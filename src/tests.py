@@ -364,7 +364,7 @@ class Commands:
         shorts = []
         titles = []
         for key in sj.SUBJECTS.keys():
-            if sj.SUBJECTS[key]['is_major']:
+            if sj.SUBJECTS[key]['Major']:
                 groups.append(sj.SUBJECTS[key]['major_en'])
                 shorts.append(sj.SUBJECTS[key]['en']['short'])
                 titles.append(sj.SUBJECTS[key]['en']['title'])

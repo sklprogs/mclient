@@ -36,7 +36,7 @@ class Check:
     
     def _search_major(self,major):
         for key in sj.SUBJECTS.keys():
-            if sj.SUBJECTS[key]['is_major'] \
+            if sj.SUBJECTS[key]['Major'] \
             and sj.SUBJECTS[key]['en']['title'] == major:
                 return True
     

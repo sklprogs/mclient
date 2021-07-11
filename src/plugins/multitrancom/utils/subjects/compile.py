@@ -204,8 +204,8 @@ class Compile:
         for key in self.subjects:
             keys.append(key)
             en.append(self.subjects[key]['en']['title'])
-            valid.append(self.subjects[key]['is_valid'])
-            majors.append(self.subjects[key]['is_major'])
+            valid.append(self.subjects[key]['Valid'])
+            majors.append(self.subjects[key]['Major'])
             groups.append(self.subjects[key]['major_en'])
         headers = (_('#'),_('KEY'),'EN',_('VALID'),_('MAJOR')
                   ,_('MAJOR (EN)')
@@ -235,7 +235,7 @@ class Compile:
         uk = []
         for key in self.subjects:
             keys.append(key)
-            valid.append(self.subjects[key]['is_valid'])
+            valid.append(self.subjects[key]['Valid'])
             en_short.append(self.subjects[key]['en']['short'])
             en.append(self.subjects[key]['en']['title'])
             ru_short.append(self.subjects[key]['ru']['short'])
@@ -297,13 +297,13 @@ class Compile:
                         self.duplicates.append(row)
                     else:
                         self.subjects[row[0]] = {}
-                        self.subjects[row[0]]['is_valid'] = self._is_valid(row)
+                        self.subjects[row[0]]['Valid'] = self._is_valid(row)
                         major_en = gp.objs.get_groups().get_major(row[1])
                         is_major = gp.objs.groups.is_major(row[1])
                         is_vip = self._is_vip(row[0])
                         self.subjects[row[0]]['major_en'] = major_en
-                        self.subjects[row[0]]['is_major'] = is_major and not is_vip
-                        self.subjects[row[0]]['is_added'] = False
+                        self.subjects[row[0]]['Major'] = is_major and not is_vip
+                        self.subjects[row[0]]['Added'] = False
                         self.subjects[row[0]]['comment'] = ''
                         self.subjects[row[0]]['en'] = {}
                         self.subjects[row[0]]['ru'] = {}
@@ -348,9 +348,9 @@ class Compile:
             sh.com.cancel(f)
     
     def _format_is_valid(self):
-        what = "': {'is_valid':"
+        what = "': {'Valid':"
         spaces = 15 * ' '
-        with_ = "':\n" + spaces + "{'is_valid':"
+        with_ = "':\n" + spaces + "{'Valid':"
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_major_en(self):
@@ -360,15 +360,15 @@ class Compile:
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_is_major(self):
-        what = ", 'is_major':"
+        what = ", 'Major':"
         spaces = 15 * ' '
-        with_ = "\n" + spaces + ",'is_major':"
+        with_ = "\n" + spaces + ",'Major':"
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_is_added(self):
-        what = ", 'is_added':"
+        what = ", 'Added':"
         spaces = 15 * ' '
-        with_ = "\n" + spaces + ",'is_added':"
+        with_ = "\n" + spaces + ",'Added':"
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_comment(self):

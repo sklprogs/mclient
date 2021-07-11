@@ -32,9 +32,9 @@ import skl_shared.shared as sh
       may come in any order.
 '''
 SUBJECTS = {'Wood, pulp and paper industries':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Wood, pulp and paper industries'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Wood, pulp and paper industries'
                    ,'title': 'Wood, pulp and paper industries'
@@ -57,9 +57,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Subjects for Chinese dictionaries (container)':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Subjects for Chinese dictionaries (container)'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Subjects for Chinese dictionaries (container)'
                    ,'title': 'Subjects for Chinese dictionaries (container)'
@@ -82,9 +82,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Stylistic values':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Stylistic values'
                    ,'title': 'Stylistic values'
@@ -107,9 +107,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Philology':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Philology'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Philology'
                    ,'title': 'Philology'
@@ -132,9 +132,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Parasciences':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Parasciences'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Parasciences'
                    ,'title': 'Parasciences'
@@ -157,9 +157,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Outdoor activities and extreme sports':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Outdoor activities and extreme sports'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Outdoor activities and extreme sports'
                    ,'title': 'Outdoor activities and extreme sports'
@@ -182,9 +182,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Machinery and mechanisms':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Machinery and mechanisms'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Machinery and mechanisms'
                    ,'title': 'Machinery and mechanisms'
@@ -207,9 +207,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Light industries':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Light industries'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Light industries'
                    ,'title': 'Light industries'
@@ -232,9 +232,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Languages':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Languages'
                    ,'title': 'Languages'
@@ -257,9 +257,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Jargon and slang':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Jargon and slang'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Jargon and slang'
                    ,'title': 'Jargon and slang'
@@ -282,9 +282,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Grammatical labels':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Grammatical labels'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Grammatical labels'
                    ,'title': 'Grammatical labels'
@@ -307,9 +307,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Emotional values':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Emotional values'
                    ,'title': 'Emotional values'
@@ -332,9 +332,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Crafts':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Crafts'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Crafts'
                    ,'title': 'Crafts'
@@ -357,9 +357,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Countries and regions':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Countries and regions'
                    ,'title': 'Countries and regions'
@@ -382,9 +382,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Companion animals':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Companion animals'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Companion animals'
                    ,'title': 'Companion animals'
@@ -407,9 +407,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Auxilliary categories (editor use only)':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Auxilliary categories (editor use only)'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Auxilliary categories (editor use only)'
                    ,'title': 'Auxilliary categories (editor use only)'
@@ -432,9 +432,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Art and culture (n.e.s.)':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'Art and culture (n.e.s.)'
                    ,'title': 'Art and culture (n.e.s.)'
@@ -457,9 +457,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'AI.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'AI.'
                    ,'title': 'Artificial intelligence'
@@ -482,9 +482,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'AIDS.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'AIDS.'
                    ,'title': 'AIDS'
@@ -507,9 +507,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'AMEX.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Finances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'AMEX.'
                    ,'title': 'American stock exchange'
@@ -532,9 +532,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ASCII.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ASCII.'
                    ,'title': 'ASCII'
@@ -557,9 +557,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Alg.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Alg.'
                    ,'title': 'Algeria'
@@ -582,9 +582,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'AmE':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Auxilliary categories (editor use only)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'AmE'
                    ,'title': 'American English'
@@ -607,9 +607,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Ant.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Ant.'
                    ,'title': 'Antilles'
@@ -632,9 +632,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Apollo-Soyuz':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Space'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Apollo-Soyuz'
                    ,'title': 'Apollo-Soyuz'
@@ -657,9 +657,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Arag.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Arag.'
                    ,'title': 'Aragon'
@@ -682,9 +682,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Arg.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Arg.'
                    ,'title': 'Argentina'
@@ -707,9 +707,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Australia':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Australia'
                    ,'title': 'Australia'
@@ -732,9 +732,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Austria':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Austria'
                    ,'title': 'Austria'
@@ -757,9 +757,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Belar.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Belar.'
                    ,'title': 'Belarus'
@@ -782,9 +782,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'BrE':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Auxilliary categories (editor use only)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'BrE'
                    ,'title': 'British English'
@@ -807,9 +807,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Braz.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Braz.'
                    ,'title': 'Brazil'
@@ -832,9 +832,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'C.-R.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'C.-R.'
                    ,'title': 'Costa Rica'
@@ -857,9 +857,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'CNC':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'CNC'
                    ,'title': 'Computer numerical control'
@@ -882,9 +882,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'CRT':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electronics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'CRT'
                    ,'title': 'Cathode-ray tubes'
@@ -907,9 +907,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'CT':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical appliances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'CT'
                    ,'title': 'Computer tomography'
@@ -932,9 +932,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Canada':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Canada'
                    ,'title': 'Canada'
@@ -957,9 +957,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Centr.Am.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Centr.Am.'
                    ,'title': 'Central America'
@@ -982,9 +982,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Chil.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Chil.'
                    ,'title': 'Chile'
@@ -1007,9 +1007,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'China':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'China'
                    ,'title': 'China'
@@ -1032,9 +1032,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Col.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Col.'
                    ,'title': 'Columbia'
@@ -1057,9 +1057,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Cuba':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Cuba'
                    ,'title': 'Cuba'
@@ -1082,9 +1082,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Cypr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Cypr.'
                    ,'title': 'Cyprus'
@@ -1107,9 +1107,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Dutch':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Dutch'
                    ,'title': 'Dutch'
@@ -1132,9 +1132,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'EBRD':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Finances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'EBRD'
                    ,'title': 'European Bank for Reconstruction and Development'
@@ -1157,9 +1157,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'EU.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'EU.'
                    ,'title': 'European Union'
@@ -1182,9 +1182,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Ecuad.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Ecuad.'
                    ,'title': 'Ecuador'
@@ -1207,9 +1207,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'FBI.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law enforcement'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'FBI.'
                    ,'title': 'Federal Bureau of Investigation'
@@ -1232,9 +1232,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'GDR':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'GDR'
                    ,'title': 'East Germany'
@@ -1257,9 +1257,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Germ.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Germ.'
                    ,'title': 'Germany'
@@ -1282,9 +1282,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik'
                    ,'title': 'General'
@@ -1307,9 +1307,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, GOST.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Quality control and standards'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, GOST.'
                    ,'title': 'GOST'
@@ -1332,9 +1332,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, IT':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, IT'
                    ,'title': 'Information technology'
@@ -1357,9 +1357,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, abbr.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Grammatical labels'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, abbr.'
                    ,'title': 'Abbreviation'
@@ -1382,9 +1382,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, abbr., IT':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, abbr., IT'
                    ,'title': 'Abbreviation, Information technology'
@@ -1407,9 +1407,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, abbr., account.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, abbr., account.'
                    ,'title': 'Abbreviation, Accounting'
@@ -1432,9 +1432,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, abbr., bank.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, abbr., bank.'
                    ,'title': 'Abbreviation, Banking'
@@ -1457,9 +1457,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, adm.law.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, adm.law.'
                    ,'title': 'Administrative law'
@@ -1482,9 +1482,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, adv.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Business'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, adv.'
                    ,'title': 'Advertising'
@@ -1507,9 +1507,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, aer.phot.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Aviation'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, aer.phot.'
                    ,'title': 'Aerial photography and topography'
@@ -1532,9 +1532,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, agric.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, agric.'
                    ,'title': 'Agriculture'
@@ -1557,9 +1557,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, ballist.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, ballist.'
                    ,'title': 'Ballistics'
@@ -1582,9 +1582,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, biogeogr.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, biogeogr.'
                    ,'title': 'Biogeography'
@@ -1607,9 +1607,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, bot.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, bot.'
                    ,'title': 'Botany'
@@ -1632,9 +1632,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, cloth.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Light industries'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, cloth.'
                    ,'title': 'Clothing'
@@ -1657,9 +1657,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, comp.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, comp.'
                    ,'title': 'Computing'
@@ -1682,9 +1682,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, cryptogr.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Security systems'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, cryptogr.'
                    ,'title': 'Cryptography'
@@ -1707,9 +1707,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, dial.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Dialectal'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, dial.'
                    ,'title': 'Dialectal'
@@ -1732,9 +1732,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, econ.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Economy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, econ.'
                    ,'title': 'Economy'
@@ -1757,9 +1757,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, el.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Electronics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, el.'
                    ,'title': 'Electronics'
@@ -1782,9 +1782,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, electric.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Electrical engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, electric.'
                    ,'title': 'Electricity'
@@ -1807,9 +1807,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, email':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Communications'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, email'
                    ,'title': 'E-mail'
@@ -1832,9 +1832,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, expl.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Law enforcement'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, expl.'
                    ,'title': 'Explosives'
@@ -1857,9 +1857,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, fig.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, fig.'
                    ,'title': 'Figurative'
@@ -1882,9 +1882,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, footwear':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Light industries'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, footwear'
                    ,'title': 'Footwear'
@@ -1907,9 +1907,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, fr.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, fr.'
                    ,'title': 'French'
@@ -1932,9 +1932,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, garden.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, garden.'
                    ,'title': 'Gardening'
@@ -1957,9 +1957,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, glac.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, glac.'
                    ,'title': 'Glaciology'
@@ -1982,9 +1982,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, horse.breed.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, horse.breed.'
                    ,'title': 'Horse breeding'
@@ -2007,9 +2007,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, hunt.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, hunt.'
                    ,'title': 'Hunting'
@@ -2032,9 +2032,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, inform.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, inform.'
                    ,'title': 'Informal'
@@ -2057,9 +2057,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, law':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, law'
                    ,'title': 'Law'
@@ -2082,9 +2082,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, mach.mech.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Machinery and mechanisms'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, mach.mech.'
                    ,'title': 'Machinery and mechanisms'
@@ -2107,9 +2107,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, magn.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, magn.'
                    ,'title': 'Magnetics'
@@ -2132,9 +2132,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, math.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Mathematics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, math.'
                    ,'title': 'Mathematics'
@@ -2157,9 +2157,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, med.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, med.'
                    ,'title': 'Medical'
@@ -2182,9 +2182,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, media.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Mass media'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, media.'
                    ,'title': 'Mass media'
@@ -2207,9 +2207,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, met.phys.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, met.phys.'
                    ,'title': 'Metal physics'
@@ -2232,9 +2232,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, mil.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Military'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, mil.'
                    ,'title': 'Military'
@@ -2257,9 +2257,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, mil., air.def.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Military'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, mil., air.def.'
                    ,'title': 'Air defense'
@@ -2282,9 +2282,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, mil., arm.veh.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Military'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, mil., arm.veh.'
                    ,'title': 'Armored vehicles'
@@ -2307,9 +2307,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, mil., artil.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Military'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, mil., artil.'
                    ,'title': 'Artillery'
@@ -2332,9 +2332,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, mil., avia.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Aviation'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, mil., avia.'
                    ,'title': 'Military aviation'
@@ -2357,9 +2357,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, mycol.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, mycol.'
                    ,'title': 'Mycology'
@@ -2382,9 +2382,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, myth.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Mythology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, myth.'
                    ,'title': 'Mythology'
@@ -2407,9 +2407,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, nautic.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Nautical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, nautic.'
                    ,'title': 'Nautical'
@@ -2432,9 +2432,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, obs.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, obs.'
                    ,'title': 'Obsolete / dated'
@@ -2457,9 +2457,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, ocean.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, ocean.'
                    ,'title': 'Oceanography (oceanology)'
@@ -2482,9 +2482,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, paraglid.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Outdoor activities and extreme sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, paraglid.'
                    ,'title': 'Paragliding'
@@ -2507,9 +2507,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, philolog.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Philology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, philolog.'
                    ,'title': 'Philology'
@@ -2532,9 +2532,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, phonet.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Linguistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, phonet.'
                    ,'title': 'Phonetics'
@@ -2557,9 +2557,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, photo.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Photography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, photo.'
                    ,'title': 'Photography'
@@ -2582,9 +2582,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, poetic':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, poetic'
                    ,'title': 'Poetic'
@@ -2607,9 +2607,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, polit.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Politics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, polit.'
                    ,'title': 'Politics'
@@ -2632,9 +2632,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, polygr.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Publishing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, polygr.'
                    ,'title': 'Polygraphy'
@@ -2657,9 +2657,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, prof.jarg.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, prof.jarg.'
                    ,'title': 'Professional jargon'
@@ -2682,9 +2682,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, prop.&figur.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, prop.&figur.'
                    ,'title': 'Proper and figurative'
@@ -2707,9 +2707,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, radio':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Communications'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, radio'
                    ,'title': 'Radio'
@@ -2732,9 +2732,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, rel., jud.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Religion'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, rel., jud.'
                    ,'title': 'Judaism'
@@ -2757,9 +2757,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, row.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, row.'
                    ,'title': 'Rowing'
@@ -2782,9 +2782,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, sail.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Outdoor activities and extreme sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, sail.'
                    ,'title': 'Sailing'
@@ -2807,9 +2807,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, scient.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, scient.'
                    ,'title': 'Scientific'
@@ -2832,9 +2832,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, sculp.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, sculp.'
                    ,'title': 'Sculpture'
@@ -2857,9 +2857,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, slang':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, slang'
                    ,'title': 'Slang'
@@ -2882,9 +2882,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, slavon.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, slavon.'
                    ,'title': 'Slavonic'
@@ -2907,9 +2907,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, social.sc.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Education'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, social.sc.'
                    ,'title': 'Social science'
@@ -2932,9 +2932,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, spin.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Crafts'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, spin.'
                    ,'title': 'Spinning'
@@ -2957,9 +2957,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, sport.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, sport.'
                    ,'title': 'Sports'
@@ -2982,9 +2982,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, sport.goods':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, sport.goods'
                    ,'title': 'Sporting goods'
@@ -3007,9 +3007,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, surv.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Sociology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, surv.'
                    ,'title': 'Survey'
@@ -3032,9 +3032,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, tech.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, tech.'
                    ,'title': 'Technology'
@@ -3057,9 +3057,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, tel.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Communications'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, tel.'
                    ,'title': 'Telephony'
@@ -3082,9 +3082,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, terat.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, terat.'
                    ,'title': 'Teratology'
@@ -3107,9 +3107,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, topogr.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, topogr.'
                    ,'title': 'Topography'
@@ -3132,9 +3132,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, typewrit.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Records management'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, typewrit.'
                    ,'title': 'Typewriters and typewriting'
@@ -3157,9 +3157,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, vent.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, vent.'
                    ,'title': 'Ventilation'
@@ -3182,9 +3182,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, weav.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Crafts'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, weav.'
                    ,'title': 'Weaving'
@@ -3207,9 +3207,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, written':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, written'
                    ,'title': 'Written'
@@ -3232,9 +3232,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Gruzovik, zool.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Gruzovik, zool.'
                    ,'title': 'Zoology'
@@ -3257,9 +3257,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Guatem.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Guatem.'
                    ,'title': 'Guatemala'
@@ -3282,9 +3282,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'HF.electr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electronics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'HF.electr.'
                    ,'title': 'High frequency electronics'
@@ -3307,9 +3307,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'HR':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Business'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'HR'
                    ,'title': 'Human resources'
@@ -3332,9 +3332,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'IMF.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Finances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'IMF.'
                    ,'title': 'International Monetary Fund'
@@ -3357,9 +3357,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'IT':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'IT'
                    ,'title': 'Information technology'
@@ -3382,9 +3382,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'India':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'India'
                    ,'title': 'India'
@@ -3407,9 +3407,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Indones.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Indones.'
                    ,'title': 'Indonesian'
@@ -3432,9 +3432,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Iran':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Iran'
                    ,'title': 'Iran'
@@ -3457,9 +3457,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Kazakh.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Kazakh.'
                    ,'title': 'Kazakhstan'
@@ -3482,9 +3482,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Kyrgyz.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Kyrgyz.'
                    ,'title': 'Kyrgyzstan'
@@ -3507,9 +3507,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'LP.play.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Multimedia'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'LP.play.'
                    ,'title': 'LP players'
@@ -3532,9 +3532,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'MSDS':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemical industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'MSDS'
                    ,'title': 'Material safety data sheet'
@@ -3557,9 +3557,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Makarov.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Makarov.'
                    ,'title': 'Makarov'
@@ -3582,9 +3582,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Makarov., inform., amer.usg.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Makarov., inform., amer.usg.'
                    ,'title': 'Makarov, Informal, American (usage, not AmE)'
@@ -3607,9 +3607,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Moroc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Moroc.'
                    ,'title': 'Morocco'
@@ -3632,9 +3632,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'N.Ireland.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'N.Ireland.'
                    ,'title': 'Northern Ireland'
@@ -3657,9 +3657,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'NASA':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Space'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'NASA'
                    ,'title': 'NASA'
@@ -3682,9 +3682,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'NATO':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Military'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'NATO'
                    ,'title': 'NATO'
@@ -3707,9 +3707,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'NGO':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'NGO'
                    ,'title': 'Non-governmental organizations'
@@ -3732,9 +3732,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'NYSE.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Finances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'NYSE.'
                    ,'title': 'New York Stock Exchange'
@@ -3757,9 +3757,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Nasdaq':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Finances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Nasdaq'
                    ,'title': 'NASDAQ'
@@ -3782,9 +3782,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Netherl., law, court':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Netherl., law, court'
                    ,'title': 'Netherlands, Court (law)'
@@ -3807,9 +3807,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'O&G':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Oil and gas'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'O&G'
                    ,'title': 'Oil and gas'
@@ -3832,9 +3832,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'O&G, casp.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Oil and gas'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'O&G, casp.'
                    ,'title': 'Caspian'
@@ -3857,9 +3857,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'O&G, karach.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Oil and gas'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'O&G, karach.'
                    ,'title': 'Karachaganak'
@@ -3882,9 +3882,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'O&G, molikpaq.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Oil and gas'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'O&G, molikpaq.'
                    ,'title': 'Molikpaq'
@@ -3907,9 +3907,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'O&G, oilfield.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Oil and gas'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'O&G, oilfield.'
                    ,'title': 'Oilfields'
@@ -3932,9 +3932,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'O&G, sahk.r.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Oil and gas'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'O&G, sahk.r.'
                    ,'title': 'Sakhalin R'
@@ -3957,9 +3957,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'O&G, sahk.s.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Oil and gas'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'O&G, sahk.s.'
                    ,'title': 'Sakhalin S'
@@ -3982,9 +3982,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'O&G, sakh.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Oil and gas'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'O&G, sakh.'
                    ,'title': 'Sakhalin'
@@ -4007,9 +4007,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'O&G, sakh., geol.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'O&G, sakh., geol.'
                    ,'title': 'Sakhalin, Geology'
@@ -4032,9 +4032,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'O&G, sakh.a.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Oil and gas'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'O&G, sakh.a.'
                    ,'title': 'Sakhalin A'
@@ -4057,9 +4057,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'O&G, tengiz.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Oil and gas'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'O&G, tengiz.'
                    ,'title': 'Tengiz'
@@ -4082,9 +4082,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'O&G. tech.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Oil and gas'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'O&G. tech.'
                    ,'title': 'Oil and gas technology'
@@ -4107,9 +4107,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'OHS':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Occupational health & safety'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'OHS'
                    ,'title': 'Occupational health & safety'
@@ -4132,9 +4132,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'PCB':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electronics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'PCB'
                    ,'title': 'Printed circuit boards'
@@ -4157,9 +4157,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'PPE':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Occupational health & safety'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'PPE'
                    ,'title': 'Personal protective equipment'
@@ -4182,9 +4182,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'PR':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Business'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'PR'
                    ,'title': 'Public relations'
@@ -4207,9 +4207,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'PSP':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electrical engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'PSP'
                    ,'title': 'Power system protection'
@@ -4232,9 +4232,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Panam.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Panam.'
                    ,'title': 'Panama'
@@ -4257,9 +4257,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Peru.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Peru.'
                    ,'title': 'Peru'
@@ -4282,9 +4282,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Philipp.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Philipp.'
                    ,'title': 'Philippines'
@@ -4307,9 +4307,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'R&D.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'R&D.'
                    ,'title': 'Research and development'
@@ -4332,9 +4332,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Russia':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Russia'
                    ,'title': 'Russia'
@@ -4357,9 +4357,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'S.Amer.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'S.Amer.'
                    ,'title': 'South America'
@@ -4382,9 +4382,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'SAP.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'SAP.'
                    ,'title': 'SAP'
@@ -4407,9 +4407,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'SAP.fin.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'SAP.fin.'
                    ,'title': 'SAP finance'
@@ -4432,9 +4432,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'SAP.tech.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'SAP.tech.'
                    ,'title': 'SAP tech.'
@@ -4457,9 +4457,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Scotl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Scotl.'
                    ,'title': 'Scotland'
@@ -4482,9 +4482,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Spain':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Spain'
                    ,'title': 'Spain'
@@ -4507,9 +4507,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'TV':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mass media'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'TV'
                    ,'title': 'Television'
@@ -4532,9 +4532,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'UK':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'UK'
                    ,'title': 'United Kingdom'
@@ -4557,9 +4557,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'UN':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'United Nations'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'UN'
                    ,'title': 'United Nations'
@@ -4582,9 +4582,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'USA':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'USA'
                    ,'title': 'United States'
@@ -4607,9 +4607,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Ukraine':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Ukraine'
                    ,'title': 'Ukraine'
@@ -4632,9 +4632,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Venezuel.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Venezuel.'
                    ,'title': 'Venezuela'
@@ -4657,9 +4657,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'WTO.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Economy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'WTO.'
                    ,'title': 'World trade organization'
@@ -4682,9 +4682,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Grammatical labels'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr.'
                    ,'title': 'Abbreviation'
@@ -4707,9 +4707,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., O&G, casp.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., O&G, casp.'
                    ,'title': 'Abbreviation, Caspian'
@@ -4732,9 +4732,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., O&G, karach.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., O&G, karach.'
                    ,'title': 'Abbreviation, Karachaganak'
@@ -4757,9 +4757,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., O&G, sahk.r.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., O&G, sahk.r.'
                    ,'title': 'Abbreviation, Sakhalin R'
@@ -4782,9 +4782,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., O&G, sahk.s.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., O&G, sahk.s.'
                    ,'title': 'Abbreviation, Sakhalin S'
@@ -4807,9 +4807,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., O&G, sakh.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., O&G, sakh.'
                    ,'title': 'Abbreviation, Sakhalin'
@@ -4832,9 +4832,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., O&G, sakh.a.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., O&G, sakh.a.'
                    ,'title': 'Abbreviation, Sakhalin A'
@@ -4857,9 +4857,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., amer.usg.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., amer.usg.'
                    ,'title': 'Abbreviation, American (usage, not AmE)'
@@ -4882,9 +4882,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., amer.usg., slang':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., amer.usg., slang'
                    ,'title': 'Abbreviation, American (usage, not AmE), Slang'
@@ -4907,9 +4907,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., avia., avia., ICAO':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., avia., avia., ICAO'
                    ,'title': 'Abbreviation, Aviation, ICAO'
@@ -4932,9 +4932,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., avia., med.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., avia., med.'
                    ,'title': 'Abbreviation, Aviation medicine'
@@ -4957,9 +4957,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., comp., MS':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., comp., MS'
                    ,'title': 'Abbreviation, Microsoft'
@@ -4982,9 +4982,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., comp., net.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., comp., net.'
                    ,'title': 'Abbreviation, Computer networks'
@@ -5007,9 +5007,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., comp., net., IT':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., comp., net., IT'
                    ,'title': 'Abbreviation, Computer networks, Information technology'
@@ -5032,9 +5032,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., fant./sci-fi.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., fant./sci-fi.'
                    ,'title': 'Abbreviation, Fantasy and science fiction'
@@ -5057,9 +5057,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., law, ADR':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., law, ADR'
                    ,'title': 'Abbreviation, Alternative dispute resolution'
@@ -5082,9 +5082,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., law, copyr.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., law, copyr.'
                    ,'title': 'Abbreviation, Copyright'
@@ -5107,9 +5107,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., mil., WMD':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., mil., WMD'
                    ,'title': 'Abbreviation, Weapons of mass destruction'
@@ -5132,9 +5132,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., mil., artil.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., mil., artil.'
                    ,'title': 'Abbreviation, Artillery'
@@ -5157,9 +5157,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., mil., navy':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., mil., navy'
                    ,'title': 'Abbreviation, Navy'
@@ -5182,9 +5182,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., patents.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., patents.'
                    ,'title': 'Abbreviation, Patents'
@@ -5207,9 +5207,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'abbr., sport, bask.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'abbr., sport, bask.'
                    ,'title': 'Abbreviation, Basketball'
@@ -5232,9 +5232,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'account.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Finances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'account.'
                    ,'title': 'Accounting'
@@ -5257,9 +5257,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'accum.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'accum.'
                    ,'title': 'Accumulators'
@@ -5282,9 +5282,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'acoust.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'acoust.'
                    ,'title': 'Acoustics'
@@ -5307,9 +5307,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'acrid.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'acrid.'
                    ,'title': 'Acridology'
@@ -5332,9 +5332,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'acrob.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'acrob.'
                    ,'title': 'Acrobatics'
@@ -5357,9 +5357,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'acup.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medicine - Alternative medicine'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'acup.'
                    ,'title': 'Acupuncture'
@@ -5382,9 +5382,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'addit.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'addit.'
                    ,'title': 'Additive manufacturing & 3D printing'
@@ -5407,9 +5407,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'adm.law.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'adm.law.'
                    ,'title': 'Administrative law'
@@ -5432,9 +5432,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'admin.geo.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'admin.geo.'
                    ,'title': 'Administrative geography'
@@ -5457,9 +5457,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'adv.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Business'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'adv.'
                    ,'title': 'Advertising'
@@ -5482,9 +5482,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'aer.phot.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Aviation'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'aer.phot.'
                    ,'title': 'Aerial photography and topography'
@@ -5507,9 +5507,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'aerodyn.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'aerodyn.'
                    ,'title': 'Aerodynamics'
@@ -5532,9 +5532,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'aerohydr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'aerohydr.'
                    ,'title': 'Aerohydrodynamics'
@@ -5557,9 +5557,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'aeron.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Aviation'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'aeron.'
                    ,'title': 'Aeronautics'
@@ -5582,9 +5582,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'affect.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'affect.'
                    ,'title': 'Affectionate'
@@ -5607,9 +5607,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'afghan.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'afghan.'
                    ,'title': 'Afghanistan'
@@ -5632,9 +5632,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'afr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'afr.'
                    ,'title': 'Africa'
@@ -5657,9 +5657,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'african.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'african.'
                    ,'title': 'African'
@@ -5682,9 +5682,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'agr.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'agr.'
                    ,'title': 'Agronomy'
@@ -5707,9 +5707,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'agric.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'agric.'
                    ,'title': 'Agriculture'
@@ -5732,9 +5732,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'agrochem.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'agrochem.'
                    ,'title': 'Agrochemistry'
@@ -5757,9 +5757,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'aikido.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Martial arts and combat sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'aikido.'
                    ,'title': 'Aikido'
@@ -5782,9 +5782,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'airccon.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'airccon.'
                    ,'title': 'Air conditioners'
@@ -5807,9 +5807,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'airports':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Aviation'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'airports'
                    ,'title': 'Airports and air traffic control'
@@ -5832,9 +5832,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'airsh.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Aviation'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'airsh.'
                    ,'title': 'Airships'
@@ -5857,9 +5857,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'alg.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mathematics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'alg.'
                    ,'title': 'Algebra'
@@ -5882,9 +5882,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'alk.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'alk.'
                    ,'title': 'Alkaloids'
@@ -5907,9 +5907,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'allergol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'allergol.'
                    ,'title': 'Allergology'
@@ -5932,9 +5932,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'alp.ski.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Outdoor activities and extreme sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'alp.ski.'
                    ,'title': 'Alpine skiing'
@@ -5957,9 +5957,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'alum.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Metallurgy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'alum.'
                    ,'title': 'Aluminium industry'
@@ -5982,9 +5982,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'amer.usg.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'amer.usg.'
                    ,'title': 'American (usage, not AmE)'
@@ -6007,9 +6007,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'amer.usg., Makarov.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'amer.usg., Makarov.'
                    ,'title': 'American (usage, not AmE), Makarov'
@@ -6032,9 +6032,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'amer.usg., account.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'amer.usg., account.'
                    ,'title': 'American (usage, not AmE), Accounting'
@@ -6057,9 +6057,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'anaesthes.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'anaesthes.'
                    ,'title': 'Anesthesiology'
@@ -6082,9 +6082,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'anat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'anat.'
                    ,'title': 'Anatomy'
@@ -6107,9 +6107,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'anc.fr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'anc.fr.'
                    ,'title': 'Ancient French'
@@ -6132,9 +6132,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'anc.gr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'anc.gr.'
                    ,'title': 'Ancient Greek'
@@ -6157,9 +6157,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'anc.hebr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'anc.hebr.'
                    ,'title': 'Ancient Hebrew'
@@ -6182,9 +6182,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'angl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Hobbies and pastimes'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'angl.'
                    ,'title': 'Angling (hobby)'
@@ -6207,9 +6207,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'anim.husb.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'anim.husb.'
                    ,'title': 'Animal husbandry'
@@ -6232,9 +6232,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'animat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Cinematography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'animat.'
                    ,'title': 'Animation and animated films'
@@ -6257,9 +6257,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'antarct.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'antarct.'
                    ,'title': 'Antarctic'
@@ -6282,9 +6282,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'antenn.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Communications'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'antenn.'
                    ,'title': 'Antennas and waveguides'
@@ -6307,9 +6307,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'anthr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Historical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'anthr.'
                    ,'title': 'Anthropology'
@@ -6332,9 +6332,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'antitrust.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'antitrust.'
                    ,'title': 'Antitrust law'
@@ -6357,9 +6357,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'appl.math.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mathematics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'appl.math.'
                    ,'title': 'Applied mathematics'
@@ -6382,9 +6382,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'arabic':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'arabic'
                    ,'title': 'Arabic language'
@@ -6407,9 +6407,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'arch.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'arch.'
                    ,'title': 'Archaic'
@@ -6432,9 +6432,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'archer.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'archer.'
                    ,'title': 'Archery'
@@ -6457,9 +6457,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'archit.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'archit.'
                    ,'title': 'Architecture'
@@ -6482,9 +6482,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'archive.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Records management'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'archive.'
                    ,'title': 'Archiving'
@@ -6507,9 +6507,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'arts.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'arts.'
                    ,'title': 'Art'
@@ -6532,9 +6532,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'astr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Space'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'astr.'
                    ,'title': 'Astronomy'
@@ -6557,9 +6557,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'astrol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Parasciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'astrol.'
                    ,'title': 'Astrology'
@@ -6582,9 +6582,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'astrometr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Space'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'astrometr.'
                    ,'title': 'Astrometry'
@@ -6607,9 +6607,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'astronaut.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Space'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'astronaut.'
                    ,'title': 'Astronautics'
@@ -6632,9 +6632,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'astrophys.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'astrophys.'
                    ,'title': 'Astrophysics'
@@ -6657,9 +6657,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'astrospectr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Space'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'astrospectr.'
                    ,'title': 'Astrospectroscopy'
@@ -6682,9 +6682,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'athlet.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'athlet.'
                    ,'title': 'Athletics'
@@ -6707,9 +6707,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'atring.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Building materials'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'atring.'
                    ,'title': 'Astringents'
@@ -6732,9 +6732,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'audio.el.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Multimedia'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'audio.el.'
                    ,'title': 'Audio electronics'
@@ -6757,9 +6757,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'austral.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'austral.'
                    ,'title': 'Australian'
@@ -6782,9 +6782,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'austrian':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'austrian'
                    ,'title': 'Austrian (usage)'
@@ -6807,9 +6807,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'auto.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Transport'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'auto.'
                    ,'title': 'Automobiles'
@@ -6832,9 +6832,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'auto.ctrl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'auto.ctrl.'
                    ,'title': 'Automatic control'
@@ -6857,9 +6857,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'automat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Machinery and mechanisms'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'automat.'
                    ,'title': 'Automated equipment'
@@ -6882,9 +6882,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'avia.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Aviation'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'avia.'
                    ,'title': 'Aviation'
@@ -6907,9 +6907,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'avia., avia., ICAO':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'avia., avia., ICAO'
                    ,'title': 'Aviation, ICAO'
@@ -6932,9 +6932,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'avia., med.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Aviation'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'avia., med.'
                    ,'title': 'Aviation medicine'
@@ -6957,9 +6957,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'avunc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'avunc.'
                    ,'title': 'Avuncular'
@@ -6982,9 +6982,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'bacteriol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'bacteriol.'
                    ,'title': 'Bacteriology'
@@ -7007,9 +7007,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'baker.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Food industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'baker.'
                    ,'title': 'Bakery'
@@ -7032,9 +7032,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ball.bear.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Machinery and mechanisms'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ball.bear.'
                    ,'title': 'Ball bearings'
@@ -7057,9 +7057,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ballet.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ballet.'
                    ,'title': 'Ballet'
@@ -7082,9 +7082,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'bank.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Finances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'bank.'
                    ,'title': 'Banking'
@@ -7107,9 +7107,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'baseb.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'baseb.'
                    ,'title': 'Baseball'
@@ -7132,9 +7132,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'beekeep.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'beekeep.'
                    ,'title': 'Beekeeping'
@@ -7157,9 +7157,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'belg.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'belg.'
                    ,'title': 'Belgian (usage)'
@@ -7182,9 +7182,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'bev.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Cooking'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'bev.'
                    ,'title': 'Beverages'
@@ -7207,9 +7207,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'bible.term.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Religion'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'bible.term.'
                    ,'title': 'Bible'
@@ -7232,9 +7232,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'bibliogr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Records management'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'bibliogr.'
                    ,'title': 'Bibliography'
@@ -7257,9 +7257,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'bill.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'bill.'
                    ,'title': 'Bills'
@@ -7282,9 +7282,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'billiar.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Games (other than sports)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'billiar.'
                    ,'title': 'Billiards'
@@ -7307,9 +7307,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'bioacoust.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'bioacoust.'
                    ,'title': 'Bioacoustics'
@@ -7332,9 +7332,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'biochem.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'biochem.'
                    ,'title': 'Biochemistry'
@@ -7357,9 +7357,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'bioenerg.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Energy industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'bioenerg.'
                    ,'title': 'Bioenergy'
@@ -7382,9 +7382,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'biol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'biol.'
                    ,'title': 'Biology'
@@ -7407,9 +7407,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'biom.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Security systems'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'biom.'
                    ,'title': 'Biometry'
@@ -7432,9 +7432,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'bion.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'bion.'
                    ,'title': 'Bionics'
@@ -7457,9 +7457,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'biophys.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'biophys.'
                    ,'title': 'Biophysics'
@@ -7482,9 +7482,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'biotaxy.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'biotaxy.'
                    ,'title': 'Biotaxy'
@@ -7507,9 +7507,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'biotechn.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'biotechn.'
                    ,'title': 'Biotechnology'
@@ -7532,9 +7532,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'black.sl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'black.sl.'
                    ,'title': 'Black slang'
@@ -7557,9 +7557,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'bodybuild.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'bodybuild.'
                    ,'title': 'Bodybuilding'
@@ -7582,9 +7582,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'book.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'book.'
                    ,'title': 'Bookish / literary'
@@ -7607,9 +7607,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'book.bind.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Publishing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'book.bind.'
                    ,'title': 'Book binding'
@@ -7632,9 +7632,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'bot.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'bot.'
                    ,'title': 'Botany'
@@ -7657,9 +7657,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'box.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Martial arts and combat sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'box.'
                    ,'title': 'Boxing'
@@ -7682,9 +7682,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'brew.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Food industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'brew.'
                    ,'title': 'Brewery'
@@ -7707,9 +7707,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'bricks':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Building materials'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'bricks'
                    ,'title': 'Bricks'
@@ -7732,9 +7732,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'bridg.constr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'bridg.constr.'
                    ,'title': 'Bridge construction'
@@ -7757,9 +7757,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'brit.usg.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'brit.usg.'
                    ,'title': 'British (usage, not BrE)'
@@ -7782,9 +7782,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'brit.usg., austral.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'brit.usg., austral.'
                    ,'title': 'British (usage, not BrE), Australian'
@@ -7807,9 +7807,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'build.mat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Building materials'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'build.mat.'
                    ,'title': 'Building materials'
@@ -7832,9 +7832,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'build.struct.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'build.struct.'
                    ,'title': 'Building structures'
@@ -7857,9 +7857,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'bus.styl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Business'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'bus.styl.'
                    ,'title': 'Business style'
@@ -7882,9 +7882,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'busin.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Business'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'busin.'
                    ,'title': 'Business'
@@ -7907,9 +7907,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cables':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electrical engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cables'
                    ,'title': 'Cables and cable production'
@@ -7932,9 +7932,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'calligr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'calligr.'
                    ,'title': 'Calligraphy'
@@ -7957,9 +7957,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'can.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Food industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'can.'
                    ,'title': 'Canning'
@@ -7982,9 +7982,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'canad.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'canad.'
                    ,'title': 'Canadian'
@@ -8007,9 +8007,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'carcin.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'carcin.'
                    ,'title': 'Carcinology'
@@ -8032,9 +8032,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cardiol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cardiol.'
                    ,'title': 'Cardiology'
@@ -8057,9 +8057,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cards':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Games (other than sports)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cards'
                    ,'title': 'Card games'
@@ -8082,9 +8082,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cartogr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cartogr.'
                    ,'title': 'Cartography'
@@ -8107,9 +8107,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cartogr., amer.usg.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cartogr., amer.usg.'
                    ,'title': 'Cartography, American (usage, not AmE)'
@@ -8132,9 +8132,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cel.mech.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Space'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cel.mech.'
                    ,'title': 'Celestial mechanics'
@@ -8157,9 +8157,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cem.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Building materials'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cem.'
                    ,'title': 'Cement'
@@ -8182,9 +8182,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ceram.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Production'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ceram.'
                    ,'title': 'Ceramics'
@@ -8207,9 +8207,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ceram.tile.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Building materials'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ceram.tile.'
                    ,'title': 'Ceramic tiles'
@@ -8232,9 +8232,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'chalcid.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'chalcid.'
                    ,'title': 'Chalcidology'
@@ -8257,9 +8257,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'charit.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Finances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'charit.'
                    ,'title': 'Charities'
@@ -8282,9 +8282,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'chat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'chat.'
                    ,'title': 'Chat and Internet slang'
@@ -8307,9 +8307,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'chech.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'chech.'
                    ,'title': 'Czech'
@@ -8332,9 +8332,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'checkers.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Games (other than sports)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'checkers.'
                    ,'title': 'Checkers'
@@ -8357,9 +8357,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cheese':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Food industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cheese'
                    ,'title': 'Cheesemaking (caseiculture)'
@@ -8382,9 +8382,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'chem.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'chem.'
                    ,'title': 'Chemistry'
@@ -8407,9 +8407,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'chem.comp.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'chem.comp.'
                    ,'title': 'Chemical compounds'
@@ -8432,9 +8432,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'chem.fib.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemical industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'chem.fib.'
                    ,'title': 'Chemical fibers'
@@ -8457,9 +8457,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'chem.ind.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemical industry'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'chem.ind.'
                    ,'title': 'Chemical industry'
@@ -8482,9 +8482,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'chem.nomencl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'chem.nomencl.'
                    ,'title': 'Chemical nomenclature'
@@ -8507,9 +8507,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'chess.term.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Games (other than sports)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'chess.term.'
                    ,'title': 'Chess'
@@ -8532,9 +8532,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'child.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'child.'
                    ,'title': 'Childish'
@@ -8557,9 +8557,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'chinese.lang.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'chinese.lang.'
                    ,'title': 'Chinese'
@@ -8582,9 +8582,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'choreogr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'choreogr.'
                    ,'title': 'Choreography'
@@ -8607,9 +8607,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'chromat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'chromat.'
                    ,'title': 'Chromatography'
@@ -8632,9 +8632,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cinema':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Cinematography'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'cinema'
                    ,'title': 'Cinematography'
@@ -8657,9 +8657,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cinema.equip.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Cinematography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cinema.equip.'
                    ,'title': 'Cinema equipment'
@@ -8682,9 +8682,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'circus':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'circus'
                    ,'title': 'Circus'
@@ -8707,9 +8707,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'civ.law.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'civ.law.'
                    ,'title': 'Civil law'
@@ -8732,9 +8732,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'civ.proc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'civ.proc.'
                    ,'title': 'Civil procedure'
@@ -8757,9 +8757,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'clas.ant.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Historical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'clas.ant.'
                    ,'title': 'Classical antiquity (excl. mythology)'
@@ -8782,9 +8782,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cleric.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Religion'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cleric.'
                    ,'title': 'Clerical'
@@ -8807,9 +8807,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'clich.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'clich.'
                    ,'title': 'Cliche'
@@ -8832,9 +8832,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'clim.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'clim.'
                    ,'title': 'Climatology'
@@ -8857,9 +8857,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'clin.trial.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'clin.trial.'
                    ,'title': 'Clinical trial'
@@ -8882,9 +8882,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cloth.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Light industries'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cloth.'
                    ,'title': 'Clothing'
@@ -8907,9 +8907,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'coal.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mining'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'coal.'
                    ,'title': 'Coal'
@@ -8932,9 +8932,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cockney':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cockney'
                    ,'title': 'Cockney rhyming slang'
@@ -8957,9 +8957,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'coff.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Food industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'coff.'
                    ,'title': 'Coffee'
@@ -8982,9 +8982,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'coll.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Grammatical labels'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'coll.'
                    ,'title': 'Collective'
@@ -9007,9 +9007,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'collect.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Collecting'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'collect.'
                    ,'title': 'Collecting'
@@ -9032,9 +9032,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'college.vern.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'college.vern.'
                    ,'title': 'College vernacular'
@@ -9057,9 +9057,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'colloid.chem.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'colloid.chem.'
                    ,'title': 'Colloid chemistry'
@@ -9082,9 +9082,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'combust.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Machinery and mechanisms'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'combust.'
                    ,'title': 'Combustion gas turbines'
@@ -9107,9 +9107,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'comic.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'comic.'
                    ,'title': 'Comics'
@@ -9132,9 +9132,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'commer.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Business'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'commer.'
                    ,'title': 'Commerce'
@@ -9157,9 +9157,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'commun.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Communications'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'commun.'
                    ,'title': 'Communications'
@@ -9182,9 +9182,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'comp.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'comp.'
                    ,'title': 'Computing'
@@ -9207,9 +9207,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'comp., MS':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'comp., MS'
                    ,'title': 'Microsoft'
@@ -9232,9 +9232,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'comp., net.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'comp., net.'
                    ,'title': 'Computer networks'
@@ -9257,9 +9257,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'comp., net., abbr.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'comp., net., abbr.'
                    ,'title': 'Computer networks, Abbreviation'
@@ -9282,9 +9282,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'comp.games.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'comp.games.'
                    ,'title': 'Computer games'
@@ -9307,9 +9307,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'comp.graph.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'comp.graph.'
                    ,'title': 'Computer graphics'
@@ -9332,9 +9332,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'comp.name.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Proper name'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'comp.name.'
                    ,'title': 'Company name'
@@ -9357,9 +9357,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'comp.sec.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'comp.sec.'
                    ,'title': 'Computer security'
@@ -9382,9 +9382,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'comp.sl., humor.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'comp.sl., humor.'
                    ,'title': 'Computing slang, Humorous / Jocular'
@@ -9407,9 +9407,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'compr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'compr.'
                    ,'title': 'Compressors'
@@ -9432,9 +9432,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'concr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Building materials'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'concr.'
                    ,'title': 'Concrete'
@@ -9457,9 +9457,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'confect.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Cooking'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'confect.'
                    ,'title': 'Confectionery'
@@ -9482,9 +9482,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'construct.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'construct.'
                    ,'title': 'Construction'
@@ -9507,9 +9507,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'consult.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Business'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'consult.'
                    ,'title': 'Consulting'
@@ -9532,9 +9532,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'contempt.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'contempt.'
                    ,'title': 'Contemptuous'
@@ -9557,9 +9557,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'context.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'context.'
                    ,'title': 'Contextual meaning'
@@ -9582,9 +9582,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'conv.ind.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Production'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'conv.ind.'
                    ,'title': 'Converter industry'
@@ -9607,9 +9607,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'conv.notation.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Subjects for Chinese dictionaries (container)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'conv.notation.'
                    ,'title': 'Conventional notation'
@@ -9632,9 +9632,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cook.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Cooking'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'cook.'
                    ,'title': 'Cooking'
@@ -9657,9 +9657,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'coop.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Crafts'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'coop.'
                    ,'title': 'Cooperage'
@@ -9682,9 +9682,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'corp.gov.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Business'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'corp.gov.'
                    ,'title': 'Corporate governance'
@@ -9707,9 +9707,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'corrupt.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law enforcement'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'corrupt.'
                    ,'title': 'Combating corruption'
@@ -9732,9 +9732,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cosmet.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Wellness'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cosmet.'
                    ,'title': 'Cosmetics and cosmetology'
@@ -9757,9 +9757,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'crim.jarg.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'crim.jarg.'
                    ,'title': 'Criminal jargon'
@@ -9782,9 +9782,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'crim.law.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'crim.law.'
                    ,'title': 'Criminal law'
@@ -9807,9 +9807,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cryptogr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Security systems'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cryptogr.'
                    ,'title': 'Cryptography'
@@ -9832,9 +9832,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'crystall.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'crystall.'
                    ,'title': 'Crystallography'
@@ -9857,9 +9857,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cultur.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cultur.'
                    ,'title': 'Cultural studies'
@@ -9882,9 +9882,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'curr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Finances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'curr.'
                    ,'title': 'Currencies and monetary policy'
@@ -9907,9 +9907,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cust.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Government, administration and public services'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cust.'
                    ,'title': 'Customs'
@@ -9932,9 +9932,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cyber.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cyber.'
                    ,'title': 'Cybernetics'
@@ -9957,9 +9957,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cyc.sport':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cyc.sport'
                    ,'title': 'Cycle sport'
@@ -9982,9 +9982,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cycl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Outdoor activities and extreme sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cycl.'
                    ,'title': 'Cycling (other than sport)'
@@ -10007,9 +10007,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cytog.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cytog.'
                    ,'title': 'Cytogenetics'
@@ -10032,9 +10032,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'cytol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'cytol.'
                    ,'title': 'Cytology'
@@ -10057,9 +10057,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'d.b..':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'd.b..'
                    ,'title': 'Databases'
@@ -10082,9 +10082,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dactyl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law enforcement'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'dactyl.'
                    ,'title': 'Dactyloscopy'
@@ -10107,9 +10107,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dam.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'dam.'
                    ,'title': 'Dams'
@@ -10132,9 +10132,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dan.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'dan.'
                    ,'title': 'Danish'
@@ -10157,9 +10157,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'danc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'danc.'
                    ,'title': 'Dancing'
@@ -10182,9 +10182,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dat.proc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'dat.proc.'
                    ,'title': 'Data processing'
@@ -10207,9 +10207,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'deaf.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'deaf.'
                    ,'title': 'Deafblindness'
@@ -10232,9 +10232,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'demogr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'demogr.'
                    ,'title': 'Demography'
@@ -10257,9 +10257,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dent.impl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical appliances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'dent.impl.'
                    ,'title': 'Dental implantology'
@@ -10282,9 +10282,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dentist.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'dentist.'
                    ,'title': 'Dentistry'
@@ -10307,9 +10307,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'derbet.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Dialectal'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'derbet.'
                    ,'title': 'Derbet language'
@@ -10332,9 +10332,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dermat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'dermat.'
                    ,'title': 'Dermatology'
@@ -10357,9 +10357,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'derog.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'derog.'
                    ,'title': 'Derogatory'
@@ -10382,9 +10382,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'desert.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'desert.'
                    ,'title': 'Desert science'
@@ -10407,9 +10407,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'design.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'design.'
                    ,'title': 'Design'
@@ -10432,9 +10432,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dial.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Dialectal'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'dial.'
                    ,'title': 'Dialectal'
@@ -10457,9 +10457,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dialys.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'dialys.'
                    ,'title': 'Dyalysis'
@@ -10482,9 +10482,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'diet.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'diet.'
                    ,'title': 'Dietology'
@@ -10507,9 +10507,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dig.curr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Finances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'dig.curr.'
                    ,'title': 'Digital and cryptocurrencies'
@@ -10532,9 +10532,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dimin.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Grammatical labels'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'dimin.'
                    ,'title': 'Diminutive'
@@ -10557,9 +10557,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dipl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Foreign affairs'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'dipl.'
                    ,'title': 'Diplomacy'
@@ -10582,9 +10582,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dipl., amer.usg.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'dipl., amer.usg.'
                    ,'title': 'Diplomacy, American (usage, not AmE)'
@@ -10607,9 +10607,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'disappr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'disappr.'
                    ,'title': 'Disapproving'
@@ -10632,9 +10632,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'disast.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Politics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'disast.'
                    ,'title': 'Disaster recovery'
@@ -10657,9 +10657,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'distil.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'distil.'
                    ,'title': 'Distillation'
@@ -10682,9 +10682,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dog.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Companion animals'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'dog.'
                    ,'title': 'Dog breeding'
@@ -10707,9 +10707,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dominic.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'dominic.'
                    ,'title': 'Dominican Republic'
@@ -10732,9 +10732,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dril.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mining'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'dril.'
                    ,'title': 'Drilling'
@@ -10757,9 +10757,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'drug.name':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'drug.name'
                    ,'title': 'Drug name'
@@ -10782,9 +10782,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'drugs':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'drugs'
                    ,'title': 'Drugs and addiction medicine'
@@ -10807,9 +10807,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'drv.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'drv.'
                    ,'title': 'Drives'
@@ -10832,9 +10832,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'drw.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'drw.'
                    ,'title': 'Drawing'
@@ -10857,9 +10857,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'drywall':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Building materials'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'drywall'
                    ,'title': 'Drywall'
@@ -10882,9 +10882,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'dye.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemical industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'dye.'
                    ,'title': 'Dyes'
@@ -10907,9 +10907,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ecol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Natural resourses and wildlife conservation'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ecol.'
                    ,'title': 'Ecology'
@@ -10932,9 +10932,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'econ.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Economy'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'econ.'
                    ,'title': 'Economy'
@@ -10957,9 +10957,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'econ., amer.usg.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'econ., amer.usg.'
                    ,'title': 'Economy, American (usage, not AmE)'
@@ -10982,9 +10982,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'econ.law.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'econ.law.'
                    ,'title': 'Economic law'
@@ -11007,9 +11007,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'econometr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mathematics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'econometr.'
                    ,'title': 'Econometrics'
@@ -11032,9 +11032,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ed.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Education'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'ed.'
                    ,'title': 'Education'
@@ -11057,9 +11057,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ed., subj.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Education'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ed., subj.'
                    ,'title': 'School and university subjects'
@@ -11082,9 +11082,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'egypt.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Historical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'egypt.'
                    ,'title': 'Egyptology'
@@ -11107,9 +11107,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'el.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electronics'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'el.'
                    ,'title': 'Electronics'
@@ -11132,9 +11132,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'el.chem.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'el.chem.'
                    ,'title': 'Electrochemistry'
@@ -11157,9 +11157,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'el.com.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Business'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'el.com.'
                    ,'title': 'Electronic commerce'
@@ -11182,9 +11182,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'el.gen.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Energy industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'el.gen.'
                    ,'title': 'Electricity generation'
@@ -11207,9 +11207,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'el.mach.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electrical engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'el.mach.'
                    ,'title': 'Electric machinery'
@@ -11232,9 +11232,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'el.med.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'el.med.'
                    ,'title': 'Electromedicine'
@@ -11257,9 +11257,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'el.met.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Metallurgy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'el.met.'
                    ,'title': 'Electrometallurgy'
@@ -11282,9 +11282,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'el.mot.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electrical engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'el.mot.'
                    ,'title': 'Electric motors'
@@ -11307,9 +11307,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'el.therm.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Metallurgy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'el.therm.'
                    ,'title': 'Electrothermy'
@@ -11332,9 +11332,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'el.tract.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Machinery and mechanisms'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'el.tract.'
                    ,'title': 'Electric traction'
@@ -11357,9 +11357,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'elect.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Politics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'elect.'
                    ,'title': 'Elections'
@@ -11382,9 +11382,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'electr.eng.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electrical engineering'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'electr.eng.'
                    ,'title': 'Electrical engineering'
@@ -11407,9 +11407,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'electric.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electrical engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'electric.'
                    ,'title': 'Electricity'
@@ -11432,9 +11432,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'electrophor.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical appliances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'electrophor.'
                    ,'title': 'Electrophoresis'
@@ -11457,9 +11457,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'elev.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Machinery and mechanisms'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'elev.'
                    ,'title': 'Elevators'
@@ -11482,9 +11482,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'els.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'els.'
                    ,'title': 'Electrolysis'
@@ -11507,9 +11507,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'embryol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'embryol.'
                    ,'title': 'Embryology'
@@ -11532,9 +11532,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'emerg.care':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'emerg.care'
                    ,'title': 'Emergency medical care'
@@ -11557,9 +11557,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'emotive':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'emotive'
                    ,'title': 'Emotive'
@@ -11582,9 +11582,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'empl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Economy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'empl.'
                    ,'title': 'Employment'
@@ -11607,9 +11607,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'endocr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'endocr.'
                    ,'title': 'Endocrinology'
@@ -11632,9 +11632,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'energ.distr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Energy industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'energ.distr.'
                    ,'title': 'Energy distribution'
@@ -11657,9 +11657,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'energ.ind.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Energy industry'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'energ.ind.'
                    ,'title': 'Energy industry'
@@ -11682,9 +11682,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'energ.syst.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Energy industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'energ.syst.'
                    ,'title': 'Energy system'
@@ -11707,9 +11707,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'eng.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'eng.'
                    ,'title': 'Engineering'
@@ -11732,9 +11732,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'eng.geol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'eng.geol.'
                    ,'title': 'Engineering geology'
@@ -11757,9 +11757,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'engin.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Machinery and mechanisms'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'engin.'
                    ,'title': 'Engines'
@@ -11782,9 +11782,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'engl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'engl.'
                    ,'title': 'English'
@@ -11807,9 +11807,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'entomol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'entomol.'
                    ,'title': 'Entomology'
@@ -11832,9 +11832,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'environ.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Natural resourses and wildlife conservation'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'environ.'
                    ,'title': 'Environment'
@@ -11857,9 +11857,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'epist.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'epist.'
                    ,'title': 'Epistolary'
@@ -11882,9 +11882,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'equestr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'equestr.'
                    ,'title': 'Equestrianism'
@@ -11907,9 +11907,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'eskim.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'eskim.'
                    ,'title': 'Eskimo (usage)'
@@ -11932,9 +11932,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'esot.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Parasciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'esot.'
                    ,'title': 'Esoterics'
@@ -11957,9 +11957,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'esper.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'esper.'
                    ,'title': 'Esperanto'
@@ -11982,9 +11982,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ethnogr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ethnogr.'
                    ,'title': 'Ethnography'
@@ -12007,9 +12007,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ethnol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ethnol.'
                    ,'title': 'Ethnology'
@@ -12032,9 +12032,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ethnopsychol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Psychology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ethnopsychol.'
                    ,'title': 'Ethnopsychology'
@@ -12057,9 +12057,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ethol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ethol.'
                    ,'title': 'Ethology'
@@ -12082,9 +12082,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'euph.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'euph.'
                    ,'title': 'Euphemistic'
@@ -12107,9 +12107,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'evol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'evol.'
                    ,'title': 'Evolution'
@@ -12132,9 +12132,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'excl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Grammatical labels'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'excl.'
                    ,'title': 'Exclamation'
@@ -12157,9 +12157,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'exhib.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Business'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'exhib.'
                    ,'title': 'Exhibitions'
@@ -12182,9 +12182,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'explan.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'explan.'
                    ,'title': 'Explanatory translation'
@@ -12207,9 +12207,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'extr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'extr.'
                    ,'title': 'Extrusion'
@@ -12232,9 +12232,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'f.trade.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Economy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'f.trade.'
                    ,'title': 'Foreign trade'
@@ -12257,9 +12257,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'facil.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Production'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'facil.'
                    ,'title': 'Facilities'
@@ -12282,9 +12282,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'fant./sci-fi., abbr.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'fant./sci-fi., abbr.'
                    ,'title': 'Fantasy and science fiction, Abbreviation'
@@ -12307,9 +12307,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'fash.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'fash.'
                    ,'title': 'Fashion'
@@ -12332,9 +12332,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'faux ami':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Auxilliary categories (editor use only)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'faux ami'
                    ,'title': "Translator's false friend"}, 'ru': {'short': 'ложн.друг.'
@@ -12348,9 +12348,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'felin.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Companion animals'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'felin.'
                    ,'title': 'Felinology'
@@ -12373,9 +12373,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'fenc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'fenc.'
                    ,'title': 'Fencing'
@@ -12398,9 +12398,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ferm.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Food industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ferm.'
                    ,'title': 'Fermentation'
@@ -12423,9 +12423,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'fert.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'fert.'
                    ,'title': 'Fertilizers'
@@ -12448,9 +12448,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'fib.optic':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'fib.optic'
                    ,'title': 'Fiber optic'
@@ -12473,9 +12473,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'fig.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'fig.'
                    ,'title': 'Figurative'
@@ -12498,9 +12498,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'fig.of.sp.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'fig.of.sp.'
                    ,'title': 'Figure of speech'
@@ -12523,9 +12523,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'fig.skat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'fig.skat.'
                    ,'title': 'Figure skating'
@@ -12548,9 +12548,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'file.ext.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'file.ext.'
                    ,'title': 'File extension'
@@ -12573,9 +12573,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'film.equip.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Cinematography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'film.equip.'
                    ,'title': 'Filming equipment'
@@ -12598,9 +12598,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'film.light.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Cinematography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'film.light.'
                    ,'title': 'Film lighting equipment'
@@ -12623,9 +12623,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'film.proc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Cinematography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'film.proc.'
                    ,'title': 'Film processing'
@@ -12648,9 +12648,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'fin.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Finances'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'fin.'
                    ,'title': 'Finances'
@@ -12673,9 +12673,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'finn.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'finn.'
                    ,'title': 'Finnish language'
@@ -12698,9 +12698,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'fire.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'fire.'
                    ,'title': 'Firefighting and fire-control systems'
@@ -12723,9 +12723,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'fish.farm.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'fish.farm.'
                    ,'title': 'Fish farming (pisciculture)'
@@ -12748,9 +12748,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'fishery':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Nautical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'fishery'
                    ,'title': 'Fishery (fishing industry)'
@@ -12773,9 +12773,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'flor.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'flor.'
                    ,'title': 'Floriculture'
@@ -12798,9 +12798,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'flour.prod.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Food industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'flour.prod.'
                    ,'title': 'Flour production'
@@ -12823,9 +12823,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'flow.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Oil and gas'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'flow.'
                    ,'title': 'Flow measurement'
@@ -12848,9 +12848,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'fodd.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'fodd.'
                    ,'title': 'Fodder'
@@ -12873,9 +12873,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'foil.ships':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Nautical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'foil.ships'
                    ,'title': 'Foil ships'
@@ -12898,9 +12898,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'folk.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Folklore'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'folk.'
                    ,'title': 'Folklore'
@@ -12923,9 +12923,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'food.ind.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Food industry'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'food.ind.'
                    ,'title': 'Food industry'
@@ -12948,9 +12948,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'food.serv.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Service industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'food.serv.'
                    ,'title': 'Food service and catering'
@@ -12973,9 +12973,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'footb.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'footb.'
                    ,'title': 'Football'
@@ -12998,9 +12998,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'footwear':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Light industries'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'footwear'
                    ,'title': 'Footwear'
@@ -13023,9 +13023,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'for.chem.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemical industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'for.chem.'
                    ,'title': 'Forest chemistry'
@@ -13048,9 +13048,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'for.pol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Foreign affairs'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'for.pol.'
                    ,'title': 'Foreign policy'
@@ -13073,9 +13073,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'foreig.aff.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Foreign affairs'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'foreig.aff.'
                    ,'title': 'Foreign affairs'
@@ -13098,9 +13098,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'forens.med.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law enforcement'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'forens.med.'
                    ,'title': 'Forensic medicine'
@@ -13123,9 +13123,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'forestr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Natural resourses and wildlife conservation'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'forestr.'
                    ,'title': 'Forestry'
@@ -13148,9 +13148,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'forestr., amer.usg.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'forestr., amer.usg.'
                    ,'title': 'Forestry, American (usage, not AmE)'
@@ -13173,9 +13173,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'forex':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Finances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'forex'
                    ,'title': 'Foreign exchange market'
@@ -13198,9 +13198,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'forg.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Metallurgy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'forg.'
                    ,'title': 'Forging'
@@ -13223,9 +13223,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'formal':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'formal'
                    ,'title': 'Formal'
@@ -13248,9 +13248,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'found.engin.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'found.engin.'
                    ,'title': 'Foundation engineering'
@@ -13273,9 +13273,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'foundr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Metallurgy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'foundr.'
                    ,'title': 'Foundry'
@@ -13298,9 +13298,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'fr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'fr.'
                    ,'title': 'French'
@@ -13323,9 +13323,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'furn.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'furn.'
                    ,'title': 'Furniture'
@@ -13348,9 +13348,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'gaelic':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'gaelic'
                    ,'title': 'Gaelic'
@@ -13373,9 +13373,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'galv.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemical industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'galv.'
                    ,'title': 'Galvanizing'
@@ -13398,9 +13398,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'galv.plast.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemical industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'galv.plast.'
                    ,'title': 'Galvanoplasty'
@@ -13423,9 +13423,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'gambl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Games (other than sports)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'gambl.'
                    ,'title': 'Gambling'
@@ -13448,9 +13448,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'games':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Games (other than sports)'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'games'
                    ,'title': 'Games (other than sports)'
@@ -13473,9 +13473,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'garden.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'garden.'
                    ,'title': 'Gardening'
@@ -13498,9 +13498,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'gas.proc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Oil and gas'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'gas.proc.'
                    ,'title': 'Gas processing plants'
@@ -13523,9 +13523,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'gastroent.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'gastroent.'
                    ,'title': 'Gastroenterology'
@@ -13548,9 +13548,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'gear.tr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Machinery and mechanisms'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'gear.tr.'
                    ,'title': 'Gear train'
@@ -13573,9 +13573,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'gem.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'gem.'
                    ,'title': 'Gemmology'
@@ -13598,9 +13598,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'gen.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'gen.'
                    ,'title': 'General'
@@ -13623,9 +13623,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'gen.eng.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'gen.eng.'
                    ,'title': 'Genetic engineering'
@@ -13648,9 +13648,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'geneal.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Historical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'geneal.'
                    ,'title': 'Genealogy'
@@ -13673,9 +13673,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'genet.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'genet.'
                    ,'title': 'Genetics'
@@ -13698,9 +13698,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'geobot.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'geobot.'
                    ,'title': 'Geobotanics'
@@ -13723,9 +13723,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'geochem.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'geochem.'
                    ,'title': 'Geochemistry'
@@ -13748,9 +13748,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'geochron.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'geochron.'
                    ,'title': 'Geochronology'
@@ -13773,9 +13773,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'geogr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'geogr.'
                    ,'title': 'Geography'
@@ -13798,9 +13798,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'geol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'geol.'
                    ,'title': 'Geology'
@@ -13823,9 +13823,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'geom.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mathematics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'geom.'
                    ,'title': 'Geometry'
@@ -13848,9 +13848,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'geomech.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'geomech.'
                    ,'title': 'Geomechanics'
@@ -13873,9 +13873,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'geomorph.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'geomorph.'
                    ,'title': 'Geomorphology'
@@ -13898,9 +13898,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'geophys.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'geophys.'
                    ,'title': 'Geophysics'
@@ -13923,9 +13923,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'germ.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'germ.'
                    ,'title': 'German'
@@ -13948,9 +13948,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'glass':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Production'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'glass'
                    ,'title': 'Glass production'
@@ -13973,9 +13973,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'glass.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Food industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'glass.'
                    ,'title': 'Glass container manufacture'
@@ -13998,9 +13998,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'gloom.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'gloom.'
                    ,'title': 'Gloomy'
@@ -14023,9 +14023,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'goldmin.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mining'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'goldmin.'
                    ,'title': 'Gold mining'
@@ -14048,9 +14048,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'golf.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Games (other than sports)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'golf.'
                    ,'title': 'Golf'
@@ -14073,9 +14073,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'gov.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Government, administration and public services'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'gov.'
                    ,'title': 'Government, administration and public services'
@@ -14098,9 +14098,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'gram.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Linguistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'gram.'
                    ,'title': 'Grammar'
@@ -14123,9 +14123,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'grav.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mathematics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'grav.'
                    ,'title': 'Gravimetry'
@@ -14148,9 +14148,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'greek.lang.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'greek.lang.'
                    ,'title': 'Greek'
@@ -14173,9 +14173,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'green.tech.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'green.tech.'
                    ,'title': 'Greenhouse technology'
@@ -14198,9 +14198,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'gymn.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'gymn.'
                    ,'title': 'Gymnastics'
@@ -14223,9 +14223,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'gyrosc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'gyrosc.'
                    ,'title': 'Gyroscopes'
@@ -14248,9 +14248,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'h.rghts.act.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Human rights activism'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'h.rghts.act.'
                    ,'title': 'Human rights activism'
@@ -14273,9 +14273,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hab.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Light industries'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hab.'
                    ,'title': 'Haberdashery'
@@ -14298,9 +14298,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hack.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hack.'
                    ,'title': 'Hacking'
@@ -14323,9 +14323,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'handb.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'handb.'
                    ,'title': 'Handball'
@@ -14348,9 +14348,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'handicraft.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Hobbies and pastimes'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'handicraft.'
                    ,'title': 'Handicraft'
@@ -14373,9 +14373,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hawai.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hawai.'
                    ,'title': 'Hawaii'
@@ -14398,9 +14398,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'health.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Government, administration and public services'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'health.'
                    ,'title': 'Health care'
@@ -14423,9 +14423,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hear.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical appliances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hear.'
                    ,'title': 'Hearing aid'
@@ -14448,9 +14448,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'heat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'heat.'
                    ,'title': 'Heating'
@@ -14473,9 +14473,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'heat.exch.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'heat.exch.'
                    ,'title': 'Heat exchangers'
@@ -14498,9 +14498,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'heat.transf.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'heat.transf.'
                    ,'title': 'Heat transfer'
@@ -14523,9 +14523,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'heavy.eq.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'heavy.eq.'
                    ,'title': 'Heavy equipment vehicles'
@@ -14548,9 +14548,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'helic.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Aviation'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'helic.'
                    ,'title': 'Helicopters'
@@ -14573,9 +14573,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'helminth.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'helminth.'
                    ,'title': 'Helminthology'
@@ -14598,9 +14598,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hemat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hemat.'
                    ,'title': 'Hematology'
@@ -14623,9 +14623,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'herald.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Historical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'herald.'
                    ,'title': 'Heraldry'
@@ -14648,9 +14648,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'herpet.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'herpet.'
                    ,'title': 'Herpetology (incl. serpentology)'
@@ -14673,9 +14673,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hi-fi':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Multimedia'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hi-fi'
                    ,'title': 'Hi-Fi'
@@ -14698,9 +14698,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hi.jump.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hi.jump.'
                    ,'title': 'High jump'
@@ -14723,9 +14723,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hindi':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hindi'
                    ,'title': 'Hindi'
@@ -14748,9 +14748,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hist.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Historical'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'hist.'
                    ,'title': 'Historical'
@@ -14773,9 +14773,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hist.fig.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Historical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hist.fig.'
                    ,'title': 'Historical figure'
@@ -14798,9 +14798,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'histol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'histol.'
                    ,'title': 'Histology'
@@ -14823,9 +14823,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hobby':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Hobbies and pastimes'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'hobby'
                    ,'title': 'Hobbies and pastimes'
@@ -14848,9 +14848,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hockey.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hockey.'
                    ,'title': 'Hockey'
@@ -14873,9 +14873,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'homeopath.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medicine - Alternative medicine'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'homeopath.'
                    ,'title': 'Homeopathy'
@@ -14898,9 +14898,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'horse.breed.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'horse.breed.'
                    ,'title': 'Horse breeding'
@@ -14923,9 +14923,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'horse.rac.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'horse.rac.'
                    ,'title': 'Horse racing'
@@ -14948,9 +14948,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'horticult.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'horticult.'
                    ,'title': 'Horticulture'
@@ -14973,9 +14973,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hotels':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Service industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hotels'
                    ,'title': 'Hotel industry'
@@ -14998,9 +14998,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'house.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'house.'
                    ,'title': 'Household appliances'
@@ -15023,9 +15023,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hovercr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Nautical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hovercr.'
                    ,'title': 'Hovercraft'
@@ -15048,9 +15048,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'humor.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'humor.'
                    ,'title': 'Humorous / Jocular'
@@ -15073,9 +15073,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hunt.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hunt.'
                    ,'title': 'Hunting'
@@ -15098,9 +15098,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hydr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hydr.'
                    ,'title': 'Hydraulic engineering'
@@ -15123,9 +15123,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hydraul.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hydraul.'
                    ,'title': 'Hydraulics'
@@ -15148,9 +15148,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hydroac.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hydroac.'
                    ,'title': 'Hydroacoustics'
@@ -15173,9 +15173,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hydrobiol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hydrobiol.'
                    ,'title': 'Hydrobiology'
@@ -15198,9 +15198,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hydroel.st.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Energy industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hydroel.st.'
                    ,'title': 'Hydroelectric power stations'
@@ -15223,9 +15223,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hydrogeol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hydrogeol.'
                    ,'title': 'Hydrogeology'
@@ -15248,9 +15248,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hydrogr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hydrogr.'
                    ,'title': 'Hydrography'
@@ -15273,9 +15273,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hydrol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hydrol.'
                    ,'title': 'Hydrology'
@@ -15298,9 +15298,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hydromech.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hydromech.'
                    ,'title': 'Hydromechanics'
@@ -15323,9 +15323,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hydropl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Aviation'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hydropl.'
                    ,'title': 'Hydroplanes'
@@ -15348,9 +15348,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'hygien.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Wellness'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'hygien.'
                    ,'title': 'Hygiene'
@@ -15373,9 +15373,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ice.form.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ice.form.'
                    ,'title': 'Ice formation'
@@ -15398,9 +15398,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'icel.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'icel.'
                    ,'title': 'Iceland'
@@ -15423,9 +15423,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ichtyol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ichtyol.'
                    ,'title': 'Ichthyology'
@@ -15448,9 +15448,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'idiom':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'idiom'
                    ,'title': 'Idiomatic'
@@ -15473,9 +15473,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'idiom, amer.usg.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'idiom, amer.usg.'
                    ,'title': 'Idiomatic, American (usage, not AmE)'
@@ -15498,9 +15498,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'idiom, brit.usg.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'idiom, brit.usg.'
                    ,'title': 'Idiomatic, British (usage, not BrE)'
@@ -15523,9 +15523,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'imitat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Grammatical labels'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'imitat.'
                    ,'title': 'Iimitative (onomatopoeic)'
@@ -15548,9 +15548,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'immigr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Foreign affairs'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'immigr.'
                    ,'title': 'Immigration and citizenship'
@@ -15573,9 +15573,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'immunol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'immunol.'
                    ,'title': 'Immunology'
@@ -15598,9 +15598,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'indust.hyg.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'indust.hyg.'
                    ,'title': 'Industrial hygiene'
@@ -15623,9 +15623,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'industr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Industry'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'industr.'
                    ,'title': 'Industry'
@@ -15648,9 +15648,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'inet.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Communications'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'inet.'
                    ,'title': 'Internet'
@@ -15673,9 +15673,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'inf.secur.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'inf.secur.'
                    ,'title': 'Information security'
@@ -15698,9 +15698,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'inform.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'inform.'
                    ,'title': 'Informal'
@@ -15723,9 +15723,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'infr.techn.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Security systems'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'infr.techn.'
                    ,'title': 'Infrared technology'
@@ -15748,9 +15748,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'inherit.law.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'inherit.law.'
                    ,'title': 'Inheritance law'
@@ -15773,9 +15773,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'inorg.chem.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'inorg.chem.'
                    ,'title': 'Inorganic chemistry'
@@ -15798,9 +15798,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'insur.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Economy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'insur.'
                    ,'title': 'Insurance'
@@ -15823,9 +15823,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'int. law.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'int. law.'
                    ,'title': 'International law'
@@ -15848,9 +15848,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'int.circ.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electronics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'int.circ.'
                    ,'title': 'Integrated circuits'
@@ -15873,9 +15873,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'int.rel.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Foreign affairs'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'int.rel.'
                    ,'title': 'International relations'
@@ -15898,9 +15898,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'int.transport.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Logistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'int.transport.'
                    ,'title': 'International transportation'
@@ -15923,9 +15923,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'intell.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law enforcement'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'intell.'
                    ,'title': 'Intelligence and security services'
@@ -15948,9 +15948,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'interntl.trade.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Economy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'interntl.trade.'
                    ,'title': 'International trade'
@@ -15973,9 +15973,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'invect.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'invect.'
                    ,'title': 'Invective'
@@ -15998,9 +15998,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'invest.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Business'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'invest.'
                    ,'title': 'Investment'
@@ -16023,9 +16023,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'irish.lang.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'irish.lang.'
                    ,'title': 'Irish'
@@ -16048,9 +16048,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ironic.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ironic.'
                    ,'title': 'Ironical'
@@ -16073,9 +16073,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'isol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electrical engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'isol.'
                    ,'title': 'Isolation'
@@ -16098,9 +16098,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ital.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ital.'
                    ,'title': 'Italian'
@@ -16123,9 +16123,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'jamaic.eng.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Dialectal'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'jamaic.eng.'
                    ,'title': 'Jamaican English'
@@ -16148,9 +16148,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'jap.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'jap.'
                    ,'title': 'Japanese language'
@@ -16173,9 +16173,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'jarg.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'jarg.'
                    ,'title': 'Jargon'
@@ -16198,9 +16198,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'jet.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Machinery and mechanisms'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'jet.'
                    ,'title': 'Jet engines'
@@ -16223,9 +16223,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'jewl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Production'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'jewl.'
                    ,'title': 'Jewelry'
@@ -16248,9 +16248,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'journ.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mass media'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'journ.'
                    ,'title': 'Journalism (terminology)'
@@ -16273,9 +16273,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'judo.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Martial arts and combat sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'judo.'
                    ,'title': 'Judo'
@@ -16298,9 +16298,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'karate.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Martial arts and combat sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'karate.'
                    ,'title': 'Karate'
@@ -16323,9 +16323,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'knit.goods':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Light industries'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'knit.goods'
                    ,'title': 'Knitted goods'
@@ -16348,9 +16348,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'korea.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'korea.'
                    ,'title': 'Korean'
@@ -16373,9 +16373,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'lab.eq.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'lab.eq.'
                    ,'title': 'Laboratory equipment'
@@ -16398,9 +16398,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'lab.law.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'lab.law.'
                    ,'title': 'Labor law'
@@ -16423,9 +16423,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'labor.org.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Management'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'labor.org.'
                    ,'title': 'Labor organization'
@@ -16448,9 +16448,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'landsc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'landsc.'
                    ,'title': 'Landscaping'
@@ -16473,9 +16473,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'laser.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'laser.'
                    ,'title': 'Lasers'
@@ -16498,9 +16498,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'laser.med.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'laser.med.'
                    ,'title': 'Laser medicine'
@@ -16523,9 +16523,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'lat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'lat.'
                    ,'title': 'Latin'
@@ -16548,9 +16548,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'lat.amer.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'lat.amer.'
                    ,'title': 'Latin American'
@@ -16573,9 +16573,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'lat.amer.sl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'lat.amer.sl.'
                    ,'title': 'Latin American slang'
@@ -16598,9 +16598,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'laud.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'laud.'
                    ,'title': 'Laudatory'
@@ -16623,9 +16623,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'law':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'law'
                    ,'title': 'Law'
@@ -16648,9 +16648,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'law, ADR':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Business'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'law, ADR'
                    ,'title': 'Alternative dispute resolution'
@@ -16673,9 +16673,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'law, amer.usg.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'law, amer.usg.'
                    ,'title': 'Law, American (usage, not AmE)'
@@ -16698,9 +16698,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'law, com.law':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'law, com.law'
                    ,'title': 'Common law (Anglo-Saxon legal system)'
@@ -16723,9 +16723,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'law, contr., context.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'law, contr., context.'
                    ,'title': 'Contracts, Contextual meaning'
@@ -16748,9 +16748,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'law, copyr.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'law, copyr.'
                    ,'title': 'Copyright'
@@ -16773,9 +16773,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'law, copyr., abbr.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'law, copyr., abbr.'
                    ,'title': 'Copyright, Abbreviation'
@@ -16798,9 +16798,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'law, court':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'law, court'
                    ,'title': 'Court (law)'
@@ -16823,9 +16823,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'law.enf.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law enforcement'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'law.enf.'
                    ,'title': 'Law enforcement'
@@ -16848,9 +16848,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'lean.prod.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Natural resourses and wildlife conservation'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'lean.prod.'
                    ,'title': 'Lean production'
@@ -16873,9 +16873,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'leath.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Light industries'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'leath.'
                    ,'title': 'Leather'
@@ -16898,9 +16898,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'leg.ent.typ.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Business'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'leg.ent.typ.'
                    ,'title': 'Legal entity types (business legal structures)'
@@ -16923,9 +16923,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'legal.theor.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'legal.theor.'
                    ,'title': 'Legal theory'
@@ -16948,9 +16948,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'level.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'level.'
                    ,'title': 'Level measurement'
@@ -16973,9 +16973,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'lgbt':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Human rights activism'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'lgbt'
                    ,'title': 'LGBT'
@@ -16998,9 +16998,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'libr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'libr.'
                    ,'title': 'Librarianship'
@@ -17023,9 +17023,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'life.sc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'life.sc.'
                    ,'title': 'Life sciences'
@@ -17048,9 +17048,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'light.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'light.'
                    ,'title': 'Lighting (other than cinema)'
@@ -17073,9 +17073,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'limn.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'limn.'
                    ,'title': 'Limnology'
@@ -17098,9 +17098,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ling.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Linguistics'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'ling.'
                    ,'title': 'Linguistics'
@@ -17123,9 +17123,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'lit.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Literature'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'lit.'
                    ,'title': 'Literature'
@@ -17148,9 +17148,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'lit., f.tales':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Literature'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'lit., f.tales'
                    ,'title': 'Fairy tales'
@@ -17173,9 +17173,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'liter.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'liter.'
                    ,'title': 'Literally'
@@ -17198,9 +17198,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'lithol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'lithol.'
                    ,'title': 'Lithology'
@@ -17223,9 +17223,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'load.equip.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Logistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'load.equip.'
                    ,'title': 'Loading equipment'
@@ -17248,9 +17248,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'loc.name.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'loc.name.'
                    ,'title': 'Local name'
@@ -17273,9 +17273,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'logging':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Wood, pulp and paper industries'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'logging'
                    ,'title': 'Logging'
@@ -17298,9 +17298,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'logic':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Philosophy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'logic'
                    ,'title': 'Logic'
@@ -17323,9 +17323,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'logist.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Logistics'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'logist.'
                    ,'title': 'Logistics'
@@ -17348,9 +17348,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'logop.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'logop.'
                    ,'title': 'Logopedics'
@@ -17373,9 +17373,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'low':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'low'
                    ,'title': 'Low register'
@@ -17398,9 +17398,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'low.germ.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'low.germ.'
                    ,'title': 'Lower German'
@@ -17423,9 +17423,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'luge.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'luge.'
                    ,'title': 'Luge'
@@ -17448,9 +17448,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mach.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mach.'
                    ,'title': 'Machine tools'
@@ -17473,9 +17473,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mach.comp.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Machinery and mechanisms'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mach.comp.'
                    ,'title': 'Machine components'
@@ -17498,9 +17498,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'magn.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'magn.'
                    ,'title': 'Magnetics'
@@ -17523,9 +17523,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'magn.tomogr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical appliances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'magn.tomogr.'
                    ,'title': 'Magnetic tomography'
@@ -17548,9 +17548,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'magnet.image.rec.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Cinematography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'magnet.image.rec.'
                    ,'title': 'Magnetic image recording'
@@ -17573,9 +17573,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'malac.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'malac.'
                    ,'title': 'Malacology'
@@ -17598,9 +17598,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'malay.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'malay.'
                    ,'title': 'Malay'
@@ -17623,9 +17623,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mamal.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mamal.'
                    ,'title': 'Mammalogy'
@@ -17648,9 +17648,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mamm.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mamm.'
                    ,'title': 'Mammals'
@@ -17673,9 +17673,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'manag.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Management'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'manag.'
                    ,'title': 'Management'
@@ -17698,9 +17698,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'manga.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'manga.'
                    ,'title': 'Manga'
@@ -17723,9 +17723,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'maor.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'maor.'
                    ,'title': 'Maori'
@@ -17748,9 +17748,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mar.law':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mar.law'
                    ,'title': 'Maritime law & Law of the Sea'
@@ -17773,9 +17773,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'market.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Economy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'market.'
                    ,'title': 'Marketing'
@@ -17798,9 +17798,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mart.arts':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Martial arts and combat sports'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'mart.arts'
                    ,'title': 'Martial arts and combat sports'
@@ -17823,9 +17823,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'match.prod.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Wood, pulp and paper industries'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'match.prod.'
                    ,'title': 'Matches'
@@ -17848,9 +17848,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mater.sc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mater.sc.'
                    ,'title': 'Materials science'
@@ -17873,9 +17873,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'math.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mathematics'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'math.'
                    ,'title': 'Mathematics'
@@ -17898,9 +17898,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'math.anal.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mathematics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'math.anal.'
                    ,'title': 'Mathematical analysis'
@@ -17923,9 +17923,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mean.2':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Auxilliary categories (editor use only)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mean.2'
                    ,'title': 'Meaning 2'
@@ -17948,9 +17948,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'meas.inst.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electrical engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'meas.inst.'
                    ,'title': 'Measuring instruments'
@@ -17973,9 +17973,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'meat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'meat.'
                    ,'title': 'Meat processing'
@@ -17997,9 +17997,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mech.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mech.'
                    ,'title': 'Mechanics'
@@ -18022,9 +18022,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mech.eng.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mech.eng.'
                    ,'title': 'Mechanic engineering'
@@ -18047,9 +18047,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'med.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'med.'
                    ,'title': 'Medical'
@@ -18072,9 +18072,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'med., alt.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Medicine - Alternative medicine'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'med., alt.'
                    ,'title': 'Medicine - Alternative medicine'
@@ -18097,9 +18097,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'med., epid.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'med., epid.'
                    ,'title': 'Epidemiology'
@@ -18122,9 +18122,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'med.appl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical appliances'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'med.appl.'
                    ,'title': 'Medical appliances'
@@ -18147,9 +18147,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'media.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mass media'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'media.'
                    ,'title': 'Mass media'
@@ -18172,9 +18172,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'melior.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'melior.'
                    ,'title': 'Melioration'
@@ -18197,9 +18197,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'merch.nav.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Nautical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'merch.nav.'
                    ,'title': 'Merchant navy'
@@ -18222,9 +18222,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'met.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Metallurgy'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'met.'
                    ,'title': 'Metallurgy'
@@ -18247,9 +18247,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'met.health.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Psychology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'met.health.'
                    ,'title': 'Mental health'
@@ -18272,9 +18272,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'met.sci.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Metallurgy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'met.sci.'
                    ,'title': 'Metal science'
@@ -18297,9 +18297,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'met.work.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'met.work.'
                    ,'title': 'Metalworking'
@@ -18322,9 +18322,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'meteorol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'meteorol.'
                    ,'title': 'Meteorology'
@@ -18347,9 +18347,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'metro':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Transport'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'metro'
                    ,'title': 'Metro and rapid transit'
@@ -18372,9 +18372,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'metrol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'metrol.'
                    ,'title': 'Metrology'
@@ -18397,9 +18397,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mexic.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mexic.'
                    ,'title': 'Mexican'
@@ -18422,9 +18422,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'microbiol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'microbiol.'
                    ,'title': 'Microbiology'
@@ -18447,9 +18447,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'microel.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electronics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'microel.'
                    ,'title': 'Microelectronics'
@@ -18472,9 +18472,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'microsc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical appliances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'microsc.'
                    ,'title': 'Microscopy'
@@ -18497,9 +18497,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mid.chin.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Dialectal'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mid.chin.'
                    ,'title': 'Middle Chinese'
@@ -18522,9 +18522,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mil.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Military'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'mil.'
                    ,'title': 'Military'
@@ -18547,9 +18547,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mil., AAA':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Military'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mil., AAA'
                    ,'title': 'Anti-air artillery'
@@ -18572,9 +18572,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mil., WMD':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Military'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mil., WMD'
                    ,'title': 'Weapons of mass destruction'
@@ -18597,9 +18597,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mil., ammo':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Military'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mil., ammo'
                    ,'title': 'Ammunition'
@@ -18622,9 +18622,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mil., arm.veh.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Military'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mil., arm.veh.'
                    ,'title': 'Armored vehicles'
@@ -18647,9 +18647,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mil., artil.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Military'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mil., artil.'
                    ,'title': 'Artillery'
@@ -18672,9 +18672,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mil., avia.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Aviation'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mil., avia.'
                    ,'title': 'Military aviation'
@@ -18697,9 +18697,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mil., grnd.forc.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Military'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mil., grnd.forc.'
                    ,'title': 'Ground forces (Army)'
@@ -18722,9 +18722,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mil., lingo':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mil., lingo'
                    ,'title': 'Military lingo'
@@ -18747,9 +18747,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mil., mil., arm.veh.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mil., mil., arm.veh.'
                    ,'title': 'Military, Armored vehicles'
@@ -18772,9 +18772,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mil., navy':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Military'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mil., navy'
                    ,'title': 'Navy'
@@ -18797,9 +18797,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'milk.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'milk.'
                    ,'title': 'Milk production'
@@ -18822,9 +18822,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'min.class.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'min.class.'
                    ,'title': 'Mineral classification'
@@ -18847,9 +18847,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'min.proc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mining'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'min.proc.'
                    ,'title': 'Mineral processing'
@@ -18872,9 +18872,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'min.prod.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'min.prod.'
                    ,'title': 'Mineral products'
@@ -18897,9 +18897,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mine.surv.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mining'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mine.surv.'
                    ,'title': 'Mine surveying'
@@ -18922,9 +18922,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mineral.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mineral.'
                    ,'title': 'Mineralogy'
@@ -18947,9 +18947,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mining.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mining'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'mining.'
                    ,'title': 'Mining'
@@ -18972,9 +18972,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'missil.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Military'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'missil.'
                    ,'title': 'Missiles'
@@ -18997,9 +18997,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'misused':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Auxilliary categories (editor use only)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'misused'
                    ,'title': 'Misused'
@@ -19022,9 +19022,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mob.com.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Communications'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mob.com.'
                    ,'title': 'Mobile and cellular communications'
@@ -19047,9 +19047,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'modern':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'modern'
                    ,'title': 'Modern use'
@@ -19072,9 +19072,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mol.biol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mol.biol.'
                    ,'title': 'Molecular biology'
@@ -19097,9 +19097,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'moldav.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'moldav.'
                    ,'title': 'Moldavian'
@@ -19122,9 +19122,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'morph.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Linguistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'morph.'
                    ,'title': 'Morphology'
@@ -19147,9 +19147,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'moto.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Transport'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'moto.'
                    ,'title': 'Motorcycles'
@@ -19172,9 +19172,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mount.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Outdoor activities and extreme sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mount.'
                    ,'title': 'Mountaineering'
@@ -19197,9 +19197,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'multimed.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Multimedia'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'multimed.'
                    ,'title': 'Multimedia'
@@ -19222,9 +19222,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mun.plan.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mun.plan.'
                    ,'title': 'Municipal planning'
@@ -19247,9 +19247,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mus.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mus.'
                    ,'title': 'Music'
@@ -19272,9 +19272,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'mus.instr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'mus.instr.'
                    ,'title': 'Musical instruments'
@@ -19297,9 +19297,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'museum.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'museum.'
                    ,'title': 'Museums'
@@ -19322,9 +19322,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'myth.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mythology'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'myth.'
                    ,'title': 'Mythology'
@@ -19347,9 +19347,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'myth., gr.-rom.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Mythology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'myth., gr.-rom.'
                    ,'title': 'Greek and Roman mythology'
@@ -19372,9 +19372,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'myth., nors., myth.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'myth., nors., myth.'
                    ,'title': 'Norse mythology, Mythology'
@@ -19397,9 +19397,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'n.amer.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'n.amer.'
                    ,'title': 'North American (USA and Canada)'
@@ -19422,9 +19422,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'names':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Proper name'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'names'
                    ,'title': 'Names and surnames'
@@ -19447,9 +19447,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'nano':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'nano'
                    ,'title': 'Nanotechnology'
@@ -19472,9 +19472,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'narrow.film.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Cinematography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'narrow.film.'
                    ,'title': 'Narrow film'
@@ -19497,9 +19497,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'nat.res.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Natural resourses and wildlife conservation'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'nat.res.'
                    ,'title': 'Natural resourses and wildlife conservation'
@@ -19522,9 +19522,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'nat.sc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'nat.sc.'
                    ,'title': 'Natural sciences'
@@ -19547,9 +19547,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'nautic.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Nautical'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'nautic.'
                    ,'title': 'Nautical'
@@ -19572,9 +19572,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'navig.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Aviation'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'navig.'
                    ,'title': 'Navigation'
@@ -19597,9 +19597,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'neol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'neol.'
                    ,'title': 'Neologism'
@@ -19622,9 +19622,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'nephr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'nephr.'
                    ,'title': 'Nephrology'
@@ -19647,9 +19647,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'neugoling.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Linguistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'neugoling.'
                    ,'title': 'Neurolinguistics'
@@ -19672,9 +19672,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'neur.net.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'neur.net.'
                    ,'title': 'Neural networks'
@@ -19697,9 +19697,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'neurol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'neurol.'
                    ,'title': 'Neurology'
@@ -19722,9 +19722,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'neuropsychol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Psychology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'neuropsychol.'
                    ,'title': 'Neuropsychology'
@@ -19747,9 +19747,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'neurosurg.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'neurosurg.'
                    ,'title': 'Neurosurgery'
@@ -19772,9 +19772,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'new.zeal.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'new.zeal.'
                    ,'title': 'New Zealand'
@@ -19797,9 +19797,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'news':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'news'
                    ,'title': 'News style'
@@ -19822,9 +19822,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'nonferr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Metallurgy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'nonferr.'
                    ,'title': 'Nonferrous industry'
@@ -19847,9 +19847,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'nonlin.opt.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'nonlin.opt.'
                    ,'title': 'Nonlinear optics'
@@ -19872,9 +19872,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'nonstand.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'nonstand.'
                    ,'title': 'Nonstandard'
@@ -19897,9 +19897,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'norw.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'norw.'
                    ,'title': 'Norway'
@@ -19922,9 +19922,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'notar.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'notar.'
                    ,'title': 'Notarial practice'
@@ -19947,9 +19947,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'nucl.chem.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'nucl.chem.'
                    ,'title': 'Nuclear chemistry'
@@ -19972,9 +19972,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'nucl.phys.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'nucl.phys.'
                    ,'title': 'Nuclear physics'
@@ -19997,9 +19997,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'nucl.pow.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Energy industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'nucl.pow.'
                    ,'title': 'Nuclear and fusion power'
@@ -20022,9 +20022,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'numism.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Collecting'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'numism.'
                    ,'title': 'Numismatics'
@@ -20047,9 +20047,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'nurs.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'nurs.'
                    ,'title': 'Nursing'
@@ -20072,9 +20072,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'obs.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'obs.'
                    ,'title': 'Obsolete / dated'
@@ -20097,9 +20097,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'obs., inform.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'obs., inform.'
                    ,'title': 'Obsolete / dated, Informal'
@@ -20122,9 +20122,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'obs., ironic.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'obs., ironic.'
                    ,'title': 'Obsolete / dated, Ironical'
@@ -20147,9 +20147,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'obs., mil.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'obs., mil.'
                    ,'title': 'Obsolete / dated, Military'
@@ -20172,9 +20172,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'obst.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'obst.'
                    ,'title': 'Obstetrics'
@@ -20197,9 +20197,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ocean.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ocean.'
                    ,'title': 'Oceanography (oceanology)'
@@ -20222,9 +20222,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'offic.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'offic.'
                    ,'title': 'Officialese'
@@ -20247,9 +20247,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'office.equip.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'office.equip.'
                    ,'title': 'Office equipment'
@@ -20272,9 +20272,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'offsh.comp.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Business'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'offsh.comp.'
                    ,'title': 'Offshore companies'
@@ -20297,9 +20297,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'oil':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Oil and gas'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'oil'
                    ,'title': 'Oil / petroleum'
@@ -20322,9 +20322,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'oil.lubr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Oil and gas'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'oil.lubr.'
                    ,'title': 'Oils and lubricants'
@@ -20347,9 +20347,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'oil.proc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Oil and gas'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'oil.proc.'
                    ,'title': 'Oil processing plants'
@@ -20372,9 +20372,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'old.fash.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'old.fash.'
                    ,'title': 'Old-fashioned'
@@ -20397,9 +20397,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'old.orth.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Auxilliary categories (editor use only)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'old.orth.'
                    ,'title': 'Old orthography'
@@ -20422,9 +20422,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'oncol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'oncol.'
                    ,'title': 'Oncology'
@@ -20447,9 +20447,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'op.hearth.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Metallurgy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'op.hearth.'
                    ,'title': 'Open-hearth process'
@@ -20472,9 +20472,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'op.syst.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'op.syst.'
                    ,'title': 'Operation systems'
@@ -20497,9 +20497,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ophtalm.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ophtalm.'
                    ,'title': 'Ophthalmology'
@@ -20522,9 +20522,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'opt.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'opt.'
                    ,'title': 'Optics (branch of physics)'
@@ -20547,9 +20547,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'optometr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'optometr.'
                    ,'title': 'Optometry'
@@ -20572,9 +20572,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ore.form.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mining'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ore.form.'
                    ,'title': 'Ore formation'
@@ -20597,9 +20597,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'org.chem.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'org.chem.'
                    ,'title': 'Organic chemistry'
@@ -20622,9 +20622,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'org.crime.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law enforcement'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'org.crime.'
                    ,'title': 'Organized crime'
@@ -20647,9 +20647,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'org.name.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Proper name'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'org.name.'
                    ,'title': 'Name of organization'
@@ -20672,9 +20672,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'orient.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'orient.'
                    ,'title': 'Oriental'
@@ -20697,9 +20697,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'orthop.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'orthop.'
                    ,'title': 'Orthopedics'
@@ -20722,9 +20722,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pack.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Production'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pack.'
                    ,'title': 'Packaging'
@@ -20747,9 +20747,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'paint.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'paint.'
                    ,'title': 'Painting'
@@ -20772,9 +20772,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'paint.varn.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Building materials'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'paint.varn.'
                    ,'title': 'Paint, varnish and lacquer'
@@ -20797,9 +20797,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'paint.w.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'paint.w.'
                    ,'title': 'Paint work'
@@ -20822,9 +20822,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pal.bot.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pal.bot.'
                    ,'title': 'Paleobotany'
@@ -20847,9 +20847,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'paleogr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Historical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'paleogr.'
                    ,'title': 'Palaeography'
@@ -20872,9 +20872,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'paleont.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'paleont.'
                    ,'title': 'Paleontology'
@@ -20897,9 +20897,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'paleozool.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'paleozool.'
                    ,'title': 'Paleozoology'
@@ -20922,9 +20922,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'palyn.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'palyn.'
                    ,'title': 'Palynology'
@@ -20947,9 +20947,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'parapsych.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Parasciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'parapsych.'
                    ,'title': 'Parapsychology'
@@ -20972,9 +20972,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'parasitol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'parasitol.'
                    ,'title': 'Parasitology'
@@ -20997,9 +20997,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'patents.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'patents.'
                    ,'title': 'Patents'
@@ -21022,9 +21022,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pathol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pathol.'
                    ,'title': 'Pathology'
@@ -21047,9 +21047,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pedag.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Education'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pedag.'
                    ,'title': 'Pedagogics'
@@ -21072,9 +21072,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pediatr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pediatr.'
                    ,'title': 'Pediatrics'
@@ -21097,9 +21097,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pejor.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pejor.'
                    ,'title': 'Pejorative'
@@ -21122,9 +21122,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'penitent.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Government, administration and public services'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'penitent.'
                    ,'title': 'Penitentiary system'
@@ -21147,9 +21147,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'perf.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Wellness'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'perf.'
                    ,'title': 'Perfume'
@@ -21172,9 +21172,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'permits.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Occupational health & safety'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'permits.'
                    ,'title': 'Permit to work system'
@@ -21197,9 +21197,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pers.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pers.'
                    ,'title': 'Persian'
@@ -21222,9 +21222,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pest.contr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pest.contr.'
                    ,'title': 'Pest control'
@@ -21247,9 +21247,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pet.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Companion animals'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pet.'
                    ,'title': 'Pets'
@@ -21272,9 +21272,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'petrogr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'petrogr.'
                    ,'title': 'Petrography'
@@ -21297,9 +21297,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'phaler.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Collecting'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'phaler.'
                    ,'title': 'Phaleristics'
@@ -21322,9 +21322,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pharm.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pharm.'
                    ,'title': 'Pharmacology'
@@ -21347,9 +21347,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pharmac.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pharmac.'
                    ,'title': 'Pharmacy'
@@ -21372,9 +21372,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'philat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Collecting'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'philat.'
                    ,'title': 'Philately / stamp collecting'
@@ -21397,9 +21397,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'philos.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Philosophy'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'philos.'
                    ,'title': 'Philosophy'
@@ -21422,9 +21422,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'phonol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Linguistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'phonol.'
                    ,'title': 'Phonology'
@@ -21447,9 +21447,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'photo.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Photography'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'photo.'
                    ,'title': 'Photography'
@@ -21472,9 +21472,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'photo.sound.rec.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Cinematography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'photo.sound.rec.'
                    ,'title': 'Photographical sound recording'
@@ -21497,9 +21497,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'photometr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'photometr.'
                    ,'title': 'Photometry'
@@ -21522,9 +21522,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'phras.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'phras.'
                    ,'title': 'Phraseological unit'
@@ -21547,9 +21547,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'phys.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'phys.'
                    ,'title': 'Physics'
@@ -21572,9 +21572,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'phys.chem.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'phys.chem.'
                    ,'title': 'Physical chemistry'
@@ -21597,9 +21597,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'physiol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'physiol.'
                    ,'title': 'Physiology'
@@ -21622,9 +21622,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'physioth.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'physioth.'
                    ,'title': 'Physiotherapy'
@@ -21647,9 +21647,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'phytophathol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'phytophathol.'
                    ,'title': 'Phytophathology'
@@ -21672,9 +21672,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'piez.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'piez.'
                    ,'title': 'Piezoelectric crystals'
@@ -21696,9 +21696,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pipes.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pipes.'
                    ,'title': 'Pipelines'
@@ -21721,9 +21721,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'plann.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Production'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'plann.'
                    ,'title': 'Planning'
@@ -21746,9 +21746,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'plast.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemical industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'plast.'
                    ,'title': 'Plastics'
@@ -21771,9 +21771,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'plumb.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'plumb.'
                    ,'title': 'Plumbing'
@@ -21796,9 +21796,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pmp.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Machinery and mechanisms'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pmp.'
                    ,'title': 'Pumps'
@@ -21821,9 +21821,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pneum.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Machinery and mechanisms'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pneum.'
                    ,'title': 'Pneumatics'
@@ -21846,9 +21846,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'poetic':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'poetic'
                    ,'title': 'Poetic'
@@ -21871,9 +21871,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'poetry':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Literature'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'poetry'
                    ,'title': 'Poetry (terminology)'
@@ -21896,9 +21896,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'police':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Government, administration and public services'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'police'
                    ,'title': 'Police'
@@ -21921,9 +21921,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'police.jarg.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'police.jarg.'
                    ,'title': 'Police jargon'
@@ -21946,9 +21946,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'polish.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'polish.'
                    ,'title': 'Polish'
@@ -21971,9 +21971,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'polit.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Politics'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'polit.'
                    ,'title': 'Politics'
@@ -21996,9 +21996,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'polit.econ.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Economy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'polit.econ.'
                    ,'title': 'Political economy'
@@ -22021,9 +22021,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'polite':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'polite'
                    ,'title': 'Polite'
@@ -22046,9 +22046,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'polygr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Publishing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'polygr.'
                    ,'title': 'Polygraphy'
@@ -22071,9 +22071,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'polym.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemical industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'polym.'
                    ,'title': 'Polymers'
@@ -22096,9 +22096,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'polynes.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'polynes.'
                    ,'title': 'Polynesian'
@@ -22121,9 +22121,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pomp.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pomp.'
                    ,'title': 'Pompous'
@@ -22146,9 +22146,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'port.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'port.'
                    ,'title': 'Portuguese'
@@ -22171,9 +22171,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'post':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Communications'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'post'
                    ,'title': 'Postal service'
@@ -22196,9 +22196,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pow.el.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electrical engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pow.el.'
                    ,'title': 'Power electronics'
@@ -22221,9 +22221,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'powd.met.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Metallurgy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'powd.met.'
                    ,'title': 'Powder metallurgy'
@@ -22246,9 +22246,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pragm.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Linguistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pragm.'
                    ,'title': 'Pragmatics'
@@ -22271,9 +22271,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'press.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'press.'
                    ,'title': 'Press equipment'
@@ -22296,9 +22296,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pris.sl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pris.sl.'
                    ,'title': 'Prison slang'
@@ -22320,9 +22320,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'priv.int.law.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'priv.int.law.'
                    ,'title': 'Private international law'
@@ -22345,9 +22345,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'procur.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Logistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'procur.'
                    ,'title': 'Procurement'
@@ -22370,9 +22370,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'product.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Production'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'product.'
                    ,'title': 'Production'
@@ -22395,9 +22395,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'prof.jarg.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'prof.jarg.'
                    ,'title': 'Professional jargon'
@@ -22420,9 +22420,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'progr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'progr.'
                    ,'title': 'Programming'
@@ -22445,9 +22445,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'proj.manag.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Management'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'proj.manag.'
                    ,'title': 'Project management'
@@ -22470,9 +22470,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'project.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Cinematography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'project.'
                    ,'title': 'Projectors'
@@ -22495,9 +22495,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'prop.&figur.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'prop.&figur.'
                    ,'title': 'Proper and figurative'
@@ -22520,9 +22520,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'prop.name':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Proper name'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'prop.name'
                    ,'title': 'Proper name'
@@ -22545,9 +22545,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'protozool.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'protozool.'
                    ,'title': 'Protozoology'
@@ -22570,9 +22570,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'proverb':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Folklore'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'proverb'
                    ,'title': 'Proverb'
@@ -22595,9 +22595,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'psychiat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'psychiat.'
                    ,'title': 'Psychiatry'
@@ -22620,9 +22620,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'psychol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Psychology'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'psychol.'
                    ,'title': 'Psychology'
@@ -22645,9 +22645,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'psycholing.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Linguistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'psycholing.'
                    ,'title': 'Psycholinguistics'
@@ -22670,9 +22670,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'psychopathol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Psychology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'psychopathol.'
                    ,'title': 'Psychopathology'
@@ -22695,9 +22695,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'psychophys.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Psychology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'psychophys.'
                    ,'title': 'Psychophysiology'
@@ -22720,9 +22720,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'psychother.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'psychother.'
                    ,'title': 'Psychotherapy'
@@ -22745,9 +22745,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'publ.law.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Law'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'publ.law.'
                    ,'title': 'Public law'
@@ -22770,9 +22770,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'publ.transp.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Transport'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'publ.transp.'
                    ,'title': 'Public transportation'
@@ -22795,9 +22795,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'publ.util.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Government, administration and public services'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'publ.util.'
                    ,'title': 'Public utilities'
@@ -22820,9 +22820,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'publish.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Publishing'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'publish.'
                    ,'title': 'Publishing'
@@ -22845,9 +22845,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'puert.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'puert.'
                    ,'title': 'Puerto Rican Spanish'
@@ -22870,9 +22870,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pulm.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pulm.'
                    ,'title': 'Pulmonology'
@@ -22895,9 +22895,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pulp.n.paper':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Wood, pulp and paper industries'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pulp.n.paper'
                    ,'title': 'Pulp and paper industry'
@@ -22920,9 +22920,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'pwr.lines.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Energy industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'pwr.lines.'
                    ,'title': 'Power lines'
@@ -22945,9 +22945,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'qual.cont.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Quality control and standards'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'qual.cont.'
                    ,'title': 'Quality control and standards'
@@ -22970,9 +22970,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'quant.el.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'quant.el.'
                    ,'title': 'Quantum electronics'
@@ -22995,9 +22995,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'quant.mech.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'quant.mech.'
                    ,'title': 'Quantum mechanics'
@@ -23020,9 +23020,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'quar.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mining'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'quar.'
                    ,'title': 'Quarrying'
@@ -23044,9 +23044,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'quran':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Religion'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'quran'
                    ,'title': 'Quran'
@@ -23069,9 +23069,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'racing':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'racing'
                    ,'title': 'Racing and motorsport'
@@ -23094,9 +23094,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'rad.geod.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'rad.geod.'
                    ,'title': 'Radiogeodesy'
@@ -23119,9 +23119,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'radio':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Communications'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'radio'
                    ,'title': 'Radio'
@@ -23144,9 +23144,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'radio, amer.usg., abbr.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'radio, amer.usg., abbr.'
                    ,'title': 'Radio, American (usage, not AmE), Abbreviation'
@@ -23169,9 +23169,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'radioastron.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Space'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'radioastron.'
                    ,'title': 'Radioastronomy'
@@ -23194,9 +23194,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'radiobiol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'radiobiol.'
                    ,'title': 'Radiobiology'
@@ -23219,9 +23219,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'radiogr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical appliances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'radiogr.'
                    ,'title': 'Radiography'
@@ -23244,9 +23244,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'radiol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'radiol.'
                    ,'title': 'Radiology'
@@ -23269,9 +23269,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'radioloc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Military'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'radioloc.'
                    ,'title': 'Radiolocation'
@@ -23294,9 +23294,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'railw.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Transport'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'railw.'
                    ,'title': 'Railway term'
@@ -23319,9 +23319,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'rare':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'rare'
                    ,'title': 'Rare'
@@ -23344,9 +23344,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'real.est.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'real.est.'
                    ,'title': 'Real estate'
@@ -23369,9 +23369,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'rec.mngmt':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Records management'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'rec.mngmt'
                    ,'title': 'Records management'
@@ -23394,9 +23394,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'refr.mat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Building materials'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'refr.mat.'
                    ,'title': 'Refractory materials'
@@ -23419,9 +23419,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'refrig.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'refrig.'
                    ,'title': 'Refrigeration'
@@ -23444,9 +23444,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'reg.usg.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'reg.usg.'
                    ,'title': 'Regional usage (other than language varieties)'
@@ -23469,9 +23469,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'rel., budd.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Religion'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'rel., budd.'
                    ,'title': 'Buddhism'
@@ -23494,9 +23494,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'rel., cath.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Religion'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'rel., cath.'
                    ,'title': 'Catholic'
@@ -23519,9 +23519,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'rel., christ.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Religion'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'rel., christ.'
                    ,'title': 'Christianity'
@@ -23544,9 +23544,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'rel., east.orth.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Religion'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'rel., east.orth.'
                    ,'title': 'Eastern Orthodoxy'
@@ -23569,9 +23569,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'rel., hind.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Mythology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'rel., hind.'
                    ,'title': 'Hinduism'
@@ -23594,9 +23594,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'rel., islam':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Religion'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'rel., islam'
                    ,'title': 'Islam'
@@ -23619,9 +23619,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'reliabil.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Quality control and standards'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'reliabil.'
                    ,'title': 'Reliability'
@@ -23644,9 +23644,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'relig.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Religion'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'relig.'
                    ,'title': 'Religion'
@@ -23669,9 +23669,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'rem.sens.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'rem.sens.'
                    ,'title': 'Remote sensing'
@@ -23694,9 +23694,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'reptil.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'reptil.'
                    ,'title': 'Amphibians and reptiles'
@@ -23719,9 +23719,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'resin.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemical industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'resin.'
                    ,'title': 'Resins'
@@ -23744,9 +23744,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'respect.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'respect.'
                    ,'title': 'Respectful'
@@ -23769,9 +23769,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'rhetor.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'rhetor.'
                    ,'title': 'Rhetoric'
@@ -23794,9 +23794,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'risk.man.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Management'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'risk.man.'
                    ,'title': 'Risk Management'
@@ -23819,9 +23819,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'rit.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Dialectal'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'rit.'
                    ,'title': 'Ritual'
@@ -23844,9 +23844,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'road.constr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'road.constr.'
                    ,'title': 'Road construction'
@@ -23869,9 +23869,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'road.sign.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Transport'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'road.sign.'
                    ,'title': 'Road sign'
@@ -23894,9 +23894,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'road.surf.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'road.surf.'
                    ,'title': 'Road surface'
@@ -23919,9 +23919,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'road.wrk.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'road.wrk.'
                    ,'title': 'Road works'
@@ -23944,9 +23944,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'robot.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'robot.'
                    ,'title': 'Robotics'
@@ -23969,9 +23969,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'roll.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Metallurgy'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'roll.'
                    ,'title': 'Roll stock'
@@ -23994,9 +23994,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'romanian.lang.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'romanian.lang.'
                    ,'title': 'Romanian'
@@ -24019,9 +24019,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'rude':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'rude'
                    ,'title': 'Rude'
@@ -24044,9 +24044,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'rugb.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'rugb.'
                    ,'title': 'Rugby football'
@@ -24069,9 +24069,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'russ.lang.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'russ.lang.'
                    ,'title': 'Russian language'
@@ -24094,9 +24094,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'s.germ.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 's.germ.'
                    ,'title': 'South German'
@@ -24119,9 +24119,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sail.ships':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Nautical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sail.ships'
                    ,'title': 'Sailing ships'
@@ -24144,9 +24144,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sanit.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sanit.'
                    ,'title': 'Sanitation'
@@ -24169,9 +24169,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sanscr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sanscr.'
                    ,'title': 'Sanskrit'
@@ -24194,9 +24194,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sarcast.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Emotional values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sarcast.'
                    ,'title': 'Sarcastical'
@@ -24219,9 +24219,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sat.comm.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Communications'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sat.comm.'
                    ,'title': 'Satellite communications'
@@ -24244,9 +24244,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'saying.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Folklore'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'saying.'
                    ,'title': 'Saying'
@@ -24269,9 +24269,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'school.sl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'school.sl.'
                    ,'title': 'School'
@@ -24294,9 +24294,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'scient.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'scient.'
                    ,'title': 'Scientific'
@@ -24319,9 +24319,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'scottish':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'scottish'
                    ,'title': 'Scottish (usage)'
@@ -24344,9 +24344,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'scr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Literature'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'scr.'
                    ,'title': 'Screenwriting'
@@ -24369,9 +24369,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'scub.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Outdoor activities and extreme sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'scub.'
                    ,'title': 'Scuba diving'
@@ -24394,9 +24394,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sec.sys.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Security systems'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'sec.sys.'
                    ,'title': 'Security systems'
@@ -24419,9 +24419,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'securit.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Finances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'securit.'
                    ,'title': 'Securities'
@@ -24444,9 +24444,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'seism.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'seism.'
                    ,'title': 'Seismology'
@@ -24469,9 +24469,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'seism.res.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'seism.res.'
                    ,'title': 'Seismic resistance'
@@ -24494,9 +24494,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sel.breed.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sel.breed.'
                    ,'title': 'Selective breeding'
@@ -24519,9 +24519,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'semant.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Linguistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'semant.'
                    ,'title': 'Semantics'
@@ -24544,9 +24544,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'semicond.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electrical engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'semicond.'
                    ,'title': 'Semiconductors'
@@ -24569,9 +24569,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'semiot.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Linguistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'semiot.'
                    ,'title': 'Semiotics'
@@ -24594,9 +24594,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sens.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sens.'
                    ,'title': 'Sensitometry'
@@ -24619,9 +24619,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sew.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Light industries'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sew.'
                    ,'title': 'Sewing and clothing industry'
@@ -24644,9 +24644,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sewage':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sewage'
                    ,'title': 'Sewage and wastewater treatment'
@@ -24669,9 +24669,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sex':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sex'
                    ,'title': 'Sex and sexual subcultures'
@@ -24694,9 +24694,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sexol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sexol.'
                    ,'title': 'Sexology'
@@ -24719,9 +24719,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'shinto.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Religion'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'shinto.'
                    ,'title': 'Shinto'
@@ -24744,9 +24744,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ship.handl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Nautical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ship.handl.'
                    ,'title': 'Ship handling'
@@ -24769,9 +24769,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'shipb.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Nautical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'shipb.'
                    ,'title': 'Shipbuilding'
@@ -24794,9 +24794,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'shoot.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'shoot.'
                    ,'title': 'Shooting sport'
@@ -24819,9 +24819,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'show.biz.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'show.biz.'
                    ,'title': 'Show business'
@@ -24844,9 +24844,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'signall.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Security systems'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'signall.'
                    ,'title': 'Signalling'
@@ -24869,9 +24869,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'silic.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemical industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'silic.'
                    ,'title': 'Silicate industry'
@@ -24894,9 +24894,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ski.jump.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ski.jump.'
                    ,'title': 'Ski jumping'
@@ -24919,9 +24919,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'skiing':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'skiing'
                    ,'title': 'Skiing'
@@ -24944,9 +24944,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'skydive.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Outdoor activities and extreme sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'skydive.'
                    ,'title': 'Skydiving'
@@ -24969,9 +24969,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sl., drug.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sl., drug.'
                    ,'title': 'Drug-related slang'
@@ -24994,9 +24994,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sl., teen.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sl., teen.'
                    ,'title': 'Teenager slang'
@@ -25019,9 +25019,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'slang':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'slang'
                    ,'title': 'Slang'
@@ -25044,9 +25044,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sms':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Communications'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sms'
                    ,'title': 'Short message service'
@@ -25069,9 +25069,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'snd.proc.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Multimedia'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'snd.proc.'
                    ,'title': 'Digital sound processing'
@@ -25094,9 +25094,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'snd.rec.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Cinematography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'snd.rec.'
                    ,'title': 'Sound recording'
@@ -25119,9 +25119,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'snowb.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Outdoor activities and extreme sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'snowb.'
                    ,'title': 'Snowboard'
@@ -25144,9 +25144,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'soc.med.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'soc.med.'
                    ,'title': 'Social media'
@@ -25169,9 +25169,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'social.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Historical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'social.'
                    ,'title': 'Socialism'
@@ -25194,9 +25194,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sociol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sociology'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'sociol.'
                    ,'title': 'Sociology'
@@ -25219,9 +25219,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'socioling.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Linguistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'socioling.'
                    ,'title': 'Sociolinguistics'
@@ -25244,9 +25244,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'softw.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Computing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'softw.'
                    ,'title': 'Software'
@@ -25269,9 +25269,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'soil.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'soil.'
                    ,'title': 'Soil science'
@@ -25294,9 +25294,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'soil.mech.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'soil.mech.'
                    ,'title': 'Soil mechanics'
@@ -25319,9 +25319,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sol.pow.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Energy industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sol.pow.'
                    ,'title': 'Solar power'
@@ -25344,9 +25344,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'solid.st.phys.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'solid.st.phys.'
                    ,'title': 'Solid-state physics'
@@ -25369,9 +25369,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'som.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medicine - Alternative medicine'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'som.'
                    ,'title': 'Somatics'
@@ -25394,9 +25394,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sound.eng.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Cinematography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sound.eng.'
                    ,'title': 'Sound engineering'
@@ -25419,9 +25419,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'south.Dutch.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'south.Dutch.'
                    ,'title': 'Southern Dutch'
@@ -25444,9 +25444,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'south.afr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'south.afr.'
                    ,'title': 'South African'
@@ -25469,9 +25469,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'soviet.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Historical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'soviet.'
                    ,'title': 'Soviet'
@@ -25494,9 +25494,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sp.dis.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sp.dis.'
                    ,'title': 'Speech disorders'
@@ -25519,9 +25519,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'space':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Space'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'space'
                    ,'title': 'Space'
@@ -25544,9 +25544,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'span.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'span.'
                    ,'title': 'Spanish'
@@ -25569,9 +25569,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'span.-am.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'span.-am.'
                    ,'title': 'Spanish-American'
@@ -25594,9 +25594,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'spectr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemistry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'spectr.'
                    ,'title': 'Spectroscopy'
@@ -25619,9 +25619,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'speed.skat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Outdoor activities and extreme sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'speed.skat.'
                    ,'title': 'Speed skating'
@@ -25644,9 +25644,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'speleo.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'speleo.'
                    ,'title': 'Speleology'
@@ -25669,9 +25669,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'spice.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Cooking'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'spice.'
                    ,'title': 'Spices'
@@ -25694,9 +25694,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'spoken':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'spoken'
                    ,'title': 'Spoken'
@@ -25719,9 +25719,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sport, bask.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sport, bask.'
                    ,'title': 'Basketball'
@@ -25744,9 +25744,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sport.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'sport.'
                    ,'title': 'Sports'
@@ -25769,9 +25769,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'st.exch.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Finances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'st.exch.'
                    ,'title': 'Stock Exchange'
@@ -25794,9 +25794,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'starch.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Food industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'starch.'
                    ,'title': 'Starch industry'
@@ -25819,9 +25819,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'stat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mathematics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'stat.'
                    ,'title': 'Statistics'
@@ -25844,9 +25844,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'station.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Records management'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'station.'
                    ,'title': 'Stationery'
@@ -25869,9 +25869,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'stereo.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Multimedia'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'stereo.'
                    ,'title': 'Stereo'
@@ -25894,9 +25894,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'stmp.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'stmp.'
                    ,'title': 'Stamping'
@@ -25919,9 +25919,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'stn.mas.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'stn.mas.'
                    ,'title': 'Stonemasonry'
@@ -25944,9 +25944,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'str.mater.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'str.mater.'
                    ,'title': 'Strength of materials'
@@ -25969,9 +25969,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'strat.plast.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Chemical industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'strat.plast.'
                    ,'title': 'Stratified plastics'
@@ -25994,9 +25994,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'stratigr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'stratigr.'
                    ,'title': 'Stratigraphy'
@@ -26019,9 +26019,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'stylist.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Linguistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'stylist.'
                    ,'title': 'Stylistics'
@@ -26044,9 +26044,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'subl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'subl.'
                    ,'title': 'Sublime'
@@ -26069,9 +26069,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'subm.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Nautical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'subm.'
                    ,'title': 'Submarines'
@@ -26094,9 +26094,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'sugar.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Food industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'sugar.'
                    ,'title': 'Sugar production'
@@ -26119,9 +26119,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'supercond.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electrical engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'supercond.'
                    ,'title': 'Superconductivity'
@@ -26144,9 +26144,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'superl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'superl.'
                    ,'title': 'Superlative'
@@ -26169,9 +26169,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'surg.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'surg.'
                    ,'title': 'Surgery'
@@ -26194,9 +26194,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'surn.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Proper name'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'surn.'
                    ,'title': 'Surname'
@@ -26219,9 +26219,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'survey.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'survey.'
                    ,'title': 'Surveying'
@@ -26244,9 +26244,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'svc.ind.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Service industry'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'svc.ind.'
                    ,'title': 'Service industry'
@@ -26269,9 +26269,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'swed.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'swed.'
                    ,'title': 'Swedish'
@@ -26294,9 +26294,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'swim.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'swim.'
                    ,'title': 'Swimming'
@@ -26319,9 +26319,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'swiss.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Regional usage (other than language varieties)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'swiss.'
                    ,'title': 'Swiss term'
@@ -26344,9 +26344,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'swtch.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'swtch.'
                    ,'title': 'Switches'
@@ -26369,9 +26369,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'synt.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Linguistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'synt.'
                    ,'title': 'Syntax'
@@ -26394,9 +26394,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'tab.tenn.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'tab.tenn.'
                    ,'title': 'Table tennis'
@@ -26419,9 +26419,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'tabl.game':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Games (other than sports)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'tabl.game'
                    ,'title': 'Tabletop games'
@@ -26444,9 +26444,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'taboo':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'taboo'
                    ,'title': 'Taboo expressions and obscenities'
@@ -26469,9 +26469,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'taboo, amer.usg., black.sl., slang':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'taboo, amer.usg., black.sl., slang'
                    ,'title': 'Taboo expressions and obscenities, American (usage, not AmE), Black slang, Slang'
@@ -26494,9 +26494,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'taiw.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'taiw.'
                    ,'title': 'Taiwan'
@@ -26519,9 +26519,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'tao.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Religion'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'tao.'
                    ,'title': 'Taoism'
@@ -26544,9 +26544,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'tat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'tat.'
                    ,'title': 'Tatar'
@@ -26569,9 +26569,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'taur.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'taur.'
                    ,'title': 'Tauromachy'
@@ -26594,9 +26594,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'tax.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Government, administration and public services'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'tax.'
                    ,'title': 'Taxes'
@@ -26619,9 +26619,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'tech.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'tech.'
                    ,'title': 'Technology'
@@ -26644,9 +26644,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'tecton.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'tecton.'
                    ,'title': 'Tectonics'
@@ -26669,9 +26669,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'tel.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Communications'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'tel.'
                    ,'title': 'Telephony'
@@ -26694,9 +26694,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'tel.mech.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Communications'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'tel.mech.'
                    ,'title': 'Telemechanics'
@@ -26719,9 +26719,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'telecom.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Communications'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'telecom.'
                    ,'title': 'Telecommunications'
@@ -26744,9 +26744,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'telegr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Communications'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'telegr.'
                    ,'title': 'Telegraphy'
@@ -26769,9 +26769,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'tenn.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'tenn.'
                    ,'title': 'Tennis'
@@ -26794,9 +26794,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'textile':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Light industries'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'textile'
                    ,'title': 'Textile industry'
@@ -26819,9 +26819,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'thai.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'thai.'
                    ,'title': 'Thai'
@@ -26844,9 +26844,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'theatre.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'theatre.'
                    ,'title': 'Theatre'
@@ -26869,9 +26869,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'therm.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'therm.'
                    ,'title': 'Thermodynamics'
@@ -26894,9 +26894,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'therm.energ.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Energy industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'therm.energ.'
                    ,'title': 'Thermal Energy'
@@ -26919,9 +26919,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'therm.eng.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'therm.eng.'
                    ,'title': 'Thermal engineering'
@@ -26944,9 +26944,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'timb.float.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Wood, pulp and paper industries'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'timb.float.'
                    ,'title': 'Timber floating'
@@ -26969,9 +26969,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'tin.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Production'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'tin.'
                    ,'title': 'Tinware'
@@ -26994,9 +26994,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'tirk.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'tirk.'
                    ,'title': 'Turk'
@@ -27019,9 +27019,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'titles':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Art and culture (n.e.s.)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'titles'
                    ,'title': 'Titles of works of art'
@@ -27044,9 +27044,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'tobac.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'tobac.'
                    ,'title': 'Tobacco industry'
@@ -27069,9 +27069,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'tools':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'tools'
                    ,'title': 'Tools'
@@ -27094,9 +27094,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'topogr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'topogr.'
                    ,'title': 'Topography'
@@ -27119,9 +27119,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'topol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Mathematics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'topol.'
                    ,'title': 'Topology'
@@ -27144,9 +27144,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'topon.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Proper name'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'topon.'
                    ,'title': 'Toponym'
@@ -27169,9 +27169,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'torped.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Military'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'torped.'
                    ,'title': 'Torpedoes'
@@ -27194,9 +27194,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'toxicol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'toxicol.'
                    ,'title': 'Toxicology'
@@ -27219,9 +27219,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'toy.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'toy.'
                    ,'title': 'Toys'
@@ -27244,9 +27244,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'tradem.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Business'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'tradem.'
                    ,'title': 'Trademark'
@@ -27269,9 +27269,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'traf.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Transport'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'traf.'
                    ,'title': 'Road traffic'
@@ -27294,9 +27294,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'traf.contr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Transport'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'traf.contr.'
                    ,'title': 'Traffic control'
@@ -27319,9 +27319,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'trampol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'trampol.'
                    ,'title': 'Trampolining'
@@ -27344,9 +27344,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'transf.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electrical engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'transf.'
                    ,'title': 'Transformers'
@@ -27369,9 +27369,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'transp.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Transport'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'transp.'
                    ,'title': 'Transport'
@@ -27394,9 +27394,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'transpl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'transpl.'
                    ,'title': 'Transplantology'
@@ -27419,9 +27419,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'traumat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'traumat.'
                    ,'title': 'Traumatology'
@@ -27444,9 +27444,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'trav.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Travel'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'trav.'
                    ,'title': 'Travel'
@@ -27469,9 +27469,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'trd.class.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Business'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'trd.class.'
                    ,'title': 'Trade classification'
@@ -27494,9 +27494,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'trib.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Physics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'trib.'
                    ,'title': 'Tribology'
@@ -27519,9 +27519,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'trucks':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Transport'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'trucks'
                    ,'title': 'Trucks/Lorries'
@@ -27544,9 +27544,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'tunn.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'tunn.'
                    ,'title': 'Tunneling'
@@ -27569,9 +27569,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'turb.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Machinery and mechanisms'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'turb.'
                    ,'title': 'Turbines'
@@ -27594,9 +27594,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'turkish':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'turkish'
                    ,'title': 'Turkish language'
@@ -27619,9 +27619,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'typogr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Publishing'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'typogr.'
                    ,'title': 'Typography'
@@ -27644,9 +27644,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'typol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Linguistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'typol.'
                    ,'title': 'Typology'
@@ -27669,9 +27669,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ufol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Parasciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ufol.'
                    ,'title': 'Ufology'
@@ -27694,9 +27694,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'ultrasnd.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical appliances'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'ultrasnd.'
                    ,'title': 'Ultrasound'
@@ -27719,9 +27719,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'unions.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Production'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'unions.'
                    ,'title': 'Trade unions'
@@ -27744,9 +27744,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'unit.meas.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'unit.meas.'
                    ,'title': 'Unit measures'
@@ -27769,9 +27769,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'univer.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Education'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'univer.'
                    ,'title': 'University'
@@ -27794,9 +27794,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'urol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'urol.'
                    ,'title': 'Urology'
@@ -27819,9 +27819,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'urug.sp.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Dialectal'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'urug.sp.'
                    ,'title': 'Uruguayan Spanish'
@@ -27844,9 +27844,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'vac.tub.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Electronics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'vac.tub.'
                    ,'title': 'Vacuum tubes'
@@ -27869,9 +27869,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'valves':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'valves'
                    ,'title': 'Valves'
@@ -27894,9 +27894,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'venereol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'venereol.'
                    ,'title': 'Venereology'
@@ -27919,9 +27919,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'vent.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'vent.'
                    ,'title': 'Ventilation'
@@ -27944,9 +27944,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'verbat.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Subjects for Chinese dictionaries (container)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'verbat.'
                    ,'title': 'Verbatim'
@@ -27969,9 +27969,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'verl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Jargon and slang'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'verl.'
                    ,'title': 'Verlan'
@@ -27994,9 +27994,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'vernac.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'vernac.'
                    ,'title': 'Vernacular language'
@@ -28019,9 +28019,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'vet.med.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Medical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'vet.med.'
                    ,'title': 'Veterinary medicine'
@@ -28044,9 +28044,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'vibr.monit.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'vibr.monit.'
                    ,'title': 'Vibration monitoring'
@@ -28069,9 +28069,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'video.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Multimedia'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'video.'
                    ,'title': 'Video recording'
@@ -28094,9 +28094,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'viet.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'viet.'
                    ,'title': 'Vietnamese'
@@ -28119,9 +28119,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'virol.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Life sciences'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'virol.'
                    ,'title': 'Virology'
@@ -28144,9 +28144,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'volcan.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Geology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'volcan.'
                    ,'title': 'Volcanology'
@@ -28169,9 +28169,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'voll.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'voll.'
                    ,'title': 'Volleyball'
@@ -28194,9 +28194,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'vulg.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Stylistic values'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'vulg.'
                    ,'title': 'Vulgar'
@@ -28219,9 +28219,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'wales':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'wales'
                    ,'title': 'Wales'
@@ -28244,9 +28244,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'wareh.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Logistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'wareh.'
                    ,'title': 'Warehouse'
@@ -28269,9 +28269,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'waste.man.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'waste.man.'
                    ,'title': 'Waste management'
@@ -28294,9 +28294,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'watchm.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Machinery and mechanisms'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'watchm.'
                    ,'title': 'Watchmaking'
@@ -28319,9 +28319,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'water.res.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Natural resourses and wildlife conservation'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'water.res.'
                    ,'title': 'Water resources'
@@ -28344,9 +28344,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'water.suppl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Engineering'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'water.suppl.'
                    ,'title': 'Water supply'
@@ -28369,9 +28369,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'waterski.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Outdoor activities and extreme sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'waterski.'
                    ,'title': 'Waterskiing'
@@ -28394,9 +28394,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'weap.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'weap.'
                    ,'title': 'Weapons and gunsmithing'
@@ -28419,9 +28419,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'weightlift.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'weightlift.'
                    ,'title': 'Weightlifting'
@@ -28444,9 +28444,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'weld.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'weld.'
                    ,'title': 'Welding'
@@ -28469,9 +28469,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'welf.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Government, administration and public services'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'welf.'
                    ,'title': 'Welfare & Social Security'
@@ -28494,9 +28494,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'well.contr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Oil and gas'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'well.contr.'
                    ,'title': 'Well control'
@@ -28519,9 +28519,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'welln.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Wellness'
-               ,'is_major': True
+               ,'Major': True
                ,'en':
                    {'short': 'welln.'
                    ,'title': 'Wellness'
@@ -28544,9 +28544,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'west.Ind.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Countries and regions'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'west.Ind.'
                    ,'title': 'West Indies'
@@ -28569,9 +28569,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'win.tast.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Food industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'win.tast.'
                    ,'title': 'Wine tasting'
@@ -28594,9 +28594,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'wind.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Energy industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'wind.'
                    ,'title': 'Wind Energy'
@@ -28619,9 +28619,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'windows':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'windows'
                    ,'title': 'Windows'
@@ -28644,9 +28644,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'wine.gr.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'wine.gr.'
                    ,'title': 'Wine growing'
@@ -28669,9 +28669,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'winemak.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Food industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'winemak.'
                    ,'title': 'Winemaking'
@@ -28694,9 +28694,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'wir.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Construction'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'wir.'
                    ,'title': 'Wiring'
@@ -28719,9 +28719,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'wire.drw.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Industry'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'wire.drw.'
                    ,'title': 'Wire drawing'
@@ -28744,9 +28744,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'wnd.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Technology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'wnd.'
                    ,'title': 'Winding'
@@ -28769,9 +28769,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'wood.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Wood, pulp and paper industries'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'wood.'
                    ,'title': 'Wood processing'
@@ -28794,9 +28794,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'work.fl.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Records management'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'work.fl.'
                    ,'title': 'Work flow'
@@ -28819,9 +28819,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'wrest.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Martial arts and combat sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'wrest.'
                    ,'title': 'Wrestling'
@@ -28844,9 +28844,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'yacht.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Nautical'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'yacht.'
                    ,'title': 'Yachting'
@@ -28869,9 +28869,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'yiddish.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Languages'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'yiddish.'
                    ,'title': 'Yiddish'
@@ -28894,9 +28894,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'zool.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Biology'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'zool.'
                    ,'title': 'Zoology'
@@ -28919,9 +28919,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'zoot.':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': 'Agriculture'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'zoot.'
                    ,'title': 'Zootechnics'
@@ -28944,9 +28944,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Игорь Миг':
-               {'is_valid': True
+               {'Valid': True
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Игорь Миг'
                    ,'title': 'General'
@@ -28969,9 +28969,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Игорь Миг, abbr.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Grammatical labels'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Игорь Миг, abbr.'
                    ,'title': 'Abbreviation'
@@ -28994,9 +28994,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Игорь Миг, calque.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Auxilliary categories (editor use only)'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Игорь Миг, calque.'
                    ,'title': 'Loan translation'
@@ -29019,9 +29019,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Игорь Миг, cloth.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Light industries'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Игорь Миг, cloth.'
                    ,'title': 'Clothing'
@@ -29044,9 +29044,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Игорь Миг, earth.sc.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Игорь Миг, earth.sc.'
                    ,'title': 'Earth sciences'
@@ -29069,9 +29069,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Игорь Миг, hydrom.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Geography'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Игорь Миг, hydrom.'
                    ,'title': 'Hydrometry'
@@ -29094,9 +29094,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Игорь Миг, inform.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Игорь Миг, inform.'
                    ,'title': 'Informal'
@@ -29119,9 +29119,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Игорь Миг, quot.aph.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Literature'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Игорь Миг, quot.aph.'
                    ,'title': 'Quotes and aphorisms'
@@ -29144,9 +29144,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Игорь Миг, sport.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Sports'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Игорь Миг, sport.'
                    ,'title': 'Sports'
@@ -29169,9 +29169,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Игорь Миг, tagmem.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': 'Linguistics'
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Игорь Миг, tagmem.'
                    ,'title': 'Tagmemics'
@@ -29194,9 +29194,9 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                }
            ,'Игорь Миг, weap.':
-               {'is_valid': False
+               {'Valid': False
                ,'major_en': ''
-               ,'is_major': False
+               ,'Major': False
                ,'en':
                    {'short': 'Игорь Миг, weap.'
                    ,'title': 'Weapons and gunsmithing'
@@ -29231,7 +29231,7 @@ class Subjects:
         ''' Short titles are more valid than full titles, e.g.,
             'Gruzovik, obs.' -> 'Obsolete / dated' due to a bug
             at multitran.com. Thus, it's not necessary to check for
-            'is_valid' key there.
+            'Valid' key there.
         '''
         for key in SUBJECTS.keys():
             if SUBJECTS[key][self.lang]['short'] == short:
@@ -29264,7 +29264,7 @@ class Subjects:
         # Takes ~0.0016s on Intel Atom
         majors = []
         for key in SUBJECTS.keys():
-            if SUBJECTS[key]['is_major'] and SUBJECTS[key]['is_valid']:
+            if SUBJECTS[key]['Major'] and SUBJECTS[key]['Valid']:
                 majors.append(SUBJECTS[key][self.lang]['title'])
         return sorted(majors)
     
@@ -29274,7 +29274,7 @@ class Subjects:
         if major_en:
             for key in SUBJECTS.keys():
                 if major_en == SUBJECTS[key]['major_en'] \
-                and SUBJECTS[key]['is_major']:
+                and SUBJECTS[key]['Major']:
                     return SUBJECTS[key][self.lang]['title']
         else:
             sh.com.rep_empty(f)
@@ -29303,7 +29303,7 @@ class Subjects:
         if major_en:
             for key in SUBJECTS.keys():
                 if major_en == SUBJECTS[key]['major_en'] \
-                and not SUBJECTS[key]['is_major']:
+                and not SUBJECTS[key]['Major']:
                     group.append(SUBJECTS[key][self.lang]['title'])
         else:
             sh.com.rep_empty(f)
