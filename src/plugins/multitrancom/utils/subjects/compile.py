@@ -404,7 +404,7 @@ class Compile:
     
     def _format_title(self):
         what = ", 'title':"
-        with_ = ":\n{},'title':".format(19*' ')
+        with_ = "\n{},'title':".format(19*' ')
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_end(self):
