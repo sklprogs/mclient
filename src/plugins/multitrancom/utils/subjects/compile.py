@@ -348,76 +348,80 @@ class Compile:
             sh.com.cancel(f)
     
     def _format_valid(self):
-        spaces = 15 * ' '
         what = "': {'Valid':"
-        with_ = "':\n" + spaces + "{'Valid':"
+        with_ = "':\n{}{{'Valid':".format(15*' ')
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_major_en(self):
-        spaces = 15 * ' '
         what = ", 'major_en':"
-        with_ = "\n" + spaces + ",'major_en':"
+        with_ = "\n{},'major_en':".format(15*' ')
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_major(self):
-        spaces = 15 * ' '
         what = ", 'Major':"
-        with_ = "\n" + spaces + ",'Major':"
+        with_ = "\n{},'Major':".format(15*' ')
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_modified(self):
-        spaces = 15 * ' '
         what = ", 'Modified':"
-        with_ = "\n" + spaces + ",'Modified':"
+        with_ = "\n{},'Modified':".format(15*' ')
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_comment(self):
-        spaces = 15 * ' '
         what = ", 'comment':"
-        with_ = "\n" + spaces + ",'comment':"
+        with_ = "\n{},'comment':".format(15*' ')
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_en(self):
-        spaces = 15 * ' '
         what = ", 'en':"
-        with_ = "\n" + spaces + ",'en':"
+        with_ = "\n{},'en':".format(15*' ')
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_ru(self):
-        spaces = 15 * ' '
-        what = ", 'ru':"
-        with_ = "\n" + spaces + ",'ru':"
+        what = "}, 'ru':"
+        with_ = "\n{}}}\n{},'ru':".format(19*' ',15*' ')
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_de(self):
-        spaces = 15 * ' '
-        what = ", 'de':"
-        with_ = "\n" + spaces + ",'de':"
+        what = "}, 'de':"
+        with_ = "\n{}}}\n{},'de':".format(19*' ',15*' ')
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_es(self):
-        spaces = 15 * ' '
-        what = ", 'es':"
-        with_ = "\n" + spaces + ",'es':"
+        what = "}, 'es':"
+        with_ = "\n{}}}\n{},'es':".format(19*' ',15*' ')
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_uk(self):
-        spaces = 15 * ' '
-        what = ", 'uk':"
-        with_ = "\n" + spaces + ",'uk':"
+        what = "}, 'uk':"
+        with_ = "\n{}}}\n{},'uk':".format(19*' ',15*' ')
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_short(self):
-        spaces = 19 * ' '
         what = ": {'short':"
-        with_ = ":\n" + spaces + "{'short':"
+        with_ = ":\n{}{{'short':".format(19*' ')
+        self.formatted = self.formatted.replace(what,with_)
+    
+    def _format_title(self):
+        what = ", 'title':"
+        with_ = ":\n{},'title':".format(19*' ')
+        self.formatted = self.formatted.replace(what,with_)
+    
+    def _format_end(self):
+        what = '}}, '
+        with_ = '\n{}}}\n{}}}\n{},'.format(19*' ',15*' ',11*' ')
+        self.formatted = self.formatted.replace(what,with_)
+    
+    def _format_last(self):
+        what = '}}}'
+        with_ = '\n{}}}\n{}}}\n{}}}'.format(19*' ',15*' ',11*' ')
         self.formatted = self.formatted.replace(what,with_)
     
     def format(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.compile.Compile.format'
         if self.Success:
             if self.subjects:
-                self.formatted = 'SUBJECTS = ' + str(self.subjects)
+                self.formatted = 'SUBJECTS = {}'.format(self.subjects)
                 self._format_valid()
                 self._format_major_en()
                 self._format_major()
@@ -429,6 +433,9 @@ class Compile:
                 self._format_es()
                 self._format_uk()
                 self._format_short()
+                self._format_title()
+                self._format_end()
+                self._format_last()
             else:
                 self.Success = False
                 sh.com.rep_empty(f)
