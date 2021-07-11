@@ -12,6 +12,6 @@ if __name__ == '__main__':
     sh.com.start()
     #us.Compile(1).run()
     #us.Check().run()
-    us.Missing(1).run()
+    us.Missing(0).run()
     sh.com.end()
                 

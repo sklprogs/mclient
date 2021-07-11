@@ -13,6 +13,30 @@ class Missing:
         self.set_values()
         self.Debug = Debug
     
+    def copy(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.compile.Missing.copy'
+        if self.Success:
+            missing = list(self.missing)
+            for i in range(len(missing)):
+                missing[i] = '\t'.join(missing[i])
+            missing = '\n'.join(missing)
+            sh.Clipboard().copy(missing)
+            mes = _('Copied to clipboard. Paste it and press Return to exit.')
+            input(mes)
+        else:
+            sh.com.cancel(f)
+    
+    def match(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.compile.Missing.match'
+        if self.Success:
+            for subject in self.wanted:
+                for row in self.subjects:
+                    if row[0] == subject:
+                        self.missing.append(row)
+            sh.com.rep_matches(f,len(self.missing))
+        else:
+            sh.com.cancel(f)
+    
     def _debug_wanted(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.compile.Missing._debug_wanted'
         nos = [i + 1 for i in range(len(self.wanted))]
@@ -79,7 +103,12 @@ class Missing:
                     row = row.split('\t')
                     if len(row) == self.col_num:
                         row = self._delete_no(row)
-                        self.subjects.append(row)
+                        if row[0]:
+                            self.subjects.append(row)
+                        else:
+                            self.Success = False
+                            sh.com.rep_empty(f)
+                            return
                     else:
                         self.Success = False
                         sub = '{} == {}'.format(len(row),self.col_num)
@@ -121,7 +150,9 @@ class Missing:
         self.load()
         self.split_wanted()
         self.split_titles()
+        self.match()
         self.debug()
+        self.copy()
 
 
 
