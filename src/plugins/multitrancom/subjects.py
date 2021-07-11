@@ -34932,15 +34932,16 @@ class Subjects:
         majors = self.get_majors()
         for major in majors:
             group = self.get_group(major)
-            if group:
-                # Embedded lists
-                #lst.append([major]+group)
-                # Plain list
-                lst += [major]
-                lst += group
-            else:
-                mes = _('Wrong input data: "{}"!').format(major)
-                sh.objs.get_mes(f,mes,True).show_warning()
+            lst += [major]
+            ''' Actually, a group can be empty. This happens when there
+                are subjects related to different major subjects.
+                SUBJECTS does not currently support several major
+                subjects by design. Two major subjects can have
+                intersecting subjects. As a result, such major subjects
+                as "United Nations" or "Travel" can be reported as
+                not comprising any subjects.
+            '''
+            lst += group
         return lst
 
 

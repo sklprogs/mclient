@@ -358,6 +358,9 @@ class Plugin:
 class Commands:
     
     def get_subjects_wo_majors(self):
+        ''' Get subjects not united by a major subject. This is not
+            an error and can be witnessed sometimes at multitran.com.
+        '''
         f = '[MClient] tests.Commands.get_subjects_wo_majors'
         import plugins.multitrancom.subjects as sj
         titles = []

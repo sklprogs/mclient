@@ -2,8 +2,7 @@ mclient:
 - 
 
 multitrancom:
-- 28:[MClient] plugins.multitrancom.subjects.Subjects.get_list:ПРЕДУПРЕЖДЕНИЕ:Недопустимые входные данные: "ООН (Организация Объединенных Наций)"!
-  29:[MClient] plugins.multitrancom.subjects.Subjects.get_list:ПРЕДУПРЕЖДЕНИЕ:Недопустимые входные данные: "Туризм"!
+- 
 - RU-EN, mannits: trash in the end
 - RU-EN, icon: make_pretty fails
 - RU-CN: suggestions are provided for RU-EN
