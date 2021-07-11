@@ -302,7 +302,7 @@ class Compile:
                         is_major = gp.objs.groups.is_major(row[1])
                         is_vip = self._is_vip(row[0])
                         self.subjects[row[0]]['Major'] = is_major and not is_vip
-                        self.subjects[row[0]]['Added'] = False
+                        self.subjects[row[0]]['Modified'] = False
                         self.subjects[row[0]]['comment'] = ''
                         self.subjects[row[0]]['major_en'] = major_en
                         self.subjects[row[0]]['en'] = {}
@@ -347,45 +347,88 @@ class Compile:
         else:
             sh.com.cancel(f)
     
-    def _format_is_valid(self):
-        what = "': {'Valid':"
+    def _format_valid(self):
         spaces = 15 * ' '
+        what = "': {'Valid':"
         with_ = "':\n" + spaces + "{'Valid':"
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_major_en(self):
-        what = ", 'major_en':"
         spaces = 15 * ' '
+        what = ", 'major_en':"
         with_ = "\n" + spaces + ",'major_en':"
         self.formatted = self.formatted.replace(what,with_)
     
-    def _format_is_major(self):
-        what = ", 'Major':"
+    def _format_major(self):
         spaces = 15 * ' '
+        what = ", 'Major':"
         with_ = "\n" + spaces + ",'Major':"
         self.formatted = self.formatted.replace(what,with_)
     
-    def _format_is_added(self):
-        what = ", 'Added':"
+    def _format_modified(self):
         spaces = 15 * ' '
-        with_ = "\n" + spaces + ",'Added':"
+        what = ", 'Modified':"
+        with_ = "\n" + spaces + ",'Modified':"
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_comment(self):
-        what = ", 'comment':"
         spaces = 15 * ' '
+        what = ", 'comment':"
         with_ = "\n" + spaces + ",'comment':"
+        self.formatted = self.formatted.replace(what,with_)
+    
+    def _format_en(self):
+        spaces = 15 * ' '
+        what = ", 'en':"
+        with_ = "\n" + spaces + ",'en':"
+        self.formatted = self.formatted.replace(what,with_)
+    
+    def _format_ru(self):
+        spaces = 15 * ' '
+        what = ", 'ru':"
+        with_ = "\n" + spaces + ",'ru':"
+        self.formatted = self.formatted.replace(what,with_)
+    
+    def _format_de(self):
+        spaces = 15 * ' '
+        what = ", 'de':"
+        with_ = "\n" + spaces + ",'de':"
+        self.formatted = self.formatted.replace(what,with_)
+    
+    def _format_es(self):
+        spaces = 15 * ' '
+        what = ", 'es':"
+        with_ = "\n" + spaces + ",'es':"
+        self.formatted = self.formatted.replace(what,with_)
+    
+    def _format_uk(self):
+        spaces = 15 * ' '
+        what = ", 'uk':"
+        with_ = "\n" + spaces + ",'uk':"
+        self.formatted = self.formatted.replace(what,with_)
+    
+    def _format_short(self):
+        spaces = 19 * ' '
+        what = ": {'short':"
+        with_ = ":\n" + spaces + "{'short':"
+        self.formatted = self.formatted.replace(what,with_)
     
     def format(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.compile.Compile.format'
         if self.Success:
             if self.subjects:
                 self.formatted = 'SUBJECTS = ' + str(self.subjects)
-                self._format_is_valid()
+                self._format_valid()
                 self._format_major_en()
-                self._format_is_major()
-                self._format_is_added()
+                self._format_major()
+                self._format_modified()
                 self._format_comment()
+                self._format_en()
+                self._format_ru()
+                self._format_de()
+                self._format_es()
+                self._format_uk()
+                self._format_short()
             else:
                 self.Success = False
                 sh.com.rep_empty(f)
