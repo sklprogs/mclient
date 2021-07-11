@@ -171,7 +171,8 @@ class Compile:
         self.duplicates = []
         self.vip = ['Gruzovik','Игорь Миг']
         self.subjects = {}
-        self.colsno = 10
+        self.col_num = 10
+        self.formatted = ''
     
     def _debug_duplicates(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.compile.Compile._debug_duplicates'
@@ -182,8 +183,8 @@ class Compile:
     def copy(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.compile.Compile.copy'
         if self.Success:
-            if self.subjects:
-                sh.Clipboard().copy(self.subjects)
+            if self.formatted:
+                sh.Clipboard().copy(self.formatted)
                 mes = _('Copied to clipboard. Paste it and press Return to exit.')
                 input(mes)
             else:
@@ -288,7 +289,7 @@ class Compile:
         f = '[MClient] plugins.multitrancom.utils.subjects.compile.Compile.compile'
         if self.Success:
             for row in self.lst:
-                if len(row) == self.colsno:
+                if len(row) == self.col_num:
                     if row[0] in self.subjects:
                         mes = _('Key "{}" already exists!')
                         mes = mes.format(row[0])
@@ -302,6 +303,8 @@ class Compile:
                         is_vip = self._is_vip(row[0])
                         self.subjects[row[0]]['major_en'] = major_en
                         self.subjects[row[0]]['is_major'] = is_major and not is_vip
+                        self.subjects[row[0]]['is_added'] = False
+                        self.subjects[row[0]]['comment'] = ''
                         self.subjects[row[0]]['en'] = {}
                         self.subjects[row[0]]['ru'] = {}
                         self.subjects[row[0]]['de'] = {}
@@ -319,7 +322,7 @@ class Compile:
                         self.subjects[row[0]]['uk']['title'] = row[9]
                 else:
                     self.Success = False
-                    sub = '{} == {}'.format(len(row),self.colsno)
+                    sub = '{} == {}'.format(len(row),self.col_num)
                     mes = _('The condition "{}" is not observed!')
                     mes = mes.format(sub)
                     sh.objs.get_mes(f,mes,True).show_warning()
@@ -344,9 +347,55 @@ class Compile:
         else:
             sh.com.cancel(f)
     
+    def _format_is_valid(self):
+        what = "': {'is_valid':"
+        spaces = 15 * ' '
+        with_ = "':\n" + spaces + "{'is_valid':"
+        self.formatted = self.formatted.replace(what,with_)
+    
+    def _format_major_en(self):
+        what = ", 'major_en':"
+        spaces = 15 * ' '
+        with_ = "\n" + spaces + ",'major_en':"
+        self.formatted = self.formatted.replace(what,with_)
+    
+    def _format_is_major(self):
+        what = ", 'is_major':"
+        spaces = 15 * ' '
+        with_ = "\n" + spaces + ",'is_major':"
+        self.formatted = self.formatted.replace(what,with_)
+    
+    def _format_is_added(self):
+        what = ", 'is_added':"
+        spaces = 15 * ' '
+        with_ = "\n" + spaces + ",'is_added':"
+        self.formatted = self.formatted.replace(what,with_)
+    
+    def _format_comment(self):
+        what = ", 'comment':"
+        spaces = 15 * ' '
+        with_ = "\n" + spaces + ",'comment':"
+    
+    def format(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.compile.Compile.format'
+        if self.Success:
+            if self.subjects:
+                self.formatted = 'SUBJECTS = ' + str(self.subjects)
+                self._format_is_valid()
+                self._format_major_en()
+                self._format_is_major()
+                self._format_is_added()
+                self._format_comment()
+            else:
+                self.Success = False
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
     def run(self):
         self.load()
         self.split()
         self.compile()
         self.debug()
+        self.format()
         self.copy()

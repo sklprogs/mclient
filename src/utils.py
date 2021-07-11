@@ -10,8 +10,8 @@ import plugins.multitrancom.utils.subjects.compile as us
 if __name__ == '__main__':
     f = '[MClient] utils.__main__'
     sh.com.start()
-    #us.Compile(1).run()
+    us.Compile(0).run()
     #us.Check().run()
-    us.Missing(0).run()
+    #us.Missing(0).run()
     sh.com.end()
                 
