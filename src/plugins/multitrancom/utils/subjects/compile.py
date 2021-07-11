@@ -301,10 +301,10 @@ class Compile:
                         major_en = gp.objs.get_groups().get_major(row[1])
                         is_major = gp.objs.groups.is_major(row[1])
                         is_vip = self._is_vip(row[0])
-                        self.subjects[row[0]]['major_en'] = major_en
                         self.subjects[row[0]]['Major'] = is_major and not is_vip
                         self.subjects[row[0]]['Added'] = False
                         self.subjects[row[0]]['comment'] = ''
+                        self.subjects[row[0]]['major_en'] = major_en
                         self.subjects[row[0]]['en'] = {}
                         self.subjects[row[0]]['ru'] = {}
                         self.subjects[row[0]]['de'] = {}
