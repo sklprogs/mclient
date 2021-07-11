@@ -357,6 +357,21 @@ class Plugin:
 
 class Commands:
     
+    def get_subjects_wo_majors(self):
+        f = '[MClient] tests.Commands.get_subjects_wo_majors'
+        import plugins.multitrancom.subjects as sj
+        titles = []
+        for key in sj.SUBJECTS.keys():
+            if not sj.SUBJECTS[key]['major_en'] \
+            and sj.SUBJECTS[key]['Valid']:
+                titles.append(sj.SUBJECTS[key]['en']['title'])
+        titles = sorted(set(titles))
+        if titles:
+            mes = '\n'.join(titles)
+            sh.com.run_fast_debug(f,mes)
+        else:
+            sh.com.rep_lazy(f)
+    
     def get_modified_subjects(self):
         f = '[MClient] tests.Commands.get_modified_subjects'
         import plugins.multitrancom.subjects as sj
@@ -757,5 +772,6 @@ if __name__ == '__main__':
     #com.edit_blacklist()
     #com.edit_priorities()
     #com.get_majors_en()
-    com.get_modified_subjects()
+    #com.get_modified_subjects()
+    com.get_subjects_wo_majors()
     sh.com.end()

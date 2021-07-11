@@ -31,7 +31,3274 @@ import skl_shared.shared as sh
     - The result will be sorted and freed of duplicates, so subjects
       may come in any order.
 '''
-SUBJECTS = {'Wood, pulp and paper industries':
+SUBJECTS = {'Albanian language':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Languages'
+               ,'en':
+                   {'short': 'Albanian language'
+                   ,'title': 'Albanian language'
+                   }
+               ,'ru':
+                   {'short': 'Албанский язык'
+                   ,'title': 'Албанский язык'
+                   }
+               ,'de':
+                   {'short': 'Albanian language'
+                   ,'title': 'Albanian language'
+                   }
+               ,'es':
+                   {'short': 'Albanian language'
+                   ,'title': 'Albanian language'
+                   }
+               ,'uk':
+                   {'short': 'Албанська мова'
+                   ,'title': 'Албанська мова'
+                   }
+               }
+           ,'Alcohol distilling':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Food industry'
+               ,'en':
+                   {'short': 'Alcohol distilling'
+                   ,'title': 'Alcohol distilling'
+                   }
+               ,'ru':
+                   {'short': 'Производство спирта'
+                   ,'title': 'Производство спирта'
+                   }
+               ,'de':
+                   {'short': 'Alcohol distilling'
+                   ,'title': 'Alcohol distilling'
+                   }
+               ,'es':
+                   {'short': 'Alcohol distilling'
+                   ,'title': 'Alcohol distilling'
+                   }
+               ,'uk':
+                   {'short': 'Виробництво спирту'
+                   ,'title': 'Виробництво спирту'
+                   }
+               }
+           ,'Alloy addition':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Metallurgy'
+               ,'en':
+                   {'short': 'Alloy addition'
+                   ,'title': 'Alloy addition'
+                   }
+               ,'ru':
+                   {'short': 'Легирование'
+                   ,'title': 'Легирование'
+                   }
+               ,'de':
+                   {'short': 'Alloy addition'
+                   ,'title': 'Alloy addition'
+                   }
+               ,'es':
+                   {'short': 'Alloy addition'
+                   ,'title': 'Alloy addition'
+                   }
+               ,'uk':
+                   {'short': 'Легування'
+                   ,'title': 'Легування'
+                   }
+               }
+           ,'American football':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Sports'
+               ,'en':
+                   {'short': 'American football'
+                   ,'title': 'American football'
+                   }
+               ,'ru':
+                   {'short': 'Американский футбол'
+                   ,'title': 'Американский футбол'
+                   }
+               ,'de':
+                   {'short': 'American football'
+                   ,'title': 'American football'
+                   }
+               ,'es':
+                   {'short': 'American football'
+                   ,'title': 'American football'
+                   }
+               ,'uk':
+                   {'short': 'Американський футбол'
+                   ,'title': 'Американський футбол'
+                   }
+               }
+           ,'Ampelography':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Biology'
+               ,'en':
+                   {'short': 'Ampelography'
+                   ,'title': 'Ampelography'
+                   }
+               ,'ru':
+                   {'short': 'Ампелография'
+                   ,'title': 'Ампелография'
+                   }
+               ,'de':
+                   {'short': 'Ampelography'
+                   ,'title': 'Ampelography'
+                   }
+               ,'es':
+                   {'short': 'Ampelography'
+                   ,'title': 'Ampelography'
+                   }
+               ,'uk':
+                   {'short': 'Ампелографія'
+                   ,'title': 'Ампелографія'
+                   }
+               }
+           ,'Andalusia':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Countries and regions'
+               ,'en':
+                   {'short': 'Andalusia'
+                   ,'title': 'Andalusia'
+                   }
+               ,'ru':
+                   {'short': 'Андалусия'
+                   ,'title': 'Андалусия'
+                   }
+               ,'de':
+                   {'short': 'Andalusia'
+                   ,'title': 'Andalusia'
+                   }
+               ,'es':
+                   {'short': 'Andalusia'
+                   ,'title': 'Andalusia'
+                   }
+               ,'uk':
+                   {'short': 'Андалусія'
+                   ,'title': 'Андалусія'
+                   }
+               }
+           ,'Archaeology':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Historical'
+               ,'en':
+                   {'short': 'Archaeology'
+                   ,'title': 'Archaeology'
+                   }
+               ,'ru':
+                   {'short': 'Археология'
+                   ,'title': 'Археология'
+                   }
+               ,'de':
+                   {'short': 'Archeologie'
+                   ,'title': 'Archeologie'
+                   }
+               ,'es':
+                   {'short': 'Arqueología'
+                   ,'title': 'Arqueología'
+                   }
+               ,'uk':
+                   {'short': 'Археологія'
+                   ,'title': 'Археологія'
+                   }
+               }
+           ,'Asturias':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Countries and regions'
+               ,'en':
+                   {'short': 'Asturias'
+                   ,'title': 'Asturias'
+                   }
+               ,'ru':
+                   {'short': 'Астурия'
+                   ,'title': 'Астурия'
+                   }
+               ,'de':
+                   {'short': 'Asturias'
+                   ,'title': 'Asturias'
+                   }
+               ,'es':
+                   {'short': 'Asturias'
+                   ,'title': 'Asturias'
+                   }
+               ,'uk':
+                   {'short': 'Астурія'
+                   ,'title': 'Астурія'
+                   }
+               }
+           ,'Audit':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Finances'
+               ,'en':
+                   {'short': 'Audit'
+                   ,'title': 'Audit'
+                   }
+               ,'ru':
+                   {'short': 'Аудит'
+                   ,'title': 'Аудит'
+                   }
+               ,'de':
+                   {'short': 'Wirtschaftsprüfung'
+                   ,'title': 'Wirtschaftsprüfung'
+                   }
+               ,'es':
+                   {'short': 'Audit'
+                   ,'title': 'Audit'
+                   }
+               ,'uk':
+                   {'short': 'Аудит'
+                   ,'title': 'Аудит'
+                   }
+               }
+           ,'Augmentative':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Grammatical labels'
+               ,'en':
+                   {'short': 'Augmentative'
+                   ,'title': 'Augmentative'
+                   }
+               ,'ru':
+                   {'short': 'Увеличительно'
+                   ,'title': 'Увеличительно'
+                   }
+               ,'de':
+                   {'short': 'Augmentative'
+                   ,'title': 'Augmentative'
+                   }
+               ,'es':
+                   {'short': 'Augmentative'
+                   ,'title': 'Augmentative'
+                   }
+               ,'uk':
+                   {'short': 'Збільшувально'
+                   ,'title': 'Збільшувально'
+                   }
+               }
+           ,'Badminton':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Sports'
+               ,'en':
+                   {'short': 'Badminton'
+                   ,'title': 'Badminton'
+                   }
+               ,'ru':
+                   {'short': 'Бадминтон'
+                   ,'title': 'Бадминтон'
+                   }
+               ,'de':
+                   {'short': 'Badminton'
+                   ,'title': 'Badminton'
+                   }
+               ,'es':
+                   {'short': 'Badminton'
+                   ,'title': 'Badminton'
+                   }
+               ,'uk':
+                   {'short': 'Бадмінтон'
+                   ,'title': 'Бадмінтон'
+                   }
+               }
+           ,'Barbarism':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Stylistic values'
+               ,'en':
+                   {'short': 'Barbarism'
+                   ,'title': 'Barbarism'
+                   }
+               ,'ru':
+                   {'short': 'Варваризм'
+                   ,'title': 'Варваризм'
+                   }
+               ,'de':
+                   {'short': 'Barbarism'
+                   ,'title': 'Barbarism'
+                   }
+               ,'es':
+                   {'short': 'Barbarism'
+                   ,'title': 'Barbarism'
+                   }
+               ,'uk':
+                   {'short': 'Варваризм'
+                   ,'title': 'Варваризм'
+                   }
+               }
+           ,'Beijing dialect':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Dialectal'
+               ,'en':
+                   {'short': 'Beijing dialect'
+                   ,'title': 'Beijing dialect'
+                   }
+               ,'ru':
+                   {'short': 'Пекинский диалект'
+                   ,'title': 'Пекинский диалект'
+                   }
+               ,'de':
+                   {'short': 'Pekinger Mandarin'
+                   ,'title': 'Pekinger Mandarin'
+                   }
+               ,'es':
+                   {'short': 'Beijing dialect'
+                   ,'title': 'Beijing dialect'
+                   }
+               ,'uk':
+                   {'short': 'Пекінський діалект'
+                   ,'title': 'Пекінський діалект'
+                   }
+               }
+           ,'Belarusian language':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Languages'
+               ,'en':
+                   {'short': 'Belarusian language'
+                   ,'title': 'Belarusian language'
+                   }
+               ,'ru':
+                   {'short': 'Белорусский язык'
+                   ,'title': 'Белорусский язык'
+                   }
+               ,'de':
+                   {'short': 'Belarusian language'
+                   ,'title': 'Belarusian language'
+                   }
+               ,'es':
+                   {'short': 'Belarusian language'
+                   ,'title': 'Belarusian language'
+                   }
+               ,'uk':
+                   {'short': 'Білоруська мова'
+                   ,'title': 'Білоруська мова'
+                   }
+               }
+           ,'Berlin expression':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'en':
+                   {'short': 'Berlin expression'
+                   ,'title': 'Berlin expression'
+                   }
+               ,'ru':
+                   {'short': 'Берлинское выражение'
+                   ,'title': 'Берлинское выражение'
+                   }
+               ,'de':
+                   {'short': 'Berlinerisch'
+                   ,'title': 'Berlinerisch'
+                   }
+               ,'es':
+                   {'short': 'Berlin expression'
+                   ,'title': 'Berlin expression'
+                   }
+               ,'uk':
+                   {'short': 'Берлінський вираз'
+                   ,'title': 'Берлінський вираз'
+                   }
+               }
+           ,'Biathlon':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Sports'
+               ,'en':
+                   {'short': 'Biathlon'
+                   ,'title': 'Biathlon'
+                   }
+               ,'ru':
+                   {'short': 'Биатлон'
+                   ,'title': 'Биатлон'
+                   }
+               ,'de':
+                   {'short': 'Biathlon'
+                   ,'title': 'Biathlon'
+                   }
+               ,'es':
+                   {'short': 'Biathlon'
+                   ,'title': 'Biathlon'
+                   }
+               ,'uk':
+                   {'short': 'Біатлон'
+                   ,'title': 'Біатлон'
+                   }
+               }
+           ,'Blast-furnace practice':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Metallurgy'
+               ,'en':
+                   {'short': 'Blast-furnace practice'
+                   ,'title': 'Blast-furnace practice'
+                   }
+               ,'ru':
+                   {'short': 'Доменное производство'
+                   ,'title': 'Доменное производство'
+                   }
+               ,'de':
+                   {'short': 'Hochofenbetrieb'
+                   ,'title': 'Hochofenbetrieb'
+                   }
+               ,'es':
+                   {'short': 'Blast-furnace practice'
+                   ,'title': 'Blast-furnace practice'
+                   }
+               ,'uk':
+                   {'short': 'Доменне виробництво'
+                   ,'title': 'Доменне виробництво'
+                   }
+               }
+           ,'Bolivia':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Countries and regions'
+               ,'en':
+                   {'short': 'Bolivia'
+                   ,'title': 'Bolivia'
+                   }
+               ,'ru':
+                   {'short': 'Боливия'
+                   ,'title': 'Боливия'
+                   }
+               ,'de':
+                   {'short': 'Bolivia'
+                   ,'title': 'Bolivia'
+                   }
+               ,'es':
+                   {'short': 'Bolivia'
+                   ,'title': 'Bolivia'
+                   }
+               ,'uk':
+                   {'short': 'Болівія'
+                   ,'title': 'Болівія'
+                   }
+               }
+           ,'Bowling':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Games (other than sports)'
+               ,'en':
+                   {'short': 'Bowling'
+                   ,'title': 'Bowling'
+                   }
+               ,'ru':
+                   {'short': 'Боулинг'
+                   ,'title': 'Боулинг'
+                   }
+               ,'de':
+                   {'short': 'Bowling'
+                   ,'title': 'Bowling'
+                   }
+               ,'es':
+                   {'short': 'Bowling'
+                   ,'title': 'Bowling'
+                   }
+               ,'uk':
+                   {'short': 'Боулінг'
+                   ,'title': 'Боулінг'
+                   }
+               }
+           ,'Bridge (card game)':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Games (other than sports)'
+               ,'en':
+                   {'short': 'Bridge (card game)'
+                   ,'title': 'Bridge (card game)'
+                   }
+               ,'ru':
+                   {'short': 'Бридж'
+                   ,'title': 'Бридж'
+                   }
+               ,'de':
+                   {'short': 'Bridge'
+                   ,'title': 'Bridge'
+                   }
+               ,'es':
+                   {'short': 'Bridge (card game)'
+                   ,'title': 'Bridge (card game)'
+                   }
+               ,'uk':
+                   {'short': 'Бридж'
+                   ,'title': 'Бридж'
+                   }
+               }
+           ,'Bulgarian language':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Languages'
+               ,'en':
+                   {'short': 'Bulgarian language'
+                   ,'title': 'Bulgarian language'
+                   }
+               ,'ru':
+                   {'short': 'Болгарский язык'
+                   ,'title': 'Болгарский язык'
+                   }
+               ,'de':
+                   {'short': 'Bulgarian language'
+                   ,'title': 'Bulgarian language'
+                   }
+               ,'es':
+                   {'short': 'Bulgarian language'
+                   ,'title': 'Bulgarian language'
+                   }
+               ,'uk':
+                   {'short': 'Болгарська мова'
+                   ,'title': 'Болгарська мова'
+                   }
+               }
+           ,'Cantonese':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Dialectal'
+               ,'en':
+                   {'short': 'Cantonese'
+                   ,'title': 'Cantonese'
+                   }
+               ,'ru':
+                   {'short': 'Кантонский диалект'
+                   ,'title': 'Кантонский диалект'
+                   }
+               ,'de':
+                   {'short': 'Kantonesische Sprache'
+                   ,'title': 'Kantonesische Sprache'
+                   }
+               ,'es':
+                   {'short': 'Cantonés'
+                   ,'title': 'Cantonés'
+                   }
+               ,'uk':
+                   {'short': 'Кантонський діалект'
+                   ,'title': 'Кантонський діалект'
+                   }
+               }
+           ,'Cast iron':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Metallurgy'
+               ,'en':
+                   {'short': 'Cast iron'
+                   ,'title': 'Cast iron'
+                   }
+               ,'ru':
+                   {'short': 'Производство чугуна'
+                   ,'title': 'Производство чугуна'
+                   }
+               ,'de':
+                   {'short': 'Cast iron'
+                   ,'title': 'Cast iron'
+                   }
+               ,'es':
+                   {'short': 'Cast iron'
+                   ,'title': 'Cast iron'
+                   }
+               ,'uk':
+                   {'short': 'Виробництво чавуну'
+                   ,'title': 'Виробництво чавуну'
+                   }
+               }
+           ,'Champagne and sparkling wines':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Food industry'
+               ,'en':
+                   {'short': 'Champagne and sparkling wines'
+                   ,'title': 'Champagne and sparkling wines'
+                   }
+               ,'ru':
+                   {'short': 'Производство шампанского'
+                   ,'title': 'Производство шампанского'
+                   }
+               ,'de':
+                   {'short': 'Champagne and sparkling wines'
+                   ,'title': 'Champagne and sparkling wines'
+                   }
+               ,'es':
+                   {'short': 'Champagne and sparkling wines'
+                   ,'title': 'Champagne and sparkling wines'
+                   }
+               ,'uk':
+                   {'short': 'Виробництво шампанського'
+                   ,'title': 'Виробництво шампанського'
+                   }
+               }
+           ,'Companies & Partnerships':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Business'
+               ,'en':
+                   {'short': 'Companies & Partnerships'
+                   ,'title': 'Companies & Partnerships'
+                   }
+               ,'ru':
+                   {'short': 'Хозяйственные общества и товарищества'
+                   ,'title': 'Хозяйственные общества и товарищества'
+                   }
+               ,'de':
+                   {'short': 'Companies & Partnerships'
+                   ,'title': 'Companies & Partnerships'
+                   }
+               ,'es':
+                   {'short': 'Companies & Partnerships'
+                   ,'title': 'Companies & Partnerships'
+                   }
+               ,'uk':
+                   {'short': 'Господарські товариства'
+                   ,'title': 'Господарські товариства'
+                   }
+               }
+           ,'Computing slang':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Computing'
+               ,'en':
+                   {'short': 'Computing slang'
+                   ,'title': 'Computing slang'
+                   }
+               ,'ru':
+                   {'short': 'Компьютерный жаргон'
+                   ,'title': 'Компьютерный жаргон'
+                   }
+               ,'de':
+                   {'short': 'Computerslang'
+                   ,'title': 'Computerslang'
+                   }
+               ,'es':
+                   {'short': 'Computing slang'
+                   ,'title': 'Computing slang'
+                   }
+               ,'uk':
+                   {'short': 'Комп’ютерний жаргон'
+                   ,'title': 'Комп’ютерний жаргон'
+                   }
+               }
+           ,'Confucianism':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Religion'
+               ,'en':
+                   {'short': 'Confucianism'
+                   ,'title': 'Confucianism'
+                   }
+               ,'ru':
+                   {'short': 'Конфуцианство'
+                   ,'title': 'Конфуцианство'
+                   }
+               ,'de':
+                   {'short': 'Confucianism'
+                   ,'title': 'Confucianism'
+                   }
+               ,'es':
+                   {'short': 'Confucianism'
+                   ,'title': 'Confucianism'
+                   }
+               ,'uk':
+                   {'short': 'Конфуціанство'
+                   ,'title': 'Конфуціанство'
+                   }
+               }
+           ,'Continuous casting':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Metallurgy'
+               ,'en':
+                   {'short': 'Continuous casting'
+                   ,'title': 'Continuous casting'
+                   }
+               ,'ru':
+                   {'short': 'Непрерывная разливка'
+                   ,'title': 'Непрерывная разливка'
+                   }
+               ,'de':
+                   {'short': 'Stranggießen'
+                   ,'title': 'Stranggießen'
+                   }
+               ,'es':
+                   {'short': 'Continuous casting'
+                   ,'title': 'Continuous casting'
+                   }
+               ,'uk':
+                   {'short': 'Безперервне розливання'
+                   ,'title': 'Безперервне розливання'
+                   }
+               }
+           ,'Contracts':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Business'
+               ,'en':
+                   {'short': 'Contracts'
+                   ,'title': 'Contracts'
+                   }
+               ,'ru':
+                   {'short': 'Договоры и контракты'
+                   ,'title': 'Договоры и контракты'
+                   }
+               ,'de':
+                   {'short': 'Verträge'
+                   ,'title': 'Verträge'
+                   }
+               ,'es':
+                   {'short': 'Contratos jurídicos'
+                   ,'title': 'Contratos jurídicos'
+                   }
+               ,'uk':
+                   {'short': 'Договори та контракти'
+                   ,'title': 'Договори та контракти'
+                   }
+               }
+           ,'Cricket':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Games (other than sports)'
+               ,'en':
+                   {'short': 'Cricket'
+                   ,'title': 'Cricket'
+                   }
+               ,'ru':
+                   {'short': 'Крикет'
+                   ,'title': 'Крикет'
+                   }
+               ,'de':
+                   {'short': 'Cricket'
+                   ,'title': 'Cricket'
+                   }
+               ,'es':
+                   {'short': 'Cricket'
+                   ,'title': 'Cricket'
+                   }
+               ,'uk':
+                   {'short': 'Крикет'
+                   ,'title': 'Крикет'
+                   }
+               }
+           ,'Criminology':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Law enforcement'
+               ,'en':
+                   {'short': 'Criminology'
+                   ,'title': 'Criminology'
+                   }
+               ,'ru':
+                   {'short': 'Криминология'
+                   ,'title': 'Криминология'
+                   }
+               ,'de':
+                   {'short': 'Kriminologie'
+                   ,'title': 'Kriminologie'
+                   }
+               ,'es':
+                   {'short': 'Criminology'
+                   ,'title': 'Criminology'
+                   }
+               ,'uk':
+                   {'short': 'Кримінологія'
+                   ,'title': 'Кримінологія'
+                   }
+               }
+           ,'Croquet':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Sports'
+               ,'en':
+                   {'short': 'Croquet'
+                   ,'title': 'Croquet'
+                   }
+               ,'ru':
+                   {'short': 'Крокет'
+                   ,'title': 'Крокет'
+                   }
+               ,'de':
+                   {'short': 'Krocket'
+                   ,'title': 'Krocket'
+                   }
+               ,'es':
+                   {'short': 'Croquet'
+                   ,'title': 'Croquet'
+                   }
+               ,'uk':
+                   {'short': 'Крокет'
+                   ,'title': 'Крокет'
+                   }
+               }
+           ,'Cults and miscellaneous spiritual practices':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Religion'
+               ,'en':
+                   {'short': 'Cults and miscellaneous spiritual practices'
+                   ,'title': 'Cults and miscellaneous spiritual practices'
+                   }
+               ,'ru':
+                   {'short': 'Культы и прочие духовные практики'
+                   ,'title': 'Культы и прочие духовные практики'
+                   }
+               ,'de':
+                   {'short': 'Cults and miscellaneous spiritual practices'
+                   ,'title': 'Cults and miscellaneous spiritual practices'
+                   }
+               ,'es':
+                   {'short': 'Cults and miscellaneous spiritual practices'
+                   ,'title': 'Cults and miscellaneous spiritual practices'
+                   }
+               ,'uk':
+                   {'short': 'Культи та інші духовні практики'
+                   ,'title': 'Культи та інші духовні практики'
+                   }
+               }
+           ,'Curling':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Sports'
+               ,'en':
+                   {'short': 'Curling'
+                   ,'title': 'Curling'
+                   }
+               ,'ru':
+                   {'short': 'Кёрлинг'
+                   ,'title': 'Кёрлинг'
+                   }
+               ,'de':
+                   {'short': 'Curling'
+                   ,'title': 'Curling'
+                   }
+               ,'es':
+                   {'short': 'Curling'
+                   ,'title': 'Curling'
+                   }
+               ,'uk':
+                   {'short': 'Керлінг'
+                   ,'title': 'Керлінг'
+                   }
+               }
+           ,'Darts':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Games (other than sports)'
+               ,'en':
+                   {'short': 'Darts'
+                   ,'title': 'Darts'
+                   }
+               ,'ru':
+                   {'short': 'Дартс'
+                   ,'title': 'Дартс'
+                   }
+               ,'de':
+                   {'short': 'Darts'
+                   ,'title': 'Darts'
+                   }
+               ,'es':
+                   {'short': 'Darts'
+                   ,'title': 'Darts'
+                   }
+               ,'uk':
+                   {'short': 'Дартс'
+                   ,'title': 'Дартс'
+                   }
+               }
+           ,'Dice':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Games (other than sports)'
+               ,'en':
+                   {'short': 'Dice'
+                   ,'title': 'Dice'
+                   }
+               ,'ru':
+                   {'short': 'Игральные кости'
+                   ,'title': 'Игральные кости'
+                   }
+               ,'de':
+                   {'short': 'Dice'
+                   ,'title': 'Dice'
+                   }
+               ,'es':
+                   {'short': 'Dice'
+                   ,'title': 'Dice'
+                   }
+               ,'uk':
+                   {'short': 'Гральні кісточки'
+                   ,'title': 'Гральні кісточки'
+                   }
+               }
+           ,'Diseases':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Medical'
+               ,'en':
+                   {'short': 'Diseases'
+                   ,'title': 'Diseases'
+                   }
+               ,'ru':
+                   {'short': 'Заболевания'
+                   ,'title': 'Заболевания'
+                   }
+               ,'de':
+                   {'short': 'Krankheiten'
+                   ,'title': 'Krankheiten'
+                   }
+               ,'es':
+                   {'short': 'Diseases'
+                   ,'title': 'Diseases'
+                   }
+               ,'uk':
+                   {'short': 'Захворювання'
+                   ,'title': 'Захворювання'
+                   }
+               }
+           ,'Doping':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Sports'
+               ,'en':
+                   {'short': 'Doping'
+                   ,'title': 'Doping'
+                   }
+               ,'ru':
+                   {'short': 'Допинг'
+                   ,'title': 'Допинг'
+                   }
+               ,'de':
+                   {'short': 'Doping'
+                   ,'title': 'Doping'
+                   }
+               ,'es':
+                   {'short': 'Doping'
+                   ,'title': 'Doping'
+                   }
+               ,'uk':
+                   {'short': 'Допінг'
+                   ,'title': 'Допінг'
+                   }
+               }
+           ,'Dragon boat':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Subjects for Chinese dictionaries (container)'
+               ,'en':
+                   {'short': 'Dragon boat'
+                   ,'title': 'Dragon boat'
+                   }
+               ,'ru':
+                   {'short': 'Драгонбот'
+                   ,'title': 'Драгонбот'
+                   }
+               ,'de':
+                   {'short': 'Dragon boat'
+                   ,'title': 'Dragon boat'
+                   }
+               ,'es':
+                   {'short': 'Dragon boat'
+                   ,'title': 'Dragon boat'
+                   }
+               ,'uk':
+                   {'short': 'Драгонбот'
+                   ,'title': 'Драгонбот'
+                   }
+               }
+           ,'Dragon dance':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Subjects for Chinese dictionaries (container)'
+               ,'en':
+                   {'short': 'Dragon dance'
+                   ,'title': 'Dragon dance'
+                   }
+               ,'ru':
+                   {'short': 'Танец дракона'
+                   ,'title': 'Танец дракона'
+                   }
+               ,'de':
+                   {'short': 'Dragon dance'
+                   ,'title': 'Dragon dance'
+                   }
+               ,'es':
+                   {'short': 'Dragon dance'
+                   ,'title': 'Dragon dance'
+                   }
+               ,'uk':
+                   {'short': 'Танок дракона'
+                   ,'title': 'Танок дракона'
+                   }
+               }
+           ,'East-Middle-German':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'en':
+                   {'short': 'East-Middle-German'
+                   ,'title': 'East-Middle-German'
+                   }
+               ,'ru':
+                   {'short': 'Восточно-средне-немецкое выраж.'
+                   ,'title': 'Восточно-средне-немецкое выраж.'
+                   }
+               ,'de':
+                   {'short': 'Ostmitteldeutsch'
+                   ,'title': 'Ostmitteldeutsch'
+                   }
+               ,'es':
+                   {'short': 'East-Middle-German'
+                   ,'title': 'East-Middle-German'
+                   }
+               ,'uk':
+                   {'short': 'Східно-середньо-німецький вираз'
+                   ,'title': 'Східно-середньо-німецький вираз'
+                   }
+               }
+           ,'Eastern Chinese':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Dialectal'
+               ,'en':
+                   {'short': 'Eastern Chinese'
+                   ,'title': 'Eastern Chinese'
+                   }
+               ,'ru':
+                   {'short': 'Восточно-китайский'
+                   ,'title': 'Восточно-китайский'
+                   }
+               ,'de':
+                   {'short': 'Ostchinesisch'
+                   ,'title': 'Ostchinesisch'
+                   }
+               ,'es':
+                   {'short': 'Eastern Chinese'
+                   ,'title': 'Eastern Chinese'
+                   }
+               ,'uk':
+                   {'short': 'Східно-китайський говір'
+                   ,'title': 'Східно-китайський говір'
+                   }
+               }
+           ,'Enameling':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Chemical industry'
+               ,'en':
+                   {'short': 'Enameling'
+                   ,'title': 'Enameling'
+                   }
+               ,'ru':
+                   {'short': 'Эмалирование'
+                   ,'title': 'Эмалирование'
+                   }
+               ,'de':
+                   {'short': 'Enameling'
+                   ,'title': 'Enameling'
+                   }
+               ,'es':
+                   {'short': 'Enameling'
+                   ,'title': 'Enameling'
+                   }
+               ,'uk':
+                   {'short': 'Емалювання'
+                   ,'title': 'Емалювання'
+                   }
+               }
+           ,'Estonian language':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Languages'
+               ,'en':
+                   {'short': 'Estonian language'
+                   ,'title': 'Estonian language'
+                   }
+               ,'ru':
+                   {'short': 'Эстонский язык'
+                   ,'title': 'Эстонский язык'
+                   }
+               ,'de':
+                   {'short': 'Estonian language'
+                   ,'title': 'Estonian language'
+                   }
+               ,'es':
+                   {'short': 'Estonian language'
+                   ,'title': 'Estonian language'
+                   }
+               ,'uk':
+                   {'short': 'Естонська мова'
+                   ,'title': 'Естонська мова'
+                   }
+               }
+           ,'Fantasy and science fiction':
+               {'Valid': False
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Literature'
+               ,'en':
+                   {'short': 'Fantasy and science fiction'
+                   ,'title': 'Fantasy and science fiction'
+                   }
+               ,'ru':
+                   {'short': 'Фантастика, фэнтези'
+                   ,'title': 'Фантастика, фэнтези'
+                   }
+               ,'de':
+                   {'short': 'Fantasy and science fiction'
+                   ,'title': 'Fantasy and science fiction'
+                   }
+               ,'es':
+                   {'short': 'Fantasy and science fiction'
+                   ,'title': 'Fantasy and science fiction'
+                   }
+               ,'uk':
+                   {'short': 'Фантастика, фентезі'
+                   ,'title': 'Фантастика, фентезі'
+                   }
+               }
+           ,'Fat-and-oil industry':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Food industry'
+               ,'en':
+                   {'short': 'Fat-and-oil industry'
+                   ,'title': 'Fat-and-oil industry'
+                   }
+               ,'ru':
+                   {'short': 'Масложировая промышленность'
+                   ,'title': 'Масложировая промышленность'
+                   }
+               ,'de':
+                   {'short': 'Fat-and-oil industry'
+                   ,'title': 'Fat-and-oil industry'
+                   }
+               ,'es':
+                   {'short': 'Fat-and-oil industry'
+                   ,'title': 'Fat-and-oil industry'
+                   }
+               ,'uk':
+                   {'short': 'Олійно-жирова промисловість'
+                   ,'title': 'Олійно-жирова промисловість'
+                   }
+               }
+           ,'Forensics':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Law enforcement'
+               ,'en':
+                   {'short': 'Forensics'
+                   ,'title': 'Forensics'
+                   }
+               ,'ru':
+                   {'short': 'Криминалистика'
+                   ,'title': 'Криминалистика'
+                   }
+               ,'de':
+                   {'short': 'Forensics'
+                   ,'title': 'Forensics'
+                   }
+               ,'es':
+                   {'short': 'Forensics'
+                   ,'title': 'Forensics'
+                   }
+               ,'uk':
+                   {'short': 'Криміналістика'
+                   ,'title': 'Криміналістика'
+                   }
+               }
+           ,'Fortification':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Military'
+               ,'en':
+                   {'short': 'Fortification'
+                   ,'title': 'Fortification'
+                   }
+               ,'ru':
+                   {'short': 'Фортификация'
+                   ,'title': 'Фортификация'
+                   }
+               ,'de':
+                   {'short': 'Fortification'
+                   ,'title': 'Fortification'
+                   }
+               ,'es':
+                   {'short': 'Fortification'
+                   ,'title': 'Fortification'
+                   }
+               ,'uk':
+                   {'short': 'Фортифікація'
+                   ,'title': 'Фортифікація'
+                   }
+               }
+           ,'France':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Countries and regions'
+               ,'en':
+                   {'short': 'France'
+                   ,'title': 'France'
+                   }
+               ,'ru':
+                   {'short': 'Франция'
+                   ,'title': 'Франция'
+                   }
+               ,'de':
+                   {'short': 'Frankreich'
+                   ,'title': 'Frankreich'
+                   }
+               ,'es':
+                   {'short': 'France'
+                   ,'title': 'France'
+                   }
+               ,'uk':
+                   {'short': 'Франція'
+                   ,'title': 'Франція'
+                   }
+               }
+           ,'Galicia':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Countries and regions'
+               ,'en':
+                   {'short': 'Galicia'
+                   ,'title': 'Galicia'
+                   }
+               ,'ru':
+                   {'short': 'Галисия'
+                   ,'title': 'Галисия'
+                   }
+               ,'de':
+                   {'short': 'Galicia'
+                   ,'title': 'Galicia'
+                   }
+               ,'es':
+                   {'short': 'Galicia'
+                   ,'title': 'Galicia'
+                   }
+               ,'uk':
+                   {'short': 'Галісія'
+                   ,'title': 'Галісія'
+                   }
+               }
+           ,'Given name':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Proper name'
+               ,'en':
+                   {'short': 'Given name'
+                   ,'title': 'Given name'
+                   }
+               ,'ru':
+                   {'short': 'Имя'
+                   ,'title': 'Имя'
+                   }
+               ,'de':
+                   {'short': 'Given name'
+                   ,'title': 'Given name'
+                   }
+               ,'es':
+                   {'short': 'Given name'
+                   ,'title': 'Given name'
+                   }
+               ,'uk':
+                   {'short': 'Ім’я'
+                   ,'title': 'Ім’я'
+                   }
+               }
+           ,'Groceries':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Food industry'
+               ,'en':
+                   {'short': 'Groceries'
+                   ,'title': 'Groceries'
+                   }
+               ,'ru':
+                   {'short': 'Бакалея'
+                   ,'title': 'Бакалея'
+                   }
+               ,'de':
+                   {'short': 'Groceries'
+                   ,'title': 'Groceries'
+                   }
+               ,'es':
+                   {'short': 'Groceries'
+                   ,'title': 'Groceries'
+                   }
+               ,'uk':
+                   {'short': 'Бакалія'
+                   ,'title': 'Бакалія'
+                   }
+               }
+           ,'Gynecology':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Medical'
+               ,'en':
+                   {'short': 'Gynecology'
+                   ,'title': 'Gynecology'
+                   }
+               ,'ru':
+                   {'short': 'Гинекология'
+                   ,'title': 'Гинекология'
+                   }
+               ,'de':
+                   {'short': 'Gynäkologie'
+                   ,'title': 'Gynäkologie'
+                   }
+               ,'es':
+                   {'short': 'Gynecology'
+                   ,'title': 'Gynecology'
+                   }
+               ,'uk':
+                   {'short': 'Гінекологія'
+                   ,'title': 'Гінекологія'
+                   }
+               }
+           ,'Hairdressing':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Service industry'
+               ,'en':
+                   {'short': 'Hairdressing'
+                   ,'title': 'Hairdressing'
+                   }
+               ,'ru':
+                   {'short': 'Парикмахерское дело'
+                   ,'title': 'Парикмахерское дело'
+                   }
+               ,'de':
+                   {'short': 'Hairdressing'
+                   ,'title': 'Hairdressing'
+                   }
+               ,'es':
+                   {'short': 'Hairdressing'
+                   ,'title': 'Hairdressing'
+                   }
+               ,'uk':
+                   {'short': 'Перукарська справа'
+                   ,'title': 'Перукарська справа'
+                   }
+               }
+           ,'Hebrew':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Languages'
+               ,'en':
+                   {'short': 'Hebrew'
+                   ,'title': 'Hebrew'
+                   }
+               ,'ru':
+                   {'short': 'Иврит'
+                   ,'title': 'Иврит'
+                   }
+               ,'de':
+                   {'short': 'Hebräisch'
+                   ,'title': 'Hebräisch'
+                   }
+               ,'es':
+                   {'short': 'Hebrew'
+                   ,'title': 'Hebrew'
+                   }
+               ,'uk':
+                   {'short': 'Іврит'
+                   ,'title': 'Іврит'
+                   }
+               }
+           ,'Hungarian Language':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Languages'
+               ,'en':
+                   {'short': 'Hungarian Language'
+                   ,'title': 'Hungarian Language'
+                   }
+               ,'ru':
+                   {'short': 'Венгерский язык'
+                   ,'title': 'Венгерский язык'
+                   }
+               ,'de':
+                   {'short': 'Ungarisch'
+                   ,'title': 'Ungarisch'
+                   }
+               ,'es':
+                   {'short': 'Húngaro'
+                   ,'title': 'Húngaro'
+                   }
+               ,'uk':
+                   {'short': 'Угорська мова'
+                   ,'title': 'Угорська мова'
+                   }
+               }
+           ,'ICAO':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Aviation'
+               ,'en':
+                   {'short': 'ICAO'
+                   ,'title': 'ICAO'
+                   }
+               ,'ru':
+                   {'short': 'ИКАО'
+                   ,'title': 'ИКАО'
+                   }
+               ,'de':
+                   {'short': 'ICAO'
+                   ,'title': 'ICAO'
+                   }
+               ,'es':
+                   {'short': 'ICAO'
+                   ,'title': 'ICAO'
+                   }
+               ,'uk':
+                   {'short': 'ІКАО'
+                   ,'title': 'ІКАО'
+                   }
+               }
+           ,'Identification systems':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Security systems'
+               ,'en':
+                   {'short': 'Identification systems'
+                   ,'title': 'Identification systems'
+                   }
+               ,'ru':
+                   {'short': 'Системы идентификации'
+                   ,'title': 'Системы идентификации'
+                   }
+               ,'de':
+                   {'short': 'Identification systems'
+                   ,'title': 'Identification systems'
+                   }
+               ,'es':
+                   {'short': 'Identification systems'
+                   ,'title': 'Identification systems'
+                   }
+               ,'uk':
+                   {'short': 'Системи ідентифікації'
+                   ,'title': 'Системи ідентифікації'
+                   }
+               }
+           ,'Instead of':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Subjects for Chinese dictionaries (container)'
+               ,'en':
+                   {'short': 'Instead of'
+                   ,'title': 'Instead of'
+                   }
+               ,'ru':
+                   {'short': 'Вместо'
+                   ,'title': 'Вместо'
+                   }
+               ,'de':
+                   {'short': 'Instead of'
+                   ,'title': 'Instead of'
+                   }
+               ,'es':
+                   {'short': 'Instead of'
+                   ,'title': 'Instead of'
+                   }
+               ,'uk':
+                   {'short': 'Замість'
+                   ,'title': 'Замість'
+                   }
+               }
+           ,'Irish (usage, not language)':
+               {'Valid': False
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'en':
+                   {'short': 'Irish (usage, not language)'
+                   ,'title': 'Irish (usage, not language)'
+                   }
+               ,'ru':
+                   {'short': 'Ирландское выражение'
+                   ,'title': 'Ирландское выражение'
+                   }
+               ,'de':
+                   {'short': 'Irish (usage, not language)'
+                   ,'title': 'Irish (usage, not language)'
+                   }
+               ,'es':
+                   {'short': 'Irish (usage, not language)'
+                   ,'title': 'Irish (usage, not language)'
+                   }
+               ,'uk':
+                   {'short': 'Ірландський вираз'
+                   ,'title': 'Ірландський вираз'
+                   }
+               }
+           ,'Israel':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Countries and regions'
+               ,'en':
+                   {'short': 'Israel'
+                   ,'title': 'Israel'
+                   }
+               ,'ru':
+                   {'short': 'Израиль'
+                   ,'title': 'Израиль'
+                   }
+               ,'de':
+                   {'short': 'Israel'
+                   ,'title': 'Israel'
+                   }
+               ,'es':
+                   {'short': 'Israel'
+                   ,'title': 'Israel'
+                   }
+               ,'uk':
+                   {'short': 'Ізраїль'
+                   ,'title': 'Ізраїль'
+                   }
+               }
+           ,'Japan':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Countries and regions'
+               ,'en':
+                   {'short': 'Japan'
+                   ,'title': 'Japan'
+                   }
+               ,'ru':
+                   {'short': 'Япония'
+                   ,'title': 'Япония'
+                   }
+               ,'de':
+                   {'short': 'Japan'
+                   ,'title': 'Japan'
+                   }
+               ,'es':
+                   {'short': 'Japan'
+                   ,'title': 'Japan'
+                   }
+               ,'uk':
+                   {'short': 'Японія'
+                   ,'title': 'Японія'
+                   }
+               }
+           ,'Kabaddi':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Subjects for Chinese dictionaries (container)'
+               ,'en':
+                   {'short': 'Kabaddi'
+                   ,'title': 'Kabaddi'
+                   }
+               ,'ru':
+                   {'short': 'Кабадди'
+                   ,'title': 'Кабадди'
+                   }
+               ,'de':
+                   {'short': 'Kabaddi'
+                   ,'title': 'Kabaddi'
+                   }
+               ,'es':
+                   {'short': 'Kabaddi'
+                   ,'title': 'Kabaddi'
+                   }
+               ,'uk':
+                   {'short': 'Кабадді'
+                   ,'title': 'Кабадді'
+                   }
+               }
+           ,'Kick volleyball':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Sports'
+               ,'en':
+                   {'short': 'Kick volleyball'
+                   ,'title': 'Kick volleyball'
+                   }
+               ,'ru':
+                   {'short': 'Малайский волейбол'
+                   ,'title': 'Малайский волейбол'
+                   }
+               ,'de':
+                   {'short': 'Kick volleyball'
+                   ,'title': 'Kick volleyball'
+                   }
+               ,'es':
+                   {'short': 'Kick volleyball'
+                   ,'title': 'Kick volleyball'
+                   }
+               ,'uk':
+                   {'short': 'Малайський волейбол'
+                   ,'title': 'Малайський волейбол'
+                   }
+               }
+           ,'Long jump':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Sports'
+               ,'en':
+                   {'short': 'Long jump'
+                   ,'title': 'Long jump'
+                   }
+               ,'ru':
+                   {'short': 'Прыжки в длину'
+                   ,'title': 'Прыжки в длину'
+                   }
+               ,'de':
+                   {'short': 'Long jump'
+                   ,'title': 'Long jump'
+                   }
+               ,'es':
+                   {'short': 'Long jump'
+                   ,'title': 'Long jump'
+                   }
+               ,'uk':
+                   {'short': 'Стрибки в довжину'
+                   ,'title': 'Стрибки в довжину'
+                   }
+               }
+           ,'Mahjong':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Games (other than sports)'
+               ,'en':
+                   {'short': 'Mahjong'
+                   ,'title': 'Mahjong'
+                   }
+               ,'ru':
+                   {'short': 'Маджонг'
+                   ,'title': 'Маджонг'
+                   }
+               ,'de':
+                   {'short': 'Mahjong'
+                   ,'title': 'Mahjong'
+                   }
+               ,'es':
+                   {'short': 'Mahjong'
+                   ,'title': 'Mahjong'
+                   }
+               ,'uk':
+                   {'short': 'Маджонг'
+                   ,'title': 'Маджонг'
+                   }
+               }
+           ,'Manchu language':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Languages'
+               ,'en':
+                   {'short': 'Manchu language'
+                   ,'title': 'Manchu language'
+                   }
+               ,'ru':
+                   {'short': 'Маньчжурский язык'
+                   ,'title': 'Маньчжурский язык'
+                   }
+               ,'de':
+                   {'short': 'Mandschurisch'
+                   ,'title': 'Mandschurisch'
+                   }
+               ,'es':
+                   {'short': 'Manchu language'
+                   ,'title': 'Manchu language'
+                   }
+               ,'uk':
+                   {'short': 'Маньчжурська мова'
+                   ,'title': 'Маньчжурська мова'
+                   }
+               }
+           ,'Manual therapy and osteopathy':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Medicine - Alternative medicine'
+               ,'en':
+                   {'short': 'Manual therapy and osteopathy'
+                   ,'title': 'Manual therapy and osteopathy'
+                   }
+               ,'ru':
+                   {'short': 'Мануальная терапия и остеопатия'
+                   ,'title': 'Мануальная терапия и остеопатия'
+                   }
+               ,'de':
+                   {'short': 'Manual therapy and osteopathy'
+                   ,'title': 'Manual therapy and osteopathy'
+                   }
+               ,'es':
+                   {'short': 'Manual therapy and osteopathy'
+                   ,'title': 'Manual therapy and osteopathy'
+                   }
+               ,'uk':
+                   {'short': 'Мануальна терапія та остеопатія'
+                   ,'title': 'Мануальна терапія та остеопатія'
+                   }
+               }
+           ,'Meaning 1':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Auxilliary categories (editor use only)'
+               ,'en':
+                   {'short': 'Meaning 1'
+                   ,'title': 'Meaning 1'
+                   }
+               ,'ru':
+                   {'short': 'Значение 1'
+                   ,'title': 'Значение 1'
+                   }
+               ,'de':
+                   {'short': 'Meaning 1'
+                   ,'title': 'Meaning 1'
+                   }
+               ,'es':
+                   {'short': 'Meaning 1'
+                   ,'title': 'Meaning 1'
+                   }
+               ,'uk':
+                   {'short': 'Значення 1'
+                   ,'title': 'Значення 1'
+                   }
+               }
+           ,'Meaning 3':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Auxilliary categories (editor use only)'
+               ,'en':
+                   {'short': 'Meaning 3'
+                   ,'title': 'Meaning 3'
+                   }
+               ,'ru':
+                   {'short': 'Значение 3'
+                   ,'title': 'Значение 3'
+                   }
+               ,'de':
+                   {'short': 'Meaning 3'
+                   ,'title': 'Meaning 3'
+                   }
+               ,'es':
+                   {'short': 'Meaning 3'
+                   ,'title': 'Meaning 3'
+                   }
+               ,'uk':
+                   {'short': 'Значення 3'
+                   ,'title': 'Значення 3'
+                   }
+               }
+           ,'Middle German':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'en':
+                   {'short': 'Middle German'
+                   ,'title': 'Middle German'
+                   }
+               ,'ru':
+                   {'short': 'Средне-немецкое выражение'
+                   ,'title': 'Средне-немецкое выражение'
+                   }
+               ,'de':
+                   {'short': 'Mitteldeutsch'
+                   ,'title': 'Mitteldeutsch'
+                   }
+               ,'es':
+                   {'short': 'Middle German'
+                   ,'title': 'Middle German'
+                   }
+               ,'uk':
+                   {'short': 'Середньо-німецький вираз'
+                   ,'title': 'Середньо-німецький вираз'
+                   }
+               }
+           ,'Model sports':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Hobbies and pastimes'
+               ,'en':
+                   {'short': 'Model sports'
+                   ,'title': 'Model sports'
+                   }
+               ,'ru':
+                   {'short': 'Моделирование'
+                   ,'title': 'Моделирование'
+                   }
+               ,'de':
+                   {'short': 'Model sports'
+                   ,'title': 'Model sports'
+                   }
+               ,'es':
+                   {'short': 'Model sports'
+                   ,'title': 'Model sports'
+                   }
+               ,'uk':
+                   {'short': 'Моделювання'
+                   ,'title': 'Моделювання'
+                   }
+               }
+           ,'Molecular genetics':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Biology'
+               ,'en':
+                   {'short': 'Molecular genetics'
+                   ,'title': 'Molecular genetics'
+                   }
+               ,'ru':
+                   {'short': 'Молекулярная генетика'
+                   ,'title': 'Молекулярная генетика'
+                   }
+               ,'de':
+                   {'short': 'Molecular genetics'
+                   ,'title': 'Molecular genetics'
+                   }
+               ,'es':
+                   {'short': 'Molecular genetics'
+                   ,'title': 'Molecular genetics'
+                   }
+               ,'uk':
+                   {'short': 'Молекулярна генетика'
+                   ,'title': 'Молекулярна генетика'
+                   }
+               }
+           ,'Mongolian':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Languages'
+               ,'en':
+                   {'short': 'Mongolian'
+                   ,'title': 'Mongolian'
+                   }
+               ,'ru':
+                   {'short': 'Монгольский язык'
+                   ,'title': 'Монгольский язык'
+                   }
+               ,'de':
+                   {'short': 'Mongolisch'
+                   ,'title': 'Mongolisch'
+                   }
+               ,'es':
+                   {'short': 'Mongolian'
+                   ,'title': 'Mongolian'
+                   }
+               ,'uk':
+                   {'short': 'Монгольська мова'
+                   ,'title': 'Монгольська мова'
+                   }
+               }
+           ,'Neapolitan':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'en':
+                   {'short': 'Neapolitan'
+                   ,'title': 'Neapolitan'
+                   }
+               ,'ru':
+                   {'short': 'Неаполитанское выражение'
+                   ,'title': 'Неаполитанское выражение'
+                   }
+               ,'de':
+                   {'short': 'Neapolitan'
+                   ,'title': 'Neapolitan'
+                   }
+               ,'es':
+                   {'short': 'Neapolitan'
+                   ,'title': 'Neapolitan'
+                   }
+               ,'uk':
+                   {'short': 'Неаполітанський вираз'
+                   ,'title': 'Неаполітанський вираз'
+                   }
+               }
+           ,'Netherlands':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Countries and regions'
+               ,'en':
+                   {'short': 'Netherlands'
+                   ,'title': 'Netherlands'
+                   }
+               ,'ru':
+                   {'short': 'Нидерланды'
+                   ,'title': 'Нидерланды'
+                   }
+               ,'de':
+                   {'short': 'Netherlands'
+                   ,'title': 'Netherlands'
+                   }
+               ,'es':
+                   {'short': 'Netherlands'
+                   ,'title': 'Netherlands'
+                   }
+               ,'uk':
+                   {'short': 'Нідерланди'
+                   ,'title': 'Нідерланди'
+                   }
+               }
+           ,'Netherlands (usage)':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'en':
+                   {'short': 'Netherlands (usage)'
+                   ,'title': 'Netherlands (usage)'
+                   }
+               ,'ru':
+                   {'short': 'Нидерландское выражение'
+                   ,'title': 'Нидерландское выражение'
+                   }
+               ,'de':
+                   {'short': 'Netherlands (usage)'
+                   ,'title': 'Netherlands (usage)'
+                   }
+               ,'es':
+                   {'short': 'Netherlands (usage)'
+                   ,'title': 'Netherlands (usage)'
+                   }
+               ,'uk':
+                   {'short': 'Нідерландський вираз'
+                   ,'title': 'Нідерландський вираз'
+                   }
+               }
+           ,'Non-destructive testing':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Quality control and standards'
+               ,'en':
+                   {'short': 'Non-destructive testing'
+                   ,'title': 'Non-destructive testing'
+                   }
+               ,'ru':
+                   {'short': 'Дефектоскопия'
+                   ,'title': 'Дефектоскопия'
+                   }
+               ,'de':
+                   {'short': 'Defektoskopie'
+                   ,'title': 'Defektoskopie'
+                   }
+               ,'es':
+                   {'short': 'Non-destructive testing'
+                   ,'title': 'Non-destructive testing'
+                   }
+               ,'uk':
+                   {'short': 'Дефектоскопія'
+                   ,'title': 'Дефектоскопія'
+                   }
+               }
+           ,'Norse mythology':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Mythology'
+               ,'en':
+                   {'short': 'Norse mythology'
+                   ,'title': 'Norse mythology'
+                   }
+               ,'ru':
+                   {'short': 'Скандинавская мифология'
+                   ,'title': 'Скандинавская мифология'
+                   }
+               ,'de':
+                   {'short': 'Norse mythology'
+                   ,'title': 'Norse mythology'
+                   }
+               ,'es':
+                   {'short': 'Norse mythology'
+                   ,'title': 'Norse mythology'
+                   }
+               ,'uk':
+                   {'short': 'Скандинавська міфологія'
+                   ,'title': 'Скандинавська міфологія'
+                   }
+               }
+           ,'Northeastern Mandarin':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Dialectal'
+               ,'en':
+                   {'short': 'Northeastern Mandarin'
+                   ,'title': 'Northeastern Mandarin'
+                   }
+               ,'ru':
+                   {'short': 'Северо-восточный китайский диалект'
+                   ,'title': 'Северо-восточный китайский диалект'
+                   }
+               ,'de':
+                   {'short': 'Nordostchinesisches Mandarin'
+                   ,'title': 'Nordostchinesisches Mandarin'
+                   }
+               ,'es':
+                   {'short': 'Northeastern Mandarin'
+                   ,'title': 'Northeastern Mandarin'
+                   }
+               ,'uk':
+                   {'short': 'Північно-східний китайський діалект'
+                   ,'title': 'Північно-східний китайський діалект'
+                   }
+               }
+           ,'Northern Chinese':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Dialectal'
+               ,'en':
+                   {'short': 'Northern Chinese'
+                   ,'title': 'Northern Chinese'
+                   }
+               ,'ru':
+                   {'short': 'Севернокитайские диалекты'
+                   ,'title': 'Севернокитайские диалекты'
+                   }
+               ,'de':
+                   {'short': 'Northern Chinese'
+                   ,'title': 'Northern Chinese'
+                   }
+               ,'es':
+                   {'short': 'Northern Chinese'
+                   ,'title': 'Northern Chinese'
+                   }
+               ,'uk':
+                   {'short': 'Північнокитайські діалекти'
+                   ,'title': 'Північнокитайські діалекти'
+                   }
+               }
+           ,'Northern German':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'en':
+                   {'short': 'Northern German'
+                   ,'title': 'Northern German'
+                   }
+               ,'ru':
+                   {'short': 'Северо-немецкий'
+                   ,'title': 'Северо-немецкий'
+                   }
+               ,'de':
+                   {'short': 'Norddeutsch'
+                   ,'title': 'Norddeutsch'
+                   }
+               ,'es':
+                   {'short': 'Northern German'
+                   ,'title': 'Northern German'
+                   }
+               ,'uk':
+                   {'short': 'Північно-німецький'
+                   ,'title': 'Північно-німецький'
+                   }
+               }
+           ,'Ornithology':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Biology'
+               ,'en':
+                   {'short': 'Ornithology'
+                   ,'title': 'Ornithology'
+                   }
+               ,'ru':
+                   {'short': 'Орнитология'
+                   ,'title': 'Орнитология'
+                   }
+               ,'de':
+                   {'short': 'Ornithology'
+                   ,'title': 'Ornithology'
+                   }
+               ,'es':
+                   {'short': 'Ornithology'
+                   ,'title': 'Ornithology'
+                   }
+               ,'uk':
+                   {'short': 'Орнітологія'
+                   ,'title': 'Орнітологія'
+                   }
+               }
+           ,'Petanque':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Sports'
+               ,'en':
+                   {'short': 'Petanque'
+                   ,'title': 'Petanque'
+                   }
+               ,'ru':
+                   {'short': 'Петанк'
+                   ,'title': 'Петанк'
+                   }
+               ,'de':
+                   {'short': 'Petanque'
+                   ,'title': 'Petanque'
+                   }
+               ,'es':
+                   {'short': 'Petanque'
+                   ,'title': 'Petanque'
+                   }
+               ,'uk':
+                   {'short': 'Петанк'
+                   ,'title': 'Петанк'
+                   }
+               }
+           ,'Physical sciences':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Education'
+               ,'en':
+                   {'short': 'Physical sciences'
+                   ,'title': 'Physical sciences'
+                   }
+               ,'ru':
+                   {'short': 'Естествознание'
+                   ,'title': 'Естествознание'
+                   }
+               ,'de':
+                   {'short': 'Physical sciences'
+                   ,'title': 'Physical sciences'
+                   }
+               ,'es':
+                   {'short': 'Physical sciences'
+                   ,'title': 'Physical sciences'
+                   }
+               ,'uk':
+                   {'short': 'Природознавство'
+                   ,'title': 'Природознавство'
+                   }
+               }
+           ,'Pigeon racing':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Subjects for Chinese dictionaries (container)'
+               ,'en':
+                   {'short': 'Pigeon racing'
+                   ,'title': 'Pigeon racing'
+                   }
+               ,'ru':
+                   {'short': 'Голубиные гонки'
+                   ,'title': 'Голубиные гонки'
+                   }
+               ,'de':
+                   {'short': 'Pigeon racing'
+                   ,'title': 'Pigeon racing'
+                   }
+               ,'es':
+                   {'short': 'Pigeon racing'
+                   ,'title': 'Pigeon racing'
+                   }
+               ,'uk':
+                   {'short': 'Голубині перегони'
+                   ,'title': 'Голубині перегони'
+                   }
+               }
+           ,'Platform diving':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Sports'
+               ,'en':
+                   {'short': 'Platform diving'
+                   ,'title': 'Platform diving'
+                   }
+               ,'ru':
+                   {'short': 'Прыжки в воду'
+                   ,'title': 'Прыжки в воду'
+                   }
+               ,'de':
+                   {'short': 'Platform diving'
+                   ,'title': 'Platform diving'
+                   }
+               ,'es':
+                   {'short': 'Platform diving'
+                   ,'title': 'Platform diving'
+                   }
+               ,'uk':
+                   {'short': 'Стрибки у воду'
+                   ,'title': 'Стрибки у воду'
+                   }
+               }
+           ,'Pole vaults':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Sports'
+               ,'en':
+                   {'short': 'Pole vaults'
+                   ,'title': 'Pole vaults'
+                   }
+               ,'ru':
+                   {'short': 'Прыжки с шестом'
+                   ,'title': 'Прыжки с шестом'
+                   }
+               ,'de':
+                   {'short': 'Pole vaults'
+                   ,'title': 'Pole vaults'
+                   }
+               ,'es':
+                   {'short': 'Pole vaults'
+                   ,'title': 'Pole vaults'
+                   }
+               ,'uk':
+                   {'short': 'Стрибки з жердиною'
+                   ,'title': 'Стрибки з жердиною'
+                   }
+               }
+           ,'Polo':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Sports'
+               ,'en':
+                   {'short': 'Polo'
+                   ,'title': 'Polo'
+                   }
+               ,'ru':
+                   {'short': 'Поло'
+                   ,'title': 'Поло'
+                   }
+               ,'de':
+                   {'short': 'Polo'
+                   ,'title': 'Polo'
+                   }
+               ,'es':
+                   {'short': 'Polo'
+                   ,'title': 'Polo'
+                   }
+               ,'uk':
+                   {'short': 'Поло'
+                   ,'title': 'Поло'
+                   }
+               }
+           ,'Poultry farming':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Agriculture'
+               ,'en':
+                   {'short': 'Poultry farming'
+                   ,'title': 'Poultry farming'
+                   }
+               ,'ru':
+                   {'short': 'Птицеводство'
+                   ,'title': 'Птицеводство'
+                   }
+               ,'de':
+                   {'short': 'Poultry farming'
+                   ,'title': 'Poultry farming'
+                   }
+               ,'es':
+                   {'short': 'Poultry farming'
+                   ,'title': 'Poultry farming'
+                   }
+               ,'uk':
+                   {'short': 'Птахівництво'
+                   ,'title': 'Птахівництво'
+                   }
+               }
+           ,'Procedural law':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Law'
+               ,'en':
+                   {'short': 'Procedural law'
+                   ,'title': 'Procedural law'
+                   }
+               ,'ru':
+                   {'short': 'Процессуальное право'
+                   ,'title': 'Процессуальное право'
+                   }
+               ,'de':
+                   {'short': 'Procedural law'
+                   ,'title': 'Procedural law'
+                   }
+               ,'es':
+                   {'short': 'Procedural law'
+                   ,'title': 'Procedural law'
+                   }
+               ,'uk':
+                   {'short': 'Процесуальне право'
+                   ,'title': 'Процесуальне право'
+                   }
+               }
+           ,'Puzzle':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Folklore'
+               ,'en':
+                   {'short': 'Puzzle'
+                   ,'title': 'Puzzle'
+                   }
+               ,'ru':
+                   {'short': 'Загадка'
+                   ,'title': 'Загадка'
+                   }
+               ,'de':
+                   {'short': 'Puzzle'
+                   ,'title': 'Puzzle'
+                   }
+               ,'es':
+                   {'short': 'Puzzle'
+                   ,'title': 'Puzzle'
+                   }
+               ,'uk':
+                   {'short': 'Загадка'
+                   ,'title': 'Загадка'
+                   }
+               }
+           ,'Reinforced concrete':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Construction'
+               ,'en':
+                   {'short': 'Reinforced concrete'
+                   ,'title': 'Reinforced concrete'
+                   }
+               ,'ru':
+                   {'short': 'Железобетонные изделия'
+                   ,'title': 'Железобетонные изделия'
+                   }
+               ,'de':
+                   {'short': 'Stahlbetonteile'
+                   ,'title': 'Stahlbetonteile'
+                   }
+               ,'es':
+                   {'short': 'Reinforced concrete'
+                   ,'title': 'Reinforced concrete'
+                   }
+               ,'uk':
+                   {'short': 'Залізобетонні вироби'
+                   ,'title': 'Залізобетонні вироби'
+                   }
+               }
+           ,'Reservoir simulation':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Geology'
+               ,'en':
+                   {'short': 'Reservoir simulation'
+                   ,'title': 'Reservoir simulation'
+                   }
+               ,'ru':
+                   {'short': 'Моделирование пластовых процессов'
+                   ,'title': 'Моделирование пластовых процессов'
+                   }
+               ,'de':
+                   {'short': 'Reservoir simulation'
+                   ,'title': 'Reservoir simulation'
+                   }
+               ,'es':
+                   {'short': 'Reservoir simulation'
+                   ,'title': 'Reservoir simulation'
+                   }
+               ,'uk':
+                   {'short': 'Моделювання пластових процесів'
+                   ,'title': 'Моделювання пластових процесів'
+                   }
+               }
+           ,'Rhine':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'en':
+                   {'short': 'Rhine'
+                   ,'title': 'Rhine'
+                   }
+               ,'ru':
+                   {'short': 'Рейнское выражение'
+                   ,'title': 'Рейнское выражение'
+                   }
+               ,'de':
+                   {'short': 'Rheinisch'
+                   ,'title': 'Rheinisch'
+                   }
+               ,'es':
+                   {'short': 'Rhine'
+                   ,'title': 'Rhine'
+                   }
+               ,'uk':
+                   {'short': 'Рейнський вираз'
+                   ,'title': 'Рейнський вираз'
+                   }
+               }
+           ,'Salvadoran Spanish':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Dialectal'
+               ,'en':
+                   {'short': 'Salvadoran Spanish'
+                   ,'title': 'Salvadoran Spanish'
+                   }
+               ,'ru':
+                   {'short': 'Сальвадорский диалект испанского языка'
+                   ,'title': 'Сальвадорский диалект испанского языка'
+                   }
+               ,'de':
+                   {'short': 'Salvadoran Spanish'
+                   ,'title': 'Salvadoran Spanish'
+                   }
+               ,'es':
+                   {'short': 'Salvadoran Spanish'
+                   ,'title': 'Salvadoran Spanish'
+                   }
+               ,'uk':
+                   {'short': 'Сальвадорський діалект іспанської мови'
+                   ,'title': 'Сальвадорський діалект іспанської мови'
+                   }
+               }
+           ,'Scandinavian':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Languages'
+               ,'en':
+                   {'short': 'Scandinavian'
+                   ,'title': 'Scandinavian'
+                   }
+               ,'ru':
+                   {'short': 'Скандинавские языки'
+                   ,'title': 'Скандинавские языки'
+                   }
+               ,'de':
+                   {'short': 'Skandinavische Sprachen'
+                   ,'title': 'Skandinavische Sprachen'
+                   }
+               ,'es':
+                   {'short': 'Scandinavian'
+                   ,'title': 'Scandinavian'
+                   }
+               ,'uk':
+                   {'short': 'Скандинавські мови'
+                   ,'title': 'Скандинавські мови'
+                   }
+               }
+           ,'Sedimentology':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Geology'
+               ,'en':
+                   {'short': 'Sedimentology'
+                   ,'title': 'Sedimentology'
+                   }
+               ,'ru':
+                   {'short': 'Седиментология'
+                   ,'title': 'Седиментология'
+                   }
+               ,'de':
+                   {'short': 'Sedimentology'
+                   ,'title': 'Sedimentology'
+                   }
+               ,'es':
+                   {'short': 'Sedimentology'
+                   ,'title': 'Sedimentology'
+                   }
+               ,'uk':
+                   {'short': 'Седиментологія'
+                   ,'title': 'Седиментологія'
+                   }
+               }
+           ,'Shanghainese':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Dialectal'
+               ,'en':
+                   {'short': 'Shanghainese'
+                   ,'title': 'Shanghainese'
+                   }
+               ,'ru':
+                   {'short': 'Шанхайский диалект'
+                   ,'title': 'Шанхайский диалект'
+                   }
+               ,'de':
+                   {'short': 'Shanghai-Dialekt'
+                   ,'title': 'Shanghai-Dialekt'
+                   }
+               ,'es':
+                   {'short': 'Shanghainese'
+                   ,'title': 'Shanghainese'
+                   }
+               ,'uk':
+                   {'short': 'Шанхайський діалект'
+                   ,'title': 'Шанхайський діалект'
+                   }
+               }
+           ,'Sicilian':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Dialectal'
+               ,'en':
+                   {'short': 'Sicilian'
+                   ,'title': 'Sicilian'
+                   }
+               ,'ru':
+                   {'short': 'Сицилийский диалект'
+                   ,'title': 'Сицилийский диалект'
+                   }
+               ,'de':
+                   {'short': 'Sicilian'
+                   ,'title': 'Sicilian'
+                   }
+               ,'es':
+                   {'short': 'Sicilian'
+                   ,'title': 'Sicilian'
+                   }
+               ,'uk':
+                   {'short': 'Сицилійська мова'
+                   ,'title': 'Сицилійська мова'
+                   }
+               }
+           ,'Skateboarding':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Outdoor activities and extreme sports'
+               ,'en':
+                   {'short': 'Skateboarding'
+                   ,'title': 'Skateboarding'
+                   }
+               ,'ru':
+                   {'short': 'Скейтбординг'
+                   ,'title': 'Скейтбординг'
+                   }
+               ,'de':
+                   {'short': 'Skateboarding'
+                   ,'title': 'Skateboarding'
+                   }
+               ,'es':
+                   {'short': 'Skateboarding'
+                   ,'title': 'Skateboarding'
+                   }
+               ,'uk':
+                   {'short': 'Skateboarding'
+                   ,'title': 'Skateboarding'
+                   }
+               }
+           ,'South Asia':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Countries and regions'
+               ,'en':
+                   {'short': 'South Asia'
+                   ,'title': 'South Asia'
+                   }
+               ,'ru':
+                   {'short': 'Южная Азия'
+                   ,'title': 'Южная Азия'
+                   }
+               ,'de':
+                   {'short': 'South Asia'
+                   ,'title': 'South Asia'
+                   }
+               ,'es':
+                   {'short': 'South Asia'
+                   ,'title': 'South Asia'
+                   }
+               ,'uk':
+                   {'short': 'Південна Азія'
+                   ,'title': 'Південна Азія'
+                   }
+               }
+           ,'South-West-German':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'en':
+                   {'short': 'South-West-German'
+                   ,'title': 'South-West-German'
+                   }
+               ,'ru':
+                   {'short': 'Юго-западно-немецкое выражение'
+                   ,'title': 'Юго-западно-немецкое выражение'
+                   }
+               ,'de':
+                   {'short': 'Südwestdeutsch'
+                   ,'title': 'Südwestdeutsch'
+                   }
+               ,'es':
+                   {'short': 'South-West-German'
+                   ,'title': 'South-West-German'
+                   }
+               ,'uk':
+                   {'short': 'Південно-західно-німецький вираз'
+                   ,'title': 'Південно-західно-німецький вираз'
+                   }
+               }
+           ,'Southern Chinese':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Dialectal'
+               ,'en':
+                   {'short': 'Southern Chinese'
+                   ,'title': 'Southern Chinese'
+                   }
+               ,'ru':
+                   {'short': 'Южнокитайские диалекты'
+                   ,'title': 'Южнокитайские диалекты'
+                   }
+               ,'de':
+                   {'short': 'Südchinesisch'
+                   ,'title': 'Südchinesisch'
+                   }
+               ,'es':
+                   {'short': 'Dialectos del sur de China'
+                   ,'title': 'Dialectos del sur de China'
+                   }
+               ,'uk':
+                   {'short': 'Південнокитайські діалекти'
+                   ,'title': 'Південнокитайські діалекти'
+                   }
+               }
+           ,'Steel production':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Metallurgy'
+               ,'en':
+                   {'short': 'Steel production'
+                   ,'title': 'Steel production'
+                   }
+               ,'ru':
+                   {'short': 'Производство стали'
+                   ,'title': 'Производство стали'
+                   }
+               ,'de':
+                   {'short': 'Steel production'
+                   ,'title': 'Steel production'
+                   }
+               ,'es':
+                   {'short': 'Steel production'
+                   ,'title': 'Steel production'
+                   }
+               ,'uk':
+                   {'short': 'Виробництво сталі'
+                   ,'title': 'Виробництво сталі'
+                   }
+               }
+           ,'Sumo':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Martial arts and combat sports'
+               ,'en':
+                   {'short': 'Sumo'
+                   ,'title': 'Sumo'
+                   }
+               ,'ru':
+                   {'short': 'Сумо'
+                   ,'title': 'Сумо'
+                   }
+               ,'de':
+                   {'short': 'Sumo'
+                   ,'title': 'Sumo'
+                   }
+               ,'es':
+                   {'short': 'Sumo'
+                   ,'title': 'Sumo'
+                   }
+               ,'uk':
+                   {'short': 'Сумо'
+                   ,'title': 'Сумо'
+                   }
+               }
+           ,'Taekwondo':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Martial arts and combat sports'
+               ,'en':
+                   {'short': 'Taekwondo'
+                   ,'title': 'Taekwondo'
+                   }
+               ,'ru':
+                   {'short': 'Тхэквондо'
+                   ,'title': 'Тхэквондо'
+                   }
+               ,'de':
+                   {'short': 'Taekwondo'
+                   ,'title': 'Taekwondo'
+                   }
+               ,'es':
+                   {'short': 'Taekwondo'
+                   ,'title': 'Taekwondo'
+                   }
+               ,'uk':
+                   {'short': 'Тхеквондо'
+                   ,'title': 'Тхеквондо'
+                   }
+               }
+           ,'Taxation of forests':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Natural resourses and wildlife conservation'
+               ,'en':
+                   {'short': 'Taxation of forests'
+                   ,'title': 'Taxation of forests'
+                   }
+               ,'ru':
+                   {'short': 'Таксация леса'
+                   ,'title': 'Таксация леса'
+                   }
+               ,'de':
+                   {'short': 'Taxation of forests'
+                   ,'title': 'Taxation of forests'
+                   }
+               ,'es':
+                   {'short': 'Taxation of forests'
+                   ,'title': 'Taxation of forests'
+                   }
+               ,'uk':
+                   {'short': 'Таксація лісу'
+                   ,'title': 'Таксація лісу'
+                   }
+               }
+           ,'Throw':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Sports'
+               ,'en':
+                   {'short': 'Throw'
+                   ,'title': 'Throw'
+                   }
+               ,'ru':
+                   {'short': 'Метание снаряда'
+                   ,'title': 'Метание снаряда'
+                   }
+               ,'de':
+                   {'short': 'Throw'
+                   ,'title': 'Throw'
+                   }
+               ,'es':
+                   {'short': 'Throw'
+                   ,'title': 'Throw'
+                   }
+               ,'uk':
+                   {'short': 'Метання'
+                   ,'title': 'Метання'
+                   }
+               }
+           ,'Tibetan':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Languages'
+               ,'en':
+                   {'short': 'Tibetan'
+                   ,'title': 'Tibetan'
+                   }
+               ,'ru':
+                   {'short': 'Тибетский язык'
+                   ,'title': 'Тибетский язык'
+                   }
+               ,'de':
+                   {'short': 'Tibetan'
+                   ,'title': 'Tibetan'
+                   }
+               ,'es':
+                   {'short': 'Tibetan'
+                   ,'title': 'Tibetan'
+                   }
+               ,'uk':
+                   {'short': 'Тибетська мова'
+                   ,'title': 'Тибетська мова'
+                   }
+               }
+           ,'Torgut language':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Dialectal'
+               ,'en':
+                   {'short': 'Torgut language'
+                   ,'title': 'Torgut language'
+                   }
+               ,'ru':
+                   {'short': 'Торгутский диалект'
+                   ,'title': 'Торгутский диалект'
+                   }
+               ,'de':
+                   {'short': 'Torgut language'
+                   ,'title': 'Torgut language'
+                   }
+               ,'es':
+                   {'short': 'Torgut language'
+                   ,'title': 'Torgut language'
+                   }
+               ,'uk':
+                   {'short': 'Торгутський діалект'
+                   ,'title': 'Торгутський діалект'
+                   }
+               }
+           ,'Traditional medicine':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Medicine - Alternative medicine'
+               ,'en':
+                   {'short': 'Traditional medicine'
+                   ,'title': 'Traditional medicine'
+                   }
+               ,'ru':
+                   {'short': 'Народная медицина'
+                   ,'title': 'Народная медицина'
+                   }
+               ,'de':
+                   {'short': 'Traditional medicine'
+                   ,'title': 'Traditional medicine'
+                   }
+               ,'es':
+                   {'short': 'Traditional medicine'
+                   ,'title': 'Traditional medicine'
+                   }
+               ,'uk':
+                   {'short': 'Народна медицина'
+                   ,'title': 'Народна медицина'
+                   }
+               }
+           ,'Turkey':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Countries and regions'
+               ,'en':
+                   {'short': 'Turkey'
+                   ,'title': 'Turkey'
+                   }
+               ,'ru':
+                   {'short': 'Турция'
+                   ,'title': 'Турция'
+                   }
+               ,'de':
+                   {'short': 'Türkei'
+                   ,'title': 'Türkei'
+                   }
+               ,'es':
+                   {'short': 'Turquía'
+                   ,'title': 'Turquía'
+                   }
+               ,'uk':
+                   {'short': 'Туреччина'
+                   ,'title': 'Туреччина'
+                   }
+               }
+           ,'Tuscan':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'en':
+                   {'short': 'Tuscan'
+                   ,'title': 'Tuscan'
+                   }
+               ,'ru':
+                   {'short': 'Тосканское выражение'
+                   ,'title': 'Тосканское выражение'
+                   }
+               ,'de':
+                   {'short': 'Tuscan'
+                   ,'title': 'Tuscan'
+                   }
+               ,'es':
+                   {'short': 'Tuscan'
+                   ,'title': 'Tuscan'
+                   }
+               ,'uk':
+                   {'short': 'Тосканський вираз'
+                   ,'title': 'Тосканський вираз'
+                   }
+               }
+           ,'Ukrainian (usage)':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'en':
+                   {'short': 'Ukrainian (usage)'
+                   ,'title': 'Ukrainian (usage)'
+                   }
+               ,'ru':
+                   {'short': 'Украинское выражение'
+                   ,'title': 'Украинское выражение'
+                   }
+               ,'de':
+                   {'short': 'Ukrainisch (Verwendung)'
+                   ,'title': 'Ukrainisch (Verwendung)'
+                   }
+               ,'es':
+                   {'short': 'Ukrainian (usage)'
+                   ,'title': 'Ukrainian (usage)'
+                   }
+               ,'uk':
+                   {'short': 'Український вираз'
+                   ,'title': 'Український вираз'
+                   }
+               }
+           ,'Ukrainian language':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Languages'
+               ,'en':
+                   {'short': 'Ukrainian language'
+                   ,'title': 'Ukrainian language'
+                   }
+               ,'ru':
+                   {'short': 'Украинский язык'
+                   ,'title': 'Украинский язык'
+                   }
+               ,'de':
+                   {'short': 'Ukrainische Sprache'
+                   ,'title': 'Ukrainische Sprache'
+                   }
+               ,'es':
+                   {'short': 'Ukrainian language'
+                   ,'title': 'Ukrainian language'
+                   }
+               ,'uk':
+                   {'short': 'Українська мова'
+                   ,'title': 'Українська мова'
+                   }
+               }
+           ,'Vienna dialect':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Dialectal'
+               ,'en':
+                   {'short': 'Vienna dialect'
+                   ,'title': 'Vienna dialect'
+                   }
+               ,'ru':
+                   {'short': 'Венский диалект'
+                   ,'title': 'Венский диалект'
+                   }
+               ,'de':
+                   {'short': 'Wienerisch'
+                   ,'title': 'Wienerisch'
+                   }
+               ,'es':
+                   {'short': 'Vienna dialect'
+                   ,'title': 'Vienna dialect'
+                   }
+               ,'uk':
+                   {'short': 'Віденський діалект'
+                   ,'title': 'Віденський діалект'
+                   }
+               }
+           ,'Water polo':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Sports'
+               ,'en':
+                   {'short': 'Water polo'
+                   ,'title': 'Water polo'
+                   }
+               ,'ru':
+                   {'short': 'Водное поло'
+                   ,'title': 'Водное поло'
+                   }
+               ,'de':
+                   {'short': 'Water polo'
+                   ,'title': 'Water polo'
+                   }
+               ,'es':
+                   {'short': 'Water polo'
+                   ,'title': 'Water polo'
+                   }
+               ,'uk':
+                   {'short': 'Водне поло'
+                   ,'title': 'Водне поло'
+                   }
+               }
+           ,'West-German':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'en':
+                   {'short': 'West-German'
+                   ,'title': 'West-German'
+                   }
+               ,'ru':
+                   {'short': 'Западно-немецкое выражение'
+                   ,'title': 'Западно-немецкое выражение'
+                   }
+               ,'de':
+                   {'short': 'Westdeutsch'
+                   ,'title': 'Westdeutsch'
+                   }
+               ,'es':
+                   {'short': 'West-German'
+                   ,'title': 'West-German'
+                   }
+               ,'uk':
+                   {'short': 'Західно-німецький вираз'
+                   ,'title': 'Західно-німецький вираз'
+                   }
+               }
+           ,'Windsurfing':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Outdoor activities and extreme sports'
+               ,'en':
+                   {'short': 'Windsurfing'
+                   ,'title': 'Windsurfing'
+                   }
+               ,'ru':
+                   {'short': 'Виндсерфинг'
+                   ,'title': 'Виндсерфинг'
+                   }
+               ,'de':
+                   {'short': 'Windsurfing'
+                   ,'title': 'Windsurfing'
+                   }
+               ,'es':
+                   {'short': 'Windsurfing'
+                   ,'title': 'Windsurfing'
+                   }
+               ,'uk':
+                   {'short': 'Віндсерфінг'
+                   ,'title': 'Віндсерфінг'
+                   }
+               }
+           ,'Wushu':
+               {'Valid': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': 'Short title is unknown'
+               ,'major_en': 'Martial arts and combat sports'
+               ,'en':
+                   {'short': 'Wushu'
+                   ,'title': 'Wushu'
+                   }
+               ,'ru':
+                   {'short': 'Ушу'
+                   ,'title': 'Ушу'
+                   }
+               ,'de':
+                   {'short': 'Wushu'
+                   ,'title': 'Wushu'
+                   }
+               ,'es':
+                   {'short': 'Wushu'
+                   ,'title': 'Wushu'
+                   }
+               ,'uk':
+                   {'short': 'Wushu'
+                   ,'title': 'Wushu'
+                   }
+               }
+           ,'Wood, pulp and paper industries':
                {'Valid': True
                ,'Major': True
                ,'Modified': True
