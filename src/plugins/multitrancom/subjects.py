@@ -34904,12 +34904,10 @@ class Subjects:
         '''
         f = '[MClient] plugins.multitrancom.subjects.Subjects.get_group_with_header'
         major = self.get_major(title)
+        if not major:
+            major = title
         group = self.get_group(title)
-        if major and group:
-            return [major] + group
-        else:
-            sh.com.rep_empty(f)
-        return []
+        return [major] + group
     
     def get_group(self,title):
         f = '[MClient] plugins.multitrancom.subjects.Subjects.get_group'

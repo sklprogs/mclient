@@ -2,7 +2,8 @@ mclient:
 - 
 
 multitrancom:
-- 
+- EN-RU: case tracking database system: "ambassador" should be a user
+  name
 - RU-EN, mannits: trash in the end
 - RU-EN, icon: make_pretty fails
 - RU-CN: suggestions are provided for RU-EN
