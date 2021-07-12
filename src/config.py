@@ -5,6 +5,8 @@ import os
 from skl_shared.localize import _
 import skl_shared.shared as sh
 
+sample_prior = _('General')
+
 
 class DefaultKeys(sh.DefaultKeys):
 

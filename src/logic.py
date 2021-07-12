@@ -16,8 +16,6 @@ SPORDER = (_('Noun'),_('Verb'),_('Adjective'),_('Abbreviation')
           ,_('Adverb'),_('Preposition'),_('Pronoun')
           )
 
-sample_prior = _('General')
-
 
 class SpeechPrior:
     
