@@ -275,23 +275,22 @@ class Welcome:
         objs.plugins.set(old)
 
     def gen_source_code(self,title,status,color):
-        self.istr.write('      <b>{}</b>\n'.format(title))
-        self.istr.write('      <font face="Serif" color="')
-        self.istr.write(color)
-        self.istr.write('" size="6">')
-        self.istr.write(status)
-        self.istr.write('</font>.\n')
-        self.istr.write('      <br>\n')
+        sub = ' {}'.format(status)
+        code = '<b>{}</b><font face="Serif" color="{}" size="6">{}'
+        code = code.format(title,color,sub)
+        self.istr.write(code)
+        code = '</font>.<br>'
+        self.istr.write(code)
     
     def gen_hint(self,hint):
-        self.istr.write('<td align="left" valign="top" col width="200">')
-        self.istr.write(hint)
-        self.istr.write('</td>')
+        code = '<td align="left" valign="top" col width="200">{}</td>'
+        code = code.format(hint)
+        self.istr.write(code)
     
     def gen_hotkey(self,hotkey):
-        self.istr.write('<td align="center" valign="top" col width="100">')
-        self.istr.write(sh.Hotkeys(hotkey).run())
-        self.istr.write('</td>')
+        code = '<td align="center" valign="top" col width="100">{}</td>'
+        code = code.format(sh.Hotkeys(hotkey).run())
+        self.istr.write(code)
     
     def gen_row(self,hint1,hotkey1,hint2,hotkey2):
         self.istr.write('<tr>')
@@ -304,8 +303,7 @@ class Welcome:
         self.istr.write('</tr>')
     
     def set_hotkeys(self):
-        self.istr.write('<font face="Serif" size="5">')
-        self.istr.write('<table>')
+        self.istr.write('<font face="Serif" size="5"><table>')
 
         hint1 = _('Translate the current input or selection')
         hotkey1 = ('<Button-1>','<Return>')
@@ -440,61 +438,44 @@ class Welcome:
         self.gen_row(hint32,hotkey32,hint33,hotkey33)
         self.gen_row(hint41,hotkey41,'','')
         
-        self.istr.write('</font>')
-        self.istr.write('</table>')
+        self.istr.write('</font></table>')
     
     def generate(self):
         f = '[MClient] logic.Welcome.generate'
         self.istr = io.StringIO()
-        self.istr.write('<html>\n')
-        self.istr.write('  <body>\n')
-        self.istr.write('    <h1>')
-        self.istr.write(_('Welcome to {}!').format(self.desc))
-        self.istr.write('</h1>\n')
-        self.istr.write('    <font face="Serif" size="6">\n')
-        self.istr.write('      <br>\n')
-        self.istr.write('      {}'.format(_('This program retrieves translation from online/offline sources.')))
-        self.istr.write('\n')
-        self.istr.write('      <br>\n')
-        self.istr.write('      {}'.format(_('Use an entry area below to enter a word/phrase to be translated.')))
-        self.istr.write('\n')
-        self.istr.write('\n')
-        self.istr.write('      <br><br>\n')
+        sub = _('Welcome to {}!').format(self.desc)
+        code = '<html><body><h1>{}</h1><font face="Serif" size="6"><br>'
+        code = code.format(sub)
+        self.istr.write(code)
+        sub = _('This program retrieves translation from online/offline sources.')
+        self.istr.write(sub)
+        sub = _('Use an entry area below to enter a word/phrase to be translated.')
+        code = '<br>{}<br><br>'
+        code = code.format(sub)
+        self.istr.write(code)
         for source in self.sources:
             self.gen_source_code (title = source.title
                                  ,status = source.status
                                  ,color = source.color
                                  )
-        self.istr.write(_('Offline dictionaries loaded:'))
-        self.istr.write(' Stardict: ')
-        self.istr.write('\n')
-        self.istr.write('      <font color="')
-        self.istr.write(self.sdcolor)
-        self.istr.write('">')
-        self.istr.write('{}'.format(self.sdstat))
-        self.istr.write('</font>, ')
-        self.istr.write('Lingvo (DSL): ')
-        self.istr.write('      <font color="')
-        self.istr.write(self.lgcolor)
-        self.istr.write('">')
-        self.istr.write('{}'.format(self.lgstat))
-        self.istr.write('</font>, ')
-        self.istr.write('Multitran (Demo): ')
-        self.istr.write('      <font color="')
-        self.istr.write(self.mtbcolor)
-        self.istr.write('">')
-        self.istr.write('{}'.format(self.mtbstat))
-        self.istr.write('</font>.')
-        self.istr.write('<br><br><br><br>')
-        self.istr.write('<h1>')
-        self.istr.write(_('Main hotkeys'))
-        self.istr.write('</h1>')
-        self.istr.write('<h2>')
-        self.istr.write(_('(see documentation for other hotkeys, mouse bindings and functions)'))
-        self.istr.write('</h2>')
+        sub1 = _('Offline dictionaries loaded:')
+        sub2 = ' Stardict: '
+        sub3 = ', Lingvo (DSL): '
+        code = '{}{}<font color="{}">{}</font>{}'
+        code = code.format(sub1,sub2,self.sdcolor,self.sdstat,sub3)
+        self.istr.write(code)
+        sub = ', Multitran (Demo): '
+        code = '<font color="{}">{}</font>{}<font color="{}'
+        code = code.format(self.lgcolor,self.lgstat,sub,self.mtbcolor)
+        self.istr.write(code)
+        sub1 = _('Main hotkeys')
+        sub2 = _('(see documentation for other hotkeys, mouse bindings and functions)')
+        code = '">{}</font>{}<br><br><br><br><h1>{}</h1><h2>{}</h2>'
+        code = code.format(self.mtbstat,'.',sub1,sub2)
+        self.istr.write(code)
         self.set_hotkeys()
-        self.istr.write('  </body>\n')
-        self.istr.write('</html>')
+        code = '</body></html>'
+        self.istr.write(code)
         code = self.istr.getvalue()
         self.istr.close()
         return code
