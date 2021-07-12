@@ -21,7 +21,10 @@ class Subjects:
         return self.lst
     
     def get_group(self,subject):
-        return ''
+        return []
+    
+    def get_group_with_header(self,subject):
+        return [subject]
 
 
 
