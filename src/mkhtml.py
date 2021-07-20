@@ -42,23 +42,16 @@ class HTM:
     
     # 'collimit' includes fixed blocks
     def reset (self,data,cols,collimit=9,Printer=False
-              ,Reverse=False,width=0,phdic='',skipped=0
-              ,max_syms=30
+              ,Reverse=False,phdic='',skipped=0
               ):
         self.set_values()
         self.collimit = collimit
         self.cols = cols
         self.data = data
-        ''' Maximum number of symbols in a column. If the column exceeds
-            this number and 'self.width' is set - wrap the column.
-            #TODO: calculate font width to be more precise
-        '''
-        self.maxsyms = max_syms
         self.phdic = phdic
         self.Printer = Printer
         self.Reverse = Reverse
         self.skipped = skipped
-        self.width = width
         
     def run(self):
         self.assign()
@@ -342,10 +335,8 @@ class HTM:
             self.output.write('<div id="printableArea">')
         if self.blocks:
             self.output.write('<table>')
-            if self.width and self.Reverse:
-                sub = '<col width="{}"/><tr><td valign="top">'
-                sub = sub.format(self.width)
-                self.output.write(sub)
+            if self.Reverse:
+                self.output.write('<tr><td valign="top">')
             elif self.blocks and self.blocks[0].text \
             and self.blocks[0].type_ in ('dic','wform','transc'
                                         ,'speech','phdic'
@@ -356,14 +347,7 @@ class HTM:
             i = j = 0
             for self.block in self.blocks:
                 while self.block.i > i:
-                    cond1 = self.width and self.Reverse
-                    cond2 = self.width \
-                            and len(self.block.text) > self.maxsyms
-                    if cond1 or cond2:
-                        sub = '<col width="{}"/>'
-                    else:
-                        sub = ''
-                    self.output.write('</td></tr>{}<tr>'.format(sub))
+                    self.output.write('</td></tr><tr>')
                     if self.block.text \
                     and self.block.type_ in ('dic','wform','transc'
                                             ,'speech','phdic'

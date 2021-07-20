@@ -357,6 +357,13 @@ class Plugin:
 
 class Commands:
     
+    def check_width(self):
+        import mclient as mc
+        file = '/home/pete/tmp/frame rate.htm'
+        code = sh.ReadTextFile(file).get()
+        mc.objs.get_webframe().fill(code)
+        mc.objs.webframe.show()
+    
     def get_subjects_wo_majors(self):
         ''' Get subjects not united by a major subject. This is not
             an error and can be witnessed sometimes at multitran.com.
@@ -776,5 +783,6 @@ if __name__ == '__main__':
     #com.edit_priorities()
     #com.get_majors_en()
     #com.get_modified_subjects()
-    com.get_subjects_wo_majors()
+    #com.get_subjects_wo_majors()
+    com.check_width()
     sh.com.end()

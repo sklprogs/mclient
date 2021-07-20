@@ -2042,7 +2042,6 @@ class WebFrame:
         mh.objs.get_htm().reset (data = objs.blocksdb.fetch()
                                 ,cols = lg.objs.request.cols
                                 ,collimit = lg.objs.request.collimit
-                                ,width = sh.lg.globs['int']['col_width']
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,phdic = self.phdic
                                 ,skipped = len(com.get_skipped_dics())
@@ -2582,7 +2581,6 @@ class WebFrame:
         mh.objs.get_htm().reset (data = objs.blocksdb.fetch()
                                 ,cols = lg.objs.request.cols
                                 ,collimit = lg.objs.request.collimit
-                                ,width = sh.lg.globs['int']['col_width']
                                 ,Printer = True
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,skipped = len(com.get_skipped_dics())

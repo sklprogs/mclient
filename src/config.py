@@ -41,7 +41,6 @@ class DefaultKeys(sh.DefaultKeys):
     def _load_int(self):
         sh.lg.globs['int'].update ({
             'colnum'            :4
-           ,'col_width'         :250
            ,'font_col1_size'    :4
            ,'font_col2_size'    :4
            ,'font_col3_size'    :3
@@ -221,10 +220,6 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'colnum'
         comment = _('[Autosave] Number of non-fixed columns')
-        self.add_key(section,section_abbr,key,comment)
-        
-        key = 'col_width'
-        comment = _('A column width. Set to 0 to pick the value automatically.')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'font_comments_size'
