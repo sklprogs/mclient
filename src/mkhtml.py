@@ -24,6 +24,13 @@ class HTM:
         self.set_priority_colors()
         self.set_blocked_colors()
     
+    def set_width(self):
+        f = '[MClient] mkhtml.HTM.set_width'
+        if sh.lg.globs['int']['colnum']:
+            self.width = int(80/sh.lg.globs['int']['colnum'])
+        else:
+            sh.com.rep_empty(f)
+    
     def _run_user(self):
         if self.block.type_ == 'user':
             color = sh.lg.globs['str']['color_comments']
@@ -54,6 +61,7 @@ class HTM:
         self.skipped = skipped
         
     def run(self):
+        self.set_width()
         self.assign()
         self.gen_htm()
         return self.htm
@@ -105,6 +113,7 @@ class HTM:
         '''
         self.script = self.script % _('Print')
         self.skipped = 0
+        self.width = 0
     
     def set_priority_colors(self):
         default_color = 'red'
@@ -334,7 +343,7 @@ class HTM:
             self.output.write(self.script)
             self.output.write('<div id="printableArea">')
         if self.blocks:
-            self.output.write('<table>')
+            self.output.write('<table style="width: 100%">')
             if self.Reverse:
                 self.output.write('<tr><td valign="top">')
             elif self.blocks and self.blocks[0].text \
@@ -353,6 +362,9 @@ class HTM:
                                             ,'speech','phdic'
                                             ):
                         base = '<td align="center" valign="top">'
+                    elif self.width and self.block.text:
+                        base = '<td valign="top" style="width: {}%">'
+                        base = base.format(self.width)
                     else:
                         base = '<td valign="top">'
                     self.output.write(base)
@@ -360,7 +372,17 @@ class HTM:
                     j = 0
                 while self.block.j > j:
                     self.output.write('</td>')
-                    self.output.write('<td valign="top">')
+                    mes = '<td valign="top"{}>'
+                    if self.block.text \
+                    and self.block.type_ in ('term','comment','user'
+                                            ,'correction','phrase'
+                                            ,'phcom','phcount'
+                                            ) and self.width:
+                        sub = ' style="width: {}%"'.format(self.width)
+                    else:
+                        sub = ''
+                    mes = mes.format(sub)
+                    self.output.write(mes)
                     j += 1
                 if self.Reverse:
                     self.block.xi = self.block.j
@@ -390,6 +412,11 @@ class HTM:
             self.output.write('</div>')
         self.output.write('</meta></body></html>')
         self.htm = self.output.getvalue()
+        #TODO: Fix the algorithm and drop this workaround
+        what = '<td valign="top" style="width: {}%"></td>'
+        what = what.format(self.width)
+        with_ = '<td valign="top"></td>'
+        self.htm = self.htm.replace(what,with_)
         self.output.close()
         return self.htm
 

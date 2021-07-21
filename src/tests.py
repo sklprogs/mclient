@@ -360,6 +360,7 @@ class Commands:
     def check_width(self):
         import mclient as mc
         file = '/home/pete/tmp/frame rate.htm'
+        #file = '/tmp/f.htm'
         code = sh.ReadTextFile(file).get()
         mc.objs.get_webframe().fill(code)
         mc.objs.webframe.show()
