@@ -343,7 +343,15 @@ class HTM:
             self.output.write(self.script)
             self.output.write('<div id="printableArea">')
         if self.blocks:
-            self.output.write('<table style="width: 100%">')
+            ''' Sometimes the right end in a multicolumn view is not
+                visible. Setting a table width explicitly allows to
+                avoid this problem. The value of 82% is picked up by
+                trial and error and is the minimum to show EN-RU,
+                'deterrence' properly.
+                #TODO: remove extra table properties when using a good
+                web engine
+            '''
+            self.output.write('<table style="width: 82%;table-layout:fixed;">')
             if self.Reverse:
                 self.output.write('<tr><td valign="top">')
             elif self.blocks and self.blocks[0].text \
