@@ -12,8 +12,6 @@ mclient:
 multitrancom:
 - RU-EN, яркий -> Океанология: do not set width in percent when there
   is only a single row
-- Compare column width in RU-EN: entity; RU-EN: frailty; RU-EN: snap;
-  RU-EN: ramp up
 - Check bad charachers: RU-EN, счет на оплату
 - Fix links in a saved raw html
 - RU-EN, fall in behind, swoop in: Show phrases when only separate words
