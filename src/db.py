@@ -22,6 +22,21 @@ class DB:
         self.create_blocks()
         self.create_articles()
     
+    def get_max_row_no(self):
+        ''' This is a less advanced alternative of 'self.get_max_row'
+            for cases when positions are not set yet.
+        '''
+        f = '[MClient] db.DB.get_max_row_no'
+        if self.artid:
+            query = 'select ROWNO from BLOCKS where ARTICLEID = ? \
+                     and BLOCK = 0 and IGNORE = 0 order by ROWNO desc'
+            self.dbc.execute(query,(self.artid,))
+            result = self.dbc.fetchone()
+            if result:
+                return result[0]
+        else:
+            sh.com.rep_empty(f)
+    
     def get_dic_pairs(self):
         f = '[MClient] db.DB.get_dic_pairs'
         if self.artid:
@@ -588,8 +603,8 @@ class DB:
         else:
             sh.com.rep_empty(f)
 
-    # Find the maximum available row number for the set column
     def get_max_row_sp(self,col_no):
+        # Find the maximum available row number for a certain column
         f = '[MClient] db.DB.get_max_row_sp'
         if self.artid:
             if self.Selectable:

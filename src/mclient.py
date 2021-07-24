@@ -91,6 +91,15 @@ class Commands:
     ''' #NOTE: DB is in controller (not in logic), so DB-related code
         is here too.
     '''
+    def has_single_row(self):
+        # Check whether the current article has only 1 row
+        f = '[MClient] mclient.Commands.has_single_row'
+        row_no = objs.get_blocksdb().get_max_row_no()
+        if row_no is None:
+            sh.com.rep_empty(f)
+        elif row_no == 0:
+            return True
+
     def get_dics(self,Block=False,Phrases=False):
         f = '[MClient] mclient.Commands.get_dics'
         new_dics = []
@@ -2042,13 +2051,20 @@ class WebFrame:
         cells.run()
         cells.dump(objs.blocksdb)
         
+        col_width = lg.com.get_column_width()
+        if com.has_single_row():
+            #TODO: read 'tab_width' from 'globs'
+            col_width = tab_width = 0
+        else:
+            tab_width = 82
         mh.objs.get_htm().reset (data = objs.blocksdb.fetch()
                                 ,cols = lg.objs.request.cols
                                 ,collimit = lg.objs.request.collimit
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,phdic = self.phdic
                                 ,skipped = len(com.get_skipped_dics())
-                                ,col_width = lg.com.get_column_width()
+                                ,tab_width = tab_width
+                                ,col_width = col_width
                                 )
         mh.objs.htm.run()
         
@@ -2582,13 +2598,20 @@ class WebFrame:
 
     def print(self,event=None):
         f = '[MClient] mclient.WebFrame.print'
+        col_width = lg.com.get_column_width()
+        if com.has_single_row():
+            #TODO: read 'tab_width' from 'globs'
+            col_width = tab_width = 0
+        else:
+            tab_width = 82
         mh.objs.get_htm().reset (data = objs.blocksdb.fetch()
                                 ,cols = lg.objs.request.cols
                                 ,collimit = lg.objs.request.collimit
                                 ,Printer = True
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,skipped = len(com.get_skipped_dics())
-                                ,col_width = lg.com.get_column_width()
+                                ,tab_width = tab_width
+                                ,col_width = col_width
                                 )
         code = mh.objs.htm.run()
         if code:
