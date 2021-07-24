@@ -24,13 +24,6 @@ class HTM:
         self.set_priority_colors()
         self.set_blocked_colors()
     
-    def set_width(self):
-        f = '[MClient] mkhtml.HTM.set_width'
-        if sh.lg.globs['int']['colnum']:
-            self.width = int(80/sh.lg.globs['int']['colnum'])
-        else:
-            sh.com.rep_empty(f)
-    
     def _run_user(self):
         if self.block.type_ == 'user':
             color = sh.lg.globs['str']['color_comments']
@@ -49,7 +42,7 @@ class HTM:
     
     # 'collimit' includes fixed blocks
     def reset (self,data,cols,collimit=9,Printer=False
-              ,Reverse=False,phdic='',skipped=0
+              ,Reverse=False,phdic='',skipped=0,col_width=0
               ):
         self.set_values()
         self.collimit = collimit
@@ -59,9 +52,9 @@ class HTM:
         self.Printer = Printer
         self.Reverse = Reverse
         self.skipped = skipped
+        self.col_width = col_width
         
     def run(self):
-        self.set_width()
         self.assign()
         self.gen_htm()
         return self.htm
@@ -113,7 +106,6 @@ class HTM:
         '''
         self.script = self.script % _('Print')
         self.skipped = 0
-        self.width = 0
     
     def set_priority_colors(self):
         default_color = 'red'
@@ -334,6 +326,7 @@ class HTM:
             self.output.write(c)
 
     def gen_htm(self):
+        f = '[MClient] mkhtml.HTM.gen_htm'
         ''' Default Python string concatenation is too slow, so we use
             this module instead.
         '''
@@ -347,7 +340,9 @@ class HTM:
                 visible. Setting a table width explicitly allows to
                 avoid this problem. The value of 82% is picked up by
                 trial and error and is the minimum to show EN-RU,
-                'deterrence' properly.
+                'deterrence' properly. Setting this parameter by the
+                main widget width is not enough - the table will be
+                too wide (just as when we set the width to 100%).
                 #TODO: remove extra table properties when using a good
                 web engine.
             '''
@@ -370,9 +365,9 @@ class HTM:
                                             ,'speech','phdic'
                                             ):
                         base = '<td align="center" valign="top">'
-                    elif self.width and self.block.text:
+                    elif self.col_width and self.block.text:
                         base = '<td valign="top" style="width: {}%">'
-                        base = base.format(self.width)
+                        base = base.format(self.col_width)
                     else:
                         base = '<td valign="top">'
                     self.output.write(base)
@@ -385,8 +380,9 @@ class HTM:
                     and self.block.type_ in ('term','comment','user'
                                             ,'correction','phrase'
                                             ,'phcom','phcount'
-                                            ) and self.width:
-                        sub = ' style="width: {}%"'.format(self.width)
+                                            ) and self.col_width:
+                        sub = ' style="width: {}%"'
+                        sub = sub.format(self.col_width)
                     else:
                         sub = ''
                     mes = mes.format(sub)
@@ -422,7 +418,7 @@ class HTM:
         self.htm = self.output.getvalue()
         #TODO: Fix the algorithm and drop this workaround
         what = '<td valign="top" style="width: {}%"></td>'
-        what = what.format(self.width)
+        what = what.format(self.col_width)
         with_ = '<td valign="top"></td>'
         self.htm = self.htm.replace(what,with_)
         self.output.close()

@@ -979,6 +979,9 @@ class WebFrame:
         self.gui = gi.WebFrame()
         self.set_bindings()
     
+    def get_width(self):
+        return self.gui.obj.get_width()
+    
     def debug_settings(self):
         # Use 'import debug_gui as gi' instead of 'import gui as gi'
         f = '[MClient] mclient.WebFrame.debug_settings'
@@ -2045,6 +2048,7 @@ class WebFrame:
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,phdic = self.phdic
                                 ,skipped = len(com.get_skipped_dics())
+                                ,col_width = lg.com.get_column_width()
                                 )
         mh.objs.htm.run()
         
@@ -2584,6 +2588,7 @@ class WebFrame:
                                 ,Printer = True
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,skipped = len(com.get_skipped_dics())
+                                ,col_width = lg.com.get_column_width()
                                 )
         code = mh.objs.htm.run()
         if code:

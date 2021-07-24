@@ -357,6 +357,14 @@ class Plugin:
 
 class Commands:
     
+    def get_column_width(self):
+        f = '[MClient] tests.Commands.get_column_width'
+        import logic as lg
+        #sh.lg.globs['int']['colnum'] = 0
+        width = lg.com.get_column_width()
+        mes = '"{}%"'.format(width)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
     def check_width(self):
         import mclient as mc
         file = '/home/pete/tmp/frame rate.htm'
@@ -785,5 +793,6 @@ if __name__ == '__main__':
     #com.get_majors_en()
     #com.get_modified_subjects()
     #com.get_subjects_wo_majors()
-    com.check_width()
+    #com.check_width()
+    com.get_column_width()
     sh.com.end()

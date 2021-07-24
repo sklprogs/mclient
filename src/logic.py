@@ -590,6 +590,18 @@ class Commands:
     def __init__(self):
         self.use_unverified()
     
+    def get_column_width(self):
+        f = '[MClient] logic.Commands.get_column_width'
+        try:
+            # 20% is reserved for fixed columns
+            return int(80/sh.lg.globs['int']['colnum'])
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+        except ZeroDivisionError:
+            sh.com.rep_empty(f)
+        return 0
+    
     def load_config(self):
         objs.get_config()
     
