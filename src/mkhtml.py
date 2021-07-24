@@ -349,9 +349,9 @@ class HTM:
                 trial and error and is the minimum to show EN-RU,
                 'deterrence' properly.
                 #TODO: remove extra table properties when using a good
-                web engine
+                web engine.
             '''
-            self.output.write('<table style="width: 82%;table-layout:fixed;">')
+            self.output.write('<table style="width: 82%">')
             if self.Reverse:
                 self.output.write('<tr><td valign="top">')
             elif self.blocks and self.blocks[0].text \
