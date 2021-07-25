@@ -2,6 +2,7 @@
 * Adjust table layout such as to fit most columns
 * Break too long words (e.g., URLs) in order to keep column edges
   visible
+* Update documentation
 
 6.10
 * Set up subject priorities in a separate window
