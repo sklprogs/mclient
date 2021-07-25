@@ -2798,16 +2798,6 @@ class Settings:
     def close(self,event=None):
         self.Active = False
         self.get_gui().close()
-    
-    def get_block_settings(self,event=None):
-        f = '[MClient] mclient.Settings.get_block_settings'
-        mes = _('Not implemented yet!')
-        sh.objs.get_mes(f,mes).show_info()
-
-    def get_priority_settings(self,event=None):
-        f = '[MClient] mclient.Settings.get_priority_settings'
-        mes = _('Not implemented yet!')
-        sh.objs.get_mes(f,mes).show_info()
 
     def apply(self,event=None):
         self.close()
@@ -2816,9 +2806,6 @@ class Settings:
     
     def set_bindings(self):
         self.get_gui().btn_apl.action = self.apply
-        #TODO: implement
-        #self.btn_blk.action = self.block_settings
-        #self.btn_pri.action = self.priority_settings
         sh.com.bind (obj = self.gui.obj
                     ,bindings = [sh.lg.globs['str']['bind_settings']
                                 ,sh.lg.globs['str']['bind_settings_alt']
