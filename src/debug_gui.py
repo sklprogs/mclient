@@ -39,13 +39,6 @@ class SearchArticle(mg.SearchArticle):
 
 
 
-class Sources(mg.Sources):
-
-    def __init__(self):
-        super().__init__()
-
-
-
 class Suggest(mg.Suggest):
 
     def __init__(self):

@@ -794,5 +794,6 @@ if __name__ == '__main__':
     #com.get_modified_subjects()
     #com.get_subjects_wo_majors()
     #com.check_width()
-    com.get_column_width()
+    #com.get_column_width()
+    com.run_sources()
     sh.com.end()

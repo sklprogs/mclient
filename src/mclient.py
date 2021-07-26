@@ -303,69 +303,6 @@ class UpdateWebFrameUI:
 
 
 
-class Sources:
-    
-    def __init__(self):
-        f = '[MClient] mclient.Sources.__init__'
-        self.set_values()
-        sources = lg.objs.get_plugins().get_sources()
-        if sources:
-            self.sources = sources
-        else:
-            self.Success = False
-            sh.com.rep_empty(f)
-        self.gui = None
-    
-    def set_gui(self):
-        self.gui = gi.Sources()
-        self.set_bindings()
-    
-    def get_gui(self):
-        if self.gui is None:
-            self.set_gui()
-        return self.gui
-    
-    def reset(self):
-        self.set_values()
-        self.get_gui().reset(self.sources)
-    
-    def set_values(self):
-        self.select = []
-        self.sources = []
-        self.Success = True
-    
-    def get_sel(self):
-        f = '[MClient] mclient.Sources.get_sel'
-        if self.Success:
-            for i in range(len(self.get_gui().cboxes)):
-                if self.gui.cboxes[i].get():
-                    try:
-                        self.select.append(self.sources)
-                    except IndexError:
-                        self.Success = False
-                        mes = _('Wrong input data!')
-                        sh.objs.get_mes(f,mes).show_error()
-            return self.select
-        else:
-            sh.com.cancel(f)
-    
-    def set_bindings(self):
-        self.get_gui().btn_apl.action = self.apply
-    
-    def show(self,event=None):
-        self.get_gui().show()
-    
-    def apply(self,event=None):
-        #TODO: What is a purpose of this?
-        f = '[MClient] mclient.Sources.apply'
-        mes = self.get_sel()
-        sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def close(self,event=None):
-        self.get_gui().close()
-
-
-
 class Objects:
 
     def __init__(self):
