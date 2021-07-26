@@ -19,6 +19,7 @@ import subjects.blacklist.controller as bl
 import about.controller as ab
 import third_parties.controller as tp
 import subjects.subjects as sj
+import settings.controller as st
 
 
 if __name__ == '__main__':
@@ -27,6 +28,19 @@ if __name__ == '__main__':
         import pythoncom
     else:
         import keylistener.linux as kl
+
+
+
+class Settings(st.Settings):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def apply(self,event=None):
+        self.close()
+        st.ExportSettingsUI().run()
+        com.export_style()
+        objs.get_webframe().set_columns()
 
 
 
@@ -40,57 +54,15 @@ class About(ab.About):
 
 
 
-class ExportSettingsUI:
-    
-    def export_speech_area(self):
-        sh.lg.globs['str']['speech1'] = objs.get_settings_ui().opt_sp1.choice
-        sh.lg.globs['str']['speech2'] = objs.settings_ui.opt_sp2.choice
-        sh.lg.globs['str']['speech3'] = objs.settings_ui.opt_sp3.choice
-        sh.lg.globs['str']['speech4'] = objs.settings_ui.opt_sp4.choice
-        sh.lg.globs['str']['speech5'] = objs.settings_ui.opt_sp5.choice
-        sh.lg.globs['str']['speech6'] = objs.settings_ui.opt_sp6.choice
-        sh.lg.globs['str']['speech7'] = objs.settings_ui.opt_sp7.choice
-    
-    def export_style_area(self):
-        sh.lg.globs['str']['style'] = objs.get_settings_ui().opt_scm.choice
-        sh.lg.globs['str']['col1_type'] = objs.settings_ui.opt_cl1.choice
-        sh.lg.globs['str']['col2_type'] = objs.settings_ui.opt_cl2.choice
-        sh.lg.globs['str']['col3_type'] = objs.settings_ui.opt_cl3.choice
-        sh.lg.globs['str']['col4_type'] = objs.settings_ui.opt_cl4.choice
-        com.export_style()
-    
-    def export_checkboxes(self):
-        sh.lg.globs['bool']['SortByColumns'] = objs.get_settings_ui().cbx_no1.get()
-        sh.lg.globs['bool']['AlphabetizeTerms'] = objs.settings_ui.cbx_no2.get()
-        sh.lg.globs['bool']['BlockSubjects'] = objs.settings_ui.cbx_no3.get()
-        sh.lg.globs['bool']['PrioritizeSubjects'] = objs.settings_ui.cbx_no4.get()
-        sh.lg.globs['bool']['VerticalView'] = objs.settings_ui.cbx_no5.get()
-        sh.lg.globs['bool']['ShortSubjects'] = objs.settings_ui.cbx_no6.get()
-        sh.lg.globs['bool']['ShortSpeech'] = objs.settings_ui.cbx_no7.get()
-        sh.lg.globs['bool']['ShowUserNames'] = objs.settings_ui.cbx_no8.get()
-        objs.get_blocksdb().Selectable = sh.lg.globs['bool']['SelectTermsOnly']\
-                                       = objs.settings_ui.cbx_no9.get()
-        sh.lg.globs['bool']['Iconify'] = objs.settings_ui.cbx_no10.get()
-        sh.lg.globs['bool']['Autocompletion'] = objs.settings_ui.cbx_no11.get()
-        sh.lg.globs['bool']['Autoswap'] = objs.settings_ui.cbx_no12.get()
-        sh.lg.globs['bool']['PhraseCount'] = objs.settings_ui.cbx_no13.get()
-    
-    def run(self):
-        f = '[MClient] mclient.ExportSettingsUI.run'
-        # 'objs.get_settings_ui' may not be used as often
-        if objs.settings is None or objs.settings.gui is None:
-            sh.com.rep_lazy(f)
-        else:
-            self.export_style_area()
-            self.export_speech_area()
-            self.export_checkboxes()
-
-
-
 class Commands:
     ''' #NOTE: DB is in controller (not in logic), so DB-related code
         is here too.
     '''
+    def export_style(self):
+        f = '[MClient] mclient.Commands.export_style'
+        lg.com.export_style()
+        objs.get_blocksdb().Selectable = sh.lg.globs['bool']['SelectTermsOnly']
+
     def has_single_row(self):
         # Check whether the current article has only 1 row
         f = '[MClient] mclient.Commands.has_single_row'
@@ -125,48 +97,6 @@ class Commands:
         else:
             sh.com.rep_empty(f)
         return new_dics
-        
-    def export_style(self):
-        f = '[MClient] mclient.Commands.export_style'
-        ''' Do not use 'gettext' to name internal types - this will make
-            the program ~0,6s slower.
-        '''
-        lst = [choice for choice in (sh.lg.globs['str']['col1_type']
-                                    ,sh.lg.globs['str']['col2_type']
-                                    ,sh.lg.globs['str']['col3_type']
-                                    ,sh.lg.globs['str']['col4_type']
-                                    ) \
-               if choice != _('Do not set')
-              ]
-        ''' #NOTE: The following assignment does not change the list:
-            for item in lst:
-                if item == something:
-                    item = something_else
-        '''
-        for i in range(len(lst)):
-            ''' #cur 'Dictionaries' are kept in order to comply with
-                the old config.
-            '''
-            if lst[i] in (_('Subjects'),_('Dictionaries')):
-                lst[i] = 'dic'
-            elif lst[i] == _('Word forms'):
-                lst[i] = 'wform'
-            elif lst[i] == _('Parts of speech'):
-                lst[i] = 'speech'
-            elif lst[i] == _('Transcription'):
-                lst[i] = 'transc'
-            else:
-                sub = (_('Subjects'),_('Word forms'),_('Transcription')
-                      ,_('Parts of speech')
-                      )
-                sub = '; '.join(sub)
-                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-                mes = mes.format(lst[i],sub)
-                sh.objs.get_mes(f,mes).show_error()
-        if lst:
-            lg.objs.get_request().cols = tuple(lst)
-        else:
-            sh.com.rep_lazy(f)
     
     def get_prioritized(self):
         f = '[MClient] mclient.Commands.get_prioritized'
@@ -207,49 +137,6 @@ class Commands:
             return skipped
         else:
             return []
-
-
-
-class UpdateSettingsUI:
-    
-    def __init__(self):
-        self.gui = objs.get_settings_ui()
-    
-    def update_style_area(self):
-        self.gui.opt_scm.set(sh.lg.globs['str']['style'])
-        self.gui.opt_cl1.set(sh.lg.globs['str']['col1_type'])
-        self.gui.opt_cl2.set(sh.lg.globs['str']['col2_type'])
-        self.gui.opt_cl3.set(sh.lg.globs['str']['col3_type'])
-        self.gui.opt_cl4.set(sh.lg.globs['str']['col4_type'])
-    
-    def update_speech_area(self):
-        self.gui.opt_sp1.set(sh.lg.globs['str']['speech1'])
-        self.gui.opt_sp2.set(sh.lg.globs['str']['speech2'])
-        self.gui.opt_sp3.set(sh.lg.globs['str']['speech3'])
-        self.gui.opt_sp4.set(sh.lg.globs['str']['speech4'])
-        self.gui.opt_sp5.set(sh.lg.globs['str']['speech5'])
-        self.gui.opt_sp6.set(sh.lg.globs['str']['speech6'])
-        self.gui.opt_sp7.set(sh.lg.globs['str']['speech7'])
-    
-    def update_checkboxes(self):
-        self.gui.cbx_no1.set(sh.lg.globs['bool']['SortByColumns'])
-        self.gui.cbx_no2.set(sh.lg.globs['bool']['AlphabetizeTerms'])
-        self.gui.cbx_no3.set(sh.lg.globs['bool']['BlockSubjects'])
-        self.gui.cbx_no4.set(sh.lg.globs['bool']['PrioritizeSubjects'])
-        self.gui.cbx_no5.set(sh.lg.globs['bool']['VerticalView'])
-        self.gui.cbx_no6.set(sh.lg.globs['bool']['ShortSubjects'])
-        self.gui.cbx_no7.set(sh.lg.globs['bool']['ShortSpeech'])
-        self.gui.cbx_no8.set(sh.lg.globs['bool']['ShowUserNames'])
-        self.gui.cbx_no9.set(sh.lg.globs['bool']['SelectTermsOnly'])
-        self.gui.cbx_no10.set(sh.lg.globs['bool']['Iconify'])
-        self.gui.cbx_no11.set(sh.lg.globs['bool']['Autocompletion'])
-        self.gui.cbx_no12.set(sh.lg.globs['bool']['Autoswap'])
-        self.gui.cbx_no13.set(sh.lg.globs['bool']['PhraseCount'])
-    
-    def run(self):
-        self.update_style_area()
-        self.update_speech_area()
-        self.update_checkboxes()
 
 
 
@@ -487,12 +374,20 @@ class Objects:
             and, in case of integration, such changes will not be
             reflected in 'logic.Objects'.
         '''
-        self.webframe = self.blocksdb = self.about = self.settings \
-                      = self.search = self.symbols = self.save \
-                      = self.history = self.suggest = self.parties \
-                      = self.webframe_ui = self.settings_ui \
-                      = self.priorities = self.blacklist = None
+        self.webframe = self.blocksdb = self.about = self.search \
+                      = self.symbols = self.save = self.history \
+                      = self.suggest = self.parties = self.webframe_ui \
+                      = self.priorities = self.blacklist \
+                      = self.settings = None
 
+    def get_settings(self):
+        if self.settings is None:
+            ''' Assigning to 'st.objs.settings' avoids showing
+                the settings widget twice.
+            '''
+            self.settings = st.objs.settings = Settings()
+        return self.settings
+    
     def get_blacklist(self):
         if self.blacklist is None:
             self.blacklist = bl.Blacklist(func_group=lg.objs.get_plugins().get_group_with_header)
@@ -535,11 +430,6 @@ class Objects:
             self.search = SearchArticle()
         return self.search
     
-    def get_settings(self):
-        if self.settings is None:
-            self.settings = Settings()
-        return self.settings
-    
     def get_about(self):
         if self.about is None:
             self.about = About()
@@ -560,11 +450,6 @@ class Objects:
         if self.webframe is None:
             self.webframe = WebFrame()
         return self.webframe
-    
-    def get_settings_ui(self):
-        if self.settings_ui is None:
-            self.settings_ui = self.get_settings().get_gui()
-        return self.settings_ui
     
     def get_webframe_ui(self):
         if self.webframe_ui is None:
@@ -1001,7 +886,7 @@ class WebFrame:
             mes.append(sub)
             mes.append('')
             # GUI Settings
-            sub = objs.get_settings_ui().debug()
+            sub = st.objs.get_settings_ui().debug()
             mes.append(sub)
             mes.append('')
             # Keys
@@ -2765,63 +2650,6 @@ class WebFrame:
                                            = True
             objs.blocksdb.delete_bookmarks()
             self.load_article()
-
-
-
-class Settings:
-
-    def __init__(self):
-        self.gui = None
-        self.Active = False
-    
-    def toggle(self,event=None):
-        if self.Active:
-            self.close()
-        else:
-            self.show()
-    
-    def get_gui(self):
-        if self.gui is None:
-            self.set_gui()
-        return self.gui
-    
-    def set_gui(self):
-        self.gui = gi.Settings()
-        self.set_bindings()
-
-    def show(self,event=None):
-        self.Active = True
-        self.get_gui()
-        UpdateSettingsUI().run()
-        self.gui.show()
-    
-    def close(self,event=None):
-        self.Active = False
-        self.get_gui().close()
-
-    def apply(self,event=None):
-        self.close()
-        ExportSettingsUI().run()
-        objs.get_webframe().set_columns()
-    
-    def set_bindings(self):
-        self.get_gui().btn_apl.action = self.apply
-        sh.com.bind (obj = self.gui.obj
-                    ,bindings = [sh.lg.globs['str']['bind_settings']
-                                ,sh.lg.globs['str']['bind_settings_alt']
-                                ]
-                    ,action = self.toggle
-                    )
-
-    def get_speech_prior(self):
-        return (sh.lg.globs['str']['speech1']
-               ,sh.lg.globs['str']['speech2']
-               ,sh.lg.globs['str']['speech3']
-               ,sh.lg.globs['str']['speech4']
-               ,sh.lg.globs['str']['speech5']
-               ,sh.lg.globs['str']['speech6']
-               ,sh.lg.globs['str']['speech7']
-               )
 
 
 

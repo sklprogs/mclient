@@ -590,6 +590,45 @@ class Commands:
     def __init__(self):
         self.use_unverified()
     
+    def export_style(self):
+        f = '[MClient] logic.Commands.export_style'
+        ''' Do not use 'gettext' to name internal types - this will make
+            the program ~0,6s slower.
+        '''
+        lst = [choice for choice in (sh.lg.globs['str']['col1_type']
+                                    ,sh.lg.globs['str']['col2_type']
+                                    ,sh.lg.globs['str']['col3_type']
+                                    ,sh.lg.globs['str']['col4_type']
+                                    ) \
+               if choice != _('Do not set')
+              ]
+        ''' #NOTE: The following assignment does not change the list:
+            for item in lst:
+                if item == something:
+                    item = something_else
+        '''
+        for i in range(len(lst)):
+            if lst[i] == _('Subjects'):
+                lst[i] = 'dic'
+            elif lst[i] == _('Word forms'):
+                lst[i] = 'wform'
+            elif lst[i] == _('Parts of speech'):
+                lst[i] = 'speech'
+            elif lst[i] == _('Transcription'):
+                lst[i] = 'transc'
+            else:
+                sub = (_('Subjects'),_('Word forms'),_('Transcription')
+                      ,_('Parts of speech')
+                      )
+                sub = '; '.join(sub)
+                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+                mes = mes.format(lst[i],sub)
+                sh.objs.get_mes(f,mes).show_error()
+        if lst:
+            objs.get_request().cols = tuple(lst)
+        else:
+            sh.com.rep_lazy(f)
+    
     def get_column_width(self):
         f = '[MClient] logic.Commands.get_column_width'
         try:

@@ -7,9 +7,8 @@ import skl_shared.shared as sh
 import subjects.subjects as sj
 
 
-# Shortened
 class Block:
-
+    # Shortened
     def __init__(self):
         self.i = 0
         self.j = 0
@@ -40,11 +39,11 @@ class HTM:
                          )
             self.output.write(c)
     
-    # 'collimit' includes fixed blocks
     def reset (self,data,cols,collimit=9,Printer=False
               ,Reverse=False,phdic='',skipped=0
               ,col_width=0,tab_width=82
               ):
+        # 'collimit' includes fixed blocks
         self.set_values()
         self.collimit = collimit
         self.cols = cols
