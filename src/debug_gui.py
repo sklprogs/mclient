@@ -7,6 +7,7 @@ import gui as mg
 import about.gui as ab
 import third_parties.gui as tp
 import settings.gui as st
+import suggest.gui as sg
 
 PRODUCT = mg.PRODUCT
 VERSION = mg.VERSION
@@ -42,7 +43,7 @@ class SearchArticle(mg.SearchArticle):
 
 
 
-class Suggest(mg.Suggest):
+class Suggest(sg.Suggest):
 
     def __init__(self):
         super().__init__()
