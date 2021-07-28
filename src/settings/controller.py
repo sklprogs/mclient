@@ -127,7 +127,7 @@ class Settings:
 
     def apply(self,event=None):
         f = '[MClient] settings.controller.Settings.apply'
-        mes = _('This procedure should be overriden')
+        mes = _('This procedure should be overridden')
         sh.objs.get_mes(f,mes,True).show_error()
     
     def set_bindings(self):

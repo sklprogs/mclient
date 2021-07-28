@@ -25,7 +25,7 @@ class Suggest:
     
     def select(self,event=None):
         f = '[MClient] suggest.controller.Suggest.select'
-        mes = _('This procedure should be overriden')
+        mes = _('This procedure should be overridden')
         sh.objs.get_mes(f,mes,True).show_error()
         
     def _select(self,event=None):
@@ -86,7 +86,7 @@ class Suggest:
     
     def suggest(self,event=None):
         f = '[MClient] suggest.controller.Suggest.suggest'
-        mes = _('This procedure should be overriden')
+        mes = _('This procedure should be overridden')
         sh.objs.get_mes(f,mes,True).show_error()
     
     def set_bindings(self):
