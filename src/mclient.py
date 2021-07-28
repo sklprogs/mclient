@@ -20,6 +20,7 @@ import about.controller as ab
 import third_parties.controller as tp
 import subjects.subjects as sj
 import settings.controller as st
+import suggest.controller as sg
 
 
 if __name__ == '__main__':
@@ -28,6 +29,52 @@ if __name__ == '__main__':
         import pythoncom
     else:
         import keylistener.linux as kl
+
+
+class Suggest(sg.Suggest):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def select(self,event=None):
+        self._select()
+        objs.get_webframe().go()
+    
+    def suggest(self,event=None):
+        f = '[MClient] mclient.Suggest.suggest'
+        self.get_gui()
+        if sh.lg.globs['bool']['Autocompletion'] and event:
+            text = self.entry.get()
+            #TODO: avoid modifiers
+            if text:
+                ''' - Retrieving suggestions online is very slow, so we
+                      just do this after a space. We may bind this
+                      procedure to '<space>' as well, however, we also
+                      would like to hide suggestions if there is no text
+                      present in 'search_field', so we bind to
+                      '<KeyRelease>'.
+                    - For some reason, 'event.char' is always empty here
+                      in Python 3.7.3.
+                '''
+                if event.keysym == 'space':
+                    text = lg.com.suggest (search = text
+                                          ,limit = 35
+                                          )
+                    if text:
+                        self.gui.close()
+                        self.gui.show (lst = list(text)
+                                      ,action = self._select
+                                      )
+                        self.set_bindings()
+                        sh.objs.get_root().update_idle()
+                        sh.AttachWidget (obj1 = self.entry
+                                        ,obj2 = self.gui.parent
+                                        ,anchor = 'NE'
+                                        ).run()
+                    else:
+                        sh.com.rep_empty(f)
+            else:
+                self.gui.close()
 
 
 
@@ -2587,128 +2634,6 @@ class WebFrame:
                                            = True
             objs.blocksdb.delete_bookmarks()
             self.load_article()
-
-
-
-class Suggest:
-    
-    def __init__(self,entry):
-        self.entry = entry
-        self.gui = None
-    
-    def close(self,event=None):
-        self.get_gui().close()
-    
-    def get_gui(self):
-        if self.gui is None:
-            self.set_gui()
-        return self.gui
-    
-    def set_gui(self):
-        self.gui = gi.Suggest()
-    
-    def select(self,event=None):
-        self._select()
-        objs.get_webframe().go()
-        
-    def _select(self,event=None):
-        ''' #NOTE: this works differently in Windows and Linux.
-            In Windows selecting an item will hide suggestions,
-            in Linux they will be kept open.
-        '''
-        f = '[MClient] mclient.Suggest._select'
-        if self.gui.parent:
-            self.entry.clear_text()
-            self.entry.insert(text=self.gui.lbox.get())
-            self.entry.select_all()
-            self.entry.focus()
-        else:
-            sh.com.rep_empty(f)
-        
-    def move_down(self,event=None):
-        f = '[MClient] mclient.Suggest.move_down'
-        if self.get_gui().parent:
-            # Necessary to use arrows on ListBox
-            self.gui.lbox.focus()
-            self.gui.lbox.index_add()
-            self.gui.lbox.select()
-            self._select()
-        else:
-            sh.com.rep_empty(f)
-        
-    def move_up(self,event=None):
-        f = '[MClient] mclient.Suggest.move_up'
-        if self.get_gui().parent:
-            # Necessary to use arrows on ListBox
-            self.gui.lbox.focus()
-            self.gui.lbox.index_subtract()
-            self.gui.lbox.select()
-            self._select()
-        else:
-            sh.com.rep_empty(f)
-        
-    def move_top(self,event=None):
-        f = '[MClient] mclient.Suggest.move_top'
-        if self.get_gui().parent:
-            # Necessary to use arrows on ListBox
-            self.gui.lbox.focus()
-            self.gui.lbox.move_top()
-            self._select()
-        else:
-            sh.com.rep_empty(f)
-                          
-    def move_bottom(self,event=None):
-        f = '[MClient] mclient.Suggest.move_bottom'
-        if self.get_gui().parent:
-            # Necessary to use arrows on ListBox
-            self.gui.lbox.focus()
-            self.gui.lbox.move_bottom()
-            self._select()
-        else:
-            sh.com.rep_empty(f)
-    
-    def suggest(self,event=None):
-        f = '[MClient] mclient.Suggest.suggest'
-        self.get_gui()
-        if sh.lg.globs['bool']['Autocompletion'] and event:
-            text = self.entry.get()
-            #TODO: avoid modifiers
-            if text:
-                ''' - Retrieving suggestions online is very slow, so we
-                      just do this after a space. We may bind this
-                      procedure to '<space>' as well, however, we also
-                      would like to hide suggestions if there is no text
-                      present in 'search_field', so we bind to
-                      '<KeyRelease>'.
-                    - For some reason, 'event.char' is always empty here
-                      in Python 3.7.3.
-                '''
-                if event.keysym == 'space':
-                    text = lg.com.suggest (search = text
-                                          ,limit = 35
-                                          )
-                    if text:
-                        self.gui.close()
-                        self.gui.show (lst = list(text)
-                                      ,action = self._select
-                                      )
-                        self.set_bindings()
-                        sh.objs.get_root().update_idle()
-                        sh.AttachWidget (obj1 = self.entry
-                                        ,obj2 = self.gui.parent
-                                        ,anchor = 'NE'
-                                        ).run()
-                    else:
-                        sh.com.rep_empty(f)
-            else:
-                self.gui.close()
-    
-    def set_bindings(self):
-        if self.get_gui().parent:
-            sh.com.bind (obj = self.gui.parent
-                        ,bindings = '<ButtonRelease-1>'
-                        ,action = self.select
-                        )
 
 
 
