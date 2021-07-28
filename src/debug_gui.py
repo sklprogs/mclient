@@ -4,14 +4,17 @@
 from skl_shared.localize import _
 import skl_shared.shared as sh
 import gui as mg
+import about.gui as ab
+import third_parties.gui as tp
+import settings.gui as st
 
 PRODUCT = mg.PRODUCT
 VERSION = mg.VERSION
-CURYEAR = mg.CURYEAR
+CURYEAR = ab.CURYEAR
 ICON = mg.ICON
 
 
-class About(mg.About):
+class About(ab.About):
 
     def __init__(self):
         super().__init__()
@@ -46,7 +49,7 @@ class Suggest(mg.Suggest):
 
 
 
-class ThirdParties(mg.ThirdParties):
+class ThirdParties(tp.ThirdParties):
 
     def __init__(self):
         super().__init__()
@@ -86,7 +89,7 @@ class Debug:
 
 
 
-class Settings(mg.Settings,Debug):
+class Settings(st.Settings,Debug):
     
     def __init__(self):
         super(Settings,self).__init__()
@@ -154,8 +157,8 @@ class WebFrame(mg.WebFrame,Debug):
         self.mes = []
         self.add_widgets()
         mes = '\n'.join(self.mes)
-        mes = '{}:\n'.format(f) + mes.strip()
-        return mes
+        mes = mes.strip()
+        return f + ':\n' + mes
     
     def add_widgets(self):
         self.add_widget('ent_src',self.ent_src.get())
@@ -170,9 +173,11 @@ class WebFrame(mg.WebFrame,Debug):
 
 
 if __name__ == '__main__':
+    f = '[MClient] debug_gui.__main__'
+    mes = []
     iset = Settings()
-    iset.close()
-    iset.debug()
+    mes.append(iset.debug())
     iweb = WebFrame()
-    iweb.close()
-    iweb.debug()
+    mes.append(iweb.debug())
+    mes = '\n\n'.join(mes)
+    sh.com.run_fast_debug(f,mes)
