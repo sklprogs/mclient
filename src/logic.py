@@ -744,3 +744,5 @@ objs = Objects()
 com = Commands()
 cf.DefaultKeys()
 com.load_config()
+# Load lists from files
+objs.get_order()

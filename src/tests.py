@@ -57,8 +57,10 @@ class ArticleSubjects:
         f = '[MClient] tests.Subjects.set_blocks'
         import mclient
         import logic as lg
-        search = 'hello'
-        url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
+        #search = 'hello'
+        #url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
+        search = 'messenger'
+        url = 'https://www.multitran.com/m.exe?s=messenger&l1=1&l2=2'
         blocks = lg.objs.get_plugins().request (search = search
                                                ,url = url
                                                )
@@ -380,6 +382,17 @@ class Plugin:
 
 
 class Commands:
+    
+    def get_priority(self):
+        f = '[MClient] tests.Commands.get_priority'
+        import logic as lg
+        import subjects.subjects as sj
+        # Load lists
+        lg.objs.get_order()
+        title = 'Gruzovik, История'
+        #result = sj.objs.get_order().priorlst
+        result = sj.objs.get_order().get_priority(title)
+        sh.objs.get_mes(f,result,True).show_debug()
     
     def get_column_width(self):
         f = '[MClient] tests.Commands.get_column_width'
@@ -811,7 +824,6 @@ if __name__ == '__main__':
     #Tags().run_multitrancom()
     #Plugin().run_multitrancom()
     #com.show_about()
-    #ArticleSubjects().run()
     #com.edit_blacklist()
     #com.edit_priorities()
     #com.get_majors_en()
@@ -820,5 +832,7 @@ if __name__ == '__main__':
     #com.check_width()
     #com.get_column_width()
     #com.run_sources()
-    Offline().run_multitrancom()
+    #Offline().run_multitrancom()
+    #ArticleSubjects().run()
+    com.get_priority()
     sh.com.end()

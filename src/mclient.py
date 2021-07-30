@@ -1878,9 +1878,6 @@ class WebFrame:
                             ,ShowUsers = sh.lg.globs['bool']['ShowUserNames']
                             ,PhraseCount = sh.lg.globs['bool']['PhraseCount']
                             )
-        # Read lists from files
-        #TODO: find the first occurrence
-        lg.objs.get_order()
         sj.objs.get_article().reset (pairs = objs.blocksdb.get_dic_pairs()
                                     ,Debug = lg.objs.get_plugins().Debug
                                     )
