@@ -3,6 +3,8 @@
 * Break too long words (e.g., URLs) in order to keep column edges
   visible
 * Update documentation
+* Fix parsing user names
+* Fix processing user names as subjects
 
 6.10
 * Set up subject priorities in a separate window

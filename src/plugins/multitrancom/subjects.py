@@ -30,6 +30,9 @@ import skl_shared.shared as sh
       names are included in this list.
     - The result will be sorted and freed of duplicates, so subjects
       may come in any order.
+    - multitran.com has a bug causing that such entries as 'Gruzovik,
+      inform.' will be expanded as 'Informal'. We correct such cases
+      here manually.
 '''
 SUBJECTS = {'Albanian language':
                {'Valid': True
@@ -4648,2137 +4651,2137 @@ SUBJECTS = {'Albanian language':
                    ,'title': 'Німеччина'
                    }
                }
-           ,'Gruzovik':
+           ,'Gruzovik, gen.':
                {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': ''
                ,'en':
-                   {'short': 'Gruzovik'
-                   ,'title': 'General'
+                   {'short': 'Gruzovik, gen.'
+                   ,'title': 'Gruzovik, General'
                    }
                ,'ru':
-                   {'short': 'Gruzovik'
-                   ,'title': 'Общая лексика'
+                   {'short': 'Gruzovik, общ.'
+                   ,'title': 'Gruzovik, Общая лексика'
                    }
                ,'de':
-                   {'short': 'Gruzovik'
-                   ,'title': 'Allgemeine Lexik'
+                   {'short': 'Gruzovik, Allg.'
+                   ,'title': 'Gruzovik, Allgemeine Lexik'
                    }
                ,'es':
-                   {'short': 'Gruzovik'
-                   ,'title': 'General'
+                   {'short': 'Gruzovik, gen.'
+                   ,'title': 'Gruzovik, General'
                    }
                ,'uk':
-                   {'short': 'Gruzovik'
-                   ,'title': 'Загальна лексика'
+                   {'short': 'Gruzovik, заг.'
+                   ,'title': 'Gruzovik, Загальна лексика'
                    }
                }
            ,'Gruzovik, GOST.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Quality control and standards'
                ,'en':
                    {'short': 'Gruzovik, GOST.'
-                   ,'title': 'GOST'
+                   ,'title': 'Gruzovik, GOST'
                    }
                ,'ru':
                    {'short': 'Gruzovik, ГОСТ.'
-                   ,'title': 'ГОСТ'
+                   ,'title': 'Gruzovik, ГОСТ'
                    }
                ,'de':
                    {'short': 'Gruzovik, GOST.'
-                   ,'title': 'GOST'
+                   ,'title': 'Gruzovik, GOST'
                    }
                ,'es':
                    {'short': 'Gruzovik, GOST.'
-                   ,'title': 'GOST'
+                   ,'title': 'Gruzovik, GOST'
                    }
                ,'uk':
                    {'short': 'Gruzovik, станд.'
-                   ,'title': 'Стандарти'
+                   ,'title': 'Gruzovik, Стандарти'
                    }
                }
            ,'Gruzovik, IT':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Computing'
                ,'en':
                    {'short': 'Gruzovik, IT'
-                   ,'title': 'Information technology'
+                   ,'title': 'Gruzovik, Information technology'
                    }
                ,'ru':
                    {'short': 'Gruzovik, ИТ.'
-                   ,'title': 'Информационные технологии'
+                   ,'title': 'Gruzovik, Информационные технологии'
                    }
                ,'de':
                    {'short': 'Gruzovik, IT'
-                   ,'title': 'Informationstechnik'
+                   ,'title': 'Gruzovik, Informationstechnik'
                    }
                ,'es':
                    {'short': 'Gruzovik, IT'
-                   ,'title': 'Tecnología de la información'
+                   ,'title': 'Gruzovik, Tecnología de la información'
                    }
                ,'uk':
                    {'short': 'Gruzovik, IT'
-                   ,'title': 'Інформаційні технології'
+                   ,'title': 'Gruzovik, Інформаційні технології'
                    }
                }
            ,'Gruzovik, abbr.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Grammatical labels'
                ,'en':
                    {'short': 'Gruzovik, abbr.'
-                   ,'title': 'Abbreviation'
+                   ,'title': 'Gruzovik, Abbreviation'
                    }
                ,'ru':
                    {'short': 'Gruzovik, сокр.'
-                   ,'title': 'Сокращение'
+                   ,'title': 'Gruzovik, Сокращение'
                    }
                ,'de':
                    {'short': 'Gruzovik, Abkürz.'
-                   ,'title': 'Abkürzung'
+                   ,'title': 'Gruzovik, Abkürzung'
                    }
                ,'es':
                    {'short': 'Gruzovik, abrev.'
-                   ,'title': 'Abreviatura'
+                   ,'title': 'Gruzovik, Abreviatura'
                    }
                ,'uk':
                    {'short': 'Gruzovik, абрев.'
-                   ,'title': 'Абревіатура'
+                   ,'title': 'Gruzovik, Абревіатура'
                    }
                }
            ,'Gruzovik, abbr., IT':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': ''
                ,'en':
                    {'short': 'Gruzovik, abbr., IT'
-                   ,'title': 'Abbreviation, Information technology'
+                   ,'title': 'Gruzovik, Abbreviation, Information technology'
                    }
                ,'ru':
                    {'short': 'Gruzovik, сокр., ИТ.'
-                   ,'title': 'Сокращение, Информационные технологии'
+                   ,'title': 'Gruzovik, Сокращение, Информационные технологии'
                    }
                ,'de':
                    {'short': 'Gruzovik, Abkürz., IT'
-                   ,'title': 'Abkürzung, Informationstechnik'
+                   ,'title': 'Gruzovik, Abkürzung, Informationstechnik'
                    }
                ,'es':
                    {'short': 'Gruzovik, abrev., IT'
-                   ,'title': 'Abreviatura, Tecnología de la información'
+                   ,'title': 'Gruzovik, Abreviatura, Tecnología de la información'
                    }
                ,'uk':
                    {'short': 'Gruzovik, абрев., IT'
-                   ,'title': 'Абревіатура, Інформаційні технології'
+                   ,'title': 'Gruzovik, Абревіатура, Інформаційні технології'
                    }
                }
            ,'Gruzovik, abbr., account.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': ''
                ,'en':
                    {'short': 'Gruzovik, abbr., account.'
-                   ,'title': 'Abbreviation, Accounting'
+                   ,'title': 'Gruzovik, Abbreviation, Accounting'
                    }
                ,'ru':
                    {'short': 'Gruzovik, сокр., бухг.'
-                   ,'title': 'Сокращение, Бухгалтерский учет (кроме аудита)'
+                   ,'title': 'Gruzovik, Сокращение, Бухгалтерский учет (кроме аудита)'
                    }
                ,'de':
                    {'short': 'Gruzovik, Abkürz., Buchhalt.'
-                   ,'title': 'Abkürzung, Buchhaltung'
+                   ,'title': 'Gruzovik, Abkürzung, Buchhaltung'
                    }
                ,'es':
                    {'short': 'Gruzovik, abrev., cont.'
-                   ,'title': 'Abreviatura, Contabilidad'
+                   ,'title': 'Gruzovik, Abreviatura, Contabilidad'
                    }
                ,'uk':
                    {'short': 'Gruzovik, абрев., бухг.'
-                   ,'title': 'Абревіатура, Бухгалтерський облік (крім аудиту)'
+                   ,'title': 'Gruzovik, Абревіатура, Бухгалтерський облік (крім аудиту)'
                    }
                }
            ,'Gruzovik, abbr., bank.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': ''
                ,'en':
                    {'short': 'Gruzovik, abbr., bank.'
-                   ,'title': 'Abbreviation, Banking'
+                   ,'title': 'Gruzovik, Abbreviation, Banking'
                    }
                ,'ru':
                    {'short': 'Gruzovik, сокр., банк.'
-                   ,'title': 'Сокращение, Банки и банковское дело'
+                   ,'title': 'Gruzovik, Сокращение, Банки и банковское дело'
                    }
                ,'de':
                    {'short': 'Gruzovik, Abkürz., Bank.'
-                   ,'title': 'Abkürzung, Bankwesen'
+                   ,'title': 'Gruzovik, Abkürzung, Bankwesen'
                    }
                ,'es':
                    {'short': 'Gruzovik, abrev., bank.'
-                   ,'title': 'Abreviatura, Banking'
+                   ,'title': 'Gruzovik, Abreviatura, Banking'
                    }
                ,'uk':
                    {'short': 'Gruzovik, абрев., банк.'
-                   ,'title': 'Абревіатура, Банки та банківська справа'
+                   ,'title': 'Gruzovik, Абревіатура, Банки та банківська справа'
                    }
                }
            ,'Gruzovik, adm.law.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Law'
                ,'en':
                    {'short': 'Gruzovik, adm.law.'
-                   ,'title': 'Administrative law'
+                   ,'title': 'Gruzovik, Administrative law'
                    }
                ,'ru':
                    {'short': 'Gruzovik, админ.прав.'
-                   ,'title': 'Административное право'
+                   ,'title': 'Gruzovik, Административное право'
                    }
                ,'de':
                    {'short': 'Gruzovik, adm.law.'
-                   ,'title': 'Administrative law'
+                   ,'title': 'Gruzovik, Administrative law'
                    }
                ,'es':
                    {'short': 'Gruzovik, adm.law.'
-                   ,'title': 'Administrative law'
+                   ,'title': 'Gruzovik, Administrative law'
                    }
                ,'uk':
                    {'short': 'Gruzovik, адмін.пр.'
-                   ,'title': 'Адміністративне право'
+                   ,'title': 'Gruzovik, Адміністративне право'
                    }
                }
            ,'Gruzovik, adv.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Business'
                ,'en':
                    {'short': 'Gruzovik, adv.'
-                   ,'title': 'Advertising'
+                   ,'title': 'Gruzovik, Advertising'
                    }
                ,'ru':
                    {'short': 'Gruzovik, рекл.'
-                   ,'title': 'Реклама'
+                   ,'title': 'Gruzovik, Реклама'
                    }
                ,'de':
                    {'short': 'Gruzovik, Werb.'
-                   ,'title': 'Werbung'
+                   ,'title': 'Gruzovik, Werbung'
                    }
                ,'es':
                    {'short': 'Gruzovik, adv.'
-                   ,'title': 'Advertising'
+                   ,'title': 'Gruzovik, Advertising'
                    }
                ,'uk':
                    {'short': 'Gruzovik, рекл.'
-                   ,'title': 'Реклама'
+                   ,'title': 'Gruzovik, Реклама'
                    }
                }
            ,'Gruzovik, aer.phot.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Aviation'
                ,'en':
                    {'short': 'Gruzovik, aer.phot.'
-                   ,'title': 'Aerial photography and topography'
+                   ,'title': 'Gruzovik, Aerial photography and topography'
                    }
                ,'ru':
                    {'short': 'Gruzovik, аэрофот.'
-                   ,'title': 'Аэрофотосъемка и топография'
+                   ,'title': 'Gruzovik, Аэрофотосъемка и топография'
                    }
                ,'de':
                    {'short': 'Gruzovik, aer.phot.'
-                   ,'title': 'Aerial photography and topography'
+                   ,'title': 'Gruzovik, Aerial photography and topography'
                    }
                ,'es':
                    {'short': 'Gruzovik, aer.phot.'
-                   ,'title': 'Aerial photography and topography'
+                   ,'title': 'Gruzovik, Aerial photography and topography'
                    }
                ,'uk':
                    {'short': 'Gruzovik, аерофот.'
-                   ,'title': 'Аерофозйомка та топографія'
+                   ,'title': 'Gruzovik, Аерофозйомка та топографія'
                    }
                }
            ,'Gruzovik, agric.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Agriculture'
                ,'en':
                    {'short': 'Gruzovik, agric.'
-                   ,'title': 'Agriculture'
+                   ,'title': 'Gruzovik, Agriculture'
                    }
                ,'ru':
                    {'short': 'Gruzovik, с/х.'
-                   ,'title': 'Сельское хозяйство'
+                   ,'title': 'Gruzovik, Сельское хозяйство'
                    }
                ,'de':
                    {'short': 'Gruzovik, landwirt.'
-                   ,'title': 'Landwirtschaft'
+                   ,'title': 'Gruzovik, Landwirtschaft'
                    }
                ,'es':
                    {'short': 'Gruzovik, agric.'
-                   ,'title': 'Agricultura'
+                   ,'title': 'Gruzovik, Agricultura'
                    }
                ,'uk':
                    {'short': 'Gruzovik, с/г.'
-                   ,'title': 'Сільське господарство'
+                   ,'title': 'Gruzovik, Сільське господарство'
                    }
                }
            ,'Gruzovik, ballist.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Physics'
                ,'en':
                    {'short': 'Gruzovik, ballist.'
-                   ,'title': 'Ballistics'
+                   ,'title': 'Gruzovik, Ballistics'
                    }
                ,'ru':
                    {'short': 'Gruzovik, бал.'
-                   ,'title': 'Баллистика'
+                   ,'title': 'Gruzovik, Баллистика'
                    }
                ,'de':
                    {'short': 'Gruzovik, ballist.'
-                   ,'title': 'Ballistics'
+                   ,'title': 'Gruzovik, Ballistics'
                    }
                ,'es':
                    {'short': 'Gruzovik, ballist.'
-                   ,'title': 'Ballistics'
+                   ,'title': 'Gruzovik, Ballistics'
                    }
                ,'uk':
                    {'short': 'Gruzovik, баліст.'
-                   ,'title': 'Балістика'
+                   ,'title': 'Gruzovik, Балістика'
                    }
                }
            ,'Gruzovik, biogeogr.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Biology'
                ,'en':
                    {'short': 'Gruzovik, biogeogr.'
-                   ,'title': 'Biogeography'
+                   ,'title': 'Gruzovik, Biogeography'
                    }
                ,'ru':
                    {'short': 'Gruzovik, биогеогр.'
-                   ,'title': 'Биогеография'
+                   ,'title': 'Gruzovik, Биогеография'
                    }
                ,'de':
                    {'short': 'Gruzovik, biogeogr.'
-                   ,'title': 'Biogeography'
+                   ,'title': 'Gruzovik, Biogeography'
                    }
                ,'es':
                    {'short': 'Gruzovik, biogeogr.'
-                   ,'title': 'Biogeography'
+                   ,'title': 'Gruzovik, Biogeography'
                    }
                ,'uk':
                    {'short': 'Gruzovik, біогеогр.'
-                   ,'title': 'Біогеографія'
+                   ,'title': 'Gruzovik, Біогеографія'
                    }
                }
            ,'Gruzovik, bot.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Biology'
                ,'en':
                    {'short': 'Gruzovik, bot.'
-                   ,'title': 'Botany'
+                   ,'title': 'Gruzovik, Botany'
                    }
                ,'ru':
                    {'short': 'Gruzovik, бот.'
-                   ,'title': 'Ботаника'
+                   ,'title': 'Gruzovik, Ботаника'
                    }
                ,'de':
                    {'short': 'Gruzovik, Bot.'
-                   ,'title': 'Botanik'
+                   ,'title': 'Gruzovik, Botanik'
                    }
                ,'es':
                    {'short': 'Gruzovik, bot.'
-                   ,'title': 'Botánica'
+                   ,'title': 'Gruzovik, Botánica'
                    }
                ,'uk':
                    {'short': 'Gruzovik, бот.'
-                   ,'title': 'Ботаніка'
+                   ,'title': 'Gruzovik, Ботаніка'
                    }
                }
            ,'Gruzovik, cloth.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Light industries'
                ,'en':
                    {'short': 'Gruzovik, cloth.'
-                   ,'title': 'Clothing'
+                   ,'title': 'Gruzovik, Clothing'
                    }
                ,'ru':
                    {'short': 'Gruzovik, одеж.'
-                   ,'title': 'Одежда'
+                   ,'title': 'Gruzovik, Одежда'
                    }
                ,'de':
                    {'short': 'Gruzovik, cloth.'
-                   ,'title': 'Clothing'
+                   ,'title': 'Gruzovik, Clothing'
                    }
                ,'es':
                    {'short': 'Gruzovik, cloth.'
-                   ,'title': 'Clothing'
+                   ,'title': 'Gruzovik, Clothing'
                    }
                ,'uk':
                    {'short': 'Gruzovik, одяг'
-                   ,'title': 'Одяг'
+                   ,'title': 'Gruzovik, Одяг'
                    }
                }
            ,'Gruzovik, comp.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Computing'
                ,'en':
                    {'short': 'Gruzovik, comp.'
-                   ,'title': 'Computing'
+                   ,'title': 'Gruzovik, Computing'
                    }
                ,'ru':
                    {'short': 'Gruzovik, комп.'
-                   ,'title': 'Компьютеры'
+                   ,'title': 'Gruzovik, Компьютеры'
                    }
                ,'de':
                    {'short': 'Gruzovik, Comp.'
-                   ,'title': 'Computertechnik'
+                   ,'title': 'Gruzovik, Computertechnik'
                    }
                ,'es':
                    {'short': 'Gruzovik, comp.'
-                   ,'title': 'Computadores'
+                   ,'title': 'Gruzovik, Computadores'
                    }
                ,'uk':
                    {'short': 'Gruzovik, комп.'
-                   ,'title': "Комп'ютери"
+                   ,'title': "Gruzovik, Комп'ютери"
                    }
                }
            ,'Gruzovik, cryptogr.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Security systems'
                ,'en':
                    {'short': 'Gruzovik, cryptogr.'
-                   ,'title': 'Cryptography'
+                   ,'title': 'Gruzovik, Cryptography'
                    }
                ,'ru':
                    {'short': 'Gruzovik, криптогр.'
-                   ,'title': 'Криптография'
+                   ,'title': 'Gruzovik, Криптография'
                    }
                ,'de':
                    {'short': 'Gruzovik, cryptogr.'
-                   ,'title': 'Cryptography'
+                   ,'title': 'Gruzovik, Cryptography'
                    }
                ,'es':
                    {'short': 'Gruzovik, cryptogr.'
-                   ,'title': 'Cryptography'
+                   ,'title': 'Gruzovik, Cryptography'
                    }
                ,'uk':
                    {'short': 'Gruzovik, крипт.'
-                   ,'title': 'Криптографія'
+                   ,'title': 'Gruzovik, Криптографія'
                    }
                }
            ,'Gruzovik, dial.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Dialectal'
                ,'en':
                    {'short': 'Gruzovik, dial.'
-                   ,'title': 'Dialectal'
+                   ,'title': 'Gruzovik, Dialectal'
                    }
                ,'ru':
                    {'short': 'Gruzovik, диал.'
-                   ,'title': 'Диалектизм'
+                   ,'title': 'Gruzovik, Диалектизм'
                    }
                ,'de':
                    {'short': 'Gruzovik, Dial.'
-                   ,'title': 'Dialekt'
+                   ,'title': 'Gruzovik, Dialekt'
                    }
                ,'es':
                    {'short': 'Gruzovik, dial.'
-                   ,'title': 'Dialecto'
+                   ,'title': 'Gruzovik, Dialecto'
                    }
                ,'uk':
                    {'short': 'Gruzovik, діал.'
-                   ,'title': 'Діалектизм'
+                   ,'title': 'Gruzovik, Діалектизм'
                    }
                }
            ,'Gruzovik, econ.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Economy'
                ,'en':
                    {'short': 'Gruzovik, econ.'
-                   ,'title': 'Economy'
+                   ,'title': 'Gruzovik, Economy'
                    }
                ,'ru':
                    {'short': 'Gruzovik, эк.'
-                   ,'title': 'Экономика'
+                   ,'title': 'Gruzovik, Экономика'
                    }
                ,'de':
                    {'short': 'Gruzovik, Wirtsch.'
-                   ,'title': 'Wirtschaft'
+                   ,'title': 'Gruzovik, Wirtschaft'
                    }
                ,'es':
                    {'short': 'Gruzovik, econ.'
-                   ,'title': 'Economía'
+                   ,'title': 'Gruzovik, Economía'
                    }
                ,'uk':
                    {'short': 'Gruzovik, ек.'
-                   ,'title': 'Економіка'
+                   ,'title': 'Gruzovik, Економіка'
                    }
                }
            ,'Gruzovik, el.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Electronics'
                ,'en':
                    {'short': 'Gruzovik, el.'
-                   ,'title': 'Electronics'
+                   ,'title': 'Gruzovik, Electronics'
                    }
                ,'ru':
                    {'short': 'Gruzovik, эл.'
-                   ,'title': 'Электроника'
+                   ,'title': 'Gruzovik, Электроника'
                    }
                ,'de':
                    {'short': 'Gruzovik, el.'
-                   ,'title': 'Elektronik'
+                   ,'title': 'Gruzovik, Elektronik'
                    }
                ,'es':
                    {'short': 'Gruzovik, electr.'
-                   ,'title': 'Electrónica'
+                   ,'title': 'Gruzovik, Electrónica'
                    }
                ,'uk':
                    {'short': 'Gruzovik, ел.'
-                   ,'title': 'Електроніка'
+                   ,'title': 'Gruzovik, Електроніка'
                    }
                }
            ,'Gruzovik, electric.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Electrical engineering'
                ,'en':
                    {'short': 'Gruzovik, electric.'
-                   ,'title': 'Electricity'
+                   ,'title': 'Gruzovik, Electricity'
                    }
                ,'ru':
                    {'short': 'Gruzovik, электрич.'
-                   ,'title': 'Электричество'
+                   ,'title': 'Gruzovik, Электричество'
                    }
                ,'de':
                    {'short': 'Gruzovik, electric.'
-                   ,'title': 'Electricity'
+                   ,'title': 'Gruzovik, Electricity'
                    }
                ,'es':
                    {'short': 'Gruzovik, electric.'
-                   ,'title': 'Electricity'
+                   ,'title': 'Gruzovik, Electricity'
                    }
                ,'uk':
                    {'short': 'Gruzovik, електр.'
-                   ,'title': 'Електричний струм'
+                   ,'title': 'Gruzovik, Електричний струм'
                    }
                }
            ,'Gruzovik, email':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Communications'
                ,'en':
                    {'short': 'Gruzovik, email'
-                   ,'title': 'E-mail'
+                   ,'title': 'Gruzovik, E-mail'
                    }
                ,'ru':
                    {'short': 'Gruzovik, эл.почт.'
-                   ,'title': 'Электронная почта'
+                   ,'title': 'Gruzovik, Электронная почта'
                    }
                ,'de':
                    {'short': 'Gruzovik, E-Mail'
-                   ,'title': 'E-Mail'
+                   ,'title': 'Gruzovik, E-Mail'
                    }
                ,'es':
                    {'short': 'Gruzovik, email'
-                   ,'title': 'E-mail'
+                   ,'title': 'Gruzovik, E-mail'
                    }
                ,'uk':
                    {'short': 'Gruzovik, ел.пошт.'
-                   ,'title': 'Електронна пошта'
+                   ,'title': 'Gruzovik, Електронна пошта'
                    }
                }
            ,'Gruzovik, expl.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Law enforcement'
                ,'en':
                    {'short': 'Gruzovik, expl.'
-                   ,'title': 'Explosives'
+                   ,'title': 'Gruzovik, Explosives'
                    }
                ,'ru':
                    {'short': 'Gruzovik, ВВ.'
-                   ,'title': 'Взрывчатые вещества'
+                   ,'title': 'Gruzovik, Взрывчатые вещества'
                    }
                ,'de':
                    {'short': 'Gruzovik, expl.'
-                   ,'title': 'Explosives'
+                   ,'title': 'Gruzovik, Explosives'
                    }
                ,'es':
                    {'short': 'Gruzovik, expl.'
-                   ,'title': 'Explosives'
+                   ,'title': 'Gruzovik, Explosives'
                    }
                ,'uk':
                    {'short': 'Gruzovik, вибух.'
-                   ,'title': 'Вибухові речовини'
+                   ,'title': 'Gruzovik, Вибухові речовини'
                    }
                }
            ,'Gruzovik, fig.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': ''
                ,'en':
                    {'short': 'Gruzovik, fig.'
-                   ,'title': 'Figurative'
+                   ,'title': 'Gruzovik, Figurative'
                    }
                ,'ru':
                    {'short': 'Gruzovik, перен.'
-                   ,'title': 'Переносный смысл'
+                   ,'title': 'Gruzovik, Переносный смысл'
                    }
                ,'de':
                    {'short': 'Gruzovik, übertr.'
-                   ,'title': 'übertragen'
+                   ,'title': 'Gruzovik, übertragen'
                    }
                ,'es':
                    {'short': 'Gruzovik, fig.'
-                   ,'title': 'Figuradamente'
+                   ,'title': 'Gruzovik, Figuradamente'
                    }
                ,'uk':
                    {'short': 'Gruzovik, перен.'
-                   ,'title': 'Переносний сенс'
+                   ,'title': 'Gruzovik, Переносний сенс'
                    }
                }
            ,'Gruzovik, footwear':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Light industries'
                ,'en':
                    {'short': 'Gruzovik, footwear'
-                   ,'title': 'Footwear'
+                   ,'title': 'Gruzovik, Footwear'
                    }
                ,'ru':
                    {'short': 'Gruzovik, обув.'
-                   ,'title': 'Обувь'
+                   ,'title': 'Gruzovik, Обувь'
                    }
                ,'de':
                    {'short': 'Gruzovik, footwear'
-                   ,'title': 'Footwear'
+                   ,'title': 'Gruzovik, Footwear'
                    }
                ,'es':
                    {'short': 'Gruzovik, footwear'
-                   ,'title': 'Footwear'
+                   ,'title': 'Gruzovik, Footwear'
                    }
                ,'uk':
                    {'short': 'Gruzovik, взут.'
-                   ,'title': 'Взуття'
+                   ,'title': 'Gruzovik, Взуття'
                    }
                }
            ,'Gruzovik, fr.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Languages'
                ,'en':
                    {'short': 'Gruzovik, fr.'
-                   ,'title': 'French'
+                   ,'title': 'Gruzovik, French'
                    }
                ,'ru':
                    {'short': 'Gruzovik, фр.'
-                   ,'title': 'Французский язык'
+                   ,'title': 'Gruzovik, Французский язык'
                    }
                ,'de':
                    {'short': 'Gruzovik, Franz. Sp.'
-                   ,'title': 'Französisch'
+                   ,'title': 'Gruzovik, Französisch'
                    }
                ,'es':
                    {'short': 'Gruzovik, fr.'
-                   ,'title': 'Francés'
+                   ,'title': 'Gruzovik, Francés'
                    }
                ,'uk':
                    {'short': 'Gruzovik, фр.'
-                   ,'title': 'Французька мова'
+                   ,'title': 'Gruzovik, Французька мова'
                    }
                }
            ,'Gruzovik, garden.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Agriculture'
                ,'en':
                    {'short': 'Gruzovik, garden.'
-                   ,'title': 'Gardening'
+                   ,'title': 'Gruzovik, Gardening'
                    }
                ,'ru':
                    {'short': 'Gruzovik, сад.'
-                   ,'title': 'Садоводство'
+                   ,'title': 'Gruzovik, Садоводство'
                    }
                ,'de':
                    {'short': 'Gruzovik, Garten.'
-                   ,'title': 'Gartenarbeit'
+                   ,'title': 'Gruzovik, Gartenarbeit'
                    }
                ,'es':
                    {'short': 'Gruzovik, garden.'
-                   ,'title': 'Gardening'
+                   ,'title': 'Gruzovik, Gardening'
                    }
                ,'uk':
                    {'short': 'Gruzovik, садівн.'
-                   ,'title': 'Садівництво'
+                   ,'title': 'Gruzovik, Садівництво'
                    }
                }
            ,'Gruzovik, glac.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Geology'
                ,'en':
                    {'short': 'Gruzovik, glac.'
-                   ,'title': 'Glaciology'
+                   ,'title': 'Gruzovik, Glaciology'
                    }
                ,'ru':
                    {'short': 'Gruzovik, гляц.'
-                   ,'title': 'Гляциология'
+                   ,'title': 'Gruzovik, Гляциология'
                    }
                ,'de':
                    {'short': 'Gruzovik, glac.'
-                   ,'title': 'Glaciology'
+                   ,'title': 'Gruzovik, Glaciology'
                    }
                ,'es':
                    {'short': 'Gruzovik, glac.'
-                   ,'title': 'Glaciology'
+                   ,'title': 'Gruzovik, Glaciology'
                    }
                ,'uk':
                    {'short': 'Gruzovik, гляц.'
-                   ,'title': 'Гляціологія'
+                   ,'title': 'Gruzovik, Гляціологія'
                    }
                }
            ,'Gruzovik, horse.breed.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Agriculture'
                ,'en':
                    {'short': 'Gruzovik, horse.breed.'
-                   ,'title': 'Horse breeding'
+                   ,'title': 'Gruzovik, Horse breeding'
                    }
                ,'ru':
                    {'short': 'Gruzovik, кон.'
-                   ,'title': 'Коневодство'
+                   ,'title': 'Gruzovik, Коневодство'
                    }
                ,'de':
                    {'short': 'Gruzovik, horse.breed.'
-                   ,'title': 'Horse breeding'
+                   ,'title': 'Gruzovik, Horse breeding'
                    }
                ,'es':
                    {'short': 'Gruzovik, horse.breed.'
-                   ,'title': 'Horse breeding'
+                   ,'title': 'Gruzovik, Horse breeding'
                    }
                ,'uk':
                    {'short': 'Gruzovik, кон.'
-                   ,'title': 'Конярство'
+                   ,'title': 'Gruzovik, Конярство'
                    }
                }
            ,'Gruzovik, hunt.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': ''
                ,'en':
                    {'short': 'Gruzovik, hunt.'
-                   ,'title': 'Hunting'
+                   ,'title': 'Gruzovik, Hunting'
                    }
                ,'ru':
                    {'short': 'Gruzovik, охот.'
-                   ,'title': 'Охота и охотоведение'
+                   ,'title': 'Gruzovik, Охота и охотоведение'
                    }
                ,'de':
                    {'short': 'Gruzovik, Jagd.'
-                   ,'title': 'Jagd'
+                   ,'title': 'Gruzovik, Jagd'
                    }
                ,'es':
                    {'short': 'Gruzovik, caza'
-                   ,'title': 'Caza y cinegética'
+                   ,'title': 'Gruzovik, Caza y cinegética'
                    }
                ,'uk':
                    {'short': 'Gruzovik, мислив.'
-                   ,'title': 'Мисливство та мисливствознавство'
+                   ,'title': 'Gruzovik, Мисливство та мисливствознавство'
                    }
                }
            ,'Gruzovik, inform.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': ''
                ,'en':
                    {'short': 'Gruzovik, inform.'
-                   ,'title': 'Informal'
+                   ,'title': 'Gruzovik, Informal'
                    }
                ,'ru':
                    {'short': 'Gruzovik, разг.'
-                   ,'title': 'Разговорная лексика'
+                   ,'title': 'Gruzovik, Разговорная лексика'
                    }
                ,'de':
                    {'short': 'Gruzovik, Umg.'
-                   ,'title': 'Umgangssprache'
+                   ,'title': 'Gruzovik, Umgangssprache'
                    }
                ,'es':
                    {'short': 'Gruzovik, inf.'
-                   ,'title': 'Informal'
+                   ,'title': 'Gruzovik, Informal'
                    }
                ,'uk':
                    {'short': 'Gruzovik, розмовн.'
-                   ,'title': 'Розмовна лексика'
+                   ,'title': 'Gruzovik, Розмовна лексика'
                    }
                }
            ,'Gruzovik, law':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Law'
                ,'en':
                    {'short': 'Gruzovik, law'
-                   ,'title': 'Law'
+                   ,'title': 'Gruzovik, Law'
                    }
                ,'ru':
                    {'short': 'Gruzovik, юр.'
-                   ,'title': 'Юридическая лексика'
+                   ,'title': 'Gruzovik, Юридическая лексика'
                    }
                ,'de':
                    {'short': 'Gruzovik, Recht.'
-                   ,'title': 'Recht'
+                   ,'title': 'Gruzovik, Recht'
                    }
                ,'es':
                    {'short': 'Gruzovik, jur.'
-                   ,'title': 'Jurídico'
+                   ,'title': 'Gruzovik, Jurídico'
                    }
                ,'uk':
                    {'short': 'Gruzovik, юр.'
-                   ,'title': 'Юридична лексика'
+                   ,'title': 'Gruzovik, Юридична лексика'
                    }
                }
            ,'Gruzovik, mach.mech.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Machinery and mechanisms'
                ,'en':
                    {'short': 'Gruzovik, mach.mech.'
-                   ,'title': 'Machinery and mechanisms'
+                   ,'title': 'Gruzovik, Machinery and mechanisms'
                    }
                ,'ru':
                    {'short': 'Gruzovik, маш.мех.'
-                   ,'title': 'Машины и механизмы'
+                   ,'title': 'Gruzovik, Машины и механизмы'
                    }
                ,'de':
                    {'short': 'Gruzovik, mach.mech.'
-                   ,'title': 'Machinery and mechanisms'
+                   ,'title': 'Gruzovik, Machinery and mechanisms'
                    }
                ,'es':
                    {'short': 'Gruzovik, mach.mech.'
-                   ,'title': 'Machinery and mechanisms'
+                   ,'title': 'Gruzovik, Machinery and mechanisms'
                    }
                ,'uk':
                    {'short': 'Gruzovik, маш.мех.'
-                   ,'title': 'Машини та механізми'
+                   ,'title': 'Gruzovik, Машини та механізми'
                    }
                }
            ,'Gruzovik, magn.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Physics'
                ,'en':
                    {'short': 'Gruzovik, magn.'
-                   ,'title': 'Magnetics'
+                   ,'title': 'Gruzovik, Magnetics'
                    }
                ,'ru':
                    {'short': 'Gruzovik, магн.'
-                   ,'title': 'Магнетизм'
+                   ,'title': 'Gruzovik, Магнетизм'
                    }
                ,'de':
                    {'short': 'Gruzovik, Magnet.'
-                   ,'title': 'Magnetismus'
+                   ,'title': 'Gruzovik, Magnetismus'
                    }
                ,'es':
                    {'short': 'Gruzovik, magn.'
-                   ,'title': 'Magnetics'
+                   ,'title': 'Gruzovik, Magnetics'
                    }
                ,'uk':
                    {'short': 'Gruzovik, магн.'
-                   ,'title': 'Магнетизм'
+                   ,'title': 'Gruzovik, Магнетизм'
                    }
                }
            ,'Gruzovik, math.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Mathematics'
                ,'en':
                    {'short': 'Gruzovik, math.'
-                   ,'title': 'Mathematics'
+                   ,'title': 'Gruzovik, Mathematics'
                    }
                ,'ru':
                    {'short': 'Gruzovik, мат.'
-                   ,'title': 'Математика'
+                   ,'title': 'Gruzovik, Математика'
                    }
                ,'de':
                    {'short': 'Gruzovik, Math.'
-                   ,'title': 'Mathematik'
+                   ,'title': 'Gruzovik, Mathematik'
                    }
                ,'es':
                    {'short': 'Gruzovik, mat.'
-                   ,'title': 'Matemáticas'
+                   ,'title': 'Gruzovik, Matemáticas'
                    }
                ,'uk':
                    {'short': 'Gruzovik, мат.'
-                   ,'title': 'Математика'
+                   ,'title': 'Gruzovik, Математика'
                    }
                }
            ,'Gruzovik, med.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Medical'
                ,'en':
                    {'short': 'Gruzovik, med.'
-                   ,'title': 'Medical'
+                   ,'title': 'Gruzovik, Medical'
                    }
                ,'ru':
                    {'short': 'Gruzovik, мед.'
-                   ,'title': 'Медицина'
+                   ,'title': 'Gruzovik, Медицина'
                    }
                ,'de':
                    {'short': 'Gruzovik, Med.'
-                   ,'title': 'Medizin'
+                   ,'title': 'Gruzovik, Medizin'
                    }
                ,'es':
                    {'short': 'Gruzovik, med.'
-                   ,'title': 'Medicina'
+                   ,'title': 'Gruzovik, Medicina'
                    }
                ,'uk':
                    {'short': 'Gruzovik, мед.'
-                   ,'title': 'Медицина'
+                   ,'title': 'Gruzovik, Медицина'
                    }
                }
            ,'Gruzovik, media.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Mass media'
                ,'en':
                    {'short': 'Gruzovik, media.'
-                   ,'title': 'Mass media'
+                   ,'title': 'Gruzovik, Mass media'
                    }
                ,'ru':
                    {'short': 'Gruzovik, СМИ.'
-                   ,'title': 'Средства массовой информации'
+                   ,'title': 'Gruzovik, Средства массовой информации'
                    }
                ,'de':
                    {'short': 'Gruzovik, Massenmed.'
-                   ,'title': 'Massenmedien'
+                   ,'title': 'Gruzovik, Massenmedien'
                    }
                ,'es':
                    {'short': 'Gruzovik, media.'
-                   ,'title': 'Mass media'
+                   ,'title': 'Gruzovik, Mass media'
                    }
                ,'uk':
                    {'short': 'Gruzovik, ЗМІ'
-                   ,'title': 'Засоби масової інформації'
+                   ,'title': 'Gruzovik, Засоби масової інформації'
                    }
                }
            ,'Gruzovik, met.phys.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Physics'
                ,'en':
                    {'short': 'Gruzovik, met.phys.'
-                   ,'title': 'Metal physics'
+                   ,'title': 'Gruzovik, Metal physics'
                    }
                ,'ru':
                    {'short': 'Gruzovik, физ.мет.'
-                   ,'title': 'Физика металлов'
+                   ,'title': 'Gruzovik, Физика металлов'
                    }
                ,'de':
                    {'short': 'Gruzovik, Metphsk.'
-                   ,'title': 'Metallphysik'
+                   ,'title': 'Gruzovik, Metallphysik'
                    }
                ,'es':
                    {'short': 'Gruzovik, met.phys.'
-                   ,'title': 'Metal physics'
+                   ,'title': 'Gruzovik, Metal physics'
                    }
                ,'uk':
                    {'short': 'Gruzovik, фіз.мет.'
-                   ,'title': 'Фізика металів'
+                   ,'title': 'Gruzovik, Фізика металів'
                    }
                }
            ,'Gruzovik, mil.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Military'
                ,'en':
                    {'short': 'Gruzovik, mil.'
-                   ,'title': 'Military'
+                   ,'title': 'Gruzovik, Military'
                    }
                ,'ru':
                    {'short': 'Gruzovik, воен.'
-                   ,'title': 'Военный термин'
+                   ,'title': 'Gruzovik, Военный термин'
                    }
                ,'de':
                    {'short': 'Gruzovik, Mil.'
-                   ,'title': 'Militär'
+                   ,'title': 'Gruzovik, Militär'
                    }
                ,'es':
                    {'short': 'Gruzovik, mil.'
-                   ,'title': 'Término militar'
+                   ,'title': 'Gruzovik, Término militar'
                    }
                ,'uk':
                    {'short': 'Gruzovik, військ.'
-                   ,'title': 'Військовий термін'
+                   ,'title': 'Gruzovik, Військовий термін'
                    }
                }
            ,'Gruzovik, mil., air.def.':
                {'Valid': False
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Military'
                ,'en':
                    {'short': 'Gruzovik, mil., air.def.'
-                   ,'title': 'Air defense'
+                   ,'title': 'Gruzovik, Air defense'
                    }
                ,'ru':
                    {'short': 'Gruzovik, воен., ПВО.'
-                   ,'title': 'Противовоздушная оборона'
+                   ,'title': 'Gruzovik, Противовоздушная оборона'
                    }
                ,'de':
                    {'short': 'Gruzovik, mil., air.def.'
-                   ,'title': 'Air defense'
+                   ,'title': 'Gruzovik, Air defense'
                    }
                ,'es':
                    {'short': 'Gruzovik, mil., air.def.'
-                   ,'title': 'Air defense'
+                   ,'title': 'Gruzovik, Air defense'
                    }
                ,'uk':
                    {'short': 'Gruzovik, військ., ППО'
-                   ,'title': 'Протиповітряна оборона'
+                   ,'title': 'Gruzovik, Протиповітряна оборона'
                    }
                }
            ,'Gruzovik, mil., arm.veh.':
                {'Valid': False
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Military'
                ,'en':
                    {'short': 'Gruzovik, mil., arm.veh.'
-                   ,'title': 'Armored vehicles'
+                   ,'title': 'Gruzovik, Armored vehicles'
                    }
                ,'ru':
                    {'short': 'Gruzovik, воен., брон.'
-                   ,'title': 'Бронетехника'
+                   ,'title': 'Gruzovik, Бронетехника'
                    }
                ,'de':
                    {'short': 'Gruzovik, mil., arm.veh.'
-                   ,'title': 'Armored vehicles'
+                   ,'title': 'Gruzovik, Armored vehicles'
                    }
                ,'es':
                    {'short': 'Gruzovik, mil., arm.veh.'
-                   ,'title': 'Armored vehicles'
+                   ,'title': 'Gruzovik, Armored vehicles'
                    }
                ,'uk':
                    {'short': 'Gruzovik, військ., брон.'
-                   ,'title': 'Бронетехніка'
+                   ,'title': 'Gruzovik, Бронетехніка'
                    }
                }
            ,'Gruzovik, mil., artil.':
                {'Valid': False
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Military'
                ,'en':
                    {'short': 'Gruzovik, mil., artil.'
-                   ,'title': 'Artillery'
+                   ,'title': 'Gruzovik, Artillery'
                    }
                ,'ru':
                    {'short': 'Gruzovik, воен., арт.'
-                   ,'title': 'Артиллерия'
+                   ,'title': 'Gruzovik, Артиллерия'
                    }
                ,'de':
                    {'short': 'Gruzovik, Artil.'
-                   ,'title': 'Artillerie'
+                   ,'title': 'Gruzovik, Artillerie'
                    }
                ,'es':
                    {'short': 'Gruzovik, mil.,artill.'
-                   ,'title': 'Artillería'
+                   ,'title': 'Gruzovik, Artillería'
                    }
                ,'uk':
                    {'short': 'Gruzovik, військ., арт.'
-                   ,'title': 'Артилерія'
+                   ,'title': 'Gruzovik, Артилерія'
                    }
                }
            ,'Gruzovik, mil., avia.':
                {'Valid': False
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Aviation'
                ,'en':
                    {'short': 'Gruzovik, mil., avia.'
-                   ,'title': 'Military aviation'
+                   ,'title': 'Gruzovik, Military aviation'
                    }
                ,'ru':
                    {'short': 'Gruzovik, воен., авиац.'
-                   ,'title': 'Военная авиация'
+                   ,'title': 'Gruzovik, Военная авиация'
                    }
                ,'de':
                    {'short': 'Gruzovik, mil., avia.'
-                   ,'title': 'Military aviation'
+                   ,'title': 'Gruzovik, Military aviation'
                    }
                ,'es':
                    {'short': 'Gruzovik, mil., avia.'
-                   ,'title': 'Military aviation'
+                   ,'title': 'Gruzovik, Military aviation'
                    }
                ,'uk':
                    {'short': 'Gruzovik, військ., авіац.'
-                   ,'title': 'Військова авіація'
+                   ,'title': 'Gruzovik, Військова авіація'
                    }
                }
            ,'Gruzovik, mycol.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Biology'
                ,'en':
                    {'short': 'Gruzovik, mycol.'
-                   ,'title': 'Mycology'
+                   ,'title': 'Gruzovik, Mycology'
                    }
                ,'ru':
                    {'short': 'Gruzovik, микол.'
-                   ,'title': 'Микология'
+                   ,'title': 'Gruzovik, Микология'
                    }
                ,'de':
                    {'short': 'Gruzovik, mycol.'
-                   ,'title': 'Mycology'
+                   ,'title': 'Gruzovik, Mycology'
                    }
                ,'es':
                    {'short': 'Gruzovik, mycol.'
-                   ,'title': 'Mycology'
+                   ,'title': 'Gruzovik, Mycology'
                    }
                ,'uk':
                    {'short': 'Gruzovik, мікол.'
-                   ,'title': 'Мікологія'
+                   ,'title': 'Gruzovik, Мікологія'
                    }
                }
            ,'Gruzovik, myth.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Mythology'
                ,'en':
                    {'short': 'Gruzovik, myth.'
-                   ,'title': 'Mythology'
+                   ,'title': 'Gruzovik, Mythology'
                    }
                ,'ru':
                    {'short': 'Gruzovik, миф.'
-                   ,'title': 'Мифология'
+                   ,'title': 'Gruzovik, Мифология'
                    }
                ,'de':
                    {'short': 'Gruzovik, Myth.'
-                   ,'title': 'Mythologie'
+                   ,'title': 'Gruzovik, Mythologie'
                    }
                ,'es':
                    {'short': 'Gruzovik, mitol.'
-                   ,'title': 'Mitología'
+                   ,'title': 'Gruzovik, Mitología'
                    }
                ,'uk':
                    {'short': 'Gruzovik, міф.'
-                   ,'title': 'Міфологія'
+                   ,'title': 'Gruzovik, Міфологія'
                    }
                }
            ,'Gruzovik, nautic.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Nautical'
                ,'en':
                    {'short': 'Gruzovik, nautic.'
-                   ,'title': 'Nautical'
+                   ,'title': 'Gruzovik, Nautical'
                    }
                ,'ru':
                    {'short': 'Gruzovik, мор.'
-                   ,'title': 'Морской термин'
+                   ,'title': 'Gruzovik, Морской термин'
                    }
                ,'de':
                    {'short': 'Gruzovik, Mar.'
-                   ,'title': 'Marine'
+                   ,'title': 'Gruzovik, Marine'
                    }
                ,'es':
                    {'short': 'Gruzovik, náut.'
-                   ,'title': 'Náutico'
+                   ,'title': 'Gruzovik, Náutico'
                    }
                ,'uk':
                    {'short': 'Gruzovik, мор.'
-                   ,'title': 'Морський термін'
+                   ,'title': 'Gruzovik, Морський термін'
                    }
                }
            ,'Gruzovik, obs.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Stylistic values'
                ,'en':
                    {'short': 'Gruzovik, obs.'
-                   ,'title': 'Obsolete / dated'
+                   ,'title': 'Gruzovik, Obsolete / dated'
                    }
                ,'ru':
                    {'short': 'Gruzovik, уст.'
-                   ,'title': 'Устаревшее'
+                   ,'title': 'Gruzovik, Устаревшее'
                    }
                ,'de':
                    {'short': 'Gruzovik, veralt.'
-                   ,'title': 'Veraltet'
+                   ,'title': 'Gruzovik, Veraltet'
                    }
                ,'es':
                    {'short': 'Gruzovik, antic.'
-                   ,'title': 'Anticuado'
+                   ,'title': 'Gruzovik, Anticuado'
                    }
                ,'uk':
                    {'short': 'Gruzovik, застар.'
-                   ,'title': 'Застаріле'
+                   ,'title': 'Gruzovik, Застаріле'
                    }
                }
            ,'Gruzovik, ocean.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Geography'
                ,'en':
                    {'short': 'Gruzovik, ocean.'
-                   ,'title': 'Oceanography (oceanology)'
+                   ,'title': 'Gruzovik, Oceanography (oceanology)'
                    }
                ,'ru':
                    {'short': 'Gruzovik, океан.'
-                   ,'title': 'Океанология (океанография)'
+                   ,'title': 'Gruzovik, Океанология (океанография)'
                    }
                ,'de':
                    {'short': 'Gruzovik, Ozeanogr.'
-                   ,'title': 'Ozeanographie'
+                   ,'title': 'Gruzovik, Ozeanographie'
                    }
                ,'es':
                    {'short': 'Gruzovik, ocean.'
-                   ,'title': 'Oceanography (oceanology)'
+                   ,'title': 'Gruzovik, Oceanography (oceanology)'
                    }
                ,'uk':
                    {'short': 'Gruzovik, океан.'
-                   ,'title': 'Океанологія (океанографія)'
+                   ,'title': 'Gruzovik, Океанологія (океанографія)'
                    }
                }
            ,'Gruzovik, paraglid.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Outdoor activities and extreme sports'
                ,'en':
                    {'short': 'Gruzovik, paraglid.'
-                   ,'title': 'Paragliding'
+                   ,'title': 'Gruzovik, Paragliding'
                    }
                ,'ru':
                    {'short': 'Gruzovik, параплан.'
-                   ,'title': 'Парапланеризм'
+                   ,'title': 'Gruzovik, Парапланеризм'
                    }
                ,'de':
                    {'short': 'Gruzovik, paraglid.'
-                   ,'title': 'Paragliding'
+                   ,'title': 'Gruzovik, Paragliding'
                    }
                ,'es':
                    {'short': 'Gruzovik, paraglid.'
-                   ,'title': 'Paragliding'
+                   ,'title': 'Gruzovik, Paragliding'
                    }
                ,'uk':
                    {'short': 'Gruzovik, параплан.'
-                   ,'title': 'Парапланеризм'
+                   ,'title': 'Gruzovik, Парапланеризм'
                    }
                }
            ,'Gruzovik, philolog.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Philology'
                ,'en':
                    {'short': 'Gruzovik, philolog.'
-                   ,'title': 'Philology'
+                   ,'title': 'Gruzovik, Philology'
                    }
                ,'ru':
                    {'short': 'Gruzovik, филол.'
-                   ,'title': 'Филология'
+                   ,'title': 'Gruzovik, Филология'
                    }
                ,'de':
                    {'short': 'Gruzovik, Philol.'
-                   ,'title': 'Philologie'
+                   ,'title': 'Gruzovik, Philologie'
                    }
                ,'es':
                    {'short': 'Gruzovik, philolog.'
-                   ,'title': 'Philology'
+                   ,'title': 'Gruzovik, Philology'
                    }
                ,'uk':
                    {'short': 'Gruzovik, філол.'
-                   ,'title': 'Філологія'
+                   ,'title': 'Gruzovik, Філологія'
                    }
                }
            ,'Gruzovik, phonet.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Linguistics'
                ,'en':
                    {'short': 'Gruzovik, phonet.'
-                   ,'title': 'Phonetics'
+                   ,'title': 'Gruzovik, Phonetics'
                    }
                ,'ru':
                    {'short': 'Gruzovik, фон.'
-                   ,'title': 'Фонетика'
+                   ,'title': 'Gruzovik, Фонетика'
                    }
                ,'de':
                    {'short': 'Gruzovik, Phonet.'
-                   ,'title': 'Phonetik'
+                   ,'title': 'Gruzovik, Phonetik'
                    }
                ,'es':
                    {'short': 'Gruzovik, fonét.'
-                   ,'title': 'Fonética'
+                   ,'title': 'Gruzovik, Fonética'
                    }
                ,'uk':
                    {'short': 'Gruzovik, фон.'
-                   ,'title': 'Фонетика'
+                   ,'title': 'Gruzovik, Фонетика'
                    }
                }
            ,'Gruzovik, photo.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Photography'
                ,'en':
                    {'short': 'Gruzovik, photo.'
-                   ,'title': 'Photography'
+                   ,'title': 'Gruzovik, Photography'
                    }
                ,'ru':
                    {'short': 'Gruzovik, фото.'
-                   ,'title': 'Фотография'
+                   ,'title': 'Gruzovik, Фотография'
                    }
                ,'de':
                    {'short': 'Gruzovik, Foto.'
-                   ,'title': 'Foto'
+                   ,'title': 'Gruzovik, Foto'
                    }
                ,'es':
                    {'short': 'Gruzovik, fotogr.'
-                   ,'title': 'Fotografía'
+                   ,'title': 'Gruzovik, Fotografía'
                    }
                ,'uk':
                    {'short': 'Gruzovik, фото'
-                   ,'title': 'Фотографія'
+                   ,'title': 'Gruzovik, Фотографія'
                    }
                }
            ,'Gruzovik, poetic':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Stylistic values'
                ,'en':
                    {'short': 'Gruzovik, poetic'
-                   ,'title': 'Poetic'
+                   ,'title': 'Gruzovik, Poetic'
                    }
                ,'ru':
                    {'short': 'Gruzovik, поэт.'
-                   ,'title': 'Поэтический язык'
+                   ,'title': 'Gruzovik, Поэтический язык'
                    }
                ,'de':
                    {'short': 'Gruzovik, Poet.'
-                   ,'title': 'Poetisch'
+                   ,'title': 'Gruzovik, Poetisch'
                    }
                ,'es':
                    {'short': 'Gruzovik, poét.'
-                   ,'title': 'Poético'
+                   ,'title': 'Gruzovik, Poético'
                    }
                ,'uk':
                    {'short': 'Gruzovik, поет.'
-                   ,'title': 'Поетична мова'
+                   ,'title': 'Gruzovik, Поетична мова'
                    }
                }
            ,'Gruzovik, polit.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Politics'
                ,'en':
                    {'short': 'Gruzovik, polit.'
-                   ,'title': 'Politics'
+                   ,'title': 'Gruzovik, Politics'
                    }
                ,'ru':
                    {'short': 'Gruzovik, полит.'
-                   ,'title': 'Политика'
+                   ,'title': 'Gruzovik, Политика'
                    }
                ,'de':
                    {'short': 'Gruzovik, Polit.'
-                   ,'title': 'Politik'
+                   ,'title': 'Gruzovik, Politik'
                    }
                ,'es':
                    {'short': 'Gruzovik, polít.'
-                   ,'title': 'Política'
+                   ,'title': 'Gruzovik, Política'
                    }
                ,'uk':
                    {'short': 'Gruzovik, політ.'
-                   ,'title': 'Політика'
+                   ,'title': 'Gruzovik, Політика'
                    }
                }
            ,'Gruzovik, polygr.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Publishing'
                ,'en':
                    {'short': 'Gruzovik, polygr.'
-                   ,'title': 'Polygraphy'
+                   ,'title': 'Gruzovik, Polygraphy'
                    }
                ,'ru':
                    {'short': 'Gruzovik, полигр.'
-                   ,'title': 'Полиграфия'
+                   ,'title': 'Gruzovik, Полиграфия'
                    }
                ,'de':
                    {'short': 'Gruzovik, Polygr.'
-                   ,'title': 'Polygraphie'
+                   ,'title': 'Gruzovik, Polygraphie'
                    }
                ,'es':
                    {'short': 'Gruzovik, poligr.'
-                   ,'title': 'Poligrafía'
+                   ,'title': 'Gruzovik, Poligrafía'
                    }
                ,'uk':
                    {'short': 'Gruzovik, полігр.'
-                   ,'title': 'Поліграфія'
+                   ,'title': 'Gruzovik, Поліграфія'
                    }
                }
            ,'Gruzovik, prof.jarg.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Jargon and slang'
                ,'en':
                    {'short': 'Gruzovik, prof.jarg.'
-                   ,'title': 'Professional jargon'
+                   ,'title': 'Gruzovik, Professional jargon'
                    }
                ,'ru':
                    {'short': 'Gruzovik, проф.жарг.'
-                   ,'title': 'Профессиональный жаргон'
+                   ,'title': 'Gruzovik, Профессиональный жаргон'
                    }
                ,'de':
                    {'short': 'Gruzovik, Fachj.'
-                   ,'title': 'Fachjargon'
+                   ,'title': 'Gruzovik, Fachjargon'
                    }
                ,'es':
                    {'short': 'Gruzovik, profesion.'
-                   ,'title': 'Jerga profesional'
+                   ,'title': 'Gruzovik, Jerga profesional'
                    }
                ,'uk':
                    {'short': 'Gruzovik, проф.жарг.'
-                   ,'title': 'Професійний жаргон'
+                   ,'title': 'Gruzovik, Професійний жаргон'
                    }
                }
            ,'Gruzovik, prop.&figur.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': ''
                ,'en':
                    {'short': 'Gruzovik, prop.&figur.'
-                   ,'title': 'Proper and figurative'
+                   ,'title': 'Gruzovik, Proper and figurative'
                    }
                ,'ru':
                    {'short': 'Gruzovik, прям.перен.'
-                   ,'title': 'Прямой и переносный смысл'
+                   ,'title': 'Gruzovik, Прямой и переносный смысл'
                    }
                ,'de':
                    {'short': 'Gruzovik, prop.&figur.'
-                   ,'title': 'Proper and figurative'
+                   ,'title': 'Gruzovik, Proper and figurative'
                    }
                ,'es':
                    {'short': 'Gruzovik, prop.&figur.'
-                   ,'title': 'Proper and figurative'
+                   ,'title': 'Gruzovik, Proper and figurative'
                    }
                ,'uk':
                    {'short': 'Gruzovik, прям.перен.'
-                   ,'title': 'Прямий і переносний сенс'
+                   ,'title': 'Gruzovik, Прямий і переносний сенс'
                    }
                }
            ,'Gruzovik, radio':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Communications'
                ,'en':
                    {'short': 'Gruzovik, radio'
-                   ,'title': 'Radio'
+                   ,'title': 'Gruzovik, Radio'
                    }
                ,'ru':
                    {'short': 'Gruzovik, радио.'
-                   ,'title': 'Радио'
+                   ,'title': 'Gruzovik, Радио'
                    }
                ,'de':
                    {'short': 'Gruzovik, Radio.'
-                   ,'title': 'Radio'
+                   ,'title': 'Gruzovik, Radio'
                    }
                ,'es':
                    {'short': 'Gruzovik, radio'
-                   ,'title': 'Radio'
+                   ,'title': 'Gruzovik, Radio'
                    }
                ,'uk':
                    {'short': 'Gruzovik, радіо'
-                   ,'title': 'Радіо'
+                   ,'title': 'Gruzovik, Радіо'
                    }
                }
            ,'Gruzovik, rel., jud.':
                {'Valid': False
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Religion'
                ,'en':
                    {'short': 'Gruzovik, rel., jud.'
-                   ,'title': 'Judaism'
+                   ,'title': 'Gruzovik, Judaism'
                    }
                ,'ru':
                    {'short': 'Gruzovik, рел., иуд.'
-                   ,'title': 'Иудаизм'
+                   ,'title': 'Gruzovik, Иудаизм'
                    }
                ,'de':
                    {'short': 'Gruzovik, rel., jud.'
-                   ,'title': 'Judaism'
+                   ,'title': 'Gruzovik, Judaism'
                    }
                ,'es':
                    {'short': 'Gruzovik, rel., jud.'
-                   ,'title': 'Judaism'
+                   ,'title': 'Gruzovik, Judaism'
                    }
                ,'uk':
                    {'short': 'Gruzovik, юд.'
-                   ,'title': 'Юдаїзм'
+                   ,'title': 'Gruzovik, Юдаїзм'
                    }
                }
            ,'Gruzovik, row.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Sports'
                ,'en':
                    {'short': 'Gruzovik, row.'
-                   ,'title': 'Rowing'
+                   ,'title': 'Gruzovik, Rowing'
                    }
                ,'ru':
                    {'short': 'Gruzovik, греб.'
-                   ,'title': 'Гребной спорт'
+                   ,'title': 'Gruzovik, Гребной спорт'
                    }
                ,'de':
                    {'short': 'Gruzovik, row.'
-                   ,'title': 'Rowing'
+                   ,'title': 'Gruzovik, Rowing'
                    }
                ,'es':
                    {'short': 'Gruzovik, row.'
-                   ,'title': 'Rowing'
+                   ,'title': 'Gruzovik, Rowing'
                    }
                ,'uk':
                    {'short': 'Gruzovik, весл.'
-                   ,'title': 'Веслування'
+                   ,'title': 'Gruzovik, Веслування'
                    }
                }
            ,'Gruzovik, sail.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Outdoor activities and extreme sports'
                ,'en':
                    {'short': 'Gruzovik, sail.'
-                   ,'title': 'Sailing'
+                   ,'title': 'Gruzovik, Sailing'
                    }
                ,'ru':
                    {'short': 'Gruzovik, парусн.сп.'
-                   ,'title': 'Парусный спорт'
+                   ,'title': 'Gruzovik, Парусный спорт'
                    }
                ,'de':
                    {'short': 'Gruzovik, sail.'
-                   ,'title': 'Sailing'
+                   ,'title': 'Gruzovik, Sailing'
                    }
                ,'es':
                    {'short': 'Gruzovik, sail.'
-                   ,'title': 'Sailing'
+                   ,'title': 'Gruzovik, Sailing'
                    }
                ,'uk':
                    {'short': 'Gruzovik, вітр.спорт'
-                   ,'title': 'Вітрильний спорт'
+                   ,'title': 'Gruzovik, Вітрильний спорт'
                    }
                }
            ,'Gruzovik, scient.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Stylistic values'
                ,'en':
                    {'short': 'Gruzovik, scient.'
-                   ,'title': 'Scientific'
+                   ,'title': 'Gruzovik, Scientific'
                    }
                ,'ru':
                    {'short': 'Gruzovik, науч.'
-                   ,'title': 'Научный термин'
+                   ,'title': 'Gruzovik, Научный термин'
                    }
                ,'de':
                    {'short': 'Gruzovik, Wissensch.'
-                   ,'title': 'Wissenschaftlicher Ausdruck'
+                   ,'title': 'Gruzovik, Wissenschaftlicher Ausdruck'
                    }
                ,'es':
                    {'short': 'Gruzovik, scient.'
-                   ,'title': 'Scientific'
+                   ,'title': 'Gruzovik, Scientific'
                    }
                ,'uk':
                    {'short': 'Gruzovik, науков.'
-                   ,'title': 'Науковий термін'
+                   ,'title': 'Gruzovik, Науковий термін'
                    }
                }
            ,'Gruzovik, sculp.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Art and culture (n.e.s.)'
                ,'en':
                    {'short': 'Gruzovik, sculp.'
-                   ,'title': 'Sculpture'
+                   ,'title': 'Gruzovik, Sculpture'
                    }
                ,'ru':
                    {'short': 'Gruzovik, скульп.'
-                   ,'title': 'Скульптура'
+                   ,'title': 'Gruzovik, Скульптура'
                    }
                ,'de':
                    {'short': 'Gruzovik, sculp.'
-                   ,'title': 'Sculpture'
+                   ,'title': 'Gruzovik, Sculpture'
                    }
                ,'es':
                    {'short': 'Gruzovik, sculp.'
-                   ,'title': 'Sculpture'
+                   ,'title': 'Gruzovik, Sculpture'
                    }
                ,'uk':
                    {'short': 'Gruzovik, скульп.'
-                   ,'title': 'Скульптура'
+                   ,'title': 'Gruzovik, Скульптура'
                    }
                }
            ,'Gruzovik, slang':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Jargon and slang'
                ,'en':
                    {'short': 'Gruzovik, slang'
-                   ,'title': 'Slang'
+                   ,'title': 'Gruzovik, Slang'
                    }
                ,'ru':
                    {'short': 'Gruzovik, сл.'
-                   ,'title': 'Сленг'
+                   ,'title': 'Gruzovik, Сленг'
                    }
                ,'de':
                    {'short': 'Gruzovik, Slang.'
-                   ,'title': 'Slang'
+                   ,'title': 'Gruzovik, Slang'
                    }
                ,'es':
                    {'short': 'Gruzovik, jerg.'
-                   ,'title': 'Jerga'
+                   ,'title': 'Gruzovik, Jerga'
                    }
                ,'uk':
                    {'short': 'Gruzovik, сленг'
-                   ,'title': 'Сленг'
+                   ,'title': 'Gruzovik, Сленг'
                    }
                }
            ,'Gruzovik, slavon.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Regional usage (other than language varieties)'
                ,'en':
                    {'short': 'Gruzovik, slavon.'
-                   ,'title': 'Slavonic'
+                   ,'title': 'Gruzovik, Slavonic'
                    }
                ,'ru':
                    {'short': 'Gruzovik, славянск.'
-                   ,'title': 'Славянское выражение'
+                   ,'title': 'Gruzovik, Славянское выражение'
                    }
                ,'de':
                    {'short': 'Gruzovik, slavon.'
-                   ,'title': 'Slavonic'
+                   ,'title': 'Gruzovik, Slavonic'
                    }
                ,'es':
                    {'short': 'Gruzovik, slavon.'
-                   ,'title': 'Slavonic'
+                   ,'title': 'Gruzovik, Slavonic'
                    }
                ,'uk':
                    {'short': 'Gruzovik, слов’ян.'
-                   ,'title': 'Слов’янський вираз'
+                   ,'title': 'Gruzovik, Слов’янський вираз'
                    }
                }
            ,'Gruzovik, social.sc.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Education'
                ,'en':
                    {'short': 'Gruzovik, social.sc.'
-                   ,'title': 'Social science'
+                   ,'title': 'Gruzovik, Social science'
                    }
                ,'ru':
                    {'short': 'Gruzovik, обществ.'
-                   ,'title': 'Обществоведение'
+                   ,'title': 'Gruzovik, Обществоведение'
                    }
                ,'de':
                    {'short': 'Gruzovik, social.sc.'
-                   ,'title': 'Social science'
+                   ,'title': 'Gruzovik, Social science'
                    }
                ,'es':
                    {'short': 'Gruzovik, social.sc.'
-                   ,'title': 'Social science'
+                   ,'title': 'Gruzovik, Social science'
                    }
                ,'uk':
                    {'short': 'Gruzovik, суспільс.'
-                   ,'title': 'Суспільствознавство'
+                   ,'title': 'Gruzovik, Суспільствознавство'
                    }
                }
            ,'Gruzovik, spin.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Crafts'
                ,'en':
                    {'short': 'Gruzovik, spin.'
-                   ,'title': 'Spinning'
+                   ,'title': 'Gruzovik, Spinning'
                    }
                ,'ru':
                    {'short': 'Gruzovik, пряд.'
-                   ,'title': 'Прядение'
+                   ,'title': 'Gruzovik, Прядение'
                    }
                ,'de':
                    {'short': 'Gruzovik, spin.'
-                   ,'title': 'Spinning'
+                   ,'title': 'Gruzovik, Spinning'
                    }
                ,'es':
                    {'short': 'Gruzovik, spin.'
-                   ,'title': 'Spinning'
+                   ,'title': 'Gruzovik, Spinning'
                    }
                ,'uk':
                    {'short': 'Gruzovik, пряд.'
-                   ,'title': 'Прядіння'
+                   ,'title': 'Gruzovik, Прядіння'
                    }
                }
            ,'Gruzovik, sport.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Sports'
                ,'en':
                    {'short': 'Gruzovik, sport.'
-                   ,'title': 'Sports'
+                   ,'title': 'Gruzovik, Sports'
                    }
                ,'ru':
                    {'short': 'Gruzovik, спорт.'
-                   ,'title': 'Спорт'
+                   ,'title': 'Gruzovik, Спорт'
                    }
                ,'de':
                    {'short': 'Gruzovik, Sport.'
-                   ,'title': 'Sport'
+                   ,'title': 'Gruzovik, Sport'
                    }
                ,'es':
                    {'short': 'Gruzovik, dep.'
-                   ,'title': 'Deporte'
+                   ,'title': 'Gruzovik, Deporte'
                    }
                ,'uk':
                    {'short': 'Gruzovik, спорт.'
-                   ,'title': 'Спорт'
+                   ,'title': 'Gruzovik, Спорт'
                    }
                }
            ,'Gruzovik, sport.goods':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Sports'
                ,'en':
                    {'short': 'Gruzovik, sport.goods'
-                   ,'title': 'Sporting goods'
+                   ,'title': 'Gruzovik, Sporting goods'
                    }
                ,'ru':
                    {'short': 'Gruzovik, спорт.тов.'
-                   ,'title': 'Спорттовары'
+                   ,'title': 'Gruzovik, Спорттовары'
                    }
                ,'de':
                    {'short': 'Gruzovik, sport.goods'
-                   ,'title': 'Sporting goods'
+                   ,'title': 'Gruzovik, Sporting goods'
                    }
                ,'es':
                    {'short': 'Gruzovik, sport.goods'
-                   ,'title': 'Sporting goods'
+                   ,'title': 'Gruzovik, Sporting goods'
                    }
                ,'uk':
                    {'short': 'Gruzovik, спорт.тов.'
-                   ,'title': 'Спорттовари'
+                   ,'title': 'Gruzovik, Спорттовари'
                    }
                }
            ,'Gruzovik, surv.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Sociology'
                ,'en':
                    {'short': 'Gruzovik, surv.'
-                   ,'title': 'Survey'
+                   ,'title': 'Gruzovik, Survey'
                    }
                ,'ru':
                    {'short': 'Gruzovik, соц.опр.'
-                   ,'title': 'Социологический опрос'
+                   ,'title': 'Gruzovik, Социологический опрос'
                    }
                ,'de':
                    {'short': 'Gruzovik, surv.'
-                   ,'title': 'Survey'
+                   ,'title': 'Gruzovik, Survey'
                    }
                ,'es':
                    {'short': 'Gruzovik, surv.'
-                   ,'title': 'Survey'
+                   ,'title': 'Gruzovik, Survey'
                    }
                ,'uk':
                    {'short': 'Gruzovik, соц.опит.'
-                   ,'title': 'Соціологічне опитування'
+                   ,'title': 'Gruzovik, Соціологічне опитування'
                    }
                }
            ,'Gruzovik, tech.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Technology'
                ,'en':
                    {'short': 'Gruzovik, tech.'
-                   ,'title': 'Technology'
+                   ,'title': 'Gruzovik, Technology'
                    }
                ,'ru':
                    {'short': 'Gruzovik, тех.'
-                   ,'title': 'Техника'
+                   ,'title': 'Gruzovik, Техника'
                    }
                ,'de':
                    {'short': 'Gruzovik, Tech.'
-                   ,'title': 'Technik'
+                   ,'title': 'Gruzovik, Technik'
                    }
                ,'es':
                    {'short': 'Gruzovik, tec.'
-                   ,'title': 'Tecnología'
+                   ,'title': 'Gruzovik, Tecnología'
                    }
                ,'uk':
                    {'short': 'Gruzovik, техн.'
-                   ,'title': 'Техніка'
+                   ,'title': 'Gruzovik, Техніка'
                    }
                }
            ,'Gruzovik, tel.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Communications'
                ,'en':
                    {'short': 'Gruzovik, tel.'
-                   ,'title': 'Telephony'
+                   ,'title': 'Gruzovik, Telephony'
                    }
                ,'ru':
                    {'short': 'Gruzovik, тлф.'
-                   ,'title': 'Телефония'
+                   ,'title': 'Gruzovik, Телефония'
                    }
                ,'de':
                    {'short': 'Gruzovik, Telef.'
-                   ,'title': 'Telefonie'
+                   ,'title': 'Gruzovik, Telefonie'
                    }
                ,'es':
                    {'short': 'Gruzovik, tel.'
-                   ,'title': 'Telephony'
+                   ,'title': 'Gruzovik, Telephony'
                    }
                ,'uk':
                    {'short': 'Gruzovik, тлф.'
-                   ,'title': 'Телефонія'
+                   ,'title': 'Gruzovik, Телефонія'
                    }
                }
            ,'Gruzovik, terat.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Life sciences'
                ,'en':
                    {'short': 'Gruzovik, terat.'
-                   ,'title': 'Teratology'
+                   ,'title': 'Gruzovik, Teratology'
                    }
                ,'ru':
                    {'short': 'Gruzovik, терат.'
-                   ,'title': 'Тератология'
+                   ,'title': 'Gruzovik, Тератология'
                    }
                ,'de':
                    {'short': 'Gruzovik, Teratol.'
-                   ,'title': 'Teratologie'
+                   ,'title': 'Gruzovik, Teratologie'
                    }
                ,'es':
                    {'short': 'Gruzovik, terat.'
-                   ,'title': 'Teratología'
+                   ,'title': 'Gruzovik, Teratología'
                    }
                ,'uk':
                    {'short': 'Gruzovik, терат.'
-                   ,'title': 'Тератологія'
+                   ,'title': 'Gruzovik, Тератологія'
                    }
                }
            ,'Gruzovik, topogr.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Geography'
                ,'en':
                    {'short': 'Gruzovik, topogr.'
-                   ,'title': 'Topography'
+                   ,'title': 'Gruzovik, Topography'
                    }
                ,'ru':
                    {'short': 'Gruzovik, топогр.'
-                   ,'title': 'Топография'
+                   ,'title': 'Gruzovik, Топография'
                    }
                ,'de':
                    {'short': 'Gruzovik, Topogr.'
-                   ,'title': 'Topographie'
+                   ,'title': 'Gruzovik, Topographie'
                    }
                ,'es':
                    {'short': 'Gruzovik, topogr.'
-                   ,'title': 'Topografía'
+                   ,'title': 'Gruzovik, Topografía'
                    }
                ,'uk':
                    {'short': 'Gruzovik, топ.'
-                   ,'title': 'Топографія'
+                   ,'title': 'Gruzovik, Топографія'
                    }
                }
            ,'Gruzovik, typewrit.':
                {'Valid': False
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Records management'
                ,'en':
                    {'short': 'Gruzovik, typewrit.'
-                   ,'title': 'Typewriters and typewriting'
+                   ,'title': 'Gruzovik, Typewriters and typewriting'
                    }
                ,'ru':
                    {'short': 'Gruzovik, пиш.маш.'
-                   ,'title': 'Пишущие машинки, машинопись'
+                   ,'title': 'Gruzovik, Пишущие машинки, машинопись'
                    }
                ,'de':
                    {'short': 'Gruzovik, typewrit.'
-                   ,'title': 'Typewriters and typewriting'
+                   ,'title': 'Gruzovik, Typewriters and typewriting'
                    }
                ,'es':
                    {'short': 'Gruzovik, typewrit.'
-                   ,'title': 'Typewriters and typewriting'
+                   ,'title': 'Gruzovik, Typewriters and typewriting'
                    }
                ,'uk':
                    {'short': 'Gruzovik, друк.маш.'
-                   ,'title': 'Друкарські машинки та машинопис'
+                   ,'title': 'Gruzovik, Друкарські машинки та машинопис'
                    }
                }
            ,'Gruzovik, vent.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Engineering'
                ,'en':
                    {'short': 'Gruzovik, vent.'
-                   ,'title': 'Ventilation'
+                   ,'title': 'Gruzovik, Ventilation'
                    }
                ,'ru':
                    {'short': 'Gruzovik, вент.'
-                   ,'title': 'Вентиляция'
+                   ,'title': 'Gruzovik, Вентиляция'
                    }
                ,'de':
                    {'short': 'Gruzovik, vent.'
-                   ,'title': 'Ventilation'
+                   ,'title': 'Gruzovik, Ventilation'
                    }
                ,'es':
                    {'short': 'Gruzovik, vent.'
-                   ,'title': 'Ventilation'
+                   ,'title': 'Gruzovik, Ventilation'
                    }
                ,'uk':
                    {'short': 'Gruzovik, вент.'
-                   ,'title': 'Вентиляція'
+                   ,'title': 'Gruzovik, Вентиляція'
                    }
                }
            ,'Gruzovik, weav.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Crafts'
                ,'en':
                    {'short': 'Gruzovik, weav.'
-                   ,'title': 'Weaving'
+                   ,'title': 'Gruzovik, Weaving'
                    }
                ,'ru':
                    {'short': 'Gruzovik, ткач.'
-                   ,'title': 'Ткачество'
+                   ,'title': 'Gruzovik, Ткачество'
                    }
                ,'de':
                    {'short': 'Gruzovik, weav.'
-                   ,'title': 'Weaving'
+                   ,'title': 'Gruzovik, Weaving'
                    }
                ,'es':
                    {'short': 'Gruzovik, weav.'
-                   ,'title': 'Weaving'
+                   ,'title': 'Gruzovik, Weaving'
                    }
                ,'uk':
                    {'short': 'Gruzovik, ткац.'
-                   ,'title': 'Ткацтво'
+                   ,'title': 'Gruzovik, Ткацтво'
                    }
                }
            ,'Gruzovik, written':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Stylistic values'
                ,'en':
                    {'short': 'Gruzovik, written'
-                   ,'title': 'Written'
+                   ,'title': 'Gruzovik, Written'
                    }
                ,'ru':
                    {'short': 'Gruzovik, письм.'
-                   ,'title': 'Письменная речь'
+                   ,'title': 'Gruzovik, Письменная речь'
                    }
                ,'de':
                    {'short': 'Gruzovik, written'
-                   ,'title': 'Written'
+                   ,'title': 'Gruzovik, Written'
                    }
                ,'es':
                    {'short': 'Gruzovik, written'
-                   ,'title': 'Written'
+                   ,'title': 'Gruzovik, Written'
                    }
                ,'uk':
                    {'short': 'Gruzovik, письм.'
-                   ,'title': 'Письмове мовлення'
+                   ,'title': 'Gruzovik, Письмове мовлення'
                    }
                }
            ,'Gruzovik, zool.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Biology'
                ,'en':
                    {'short': 'Gruzovik, zool.'
-                   ,'title': 'Zoology'
+                   ,'title': 'Gruzovik, Zoology'
                    }
                ,'ru':
                    {'short': 'Gruzovik, зоол.'
-                   ,'title': 'Зоология'
+                   ,'title': 'Gruzovik, Зоология'
                    }
                ,'de':
                    {'short': 'Gruzovik, Zool.'
-                   ,'title': 'Zoologie'
+                   ,'title': 'Gruzovik, Zoologie'
                    }
                ,'es':
                    {'short': 'Gruzovik, zool.'
-                   ,'title': 'Zoología'
+                   ,'title': 'Gruzovik, Zoología'
                    }
                ,'uk':
                    {'short': 'Gruzovik, зоол.'
-                   ,'title': 'Зоологія'
+                   ,'title': 'Gruzovik, Зоологія'
                    }
                }
            ,'Guatem.':
@@ -34537,301 +34540,301 @@ SUBJECTS = {'Albanian language':
                    ,'title': 'Зоотехнія'
                    }
                }
-           ,'Игорь Миг':
+           ,'Игорь Миг, gen.':
                {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': ''
                ,'en':
-                   {'short': 'Игорь Миг'
-                   ,'title': 'General'
+                   {'short': 'Игорь Миг, gen.'
+                   ,'title': 'Игорь Миг, General'
                    }
                ,'ru':
-                   {'short': 'Игорь Миг'
-                   ,'title': 'Общая лексика'
+                   {'short': 'Игорь Миг, общ.'
+                   ,'title': 'Игорь Миг, Общая лексика'
                    }
                ,'de':
-                   {'short': 'Игорь Миг'
-                   ,'title': 'Allgemeine Lexik'
+                   {'short': 'Игорь Миг, Allg.'
+                   ,'title': 'Игорь Миг, Allgemeine Lexik'
                    }
                ,'es':
-                   {'short': 'Игорь Миг'
-                   ,'title': 'General'
+                   {'short': 'Игорь Миг, gen.'
+                   ,'title': 'Игорь Миг, General'
                    }
                ,'uk':
-                   {'short': 'Игорь Миг'
-                   ,'title': 'Загальна лексика'
+                   {'short': 'Игорь Миг, заг.'
+                   ,'title': 'Игорь Миг, Загальна лексика'
                    }
                }
            ,'Игорь Миг, abbr.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Grammatical labels'
                ,'en':
                    {'short': 'Игорь Миг, abbr.'
-                   ,'title': 'Abbreviation'
+                   ,'title': 'Игорь Миг, Abbreviation'
                    }
                ,'ru':
                    {'short': 'Игорь Миг, сокр.'
-                   ,'title': 'Сокращение'
+                   ,'title': 'Игорь Миг, Сокращение'
                    }
                ,'de':
                    {'short': 'Игорь Миг, Abkürz.'
-                   ,'title': 'Abkürzung'
+                   ,'title': 'Игорь Миг, Abkürzung'
                    }
                ,'es':
                    {'short': 'Игорь Миг, abrev.'
-                   ,'title': 'Abreviatura'
+                   ,'title': 'Игорь Миг, Abreviatura'
                    }
                ,'uk':
                    {'short': 'Игорь Миг, абрев.'
-                   ,'title': 'Абревіатура'
+                   ,'title': 'Игорь Миг, Абревіатура'
                    }
                }
            ,'Игорь Миг, calque.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Auxilliary categories (editor use only)'
                ,'en':
                    {'short': 'Игорь Миг, calque.'
-                   ,'title': 'Loan translation'
+                   ,'title': 'Игорь Миг, Loan translation'
                    }
                ,'ru':
                    {'short': 'Игорь Миг, калька.'
-                   ,'title': 'Калька'
+                   ,'title': 'Игорь Миг, Калька'
                    }
                ,'de':
                    {'short': 'Игорь Миг, calque.'
-                   ,'title': 'Loan translation'
+                   ,'title': 'Игорь Миг, Loan translation'
                    }
                ,'es':
                    {'short': 'Игорь Миг, calque.'
-                   ,'title': 'Loan translation'
+                   ,'title': 'Игорь Миг, Loan translation'
                    }
                ,'uk':
                    {'short': 'Игорь Миг, калька'
-                   ,'title': 'Калька'
+                   ,'title': 'Игорь Миг, Калька'
                    }
                }
            ,'Игорь Миг, cloth.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Light industries'
                ,'en':
                    {'short': 'Игорь Миг, cloth.'
-                   ,'title': 'Clothing'
+                   ,'title': 'Игорь Миг, Clothing'
                    }
                ,'ru':
                    {'short': 'Игорь Миг, одеж.'
-                   ,'title': 'Одежда'
+                   ,'title': 'Игорь Миг, Одежда'
                    }
                ,'de':
                    {'short': 'Игорь Миг, cloth.'
-                   ,'title': 'Clothing'
+                   ,'title': 'Игорь Миг, Clothing'
                    }
                ,'es':
                    {'short': 'Игорь Миг, cloth.'
-                   ,'title': 'Clothing'
+                   ,'title': 'Игорь Миг, Clothing'
                    }
                ,'uk':
                    {'short': 'Игорь Миг, одяг'
-                   ,'title': 'Одяг'
+                   ,'title': 'Игорь Миг, Одяг'
                    }
                }
            ,'Игорь Миг, earth.sc.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Geography'
                ,'en':
                    {'short': 'Игорь Миг, earth.sc.'
-                   ,'title': 'Earth sciences'
+                   ,'title': 'Игорь Миг, Earth sciences'
                    }
                ,'ru':
                    {'short': 'Игорь Миг, землевед.'
-                   ,'title': 'Землеведение'
+                   ,'title': 'Игорь Миг, Землеведение'
                    }
                ,'de':
                    {'short': 'Игорь Миг, earth.sc.'
-                   ,'title': 'Earth sciences'
+                   ,'title': 'Игорь Миг, Earth sciences'
                    }
                ,'es':
                    {'short': 'Игорь Миг, earth.sc.'
-                   ,'title': 'Earth sciences'
+                   ,'title': 'Игорь Миг, Earth sciences'
                    }
                ,'uk':
                    {'short': 'Игорь Миг, землезн.'
-                   ,'title': 'Землезнавство'
+                   ,'title': 'Игорь Миг, Землезнавство'
                    }
                }
            ,'Игорь Миг, hydrom.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Geography'
                ,'en':
                    {'short': 'Игорь Миг, hydrom.'
-                   ,'title': 'Hydrometry'
+                   ,'title': 'Игорь Миг, Hydrometry'
                    }
                ,'ru':
                    {'short': 'Игорь Миг, гидром.'
-                   ,'title': 'Гидрометрия'
+                   ,'title': 'Игорь Миг, Гидрометрия'
                    }
                ,'de':
                    {'short': 'Игорь Миг, hydrom.'
-                   ,'title': 'Hydrometry'
+                   ,'title': 'Игорь Миг, Hydrometry'
                    }
                ,'es':
                    {'short': 'Игорь Миг, hydrom.'
-                   ,'title': 'Hydrometry'
+                   ,'title': 'Игорь Миг, Hydrometry'
                    }
                ,'uk':
                    {'short': 'Игорь Миг, гідром.'
-                   ,'title': 'Гідрометрія'
+                   ,'title': 'Игорь Миг, Гідрометрія'
                    }
                }
            ,'Игорь Миг, inform.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': ''
                ,'en':
                    {'short': 'Игорь Миг, inform.'
-                   ,'title': 'Informal'
+                   ,'title': 'Игорь Миг, Informal'
                    }
                ,'ru':
                    {'short': 'Игорь Миг, разг.'
-                   ,'title': 'Разговорная лексика'
+                   ,'title': 'Игорь Миг, Разговорная лексика'
                    }
                ,'de':
                    {'short': 'Игорь Миг, Umg.'
-                   ,'title': 'Umgangssprache'
+                   ,'title': 'Игорь Миг, Umgangssprache'
                    }
                ,'es':
                    {'short': 'Игорь Миг, inf.'
-                   ,'title': 'Informal'
+                   ,'title': 'Игорь Миг, Informal'
                    }
                ,'uk':
                    {'short': 'Игорь Миг, розмовн.'
-                   ,'title': 'Розмовна лексика'
+                   ,'title': 'Игорь Миг, Розмовна лексика'
                    }
                }
            ,'Игорь Миг, quot.aph.':
                {'Valid': False
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Literature'
                ,'en':
                    {'short': 'Игорь Миг, quot.aph.'
-                   ,'title': 'Quotes and aphorisms'
+                   ,'title': 'Игорь Миг, Quotes and aphorisms'
                    }
                ,'ru':
                    {'short': 'Игорь Миг, цит.афор.'
-                   ,'title': 'Цитаты, афоризмы и крылатые выражения'
+                   ,'title': 'Игорь Миг, Цитаты, афоризмы и крылатые выражения'
                    }
                ,'de':
                    {'short': 'Игорь Миг, quot.aph.'
-                   ,'title': 'Quotes and aphorisms'
+                   ,'title': 'Игорь Миг, Quotes and aphorisms'
                    }
                ,'es':
                    {'short': 'Игорь Миг, quot.aph.'
-                   ,'title': 'Quotes and aphorisms'
+                   ,'title': 'Игорь Миг, Quotes and aphorisms'
                    }
                ,'uk':
                    {'short': 'Игорь Миг, цит.афор.'
-                   ,'title': 'Цитати, афоризми та крилаті вирази'
+                   ,'title': 'Игорь Миг, Цитати, афоризми та крилаті вирази'
                    }
                }
            ,'Игорь Миг, sport.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Sports'
                ,'en':
                    {'short': 'Игорь Миг, sport.'
-                   ,'title': 'Sports'
+                   ,'title': 'Игорь Миг, Sports'
                    }
                ,'ru':
                    {'short': 'Игорь Миг, спорт.'
-                   ,'title': 'Спорт'
+                   ,'title': 'Игорь Миг, Спорт'
                    }
                ,'de':
                    {'short': 'Игорь Миг, Sport.'
-                   ,'title': 'Sport'
+                   ,'title': 'Игорь Миг, Sport'
                    }
                ,'es':
                    {'short': 'Игорь Миг, dep.'
-                   ,'title': 'Deporte'
+                   ,'title': 'Игорь Миг, Deporte'
                    }
                ,'uk':
                    {'short': 'Игорь Миг, спорт.'
-                   ,'title': 'Спорт'
+                   ,'title': 'Игорь Миг, Спорт'
                    }
                }
            ,'Игорь Миг, tagmem.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': 'Linguistics'
                ,'en':
                    {'short': 'Игорь Миг, tagmem.'
-                   ,'title': 'Tagmemics'
+                   ,'title': 'Игорь Миг, Tagmemics'
                    }
                ,'ru':
                    {'short': 'Игорь Миг, тагмем.'
-                   ,'title': 'Тагмемика'
+                   ,'title': 'Игорь Миг, Тагмемика'
                    }
                ,'de':
                    {'short': 'Игорь Миг, tagmem.'
-                   ,'title': 'Tagmemics'
+                   ,'title': 'Игорь Миг, Tagmemics'
                    }
                ,'es':
                    {'short': 'Игорь Миг, tagmem.'
-                   ,'title': 'Tagmemics'
+                   ,'title': 'Игорь Миг, Tagmemics'
                    }
                ,'uk':
                    {'short': 'Игорь Миг, тагмем.'
-                   ,'title': 'Тагмеміка'
+                   ,'title': 'Игорь Миг, Тагмеміка'
                    }
                }
            ,'Игорь Миг, weap.':
-               {'Valid': False
+               {'Valid': True
                ,'Major': False
-               ,'Modified': False
+               ,'Modified': True
                ,'comment': ''
                ,'major_en': ''
                ,'en':
                    {'short': 'Игорь Миг, weap.'
-                   ,'title': 'Weapons and gunsmithing'
+                   ,'title': 'Игорь Миг, Weapons and gunsmithing'
                    }
                ,'ru':
                    {'short': 'Игорь Миг, оруж.'
-                   ,'title': 'Оружие и оружейное производство'
+                   ,'title': 'Игорь Миг, Оружие и оружейное производство'
                    }
                ,'de':
                    {'short': 'Игорь Миг, Waffen'
-                   ,'title': 'Waffen und Waffenindustrie'
+                   ,'title': 'Игорь Миг, Waffen und Waffenindustrie'
                    }
                ,'es':
                    {'short': 'Игорь Миг, weap.'
-                   ,'title': 'Weapons and gunsmithing'
+                   ,'title': 'Игорь Миг, Weapons and gunsmithing'
                    }
                ,'uk':
                    {'short': 'Игорь Миг, зброя'
-                   ,'title': 'Зброя та зброярство'
+                   ,'title': 'Игорь Миг, Зброя та зброярство'
                    }
                }
            }

@@ -7,6 +7,30 @@ import skl_shared.shared as sh
 DEBUG = True
 
 
+class Offline:
+    
+    def __init__(self):
+        self.maxrows = 0
+    
+    def run_multitrancom(self):
+        import plugins.multitrancom.cleanup as cu
+        import plugins.multitrancom.tags as tg
+        import plugins.multitrancom.elems as el
+        file = '/home/pete/bin/mclient/tests/multitrancom (saved in browser)/hello (2021-03-14).html'
+        self.htm = sh.ReadTextFile(file).get()
+        self.text = cu.CleanUp(self.htm).run()
+        itags = tg.Tags (text = self.text
+                        ,Debug = DEBUG
+                        ,maxrows = self.maxrows
+                        )
+        blocks = itags.run()
+        blocks = el.Elems (blocks = blocks
+                          ,Debug = DEBUG
+                          ,maxrows = self.maxrows
+                          ).run()
+
+
+
 class ArticleSubjects:
     
     def __init__(self):
@@ -795,5 +819,6 @@ if __name__ == '__main__':
     #com.get_subjects_wo_majors()
     #com.check_width()
     #com.get_column_width()
-    com.run_sources()
+    #com.run_sources()
+    Offline().run_multitrancom()
     sh.com.end()

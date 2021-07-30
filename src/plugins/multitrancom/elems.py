@@ -390,9 +390,13 @@ class Elems:
             if self.blocks[i-1].rowno != self.blocks[i].rowno:
                 if self.blocks[i].type_ == 'user':
                     self.blocks[i].type_ = 'dic'
-                    ''' Since this block is originally not DIC, we
-                        should set DICF at the step of
-                        'self.expand_dic_file'.
+                    ''' If DICF was not extracted for a user-type block
+                        which is actually a subject, we may set such
+                        field here, however, such entries as 'Gruzovik,
+                        inform.' will not be expanded (due to a bug at
+                        multitran.com, 'Informal' will be used). Thus,
+                        we correct such entries in SUBJECTS and just
+                        try in 'self.expand_dic_file' to expand them.
                     '''
                     self.blocks[i].dic = self.blocks[i].text
                     count += 1
