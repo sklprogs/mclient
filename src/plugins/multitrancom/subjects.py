@@ -34,7 +34,34 @@ import skl_shared.shared as sh
       inform.' will be expanded as 'Informal'. We correct such cases
       here manually.
 '''
-SUBJECTS = {'Albanian language':
+SUBJECTS = {'Gruzovik, hist.':
+               {'Single': False
+               ,'Major': True
+               ,'Modified': True
+               ,'comment': ''
+               ,'major_en': 'Historical'
+               ,'en':
+                   {'short': 'Gruzovik, hist.'
+                   ,'title': 'Gruzovik, Historical'
+                   }
+               ,'ru':
+                   {'short': 'Gruzovik, ист.'
+                   ,'title': 'Gruzovik, История'
+                   }
+               ,'de':
+                   {'short': 'Gruzovik, Gesch.'
+                   ,'title': 'Gruzovik, Geschichte'
+                   }
+               ,'es':
+                   {'short': 'Gruzovik, hist.'
+                   ,'title': 'Gruzovik, Historia'
+                   }
+               ,'uk':
+                   {'short': 'Gruzovik, іст.'
+                   ,'title': 'Gruzovik, Історія'
+                   }
+               }
+           ,'Albanian language':
                {'Single': True
                ,'Major': False
                ,'Modified': True
@@ -4652,7 +4679,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, gen.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4679,7 +4706,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, GOST.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4706,7 +4733,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, IT':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4733,7 +4760,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, abbr.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4760,7 +4787,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, abbr., IT':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4787,7 +4814,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, abbr., account.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4814,7 +4841,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, abbr., bank.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4841,7 +4868,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, adm.law.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4868,7 +4895,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, adv.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4895,7 +4922,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, aer.phot.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4922,7 +4949,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, agric.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4949,7 +4976,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, ballist.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4976,7 +5003,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, biogeogr.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5003,7 +5030,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, bot.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5030,7 +5057,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, cloth.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5057,7 +5084,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, comp.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5084,7 +5111,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, cryptogr.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5111,7 +5138,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, dial.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5138,7 +5165,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, econ.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5165,7 +5192,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, el.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5192,7 +5219,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, electric.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5219,7 +5246,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, email':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5246,7 +5273,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, expl.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5273,7 +5300,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, fig.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5300,7 +5327,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, footwear':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5327,7 +5354,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, fr.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5354,7 +5381,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, garden.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5381,7 +5408,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, glac.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5408,7 +5435,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, horse.breed.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5435,7 +5462,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, hunt.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5462,7 +5489,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, inform.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5489,7 +5516,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, law':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5516,7 +5543,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, mach.mech.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5543,7 +5570,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, magn.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5570,7 +5597,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, math.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5597,7 +5624,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, med.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5624,7 +5651,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, media.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5651,7 +5678,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, met.phys.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5678,7 +5705,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, mil.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5813,7 +5840,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, mycol.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5840,7 +5867,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, myth.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5867,7 +5894,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, nautic.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5894,7 +5921,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, obs.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5921,7 +5948,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, ocean.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5948,7 +5975,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, paraglid.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5975,7 +6002,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, philolog.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6002,7 +6029,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, phonet.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6029,7 +6056,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, photo.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6056,7 +6083,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, poetic':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6083,7 +6110,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, polit.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6110,7 +6137,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, polygr.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6137,7 +6164,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, prof.jarg.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6164,7 +6191,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, prop.&figur.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6191,7 +6218,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, radio':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6245,7 +6272,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, row.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6272,7 +6299,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, sail.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6299,7 +6326,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, scient.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6326,7 +6353,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, sculp.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6353,7 +6380,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, slang':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6380,7 +6407,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, slavon.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6407,7 +6434,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, social.sc.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6434,7 +6461,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, spin.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6461,7 +6488,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, sport.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6488,7 +6515,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, sport.goods':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6515,7 +6542,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, surv.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6542,7 +6569,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, tech.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6569,7 +6596,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, tel.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6596,7 +6623,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, terat.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6623,7 +6650,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, topogr.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6677,7 +6704,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, vent.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6704,7 +6731,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, weav.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6731,7 +6758,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, written':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6758,7 +6785,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, zool.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34541,7 +34568,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, gen.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34568,7 +34595,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, abbr.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34595,7 +34622,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, calque.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34622,7 +34649,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, cloth.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34649,7 +34676,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, earth.sc.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34676,7 +34703,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, hydrom.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34703,7 +34730,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, inform.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34757,7 +34784,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, sport.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34784,7 +34811,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, tagmem.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34811,7 +34838,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, weap.':
-               {'Single': True
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
