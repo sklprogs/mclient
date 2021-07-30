@@ -406,7 +406,7 @@ class Commands:
         titles = []
         for key in sj.SUBJECTS.keys():
             if not sj.SUBJECTS[key]['major_en'] \
-            and sj.SUBJECTS[key]['Valid']:
+            and sj.SUBJECTS[key]['Single']:
                 titles.append(sj.SUBJECTS[key]['en']['title'])
         titles = sorted(set(titles))
         if titles:

@@ -35,7 +35,7 @@ import skl_shared.shared as sh
       here manually.
 '''
 SUBJECTS = {'Albanian language':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -62,7 +62,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Alcohol distilling':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -89,7 +89,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Alloy addition':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -116,7 +116,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'American football':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -143,7 +143,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Ampelography':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -170,7 +170,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Andalusia':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -197,7 +197,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Archaeology':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -224,7 +224,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Asturias':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -251,7 +251,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Audit':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -278,7 +278,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Augmentative':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -305,7 +305,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Badminton':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -332,7 +332,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Barbarism':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -359,7 +359,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Beijing dialect':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -386,7 +386,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Belarusian language':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -413,7 +413,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Berlin expression':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -440,7 +440,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Biathlon':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -467,7 +467,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Blast-furnace practice':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -494,7 +494,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Bolivia':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -521,7 +521,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Bowling':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -548,7 +548,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Bridge (card game)':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -575,7 +575,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Bulgarian language':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -602,7 +602,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Cantonese':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -629,7 +629,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Cast iron':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -656,7 +656,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Champagne and sparkling wines':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -683,7 +683,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Companies & Partnerships':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -710,7 +710,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Computing slang':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -737,7 +737,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Confucianism':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -764,7 +764,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Continuous casting':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -791,7 +791,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Contracts':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -818,7 +818,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Cricket':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -845,7 +845,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Criminology':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -872,7 +872,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Croquet':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -899,7 +899,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Cults and miscellaneous spiritual practices':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -926,7 +926,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Curling':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -953,7 +953,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Darts':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -980,7 +980,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Dice':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1007,7 +1007,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Diseases':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1034,7 +1034,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Doping':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1061,7 +1061,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Dragon boat':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1088,7 +1088,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Dragon dance':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1115,7 +1115,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'East-Middle-German':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1142,7 +1142,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Eastern Chinese':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1169,7 +1169,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Enameling':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1196,7 +1196,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Estonian language':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1223,7 +1223,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Fantasy and science fiction':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1250,7 +1250,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Fat-and-oil industry':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1277,7 +1277,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Forensics':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1304,7 +1304,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Fortification':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1331,7 +1331,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'France':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1358,7 +1358,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Galicia':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1385,7 +1385,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Given name':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1412,7 +1412,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Groceries':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1439,7 +1439,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gynecology':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1466,7 +1466,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Hairdressing':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1493,7 +1493,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Hebrew':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1520,7 +1520,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Hungarian Language':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1547,7 +1547,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ICAO':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1574,7 +1574,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Identification systems':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1601,7 +1601,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Instead of':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1628,7 +1628,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Irish (usage, not language)':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1655,7 +1655,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Israel':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1682,7 +1682,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Japan':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1709,7 +1709,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Kabaddi':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1736,7 +1736,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Kick volleyball':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1763,7 +1763,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Long jump':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1790,7 +1790,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Mahjong':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1817,7 +1817,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Manchu language':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1844,7 +1844,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Manual therapy and osteopathy':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1871,7 +1871,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Meaning 1':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1898,7 +1898,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Meaning 3':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1925,7 +1925,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Middle German':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1952,7 +1952,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Model sports':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -1979,7 +1979,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Molecular genetics':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2006,7 +2006,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Mongolian':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2033,7 +2033,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Neapolitan':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2060,7 +2060,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Netherlands':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2087,7 +2087,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Netherlands (usage)':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2114,7 +2114,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Non-destructive testing':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2141,7 +2141,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Norse mythology':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2168,7 +2168,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Northeastern Mandarin':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2195,7 +2195,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Northern Chinese':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2222,7 +2222,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Northern German':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2249,7 +2249,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Ornithology':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2276,7 +2276,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Petanque':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2303,7 +2303,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Physical sciences':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2330,7 +2330,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Pigeon racing':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2357,7 +2357,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Platform diving':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2384,7 +2384,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Pole vaults':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2411,7 +2411,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Polo':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2438,7 +2438,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Poultry farming':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2465,7 +2465,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Procedural law':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2492,7 +2492,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Puzzle':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2519,7 +2519,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Reinforced concrete':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2546,7 +2546,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Reservoir simulation':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2573,7 +2573,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Rhine':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2600,7 +2600,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Salvadoran Spanish':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2627,7 +2627,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Scandinavian':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2654,7 +2654,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Sedimentology':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2681,7 +2681,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Shanghainese':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2708,7 +2708,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Sicilian':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2735,7 +2735,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Skateboarding':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2762,7 +2762,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'South Asia':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2789,7 +2789,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'South-West-German':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2816,7 +2816,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Southern Chinese':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2843,7 +2843,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Steel production':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2870,7 +2870,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Sumo':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2897,7 +2897,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Taekwondo':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2924,7 +2924,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Taxation of forests':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2951,7 +2951,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Throw':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -2978,7 +2978,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Tibetan':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3005,7 +3005,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Torgut language':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3032,7 +3032,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Traditional medicine':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3059,7 +3059,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Turkey':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3086,7 +3086,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Tuscan':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3113,7 +3113,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Ukrainian (usage)':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3140,7 +3140,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Ukrainian language':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3167,7 +3167,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Vienna dialect':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3194,7 +3194,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Water polo':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3221,7 +3221,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'West-German':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3248,7 +3248,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Windsurfing':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3275,7 +3275,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Wushu':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3302,7 +3302,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Wood, pulp and paper industries':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3329,7 +3329,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Subjects for Chinese dictionaries (container)':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3356,7 +3356,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Stylistic values':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3383,7 +3383,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Philology':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3410,7 +3410,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Parasciences':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3437,7 +3437,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Outdoor activities and extreme sports':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3464,7 +3464,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Machinery and mechanisms':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3491,7 +3491,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Light industries':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3518,7 +3518,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Languages':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3545,7 +3545,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Jargon and slang':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3572,7 +3572,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Grammatical labels':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3599,7 +3599,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Emotional values':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3626,7 +3626,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Crafts':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3653,7 +3653,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Countries and regions':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3680,7 +3680,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Companion animals':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3707,7 +3707,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Auxilliary categories (editor use only)':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3734,7 +3734,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Art and culture (n.e.s.)':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': True
                ,'comment': 'Short title is unknown'
@@ -3761,7 +3761,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'AI.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -3788,7 +3788,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'AIDS.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -3815,7 +3815,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'AMEX.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -3842,7 +3842,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ASCII.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -3869,7 +3869,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Alg.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -3896,7 +3896,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'AmE':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -3923,7 +3923,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Ant.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -3950,7 +3950,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Apollo-Soyuz':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -3977,7 +3977,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Arag.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4004,7 +4004,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Arg.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4031,7 +4031,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Australia':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4058,7 +4058,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Austria':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4085,7 +4085,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Belar.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4112,7 +4112,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'BrE':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4139,7 +4139,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Braz.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4166,7 +4166,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'C.-R.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4193,7 +4193,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'CNC':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4220,7 +4220,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'CRT':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4247,7 +4247,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'CT':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4274,7 +4274,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Canada':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4301,7 +4301,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Centr.Am.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4328,7 +4328,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Chil.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4355,7 +4355,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'China':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4382,7 +4382,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Col.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4409,7 +4409,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Cuba':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4436,7 +4436,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Cypr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4463,7 +4463,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Dutch':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4490,7 +4490,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'EBRD':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4517,7 +4517,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'EU.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4544,7 +4544,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Ecuad.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4571,7 +4571,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'FBI.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4598,7 +4598,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'GDR':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4625,7 +4625,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Germ.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -4652,7 +4652,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, gen.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4679,7 +4679,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, GOST.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4706,7 +4706,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, IT':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4733,7 +4733,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, abbr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4760,7 +4760,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, abbr., IT':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4787,7 +4787,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, abbr., account.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4814,7 +4814,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, abbr., bank.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4841,7 +4841,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, adm.law.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4868,7 +4868,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, adv.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4895,7 +4895,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, aer.phot.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4922,7 +4922,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, agric.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4949,7 +4949,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, ballist.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -4976,7 +4976,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, biogeogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5003,7 +5003,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, bot.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5030,7 +5030,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, cloth.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5057,7 +5057,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, comp.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5084,7 +5084,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, cryptogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5111,7 +5111,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, dial.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5138,7 +5138,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, econ.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5165,7 +5165,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, el.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5192,7 +5192,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, electric.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5219,7 +5219,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, email':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5246,7 +5246,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, expl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5273,7 +5273,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, fig.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5300,7 +5300,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, footwear':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5327,7 +5327,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, fr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5354,7 +5354,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, garden.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5381,7 +5381,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, glac.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5408,7 +5408,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, horse.breed.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5435,7 +5435,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, hunt.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5462,7 +5462,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, inform.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5489,7 +5489,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, law':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5516,7 +5516,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, mach.mech.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5543,7 +5543,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, magn.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5570,7 +5570,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, math.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5597,7 +5597,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, med.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5624,7 +5624,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, media.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5651,7 +5651,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, met.phys.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5678,7 +5678,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, mil.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5705,7 +5705,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, mil., air.def.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5732,7 +5732,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, mil., arm.veh.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5759,7 +5759,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, mil., artil.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5786,7 +5786,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, mil., avia.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5813,7 +5813,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, mycol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5840,7 +5840,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, myth.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5867,7 +5867,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, nautic.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5894,7 +5894,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, obs.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5921,7 +5921,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, ocean.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5948,7 +5948,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, paraglid.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -5975,7 +5975,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, philolog.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6002,7 +6002,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, phonet.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6029,7 +6029,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, photo.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6056,7 +6056,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, poetic':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6083,7 +6083,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, polit.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6110,7 +6110,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, polygr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6137,7 +6137,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, prof.jarg.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6164,7 +6164,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, prop.&figur.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6191,7 +6191,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, radio':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6218,7 +6218,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, rel., jud.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6245,7 +6245,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, row.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6272,7 +6272,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, sail.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6299,7 +6299,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, scient.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6326,7 +6326,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, sculp.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6353,7 +6353,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, slang':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6380,7 +6380,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, slavon.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6407,7 +6407,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, social.sc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6434,7 +6434,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, spin.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6461,7 +6461,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, sport.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6488,7 +6488,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, sport.goods':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6515,7 +6515,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, surv.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6542,7 +6542,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, tech.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6569,7 +6569,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, tel.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6596,7 +6596,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, terat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6623,7 +6623,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, topogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6650,7 +6650,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, typewrit.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6677,7 +6677,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, vent.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6704,7 +6704,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, weav.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6731,7 +6731,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, written':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6758,7 +6758,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Gruzovik, zool.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -6785,7 +6785,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Guatem.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -6812,7 +6812,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'HF.electr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -6839,7 +6839,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'HR':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -6866,7 +6866,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'IMF.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -6893,7 +6893,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'IT':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -6920,7 +6920,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'India':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -6947,7 +6947,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Indones.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -6974,7 +6974,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Iran':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7001,7 +7001,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Kazakh.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7028,7 +7028,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Kyrgyz.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7055,7 +7055,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'LP.play.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7082,7 +7082,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'MSDS':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7109,7 +7109,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Makarov.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7136,7 +7136,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Makarov., inform., amer.usg.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7163,7 +7163,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Moroc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7190,7 +7190,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'N.Ireland.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7217,7 +7217,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'NASA':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7244,7 +7244,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'NATO':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7271,7 +7271,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'NGO':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7298,7 +7298,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'NYSE.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7325,7 +7325,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Nasdaq':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7352,7 +7352,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Netherl., law, court':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7379,7 +7379,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'O&G':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -7406,7 +7406,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'O&G, casp.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7433,7 +7433,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'O&G, karach.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7460,7 +7460,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'O&G, molikpaq.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7487,7 +7487,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'O&G, oilfield.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7514,7 +7514,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'O&G, sahk.r.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7541,7 +7541,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'O&G, sahk.s.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7568,7 +7568,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'O&G, sakh.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7595,7 +7595,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'O&G, sakh., geol.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7622,7 +7622,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'O&G, sakh.a.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7649,7 +7649,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'O&G, tengiz.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7676,7 +7676,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'O&G. tech.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7703,7 +7703,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'OHS':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -7730,7 +7730,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'PCB':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7757,7 +7757,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'PPE':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7784,7 +7784,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'PR':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7811,7 +7811,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'PSP':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7838,7 +7838,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Panam.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7865,7 +7865,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Peru.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7892,7 +7892,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Philipp.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7919,7 +7919,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'R&D.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7946,7 +7946,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Russia':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -7973,7 +7973,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'S.Amer.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8000,7 +8000,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'SAP.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8027,7 +8027,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'SAP.fin.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8054,7 +8054,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'SAP.tech.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8081,7 +8081,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Scotl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8108,7 +8108,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Spain':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8135,7 +8135,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'TV':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8162,7 +8162,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'UK':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8189,7 +8189,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'UN':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -8216,7 +8216,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'USA':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8243,7 +8243,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Ukraine':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8270,7 +8270,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Venezuel.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8297,7 +8297,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'WTO.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8324,7 +8324,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8351,7 +8351,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., O&G, casp.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8378,7 +8378,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., O&G, karach.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8405,7 +8405,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., O&G, sahk.r.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8432,7 +8432,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., O&G, sahk.s.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8459,7 +8459,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., O&G, sakh.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8486,7 +8486,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., O&G, sakh.a.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8513,7 +8513,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., amer.usg.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8540,7 +8540,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., amer.usg., slang':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8567,7 +8567,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., avia., avia., ICAO':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8594,7 +8594,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., avia., med.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8621,7 +8621,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., comp., MS':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8648,7 +8648,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., comp., net.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8675,7 +8675,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., comp., net., IT':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8702,7 +8702,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., fant./sci-fi.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8729,7 +8729,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., law, ADR':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8756,7 +8756,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., law, copyr.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8783,7 +8783,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., mil., WMD':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8810,7 +8810,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., mil., artil.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8837,7 +8837,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., mil., navy':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8864,7 +8864,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., patents.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8891,7 +8891,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'abbr., sport, bask.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8918,7 +8918,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'account.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8945,7 +8945,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'accum.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8972,7 +8972,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'acoust.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -8999,7 +8999,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'acrid.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9026,7 +9026,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'acrob.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9053,7 +9053,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'acup.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9080,7 +9080,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'addit.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9107,7 +9107,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'adm.law.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9134,7 +9134,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'admin.geo.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9161,7 +9161,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'adv.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9188,7 +9188,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'aer.phot.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9215,7 +9215,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'aerodyn.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9242,7 +9242,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'aerohydr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9269,7 +9269,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'aeron.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9296,7 +9296,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'affect.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9323,7 +9323,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'afghan.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9350,7 +9350,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'afr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9377,7 +9377,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'african.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9404,7 +9404,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'agr.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9431,7 +9431,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'agric.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -9458,7 +9458,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'agrochem.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9485,7 +9485,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'aikido.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9512,7 +9512,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'airccon.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9539,7 +9539,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'airports':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9566,7 +9566,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'airsh.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9593,7 +9593,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'alg.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9620,7 +9620,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'alk.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9647,7 +9647,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'allergol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9674,7 +9674,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'alp.ski.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9701,7 +9701,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'alum.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9728,7 +9728,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'amer.usg.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9755,7 +9755,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'amer.usg., Makarov.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9782,7 +9782,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'amer.usg., account.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9809,7 +9809,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'anaesthes.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9836,7 +9836,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'anat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9863,7 +9863,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'anc.fr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9890,7 +9890,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'anc.gr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9917,7 +9917,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'anc.hebr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9944,7 +9944,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'angl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -9971,7 +9971,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'anim.husb.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -9998,7 +9998,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'animat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10025,7 +10025,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'antarct.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10052,7 +10052,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'antenn.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10079,7 +10079,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'anthr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10106,7 +10106,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'antitrust.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10133,7 +10133,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'appl.math.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10160,7 +10160,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'arabic':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10187,7 +10187,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'arch.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10214,7 +10214,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'archer.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10241,7 +10241,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'archit.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10268,7 +10268,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'archive.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10295,7 +10295,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'arts.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10322,7 +10322,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'astr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10349,7 +10349,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'astrol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10376,7 +10376,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'astrometr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10403,7 +10403,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'astronaut.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10430,7 +10430,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'astrophys.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10457,7 +10457,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'astrospectr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10484,7 +10484,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'athlet.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10511,7 +10511,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'atring.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10538,7 +10538,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'audio.el.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10565,7 +10565,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'austral.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10592,7 +10592,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'austrian':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10619,7 +10619,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'auto.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10646,7 +10646,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'auto.ctrl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10673,7 +10673,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'automat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10700,7 +10700,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'avia.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -10727,7 +10727,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'avia., avia., ICAO':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10754,7 +10754,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'avia., med.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10781,7 +10781,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'avunc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10808,7 +10808,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'bacteriol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10835,7 +10835,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'baker.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10862,7 +10862,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ball.bear.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10889,7 +10889,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ballet.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10916,7 +10916,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'bank.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10943,7 +10943,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'baseb.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10970,7 +10970,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'beekeep.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -10997,7 +10997,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'belg.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11024,7 +11024,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'bev.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11051,7 +11051,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'bible.term.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11078,7 +11078,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'bibliogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11105,7 +11105,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'bill.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11132,7 +11132,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'billiar.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11159,7 +11159,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'bioacoust.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11186,7 +11186,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'biochem.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11213,7 +11213,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'bioenerg.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11240,7 +11240,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'biol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -11267,7 +11267,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'biom.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11294,7 +11294,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'bion.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11321,7 +11321,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'biophys.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11348,7 +11348,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'biotaxy.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11375,7 +11375,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'biotechn.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11402,7 +11402,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'black.sl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11429,7 +11429,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'bodybuild.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11456,7 +11456,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'book.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11483,7 +11483,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'book.bind.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11510,7 +11510,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'bot.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11537,7 +11537,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'box.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11564,7 +11564,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'brew.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11591,7 +11591,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'bricks':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11618,7 +11618,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'bridg.constr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11645,7 +11645,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'brit.usg.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11672,7 +11672,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'brit.usg., austral.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11699,7 +11699,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'build.mat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -11726,7 +11726,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'build.struct.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11753,7 +11753,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'bus.styl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11780,7 +11780,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'busin.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -11807,7 +11807,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cables':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11834,7 +11834,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'calligr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11861,7 +11861,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'can.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11888,7 +11888,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'canad.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11915,7 +11915,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'carcin.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11942,7 +11942,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cardiol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11969,7 +11969,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cards':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -11996,7 +11996,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cartogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12023,7 +12023,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cartogr., amer.usg.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12050,7 +12050,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cel.mech.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12077,7 +12077,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cem.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12104,7 +12104,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ceram.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12131,7 +12131,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ceram.tile.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12158,7 +12158,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'chalcid.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12185,7 +12185,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'charit.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12212,7 +12212,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'chat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12239,7 +12239,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'chech.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12266,7 +12266,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'checkers.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12293,7 +12293,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cheese':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12320,7 +12320,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'chem.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -12347,7 +12347,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'chem.comp.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12374,7 +12374,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'chem.fib.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12401,7 +12401,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'chem.ind.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -12428,7 +12428,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'chem.nomencl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12455,7 +12455,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'chess.term.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12482,7 +12482,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'child.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12509,7 +12509,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'chinese.lang.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12536,7 +12536,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'choreogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12563,7 +12563,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'chromat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12590,7 +12590,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cinema':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -12617,7 +12617,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cinema.equip.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12644,7 +12644,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'circus':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12671,7 +12671,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'civ.law.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12698,7 +12698,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'civ.proc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12725,7 +12725,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'clas.ant.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12752,7 +12752,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cleric.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12779,7 +12779,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'clich.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12806,7 +12806,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'clim.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12833,7 +12833,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'clin.trial.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12860,7 +12860,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cloth.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12887,7 +12887,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'coal.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12914,7 +12914,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cockney':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12941,7 +12941,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'coff.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12968,7 +12968,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'coll.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -12995,7 +12995,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'collect.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -13022,7 +13022,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'college.vern.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13049,7 +13049,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'colloid.chem.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13076,7 +13076,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'combust.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13103,7 +13103,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'comic.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13130,7 +13130,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'commer.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13157,7 +13157,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'commun.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -13184,7 +13184,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'comp.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -13211,7 +13211,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'comp., MS':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13238,7 +13238,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'comp., net.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13265,7 +13265,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'comp., net., abbr.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13292,7 +13292,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'comp.games.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13319,7 +13319,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'comp.graph.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13346,7 +13346,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'comp.name.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13373,7 +13373,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'comp.sec.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13400,7 +13400,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'comp.sl., humor.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13427,7 +13427,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'compr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13454,7 +13454,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'concr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13481,7 +13481,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'confect.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13508,7 +13508,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'construct.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -13535,7 +13535,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'consult.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13562,7 +13562,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'contempt.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13589,7 +13589,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'context.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13616,7 +13616,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'conv.ind.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13643,7 +13643,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'conv.notation.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13670,7 +13670,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cook.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -13697,7 +13697,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'coop.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13724,7 +13724,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'corp.gov.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13751,7 +13751,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'corrupt.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13778,7 +13778,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cosmet.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13805,7 +13805,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'crim.jarg.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13832,7 +13832,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'crim.law.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13859,7 +13859,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cryptogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13886,7 +13886,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'crystall.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13913,7 +13913,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cultur.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13940,7 +13940,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'curr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13967,7 +13967,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cust.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -13994,7 +13994,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cyber.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14021,7 +14021,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cyc.sport':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14048,7 +14048,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cycl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14075,7 +14075,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cytog.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14102,7 +14102,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'cytol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14129,7 +14129,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'d.b..':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14156,7 +14156,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dactyl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14183,7 +14183,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dam.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14210,7 +14210,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dan.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14237,7 +14237,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'danc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14264,7 +14264,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dat.proc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14291,7 +14291,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'deaf.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14318,7 +14318,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'demogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14345,7 +14345,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dent.impl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14372,7 +14372,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dentist.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14399,7 +14399,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'derbet.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14426,7 +14426,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dermat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14453,7 +14453,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'derog.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14480,7 +14480,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'desert.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14507,7 +14507,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'design.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14534,7 +14534,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dial.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -14561,7 +14561,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dialys.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14588,7 +14588,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'diet.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14615,7 +14615,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dig.curr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14642,7 +14642,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dimin.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14669,7 +14669,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dipl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14696,7 +14696,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dipl., amer.usg.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14723,7 +14723,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'disappr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14750,7 +14750,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'disast.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14777,7 +14777,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'distil.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14804,7 +14804,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dog.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14831,7 +14831,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dominic.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14858,7 +14858,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dril.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14885,7 +14885,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'drug.name':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14912,7 +14912,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'drugs':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14939,7 +14939,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'drv.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14966,7 +14966,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'drw.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -14993,7 +14993,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'drywall':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15020,7 +15020,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'dye.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15047,7 +15047,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ecol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15074,7 +15074,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'econ.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -15101,7 +15101,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'econ., amer.usg.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15128,7 +15128,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'econ.law.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15155,7 +15155,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'econometr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15182,7 +15182,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ed.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -15209,7 +15209,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ed., subj.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15236,7 +15236,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'egypt.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15263,7 +15263,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'el.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -15290,7 +15290,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'el.chem.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15317,7 +15317,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'el.com.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15344,7 +15344,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'el.gen.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15371,7 +15371,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'el.mach.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15398,7 +15398,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'el.med.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15425,7 +15425,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'el.met.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15452,7 +15452,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'el.mot.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15479,7 +15479,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'el.therm.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15506,7 +15506,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'el.tract.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15533,7 +15533,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'elect.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15560,7 +15560,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'electr.eng.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -15587,7 +15587,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'electric.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15614,7 +15614,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'electrophor.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15641,7 +15641,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'elev.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15668,7 +15668,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'els.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15695,7 +15695,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'embryol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15722,7 +15722,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'emerg.care':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15749,7 +15749,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'emotive':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15776,7 +15776,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'empl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15803,7 +15803,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'endocr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15830,7 +15830,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'energ.distr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15857,7 +15857,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'energ.ind.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -15884,7 +15884,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'energ.syst.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15911,7 +15911,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'eng.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -15938,7 +15938,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'eng.geol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15965,7 +15965,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'engin.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -15992,7 +15992,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'engl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16019,7 +16019,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'entomol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16046,7 +16046,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'environ.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16073,7 +16073,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'epist.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16100,7 +16100,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'equestr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16127,7 +16127,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'eskim.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16154,7 +16154,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'esot.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16181,7 +16181,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'esper.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16208,7 +16208,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ethnogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16235,7 +16235,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ethnol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16262,7 +16262,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ethnopsychol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16289,7 +16289,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ethol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16316,7 +16316,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'euph.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16343,7 +16343,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'evol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16370,7 +16370,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'excl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16397,7 +16397,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'exhib.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16424,7 +16424,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'explan.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16451,7 +16451,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'extr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16478,7 +16478,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'f.trade.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16505,7 +16505,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'facil.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16532,7 +16532,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'fant./sci-fi., abbr.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16559,7 +16559,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'fash.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16586,7 +16586,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'faux ami':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16613,7 +16613,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'felin.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16640,7 +16640,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'fenc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16667,7 +16667,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ferm.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16694,7 +16694,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'fert.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16721,7 +16721,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'fib.optic':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16748,7 +16748,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'fig.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16775,7 +16775,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'fig.of.sp.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16802,7 +16802,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'fig.skat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16829,7 +16829,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'file.ext.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16856,7 +16856,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'film.equip.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16883,7 +16883,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'film.light.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16910,7 +16910,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'film.proc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16937,7 +16937,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'fin.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -16964,7 +16964,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'finn.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -16991,7 +16991,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'fire.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17018,7 +17018,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'fish.farm.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17045,7 +17045,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'fishery':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17072,7 +17072,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'flor.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17099,7 +17099,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'flour.prod.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17126,7 +17126,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'flow.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17153,7 +17153,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'fodd.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17180,7 +17180,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'foil.ships':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17207,7 +17207,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'folk.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -17234,7 +17234,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'food.ind.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -17261,7 +17261,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'food.serv.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17288,7 +17288,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'footb.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17315,7 +17315,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'footwear':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17342,7 +17342,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'for.chem.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17369,7 +17369,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'for.pol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17396,7 +17396,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'foreig.aff.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -17423,7 +17423,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'forens.med.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17450,7 +17450,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'forestr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17477,7 +17477,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'forestr., amer.usg.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17504,7 +17504,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'forex':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17531,7 +17531,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'forg.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17558,7 +17558,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'formal':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17585,7 +17585,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'found.engin.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17612,7 +17612,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'foundr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17639,7 +17639,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'fr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17666,7 +17666,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'furn.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17693,7 +17693,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'gaelic':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17720,7 +17720,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'galv.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17747,7 +17747,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'galv.plast.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17774,7 +17774,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'gambl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17801,7 +17801,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'games':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -17828,7 +17828,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'garden.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17855,7 +17855,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'gas.proc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17882,7 +17882,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'gastroent.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17909,7 +17909,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'gear.tr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17936,7 +17936,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'gem.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17963,7 +17963,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'gen.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -17990,7 +17990,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'gen.eng.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18017,7 +18017,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'geneal.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18044,7 +18044,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'genet.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18071,7 +18071,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'geobot.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18098,7 +18098,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'geochem.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18125,7 +18125,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'geochron.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18152,7 +18152,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'geogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -18179,7 +18179,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'geol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -18206,7 +18206,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'geom.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18233,7 +18233,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'geomech.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18260,7 +18260,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'geomorph.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18287,7 +18287,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'geophys.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18314,7 +18314,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'germ.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18341,7 +18341,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'glass':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18368,7 +18368,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'glass.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18395,7 +18395,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'gloom.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18422,7 +18422,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'goldmin.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18449,7 +18449,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'golf.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18476,7 +18476,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'gov.':
-               {'Valid': False
+               {'Single': False
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -18503,7 +18503,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'gram.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18530,7 +18530,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'grav.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18557,7 +18557,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'greek.lang.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18584,7 +18584,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'green.tech.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18611,7 +18611,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'gymn.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18638,7 +18638,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'gyrosc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18665,7 +18665,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'h.rghts.act.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -18692,7 +18692,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hab.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18719,7 +18719,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hack.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18746,7 +18746,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'handb.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18773,7 +18773,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'handicraft.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18800,7 +18800,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hawai.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18827,7 +18827,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'health.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18854,7 +18854,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hear.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18881,7 +18881,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'heat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18908,7 +18908,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'heat.exch.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18935,7 +18935,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'heat.transf.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18962,7 +18962,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'heavy.eq.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -18989,7 +18989,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'helic.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19016,7 +19016,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'helminth.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19043,7 +19043,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hemat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19070,7 +19070,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'herald.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19097,7 +19097,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'herpet.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19124,7 +19124,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hi-fi':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19151,7 +19151,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hi.jump.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19178,7 +19178,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hindi':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19205,7 +19205,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hist.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -19232,7 +19232,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hist.fig.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19259,7 +19259,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'histol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19286,7 +19286,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hobby':
-               {'Valid': False
+               {'Single': False
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -19313,7 +19313,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hockey.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19340,7 +19340,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'homeopath.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19367,7 +19367,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'horse.breed.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19394,7 +19394,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'horse.rac.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19421,7 +19421,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'horticult.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19448,7 +19448,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hotels':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19475,7 +19475,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'house.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19502,7 +19502,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hovercr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19529,7 +19529,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'humor.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19556,7 +19556,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hunt.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19583,7 +19583,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hydr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19610,7 +19610,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hydraul.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19637,7 +19637,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hydroac.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19664,7 +19664,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hydrobiol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19691,7 +19691,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hydroel.st.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19718,7 +19718,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hydrogeol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19745,7 +19745,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hydrogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19772,7 +19772,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hydrol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19799,7 +19799,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hydromech.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19826,7 +19826,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hydropl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19853,7 +19853,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'hygien.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19880,7 +19880,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ice.form.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19907,7 +19907,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'icel.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19934,7 +19934,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ichtyol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19961,7 +19961,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'idiom':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -19988,7 +19988,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'idiom, amer.usg.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20015,7 +20015,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'idiom, brit.usg.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20042,7 +20042,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'imitat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20069,7 +20069,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'immigr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20096,7 +20096,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'immunol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20123,7 +20123,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'indust.hyg.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20150,7 +20150,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'industr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -20177,7 +20177,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'inet.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20204,7 +20204,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'inf.secur.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20231,7 +20231,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'inform.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20258,7 +20258,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'infr.techn.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20285,7 +20285,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'inherit.law.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20312,7 +20312,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'inorg.chem.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20339,7 +20339,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'insur.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20366,7 +20366,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'int. law.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20393,7 +20393,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'int.circ.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20420,7 +20420,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'int.rel.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20447,7 +20447,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'int.transport.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20474,7 +20474,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'intell.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20501,7 +20501,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'interntl.trade.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20528,7 +20528,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'invect.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20555,7 +20555,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'invest.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20582,7 +20582,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'irish.lang.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20609,7 +20609,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ironic.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20636,7 +20636,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'isol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20663,7 +20663,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ital.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20690,7 +20690,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'jamaic.eng.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20717,7 +20717,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'jap.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20744,7 +20744,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'jarg.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20771,7 +20771,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'jet.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20798,7 +20798,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'jewl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20825,7 +20825,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'journ.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20852,7 +20852,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'judo.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20879,7 +20879,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'karate.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20906,7 +20906,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'knit.goods':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20933,7 +20933,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'korea.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20960,7 +20960,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'lab.eq.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -20987,7 +20987,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'lab.law.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21014,7 +21014,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'labor.org.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21041,7 +21041,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'landsc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21068,7 +21068,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'laser.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21095,7 +21095,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'laser.med.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21122,7 +21122,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'lat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21149,7 +21149,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'lat.amer.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21176,7 +21176,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'lat.amer.sl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21203,7 +21203,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'laud.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21230,7 +21230,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'law':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -21257,7 +21257,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'law, ADR':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21284,7 +21284,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'law, amer.usg.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21311,7 +21311,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'law, com.law':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21338,7 +21338,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'law, contr., context.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21365,7 +21365,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'law, copyr.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21392,7 +21392,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'law, copyr., abbr.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21419,7 +21419,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'law, court':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21446,7 +21446,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'law.enf.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -21473,7 +21473,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'lean.prod.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21500,7 +21500,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'leath.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21527,7 +21527,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'leg.ent.typ.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21554,7 +21554,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'legal.theor.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21581,7 +21581,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'level.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21608,7 +21608,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'lgbt':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21635,7 +21635,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'libr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21662,7 +21662,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'life.sc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -21689,7 +21689,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'light.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21716,7 +21716,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'limn.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21743,7 +21743,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ling.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -21770,7 +21770,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'lit.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -21797,7 +21797,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'lit., f.tales':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21824,7 +21824,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'liter.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21851,7 +21851,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'lithol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21878,7 +21878,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'load.equip.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21905,7 +21905,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'loc.name.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21932,7 +21932,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'logging':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21959,7 +21959,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'logic':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -21986,7 +21986,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'logist.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -22013,7 +22013,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'logop.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22040,7 +22040,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'low':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22067,7 +22067,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'low.germ.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22094,7 +22094,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'luge.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22121,7 +22121,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mach.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22148,7 +22148,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mach.comp.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22175,7 +22175,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'magn.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22202,7 +22202,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'magn.tomogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22229,7 +22229,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'magnet.image.rec.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22256,7 +22256,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'malac.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22283,7 +22283,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'malay.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22310,7 +22310,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mamal.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22337,7 +22337,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mamm.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22364,7 +22364,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'manag.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -22391,7 +22391,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'manga.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22418,7 +22418,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'maor.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22445,7 +22445,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mar.law':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22472,7 +22472,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'market.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22499,7 +22499,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mart.arts':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -22526,7 +22526,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'match.prod.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22553,7 +22553,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mater.sc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22580,7 +22580,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'math.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -22607,7 +22607,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'math.anal.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22634,7 +22634,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mean.2':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22661,7 +22661,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'meas.inst.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22688,7 +22688,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'meat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22715,7 +22715,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mech.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22742,7 +22742,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mech.eng.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22769,7 +22769,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'med.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -22796,7 +22796,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'med., alt.':
-               {'Valid': False
+               {'Single': False
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -22823,7 +22823,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'med., epid.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22850,7 +22850,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'med.appl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -22877,7 +22877,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'media.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -22904,7 +22904,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'melior.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22931,7 +22931,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'merch.nav.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -22958,7 +22958,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'met.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -22985,7 +22985,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'met.health.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23012,7 +23012,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'met.sci.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23039,7 +23039,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'met.work.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23066,7 +23066,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'meteorol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -23093,7 +23093,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'metro':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23120,7 +23120,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'metrol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23147,7 +23147,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mexic.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23174,7 +23174,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'microbiol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23201,7 +23201,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'microel.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23228,7 +23228,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'microsc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23255,7 +23255,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mid.chin.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23282,7 +23282,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mil.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -23309,7 +23309,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mil., AAA':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23336,7 +23336,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mil., WMD':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23363,7 +23363,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mil., ammo':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23390,7 +23390,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mil., arm.veh.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23417,7 +23417,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mil., artil.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23444,7 +23444,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mil., avia.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23471,7 +23471,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mil., grnd.forc.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23498,7 +23498,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mil., lingo':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23525,7 +23525,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mil., mil., arm.veh.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23552,7 +23552,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mil., navy':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23579,7 +23579,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'milk.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23606,7 +23606,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'min.class.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23633,7 +23633,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'min.proc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23660,7 +23660,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'min.prod.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23687,7 +23687,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mine.surv.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23714,7 +23714,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mineral.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23741,7 +23741,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mining.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -23768,7 +23768,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'missil.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23795,7 +23795,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'misused':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23822,7 +23822,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mob.com.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23849,7 +23849,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'modern':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23876,7 +23876,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mol.biol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23903,7 +23903,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'moldav.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23930,7 +23930,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'morph.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23957,7 +23957,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'moto.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -23984,7 +23984,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mount.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24011,7 +24011,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'multimed.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -24038,7 +24038,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mun.plan.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24065,7 +24065,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mus.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24092,7 +24092,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'mus.instr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24119,7 +24119,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'museum.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24146,7 +24146,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'myth.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -24173,7 +24173,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'myth., gr.-rom.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24200,7 +24200,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'myth., nors., myth.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24227,7 +24227,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'n.amer.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24254,7 +24254,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'names':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24281,7 +24281,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'nano':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24308,7 +24308,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'narrow.film.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24335,7 +24335,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'nat.res.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -24362,7 +24362,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'nat.sc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24389,7 +24389,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'nautic.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -24416,7 +24416,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'navig.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24443,7 +24443,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'neol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24470,7 +24470,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'nephr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24497,7 +24497,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'neugoling.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24524,7 +24524,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'neur.net.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24551,7 +24551,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'neurol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24578,7 +24578,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'neuropsychol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24605,7 +24605,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'neurosurg.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24632,7 +24632,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'new.zeal.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24659,7 +24659,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'news':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24686,7 +24686,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'nonferr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24713,7 +24713,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'nonlin.opt.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24740,7 +24740,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'nonstand.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24767,7 +24767,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'norw.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24794,7 +24794,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'notar.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24821,7 +24821,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'nucl.chem.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24848,7 +24848,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'nucl.phys.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24875,7 +24875,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'nucl.pow.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24902,7 +24902,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'numism.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24929,7 +24929,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'nurs.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -24956,7 +24956,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'obs.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -24983,7 +24983,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'obs., inform.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25010,7 +25010,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'obs., ironic.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25037,7 +25037,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'obs., mil.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25064,7 +25064,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'obst.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25091,7 +25091,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ocean.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25118,7 +25118,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'offic.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25145,7 +25145,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'office.equip.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25172,7 +25172,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'offsh.comp.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25199,7 +25199,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'oil':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25226,7 +25226,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'oil.lubr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25253,7 +25253,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'oil.proc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25280,7 +25280,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'old.fash.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25307,7 +25307,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'old.orth.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25334,7 +25334,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'oncol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25361,7 +25361,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'op.hearth.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25388,7 +25388,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'op.syst.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25415,7 +25415,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ophtalm.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25442,7 +25442,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'opt.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25469,7 +25469,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'optometr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25496,7 +25496,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ore.form.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25523,7 +25523,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'org.chem.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25550,7 +25550,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'org.crime.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25577,7 +25577,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'org.name.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25604,7 +25604,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'orient.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25631,7 +25631,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'orthop.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25658,7 +25658,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pack.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25685,7 +25685,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'paint.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25712,7 +25712,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'paint.varn.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25739,7 +25739,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'paint.w.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25766,7 +25766,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pal.bot.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25793,7 +25793,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'paleogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25820,7 +25820,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'paleont.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25847,7 +25847,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'paleozool.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25874,7 +25874,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'palyn.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25901,7 +25901,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'parapsych.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25928,7 +25928,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'parasitol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25955,7 +25955,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'patents.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -25982,7 +25982,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pathol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26009,7 +26009,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pedag.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26036,7 +26036,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pediatr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26063,7 +26063,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pejor.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26090,7 +26090,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'penitent.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26117,7 +26117,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'perf.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26144,7 +26144,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'permits.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26171,7 +26171,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pers.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26198,7 +26198,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pest.contr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26225,7 +26225,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pet.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26252,7 +26252,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'petrogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26279,7 +26279,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'phaler.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26306,7 +26306,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pharm.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26333,7 +26333,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pharmac.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26360,7 +26360,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'philat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26387,7 +26387,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'philos.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -26414,7 +26414,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'phonol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26441,7 +26441,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'photo.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -26468,7 +26468,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'photo.sound.rec.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26495,7 +26495,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'photometr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26522,7 +26522,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'phras.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26549,7 +26549,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'phys.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -26576,7 +26576,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'phys.chem.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26603,7 +26603,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'physiol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26630,7 +26630,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'physioth.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26657,7 +26657,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'phytophathol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26684,7 +26684,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'piez.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26711,7 +26711,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pipes.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26738,7 +26738,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'plann.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26765,7 +26765,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'plast.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26792,7 +26792,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'plumb.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26819,7 +26819,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pmp.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26846,7 +26846,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pneum.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26873,7 +26873,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'poetic':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26900,7 +26900,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'poetry':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26927,7 +26927,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'police':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26954,7 +26954,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'police.jarg.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -26981,7 +26981,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'polish.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27008,7 +27008,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'polit.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -27035,7 +27035,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'polit.econ.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27062,7 +27062,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'polite':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27089,7 +27089,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'polygr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27116,7 +27116,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'polym.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27143,7 +27143,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'polynes.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27170,7 +27170,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pomp.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27197,7 +27197,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'port.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27224,7 +27224,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'post':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27251,7 +27251,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pow.el.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27278,7 +27278,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'powd.met.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27305,7 +27305,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pragm.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27332,7 +27332,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'press.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27359,7 +27359,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pris.sl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27386,7 +27386,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'priv.int.law.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27413,7 +27413,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'procur.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27440,7 +27440,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'product.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -27467,7 +27467,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'prof.jarg.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27494,7 +27494,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'progr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27521,7 +27521,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'proj.manag.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27548,7 +27548,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'project.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27575,7 +27575,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'prop.&figur.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27602,7 +27602,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'prop.name':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -27629,7 +27629,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'protozool.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27656,7 +27656,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'proverb':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27683,7 +27683,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'psychiat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27710,7 +27710,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'psychol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -27737,7 +27737,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'psycholing.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27764,7 +27764,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'psychopathol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27791,7 +27791,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'psychophys.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27818,7 +27818,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'psychother.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27845,7 +27845,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'publ.law.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27872,7 +27872,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'publ.transp.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27899,7 +27899,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'publ.util.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27926,7 +27926,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'publish.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -27953,7 +27953,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'puert.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -27980,7 +27980,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pulm.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28007,7 +28007,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pulp.n.paper':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28034,7 +28034,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'pwr.lines.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28061,7 +28061,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'qual.cont.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -28088,7 +28088,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'quant.el.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28115,7 +28115,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'quant.mech.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28142,7 +28142,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'quar.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28169,7 +28169,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'quran':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28196,7 +28196,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'racing':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28223,7 +28223,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'rad.geod.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28250,7 +28250,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'radio':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28277,7 +28277,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'radio, amer.usg., abbr.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28304,7 +28304,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'radioastron.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28331,7 +28331,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'radiobiol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28358,7 +28358,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'radiogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28385,7 +28385,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'radiol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28412,7 +28412,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'radioloc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28439,7 +28439,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'railw.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28466,7 +28466,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'rare':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28493,7 +28493,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'real.est.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28520,7 +28520,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'rec.mngmt':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -28547,7 +28547,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'refr.mat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28574,7 +28574,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'refrig.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28601,7 +28601,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'reg.usg.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -28628,7 +28628,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'rel., budd.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28655,7 +28655,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'rel., cath.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28682,7 +28682,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'rel., christ.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28709,7 +28709,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'rel., east.orth.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28736,7 +28736,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'rel., hind.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28763,7 +28763,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'rel., islam':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28790,7 +28790,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'reliabil.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28817,7 +28817,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'relig.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -28844,7 +28844,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'rem.sens.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28871,7 +28871,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'reptil.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28898,7 +28898,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'resin.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28925,7 +28925,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'respect.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28952,7 +28952,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'rhetor.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -28979,7 +28979,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'risk.man.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29006,7 +29006,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'rit.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29033,7 +29033,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'road.constr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29060,7 +29060,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'road.sign.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29087,7 +29087,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'road.surf.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29114,7 +29114,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'road.wrk.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29141,7 +29141,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'robot.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29168,7 +29168,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'roll.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29195,7 +29195,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'romanian.lang.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29222,7 +29222,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'rude':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29249,7 +29249,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'rugb.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29276,7 +29276,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'russ.lang.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29303,7 +29303,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'s.germ.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29330,7 +29330,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sail.ships':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29357,7 +29357,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sanit.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29384,7 +29384,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sanscr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29411,7 +29411,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sarcast.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29438,7 +29438,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sat.comm.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29465,7 +29465,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'saying.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29492,7 +29492,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'school.sl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29519,7 +29519,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'scient.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29546,7 +29546,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'scottish':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29573,7 +29573,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'scr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29600,7 +29600,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'scub.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29627,7 +29627,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sec.sys.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -29654,7 +29654,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'securit.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29681,7 +29681,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'seism.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29708,7 +29708,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'seism.res.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29735,7 +29735,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sel.breed.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29762,7 +29762,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'semant.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29789,7 +29789,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'semicond.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29816,7 +29816,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'semiot.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29843,7 +29843,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sens.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29870,7 +29870,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sew.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29897,7 +29897,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sewage':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29924,7 +29924,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sex':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29951,7 +29951,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sexol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -29978,7 +29978,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'shinto.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30005,7 +30005,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ship.handl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30032,7 +30032,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'shipb.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30059,7 +30059,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'shoot.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30086,7 +30086,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'show.biz.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30113,7 +30113,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'signall.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30140,7 +30140,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'silic.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30167,7 +30167,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ski.jump.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30194,7 +30194,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'skiing':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30221,7 +30221,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'skydive.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30248,7 +30248,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sl., drug.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30275,7 +30275,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sl., teen.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30302,7 +30302,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'slang':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30329,7 +30329,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sms':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30356,7 +30356,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'snd.proc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30383,7 +30383,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'snd.rec.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30410,7 +30410,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'snowb.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30437,7 +30437,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'soc.med.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30464,7 +30464,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'social.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30491,7 +30491,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sociol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -30518,7 +30518,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'socioling.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30545,7 +30545,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'softw.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30572,7 +30572,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'soil.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30599,7 +30599,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'soil.mech.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30626,7 +30626,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sol.pow.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30653,7 +30653,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'solid.st.phys.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30680,7 +30680,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'som.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30707,7 +30707,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sound.eng.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30734,7 +30734,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'south.Dutch.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30761,7 +30761,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'south.afr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30788,7 +30788,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'soviet.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30815,7 +30815,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sp.dis.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30842,7 +30842,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'space':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -30869,7 +30869,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'span.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30896,7 +30896,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'span.-am.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30923,7 +30923,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'spectr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30950,7 +30950,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'speed.skat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -30977,7 +30977,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'speleo.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31004,7 +31004,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'spice.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31031,7 +31031,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'spoken':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31058,7 +31058,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sport, bask.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31085,7 +31085,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sport.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -31112,7 +31112,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'st.exch.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31139,7 +31139,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'starch.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31166,7 +31166,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'stat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31193,7 +31193,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'station.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31220,7 +31220,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'stereo.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31247,7 +31247,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'stmp.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31274,7 +31274,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'stn.mas.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31301,7 +31301,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'str.mater.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31328,7 +31328,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'strat.plast.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31355,7 +31355,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'stratigr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31382,7 +31382,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'stylist.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31409,7 +31409,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'subl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31436,7 +31436,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'subm.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31463,7 +31463,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'sugar.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31490,7 +31490,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'supercond.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31517,7 +31517,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'superl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31544,7 +31544,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'surg.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31571,7 +31571,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'surn.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31598,7 +31598,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'survey.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31625,7 +31625,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'svc.ind.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -31652,7 +31652,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'swed.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31679,7 +31679,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'swim.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31706,7 +31706,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'swiss.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31733,7 +31733,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'swtch.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31760,7 +31760,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'synt.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31787,7 +31787,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'tab.tenn.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31814,7 +31814,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'tabl.game':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31841,7 +31841,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'taboo':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31868,7 +31868,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'taboo, amer.usg., black.sl., slang':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31895,7 +31895,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'taiw.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31922,7 +31922,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'tao.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31949,7 +31949,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'tat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -31976,7 +31976,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'taur.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32003,7 +32003,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'tax.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32030,7 +32030,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'tech.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -32057,7 +32057,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'tecton.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32084,7 +32084,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'tel.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32111,7 +32111,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'tel.mech.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32138,7 +32138,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'telecom.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32165,7 +32165,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'telegr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32192,7 +32192,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'tenn.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32219,7 +32219,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'textile':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32246,7 +32246,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'thai.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32273,7 +32273,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'theatre.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32300,7 +32300,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'therm.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32327,7 +32327,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'therm.energ.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32354,7 +32354,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'therm.eng.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32381,7 +32381,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'timb.float.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32408,7 +32408,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'tin.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32435,7 +32435,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'tirk.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32462,7 +32462,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'titles':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32489,7 +32489,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'tobac.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32516,7 +32516,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'tools':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32543,7 +32543,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'topogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32570,7 +32570,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'topol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32597,7 +32597,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'topon.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32624,7 +32624,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'torped.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32651,7 +32651,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'toxicol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32678,7 +32678,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'toy.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32705,7 +32705,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'tradem.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32732,7 +32732,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'traf.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32759,7 +32759,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'traf.contr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32786,7 +32786,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'trampol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32813,7 +32813,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'transf.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32840,7 +32840,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'transp.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -32867,7 +32867,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'transpl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32894,7 +32894,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'traumat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32921,7 +32921,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'trav.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -32948,7 +32948,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'trd.class.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -32975,7 +32975,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'trib.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33002,7 +33002,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'trucks':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33029,7 +33029,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'tunn.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33056,7 +33056,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'turb.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33083,7 +33083,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'turkish':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33110,7 +33110,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'typogr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33137,7 +33137,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'typol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33164,7 +33164,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ufol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33191,7 +33191,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'ultrasnd.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33218,7 +33218,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'unions.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33245,7 +33245,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'unit.meas.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33272,7 +33272,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'univer.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33299,7 +33299,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'urol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33326,7 +33326,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'urug.sp.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33353,7 +33353,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'vac.tub.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33380,7 +33380,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'valves':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33407,7 +33407,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'venereol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33434,7 +33434,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'vent.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33461,7 +33461,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'verbat.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33488,7 +33488,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'verl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33515,7 +33515,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'vernac.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33542,7 +33542,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'vet.med.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33569,7 +33569,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'vibr.monit.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33596,7 +33596,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'video.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33623,7 +33623,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'viet.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33650,7 +33650,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'virol.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33677,7 +33677,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'volcan.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33704,7 +33704,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'voll.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33731,7 +33731,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'vulg.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33758,7 +33758,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'wales':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33785,7 +33785,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'wareh.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33812,7 +33812,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'waste.man.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33839,7 +33839,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'watchm.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33866,7 +33866,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'water.res.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33893,7 +33893,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'water.suppl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33920,7 +33920,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'waterski.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33947,7 +33947,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'weap.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -33974,7 +33974,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'weightlift.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34001,7 +34001,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'weld.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34028,7 +34028,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'welf.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34055,7 +34055,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'well.contr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34082,7 +34082,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'welln.':
-               {'Valid': True
+               {'Single': True
                ,'Major': True
                ,'Modified': False
                ,'comment': ''
@@ -34109,7 +34109,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'west.Ind.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34136,7 +34136,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'win.tast.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34163,7 +34163,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'wind.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34190,7 +34190,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'windows':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34217,7 +34217,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'wine.gr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34244,7 +34244,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'winemak.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34271,7 +34271,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'wir.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34298,7 +34298,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'wire.drw.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34325,7 +34325,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'wnd.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34352,7 +34352,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'wood.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34379,7 +34379,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'work.fl.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34406,7 +34406,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'wrest.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34433,7 +34433,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'yacht.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34460,7 +34460,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'yiddish.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34487,7 +34487,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'zool.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34514,7 +34514,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'zoot.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': False
                ,'comment': ''
@@ -34541,7 +34541,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, gen.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34568,7 +34568,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, abbr.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34595,7 +34595,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, calque.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34622,7 +34622,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, cloth.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34649,7 +34649,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, earth.sc.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34676,7 +34676,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, hydrom.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34703,7 +34703,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, inform.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34730,7 +34730,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, quot.aph.':
-               {'Valid': False
+               {'Single': False
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34757,7 +34757,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, sport.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34784,7 +34784,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, tagmem.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34811,7 +34811,7 @@ SUBJECTS = {'Albanian language':
                    }
                }
            ,'Игорь Миг, weap.':
-               {'Valid': True
+               {'Single': True
                ,'Major': False
                ,'Modified': True
                ,'comment': ''
@@ -34850,7 +34850,7 @@ class Subjects:
         ''' Short titles are more valid than full titles, e.g.,
             'Gruzovik, obs.' -> 'Obsolete / dated' due to a bug
             at multitran.com. Thus, it's not necessary to check for
-            'Valid' key there.
+            'Single' key there.
         '''
         for key in SUBJECTS.keys():
             if SUBJECTS[key][self.lang]['short'] == short:
@@ -34883,7 +34883,7 @@ class Subjects:
         # Takes ~0.0016s on Intel Atom
         majors = []
         for key in SUBJECTS.keys():
-            if SUBJECTS[key]['Major'] and SUBJECTS[key]['Valid']:
+            if SUBJECTS[key]['Major'] and SUBJECTS[key]['Single']:
                 majors.append(SUBJECTS[key][self.lang]['title'])
         return sorted(majors)
     

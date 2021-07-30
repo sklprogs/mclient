@@ -38,9 +38,9 @@ class Format:
         self.format()
         return self.formatted
     
-    def _format_valid(self):
-        what = "': {'Valid':"
-        with_ = "':\n{}{{'Valid':".format(15*' ')
+    def _format_single(self):
+        what = "': {'Single':"
+        with_ = "':\n{}{{'Single':".format(15*' ')
         self.formatted = self.formatted.replace(what,with_)
     
     def _format_major_en(self):
@@ -112,7 +112,7 @@ class Format:
         f = '[MClient] plugins.multitrancom.utils.subjects.compile.Compile.format'
         if self.Success:
             self.formatted = 'SUBJECTS = {}'.format(self.subjects)
-            self._format_valid()
+            self._format_single()
             self._format_major_en()
             self._format_major()
             self._format_modified()
@@ -150,7 +150,7 @@ class Missing:
         else:
             sh.com.cancel(f)
     
-    def _is_valid(self,row):
+    def _is_single(self,row):
         for item in row:
             if ', ' in item:
                 return False
@@ -172,7 +172,7 @@ class Missing:
                         sh.objs.get_mes(f,mes,True).show_warning()
                     else:
                         self.subjects[row[0]] = {}
-                        self.subjects[row[0]]['Valid'] = self._is_valid(row)
+                        self.subjects[row[0]]['Single'] = self._is_single(row)
                         major_en = gp.objs.get_groups().get_major(row[0])
                         is_major = gp.objs.groups.is_major(row[0])
                         is_vip = self._is_vip(row[0])
@@ -403,20 +403,20 @@ class Compile:
         f = '[MClient] plugins.multitrancom.utils.subjects.compile.Compile._debug_attrs'
         nos = [i + 1 for i in range(len(self.subjects.keys()))]
         keys = []
-        valid = []
+        single = []
         en = []
         majors = []
         groups = []
         for key in self.subjects:
             keys.append(key)
             en.append(self.subjects[key]['en']['title'])
-            valid.append(self.subjects[key]['Valid'])
+            single.append(self.subjects[key]['Single'])
             majors.append(self.subjects[key]['Major'])
             groups.append(self.subjects[key]['major_en'])
-        headers = (_('#'),_('KEY'),'EN',_('VALID'),_('MAJOR')
+        headers = (_('#'),_('KEY'),'EN',_('SINGLE'),_('MAJOR')
                   ,_('MAJOR (EN)')
                   )
-        iterable = [nos,keys,en,valid,majors,groups]
+        iterable = [nos,keys,en,single,majors,groups]
         # 10'' monitor: 25 symbols per column
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
@@ -428,7 +428,7 @@ class Compile:
         f = '[MClient] plugins.multitrancom.utils.subjects.compile.Compile._debug_langs'
         nos = [i + 1 for i in range(len(self.subjects.keys()))]
         keys = []
-        valid = []
+        single = []
         en_short = []
         en = []
         ru_short = []
@@ -441,7 +441,7 @@ class Compile:
         uk = []
         for key in self.subjects:
             keys.append(key)
-            valid.append(self.subjects[key]['Valid'])
+            single.append(self.subjects[key]['Single'])
             en_short.append(self.subjects[key]['en']['short'])
             en.append(self.subjects[key]['en']['title'])
             ru_short.append(self.subjects[key]['ru']['short'])
@@ -452,10 +452,10 @@ class Compile:
             sp.append(self.subjects[key]['es']['title'])
             uk_short.append(self.subjects[key]['uk']['short'])
             uk.append(self.subjects[key]['uk']['title'])
-        headers = (_('#'),_('KEY'),_('VALID'),'ENS','EN','RUS','RU'
+        headers = (_('#'),_('KEY'),_('SINGLE'),'ENS','EN','RUS','RU'
                   ,'DES','DE','SPS','SP','UKS','UK'
                   )
-        iterable = [nos,keys,valid,en_short,en,ru_short,ru,de_short,de
+        iterable = [nos,keys,single,en_short,en,ru_short,ru,de_short,de
                    ,sp_short,sp,uk_short,uk
                    ]
         # 10'' monitor: 8 symbols per column
@@ -480,7 +480,7 @@ class Compile:
         else:
             sh.com.cancel(f)
     
-    def _is_valid(self,row):
+    def _is_single(self,row):
         for item in row:
             if ', ' in item:
                 return False
@@ -503,7 +503,7 @@ class Compile:
                         self.duplicates.append(row)
                     else:
                         self.subjects[row[0]] = {}
-                        self.subjects[row[0]]['Valid'] = self._is_valid(row)
+                        self.subjects[row[0]]['Single'] = self._is_single(row)
                         major_en = gp.objs.get_groups().get_major(row[1])
                         is_major = gp.objs.groups.is_major(row[1])
                         is_vip = self._is_vip(row[0])
