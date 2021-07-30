@@ -2,9 +2,7 @@ mclient:
 - 
 
 multitrancom:
-- EN-RU: case tracking database system: "ambassador" should be a user
-  name
-- RU-EN, mannits: trash in the end
+- EN-RU: hello -> maystay: Double space before a user name
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"
 - Widget is not shown immediately when using F2 -> Esc -> F2 (probably

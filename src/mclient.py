@@ -119,28 +119,28 @@ class Commands:
         elif row_no == 0:
             return True
 
-    def get_dics(self,Block=False,Phrases=False):
-        f = '[MClient] mclient.Commands.get_dics'
+    def get_article_subjects(self):
+        f = '[MClient] mclient.Commands.get_article_subjects'
         new_dics = []
-        dics = objs.get_blocksdb().get_dics(Block)
+        dics = objs.get_blocksdb().get_dics(False)
         if dics:
             dics = [item[0] for item in dics]
             for dic in dics:
                 items = dic.split(', ')
                 new_dics += items
+            new_dics += dics
             new_dics = [item.strip() for item in new_dics \
                         if item.strip()
                        ]
             new_dics = sorted(set(new_dics))
-            if not Phrases:
-                phdic = objs.blocksdb.get_phdic()
-                if phdic:
-                    try:
-                        new_dics.remove(phdic[1])
-                    except ValueError:
-                        mes = _('Wrong input data: "{}"!')
-                        mes = mes.format(phdic[1])
-                        sh.objs.get_mes(f,mes,True).show_warning()
+            phdic = objs.blocksdb.get_phdic()
+            if phdic:
+                try:
+                    new_dics.remove(phdic[1])
+                except ValueError:
+                    mes = _('Wrong input data: "{}"!')
+                    mes = mes.format(phdic[1])
+                    sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.rep_empty(f)
         return new_dics
@@ -2413,7 +2413,7 @@ class WebFrame:
         old_key = sh.lg.globs['bool']['BlockSubjects']
         objs.get_blacklist().reset (lst1 = old_list
                                    ,lst2 = lg.objs.get_plugins().get_subjects()
-                                   ,art_subjects = com.get_dics()
+                                   ,art_subjects = com.get_article_subjects()
                                    ,majors = lg.objs.plugins.get_majors()
                                    )
         objs.blacklist.set_checkbox(sh.lg.globs['bool']['BlockSubjects'])
@@ -2434,7 +2434,7 @@ class WebFrame:
         old_key = sh.lg.globs['bool']['PrioritizeSubjects']
         objs.get_priorities().reset (lst1 = old_list
                                     ,lst2 = lg.objs.get_plugins().get_subjects()
-                                    ,art_subjects = com.get_dics()
+                                    ,art_subjects = com.get_article_subjects()
                                     ,majors = lg.objs.plugins.get_majors()
                                     )
         objs.priorities.set_checkbox(sh.lg.globs['bool']['PrioritizeSubjects'])
