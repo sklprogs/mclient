@@ -95,6 +95,8 @@ class CleanUp:
                 entire module takes ~0.58s, since we have already
                 deleted unicode control codes?
             '''
+            # Delete a non-breaking space before a user name
+            self.text = self.text.replace('&nbsp;',' ')
             self.text = sh.Text(self.text).delete_unsupported()
             return self.text
         else:

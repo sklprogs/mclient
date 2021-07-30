@@ -2,7 +2,6 @@ mclient:
 - 
 
 multitrancom:
-- EN-RU: hello -> maystay: Double space before a user name
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"
 - Widget is not shown immediately when using F2 -> Esc -> F2 (probably

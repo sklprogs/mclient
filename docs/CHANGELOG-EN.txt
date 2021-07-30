@@ -1,10 +1,16 @@
 (in development)
+* 
+
+6.11
 * Adjust table layout such as to fit most columns
 * Break too long words (e.g., URLs) in order to keep column edges
   visible
 * Update documentation
 * Fix parsing user names
+* Remove an extra space before user names
 * Fix processing user names as subjects
+* Allow subjects with commas while blocking/prioritizing in an article
+  view
 
 6.10
 * Set up subject priorities in a separate window
