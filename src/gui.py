@@ -6,7 +6,6 @@ from skl_shared.localize import _
 import skl_shared.shared as sh
 
 PRODUCT = 'MClient'
-VERSION = '6.10'
 ICON = sh.objs.get_pdir().add('..','resources','icon_64x64_mclient.gif')
 
 
@@ -622,6 +621,5 @@ class WebFrame:
 
 if __name__ == '__main__':
     sh.com.start()
-    #WebFrame().show()
-    Settings().show()
+    WebFrame().show()
     sh.com.end()

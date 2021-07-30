@@ -1145,7 +1145,7 @@ class WebFrame:
     def reset(self):
         #'widget.reset' is already done in 'self.fill'
         welcome = lg.Welcome (product = gi.PRODUCT
-                             ,version = gi.VERSION
+                             ,version = ab.VERSION
                              )
         self.fill(welcome.run())
         self.update_buttons()
@@ -1630,7 +1630,7 @@ class WebFrame:
         
     def set_title(self,arg=None):
         if not arg:
-            arg = sh.List(lst1=[gi.PRODUCT,gi.VERSION]).space_items()
+            arg = sh.List(lst1=[gi.PRODUCT,ab.VERSION]).space_items()
         self.gui.set_title(arg)
 
     def get_text(self,event=None):

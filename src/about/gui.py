@@ -4,8 +4,7 @@
 from skl_shared.localize import _
 import skl_shared.shared as sh
 
-PRODUCT = 'MClient'
-VERSION = '6.10'
+VERSION = '6.11'
 CURYEAR = 2021
 ICON = sh.objs.get_pdir().add('..','resources','icon_64x64_mclient.gif')
 

@@ -5,6 +5,8 @@ from skl_shared.localize import _
 import skl_shared.shared as sh
 from . import gui as gi
 
+VERSION = gi.VERSION
+
 
 class About:
 

@@ -10,7 +10,7 @@ import settings.gui as st
 import suggest.gui as sg
 
 PRODUCT = mg.PRODUCT
-VERSION = mg.VERSION
+VERSION = ab.VERSION
 CURYEAR = ab.CURYEAR
 ICON = mg.ICON
 
