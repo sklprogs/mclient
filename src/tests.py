@@ -36,26 +36,24 @@ class ArticleSubjects:
     def __init__(self):
         self.blocks = []
     
-    def set_lists(self):
-        # Read lists from files
-        import logic as lg
-        lg.objs.get_order()
-    
     def run(self):
-        self.set_lists()
         self.set_blocks()
         self.set_article()
     
     def set_article(self):
+        f = '[MClient] tests.Subjects.set_article'
         import subjects.subjects as sj
         import mclient
         pairs = mclient.objs.get_blocksdb().get_dic_pairs()
+        mes = _('Pairs: {}').format(pairs)
+        sh.objs.get_mes(f,mes,True).show_debug()
         sj.objs.get_article().reset(pairs,DEBUG)
         sj.objs.article.run()
     
     def set_blocks(self):
         f = '[MClient] tests.Subjects.set_blocks'
         import mclient
+        # Lists will be automatically read from files on import
         import logic as lg
         #search = 'hello'
         #url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
@@ -387,10 +385,7 @@ class Commands:
         f = '[MClient] tests.Commands.get_priority'
         import logic as lg
         import subjects.subjects as sj
-        # Load lists
-        lg.objs.get_order()
         title = 'Gruzovik, История'
-        #result = sj.objs.get_order().priorlst
         result = sj.objs.get_order().get_priority(title)
         sh.objs.get_mes(f,result,True).show_debug()
     
@@ -833,6 +828,6 @@ if __name__ == '__main__':
     #com.get_column_width()
     #com.run_sources()
     #Offline().run_multitrancom()
-    #ArticleSubjects().run()
-    com.get_priority()
+    ArticleSubjects().run()
+    #com.get_priority()
     sh.com.end()

@@ -102,21 +102,28 @@ class ArticleSubjects:
         self.debug()
     
     def fill(self):
-        # Takes ~?s for 'set' on Intel Atom
+        # Takes ~0.007s for 'set' on Intel Atom
         f = '[MClient] subjects.subjects.ArticleSubjects.fill'
         if self.Success:
             for pair in self.pairs:
                 if pair[0] and not pair[0] in self.subjects:
-                    count1 = pair[0].count(', ')
-                    count2 = pair[1].count(', ')
-                    if count1 and count1 == count2:
-                        short_lst = pair[0].split(', ')
-                        title_lst = pair[1].split(', ')
-                        Blocked = self._is_list_blocked(title_lst)
-                        priority = self._get_list_priority(title_lst)
-                    else:
-                        Blocked = objs.get_order().is_blocked(pair[1])
+                    if objs.get_order().is_blocked(pair[1]):
+                        Blocked = True
                         priority = objs.order.get_priority(pair[1])
+                    elif objs.order.is_prioritized(pair[1]):
+                        Blocked = objs.order.is_blocked(pair[1])
+                        priority = objs.order.get_priority(pair[1])
+                    else:
+                        count1 = pair[0].count(', ')
+                        count2 = pair[1].count(', ')
+                        if count1 and count1 == count2:
+                            short_lst = pair[0].split(', ')
+                            title_lst = pair[1].split(', ')
+                            Blocked = self._is_list_blocked(title_lst)
+                            priority = self._get_list_priority(title_lst)
+                        else:
+                            Blocked = False
+                            priority = 0
                     self.subjects[pair[0]] = {}
                     self.subjects[pair[1]] = {}
                     self.subjects[pair[0]]['short'] = pair[0]
