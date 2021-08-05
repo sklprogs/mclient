@@ -2,6 +2,7 @@
 * 
 
 6.11
+* Align columns by width (except for one-row articles)
 * Adjust table layout such as to fit most columns
 * Break too long words (e.g., URLs) in order to keep column edges
   visible

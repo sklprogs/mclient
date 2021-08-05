@@ -2,6 +2,8 @@ mclient:
 - 
 
 multitrancom:
+- EN-RU, one-man company, action required -> phrases: too wide fixed
+  columns
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"
 - Widget is not shown immediately when using F2 -> Esc -> F2 (probably
