@@ -34,7 +34,34 @@ import skl_shared.shared as sh
       inform.' will be expanded as 'Informal'. We correct such cases
       here manually.
 '''
-SUBJECTS = {'Gruzovik, hist.':
+SUBJECTS = {'quot.aph.':
+               {'Single': True
+               ,'Major': False
+               ,'Modified': True
+               ,'comment': ''
+               ,'major_en': 'Literature'
+               ,'en':
+                   {'short': 'quot.aph.'
+                   ,'title': 'Quotes and aphorisms'
+                   }
+               ,'ru':
+                   {'short': 'цит.афор.'
+                   ,'title': 'Цитаты, афоризмы и крылатые выражения'
+                   }
+               ,'de':
+                   {'short': 'quot.aph.'
+                   ,'title': 'Quotes and aphorisms'
+                   }
+               ,'es':
+                   {'short': 'quot.aph.'
+                   ,'title': 'Quotes and aphorisms'
+                   }
+               ,'uk':
+                   {'short': 'цит.афор.'
+                   ,'title': 'Цитати, афоризми та крилаті вирази'
+                   }
+               }
+           ,'Gruzovik, hist.':
                {'Single': False
                ,'Major': True
                ,'Modified': True
