@@ -41,7 +41,7 @@ class HTM:
     
     def reset (self,data,cols,collimit=9,Printer=False
               ,Reverse=False,phdic='',skipped=0
-              ,col_width=0,tab_width=82
+              ,col_width=0
               ):
         # 'collimit' includes fixed blocks
         self.set_values()
@@ -53,7 +53,6 @@ class HTM:
         self.Reverse = Reverse
         self.skipped = skipped
         self.col_width = col_width
-        self.tab_width = tab_width
         
     def run(self):
         self.assign()
@@ -337,26 +336,12 @@ class HTM:
             self.output.write(self.script)
             self.output.write('<div id="printableArea">')
         if self.blocks:
-            ''' - Sometimes the right end in a multicolumn view is not
-                  visible. Setting a table width explicitly allows to
-                  avoid this problem. The value of 82% is picked up by
-                  trial and error and is the minimum to show EN-RU,
-                  'deterrence' properly. Setting this parameter by the
-                  main widget width is not enough - the table will be
-                  too wide (just as when we set the width to 100%).
-                - If the current article how only 1 row then 'tab_width'
-                  should be set to 0. 'tab_width' does not necessarily
-                  correlate with 'col_width' since the latter may be set
-                  explicitly by a program user.
+            ''' - If the current article how only 1 row then the 'width'
+                  argument of the 'table style' tag should be set to 0.
                 - #TODO: remove extra table properties when using
                   a good web engine.
             '''
-            if self.tab_width:
-                sub = '<table style="width: {}%">'
-                sub = sub.format(self.tab_width)
-            else:
-                sub = '<table>'
-            self.output.write(sub)
+            self.output.write('<table>')
             if self.Reverse:
                 self.output.write('<tr><td valign="top">')
             elif self.blocks and self.blocks[0].text \

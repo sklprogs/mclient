@@ -1917,19 +1917,16 @@ class WebFrame:
         cells.run()
         cells.dump(objs.blocksdb)
         
-        col_width = lg.com.get_column_width()
         if com.has_single_row():
-            #TODO: read 'tab_width' from 'globs'
-            col_width = tab_width = 0
+            col_width = 0
         else:
-            tab_width = 82
+            col_width = lg.com.get_column_width()
         mh.objs.get_htm().reset (data = objs.blocksdb.fetch()
                                 ,cols = lg.objs.request.cols
                                 ,collimit = lg.objs.request.collimit
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,phdic = self.phdic
                                 ,skipped = len(com.get_skipped_dics())
-                                ,tab_width = tab_width
                                 ,col_width = col_width
                                 )
         mh.objs.htm.run()
@@ -2464,19 +2461,16 @@ class WebFrame:
 
     def print(self,event=None):
         f = '[MClient] mclient.WebFrame.print'
-        col_width = lg.com.get_column_width()
         if com.has_single_row():
-            #TODO: read 'tab_width' from 'globs'
-            col_width = tab_width = 0
+            col_width = 0
         else:
-            tab_width = 82
+            col_width = lg.com.get_column_width()
         mh.objs.get_htm().reset (data = objs.blocksdb.fetch()
                                 ,cols = lg.objs.request.cols
                                 ,collimit = lg.objs.request.collimit
                                 ,Printer = True
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,skipped = len(com.get_skipped_dics())
-                                ,tab_width = tab_width
                                 ,col_width = col_width
                                 )
         code = mh.objs.htm.run()
