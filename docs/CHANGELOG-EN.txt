@@ -1,5 +1,7 @@
 (in development)
-* 
+* A table width is no longer set (reverting the change from
+  version 6.11) in order to save a free space to the right increasing
+  proportionally with a screen width
 
 6.11
 * Align columns by width (except for one-row articles)
