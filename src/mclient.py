@@ -110,9 +110,9 @@ class Commands:
         col_num = 0
         percent = 0
         if not self.has_single_row():
-            col_num = objs.get_blocksdb().get_max_col_no()
-            if col_num:
-                col_num += 1
+            result = objs.get_blocksdb().get_max_col_no()
+            if result:
+                col_num = result + 1
             else:
                 sh.com.rep_empty(f)
         if col_num > len(lg.objs.get_request().cols):
