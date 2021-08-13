@@ -22,6 +22,21 @@ class DB:
         self.create_blocks()
         self.create_articles()
     
+    def get_max_col_no(self):
+        ''' This is a less advanced alternative of 'self.get_max_col'
+            for cases when positions are not set yet.
+        '''
+        f = '[MClient] db.DB.get_max_col_no'
+        if self.artid:
+            query = 'select COLNO from BLOCKS where ARTICLEID = ? \
+                     and BLOCK = 0 and IGNORE = 0 order by COLNO desc'
+            self.dbc.execute(query,(self.artid,))
+            col_no = self.dbc.fetchone()
+            if col_no:
+                return col_no[0]
+        else:
+            sh.com.rep_empty(f)
+    
     def get_max_row_no(self):
         ''' This is a less advanced alternative of 'self.get_max_row'
             for cases when positions are not set yet.

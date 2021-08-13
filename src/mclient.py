@@ -105,6 +105,25 @@ class Commands:
     ''' #NOTE: DB is in controller (not in logic), so DB-related code
         is here too.
     '''
+    def get_column_width(self):
+        f = '[MClient] mclient.Commands.get_column_width'
+        col_num = 0
+        percent = 0
+        if not self.has_single_row():
+            col_num = objs.get_blocksdb().get_max_col_no()
+            if col_num:
+                col_num += 1
+            else:
+                sh.com.rep_empty(f)
+        if col_num > len(lg.objs.get_request().cols):
+            col_num -= len(lg.objs.request.cols)
+            # 20% is reserved for fixed columns
+            percent = int(80/col_num)
+        mes = _('Term columns: number: {}, percentage: {}%')
+        mes = mes.format(col_num,percent)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return percent
+    
     def export_style(self):
         f = '[MClient] mclient.Commands.export_style'
         lg.com.export_style()
@@ -1917,17 +1936,13 @@ class WebFrame:
         cells.run()
         cells.dump(objs.blocksdb)
         
-        if com.has_single_row():
-            col_width = 0
-        else:
-            col_width = lg.com.get_column_width()
         mh.objs.get_htm().reset (data = objs.blocksdb.fetch()
                                 ,cols = lg.objs.request.cols
                                 ,collimit = lg.objs.request.collimit
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,phdic = self.phdic
                                 ,skipped = len(com.get_skipped_dics())
-                                ,col_width = col_width
+                                ,col_width = com.get_column_width()
                                 )
         mh.objs.htm.run()
         
@@ -2461,17 +2476,13 @@ class WebFrame:
 
     def print(self,event=None):
         f = '[MClient] mclient.WebFrame.print'
-        if com.has_single_row():
-            col_width = 0
-        else:
-            col_width = lg.com.get_column_width()
         mh.objs.get_htm().reset (data = objs.blocksdb.fetch()
                                 ,cols = lg.objs.request.cols
                                 ,collimit = lg.objs.request.collimit
                                 ,Printer = True
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,skipped = len(com.get_skipped_dics())
-                                ,col_width = col_width
+                                ,col_width = com.get_column_width()
                                 )
         code = mh.objs.htm.run()
         if code:

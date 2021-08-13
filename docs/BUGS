@@ -2,6 +2,8 @@ mclient:
 - 
 
 multitrancom:
+- (MClient mode) EN-RU, reproducibility: ')' in the beginning
+- (Clarity mode) EN-RU, frame rate: too wide fixed columns
 - EN-RU, one-man company, action required -> phrases, as an exception,
   deny liability, deny liability -> Phrases, replacement request:
   too wide fixed columns

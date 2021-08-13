@@ -492,7 +492,7 @@ class CurRequest:
     
     def set_values(self):
         self.cols = ('dic','wform','transc','speech')
-        self.collimit = sh.lg.globs['int']['colnum'] + 4
+        self.collimit = sh.lg.globs['int']['colnum'] + len(self.cols)
         ''' Toggling blacklisting should not depend on a number of
             blocked subjects (otherwise, it is not clear how
             blacklisting should be toggled)
@@ -628,18 +628,6 @@ class Commands:
             objs.get_request().cols = tuple(lst)
         else:
             sh.com.rep_lazy(f)
-    
-    def get_column_width(self):
-        f = '[MClient] logic.Commands.get_column_width'
-        try:
-            # 20% is reserved for fixed columns
-            return int(80/sh.lg.globs['int']['colnum'])
-        except KeyError:
-            mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
-        except ZeroDivisionError:
-            sh.com.rep_empty(f)
-        return 0
     
     def load_config(self):
         objs.get_config()
