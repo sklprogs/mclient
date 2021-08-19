@@ -120,9 +120,8 @@ class Commands:
             ''' If there are only 2 term columns, they should not be
                 spaced apart too far from each other, this looks ugly.
             '''
-            if col_num != 2:
-                # 20% is reserved for fixed columns
-                percent = int(80/col_num)
+            # 20% is reserved for fixed columns
+            percent = int(80/col_num)
         mes = _('Term columns: number: {}, percentage: {}%')
         mes = mes.format(col_num,percent)
         sh.objs.get_mes(f,mes,True).show_debug()
