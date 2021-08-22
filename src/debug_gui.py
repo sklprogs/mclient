@@ -119,6 +119,9 @@ class Settings(st.Settings,Debug):
         self.add_widget('lbl_no11',self.lbl_no11.text)
         self.add_widget('lbl_no12',self.lbl_no12.text)
         self.add_widget('lbl_no13',self.lbl_no13.text)
+        self.add_widget('lbl_no14',self.lbl_no14.text)
+        self.add_widget('lbl_no15',self.lbl_no15.text)
+        self.add_widget('lbl_no16',self.lbl_no16.text)
         self.add_widget('cbx_no1',self.cbx_no1.get())
         self.add_widget('cbx_no2',self.cbx_no2.get())
         self.add_widget('cbx_no3',self.cbx_no3.get())
@@ -132,6 +135,8 @@ class Settings(st.Settings,Debug):
         self.add_widget('cbx_no11',self.cbx_no11.get())
         self.add_widget('cbx_no12',self.cbx_no12.get())
         self.add_widget('cbx_no13',self.cbx_no13.get())
+        self.add_widget('cbx_no14',self.cbx_no14.get())
+        self.add_widget('cbx_no15',self.cbx_no15.get())
         self.add_widget('opt_scm',self.opt_scm.choice)
         self.add_widget('opt_cl1',self.opt_cl1.choice)
         self.add_widget('opt_cl2',self.opt_cl2.choice)
@@ -144,6 +149,7 @@ class Settings(st.Settings,Debug):
         self.add_widget('opt_sp5',self.opt_sp5.choice)
         self.add_widget('opt_sp6',self.opt_sp6.choice)
         self.add_widget('opt_sp7',self.opt_sp7.choice)
+        self.add_widget('ent_tab',self.ent_tab.get())
 
 
 

@@ -1946,6 +1946,7 @@ class WebFrame:
                                 ,phdic = self.phdic
                                 ,skipped = len(com.get_skipped_dics())
                                 ,col_width = com.get_column_width()
+                                ,tab_width = sh.lg.globs['int']['table_width']
                                 )
         mh.objs.htm.run()
         
@@ -2486,6 +2487,7 @@ class WebFrame:
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,skipped = len(com.get_skipped_dics())
                                 ,col_width = com.get_column_width()
+                                ,tab_width = sh.lg.globs['int']['table_width']
                                 )
         code = mh.objs.htm.run()
         if code:

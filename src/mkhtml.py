@@ -41,7 +41,7 @@ class HTM:
     
     def reset (self,data,cols,collimit=9,Printer=False
               ,Reverse=False,phdic='',skipped=0
-              ,col_width=0
+              ,col_width=0,tab_width=100
               ):
         # 'collimit' includes fixed blocks
         self.set_values()
@@ -53,6 +53,7 @@ class HTM:
         self.Reverse = Reverse
         self.skipped = skipped
         self.col_width = col_width
+        self.tab_width = tab_width
         
     def run(self):
         self.assign()
@@ -341,7 +342,8 @@ class HTM:
                 - #TODO: remove extra table properties when using
                   a good web engine.
             '''
-            self.output.write('<table>')
+            sub = '<table style="width: {}%">'.format(self.tab_width)
+            self.output.write(sub)
             if self.Reverse:
                 self.output.write('<tr><td valign="top">')
             elif self.blocks and self.blocks[0].text \

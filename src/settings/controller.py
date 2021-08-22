@@ -41,11 +41,21 @@ class UpdateSettingsUI:
         self.gui.cbx_no11.set(sh.lg.globs['bool']['Autocompletion'])
         self.gui.cbx_no12.set(sh.lg.globs['bool']['Autoswap'])
         self.gui.cbx_no13.set(sh.lg.globs['bool']['PhraseCount'])
+        self.gui.cbx_no14.set(sh.lg.globs['bool']['AdjustByWidth'])
+    
+    def update_table_width(self):
+        self.gui.ent_tab.reset()
+        self.gui.ent_tab.insert(sh.lg.globs['int']['table_width'])
+        if sh.lg.globs['int']['table_width'] == 100:
+            self.gui.cbx_no15.disable()
+        else:
+            self.gui.cbx_no15.enable()
     
     def run(self):
         self.update_style_area()
         self.update_speech_area()
         self.update_checkboxes()
+        self.update_table_width()
 
 
 
@@ -81,6 +91,18 @@ class ExportSettingsUI:
         sh.lg.globs['bool']['Autocompletion'] = objs.settings_ui.cbx_no11.get()
         sh.lg.globs['bool']['Autoswap'] = objs.settings_ui.cbx_no12.get()
         sh.lg.globs['bool']['PhraseCount'] = objs.settings_ui.cbx_no13.get()
+        sh.lg.globs['bool']['AdjustByWidth'] = objs.settings_ui.cbx_no14.get()
+    
+    def export_table_width(self):
+        f = '[MClient] settings.controller.ExportSettingsUI.export_table_width'
+        if objs.settings_ui.cbx_no15.get():
+            width = objs.settings_ui.ent_tab.get()
+            width = sh.Input(f,width).get_integer()
+            if not 60 <= width <= 100:
+                mes = _('Wrong input data: "{}"!').format(width)
+                sh.objs.get_mes(f,mes,True).show_warning()
+                width = 100
+            sh.lg.globs['int']['table_width'] = width
     
     def run(self):
         f = '[MClient] settings.controller.ExportSettingsUI.run'
@@ -91,6 +113,7 @@ class ExportSettingsUI:
             self.export_style_area()
             self.export_speech_area()
             self.export_checkboxes()
+            self.export_table_width()
 
 
 
@@ -132,11 +155,15 @@ class Settings:
     
     def set_bindings(self):
         self.get_gui().btn_apl.action = self.apply
-        sh.com.bind (obj = self.gui.obj
+        sh.com.bind (obj = self.gui
                     ,bindings = [sh.lg.globs['str']['bind_settings']
                                 ,sh.lg.globs['str']['bind_settings_alt']
                                 ]
                     ,action = self.toggle
+                    )
+        sh.com.bind (obj = self.gui.ent_tab
+                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,action = self.apply
                     )
 
     def get_speech_prior(self):

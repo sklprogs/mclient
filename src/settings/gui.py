@@ -250,15 +250,17 @@ class Settings:
         self.update_sp6()
 
     def set_gui(self):
-        self.obj = self.parent = sh.Top(AutoCr=True)
-        self.set_title()
+        self.parent = sh.Top (AutoCr = True
+                             ,title = _('View Settings')
+                             ,icon = ICON
+                             )
+        self.widget = self.parent.widget
         self.set_frames()
         self.set_cboxes()
         self.set_labels()
         self.set_columns()
         self.set_buttons()
         self.set_bindings()
-        self.set_icon()
 
     def block_settings(self,event=None):
         f = '[MClient] settings.gui.Settings.block_settings'
@@ -310,6 +312,13 @@ class Settings:
         self.cbx_no13 = sh.CheckBox (parent = self.frm_cb13
                                     ,side = 'left'
                                     )
+        self.cbx_no14 = sh.CheckBox (parent = self.frm_cb14
+                                    ,side = 'left'
+                                    )
+        self.cbx_no15 = sh.CheckBox (parent = self.frm_cb15
+                                    ,side = 'left'
+                                    )
+        self.cbx_no15.widget.config(state='disabled')
 
     def reset(self,event=None):
         self.opt_scm.set(PRODUCT)
@@ -337,6 +346,7 @@ class Settings:
         self.cbx_no11.enable()
         self.cbx_no12.disable()
         self.cbx_no13.enable()
+        self.cbx_no14.enable()
 
     def set_buttons(self):
         sh.Button (parent = self.frm_btn
@@ -351,26 +361,13 @@ class Settings:
                                  ,text = _('Apply')
                                  ,side = 'right'
                                  )
-        #TODO: elaborate
-        '''
-        self.btn_blk = sh.Button (parent = self.frm_cb3
-                                 ,hint = _('Tune up blacklisting')
-                                 ,text = _('Add/Remove')
-                                 ,side = 'right'
-                                 )
-        self.btn_pri = sh.Button (parent = self.frm_cb4
-                                 ,hint = _('Tune up prioritizing')
-                                 ,text = _('Add/Remove')
-                                 ,side = 'right'
-                                 )
-        '''
 
     def set_frames(self):
-        self.frm_col = sh.Frame (parent = self.obj
+        self.frm_col = sh.Frame (parent = self.parent
                                 ,expand = True
                                 ,fill = 'both'
                                 )
-        self.frm_spc = sh.Frame (parent = self.obj
+        self.frm_spc = sh.Frame (parent = self.parent
                                 ,expand = True
                                 ,fill = 'both'
                                 )
@@ -434,59 +431,67 @@ class Settings:
                                 ,expand = False
                                 ,fill = 'both'
                                 )
-        self.frm_cb1 = sh.Frame (parent = self.obj
+        self.frm_cb1 = sh.Frame (parent = self.parent
                                 ,expand = False
                                 ,fill = 'x'
                                 )
-        self.frm_cb2 = sh.Frame (parent = self.obj
+        self.frm_cb2 = sh.Frame (parent = self.parent
                                 ,expand = False
                                 ,fill = 'x'
                                 )
-        self.frm_cb3 = sh.Frame (parent = self.obj
+        self.frm_cb3 = sh.Frame (parent = self.parent
                                 ,expand = False
                                 ,fill = 'x'
                                 )
-        self.frm_cb4 = sh.Frame (parent = self.obj
+        self.frm_cb4 = sh.Frame (parent = self.parent
                                 ,expand = False
                                 ,fill = 'x'
                                 )
-        self.frm_cb5 = sh.Frame (parent = self.obj
+        self.frm_cb5 = sh.Frame (parent = self.parent
                                 ,expand = False
                                 ,fill = 'x'
                                 )
-        self.frm_cb6 = sh.Frame (parent = self.obj
+        self.frm_cb6 = sh.Frame (parent = self.parent
                                 ,expand = False
                                 ,fill = 'x'
                                 )
-        self.frm_cb7 = sh.Frame (parent = self.obj
+        self.frm_cb7 = sh.Frame (parent = self.parent
                                 ,expand = False
                                 ,fill = 'x'
                                 )
-        self.frm_cb8 = sh.Frame (parent = self.obj
+        self.frm_cb8 = sh.Frame (parent = self.parent
                                 ,expand = False
                                 ,fill = 'x'
                                 )
-        self.frm_cb9 = sh.Frame (parent = self.obj
+        self.frm_cb9 = sh.Frame (parent = self.parent
                                 ,expand = False
                                 ,fill = 'x'
                                 )
-        self.frm_cb10 = sh.Frame (parent = self.obj
+        self.frm_cb10 = sh.Frame (parent = self.parent
                                  ,expand = False
                                  ,fill = 'x'
                                  )
-        self.frm_cb11 = sh.Frame (parent = self.obj
+        self.frm_cb11 = sh.Frame (parent = self.parent
                                  ,expand = False
                                  ,fill = 'x'
                                  )
-        self.frm_cb12 = sh.Frame (parent = self.obj
+        self.frm_cb12 = sh.Frame (parent = self.parent
                                  ,expand = False
                                  ,fill = 'x'
                                  )
-        self.frm_cb13 = sh.Frame (parent = self.obj
+        self.frm_cb13 = sh.Frame (parent = self.parent
                                  ,expand = False
                                  ,fill = 'x'
                                  )
-        self.frm_btn = sh.Frame (parent = self.obj
+        self.frm_cb14 = sh.Frame (parent = self.parent
+                                 ,expand = False
+                                 ,fill = 'x'
+                                 )
+        self.frm_cb15 = sh.Frame (parent = self.parent
+                                 ,expand = False
+                                 ,fill = 'x'
+                                 )
+        self.frm_btn = sh.Frame (parent = self.parent
                                 ,expand = False
                                 ,fill = 'x'
                                 ,side = 'bottom'
@@ -591,6 +596,22 @@ class Settings:
                                  )
         self.lbl_no13 = sh.Label (parent = self.frm_cb13
                                  ,text = _('Show a phrase count')
+                                 ,side = 'left'
+                                 )
+        self.lbl_no14 = sh.Label (parent = self.frm_cb14
+                                 ,text = _('Adjust columns by width')
+                                 ,side = 'left'
+                                 )
+        self.lbl_no15 = sh.Label (parent = self.frm_cb15
+                                 ,text = _('Use a different table width:')
+                                 ,side = 'left'
+                                 )
+        self.ent_tab = sh.Entry (parent = self.frm_cb15
+                                ,side = 'left'
+                                ,width = 3
+                                )
+        self.lbl_no16 = sh.Label (parent = self.frm_cb15
+                                 ,text = '%'
                                  ,side = 'left'
                                  )
         sh.Label (parent = self.frm_sp1
@@ -732,7 +753,7 @@ class Settings:
                                      )
 
     def set_bindings(self):
-        sh.com.bind (obj = self.obj
+        sh.com.bind (obj = self.parent
                     ,bindings = ('<Escape>','<Control-q>','<Control-w>')
                     ,action = self.close
                     )
@@ -788,22 +809,17 @@ class Settings:
                     ,bindings = '<Button-1>'
                     ,action = self.cbx_no13.toggle
                     )
-
-    def set_title(self,text=_('View Settings')):
-        self.obj.set_title(text=text)
+        sh.com.bind (obj = self.lbl_no14
+                    ,bindings = '<Button-1>'
+                    ,action = self.cbx_no14.toggle
+                    )
 
     def show(self,event=None):
-        self.obj.show()
+        self.parent.show()
 
     def close(self,event=None):
-        self.obj.close()
+        self.parent.close()
 
-    def set_icon(self,path=None):
-        if path:
-            self.obj.set_icon(path)
-        else:
-            self.obj.set_icon(ICON)
-    
     def update_sp1(self):
         f = '[MClient] settings.gui.Settings.update_sp1'
         if self.opt_sp1.choice in self.spallow:
@@ -901,3 +917,7 @@ class Settings:
         else:
             mes = _('Empty input is not allowed!')
             sh.objs.get_mes(f,mes).show_error()
+
+
+if __name__ == '__main__':
+    Settings().show()

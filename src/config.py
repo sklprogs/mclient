@@ -21,7 +21,8 @@ class DefaultKeys(sh.DefaultKeys):
         
     def _load_bool(self):
         sh.lg.globs['bool'].update ({
-            'AlphabetizeTerms'   :True
+            'AdjustByWidth'      :True
+           ,'AlphabetizeTerms'   :True
            ,'AutoCloseSpecSymbol':False
            ,'Autocompletion'     :True
            ,'Autoswap'           :False
@@ -47,6 +48,7 @@ class DefaultKeys(sh.DefaultKeys):
            ,'font_col4_size'    :3
            ,'font_comments_size':3
            ,'font_terms_size'   :4
+           ,'table_width'       :100
            ,'timeout'           :5
                                   })
     
@@ -153,6 +155,10 @@ class CreateConfig(sh.CreateConfig):
         self.add_section(section,comment)
         section_abbr = self.sections[-1].abbr
         
+        key = 'AdjustByWidth'
+        comment = _('[Autosave] Adjust columns by width')
+        self.add_key(section,section_abbr,key,comment)
+        
         key = 'AlphabetizeTerms'
         comment = _('[Autosave] Sort terms by alphabet')
         self.add_key(section,section_abbr,key,comment)
@@ -248,6 +254,10 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'font_terms_size'
         comment = _('A font size of terms')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'table_width'
+        comment = _('[Autosave] A table width (in percent)')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'timeout'
