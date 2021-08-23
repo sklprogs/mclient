@@ -95,14 +95,13 @@ class ExportSettingsUI:
     
     def export_table_width(self):
         f = '[MClient] settings.controller.ExportSettingsUI.export_table_width'
-        if objs.settings_ui.cbx_no15.get():
-            width = objs.settings_ui.ent_tab.get()
-            width = sh.Input(f,width).get_integer()
-            if not 60 <= width <= 100:
-                mes = _('Wrong input data: "{}"!').format(width)
-                sh.objs.get_mes(f,mes,True).show_warning()
-                width = 100
-            sh.lg.globs['int']['table_width'] = width
+        width = objs.get_settings_ui().ent_tab.get()
+        width = sh.Input(f,width).get_integer()
+        if not 60 <= width <= 100:
+            mes = _('Wrong input data: "{}"!').format(width)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            width = 100
+        sh.lg.globs['int']['table_width'] = width
     
     def run(self):
         f = '[MClient] settings.controller.ExportSettingsUI.run'
