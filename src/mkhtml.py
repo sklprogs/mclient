@@ -337,12 +337,19 @@ class HTM:
             self.output.write(self.script)
             self.output.write('<div id="printableArea">')
         if self.blocks:
-            ''' - If the current article how only 1 row then the 'width'
-                  argument of the 'table style' tag should be set to 0.
+            ''' - If the current article has only 1 row or it is
+                  undesirable to adjust columns by width then
+                  the 'width' argument of the 'table style' tag should
+                  not be used, otherwise, articles for separate words
+                  will have too wide columns.
                 - #TODO: remove extra table properties when using
                   a good web engine.
             '''
-            sub = '<table style="width: {}%">'.format(self.tab_width)
+            if self.tab_width in (0,100) or not self.col_width:
+                sub = '<table>'
+            else:
+                sub = '<table style="width: {}%">'
+                sub = sub.format(self.tab_width)
             self.output.write(sub)
             if self.Reverse:
                 self.output.write('<tr><td valign="top">')

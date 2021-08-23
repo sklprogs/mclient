@@ -109,7 +109,8 @@ class Commands:
         f = '[MClient] mclient.Commands.get_column_width'
         col_num = 0
         percent = 0
-        if not self.has_single_row():
+        if not self.has_single_row() \
+        and sh.lg.globs['bool']['AdjustByWidth']:
             result = objs.get_blocksdb().get_max_col_no()
             if result:
                 col_num = result + 1
@@ -126,6 +127,16 @@ class Commands:
         mes = mes.format(col_num,percent)
         sh.objs.get_mes(f,mes,True).show_debug()
         return percent
+    
+    def get_table_width(self):
+        f = '[MClient] mclient.Commands.get_table_width'
+        if self.has_single_row():
+            width = 100
+        else:
+            width = sh.lg.globs['int']['table_width']
+        mes = _('Table width: {}%').format(width)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return width
     
     def export_style(self):
         f = '[MClient] mclient.Commands.export_style'
@@ -1946,7 +1957,7 @@ class WebFrame:
                                 ,phdic = self.phdic
                                 ,skipped = len(com.get_skipped_dics())
                                 ,col_width = com.get_column_width()
-                                ,tab_width = sh.lg.globs['int']['table_width']
+                                ,tab_width = com.get_table_width()
                                 )
         mh.objs.htm.run()
         
@@ -2487,7 +2498,7 @@ class WebFrame:
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,skipped = len(com.get_skipped_dics())
                                 ,col_width = com.get_column_width()
-                                ,tab_width = sh.lg.globs['int']['table_width']
+                                ,tab_width = com.get_table_width()
                                 )
         code = mh.objs.htm.run()
         if code:

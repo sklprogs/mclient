@@ -10,8 +10,6 @@ mclient:
   add titles everywhere
 
 multitrancom:
-- EN-RU, scout, caseload (4 columns), identity (4 columns), once
-  (4 columns): test when adjusting a table layout is supported
 - Add new mode: EN-RU, nederlands: "перевод с других языков"
 - Check bad charachers: RU-EN, счет на оплату
 - Fix links in a saved raw html
