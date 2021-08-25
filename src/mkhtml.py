@@ -41,7 +41,7 @@ class HTM:
     
     def reset (self,data,cols,collimit=9,Printer=False
               ,Reverse=False,phdic='',skipped=0
-              ,col_width=0,tab_width=100
+              ,col_width=0,tab_width=0
               ):
         # 'collimit' includes fixed blocks
         self.set_values()
@@ -345,7 +345,7 @@ class HTM:
                 - #TODO: remove extra table properties when using
                   a good web engine.
             '''
-            if self.tab_width in (0,100) or not self.col_width:
+            if self.tab_width in (0,100):
                 sub = '<table>'
             else:
                 sub = '<table style="width: {}%">'

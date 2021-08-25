@@ -272,6 +272,12 @@ class Settings:
         mes = _('Not implemented yet!')
         sh.objs.get_mes(f,mes).show_info()
 
+    def set_dep(self,event=None):
+        if self.cbx_no14.get():
+            self.cbx_no15.set_state(True)
+        else:
+            self.cbx_no15.set_state(False)
+    
     def set_cboxes(self):
         self.cbx_no1 = sh.CheckBox (parent = self.frm_cb1
                                    ,side = 'left'
@@ -314,11 +320,16 @@ class Settings:
                                     )
         self.cbx_no14 = sh.CheckBox (parent = self.frm_cb14
                                     ,side = 'left'
+                                    ,action = self.set_dep
                                     )
+        self.lbl_spc = sh.Label (parent = self.frm_cb15
+                                ,side = 'left'
+                                ,text = ''
+                                ,width = 2
+                                )
         self.cbx_no15 = sh.CheckBox (parent = self.frm_cb15
                                     ,side = 'left'
                                     )
-        self.cbx_no15.widget.config(state='disabled')
 
     def reset(self,event=None):
         self.opt_scm.set(PRODUCT)
@@ -603,14 +614,14 @@ class Settings:
                                  ,side = 'left'
                                  )
         self.lbl_no15 = sh.Label (parent = self.frm_cb15
-                                 ,text = _('Use a different table width:')
+                                 ,text = _('Use a custom table width:')
                                  ,side = 'left'
                                  )
         self.ent_tab = sh.Entry (parent = self.frm_cb15
                                 ,side = 'left'
                                 ,width = 3
                                 )
-        self.lbl_no16 = sh.Label (parent = self.frm_cb15
+        self.lbl_prc = sh.Label (parent = self.frm_cb15
                                  ,text = '%'
                                  ,side = 'left'
                                  )
@@ -811,9 +822,25 @@ class Settings:
                     )
         sh.com.bind (obj = self.lbl_no14
                     ,bindings = '<Button-1>'
-                    ,action = self.cbx_no14.toggle
+                    ,action = self.click_label14
+                    )
+        sh.com.bind (obj = self.lbl_spc
+                    ,bindings = '<Button-1>'
+                    ,action = self.cbx_no15.toggle
+                    )
+        sh.com.bind (obj = self.lbl_no15
+                    ,bindings = '<Button-1>'
+                    ,action = self.cbx_no15.toggle
+                    )
+        sh.com.bind (obj = self.lbl_prc
+                    ,bindings = '<Button-1>'
+                    ,action = self.cbx_no15.toggle
                     )
 
+    def click_label14(self,event=None):
+        self.cbx_no14.toggle()
+        self.set_dep()
+    
     def show(self,event=None):
         self.parent.show()
 

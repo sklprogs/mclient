@@ -44,12 +44,17 @@ class UpdateSettingsUI:
         self.gui.cbx_no14.set(sh.lg.globs['bool']['AdjustByWidth'])
     
     def update_table_width(self):
-        self.gui.ent_tab.reset()
-        self.gui.ent_tab.insert(sh.lg.globs['int']['table_width'])
-        if sh.lg.globs['int']['table_width'] == 100:
-            self.gui.cbx_no15.disable()
-        else:
+        if not self.gui.ent_tab.get():
+            self.gui.ent_tab.insert(sh.lg.globs['int']['table_width'])
+        if sh.lg.globs['bool']['AdjustLayout'] \
+        and sh.lg.globs['bool']['AdjustByWidth']:
             self.gui.cbx_no15.enable()
+        else:
+            self.gui.cbx_no15.disable()
+        if sh.lg.globs['bool']['AdjustByWidth']:
+            self.gui.cbx_no15.set_state(True)
+        else:
+            self.gui.cbx_no15.set_state(False)
     
     def run(self):
         self.update_style_area()
@@ -92,15 +97,20 @@ class ExportSettingsUI:
         sh.lg.globs['bool']['Autoswap'] = objs.settings_ui.cbx_no12.get()
         sh.lg.globs['bool']['PhraseCount'] = objs.settings_ui.cbx_no13.get()
         sh.lg.globs['bool']['AdjustByWidth'] = objs.settings_ui.cbx_no14.get()
+        sh.lg.globs['bool']['AdjustLayout'] = objs.settings_ui.cbx_no15.get()
     
     def export_table_width(self):
         f = '[MClient] settings.controller.ExportSettingsUI.export_table_width'
         width = objs.get_settings_ui().ent_tab.get()
         width = sh.Input(f,width).get_integer()
-        if not 60 <= width <= 100:
-            mes = _('Wrong input data: "{}"!').format(width)
-            sh.objs.get_mes(f,mes,True).show_warning()
-            width = 100
+        if not 60 <= width < 100:
+            sub = _('{} ≤ value < {}').format(60,100)
+            mes = _('A custom table width shall lie within the following range: {}')
+            mes = mes.format(sub)
+            sh.objs.get_mes(f,mes).show_warning()
+            width = 97
+            objs.settings_ui.ent_tab.reset()
+            objs.settings_ui.ent_tab.insert(width)
         sh.lg.globs['int']['table_width'] = width
     
     def run(self):

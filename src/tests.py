@@ -381,6 +381,14 @@ class Plugin:
 
 class Commands:
     
+    def run_settings(self):
+        import config as cf
+        import logic as lg
+        import settings.controller as st
+        cf.DefaultKeys()
+        lg.com.load_config()
+        st.objs.get_settings().show()
+    
     def get_priority(self):
         f = '[MClient] tests.Commands.get_priority'
         import logic as lg
@@ -828,6 +836,7 @@ if __name__ == '__main__':
     #com.get_column_width()
     #com.run_sources()
     #Offline().run_multitrancom()
-    ArticleSubjects().run()
+    #ArticleSubjects().run()
     #com.get_priority()
+    com.run_settings()
     sh.com.end()

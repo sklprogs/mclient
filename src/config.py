@@ -22,6 +22,7 @@ class DefaultKeys(sh.DefaultKeys):
     def _load_bool(self):
         sh.lg.globs['bool'].update ({
             'AdjustByWidth'      :True
+           ,'AdjustLayout'       :False
            ,'AlphabetizeTerms'   :True
            ,'AutoCloseSpecSymbol':False
            ,'Autocompletion'     :True
@@ -48,7 +49,7 @@ class DefaultKeys(sh.DefaultKeys):
            ,'font_col4_size'    :3
            ,'font_comments_size':3
            ,'font_terms_size'   :4
-           ,'table_width'       :100
+           ,'table_width'       :97
            ,'timeout'           :5
                                   })
     
@@ -157,6 +158,10 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'AdjustByWidth'
         comment = _('[Autosave] Adjust columns by width')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'AdjustLayout'
+        comment = _('[Autosave] Use a custom table width')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'AlphabetizeTerms'

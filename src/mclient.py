@@ -130,10 +130,12 @@ class Commands:
     
     def get_table_width(self):
         f = '[MClient] mclient.Commands.get_table_width'
-        if self.has_single_row():
-            width = 100
-        else:
+        if sh.lg.globs['bool']['AdjustLayout'] \
+        and sh.lg.globs['bool']['AdjustByWidth'] \
+        and not self.has_single_row():
             width = sh.lg.globs['int']['table_width']
+        else:
+            width = 0
         mes = _('Table width: {}%').format(width)
         sh.objs.get_mes(f,mes,True).show_debug()
         return width
