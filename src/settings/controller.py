@@ -46,8 +46,7 @@ class UpdateSettingsUI:
     def update_table_width(self):
         if not self.gui.ent_tab.get():
             self.gui.ent_tab.insert(sh.lg.globs['int']['table_width'])
-        if sh.lg.globs['bool']['AdjustLayout'] \
-        and sh.lg.globs['bool']['AdjustByWidth']:
+        if sh.lg.globs['bool']['AdjustLayout']:
             self.gui.cbx_no15.enable()
         else:
             self.gui.cbx_no15.disable()
