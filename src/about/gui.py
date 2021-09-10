@@ -12,7 +12,6 @@ ICON = sh.objs.get_pdir().add('..','resources','icon_64x64_mclient.gif')
 class About:
 
     def __init__(self):
-        self.type = 'About'
         self.set_gui()
         
     def set_gui(self):
@@ -21,7 +20,6 @@ class About:
         self.set_frames()
         self.set_labels()
         self.set_buttons()
-        self.set_bindings()
         self.set_icon()
         self.set_title()
         self.widget.focus_set()
@@ -80,12 +78,6 @@ class About:
                                  ,side = 'right'
                                  )
     
-    def set_bindings(self):
-        sh.com.bind (obj = self.obj
-                    ,bindings = ('<Escape>','<Control-q>','<Control-w>')
-                    ,action = self.close
-                    )
-
     def close(self,event=None):
         self.obj.close()
 

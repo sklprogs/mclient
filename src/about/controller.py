@@ -25,27 +25,36 @@ class About:
             self.set_gui()
         return self.gui
     
-    def close(self):
+    def close(self,event=None):
         self.Active = False
         self.get_gui().close()
     
-    def show(self):
+    def show(self,event=None):
         self.Active = True
         self.get_gui().show()
     
     def set_gui(self):
         self.gui = gi.About()
-        self.set_bindings()
         self.gui.lbl_abt.set_font(sh.lg.globs['str']['font_style'])
+        self.set_bindings()
         
     def set_bindings(self):
-        sh.com.bind (obj = self.get_gui().obj
+        f = '[MClient] about.controller.About.set_bindings'
+        if self.gui is None:
+            sh.com.rep_empty(f)
+            return
+        sh.com.bind (obj = self.gui.obj
                     ,bindings = sh.lg.globs['str']['bind_show_about']
                     ,action = self.toggle
+                    )
+        sh.com.bind (obj = self.gui.obj
+                    ,bindings = ('<Escape>','<Control-q>','<Control-w>')
+                    ,action = self.close
                     )
         self.gui.btn_thd.action = self.show_third_parties
         self.gui.btn_lic.action = self.open_license_url
         self.gui.btn_eml.action = self.send_feedback
+        self.gui.widget.protocol('WM_DELETE_WINDOW',self.close)
 
     def send_feedback(self,event=None):
         # Compose an email to the author
