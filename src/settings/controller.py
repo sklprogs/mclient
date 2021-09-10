@@ -162,7 +162,10 @@ class Settings:
         sh.objs.get_mes(f,mes,True).show_error()
     
     def set_bindings(self):
-        self.get_gui().btn_apl.action = self.apply
+        f = '[MClient] settings.controller.Settings.set_bindings'
+        if self.gui is None:
+            sh.com.rep_empty(f)
+            return
         sh.com.bind (obj = self.gui
                     ,bindings = [sh.lg.globs['str']['bind_settings']
                                 ,sh.lg.globs['str']['bind_settings_alt']
@@ -173,6 +176,12 @@ class Settings:
                     ,bindings = ('<Return>','<KP_Enter>')
                     ,action = self.apply
                     )
+        sh.com.bind (obj = self.gui
+                    ,bindings = ('<Escape>','<Control-q>','<Control-w>')
+                    ,action = self.close
+                    )
+        self.gui.btn_apl.action = self.apply
+        self.gui.widget.protocol('WM_DELETE_WINDOW',self.close)
 
     def get_speech_prior(self):
         return (sh.lg.globs['str']['speech1']

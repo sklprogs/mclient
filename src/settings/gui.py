@@ -764,10 +764,6 @@ class Settings:
                                      )
 
     def set_bindings(self):
-        sh.com.bind (obj = self.parent
-                    ,bindings = ('<Escape>','<Control-q>','<Control-w>')
-                    ,action = self.close
-                    )
         sh.com.bind (obj = self.lbl_no1
                     ,bindings = '<Button-1>'
                     ,action = self.cbx_no1.toggle
