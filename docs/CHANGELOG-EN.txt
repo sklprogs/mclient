@@ -1,6 +1,9 @@
 (in development)
 * 
 
+6.12.1
+* Fix calculating a column width for articles with no fixed columns
+
 6.12
 * Get a column width based on a factual (not preset) number of columns
 * Fix too wide columns for a single-line article
