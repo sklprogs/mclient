@@ -85,35 +85,23 @@ class History:
     def __init__(self):
         self.set_gui()
 
+    def get_item(self):
+        return self.lbx.get()
+    
     def set_gui(self):
         self.parent = sh.Top (icon = ICON
                              ,title = _('History')
                              )
-        self.obj = sh.ListBox(self.parent)
+        self.widget = self.parent.widget
+        self.lbx = sh.ListBox(self.parent)
         sh.Geometry(self.parent).set('250x350')
-        self.widget = self.obj.widget
-        self.set_bindings()
-
-    def set_bindings(self):
-        sh.com.bind (obj = self
-                    ,bindings = '<ButtonRelease-3>'
-                    ,action = self.copy
-                    )
-        sh.com.bind (obj = self.parent
-                    ,bindings = ('<Escape>','<Control-q>','<Control-w>')
-                    ,action = self.close
-                    )
 
     def show(self,event=None):
-        self.obj.focus()
+        self.lbx.focus()
         self.parent.show()
 
     def close(self,event=None):
         self.parent.close()
-
-    # Скопировать элемент истории
-    def copy(self,event=None):
-        sh.Clipboard().copy(self.obj.get())
 
 
 
@@ -260,7 +248,7 @@ class WebFrame:
         self.set_title()
         self.set_bindings()
         self.ent_src.focus()
-        self.obj.widget.protocol("WM_DELETE_WINDOW",self.close)
+        self.obj.widget.protocol('WM_DELETE_WINDOW',self.close)
 
     def set_frame_panel(self):
         ''' Do not mix 'self.frm_pnl' and 'self.frm_btm', otherwise,

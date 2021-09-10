@@ -789,6 +789,12 @@ class History:
         self.Active = False
         self.gui = None
     
+    def get_item(self,event=None):
+        return self.get_gui().get_item()
+    
+    def copy(self,event=None):
+        sh.Clipboard().copy(self.get_item())
+    
     def toggle(self,event=None):
         if self.Active:
             self.close()
@@ -802,7 +808,6 @@ class History:
     
     def set_gui(self):
         self.gui = gi.History()
-        self.gui.obj.action = self.go
         self.set_bindings()
 
     def set_bindings(self):
@@ -827,13 +832,23 @@ class History:
                     ,bindings = '<End>'
                     ,action = self.go_last
                     )
+        sh.com.bind (obj = self.gui
+                    ,bindings = '<ButtonRelease-3>'
+                    ,action = self.copy
+                    )
+        sh.com.bind (obj = self.gui
+                    ,bindings = ('<Escape>','<Control-q>','<Control-w>')
+                    ,action = self.close
+                    )
         self.gui.action = self.go
+        self.gui.lbx.action = self.go
+        self.gui.widget.protocol('WM_DELETE_WINDOW',self.close)
 
     def autoselect(self):
-        self.get_gui().obj.clear_sel()
+        self.get_gui().lbx.clear_sel()
         item = str(objs.get_blocksdb().artid) \
                + ' ► ' + lg.objs.get_request().search
-        self.gui.obj.set(item=item)
+        self.gui.lbx.set(item)
 
     def show(self,event=None):
         self.Active = True
@@ -850,7 +865,7 @@ class History:
         if searches:
             for item in searches:
                 lst.append(str(item[0]) + ' ► ' + str(item[1]))
-            self.get_gui().obj.reset(lst=lst)
+            self.get_gui().lbx.reset(lst)
 
     def update(self):
         self.fill()
@@ -863,25 +878,25 @@ class History:
 
     def go_first(self,event=None):
         f = '[MClient] mclient.History.go_first'
-        if self.get_gui().obj.lst:
-            self.gui.obj.clear_sel()
-            self.gui.obj.set(item=self.gui.obj.lst[0])
+        if self.get_gui().lbx.lst:
+            self.gui.lbx.clear_sel()
+            self.gui.lbx.set(self.gui.lbx.lst[0])
             self.go()
         else:
             sh.com.rep_empty(f)
         
     def go_last(self,event=None):
         f = '[MClient] mclient.History.go_last'
-        if self.get_gui().obj.lst:
-            self.gui.obj.clear_sel()
-            self.gui.obj.set(item=self.gui.obj.lst[-1])
+        if self.get_gui().lbx.lst:
+            self.gui.lbx.clear_sel()
+            self.gui.lbx.set(self.gui.lbx.lst[-1])
             self.go()
         else:
             sh.com.rep_empty(f)
     
     def go(self,event=None):
         f = '[MClient] mclient.History.go'
-        result = self.get_gui().obj.get()
+        result = self.get_gui().lbx.get()
         result = result.split(' ► ')
         if len(result) == 2:
             objs.get_blocksdb().artid = int(result[0])
