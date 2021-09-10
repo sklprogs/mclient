@@ -22,6 +22,17 @@ class DB:
         self.create_blocks()
         self.create_articles()
     
+    def get_fixed(self):
+        f = '[MClient] db.DB.get_fixed'
+        if self.artid:
+            query = 'select distinct TYPE,TEXT from BLOCKS \
+                     where ARTICLEID = ? and TYPE in (?,?,?,?) \
+                     and TEXT != ? and BLOCK = 0 and IGNORE = 0'
+            self.dbc.execute(query,(self.artid,'dic','wform','transc','speech','',))
+            return self.dbc.fetchall()
+        else:
+            sh.com.rep_empty(f)
+    
     def get_max_col_no(self):
         ''' This is a less advanced alternative of 'self.get_max_col'
             for cases when positions are not set yet.

@@ -105,10 +105,27 @@ class Commands:
     ''' #NOTE: DB is in controller (not in logic), so DB-related code
         is here too.
     '''
+    def get_fixed_col_num(self):
+        f = '[MClient] mclient.Commands.get_fixed_col_num'
+        num = 0
+        data = objs.get_blocksdb().get_fixed()
+        if data:
+            #NOTE: Add new fixed types here
+            fixed = ('dic','wform','transc','speech')
+            for type_ in fixed:
+                for tuple_ in data:
+                    if tuple_[0] == type_:
+                        num += 1
+                        break
+        else:
+            sh.com.rep_empty(f)
+        mes = _('Number of fixed columns: {}').format(num)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return num
+        
     def get_column_width(self):
         f = '[MClient] mclient.Commands.get_column_width'
         col_num = 0
-        percent = 0
         if not self.has_single_row() \
         and sh.lg.globs['bool']['AdjustByWidth']:
             result = objs.get_blocksdb().get_max_col_no()
@@ -116,13 +133,23 @@ class Commands:
                 col_num = result + 1
             else:
                 sh.com.rep_empty(f)
-        if col_num > len(lg.objs.get_request().cols):
+        fixed_col_num = self.get_fixed_col_num()
+        ''' 'objs.blocksdb.get_max_col_no' includes fixed columns so we
+            need to subtract their number.
+            #NOTE: Since fixed columns are set irrespectively of
+            whether they have a text in it, we need to subtract
+            a constant number unless there are no fixed columns
+            (yet there are 4 fixed columns with empty TEXT fields,
+            the space occupied by them is 0%).
+        '''
+        if col_num > len(lg.objs.get_request().cols) and fixed_col_num:
             col_num -= len(lg.objs.request.cols)
-            ''' If there are only 2 term columns, they should not be
-                spaced apart too far from each other, this looks ugly.
-            '''
-            # 20% is reserved for fixed columns
-            percent = int(80/col_num)
+        # Fixed columns should take up to 20% of a window width (4*5%)
+        space = 100 - fixed_col_num * 5
+        try:
+            percent = int(space/col_num)
+        except ZeroDivisionError:
+            percent = 0
         mes = _('Term columns: number: {}, percentage: {}%')
         mes = mes.format(col_num,percent)
         sh.objs.get_mes(f,mes,True).show_debug()
