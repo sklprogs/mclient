@@ -2,6 +2,7 @@ mclient:
 - 
 
 multitrancom:
+- EN-RU, гематоген -> Фразы (6): too wide term columns
 - EN-RU, shared variables -> Программирование: table layout does not
   adjust and the following warning is received:
   subjects.subjects.ArticleSubjects.is_blocked:ПРЕДУПРЕЖДЕНИЕ:Недопустимые входные данные: ""!
