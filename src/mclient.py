@@ -248,6 +248,8 @@ class Commands:
             col_num -= len(lg.objs.request.cols)
         # Fixed columns should take up to 20% of a window width (4*5%)
         space = 100 - fixed_col_num * 5
+        mes = _('Space available for term columns: {}%').format(space)
+        sh.objs.get_mes(f,mes,True).show_debug()
         try:
             percent = int(space/col_num)
         except ZeroDivisionError:
@@ -259,6 +261,9 @@ class Commands:
             sh.com.rep_empty(f)
         mes = _('Term columns: number: {}, percentage: {}%')
         mes = mes.format(col_num,round(percent,1))
+        sh.objs.get_mes(f,mes,True).show_debug()
+        empty = space - percent * col_num
+        mes = _('Empty column: {}%').format(empty)
         sh.objs.get_mes(f,mes,True).show_debug()
         return percent
     
