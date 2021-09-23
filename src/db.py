@@ -22,13 +22,27 @@ class DB:
         self.create_blocks()
         self.create_articles()
     
+    def get_term_cell_texts(self):
+        f = '[MClient] db.DB.get_term_cell_texts'
+        if self.artid:
+            #TODO: read types from a unique data module
+            query = 'select CELLNO,TEXT from BLOCKS where ARTICLEID = ?\
+                     and not TYPE in (?,?,?,?,?) and BLOCK = 0 \
+                     and IGNORE = 0 order by CELLNO'
+            args = (self.artid,'dic','wform','transc','speech','phdic',)
+            self.dbc.execute(query,args)
+            return self.dbc.fetchall()
+        else:
+            sh.com.rep_empty(f)
+    
     def get_fixed(self):
         f = '[MClient] db.DB.get_fixed'
         if self.artid:
             query = 'select distinct TYPE,TEXT from BLOCKS \
                      where ARTICLEID = ? and TYPE in (?,?,?,?) \
                      and TEXT != ? and BLOCK = 0 and IGNORE = 0'
-            self.dbc.execute(query,(self.artid,'dic','wform','transc','speech','',))
+            args = (self.artid,'dic','wform','transc','speech','',)
+            self.dbc.execute(query,args)
             return self.dbc.fetchall()
         else:
             sh.com.rep_empty(f)

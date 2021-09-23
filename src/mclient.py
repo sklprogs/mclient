@@ -31,6 +31,108 @@ if __name__ == '__main__':
         import keylistener.linux as kl
 
 
+class WidestColumn:
+    ''' Calculate an actual size of the widest column. This is
+        font-dependent and window-dependent so the code can run
+        in a controller only.
+    '''
+    def __init__(self,max_percent=80):
+        self.longest = ''
+        self.pixels = 0
+        self.max_pixels = 0
+        self.percent = 0
+        # An available (term column) screen space in percent
+        self.max_percent = max_percent
+    
+    def report(self):
+        f = '[MClient] mclient.WidestColumn.report'
+        cut = sh.Text(self.longest).shorten(100)
+        mes = _('The maximum column width (based on contents) is {} pixels ({}%): "{}"')
+        mes = mes.format(self.pixels,round(self.percent,1),cut)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def run(self):
+        self.set_longest()
+        self.set_max_pixels()
+        self.set_pixels()
+        self.set_percent()
+        self.report()
+        return self.percent
+    
+    def set_percent(self):
+        f = '[MClient] mclient.WidestColumn.set_percent'
+        if self.pixels and self.max_pixels:
+            self.percent = (self.pixels * 100) / self.max_pixels
+            sh.objs.get_mes(f,self.percent,True).show_debug()
+        else:
+            sh.com.rep_empty(f)
+    
+    def set_max_pixels(self):
+        f = '[MClient] mclient.WidestColumn.set_max_pixels'
+        max_width = objs.get_webframe_ui().get_width()
+        if self.max_percent and max_width:
+            self.max_pixels = (max_width * self.max_percent) / 100
+            self.max_pixels = int(self.max_pixels)
+            mes = _('Available space: {} pixels')
+            mes = mes.format(self.max_pixels)
+            sh.objs.get_mes(f,mes,True).show_debug()
+        else:
+            sh.com.rep_empty(f)
+    
+    def set_pixels(self):
+        f = '[MClient] mclient.WidestColumn.set_pixels'
+        if self.longest:
+            ''' Calculating a cell width depending on a block type
+                would be more precise, however, this would require
+                calculating a width of each cell separately which is
+                very slow.
+            '''
+            max_font_size = max (sh.lg.globs['int']['font_terms_size']
+                                ,sh.lg.globs['int']['font_comments_size']
+                                )
+            #TODO: a trial-and-error choice, calculate more precisely
+            max_font_size *= 2.5
+            font = '{} {}'.format (sh.lg.globs['str']['font_terms_family']
+                                  ,max_font_size
+                                  )
+            #TODO: do we need to pass 'xborder=0' here (default is 20)?
+            #NOTE: this cannot run in logic, a root widget is required
+            ifont = sh.Font(font)
+            ifont.set_text(self.longest)
+            self.pixels = ifont.get_width()
+        else:
+            sh.com.rep_empty(f)
+    
+    def set_longest(self):
+        f = '[MClient] mclient.Commands.set_longest'
+        data = objs.get_blocksdb().get_term_cell_texts()
+        if data:
+            ''' The last tuple of 'data' is the maximum row number
+                (since the output from db is sorted by row and cell
+                numbers). We do not add 1 since ROWNO starts from 1.
+            '''
+            rows = [[] for i in range(data[-1][0])]
+            for tuple_ in data:
+                ''' -1 since ROWNO starts from 1. We do not take spaces
+                    between blocks into account since some blocks
+                    usually already start with a space.
+                '''
+                rows[tuple_[0]-1].append(tuple_[1])
+            for i in range(len(rows)):
+                ''' We do not add a space since blocks usually already
+                    start with a space where necessary
+                '''
+                rows[i] = ''.join(rows[i])
+            max_ = 0
+            for item in rows:
+                if len(item) > max_:
+                    max_ = len(item)
+                    self.longest = item
+        else:
+            sh.com.rep_empty(f)
+
+
+
 class Suggest(sg.Suggest):
     
     def __init__(self,*args,**kwargs):
@@ -150,8 +252,13 @@ class Commands:
             percent = int(space/col_num)
         except ZeroDivisionError:
             percent = 0
+        max_percent = WidestColumn(space).run()
+        if max_percent:
+            percent = min(percent,max_percent)
+        else:
+            sh.com.rep_empty(f)
         mes = _('Term columns: number: {}, percentage: {}%')
-        mes = mes.format(col_num,percent)
+        mes = mes.format(col_num,round(percent,1))
         sh.objs.get_mes(f,mes,True).show_debug()
         return percent
     

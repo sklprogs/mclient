@@ -357,7 +357,8 @@ class HTM:
             and self.blocks[0].type_ in ('dic','wform','transc'
                                         ,'speech','phdic'
                                         ):
-                self.output.write('<tr><td align="center" valign="top">')
+                #TODO: do not hardcode percentage
+                self.output.write('<tr><td align="center" valign="top" style="width: 5%">')
             else:
                 self.output.write('<tr><td valign="top">')
             i = j = 0
