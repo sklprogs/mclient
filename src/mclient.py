@@ -31,56 +31,156 @@ if __name__ == '__main__':
         import keylistener.linux as kl
 
 
-class WidestColumn:
+class ColumnWidth:
     ''' Calculate an actual size of the widest column. This is
         font-dependent and window-dependent so the code can run
         in a controller only.
     '''
-    def __init__(self,max_percent=80):
+    def __init__(self):
         self.longest = ''
-        self.pixels = 0
-        self.max_pixels = 0
-        self.percent = 0
-        # An available (term column) screen space in percent
-        self.max_percent = max_percent
+        self.shortest = ''
+        # Number of fixed columns
+        self.fixed_num = 0
+        # Number of term columns
+        self.term_num = 0
+        # Actual space taken by fixed columns
+        self.all_fixed_pc = 0
+        # Actual space taken by term columns
+        self.all_terms_pc = 0
+        # Maximum available space for term columns (percent)
+        self.max_terms_pc = 0
+        # Maximum available space for term columns (pixels)
+        self.max_terms_px = 0
+        # Maximum width of a term column (percent)
+        self.max_term_pc = 0
+        # Maximum width of a term column (pixels)
+        self.max_term_px = 0
+        # Average width of a term column (percent)
+        self.term_pc = 0
+        # Average width of a term column (pixels)
+        self.term_px = 0
+        # Maximum available space that should be empty (percent)
+        self.empty_pc = 0
+        # Maximum available space that should be empty (pixels)
+        self.empty_px = 0
     
-    def report(self):
-        f = '[MClient] mclient.WidestColumn.report'
-        cut = sh.Text(self.longest).shorten(100)
-        mes = _('The maximum column width (based on contents) is {} pixels ({}%): "{}"')
-        mes = mes.format(self.pixels,round(self.percent,1),cut)
-        sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def run(self):
-        self.set_longest()
-        self.set_max_pixels()
-        self.set_pixels()
-        self.set_percent()
-        self.report()
-        return self.percent
-    
-    def set_percent(self):
-        f = '[MClient] mclient.WidestColumn.set_percent'
-        if self.pixels and self.max_pixels:
-            self.percent = (self.pixels * 100) / self.max_pixels
-            sh.objs.get_mes(f,self.percent,True).show_debug()
+    def set_term_pc(self):
+        f = '[MClient] mclient.ColumnWidth.set_term_pc'
+        if self.max_term_px:
+            self.term_pc = (self.term_px * self.max_term_pc) / self.max_term_px
+            sh.objs.get_mes(f,self.term_pc,True).show_debug()
         else:
             sh.com.rep_empty(f)
     
-    def set_max_pixels(self):
-        f = '[MClient] mclient.WidestColumn.set_max_pixels'
+    def set_all_terms_pc(self):
+        f = '[MClient] mclient.ColumnWidth.set_all_terms_pc'
+        self.all_terms_pc = self.term_pc * self.term_num
+        mes = _('An actual space taken by term columns: {}%')
+        mes = mes.format(round(self.all_terms_pc,1))
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def set_empty_space(self):
+        f = '[MClient] mclient.ColumnWidth.set_empty_space'
+        self.empty_pc = 100 - self.all_terms_pc - self.all_fixed_pc
+        if not 0 <= self.empty_pc < 100:
+            self.empty_pc = 0
+        mes = _('Empty column: {}%').format(round(self.empty_pc,1))
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def set_max_term_pc(self):
+        f = '[MClient] mclient.ColumnWidth.set_max_term_pc'
+        if self.term_num:
+            self.max_term_pc = self.max_terms_pc / self.term_num
+            sh.objs.get_mes(f,self.max_term_pc,True).show_debug()
+        else:
+            sh.com.rep_empty(f)
+    
+    def set_fixed_space(self):
+        f = '[MClient] mclient.ColumnWidth.set_fixed_space'
+        # TODO: Do not hardcode
+        # Fixed columns should take up to 20% of a window width (4*5%)
+        self.all_fixed_pc = self.fixed_num * 5
+        mes = _('An actual space taken by fixed columns: {}%')
+        mes = mes.format(round(self.all_fixed_pc,1))
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def set_term_space(self):
+        f = '[MClient] mclient.ColumnWidth.set_term_space'
+        self.max_terms_pc = 100 - self.all_fixed_pc
+        mes = _('A space available for term columns: {}%')
+        mes = mes.format(round(self.max_terms_pc,1))
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def set_fixed_num(self):
+        f = '[MClient] mclient.ColumnWidth.set_fixed_num'
+        data = objs.get_blocksdb().get_fixed()
+        if data:
+            #NOTE: Add new fixed types here
+            fixed = ('dic','wform','transc','speech')
+            for type_ in fixed:
+                for tuple_ in data:
+                    if tuple_[0] == type_:
+                        self.fixed_num += 1
+                        break
+        else:
+            sh.com.rep_empty(f)
+        mes = _('An actual number of fixed columns: {}')
+        mes = mes.format(self.fixed_num)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def set_term_num(self):
+        f = '[MClient] mclient.ColumnWidth.set_term_num'
+        if not com.has_single_row() \
+        and sh.lg.globs['bool']['AdjustByWidth']:
+            result = objs.get_blocksdb().get_max_col_no()
+            if result:
+                self.term_num = result + 1
+            else:
+                sh.com.rep_empty(f)
+        ''' 'objs.blocksdb.get_max_col_no' includes fixed columns so we
+            need to subtract their number.
+            #NOTE: Since fixed columns are set irrespectively of
+            whether they have a text in it, we need to subtract
+            a constant number unless there are no fixed columns
+            (yet there are 4 fixed columns with empty TEXT fields,
+            the space occupied by them is 0%).
+        '''
+        if self.term_num > len(lg.objs.get_request().cols) \
+        and self.fixed_num:
+            self.term_num -= len(lg.objs.request.cols)
+        mes = _('An actual number of term columns: {}')
+        mes = mes.format(self.term_num)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def run(self):
+        # The order of execution is important
+        self.set_fixed_num()
+        self.set_term_num()
+        self.set_fixed_space()
+        self.set_term_space()
+        self.set_max_term_pc()
+        self.set_max_term_px()
+        self.set_longest()
+        self.set_term_px()
+        self.set_term_pc()
+        self.set_all_terms_pc()
+        self.set_empty_space()
+        return self.term_pc
+    
+    def set_max_term_px(self):
+        f = '[MClient] mclient.ColumnWidth.set_max_term_px'
         max_width = objs.get_webframe_ui().get_width()
-        if self.max_percent and max_width:
-            self.max_pixels = (max_width * self.max_percent) / 100
-            self.max_pixels = int(self.max_pixels)
-            mes = _('Available space: {} pixels')
-            mes = mes.format(self.max_pixels)
+        if self.max_term_pc and max_width:
+            self.max_term_px = (max_width * self.max_term_pc) / 100
+            self.max_term_px = int(self.max_term_px)
+            mes = _('A space available for a term column: {} pixels')
+            mes = mes.format(self.max_term_px)
             sh.objs.get_mes(f,mes,True).show_debug()
         else:
             sh.com.rep_empty(f)
     
-    def set_pixels(self):
-        f = '[MClient] mclient.WidestColumn.set_pixels'
+    def set_term_px(self):
+        f = '[MClient] mclient.ColumnWidth.set_term_px'
         if self.longest:
             ''' Calculating a cell width depending on a block type
                 would be more precise, however, this would require
@@ -98,8 +198,23 @@ class WidestColumn:
             #TODO: do we need to pass 'xborder=0' here (default is 20)?
             #NOTE: this cannot run in logic, a root widget is required
             ifont = sh.Font(font)
+            ifont.set_text(self.shortest)
+            min_width = ifont.get_width()
+            #TODO: either do a reset here, or rework 'sh.Font'
+            #TODO: do we need to pass 'xborder=0' here (default is 20)?
+            ifont.reset(font)
             ifont.set_text(self.longest)
-            self.pixels = ifont.get_width()
+            max_width = ifont.get_width()
+            mes = _('A width of the shortest cell: {} pixels')
+            mes = mes.format(min_width)
+            sh.objs.get_mes(f,mes,True).show_debug()
+            mes = _('A width of the longest cell: {} pixels')
+            mes = mes.format(max_width)
+            sh.objs.get_mes(f,mes,True).show_debug()
+            self.term_px = int((min_width + max_width) / 2)
+            mes = _('An average width of a term column: {} pixels')
+            mes = mes.format(self.term_px)
+            sh.objs.get_mes(f,mes,True).show_debug()
         else:
             sh.com.rep_empty(f)
     
@@ -128,6 +243,19 @@ class WidestColumn:
                 if len(item) > max_:
                     max_ = len(item)
                     self.longest = item
+            min_ = max_
+            for item in rows:
+                if 0 < len(item) < min_:
+                    min_ = len(item)
+                    self.shortest = item
+            cut = sh.Text(self.shortest).shorten(100)
+            mes = _('The shortest cell ({} symbols): "{}"')
+            mes = mes.format(len(self.shortest),cut)
+            sh.objs.get_mes(f,mes,True).show_debug()
+            cut = sh.Text(self.longest).shorten(100)
+            mes = _('The longest cell ({} symbols): "{}"')
+            mes = mes.format(len(self.longest),cut)
+            sh.objs.get_mes(f,mes,True).show_debug()
         else:
             sh.com.rep_empty(f)
 
@@ -207,66 +335,6 @@ class Commands:
     ''' #NOTE: DB is in controller (not in logic), so DB-related code
         is here too.
     '''
-    def get_fixed_col_num(self):
-        f = '[MClient] mclient.Commands.get_fixed_col_num'
-        num = 0
-        data = objs.get_blocksdb().get_fixed()
-        if data:
-            #NOTE: Add new fixed types here
-            fixed = ('dic','wform','transc','speech')
-            for type_ in fixed:
-                for tuple_ in data:
-                    if tuple_[0] == type_:
-                        num += 1
-                        break
-        else:
-            sh.com.rep_empty(f)
-        mes = _('Number of fixed columns: {}').format(num)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        return num
-        
-    def get_column_width(self):
-        f = '[MClient] mclient.Commands.get_column_width'
-        col_num = 0
-        if not self.has_single_row() \
-        and sh.lg.globs['bool']['AdjustByWidth']:
-            result = objs.get_blocksdb().get_max_col_no()
-            if result:
-                col_num = result + 1
-            else:
-                sh.com.rep_empty(f)
-        fixed_col_num = self.get_fixed_col_num()
-        ''' 'objs.blocksdb.get_max_col_no' includes fixed columns so we
-            need to subtract their number.
-            #NOTE: Since fixed columns are set irrespectively of
-            whether they have a text in it, we need to subtract
-            a constant number unless there are no fixed columns
-            (yet there are 4 fixed columns with empty TEXT fields,
-            the space occupied by them is 0%).
-        '''
-        if col_num > len(lg.objs.get_request().cols) and fixed_col_num:
-            col_num -= len(lg.objs.request.cols)
-        # Fixed columns should take up to 20% of a window width (4*5%)
-        space = 100 - fixed_col_num * 5
-        mes = _('Space available for term columns: {}%').format(space)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        try:
-            percent = int(space/col_num)
-        except ZeroDivisionError:
-            percent = 0
-        max_percent = WidestColumn(space).run()
-        if max_percent:
-            percent = min(percent,max_percent)
-        else:
-            sh.com.rep_empty(f)
-        mes = _('Term columns: number: {}, percentage: {}%')
-        mes = mes.format(col_num,round(percent,1))
-        sh.objs.get_mes(f,mes,True).show_debug()
-        empty = space - percent * col_num
-        mes = _('Empty column: {}%').format(empty)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        return percent
-    
     def get_table_width(self):
         f = '[MClient] mclient.Commands.get_table_width'
         if sh.lg.globs['bool']['AdjustLayout'] \
@@ -2112,7 +2180,7 @@ class WebFrame:
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,phdic = self.phdic
                                 ,skipped = len(com.get_skipped_dics())
-                                ,col_width = com.get_column_width()
+                                ,col_width = ColumnWidth().run()
                                 ,tab_width = com.get_table_width()
                                 )
         mh.objs.htm.run()
@@ -2653,7 +2721,7 @@ class WebFrame:
                                 ,Printer = True
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,skipped = len(com.get_skipped_dics())
-                                ,col_width = com.get_column_width()
+                                ,col_width = ColumnWidth().run()
                                 ,tab_width = com.get_table_width()
                                 )
         code = mh.objs.htm.run()
