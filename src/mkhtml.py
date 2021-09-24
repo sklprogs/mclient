@@ -358,8 +358,13 @@ class HTM:
             and self.blocks[0].type_ in ('dic','wform','transc'
                                         ,'speech','phdic'
                                         ):
-                #TODO: do not hardcode percentage
-                self.output.write('<tr><td align="center" valign="top" style="width: 5%">')
+                sub = '<tr><td align="center" valign="top"{}>'
+                if self.col_width:
+                    #TODO: do not hardcode percentage
+                    sub = sub.format(' style="width: 5%"')
+                else:
+                    sub = sub.format('')
+                self.output.write(sub)
             else:
                 self.output.write('<tr><td valign="top">')
             i = j = 0
@@ -370,8 +375,12 @@ class HTM:
                     and self.block.type_ in ('dic','wform','transc'
                                             ,'speech','phdic'
                                             ):
-                        #TODO: do not hardcode percentage
-                        base = '<td align="center" valign="top" style="width: 5%">'
+                        base = '<td align="center" valign="top"{}>'
+                        if self.col_width:
+                            #TODO: do not hardcode percentage
+                            base = base.format(' style="width: 5%"')
+                        else:
+                            base = base.format('')
                     elif self.col_width and self.block.text:
                         base = '<td valign="top" style="width: {}%">'
                         base = base.format(self.col_width)
@@ -388,11 +397,16 @@ class HTM:
                                                ,'correction','phrase'
                                                ,'phcom','phcount'
                                                ) and self.col_width:
-                            sub = ' style="width: {}%"'
-                            sub = sub.format(self.col_width)
-                        else:
+                            if self.col_width:
+                                sub = ' style="width: {}%"'
+                                sub = sub.format(self.col_width)
+                            else:
+                                sub = ''
+                        elif self.col_width:
                             #TODO: do not hardcode percentage
                             sub = ' style="width: {}%"'.format(5)
+                        else:
+                            sub = ''
                     else:
                         sub = ''
                     mes = mes.format(sub)
@@ -411,7 +425,7 @@ class HTM:
                 self._run_comment()
                 self._run_user()
                 self._run_correction()
-            if self.empty_pc:
+            if self.empty_pc and self.col_width:
                 sub = '</td><td style="width: {}%"></td></tr></table>'
                 sub = sub.format(self.empty_pc)
                 self.output.write(sub)
