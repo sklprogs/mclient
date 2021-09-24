@@ -207,6 +207,8 @@ class ColumnWidth:
             mes = mes.format(max_width)
             sh.objs.get_mes(f,mes,True).show_debug()
             self.term_px = int((min_width + max_width) / 2)
+            if self.term_px > self.max_term_px:
+                self.term_px = self.max_term_px
             mes = _('An average width of a term column: {} pixels')
             mes = mes.format(self.term_px)
             sh.objs.get_mes(f,mes,True).show_debug()
