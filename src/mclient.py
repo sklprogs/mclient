@@ -49,8 +49,6 @@ class ColumnWidth:
         self.all_terms_pc = 0
         # Maximum available space for term columns (percent)
         self.max_terms_pc = 0
-        # Maximum available space for term columns (pixels)
-        self.max_terms_px = 0
         # Maximum width of a term column (percent)
         self.max_term_pc = 0
         # Maximum width of a term column (pixels)
@@ -61,8 +59,6 @@ class ColumnWidth:
         self.term_px = 0
         # Maximum available space that should be empty (percent)
         self.empty_pc = 0
-        # Maximum available space that should be empty (pixels)
-        self.empty_px = 0
     
     def set_term_pc(self):
         f = '[MClient] mclient.ColumnWidth.set_term_pc'
