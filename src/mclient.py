@@ -161,7 +161,6 @@ class ColumnWidth:
         self.set_term_pc()
         self.set_all_terms_pc()
         self.set_empty_space()
-        return self.term_pc
     
     def set_max_term_px(self):
         f = '[MClient] mclient.ColumnWidth.set_max_term_px'
@@ -2170,14 +2169,17 @@ class WebFrame:
         cells.run()
         cells.dump(objs.blocksdb)
         
+        iwidth = ColumnWidth()
+        iwidth.run()
         mh.objs.get_htm().reset (data = objs.blocksdb.fetch()
                                 ,cols = lg.objs.request.cols
                                 ,collimit = lg.objs.request.collimit
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,phdic = self.phdic
                                 ,skipped = len(com.get_skipped_dics())
-                                ,col_width = ColumnWidth().run()
                                 ,tab_width = com.get_table_width()
+                                ,col_width = iwidth.term_pc
+                                ,empty_pc = iwidth.empty_pc
                                 )
         mh.objs.htm.run()
         
@@ -2711,14 +2713,16 @@ class WebFrame:
 
     def print(self,event=None):
         f = '[MClient] mclient.WebFrame.print'
+        iwidth = ColumnWidth()
+        iwidth.run()
         mh.objs.get_htm().reset (data = objs.blocksdb.fetch()
                                 ,cols = lg.objs.request.cols
                                 ,collimit = lg.objs.request.collimit
                                 ,Printer = True
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,skipped = len(com.get_skipped_dics())
-                                ,col_width = ColumnWidth().run()
-                                ,tab_width = com.get_table_width()
+                                ,col_width = iwidth.term_pc
+                                ,empty_pc = iwidth.empty_pc
                                 )
         code = mh.objs.htm.run()
         if code:

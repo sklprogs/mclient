@@ -41,7 +41,7 @@ class HTM:
     
     def reset (self,data,cols,collimit=9,Printer=False
               ,Reverse=False,phdic='',skipped=0
-              ,col_width=0,tab_width=0
+              ,col_width=0,tab_width=0,empty_pc=0
               ):
         # 'collimit' includes fixed blocks
         self.set_values()
@@ -54,6 +54,7 @@ class HTM:
         self.skipped = skipped
         self.col_width = col_width
         self.tab_width = tab_width
+        self.empty_pc = empty_pc
         
     def run(self):
         self.assign()
@@ -369,7 +370,8 @@ class HTM:
                     and self.block.type_ in ('dic','wform','transc'
                                             ,'speech','phdic'
                                             ):
-                        base = '<td align="center" valign="top">'
+                        #TODO: do not hardcode percentage
+                        base = '<td align="center" valign="top" style="width: 5%">'
                     elif self.col_width and self.block.text:
                         base = '<td valign="top" style="width: {}%">'
                         base = base.format(self.col_width)
@@ -381,13 +383,16 @@ class HTM:
                 while self.block.j > j:
                     self.output.write('</td>')
                     mes = '<td valign="top"{}>'
-                    if self.block.text \
-                    and self.block.type_ in ('term','comment','user'
-                                            ,'correction','phrase'
-                                            ,'phcom','phcount'
-                                            ) and self.col_width:
-                        sub = ' style="width: {}%"'
-                        sub = sub.format(self.col_width)
+                    if self.block.text:
+                        if self.block.type_ in ('term','comment','user'
+                                               ,'correction','phrase'
+                                               ,'phcom','phcount'
+                                               ) and self.col_width:
+                            sub = ' style="width: {}%"'
+                            sub = sub.format(self.col_width)
+                        else:
+                            #TODO: do not hardcode percentage
+                            sub = ' style="width: {}%"'.format(5)
                     else:
                         sub = ''
                     mes = mes.format(sub)
@@ -406,7 +411,12 @@ class HTM:
                 self._run_comment()
                 self._run_user()
                 self._run_correction()
-            self.output.write('</td></tr></table>')
+            if self.empty_pc:
+                sub = '</td><td style="width: {}%"></td></tr></table>'
+                sub = sub.format(self.empty_pc)
+                self.output.write(sub)
+            else:
+                self.output.write('</td></tr></table>')
         elif self.skipped:
             self.output.write('<h1>')
             mes = _('Nothing has been found (skipped subjects: {}).')
