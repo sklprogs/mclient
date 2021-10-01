@@ -2,12 +2,14 @@ mclient:
 - 
 
 multitrancom:
-- EN-RU, гематоген -> Фразы (6): too wide term columns
-- EN-RU, shared variables -> Программирование: table layout does not
+- RU-EN, Tagalog -> Фразы (6): too wide fixed columns, empty space in 
+  a wrong place
+- RU-EN, гематоген -> Фразы (6): too wide term columns
+- RU-EN, shared variables -> Программирование: table layout does not
   adjust and the following warning is received:
   subjects.subjects.ArticleSubjects.is_blocked:ПРЕДУПРЕЖДЕНИЕ:Недопустимые входные данные: ""!
-- (MClient mode) EN-RU, reproducibility: ')' in the beginning
-- (Clarity mode) EN-RU, frame rate: too wide fixed columns
+- (MClient mode) RU-EN, reproducibility: ')' in the beginning
+- (Clarity mode) RU-EN, frame rate: too wide fixed columns
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"
 - Widget is not shown immediately when using F2 -> Esc -> F2 (probably
@@ -18,7 +20,7 @@ multitrancom:
   the search
 - Mclient mode: transcription must be set after parts of speechs, but
   actually it is set before
-- vertical view, EN-RU: "поцелуй": fix Moves.up for the 1st element
+- vertical view, RU-EN: "поцелуй": fix Moves.up for the 1st element
 - for vertical view: concerning coloring, rely on row numbers instead of
   column numbers
 - (DB) Fix Moves on 'рабочая документация' (SelectTermsOnly=0), selects
@@ -30,7 +32,7 @@ multitrancom:
   of 'dic' type
 
 stardict:
-- EN-RU, full: search gate: found by 'Suggest' and logged as found by
+- RU-EN, full: search gate: found by 'Suggest' and logged as found by
   'AllDics.get', but could not be shown
 - Unknown mode "" in Elems.order_speech when using local dictionaries
   (Stardict 2)
@@ -44,7 +46,7 @@ dsl:
 multitrandem:
 - Throws an error during a search when Stardict/DSL dics (but not MT)
   are available
-- EN-RU, 'цепь: провод': fails when no dics are available (option menus
+- RU-EN, 'цепь: провод': fails when no dics are available (option menus
   have available pairs though)
 - AS: an abbreviation, not a conjunction
 - DARE: an abbreviation, not a noun

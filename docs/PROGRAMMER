@@ -1,4 +1,18 @@
 
+- In order to make a web-page to have columns without too wide gaps:
+  1) Do not set zero-length fixed columns (if they are present, 
+     the layout will be broken even in modern browsers). Alternatively,
+     set them to have a very small width, e.g., 0.1%-1% (0% does not
+     work).
+  2) a) Set the table to be as wide as fixed and term columns in total,
+        e.g., '<table style="width: 45%">', or
+     b) Do not explicitly set a table width. Instead, create a wide
+        empty column as follows:
+            <td/>
+            <td style="width: 55%"/>
+        For some reason, an empty column must be created before
+        the empty column with the fixed width, otherwise, the last term
+        column will appear at the right corner.
 - Blocks like "Английский тезаурус" and "Русский тезаурус" are skipped
   since setting several blocks of the same fixed type in succession is
   not supported for now
