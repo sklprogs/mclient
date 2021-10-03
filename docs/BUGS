@@ -1,7 +1,9 @@
 mclient:
-- 'Обработка данных' is prioritized but not colored (phdic)
+- 
 
 multitrancom:
+- RU-EN, hello: IT phdics are prioritized but not colored
+- RU-EN, set: 'Обработка данных' is prioritized but not colored (phdic)
 - RU-EN, Tagalog -> Фразы (6): too wide fixed columns, empty space in 
   a wrong place
 - RU-EN, гематоген -> Фразы (6): too wide term columns
@@ -41,7 +43,7 @@ stardict:
   (sdict_EnRu_full - cut (manual).txt) are not separated when sorting
 
 dsl:
-- 
+- Cannot find anything in Ozhegov's and Ushakov's dictionaries
 
 multitrandem:
 - Throws an error during a search when Stardict/DSL dics (but not MT)
