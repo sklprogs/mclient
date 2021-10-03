@@ -31,8 +31,11 @@ class ArticleSubjects:
             try:
                 return self.subjects[item]['priority']
             except KeyError:
+                '''
                 mes = _('Wrong input data: "{}"!').format(item)
                 sh.objs.get_mes(f,mes,True).show_warning()
+                '''
+                pass
         else:
             sh.com.cancel(f)
         return 0
@@ -43,8 +46,11 @@ class ArticleSubjects:
             try:
                 return self.subjects[item]['block']
             except KeyError:
+                '''
                 mes = _('Wrong input data: "{}"!').format(item)
                 sh.objs.get_mes(f,mes,True).show_warning()
+                '''
+                pass
         else:
             sh.com.cancel(f)
     

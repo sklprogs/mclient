@@ -1,113 +1,277 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import io
 from skl_shared.localize import _
 import skl_shared.shared as sh
 import subjects.subjects as sj
 
 
-class Block:
-    # Shortened
-    def __init__(self):
-        self.i = 0
-        self.j = 0
-        self.text = ''
-        self.type_ = ''
-
-
-class HTM:
-
-    def __init__(self):
-        self.set_values()
-        self.set_priority_colors()
-        self.set_blocked_colors()
+class Font:
     
-    def _run_user(self):
-        if self.block.type_ == 'user':
+    def __init__ (self,block,blocked_color1='dim gray'
+                 ,blocked_color2='dim gray',blocked_color3='dim gray'
+                 ,blocked_color4='dim gray',priority_color1='red'
+                 ,priority_color2='red',priority_color3='red'
+                 ,priority_color4='red'
+                 ):
+        self.set_values()
+        self.block = block
+        self.blocked_color1 = blocked_color1
+        self.blocked_color2 = blocked_color2
+        self.blocked_color3 = blocked_color3
+        self.blocked_color4 = blocked_color4
+        self.priority_color1 = priority_color1
+        self.priority_color2 = priority_color2
+        self.priority_color3 = priority_color3
+        self.priority_color4 = priority_color4
+    
+    def set_values(self):
+        self.Success = True
+        self.text = ''
+        self.family = 'Serif'
+        self.color = 'black'
+        self.size = 4
+        self.Bold = False
+        self.Italic = False
+        self.rowno = 0
+        self.colno = 0
+        self.col_width = 0
+    
+    def run(self):
+        self.check()
+        self.set_text()
+        self.set_family()
+        self.set_size()
+        self.set_color()
+        self.set_bold()
+        self.set_italic()
+        self.set_pos()
+    
+    def set_pos(self):
+        f = '[MClient] mkhtml.Font.set_pos'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.rowno = self.block.xi
+        self.colno = self.block.xj
+    
+    def _set_color(self):
+        if self.block.xj == 0:
+            self.color = sh.lg.globs['str']['color_col1']
+        elif self.block.xj == 1:
+            self.color = sh.lg.globs['str']['color_col2']
+        elif self.block.xj == 2:
+            self.color = sh.lg.globs['str']['color_col3']
+        elif self.block.xj == 3:
+            self.color = sh.lg.globs['str']['color_col4']
+        elif self.block.type_ in ('phrase','term'):
+            self.color = sh.lg.globs['str']['color_terms']
+        elif self.block.type_ in ('comment','phcom','phcount','transc'):
+            self.color = sh.lg.globs['str']['color_comments']
+        elif self.block.type_ == 'correction':
+            self.color = 'green'
+        elif self.block.type_ == 'user':
             color = sh.lg.globs['str']['color_comments']
             result = sh.com.get_mod_color (color = color
                                           ,delta = 75
                                           )
             if result:
                 color = result
-            c = '<i><font face="{}" size="{}" color="{}">{}</font></i>'
-            c = c.format (sh.lg.globs['str']['font_comments_family']
-                         ,sh.lg.globs['int']['font_comments_size']
-                         ,color
-                         ,self.block.text
-                         )
-            self.output.write(c)
+            self.color = color
     
-    def reset (self,data,cols,collimit=9,Printer=False
-              ,Reverse=False,phdic='',skipped=0
-              ,col_width=0,tab_width=0,empty_pc=0
-              ):
-        # 'collimit' includes fixed blocks
+    def _set_color_p(self):
+        if self.block.xj == 0:
+            self.color = self.priority_color1
+        elif self.block.xj == 1:
+            self.color = self.priority_color2
+        elif self.block.xj == 2:
+            self.color = self.priority_color3
+        elif self.block.xj == 3:
+            self.color = self.priority_color4
+        else:
+            self.color = 'red'
+    
+    def _set_color_b(self):
+        if self.block.xj == 0:
+            self.color = self.blocked_color1
+        elif self.block.xj == 1:
+            self.color = self.blocked_color2
+        elif self.block.xj == 2:
+            self.color = self.blocked_color3
+        elif self.block.xj == 3:
+            self.color = self.blocked_color4
+        else:
+            self.color = 'dim gray'
+    
+    def set_bold(self):
+        f = '[MClient] mkhtml.Font.set_bold'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if self.block.xj == 0 or self.block.type_ in ('dic','phdic','wform'):
+            self.Bold = True
+    
+    def set_italic(self):
+        f = '[MClient] mkhtml.Font.set_italic'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if self.block.type_ in ('comment','correction','phcom'
+                               ,'phcount','speech','transc','user'
+                               ):
+            self.Italic = True
+    
+    def set_color(self):
+        f = '[MClient] mkhtml.Font.set_color'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        ''' We need to determine whether a block is blockable or
+            prioritizable irrespectively of its state in a current view,
+            so we do not rely on 'block' values.
+        '''
+        if sj.objs.get_article().is_blocked(self.block.text):
+            self._set_color_b()
+        elif sj.objs.article.get_priority(self.block.text) > 0:
+            self._set_color_p()
+        else:
+            self._set_color()
+    
+    def set_text(self):
+        f = '[MClient] mkhtml.Font.set_text'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.text = self.block.text
+    
+    def check(self):
+        f = '[MClient] mkhtml.Font.check'
+        if self.block and self.blocked_color1 and self.blocked_color2 \
+        and self.blocked_color3 and self.blocked_color4 \
+        and self.priority_color1 and self.priority_color2 \
+        and self.priority_color3 and self.priority_color4:
+            pass
+        else:
+            self.Success = False
+            sh.com.rep_empty(f)
+    
+    def set_family(self):
+        f = '[MClient] mkhtml.Font.set_family'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if self.block.xj == 0:
+            self.family = sh.lg.globs['str']['font_col1_family']
+        elif self.block.xj == 1:
+            self.family = sh.lg.globs['str']['font_col2_family']
+        elif self.block.xj == 2:
+            self.family = sh.lg.globs['str']['font_col3_family']
+        elif self.block.xj == 3:
+            self.family = sh.lg.globs['str']['font_col4_family']
+        elif self.block.type_ in ('comment','correction','phcom'
+                                 ,'phcount','transc','user'
+                                 ):
+            self.family = sh.lg.globs['str']['font_comments_family']
+        elif self.block.type_ in ('phrase','term'):
+            self.family = sh.lg.globs['str']['font_terms_family']
+    
+    def set_size(self):
+        f = '[MClient] mkhtml.Font.set_size'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if self.block.xj == 0:
+            self.size = sh.lg.globs['int']['font_col1_size']
+        elif self.block.xj == 1:
+            self.size = sh.lg.globs['int']['font_col2_size']
+        elif self.block.xj == 2:
+            self.size = sh.lg.globs['int']['font_col3_size']
+        elif self.block.xj == 3:
+            self.size = sh.lg.globs['int']['font_col4_size']
+        elif self.block.type_ in ('comment','correction','phcom'
+                                 ,'phcount','transc','user'
+                                 ):
+            self.size = sh.lg.globs['int']['font_comments_size']
+        elif self.block.type_ in ('phrase','term'):
+            self.size = sh.lg.globs['int']['font_terms_size']
+
+
+
+class Fonts:
+    
+    def __init__(self,Debug=False,maxrows=1000):
         self.set_values()
-        self.collimit = collimit
-        self.cols = cols
-        self.data = data
-        self.phdic = phdic
-        self.Printer = Printer
+        self.set_blocked_colors()
+        self.set_priority_colors()
+        self.Debug = Debug
+        self.maxrows = maxrows
+    
+    def set_column_width(self):
+        f = '[MClient] mkhtml.Fonts.set_column_width'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        for ifont in self.fonts:
+            # TODO: rework
+            if ifont.colno in (0,1,2,3):
+                ifont.col_width = 5
+            else:
+                ifont.col_width = self.term_col_width
+    
+    def debug(self):
+        f = '[MClient] mkhtml.Fonts.debug'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not self.Debug:
+            sh.com.rep_lazy(f)
+            return
+        nos = [i + 1 for i in range(len(self.fonts))]
+        texts = []
+        families = []
+        colors = []
+        sizes = []
+        bolds = []
+        italics = []
+        rownos = []
+        colnos = []
+        col_widths = []
+        for ifont in self.fonts:
+            texts.append(ifont.text)
+            families.append(ifont.family)
+            colors.append(ifont.color)
+            sizes.append(ifont.size)
+            bolds.append(ifont.Bold)
+            italics.append(ifont.Italic)
+            rownos.append(ifont.rowno)
+            colnos.append(ifont.colno)
+            col_widths.append(ifont.col_width)
+        headers = (_('#'),_('ROW #'),_('COLUMN #'),_('WIDTH (%)')
+                  ,_('TEXT'),_('COLOR'),_('FAMILY'),_('SIZE'),_('BOLD')
+                  ,_('ITALIC')
+                  )
+        iterable = [nos,rownos,colnos,col_widths,texts,colors,families
+                   ,sizes,bolds,italics
+                   ]
+        mes = sh.FastTable (headers = headers
+                           ,iterable = iterable
+                           ,maxrow = 30
+                           ,maxrows = self.maxrows
+                           ).run()
+        sh.com.run_fast_debug(f,mes)
+    
+    def reset(self,blocks,Reverse=False,term_col_width=0):
+        self.set_values()
+        self.blocks = blocks
         self.Reverse = Reverse
-        self.skipped = skipped
-        self.col_width = col_width
-        self.tab_width = tab_width
-        self.empty_pc = empty_pc
-        
-    def run(self):
-        self.assign()
-        self.gen_htm()
-        return self.htm
+        self.term_col_width = term_col_width
     
     def set_values(self):
-        self.block = None
+        self.Success = True
+        self.Reverse = False
+        self.fonts = []
         self.blocks = []
-        self.htm = ''
-        self.phdic = ''
-        self.script = '''
-        <head>
-
-          <div align="center">
-            <!-- A button to print the printable area -->
-            <input type="button" onclick="printDiv('printableArea')" value="%s" />
-          </div>
-
-          <script type="text/javascript">
-            function printDiv(divName) {
-              var printContents = document.getElementById(divName).innerHTM;
-              var originalContents = document.body.innerHTM;
-              document.body.innerHTM = printContents;
-              window.print();
-              document.body.innerHTM = originalContents;
-            }
-          </script>
-
-          <!-- Print in a landscape mode -->
-          <style type="text/css">
-            @page
-            {
-              size: landscape;
-              margin: 1.5cm;
-            }
-          </style>
-
-          <style type="text/css" media="print">
-            @page
-            {
-              size: landscape;
-              margin: 1.5cm;
-            }
-          </style>
-
-        </head>
-        '''
-        ''' Either don't use 'format' here or double all curly braces
-            in the script.
-        '''
-        self.script = self.script % _('Print')
-        self.skipped = 0
+        self.term_col_width = 0
     
     def set_priority_colors(self):
         default_color = 'red'
@@ -181,276 +345,182 @@ class HTM:
         else:
             self.blocked_color4 = default_color
     
-    def assign(self):
-        for item in self.data:
-            block = Block()
-            block.type_ = item[0]
-            block.text = item[1]
-            block.i = item[2]
-            block.j = item[3]
-            self.blocks.append(block)
+    def check(self):
+        f = '[MClient] mkhtml.Fonts.check'
+        if not self.blocks:
+            self.Success = False
+            sh.com.rep_empty(f)
     
-    def _run_dic(self):
-        if self.block.type_ in ('dic','phdic') and self.block.text:
-            # Suppress useless error output
-            if self.block.text == self.phdic:
-                Blocked = False
-                Prioritized = False
+    def reverse(self):
+        f = '[MClient] mkhtml.Fonts.reverse'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        for block in self.blocks:
+            if self.Reverse:
+                block.xi = block.j
+                block.xj = block.i
             else:
-                Blocked = sj.objs.get_article().is_blocked(self.block.text)
-                Prioritized = sj.objs.article.get_priority(self.block.text) > 0
-            if Blocked:
-                sub = self._get_color_b()
-            elif Prioritized:
-                sub = self._get_color_p()
+                block.xi = block.i
+                block.xj = block.j
+    
+    def fill(self):
+        f = '[MClient] mkhtml.Fonts.fill'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        for block in self.blocks:
+            ifont = Font (block = block
+                         ,blocked_color1 = self.blocked_color1
+                         ,blocked_color2 = self.blocked_color2
+                         ,blocked_color3 = self.blocked_color3
+                         ,blocked_color4 = self.blocked_color4
+                         ,priority_color1 = self.priority_color1
+                         ,priority_color2 = self.priority_color2
+                         ,priority_color3 = self.priority_color3
+                         ,priority_color4 = self.priority_color4
+                         )
+            ifont.run()
+            self.fonts.append(ifont)
+    
+    def run(self):
+        self.check()
+        self.reverse()
+        self.fill()
+        self.set_column_width()
+        self.debug()
+        return self.fonts
+
+
+
+class Block:
+    # Shortened
+    def __init__(self):
+        self.i = 0
+        self.j = 0
+        self.text = ''
+        self.type_ = ''
+
+
+class HTM:
+
+    def __init__(self):
+        self.set_values()
+    
+    def reset(self,fonts,Printer=False,skipped=0,tab_width=0):
+        # 'collimit' includes fixed blocks
+        self.set_values()
+        self.fonts = fonts
+        self.Printer = Printer
+        self.skipped = skipped
+        self.tab_width = tab_width
+        
+    def set_landscape(self):
+        f = '[MClient] mkhtml.HTM.set_landscape'
+        if self.Printer:
+            file = sh.objs.get_pdir().add ('..','resources'
+                                          ,'landscape.html'
+                                          )
+            code = sh.ReadTextFile(file).get()
+            if code:
+                ''' Either don't use 'format' here or double all curly
+                    braces in the script.
+                '''
+                self.landscape = code % _('Print')
             else:
-                sub = self._get_color()
-            c = '<font face="{}" color="{}" size="{}"><b>{}</b></font>'
-            c = c.format (self._get_family()
-                         ,sub
-                         ,self._get_size()
-                         ,self.block.text
-                         )
-            self.output.write(c)
-
-    def _get_family(self):
-        if self.block.xj == 0:
-            return sh.lg.globs['str']['font_col1_family']
-        elif self.block.xj == 1:
-            return sh.lg.globs['str']['font_col2_family']
-        elif self.block.xj == 2:
-            return sh.lg.globs['str']['font_col3_family']
-        elif self.block.xj == 3:
-            return sh.lg.globs['str']['font_col4_family']
-        else:
-            return sh.lg.globs['str']['font_terms_family']
-            
-    def _get_size(self):
-        if self.block.xj == 0:
-            return sh.lg.globs['int']['font_col1_size']
-        elif self.block.xj == 1:
-            return sh.lg.globs['int']['font_col2_size']
-        elif self.block.xj == 2:
-            return sh.lg.globs['int']['font_col3_size']
-        elif self.block.xj == 3:
-            return sh.lg.globs['int']['font_col4_size']
-        else:
-            return sh.lg.globs['int']['font_terms_size']
-            
-    def _get_color_p(self):
-        if self.block.xj == 0:
-            return self.priority_color1
-        elif self.block.xj == 1:
-            return self.priority_color2
-        elif self.block.xj == 2:
-            return self.priority_color3
-        elif self.block.xj == 3:
-            return self.priority_color4
-        else:
-            return 'red'
-            
-    def _get_color_b(self):
-        if self.block.xj == 0:
-            return self.blocked_color1
-        elif self.block.xj == 1:
-            return self.blocked_color2
-        elif self.block.xj == 2:
-            return self.blocked_color3
-        elif self.block.xj == 3:
-            return self.blocked_color4
-        else:
-            return 'dim gray'
+                sh.com.rep_empty(f)
     
-    def _get_color(self):
-        if self.block.xj == 0:
-            return sh.lg.globs['str']['color_col1']
-        elif self.block.xj == 1:
-            return sh.lg.globs['str']['color_col2']
-        elif self.block.xj == 2:
-            return sh.lg.globs['str']['color_col3']
-        elif self.block.xj == 3:
-            return sh.lg.globs['str']['color_col4']
-        else:
-            return sh.lg.globs['str']['color_terms']
+    def run(self):
+        self.set_landscape()
+        self.gen_htm()
+        return self.htm
     
-    def _run_wform(self):
-        if self.block.type_ == 'wform':
-            c = '<font face="{}" color="{}" size="{}"><b>{}</b></font>'
-            c = c.format (self._get_family()
-                         ,self._get_color()
-                         ,self._get_size()
-                         ,self.block.text
-                         )
-            self.output.write(c)
-
-    def _run_term(self):
-        if self.block.type_ in ('term','phrase'):
-            c = '<font face="{}" color="{}" size="{}">{}</font>'
-            c = c.format (sh.lg.globs['str']['font_terms_family']
-                         ,sh.lg.globs['str']['color_terms']
-                         ,sh.lg.globs['int']['font_terms_size']
-                         ,self.block.text
-                         )
-            self.output.write(c)
-
-    def _run_speech(self):
-        if self.block.type_ == 'speech':
-            if self.block.xj == 0:
-                sub = '<b>{}</b>'.format(self.block.text)
-            else:
-                sub = self.block.text
-            c = '<font face="{}" color="{}" size="{}"><i>{}</i></font>'
-            c = c.format (self._get_family()
-                         ,self._get_color()
-                         ,self._get_size()
-                         ,sub
-                         )
-            self.output.write(c)
+    def set_values(self):
+        self.htm = ''
+        self.landscape = ''
+        self.skipped = 0
+        self.tab_width = 0
+        self.Printer = False
     
-    def _run_comment(self):
-        if self.block.type_ in ('comment','transc','phcount','phcom'):
-            c = '<i><font face="{}" size="{}" color="{}">{}</font></i>'
-            c = c.format (sh.lg.globs['str']['font_comments_family']
-                         ,sh.lg.globs['int']['font_comments_size']
-                         ,sh.lg.globs['str']['color_comments']
-                         ,self.block.text
-                         )
-            self.output.write(c)
-
-    def _run_correction(self):
-        if self.block.type_ == 'correction':
-            c = '<i><font face="{}" size="{}" color="{}">{}</font></i>'
-            c = c.format (sh.lg.globs['str']['font_comments_family']
-                         ,sh.lg.globs['int']['font_comments_size']
-                         ,'green'
-                         ,self.block.text
-                         )
-            self.output.write(c)
-
     def gen_htm(self):
         f = '[MClient] mkhtml.HTM.gen_htm'
-        ''' Default Python string concatenation is too slow, so we use
-            this module instead.
-        '''
-        self.output = io.StringIO()
-        self.output.write('<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">')
+        code = []
+        code.append('<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">')
         if self.Printer:
-            self.output.write(self.script)
-            self.output.write('<div id="printableArea">')
-        if self.blocks:
-            ''' - If the current article has only 1 row or it is
-                  undesirable to adjust columns by width then
-                  the 'width' argument of the 'table style' tag should
-                  not be used, otherwise, articles for separate words
-                  will have too wide columns.
-                - #TODO: remove extra table properties when using
-                  a good web engine.
-            '''
-            if self.tab_width in (0,100):
-                sub = '<table>'
-            else:
+            code.append(self.landscape)
+            code.append('<div id="printableArea">')
+        if self.fonts:
+            FixedLayout = not self.tab_width in (0,100)
+            if FixedLayout:
                 sub = '<table style="width: {}%">'
                 sub = sub.format(self.tab_width)
-            self.output.write(sub)
-            if self.Reverse:
-                self.output.write('<tr><td valign="top">')
-            elif self.blocks and self.blocks[0].text \
-            and self.blocks[0].type_ in ('dic','wform','transc'
-                                        ,'speech','phdic'
-                                        ):
-                sub = '<tr><td align="center" valign="top"{}>'
-                if self.col_width:
-                    #TODO: do not hardcode percentage
-                    sub = sub.format(' style="width: 5%"')
-                else:
-                    sub = sub.format('')
-                self.output.write(sub)
             else:
-                self.output.write('<tr><td valign="top">')
-            i = j = 0
-            for self.block in self.blocks:
-                while self.block.i > i:
-                    self.output.write('</td></tr><tr>')
-                    if self.block.text \
-                    and self.block.type_ in ('dic','wform','transc'
-                                            ,'speech','phdic'
-                                            ):
-                        base = '<td align="center" valign="top"{}>'
-                        if self.col_width:
-                            #TODO: do not hardcode percentage
-                            base = base.format(' style="width: 5%"')
-                        else:
-                            base = base.format('')
-                    elif self.col_width and self.block.text:
-                        base = '<td valign="top" style="width: {}%">'
-                        base = base.format(self.col_width)
+                sub = '<table>'
+            code.append(sub)
+            old_colno = -1
+            old_rowno = -1
+            for ifont in self.fonts:
+                if old_rowno != ifont.rowno:
+                    if ifont.rowno > 0:
+                        code.append('</td></tr>')
+                    code.append('<tr>')
+                if old_colno != ifont.colno:
+                    if ifont.colno > 0 and old_rowno == ifont.rowno:
+                        code.append('</td>')
+                    #NOTE: This code depends on a starting number
+                    if old_rowno != ifont.rowno and 0 < ifont.colno <= 4:
+                        for i in range(ifont.colno):
+                            #TODO: Rework
+                            code.append('<td></td>')
+                            #code.append('<td align="center" valign="top" style="width: 5%"></td>')
+                    sub = '<td{} valign="top"{}>'
+                    if ifont.colno in (0,1,2,3):
+                        sub1 = ' align="center"'
                     else:
-                        base = '<td valign="top">'
-                    self.output.write(base)
-                    i = self.block.i
-                    j = 0
-                while self.block.j > j:
-                    self.output.write('</td>')
-                    mes = '<td valign="top"{}>'
-                    if self.block.text:
-                        if self.block.type_ in ('term','comment','user'
-                                               ,'correction','phrase'
-                                               ,'phcom','phcount'
-                                               ) and self.col_width:
-                            if self.col_width:
-                                sub = ' style="width: {}%"'
-                                sub = sub.format(self.col_width)
-                            else:
-                                sub = ''
-                        elif self.col_width:
-                            #TODO: do not hardcode percentage
-                            sub = ' style="width: {}%"'.format(5)
-                        else:
-                            sub = ''
+                        sub1 = ''
+                    if FixedLayout:
+                        sub2 = ' style="width: {}%"'
+                        sub2 = sub2.format(ifont.col_width)
                     else:
-                        sub = ''
-                    mes = mes.format(sub)
-                    self.output.write(mes)
-                    j += 1
-                if self.Reverse:
-                    self.block.xi = self.block.j
-                    self.block.xj = self.block.i
+                        sub2 = ''
+                    sub = sub.format(sub1,sub2)
+                    code.append(sub)
+                    old_colno = ifont.colno
+                ''' Cannot be modified immediately after a new row has
+                    been discovered since 'rowno' is used after that.
+                '''
+                if old_rowno != ifont.rowno:
+                    old_rowno = ifont.rowno
+                if ifont.Bold:
+                    sub1 = '<b>'
+                    sub4 = '</b>'
                 else:
-                    self.block.xi = self.block.i
-                    self.block.xj = self.block.j
-                self._run_dic()
-                self._run_wform()
-                self._run_speech()
-                self._run_term()
-                self._run_comment()
-                self._run_user()
-                self._run_correction()
-            if self.empty_pc and self.col_width:
-                sub = '</td><td style="width: {}%"></td></tr></table>'
-                sub = sub.format(self.empty_pc)
-                self.output.write(sub)
-            else:
-                self.output.write('</td></tr></table>')
+                    sub1 = sub4 = ''
+                if ifont.Italic:
+                    sub2 = '<i>'
+                    sub3 = '</i>'
+                else:
+                    sub2 = sub3 = ''
+                sub = '{}{}<font face="{}" color="{}" size="{}">{}</font>{}{}'
+                sub = sub.format (sub1,sub2,ifont.family,ifont.color
+                                 ,ifont.size,ifont.text,sub3,sub4
+                                 )
+                code.append(sub)
+            code.append('</td></tr></table>')
         elif self.skipped:
-            self.output.write('<h1>')
+            code.append('<h1>')
             mes = _('Nothing has been found (skipped subjects: {}).')
             mes = mes.format(self.skipped)
-            self.output.write(mes)
-            self.output.write('</h1>')
+            code.append(mes)
+            code.append('</h1>')
         else:
-            self.output.write('<h1>')
-            self.output.write(_('Nothing has been found.'))
-            self.output.write('</h1>')
+            code.append('<h1>')
+            code.append(_('Nothing has been found.'))
+            code.append('</h1>')
         if self.Printer:
-            self.output.write('</div>')
-        self.output.write('</meta></body></html>')
-        self.htm = self.output.getvalue()
-        #TODO: Fix the algorithm and drop this workaround
-        what = '<td valign="top" style="width: {}%"></td>'
-        what = what.format(self.col_width)
-        with_ = '<td valign="top"></td>'
-        self.htm = self.htm.replace(what,with_)
-        self.output.close()
+            code.append('</div>')
+        code.append('</meta></body></html>')
+        self.htm = ''.join(code)
         return self.htm
 
 
@@ -458,12 +528,17 @@ class HTM:
 class Objects:
     
     def __init__(self):
-        self.htm = None
+        self.htm = self.fonts = None
         
     def get_htm(self):
         if self.htm is None:
             self.htm = HTM()
         return self.htm
+    
+    def get_fonts(self,Debug=False,maxrows=1000):
+        if self.fonts is None:
+            self.fonts = Fonts(Debug,maxrows)
+        return self.fonts
 
 
 objs = Objects()

@@ -1,6 +1,8 @@
 
 
 mclient:
+- Fix colorizing
+- Fix Vertical mode
 - Make a cell fully visible when mousing over it
 - Improve toggling widgets using F1-F12
 - Checking for symbols unsupported in Tk takes too long (when loading
@@ -10,6 +12,8 @@ mclient:
   add titles everywhere
 
 multitrancom:
+- RU-EN, Makarov: colorize phdics even when prioritizing is off since
+  there are no subjects to prioritize
 - RU-EN, visioner, droid: 5% for fixed columns may be too much
 - Add new mode: RU-EN, nederlands: "перевод с других языков"
 - Check bad charachers: RU-EN, счет на оплату

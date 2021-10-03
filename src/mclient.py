@@ -2173,17 +2173,28 @@ class WebFrame:
         
         iwidth = ColumnWidth()
         iwidth.run()
-        mh.objs.get_htm().reset (data = objs.blocksdb.fetch()
-                                ,cols = lg.objs.request.cols
-                                ,collimit = lg.objs.request.collimit
-                                ,Reverse = sh.lg.globs['bool']['VerticalView']
-                                ,phdic = self.phdic
-                                ,skipped = len(com.get_skipped_dics())
-                                ,tab_width = com.get_table_width()
-                                ,col_width = iwidth.term_pc
-                                ,empty_pc = iwidth.empty_pc
+        
+        #cur
+        data = objs.blocksdb.fetch()
+        skipped = len(com.get_skipped_dics())
+        tab_width = com.get_table_width()
+        term_col_width = iwidth.term_pc
+        
+        mktimer = sh.Timer('mkhtm')
+        mktimer.start()
+        
+        mh.objs.get_fonts(lg.objs.get_plugins().Debug)
+        #mh.objs.get_fonts(True)
+        mh.objs.fonts.reset (blocks = cells.blocks
+                            ,Reverse = sh.lg.globs['bool']['VerticalView']
+                            ,term_col_width = term_col_width
+                            )
+        mh.objs.get_htm().reset (fonts = mh.objs.fonts.run()
+                                ,skipped = skipped
+                                ,tab_width = tab_width
                                 )
         mh.objs.htm.run()
+        mktimer.end()
         
         lg.objs.request.htm = mh.objs.htm.htm
         self.fill(lg.objs.request.htm)
@@ -2715,16 +2726,11 @@ class WebFrame:
 
     def print(self,event=None):
         f = '[MClient] mclient.WebFrame.print'
-        iwidth = ColumnWidth()
-        iwidth.run()
-        mh.objs.get_htm().reset (data = objs.blocksdb.fetch()
-                                ,cols = lg.objs.request.cols
-                                ,collimit = lg.objs.request.collimit
+        mh.objs.get_fonts(lg.objs.get_plugins().Debug)
+        mh.objs.get_htm().reset (fonts = mh.objs.fonts.fonts
                                 ,Printer = True
-                                ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,skipped = len(com.get_skipped_dics())
-                                ,col_width = iwidth.term_pc
-                                ,empty_pc = iwidth.empty_pc
+                                ,tab_width = com.get_table_width()
                                 )
         code = mh.objs.htm.run()
         if code:

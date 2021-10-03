@@ -1,0 +1,18 @@
+<head>
+  <div align="center">
+    <!-- A button to print the printable area -->
+    <input type="button" onclick="printDiv('printableArea')" value="%s"/>
+  </div>
+  <script type="text/javascript">
+    function printDiv(divName) {
+      var printContents = document.getElementById(divName).innerHTM;
+      var originalContents = document.body.innerHTM;
+      document.body.innerHTM = printContents;
+      window.print();
+      document.body.innerHTM = originalContents;
+      }
+  </script>
+  <!-- Print in a landscape mode -->
+  <style type="text/css">@page{size: landscape;margin: 1.5cm;}</style>
+  <style type="text/css" media="print">@page{size: landscape;margin: 1.5cm;}</style>
+</head>
