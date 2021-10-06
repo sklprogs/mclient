@@ -47,14 +47,14 @@ class BlockPrioritize:
                 ,spdic={}
                 ):
         f = '[MClient] cells.BlockPrioritize.__init__'
-        self.Block = Block
+        self.query = ''
         self.blocks = []
+        self.Block = Block
         self.data = data
         self.Debug = Debug
         self.maxrows = maxrows
         self.phdic = phdic
         self.Prioritize = Prioritize
-        self.query = ''
         self.spdic = spdic
         if self.data:
             self.Success = True
@@ -80,26 +80,6 @@ class BlockPrioritize:
                                ,maxrows = self.maxrows
                                ,Transpose = True
                                ).run()
-        return f + ':\n' + mes
-    
-    def _debug_dics(self):
-        f = '[MClient] cells.BlockPrioritize._debug_dics'
-        nos = [i + 1 for i in range(len(self.dics.keys()))]
-        keys = []
-        block = []
-        priority = []
-        for key in self.dics.keys():
-            keys.append('"{}"'.format(key))
-            block.append(self.dics[key]['block'])
-            priority.append(self.dics[key]['priority'])
-        headers = (_('#'),_('KEY'),_('BLOCKED'),_('PRIORITY'))
-        iterable = [nos,keys,block,priority]
-        # 10'' monitor: 30 symbols per column
-        mes = sh.FastTable (headers = headers
-                           ,iterable = iterable
-                           ,maxrow = 30
-                           ,maxrows = self.maxrows
-                           ).run()
         return f + ':\n' + mes
     
     def prioritize_speech(self):
@@ -192,7 +172,7 @@ class BlockPrioritize:
     def debug(self):
         f = '[MClient] cells.BlockPrioritize.debug'
         if self.Debug:
-            mes = [self._debug_dics(),self._debug_blocks()]
+            mes = [self._debug_blocks()]
             mes = '\n\n'.join(mes)
             sh.com.run_fast_debug(f,mes)
         else:
@@ -217,6 +197,7 @@ class Cells:
         f = '[MClient] cells.Cells.__init__'
         # Sqlite fetch
         self.blocks = []
+        self.unsupsp = []
         self.cols = cols
         self.collimit = collimit
         self.data = data
@@ -225,7 +206,6 @@ class Cells:
         self.phdic = phdic
         self.Reverse = Reverse
         self.spdic = spdic
-        self.unsupsp = []
         if self.data:
             self.Success = True
         else:

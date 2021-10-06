@@ -12,6 +12,7 @@ mclient:
   add titles everywhere
 
 multitrancom:
+- RU-EN, sat (2, netbook): fix layout 
 - RU-EN, Makarov: colorize phdics even when prioritizing is off since
   there are no subjects to prioritize
 - RU-EN, visioner, droid: 5% for fixed columns may be too much

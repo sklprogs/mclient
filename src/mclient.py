@@ -43,9 +43,11 @@ class ColumnWidth:
         self.fixed_num = 0
         # Number of term columns
         self.term_num = 0
-        # Actual space taken by fixed columns
+        # A width of the program window (pixels)
+        self.window_width = 0
+        # Actual space taken by fixed columns (percent)
         self.all_fixed_pc = 0
-        # Actual space taken by term columns
+        # Actual space taken by term columns (percent)
         self.all_terms_pc = 0
         # Maximum available space for term columns (percent)
         self.max_terms_pc = 0
@@ -59,6 +61,11 @@ class ColumnWidth:
         self.term_px = 0
         # Maximum available space that should be empty (percent)
         self.empty_pc = 0
+    
+    def set_window_width(self):
+        f = '[MClient] mclient.ColumnWidth.set_window_width'
+        self.window_width = objs.get_webframe_ui().get_width()
+        sh.objs.get_mes(f,self.window_width,True).show_debug()
     
     def set_term_pc(self):
         f = '[MClient] mclient.ColumnWidth.set_term_pc'
@@ -150,6 +157,7 @@ class ColumnWidth:
     
     def run(self):
         # The order of execution is important
+        self.set_window_width()
         self.set_fixed_num()
         self.set_term_num()
         self.set_fixed_space()
@@ -164,9 +172,8 @@ class ColumnWidth:
     
     def set_max_term_px(self):
         f = '[MClient] mclient.ColumnWidth.set_max_term_px'
-        max_width = objs.get_webframe_ui().get_width()
-        if self.max_term_pc and max_width:
-            self.max_term_px = (max_width * self.max_term_pc) / 100
+        if self.max_term_pc and self.window_width:
+            self.max_term_px = (self.window_width * self.max_term_pc) / 100
             self.max_term_px = int(self.max_term_px)
             mes = _('A space available for a term column: {} pixels')
             mes = mes.format(self.max_term_px)
