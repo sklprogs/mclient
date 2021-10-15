@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export WINEPREFIX="$HOME/base/software/wine/python38_vista"
+export WINEPREFIX="$HOME/software/wine/python38_vista"
 product="mclient"
 python="$WINEPREFIX/drive_c/Python"
 pyinstaller="$python/Scripts/pyinstaller.exe"
