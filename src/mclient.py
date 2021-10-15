@@ -37,8 +37,32 @@ class ColumnWidth:
         in a controller only.
     '''
     def __init__(self):
-        self.longest = ''
-        self.shortest = ''
+        self.longest_fixed1 = ''
+        self.longest_fixed2 = ''
+        self.longest_fixed3 = ''
+        self.longest_fixed4 = ''
+        self.shortest_fixed1 = ''
+        self.shortest_fixed2 = ''
+        self.shortest_fixed3 = ''
+        self.shortest_fixed4 = ''
+        self.longest_term = ''
+        self.shortest_term = ''
+        # Actual space taken by fixed column 1 (pixels)
+        self.all_fixed1_px = 0
+        # Actual space taken by fixed column 1 (percent)
+        self.all_fixed1_pc = 0
+        # Actual space taken by fixed column 2 (pixels)
+        self.all_fixed2_px = 0
+        # Actual space taken by fixed column 2 (percent)
+        self.all_fixed2_pc = 0
+        # Actual space taken by fixed column 3 (pixels)
+        self.all_fixed3_px = 0
+        # Actual space taken by fixed column 3 (percent)
+        self.all_fixed3_pc = 0
+        # Actual space taken by fixed column 4 (pixels)
+        self.all_fixed4_px = 0
+        # Actual space taken by fixed column 4 (percent)
+        self.all_fixed4_pc = 0
         # Number of fixed columns
         self.fixed_num = 0
         # Number of term columns
@@ -61,6 +85,113 @@ class ColumnWidth:
         self.term_px = 0
         # Maximum available space that should be empty (percent)
         self.empty_pc = 0
+        # Maximum available space for a fixed column (pixels)
+        self.max_fixed_px = 0
+        # Maximum available space for a fixed column (percent)
+        self.max_fixed_pc = 5
+    
+    def set_max_fixed_px(self):
+        f = '[MClient] mclient.ColumnWidth.set_max_fixed_px'
+        self.max_fixed_px = (self.window_width * self.max_fixed_pc) / 100
+        mes = _('Maximum available space for a fixed column: {} pixels ({}%)')
+        mes = mes.format(self.max_fixed_px,self.max_fixed_pc)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def _set_all_fixed1_px(self):
+        f = '[MClient] mclient.ColumnWidth._set_all_fixed1_px'
+        if not self.longest_fixed1:
+            sh.com.rep_empty(f)
+            return
+        font_size = sh.lg.globs['int']['font_col1_size']
+        #TODO: a trial-and-error choice, calculate more precisely
+        font_size *= 2.5
+        font = '{} {}'.format (sh.lg.globs['str']['font_col1_family']
+                              ,font_size
+                              )
+        #TODO: do we need to pass 'xborder=0' here (default is 20)?
+        #NOTE: this cannot run in logic, a root widget is required
+        ifont = sh.Font(font)
+        ifont.set_text(self.shortest_fixed1)
+        min_width = ifont.get_width()
+        mes = _('A width of the shortest cell of column #{}: {} pixels')
+        mes = mes.format(1,min_width)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        #TODO: either do a reset here, or rework 'sh.Font'
+        #TODO: do we need to pass 'xborder=0' here (default is 20)?
+        ifont.reset(font)
+        ifont.set_text(self.longest_fixed1)
+        max_width = ifont.get_width()
+        mes = _('A width of the longest cell of column #{}: {} pixels')
+        mes = mes.format(1,max_width)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        if len(self.shortest_fixed1) == len(self.longest_fixed1):
+            self.all_fixed1_px = max_width
+        elif self.shortest_fixed1 == '':
+            self.all_fixed1_px = max_width
+        else:
+            self.all_fixed1_px = int((min_width + max_width) / 2)
+        if self.all_fixed1_px > self.max_fixed_px:
+            self.all_fixed1_px = self.max_fixed_px
+        mes = _('An average width of column #{}: {} pixels')
+        mes = mes.format(1,self.all_fixed1_px)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def set_all_fixed_px(self):
+        f = '[MClient] mclient.ColumnWidth.set_all_fixed_px'
+        self._set_all_fixed1_px()
+    
+    def _report_fixed(self,colno):
+        f = '[MClient] mclient.ColumnWidth._report_fixed'
+        if colno in (0,1,2,3):
+            if colno == 0:
+                shortest = self.shortest_fixed1
+                longest = self.longest_fixed1
+            elif colno == 1:
+                shortest = self.shortest_fixed2
+                longest = self.longest_fixed2
+            elif colno == 2:
+                shortest = self.shortest_fixed3
+                longest = self.longest_fixed3
+            elif colno == 3:
+                shortest = self.shortest_fixed4
+                longest = self.longest_fixed4
+            cut = sh.Text(shortest).shorten(100)
+            mes = _('The shortest fixed cell (column {}, {} symbols): "{}"')
+            mes = mes.format(colno+1,len(shortest),cut)
+            sh.objs.get_mes(f,mes,True).show_debug()
+            cut = sh.Text(longest).shorten(100)
+            mes = _('The longest fixed cell (column {}, {} symbols): "{}"')
+            mes = mes.format(colno+1,len(longest),cut)
+            sh.objs.get_mes(f,mes,True).show_debug()
+        else:
+            mes = _('Wrong input data: "{}"').format(colno)
+            sh.objs.get_mes(f,mes,True).show_warning()
+    
+    def set_longest_fixed(self):
+        ''' #NOTE: this is simplified since fixed cells are ordinary
+            blocks. 
+        '''
+        f = '[MClient] mclient.ColumnWidth.set_longest_fixed'
+        column1 = objs.get_blocksdb().get_column_texts(0)
+        column2 = objs.blocksdb.get_column_texts(1)
+        column3 = objs.blocksdb.get_column_texts(2)
+        column4 = objs.blocksdb.get_column_texts(3)
+        if column1:
+            self.longest_fixed1 = max(column1,key=len)
+            self.shortest_fixed1 = min(column1,key=len)
+        if column2:
+            self.longest_fixed2 = max(column2,key=len)
+            self.shortest_fixed2 = min(column2,key=len)
+        if column3:
+            self.longest_fixed3 = max(column3,key=len)
+            self.shortest_fixed3 = min(column3,key=len)
+        if column4:
+            self.longest_fixed4 = max(column4,key=len)
+            self.shortest_fixed4 = min(column4,key=len)
+        self._report_fixed(0)
+        self._report_fixed(1)
+        self._report_fixed(2)
+        self._report_fixed(3)
     
     def set_window_width(self):
         f = '[MClient] mclient.ColumnWidth.set_window_width'
@@ -160,11 +291,13 @@ class ColumnWidth:
         self.set_window_width()
         self.set_fixed_num()
         self.set_term_num()
+        self.set_longest_fixed()
+        self.set_all_fixed_px()
         self.set_fixed_space()
         self.set_term_space()
         self.set_max_term_pc()
         self.set_max_term_px()
-        self.set_longest()
+        self.set_longest_term()
         self.set_term_px()
         self.set_term_pc()
         self.set_all_terms_pc()
@@ -183,7 +316,7 @@ class ColumnWidth:
     
     def set_term_px(self):
         f = '[MClient] mclient.ColumnWidth.set_term_px'
-        if self.longest:
+        if self.longest_term:
             ''' Calculating a cell width depending on a block type
                 would be more precise, however, this would require
                 calculating a width of each cell separately which is
@@ -200,12 +333,12 @@ class ColumnWidth:
             #TODO: do we need to pass 'xborder=0' here (default is 20)?
             #NOTE: this cannot run in logic, a root widget is required
             ifont = sh.Font(font)
-            ifont.set_text(self.shortest)
+            ifont.set_text(self.shortest_term)
             min_width = ifont.get_width()
             #TODO: either do a reset here, or rework 'sh.Font'
             #TODO: do we need to pass 'xborder=0' here (default is 20)?
             ifont.reset(font)
-            ifont.set_text(self.longest)
+            ifont.set_text(self.longest_term)
             max_width = ifont.get_width()
             mes = _('A width of the shortest cell: {} pixels')
             mes = mes.format(min_width)
@@ -222,8 +355,8 @@ class ColumnWidth:
         else:
             sh.com.rep_empty(f)
     
-    def set_longest(self):
-        f = '[MClient] mclient.Commands.set_longest'
+    def set_longest_term(self):
+        f = '[MClient] mclient.Commands.set_longest_term'
         data = objs.get_blocksdb().get_term_cell_texts()
         if data:
             ''' The last tuple of 'data' is the maximum row number
@@ -246,19 +379,19 @@ class ColumnWidth:
             for item in rows:
                 if len(item) > max_:
                     max_ = len(item)
-                    self.longest = item
+                    self.longest_term = item
             min_ = max_
             for item in rows:
                 if 0 < len(item) < min_:
                     min_ = len(item)
-                    self.shortest = item
-            cut = sh.Text(self.shortest).shorten(100)
-            mes = _('The shortest cell ({} symbols): "{}"')
-            mes = mes.format(len(self.shortest),cut)
+                    self.shortest_term = item
+            cut = sh.Text(self.shortest_term).shorten(100)
+            mes = _('The shortest term cell ({} symbols): "{}"')
+            mes = mes.format(len(self.shortest_term),cut)
             sh.objs.get_mes(f,mes,True).show_debug()
-            cut = sh.Text(self.longest).shorten(100)
-            mes = _('The longest cell ({} symbols): "{}"')
-            mes = mes.format(len(self.longest),cut)
+            cut = sh.Text(self.longest_term).shorten(100)
+            mes = _('The longest term cell ({} symbols): "{}"')
+            mes = mes.format(len(self.longest_term),cut)
             sh.objs.get_mes(f,mes,True).show_debug()
         else:
             sh.com.rep_empty(f)
@@ -2178,8 +2311,12 @@ class WebFrame:
         cells.run()
         cells.dump(objs.blocksdb)
         
+        #cur
+        timer_col = sh.Timer('ColumnWidth')
+        timer_col.start()
         iwidth = ColumnWidth()
         iwidth.run()
+        timer_col.end()
         
         #cur
         data = objs.blocksdb.fetch()

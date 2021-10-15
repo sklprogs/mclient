@@ -2,6 +2,10 @@ mclient:
 - 
 
 multitrancom:
+- RU-EN, в режиме -> Биржевой термин: incorrect colorization of
+  "automatic trading"
+- RU-EN, в режиме -> SAP финансы: selecting wforms without 
+  the specialized mode
 - RU-EN, hello: IT phdics are prioritized but not colored
 - RU-EN, set: 'Обработка данных' is prioritized but not colored (phdic)
 - RU-EN, Tagalog -> Фразы (6): too wide fixed columns, empty space in 

@@ -1,6 +1,7 @@
 
 
 mclient:
+- Improve main icon quality
 - Fix colorizing
 - Fix Vertical mode
 - Make a cell fully visible when mousing over it
@@ -12,7 +13,12 @@ mclient:
   add titles everywhere
 
 multitrancom:
-- RU-EN, sat (2, netbook): fix layout 
+- RU-EN, bying: no suitable mode, wrong types (not subjects or wforms)
+- RU-EN, актуальным (2, netbook): layout looks good only at 75% 
+- RU-EN, стоимость (2, netbook): table doesn't look good for both 
+  adjusted and non-adjusted layouts
+- RU-EN, режим: do not allow too wide fixed columns
+- RU-EN, sat (2, netbook), sad sack (6, notebook): fix layout 
 - RU-EN, Makarov: colorize phdics even when prioritizing is off since
   there are no subjects to prioritize
 - RU-EN, visioner, droid: 5% for fixed columns may be too much
