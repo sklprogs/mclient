@@ -59,7 +59,7 @@ class About:
     def send_feedback(self,event=None):
         # Compose an email to the author
         sh.Email (email = sh.lg.email
-                 ,subject = _('On {}').format(gi.PRODUCT)
+                 ,subject = _('On MClient')
                  ).create()
 
     def open_license_url(self,event=None):

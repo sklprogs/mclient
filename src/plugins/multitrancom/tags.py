@@ -125,6 +125,8 @@ class AnalyzeTag:
     
     def _is_term(self):
         return 'class="trans"' in self.tag.text \
+        or 'class="trans1"' in self.tag.text \
+        or 'class="trans2"' in self.tag.text \
         or 'class="termsforsubject"' in self.tag.text \
         or 'class="phraselist1"' in self.tag.text \
         or 'class="phraselist2"' in self.tag.text
