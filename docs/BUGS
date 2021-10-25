@@ -2,6 +2,27 @@ mclient:
 - 
 
 multitrancom:
+- RU-EN, память -> Фразы: a segment is not found
+- RU-EN, Andrey:
+File "/home/pete/bin/mclient/src/mclient.py", line 300, in run
+    self.set_longest_term()
+  File "/home/pete/bin/mclient/src/mclient.py", line 372, in set_longest_term
+    rows[tuple_[0]-1].append(tuple_[1])
+IndexError: list index out of range
+- RU-EN, phytophotodermatitis:
+Traceback (most recent call last):
+  File "tkinter/__init__.py", line 1892, in __call__
+  File "mclient.py", line 2246, in go_keyboard
+  File "mclient.py", line 2286, in go_search
+  File "mclient.py", line 2175, in load_article
+  File "mclient.py", line 159, in run
+  File "mclient.py", line 232, in set_longest
+IndexError: list index out of range
+- RU-EN, purka, долгого ожидания -> Phrases: too wide columns
+- RU-EN, слушать: Unable to find: "Ironical"<...>
+- RU-EN, get into: Unable to find: "Idiomatic"<...>
+- RU-EN, global: Не удалось найти: 
+"http://medicalexpress.uz/index .php?id=1712-7&lang=ru&tpl=pri ntable"<...>
 - RU-EN, в режиме -> Биржевой термин: incorrect colorization of
   "automatic trading"
 - RU-EN, в режиме -> SAP финансы: selecting wforms without 
