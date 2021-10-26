@@ -89,7 +89,7 @@ class Font:
         elif self.block.xj == 3:
             self.color = self.priority_color4
         else:
-            self.color = 'red'
+            self.color = self.priority_color1
     
     def _set_color_b(self):
         if self.block.xj == 0:
@@ -274,16 +274,15 @@ class Fonts:
         self.term_col_width = 0
     
     def set_priority_colors(self):
-        default_color = 'red'
         delta = -76
         # Column 1 color
-        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col1']
-                                      ,delta = delta
-                                      )
-        if result:
-            self.priority_color1 = result
-        else:
-            self.priority_color1 = default_color
+        default_color = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col1']
+                                             ,delta = delta
+                                             )
+        if not default_color:
+            default_color = 'red'
+        
+        self.priority_color1 = default_color
         # Column 2 color
         result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col2']
                                       ,delta = delta
