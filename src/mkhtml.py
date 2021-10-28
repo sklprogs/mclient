@@ -479,10 +479,15 @@ class HTM:
                         code.append('</td>')
                     #NOTE: This code depends on a starting number
                     if old_rowno != ifont.rowno and 0 < ifont.colno <= 4:
-                        for i in range(ifont.colno):
-                            #TODO: Rework
-                            code.append('<td></td>')
-                            #code.append('<td align="center" valign="top" style="width: 5%"></td>')
+                        sub = '<td align="center" valign="top" style="width: {}%"></td>'
+                        sub1 = sub.format(objs.get_fonts().col1_width)
+                        code.append(sub1)
+                        sub2 = sub.format(objs.get_fonts().col2_width)
+                        code.append(sub2)
+                        sub3 = sub.format(objs.get_fonts().col3_width)
+                        code.append(sub3)
+                        sub4 = sub.format(objs.get_fonts().col4_width)
+                        code.append(sub4)
                     sub = '<td{} valign="top"{}>'
                     if ifont.colno in (0,1,2,3):
                         sub1 = ' align="center"'

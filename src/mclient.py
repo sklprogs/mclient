@@ -41,7 +41,7 @@ class ColumnWidth:
     
     def set_values(self):
         self.fixed_sum_pc = 20
-        self.min_width = 1
+        self.min_width = 10
         self.window_width = 0
         self.fixed_num = 0
         self.term_num = 0
@@ -274,8 +274,8 @@ class ColumnWidth:
             long3_px = self._calc_font(self.long3,3)
         if self.short3:
             short3_px = self._calc_font(self.short3,3)
-        if self.long1:
-            long1_px = self._calc_font(self.long1,1)
+        if self.long4:
+            long4_px = self._calc_font(self.long4,4)
         if self.short4:
             short4_px = self._calc_font(self.short4,4)
         if self.long_term:
