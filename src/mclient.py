@@ -2344,7 +2344,6 @@ class WebFrame:
         mktimer.start()
         
         mh.objs.get_fonts(lg.objs.get_plugins().Debug)
-        #mh.objs.get_fonts(True)
         mh.objs.fonts.reset (blocks = cells.blocks
                             ,Reverse = sh.lg.globs['bool']['VerticalView']
                             ,col1_width = objs.column_width.col1_pc
