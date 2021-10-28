@@ -465,12 +465,7 @@ class HTM:
             code.append(self.landscape)
             code.append('<div id="printableArea">')
         if self.fonts:
-            FixedLayout = not self.tab_width in (0,100)
-            if FixedLayout:
-                sub = '<table style="width: {}%">'
-                sub = sub.format(self.tab_width)
-            else:
-                sub = '<table>'
+            sub = '<table style="width: {}%">'.format(self.tab_width)
             code.append(sub)
             old_colno = -1
             old_rowno = -1
@@ -493,7 +488,7 @@ class HTM:
                         sub1 = ' align="center"'
                     else:
                         sub1 = ''
-                    if FixedLayout:
+                    if ifont.col_width:
                         sub2 = ' style="width: {}%"'
                         sub2 = sub2.format(ifont.col_width)
                     else:

@@ -41,6 +41,7 @@ class ColumnWidth:
     
     def set_values(self):
         self.fixed_sum_pc = 20
+        self.min_width = 1
         self.window_width = 0
         self.fixed_num = 0
         self.term_num = 0
@@ -104,7 +105,7 @@ class ColumnWidth:
             sh.com.rep_empty(f)
             return
         if not self.act_term:
-            self.act_term = 1
+            self.act_term = self.min_width
         # We have already set act[1..4] to 1, so we cannot get 0 here
         self.col1 = min(self.act1,self.avail_fixed)
         self.col2 = min(self.act2,self.avail_fixed)
@@ -153,17 +154,17 @@ class ColumnWidth:
             cause bugs.
         '''
         if not self.act1:
-            self.act1 = 1
-            avail_sum -= 1
+            self.act1 = self.min_width
+            avail_sum -= self.min_width
         if not self.act2:
-            self.act2 = 1
-            avail_sum -= 1
+            self.act2 = self.min_width
+            avail_sum -= self.min_width
         if not self.act3:
-            self.act3 = 1
-            avail_sum -= 1
+            self.act3 = self.min_width
+            avail_sum -= self.min_width
         if not self.act4:
-            self.act4 = 1
-            avail_sum -= 1
+            self.act4 = self.min_width
+            avail_sum -= self.min_width
         self.avail_fixed = avail_sum / self.fixed_num
         mes = _('Space available for a fixed column: {} pixels')
         mes = mes.format(self.avail_fixed)
