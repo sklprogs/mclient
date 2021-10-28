@@ -165,7 +165,7 @@ class ColumnWidth:
             self.act4 = 1
             avail_sum -= 1
         self.avail_fixed = avail_sum / self.fixed_num
-        mes = _('Maximum space available for a fixed column: {} pixels')
+        mes = _('Space available for a fixed column: {} pixels')
         mes = mes.format(self.avail_fixed)
         sh.objs.get_mes(f,mes,True).show_debug()
     
@@ -175,7 +175,7 @@ class ColumnWidth:
             sh.com.rep_empty(f)
             return
         self.avail_term = self.avail_term_sum / self.term_num
-        mes = _('Maximum space available for a term column: {} pixels')
+        mes = _('Space available for a term column: {} pixels')
         mes = mes.format(self.avail_term)
         sh.objs.get_mes(f,mes,True).show_debug()
     
@@ -407,7 +407,7 @@ class ColumnWidth:
             sh.com.rep_empty(f)
             return
         self.avail_fixed_sum = (self.window_width * self.fixed_sum_pc) / 100
-        mes = _('Maximum space available for fixed columns: {} pixels ({}%)')
+        mes = _('Space available for fixed columns: {} pixels ({}%)')
         mes = mes.format(self.avail_fixed_sum,self.fixed_sum_pc)
         sh.objs.get_mes(f,mes,True).show_debug()
     
@@ -418,7 +418,7 @@ class ColumnWidth:
             return
         percent = 100 - self.fixed_sum_pc
         self.avail_term_sum = self.window_width - self.avail_fixed_sum
-        mes = _('Maximum space available for term columns: {} pixels ({}%)')
+        mes = _('Space available for term columns: {} pixels ({}%)')
         mes = mes.format(self.avail_term_sum,percent)
         sh.objs.get_mes(f,mes,True).show_debug()
     
@@ -2343,9 +2343,8 @@ class WebFrame:
         mktimer = sh.Timer('mkhtm')
         mktimer.start()
         
-        #mh.objs.get_fonts(lg.objs.get_plugins().Debug)
-        #cur
-        mh.objs.get_fonts(True)
+        mh.objs.get_fonts(lg.objs.get_plugins().Debug)
+        #mh.objs.get_fonts(True)
         mh.objs.fonts.reset (blocks = cells.blocks
                             ,Reverse = sh.lg.globs['bool']['VerticalView']
                             ,col1_width = objs.column_width.col1_pc
