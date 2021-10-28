@@ -212,9 +212,14 @@ class Fonts:
             sh.com.cancel(f)
             return
         for ifont in self.fonts:
-            # TODO: rework
-            if ifont.colno in (0,1,2,3):
-                ifont.col_width = 5
+            if ifont.colno == 0:
+                ifont.col_width = self.col1_width
+            elif ifont.colno == 1:
+                ifont.col_width = self.col2_width
+            elif ifont.colno == 2:
+                ifont.col_width = self.col3_width
+            elif ifont.colno == 3:
+                ifont.col_width = self.col4_width
             else:
                 ifont.col_width = self.term_col_width
     
@@ -246,24 +251,31 @@ class Fonts:
             rownos.append(ifont.rowno)
             colnos.append(ifont.colno)
             col_widths.append(ifont.col_width)
-        headers = (_('#'),_('ROW #'),_('COLUMN #'),_('WIDTH (%)')
+        headers = (_('#'),_('ROW #'),_('COLUMN #'),_('COLUMN WIDTH (%)')
                   ,_('TEXT'),_('COLOR'),_('FAMILY'),_('SIZE'),_('BOLD')
                   ,_('ITALIC')
                   )
         iterable = [nos,rownos,colnos,col_widths,texts,colors,families
                    ,sizes,bolds,italics
                    ]
+        # 10'' screen: 20 symbols
         mes = sh.FastTable (headers = headers
                            ,iterable = iterable
-                           ,maxrow = 30
+                           ,maxrow = 20
                            ,maxrows = self.maxrows
                            ).run()
         sh.com.run_fast_debug(f,mes)
     
-    def reset(self,blocks,Reverse=False,term_col_width=0):
+    def reset (self,blocks,Reverse=False,col1_width=0,col2_width=0
+              ,col3_width=0,col4_width=0,term_col_width=0
+              ):
         self.set_values()
         self.blocks = blocks
         self.Reverse = Reverse
+        self.col1_width = col1_width
+        self.col2_width = col2_width
+        self.col3_width = col3_width
+        self.col4_width = col4_width
         self.term_col_width = term_col_width
     
     def set_values(self):
@@ -271,6 +283,10 @@ class Fonts:
         self.Reverse = False
         self.fonts = []
         self.blocks = []
+        self.col1_width = 0
+        self.col2_width = 0
+        self.col3_width = 0
+        self.col4_width = 0
         self.term_col_width = 0
     
     def set_priority_colors(self):

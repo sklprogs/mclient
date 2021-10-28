@@ -37,212 +37,146 @@ class ColumnWidth:
         in a controller only.
     '''
     def __init__(self):
-        self.longest_fixed1 = ''
-        self.longest_fixed2 = ''
-        self.longest_fixed3 = ''
-        self.longest_fixed4 = ''
-        self.shortest_fixed1 = ''
-        self.shortest_fixed2 = ''
-        self.shortest_fixed3 = ''
-        self.shortest_fixed4 = ''
-        self.longest_term = ''
-        self.shortest_term = ''
-        # Actual space taken by fixed column 1 (pixels)
-        self.all_fixed1_px = 0
-        # Actual space taken by fixed column 1 (percent)
-        self.all_fixed1_pc = 0
-        # Actual space taken by fixed column 2 (pixels)
-        self.all_fixed2_px = 0
-        # Actual space taken by fixed column 2 (percent)
-        self.all_fixed2_pc = 0
-        # Actual space taken by fixed column 3 (pixels)
-        self.all_fixed3_px = 0
-        # Actual space taken by fixed column 3 (percent)
-        self.all_fixed3_pc = 0
-        # Actual space taken by fixed column 4 (pixels)
-        self.all_fixed4_px = 0
-        # Actual space taken by fixed column 4 (percent)
-        self.all_fixed4_pc = 0
-        # Number of fixed columns
-        self.fixed_num = 0
-        # Number of term columns
-        self.term_num = 0
-        # A width of the program window (pixels)
+        self.set_values()
+    
+    def set_values(self):
+        self.fixed_sum_pc = 20
         self.window_width = 0
-        # Actual space taken by fixed columns (percent)
-        self.all_fixed_pc = 0
-        # Actual space taken by term columns (percent)
-        self.all_terms_pc = 0
-        # Maximum available space for term columns (percent)
-        self.max_terms_pc = 0
-        # Maximum width of a term column (percent)
-        self.max_term_pc = 0
-        # Maximum width of a term column (pixels)
-        self.max_term_px = 0
-        # Average width of a term column (percent)
-        self.term_pc = 0
-        # Average width of a term column (pixels)
-        self.term_px = 0
-        # Maximum available space that should be empty (percent)
-        self.empty_pc = 0
-        # Maximum available space for a fixed column (pixels)
-        self.max_fixed_px = 0
-        # Maximum available space for a fixed column (percent)
-        self.max_fixed_pc = 5
+        self.fixed_num = 0
+        self.term_num = 0
+        self.avail_fixed = 0
+        self.avail_fixed_sum = 0
+        self.avail_term_sum = 0
+        self.act1 = 0
+        self.act2 = 0
+        self.act3 = 0
+        self.act4 = 0
+        self.col1 = 0
+        self.col2 = 0
+        self.col3 = 0
+        self.col4 = 0
+        self.term_col = 0
+        self.act_term = 0
+        self.col1_pc = 0
+        self.col2_pc = 0
+        self.col3_pc = 0
+        self.col4_pc = 0
+        self.term_col_pc = 0
+        self.table_pc = 100
+        self.short1 = ''
+        self.long1 = ''
+        self.short2 = ''
+        self.long2 = ''
+        self.short3 = ''
+        self.long3 = ''
+        self.short4 = ''
+        self.long4 = ''
+        self.long_term = ''
+        self.short_term = ''
     
-    def set_max_fixed_px(self):
-        f = '[MClient] mclient.ColumnWidth.set_max_fixed_px'
-        self.max_fixed_px = (self.window_width * self.max_fixed_pc) / 100
-        mes = _('Maximum available space for a fixed column: {} pixels ({}%)')
-        mes = mes.format(self.max_fixed_px,self.max_fixed_pc)
-        sh.objs.get_mes(f,mes,True).show_debug()
+    def reset(self):
+        self.set_values()
     
-    def _set_all_fixed1_px(self):
-        f = '[MClient] mclient.ColumnWidth._set_all_fixed1_px'
-        if not self.longest_fixed1:
+    def run(self):
+        # This procedure will take almost the same time as 'calc_fonts'
+        self.set_window_width()
+        self.set_avail_fixed_sum()
+        self.set_avail_term_sum()
+        self.set_longest()
+        self.calc_fonts()
+        self.set_fixed_num()
+        self.set_term_num()
+        self.set_avail_fixed()
+        self.set_avail_term()
+        self.set_width()
+    
+    def get_table_width(self):
+        if not sh.lg.globs['bool']['AdjustByWidth']:
+            return 100
+        if not self.table_pc:
+            return 100
+        return self.table_pc
+    
+    def set_width(self):
+        f = '[MClient] mclient.ColumnWidth.set_width'
+        if not self.avail_fixed or not self.avail_term \
+        or not self.window_width:
             sh.com.rep_empty(f)
             return
-        font_size = sh.lg.globs['int']['font_col1_size']
-        #TODO: a trial-and-error choice, calculate more precisely
-        font_size *= 2.5
-        font = '{} {}'.format (sh.lg.globs['str']['font_col1_family']
-                              ,font_size
-                              )
-        #TODO: do we need to pass 'xborder=0' here (default is 20)?
-        #NOTE: this cannot run in logic, a root widget is required
-        ifont = sh.Font(font)
-        ifont.set_text(self.shortest_fixed1)
-        min_width = ifont.get_width()
-        mes = _('A width of the shortest cell of column #{}: {} pixels')
-        mes = mes.format(1,min_width)
+        if not self.act_term:
+            self.act_term = 1
+        # We have already set act[1..4] to 1, so we cannot get 0 here
+        self.col1 = min(self.act1,self.avail_fixed)
+        self.col2 = min(self.act2,self.avail_fixed)
+        self.col3 = min(self.act3,self.avail_fixed)
+        self.col4 = min(self.act4,self.avail_fixed)
+        self.term_col = min(self.act_term,self.avail_term)
+        self.col1_pc = (100 * self.col1) / self.window_width
+        self.col2_pc = (100 * self.col2) / self.window_width
+        self.col3_pc = (100 * self.col3) / self.window_width
+        self.col4_pc = (100 * self.col4) / self.window_width
+        self.term_col_pc = (100 * self.term_col) / self.window_width
+        mes = _('Column #{}: {} pixels ({}%)')
+        mes = mes.format(1,self.col1,self.col1_pc)
         sh.objs.get_mes(f,mes,True).show_debug()
-        #TODO: either do a reset here, or rework 'sh.Font'
-        #TODO: do we need to pass 'xborder=0' here (default is 20)?
-        ifont.reset(font)
-        ifont.set_text(self.longest_fixed1)
-        max_width = ifont.get_width()
-        mes = _('A width of the longest cell of column #{}: {} pixels')
-        mes = mes.format(1,max_width)
+        mes = _('Column #{}: {} pixels ({}%)')
+        mes = mes.format(2,self.col2,self.col2_pc)
         sh.objs.get_mes(f,mes,True).show_debug()
-        if len(self.shortest_fixed1) == len(self.longest_fixed1):
-            self.all_fixed1_px = max_width
-        elif self.shortest_fixed1 == '':
-            self.all_fixed1_px = max_width
-        else:
-            self.all_fixed1_px = int((min_width + max_width) / 2)
-        if self.all_fixed1_px > self.max_fixed_px:
-            self.all_fixed1_px = self.max_fixed_px
-        mes = _('An average width of column #{}: {} pixels')
-        mes = mes.format(1,self.all_fixed1_px)
+        mes = _('Column #{}: {} pixels ({}%)')
+        mes = mes.format(3,self.col3,self.col3_pc)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = _('Column #{}: {} pixels ({}%)')
+        mes = mes.format(4,self.col4,self.col4_pc)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = _('Term column: {} pixels ({}%)')
+        mes = mes.format(self.term_col,self.term_col_pc)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        table_px = self.col1 + self.col2 + self.col3 + self.col4 \
+                 + self.term_num * self.term_col
+        self.table_pc = self.col1_pc + self.col2_pc + self.col3_pc \
+                      + self.col4_pc + self.term_num * self.term_col_pc
+        mes = _('Window width: {} pixels; table width: {} pixels ({}%)')
+        mes = mes.format(self.window_width,table_px,self.table_pc)
         sh.objs.get_mes(f,mes,True).show_debug()
     
-    def set_all_fixed_px(self):
-        f = '[MClient] mclient.ColumnWidth.set_all_fixed_px'
-        self._set_all_fixed1_px()
-    
-    def _report_fixed(self,colno):
-        f = '[MClient] mclient.ColumnWidth._report_fixed'
-        if colno in (0,1,2,3):
-            if colno == 0:
-                shortest = self.shortest_fixed1
-                longest = self.longest_fixed1
-            elif colno == 1:
-                shortest = self.shortest_fixed2
-                longest = self.longest_fixed2
-            elif colno == 2:
-                shortest = self.shortest_fixed3
-                longest = self.longest_fixed3
-            elif colno == 3:
-                shortest = self.shortest_fixed4
-                longest = self.longest_fixed4
-            cut = sh.Text(shortest).shorten(100)
-            mes = _('The shortest fixed cell (column {}, {} symbols): "{}"')
-            mes = mes.format(colno+1,len(shortest),cut)
-            sh.objs.get_mes(f,mes,True).show_debug()
-            cut = sh.Text(longest).shorten(100)
-            mes = _('The longest fixed cell (column {}, {} symbols): "{}"')
-            mes = mes.format(colno+1,len(longest),cut)
-            sh.objs.get_mes(f,mes,True).show_debug()
-        else:
-            mes = _('Wrong input data: "{}"').format(colno)
-            sh.objs.get_mes(f,mes,True).show_warning()
-    
-    def set_longest_fixed(self):
-        ''' #NOTE: this is simplified since fixed cells are ordinary
-            blocks. 
+    def set_avail_fixed(self):
+        f = '[MClient] mclient.ColumnWidth.set_avail_fixed'
+        if not self.fixed_num:
+            return
+        if not self.avail_fixed_sum:
+            sh.com.rep_empty(f)
+            return
+        avail_sum = self.avail_fixed_sum
+        ''' #NOTE: in case of a fixed layout, we must set a width for
+            all columns. We cannot set a column width to 0 since the
+            web engine will treat this as a default width which will
+            cause bugs.
         '''
-        f = '[MClient] mclient.ColumnWidth.set_longest_fixed'
-        column1 = objs.get_blocksdb().get_column_texts(0)
-        column2 = objs.blocksdb.get_column_texts(1)
-        column3 = objs.blocksdb.get_column_texts(2)
-        column4 = objs.blocksdb.get_column_texts(3)
-        if column1:
-            self.longest_fixed1 = max(column1,key=len)
-            self.shortest_fixed1 = min(column1,key=len)
-        if column2:
-            self.longest_fixed2 = max(column2,key=len)
-            self.shortest_fixed2 = min(column2,key=len)
-        if column3:
-            self.longest_fixed3 = max(column3,key=len)
-            self.shortest_fixed3 = min(column3,key=len)
-        if column4:
-            self.longest_fixed4 = max(column4,key=len)
-            self.shortest_fixed4 = min(column4,key=len)
-        self._report_fixed(0)
-        self._report_fixed(1)
-        self._report_fixed(2)
-        self._report_fixed(3)
+        if not self.act1:
+            self.act1 = 1
+            avail_sum -= 1
+        if not self.act2:
+            self.act2 = 1
+            avail_sum -= 1
+        if not self.act3:
+            self.act3 = 1
+            avail_sum -= 1
+        if not self.act4:
+            self.act4 = 1
+            avail_sum -= 1
+        self.avail_fixed = avail_sum / self.fixed_num
+        mes = _('Maximum space available for a fixed column: {} pixels')
+        mes = mes.format(self.avail_fixed)
+        sh.objs.get_mes(f,mes,True).show_debug()
     
-    def set_window_width(self):
-        f = '[MClient] mclient.ColumnWidth.set_window_width'
-        self.window_width = objs.get_webframe_ui().get_width()
-        sh.objs.get_mes(f,self.window_width,True).show_debug()
-    
-    def set_term_pc(self):
-        f = '[MClient] mclient.ColumnWidth.set_term_pc'
-        if self.max_term_px:
-            self.term_pc = (self.term_px * self.max_term_pc) / self.max_term_px
-            sh.objs.get_mes(f,self.term_pc,True).show_debug()
-        else:
+    def set_avail_term(self):
+        f = '[MClient] mclient.ColumnWidth.set_avail_term'
+        if not self.term_num or not self.avail_term_sum:
             sh.com.rep_empty(f)
-    
-    def set_all_terms_pc(self):
-        f = '[MClient] mclient.ColumnWidth.set_all_terms_pc'
-        self.all_terms_pc = self.term_pc * self.term_num
-        mes = _('An actual space taken by term columns: {}%')
-        mes = mes.format(round(self.all_terms_pc,1))
-        sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def set_empty_space(self):
-        f = '[MClient] mclient.ColumnWidth.set_empty_space'
-        self.empty_pc = 100 - self.all_terms_pc - self.all_fixed_pc
-        if not 0 <= self.empty_pc < 100:
-            self.empty_pc = 0
-        mes = _('Empty column: {}%').format(round(self.empty_pc,1))
-        sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def set_max_term_pc(self):
-        f = '[MClient] mclient.ColumnWidth.set_max_term_pc'
-        if self.term_num:
-            self.max_term_pc = self.max_terms_pc / self.term_num
-            sh.objs.get_mes(f,self.max_term_pc,True).show_debug()
-        else:
-            sh.com.rep_empty(f)
-    
-    def set_fixed_space(self):
-        f = '[MClient] mclient.ColumnWidth.set_fixed_space'
-        # TODO: Do not hardcode
-        # Fixed columns should take up to 20% of a window width (4*5%)
-        self.all_fixed_pc = self.fixed_num * 5
-        mes = _('An actual space taken by fixed columns: {}%')
-        mes = mes.format(round(self.all_fixed_pc,1))
-        sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def set_term_space(self):
-        f = '[MClient] mclient.ColumnWidth.set_term_space'
-        self.max_terms_pc = 100 - self.all_fixed_pc
-        mes = _('A space available for term columns: {}%')
-        mes = mes.format(round(self.max_terms_pc,1))
+            return
+        self.avail_term = self.avail_term_sum / self.term_num
+        mes = _('Maximum space available for a term column: {} pixels')
+        mes = mes.format(self.avail_term)
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_fixed_num(self):
@@ -286,115 +220,212 @@ class ColumnWidth:
         mes = mes.format(self.term_num)
         sh.objs.get_mes(f,mes,True).show_debug()
     
-    def run(self):
-        # The order of execution is important
-        self.set_window_width()
-        self.set_fixed_num()
-        self.set_term_num()
-        self.set_longest_fixed()
-        self.set_all_fixed_px()
-        self.set_fixed_space()
-        self.set_term_space()
-        self.set_max_term_pc()
-        self.set_max_term_px()
-        self.set_longest_term()
-        self.set_term_px()
-        self.set_term_pc()
-        self.set_all_terms_pc()
-        self.set_empty_space()
-    
-    def set_max_term_px(self):
-        f = '[MClient] mclient.ColumnWidth.set_max_term_px'
-        if self.max_term_pc and self.window_width:
-            self.max_term_px = (self.window_width * self.max_term_pc) / 100
-            self.max_term_px = int(self.max_term_px)
-            mes = _('A space available for a term column: {} pixels')
-            mes = mes.format(self.max_term_px)
-            sh.objs.get_mes(f,mes,True).show_debug()
-        else:
+    def _calc_font(self,text,colno):
+        f = '[MClient] mclient.ColumnWidth.calc_font'
+        if not text or not colno:
             sh.com.rep_empty(f)
-    
-    def set_term_px(self):
-        f = '[MClient] mclient.ColumnWidth.set_term_px'
-        if self.longest_term:
-            ''' Calculating a cell width depending on a block type
-                would be more precise, however, this would require
-                calculating a width of each cell separately which is
-                very slow.
-            '''
-            max_font_size = max (sh.lg.globs['int']['font_terms_size']
-                                ,sh.lg.globs['int']['font_comments_size']
-                                )
-            #TODO: a trial-and-error choice, calculate more precisely
-            max_font_size *= 2.5
-            font = '{} {}'.format (sh.lg.globs['str']['font_terms_family']
-                                  ,max_font_size
-                                  )
-            #TODO: do we need to pass 'xborder=0' here (default is 20)?
-            #NOTE: this cannot run in logic, a root widget is required
-            ifont = sh.Font(font)
-            ifont.set_text(self.shortest_term)
-            min_width = ifont.get_width()
-            #TODO: either do a reset here, or rework 'sh.Font'
-            #TODO: do we need to pass 'xborder=0' here (default is 20)?
-            ifont.reset(font)
-            ifont.set_text(self.longest_term)
-            max_width = ifont.get_width()
-            mes = _('A width of the shortest cell: {} pixels')
-            mes = mes.format(min_width)
-            sh.objs.get_mes(f,mes,True).show_debug()
-            mes = _('A width of the longest cell: {} pixels')
-            mes = mes.format(max_width)
-            sh.objs.get_mes(f,mes,True).show_debug()
-            self.term_px = int((min_width + max_width) / 2)
-            if self.term_px > self.max_term_px:
-                self.term_px = self.max_term_px
-            mes = _('An average width of a term column: {} pixels')
-            mes = mes.format(self.term_px)
-            sh.objs.get_mes(f,mes,True).show_debug()
+            return 0
+        if colno == 1:
+            family = sh.lg.globs['str']['font_col1_family']
+            size = sh.lg.globs['int']['font_col1_size']
+        elif colno == 2:
+            family = sh.lg.globs['str']['font_col2_family']
+            size = sh.lg.globs['int']['font_col2_size']
+        elif colno == 3:
+            family = sh.lg.globs['str']['font_col1_family']
+            size = sh.lg.globs['int']['font_col3_size']
+        elif colno == 4:
+            family = sh.lg.globs['str']['font_col1_family']
+            size = sh.lg.globs['int']['font_col4_size']
         else:
-            sh.com.rep_empty(f)
+            family = sh.lg.globs['str']['font_terms_family']
+            size = sh.lg.globs['int']['font_terms_size']
+        #TODO: a trial-and-error choice, calculate more precisely
+        size = int(size*2.5)
+        font = '{} {}'.format(family,size)
+        #TODO: do we need to pass 'xborder=0' here (default is 20)?
+        #NOTE: this cannot run in logic, a root widget is required
+        ifont = sh.Font(font)
+        ifont.set_text(text)
+        width = ifont.get_width()
+        mes = _('Font: "{}"; text: "{}"; width: {} pixels')
+        cut = sh.Text(text).shorten(60)
+        mes = mes.format(font,cut,width)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return width
     
-    def set_longest_term(self):
-        f = '[MClient] mclient.Commands.set_longest_term'
+    def calc_fonts(self):
+        f = '[MClient] mclient.ColumnWidth.calc_fonts'
+        timer = sh.Timer(f)
+        timer.start()
+        short1_px = long1_px = short2_px = long2_px = short3_px \
+                  = long3_px = short4_px = long4_px = short_term_px \
+                  = long_term_px = 0
+        if self.long1:
+            long1_px = self._calc_font(self.long1,1)
+        if self.short1:
+            short1_px = self._calc_font(self.short1,1)
+        if self.long2:
+            long2_px = self._calc_font(self.long2,2)
+        if self.short2:
+            short2_px = self._calc_font(self.short2,2)
+        if self.long3:
+            long3_px = self._calc_font(self.long3,3)
+        if self.short3:
+            short3_px = self._calc_font(self.short3,3)
+        if self.long1:
+            long1_px = self._calc_font(self.long1,1)
+        if self.short4:
+            short4_px = self._calc_font(self.short4,4)
+        if self.long_term:
+            long_term_px = self._calc_font(self.long_term,5)
+        if self.short_term:
+            short_term_px = self._calc_font(self.short_term,5)
+        if short1_px and long1_px:
+            self.act1 = (short1_px + long1_px) / 2
+        elif long1_px:
+            self.act1 = long1_px
+        if short2_px and long2_px:
+            self.act2 = (short2_px + long2_px) / 2
+        elif long2_px:
+            self.act2 = long2_px
+        if short3_px and long3_px:
+            self.act3 = (short3_px + long3_px) / 2
+        elif long3_px:
+            self.act3 = long3_px
+        if short4_px and long4_px:
+            self.act4 = (short4_px + long4_px) / 2
+        elif long4_px:
+            self.act4 = long4_px
+        if short_term_px and long_term_px:
+            self.act_term = (short_term_px + long_term_px) / 2
+        else:
+            self.act_term = long_term_px
+        mes = _('Column #1: {} px; #2: {} px; #3: {} px; #4: {} px; others: {} px')
+        mes = mes.format (self.act1,self.act2,self.act3,self.act4
+                         ,self.act_term
+                         )
+        sh.objs.get_mes(f,mes,True).show_debug()
+        timer.end()
+    
+    def set_longest(self):
+        f = '[MClient] mclient.ColumnWidth.set_longest'
+        mes = _('Term cells:')
+        sh.objs.get_mes(f,mes,True).show_debug()
         data = objs.get_blocksdb().get_term_cell_texts()
         if data:
-            ''' The last tuple of 'data' is the maximum row number
-                (since the output from db is sorted by row and cell
-                numbers). We do not add 1 since ROWNO starts from 1.
-            '''
-            rows = [[] for i in range(data[-1][0])]
-            for tuple_ in data:
-                ''' -1 since ROWNO starts from 1. We do not take spaces
-                    between blocks into account since some blocks
-                    usually already start with a space.
-                '''
-                rows[tuple_[0]-1].append(tuple_[1])
-            for i in range(len(rows)):
-                ''' We do not add a space since blocks usually already
-                    start with a space where necessary
-                '''
-                rows[i] = ''.join(rows[i])
-            max_ = 0
-            for item in rows:
-                if len(item) > max_:
-                    max_ = len(item)
-                    self.longest_term = item
-            min_ = max_
-            for item in rows:
-                if 0 < len(item) < min_:
-                    min_ = len(item)
-                    self.shortest_term = item
-            cut = sh.Text(self.shortest_term).shorten(100)
-            mes = _('The shortest term cell ({} symbols): "{}"')
-            mes = mes.format(len(self.shortest_term),cut)
-            sh.objs.get_mes(f,mes,True).show_debug()
-            cut = sh.Text(self.longest_term).shorten(100)
-            mes = _('The longest term cell ({} symbols): "{}"')
-            mes = mes.format(len(self.longest_term),cut)
-            sh.objs.get_mes(f,mes,True).show_debug()
+            tuple_ = self._get_longest(data)
+            if tuple_:
+                self.short_term, self.long_term = tuple_
+            else:
+                sh.com.rep_empty(f)
         else:
             sh.com.rep_empty(f)
+        # Column #1
+        mes = _('Column #{}:').format(1)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        data = objs.get_blocksdb().get_fixed_cell_texts(1)
+        tuple_ = self._get_longest(data)
+        if tuple_:
+            self.short1, self.long1 = tuple_
+        else:
+            sh.com.rep_empty(f)
+        # Column #2
+        mes = _('Column #{}:').format(2)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        data = objs.get_blocksdb().get_fixed_cell_texts(2)
+        tuple_ = self._get_longest(data)
+        if tuple_:
+            self.short2, self.long2 = tuple_
+        else:
+            sh.com.rep_empty(f)
+        # Column #3
+        mes = _('Column #{}:').format(3)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        data = objs.get_blocksdb().get_fixed_cell_texts(3)
+        tuple_ = self._get_longest(data)
+        if tuple_:
+            self.short3, self.long3 = tuple_
+        else:
+            sh.com.rep_empty(f)
+        # Column #4
+        mes = _('Column #{}:').format(4)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        data = objs.get_blocksdb().get_fixed_cell_texts(3)
+        tuple_ = self._get_longest(data)
+        if tuple_:
+            self.short4, self.long4 = tuple_
+        else:
+            sh.com.rep_empty(f)
+    
+    def _get_longest(self,data):
+        f = '[MClient] mclient.ColumnWidth._get_longest'
+        if not data:
+            sh.com.rep_empty(f)
+            return
+        shortest = ''
+        longest = ''
+        ''' The last tuple of 'data' is the maximum row number (since
+            the output from db is sorted by row and cell numbers).
+            We do not add 1 since ROWNO starts from 1.
+        '''
+        rows = [[] for i in range(data[-1][0])]
+        for tuple_ in data:
+            ''' -1 since ROWNO starts from 1. We do not take spaces
+                between blocks into account since some blocks usually
+                already start with a space.
+            '''
+            rows[tuple_[0]-1].append(tuple_[1])
+        for i in range(len(rows)):
+            ''' We do not add a space since blocks usually already
+                start with a space where necessary.
+            '''
+            rows[i] = ''.join(rows[i])
+        max_ = 0
+        for item in rows:
+            if len(item) > max_:
+                max_ = len(item)
+                longest = item
+        min_ = max_
+        for item in rows:
+            if 0 < len(item) < min_:
+                min_ = len(item)
+                shortest = item
+        cut = sh.Text(shortest).shorten(60)
+        mes = _('The shortest cell ({} symbols): "{}"')
+        mes = mes.format(len(shortest),cut)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        cut = sh.Text(longest).shorten(60)
+        mes = _('The longest cell ({} symbols): "{}"')
+        mes = mes.format(len(longest),cut)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return(shortest,longest)
+    
+    def set_avail_fixed_sum(self):
+        f = '[MClient] mclient.ColumnWidth.set_avail_fixed_sum'
+        if not self.window_width or not self.fixed_sum_pc:
+            sh.com.rep_empty(f)
+            return
+        self.avail_fixed_sum = (self.window_width * self.fixed_sum_pc) / 100
+        mes = _('Maximum space available for fixed columns: {} pixels ({}%)')
+        mes = mes.format(self.avail_fixed_sum,self.fixed_sum_pc)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def set_avail_term_sum(self):
+        f = '[MClient] mclient.ColumnWidth.set_avail_term_sum'
+        if not self.window_width or not self.avail_fixed_sum:
+            sh.com.rep_empty(f)
+            return
+        percent = 100 - self.fixed_sum_pc
+        self.avail_term_sum = self.window_width - self.avail_fixed_sum
+        mes = _('Maximum space available for term columns: {} pixels ({}%)')
+        mes = mes.format(self.avail_term_sum,percent)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def set_window_width(self):
+        f = '[MClient] mclient.ColumnWidth.set_window_width'
+        self.window_width = objs.get_webframe_ui().get_width()
+        sh.objs.get_mes(f,self.window_width,True).show_debug()
 
 
 
@@ -472,18 +503,6 @@ class Commands:
     ''' #NOTE: DB is in controller (not in logic), so DB-related code
         is here too.
     '''
-    def get_table_width(self):
-        f = '[MClient] mclient.Commands.get_table_width'
-        if sh.lg.globs['bool']['AdjustLayout'] \
-        and sh.lg.globs['bool']['AdjustByWidth'] \
-        and not self.has_single_row():
-            width = sh.lg.globs['int']['table_width']
-        else:
-            width = 0
-        mes = _('Table width: {}%').format(width)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        return width
-    
     def export_style(self):
         f = '[MClient] mclient.Commands.export_style'
         lg.com.export_style()
@@ -741,8 +760,13 @@ class Objects:
                       = self.symbols = self.save = self.history \
                       = self.suggest = self.parties = self.webframe_ui \
                       = self.priorities = self.blacklist \
-                      = self.settings = None
+                      = self.settings = self.column_width = None
 
+    def get_column_width(self):
+        if self.column_width is None:
+            self.column_width = ColumnWidth()
+        return self.column_width
+    
     def get_settings(self):
         if self.settings is None:
             ''' Assigning to 'st.objs.settings' avoids showing
@@ -2311,31 +2335,28 @@ class WebFrame:
         cells.run()
         cells.dump(objs.blocksdb)
         
-        #cur
-        timer_col = sh.Timer('ColumnWidth')
-        timer_col.start()
-        iwidth = ColumnWidth()
-        iwidth.run()
-        timer_col.end()
+        objs.get_column_width().reset()
+        objs.column_width.run()
         
-        #cur
         data = objs.blocksdb.fetch()
-        skipped = len(com.get_skipped_dics())
-        tab_width = com.get_table_width()
-        term_col_width = iwidth.term_pc
         
         mktimer = sh.Timer('mkhtm')
         mktimer.start()
         
-        mh.objs.get_fonts(lg.objs.get_plugins().Debug)
-        #mh.objs.get_fonts(True)
+        #mh.objs.get_fonts(lg.objs.get_plugins().Debug)
+        #cur
+        mh.objs.get_fonts(True)
         mh.objs.fonts.reset (blocks = cells.blocks
                             ,Reverse = sh.lg.globs['bool']['VerticalView']
-                            ,term_col_width = term_col_width
+                            ,col1_width = objs.column_width.col1_pc
+                            ,col2_width = objs.column_width.col2_pc
+                            ,col3_width = objs.column_width.col3_pc
+                            ,col4_width = objs.column_width.col4_pc
+                            ,term_col_width = objs.column_width.term_col_pc
                             )
         mh.objs.get_htm().reset (fonts = mh.objs.fonts.run()
-                                ,skipped = skipped
-                                ,tab_width = tab_width
+                                ,skipped = len(com.get_skipped_dics())
+                                ,tab_width = objs.column_width.get_table_width()
                                 )
         mh.objs.htm.run()
         mktimer.end()
@@ -2874,7 +2895,7 @@ class WebFrame:
         mh.objs.get_htm().reset (fonts = mh.objs.fonts.fonts
                                 ,Printer = True
                                 ,skipped = len(com.get_skipped_dics())
-                                ,tab_width = com.get_table_width()
+                                ,tab_width = objs.get_column_width().get_table_width()
                                 )
         code = mh.objs.htm.run()
         if code:

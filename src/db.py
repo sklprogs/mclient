@@ -22,35 +22,25 @@ class DB:
         self.create_blocks()
         self.create_articles()
     
-    def get_column_texts(self,colno):
-        f = '[MClient] db.DB.get_column_texts'
+    def get_fixed_cell_texts(self,colno):
+        f = '[MClient] db.DB.get_fixed_cell_texts'
         if self.artid:
-            query = 'select distinct TEXT from BLOCKS \
-                     where ARTICLEID = ? and COLNO = ? \
-                     and TYPE in (?,?,?,?,?) and BLOCK = 0 \
-                     and IGNORE = 0 and TEXT != ?'
-            args = (self.artid,colno,'dic','wform','transc','speech'
-                   ,'phdic',''
-                   ,
-                   )
+            query = 'select CELLNO,TEXT from BLOCKS where ARTICLEID = ?\
+                     and COLNO = ? and BLOCK = 0 \
+                     and IGNORE = 0 and TEXT != ? order by CELLNO'
+            args = (self.artid,colno,'',)
             self.dbc.execute(query,args)
-            result = self.dbc.fetchall()
-            if result:
-                return [item[0] for item in result]
+            return self.dbc.fetchall()
         else:
             sh.com.rep_empty(f)
     
     def get_term_cell_texts(self):
         f = '[MClient] db.DB.get_term_cell_texts'
         if self.artid:
-            #TODO: read types from a unique data module
             query = 'select CELLNO,TEXT from BLOCKS where ARTICLEID = ?\
-                     and not TYPE in (?,?,?,?,?) and BLOCK = 0 \
+                     and COLNO > ? and BLOCK = 0 \
                      and IGNORE = 0 and TEXT != ? order by CELLNO'
-            args = (self.artid,'dic','wform','transc','speech','phdic'
-                   ,''
-                   ,
-                   )
+            args = (self.artid,4,'',)
             self.dbc.execute(query,args)
             return self.dbc.fetchall()
         else:
