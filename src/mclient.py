@@ -1212,6 +1212,10 @@ class WebFrame:
         self.gui = gi.WebFrame()
         self.set_bindings()
     
+    def change_col_no(self,no):
+        self.gui.opt_col.set(no)
+        self.set_columns()
+    
     def get_width(self):
         return self.gui.obj.get_width()
     
@@ -1556,6 +1560,46 @@ class WebFrame:
     def set_bindings(self):
         # 'gui.obj.widget' is 'Toplevel'; 'gui.widget' is 'TkinterHtml'
         sh.com.bind (obj = self.gui.obj
+                    ,bindings = '<Alt-Key-0>'
+                    ,action = lambda e:self.change_col_no(10)
+                    )
+        sh.com.bind (obj = self.gui.obj
+                    ,bindings = '<Alt-Key-1>'
+                    ,action = lambda e:self.change_col_no(1)
+                    )
+        sh.com.bind (obj = self.gui.obj
+                    ,bindings = '<Alt-Key-2>'
+                    ,action = lambda e:self.change_col_no(2)
+                    )
+        sh.com.bind (obj = self.gui.obj
+                    ,bindings = '<Alt-Key-3>'
+                    ,action = lambda e:self.change_col_no(3)
+                    )
+        sh.com.bind (obj = self.gui.obj
+                    ,bindings = '<Alt-Key-4>'
+                    ,action = lambda e:self.change_col_no(4)
+                    )
+        sh.com.bind (obj = self.gui.obj
+                    ,bindings = '<Alt-Key-5>'
+                    ,action = lambda e:self.change_col_no(5)
+                    )
+        sh.com.bind (obj = self.gui.obj
+                    ,bindings = '<Alt-Key-6>'
+                    ,action = lambda e:self.change_col_no(6)
+                    )
+        sh.com.bind (obj = self.gui.obj
+                    ,bindings = '<Alt-Key-7>'
+                    ,action = lambda e:self.change_col_no(7)
+                    )
+        sh.com.bind (obj = self.gui.obj
+                    ,bindings = '<Alt-Key-8>'
+                    ,action = lambda e:self.change_col_no(8)
+                    )
+        sh.com.bind (obj = self.gui.obj
+                    ,bindings = '<Alt-Key-9>'
+                    ,action = lambda e:self.change_col_no(9)
+                    )
+        sh.com.bind (obj = self.gui.obj
                     ,bindings = sh.lg.globs['str']['bind_copy_nominative']
                     ,action = self.copy_wform
                     )
@@ -1626,27 +1670,27 @@ class WebFrame:
                     )
         sh.com.bind (obj = self.gui.obj
                     ,bindings = sh.lg.globs['str']['bind_col1_down']
-                    ,action = lambda e:self.move_next_section(col_no=0)
+                    ,action = lambda e:self.move_next_section(0)
                     )
         sh.com.bind (obj = self.gui.obj
                     ,bindings = sh.lg.globs['str']['bind_col1_up']
-                    ,action = lambda e:self.move_prev_section(col_no=0)
+                    ,action = lambda e:self.move_prev_section(0)
                     )
         sh.com.bind (obj = self.gui.obj
                     ,bindings = sh.lg.globs['str']['bind_col2_down']
-                    ,action = lambda e:self.move_next_section(col_no=1)
+                    ,action = lambda e:self.move_next_section(1)
                     )
         sh.com.bind (obj = self.gui.obj
                     ,bindings = sh.lg.globs['str']['bind_col2_up']
-                    ,action = lambda e:self.move_prev_section(col_no=1)
+                    ,action = lambda e:self.move_prev_section(1)
                     )
         sh.com.bind (obj = self.gui.obj
                     ,bindings = sh.lg.globs['str']['bind_col3_down']
-                    ,action = lambda e:self.move_next_section(col_no=2)
+                    ,action = lambda e:self.move_next_section(2)
                     )
         sh.com.bind (obj = self.gui.obj
                     ,bindings = sh.lg.globs['str']['bind_col3_up']
-                    ,action = lambda e:self.move_prev_section(col_no=2)
+                    ,action = lambda e:self.move_prev_section(2)
                     )
         sh.com.bind (obj = self.gui.obj
                     ,bindings = sh.lg.globs['str']['bind_go_phrases']
@@ -1712,7 +1756,7 @@ class WebFrame:
                     )
         sh.com.bind (obj = self.gui.obj
                     ,bindings = sh.lg.globs['str']['bind_define']
-                    ,action = lambda e:self.define(Selected=True)
+                    ,action = lambda e:self.define(True)
                     )
         sh.com.bind (obj = self.gui.obj
                     ,bindings = (sh.lg.globs['str']['bind_prev_lang1']
@@ -1964,7 +2008,7 @@ class WebFrame:
         self.gui.btn_brw.action = self.open_in_browser
         self.gui.btn_cap.action = self.watch_clipboard
         self.gui.btn_clr.action = self.clear_search_field
-        self.gui.btn_def.action = lambda x:self.define(Selected=False)
+        self.gui.btn_def.action = lambda x:self.define(False)
         self.gui.btn_hst.action = self.toggle_history
         self.gui.btn_ins.action = self.paste_search_field
         self.gui.btn_nxt.action = self.go_forward
@@ -2889,7 +2933,7 @@ class WebFrame:
         return col_no
     
     # Go to the next section of column #col_no
-    def move_next_section(self,event=None,col_no=0):
+    def move_next_section(self,col_no=0):
         f = '[MClient] mclient.WebFrame.move_next_section'
         col_no = self.ignore_column(col_no)
         result1 = objs.get_blocksdb().get_block_pos(self.pos)
@@ -2920,7 +2964,7 @@ class WebFrame:
         else:
             sh.com.rep_empty(f)
         
-    def move_prev_section(self,event=None,col_no=0):
+    def move_prev_section(self,col_no=0):
         # Go to the previous section of column #col_no
         f = '[MClient] mclient.WebFrame.move_prev_section'
         col_no = self.ignore_column(col_no)
