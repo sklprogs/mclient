@@ -47,6 +47,7 @@ class ColumnWidth:
         self.term_num = 0
         self.avail_fixed = 0
         self.avail_fixed_sum = 0
+        self.avail_term = 0
         self.avail_term_sum = 0
         self.act1 = 0
         self.act2 = 0
