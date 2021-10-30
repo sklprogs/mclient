@@ -41,7 +41,7 @@ class ColumnWidth:
     
     def set_values(self):
         self.fixed_sum_pc = 20
-        self.min_width = 10
+        self.min_width = 1
         self.window_width = 0
         self.fixed_num = 0
         self.term_num = 0
@@ -65,16 +65,11 @@ class ColumnWidth:
         self.col4_pc = 0
         self.term_col_pc = 0
         self.table_pc = 100
-        self.short1 = ''
         self.long1 = ''
-        self.short2 = ''
         self.long2 = ''
-        self.short3 = ''
         self.long3 = ''
-        self.short4 = ''
         self.long4 = ''
         self.long_term = ''
-        self.short_term = ''
     
     def reset(self):
         self.set_values()
@@ -260,49 +255,22 @@ class ColumnWidth:
         f = '[MClient] mclient.ColumnWidth.calc_fonts'
         timer = sh.Timer(f)
         timer.start()
-        short1_px = long1_px = short2_px = long2_px = short3_px \
-                  = long3_px = short4_px = long4_px = short_term_px \
-                  = long_term_px = 0
+        long1_px = long2_px = long3_px = long4_px = long_term_px = 0
         if self.long1:
             long1_px = self._calc_font(self.long1,1)
-        if self.short1:
-            short1_px = self._calc_font(self.short1,1)
         if self.long2:
             long2_px = self._calc_font(self.long2,2)
-        if self.short2:
-            short2_px = self._calc_font(self.short2,2)
         if self.long3:
             long3_px = self._calc_font(self.long3,3)
-        if self.short3:
-            short3_px = self._calc_font(self.short3,3)
         if self.long4:
             long4_px = self._calc_font(self.long4,4)
-        if self.short4:
-            short4_px = self._calc_font(self.short4,4)
         if self.long_term:
             long_term_px = self._calc_font(self.long_term,5)
-        if self.short_term:
-            short_term_px = self._calc_font(self.short_term,5)
-        if short1_px and long1_px:
-            self.act1 = (short1_px + long1_px) / 2
-        elif long1_px:
-            self.act1 = long1_px
-        if short2_px and long2_px:
-            self.act2 = (short2_px + long2_px) / 2
-        elif long2_px:
-            self.act2 = long2_px
-        if short3_px and long3_px:
-            self.act3 = (short3_px + long3_px) / 2
-        elif long3_px:
-            self.act3 = long3_px
-        if short4_px and long4_px:
-            self.act4 = (short4_px + long4_px) / 2
-        elif long4_px:
-            self.act4 = long4_px
-        if short_term_px and long_term_px:
-            self.act_term = (short_term_px + long_term_px) / 2
-        else:
-            self.act_term = long_term_px
+        self.act1 = long1_px
+        self.act2 = long2_px
+        self.act3 = long3_px
+        self.act4 = long4_px
+        self.act_term = long_term_px
         mes = _('Column #1: {} px; #2: {} px; #3: {} px; #4: {} px; others: {} px')
         mes = mes.format (self.act1,self.act2,self.act3,self.act4
                          ,self.act_term
@@ -315,57 +283,33 @@ class ColumnWidth:
         mes = _('Term cells:')
         sh.objs.get_mes(f,mes,True).show_debug()
         data = objs.get_blocksdb().get_term_cell_texts()
-        if data:
-            tuple_ = self._get_longest(data)
-            if tuple_:
-                self.short_term, self.long_term = tuple_
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.rep_empty(f)
+        self.long_term = self._get_longest(data)
         # Column #1
         mes = _('Column #{}:').format(1)
         sh.objs.get_mes(f,mes,True).show_debug()
         data = objs.get_blocksdb().get_fixed_cell_texts(1)
-        tuple_ = self._get_longest(data)
-        if tuple_:
-            self.short1, self.long1 = tuple_
-        else:
-            sh.com.rep_empty(f)
+        self.long1 = self._get_longest(data)
         # Column #2
         mes = _('Column #{}:').format(2)
         sh.objs.get_mes(f,mes,True).show_debug()
         data = objs.get_blocksdb().get_fixed_cell_texts(2)
-        tuple_ = self._get_longest(data)
-        if tuple_:
-            self.short2, self.long2 = tuple_
-        else:
-            sh.com.rep_empty(f)
+        self.long2 = self._get_longest(data)
         # Column #3
         mes = _('Column #{}:').format(3)
         sh.objs.get_mes(f,mes,True).show_debug()
         data = objs.get_blocksdb().get_fixed_cell_texts(3)
-        tuple_ = self._get_longest(data)
-        if tuple_:
-            self.short3, self.long3 = tuple_
-        else:
-            sh.com.rep_empty(f)
+        self.long3 = self._get_longest(data)
         # Column #4
         mes = _('Column #{}:').format(4)
         sh.objs.get_mes(f,mes,True).show_debug()
         data = objs.get_blocksdb().get_fixed_cell_texts(3)
-        tuple_ = self._get_longest(data)
-        if tuple_:
-            self.short4, self.long4 = tuple_
-        else:
-            sh.com.rep_empty(f)
+        self.long4 = self._get_longest(data)
     
     def _get_longest(self,data):
         f = '[MClient] mclient.ColumnWidth._get_longest'
         if not data:
             sh.com.rep_empty(f)
-            return
-        shortest = ''
+            return ''
         longest = ''
         ''' The last tuple of 'data' is the maximum row number (since
             the output from db is sorted by row and cell numbers).
@@ -388,20 +332,11 @@ class ColumnWidth:
             if len(item) > max_:
                 max_ = len(item)
                 longest = item
-        min_ = max_
-        for item in rows:
-            if 0 < len(item) < min_:
-                min_ = len(item)
-                shortest = item
-        cut = sh.Text(shortest).shorten(60)
-        mes = _('The shortest cell ({} symbols): "{}"')
-        mes = mes.format(len(shortest),cut)
-        sh.objs.get_mes(f,mes,True).show_debug()
         cut = sh.Text(longest).shorten(60)
         mes = _('The longest cell ({} symbols): "{}"')
         mes = mes.format(len(longest),cut)
         sh.objs.get_mes(f,mes,True).show_debug()
-        return(shortest,longest)
+        return longest
     
     def set_avail_fixed_sum(self):
         f = '[MClient] mclient.ColumnWidth.set_avail_fixed_sum'
