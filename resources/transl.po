@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-28 03:37+0300\n"
-"PO-Revision-Date: 2021-10-28 03:44+0300\n"
+"POT-Creation-Date: 2021-10-30 13:54+0300\n"
+"PO-Revision-Date: 2021-10-30 13:55+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -129,8 +129,8 @@ msgstr "Части речи"
 msgid "Transcription"
 msgstr "Транскрипция"
 
-#: mclient/src/config.py:129 mclient/src/mclient.py:1315
-#: mclient/src/mclient.py:1319 mclient/src/plugins/multitrancom/pairs.py:7
+#: mclient/src/config.py:129 mclient/src/mclient.py:1317
+#: mclient/src/mclient.py:1321 mclient/src/plugins/multitrancom/pairs.py:7
 #: mclient/src/plugins/multitrancom/pairs.py:21
 #: mclient/src/plugins/multitrancom/pairs.py:60
 #: mclient/src/plugins/multitrancom/pairs.py:111
@@ -389,7 +389,7 @@ msgid "English"
 msgstr "Английский"
 
 #: mclient/src/config.py:133 mclient/src/manager.py:203
-#: mclient/src/manager.py:255 mclient/src/mclient.py:1594
+#: mclient/src/manager.py:255 mclient/src/mclient.py:1596
 #: mclient/src/settings/gui.py:25 mclient/src/settings/gui.py:113
 #: mclient/src/settings/gui.py:128 mclient/src/tests.py:586
 #: mclient/src/tests.py:646 mclient/src/tests.py:688 mclient/src/tests.py:779
@@ -688,7 +688,7 @@ msgid "About the program"
 msgstr "Информация о программе"
 
 #: mclient/src/config.py:460 mclient/src/gui.py:337 mclient/src/logic.py:383
-#: skl_shared/src/shared.py:2174
+#: skl_shared/src/shared.py:2181
 msgid "Paste a special symbol"
 msgstr "Вставить специальный символ"
 
@@ -815,9 +815,9 @@ msgstr "Адрес для поиска в Интернете"
 #: mclient/src/settings/gui.py:146 skl_shared/src/logic.py:134
 #: skl_shared/src/logic.py:148 skl_shared/src/logic.py:964
 #: skl_shared/src/logic.py:2523 skl_shared/src/shared.py:1020
-#: skl_shared/src/shared.py:2320 skl_shared/src/shared.py:2333
-#: skl_shared/src/shared.py:2863 skl_shared/src/shared.py:3244
-#: skl_shared/src/shared.py:3324 skl_shared/src/tests.py:105
+#: skl_shared/src/shared.py:2327 skl_shared/src/shared.py:2340
+#: skl_shared/src/shared.py:2870 skl_shared/src/shared.py:3251
+#: skl_shared/src/shared.py:3331 skl_shared/src/tests.py:106
 msgid ""
 "An unknown mode \"{}\"!\n"
 "\n"
@@ -843,7 +843,7 @@ msgstr "Удаление всех записей из {}"
 msgid "Delete records of article No. {} from {}"
 msgstr "Удаление записей статьи №{} из {}"
 
-#: mclient/src/db.py:1028 mclient/src/mclient.py:1266
+#: mclient/src/db.py:1028 mclient/src/mclient.py:1268
 #: mclient/src/mclient.py:2396 mclient/src/mclient.py:2496
 #: mclient/src/mclient.py:2508 mclient/src/mclient.py:2520
 #: mclient/src/mclient.py:2532 mclient/src/mclient.py:3030
@@ -863,9 +863,9 @@ msgstr "Удаление записей статьи №{} из {}"
 #: skl_shared/src/logic.py:1291 skl_shared/src/logic.py:1388
 #: skl_shared/src/logic.py:2131 skl_shared/src/logic.py:2597
 #: skl_shared/src/logic.py:3449 skl_shared/src/logic.py:3781
-#: skl_shared/src/logic.py:4426 skl_shared/src/shared.py:2096
-#: skl_shared/src/shared.py:2791 skl_shared/src/shared.py:3237
-#: skl_shared/src/shared.py:4186 skl_shared/src/tests.py:83
+#: skl_shared/src/logic.py:4426 skl_shared/src/shared.py:2103
+#: skl_shared/src/shared.py:2798 skl_shared/src/shared.py:3244
+#: skl_shared/src/shared.py:4193 skl_shared/src/tests.py:84
 msgid "Wrong input data!"
 msgstr "Недопустимые входные данные!"
 
@@ -899,27 +899,27 @@ msgstr "Однострочные виджеты"
 msgid "UNKNOWN"
 msgstr "НЕИЗВЕСТНО"
 
-#: mclient/src/gui.py:27 skl_shared/src/shared.py:4548
+#: mclient/src/gui.py:27 skl_shared/src/shared.py:4555
 msgid "Enter a string to search:"
 msgstr "Строка для поиска:"
 
-#: mclient/src/gui.py:53 mclient/src/mclient.py:938
+#: mclient/src/gui.py:53 mclient/src/mclient.py:940
 msgid "Save the current view as a web-page (*.htm)"
 msgstr "Сохранить текущее представление как веб-страницу (*.htm)"
 
-#: mclient/src/gui.py:54 mclient/src/mclient.py:940
+#: mclient/src/gui.py:54 mclient/src/mclient.py:942
 msgid "Save the original article as a web-page (*.htm)"
 msgstr "Сохранить оригинальную статью как веб-страницу (*.htm)"
 
-#: mclient/src/gui.py:55 mclient/src/mclient.py:942
+#: mclient/src/gui.py:55 mclient/src/mclient.py:944
 msgid "Save the article as plain text in UTF-8 (*.txt)"
 msgstr "Сохранить статью как обычный текст в кодировке UTF-8 (*.txt)"
 
-#: mclient/src/gui.py:56 mclient/src/mclient.py:944
+#: mclient/src/gui.py:56 mclient/src/mclient.py:946
 msgid "Copy the code of the article to clipboard"
 msgstr "Скопировать код статьи в буфер обмена"
 
-#: mclient/src/gui.py:57 mclient/src/mclient.py:946
+#: mclient/src/gui.py:57 mclient/src/mclient.py:948
 msgid "Copy the text of the article to clipboard"
 msgstr "Скопировать текст статьи в буфер обмена"
 
@@ -1065,7 +1065,7 @@ msgstr "Дать определение термину"
 msgid "Clipboard"
 msgstr "Буфер обмена"
 
-#: mclient/src/gui.py:482 mclient/src/mclient.py:644
+#: mclient/src/gui.py:482 mclient/src/mclient.py:646
 msgid "Capture Ctrl-c-c and Ctrl-Ins-Ins"
 msgstr "Перехватывать Ctrl-c-c и Ctrl-Ins-Ins"
 
@@ -1090,7 +1090,7 @@ msgstr "ПРИОРИТЕТ"
 msgid "ABBREVIATION"
 msgstr "АББРЕВИАТУРА"
 
-#: mclient/src/logic.py:125 mclient/src/mclient.py:539
+#: mclient/src/logic.py:125 mclient/src/mclient.py:541
 #: mclient/src/mclient.py:2570 mclient/src/mclient.py:2582
 #: mclient/src/mclient.py:2594 mclient/src/mclient.py:2606
 #: mclient/src/plugins/dsl/get.py:399 mclient/src/plugins/dsl/get.py:416
@@ -1116,8 +1116,8 @@ msgstr "АББРЕВИАТУРА"
 #: skl_shared/src/logic.py:622 skl_shared/src/logic.py:2368
 #: skl_shared/src/logic.py:2840 skl_shared/src/logic.py:4576
 #: skl_shared/src/logic.py:4736 skl_shared/src/logic.py:4770
-#: skl_shared/src/logic.py:4855 skl_shared/src/shared.py:2370
-#: skl_shared/src/shared.py:5084
+#: skl_shared/src/logic.py:4855 skl_shared/src/shared.py:2377
+#: skl_shared/src/shared.py:5091
 msgid "Wrong input data: \"{}\"!"
 msgstr "Недопустимые входные данные: \"{}\"!"
 
@@ -1148,7 +1148,7 @@ msgstr "Фраза"
 #: mclient/src/plugins/stardict/get.py:306 skl_shared/src/logic.py:346
 #: skl_shared/src/logic.py:1161 skl_shared/src/logic.py:1180
 #: skl_shared/src/logic.py:2666 skl_shared/src/logic.py:2686
-#: skl_shared/src/shared.py:4138
+#: skl_shared/src/shared.py:4145
 msgid "The condition \"{}\" is not observed!"
 msgstr "Условие \"{}\" не выполнено!"
 
@@ -1411,148 +1411,146 @@ msgstr "Не задано"
 msgid "Unable to use unverified certificates!"
 msgstr "Не удается использовать неподтвержденные сертификаты!"
 
-#: mclient/src/mclient.py:119 mclient/src/mclient.py:122
-#: mclient/src/mclient.py:125 mclient/src/mclient.py:128
+#: mclient/src/mclient.py:121 mclient/src/mclient.py:124
+#: mclient/src/mclient.py:127 mclient/src/mclient.py:130
 msgid "Column #{}: {} pixels ({}%)"
 msgstr "Столбец №{}: {} пикселей ({}%)"
 
-#: mclient/src/mclient.py:131
+#: mclient/src/mclient.py:133
 msgid "Term column: {} pixels ({}%)"
 msgstr "Столбец с терминами: {} пикселей ({}%)"
 
-#: mclient/src/mclient.py:138
+#: mclient/src/mclient.py:140
 msgid "Window width: {} pixels; table width: {} pixels ({}%)"
 msgstr "Ширина окна: {} пикселей; ширина таблицы: {} пикселей ({}%)"
 
-#: mclient/src/mclient.py:168
+#: mclient/src/mclient.py:170
 msgid "Space available for a fixed column: {} pixels"
 msgstr "Доступное пространство для фиксированного столбца: {} пикселей"
 
-#: mclient/src/mclient.py:178
+#: mclient/src/mclient.py:180
 msgid "Space available for a term column: {} pixels"
 msgstr "Доступное пространство для столбца с терминами: {} пикселей"
 
-#: mclient/src/mclient.py:195
+#: mclient/src/mclient.py:197
 msgid "An actual number of fixed columns: {}"
 msgstr "Реальное число фиксированных столбцов: {}"
 
-#: mclient/src/mclient.py:219
+#: mclient/src/mclient.py:221
 msgid "An actual number of term columns: {}"
 msgstr "Реальное число столбцов с терминами: {}"
 
-#: mclient/src/mclient.py:251
-#| msgid "#: {}; Pattern: \"{}\"; Match: {}"
+#: mclient/src/mclient.py:253
 msgid "Font: \"{}\"; text: \"{}\"; width: {} pixels"
 msgstr "Шрифт: \"{}\"; текст: \"{}\"; ширина: {} пикселей"
 
-#: mclient/src/mclient.py:304
+#: mclient/src/mclient.py:306
 msgid "Column #1: {} px; #2: {} px; #3: {} px; #4: {} px; others: {} px"
 msgstr "Столбец №1: {} пкс; №2: {} пкс; №3: {} пкс; №4: {} пкс; другие: {} пкс"
 
-#: mclient/src/mclient.py:313
+#: mclient/src/mclient.py:315
 msgid "Term cells:"
 msgstr "Ячейки с терминами:"
 
-#: mclient/src/mclient.py:325 mclient/src/mclient.py:334
-#: mclient/src/mclient.py:343 mclient/src/mclient.py:352
+#: mclient/src/mclient.py:327 mclient/src/mclient.py:336
+#: mclient/src/mclient.py:345 mclient/src/mclient.py:354
 msgid "Column #{}:"
 msgstr "Столбец №{}:"
 
-#: mclient/src/mclient.py:395
+#: mclient/src/mclient.py:397
 msgid "The shortest cell ({} symbols): \"{}\""
 msgstr "Самая короткая ячейка ({} символов): \"{}\""
 
-#: mclient/src/mclient.py:399
+#: mclient/src/mclient.py:401
 msgid "The longest cell ({} symbols): \"{}\""
 msgstr "Самая длинная ячейка ({} символов): \"{}\""
 
-#: mclient/src/mclient.py:410
+#: mclient/src/mclient.py:412
 msgid "Space available for fixed columns: {} pixels ({}%)"
 msgstr "Доступное пространство для фиксированных столбов: {} пикселей ({}%)"
 
-#: mclient/src/mclient.py:421
-#| msgid "A space available for a term column: {} pixels"
+#: mclient/src/mclient.py:423
 msgid "Space available for term columns: {} pixels ({}%)"
 msgstr "Доступное пространство для столбцов с терминами: {} пикселей ({}%)"
 
-#: mclient/src/mclient.py:598
+#: mclient/src/mclient.py:600
 msgid "Restore source language: {}"
 msgstr "Восстановление языка оригинала: {}"
 
-#: mclient/src/mclient.py:602
+#: mclient/src/mclient.py:604
 msgid "Restore target language: {}"
 msgstr "Восстановление языка перевода: {}"
 
-#: mclient/src/mclient.py:618
+#: mclient/src/mclient.py:620
 msgid "Sort terms by alphabet"
 msgstr "Сортировка терминов по алфавиту"
 
-#: mclient/src/mclient.py:620 mclient/src/mclient.py:636
-#: mclient/src/mclient.py:647 mclient/src/mclient.py:663
-#: mclient/src/mclient.py:687
+#: mclient/src/mclient.py:622 mclient/src/mclient.py:638
+#: mclient/src/mclient.py:649 mclient/src/mclient.py:665
+#: mclient/src/mclient.py:689
 msgid "Status: ON"
 msgstr "Состояние: ВКЛ"
 
-#: mclient/src/mclient.py:622 mclient/src/mclient.py:639
-#: mclient/src/mclient.py:650 mclient/src/mclient.py:665
-#: mclient/src/mclient.py:689
+#: mclient/src/mclient.py:624 mclient/src/mclient.py:641
+#: mclient/src/mclient.py:652 mclient/src/mclient.py:667
+#: mclient/src/mclient.py:691
 msgid "Status: OFF"
 msgstr "Состояние: ВЫКЛ"
 
-#: mclient/src/mclient.py:624 mclient/src/mclient.py:667
+#: mclient/src/mclient.py:626 mclient/src/mclient.py:669
 msgid "This page is not supported"
 msgstr "Эта страница не поддерживается"
 
-#: mclient/src/mclient.py:633
+#: mclient/src/mclient.py:635
 msgid "Vertical mode"
 msgstr "Вертикальный режим"
 
-#: mclient/src/mclient.py:655 mclient/src/subjects/priorities/gui.py:307
+#: mclient/src/mclient.py:657 mclient/src/subjects/priorities/gui.py:307
 msgid "Subject prioritization"
 msgstr "Приоритизация тематик"
 
-#: mclient/src/mclient.py:669
+#: mclient/src/mclient.py:671
 msgid "{} subjects were prioritized"
 msgstr "{} тематик упорядочено по приоритету"
 
-#: mclient/src/mclient.py:672
+#: mclient/src/mclient.py:674
 msgid "Nothing to prioritize"
 msgstr "Приоритизация не требуется"
 
-#: mclient/src/mclient.py:679 mclient/src/subjects/blacklist/gui.py:259
+#: mclient/src/mclient.py:681 mclient/src/subjects/blacklist/gui.py:259
 msgid "Subject blocking"
 msgstr "Блокировка тематик"
 
-#: mclient/src/mclient.py:694
+#: mclient/src/mclient.py:696
 msgid "Skipped {} terms in {} subjects"
 msgstr "Опущено {} терминов в {} тематиках"
 
-#: mclient/src/mclient.py:697
+#: mclient/src/mclient.py:699
 msgid "Nothing was blocked"
 msgstr "Ничего не заблокировано"
 
-#: mclient/src/mclient.py:881 mclient/src/mclient.py:882
+#: mclient/src/mclient.py:883 mclient/src/mclient.py:884
 #: skl_shared/src/logic.py:4625 skl_shared/src/logic.py:4626
 msgid "Web-page"
 msgstr "Веб-страница"
 
-#: mclient/src/mclient.py:883 mclient/src/mclient.py:886
+#: mclient/src/mclient.py:885 mclient/src/mclient.py:888
 #: skl_shared/src/logic.py:4627
 msgid "All files"
 msgstr "Все файлы"
 
-#: mclient/src/mclient.py:885 skl_shared/src/logic.py:4624
+#: mclient/src/mclient.py:887 skl_shared/src/logic.py:4624
 msgid "Plain text (UTF-8)"
 msgstr "Обычный текст (UTF-8)"
 
-#: mclient/src/mclient.py:949 mclient/src/plugins/multitrandem/utils.py:171
+#: mclient/src/mclient.py:951 mclient/src/plugins/multitrandem/utils.py:171
 #: mclient/src/plugins/multitrandem/utils.py:745
 #: skl_shared/src/image/controller.py:49 skl_shared/src/logic.py:2279
 #: skl_shared/src/logic.py:2326 skl_shared/src/logic.py:2546
 msgid "Operation has been canceled by the user."
 msgstr "Операция отменена пользователем."
 
-#: mclient/src/mclient.py:1071 mclient/src/mclient.py:1122
+#: mclient/src/mclient.py:1073 mclient/src/mclient.py:1124
 #: mclient/src/plugins/multitrancom/utils/utils.py:150
 #: mclient/src/plugins/multitrancom/utils/utils.py:193
 #: mclient/src/plugins/multitrandem/utils.py:266
@@ -1561,60 +1559,60 @@ msgstr "Операция отменена пользователем."
 #: mclient/src/plugins/multitrandem/utils.py:612
 #: mclient/src/plugins/multitrandem/utils.py:622
 #: mclient/src/plugins/multitrandem/utils.py:635
-#: mclient/src/plugins/multitrandem/utils.py:672 skl_shared/src/shared.py:5010
-#: skl_shared/src/shared.py:5037
+#: mclient/src/plugins/multitrandem/utils.py:672 skl_shared/src/shared.py:5017
+#: skl_shared/src/shared.py:5044
 msgid "No matches!"
 msgstr "Совпадений нет!"
 
-#: mclient/src/mclient.py:1074
+#: mclient/src/mclient.py:1076
 msgid "The end has been reached. Searching from the start."
 msgstr "Достигнут конец. Поиск производится с начала."
 
-#: mclient/src/mclient.py:1104
+#: mclient/src/mclient.py:1106
 msgid "The start has been reached. Searching from the end."
 msgstr "Достигнуто начало. Поиск производится с конца."
 
-#: mclient/src/mclient.py:1249 mclient/src/mclient.py:2471
+#: mclient/src/mclient.py:1251 mclient/src/mclient.py:2471
 msgid "Set source to \"{}\""
 msgstr "Выбран источник \"{}\""
 
-#: mclient/src/mclient.py:1300
+#: mclient/src/mclient.py:1302
 msgid "Please import \"{}\" instead of \"{}\""
 msgstr "Пожалуйста, импортируйте \"{}\" вместо \"{}\""
 
-#: mclient/src/mclient.py:1329 mclient/src/plugins/multitrandem/elems.py:172
+#: mclient/src/mclient.py:1331 mclient/src/plugins/multitrandem/elems.py:172
 msgid "Debug table:"
 msgstr "Таблица для отладки:"
 
-#: mclient/src/mclient.py:1436
+#: mclient/src/mclient.py:1438
 msgid "Cannot swap languages, this is a one-way dictionary!"
 msgstr "Нельзя поменять языки местами, это односторонний словарь!"
 
-#: mclient/src/mclient.py:1459
+#: mclient/src/mclient.py:1461
 msgid "Pair {}-{} is not supported!"
 msgstr "Пара {}-{} не поддерживается!"
 
-#: mclient/src/mclient.py:1962
+#: mclient/src/mclient.py:1964
 msgid "Show history"
 msgstr "Показать историю"
 
-#: mclient/src/mclient.py:1963
+#: mclient/src/mclient.py:1965
 msgid "Clear history"
 msgstr "Очистить историю"
 
-#: mclient/src/mclient.py:2139
+#: mclient/src/mclient.py:2141
 msgid "The column is too wide to be fully shown"
 msgstr "Столбец слишком широк для отображения"
 
-#: mclient/src/mclient.py:2167
+#: mclient/src/mclient.py:2169
 msgid "The row is too wide to be fully shown"
 msgstr "Строка слишком широка для отображения"
 
-#: mclient/src/mclient.py:2209
+#: mclient/src/mclient.py:2211
 msgid "Nothing has been loaded yet."
 msgstr "Ничего еще не загружено."
 
-#: mclient/src/mclient.py:2241
+#: mclient/src/mclient.py:2243
 msgid "Load article No. {} from memory"
 msgstr "Загрузка статьи №{} из памяти"
 
@@ -1701,7 +1699,6 @@ msgid "COLUMN #"
 msgstr "СТОЛБЕЦ №"
 
 #: mclient/src/mkhtml.py:254
-#| msgid "WIDTH (%)"
 msgid "COLUMN WIDTH (%)"
 msgstr "ШИРИНА СТОЛБЦА (%)"
 
@@ -14985,7 +14982,7 @@ msgstr "Ключ \"{}\" уже существует!"
 #: mclient/src/plugins/multitrancom/utils/subjects/compile.py:416
 #: mclient/src/plugins/multitrancom/utils/subjects/compile.py:455
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
-#: mclient/src/subjects/subjects.py:82 skl_shared/src/shared.py:4114
+#: mclient/src/subjects/subjects.py:82 skl_shared/src/shared.py:4121
 msgid "KEY"
 msgstr "КЛЮЧ"
 
@@ -15074,11 +15071,11 @@ msgstr "URL, вызвавшие ошибки:"
 msgid "Press any key to continue."
 msgstr "Нажмите любую клавишу для продолжения."
 
-#: mclient/src/plugins/multitrandem/get.py:66 skl_shared/src/shared.py:3917
+#: mclient/src/plugins/multitrandem/get.py:66 skl_shared/src/shared.py:3924
 msgid "Yes"
 msgstr "Да"
 
-#: mclient/src/plugins/multitrandem/get.py:68 skl_shared/src/shared.py:3918
+#: mclient/src/plugins/multitrandem/get.py:68 skl_shared/src/shared.py:3925
 msgid "No"
 msgstr "Нет"
 
@@ -15132,7 +15129,7 @@ msgstr "Пределы страницы: [{}:{}]"
 #: mclient/src/plugins/multitrandem/get.py:1572
 #: skl_shared/src/image/controller.py:35 skl_shared/src/logic.py:3119
 #: skl_shared/src/logic.py:3223 skl_shared/src/logic.py:3391
-#: skl_shared/src/shared.py:4083 skl_shared/src/web.py:26
+#: skl_shared/src/shared.py:4090 skl_shared/src/web.py:26
 msgid ""
 "Third-party module has failed!\n"
 "\n"
@@ -15217,7 +15214,7 @@ msgstr "Найдены статьи: {}"
 msgid "No articles have been found!"
 msgstr "Статьи не найдены!"
 
-#: mclient/src/plugins/multitrandem/tags.py:47 skl_shared/src/shared.py:4183
+#: mclient/src/plugins/multitrandem/tags.py:47 skl_shared/src/shared.py:4190
 msgid "Wrong input data: \"{}\""
 msgstr "Недопустимые входные данные: \"{}\"!"
 
@@ -15256,7 +15253,7 @@ msgstr "Страницы:"
 #: mclient/src/plugins/multitrandem/tests.py:134
 #: mclient/src/plugins/multitrandem/tests.py:146
 #: mclient/src/plugins/multitrandem/tests.py:147
-#: mclient/src/plugins/multitrandem/tests.py:148 skl_shared/src/shared.py:4102
+#: mclient/src/plugins/multitrandem/tests.py:148 skl_shared/src/shared.py:4109
 msgid "N/A"
 msgstr "Н/Д"
 
@@ -15668,13 +15665,13 @@ msgstr "Перезагрузить настройки"
 #: mclient/src/subjects/blacklist/gui.py:223
 #: mclient/src/subjects/priorities/gui.py:271 skl_shared/src/shared.py:635
 #: skl_shared/src/shared.py:709 skl_shared/src/shared.py:1302
-#: skl_shared/src/shared.py:1584 skl_shared/src/shared.py:2657
+#: skl_shared/src/shared.py:1591 skl_shared/src/shared.py:2664
 msgid "Close"
 msgstr "Закрыть"
 
 #: mclient/src/subjects/blacklist/gui.py:224
 #: mclient/src/subjects/priorities/gui.py:272 skl_shared/src/shared.py:636
-#: skl_shared/src/shared.py:1585
+#: skl_shared/src/shared.py:1592
 msgid "Close this window"
 msgstr "Закрыть это окно"
 
@@ -15764,7 +15761,7 @@ msgstr "Число блоков: {}"
 msgid "Web-page:"
 msgstr "Веб-страница:"
 
-#: mclient/src/tests.py:308 skl_shared/src/tests.py:1303
+#: mclient/src/tests.py:308 skl_shared/src/tests.py:1314
 msgid "Text:"
 msgstr "Текст:"
 
@@ -15784,28 +15781,28 @@ msgstr "Оффлайн"
 msgid "Triggered!"
 msgstr "Сработало!"
 
-#: skl_shared/src/gui.py:1264 skl_shared/src/logic.py:443
+#: skl_shared/src/gui.py:1265 skl_shared/src/logic.py:443
 #: skl_shared/src/logic.py:490 skl_shared/src/logic.py:1028
-#: skl_shared/src/logic.py:4644 skl_shared/src/shared.py:3825
+#: skl_shared/src/logic.py:4644 skl_shared/src/shared.py:3832
 msgid "WARNING"
 msgstr "ПРЕДУПРЕЖДЕНИЕ"
 
-#: skl_shared/src/gui.py:1271 skl_shared/src/logic.py:484
-#: skl_shared/src/logic.py:1028 skl_shared/src/shared.py:3817
+#: skl_shared/src/gui.py:1272 skl_shared/src/logic.py:484
+#: skl_shared/src/logic.py:1028 skl_shared/src/shared.py:3824
 msgid "ERROR"
 msgstr "ОШИБКА"
 
-#: skl_shared/src/gui.py:1278 skl_shared/src/logic.py:445
-#: skl_shared/src/logic.py:508 skl_shared/src/shared.py:3850
-#: skl_shared/src/shared.py:4055
+#: skl_shared/src/gui.py:1279 skl_shared/src/logic.py:445
+#: skl_shared/src/logic.py:508 skl_shared/src/shared.py:3857
+#: skl_shared/src/shared.py:4062
 msgid "QUESTION"
 msgstr "ВОПРОС"
 
-#: skl_shared/src/gui.py:1285 skl_shared/src/logic.py:441
+#: skl_shared/src/gui.py:1286 skl_shared/src/logic.py:441
 #: skl_shared/src/logic.py:468 skl_shared/src/logic.py:496
 #: skl_shared/src/logic.py:1006 skl_shared/src/logic.py:1048
-#: skl_shared/src/logic.py:4652 skl_shared/src/shared.py:3834
-#: skl_shared/src/shared.py:3842
+#: skl_shared/src/logic.py:4652 skl_shared/src/shared.py:3841
+#: skl_shared/src/shared.py:3849
 msgid "INFO"
 msgstr "ИНФОРМАЦИЯ"
 
@@ -15908,7 +15905,7 @@ msgid "Dictionary \"{}\": Incorrect line #{}: \"{}\"!"
 msgstr "Словарь \"{}\": Неправильная строка №{}: \"{}\"!"
 
 #: skl_shared/src/logic.py:1287 skl_shared/src/logic.py:2195
-#: skl_shared/src/shared.py:2974 skl_shared/src/shared.py:3730
+#: skl_shared/src/shared.py:2981 skl_shared/src/shared.py:3737
 msgid "File \"{}\" has not been found!"
 msgstr "Файл \"{}\" не найден!"
 
@@ -16294,6 +16291,34 @@ msgstr "Операция отменена."
 msgid "{} blocks have been deleted"
 msgstr "{} блоков удалено"
 
+#: skl_shared/src/password/controller.py:12 skl_shared/src/password/gui.py:10
+msgid "Set your credentials:"
+msgstr "Укажите данные для входа:"
+
+#: skl_shared/src/password/controller.py:78 skl_shared/src/tests.py:122
+msgid "Login: \"{}\""
+msgstr "Учетная запись: \"{}\""
+
+#: skl_shared/src/password/controller.py:80 skl_shared/src/tests.py:124
+msgid "Password: \"{}\""
+msgstr "Пароль: \"{}\""
+
+#: skl_shared/src/password/gui.py:34 skl_shared/src/shared.py:3928
+msgid "Cancel"
+msgstr "Отмена"
+
+#: skl_shared/src/password/gui.py:38
+msgid "OK"
+msgstr "OK"
+
+#: skl_shared/src/password/gui.py:55
+msgid "Login:"
+msgstr "Учетная запись:"
+
+#: skl_shared/src/password/gui.py:61
+msgid "Password:"
+msgstr "Пароль:"
+
 #: skl_shared/src/regexp.py:56
 msgid "A syntax error in the regular expression (id: {})!"
 msgstr "Синтаксическая ошибка в регулярном выражении (запись: {})!"
@@ -16311,12 +16336,12 @@ msgstr ""
 "\"{}\"."
 
 #: skl_shared/src/shared.py:68 skl_shared/src/shared.py:83
-#: skl_shared/src/shared.py:4339 skl_shared/src/shared.py:4357
+#: skl_shared/src/shared.py:4346 skl_shared/src/shared.py:4364
 msgid "Compare texts:"
 msgstr "Сравните тексты:"
 
 #: skl_shared/src/shared.py:710 skl_shared/src/shared.py:1301
-#: skl_shared/src/shared.py:2656 skl_shared/src/shared.py:3933
+#: skl_shared/src/shared.py:2663 skl_shared/src/shared.py:3940
 msgid "Reject and close"
 msgstr "Отказаться и закрыть"
 
@@ -16325,8 +16350,8 @@ msgid "Restore the text"
 msgstr "Восстановить текст"
 
 #: skl_shared/src/shared.py:726 skl_shared/src/shared.py:1315
-#: skl_shared/src/shared.py:2664 skl_shared/src/shared.py:3925
-#: skl_shared/src/shared.py:3939
+#: skl_shared/src/shared.py:2671 skl_shared/src/shared.py:3932
+#: skl_shared/src/shared.py:3946
 msgid "Accept and close"
 msgstr "Принять и закрыть"
 
@@ -16339,91 +16364,91 @@ msgstr "Выделение отсутствует!"
 msgid "Clear the field"
 msgstr "Очистить поле"
 
-#: skl_shared/src/shared.py:1316 skl_shared/src/shared.py:2665
+#: skl_shared/src/shared.py:1316 skl_shared/src/shared.py:2672
 msgid "Save and close"
 msgstr "Запомнить и выйти"
 
-#: skl_shared/src/shared.py:1578
+#: skl_shared/src/shared.py:1585
 msgid "Toggle all"
 msgstr "Переключить все"
 
-#: skl_shared/src/shared.py:1579
+#: skl_shared/src/shared.py:1586
 msgid "Mark/unmark all checkboxes"
 msgstr "Переключить все галки"
 
-#: skl_shared/src/shared.py:1611
+#: skl_shared/src/shared.py:1618
 msgid "Select files:"
 msgstr "Выберите файлы:"
 
-#: skl_shared/src/shared.py:1786 skl_shared/src/shared.py:1801
-#: skl_shared/src/shared.py:1961 skl_shared/src/shared.py:2964
-#: skl_shared/src/shared.py:3005 skl_shared/src/shared.py:3007
+#: skl_shared/src/shared.py:1793 skl_shared/src/shared.py:1808
+#: skl_shared/src/shared.py:1968 skl_shared/src/shared.py:2971
+#: skl_shared/src/shared.py:3012 skl_shared/src/shared.py:3014
 msgid "Please wait..."
 msgstr "Подождите..."
 
-#: skl_shared/src/shared.py:1804 skl_shared/src/shared.py:1819
-#: skl_shared/src/shared.py:1964
+#: skl_shared/src/shared.py:1811 skl_shared/src/shared.py:1826
+#: skl_shared/src/shared.py:1971
 msgid "The required widget has not been created yet!"
 msgstr "Требуемый виджет еще не был создан!"
 
-#: skl_shared/src/shared.py:2144
+#: skl_shared/src/shared.py:2151
 msgid "Clipboard is empty!"
 msgstr "Буфер обмена пуст!"
 
-#: skl_shared/src/shared.py:2446
+#: skl_shared/src/shared.py:2453
 msgid "Remove item #{}"
 msgstr "Удаление элемента №{}"
 
-#: skl_shared/src/shared.py:2449
+#: skl_shared/src/shared.py:2456
 msgid "No item #{}!"
 msgstr "Элемент №{} отсутствует!"
 
-#: skl_shared/src/shared.py:2523
+#: skl_shared/src/shared.py:2530
 msgid "Item \"{}\" is not in list!"
 msgstr "Элемент \"{}\" не в списке!"
 
-#: skl_shared/src/shared.py:2882
+#: skl_shared/src/shared.py:2889
 msgid "Set the geometry to \"{}x{}+{}+{}\""
 msgstr "Изменение геометрии виджета на \"{}x{}+{}+{}\""
 
-#: skl_shared/src/shared.py:3341
+#: skl_shared/src/shared.py:3348
 msgid "Widget width ({}) should not exceed screen width ({})!"
 msgstr "Ширина виджета ({}) не должна превышать ширины экрана ({})!"
 
-#: skl_shared/src/shared.py:3352
+#: skl_shared/src/shared.py:3359
 msgid "Widget height ({}) should not exceed screen height ({})!"
 msgstr "Высота виджета ({}) не должна превышать высоту экрана ({})!"
 
-#: skl_shared/src/shared.py:3381
+#: skl_shared/src/shared.py:3388
 msgid "Widget 1 geometry: {}x{}+{}+{}"
 msgstr "Геометрия виджета 1: {}x{}+{}+{}"
 
-#: skl_shared/src/shared.py:3387
+#: skl_shared/src/shared.py:3394
 msgid "Widget 2 geometry: {}x{}+{}+{}"
 msgstr "Геометрия виджета 2: {}x{}+{}+{}"
 
-#: skl_shared/src/shared.py:3484
+#: skl_shared/src/shared.py:3491
 msgid "Wrong font: \"{}\"!"
 msgstr "Неправильный шрифт: \"{}\"!"
 
-#: skl_shared/src/shared.py:3535
+#: skl_shared/src/shared.py:3542
 msgid "Save geometry: {}"
 msgstr "Сохранение геометрии: {}"
 
-#: skl_shared/src/shared.py:3544
+#: skl_shared/src/shared.py:3551
 msgid "Restore geometry: {}"
 msgstr "Восстановление геометрии: {}"
 
-#: skl_shared/src/shared.py:3563
+#: skl_shared/src/shared.py:3570
 msgid "Failed to change window properties!"
 msgstr "Не удалось изменить свойства окна!"
 
-#: skl_shared/src/shared.py:3648
+#: skl_shared/src/shared.py:3655
 msgid "Failed to get the window handle!"
 msgstr "Не удалось получить дескриптор окна!"
 
-#: skl_shared/src/shared.py:3693 skl_shared/src/shared.py:3703
-#: skl_shared/src/shared.py:3713 skl_shared/src/shared.py:4162
+#: skl_shared/src/shared.py:3700 skl_shared/src/shared.py:3710
+#: skl_shared/src/shared.py:3720 skl_shared/src/shared.py:4169
 msgid ""
 "The operation has failed!\n"
 "\n"
@@ -16433,231 +16458,227 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: skl_shared/src/shared.py:3789 skl_shared/src/shared.py:4147
+#: skl_shared/src/shared.py:3796 skl_shared/src/shared.py:4154
 msgid "Test:"
 msgstr "Тест:"
 
-#: skl_shared/src/shared.py:3921
-msgid "Cancel"
-msgstr "Отмена"
-
-#: skl_shared/src/shared.py:4114
+#: skl_shared/src/shared.py:4121
 msgid "SECTION"
 msgstr "СЕКЦИЯ"
 
-#: skl_shared/src/shared.py:4114
+#: skl_shared/src/shared.py:4121
 msgid "VALUE"
 msgstr "ЗНАЧЕНИЕ"
 
-#: skl_shared/src/shared.py:4134
+#: skl_shared/src/shared.py:4141
 msgid "An unknown color \"{}\"!"
 msgstr "Неизвестный цвет \"{}\"!"
 
-#: skl_shared/src/shared.py:4179
+#: skl_shared/src/shared.py:4186
 msgid "Failed to enable key combination \"{}\"!"
 msgstr "Не удалось задействовать сочетание клавиш \"{}\"!"
 
-#: skl_shared/src/shared.py:4545
+#: skl_shared/src/shared.py:4552
 msgid "Search:"
 msgstr "Поиск:"
 
-#: skl_shared/src/shared.py:4567
+#: skl_shared/src/shared.py:4574
 msgid "Case-sensitive search"
 msgstr "Поиск с учетом регистра"
 
-#: skl_shared/src/shared.py:4578
+#: skl_shared/src/shared.py:4585
 msgid "Loop"
 msgstr "Зациклить"
 
-#: skl_shared/src/shared.py:5001
+#: skl_shared/src/shared.py:5008
 msgid "No more matches, continuing from the bottom!"
 msgstr "Совпадений больше нет, поиск продолжен с конца!"
 
-#: skl_shared/src/shared.py:5007 skl_shared/src/shared.py:5034
+#: skl_shared/src/shared.py:5014 skl_shared/src/shared.py:5041
 msgid "No more matches!"
 msgstr "Совпадений больше нет!"
 
-#: skl_shared/src/shared.py:5029
+#: skl_shared/src/shared.py:5036
 msgid "No more matches, continuing from the top!"
 msgstr "Совпадений больше нет, поиск продолжен с начала!"
 
-#: skl_shared/src/shared.py:5063
+#: skl_shared/src/shared.py:5070
 msgid "Failed to find reference \"{}\" with index {}!"
 msgstr "Не удалось найти ссылку \"{}\" с индексом {}!"
 
-#: skl_shared/src/shared.py:5079
+#: skl_shared/src/shared.py:5086
 msgid "Pattern: \"{}\"; index: {}"
 msgstr "Образец: \"{}\"; индекс: {}"
 
-#: skl_shared/src/shared.py:5104
+#: skl_shared/src/shared.py:5111
 msgid "No reference has been found!"
 msgstr "Ссылка не найдена!"
 
-#: skl_shared/src/shared.py:5132
+#: skl_shared/src/shared.py:5139
 msgid "The start of the text has been reached!"
 msgstr "Достигнуто начало текста!"
 
-#: skl_shared/src/shared.py:5147 skl_shared/src/shared.py:5179
+#: skl_shared/src/shared.py:5154 skl_shared/src/shared.py:5186
 msgid "Distance: {} symbols"
 msgstr "Расстояние: {} символов"
 
-#: skl_shared/src/shared.py:5164
+#: skl_shared/src/shared.py:5171
 msgid "The end of the text has been reached!"
 msgstr "Достигнут конец текста!"
 
-#: skl_shared/src/shared.py:5258 skl_shared/src/tests.py:20
+#: skl_shared/src/shared.py:5265 skl_shared/src/tests.py:21
 msgid "Scrollable widget"
 msgstr "Прокручиваемый виджет"
 
-#: skl_shared/src/tests.py:56
+#: skl_shared/src/tests.py:57
 msgid "Label {}"
 msgstr "Надпись {}"
 
-#: skl_shared/src/tests.py:94
+#: skl_shared/src/tests.py:95
 msgid "Image"
 msgstr "Изображение"
 
-#: skl_shared/src/tests.py:120
+#: skl_shared/src/tests.py:131
 msgid "Hello!"
 msgstr "Здравствуйте!"
 
-#: skl_shared/src/tests.py:136
+#: skl_shared/src/tests.py:147
 msgid "Spellchecker"
 msgstr "Проверка правописания"
 
-#: skl_shared/src/tests.py:220 skl_shared/src/tests.py:237
-#: skl_shared/src/tests.py:257 skl_shared/src/tests.py:276
+#: skl_shared/src/tests.py:231 skl_shared/src/tests.py:248
+#: skl_shared/src/tests.py:268 skl_shared/src/tests.py:287
 msgid "Variant #{}"
 msgstr "Вариант №{}"
 
-#: skl_shared/src/tests.py:223
+#: skl_shared/src/tests.py:234
 msgid "Description: no settings"
 msgstr "Описание: нет настроек"
 
-#: skl_shared/src/tests.py:240
+#: skl_shared/src/tests.py:251
 msgid "Description: headers"
 msgstr "Описание: заголовки"
 
-#: skl_shared/src/tests.py:260
+#: skl_shared/src/tests.py:271
 msgid "Description: transposition"
 msgstr "Описание: транспозиция"
 
-#: skl_shared/src/tests.py:279
+#: skl_shared/src/tests.py:290
 msgid "Description: transposition and headers"
 msgstr "Описание: транспозиция и заголовки"
 
-#: skl_shared/src/tests.py:298 skl_shared/src/tests.py:313
-#: skl_shared/src/tests.py:325 skl_shared/src/tests.py:341
-#: skl_shared/src/tests.py:361 skl_shared/src/tests.py:381
-#: skl_shared/src/tests.py:395 skl_shared/src/tests.py:424
-#: skl_shared/src/tests.py:435 skl_shared/src/tests.py:457
-#: skl_shared/src/tests.py:473 skl_shared/src/tests.py:490
-#: skl_shared/src/tests.py:512 skl_shared/src/tests.py:528
-#: skl_shared/src/tests.py:540 skl_shared/src/tests.py:576
-#: skl_shared/src/tests.py:593 skl_shared/src/tests.py:605
-#: skl_shared/src/tests.py:612 skl_shared/src/tests.py:639
-#: skl_shared/src/tests.py:674 skl_shared/src/tests.py:692
-#: skl_shared/src/tests.py:739 skl_shared/src/tests.py:788
-#: skl_shared/src/tests.py:828 skl_shared/src/tests.py:884
-#: skl_shared/src/tests.py:944 skl_shared/src/tests.py:967
-#: skl_shared/src/tests.py:980 skl_shared/src/tests.py:1007
-#: skl_shared/src/tests.py:1020 skl_shared/src/tests.py:1055
-#: skl_shared/src/tests.py:1067 skl_shared/src/tests.py:1111
-#: skl_shared/src/tests.py:1163
+#: skl_shared/src/tests.py:309 skl_shared/src/tests.py:324
+#: skl_shared/src/tests.py:336 skl_shared/src/tests.py:352
+#: skl_shared/src/tests.py:372 skl_shared/src/tests.py:392
+#: skl_shared/src/tests.py:406 skl_shared/src/tests.py:435
+#: skl_shared/src/tests.py:446 skl_shared/src/tests.py:468
+#: skl_shared/src/tests.py:484 skl_shared/src/tests.py:501
+#: skl_shared/src/tests.py:523 skl_shared/src/tests.py:539
+#: skl_shared/src/tests.py:551 skl_shared/src/tests.py:587
+#: skl_shared/src/tests.py:604 skl_shared/src/tests.py:616
+#: skl_shared/src/tests.py:623 skl_shared/src/tests.py:650
+#: skl_shared/src/tests.py:685 skl_shared/src/tests.py:703
+#: skl_shared/src/tests.py:750 skl_shared/src/tests.py:799
+#: skl_shared/src/tests.py:839 skl_shared/src/tests.py:895
+#: skl_shared/src/tests.py:955 skl_shared/src/tests.py:978
+#: skl_shared/src/tests.py:991 skl_shared/src/tests.py:1018
+#: skl_shared/src/tests.py:1031 skl_shared/src/tests.py:1066
+#: skl_shared/src/tests.py:1078 skl_shared/src/tests.py:1122
+#: skl_shared/src/tests.py:1174
 msgid "Run \"{}\". Press any key to continue"
 msgstr "Запуск \"{}\". Нажмите любую клавишу для продолжения"
 
-#: skl_shared/src/tests.py:336 skl_shared/src/tests.py:356
-#: skl_shared/src/tests.py:376 skl_shared/src/tests.py:419
-#: skl_shared/src/tests.py:430 skl_shared/src/tests.py:485
+#: skl_shared/src/tests.py:347 skl_shared/src/tests.py:367
+#: skl_shared/src/tests.py:387 skl_shared/src/tests.py:430
+#: skl_shared/src/tests.py:441 skl_shared/src/tests.py:496
 msgid "Output: \"{}\""
 msgstr "Вывод: \"{}\""
 
-#: skl_shared/src/tests.py:578
+#: skl_shared/src/tests.py:589
 msgid "Copy something to clipboard"
 msgstr "Скопируйте что-нибудь в буфер обмена"
 
-#: skl_shared/src/tests.py:581 skl_shared/src/tests.py:588
+#: skl_shared/src/tests.py:592 skl_shared/src/tests.py:599
 msgid "Clipboard contents: \"{}\""
 msgstr "Содержание буфера обмена: \"{}\""
 
-#: skl_shared/src/tests.py:584
+#: skl_shared/src/tests.py:595
 msgid "The following will be copied: \"{}\""
 msgstr "Будет скопировано следующее: \"{}\""
 
-#: skl_shared/src/tests.py:600 skl_shared/src/tests.py:607
-#: skl_shared/src/tests.py:669
+#: skl_shared/src/tests.py:611 skl_shared/src/tests.py:618
+#: skl_shared/src/tests.py:680
 msgid "Your input: \"{}\""
 msgstr "Вы ввели: \"{}\""
 
-#: skl_shared/src/tests.py:630
+#: skl_shared/src/tests.py:641
 msgid "New settings"
 msgstr "Новые настройки"
 
-#: skl_shared/src/tests.py:655
+#: skl_shared/src/tests.py:666
 msgid "Your final selection: \"{}\""
 msgstr "Ваш конечный выбор: \"{}\""
 
-#: skl_shared/src/tests.py:773
+#: skl_shared/src/tests.py:784
 msgid "The event has been triggered!"
 msgstr "Событие вызвано!"
 
-#: skl_shared/src/tests.py:791
+#: skl_shared/src/tests.py:802
 msgid "Button"
 msgstr "Кнопка"
 
-#: skl_shared/src/tests.py:795
+#: skl_shared/src/tests.py:806
 msgid "Trigger an event"
 msgstr "Вызвать событие"
 
-#: skl_shared/src/tests.py:864
+#: skl_shared/src/tests.py:875
 msgid "Screen resolution: {}x{}"
 msgstr "Разрешение экрана: {}x{}"
 
-#: skl_shared/src/tests.py:866
+#: skl_shared/src/tests.py:877
 msgid "Random coordinates: x: {}; y: {}"
 msgstr "Случайные координаты: x: {}; y: {}"
 
-#: skl_shared/src/tests.py:999
+#: skl_shared/src/tests.py:1010
 msgid "Window handle (Windows-only): {}"
 msgstr "Дескриптор окна (только Windows): {}"
 
-#: skl_shared/src/tests.py:1029 skl_shared/src/tests.py:1044
+#: skl_shared/src/tests.py:1040 skl_shared/src/tests.py:1055
 msgid "You answered Yes"
 msgstr "Вы ответили Да"
 
-#: skl_shared/src/tests.py:1031 skl_shared/src/tests.py:1046
+#: skl_shared/src/tests.py:1042 skl_shared/src/tests.py:1057
 msgid "You answered No"
 msgstr "Вы ответили Нет"
 
-#: skl_shared/src/tests.py:1062
+#: skl_shared/src/tests.py:1073
 msgid "Font size: {}x{}"
 msgstr "Размер шрифта: {}x{}"
 
-#: skl_shared/src/tests.py:1071 skl_shared/src/tests.py:1080
-#: skl_shared/src/tests.py:1089 skl_shared/src/tests.py:1098
-#: skl_shared/src/tests.py:1115 skl_shared/src/tests.py:1124
-#: skl_shared/src/tests.py:1133 skl_shared/src/tests.py:1142
-#: skl_shared/src/tests.py:1151
+#: skl_shared/src/tests.py:1082 skl_shared/src/tests.py:1091
+#: skl_shared/src/tests.py:1100 skl_shared/src/tests.py:1109
+#: skl_shared/src/tests.py:1126 skl_shared/src/tests.py:1135
+#: skl_shared/src/tests.py:1144 skl_shared/src/tests.py:1153
+#: skl_shared/src/tests.py:1162
 msgid "Test #{}"
 msgstr "Тест №{}"
 
-#: skl_shared/src/tests.py:1076 skl_shared/src/tests.py:1085
-#: skl_shared/src/tests.py:1094 skl_shared/src/tests.py:1103
+#: skl_shared/src/tests.py:1087 skl_shared/src/tests.py:1096
+#: skl_shared/src/tests.py:1105 skl_shared/src/tests.py:1114
 msgid "Path: \"{}\"; free space: {}"
 msgstr "Путь: \"{}\"; свободное место: {}"
 
-#: skl_shared/src/tests.py:1120 skl_shared/src/tests.py:1129
-#: skl_shared/src/tests.py:1138 skl_shared/src/tests.py:1147
-#: skl_shared/src/tests.py:1156
+#: skl_shared/src/tests.py:1131 skl_shared/src/tests.py:1140
+#: skl_shared/src/tests.py:1149 skl_shared/src/tests.py:1158
+#: skl_shared/src/tests.py:1167
 msgid "Object: \"{}\"; size: {}"
 msgstr "Объект: \"{}\"; размер: {}"
 
-#: skl_shared/src/tests.py:1197 skl_shared/src/tests.py:1230
+#: skl_shared/src/tests.py:1208 skl_shared/src/tests.py:1241
 msgid "Press Return to place widgets randomly"
 msgstr "Нажмите Ввод, чтобы расположить виджеты случайным образом"
 
-#: skl_shared/src/tests.py:1201
+#: skl_shared/src/tests.py:1212
 msgid ""
 "Anchor: {}\n"
 "Press Return to adjust Widget 2"
@@ -16665,7 +16686,7 @@ msgstr ""
 "Привязка: {}\n"
 "Нажмите Ввод для подгонки Виджета 2"
 
-#: skl_shared/src/tests.py:1253
+#: skl_shared/src/tests.py:1264
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
 
@@ -16868,9 +16889,6 @@ msgstr "Привязка: {}"
 
 #~ msgid "Unknown dictionary \"{}\"!"
 #~ msgstr "Неизвестный словарь \"{}\"!"
-
-#~ msgid "Tag: \"{}\""
-#~ msgstr "Тег: \"{}\""
 
 #~ msgid "Complete words on input"
 #~ msgstr "Показывать подсказку для вводимых слов"
