@@ -465,7 +465,14 @@ class HTM:
             code.append(self.landscape)
             code.append('<div id="printableArea">')
         if self.fonts:
-            sub = '<table style="width: {}%">'.format(self.tab_width)
+            ''' Setting the table width to 100% will break a layout for
+                a single-line articles (when only separate words were
+                found).
+            '''
+            if self.tab_width in (0,100):
+                sub = '<table>'
+            else:
+                sub = '<table style="width: {}%">'.format(self.tab_width)
             code.append(sub)
             old_colno = -1
             old_rowno = -1
