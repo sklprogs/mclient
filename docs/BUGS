@@ -1,5 +1,6 @@
 mclient:
-- 
+- Fix Vertical mode
+- Changing a number of columns to 1 causes a block finding problem
 
 multitrancom:
 - RU-EN, unsupported response: too wide columns
