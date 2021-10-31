@@ -10,6 +10,7 @@ import skl_shared.shared as sh
 import manager
 import subjects.subjects as sj
 import config as cf
+import db
 
 
 SPORDER = (_('Noun'),_('Verb'),_('Adjective'),_('Abbreviation')
@@ -544,7 +545,13 @@ class Objects:
     def __init__(self):
         self.online = self.request = self.order = self.default \
                     = self.plugins = self.speech_prior = self.config \
-                    = self.order = None
+                    = self.order = self.blocksdb = None
+    
+    def get_blocksdb(self):
+        if self.blocksdb is None:
+            self.blocksdb = db.Moves()
+            self.blocksdb.Selectable = sh.lg.globs['bool']['SelectTermsOnly']
+        return self.blocksdb
     
     def get_order(self):
         if self.order is None:
