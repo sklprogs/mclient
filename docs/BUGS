@@ -3,6 +3,22 @@ mclient:
 - Changing a number of columns to 1 causes a block finding problem
 
 multitrancom:
+- RU-EN, scot-free (cut to the chase): too wide fixed columns
+mclient.ColumnWidth.set_term_num:ОТЛАДКА:Реальное число столбцов с терминами: 0
+- RU-EN, stock boy, stock quote: too narrow columns (fix font metrics
+  calculation)
+  49:[MClient] mclient.ColumnWidth.set_longest:ОТЛАДКА:Ячейки с терминами:
+  50:[MClient] mclient.ColumnWidth._get_longest:ПРЕДУПРЕЖДЕНИЕ:Пустые входные данные не допускаются!
+  51:[MClient] mclient.ColumnWidth.set_longest:ОТЛАДКА:Столбец №1:
+  52:[MClient] mclient.ColumnWidth._get_longest:ОТЛАДКА:Самая длинная ячейка (10 символов): " stock boy"
+  53:[MClient] mclient.ColumnWidth.set_longest:ОТЛАДКА:Столбец №2:
+  54:[MClient] mclient.ColumnWidth._get_longest:ПРЕДУПРЕЖДЕНИЕ:Пустые входные данные не допускаются!
+  55:[MClient] mclient.ColumnWidth.set_longest:ОТЛАДКА:Столбец №3:
+  56:[MClient] mclient.ColumnWidth._get_longest:ПРЕДУПРЕЖДЕНИЕ:Пустые входные данные не допускаются!
+  57:[MClient] mclient.ColumnWidth.set_longest:ОТЛАДКА:Столбец №4:
+  58:[MClient] mclient.ColumnWidth._get_longest:ПРЕДУПРЕЖДЕНИЕ:Пустые входные данные не допускаются!
+  59:[MClient] mclient.ColumnWidth.calc_font:ОТЛАДКА:Шрифт: "Arial 10"; текст: " stock boy"; ширина: 81 пикселей
+  60:[MClient] mclient.ColumnWidth.calc_fonts:ОТЛАДКА:Столбец №1: 81 пкс; №2: 0 пкс; №3: 0 пкс; №4: 0 пкс; другие: 0 пкс
 - RU-EN, unsupported response: too wide columns
 - RU-EN, struggle, revere (22'', 6): the right edge is not fully visible
 - RU-EN, struggle: lxml saving problem

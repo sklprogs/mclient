@@ -237,7 +237,7 @@ class ColumnWidth:
             family = sh.lg.globs['str']['font_terms_family']
             size = sh.lg.globs['int']['font_terms_size']
         #TODO: a trial-and-error choice, calculate more precisely
-        size = int(size*2.5)
+        size = int(size*2.4)
         font = '{} {}'.format(family,size)
         #TODO: do we need to pass 'xborder=0' here (default is 20)?
         #NOTE: this cannot run in logic, a root widget is required
