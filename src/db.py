@@ -40,7 +40,7 @@ class DB:
             query = 'select CELLNO,TEXT from BLOCKS where ARTICLEID = ?\
                      and COLNO > ? and BLOCK = 0 \
                      and IGNORE = 0 and TEXT != ? order by CELLNO'
-            args = (self.artid,4,'',)
+            args = (self.artid,3,'',)
             self.dbc.execute(query,args)
             return self.dbc.fetchall()
         else:

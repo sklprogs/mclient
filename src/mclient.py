@@ -194,8 +194,7 @@ class ColumnWidth:
     
     def set_term_num(self):
         f = '[MClient] mclient.ColumnWidth.set_term_num'
-        if not com.has_single_row() \
-        and sh.lg.globs['bool']['AdjustByWidth']:
+        if sh.lg.globs['bool']['AdjustByWidth']:
             result = lg.objs.get_blocksdb().get_max_col_no()
             if result:
                 self.term_num = result + 1
@@ -218,26 +217,26 @@ class ColumnWidth:
     
     def _calc_font(self,text,colno):
         f = '[MClient] mclient.ColumnWidth.calc_font'
-        if not text or not colno:
+        if not text:
             sh.com.rep_empty(f)
             return 0
-        if colno == 1:
+        if colno == 0:
             family = sh.lg.globs['str']['font_col1_family']
             size = sh.lg.globs['int']['font_col1_size']
-        elif colno == 2:
+        elif colno == 1:
             family = sh.lg.globs['str']['font_col2_family']
             size = sh.lg.globs['int']['font_col2_size']
-        elif colno == 3:
+        elif colno == 2:
             family = sh.lg.globs['str']['font_col1_family']
             size = sh.lg.globs['int']['font_col3_size']
-        elif colno == 4:
+        elif colno == 3:
             family = sh.lg.globs['str']['font_col1_family']
             size = sh.lg.globs['int']['font_col4_size']
         else:
             family = sh.lg.globs['str']['font_terms_family']
             size = sh.lg.globs['int']['font_terms_size']
         #TODO: a trial-and-error choice, calculate more precisely
-        size = int(size*2.4)
+        size = int(size*2.8)
         font = '{} {}'.format(family,size)
         #TODO: do we need to pass 'xborder=0' here (default is 20)?
         #NOTE: this cannot run in logic, a root widget is required
@@ -256,15 +255,15 @@ class ColumnWidth:
         timer.start()
         long1_px = long2_px = long3_px = long4_px = long_term_px = 0
         if self.long1:
-            long1_px = self._calc_font(self.long1,1)
+            long1_px = self._calc_font(self.long1,0)
         if self.long2:
-            long2_px = self._calc_font(self.long2,2)
+            long2_px = self._calc_font(self.long2,1)
         if self.long3:
-            long3_px = self._calc_font(self.long3,3)
+            long3_px = self._calc_font(self.long3,2)
         if self.long4:
-            long4_px = self._calc_font(self.long4,4)
+            long4_px = self._calc_font(self.long4,3)
         if self.long_term:
-            long_term_px = self._calc_font(self.long_term,5)
+            long_term_px = self._calc_font(self.long_term,4)
         self.act1 = long1_px
         self.act2 = long2_px
         self.act3 = long3_px
@@ -286,17 +285,17 @@ class ColumnWidth:
         # Column #1
         mes = _('Column #{}:').format(1)
         sh.objs.get_mes(f,mes,True).show_debug()
-        data = lg.objs.blocksdb.get_fixed_cell_texts(1)
+        data = lg.objs.blocksdb.get_fixed_cell_texts(0)
         self.long1 = self._get_longest(data)
         # Column #2
         mes = _('Column #{}:').format(2)
         sh.objs.get_mes(f,mes,True).show_debug()
-        data = lg.objs.blocksdb.get_fixed_cell_texts(2)
+        data = lg.objs.blocksdb.get_fixed_cell_texts(1)
         self.long2 = self._get_longest(data)
         # Column #3
         mes = _('Column #{}:').format(3)
         sh.objs.get_mes(f,mes,True).show_debug()
-        data = lg.objs.blocksdb.get_fixed_cell_texts(3)
+        data = lg.objs.blocksdb.get_fixed_cell_texts(2)
         self.long3 = self._get_longest(data)
         # Column #4
         mes = _('Column #{}:').format(4)
@@ -312,15 +311,13 @@ class ColumnWidth:
         longest = ''
         ''' The last tuple of 'data' is the maximum row number (since
             the output from db is sorted by row and cell numbers).
-            We do not add 1 since ROWNO starts from 1.
         '''
-        rows = [[] for i in range(data[-1][0])]
+        rows = [[] for i in range(data[-1][0]+1)]
         for tuple_ in data:
-            ''' -1 since ROWNO starts from 1. We do not take spaces
-                between blocks into account since some blocks usually
-                already start with a space.
+            ''' We do not take spaces between blocks into account since
+                some blocks usually already start with a space.
             '''
-            rows[tuple_[0]-1].append(tuple_[1])
+            rows[tuple_[0]].append(tuple_[1])
         for i in range(len(rows)):
             ''' We do not add a space since blocks usually already
                 start with a space where necessary.
