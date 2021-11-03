@@ -3,24 +3,6 @@ mclient:
 - Changing a number of columns to 1 causes a block finding problem
 
 multitrancom:
-- RU-EN, scot-free (cut to the chase): too wide fixed columns
-mclient.ColumnWidth.set_term_num:ОТЛАДКА:Реальное число столбцов с терминами: 0
-- RU-EN, stock boy, stock quote: too narrow columns (fix font metrics
-  calculation)
-  49:[MClient] mclient.ColumnWidth.set_longest:ОТЛАДКА:Ячейки с терминами:
-  50:[MClient] mclient.ColumnWidth._get_longest:ПРЕДУПРЕЖДЕНИЕ:Пустые входные данные не допускаются!
-  51:[MClient] mclient.ColumnWidth.set_longest:ОТЛАДКА:Столбец №1:
-  52:[MClient] mclient.ColumnWidth._get_longest:ОТЛАДКА:Самая длинная ячейка (10 символов): " stock boy"
-  53:[MClient] mclient.ColumnWidth.set_longest:ОТЛАДКА:Столбец №2:
-  54:[MClient] mclient.ColumnWidth._get_longest:ПРЕДУПРЕЖДЕНИЕ:Пустые входные данные не допускаются!
-  55:[MClient] mclient.ColumnWidth.set_longest:ОТЛАДКА:Столбец №3:
-  56:[MClient] mclient.ColumnWidth._get_longest:ПРЕДУПРЕЖДЕНИЕ:Пустые входные данные не допускаются!
-  57:[MClient] mclient.ColumnWidth.set_longest:ОТЛАДКА:Столбец №4:
-  58:[MClient] mclient.ColumnWidth._get_longest:ПРЕДУПРЕЖДЕНИЕ:Пустые входные данные не допускаются!
-  59:[MClient] mclient.ColumnWidth.calc_font:ОТЛАДКА:Шрифт: "Arial 10"; текст: " stock boy"; ширина: 81 пикселей
-  60:[MClient] mclient.ColumnWidth.calc_fonts:ОТЛАДКА:Столбец №1: 81 пкс; №2: 0 пкс; №3: 0 пкс; №4: 0 пкс; другие: 0 пкс
-- RU-EN, unsupported response: too wide columns
-- RU-EN, struggle, revere (22'', 6): the right edge is not fully visible
 - RU-EN, struggle: lxml saving problem
 strain by this new prospective U.S. threat. ||| U.S. News & World Report, США (2016))</font></i>
 - RU-EN, память -> Фразы: a segment is not found
@@ -35,12 +17,6 @@ strain by this new prospective U.S. threat. ||| U.S. News & World Report, США
   the specialized mode
 - RU-EN, hello: IT phdics are prioritized but not colored
 - RU-EN, set: 'Обработка данных' is prioritized but not colored (phdic)
-- RU-EN, Tagalog -> Фразы (6): too wide fixed columns, empty space in 
-  a wrong place
-- RU-EN, гематоген -> Фразы (6): too wide term columns
-- RU-EN, shared variables -> Программирование: table layout does not
-  adjust and the following warning is received:
-  subjects.subjects.ArticleSubjects.is_blocked:ПРЕДУПРЕЖДЕНИЕ:Недопустимые входные данные: ""!
 - (MClient mode) RU-EN, reproducibility: ')' in the beginning
 - (Clarity mode) RU-EN, frame rate: too wide fixed columns
 - RU-CN: suggestions are provided for RU-EN

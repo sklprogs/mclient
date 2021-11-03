@@ -64,10 +64,15 @@ class ColumnWidth:
         self.col4_pc = 0
         self.term_col_pc = 0
         self.table_pc = 100
+        self.short1 = ''
+        self.short2 = ''
+        self.short3 = ''
+        self.short4 = ''
         self.long1 = ''
         self.long2 = ''
         self.long3 = ''
         self.long4 = ''
+        self.short_term = ''
         self.long_term = ''
     
     def reset(self):
@@ -218,7 +223,9 @@ class ColumnWidth:
     def _calc_font(self,text,colno):
         f = '[MClient] mclient.ColumnWidth.calc_font'
         if not text:
-            sh.com.rep_empty(f)
+            ''' This is a common case (as long as we have empty
+                columns), so do not warn here.
+            '''
             return 0
         if colno == 0:
             family = sh.lg.globs['str']['font_col1_family']
@@ -253,22 +260,24 @@ class ColumnWidth:
         f = '[MClient] mclient.ColumnWidth.calc_fonts'
         timer = sh.Timer(f)
         timer.start()
-        long1_px = long2_px = long3_px = long4_px = long_term_px = 0
-        if self.long1:
-            long1_px = self._calc_font(self.long1,0)
-        if self.long2:
-            long2_px = self._calc_font(self.long2,1)
-        if self.long3:
-            long3_px = self._calc_font(self.long3,2)
-        if self.long4:
-            long4_px = self._calc_font(self.long4,3)
-        if self.long_term:
-            long_term_px = self._calc_font(self.long_term,4)
-        self.act1 = long1_px
-        self.act2 = long2_px
-        self.act3 = long3_px
-        self.act4 = long4_px
-        self.act_term = long_term_px
+        short1_px = short2_px = short3_px = short4_px = short_term_px \
+                  = long1_px = long2_px = long3_px = long4_px \
+                  = long_term_px = 0
+        short1_px = self._calc_font(self.short1,0)
+        long1_px = self._calc_font(self.long1,0)
+        short2_px = self._calc_font(self.short2,1)
+        long2_px = self._calc_font(self.long2,1)
+        short3_px = self._calc_font(self.short3,2)
+        long3_px = self._calc_font(self.long3,2)
+        short4_px = self._calc_font(self.short4,3)
+        long4_px = self._calc_font(self.long4,3)
+        short_term_px = self._calc_font(self.short_term,4)
+        long_term_px = self._calc_font(self.long_term,4)
+        self.act1 = (short1_px + long1_px) / 2
+        self.act2 = (short2_px + long2_px) / 2
+        self.act3 = (short3_px + long3_px) / 2
+        self.act4 = (short4_px + long4_px) / 2
+        self.act_term = (short_term_px + long_term_px) / 2
         mes = _('Column #1: {} px; #2: {} px; #3: {} px; #4: {} px; others: {} px')
         mes = mes.format (self.act1,self.act2,self.act3,self.act4
                          ,self.act_term
@@ -281,36 +290,28 @@ class ColumnWidth:
         mes = _('Term cells:')
         sh.objs.get_mes(f,mes,True).show_debug()
         data = lg.objs.get_blocksdb().get_term_cell_texts()
-        self.long_term = self._get_longest(data)
-        # Column #1
-        mes = _('Column #{}:').format(1)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        self.short_term, self.long_term = self._get_longest(data)
         data = lg.objs.blocksdb.get_fixed_cell_texts(0)
-        self.long1 = self._get_longest(data)
-        # Column #2
-        mes = _('Column #{}:').format(2)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        self.short1, self.long1 = self._get_longest(data)
         data = lg.objs.blocksdb.get_fixed_cell_texts(1)
-        self.long2 = self._get_longest(data)
-        # Column #3
-        mes = _('Column #{}:').format(3)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        self.short2, self.long2 = self._get_longest(data)
         data = lg.objs.blocksdb.get_fixed_cell_texts(2)
-        self.long3 = self._get_longest(data)
-        # Column #4
-        mes = _('Column #{}:').format(4)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        self.short3, self.long3 = self._get_longest(data)
         data = lg.objs.blocksdb.get_fixed_cell_texts(3)
-        self.long4 = self._get_longest(data)
+        self.short4, self.long4 = self._get_longest(data)
     
     def _get_longest(self,data):
         f = '[MClient] mclient.ColumnWidth._get_longest'
         if not data:
-            sh.com.rep_empty(f)
-            return ''
+            ''' This is a common case (as long as we have empty
+                columns), so do not warn here.
+            '''
+            return('','')
+        shortest = ''
         longest = ''
-        ''' The last tuple of 'data' is the maximum row number (since
-            the output from db is sorted by row and cell numbers).
+        ''' The last tuple of 'data' is the maximum row number - 1
+            (since the output from db is sorted by row and cell
+            numbers).
         '''
         rows = [[] for i in range(data[-1][0]+1)]
         for tuple_ in data:
@@ -328,11 +329,23 @@ class ColumnWidth:
             if len(item) > max_:
                 max_ = len(item)
                 longest = item
+        min_ = max_
+        for item in rows:
+            if 0 < len(item) < min_:
+                min_ = len(item)
+                shortest = item
+        # For simplicity purposes, in order to skip checks
+        if not shortest:
+            shortest = longest
+        cut = sh.Text(shortest).shorten(60)
+        mes = _('The shortest cell ({} symbols): "{}"')
+        mes = mes.format(len(shortest),cut)
+        sh.objs.get_mes(f,mes,True).show_debug()
         cut = sh.Text(longest).shorten(60)
         mes = _('The longest cell ({} symbols): "{}"')
         mes = mes.format(len(longest),cut)
         sh.objs.get_mes(f,mes,True).show_debug()
-        return longest
+        return(shortest,longest)
     
     def set_avail_fixed_sum(self):
         f = '[MClient] mclient.ColumnWidth.set_avail_fixed_sum'
