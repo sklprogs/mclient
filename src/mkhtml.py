@@ -40,12 +40,12 @@ class Font:
     def run(self):
         self.check()
         self.set_text()
+        self.set_pos()
         self.set_family()
         self.set_size()
         self.set_color()
         self.set_bold()
         self.set_italic()
-        self.set_pos()
     
     def set_pos(self):
         f = '[MClient] mkhtml.Font.set_pos'
@@ -57,13 +57,13 @@ class Font:
     
     def _set_color(self):
         if self.block.Fixed:
-            if self.block.xj == 0:
+            if self.colno == 0:
                 self.color = sh.lg.globs['str']['color_col1']
-            elif self.block.xj == 1:
+            elif self.colno == 1:
                 self.color = sh.lg.globs['str']['color_col2']
-            elif self.block.xj == 2:
+            elif self.colno == 2:
                 self.color = sh.lg.globs['str']['color_col3']
-            elif self.block.xj == 3:
+            elif self.colno == 3:
                 self.color = sh.lg.globs['str']['color_col4']
         elif self.block.type_ in ('phrase','term'):
             self.color = sh.lg.globs['str']['color_terms']
@@ -82,26 +82,26 @@ class Font:
     
     def _set_color_p(self):
         if self.block.Fixed:
-            if self.block.xj == 0:
+            if self.colno == 0:
                 self.color = self.priority_color1
-            elif self.block.xj == 1:
+            elif self.colno == 1:
                 self.color = self.priority_color2
-            elif self.block.xj == 2:
+            elif self.colno == 2:
                 self.color = self.priority_color3
-            elif self.block.xj == 3:
+            elif self.colno == 3:
                 self.color = self.priority_color4
         else:
             self.color = self.priority_color1
     
     def _set_color_b(self):
         if self.block.Fixed:
-            if self.block.xj == 0:
+            if self.colno == 0:
                 self.color = self.blocked_color1
-            elif self.block.xj == 1:
+            elif self.colno == 1:
                 self.color = self.blocked_color2
-            elif self.block.xj == 2:
+            elif self.colno == 2:
                 self.color = self.blocked_color3
-            elif self.block.xj == 3:
+            elif self.colno == 3:
                 self.color = self.blocked_color4
         else:
             self.color = 'dim gray'
@@ -111,7 +111,7 @@ class Font:
         if not self.Success:
             sh.com.cancel(f)
             return
-        if self.block.xj == 0 and self.block.Fixed \
+        if self.colno == 0 and self.block.Fixed \
         or self.block.type_ in ('dic','phdic','wform'):
             self.Bold = True
     
@@ -165,13 +165,13 @@ class Font:
             sh.com.cancel(f)
             return
         if self.block.Fixed:
-            if self.block.xj == 0:
+            if self.colno == 0:
                 self.family = sh.lg.globs['str']['font_col1_family']
-            elif self.block.xj == 1:
+            elif self.colno == 1:
                 self.family = sh.lg.globs['str']['font_col2_family']
-            elif self.block.xj == 2:
+            elif self.colno == 2:
                 self.family = sh.lg.globs['str']['font_col3_family']
-            elif self.block.xj == 3:
+            elif self.colno == 3:
                 self.family = sh.lg.globs['str']['font_col4_family']
         elif self.block.type_ in ('comment','correction','phcom'
                                  ,'phcount','transc','user'
@@ -186,13 +186,13 @@ class Font:
             sh.com.cancel(f)
             return
         if self.block.Fixed:
-            if self.block.xj == 0:
+            if self.colno == 0:
                 self.size = sh.lg.globs['int']['font_col1_size']
-            elif self.block.xj == 1:
+            elif self.colno == 1:
                 self.size = sh.lg.globs['int']['font_col2_size']
-            elif self.block.xj == 2:
+            elif self.colno == 2:
                 self.size = sh.lg.globs['int']['font_col3_size']
-            elif self.block.xj == 3:
+            elif self.colno == 3:
                 self.size = sh.lg.globs['int']['font_col4_size']
         elif self.block.type_ in ('comment','correction','phcom'
                                  ,'phcount','transc','user'
