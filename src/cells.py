@@ -17,6 +17,7 @@ class Block:
         self.dic = ''
         self.dprior = 0
         self.first = -1
+        self.Fixed = False
         self.i = -1
         self.j = -1
         self.last = -1
@@ -212,6 +213,12 @@ class Cells:
             self.Success = False
             sh.com.rep_empty(f)
         
+    def set_fixed(self):
+        for block in self.blocks:
+            #TODO: either add new fixed types here or import a variable
+            if block.type_ in ('dic','wform','speech','transc'):
+                block.Fixed = True
+
     def clear_phrases(self):
         ''' The 'Phrases' section comes the latest in MT, therefore,
             it inherits fixed columns of the preceding subject which
@@ -270,6 +277,7 @@ class Cells:
             self.assign()
             self.restore_fixed()
             self.clear_fixed()
+            self.set_fixed()
             self.clear_phrases()
             self.expand_speech()
             self.move_phrases_end()
