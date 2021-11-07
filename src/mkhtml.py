@@ -492,17 +492,21 @@ class HTM:
                         code.append('</td>')
                     #NOTE: This code depends on a starting number
                     if old_rowno != ifont.rowno and 0 < ifont.colno <= 4:
-                        sub = '<td align="center" valign="top" style="width: {}%"></td>'
-                        sub1 = sub.format(objs.get_fonts().col1_width)
+                        sub = '<td{} valign="top" style="width: {}%"></td>'
+                        if ifont.block.Fixed:
+                            subc = sub.format(' align="center"')
+                        else:
+                            subc = ''
+                        sub1 = sub.format(subc,objs.get_fonts().col1_width)
                         code.append(sub1)
-                        sub2 = sub.format(objs.get_fonts().col2_width)
+                        sub2 = sub.format(subc,objs.get_fonts().col2_width)
                         code.append(sub2)
-                        sub3 = sub.format(objs.get_fonts().col3_width)
+                        sub3 = sub.format(subc,objs.get_fonts().col3_width)
                         code.append(sub3)
-                        sub4 = sub.format(objs.get_fonts().col4_width)
+                        sub4 = sub.format(subc,objs.get_fonts().col4_width)
                         code.append(sub4)
                     sub = '<td{} valign="top"{}>'
-                    if ifont.colno in (0,1,2,3):
+                    if ifont.block.Fixed:
                         sub1 = ' align="center"'
                     else:
                         sub1 = ''
