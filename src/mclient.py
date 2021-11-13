@@ -100,12 +100,13 @@ class ColumnWidth:
     
     def set_width(self):
         f = '[MClient] mclient.ColumnWidth.set_width'
-        if not self.avail_fixed or not self.avail_term \
-        or not self.window_width:
+        if not self.avail_term or not self.window_width:
             sh.com.rep_empty(f)
             return
         if not self.act_term:
             self.act_term = self.min_width
+        if not self.avail_fixed:
+            self.avail_fixed = self.avail_term
         # We have already set act[1..4] to 1, so we cannot get 0 here
         self.col1 = min(self.act1,self.avail_fixed)
         self.col2 = min(self.act2,self.avail_fixed)
@@ -142,10 +143,8 @@ class ColumnWidth:
     
     def set_avail_fixed(self):
         f = '[MClient] mclient.ColumnWidth.set_avail_fixed'
-        if not self.fixed_num:
-            return
-        if not self.avail_fixed_sum:
-            sh.com.rep_empty(f)
+        if not self.fixed_num or not self.avail_fixed_sum:
+            sh.com.rep_lazy(f)
             return
         avail_sum = self.avail_fixed_sum
         ''' #NOTE: in case of a fixed layout, we must set a width for
@@ -192,7 +191,7 @@ class ColumnWidth:
                         self.fixed_num += 1
                         break
         else:
-            sh.com.rep_empty(f)
+            sh.com.rep_lazy(f)
         mes = _('An actual number of fixed columns: {}')
         mes = mes.format(self.fixed_num)
         sh.objs.get_mes(f,mes,True).show_debug()
