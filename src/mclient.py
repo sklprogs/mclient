@@ -39,7 +39,7 @@ class ColumnWidth:
         self.set_values()
     
     def set_values(self):
-        self.fixed_sum_pc = 20
+        self.fixed_sum_pc = 0
         self.min_width = 1
         self.window_width = 0
         self.fixed_num = 0
@@ -75,15 +75,26 @@ class ColumnWidth:
         self.short_term = ''
         self.long_term = ''
     
+    def set_fixed_sum_pc(self):
+        if self.long1:
+            self.fixed_sum_pc += 5
+        if self.long2:
+            self.fixed_sum_pc += 5
+        if self.long3:
+            self.fixed_sum_pc += 5
+        if self.long4:
+            self.fixed_sum_pc += 5
+    
     def reset(self):
         self.set_values()
     
     def run(self):
         # This procedure will take almost the same time as 'calc_fonts'
         self.set_window_width()
+        self.set_longest()
+        self.set_fixed_sum_pc()
         self.set_avail_fixed_sum()
         self.set_avail_term_sum()
-        self.set_longest()
         self.calc_fonts()
         self.set_fixed_num()
         self.set_term_num()
@@ -354,8 +365,11 @@ class ColumnWidth:
     
     def set_avail_fixed_sum(self):
         f = '[MClient] mclient.ColumnWidth.set_avail_fixed_sum'
-        if not self.window_width or not self.fixed_sum_pc:
+        if not self.window_width:
             sh.com.rep_empty(f)
+            return
+        if not self.fixed_sum_pc:
+            sh.com.rep_lazy(f)
             return
         self.avail_fixed_sum = (self.window_width * self.fixed_sum_pc) / 100
         mes = _('Space available for fixed columns: {} pixels ({}%)')
@@ -364,7 +378,7 @@ class ColumnWidth:
     
     def set_avail_term_sum(self):
         f = '[MClient] mclient.ColumnWidth.set_avail_term_sum'
-        if not self.window_width or not self.avail_fixed_sum:
+        if not self.window_width:
             sh.com.rep_empty(f)
             return
         percent = 100 - self.fixed_sum_pc
