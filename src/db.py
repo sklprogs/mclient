@@ -26,9 +26,13 @@ class DB:
         f = '[MClient] db.DB.get_fixed_cell_texts'
         if self.artid:
             query = 'select CELLNO,TEXT from BLOCKS where ARTICLEID = ?\
-                     and COLNO = ? and BLOCK = 0 \
-                     and IGNORE = 0 and TEXT != ? order by CELLNO'
-            args = (self.artid,colno,'',)
+                     and COLNO = ? and BLOCK = 0 and IGNORE = 0 \
+                     and TEXT != ? and TYPE in (?,?,?,?,?) \
+                     order by CELLNO'
+            args = (self.artid,colno,'','dic','wform','transc','speech'
+                   ,'phdic'
+                   ,
+                   )
             self.dbc.execute(query,args)
             return self.dbc.fetchall()
         else:
@@ -38,9 +42,12 @@ class DB:
         f = '[MClient] db.DB.get_term_cell_texts'
         if self.artid:
             query = 'select CELLNO,TEXT from BLOCKS where ARTICLEID = ?\
-                     and COLNO > ? and BLOCK = 0 \
-                     and IGNORE = 0 and TEXT != ? order by CELLNO'
-            args = (self.artid,3,'',)
+                     and BLOCK = 0 and IGNORE = 0 and TEXT != ? \
+                     and not TYPE in (?,?,?,?,?) order by CELLNO'
+            args = (self.artid,'','dic','wform','transc','speech'
+                   ,'phdic'
+                   ,
+                   )
             self.dbc.execute(query,args)
             return self.dbc.fetchall()
         else:
@@ -50,9 +57,12 @@ class DB:
         f = '[MClient] db.DB.get_fixed'
         if self.artid:
             query = 'select distinct TYPE,TEXT from BLOCKS \
-                     where ARTICLEID = ? and TYPE in (?,?,?,?) \
+                     where ARTICLEID = ? and TYPE in (?,?,?,?,?) \
                      and TEXT != ? and BLOCK = 0 and IGNORE = 0'
-            args = (self.artid,'dic','wform','transc','speech','',)
+            args = (self.artid,'dic','wform','transc','speech','phdic'
+                   ,''
+                   ,
+                   )
             self.dbc.execute(query,args)
             return self.dbc.fetchall()
         else:

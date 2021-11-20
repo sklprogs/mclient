@@ -98,6 +98,14 @@ class ColumnWidth:
             return 100
         return self.table_pc
     
+    def _get_min(self,lst):
+        lst = [item for item in lst if item]
+        # Cannot use 'min' on an empty sequence
+        if lst:
+            return min(lst)
+        else:
+            return self.min_width
+    
     def set_width(self):
         f = '[MClient] mclient.ColumnWidth.set_width'
         if not self.avail_term or not self.window_width:
@@ -105,14 +113,12 @@ class ColumnWidth:
             return
         if not self.act_term:
             self.act_term = self.min_width
-        if not self.avail_fixed:
-            self.avail_fixed = self.avail_term
         # We have already set act[1..4] to 1, so we cannot get 0 here
-        self.col1 = min(self.act1,self.avail_fixed)
-        self.col2 = min(self.act2,self.avail_fixed)
-        self.col3 = min(self.act3,self.avail_fixed)
-        self.col4 = min(self.act4,self.avail_fixed)
-        self.term_col = min(self.act_term,self.avail_term)
+        self.col1 = self._get_min([self.act1,self.avail_fixed])
+        self.col2 = self._get_min([self.act2,self.avail_fixed])
+        self.col3 = self._get_min([self.act3,self.avail_fixed])
+        self.col4 = self._get_min([self.act4,self.avail_fixed])
+        self.term_col = self._get_min([self.act_term,self.avail_term])
         self.col1_pc = (100 * self.col1) / self.window_width
         self.col2_pc = (100 * self.col2) / self.window_width
         self.col3_pc = (100 * self.col3) / self.window_width
