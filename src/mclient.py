@@ -741,7 +741,7 @@ class Objects:
 
     def get_column_width(self):
         if self.column_width is None:
-            self.column_width = ColumnWidth()
+            self.column_width = ColumnWidth(lg.objs.get_plugins().Debug)
         return self.column_width
     
     def get_settings(self):

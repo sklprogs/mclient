@@ -482,9 +482,11 @@ class HTM:
                         code.append('</td>')
                     if old_rowno != ifont.rowno:
                         delta = ifont.colno
-                        print('delta:',delta)
                         for i in range(delta):
-                            code.append('<td/>')
+                            col_width = objs.get_fonts()._get_col_width(i)
+                            sub = '<td style="width: {}%"/>'
+                            sub = sub.format(col_width)
+                            code.append(sub)
                         sub = '<td{} valign="top" style="width: {}%"/>'
                         if ifont.block.Fixed:
                             sub = sub.format (' align="center"'
