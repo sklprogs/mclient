@@ -480,9 +480,12 @@ class HTM:
                 if old_colno != ifont.colno:
                     if ifont.colno > 0 and old_rowno == ifont.rowno:
                         code.append('</td>')
-                    #NOTE: This code depends on a starting number
                     if old_rowno != ifont.rowno:
-                        sub = '<td{} valign="top" style="width: {}%"></td>'
+                        delta = ifont.colno
+                        print('delta:',delta)
+                        for i in range(delta):
+                            code.append('<td/>')
+                        sub = '<td{} valign="top" style="width: {}%"/>'
                         if ifont.block.Fixed:
                             sub = sub.format (' align="center"'
                                              ,ifont.col_width
@@ -503,8 +506,8 @@ class HTM:
                     sub = sub.format(sub1,sub2)
                     code.append(sub)
                     old_colno = ifont.colno
-                ''' Cannot be modified immediately after a new row has
-                    been discovered since 'rowno' is used after that.
+                ''' Cannot be modified immediately after a new row was
+                    discovered since 'rowno' is used after that.
                 '''
                 if old_rowno != ifont.rowno:
                     old_rowno = ifont.rowno
