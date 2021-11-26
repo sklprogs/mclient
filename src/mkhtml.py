@@ -212,22 +212,22 @@ class Fonts:
         self.Debug = Debug
         self.maxrows = maxrows
     
+    def _get_col_width(self,colno):
+        f = '[MClient] mkhtml.Fonts._get_col_width'
+        for column in self.columns:
+            if column.no == colno:
+                return column.final_pc
+        mes = _('Wrong input data: "{}"!').format(colno)
+        sh.objs.get_mes(f,mes).show_warning()
+        return 0
+    
     def set_column_width(self):
         f = '[MClient] mkhtml.Fonts.set_column_width'
         if not self.Success:
             sh.com.cancel(f)
             return
         for ifont in self.fonts:
-            if ifont.colno == 0:
-                ifont.col_width = self.col1_width
-            elif ifont.colno == 1:
-                ifont.col_width = self.col2_width
-            elif ifont.colno == 2:
-                ifont.col_width = self.col3_width
-            elif ifont.colno == 3:
-                ifont.col_width = self.col4_width
-            else:
-                ifont.col_width = self.term_col_width
+            ifont.col_width = self._get_col_width(ifont.colno)
     
     def debug(self):
         f = '[MClient] mkhtml.Fonts.debug'
@@ -272,28 +272,18 @@ class Fonts:
                            ).run()
         sh.com.run_fast_debug(f,mes)
     
-    def reset (self,blocks,Reverse=False,col1_width=0,col2_width=0
-              ,col3_width=0,col4_width=0,term_col_width=0
-              ):
+    def reset(self,blocks,columns,Reverse=False):
         self.set_values()
         self.blocks = blocks
+        self.columns = columns
         self.Reverse = Reverse
-        self.col1_width = col1_width
-        self.col2_width = col2_width
-        self.col3_width = col3_width
-        self.col4_width = col4_width
-        self.term_col_width = term_col_width
     
     def set_values(self):
         self.Success = True
         self.Reverse = False
         self.fonts = []
         self.blocks = []
-        self.col1_width = 0
-        self.col2_width = 0
-        self.col3_width = 0
-        self.col4_width = 0
-        self.term_col_width = 0
+        self.columns = []
     
     def set_priority_colors(self):
         delta = -76
@@ -368,7 +358,7 @@ class Fonts:
     
     def check(self):
         f = '[MClient] mkhtml.Fonts.check'
-        if not self.blocks:
+        if not self.blocks or not self.columns:
             self.Success = False
             sh.com.rep_empty(f)
     
@@ -491,20 +481,15 @@ class HTM:
                     if ifont.colno > 0 and old_rowno == ifont.rowno:
                         code.append('</td>')
                     #NOTE: This code depends on a starting number
-                    if old_rowno != ifont.rowno and 0 < ifont.colno <= 4:
+                    if old_rowno != ifont.rowno:
                         sub = '<td{} valign="top" style="width: {}%"></td>'
                         if ifont.block.Fixed:
-                            subc = sub.format(' align="center"')
+                            sub = sub.format (' align="center"'
+                                             ,ifont.col_width
+                                             )
                         else:
-                            subc = ''
-                        sub1 = sub.format(subc,objs.get_fonts().col1_width)
-                        code.append(sub1)
-                        sub2 = sub.format(subc,objs.get_fonts().col2_width)
-                        code.append(sub2)
-                        sub3 = sub.format(subc,objs.get_fonts().col3_width)
-                        code.append(sub3)
-                        sub4 = sub.format(subc,objs.get_fonts().col4_width)
-                        code.append(sub4)
+                            sub = sub.format('',ifont.col_width)
+                        code.append(sub)
                     sub = '<td{} valign="top"{}>'
                     if ifont.block.Fixed:
                         sub1 = ' align="center"'

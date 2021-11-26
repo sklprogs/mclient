@@ -30,13 +30,32 @@ if __name__ == '__main__':
         import keylistener.linux as kl
 
 
+
+class Column:
+    
+    def __init__(self):
+        self.no = 0
+        self.Fixed = False
+        self.text_px = 0
+        self.final_px = 0
+        self.final_pc = 0
+        self.short = ''
+        self.long = ''
+        self.short_px = 0
+        self.long_px = 0
+        self.avail_px = 0
+
+
+
 class ColumnWidth:
     ''' Calculate an actual size of the widest column. This is
         font-dependent and window-dependent so the code can run
         in a controller only.
     '''
-    def __init__(self):
+    def __init__(self,Debug=False,maxrows=1000):
         self.set_values()
+        self.Debug = Debug
+        self.maxrows = maxrows
     
     def set_values(self):
         self.fixed_sum_pc = 0
@@ -44,46 +63,57 @@ class ColumnWidth:
         self.window_width = 0
         self.fixed_num = 0
         self.term_num = 0
-        self.avail_fixed = 0
         self.avail_fixed_sum = 0
-        self.avail_term = 0
         self.avail_term_sum = 0
-        self.act1 = 0
-        self.act2 = 0
-        self.act3 = 0
-        self.act4 = 0
-        self.col1 = 0
-        self.col2 = 0
-        self.col3 = 0
-        self.col4 = 0
-        self.term_col = 0
-        self.act_term = 0
-        self.col1_pc = 0
-        self.col2_pc = 0
-        self.col3_pc = 0
-        self.col4_pc = 0
-        self.term_col_pc = 0
+        self.columns = []
         self.table_pc = 100
-        self.short1 = ''
-        self.short2 = ''
-        self.short3 = ''
-        self.short4 = ''
-        self.long1 = ''
-        self.long2 = ''
-        self.long3 = ''
-        self.long4 = ''
-        self.short_term = ''
-        self.long_term = ''
+    
+    def debug(self):
+        f = '[MClient] mclient.ColumnWidth.debug'
+        if self.Debug:
+            headers = (_('#'),'FIXED','TEXTPX','FINALPX','FINALPC'
+                      ,'SHORT','LONG','SHORTPX','LONGPX','AVAILPX'
+                      )
+            nos = []
+            fixed = []
+            text_px = []
+            final_px = []
+            final_pc = []
+            short = []
+            long_ = []
+            short_px = []
+            long_px = []
+            avail_px = []
+            for column in self.columns:
+                nos.append(column.no)
+                fixed.append(column.Fixed)
+                text_px.append(column.text_px)
+                final_px.append(column.final_px)
+                final_pc.append(column.final_pc)
+                short.append(column.short)
+                long_.append(column.long)
+                short_px.append(column.short_px)
+                long_px.append(column.long_px)
+                avail_px.append(column.avail_px)
+            iterable = [nos,fixed,text_px,final_px,final_pc,short,long_
+                       ,short_px,long_px,avail_px
+                       ]
+            mes = sh.FastTable (iterable = iterable
+                               ,headers = headers
+                               ,maxrows = self.maxrows
+                               ,maxrow = 10
+                               ).run()
+            sh.com.run_fast_debug(f,mes)
+        else:
+            sh.com.rep_lazy(f)
     
     def set_fixed_sum_pc(self):
-        if self.long1:
-            self.fixed_sum_pc += 5
-        if self.long2:
-            self.fixed_sum_pc += 5
-        if self.long3:
-            self.fixed_sum_pc += 5
-        if self.long4:
-            self.fixed_sum_pc += 5
+        f = '[MClient] mclient.ColumnWidth.set_fixed_sum_pc'
+        for column in self.columns:
+            if column.Fixed:
+                self.fixed_sum_pc += 5
+        mes = '{}%'.format(self.fixed_sum_pc)
+        sh.objs.get_mes(f,mes,True).show_debug()
     
     def reset(self):
         self.set_values()
@@ -91,16 +121,20 @@ class ColumnWidth:
     def run(self):
         # This procedure will take almost the same time as 'calc_fonts'
         self.set_window_width()
+        self.set_fixed_num()
+        self.set_term_num()
+        self.set_columns()
         self.set_longest()
         self.set_fixed_sum_pc()
         self.set_avail_fixed_sum()
         self.set_avail_term_sum()
         self.calc_fonts()
-        self.set_fixed_num()
-        self.set_term_num()
         self.set_avail_fixed()
         self.set_avail_term()
         self.set_width()
+        self.set_percentage()
+        self.set_table_width()
+        self.debug()
     
     def get_table_width(self):
         if not sh.lg.globs['bool']['AdjustByWidth']:
@@ -117,43 +151,21 @@ class ColumnWidth:
         else:
             return self.min_width
     
+    def set_percentage(self):
+        for column in self.columns:
+            column.final_pc = (100 * column.final_px) / self.window_width
+    
     def set_width(self):
-        f = '[MClient] mclient.ColumnWidth.set_width'
-        if not self.avail_term or not self.window_width:
-            sh.com.rep_empty(f)
-            return
-        if not self.act_term:
-            self.act_term = self.min_width
-        # We have already set act[1..4] to 1, so we cannot get 0 here
-        self.col1 = self._get_min([self.act1,self.avail_fixed])
-        self.col2 = self._get_min([self.act2,self.avail_fixed])
-        self.col3 = self._get_min([self.act3,self.avail_fixed])
-        self.col4 = self._get_min([self.act4,self.avail_fixed])
-        self.term_col = self._get_min([self.act_term,self.avail_term])
-        self.col1_pc = (100 * self.col1) / self.window_width
-        self.col2_pc = (100 * self.col2) / self.window_width
-        self.col3_pc = (100 * self.col3) / self.window_width
-        self.col4_pc = (100 * self.col4) / self.window_width
-        self.term_col_pc = (100 * self.term_col) / self.window_width
-        mes = _('Column #{}: {} pixels ({}%)')
-        mes = mes.format(1,self.col1,self.col1_pc)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        mes = _('Column #{}: {} pixels ({}%)')
-        mes = mes.format(2,self.col2,self.col2_pc)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        mes = _('Column #{}: {} pixels ({}%)')
-        mes = mes.format(3,self.col3,self.col3_pc)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        mes = _('Column #{}: {} pixels ({}%)')
-        mes = mes.format(4,self.col4,self.col4_pc)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        mes = _('Term column: {} pixels ({}%)')
-        mes = mes.format(self.term_col,self.term_col_pc)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        table_px = self.col1 + self.col2 + self.col3 + self.col4 \
-                 + self.term_num * self.term_col
-        self.table_pc = self.col1_pc + self.col2_pc + self.col3_pc \
-                      + self.col4_pc + self.term_num * self.term_col_pc
+        for column in self.columns:
+            column.final_px = self._get_min([column.text_px,column.avail_px])
+    
+    def set_table_width(self):
+        f = '[MClient] mclient.ColumnWidth.set_table_width'
+        table_px = 0
+        self.table_pc = 0
+        for column in self.columns:
+            table_px += column.final_px
+            self.table_pc += column.final_pc
         mes = _('Window width: {} pixels; table width: {} pixels ({}%)')
         mes = mes.format(self.window_width,table_px,self.table_pc)
         sh.objs.get_mes(f,mes,True).show_debug()
@@ -169,49 +181,36 @@ class ColumnWidth:
             web engine will treat this as a default width which will
             cause bugs.
         '''
-        if not self.act1:
-            self.act1 = self.min_width
-            avail_sum -= self.min_width
-        if not self.act2:
-            self.act2 = self.min_width
-            avail_sum -= self.min_width
-        if not self.act3:
-            self.act3 = self.min_width
-            avail_sum -= self.min_width
-        if not self.act4:
-            self.act4 = self.min_width
-            avail_sum -= self.min_width
-        self.avail_fixed = avail_sum / self.fixed_num
-        mes = _('Space available for a fixed column: {} pixels')
-        mes = mes.format(self.avail_fixed)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        for column in self.columns:
+            if column.Fixed:
+                if not column.text_px:
+                    column.text_px = self.min_width
+                    avail_sum -= self.min_width
+        avail_px = avail_sum / self.fixed_num
+        for column in self.columns:
+            if column.Fixed:
+                column.avail_px = avail_px
     
     def set_avail_term(self):
         f = '[MClient] mclient.ColumnWidth.set_avail_term'
         if not self.term_num or not self.avail_term_sum:
             sh.com.rep_empty(f)
             return
-        self.avail_term = self.avail_term_sum / self.term_num
-        mes = _('Space available for a term column: {} pixels')
-        mes = mes.format(self.avail_term)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        avail_term = self.avail_term_sum / self.term_num
+        for column in self.columns:
+            if not column.Fixed:
+                column.avail_px = avail_term
     
     def set_fixed_num(self):
         f = '[MClient] mclient.ColumnWidth.set_fixed_num'
-        data = lg.objs.get_blocksdb().get_fixed()
-        if data:
-            #NOTE: Add new fixed types here
-            fixed = ('dic','wform','transc','speech')
-            for type_ in fixed:
-                for tuple_ in data:
-                    if tuple_[0] == type_:
-                        self.fixed_num += 1
-                        break
+        columns = lg.objs.get_blocksdb().get_fixed_cols()
+        if columns:
+            self.fixed_num = len(columns)
+            mes = _('An actual number of fixed columns: {}')
+            mes = mes.format(self.fixed_num)
+            sh.objs.get_mes(f,mes,True).show_debug()
         else:
             sh.com.rep_lazy(f)
-        mes = _('An actual number of fixed columns: {}')
-        mes = mes.format(self.fixed_num)
-        sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_term_num(self):
         f = '[MClient] mclient.ColumnWidth.set_term_num'
@@ -272,49 +271,62 @@ class ColumnWidth:
         sh.objs.get_mes(f,mes,True).show_debug()
         return width
     
+    def _get_first_term(self):
+        for column in self.columns:
+            if not column.Fixed:
+                return column
+    
     def calc_fonts(self):
         f = '[MClient] mclient.ColumnWidth.calc_fonts'
-        timer = sh.Timer(f)
-        timer.start()
-        short1_px = short2_px = short3_px = short4_px = short_term_px \
-                  = long1_px = long2_px = long3_px = long4_px \
-                  = long_term_px = 0
-        short1_px = self._calc_font(self.short1,0)
-        long1_px = self._calc_font(self.long1,0)
-        short2_px = self._calc_font(self.short2,1)
-        long2_px = self._calc_font(self.long2,1)
-        short3_px = self._calc_font(self.short3,2)
-        long3_px = self._calc_font(self.long3,2)
-        short4_px = self._calc_font(self.short4,3)
-        long4_px = self._calc_font(self.long4,3)
-        short_term_px = self._calc_font(self.short_term,4)
-        long_term_px = self._calc_font(self.long_term,4)
-        self.act1 = (short1_px + long1_px) / 2
-        self.act2 = (short2_px + long2_px) / 2
-        self.act3 = (short3_px + long3_px) / 2
-        self.act4 = (short4_px + long4_px) / 2
-        self.act_term = (short_term_px + long_term_px) / 2
-        mes = _('Column #1: {} px; #2: {} px; #3: {} px; #4: {} px; others: {} px')
-        mes = mes.format (self.act1,self.act2,self.act3,self.act4
-                         ,self.act_term
-                         )
-        sh.objs.get_mes(f,mes,True).show_debug()
-        timer.end()
+        term_col = self._get_first_term()
+        if term_col:
+            term_min, term_max = term_col.short, term_col.long
+        else:
+            term_min = term_max = ''
+        for column in self.columns:
+            if column.Fixed:
+                column.short_px = self._calc_font(column.short,column.no)
+                column.long_px = self._calc_font(column.long,column.no)
+                column.text_px = (column.short_px + column.long_px) / 2
+            else:
+                if len(column.short) < len(term_min):
+                    term_min = column.short
+                if len(column.long) > len(term_max):
+                    term_max = column.long
+        if term_min and term_max:
+            term_min_px = self._calc_font(term_min,4)
+            term_max_px = self._calc_font(term_max,4)
+            term_average_px = (term_min_px + term_max_px) / 2
+            for column in self.columns:
+                if not column.Fixed:
+                    column.short = term_min
+                    column.long = term_max
+                    column.text_px = term_average_px
+        else:
+            mes = _('Unable to configure term columns!')
+            sh.objs.get_mes(f,mes,True).show_warning()
     
     def set_longest(self):
-        f = '[MClient] mclient.ColumnWidth.set_longest'
-        mes = _('Term cells:')
-        sh.objs.get_mes(f,mes,True).show_debug()
-        data = lg.objs.get_blocksdb().get_term_cell_texts()
-        self.short_term, self.long_term = self._get_longest(data)
-        data = lg.objs.blocksdb.get_fixed_cell_texts(0)
-        self.short1, self.long1 = self._get_longest(data)
-        data = lg.objs.blocksdb.get_fixed_cell_texts(1)
-        self.short2, self.long2 = self._get_longest(data)
-        data = lg.objs.blocksdb.get_fixed_cell_texts(2)
-        self.short3, self.long3 = self._get_longest(data)
-        data = lg.objs.blocksdb.get_fixed_cell_texts(3)
-        self.short4, self.long4 = self._get_longest(data)
+        columns = self.fixed_num + self.term_num
+        for i in range(columns):
+            data = lg.objs.get_blocksdb().get_col_texts(i)
+            short, long_ = self._get_longest(data)
+            self.columns[i].short = short
+            self.columns[i].long = long_
+    
+    def set_columns(self):
+        col_nos = self.fixed_num + self.term_num
+        for i in range(self.fixed_num):
+            column = Column()
+            column.no = i
+            column.Fixed = True
+            self.columns.append(column)
+        i = self.fixed_num
+        while i < col_nos:
+            column = Column()
+            column.no = i
+            self.columns.append(column)
+            i += 1
     
     def _get_longest(self,data):
         f = '[MClient] mclient.ColumnWidth._get_longest'
@@ -2344,11 +2356,7 @@ class WebFrame:
         mh.objs.get_fonts(lg.objs.get_plugins().Debug)
         mh.objs.fonts.reset (blocks = cells.blocks
                             ,Reverse = sh.lg.globs['bool']['VerticalView']
-                            ,col1_width = objs.column_width.col1_pc
-                            ,col2_width = objs.column_width.col2_pc
-                            ,col3_width = objs.column_width.col3_pc
-                            ,col4_width = objs.column_width.col4_pc
-                            ,term_col_width = objs.column_width.term_col_pc
+                            ,columns = objs.column_width.columns
                             )
         mh.objs.get_htm().reset (fonts = mh.objs.fonts.run()
                                 ,skipped = len(com.get_skipped_dics())
