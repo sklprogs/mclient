@@ -1,4 +1,5 @@
 (in development)
+* Improve selecting a column width based on a text width
 * Colorize subjects from a Phrases section
 * Add hotkeys Alt + digit to change a number of columns (for example,
   Alt-4 - 4 columns, Alt-6 - 6 columns, Alt-0 - 10 columns)

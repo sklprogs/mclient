@@ -119,7 +119,7 @@ class ColumnWidth:
         self.set_values()
     
     def run(self):
-        # This procedure will take almost the same time as 'calc_fonts'
+        # Takes ~1.42s for 'set' on Intel Atom
         self.set_window_width()
         self.set_fixed_num()
         self.set_term_num()
