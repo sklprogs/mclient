@@ -487,14 +487,6 @@ class HTM:
                             sub = '<td style="width: {}%"/>'
                             sub = sub.format(col_width)
                             code.append(sub)
-                        sub = '<td{} valign="top" style="width: {}%"/>'
-                        if ifont.block.Fixed:
-                            sub = sub.format (' align="center"'
-                                             ,ifont.col_width
-                                             )
-                        else:
-                            sub = sub.format('',ifont.col_width)
-                        code.append(sub)
                     sub = '<td{} valign="top"{}>'
                     if ifont.block.Fixed:
                         sub1 = ' align="center"'
