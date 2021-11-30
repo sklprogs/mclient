@@ -212,7 +212,7 @@ class Cells:
         else:
             self.Success = False
             sh.com.rep_empty(f)
-        
+
     def set_fixed(self):
         for block in self.blocks:
             #TODO: either add new fixed types here or import a variable
@@ -404,10 +404,11 @@ class Cells:
                 else:
                     self.blocks[x].j = len(self.cols)
                     j += 1
-                    
+    
     def wrap_y(self):
-        ''' Create a vertically reversed view. This generally differs
-            from 'wrap' in that we do not use 'collimit'.
+        ''' Create a vertically reversed view. This differs from
+            'wrap_x' in that we do not use 'collimit', so we cannot
+            just transpose row numbers to column numbers and vice versa.
         '''
         i = j = 0
         for x in range(len(self.blocks)):
@@ -421,7 +422,7 @@ class Cells:
             elif self.blocks[x].same > 0:
                 self.blocks[x].i = i
                 self.blocks[x].j = j
-            elif self.blocks[x].text:
+            else:
                 self.blocks[x].j = j
                 i += 1
                 self.blocks[x].i = i
