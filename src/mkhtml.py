@@ -217,8 +217,11 @@ class Fonts:
         for column in self.columns:
             if column.no == colno:
                 return column.final_pc
-        mes = _('Wrong input data: "{}"!').format(colno)
-        sh.objs.get_mes(f,mes).show_warning()
+        modes = sorted(set(str(column.no) for column in self.columns))
+        modes = '; '.join(modes)
+        mes = _('Argument "{}" is not covered by the range of "{}"!')
+        mes = mes.format(colno,modes)
+        sh.objs.get_mes(f,mes,True).show_warning()
         return 0
     
     def set_column_width(self):
