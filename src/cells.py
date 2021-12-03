@@ -442,10 +442,10 @@ class Cells:
             phrases = [block for block in self.blocks \
                        if block.dic == self.phdic
                       ]
-            self.blocks = [block for block in self.blocks \
-                           if block.dic != self.phdic
-                          ]
-            self.blocks = self.blocks + phrases
+            blocks = [block for block in self.blocks \
+                      if block.dic != self.phdic
+                     ]
+            self.blocks = blocks + phrases
         else:
             sh.com.rep_empty(f)
     
@@ -474,8 +474,8 @@ class Cells:
                                         )
                                  )
         
-    # Takes ~0.002s on 'set'
     def expand_speech(self):
+        # Takes ~0.002s on 'set'
         f = '[MClient] cells.Cells.expand_speech'
         if self.spdic:
             for block in self.blocks:
