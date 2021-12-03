@@ -1,5 +1,6 @@
 mclient:
 - Fix Vertical mode
+- Fix Stardict (nothing is found)
 - Changing a number of columns to 1 causes a block finding problem
 
 multitrancom:
@@ -51,6 +52,7 @@ stardict:
 
 dsl:
 - Cannot find anything in Ozhegov's and Ushakov's dictionaries
+- Fix the wrong position (at top) of a phrase section
 
 multitrandem:
 - Throws an error during a search when Stardict/DSL dics (but not MT)

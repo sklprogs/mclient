@@ -52,8 +52,8 @@ class Font:
         if not self.Success:
             sh.com.cancel(f)
             return
-        self.rowno = self.block.xi
-        self.colno = self.block.xj
+        self.rowno = self.block.i
+        self.colno = self.block.j
     
     def _set_color(self):
         if self.block.Fixed:
@@ -275,15 +275,13 @@ class Fonts:
                            ).run()
         sh.com.run_fast_debug(f,mes)
     
-    def reset(self,blocks,columns,Reverse=False):
+    def reset(self,blocks,columns):
         self.set_values()
         self.blocks = blocks
         self.columns = columns
-        self.Reverse = Reverse
     
     def set_values(self):
         self.Success = True
-        self.Reverse = False
         self.fonts = []
         self.blocks = []
         self.columns = []
@@ -365,19 +363,6 @@ class Fonts:
             self.Success = False
             sh.com.rep_empty(f)
     
-    def reverse(self):
-        f = '[MClient] mkhtml.Fonts.reverse'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        for block in self.blocks:
-            if self.Reverse:
-                block.xi = block.j
-                block.xj = block.i
-            else:
-                block.xi = block.i
-                block.xj = block.j
-    
     def fill(self):
         f = '[MClient] mkhtml.Fonts.fill'
         if not self.Success:
@@ -399,7 +384,6 @@ class Fonts:
     
     def run(self):
         self.check()
-        self.reverse()
         self.fill()
         self.set_column_width()
         self.debug()

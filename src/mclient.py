@@ -2355,7 +2355,6 @@ class WebFrame:
         
         mh.objs.get_fonts(lg.objs.get_plugins().Debug)
         mh.objs.fonts.reset (blocks = cells.blocks
-                            ,Reverse = sh.lg.globs['bool']['VerticalView']
                             ,columns = objs.column_width.columns
                             )
         mh.objs.get_htm().reset (fonts = mh.objs.fonts.run()
