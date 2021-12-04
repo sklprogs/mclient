@@ -257,20 +257,6 @@ class Cells:
                 else:
                     transc = block.transc
 
-    def run_sep_words(self):
-        ''' Reassign COLNO to start with 0 if separate words have been
-            found (all fixed columns are empty). This allows to avoid
-            the effect when a column with the 1st term is stretched
-            owing to empty fixed columns.
-        '''
-        min_j = len(self.cols)
-        for block in self.blocks:
-            if block.text and block.j < min_j:
-                min_j = block.j
-        if min_j == len(self.cols):
-            for block in self.blocks:
-                block.j -= len(self.cols)
-    
     def run(self):
         f = '[MClient] cells.Cells.run'
         if self.Success:
@@ -282,7 +268,6 @@ class Cells:
             self.expand_speech()
             self.move_phrases_end()
             self.wrap()
-            self.run_sep_words()
             self.sort_cells()
             self.set_cellno()
             self.debug()
@@ -410,10 +395,11 @@ class Cells:
             'wrap_x' in that we do not use 'collimit', so we cannot
             just transpose row numbers to column numbers and vice versa.
         '''
+        dic = ''
         i = j = 0
         for x in range(len(self.blocks)):
-            if self.cols and self.blocks[x].type_ == self.cols[0] \
-            and self.blocks[x].text:
+            if self.cols and dic != self.blocks[x].dic:
+                dic = self.blocks[x].dic
                 if x > 0:
                     j += 1
                 self.blocks[x].j = j
