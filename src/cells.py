@@ -266,7 +266,6 @@ class Cells:
             self.set_fixed()
             self.clear_phrases()
             self.expand_speech()
-            self.move_phrases_end()
             self.wrap()
             self.sort_cells()
             self.set_cellno()
@@ -397,22 +396,23 @@ class Cells:
             just transpose row numbers to column numbers and vice versa.
         '''
         dic = ''
-        i = j = 0
+        i = j = oldi = 0
         for x in range(len(self.blocks)):
             if self.cols and dic != self.blocks[x].dic:
                 dic = self.blocks[x].dic
                 if x > 0:
                     j += 1
                 self.blocks[x].j = j
-                self.blocks[x].i = 0
+                self.blocks[x].i = oldi = 0
                 i = 1
             elif self.blocks[x].same > 0:
-                self.blocks[x].i = i
+                self.blocks[x].i = oldi = i
                 self.blocks[x].j = j
             else:
                 self.blocks[x].j = j
-                i += 1
-                self.blocks[x].i = i
+                if oldi == i:
+                    i += 1
+                self.blocks[x].i = oldi = i
     
     # This is necessary because fixed columns are interchangeable now
     def sort_cells(self):
@@ -422,19 +422,6 @@ class Cells:
                                                  ,block.no
                                                  )
                              )
-    
-    def move_phrases_end(self):
-        f = '[MClient] cells.Cells.move_phrases_end'
-        if self.phdic:
-            phrases = [block for block in self.blocks \
-                       if block.dic == self.phdic
-                      ]
-            blocks = [block for block in self.blocks \
-                      if block.dic != self.phdic
-                     ]
-            self.blocks = blocks + phrases
-        else:
-            sh.com.rep_empty(f)
     
     def set_cellno(self):
         no = 0

@@ -203,6 +203,9 @@ class ColumnWidth:
     
     def set_fixed_num(self):
         f = '[MClient] mclient.ColumnWidth.set_fixed_num'
+        if sh.lg.globs['bool']['VerticalView']:
+            sh.com.rep_lazy(f)
+            return
         columns = lg.objs.get_blocksdb().get_fixed_cols()
         if columns:
             self.fixed_num = len(columns)
