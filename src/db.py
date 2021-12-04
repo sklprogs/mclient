@@ -444,8 +444,8 @@ class DB:
         else:
             sh.com.rep_empty(f)
 
-    # Assign input data for Pos
     def assign_pos(self):
+        # Assign input data for Pos
         f = '[MClient] db.DB.assign_pos'
         if self.artid:
             query = 'select NO,TYPE,TEXT,SAMECELL,ROWNO from BLOCKS \
@@ -477,7 +477,7 @@ class DB:
     def clear_cur(self):
         f = '[MClient] db.DB.clear_cur'
         if self.artid:
-            mes = _('Delete records of article No. {} from {}')
+            mes = _('Delete records of article #{} from {}')
             mes = mes.format(self.artid,'BLOCKS, ARTICLES')
             sh.objs.get_mes(f,mes,True).show_warning()
             query = 'delete from BLOCKS where ARTICLEID = ?'

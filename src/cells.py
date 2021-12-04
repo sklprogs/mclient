@@ -585,6 +585,10 @@ class Pos:
                 block.first = last
             block.last = block.first + len(text)
             last = block.last
+        ''' This may be caused by the following:
+            a) Missing types in db.DB.types
+            b) Defective HTML generation algorithm
+        '''
         if not_found:
             not_found = ['"' + item + '"' for item in not_found]
             not_found = '\n' + '\n'.join(not_found)

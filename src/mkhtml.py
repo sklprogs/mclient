@@ -441,6 +441,9 @@ class HTM:
         self.Printer = False
     
     def gen_htm(self):
+        ''' #NOTE: mismatch in opening/closing tags may fail finding
+            text and thereby the algorithm for setting positions.
+        '''
         f = '[MClient] mkhtml.HTM.gen_htm'
         code = []
         code.append('<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">')
@@ -464,7 +467,12 @@ class HTM:
                     if ifont.rowno > 0:
                         code.append('</td></tr>')
                     code.append('<tr>')
-                if old_colno != ifont.colno:
+                ''' #NOTE: Without checking a row number here finding
+                    text may fail in the vertical mode when 2 cells
+                    have a different row number but the same column
+                    number.
+                '''
+                if old_rowno != ifont.rowno or old_colno != ifont.colno:
                     if ifont.colno > 0 and old_rowno == ifont.rowno:
                         code.append('</td>')
                     if old_rowno != ifont.rowno:
