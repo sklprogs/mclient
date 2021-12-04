@@ -291,13 +291,14 @@ class Cells:
     def debug(self):
         f = '[MClient] cells.Cells.debug'
         if self.Debug:
-            headers = ('NO','TYPE','TEXT','DIC','WFORM','SPEECH'
+            headers = ('NO','TYPE','FIXED','TEXT','DIC','WFORM','SPEECH'
                       ,'SPEECHPR','ROWNO','COLNO','CELLNO','SAME'
                       )
             rows = []
             for block in self.blocks:
                 rows.append ([block.no
                              ,block.type_
+                             ,block.Fixed
                              ,block.text
                              ,block.dic
                              ,block.wform
