@@ -1,5 +1,6 @@
 mclient:
 - Fix Stardict (nothing is found)
+- Fix Vertical mode for articles with no fixed columns
 - Vertical mode icon is not changed upon toggling vertical mode on
   a welcome screen
 - Fix wrong 1st position of a speech part in the Cut-to-the chase mode
