@@ -810,6 +810,123 @@ class Commands:
         sh.objs.get_mes(f,mes,True).show_debug()
 
 
+
+class DB:
+    
+    def __init__(self,Debug=False):
+        # 'mandatory -> Иностранные дела'
+        lg.objs.get_request().search = 'Иностранные дела'
+        lg.objs.request.url = 'https://www.multitran.com/m.exe?a=3&sc=716&s=mandatory&l1=1&l2=2&SHL=2'
+        self.maxrows = 1000
+        lg.objs.get_plugins (Debug = Debug
+                            ,maxrows = self.maxrows
+                            )
+    
+    def get(self):
+        f = '[MClient] tests.DB.get'
+        result = lg.objs.get_blocksdb().get_max_col_no()
+        sh.objs.get_mes(f,result,True).show_debug()
+        lg.objs.blocksdb.print_custom()
+    
+    def run(self):
+        self.fill()
+        self.get()
+    
+    def fill(self):
+        f = '[MClient] tests.DB.fill'
+        blocks = lg.objs.get_plugins().request (search = lg.objs.get_request().search
+                                               ,url = lg.objs.request.url
+                                               )
+        # 'None' skips the autoincrement
+        data = (None                              # (00) ARTICLEID
+               ,sh.lg.globs['str']['source']      # (01) SOURCE
+               ,lg.objs.request.search            # (02) TITLE
+               ,lg.objs.request.url               # (03) URL
+               ,lg.objs.get_plugins().get_lang1() # (04) LANG1
+               ,lg.objs.plugins.get_lang2()       # (05) LANG2
+               ,None                              # (06) BOOKMARK
+               ,lg.objs.plugins.get_htm()         # (07) CODE
+               )
+        lg.objs.get_blocksdb().fill_articles(data)
+        lg.objs.blocksdb.artid = lg.objs.blocksdb.get_max_artid()
+        data = lg.com.dump_elems (blocks = blocks
+                                 ,artid = lg.objs.blocksdb.artid
+                                 )
+        if data:
+            lg.objs.blocksdb.fill_blocks(data)
+            
+        lg.objs.blocksdb.update_phterm()
+        
+        self.phdic = lg.objs.blocksdb.get_phdic()
+        if self.phdic:
+            if sh.lg.globs['bool']['ShortSubjects']:
+                self.phdic = self.phdic[0]
+            else:
+                self.phdic = self.phdic[1]
+        else:
+            self.phdic = ''
+        
+        if self.phdic:
+            lg.objs.request.SpecialPage = False
+        else:
+            # Otherwise, 'SpecialPage' will be inherited
+            lg.objs.request.SpecialPage = True
+        #self.update_columns()
+        
+        SortTerms = sh.lg.globs['bool']['AlphabetizeTerms'] \
+                    and not lg.objs.request.SpecialPage
+        ''' We must reset DB as early as possible after setting 'elems',
+            otherwise, real and loaded settings may not coincide, which,
+            in turn, may lead to a data loss, see, for example, RU-EN:
+            "цепь: провод".
+        '''
+        lg.objs.blocksdb.reset (cols = lg.objs.request.cols
+                               ,SortRows = sh.lg.globs['bool']['SortByColumns']
+                               ,SortTerms = SortTerms
+                               ,ExpandDic = not sh.lg.globs['bool']['ShortSubjects']
+                               ,ShowUsers = sh.lg.globs['bool']['ShowUserNames']
+                               ,PhraseCount = sh.lg.globs['bool']['PhraseCount']
+                               )
+        sj.objs.get_article().reset (pairs = lg.objs.blocksdb.get_dic_pairs()
+                                    ,Debug = lg.objs.get_plugins().Debug
+                                    )
+        sj.objs.article.run()
+        data = lg.objs.blocksdb.assign_bp()
+        spdic = lg.objs.get_speech_prior().get_all2prior()
+        bp = cl.BlockPrioritize (data = data
+                                ,Block = sh.lg.globs['bool']['BlockSubjects']
+                                ,Prioritize = sh.lg.globs['bool']['PrioritizeSubjects']
+                                ,phdic = self.phdic
+                                ,spdic = spdic
+                                ,Debug = lg.objs.plugins.Debug
+                                ,maxrows = lg.objs.plugins.maxrows
+                                )
+        bp.run()
+        lg.objs.blocksdb.update(bp.query)
+        
+        lg.objs.blocksdb.unignore()
+        lg.objs.blocksdb.ignore()
+        
+        data = lg.objs.blocksdb.assign_cells()
+
+        if sh.lg.globs['bool']['ShortSpeech']:
+            spdic = {}
+        else:
+            spdic = lg.objs.speech_prior.get_abbr2full()
+        
+        cells = cl.Cells (data = data
+                         ,cols = lg.objs.request.cols
+                         ,collimit = lg.objs.request.collimit
+                         ,phdic = self.phdic
+                         ,spdic = spdic
+                         ,Reverse = sh.lg.globs['bool']['VerticalView']
+                         ,Debug = lg.objs.plugins.Debug
+                         ,maxrows = lg.objs.plugins.maxrows
+                         )
+        cells.run()
+        cells.dump(lg.objs.blocksdb)
+
+
 com = Commands()
 
 
@@ -838,5 +955,9 @@ if __name__ == '__main__':
     #Offline().run_multitrancom()
     #ArticleSubjects().run()
     #com.get_priority()
-    com.run_settings()
+    #com.run_settings()
+    import logic as lg
+    import subjects.subjects as sj
+    import cells as cl
+    DB(1).run()
     sh.com.end()

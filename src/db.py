@@ -124,16 +124,18 @@ class DB:
         else:
             sh.com.rep_empty(f)
     
-    def print_custom(self,maxrow=40,maxrows=1000):
+    def print_custom(self,maxrow=15,maxrows=1000):
         ''' This allows to quickly debug only needed fields.
             The procedure is orphaned so any fields can be selected.
         '''
         f = '[MClient] db.DB.print_custom'
-        query = 'select NO,TYPE,TEXT,DIC,SPEECH,SPEECHPR from BLOCKS \
-                 order by CELLNO,NO'
+        query = 'select NO,TYPE,TEXT,CELLNO,ROWNO,COLNO,BLOCK,IGNORE \
+                 from BLOCKS order by COLNO,CELLNO,NO'
         self.dbc.execute(query)
         rows = self.dbc.fetchall()
-        headers = ('NO','TYPE','TEXT','DIC','SPEECH','SPEECHPR')
+        headers = ('NO','TYPE','TEXT','CELLNO','ROWNO','COLNO','BLOCK'
+                  ,'IGNORE'
+                  )
         mes = sh.FastTable (headers = headers
                            ,iterable = rows
                            ,maxrow = maxrow
