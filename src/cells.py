@@ -213,6 +213,26 @@ class Cells:
             self.Success = False
             sh.com.rep_empty(f)
 
+    def set_cols(self):
+        ''' #TODO (?): change lg.objs.request.cols and
+            lg.objs.request.collimit directly.
+        '''
+        f = '[MClient] cells.Cells.set_cols'
+        fixed = set(block.type_ for block in self.blocks if block.Fixed)
+        old_len = len(self.cols)
+        self.cols = [col for col in self.cols if col in fixed]
+        delta = old_len - len(self.cols)
+        if delta > 0:
+            if self.collimit > delta:
+                self.collimit -= delta
+            else:
+                pass
+        mes = _('Types of actual fixed columns: {}')
+        mes = mes.format(', '.join(self.cols))
+        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = _('Actual column limit: {}').format(self.collimit)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
     def set_fixed(self):
         for block in self.blocks:
             #TODO: either add new fixed types here or import a variable
@@ -264,6 +284,7 @@ class Cells:
             self.restore_fixed()
             self.clear_fixed()
             self.set_fixed()
+            self.set_cols()
             self.clear_phrases()
             self.expand_speech()
             self.wrap()
@@ -323,72 +344,37 @@ class Cells:
         else:
             self.wrap_x()
     
+    def get_fixed_index(self,type_):
+        f = '[MClient] cells.Cells.get_fixed_index'
+        try:
+            return self.cols.index(type_)
+        except ValueError:
+            ''' #TODO: Remove the warning about a missing 'dic' type
+                (which was 'phdic' before).
+            '''
+            mes = _('Wrong input data: "{}"!').format(type_)
+            sh.objs.get_mes(f,mes,True).show_warning()
+        return 0
+    
     def wrap_x(self):
+        f = '[MClient] cells.Cells.wrap_x'
         i = j = -1
-        PrevFixed = False
-        for x in range(len(self.blocks)):
-            if self.cols and self.blocks[x].type_ == self.cols[0]:
-                if PrevFixed:
-                    self.blocks[x].i = i
+        fixed_num = len(self.cols)
+        for block in self.blocks:
+            if not block.same:
+                if block.Fixed:
+                    j = self.get_fixed_index(block.type_)
+                    if j == 0:
+                        i += 1
+                elif j < fixed_num:
+                    j = fixed_num
                 else:
-                    PrevFixed = True
-                    i += 1
-                    self.blocks[x].i = i
-                self.blocks[x].j = 0
-                j = len(self.cols) - 1
-            elif len(self.cols) > 1 \
-            and self.blocks[x].type_ == self.cols[1]:
-                if not PrevFixed:
-                    PrevFixed = True
-                    i += 1
-                self.blocks[x].i = i
-                self.blocks[x].j = 1
-                j = len(self.cols) - 1
-            elif len(self.cols) > 2 \
-            and self.blocks[x].type_ == self.cols[2]:
-                if not PrevFixed:
-                    PrevFixed = True
-                    i += 1
-                self.blocks[x].i = i
-                self.blocks[x].j = 2
-                j = len(self.cols) - 1
-            elif len(self.cols) > 3 \
-            and self.blocks[x].type_ == self.cols[3]:
-                if not PrevFixed:
-                    PrevFixed = True
-                    i += 1
-                self.blocks[x].i = i
-                self.blocks[x].j = j = len(self.cols) - 1
-            # Must be before checking '_collimit'
-            elif self.blocks[x].same > 0:
-                PrevFixed = False
-                # This can happen if there are no fixed columns
-                if i < 0:
-                    i = 0
-                if j < len(self.cols):
-                    j = len(self.cols)
-                self.blocks[x].i = i
-                self.blocks[x].j = j
-            elif j + 1 == self.collimit:
-                PrevFixed = False
-                i += 1
-                self.blocks[x].i = i
-                # Instead of creating empty non-selectable cells
-                self.blocks[x].j = j = len(self.cols)
-            else:
-                PrevFixed = False
-                # This can happen if there are no fixed columns
-                if i < 0:
-                    i = 0
-                self.blocks[x].i = i
-                if x > 0:
                     j += 1
-                    if j < len(self.cols):
-                        j = len(self.cols) + 1
-                    self.blocks[x].j = j
-                else:
-                    self.blocks[x].j = len(self.cols)
-                    j += 1
+                    if j == self.collimit:
+                        j = fixed_num
+                        i += 1
+            block.i = i
+            block.j = j
     
     def wrap_y(self):
         ''' Create a vertically reversed view. This differs from
@@ -414,8 +400,8 @@ class Cells:
                     i += 1
                 self.blocks[x].i = oldi = i
     
-    # This is necessary because fixed columns are interchangeable now
     def sort_cells(self):
+        # This is necessary since fixed columns are interchangeable now
         self.blocks = sorted (self.blocks
                              ,key = lambda block:(block.i
                                                  ,block.j

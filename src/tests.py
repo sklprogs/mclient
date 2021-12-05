@@ -959,5 +959,5 @@ if __name__ == '__main__':
     import logic as lg
     import subjects.subjects as sj
     import cells as cl
-    DB(1).run()
+    DB(0).run()
     sh.com.end()

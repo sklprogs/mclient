@@ -633,6 +633,7 @@ class Commands:
                 sh.objs.get_mes(f,mes).show_error()
         if lst:
             objs.get_request().cols = tuple(lst)
+            #TODO: Should we change objs.request.collimit here?
         else:
             sh.com.rep_lazy(f)
     

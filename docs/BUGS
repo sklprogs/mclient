@@ -1,8 +1,9 @@
 mclient:
 - Fix Stardict (nothing is found)
-- Changing a number of columns to 1 causes a block finding problem
 - Vertical mode icon is not changed upon toggling vertical mode on
   a welcome screen
+- Fix wrong 1st position of a speech part in the Cut-to-the chase mode
+- Fix Separate words mode
 
 multitrancom:
 - RU-EN, struggle: lxml saving problem

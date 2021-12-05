@@ -475,13 +475,15 @@ class HTM:
                 if old_rowno != ifont.rowno or old_colno != ifont.colno:
                     if ifont.colno > 0 and old_rowno == ifont.rowno:
                         code.append('</td>')
-                    if old_rowno != ifont.rowno:
+                    if old_rowno == ifont.rowno:
+                        delta = ifont.colno - old_colno - 1
+                    else:
                         delta = ifont.colno
-                        for i in range(delta):
-                            col_width = objs.get_fonts()._get_col_width(i)
-                            sub = '<td style="width: {}%"/>'
-                            sub = sub.format(col_width)
-                            code.append(sub)
+                    for i in range(delta):
+                        col_width = objs.get_fonts()._get_col_width(i)
+                        sub = '<td style="width: {}%"/>'
+                        sub = sub.format(col_width)
+                        code.append(sub)
                     sub = '<td{} valign="top"{}>'
                     if ifont.block.Fixed:
                         sub1 = ' align="center"'
