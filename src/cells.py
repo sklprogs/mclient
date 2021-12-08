@@ -75,12 +75,12 @@ class BlockPrioritize:
                          ,block.sprior
                          ]
                         )
-            mes = sh.FastTable (headers = headers
-                               ,iterable = rows
-                               ,maxrow = 20
-                               ,maxrows = self.maxrows
-                               ,Transpose = True
-                               ).run()
+        mes = sh.FastTable (headers = headers
+                           ,iterable = rows
+                           ,maxrow = 20
+                           ,maxrows = self.maxrows
+                           ,Transpose = True
+                           ).run()
         return f + ':\n' + mes
     
     def prioritize_speech(self):
@@ -336,6 +336,7 @@ class Cells:
                                ,maxrows = self.maxrows
                                ,Transpose = True
                                ).run()
+            mes = f + '\n' + mes
             sh.com.run_fast_debug(f,mes)
     
     def wrap(self):
@@ -532,6 +533,7 @@ class Pos:
                                ,maxrows = self.maxrows
                                ,Transpose = True
                                ).run()
+            mes = f + '\n' + mes
             sh.com.run_fast_debug(f,mes)
     
     def gen_poses(self):
