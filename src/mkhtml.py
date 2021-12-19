@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import html
 from skl_shared.localize import _
 import skl_shared.shared as sh
 import subjects.subjects as sj
@@ -514,7 +515,8 @@ class HTM:
                     sub2 = sub3 = ''
                 sub = '{}{}<font face="{}" color="{}" size="{}">{}</font>{}{}'
                 sub = sub.format (sub1,sub2,ifont.family,ifont.color
-                                 ,ifont.size,ifont.text,sub3,sub4
+                                 ,ifont.size,html.escape(ifont.text)
+                                 ,sub3,sub4
                                  )
                 code.append(sub)
             code.append('</td></tr></table>')

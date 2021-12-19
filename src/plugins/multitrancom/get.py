@@ -189,8 +189,8 @@ class Get:
 
 class Commands:
     
-    #TODO: fix remaining links to localhost
     def fix_raw_htm(self,code):
+        #TODO: fix remaining links to localhost
         code = code.replace ('charset={}"'.format(CODING)
                             ,'charset=utf-8"'
                             )
