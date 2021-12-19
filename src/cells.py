@@ -226,7 +226,13 @@ class Cells:
             if self.collimit > delta:
                 self.collimit -= delta
             else:
-                pass
+                sub = '{} > {} - {}'.format (self.collimit
+                                            ,old_len
+                                            ,len(self.cols)
+                                            )
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.get_mes(f,mes).show_warning()
         mes = _('Types of actual fixed columns: {}')
         mes = mes.format(', '.join(self.cols))
         sh.objs.get_mes(f,mes,True).show_debug()
@@ -277,6 +283,19 @@ class Cells:
                 else:
                     transc = block.transc
 
+    def move_phrases_end(self):
+        f = '[MClient] cells.Cells.move_phrases_end'
+        if self.phdic:
+            phrases = [block for block in self.blocks \
+                       if block.dic == self.phdic
+                      ]
+            blocks = [block for block in self.blocks \
+                      if block.dic != self.phdic
+                     ]
+            self.blocks = blocks + phrases
+        else:
+            sh.com.rep_empty(f)
+    
     def run(self):
         f = '[MClient] cells.Cells.run'
         if self.Success:
@@ -287,6 +306,7 @@ class Cells:
             self.set_cols()
             self.clear_phrases()
             self.expand_speech()
+            self.move_phrases_end()
             self.wrap()
             self.sort_cells()
             self.set_cellno()
@@ -376,6 +396,9 @@ class Cells:
                         i += 1
             block.i = i
             block.j = j
+        for block in self.blocks:
+            if block.i == -1:
+                block.i = 0
     
     def wrap_y(self):
         ''' Create a vertically reversed view. This differs from
