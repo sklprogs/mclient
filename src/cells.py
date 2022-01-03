@@ -43,7 +43,7 @@ class BlockPrioritize:
         * (test purposes only).
         Modifies attributes: BLOCK, DICPR, SPEECHPR
     '''
-    def __init__(self,data,Block=False,Prioritize=False
+    def __init__(self,blocks,Block=False,Prioritize=False
                 ,phdic=None,Debug=False,maxrows=1000
                 ,spdic={}
                 ):
@@ -51,13 +51,13 @@ class BlockPrioritize:
         self.query = ''
         self.blocks = []
         self.Block = Block
-        self.data = data
         self.Debug = Debug
         self.maxrows = maxrows
         self.phdic = phdic
         self.Prioritize = Prioritize
         self.spdic = spdic
-        if self.data:
+        if blocks:
+            self.blocks = blocks
             self.Success = True
         else:
             self.Success = False
@@ -110,7 +110,6 @@ class BlockPrioritize:
     def run(self):
         f = '[MClient] cells.BlockPrioritize.run'
         if self.Success:
-            self.assign()
             self.block()
             self.prioritize_dics()
             self.prioritize_speech()
@@ -118,16 +117,6 @@ class BlockPrioritize:
             self.debug()
         else:
             sh.com.cancel(f)
-    
-    def assign(self):
-        for item in self.data:
-            block = Block()
-            block.no = item[0]
-            block.type_ = item[1]
-            block.text = item[2]
-            block.dic = item[3]
-            block.speech = item[4]
-            self.blocks.append(block)
             
     def block(self):
         f = '[MClient] cells.BlockPrioritize.block'
@@ -238,12 +227,6 @@ class Cells:
         sh.objs.get_mes(f,mes,True).show_debug()
         mes = _('Actual column limit: {}').format(self.collimit)
         sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def set_fixed(self):
-        for block in self.blocks:
-            #TODO: either add new fixed types here or import a variable
-            if block.type_ in ('dic','wform','speech','transc'):
-                block.Fixed = True
 
     def clear_phrases(self):
         ''' The 'Phrases' section comes the latest in MT, therefore,
@@ -302,7 +285,6 @@ class Cells:
             self.assign()
             self.restore_fixed()
             self.clear_fixed()
-            self.set_fixed()
             self.set_cols()
             self.clear_phrases()
             self.expand_speech()
@@ -696,3 +678,209 @@ class Pages:
             self.debug()
         else:
             sh.com.cancel(f)
+
+
+
+class UniteFixed:
+    
+    def __init__(self,blocks):
+        self.cells = []
+        self.blocks = blocks
+    
+    def set_cells(self):
+        # Create a temporary structure to help merging blocks
+        cell = []
+        for block in self.blocks:
+            if block.same == 1:
+                cell.append(block)
+            else:
+                if cell:
+                    self.cells.append(cell)
+                cell = [block]
+        if cell:
+            self.cells.append(cell)
+    
+    def has_two_fixed(self,i):
+        HasFixed = False
+        for block in self.cells[i]:
+            if block.Fixed:
+                if HasFixed:
+                    return True
+                else:
+                    HasFixed = True
+    
+    def get_first_fixed_type(self,cell):
+        for block in cell:
+            if block.Fixed:
+                return block.type_
+    
+    def run(self):
+        ''' - We should unite items in 'fixed+comment (SAME=1)'
+              structures directly since fixed columns having
+              supplementary SAME=1 blocks cannot be properly sorted.
+            - Running the entire class takes ~0.0131s for 'set' (EN-RU)
+              on AMD E-300
+        '''
+        f = '[MClient] plugins.multitrancom.elems.UniteFixed.run'
+        count = 0
+        self.set_cells()
+        for i in range(len(self.cells)):
+            if self.has_two_fixed(i):
+                count += len(self.cells[i])
+                self.cells[i][0].type_ = self.get_first_fixed_type(self.cells[i])
+                texts = [block.text for block in self.cells[i] \
+                         if block.text
+                        ]
+                self.cells[i][0].text = sh.List(texts).space_items()
+                self.cells[i] = [self.cells[i][0]]
+        self.blocks = []
+        for cell in self.cells:
+            self.blocks += cell
+        sh.com.rep_matches(f,count)
+        return self.blocks
+
+
+
+class Fixed:
+    
+    def __init__(self,blocks,phdic=''):
+        self.blocks = []
+        self.fixed_blocks = []
+        self.subjects = []
+        if blocks:
+            self.blocks = blocks
+        self.phdic = phdic
+    
+    def check(self):
+        f = '[MClient] cells.Fixed.check'
+        if self.blocks:
+            return True
+        else:
+            sh.com.rep_empty(f)
+    
+    def remove(self):
+        self.fixed_blocks = [block for block in self.blocks if block.Fixed]
+        self.blocks = [block for block in self.blocks if not block.Fixed]
+        self.subjects = [block for block in self.fixed_blocks \
+                         if block.type_ == 'dic'
+                        ]
+    
+    def find_subj(self,text):
+        for block in self.subjects:
+            if block.text == text:
+                return block.url
+    
+    def insert(self):
+        dic = wform = speech = ''
+        i = 0
+        while i < len(self.blocks):
+            if dic != self.blocks[i].dic \
+            or wform != self.blocks[i].wform \
+            or speech != self.blocks[i].speech:
+                ''' #NOTE: We do not inherit SEMINO here since it's not
+                    needed anymore.
+                '''
+                block = Block()
+                block.type_ = 'speech'
+                block.text = self.blocks[i].speech
+                block.dic = self.blocks[i].dic
+                #block.dicf = self.blocks[i].dicf
+                block.wform = self.blocks[i].wform
+                block.speech = self.blocks[i].speech
+                block.transc = self.blocks[i].transc
+                #block.term = self.blocks[i].term
+                block.same = 0
+                self.blocks.insert(i,block)
+                
+                block = Block()
+                block.type_ = 'transc'
+                block.text = self.blocks[i].transc
+                block.dic = self.blocks[i].dic
+                #block.dicf = self.blocks[i].dicf
+                block.wform = self.blocks[i].wform
+                block.speech = self.blocks[i].speech
+                block.transc = self.blocks[i].transc
+                #block.term = self.blocks[i].term
+                block.same = 0
+                self.blocks.insert(i,block)
+
+                block = Block()
+                block.type_ = 'wform'
+                block.text = self.blocks[i].wform
+                block.dic = self.blocks[i].dic
+                #block.dicf = self.blocks[i].dicf
+                block.wform = self.blocks[i].wform
+                block.speech = self.blocks[i].speech
+                block.transc = self.blocks[i].transc
+                #block.term = self.blocks[i].term
+                block.same = 0
+                self.blocks.insert(i,block)
+                
+                if self.blocks[i].dic != self.phdic:
+                    block = Block()
+                    block.type_ = 'dic'
+                    block.text = self.blocks[i].dic
+                    block.dic = self.blocks[i].dic
+                    #block.dicf = self.blocks[i].dicf
+                    block.wform = self.blocks[i].wform
+                    block.speech = self.blocks[i].speech
+                    block.transc = self.blocks[i].transc
+                    #block.term = self.blocks[i].term
+                    block.same = 0
+                    self.blocks.insert(i,block)
+                
+                dic = self.blocks[i].dic
+                wform = self.blocks[i].wform
+                speech = self.blocks[i].speech
+                i += 4
+            i += 1
+    
+    def set_fixed(self):
+        for block in self.blocks:
+            #TODO: either add new fixed types here or import a variable
+            if block.type_ in ('dic','wform','speech','transc'):
+                block.Fixed = True
+    
+    def restore_subj_urls(self):
+        f = '[MClient] cells.Fixed.restore_subj_urls'
+        for block in self.blocks:
+            if block.type_ == 'dic':
+                url = self.find_subj(block.text)
+                if url:
+                    block.url = url
+                else:
+                    mes = _('Wrong input data: "{}"!')
+                    mes = mes.format(block.text)
+                    sh.objs.get_mes(f,mes,True).show_warning()
+    
+    def run(self):
+        if self.check():
+            self.set_fixed()
+            self.remove()
+            self.insert()
+            self.restore_subj_urls()
+            self.blocks = UniteFixed(self.blocks).run()
+        return self.blocks
+
+
+
+class Commands:
+    
+    def assign_bp(self,data):
+        f = '[MClient] cells.Commands.assign_bp'
+        blocks = []
+        if not data:
+            sh.com.rep_empty(f)
+            return blocks
+        for item in data:
+            block = Block()
+            block.no = item[0]
+            block.type_ = item[1]
+            block.text = item[2]
+            block.dic = item[3]
+            block.speech = item[4]
+            blocks.append(block)
+        return blocks
+
+
+com = Commands()
