@@ -2315,11 +2315,7 @@ class WebFrame:
         sj.objs.article.run()
         data = lg.objs.blocksdb.assign_bp()
         spdic = lg.objs.speech_prior.get_all2prior()
-        
-        blocks = cl.Fixed (blocks = cl.com.assign_bp(data)
-                          ,phdic = self.phdic
-                          ).run()
-        bp = cl.BlockPrioritize (blocks = blocks
+        bp = cl.BlockPrioritize (data = data
                                 ,Block = sh.lg.globs['bool']['BlockSubjects']
                                 ,Prioritize = sh.lg.globs['bool']['PrioritizeSubjects']
                                 ,phdic = self.phdic
@@ -3067,7 +3063,7 @@ com = Commands()
 if  __name__ == '__main__':
     f = '[MClient] mclient.__main__'
     sh.com.start()
-    lg.objs.get_plugins(Debug=1,maxrows=1000)
+    lg.objs.get_plugins(Debug=False,maxrows=1000)
     lg.objs.get_default(gi.PRODUCT)
     if lg.objs.default.Success:
         run_timed_update()

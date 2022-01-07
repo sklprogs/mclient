@@ -15,12 +15,67 @@ from skl_shared.localize import _
 import skl_shared.shared as sh
 import plugins.multitrancom.subjects as sj
 
-''' These are all types of fixed columns (not just actual ones)
-    excluding 'phdic'.
-    #NOTE: Put new fixed types here.
-    #TODO: Use a single source.
-'''
-FIXED_ALL = ('dic','wform','transc','speech')
+
+class UniteFixed:
+    
+    def __init__(self,blocks):
+        self.fixed = ('dic','wform','transc','speech')
+        self.cells = []
+        self.blocks = blocks
+    
+    def set_cells(self):
+        # Create a temporary structure to help merging blocks
+        cell = []
+        for block in self.blocks:
+            if block.same == 1:
+                cell.append(block)
+            else:
+                if cell:
+                    self.cells.append(cell)
+                cell = [block]
+        if cell:
+            self.cells.append(cell)
+    
+    def has_two_fixed(self,types):
+        HasFixed = False
+        for type_ in types:
+            if type_ in self.fixed:
+                if HasFixed:
+                    return True
+                else:
+                    HasFixed = True
+    
+    def get_first_fixed_type(self,cell):
+        for block in cell:
+            if block.type_ in self.fixed:
+                return block.type_
+    
+    def run(self):
+        ''' - We should unite items in 'fixed+comment (SAME=1)'
+              structures directly since fixed columns having
+              supplementary SAME=1 blocks cannot be properly sorted.
+            - Running the entire class takes ~0.0131s for 'set' (EN-RU)
+              on AMD E-300
+        '''
+        f = '[MClient] plugins.multitrancom.elems.UniteFixed.run'
+        count = 0
+        self.set_cells()
+        for i in range(len(self.cells)):
+            types = [block.type_ for block in self.cells[i]]
+            if self.has_two_fixed(types):
+                count += len(self.cells[i])
+                self.cells[i][0].type_ = self.get_first_fixed_type(self.cells[i])
+                texts = [block.text for block in self.cells[i] \
+                         if block.text
+                        ]
+                self.cells[i][0].text = sh.List(texts).space_items()
+                self.cells[i] = [self.cells[i][0]]
+        self.blocks = []
+        for cell in self.cells:
+            self.blocks += cell
+        sh.com.rep_matches(f,count)
+        return self.blocks
+
 
 
 # A copy of Tags.Block
@@ -89,6 +144,8 @@ class Elems:
             (2 or 3 columns).
         '''
         self.max_word_len = 30
+        self.fixed = ('dic','wform','transc','speech')
+        self.dicurls = {}
         self.phdic = ''
         self.blocks = blocks
         self.Debug = Debug
@@ -202,7 +259,7 @@ class Elems:
         i = 1
         while i < len(self.blocks):
             if self.blocks[i].type_ == 'speech' \
-            and not self.blocks[i-1].type_ in FIXED_ALL:
+            and not self.blocks[i-1].type_ in self.fixed:
                 self.blocks[i].type_ = 'comment'
                 count += 1
             i += 1
@@ -673,12 +730,16 @@ class Elems:
             self.set_same()
             self.set_phcom()
             # Prepare contents
+            self.set_dic_urls()
             self.set_phcount()
+            self.blocks = UniteFixed(self.blocks).run()
             self.reassign_brackets()
             self.break_long_words()
             # Prepare for cells
             self.fill()
             self.fill_term()
+            self.remove_fixed()
+            self.insert_fixed()
             self.set_fixed_term()
             self.expand_dic_file()
             self.set_term_same()
@@ -686,6 +747,7 @@ class Elems:
             self.add_space()
             #TODO: expand parts of speech (n -> noun, etc.)
             self.set_selectables()
+            self.restore_dic_urls()
             self.debug()
             return self.blocks
         else:
@@ -823,8 +885,78 @@ class Elems:
             
     def set_fixed_term(self):
         for block in self.blocks:
-            if block.type_ in FIXED_ALL:
+            if block.type_ in self.fixed:
                 block.term = ''
+                
+    def insert_fixed(self):
+        dic = wform = speech = ''
+        i = 0
+        while i < len(self.blocks):
+            if dic != self.blocks[i].dic \
+            or wform != self.blocks[i].wform \
+            or speech != self.blocks[i].speech:
+                ''' #NOTE: We do not inherit SEMINO here since it's not
+                    needed anymore.
+                '''
+                block = Block()
+                block.type_ = 'speech'
+                block.text = self.blocks[i].speech
+                block.dic = self.blocks[i].dic
+                block.dicf = self.blocks[i].dicf
+                block.wform = self.blocks[i].wform
+                block.speech = self.blocks[i].speech
+                block.transc = self.blocks[i].transc
+                block.term = self.blocks[i].term
+                block.same = 0
+                self.blocks.insert(i,block)
+                
+                block = Block()
+                block.type_ = 'transc'
+                block.text = self.blocks[i].transc
+                block.dic = self.blocks[i].dic
+                block.dicf = self.blocks[i].dicf
+                block.wform = self.blocks[i].wform
+                block.speech = self.blocks[i].speech
+                block.transc = self.blocks[i].transc
+                block.term = self.blocks[i].term
+                block.same = 0
+                self.blocks.insert(i,block)
+
+                block = Block()
+                block.type_ = 'wform'
+                block.text = self.blocks[i].wform
+                block.dic = self.blocks[i].dic
+                block.dicf = self.blocks[i].dicf
+                block.wform = self.blocks[i].wform
+                block.speech = self.blocks[i].speech
+                block.transc = self.blocks[i].transc
+                block.term = self.blocks[i].term
+                block.same = 0
+                self.blocks.insert(i,block)
+                
+                if self.blocks[i].dic != self.phdic:
+                    block = Block()
+                    block.type_ = 'dic'
+                    block.text = self.blocks[i].dic
+                    block.dic = self.blocks[i].dic
+                    block.dicf = self.blocks[i].dicf
+                    block.wform = self.blocks[i].wform
+                    block.speech = self.blocks[i].speech
+                    block.transc = self.blocks[i].transc
+                    block.term = self.blocks[i].term
+                    block.same = 0
+                    self.blocks.insert(i,block)
+                
+                dic = self.blocks[i].dic
+                wform = self.blocks[i].wform
+                speech = self.blocks[i].speech
+                i += 4
+            i += 1
+            
+    def remove_fixed(self):
+        self.blocks = [block for block in self.blocks \
+                       if block.type_ not in self.fixed
+                      ]
                        
     def set_selectables(self):
         # block.no is set only after creating DB
@@ -834,3 +966,15 @@ class Elems:
                 block.select = 1
             else:
                 block.select = 0
+    
+    def set_dic_urls(self):
+        for block in self.blocks:
+            if block.type_ in ('dic','phdic') \
+            and not block.text in self.dicurls:
+                self.dicurls[block.text] = block.url
+    
+    def restore_dic_urls(self):
+        for i in range(len(self.blocks)):
+            if self.blocks[i].type_ in ('dic','phdic') \
+            and self.blocks[i].text in self.dicurls:
+                self.blocks[i].url = self.dicurls[self.blocks[i].text]
