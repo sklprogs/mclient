@@ -7,6 +7,8 @@ mclient:
 - Fix Separate words mode
 
 multitrancom:
+- (Clarity mode) RU-EN, gripe, spout: wrapping does not ignore ignored
+  blocks
 - RU-EN, get point across -> Phrases: when switching to non-adjusted
   columns, there is a failure to find text
 - RU-EN, phytophotodermatitis -> Медицина: wrong colors
