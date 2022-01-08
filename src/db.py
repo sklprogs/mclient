@@ -419,8 +419,8 @@ class DB:
             query.append('TERM')
         return ','.join(query)
 
-    # Assign input data for Cells
     def assign_cells(self):
+        # Assign input data for Cells
         f = '[MClient] db.DB.assign_cells'
         if self.artid:
             query = 'select NO,TYPE,TEXT,SAMECELL,'
@@ -441,6 +441,8 @@ class DB:
                 query += 'NO'
             #FIX: this will not work for Cyrillic
             query += ' collate nocase'
+            mes = sh.Text(query).delete_duplicate_spaces()
+            sh.objs.get_mes(f,mes,True).show_debug()
             self.dbc.execute(query,(self.artid,))
             return self.dbc.fetchall()
         else:
