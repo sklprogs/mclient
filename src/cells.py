@@ -381,27 +381,74 @@ class Cells:
         return 0
     
     def wrap_x(self):
-        f = '[MClient] cells.Cells.wrap_x'
+        ''' #NOTE: fixed columns are added non-sequentially in elems,
+            so an order of blocks should not be sequential.
+        '''
         i = j = -1
-        fixed_num = len(self.cols)
-        for block in self.blocks:
-            if not block.same:
-                if block.Fixed:
-                    j = self.get_fixed_index(block.type_)
-                    if j == 0:
-                        i += 1
-                elif j < fixed_num:
-                    j = fixed_num
+        PrevFixed = False
+        for x in range(len(self.blocks)):
+            if self.cols and self.blocks[x].type_ == self.cols[0]:
+                if PrevFixed:
+                    self.blocks[x].i = i
                 else:
+                    PrevFixed = True
+                    i += 1
+                    self.blocks[x].i = i
+                self.blocks[x].j = 0
+                j = len(self.cols) - 1
+            elif len(self.cols) > 1 \
+            and self.blocks[x].type_ == self.cols[1]:
+                if not PrevFixed:
+                    PrevFixed = True
+                    i += 1
+                self.blocks[x].i = i
+                self.blocks[x].j = 1
+                j = len(self.cols) - 1
+            elif len(self.cols) > 2 \
+            and self.blocks[x].type_ == self.cols[2]:
+                if not PrevFixed:
+                    PrevFixed = True
+                    i += 1
+                self.blocks[x].i = i
+                self.blocks[x].j = 2
+                j = len(self.cols) - 1
+            elif len(self.cols) > 3 \
+            and self.blocks[x].type_ == self.cols[3]:
+                if not PrevFixed:
+                    PrevFixed = True
+                    i += 1
+                self.blocks[x].i = i
+                self.blocks[x].j = j = len(self.cols) - 1
+            # Must be before checking '_collimit'
+            elif self.blocks[x].same > 0:
+                PrevFixed = False
+                # This can happen if there are no fixed columns
+                if i < 0:
+                    i = 0
+                if j < len(self.cols):
+                    j = len(self.cols)
+                self.blocks[x].i = i
+                self.blocks[x].j = j
+            elif j + 1 == self.collimit:
+                PrevFixed = False
+                i += 1
+                self.blocks[x].i = i
+                # Instead of creating empty non-selectable cells
+                self.blocks[x].j = j = len(self.cols)
+            else:
+                PrevFixed = False
+                # This can happen if there are no fixed columns
+                if i < 0:
+                    i = 0
+                self.blocks[x].i = i
+                if x > 0:
                     j += 1
-                    if j == self.collimit:
-                        j = fixed_num
-                        i += 1
-            block.i = i
-            block.j = j
-        for block in self.blocks:
-            if block.i == -1:
-                block.i = 0
+                    if j < len(self.cols):
+                        j = len(self.cols) + 1
+                    self.blocks[x].j = j
+                else:
+                    self.blocks[x].j = len(self.cols)
+                    j += 1
     
     def wrap_y(self):
         ''' Create a vertically reversed view. This differs from
