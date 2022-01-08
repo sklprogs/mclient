@@ -381,8 +381,8 @@ class Cells:
         return 0
     
     def wrap_x(self):
-        ''' #NOTE: fixed columns are added non-sequentially in elems,
-            so an order of blocks should not be sequential.
+        ''' #NOTE: orders of fixed columns in 'elems' and 'cells' can be
+            different, so blocks should not be processed sequentially.
         '''
         i = j = -1
         PrevFixed = False
