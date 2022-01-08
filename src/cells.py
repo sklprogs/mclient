@@ -370,11 +370,14 @@ class Cells:
         try:
             return self.cols.index(type_)
         except ValueError:
-            ''' #TODO: Remove the warning about a missing 'dic' type
-                (which was 'phdic' before).
+            ''' The warning about a missing 'dic' type (which was
+                'phdic' before) is natural.
             '''
-            mes = _('Wrong input data: "{}"!').format(type_)
-            sh.objs.get_mes(f,mes,True).show_warning()
+            if type_ == 'dic':
+                pass
+            else:
+                mes = _('Wrong input data: "{}"!').format(type_)
+                sh.objs.get_mes(f,mes,True).show_warning()
         return 0
     
     def wrap_x(self):
