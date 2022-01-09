@@ -13,6 +13,7 @@ mclient:
   add titles everywhere
 
 multitrancom:
+- RU-EN: splinning: implement the "Suggest:" mode
 - RU-EN, закрыть соединение: enable copying a comment block url
 - RU-EN, bying: no suitable mode, wrong types (not subjects or wforms)
 - RU-EN, актуальным (2, netbook): layout looks good only at 75% 
