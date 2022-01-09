@@ -7,6 +7,7 @@ mclient:
 - Fix Separate words mode
 
 multitrancom:
+- RU-EN: exectable: fix Vertical mode
 - RU-EN, get point across -> Phrases: when switching to non-adjusted
   columns, there is a failure to find text
 - RU-EN, phytophotodermatitis -> Медицина: wrong colors
