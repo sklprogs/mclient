@@ -48,9 +48,33 @@ class Column:
 
 
 class ColumnWidth:
-    ''' Calculate an actual size of the widest column. This is
-        font-dependent and window-dependent so the code can run
+    ''' Set column widths. This is window-dependent so the code can run
         in a controller only.
+        There are several approaches to setting column width:
+        - (Tested) Adjust columns automatically, column widths are
+          text-dependent and different. The table does not have gaps
+          between columns, but this does not always look good since
+          a narrow column can be adjacent to a very wide column which
+          looks ugly. This class is not needed with this approach.
+        - (Tested) Adjust columns on the basis of the font and screen
+          being used. This allows to minimize gaps between term columns
+          which will be set to the same width. This approach focuses on
+          an actual number of columns rather than a number of columns
+          set by a user.
+          The final view is generally good; however, this approach has
+          some drawbacks:
+          - in case of a very short and a very long column, a gap
+            between them may be too wide;
+          - text width calculation is not 100% accurate: narrow columns
+            can become even narrower (e.g., RU-EN: "on a basis of");
+          - it takes some time to calculate a font width (especially
+            for large articles).
+        - (Preferable) Adjust term columns such that they are of
+          an equal width on the basis of a screen and number of columns
+          set by a user. This approach focuses on a number of columns
+          set by a user rather than an actual number of columns which
+          allows to have a minimal gap between columns in all cases.
+        - (Not tested yet) Use a constant user-defined column width.
     '''
     def __init__(self,Debug=False,maxrows=1000):
         self.set_values()
