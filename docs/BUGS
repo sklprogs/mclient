@@ -20,8 +20,6 @@ multitrancom:
 - (Clarity mode) RU-EN, frame rate: too wide fixed columns
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"
-- Widget is not shown immediately when using F2 -> Esc -> F2 (probably
-  due to Tkinter/WM focusing/minimization behavior)
 - Do not fill history when search is empty (e.g., when changing
   the source to 'Offline')
 - Do not move at the beginning of the article after cancelling
