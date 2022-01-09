@@ -5,8 +5,6 @@ mclient:
 - Fix wrong 1st position of a speech part in the Cut-to-the chase mode
 
 multitrancom:
-- (Clarity mode) RU-EN, gripe, spout: wrapping does not ignore ignored
-  blocks
 - RU-EN, get point across -> Phrases: when switching to non-adjusted
   columns, there is a failure to find text
 - RU-EN, phytophotodermatitis -> Медицина: wrong colors

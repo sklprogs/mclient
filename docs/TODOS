@@ -3,7 +3,6 @@
 mclient:
 - Improve main icon quality
 - Fix colorizing
-- Fix Vertical mode
 - Make a cell fully visible when mousing over it
 - Checking for symbols unsupported in Tk takes too long (when loading
   dictionaries), do this check only before showing the final article.
