@@ -1,13 +1,10 @@
 mclient:
 - Fix Stardict (nothing is found)
-- Fix Vertical mode for articles with no fixed columns
-- Vertical mode icon is not changed upon toggling vertical mode on
+- Vertical mode icon is not changed upon toggling the vertical mode on
   a welcome screen
 - Fix wrong 1st position of a speech part in the Cut-to-the chase mode
-- Fix Separate words mode
 
 multitrancom:
-- RU-EN: exectable: fix Vertical mode
 - RU-EN, get point across -> Phrases: when switching to non-adjusted
   columns, there is a failure to find text
 - RU-EN, phytophotodermatitis -> Медицина: wrong colors

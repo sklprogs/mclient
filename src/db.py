@@ -47,7 +47,7 @@ class DB:
             sh.com.rep_empty(f)
     
     def get_max_col_no(self):
-        ''' This is a less advanced alternative of 'self.get_max_col'
+        ''' This is a less advanced alternative to 'self.get_max_col'
             for cases when positions are not set yet.
         '''
         f = '[MClient] db.DB.get_max_col_no'
