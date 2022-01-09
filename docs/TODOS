@@ -5,7 +5,6 @@ mclient:
 - Fix colorizing
 - Fix Vertical mode
 - Make a cell fully visible when mousing over it
-- Improve toggling widgets using F1-F12
 - Checking for symbols unsupported in Tk takes too long (when loading
   dictionaries), do this check only before showing the final article.
 - Clear CurRequest data after clearing history
@@ -47,7 +46,6 @@ multitrancom:
 - Move selection automatically when using scrollbar arrows
 - Hotkeys for moving to the end of a column
 - CSS for drawing a dash line for each section: mkhtml.py:315
-- Sometimes we need to press F4 twice for History
 - (History) Create 2 columns in ListBox instead of using delimiters
 - Create an option to toggle SELECTABLE (no need to update DB) (see
   WebFrame.select)

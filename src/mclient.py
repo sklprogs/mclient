@@ -219,10 +219,11 @@ class ColumnWidth:
         f = '[MClient] mclient.ColumnWidth.set_term_num'
         if sh.lg.globs['bool']['AdjustByWidth']:
             result = lg.objs.get_blocksdb().get_max_col_no()
-            if result:
-                self.term_num = result + 1
-            else:
+            #NOTE: COLNO currently starts from 0
+            if result is None:
                 sh.com.rep_empty(f)
+            else:
+                self.term_num = result + 1
         ''' 'lg.objs.blocksdb.get_max_col_no' includes fixed columns so
             we need to subtract their number.
             #NOTE: Since fixed columns are set irrespectively of

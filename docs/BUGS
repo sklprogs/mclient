@@ -1,10 +1,8 @@
 mclient:
 - Fix Stardict (nothing is found)
-- Fix Vertical mode for articles with no fixed columns
-- Vertical mode icon is not changed upon toggling vertical mode on
+- Vertical mode icon is not changed upon toggling the vertical mode on
   a welcome screen
 - Fix wrong 1st position of a speech part in the Cut-to-the chase mode
-- Fix Separate words mode
 
 multitrancom:
 - (Clarity mode) RU-EN, gripe, spout: wrapping does not ignore ignored
@@ -22,8 +20,6 @@ multitrancom:
 - (Clarity mode) RU-EN, frame rate: too wide fixed columns
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"
-- Widget is not shown immediately when using F2 -> Esc -> F2 (probably
-  due to Tkinter/WM focusing/minimization behavior)
 - Do not fill history when search is empty (e.g., when changing
   the source to 'Offline')
 - Do not move at the beginning of the article after cancelling

@@ -670,7 +670,7 @@ class Elems:
     
     def get_suggested(self):
         for i in range(len(self.blocks)):
-            if self.blocks[i].text in (' Варианты замены: '
+            if self.blocks[i].text in (' Варианты замены: '
                                       ,' Suggest: '
                                       ):
                 return i
