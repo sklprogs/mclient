@@ -5,8 +5,8 @@ mclient:
 - Fix wrong 1st position of a speech part in the Cut-to-the chase mode
 
 multitrancom:
-- RU-EN, get point across -> Phrases: when switching to non-adjusted
-  columns, there is a failure to find text
+- (Vertical mode) RU-EN, get point across -> Phrases: when switching to
+  non-adjusted columns, there is a failure to find text
 - RU-EN, phytophotodermatitis -> Медицина: wrong colors
 - RU-EN, в режиме -> Биржевой термин: incorrect colorization of
   "automatic trading"

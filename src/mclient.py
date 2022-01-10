@@ -161,11 +161,11 @@ class ColumnWidth:
         self.debug()
     
     def get_table_width(self):
-        if not sh.lg.globs['bool']['AdjustByWidth']:
-            return 100
-        if not self.table_pc:
-            return 100
-        return self.table_pc
+        if sh.lg.globs['bool']['AdjustLayout'] \
+        and sh.lg.globs['bool']['AdjustByWidth']:
+            return min(sh.lg.globs['int']['table_width'],self.table_pc)
+        else:
+            return 0
     
     def _get_min(self,lst):
         lst = [item for item in lst if item]
