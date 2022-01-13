@@ -1,6 +1,9 @@
 (in development)
 * 
 
+6.13.1
+* Remove a Windows workaround which could lead to thread freezing
+
 6.13
 * Improve selecting a column width on the basis of a text width
 * Colorize subjects from a Phrases section

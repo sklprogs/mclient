@@ -841,7 +841,7 @@ class Objects:
 
 def call_app():
     # Use the same key binding to call the window
-    sh.Geometry(objs.get_webframe().gui.obj).activate(MouseClicked=lg.objs.get_request().MouseClicked)
+    sh.Geometry(objs.get_webframe().gui.obj).activate()
     ''' #TODO: check if this is still the problem
         In case of .focus_set() *first* Control-c-c can call an inactive
         widget.
@@ -850,15 +850,9 @@ def call_app():
 
 def run_timed_update():
     # Capture Control-c-c
-    lg.objs.get_request().MouseClicked = False
     check = kl.keylistener.check()
     if check:
         if check == 1 and sh.lg.globs['bool']['CaptureHotkey']:
-            # Prevent thread freezing in Windows newer than XP
-            if sh.objs.get_os().is_win():
-                kl.keylistener.cancel()
-                kl.keylistener.restart()
-            lg.objs.request.MouseClicked = True
             new_clipboard = sh.Clipboard().paste()
             if new_clipboard:
                 lg.objs.request.search = new_clipboard
@@ -2463,20 +2457,19 @@ class WebFrame:
     def go_url(self,event=None):
         # Follow the URL of the current block
         f = '[MClient] mclient.WebFrame.go_url'
-        if not lg.objs.get_request().MouseClicked:
-            url = lg.objs.get_blocksdb().get_url(self.pos)
-            if url:
-                lg.objs.request.search = lg.objs.blocksdb.get_text(self.pos)
-                lg.objs.request.url = url
-                mes = _('Open link: {}').format(lg.objs.request.url)
-                sh.objs.get_mes(f,mes,True).show_info()
-                self.load_article()
+        url = lg.objs.get_blocksdb().get_url(self.pos)
+        if url:
+            lg.objs.request.search = lg.objs.blocksdb.get_text(self.pos)
+            lg.objs.request.url = url
+            mes = _('Open link: {}').format(lg.objs.request.url)
+            sh.objs.get_mes(f,mes,True).show_info()
+            self.load_article()
+        elif lg.objs.blocksdb.artid == 0:
             # Do not warn when there are no articles yet
-            elif lg.objs.blocksdb.artid == 0:
-                sh.com.rep_lazy(f)
-            else:
-                lg.objs.request.search = lg.objs.blocksdb.get_text(self.pos)
-                self.go_search()
+            sh.com.rep_lazy(f)
+        else:
+            lg.objs.request.search = lg.objs.blocksdb.get_text(self.pos)
+            self.go_search()
 
     def go_search(self):
         f = '[MClient] mclient.WebFrame.go_search'

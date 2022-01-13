@@ -496,10 +496,8 @@ class CurRequest:
         self.collimit = sh.lg.globs['int']['colnum'] + len(self.cols)
         ''' Toggling blacklisting should not depend on a number of
             blocked subjects (otherwise, it is not clear how
-            blacklisting should be toggled)
-        '''
-        self.MouseClicked = False
-        ''' *Temporary* turn off prioritizing and terms sorting for
+            blacklisting should be toggled).
+            *Temporarily* turn off prioritizing and terms sorting for
             articles with 'sep_words_found' and in phrases; use previous
             settings for new articles.
         '''
