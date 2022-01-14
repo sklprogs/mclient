@@ -5,6 +5,7 @@ mclient:
 - Fix wrong 1st position of a speech part in the Cut-to-the chase mode
 
 multitrancom:
+- (MClient mode, 6 columns, 22'') RU-EN, yowl: too wide columns
 - (Vertical mode) RU-EN, get point across -> Phrases: when switching to
   non-adjusted columns, there is a failure to find text
 - RU-EN, phytophotodermatitis -> Медицина: wrong colors
