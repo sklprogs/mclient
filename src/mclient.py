@@ -842,11 +842,7 @@ class Objects:
 def call_app():
     # Use the same key binding to call the window
     sh.Geometry(objs.get_webframe().gui.obj).activate()
-    ''' #TODO: check if this is still the problem
-        In case of .focus_set() *first* Control-c-c can call an inactive
-        widget.
-    '''
-    objs.get_webframe().gui.ent_src.widget.focus_force()
+    objs.get_webframe().gui.ent_src.focus()
 
 def run_timed_update():
     # Capture Control-c-c
