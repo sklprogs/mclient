@@ -37,6 +37,7 @@ multitrancom:
   of 'dic' type
 
 stardict:
+- RU-EN, "Akrotiri Government" from CIA World Factbook 2014: https://tuxor1337.frama.io/firedict/dictionaries.html: some text was not found
 - RU-EN, full: search gate: found by 'Suggest' and logged as found by
   'AllDics.get', but could not be shown
 - Unknown mode "" in Elems.order_speech when using local dictionaries

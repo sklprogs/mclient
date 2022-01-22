@@ -1,10 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import os
-import sys
-import io
-import tkinter as tk
 from skl_shared.localize import _
 import skl_shared.shared as sh
 import skl_shared.web as wb

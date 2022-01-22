@@ -2,8 +2,6 @@
 # -*- coding: UTF-8 -*-
 
 import io
-import urllib.request
-import html
 import ssl
 from skl_shared.localize import _
 import skl_shared.shared as sh
