@@ -837,7 +837,7 @@ class Objects:
 
 def call_app():
     # Use the same key binding to call the window
-    sh.Geometry(objs.get_webframe().gui.obj).activate()
+    sh.Geometry(objs.get_webframe().gui.obj,gi.PRODUCT).activate()
     objs.get_webframe().gui.ent_src.focus()
 
 def run_timed_update():
@@ -2071,7 +2071,9 @@ class WebFrame:
         self.gui.opt_col.action = self.set_columns
         
     def set_title(self,arg=None):
-        if not arg:
+        if arg:
+            arg = '{} — {}'.format(arg,gi.PRODUCT)
+        else:
             arg = sh.List(lst1=[gi.PRODUCT,ab.VERSION]).space_items()
         self.gui.set_title(arg)
 
