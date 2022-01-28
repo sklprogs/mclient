@@ -157,8 +157,9 @@ class ColumnWidth:
         self.debug()
     
     def get_table_width(self):
-        if sh.lg.globs['bool']['AdjustLayout'] \
-        and sh.lg.globs['bool']['AdjustByWidth']:
+        if (sh.lg.globs['bool']['AdjustLayout'] \
+        and sh.lg.globs['bool']['AdjustByWidth']) \
+        or com.has_single_row():
             return min(sh.lg.globs['int']['table_width'],self.table_pc)
         else:
             return 0
