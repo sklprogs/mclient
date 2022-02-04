@@ -854,7 +854,7 @@ def run_timed_update():
             call_app()
         if sh.objs.get_os().is_win():
             kl.keylistener.restart()
-    sh.objs.get_root().widget.after(2000,run_timed_update)
+    sh.objs.get_root().widget.after(1000,run_timed_update)
 
 
 
