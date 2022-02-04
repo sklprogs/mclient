@@ -852,7 +852,8 @@ def run_timed_update():
                 objs.get_webframe().go_search()
         if check == 2 or sh.lg.globs['bool']['CaptureHotkey']:
             call_app()
-        kl.keylistener.restart()
+        if sh.objs.get_os().is_win():
+            kl.keylistener.restart()
     sh.objs.get_root().widget.after(2000,run_timed_update)
 
 
