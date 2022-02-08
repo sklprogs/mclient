@@ -852,7 +852,7 @@ def run_timed_update():
                 objs.get_webframe().go_search()
         if check == 2 or sh.lg.globs['bool']['CaptureHotkey']:
             call_app()
-    sh.objs.get_root().widget.after(1000,run_timed_update)
+    sh.objs.get_root().widget.after(400,run_timed_update)
 
 
 
