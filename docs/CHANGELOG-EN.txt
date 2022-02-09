@@ -1,6 +1,9 @@
 (in development)
 * 
 
+6.13.2
+* Fix calling the window in Windows for some cases
+
 6.13.1
 * Fix calling the window with Alt-~, Ctrl-C-C and Ctrl-Ins-Ins
   in Windows

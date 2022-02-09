@@ -4,7 +4,7 @@
 from skl_shared.localize import _
 import skl_shared.shared as sh
 
-VERSION = '6.13.1'
+VERSION = '6.13.2'
 CURYEAR = 2022
 ICON = sh.objs.get_pdir().add('..','resources','icon_64x64_mclient.gif')
 
