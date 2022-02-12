@@ -6,6 +6,15 @@ from skl_shared.localize import _
 import skl_shared.shared as sh
 
 
+class Cell:
+    
+    def __init__(self,text,rowno,colno):
+        self.text = text
+        self.rowno = rowno
+        self.colno = colno
+
+
+
 class DB:
     
     def __init__(self):
@@ -31,6 +40,28 @@ class DB:
 class Table:
     
     def __init__(self):
+        self.cells = []
+    
+    def set_cells(self,data):
+        f = 'controller.Table.set_cells'
+        if not data:
+            sh.com.rep_empty(f)
+            return
+        fragm = []
+        old_row = -1
+        cell = []
+        for row in data:
+            #TYPE,TEXT,ROWNO,COLNO,CELLNO
+            if row[4] == old_row:
+                cell.append(row[1])
+            else:
+                self.cells.append(''.join(cell))
+                old_row = row[4]
+                cell = [row[1]]
+        if cell:
+            self.cells.append(' '.join(cell))
+    
+    def fill(self,data):
         pass
 
 
@@ -63,4 +94,8 @@ if __name__ == '__main__':
     db = DB()
     data = db.fetch()
     #com.debug_memory(data)
+    itable = Table()
+    itable.set_cells(data)
+    cells = '\n'.join(itable.cells)
+    sh.com.run_fast_debug(f,cells)
     db.close()
