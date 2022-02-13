@@ -3,12 +3,13 @@
 
 import sys
 import sqlite3
+import PyQt5
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QApplication,QMainWindow,QGridLayout \
                            ,QWidget,QTableWidget,QTableWidgetItem \
                            ,QHeaderView,QShortcut
 from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtGui import QKeySequence
+from PyQt5.QtGui import QKeySequence,QFont
 from skl_shared.localize import _
 import skl_shared.shared as sh
 
@@ -170,8 +171,18 @@ class Table(QMainWindow):
         timer.start()
         for cell in self.cells:
             table_item = QTableWidgetItem(cell.text)
-            self.table.setItem(cell.rowno,cell.colno,table_item)
+            ifont = QFont()
+            ifont.setFamily('Serif')
+            if cell.colno == 0:
+                ifont.setWeight(QFont.Bold)
+                palette = PyQt5.QtGui.QPalette()
+                palette.setColor(PyQt5.QtGui.QPalette.Text,QtCore.Qt.red)
+                #self.table.setPalette(palette)
+                table_item.setForeground(PyQt5.QtGui.QBrush(PyQt5.QtGui.QColor(0,255,0)))
+            ifont.setPixelSize(16)
+            table_item.setFont(ifont)
             table_item.setTextAlignment(QtCore.Qt.AlignTop)
+            self.table.setItem(cell.rowno,cell.colno,table_item)
             if 0 <= cell.colno < 4:
                 table_item.setTextAlignment(QtCore.Qt.AlignHCenter)
         self.layout.addWidget(self.table,0,0)
