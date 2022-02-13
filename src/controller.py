@@ -8,10 +8,11 @@ import skl_shared.shared as sh
 
 class Cell:
     
-    def __init__(self,text,rowno,colno):
+    def __init__(self,text,rowno,colno,cellno):
         self.text = text
         self.rowno = rowno
         self.colno = colno
+        self.cellno = cellno
 
 
 
@@ -37,29 +38,59 @@ class DB:
 
 
 
-class Table:
+class Cells:
     
     def __init__(self):
         self.cells = []
     
-    def set_cells(self,data):
-        f = 'controller.Table.set_cells'
+    def _get(self,cellno):
+        for i in range(len(self.cells)):
+            if self.cells[i].cellno == cellno:
+                return i
+    
+    def reset(self,data):
+        f = 'controller.Cells.reset'
         if not data:
             sh.com.rep_empty(f)
             return
-        fragm = []
-        old_row = -1
-        cell = []
-        for row in data:
-            #TYPE,TEXT,ROWNO,COLNO,CELLNO
-            if row[4] == old_row:
-                cell.append(row[1])
+        for block in data:
+            text, rowno, colno, cellno = block[1], block[2], block[3], block[4]
+            i = self._get(cellno)
+            if i is None:
+                self.cells.append(Cell(text,rowno,colno,cellno))
             else:
-                self.cells.append(''.join(cell))
-                old_row = row[4]
-                cell = [row[1]]
-        if cell:
-            self.cells.append(' '.join(cell))
+                self.cells[i].text += text
+    
+    def debug(self):
+        f = 'controller.Cells.debug'
+        if not data:
+            sh.com.rep_empty(f)
+            return
+        texts = []
+        rownos = []
+        colnos = []
+        cellnos = []
+        for cell in self.cells:
+            texts.append(cell.text)
+            rownos.append(cell.rowno)
+            colnos.append(cell.colno)
+            cellnos.append(cell.cellno)
+        headers = (_('TEXT'),_('ROW #'),_('COLUMN #'),_('CELL #'))
+        iterable = [texts,rownos,colnos,cellnos]
+        mes = sh.FastTable (headers = headers
+                           ,iterable = iterable
+                           ,maxrows = 1000
+                           ,maxrow = 40
+                           ).run()
+        sh.com.run_fast_debug(f,mes)
+
+
+
+class Table:
+    
+    def __init__(self):
+        self.cells = []
+        
     
     def fill(self,data):
         pass
@@ -93,9 +124,9 @@ if __name__ == '__main__':
     f = 'controller.__main__'
     db = DB()
     data = db.fetch()
+    icells = Cells()
+    icells.reset(data)
+    icells.debug()
     #com.debug_memory(data)
-    itable = Table()
-    itable.set_cells(data)
-    cells = '\n'.join(itable.cells)
-    sh.com.run_fast_debug(f,cells)
+    #itable = Table()
     db.close()
