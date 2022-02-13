@@ -3,7 +3,7 @@
 
 import sys
 import sqlite3
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QApplication,QMainWindow,QGridLayout \
                            ,QWidget,QTableWidget,QTableWidgetItem \
                            ,QHeaderView,QShortcut
@@ -164,7 +164,11 @@ class Table(QMainWindow):
         timer = sh.Timer(f)
         timer.start()
         for cell in self.cells:
-            self.table.setItem(cell.rowno,cell.colno,QTableWidgetItem(cell.text))
+            table_item = QTableWidgetItem(cell.text)
+            self.table.setItem(cell.rowno,cell.colno,table_item)
+            table_item.setTextAlignment(QtCore.Qt.AlignTop)
+            if 0 <= cell.colno < 4:
+                table_item.setTextAlignment(QtCore.Qt.AlignHCenter)
         self.layout.addWidget(self.table,0,0)
         #self.hheader.setSectionResizeMode(0,QHeaderView.Interactive)
         #self.hheader.setSectionResizeMode(1,QHeaderView.Interactive)
