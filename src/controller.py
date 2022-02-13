@@ -144,6 +144,10 @@ class Table(QMainWindow):
         self.hheader = self.table.horizontalHeader()
         #self.hheader.defaultSectionSize = 20
         self.vheader = self.table.verticalHeader()
+        self.vheader.setSectionResizeMode(QHeaderView.ResizeToContents)
+        self.vheader.setMaximumSectionSize(50)
+        self.hheader.hide()
+        self.vheader.hide()
         self.set_bindings()
     
     def set_bindings(self):
@@ -182,8 +186,6 @@ class Table(QMainWindow):
         self.hheader.setSectionResizeMode(5,QHeaderView.Stretch)
         self.hheader.setSectionResizeMode(6,QHeaderView.Stretch)
         self.hheader.setSectionResizeMode(7,QHeaderView.Stretch)
-        self.vheader.setSectionResizeMode(QHeaderView.ResizeToContents)
-        self.vheader.setMaximumSectionSize(50)
         timer.end()
 
 
