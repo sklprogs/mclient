@@ -4,10 +4,11 @@
 import sys
 import sqlite3
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout\
-                                        , QWidget, QTableWidget\
-                                        , QTableWidgetItem, QHeaderView
+from PyQt5.QtWidgets import QApplication,QMainWindow,QGridLayout \
+                           ,QWidget,QTableWidget,QTableWidgetItem \
+                           ,QHeaderView,QShortcut
 from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtGui import QKeySequence
 from skl_shared.localize import _
 import skl_shared.shared as sh
 
@@ -145,6 +146,11 @@ class Table(QMainWindow):
         # Allows to adapt table contents to window resizing
         header = self.table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.Stretch)
+        self.set_bindings()
+    
+    def set_bindings(self):
+        QShortcut(QKeySequence('Ctrl+Q'),self).activated.connect(self.close)
+        QShortcut(QKeySequence('Esc'),self).activated.connect(self.close)
     
     def reset(self,cells,rowno,colno):
         f = 'controller.Commands.reset'
