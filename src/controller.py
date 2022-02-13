@@ -1,7 +1,12 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import sys
 import sqlite3
+from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout\
+                                        , QWidget, QTableWidget\
+                                        , QTableWidgetItem
+from PyQt5.QtCore import QSize, Qt
 from skl_shared.localize import _
 import skl_shared.shared as sh
 
@@ -20,12 +25,13 @@ class DB:
     
     def __init__(self):
         self.set_values()
-        self.db = sqlite3.connect('/home/pete/tmp/set.db')
+        self.db = sqlite3.connect(self.path)
         self.dbc = self.db.cursor()
     
     def set_values(self):
         self.artid = 0
         self.Selectable = True
+        self.path = '/home/pete/tmp/set.db'
     
     def fetch(self):
         query = 'select TYPE,TEXT,ROWNO,COLNO,CELLNO from BLOCKS \
@@ -34,7 +40,31 @@ class DB:
         return self.dbc.fetchall()
     
     def close(self):
+        f = 'controller.DB.close'
+        mes = _('Close "{}"').format(self.path)
+        sh.objs.get_mes(f,mes,True).show_info()
         self.dbc.close()
+    
+    def get_max_col_no(self):
+        ''' This is a less advanced alternative to 'self.get_max_col'
+            for cases when positions are not set yet.
+        '''
+        f = 'controller.DB.get_max_col_no'
+        query = 'select COLNO from BLOCKS where BLOCK = 0 and \
+                        IGNORE = 0 order by COLNO desc'
+        self.dbc.execute(query,)
+        col_no = self.dbc.fetchone()
+        if col_no:
+            return col_no[0]
+    
+    def get_max_row_no(self):
+        f = 'controller.DB.get_max_row_no'
+        query = 'select ROWNO from BLOCKS where BLOCK = 0 \
+                 and IGNORE = 0 order by ROWNO desc'
+        self.dbc.execute(query,)
+        result = self.dbc.fetchone()
+        if result:
+            return result[0]
 
 
 
@@ -86,14 +116,48 @@ class Cells:
 
 
 
-class Table:
+class Table(QMainWindow):
     
     def __init__(self):
-        self.cells = []
-        
+        QMainWindow.__init__(self)
+        self.set_values()
     
-    def fill(self,data):
-        pass
+    def set_values(self):
+        self.cells = []
+        self.rowno = 0
+        self.colno = 0
+    
+    def set_gui(self):
+        f = 'controller.Table.set_gui'
+        self.setMinimumSize(QSize(800,500))
+        self.setWindowTitle('MClientQT')
+        center = QWidget(self)
+        self.setCentralWidget(center)
+        self.layout = QGridLayout()
+        center.setLayout(self.layout)
+        self.table = QTableWidget(self)
+        mes = _('Table sizes: {}x{}').format(self.rowno,self.colno)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        self.table.setRowCount(self.rowno)
+        self.table.setColumnCount(self.colno)
+    
+    def reset(self,cells,rowno,colno):
+        f = 'controller.Commands.reset'
+        if not cells:
+            sh.com.rep_empty(f)
+            return
+        self.cells = cells
+        self.rowno = rowno
+        self.colno = colno
+    
+    def fill(self):
+        f = 'controller.Commands.fill'
+        timer = sh.Timer(f)
+        timer.start()
+        for cell in self.cells:
+            self.table.setItem(cell.rowno,cell.colno,QTableWidgetItem(cell.text))
+        self.layout.addWidget(self.table,0,0)
+        timer.end()
 
 
 
@@ -122,11 +186,19 @@ com = Commands()
 
 if __name__ == '__main__':
     f = 'controller.__main__'
+    app = QApplication(sys.argv)
     db = DB()
     data = db.fetch()
+    rowno = db.get_max_row_no()
+    colno = db.get_max_col_no()
     icells = Cells()
     icells.reset(data)
-    icells.debug()
+    #icells.debug()
     #com.debug_memory(data)
-    #itable = Table()
+    itable = Table()
+    itable.reset(icells.cells,rowno,colno)
+    itable.set_gui()
+    itable.fill()
+    itable.show()
+    sys.exit(app.exec())
     db.close()
