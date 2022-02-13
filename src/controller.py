@@ -154,7 +154,7 @@ class Table(QMainWindow):
     
     def reset(self,cells,rowno,colno):
         f = 'controller.Commands.reset'
-        if not cells:
+        if not cells or not rowno or not colno:
             sh.com.rep_empty(f)
             return
         self.cells = cells
@@ -203,6 +203,10 @@ if __name__ == '__main__':
     data = db.fetch()
     rowno = db.get_max_row_no()
     colno = db.get_max_col_no()
+    if rowno is not None:
+        rowno += 1
+    if colno is not None:
+        colno += 1
     icells = Cells()
     icells.reset(data)
     #icells.debug()
