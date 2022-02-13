@@ -147,7 +147,7 @@ class Table(QMainWindow):
         #self.hheader.defaultSectionSize = 20
         self.vheader = self.table.verticalHeader()
         self.vheader.setSectionResizeMode(QHeaderView.ResizeToContents)
-        self.vheader.setMaximumSectionSize(50)
+        self.vheader.setMaximumSectionSize(80)
         self.hheader.hide()
         self.vheader.hide()
         self.set_bindings()
@@ -175,9 +175,6 @@ class Table(QMainWindow):
             ifont.setFamily('Serif')
             if cell.colno == 0:
                 ifont.setWeight(QFont.Bold)
-                palette = PyQt5.QtGui.QPalette()
-                palette.setColor(PyQt5.QtGui.QPalette.Text,QtCore.Qt.red)
-                #self.table.setPalette(palette)
                 table_item.setForeground(PyQt5.QtGui.QBrush(PyQt5.QtGui.QColor(0,255,0)))
             ifont.setPixelSize(16)
             table_item.setFont(ifont)
