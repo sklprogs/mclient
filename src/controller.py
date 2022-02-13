@@ -141,8 +141,9 @@ class Table(QMainWindow):
         sh.objs.get_mes(f,mes,True).show_debug()
         self.table.setRowCount(self.rowno)
         self.table.setColumnCount(self.colno)
-        self.header = self.table.horizontalHeader()
-        #self.header.defaultSectionSize = 20
+        self.hheader = self.table.horizontalHeader()
+        #self.hheader.defaultSectionSize = 20
+        self.vheader = self.table.verticalHeader()
         self.set_bindings()
     
     def set_bindings(self):
@@ -165,18 +166,20 @@ class Table(QMainWindow):
         for cell in self.cells:
             self.table.setItem(cell.rowno,cell.colno,QTableWidgetItem(cell.text))
         self.layout.addWidget(self.table,0,0)
-        #self.header.setSectionResizeMode(0,QHeaderView.Interactive)
-        #self.header.setSectionResizeMode(1,QHeaderView.Interactive)
+        #self.hheader.setSectionResizeMode(0,QHeaderView.Interactive)
+        #self.hheader.setSectionResizeMode(1,QHeaderView.Interactive)
         self.table.setColumnWidth(0,150)
         self.table.setColumnWidth(1,100)
         self.table.setColumnWidth(2,50)
         self.table.setColumnWidth(3,50)
         #self.table.resizeColumnToContents(2)
         #self.table.resizeColumnToContents(3)
-        self.header.setSectionResizeMode(4,QHeaderView.Stretch)
-        self.header.setSectionResizeMode(5,QHeaderView.Stretch)
-        self.header.setSectionResizeMode(6,QHeaderView.Stretch)
-        self.header.setSectionResizeMode(7,QHeaderView.Stretch)
+        self.hheader.setSectionResizeMode(4,QHeaderView.Stretch)
+        self.hheader.setSectionResizeMode(5,QHeaderView.Stretch)
+        self.hheader.setSectionResizeMode(6,QHeaderView.Stretch)
+        self.hheader.setSectionResizeMode(7,QHeaderView.Stretch)
+        self.vheader.setSectionResizeMode(QHeaderView.ResizeToContents)
+        self.vheader.setMaximumSectionSize(50)
         timer.end()
 
 
