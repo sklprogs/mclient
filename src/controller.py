@@ -142,6 +142,7 @@ class Table(QMainWindow):
         self.table.setRowCount(self.rowno)
         self.table.setColumnCount(self.colno)
         self.header = self.table.horizontalHeader()
+        self.header.defaultSectionSize = 20
         self.set_bindings()
     
     def set_bindings(self):
@@ -164,8 +165,8 @@ class Table(QMainWindow):
         for cell in self.cells:
             self.table.setItem(cell.rowno,cell.colno,QTableWidgetItem(cell.text))
         self.layout.addWidget(self.table,0,0)
-        self.header.setSectionResizeMode(0,QHeaderView.Stretch)
-        self.header.setSectionResizeMode(1,QHeaderView.Stretch)
+        self.header.setSectionResizeMode(0,QHeaderView.Interactive)
+        self.header.setSectionResizeMode(1,QHeaderView.Interactive)
         self.table.resizeColumnToContents(2)
         self.table.resizeColumnToContents(3)
         self.header.setSectionResizeMode(4,QHeaderView.Stretch)
