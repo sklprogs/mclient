@@ -4,12 +4,8 @@
 import sys
 import sqlite3
 import PyQt5
-from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QApplication,QMainWindow,QGridLayout \
-                           ,QWidget,QTableWidget,QTableWidgetItem \
-                           ,QHeaderView,QShortcut
-from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtGui import QKeySequence,QFont
+import PyQt5.QtWidgets
+
 from skl_shared.localize import _
 import skl_shared.shared as sh
 
@@ -119,10 +115,10 @@ class Cells:
 
 
 
-class Table(QMainWindow):
+class Table(PyQt5.QtWidgets.QMainWindow):
     
     def __init__(self):
-        QMainWindow.__init__(self)
+        PyQt5.QtWidgets.QMainWindow.__init__(self)
         self.set_values()
     
     def set_values(self):
@@ -133,11 +129,11 @@ class Table(QMainWindow):
     def set_gui(self):
         f = 'controller.Table.set_gui'
         self.setWindowTitle('MClientQT')
-        center = QWidget(self)
+        center = PyQt5.QtWidgets.QWidget(self)
         self.setCentralWidget(center)
-        self.layout = QGridLayout()
+        self.layout = PyQt5.QtWidgets.QGridLayout()
         center.setLayout(self.layout)
-        self.table = QTableWidget(self)
+        self.table = PyQt5.QtWidgets.QTableWidget(self)
         self.table.setShowGrid(False)
         mes = _('Table sizes: {}x{}').format(self.rowno,self.colno)
         sh.objs.get_mes(f,mes,True).show_debug()
@@ -146,15 +142,15 @@ class Table(QMainWindow):
         self.hheader = self.table.horizontalHeader()
         #self.hheader.defaultSectionSize = 20
         self.vheader = self.table.verticalHeader()
-        self.vheader.setSectionResizeMode(QHeaderView.ResizeToContents)
+        self.vheader.setSectionResizeMode(PyQt5.QtWidgets.QHeaderView.ResizeToContents)
         self.vheader.setMaximumSectionSize(80)
         self.hheader.hide()
         self.vheader.hide()
         self.set_bindings()
     
     def set_bindings(self):
-        QShortcut(QKeySequence('Ctrl+Q'),self).activated.connect(self.close)
-        QShortcut(QKeySequence('Esc'),self).activated.connect(self.close)
+        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence('Ctrl+Q'),self).activated.connect(self.close)
+        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence('Esc'),self).activated.connect(self.close)
     
     def reset(self,cells,rowno,colno):
         f = 'controller.Commands.reset'
@@ -170,31 +166,31 @@ class Table(QMainWindow):
         timer = sh.Timer(f)
         timer.start()
         for cell in self.cells:
-            table_item = QTableWidgetItem(cell.text)
-            ifont = QFont()
+            table_item = PyQt5.QtWidgets.QTableWidgetItem(cell.text)
+            ifont = PyQt5.QtGui.QFont()
             ifont.setFamily('Serif')
             if cell.colno == 0:
-                ifont.setWeight(QFont.Bold)
+                ifont.setWeight(PyQt5.QtGui.QFont.Bold)
                 table_item.setForeground(PyQt5.QtGui.QBrush(PyQt5.QtGui.QColor(0,255,0)))
             ifont.setPixelSize(16)
             table_item.setFont(ifont)
-            table_item.setTextAlignment(QtCore.Qt.AlignTop)
+            table_item.setTextAlignment(PyQt5.QtCore.Qt.AlignTop)
             self.table.setItem(cell.rowno,cell.colno,table_item)
             if 0 <= cell.colno < 4:
-                table_item.setTextAlignment(QtCore.Qt.AlignHCenter)
+                table_item.setTextAlignment(PyQt5.QtCore.Qt.AlignHCenter)
         self.layout.addWidget(self.table,0,0)
-        #self.hheader.setSectionResizeMode(0,QHeaderView.Interactive)
-        #self.hheader.setSectionResizeMode(1,QHeaderView.Interactive)
+        #self.hheader.setSectionResizeMode(0,PyQt5.QtWidgets.QHeaderView.Interactive)
+        #self.hheader.setSectionResizeMode(1,PyQt5.QtWidgets.QHeaderView.Interactive)
         self.table.setColumnWidth(0,150)
         self.table.setColumnWidth(1,100)
         self.table.setColumnWidth(2,50)
         self.table.setColumnWidth(3,50)
         #self.table.resizeColumnToContents(2)
         #self.table.resizeColumnToContents(3)
-        self.hheader.setSectionResizeMode(4,QHeaderView.Stretch)
-        self.hheader.setSectionResizeMode(5,QHeaderView.Stretch)
-        self.hheader.setSectionResizeMode(6,QHeaderView.Stretch)
-        self.hheader.setSectionResizeMode(7,QHeaderView.Stretch)
+        self.hheader.setSectionResizeMode(4,PyQt5.QtWidgets.QHeaderView.Stretch)
+        self.hheader.setSectionResizeMode(5,PyQt5.QtWidgets.QHeaderView.Stretch)
+        self.hheader.setSectionResizeMode(6,PyQt5.QtWidgets.QHeaderView.Stretch)
+        self.hheader.setSectionResizeMode(7,PyQt5.QtWidgets.QHeaderView.Stretch)
         timer.end()
 
 
@@ -224,7 +220,7 @@ com = Commands()
 
 if __name__ == '__main__':
     f = 'controller.__main__'
-    app = QApplication(sys.argv)
+    app = PyQt5.QtWidgets.QApplication(sys.argv)
     db = DB()
     data = db.fetch()
     rowno = db.get_max_row_no()
