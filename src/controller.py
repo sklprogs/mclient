@@ -137,6 +137,7 @@ class Table(QMainWindow):
         self.layout = QGridLayout()
         center.setLayout(self.layout)
         self.table = QTableWidget(self)
+        self.table.setShowGrid(False)
         mes = _('Table sizes: {}x{}').format(self.rowno,self.colno)
         sh.objs.get_mes(f,mes,True).show_debug()
         self.table.setRowCount(self.rowno)
