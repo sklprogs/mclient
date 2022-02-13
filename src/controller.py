@@ -131,7 +131,6 @@ class Table(QMainWindow):
     
     def set_gui(self):
         f = 'controller.Table.set_gui'
-        #self.setMinimumSize(QSize(800,500))
         self.setWindowTitle('MClientQT')
         center = QWidget(self)
         self.setCentralWidget(center)
@@ -142,10 +141,7 @@ class Table(QMainWindow):
         sh.objs.get_mes(f,mes,True).show_debug()
         self.table.setRowCount(self.rowno)
         self.table.setColumnCount(self.colno)
-        #self.table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
-        # Allows to adapt table contents to window resizing
-        header = self.table.horizontalHeader()
-        header.setSectionResizeMode(QHeaderView.Stretch)
+        self.header = self.table.horizontalHeader()
         self.set_bindings()
     
     def set_bindings(self):
@@ -168,7 +164,14 @@ class Table(QMainWindow):
         for cell in self.cells:
             self.table.setItem(cell.rowno,cell.colno,QTableWidgetItem(cell.text))
         self.layout.addWidget(self.table,0,0)
-        self.table.resizeColumnsToContents()
+        self.header.setSectionResizeMode(0,QHeaderView.Stretch)
+        self.header.setSectionResizeMode(1,QHeaderView.Stretch)
+        self.table.resizeColumnToContents(2)
+        self.table.resizeColumnToContents(3)
+        self.header.setSectionResizeMode(4,QHeaderView.Stretch)
+        self.header.setSectionResizeMode(5,QHeaderView.Stretch)
+        self.header.setSectionResizeMode(6,QHeaderView.Stretch)
+        self.header.setSectionResizeMode(7,QHeaderView.Stretch)
         timer.end()
 
 
