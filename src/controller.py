@@ -3,9 +3,10 @@
 
 import sys
 import sqlite3
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout\
                                         , QWidget, QTableWidget\
-                                        , QTableWidgetItem
+                                        , QTableWidgetItem, QHeaderView
 from PyQt5.QtCore import QSize, Qt
 from skl_shared.localize import _
 import skl_shared.shared as sh
@@ -129,7 +130,7 @@ class Table(QMainWindow):
     
     def set_gui(self):
         f = 'controller.Table.set_gui'
-        self.setMinimumSize(QSize(800,500))
+        #self.setMinimumSize(QSize(800,500))
         self.setWindowTitle('MClientQT')
         center = QWidget(self)
         self.setCentralWidget(center)
@@ -140,6 +141,10 @@ class Table(QMainWindow):
         sh.objs.get_mes(f,mes,True).show_debug()
         self.table.setRowCount(self.rowno)
         self.table.setColumnCount(self.colno)
+        #self.table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        # Allows to adapt table contents to window resizing
+        header = self.table.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
     
     def reset(self,cells,rowno,colno):
         f = 'controller.Commands.reset'
@@ -157,6 +162,7 @@ class Table(QMainWindow):
         for cell in self.cells:
             self.table.setItem(cell.rowno,cell.colno,QTableWidgetItem(cell.text))
         self.layout.addWidget(self.table,0,0)
+        self.table.resizeColumnsToContents()
         timer.end()
 
 
@@ -199,6 +205,7 @@ if __name__ == '__main__':
     itable.reset(icells.cells,rowno,colno)
     itable.set_gui()
     itable.fill()
-    itable.show()
+    #itable.show()
+    itable.showMaximized()
     sys.exit(app.exec())
     db.close()
