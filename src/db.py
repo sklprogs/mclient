@@ -22,6 +22,20 @@ class DB:
         self.create_blocks()
         self.create_articles()
     
+    def is_col_empty(self,no):
+        f = '[MClient] db.DB.is_col_empty'
+        if self.artid:
+            query = 'select TEXT from BLOCKS where ARTICLEID = ? \
+                     and BLOCK = 0 and IGNORE = 0 and COLNO = ? \
+                     and TEXT != ""'
+            args = (self.artid,no,)
+            self.dbc.execute(query,args)
+            result = self.dbc.fetchone()
+            if not result:
+                return True
+        else:
+            sh.com.rep_empty(f)
+    
     def get_fixed_cols(self):
         f = '[MClient] db.DB.get_fixed_cols'
         if self.artid:
