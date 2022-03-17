@@ -1,5 +1,8 @@
 (in development)
-* 
+* Return to the old method of calculating column widths in order to
+  accelerate the program
+* Change a "timeout" key type to a floating number
+* Increase an update interval up to 0.6 seconds
 
 6.13.2
 * Fix calling the window in Windows for some cases
