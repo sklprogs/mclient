@@ -12,6 +12,7 @@ import skl_shared.shared as sh
 CODING = 'UTF-8'
 # 'https' is received faster than 'http' (~0.2s)
 URL = 'https://www.multitran.com'
+# This value is reassigned with config
 TIMEOUT = 6
 PAIRROOT = URL + '/m.exe?'
 

@@ -14,7 +14,7 @@ import plugins.dsl.run as lgrun
 class Plugins:
     
     def __init__ (self,sdpath,mbpath
-                 ,timeout=6,Debug=False
+                 ,timeout=5.0,Debug=False
                  ,maxrows=1000
                  ):
         self.set_values()
@@ -178,7 +178,7 @@ class Plugins:
     def set_lang2(self,lang2):
         self.plugin.set_lang2(lang2)
     
-    def set_timeout(self,timeout=6):
+    def set_timeout(self,timeout=5.0):
         f = '[MClient] manager.Plugins.set_timeout'
         if self.plugin:
             self.plugin.set_timeout(timeout)

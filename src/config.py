@@ -17,6 +17,7 @@ class DefaultKeys(sh.DefaultKeys):
     def load(self):
         self._load_bool()
         self._load_int()
+        self._load_float()
         self._load_str()
         
     def _load_bool(self):
@@ -40,6 +41,11 @@ class DefaultKeys(sh.DefaultKeys):
            ,'VerticalView'       :False
                                    })
     
+    def _load_float(self):
+        sh.lg.globs['float'].update ({
+            'timeout' : 5.0
+                                    })
+    
     def _load_int(self):
         sh.lg.globs['int'].update ({
             'colnum'            :4
@@ -50,7 +56,6 @@ class DefaultKeys(sh.DefaultKeys):
            ,'font_comments_size':3
            ,'font_terms_size'   :4
            ,'table_width'       :97
-           ,'timeout'           :5
                                   })
     
     def _load_str(self):
@@ -224,6 +229,15 @@ class CreateConfig(sh.CreateConfig):
         comment = _('[Autosave] Vertical view')
         self.add_key(section,section_abbr,key,comment)
     
+    def fill_float(self):
+        section = _('Floatings')
+        self.add_section(section)
+        section_abbr = self.sections[-1].abbr
+        
+        key = 'timeout'
+        comment = _('A connection timeout (fractions of a second)')
+        self.add_key(section,section_abbr,key,comment)
+    
     def fill_int(self):
         section = _('Integers')
         self.add_section(section)
@@ -263,10 +277,6 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'table_width'
         comment = _('[Autosave] A table width (in percent)')
-        self.add_key(section,section_abbr,key,comment)
-        
-        key = 'timeout'
-        comment = _('A connection timeout (in seconds)')
         self.add_key(section,section_abbr,key,comment)
     
     def fill_str(self):

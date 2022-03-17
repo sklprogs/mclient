@@ -705,7 +705,7 @@ class Objects:
         if self.plugins is None:
             self.plugins = manager.Plugins (sdpath = self.get_default().get_dics()
                                            ,mbpath = self.default.get_dics()
-                                           ,timeout = sh.lg.globs['int']['timeout']
+                                           ,timeout = sh.lg.globs['float']['timeout']
                                            ,Debug = Debug
                                            ,maxrows = maxrows
                                            )
