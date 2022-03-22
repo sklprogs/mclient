@@ -217,7 +217,7 @@ class Fonts:
         f = '[MClient] mkhtml.Fonts._get_col_width'
         for column in self.columns:
             if column.no == colno:
-                return column.final_pc
+                return column.width
         modes = sorted(set(str(column.no) for column in self.columns))
         modes = '; '.join(modes)
         mes = _('Argument "{}" is not covered by the range of "{}"!')
@@ -438,7 +438,6 @@ class HTM:
         self.htm = ''
         self.landscape = ''
         self.skipped = 0
-        self.tab_width = 0
         self.Printer = False
     
     def gen_htm(self):
@@ -452,15 +451,7 @@ class HTM:
             code.append(self.landscape)
             code.append('<div id="printableArea">')
         if self.fonts:
-            ''' Setting the table width to 100% will break a layout for
-                a single-line articles (when only separate words were
-                found).
-            '''
-            if self.tab_width in (0,100):
-                sub = '<table>'
-            else:
-                sub = '<table style="width: {}%">'.format(self.tab_width)
-            code.append(sub)
+            code.append('<table>')
             old_colno = -1
             old_rowno = -1
             for ifont in self.fonts:
@@ -482,7 +473,7 @@ class HTM:
                         delta = ifont.colno
                     for i in range(delta):
                         col_width = objs.get_fonts()._get_col_width(i)
-                        sub = '<td style="width: {}%"/>'
+                        sub = '<td width="{}"/>'
                         sub = sub.format(col_width)
                         code.append(sub)
                     sub = '<td{} valign="top"{}>'
@@ -491,7 +482,7 @@ class HTM:
                     else:
                         sub1 = ''
                     if ifont.col_width:
-                        sub2 = ' style="width: {}%"'
+                        sub2 = ' width="{}"'
                         sub2 = sub2.format(ifont.col_width)
                     else:
                         sub2 = ''

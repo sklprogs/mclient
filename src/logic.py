@@ -22,44 +22,27 @@ class Column:
     def __init__(self):
         self.no = 0
         self.width = 0
-        self.final_pc = 0
         self.Fixed = False
 
 
 
 class ColumnWidth:
-    # Adjust fixed columns to have a constant width
+    ''' Adjust fixed columns to have a constant width. A fixed value
+        in pixels rather than percentage should be used to adjust
+        columns since we cannot say if gaps between columns are too
+        large without calculating a text width first.
+    '''
     def __init__(self):
         self.set_values()
     
     def set_values(self):
         # This approach includes percentage only
         self.fixed_num = 0
-        self.fixed_sum = 0
-        self.fixed = 4
-        self.min_width = 1
         self.term_num = 0
-        self.term = 0
-        self.max_table = 100
-        self.table = 0
+        self.fixed = 63
+        self.term = 157
+        self.min_width = 1
         self.columns = []
-    
-    def set_table_width(self):
-        f = '[MClient] logic.ColumnWidth.set_table_width'
-        for column in self.columns:
-            self.table += column.width
-        self.table = min(self.table,self.max_table)
-        mes = _('Table width: {}%').format(int(self.table))
-        sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def set_term(self):
-        f = '[MClient] logic.ColumnWidth.set_term'
-        if self.term_num:
-            self.term = int(self.term_sum/self.term_num)
-            mes = _('Term column width: {}%').format(self.term)
-            sh.objs.get_mes(f,mes,True).show_debug()
-        else:
-            sh.com.rep_empty(f)
     
     def set_col_width(self):
         for column in self.columns:
@@ -72,22 +55,6 @@ class ColumnWidth:
             if column.width == 0:
                 column.width = self.min_width
     
-    def set_term_sum(self):
-        f = '[MClient] logic.ColumnWidth.set_term_sum'
-        self.term_sum = 100 - self.fixed_sum
-        mes = _('Space available for term columns: {}%')
-        mes = mes.format(self.term_sum)
-        sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def set_fixed_sum(self):
-        f = '[MClient] logic.ColumnWidth.set_fixed_sum'
-        for column in self.columns:
-            if column.Fixed:
-                self.fixed_sum += self.fixed
-        mes = _('Space available for fixed columns: {}%')
-        mes = mes.format(self.fixed_sum)
-        sh.objs.get_mes(f,mes,True).show_debug()
-    
     def reset(self):
         self.set_values()
     
@@ -95,20 +62,7 @@ class ColumnWidth:
         self.set_fixed_num()
         self.set_term_num()
         self.set_columns()
-        self.set_fixed_sum()
-        self.set_term_sum()
-        self.set_term()
         self.set_col_width()
-        self.set_table_width()
-    
-    def get_table_width(self):
-        if sh.lg.globs['bool']['AdjustLayout'] \
-        and sh.lg.globs['bool']['AdjustByWidth']:
-            return min(sh.lg.globs['int']['table_width'],self.table)
-        elif sh.lg.globs['bool']['AdjustByWidth']:
-            return self.table
-        else:
-            return 0
     
     def set_fixed_num(self):
         f = '[MClient] logic.ColumnWidth.set_fixed_num'

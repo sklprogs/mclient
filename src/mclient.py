@@ -1967,7 +1967,6 @@ class WebFrame:
                             )
         mh.objs.get_htm().reset (fonts = mh.objs.fonts.run()
                                 ,skipped = len(com.get_skipped_dics())
-                                ,tab_width = lg.objs.column_width.get_table_width()
                                 )
         mh.objs.htm.run()
         mktimer.end()
@@ -2505,7 +2504,6 @@ class WebFrame:
         mh.objs.get_htm().reset (fonts = mh.objs.fonts.fonts
                                 ,Printer = True
                                 ,skipped = len(com.get_skipped_dics())
-                                ,tab_width = lg.objs.get_column_width().get_table_width()
                                 )
         code = mh.objs.htm.run()
         if code:
