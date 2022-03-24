@@ -49,6 +49,7 @@ class DefaultKeys(sh.DefaultKeys):
     def _load_int(self):
         sh.lg.globs['int'].update ({
             'colnum'            :4
+           ,'fixed_col_width'   :63
            ,'font_col1_size'    :4
            ,'font_col2_size'    :4
            ,'font_col3_size'    :3
@@ -56,6 +57,7 @@ class DefaultKeys(sh.DefaultKeys):
            ,'font_comments_size':3
            ,'font_terms_size'   :4
            ,'table_width'       :97
+           ,'term_col_width'    :157
                                   })
     
     def _load_str(self):
@@ -247,6 +249,10 @@ class CreateConfig(sh.CreateConfig):
         comment = _('[Autosave] Number of non-fixed columns')
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'fixed_col_width'
+        comment = _('[Autosave] Fixed column width')
+        self.add_key(section,section_abbr,key,comment)
+        
         key = 'font_comments_size'
         comment = _('A font size of comments')
         self.add_key(section,section_abbr,key,comment)
@@ -277,6 +283,10 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'table_width'
         comment = _('[Autosave] A table width (in percent)')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'term_col_width'
+        comment = _('[Autosave] Term column width')
         self.add_key(section,section_abbr,key,comment)
     
     def fill_str(self):

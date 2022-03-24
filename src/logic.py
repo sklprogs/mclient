@@ -39,8 +39,6 @@ class ColumnWidth:
         # This approach includes percentage only
         self.fixed_num = 0
         self.term_num = 0
-        self.fixed = 63
-        self.term = 157
         self.min_width = 1
         self.columns = []
     
@@ -49,9 +47,9 @@ class ColumnWidth:
             if objs.get_blocksdb().is_col_empty(column.no):
                 column.width = self.min_width
             elif column.Fixed:
-                column.width = self.fixed
+                column.width = sh.lg.globs['int']['fixed_col_width']
             else:
-                column.width = self.term
+                column.width = sh.lg.globs['int']['term_col_width']
             if column.width == 0:
                 column.width = self.min_width
     
