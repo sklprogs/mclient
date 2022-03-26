@@ -1,6 +1,7 @@
 
 
 mclient:
+- Learn why same-sized columns can actually be wider (e.g., 3 columns, fixed_col_width=42, term_col_width=215, hello, just about)
 - Improve main icon quality
 - Fix colorizing
 - Make a cell fully visible when mousing over it
