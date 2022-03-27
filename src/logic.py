@@ -325,18 +325,21 @@ class Welcome:
     def try_sources(self):
         f = '[MClient] logic.Welcome.try_sources'
         old = objs.get_plugins().source
-        dics = objs.plugins.get_online_sources()
-        if dics:
-            for dic in dics:
-                objs.plugins.set(dic)
-                source = Source()
-                source.title = dic
-                if objs.plugins.is_accessible():
-                    source.status = _('running')
-                    source.color = 'green'
-                self.sources.append(source)
+        if sh.lg.globs['bool']['Ping']:
+            dics = objs.plugins.get_online_sources()
+            if dics:
+                for dic in dics:
+                    objs.plugins.set(dic)
+                    source = Source()
+                    source.title = dic
+                    if objs.plugins.is_accessible():
+                        source.status = _('running')
+                        source.color = 'green'
+                    self.sources.append(source)
+            else:
+                sh.com.rep_empty(f)
         else:
-            sh.com.rep_empty(f)
+            sh.com.rep_lazy(f)
         # Try Stardict
         objs.plugins.set(_('Stardict'))
         self.sdstat = objs.get_plugins().is_accessible()

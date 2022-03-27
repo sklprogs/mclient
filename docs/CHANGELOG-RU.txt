@@ -7,7 +7,7 @@
 * Добавлена кнопка для расчета оптимальной ширины столбцов
 * Изменение типа ключа timeout на число с учетом порядков
 * Удалены ключи AdjustLayout, table_width
-* Добавлены ключи term_col_width, fixed_col_width, hotkey_delay
+* Добавлены ключи term_col_width, fixed_col_width, hotkey_delay, Ping
 * Увеличение интервала обновления до 0,6 секунд
 
 6.13.2

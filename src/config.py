@@ -31,6 +31,7 @@ class DefaultKeys(sh.DefaultKeys):
            ,'CaptureHotkey'      :True
            ,'Iconify'            :True
            ,'PhraseCount'        :True
+           ,'Ping'               :True
            ,'PrioritizeSubjects' :True
            ,'SelectTermsOnly'    :True
            ,'ShortSubjects'      :False
@@ -192,6 +193,10 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'Iconify'
         comment = _('[Autosave] Minimize the application window after specific actions, e.g., copying')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'Ping'
+        comment = _('Ping online sources at startup')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'PhraseCount'
