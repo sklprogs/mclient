@@ -44,6 +44,8 @@ class UpdateSettingsUI:
         self.gui.cbx_no14.set(sh.lg.globs['bool']['AdjustByWidth'])
     
     def update_col_widths(self):
+        self.gui.ent_num.reset()
+        self.gui.ent_num.insert(sh.lg.globs['int']['colnum'])
         self.gui.ent_fcw.reset()
         self.gui.ent_fcw.insert(sh.lg.globs['int']['fixed_col_width'])
         self.gui.ent_tcw.reset()
@@ -91,17 +93,28 @@ class ExportSettingsUI:
         sh.lg.globs['bool']['PhraseCount'] = objs.settings_ui.cbx_no13.get()
         sh.lg.globs['bool']['AdjustByWidth'] = objs.settings_ui.cbx_no14.get()
     
-    def _report_wrong_range(self,f):
+    def _report_wrong_range(self,f,start,end):
         mes = _('A value of this field should be within the range of {}-{}!')
-        mes = mes.format(50,512)
+        mes = mes.format(start,end)
         sh.objs.get_mes(f,mes).show_warning()
+    
+    def export_col_num(self):
+        f = '[MClient] settings.controller.ExportSettingsUI.export_col_num'
+        col_num = objs.get_settings_ui().ent_num.get()
+        col_num = sh.Input(f,col_num).get_integer()
+        if not 0 < col_num <= 10:
+            self._report_wrong_range(f,1,10)
+            col_num = 5
+            objs.settings_ui.ent_num.reset()
+            objs.settings_ui.ent_num.insert(col_num)
+        sh.lg.globs['int']['colnum'] = col_num
     
     def export_fixed_col_width(self):
         f = '[MClient] settings.controller.ExportSettingsUI.export_fixed_col_width'
         width = objs.get_settings_ui().ent_fcw.get()
         width = sh.Input(f,width).get_integer()
         if not 50 <= width <= 512:
-            self._report_wrong_range(f)
+            self._report_wrong_range(f,50,512)
             width = 63
             objs.settings_ui.ent_fcw.reset()
             objs.settings_ui.ent_fcw.insert(width)
@@ -112,7 +125,7 @@ class ExportSettingsUI:
         width = objs.get_settings_ui().ent_tcw.get()
         width = sh.Input(f,width).get_integer()
         if not 50 <= width <= 512:
-            self._report_wrong_range(f)
+            self._report_wrong_range(f,50,512)
             width = 157
             objs.settings_ui.ent_tcw.reset()
             objs.settings_ui.ent_tcw.insert(width)
@@ -129,6 +142,7 @@ class ExportSettingsUI:
             self.export_checkboxes()
             self.export_fixed_col_width()
             self.export_term_col_width()
+            self.export_col_num()
 
 
 
