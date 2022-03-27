@@ -78,6 +78,7 @@ class Settings(st.Settings):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+        self.get_win_width = objs.get_webframe().get_width
     
     def apply(self,event=None):
         self.close()

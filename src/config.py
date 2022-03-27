@@ -35,7 +35,7 @@ class DefaultKeys(sh.DefaultKeys):
            ,'PrioritizeSubjects' :True
            ,'SelectTermsOnly'    :True
            ,'ShortSubjects'      :False
-           ,'ShortSpeech'        :False
+           ,'ShortSpeech'        :True
            ,'ShowUserNames'      :True
            ,'SortByColumns'      :True
            ,'VerticalView'       :False

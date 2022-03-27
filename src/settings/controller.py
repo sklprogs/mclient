@@ -92,7 +92,7 @@ class ExportSettingsUI:
         sh.lg.globs['bool']['AdjustByWidth'] = objs.settings_ui.cbx_no14.get()
     
     def _report_wrong_range(self,f):
-        mes = _('A column width shall lie within the range of {}-{}')
+        mes = _('A value of this field should be within the range of {}-{}!')
         mes = mes.format(50,512)
         sh.objs.get_mes(f,mes).show_warning()
     
@@ -136,6 +136,7 @@ class Settings:
 
     def __init__(self):
         self.gui = None
+        self.get_win_width = None
         self.Active = False
     
     def toggle(self,event=None):
@@ -168,6 +169,58 @@ class Settings:
         mes = _('This procedure should be overridden')
         sh.objs.get_mes(f,mes,True).show_error()
     
+    def _set_col_num(self,window_width):
+        if window_width <= 1024:
+            return 3
+        else:
+            return 5
+    
+    def get_table_width(self):
+        f = '[MClient] settings.controller.Settings.get_table_width'
+        if self.get_win_width:
+            return self.get_win_width()
+        else:
+            mes = _('An external function is not set!')
+            sh.objs.get_mes(f,mes,True).show_error()
+            return 1050
+    
+    def suggest_col_widths(self,event=None):
+        f = '[MClient] settings.controller.Settings.suggest_col_widths'
+        table_width = self.get_table_width()
+        col_num = self.get_gui().ent_num.get()
+        if not col_num:
+            col_num = self._set_col_num(table_width)
+        col_num = sh.Input(f,col_num).get_integer()
+        if not 0 < col_num <= 10:
+            mes = _('A value of this field should be within the range of {}-{}!')
+            mes = mes.format(1,10)
+            sh.objs.get_mes(f,mes).show_warning()
+            col_num = self._set_col_num(table_width)
+        
+        ''' How we got this formula. The recommended fixed column width
+            is 63 (provided that there are 4 fixed columns). This value
+            does not depend on a screen size (but is font-dependent).
+            63 * 4 = 252. 79.77% is the recommended value of
+            a calculated term column width. We need this to be less than
+            100% since a width of columns in HTML cannot be less than
+            the text width, and we may have pretty long lines sometimes.
+        '''
+        term_width = 0.7977 * ((table_width - 252) / col_num)
+        # Values in pixels must be integer
+        term_width = int(term_width)
+        
+        mes = _('Table width: {}').format(table_width)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = _('Term column width: {}').format(term_width)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        
+        self.gui.ent_num.reset()
+        self.gui.ent_num.insert(col_num)
+        self.gui.ent_fcw.reset()
+        self.gui.ent_fcw.insert(63)
+        self.gui.ent_tcw.reset()
+        self.gui.ent_tcw.insert(term_width)
+    
     def set_bindings(self):
         f = '[MClient] settings.controller.Settings.set_bindings'
         if self.gui is None:
@@ -192,6 +245,7 @@ class Settings:
                     ,action = self.close
                     )
         self.gui.btn_apl.action = self.apply
+        self.gui.btn_sug.action = self.suggest_col_widths
         self.gui.widget.protocol('WM_DELETE_WINDOW',self.close)
 
     def get_speech_prior(self):
