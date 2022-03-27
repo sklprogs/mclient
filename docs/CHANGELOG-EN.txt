@@ -1,7 +1,12 @@
 (in development)
-* Return to the old method of calculating column widths in order to
-  accelerate the program
+* 
+
+6.14
+* Calculate column widths faster on the basis of predefined values
+* Add a button to suggest optimal column widths
 * Change a "timeout" key type to a floating number
+* Delete keys AdjustLayout, table_width
+* Add keys term_col_width, fixed_col_width
 * Increase an update interval up to 0.6 seconds
 
 6.13.2
