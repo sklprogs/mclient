@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-27 16:33+0300\n"
-"PO-Revision-Date: 2022-03-27 16:36+0300\n"
+"PO-Revision-Date: 2022-03-27 16:44+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -15563,11 +15563,11 @@ msgstr "Предпочтительное число столбцов:"
 
 #: mclient/src/settings/gui.py:606
 msgid "Fixed column width:"
-msgstr "Ширина фиксированных столбцов:"
+msgstr "Ширина фиксированных:"
 
 #: mclient/src/settings/gui.py:615
 msgid "Term column width:"
-msgstr "Ширина столбцов с терминами:"
+msgstr "Ширина с терминами:"
 
 #: mclient/src/settings/gui.py:629
 msgid "Suggest"
