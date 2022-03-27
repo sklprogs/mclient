@@ -43,23 +43,17 @@ class UpdateSettingsUI:
         self.gui.cbx_no13.set(sh.lg.globs['bool']['PhraseCount'])
         self.gui.cbx_no14.set(sh.lg.globs['bool']['AdjustByWidth'])
     
-    def update_table_width(self):
-        if not self.gui.ent_tab.get():
-            self.gui.ent_tab.insert(sh.lg.globs['int']['table_width'])
-        if sh.lg.globs['bool']['AdjustLayout']:
-            self.gui.cbx_no15.enable()
-        else:
-            self.gui.cbx_no15.disable()
-        if sh.lg.globs['bool']['AdjustByWidth']:
-            self.gui.cbx_no15.set_state(True)
-        else:
-            self.gui.cbx_no15.set_state(False)
+    def update_col_widths(self):
+        self.gui.ent_fcw.reset()
+        self.gui.ent_fcw.insert(sh.lg.globs['int']['fixed_col_width'])
+        self.gui.ent_tcw.reset()
+        self.gui.ent_tcw.insert(sh.lg.globs['int']['term_col_width'])
     
     def run(self):
         self.update_style_area()
         self.update_speech_area()
         self.update_checkboxes()
-        self.update_table_width()
+        self.update_col_widths()
 
 
 
@@ -96,32 +90,45 @@ class ExportSettingsUI:
         sh.lg.globs['bool']['Autoswap'] = objs.settings_ui.cbx_no12.get()
         sh.lg.globs['bool']['PhraseCount'] = objs.settings_ui.cbx_no13.get()
         sh.lg.globs['bool']['AdjustByWidth'] = objs.settings_ui.cbx_no14.get()
-        sh.lg.globs['bool']['AdjustLayout'] = objs.settings_ui.cbx_no15.get()
     
-    def export_table_width(self):
-        f = '[MClient] settings.controller.ExportSettingsUI.export_table_width'
-        width = objs.get_settings_ui().ent_tab.get()
+    def _report_wrong_range(self,f):
+        mes = _('A column width shall lie within the range of {}-{}')
+        mes = mes.format(50,512)
+        sh.objs.get_mes(f,mes).show_warning()
+    
+    def export_fixed_col_width(self):
+        f = '[MClient] settings.controller.ExportSettingsUI.export_fixed_col_width'
+        width = objs.get_settings_ui().ent_fcw.get()
         width = sh.Input(f,width).get_integer()
-        if not 60 <= width < 100:
-            sub = _('{} ≤ value < {}').format(60,100)
-            mes = _('A custom table width shall lie within the following range: {}')
-            mes = mes.format(sub)
-            sh.objs.get_mes(f,mes).show_warning()
-            width = 97
-            objs.settings_ui.ent_tab.reset()
-            objs.settings_ui.ent_tab.insert(width)
-        sh.lg.globs['int']['table_width'] = width
+        if not 50 <= width <= 512:
+            self._report_wrong_range(f)
+            width = 63
+            objs.settings_ui.ent_fcw.reset()
+            objs.settings_ui.ent_fcw.insert(width)
+        sh.lg.globs['int']['fixed_col_width'] = width
+    
+    def export_term_col_width(self):
+        f = '[MClient] settings.controller.ExportSettingsUI.export_term_col_width'
+        width = objs.get_settings_ui().ent_tcw.get()
+        width = sh.Input(f,width).get_integer()
+        if not 50 <= width <= 512:
+            self._report_wrong_range(f)
+            width = 157
+            objs.settings_ui.ent_tcw.reset()
+            objs.settings_ui.ent_tcw.insert(width)
+        sh.lg.globs['int']['term_col_width'] = width
     
     def run(self):
         f = '[MClient] settings.controller.ExportSettingsUI.run'
-        # 'objs.get_settings_ui' may not be used as often
+        # 'objs.get_settings_ui' may not be used so often
         if objs.settings is None or objs.settings.gui is None:
             sh.com.rep_lazy(f)
         else:
             self.export_style_area()
             self.export_speech_area()
             self.export_checkboxes()
-            self.export_table_width()
+            self.export_fixed_col_width()
+            self.export_term_col_width()
 
 
 
@@ -172,7 +179,11 @@ class Settings:
                                 ]
                     ,action = self.toggle
                     )
-        sh.com.bind (obj = self.gui.ent_tab
+        sh.com.bind (obj = self.gui.ent_fcw
+                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,action = self.apply
+                    )
+        sh.com.bind (obj = self.gui.ent_tcw
                     ,bindings = ('<Return>','<KP_Enter>')
                     ,action = self.apply
                     )
