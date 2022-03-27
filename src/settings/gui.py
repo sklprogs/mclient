@@ -593,6 +593,15 @@ class Settings:
                                  ,text = _('Adjust columns by width')
                                  ,side = 'left'
                                  )
+        sh.Label (parent = self.frm_cb15
+                 ,text = _('Preferred number of columns:')
+                 ,side = 'left'
+                 ,ipadx = 5
+                 )
+        self.ent_num = sh.Entry (parent = self.frm_cb15
+                                ,side = 'left'
+                                ,width = 2
+                                )
         self.lbl_no15 = sh.Label (parent = self.frm_cb15
                                  ,text = _('Fixed column width:')
                                  ,side = 'left'
