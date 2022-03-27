@@ -56,6 +56,7 @@ class DefaultKeys(sh.DefaultKeys):
            ,'font_comments_size':3
            ,'font_terms_size'   :4
            ,'term_col_width'    :157
+           ,'hotkey_delay'      :600
                                   })
     
     def _load_str(self):
@@ -273,6 +274,10 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'font_terms_size'
         comment = _('A font size of terms')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'hotkey_delay'
+        comment = _('[Experts only] Delay in reacting to Ctrl-C-C and Ctrl-Ins-Ins hotkeys (in milliseconds)')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'term_col_width'
