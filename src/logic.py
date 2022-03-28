@@ -43,6 +43,10 @@ class ColumnWidth:
         self.columns = []
     
     def set_col_width(self):
+        f = '[MClient] logic.ColumnWidth.set_col_width'
+        if not sh.lg.globs['bool']['AdjustByWidth']:
+            sh.com.rep_lazy(f)
+            return
         for column in self.columns:
             if objs.get_blocksdb().is_col_empty(column.no):
                 column.width = self.min_width
@@ -50,8 +54,6 @@ class ColumnWidth:
                 column.width = sh.lg.globs['int']['fixed_col_width']
             else:
                 column.width = sh.lg.globs['int']['term_col_width']
-            if column.width == 0:
-                column.width = self.min_width
     
     def reset(self):
         self.set_values()
