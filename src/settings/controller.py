@@ -100,6 +100,9 @@ class ExportSettingsUI:
     
     def export_col_num(self):
         f = '[MClient] settings.controller.ExportSettingsUI.export_col_num'
+        if not sh.lg.globs['bool']['AdjustByWidth']:
+            sh.com.rep_lazy(f)
+            return
         col_num = objs.get_settings_ui().ent_num.get()
         col_num = sh.Input(f,col_num).get_integer()
         if not 0 < col_num <= 10:
@@ -245,6 +248,10 @@ class Settings:
                                 ,sh.lg.globs['str']['bind_settings_alt']
                                 ]
                     ,action = self.toggle
+                    )
+        sh.com.bind (obj = self.gui.ent_num
+                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,action = self.apply
                     )
         sh.com.bind (obj = self.gui.ent_fcw
                     ,bindings = ('<Return>','<KP_Enter>')

@@ -80,10 +80,19 @@ class Settings(st.Settings):
         super().__init__(*args,**kwargs)
         self.get_win_width = objs.get_webframe().get_width
     
+    def set_col_num(self):
+        f = '[MClient] mclient.Settings.set_col_num'
+        if not sh.lg.globs['bool']['AdjustByWidth']:
+            sh.com.rep_lazy(f)
+            return
+        # This is required to apply the column number from Settings
+        objs.get_webframe_ui().opt_col.set(sh.lg.globs['int']['colnum'])
+    
     def apply(self,event=None):
         self.close()
         st.ExportSettingsUI().run()
         com.export_style()
+        self.set_col_num()
         objs.get_webframe().set_columns()
 
 
