@@ -588,6 +588,7 @@ class CurRequest:
             settings for new articles.
         '''
         self.SpecialPage = False
+        self.NewPageType = False
     
     def reset(self):
         self.htm = ''

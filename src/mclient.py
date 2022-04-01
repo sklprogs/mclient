@@ -1905,11 +1905,13 @@ class WebFrame:
         else:
             self.phdic = ''
         
+        old_special = lg.objs.request.SpecialPage
         if self.phdic:
             lg.objs.request.SpecialPage = False
         else:
             # Otherwise, 'SpecialPage' will be inherited
             lg.objs.request.SpecialPage = True
+        lg.objs.request.NewPageType = old_special != lg.objs.request.SpecialPage
         self.update_columns()
         
         SortTerms = sh.lg.globs['bool']['AlphabetizeTerms'] \
@@ -2537,29 +2539,33 @@ class WebFrame:
         fixed = [col for col in lg.objs.get_request().cols \
                  if col != _('Do not set')
                 ]
-        if lg.objs.request.collimit > len(fixed):
-            ''' A subject from the 'Phrases' section usually has
-                an 'original + translation' structure, so we need to
-                switch off sorting terms and ensure that the number of
-                columns is divisible by 2
-            '''
-            if lg.objs.request.SpecialPage \
-            and lg.objs.request.collimit % 2 != 0:
-                if lg.objs.request.collimit == len(fixed) + 1:
-                    lg.objs.request.collimit += 1
-                else:
-                    lg.objs.request.collimit -= 1
-            non_fixed_len = lg.objs.request.collimit - len(fixed)
-            self.gui.opt_col.set(non_fixed_len)
-            mes = _('Set the column limit to {} ({} in total)')
-            mes = mes.format(non_fixed_len,lg.objs.request.collimit)
-            sh.objs.get_mes(f,mes,True).show_info()
-        else:
+        if lg.objs.request.collimit <= len(fixed):
             sub = '{} > {}'.format (lg.objs.request.collimit
                                    ,len(fixed)
                                    )
             mes = _('The condition "{}" is not observed!').format(sub)
             sh.objs.get_mes(f,mes).show_error()
+            return
+        ''' A subject from the 'Phrases' section usually has
+            an 'original + translation' structure, so we need to
+            switch off sorting terms and ensure that the number of
+            columns is divisible by 2.
+        '''
+        term_col_num = lg.objs.request.collimit - len(fixed)
+        if not lg.objs.request.NewPageType:
+            sh.com.rep_lazy(f)
+            return
+        if lg.objs.request.SpecialPage:
+            if term_col_num % 2 != 0:
+                lg.objs.request.collimit -= 1
+                term_col_num -= 1
+        elif term_col_num % 2 == 0:
+            lg.objs.request.collimit += 1
+            term_col_num += 1
+        self.gui.opt_col.set(term_col_num)
+        mes = _('Set the column limit to {} ({} in total)')
+        mes = mes.format(term_col_num,lg.objs.request.collimit)
+        sh.objs.get_mes(f,mes,True).show_info()
 
     def ignore_column(self,col_no):
         f = '[MClient] mclient.WebFrame.ignore_column'
