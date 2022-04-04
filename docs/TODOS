@@ -10,6 +10,7 @@ mclient:
 - Clear CurRequest data after clearing history
 - Improve saving the article as a webpage, replace '\n' with '<br>',
   add titles everywhere
+- Do not restore a previous column number when changing a mode
 
 multitrancom:
 - RU-EN, закрыть соединение: enable copying a comment block url

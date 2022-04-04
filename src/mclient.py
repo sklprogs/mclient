@@ -2552,14 +2552,14 @@ class WebFrame:
             columns is divisible by 2.
         '''
         term_col_num = lg.objs.request.collimit - len(fixed)
-        if not lg.objs.request.NewPageType:
+        NoChange = lg.objs.request.SpecialPage and term_col_num % 2 == 0
+        if not lg.objs.request.NewPageType or NoChange:
             sh.com.rep_lazy(f)
             return
         if lg.objs.request.SpecialPage:
-            if term_col_num % 2 != 0:
-                lg.objs.request.collimit -= 1
-                term_col_num -= 1
-        elif term_col_num % 2 == 0:
+            lg.objs.request.collimit -= 1
+            term_col_num -= 1
+        else:
             lg.objs.request.collimit += 1
             term_col_num += 1
         self.gui.opt_col.set(term_col_num)
