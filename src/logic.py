@@ -589,6 +589,7 @@ class CurRequest:
         '''
         self.SpecialPage = False
         self.NewPageType = False
+        self.DefColNumEven = False
     
     def reset(self):
         self.htm = ''
@@ -686,6 +687,34 @@ class Commands:
     
     def __init__(self):
         self.use_unverified()
+    
+    def set_def_colnum_even(self):
+        if objs.get_request().SpecialPage:
+            return
+        if sh.lg.globs['int']['colnum'] % 2 == 0:
+            objs.request.DefColNumEven = True
+        else:
+            objs.request.DefColNumEven = False
+    
+    def update_colnum(self):
+        ''' A subject from the 'Phrases' section usually has
+            an 'original + translation' structure, so we need to
+            switch off sorting terms and ensure that the number of
+            columns is divisible by 2.
+        '''
+        if not objs.get_request().NewPageType:
+            return
+        if objs.request.SpecialPage:
+            if objs.request.DefColNumEven:
+                return
+            elif sh.lg.globs['int']['colnum'] > 2:
+                sh.lg.globs['int']['colnum'] -= 1
+            else:
+                sh.lg.globs['int']['colnum'] = 2
+        elif objs.request.DefColNumEven:
+            return
+        else:
+            sh.lg.globs['int']['colnum'] += 1
     
     def export_style(self):
         f = '[MClient] logic.Commands.export_style'
@@ -832,3 +861,4 @@ cf.DefaultKeys()
 com.load_config()
 # Load lists from files
 objs.get_order()
+com.set_def_colnum_even()

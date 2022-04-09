@@ -2536,41 +2536,18 @@ class WebFrame:
             (both logic and GUI) in special cases.
         '''
         f = '[MClient] mclient.WebFrame.update_columns'
+        lg.com.update_colnum()
         fixed = [col for col in lg.objs.get_request().cols \
                  if col != _('Do not set')
                 ]
-        if lg.objs.request.collimit <= len(fixed):
-            sub = '{} > {}'.format (lg.objs.request.collimit
-                                   ,len(fixed)
-                                   )
-            mes = _('The condition "{}" is not observed!').format(sub)
-            sh.objs.get_mes(f,mes).show_error()
-            return
-        ''' A subject from the 'Phrases' section usually has
-            an 'original + translation' structure, so we need to
-            switch off sorting terms and ensure that the number of
-            columns is divisible by 2.
-        '''
-        old_col_num = lg.objs.request.collimit - len(fixed)
-        OddToEven = lg.objs.request.NewPageType \
-                    and lg.objs.request.SpecialPage \
-                    and old_col_num % 2 != 0
-        EvenToOdd = lg.objs.request.NewPageType \
-                    and not lg.objs.request.SpecialPage \
-                    and old_col_num % 2 == 0
-        if not OddToEven and not EvenToOdd:
-            sh.com.rep_lazy(f)
-            return
-        if OddToEven:
-            lg.objs.request.collimit -= 1
-            term_col_num = old_col_num - 1
-        else:
-            lg.objs.request.collimit += 1
-            term_col_num = old_col_num + 1
-        self.gui.opt_col.set(term_col_num)
+        lg.objs.get_request().collimit = len(fixed) + sh.lg.globs['int']['colnum']
+        self.gui.opt_col.set(sh.lg.globs['int']['colnum'])
         mes = _('Set the column limit to {} ({} in total)')
-        mes = mes.format(term_col_num,lg.objs.request.collimit)
+        mes = mes.format (sh.lg.globs['int']['colnum']
+                         ,lg.objs.request.collimit
+                         )
         sh.objs.get_mes(f,mes,True).show_info()
+        lg.com.set_def_colnum_even()
 
     def ignore_column(self,col_no):
         f = '[MClient] mclient.WebFrame.ignore_column'
