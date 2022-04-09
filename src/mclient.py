@@ -2551,17 +2551,22 @@ class WebFrame:
             switch off sorting terms and ensure that the number of
             columns is divisible by 2.
         '''
-        term_col_num = lg.objs.request.collimit - len(fixed)
-        NoChange = lg.objs.request.SpecialPage and term_col_num % 2 == 0
-        if not lg.objs.request.NewPageType or NoChange:
+        old_col_num = lg.objs.request.collimit - len(fixed)
+        OddToEven = lg.objs.request.NewPageType \
+                    and lg.objs.request.SpecialPage \
+                    and old_col_num % 2 != 0
+        EvenToOdd = lg.objs.request.NewPageType \
+                    and not lg.objs.request.SpecialPage \
+                    and old_col_num % 2 == 0
+        if not OddToEven and not EvenToOdd:
             sh.com.rep_lazy(f)
             return
-        if lg.objs.request.SpecialPage:
+        if OddToEven:
             lg.objs.request.collimit -= 1
-            term_col_num -= 1
+            term_col_num = old_col_num - 1
         else:
             lg.objs.request.collimit += 1
-            term_col_num += 1
+            term_col_num = old_col_num + 1
         self.gui.opt_col.set(term_col_num)
         mes = _('Set the column limit to {} ({} in total)')
         mes = mes.format(term_col_num,lg.objs.request.collimit)
