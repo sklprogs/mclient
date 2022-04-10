@@ -1,7 +1,6 @@
 
 
 mclient:
-- Learn why same-sized columns can actually be wider (e.g., 3 columns, fixed_col_width=42, term_col_width=215, hello, just about)
 - Improve main icon quality
 - Fix colorizing
 - Make a cell fully visible when mousing over it
@@ -10,19 +9,14 @@ mclient:
 - Clear CurRequest data after clearing history
 - Improve saving the article as a webpage, replace '\n' with '<br>',
   add titles everywhere
-- Do not restore a previous column number when changing a mode
 
 multitrancom:
 - RU-EN, закрыть соединение: enable copying a comment block url
 - RU-EN, bying: no suitable mode, wrong types (not subjects or wforms)
-- RU-EN, актуальным (2, netbook): layout looks good only at 75% 
-- RU-EN, стоимость (2, netbook): table doesn't look good for both 
-  adjusted and non-adjusted layouts
-- RU-EN, режим: do not allow too wide fixed columns
-- RU-EN, sat (2, netbook), sad sack (6, notebook): fix layout 
+- RU-EN, стоимость: make cell height constant
+- RU-EN, режим, sat: test how too wide fixed columns will look in Qt
 - RU-EN, Makarov: colorize phdics even when prioritizing is off since
   there are no subjects to prioritize
-- RU-EN, visioner, droid: 5% for fixed columns may be too much
 - Add new mode: RU-EN, nederlands: "перевод с других языков"
 - Check bad charachers: RU-EN, счет на оплату
 - Fix links in a saved raw html
@@ -35,7 +29,6 @@ multitrancom:
   (check for working KZ-RU: үлек)
 - RU-EN: entity, downtime, endpoint (phrases), double-jointed (phrases),
   span: too wide columns
-- Restore true user collimit choice when not a SpecialPage
 - eng-rus, метильное: do not delete the phrase
   section when only separate words have been found: Найдено во фразах -
   найдены отдельные слова

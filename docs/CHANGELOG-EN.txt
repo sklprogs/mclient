@@ -1,6 +1,11 @@
 (in development)
 * 
 
+6.14.1
+* A different number of columns is used for common and special articles.
+  Special articles are those that have only an even number of columns
+  (e.g., a source-target pair).
+
 6.14
 * Calculate column widths faster on the basis of predefined values
 * Add a button to suggest optimal column widths
