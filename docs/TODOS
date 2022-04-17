@@ -14,7 +14,7 @@ multitrancom:
 - RU-EN, закрыть соединение: enable copying a comment block url
 - RU-EN, bying: no suitable mode, wrong types (not subjects or wforms)
 - RU-EN, стоимость: make cell height constant
-- RU-EN, режим, sat: test how too wide fixed columns will look in Qt
+- RU-EN, дезориентировать, режим, sat: test how too wide fixed columns will look in Qt
 - RU-EN, Makarov: colorize phdics even when prioritizing is off since
   there are no subjects to prioritize
 - Add new mode: RU-EN, nederlands: "перевод с других языков"
