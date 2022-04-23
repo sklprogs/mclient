@@ -7,7 +7,7 @@ import PyQt5
 import PyQt5.QtWidgets
 
 from skl_shared.localize import _
-import skl_shared.shared as sh
+import gui as gi
 
 
 class Cell:
@@ -30,7 +30,8 @@ class DB:
     def set_values(self):
         self.artid = 0
         self.Selectable = True
-        self.path = '/home/pete/tmp/set.db'
+        self.path = '/home/pete/tmp/hello.db'
+        #self.path = '/home/pete/tmp/set.db'
     
     def fetch(self):
         query = 'select TYPE,TEXT,ROWNO,COLNO,CELLNO from BLOCKS \
@@ -41,7 +42,8 @@ class DB:
     def close(self):
         f = 'controller.DB.close'
         mes = _('Close "{}"').format(self.path)
-        sh.objs.get_mes(f,mes,True).show_info()
+        #sh.objs.get_mes(f,mes,True).show_info()
+        print(mes)
         self.dbc.close()
     
     def get_max_col_no(self):
@@ -80,7 +82,8 @@ class Cells:
     def reset(self,data):
         f = 'controller.Cells.reset'
         if not data:
-            sh.com.rep_empty(f)
+            #sh.com.rep_empty(f)
+            print('Empty')
             return
         for block in data:
             text, rowno, colno, cellno = block[1], block[2], block[3], block[4]
@@ -93,7 +96,8 @@ class Cells:
     def debug(self):
         f = 'controller.Cells.debug'
         if not data:
-            sh.com.rep_empty(f)
+            #sh.com.rep_empty(f)
+            print('empty')
             return
         texts = []
         rownos = []
@@ -115,83 +119,88 @@ class Cells:
 
 
 
-class Table(PyQt5.QtWidgets.QMainWindow):
+class Table:
     
     def __init__(self):
-        PyQt5.QtWidgets.QMainWindow.__init__(self)
         self.set_values()
+        self.gui = gi.Table()
     
     def set_values(self):
         self.cells = []
         self.rowno = 0
         self.colno = 0
     
-    def set_gui(self):
-        f = 'controller.Table.set_gui'
-        self.setWindowTitle('MClientQT')
-        center = PyQt5.QtWidgets.QWidget(self)
-        self.setCentralWidget(center)
-        self.layout = PyQt5.QtWidgets.QGridLayout()
-        center.setLayout(self.layout)
-        self.table = PyQt5.QtWidgets.QTableWidget(self)
-        self.table.setShowGrid(False)
-        mes = _('Table sizes: {}x{}').format(self.rowno,self.colno)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        self.table.setRowCount(self.rowno)
-        self.table.setColumnCount(self.colno)
-        self.hheader = self.table.horizontalHeader()
-        #self.hheader.defaultSectionSize = 20
-        self.vheader = self.table.verticalHeader()
-        self.vheader.setSectionResizeMode(PyQt5.QtWidgets.QHeaderView.ResizeToContents)
-        self.vheader.setMaximumSectionSize(80)
-        self.hheader.hide()
-        self.vheader.hide()
-        self.set_bindings()
-    
-    def set_bindings(self):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence('Ctrl+Q'),self).activated.connect(self.close)
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence('Esc'),self).activated.connect(self.close)
-    
     def reset(self,cells,rowno,colno):
-        f = 'controller.Commands.reset'
-        if not cells or not rowno or not colno:
-            sh.com.rep_empty(f)
-            return
         self.cells = cells
         self.rowno = rowno
         self.colno = colno
+        self.clear()
+        self.set_view()
+        self.fill()
+    
+    def show(self,event=None):
+        self.gui.show()
+    
+    def close(self,event=None):
+        self.gui.close()
+    
+    def set_bindings(self):
+        self.gui.bind('Ctrl+Q',self.close)
+        self.gui.bind('Esc',self.close)
+        self.gui.bind('Alt+C',self.clear)
+    
+    def enable_grid(self):
+        self.gui.show_grid(True)
+    
+    def disable_grid(self):
+        self.gui.show_grid(False)
+    
+    def hide_headers(self):
+        self.gui.hide_x_header()
+        self.gui.hide_y_header()
+    
+    def set_max_row_height(self,height=80):
+        self.gui.set_max_row_height(height)
+    
+    def set_title(self,title='MClientQT'):
+        self.gui.set_title(title)
+    
+    def set_col_widths(self):
+        # Stub
+        self.gui.set_col_width(0,150)
+        self.gui.set_col_width(1,100)
+        self.gui.set_col_width(2,50)
+        self.gui.set_col_width(3,50)
+    
+    def set_view(self):
+        self.set_max_row_height(80)
+        self.gui.resize_fixed()
+        mes = _('Table sizes: {}x{}').format(self.rowno,self.colno)
+        #sh.objs.get_mes(f,mes,True).show_debug()
+        print(mes)
+        self.gui.set_col_no(self.colno)
+        self.gui.set_row_no(self.rowno)
+    
+    def set_gui(self):
+        self.set_title()
+        self.hide_headers()
+        self.disable_grid()
+        self.set_bindings()
+    
+    def set_row_no(self):
+        self.gui.set_row_no(self.rowno)
+    
+    def set_col_no(self):
+        self.gui.set_col_no(self.colno)
+    
+    def clear(self,event=None):
+        self.gui.table.clear()
     
     def fill(self):
-        f = 'controller.Commands.fill'
-        timer = sh.Timer(f)
-        timer.start()
         for cell in self.cells:
-            table_item = PyQt5.QtWidgets.QTableWidgetItem(cell.text)
-            ifont = PyQt5.QtGui.QFont()
-            ifont.setFamily('Serif')
-            if cell.colno == 0:
-                ifont.setWeight(PyQt5.QtGui.QFont.Bold)
-                table_item.setForeground(PyQt5.QtGui.QBrush(PyQt5.QtGui.QColor(0,255,0)))
-            ifont.setPixelSize(16)
-            table_item.setFont(ifont)
-            table_item.setTextAlignment(PyQt5.QtCore.Qt.AlignTop)
-            self.table.setItem(cell.rowno,cell.colno,table_item)
-            if 0 <= cell.colno < 4:
-                table_item.setTextAlignment(PyQt5.QtCore.Qt.AlignHCenter)
-        self.layout.addWidget(self.table,0,0)
-        #self.hheader.setSectionResizeMode(0,PyQt5.QtWidgets.QHeaderView.Interactive)
-        #self.hheader.setSectionResizeMode(1,PyQt5.QtWidgets.QHeaderView.Interactive)
-        self.table.setColumnWidth(0,150)
-        self.table.setColumnWidth(1,100)
-        self.table.setColumnWidth(2,50)
-        self.table.setColumnWidth(3,50)
-        #self.table.resizeColumnToContents(2)
-        #self.table.resizeColumnToContents(3)
-        self.hheader.setSectionResizeMode(4,PyQt5.QtWidgets.QHeaderView.Stretch)
-        self.hheader.setSectionResizeMode(5,PyQt5.QtWidgets.QHeaderView.Stretch)
-        self.hheader.setSectionResizeMode(6,PyQt5.QtWidgets.QHeaderView.Stretch)
-        self.hheader.setSectionResizeMode(7,PyQt5.QtWidgets.QHeaderView.Stretch)
-        timer.end()
+            table_item = self.gui.get_term_item(cell.text)
+            self.gui.set_item(table_item,cell.rowno,cell.colno)
+        self.gui.add_layout()
 
 
 
@@ -200,7 +209,8 @@ class Commands:
     def debug_memory(self,data):
         f = 'controller.Commands.debug_memory'
         if not data:
-            sh.com.rep_empty(f)
+            #sh.com.rep_empty(f)
+            print('empty')
             return
         #TYPE,TEXT,ROWNO,COLNO,CELLNO
         headers = (_('TYPE'),_('TEXT'),_('ROW #'),_('COLUMN #')
@@ -213,6 +223,7 @@ class Commands:
                            ,Transpose = 1
                            ).run()
         sh.com.run_fast_debug(f,mes)
+
 
 
 com = Commands()
@@ -237,7 +248,6 @@ if __name__ == '__main__':
     itable.reset(icells.cells,rowno,colno)
     itable.set_gui()
     itable.fill()
-    #itable.show()
-    itable.showMaximized()
+    itable.show()
     sys.exit(app.exec())
     db.close()
