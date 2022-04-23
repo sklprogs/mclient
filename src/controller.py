@@ -167,10 +167,14 @@ class Table:
     
     def set_col_widths(self):
         # Stub
-        self.gui.set_col_width(0,150)
-        self.gui.set_col_width(1,100)
-        self.gui.set_col_width(2,50)
-        self.gui.set_col_width(3,50)
+        self.gui.set_col_width(0,85)
+        self.gui.set_col_width(1,85)
+        self.gui.set_col_width(2,85)
+        self.gui.set_col_width(3,85)
+        self.gui.set_col_width(4,153)
+        self.gui.set_col_width(5,153)
+        self.gui.set_col_width(6,153)
+        self.gui.set_col_width(7,153)
     
     def set_view(self):
         self.set_max_row_height(80)
@@ -180,6 +184,7 @@ class Table:
         print(mes)
         self.gui.set_col_no(self.colno)
         self.gui.set_row_no(self.rowno)
+        self.set_col_widths()
     
     def set_gui(self):
         self.set_title()
