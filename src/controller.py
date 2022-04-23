@@ -30,7 +30,7 @@ class DB:
     def set_values(self):
         self.artid = 0
         self.Selectable = True
-        self.path = '/home/pete/tmp/hello.db'
+        self.path = '/home/pete/tmp/hello3.db'
         #self.path = '/home/pete/tmp/set.db'
     
     def fetch(self):
@@ -167,6 +167,8 @@ class Table:
     
     def set_col_widths(self):
         # Stub
+        '''
+        # 4 term columns
         self.gui.set_col_width(0,85)
         self.gui.set_col_width(1,85)
         self.gui.set_col_width(2,85)
@@ -175,6 +177,15 @@ class Table:
         self.gui.set_col_width(5,153)
         self.gui.set_col_width(6,153)
         self.gui.set_col_width(7,153)
+        '''
+        # 3 term columns
+        self.gui.set_col_width(0,135)
+        self.gui.set_col_width(1,65)
+        self.gui.set_col_width(2,65)
+        self.gui.set_col_width(3,65)
+        self.gui.set_col_width(4,205)
+        self.gui.set_col_width(5,205)
+        self.gui.set_col_width(6,205)
     
     def set_view(self):
         self.set_max_row_height(80)
