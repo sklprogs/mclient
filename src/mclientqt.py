@@ -40,7 +40,7 @@ class DB:
         return self.dbc.fetchall()
     
     def close(self):
-        f = 'controller.DB.close'
+        f = '[MClientQt] mclientqt.DB.close'
         mes = _('Close "{}"').format(self.path)
         #sh.objs.get_mes(f,mes,True).show_info()
         print(mes)
@@ -50,7 +50,7 @@ class DB:
         ''' This is a less advanced alternative to 'self.get_max_col'
             for cases when positions are not set yet.
         '''
-        f = 'controller.DB.get_max_col_no'
+        f = '[MClientQt] mclientqt.DB.get_max_col_no'
         query = 'select COLNO from BLOCKS where BLOCK = 0 and \
                         IGNORE = 0 order by COLNO desc'
         self.dbc.execute(query,)
@@ -59,7 +59,7 @@ class DB:
             return col_no[0]
     
     def get_max_row_no(self):
-        f = 'controller.DB.get_max_row_no'
+        f = '[MClientQt] mclientqt.DB.get_max_row_no'
         query = 'select ROWNO from BLOCKS where BLOCK = 0 \
                  and IGNORE = 0 order by ROWNO desc'
         self.dbc.execute(query,)
@@ -80,7 +80,7 @@ class Cells:
                 return i
     
     def reset(self,data):
-        f = 'controller.Cells.reset'
+        f = '[MClientQt] mclientqt.Cells.reset'
         if not data:
             #sh.com.rep_empty(f)
             print('Empty')
@@ -94,7 +94,7 @@ class Cells:
                 self.cells[i].text += text
     
     def debug(self):
-        f = 'controller.Cells.debug'
+        f = '[MClientQt] mclientqt.Cells.debug'
         if not data:
             #sh.com.rep_empty(f)
             print('empty')
@@ -223,7 +223,7 @@ class Table:
 class Commands:
     
     def debug_memory(self,data):
-        f = 'controller.Commands.debug_memory'
+        f = '[MClientQt] mclientqt.Commands.debug_memory'
         if not data:
             #sh.com.rep_empty(f)
             print('empty')
@@ -246,7 +246,7 @@ com = Commands()
 
 
 if __name__ == '__main__':
-    f = 'controller.__main__'
+    f = '[MClientQt] mclientqt.__main__'
     app = PyQt5.QtWidgets.QApplication(sys.argv)
     db = DB()
     data = db.fetch()
