@@ -127,15 +127,10 @@ class Table:
     
     def set_values(self):
         self.cells = []
-        self.cur_cell = None
-        self.old_cell = None
         self.rowno = 0
         self.colno = 0
         self.rownum = 0
         self.colnum = 0
-    
-    def set_cur_cell(self):
-        self.cur_cell = self.gui.get_cell(self.rowno,self.colno)
     
     def reset(self,cells,rownum,colnum):
         self.cells = cells
@@ -144,8 +139,6 @@ class Table:
         self.clear()
         self.set_view()
         self.fill()
-        self.set_cur_cell()
-        self.old_cell = self.cur_cell
     
     def show(self,event=None):
         self.gui.show()
@@ -153,17 +146,28 @@ class Table:
     def close(self,event=None):
         self.gui.close()
     
+    def set_cell_bg(self,cell,color):
+        f = '[MClientQt] mclientqt.Cells.set_cell_bg'
+        if not cell:
+            # This happens sometimes
+            print(f,'Empty!')
+            return
+        self.gui.set_cell_bg(cell,color)
+    
     def set_mouse_over(self,rowno,colno):
         if self.rowno == rowno and self.colno == colno:
             print('The cell is the same!!!!!!')
             return
         print('New cell: {}, {}'.format(rowno,colno))
-        self.gui.set_cell_bg(self.old_cell,'white')
-        self.old_cell = self.cur_cell
+        ''' We need to get and modify a cell instance as soon as
+            possible since it is deleted.
+        '''
+        old_cell = self.gui.get_cell(self.rowno,self.colno)
+        self.set_cell_bg(old_cell,'white')
+        new_cell = self.gui.get_cell(rowno,colno)
+        self.set_cell_bg(new_cell,'cyan')
         self.rowno = rowno
         self.colno = colno
-        self.set_cur_cell()
-        self.gui.set_bg(self.cur_cell,'cyan')
     
     def set_bindings(self):
         self.gui.bind('Ctrl+Q',self.close)
