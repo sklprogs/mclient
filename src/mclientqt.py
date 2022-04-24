@@ -127,16 +127,25 @@ class Table:
     
     def set_values(self):
         self.cells = []
+        self.cur_cell = None
+        self.old_cell = None
         self.rowno = 0
         self.colno = 0
+        self.rownum = 0
+        self.colnum = 0
     
-    def reset(self,cells,rowno,colno):
+    def set_cur_cell(self):
+        self.cur_cell = self.gui.get_cell(self.rowno,self.colno)
+    
+    def reset(self,cells,rownum,colnum):
         self.cells = cells
-        self.rowno = rowno
-        self.colno = colno
+        self.rownum = rownum
+        self.colnum = colnum
         self.clear()
         self.set_view()
         self.fill()
+        self.set_cur_cell()
+        self.old_cell = self.cur_cell
     
     def show(self,event=None):
         self.gui.show()
@@ -144,10 +153,23 @@ class Table:
     def close(self,event=None):
         self.gui.close()
     
+    def set_mouse_over(self,rowno,colno):
+        if self.rowno == rowno and self.colno == colno:
+            print('The cell is the same!!!!!!')
+            return
+        print('New cell: {}, {}'.format(rowno,colno))
+        self.gui.set_cell_bg(self.old_cell,'white')
+        self.old_cell = self.cur_cell
+        self.rowno = rowno
+        self.colno = colno
+        self.set_cur_cell()
+        self.gui.set_bg(self.cur_cell,'cyan')
+    
     def set_bindings(self):
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.close)
         self.gui.bind('Alt+C',self.clear)
+        self.gui.enter_cell(self.set_mouse_over)
     
     def enable_grid(self):
         self.gui.show_grid(True)
@@ -190,11 +212,11 @@ class Table:
     def set_view(self):
         self.set_max_row_height(80)
         self.gui.resize_fixed()
-        mes = _('Table sizes: {}x{}').format(self.rowno,self.colno)
+        mes = _('Table sizes: {}x{}').format(self.rownum,self.colnum)
         #sh.objs.get_mes(f,mes,True).show_debug()
         print(mes)
-        self.gui.set_col_no(self.colno)
-        self.gui.set_row_no(self.rowno)
+        self.gui.set_col_num(self.colnum)
+        self.gui.set_row_num(self.rownum)
         self.set_col_widths()
     
     def set_gui(self):
@@ -203,19 +225,19 @@ class Table:
         self.disable_grid()
         self.set_bindings()
     
-    def set_row_no(self):
-        self.gui.set_row_no(self.rowno)
+    def set_row_num(self):
+        self.gui.set_row_no(self.rownum)
     
-    def set_col_no(self):
-        self.gui.set_col_no(self.colno)
+    def set_col_num(self):
+        self.gui.set_col_num(self.colnum)
     
     def clear(self,event=None):
         self.gui.table.clear()
     
     def fill(self):
         for cell in self.cells:
-            table_item = self.gui.get_term_item(cell.text)
-            self.gui.set_item(table_item,cell.rowno,cell.colno)
+            item = self.gui.get_term_cell(cell.text)
+            self.gui.set_cell(item,cell.rowno,cell.colno)
         self.gui.add_layout()
 
 
@@ -250,19 +272,19 @@ if __name__ == '__main__':
     app = PyQt5.QtWidgets.QApplication(sys.argv)
     db = DB()
     data = db.fetch()
-    rowno = db.get_max_row_no()
-    colno = db.get_max_col_no()
-    if rowno is not None:
-        rowno += 1
-    if colno is not None:
-        colno += 1
+    rownum = db.get_max_row_no()
+    colnum = db.get_max_col_no()
+    if rownum is not None:
+        rownum += 1
+    if colnum is not None:
+        colnum += 1
     icells = Cells()
     icells.reset(data)
     #icells.debug()
     #com.debug_memory(data)
     itable = Table()
-    itable.reset(icells.cells,rowno,colno)
     itable.set_gui()
+    itable.reset(icells.cells,rownum,colnum)
     itable.fill()
     itable.show()
     sys.exit(app.exec())

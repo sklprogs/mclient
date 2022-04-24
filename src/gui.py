@@ -11,13 +11,23 @@ class Table(PyQt5.QtWidgets.QMainWindow):
         PyQt5.QtWidgets.QMainWindow.__init__(self)
         self.set_gui()
     
+    def set_cell_bg(self,cell,bg):
+        # 'cell' is QTableWidgetItem
+        cell.setBackground(PyQt5.QtGui.QBrush(PyQt5.QtGui.QColor(bg)))
+    
+    def get_cell(self,rowno,colno):
+        return self.table.item(rowno,colno)
+    
+    def enter_cell(self,action):
+        self.table.cellEntered.connect(action)
+    
     def show(self):
         self.showMaximized()
     
     def set_family(self,ifont,family):
         ifont.setFamily(family)
     
-    def get_table_item(self,text):
+    def get_new_cell(self,text):
         return PyQt5.QtWidgets.QTableWidgetItem(text)
     
     def set_font(self,widget,ifont):
@@ -26,12 +36,12 @@ class Table(PyQt5.QtWidgets.QMainWindow):
     def align_top(self,widget):
         widget.setTextAlignment(PyQt5.QtCore.Qt.AlignTop)
     
-    def get_term_item(self,text):
-        table_item = self.get_table_item(text)
-        self.set_font(table_item,objs.get_term_font())
+    def get_term_cell(self,text):
+        cell = self.get_new_cell(text)
+        self.set_font(cell,objs.get_term_font())
         self.set_family(objs.term_font,'Serif')
-        self.align_top(table_item)
-        return table_item
+        self.align_top(cell)
+        return cell
     
     def set_col_width(self,no,width):
         self.table.setColumnWidth(no,width)
@@ -42,11 +52,11 @@ class Table(PyQt5.QtWidgets.QMainWindow):
     def set_title(self,title):
         self.setWindowTitle(title)
     
-    def set_row_no(self,no):
-        self.table.setRowCount(no)
+    def set_row_num(self,num):
+        self.table.setRowCount(num)
     
-    def set_col_no(self,no):
-        self.table.setColumnCount(no)
+    def set_col_num(self,num):
+        self.table.setColumnCount(num)
     
     def show_grid(self,Show=True):
         self.table.setShowGrid(Show)
@@ -79,8 +89,8 @@ class Table(PyQt5.QtWidgets.QMainWindow):
     def clear(self,event=None):
         self.table.clear()
     
-    def set_item(self,table_item,rowno,colno):
-        self.table.setItem(rowno,colno,table_item)
+    def set_cell(self,cell,rowno,colno):
+        self.table.setItem(rowno,colno,cell)
     
     def add_layout(self):
         self.layout.addWidget(self.table,0,0)
@@ -130,18 +140,18 @@ if __name__ == '__main__':
     app = PyQt5.QtWidgets.QApplication(sys.argv)
     db = DB()
     data = db.fetch()
-    rowno = db.get_max_row_no()
-    colno = db.get_max_col_no()
-    if rowno is not None:
-        rowno += 1
-    if colno is not None:
-        colno += 1
+    rownum = db.get_max_row_no()
+    colnum = db.get_max_col_no()
+    if rownum is not None:
+        rownum += 1
+    if colnum is not None:
+        colnum += 1
     icells = Cells()
     icells.reset(data)
     #icells.debug()
     #com.debug_memory(data)
     itable = Table()
-    itable.reset(icells.cells,rowno,colno)
+    itable.reset(icells.cells,rownum,colnum)
     itable.set_gui()
     itable.fill()
     #itable.show()
