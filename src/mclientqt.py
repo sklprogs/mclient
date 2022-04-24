@@ -146,26 +146,22 @@ class Table:
     def close(self,event=None):
         self.gui.close()
     
-    def set_cell_bg(self,cell,color):
-        f = '[MClientQt] mclientqt.Cells.set_cell_bg'
-        if not cell:
-            # This happens sometimes
-            print(f,'Empty!')
-            return
-        self.gui.set_cell_bg(cell,color)
-    
     def set_mouse_over(self,rowno,colno):
         if self.rowno == rowno and self.colno == colno:
-            print('The cell is the same!!!!!!')
             return
-        print('New cell: {}, {}'.format(rowno,colno))
         ''' We need to get and modify a cell instance as soon as
             possible since it is deleted.
         '''
         old_cell = self.gui.get_cell(self.rowno,self.colno)
-        self.set_cell_bg(old_cell,'white')
         new_cell = self.gui.get_cell(rowno,colno)
-        self.set_cell_bg(new_cell,'cyan')
+        if not old_cell or not new_cell:
+            ''' The table item can be None for some reason. We should
+                verify that both old and new items are valid so we
+                would not lose our old cell's background.
+            '''
+            return
+        self.gui.set_cell_bg(old_cell,'white')
+        self.gui.set_cell_bg(new_cell,'cyan')
         self.rowno = rowno
         self.colno = colno
     
