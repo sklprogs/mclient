@@ -82,6 +82,8 @@ class Table(PyQt5.QtWidgets.QMainWindow):
         self.table = PyQt5.QtWidgets.QTableWidget(self)
         self.hheader = self.table.horizontalHeader()
         self.vheader = self.table.verticalHeader()
+        # This is required to activate mouse hovering
+        self.table.setMouseTracking(True)
     
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
