@@ -23,8 +23,8 @@ class Button:
         self.movex = movex
         self.movey = movey
         self.hint = hint
-        self.icon = self.active = active
-        self.inactive = inactive
+        self.active = active
+        self.icon = self.inactive = inactive
         self.set_gui()
     
     def activate(self):
@@ -81,7 +81,7 @@ class Button:
 
 
 
-class App(PyQt5.QtWidgets.QWidget):
+class Panel(PyQt5.QtWidgets.QWidget):
 
     def __init__(self):
         super().__init__()
@@ -90,10 +90,9 @@ class App(PyQt5.QtWidgets.QWidget):
         self.set_delta()
     
     def set_values(self):
-        self.title = 'MClientQt button panel'
-        self.left = 500
-        self.top = 500
-        self.width = 320
+        self.left = 0
+        self.top = 556
+        self.width = 1024
         self.height = 44
         self.offset = 10
         self.pos = 0
@@ -229,9 +228,6 @@ class App(PyQt5.QtWidgets.QWidget):
         if event.type() == PyQt5.QtCore.QEvent.MouseMove:
             self.trigger_hover(event)
         return super().eventFilter(source,event)
-    
-    def set_title(self):
-        self.setWindowTitle(self.title)
     
     def set_hint_bg(self):
         self.setStyleSheet('QPushButton:hover {background-color: white} QToolTip {background-color: #ffffe0}')
@@ -455,7 +451,6 @@ class App(PyQt5.QtWidgets.QWidget):
     
     def set_gui(self):
         self.set_widgets()
-        self.set_title()
         self.set_hint_bg()
         self.set_geometry()
         self.show()
@@ -466,9 +461,9 @@ class App(PyQt5.QtWidgets.QWidget):
 
 if __name__ == '__main__':
     app = PyQt5.QtWidgets.QApplication(sys.argv)
-    ex = App()
+    panel = Panel()
     ''' We can get a constant mouse hovering response only if we install
         the filter like this.
     '''
-    app.installEventFilter(ex)
+    app.installEventFilter(panel)
     sys.exit(app.exec_())
