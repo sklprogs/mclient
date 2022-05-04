@@ -176,6 +176,8 @@ class Table:
         self.vheader = self.table.verticalHeader()
         # This is required to activate mouse hovering
         self.table.setMouseTracking(True)
+        #cur
+        self.parent.setGeometry(0,20,1024,536)
     
     def clear(self,event=None):
         self.table.clear()
@@ -551,7 +553,8 @@ class Panel:
     def set_gui(self):
         self.set_widgets()
         self.set_hint_bg()
-        self.parent.show()
+        #cur
+        self.label.setGeometry(0,536,1024,44)
 
     @PyQt5.QtCore.pyqtSlot()
     def on_click(self):
