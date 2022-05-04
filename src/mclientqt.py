@@ -7,6 +7,8 @@ import PyQt5
 import PyQt5.QtWidgets
 
 from skl_shared.localize import _
+import skl_shared.shared as sh
+
 import gui as gi
 
 
@@ -119,11 +121,11 @@ class Cells:
 
 
 
-class Table:
+class App:
     
     def __init__(self):
         self.set_values()
-        self.gui = gi.Table()
+        self.gui = gi.App()
     
     def set_values(self):
         self.cells = []
@@ -152,16 +154,16 @@ class Table:
         ''' We need to get and modify a cell instance as soon as
             possible since it is deleted.
         '''
-        old_cell = self.gui.get_cell(self.rowno,self.colno)
-        new_cell = self.gui.get_cell(rowno,colno)
+        old_cell = self.gui.table.get_cell(self.rowno,self.colno)
+        new_cell = self.gui.table.get_cell(rowno,colno)
         if not old_cell or not new_cell:
             ''' The table item can be None for some reason. We should
                 verify that both old and new items are valid so we
                 would not lose our old cell's background.
             '''
             return
-        self.gui.set_cell_bg(old_cell,'white')
-        self.gui.set_cell_bg(new_cell,'cyan')
+        self.gui.table.set_cell_bg(old_cell,'white')
+        self.gui.table.set_cell_bg(new_cell,'cyan')
         self.rowno = rowno
         self.colno = colno
     
@@ -172,51 +174,51 @@ class Table:
         self.gui.enter_cell(self.set_mouse_over)
     
     def enable_grid(self):
-        self.gui.show_grid(True)
+        self.gui.table.show_grid(True)
     
     def disable_grid(self):
-        self.gui.show_grid(False)
+        self.gui.table.show_grid(False)
     
     def hide_headers(self):
-        self.gui.hide_x_header()
-        self.gui.hide_y_header()
+        self.gui.table.hide_x_header()
+        self.gui.table.hide_y_header()
     
     def set_max_row_height(self,height=80):
-        self.gui.set_max_row_height(height)
+        self.gui.table.set_max_row_height(height)
     
-    def set_title(self,title='MClientQT'):
+    def set_title(self,title='MClientQt'):
         self.gui.set_title(title)
     
     def set_col_widths(self):
         # Stub
         '''
         # 4 term columns
-        self.gui.set_col_width(0,85)
-        self.gui.set_col_width(1,85)
-        self.gui.set_col_width(2,85)
-        self.gui.set_col_width(3,85)
-        self.gui.set_col_width(4,153)
-        self.gui.set_col_width(5,153)
-        self.gui.set_col_width(6,153)
-        self.gui.set_col_width(7,153)
+        self.gui.table.set_col_width(0,85)
+        self.gui.table.set_col_width(1,85)
+        self.gui.table.set_col_width(2,85)
+        self.gui.table.set_col_width(3,85)
+        self.gui.table.set_col_width(4,153)
+        self.gui.table.set_col_width(5,153)
+        self.gui.table.set_col_width(6,153)
+        self.gui.table.set_col_width(7,153)
         '''
         # 3 term columns
-        self.gui.set_col_width(0,135)
-        self.gui.set_col_width(1,65)
-        self.gui.set_col_width(2,65)
-        self.gui.set_col_width(3,65)
-        self.gui.set_col_width(4,205)
-        self.gui.set_col_width(5,205)
-        self.gui.set_col_width(6,205)
+        self.gui.table.set_col_width(0,135)
+        self.gui.table.set_col_width(1,65)
+        self.gui.table.set_col_width(2,65)
+        self.gui.table.set_col_width(3,65)
+        self.gui.table.set_col_width(4,205)
+        self.gui.table.set_col_width(5,205)
+        self.gui.table.set_col_width(6,205)
     
     def set_view(self):
         self.set_max_row_height(80)
-        self.gui.resize_fixed()
+        self.gui.table.resize_fixed()
         mes = _('Table sizes: {}x{}').format(self.rownum,self.colnum)
         #sh.objs.get_mes(f,mes,True).show_debug()
         print(mes)
-        self.gui.set_col_num(self.colnum)
-        self.gui.set_row_num(self.rownum)
+        self.gui.table.set_col_num(self.colnum)
+        self.gui.table.set_row_num(self.rownum)
         self.set_col_widths()
     
     def set_gui(self):
@@ -226,19 +228,19 @@ class Table:
         self.set_bindings()
     
     def set_row_num(self):
-        self.gui.set_row_no(self.rownum)
+        self.gui.table.set_row_no(self.rownum)
     
     def set_col_num(self):
-        self.gui.set_col_num(self.colnum)
+        self.gui.table.set_col_num(self.colnum)
     
     def clear(self,event=None):
         self.gui.table.clear()
     
     def fill(self):
         for cell in self.cells:
-            item = self.gui.get_term_cell(cell.text)
-            self.gui.set_cell(item,cell.rowno,cell.colno)
-        self.gui.add_layout()
+            item = self.gui.table.get_term_cell(cell.text)
+            self.gui.table.set_cell(item,cell.rowno,cell.colno)
+        self.gui.table.add_layout()
 
 
 
@@ -263,13 +265,11 @@ class Commands:
         sh.com.run_fast_debug(f,mes)
 
 
-
 com = Commands()
 
 
 if __name__ == '__main__':
     f = '[MClientQt] mclientqt.__main__'
-    app = PyQt5.QtWidgets.QApplication(sys.argv)
     db = DB()
     data = db.fetch()
     rownum = db.get_max_row_no()
@@ -282,10 +282,14 @@ if __name__ == '__main__':
     icells.reset(data)
     #icells.debug()
     #com.debug_memory(data)
-    itable = Table()
-    itable.set_gui()
-    itable.reset(icells.cells,rownum,colnum)
-    itable.fill()
-    itable.show()
+    app = PyQt5.QtWidgets.QApplication(sys.argv)
+    app2 = App()
+    app2.reset(icells.cells,rownum,colnum)
+    app2.fill()
+    ''' We can get a constant mouse hovering response only if we install
+        the filter like this.
+    '''
+    #app.installEventFilter(app2.gui.panel.widget)
+    app2.show()
     sys.exit(app.exec())
     db.close()
