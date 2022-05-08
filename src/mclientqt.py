@@ -126,6 +126,7 @@ class App:
     def __init__(self):
         self.set_values()
         self.gui = gi.App()
+        self.set_gui()
     
     def set_values(self):
         self.cells = []
@@ -171,7 +172,7 @@ class App:
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.close)
         self.gui.bind('Alt+C',self.clear)
-        self.gui.enter_cell(self.set_mouse_over)
+        self.gui.table.enter_cell(self.set_mouse_over)
     
     def enable_grid(self):
         self.gui.table.show_grid(True)
