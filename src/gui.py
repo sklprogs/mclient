@@ -82,10 +82,10 @@ class Button:
 
 
 
-class App(PyQt5.QtWidgets.QMainWindow):
+class App(PyQt5.QtWidgets.QWidget):
     
-    def __init__(self):
-        PyQt5.QtWidgets.QMainWindow.__init__(self)
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
         self.set_gui()
     
     def show(self):
@@ -95,20 +95,22 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.setWindowTitle(title)
     
     def set_gui(self):
-        self.widget = PyQt5.QtWidgets.QWidget(self)
-        self.setCentralWidget(self.widget)
-        self.table = Table(self.widget)
-        self.panel = Panel(self.widget)
+        self.layout = PyQt5.QtWidgets.QVBoxLayout()
+        self.table = Table()
+        self.panel = Panel()
+        self.layout.addWidget(self.table)
+        self.layout.addWidget(self.panel)
+        self.setLayout(self.layout)
     
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
 
 
 
-class Table:
+class Table(PyQt5.QtWidgets.QWidget):
     
-    def __init__(self,parent):
-        self.parent = parent
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
         self.set_gui()
     
     def set_cell_bg(self,cell,bg):
@@ -170,14 +172,12 @@ class Table:
     
     def set_gui(self):
         self.layout = PyQt5.QtWidgets.QGridLayout()
-        self.parent.setLayout(self.layout)
-        self.table = PyQt5.QtWidgets.QTableWidget(self.parent)
+        self.setLayout(self.layout)
+        self.table = PyQt5.QtWidgets.QTableWidget(self)
         self.hheader = self.table.horizontalHeader()
         self.vheader = self.table.verticalHeader()
         # This is required to activate mouse hovering
         self.table.setMouseTracking(True)
-        #cur
-        self.parent.setGeometry(0,20,1024,536)
     
     def clear(self,event=None):
         self.table.clear()
@@ -190,10 +190,10 @@ class Table:
 
 
 
-class Panel:
-
-    def __init__(self,parent):
-        self.parent = parent
+class Panel(PyQt5.QtWidgets.QWidget):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
         self.set_values()
         self.set_gui()
         self.set_delta()
@@ -304,7 +304,7 @@ class Panel:
     
     def set_delta(self):
         # Set a delta value between a label size and a main widget size
-        self.delta = self.parent.geometry().width() - self.label.geometry().width()
+        self.delta = self.geometry().width() - self.label.geometry().width()
     
     def slide_left(self):
         if self.label.geometry().x() - self.offset >= self.delta:
@@ -335,10 +335,10 @@ class Panel:
         return super().eventFilter(source,event)
     
     def set_hint_bg(self):
-        self.parent.setStyleSheet('QPushButton:hover {background-color: white} QToolTip {background-color: #ffffe0}')
+        self.setStyleSheet('QPushButton:hover {background-color: white} QToolTip {background-color: #ffffe0}')
     
     def set_widgets(self):
-        self.label = PyQt5.QtWidgets.QWidget(self.parent)
+        self.label = PyQt5.QtWidgets.QLabel(self)
         # A button for newbies, substitutes Enter in search_field
         self.btn_trn = Button (parent = self.label
                                  ,hint = _('Translate')
@@ -553,8 +553,6 @@ class Panel:
     def set_gui(self):
         self.set_widgets()
         self.set_hint_bg()
-        #cur
-        self.label.setGeometry(0,536,1024,44)
 
     @PyQt5.QtCore.pyqtSlot()
     def on_click(self):
