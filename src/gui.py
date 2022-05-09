@@ -96,10 +96,11 @@ class App(PyQt5.QtWidgets.QWidget):
     
     def set_gui(self):
         self.layout = PyQt5.QtWidgets.QVBoxLayout()
+        self.layout.setContentsMargins(0,0,0,0)
         self.table = Table()
         self.panel = Panel()
         self.layout.addWidget(self.table)
-        self.layout.addWidget(self.panel)
+        self.layout.addWidget(self.panel,1)
         self.setLayout(self.layout)
     
     def bind(self,hotkey,action):
@@ -172,6 +173,7 @@ class Table(PyQt5.QtWidgets.QWidget):
     
     def set_gui(self):
         self.layout = PyQt5.QtWidgets.QGridLayout()
+        self.layout.setContentsMargins(0,0,0,0)
         self.setLayout(self.layout)
         self.table = PyQt5.QtWidgets.QTableWidget(self)
         self.hheader = self.table.horizontalHeader()
@@ -342,8 +344,10 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.setStyleSheet('QPushButton:hover {background-color: white} QToolTip {background-color: #ffffe0}')
     
     def set_widgets(self):
+        self.setMaximumHeight(44)
         self.panel = PyQt5.QtWidgets.QWidget(self)
         self.layout = PyQt5.QtWidgets.QHBoxLayout()
+        self.layout.setContentsMargins(4,4,4,4)
         # A button for newbies, substitutes Enter in search_field
         self.btn_trn = Button (parent = self.panel
                               ,hint = _('Translate')
@@ -611,8 +615,7 @@ objs = Objects()
 
 
 if __name__ == '__main__':
-    f = 'controller.__main__'
     exe = PyQt5.QtWidgets.QApplication(sys.argv)
-    App().show()
-    sys.exit(exe.exec())
-    db.close()
+    app = App()
+    app.show()
+    sys.exit(exe.exec_())
