@@ -563,7 +563,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
     def set_gui(self):
         self.set_widgets()
         self.set_hint_bg()
-        self.set_geometry()
+        #self.set_geometry()
         self.show()
 
     @PyQt5.QtCore.pyqtSlot()
@@ -612,24 +612,7 @@ objs = Objects()
 
 if __name__ == '__main__':
     f = 'controller.__main__'
-    app = PyQt5.QtWidgets.QApplication(sys.argv)
-    db = DB()
-    data = db.fetch()
-    rownum = db.get_max_row_no()
-    colnum = db.get_max_col_no()
-    if rownum is not None:
-        rownum += 1
-    if colnum is not None:
-        colnum += 1
-    icells = Cells()
-    icells.reset(data)
-    #icells.debug()
-    #com.debug_memory(data)
-    itable = Table()
-    itable.reset(icells.cells,rownum,colnum)
-    itable.set_gui()
-    itable.fill()
-    #itable.show()
-    itable.showMaximized()
-    sys.exit(app.exec())
+    exe = PyQt5.QtWidgets.QApplication(sys.argv)
+    App().show()
+    sys.exit(exe.exec())
     db.close()
