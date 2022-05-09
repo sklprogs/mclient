@@ -290,7 +290,7 @@ if __name__ == '__main__':
     ''' We can get a constant mouse hovering response only if we install
         the filter like this.
     '''
-    exe.installEventFilter(app.gui)
+    exe.installEventFilter(app.gui.panel)
     app.show()
-    sys.exit(exe.exec())
     db.close()
+    sys.exit(exe.exec())
