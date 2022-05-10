@@ -235,9 +235,10 @@ class Panel(PyQt5.QtWidgets.QWidget):
         ''' Set a delta value between a label size and a main widget
             size. This should be called only after the widget is drawn,
             otherwise, Qt will return bogus geometry of 640x480.
+            #TODO (?): do not update each time on hovering, update only
+            when the window size is changed.
         '''
-        if not self.delta:
-            self.delta = self.width() - self.panel.width()
+        self.delta = self.width() - self.panel.width()
     
     def slide_left(self):
         if self.panel.x() - self.offset >= self.delta:
