@@ -125,13 +125,9 @@ class Panel(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_values()
         self.set_gui()
-        self.set_delta()
     
     def set_values(self):
-        self.left = 0
-        self.top = 0
-        self.width = 800
-        self.height = 44
+        self.delta = 0
         self.offset = 10
         self.pos = 0
         self.icn_al0 = sh.objs.get_pdir().add ('..','resources'
@@ -236,16 +232,20 @@ class Panel(PyQt5.QtWidgets.QWidget):
                                         )
     
     def set_delta(self):
-        # Set a delta value between a label size and a main widget size
-        self.delta = self.geometry().width() - self.panel.geometry().width()
+        ''' Set a delta value between a label size and a main widget
+            size. This should be called only after the widget is drawn,
+            otherwise, Qt will return bogus geometry of 640x480.
+        '''
+        if not self.delta:
+            self.delta = self.width() - self.panel.width()
     
     def slide_left(self):
-        if self.panel.geometry().x() - self.offset >= self.delta:
+        if self.panel.x() - self.offset >= self.delta:
             self.pos -= self.offset
             self.panel.move(self.pos,0)
     
     def slide_right(self):
-        if self.panel.geometry().x() + self.offset <= 0:
+        if self.panel.x() + self.offset <= 0:
             self.pos += self.offset
             self.panel.move(self.pos,0)
     
@@ -254,6 +254,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
             the widget that caused the event, and this is widget will be
             any we have mouse over.
         '''
+        self.set_delta()
         geom = self.geometry()
         x = PyQt5.QtGui.QCursor().pos().x() - geom.left()
         width = geom.width()
@@ -487,9 +488,6 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.layout.addWidget(self.btn_abt.widget)
         self.layout.addWidget(self.btn_qit.widget)
         self.panel.setLayout(self.layout)
-    
-    def set_geometry(self):
-        self.setGeometry(self.left,self.top,self.width,self.height)
     
     def set_gui(self):
         self.set_widgets()
