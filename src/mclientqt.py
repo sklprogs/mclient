@@ -127,6 +127,7 @@ class App:
         self.set_values()
         self.gui = gi.App()
         self.set_gui()
+        self.update_ui()
     
     def set_values(self):
         self.cells = []
@@ -142,6 +143,14 @@ class App:
         self.clear()
         self.set_view()
         self.fill()
+    
+    def update_ui(self):
+        #TODO: load from logic
+        sources = (_('Multitran'),_('Stardict'),'Lingvo (DSL)'
+                  ,_('Local MT')
+                  )
+        self.gui.panel.opt_src.reset(sources)
+        self.gui.panel.opt_col.reset((1,2,3,4,5,6,7,8,9,10),4)
     
     def show(self,event=None):
         self.gui.show()

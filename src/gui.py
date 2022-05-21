@@ -281,195 +281,127 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.layout = PyQt5.QtWidgets.QHBoxLayout()
         self.layout.setContentsMargins(4,4,4,4)
         # A button for newbies, substitutes Enter in search_field
-        self.btn_trn = sh.Button (parent = self.panel
-                                 ,hint = _('Translate')
+        self.btn_trn = sh.Button (hint = _('Translate')
                                  ,inactive = self.icn_ret
                                  ,active = self.icn_ret
                                  )
         # A button to clear the search field
-        self.btn_clr = sh.Button (parent = self.panel
-                                 ,hint = _('Clear search field')
+        self.btn_clr = sh.Button (hint = _('Clear search field')
                                  ,inactive = self.icn_clr
                                  ,active = self.icn_clr
                                  )
         # A button to insert text into the search field
-        self.btn_ins = sh.Button (parent = self.panel
-                                 ,hint = _('Paste text from clipboard')
+        self.btn_ins = sh.Button (hint = _('Paste text from clipboard')
                                  ,inactive = self.icn_ins
                                  ,active = self.icn_ins
                                  )
         # A button to insert a current search
-        self.btn_rp1 = sh.Button (parent = self.panel
-                                 ,hint = _('Paste current request')
+        self.btn_rp1 = sh.Button (hint = _('Paste current request')
                                  ,inactive = self.icn_rp0
                                  ,active = self.icn_rp1
                                  )
         # A button to insert a previous search
-        self.btn_rp2 = sh.Button (parent = self.panel
-                                 ,hint = _('Paste previous request')
+        self.btn_rp2 = sh.Button (hint = _('Paste previous request')
                                  ,inactive = self.icn_r20
                                  ,active = self.icn_r21
                                  )
         # A button to insert special symbols
-        self.btn_sym = sh.Button (parent = self.panel
-                                 ,hint = _('Paste a special symbol')
+        self.btn_sym = sh.Button (hint = _('Paste a special symbol')
                                  ,inactive = self.icn_sym
                                  ,active = self.icn_sym
                                  )
-        self.opt_src = PyQt5.QtWidgets.QComboBox(self.panel)
-        #TODO: load from logic
-        sources = (_('Multitran'),_('Stardict'),'Lingvo (DSL)'
-                  ,_('Local MT')
-                  )
-        for source in sources:
-            self.opt_src.addItem(source)
-        '''
-        self.opt_src = sh.OptionMenu (parent = self.panel
-                                     ,Combo = True
-                                     ,font = 'Sans 11'
-                                     )
-        '''
-        ''' Configure the option menu at the GUI creation time to avoid
-            glitches with the search field.
-        '''
-        '''
-        self.opt_src.widget.configure (width = 14
-                                      ,font = 'Sans 11'
-                                      )
+        # Drop-down list with dictionary sources
+        self.opt_src = sh.OptionMenu()
         # Drop-down lists with languages
-        self.opt_lg1 = sh.OptionMenu (parent = self.panel
-                                     ,Combo = True
-                                     ,font = 'Sans 11'
-                                     )
-        '''
-        self.btn_swp = sh.Button (parent = self.panel
-                                 ,hint = _('Swap source and target languages')
+        self.opt_lg1 = sh.OptionMenu()
+        self.btn_swp = sh.Button (hint = _('Swap source and target languages')
                                  ,inactive = self.icn_swp
                                  ,active = self.icn_swp
                                  )
-        '''
-        self.opt_lg2 = sh.OptionMenu (parent = self.panel
-                                     ,Combo = True
-                                     ,font = 'Sans 11'
-                                     )
-        self.opt_col = sh.OptionMenu (parent = self.panel
-                                     ,items = (1,2,3,4,5,6,7,8,9,10)
-                                     ,default = 4
-                                     ,Combo = True
-                                     ,font = 'Sans 11'
-                                     )
-        '''
-        ''' The 'height' argument changes a height of the drop-down
-            list and not the main widget.
-        '''
-        '''
-        self.opt_lg1.widget.config (width = 11
-                                   ,height = 15
-                                   )
-        self.opt_lg2.widget.config (width = 11
-                                   ,height = 15
-                                   )
-        self.opt_col.widget.config(width=2)
-        '''
+        self.opt_lg2 = sh.OptionMenu()
+        self.opt_col = sh.OptionMenu()
         # A settings button
-        self.btn_set = sh.Button (parent = self.panel
-                                 ,hint = _('Tune up view settings')
+        self.btn_set = sh.Button (hint = _('Tune up view settings')
                                  ,inactive = self.icn_set
                                  ,active = self.icn_set
                                  )
         # A button to toggle subject blocking
-        self.btn_blk = sh.Button (parent = self.panel
-                                 ,hint = _('Configure blacklisting')
+        self.btn_blk = sh.Button (hint = _('Configure blacklisting')
                                  ,inactive = self.icn_bl0
                                  ,active = self.icn_bl1
                                  )
         # A button to toggle subject prioritization
-        self.btn_pri = sh.Button (parent = self.panel
-                                 ,hint = _('Configure prioritization')
+        self.btn_pri = sh.Button (hint = _('Configure prioritization')
                                  ,inactive = self.icn_pr0
                                  ,active = self.icn_pr1
                                  )
         # A button to toggle subject alphabetization
-        self.btn_alp = sh.Button (parent = self.panel
-                                 ,hint = _('Toggle alphabetizing')
+        self.btn_alp = sh.Button (hint = _('Toggle alphabetizing')
                                  ,inactive = self.icn_al0
                                  ,active = self.icn_al1
                                  )
         # A button to change the article view
-        self.btn_viw = sh.Button (parent = self.panel
-                                 ,hint = _('Toggle the article view mode')
+        self.btn_viw = sh.Button (hint = _('Toggle the article view mode')
                                  ,inactive = self.icn_ver
                                  ,active = self.icn_hor
                                  )
         # A button to move to the previous article
-        self.btn_prv = sh.Button (parent = self.panel
-                                 ,hint = _('Go to the preceding article')
+        self.btn_prv = sh.Button (hint = _('Go to the preceding article')
                                  ,inactive = self.icn_bk0
                                  ,active = self.icn_bk1
                                  )
         # A button to move to the next article
-        self.btn_nxt = sh.Button (parent = self.panel
-                                 ,hint = _('Go to the following article')
+        self.btn_nxt = sh.Button (hint = _('Go to the following article')
                                  ,inactive = self.icn_fw0
                                  ,active = self.icn_fw1
                                  )
         # A button to toggle and clear history
-        self.btn_hst = sh.Button (parent = self.panel
-                                 ,hint = _('Toggle history')
+        self.btn_hst = sh.Button (hint = _('Toggle history')
                                  ,inactive = self.icn_hst
                                  ,active = self.icn_hst
                                  )
         # A button to reload the article
-        self.btn_rld = sh.Button (parent = self.panel
-                                 ,hint = _('Reload the article')
+        self.btn_rld = sh.Button (hint = _('Reload the article')
                                  ,inactive = self.icn_rld
                                  ,active = self.icn_rld
                                  )
         # A button to search within the article
-        self.btn_ser = sh.Button (parent = self.panel
-                                 ,hint = _('Find in the current article')
+        self.btn_ser = sh.Button (hint = _('Find in the current article')
                                  ,inactive = self.icn_src
                                  ,active = self.icn_src
                                  )
         # A button to save the article
-        self.btn_sav = sh.Button (parent = self.panel
-                                 ,hint = _('Save the current article')
+        self.btn_sav = sh.Button (hint = _('Save the current article')
                                  ,inactive = self.icn_sav
                                  ,active = self.icn_sav
                                  )
         # A button to open the current article in a browser
-        self.btn_brw = sh.Button (parent = self.panel
-                                 ,hint = _('Open the current article in a browser')
+        self.btn_brw = sh.Button (hint = _('Open the current article in a browser')
                                  ,inactive = self.icn_brw
                                  ,active = self.icn_brw
                                  )
         # A button to print the article
-        self.btn_prn = sh.Button (parent = self.panel
-                                 ,hint = _('Create a print-ready preview')
+        self.btn_prn = sh.Button (hint = _('Create a print-ready preview')
                                  ,inactive = self.icn_prn
                                  ,active = self.icn_prn
                                  )
         # A button to define a term
-        self.btn_def = sh.Button (parent = self.panel
-                                 ,hint = _('Define the current term')
+        self.btn_def = sh.Button (hint = _('Define the current term')
                                  ,inactive = self.icn_def
                                  ,active = self.icn_def
                                  )
         # A button to toggle capturing Ctrl-c-c and Ctrl-Ins-Ins
-        self.btn_cap = sh.Button (parent = self.panel
-                                 ,hint = _('Capture Ctrl-c-c and Ctrl-Ins-Ins')
+        self.btn_cap = sh.Button (hint = _('Capture Ctrl-c-c and Ctrl-Ins-Ins')
                                  ,inactive = self.icn_cp0
                                  ,active = self.icn_cp1
                                  )
         # A button to show info about the program
-        self.btn_abt = sh.Button (parent = self.panel
-                                 ,hint = _('View About')
+        self.btn_abt = sh.Button (hint = _('View About')
                                  ,inactive = self.icn_abt
                                  ,active = self.icn_abt
                                  )
         # A button to quit the program
-        self.btn_qit = sh.Button (parent = self.panel
-                                 ,hint = _('Quit the program')
+        self.btn_qit = sh.Button (hint = _('Quit the program')
                                  ,action = self.close
                                  ,inactive = self.icn_qit
                                  ,active = self.icn_qit
@@ -480,7 +412,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.layout.addWidget(self.btn_rp1.widget)
         self.layout.addWidget(self.btn_rp2.widget)
         self.layout.addWidget(self.btn_sym.widget)
-        self.layout.addWidget(self.opt_src)
+        self.layout.addWidget(self.opt_src.widget)
         self.layout.addWidget(self.btn_swp.widget)
         self.layout.addWidget(self.btn_set.widget)
         self.layout.addWidget(self.btn_blk.widget)
