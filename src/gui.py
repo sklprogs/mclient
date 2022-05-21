@@ -107,8 +107,8 @@ class Table(PyQt5.QtWidgets.QWidget):
         self.vheader = self.table.verticalHeader()
         # This is required to activate mouse hovering
         self.table.setMouseTracking(True)
-        self.xscroll = PyQt5.QtWidgets.QScrollBar(self)
-        self.table.setHorizontalScrollBar(self.xscroll)
+        #self.xscroll = PyQt5.QtWidgets.QScrollBar(self)
+        #self.table.setHorizontalScrollBar(self.xscroll)
     
     def clear(self,event=None):
         self.table.clear()
@@ -118,7 +118,7 @@ class Table(PyQt5.QtWidgets.QWidget):
     
     def add_layout(self):
         self.layout.addWidget(self.table,0,0)
-        self.layout.addWidget(self.xscroll)
+        #self.layout.addWidget(self.xscroll)
 
 
 
