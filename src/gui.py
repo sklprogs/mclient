@@ -15,6 +15,9 @@ class App(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
+    def minimize(self):
+        self.showMinimized()
+    
     def show(self):
         self.showMaximized()
     

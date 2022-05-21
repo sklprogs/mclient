@@ -136,6 +136,9 @@ class App:
         self.rownum = 0
         self.colnum = 0
     
+    def minimize(self):
+        self.gui.minimize()
+    
     def reset(self,cells,rownum,colnum):
         self.cells = cells
         self.rownum = rownum
@@ -185,7 +188,7 @@ class App:
     
     def set_bindings(self):
         self.gui.bind('Ctrl+Q',self.close)
-        self.gui.bind('Esc',self.close)
+        self.gui.bind('Esc',self.minimize)
         self.gui.bind('Alt+C',self.clear)
         self.gui.table.enter_cell(self.set_mouse_over)
     
