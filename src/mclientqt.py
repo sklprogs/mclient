@@ -151,6 +151,11 @@ class App:
                   )
         self.gui.panel.opt_src.reset(sources)
         self.gui.panel.opt_col.reset((1,2,3,4,5,6,7,8,9,10),4)
+        #TODO: load from logic
+        langs1 = (_('English'),_('Russian'),_('French'))
+        langs2 = (_('Russian'),_('English'),_('French'))
+        self.gui.panel.opt_lg1.reset(langs1)
+        self.gui.panel.opt_lg2.reset(langs2)
     
     def show(self,event=None):
         self.gui.show()
