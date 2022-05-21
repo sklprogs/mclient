@@ -316,6 +316,13 @@ class Panel(PyQt5.QtWidgets.QWidget):
                                  ,inactive = self.icn_sym
                                  ,active = self.icn_sym
                                  )
+        self.opt_src = PyQt5.QtWidgets.QComboBox(self.panel)
+        #TODO: load from logic
+        sources = (_('Multitran'),_('Stardict'),'Lingvo (DSL)'
+                  ,_('Local MT')
+                  )
+        for source in sources:
+            self.opt_src.addItem(source)
         '''
         self.opt_src = sh.OptionMenu (parent = self.panel
                                      ,Combo = True
@@ -473,6 +480,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.layout.addWidget(self.btn_rp1.widget)
         self.layout.addWidget(self.btn_rp2.widget)
         self.layout.addWidget(self.btn_sym.widget)
+        self.layout.addWidget(self.opt_src)
         self.layout.addWidget(self.btn_swp.widget)
         self.layout.addWidget(self.btn_set.widget)
         self.layout.addWidget(self.btn_blk.widget)
