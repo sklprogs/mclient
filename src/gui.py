@@ -280,6 +280,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.panel = PyQt5.QtWidgets.QWidget(self)
         self.layout = PyQt5.QtWidgets.QHBoxLayout()
         self.layout.setContentsMargins(4,4,4,4)
+        self.ent_src = sh.Entry()
         # A button for newbies, substitutes Enter in search_field
         self.btn_trn = sh.Button (hint = _('Translate')
                                  ,inactive = self.icn_ret
@@ -406,6 +407,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
                                  ,inactive = self.icn_qit
                                  ,active = self.icn_qit
                                  )
+        self.layout.addWidget(self.ent_src.widget)
         self.layout.addWidget(self.btn_trn.widget)
         self.layout.addWidget(self.btn_clr.widget)
         self.layout.addWidget(self.btn_ins.widget)

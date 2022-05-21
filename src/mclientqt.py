@@ -145,6 +145,7 @@ class App:
         self.fill()
     
     def update_ui(self):
+        self.gui.panel.ent_src.focus()
         #TODO: load from logic
         sources = (_('Multitran'),_('Stardict'),'Lingvo (DSL)'
                   ,_('Local MT')
