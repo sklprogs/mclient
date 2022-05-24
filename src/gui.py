@@ -180,7 +180,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
                                         ,'print.svgz'
                                         )
         self.icn_pr0 = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'priority_off.svgz'
+                                        ,'priority_off.png'
                                         )
         self.icn_pr1 = sh.objs.pdir.add ('..','resources','buttons'
                                         ,'priority_on.png'
