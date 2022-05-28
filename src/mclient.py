@@ -42,7 +42,7 @@ class DB:
         return self.dbc.fetchall()
     
     def close(self):
-        f = '[MClientQt] mclientqt.DB.close'
+        f = '[MClient] mclient.DB.close'
         mes = _('Close "{}"').format(self.path)
         #sh.objs.get_mes(f,mes,True).show_info()
         print(mes)
@@ -52,7 +52,7 @@ class DB:
         ''' This is a less advanced alternative to 'self.get_max_col'
             for cases when positions are not set yet.
         '''
-        f = '[MClientQt] mclientqt.DB.get_max_col_no'
+        f = '[MClient] mclient.DB.get_max_col_no'
         query = 'select COLNO from BLOCKS where BLOCK = 0 and \
                         IGNORE = 0 order by COLNO desc'
         self.dbc.execute(query,)
@@ -61,7 +61,7 @@ class DB:
             return col_no[0]
     
     def get_max_row_no(self):
-        f = '[MClientQt] mclientqt.DB.get_max_row_no'
+        f = '[MClient] mclient.DB.get_max_row_no'
         query = 'select ROWNO from BLOCKS where BLOCK = 0 \
                  and IGNORE = 0 order by ROWNO desc'
         self.dbc.execute(query,)
@@ -82,7 +82,7 @@ class Cells:
                 return i
     
     def reset(self,data):
-        f = '[MClientQt] mclientqt.Cells.reset'
+        f = '[MClient] mclient.Cells.reset'
         if not data:
             #sh.com.rep_empty(f)
             print('Empty')
@@ -96,7 +96,7 @@ class Cells:
                 self.cells[i].text += text
     
     def debug(self):
-        f = '[MClientQt] mclientqt.Cells.debug'
+        f = '[MClient] mclient.Cells.debug'
         if not data:
             #sh.com.rep_empty(f)
             print('empty')
@@ -266,7 +266,7 @@ class App:
 class Commands:
     
     def debug_memory(self,data):
-        f = '[MClientQt] mclientqt.Commands.debug_memory'
+        f = '[MClient] mclient.Commands.debug_memory'
         if not data:
             #sh.com.rep_empty(f)
             print('empty')
@@ -288,7 +288,7 @@ com = Commands()
 
 
 if __name__ == '__main__':
-    f = '[MClientQt] mclientqt.__main__'
+    f = '[MClient] mclient.__main__'
     db = DB()
     data = db.fetch()
     rownum = db.get_max_row_no()
