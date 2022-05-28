@@ -138,46 +138,46 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.pos = 0
         self.icn_al0 = sh.objs.get_pdir().add ('..','resources'
                                               ,'buttons'
-                                              ,'alphabet_off.svgz'
+                                              ,'alphabet_off.png'
                                               )
         self.icn_al1 = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'alphabet_on.svgz'
+                                        ,'alphabet_on.png'
                                         )
         self.icn_bl0 = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'block_off.svgz'
+                                        ,'block_off.png'
                                         )
         self.icn_bl1 = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'block_on.svgz'
+                                        ,'block_on.png'
                                         )
         self.icn_clr = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'clear_search_field.svgz'
+                                        ,'clear_search_field.png'
                                         )
         self.icn_def = sh.objs.pdir.add ('..','resources','buttons'
                                         ,'define.png'
                                         )
         self.icn_bk0 = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'go_back_off.svgz'
+                                        ,'go_back_off.png'
                                         )
         self.icn_bk1 = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'go_back.svgz'
+                                        ,'go_back.png'
                                         )
         self.icn_fw0 = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'go_forward_off.svgz'
+                                        ,'go_forward_off.png'
                                         )
         self.icn_fw1 = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'go_forward.svgz'
+                                        ,'go_forward.png'
                                         )
         self.icn_ret = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'go_search.svgz'
+                                        ,'go_search.png'
                                         )
         self.icn_brw = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'open_in_browser.svgz'
+                                        ,'open_in_browser.png'
                                         )
         self.icn_ins = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'paste.svgz'
+                                        ,'paste.png'
                                         )
         self.icn_prn = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'print.svgz'
+                                        ,'print.png'
                                         )
         self.icn_pr0 = sh.objs.pdir.add ('..','resources','buttons'
                                         ,'priority_off.png'
@@ -186,55 +186,55 @@ class Panel(PyQt5.QtWidgets.QWidget):
                                         ,'priority_on.png'
                                         )
         self.icn_qit = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'quit_now.svgz'
+                                        ,'quit_now.png'
                                         )
         self.icn_rld = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'reload.svgz'
+                                        ,'reload.png'
                                         )
         self.icn_rp0 = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'repeat_sign_off.svgz'
+                                        ,'repeat_sign_off.png'
                                         )
         self.icn_rp1 = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'repeat_sign.svgz'
+                                        ,'repeat_sign.png'
                                         )
         self.icn_r20 = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'repeat_sign2_off.svgz'
+                                        ,'repeat_sign2_off.png'
                                         )
         self.icn_r21 = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'repeat_sign2.svgz'
+                                        ,'repeat_sign2.png'
                                         )
         self.icn_sav = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'save_article.svgz'
+                                        ,'save_article.png'
                                         )
         self.icn_src = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'search_article.svgz'
+                                        ,'search_article.png'
                                         )
         self.icn_set = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'settings.svgz'
+                                        ,'settings.png'
                                         )
         self.icn_abt = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'show_about.svgz'
+                                        ,'show_about.png'
                                         )
         self.icn_sym = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'spec_symbol.svgz'
+                                        ,'spec_symbol.png'
                                         )
         self.icn_hst = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'toggle_history.svgz'
+                                        ,'toggle_history.png'
                                         )
         self.icn_hor = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'toggle_view_hor.svgz'
+                                        ,'toggle_view_hor.png'
                                         )
         self.icn_ver = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'toggle_view_ver.svgz'
+                                        ,'toggle_view_ver.png'
                                         )
         self.icn_cp0 = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'watch_clipboard_off.svgz'
+                                        ,'watch_clipboard_off.png'
                                         )
         self.icn_cp1 = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'watch_clipboard_on.svgz'
+                                        ,'watch_clipboard_on.png'
                                         )
         self.icn_swp = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'swap_langs.svgz'
+                                        ,'swap_langs.png'
                                         )
     
     def set_delta(self):
