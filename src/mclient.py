@@ -186,11 +186,31 @@ class App:
         self.rowno = rowno
         self.colno = colno
     
+    def move_down(self):
+        #TODO: use smarter logic instead of incrementing a row number
+        self.set_mouse_over(self.rowno+1,self.colno)
+    
+    def move_up(self):
+        #TODO: use smarter logic instead of decrementing a row number
+        self.set_mouse_over(self.rowno-1,self.colno)
+    
+    def move_left(self):
+        #TODO: use smarter logic instead of decrementing a column number
+        self.set_mouse_over(self.rowno,self.colno-1)
+    
+    def move_right(self):
+        #TODO: use smarter logic instead of decrementing a column number
+        self.set_mouse_over(self.rowno,self.colno+1)
+    
     def set_bindings(self):
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.minimize)
         self.gui.bind('Alt+C',self.clear)
         self.gui.table.enter_cell(self.set_mouse_over)
+        self.gui.bind('Down',self.move_down)
+        self.gui.bind('Up',self.move_up)
+        self.gui.bind('Left',self.move_left)
+        self.gui.bind('Right',self.move_right)
     
     def enable_grid(self):
         self.gui.table.show_grid(True)
