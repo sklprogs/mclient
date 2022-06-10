@@ -321,14 +321,14 @@ if __name__ == '__main__':
     icells.reset(data)
     #icells.debug()
     #com.debug_memory(data)
-    exe = PyQt5.QtWidgets.QApplication(sys.argv)
+    sh.com.start()
     app = App()
     app.reset(icells.cells,rownum,colnum)
     app.fill()
     ''' We can get a constant mouse hovering response only if we install
         the filter like this.
     '''
-    exe.installEventFilter(app.gui.panel)
+    sh.objs.get_root().installEventFilter(app.gui.panel)
     app.show()
     db.close()
-    sys.exit(exe.exec())
+    sh.com.end()
