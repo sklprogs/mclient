@@ -11,6 +11,7 @@ mclient:
   add titles everywhere
 
 multitrancom:
+- RU-EN, Overhauling: check new table layout in Qt
 - RU-EN, закрыть соединение: enable copying a comment block url
 - RU-EN, bying: no suitable mode, wrong types (not subjects or wforms)
 - RU-EN, стоимость: make cell height constant
