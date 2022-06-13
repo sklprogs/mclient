@@ -12,6 +12,62 @@ import skl_shared_qt.shared as sh
 import gui as gi
 
 
+class Block:
+    
+    def __init__(self):
+        self.type_ = 'invalid'
+        self.text = ''
+        self.rowno = -1
+        self.colno = -1
+        self.cellno = -1
+
+
+
+class Cells2:
+    
+    def __init__(self):
+        self.cells = []
+        self.cell = []
+    
+    def assign(self,data):
+        f = '[MClient] mclient.Cells2.assign'
+        if not data:
+            #sh.com.rep_empty(f)
+            print('Empty')
+            return
+        old_cellno = 0
+        for row in data:
+            block = Block()
+            block.type_ = row[0]
+            block.text = row[1]
+            block.rowno = row[2]
+            block.colno = row[3]
+            block.cellno = row[4]
+            if old_cellno == block.cellno:
+                self.cell.append(block)
+            else:
+                if self.cell:
+                    self.cells.append(self.cell)
+                self.cell = [block]
+                old_cellno = block.cellno
+        if self.cell:
+            self.cells.append(self.cell)
+    
+    def debug(self):
+        data = []
+        row = []
+        for cell in self.cells:
+            row = []
+            for block in cell:
+                item = [block.type_,block.text,block.rowno,block.colno
+                       ,block.cellno
+                       ]
+                row.append(item)
+            data.append(row)
+        print(data)
+
+
+
 class Cell:
     
     def __init__(self,text,rowno,colno,cellno):
@@ -308,6 +364,13 @@ com = Commands()
 
 
 if __name__ == '__main__':
+    db = DB()
+    data = db.fetch()
+    icells = Cells2()
+    icells.assign(data)
+    icells.debug()
+    db.close()
+    """
     f = '[MClient] mclient.__main__'
     db = DB()
     data = db.fetch()
@@ -332,3 +395,4 @@ if __name__ == '__main__':
     app.show()
     db.close()
     sh.com.end()
+    """
