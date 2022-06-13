@@ -36,35 +36,49 @@ class Cells2:
             print('Empty')
             return
         old_cellno = 0
-        for row in data:
+        old_rowno = 0
+        cell = []
+        row = []
+        for item in data:
             block = Block()
-            block.type_ = row[0]
-            block.text = row[1]
-            block.rowno = row[2]
-            block.colno = row[3]
-            block.cellno = row[4]
+            block.type_ = item[0]
+            block.text = item[1]
+            block.rowno = item[2]
+            block.colno = item[3]
+            block.cellno = item[4]
             if old_cellno == block.cellno:
-                self.cell.append(block)
-            else:
-                if self.cell:
-                    self.cells.append(self.cell)
-                self.cell = [block]
+                cell.append(block)
+            elif old_rowno == block.rowno:
+                if cell:
+                    row.append(cell)
+                cell = [block]
                 old_cellno = block.cellno
-        if self.cell:
-            self.cells.append(self.cell)
+            else:
+                if row:
+                    self.cells.append(row)
+                cell = [block]
+                row = [cell]
+                old_rowno = block.rowno
+        if cell:
+            row.append(cell)
+        if row:
+            self.cells.append(row)
     
     def debug(self):
-        data = []
-        row = []
-        for cell in self.cells:
-            row = []
-            for block in cell:
-                item = [block.type_,block.text,block.rowno,block.colno
-                       ,block.cellno
-                       ]
-                row.append(item)
-            data.append(row)
-        print(data)
+        cells2 = []
+        cell2 = []
+        for row in self.cells:
+            row2 = []
+            for cell in row:
+                cell2 = []
+                for block in cell:
+                    block2 = [block.type_,block.text,block.rowno
+                             ,block.colno,block.cellno
+                             ]
+                    cell2.append(block2)
+                row2.append(cell2)
+            cells2.append(row2)
+        print(cells2)
 
 
 
