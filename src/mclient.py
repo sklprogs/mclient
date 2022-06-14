@@ -59,6 +59,7 @@ class Cells2:
                 cell = [block]
                 row = []
                 old_rowno = block.rowno
+                old_cellno = block.cellno
         if cell:
             row.append(cell)
         if row:
