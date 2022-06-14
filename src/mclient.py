@@ -23,14 +23,14 @@ class Block:
 
 
 
-class Cells2:
+class Cells:
     
     def __init__(self):
         self.cells = []
         self.cell = []
     
     def assign(self,data):
-        f = '[MClient] mclient.Cells2.assign'
+        f = '[MClient] mclient.Cells.assign'
         if not data:
             #sh.com.rep_empty(f)
             print('Empty')
@@ -83,16 +83,6 @@ class Cells2:
 
 
 
-class Cell:
-    
-    def __init__(self,text,rowno,colno,cellno):
-        self.text = text
-        self.rowno = rowno
-        self.colno = colno
-        self.cellno = cellno
-
-
-
 class DB:
     
     def __init__(self):
@@ -139,56 +129,6 @@ class DB:
         result = self.dbc.fetchone()
         if result:
             return result[0]
-
-
-
-class Cells:
-    
-    def __init__(self):
-        self.cells = []
-    
-    def _get(self,cellno):
-        for i in range(len(self.cells)):
-            if self.cells[i].cellno == cellno:
-                return i
-    
-    def reset(self,data):
-        f = '[MClient] mclient.Cells.reset'
-        if not data:
-            #sh.com.rep_empty(f)
-            print('Empty')
-            return
-        for block in data:
-            text, rowno, colno, cellno = block[1], block[2], block[3], block[4]
-            i = self._get(cellno)
-            if i is None:
-                self.cells.append(Cell(text,rowno,colno,cellno))
-            else:
-                self.cells[i].text += text
-    
-    def debug(self):
-        f = '[MClient] mclient.Cells.debug'
-        if not data:
-            #sh.com.rep_empty(f)
-            print('empty')
-            return
-        texts = []
-        rownos = []
-        colnos = []
-        cellnos = []
-        for cell in self.cells:
-            texts.append(cell.text)
-            rownos.append(cell.rowno)
-            colnos.append(cell.colno)
-            cellnos.append(cell.cellno)
-        headers = (_('TEXT'),_('ROW #'),_('COLUMN #'),_('CELL #'))
-        iterable = [texts,rownos,colnos,cellnos]
-        mes = sh.FastTable (headers = headers
-                           ,iterable = iterable
-                           ,maxrows = 1000
-                           ,maxrow = 40
-                           ).run()
-        sh.com.run_fast_debug(f,mes)
 
 
 
@@ -347,45 +287,19 @@ class App:
         self.gui.table.clear()
     
     def fill(self):
-        for cell in self.cells:
-            item = self.gui.table.get_term_cell(cell.text)
-            self.gui.table.set_cell(item,cell.rowno,cell.colno)
+        for row in self.cells:
+            for cell in row:
+                #TODO: elaborate
+                text = []
+                for block in cell:
+                    text.append(block.text)
+                text = ''.join(text)
+                item = self.gui.table.get_term_cell(text)
+                self.gui.table.set_cell(item,block.rowno,block.colno)
         self.gui.table.add_layout()
 
 
-
-class Commands:
-    
-    def debug_memory(self,data):
-        f = '[MClient] mclient.Commands.debug_memory'
-        if not data:
-            #sh.com.rep_empty(f)
-            print('empty')
-            return
-        #TYPE,TEXT,ROWNO,COLNO,CELLNO
-        headers = (_('TYPE'),_('TEXT'),_('ROW #'),_('COLUMN #')
-                  ,_('CELL #')
-                  )
-        mes = sh.FastTable (headers = headers
-                           ,iterable = data
-                           ,maxrows = 1000
-                           ,maxrow = 40
-                           ,Transpose = 1
-                           ).run()
-        sh.com.run_fast_debug(f,mes)
-
-
-com = Commands()
-
-
 if __name__ == '__main__':
-    db = DB()
-    data = db.fetch()
-    icells = Cells2()
-    icells.assign(data)
-    icells.debug()
-    db.close()
-    """
     f = '[MClient] mclient.__main__'
     db = DB()
     data = db.fetch()
@@ -396,9 +310,7 @@ if __name__ == '__main__':
     if colnum is not None:
         colnum += 1
     icells = Cells()
-    icells.reset(data)
-    #icells.debug()
-    #com.debug_memory(data)
+    icells.assign(data)
     sh.com.start()
     app = App()
     app.reset(icells.cells,rownum,colnum)
@@ -410,4 +322,3 @@ if __name__ == '__main__':
     app.show()
     db.close()
     sh.com.end()
-    """
