@@ -3,13 +3,13 @@
 
 import sys
 import sqlite3
-import PyQt5
-import PyQt5.QtWidgets
 
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
+import logic as lg
 import gui as gi
+
 
 
 class Block:
@@ -20,6 +20,11 @@ class Block:
         self.rowno = -1
         self.colno = -1
         self.cellno = -1
+        self.family = 'Serif'
+        self.color = 'black'
+        self.size = 12
+        self.Bold = False
+        self.Italic = False
 
 
 
@@ -32,8 +37,7 @@ class Cells:
     def assign(self,data):
         f = '[MClient] mclient.Cells.assign'
         if not data:
-            #sh.com.rep_empty(f)
-            print('Empty')
+            sh.com.rep_empty(f)
             return
         old_cellno = 0
         old_rowno = 0
@@ -46,6 +50,7 @@ class Cells:
             block.rowno = item[2]
             block.colno = item[3]
             block.cellno = item[4]
+            block = lg.Font(block).run()
             if old_cellno == block.cellno:
                 cell.append(block)
             elif old_rowno == block.rowno:
@@ -301,6 +306,8 @@ class App:
 
 if __name__ == '__main__':
     f = '[MClient] mclient.__main__'
+    sh.com.start()
+    lg.objs.get_plugins(Debug=False,maxrows=1000)
     db = DB()
     data = db.fetch()
     rownum = db.get_max_row_no()
@@ -311,7 +318,6 @@ if __name__ == '__main__':
         colnum += 1
     icells = Cells()
     icells.assign(data)
-    sh.com.start()
     app = App()
     app.reset(icells.cells,rownum,colnum)
     app.fill()
