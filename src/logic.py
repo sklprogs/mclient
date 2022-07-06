@@ -45,6 +45,7 @@ class Font:
         self.set_color()
         self.set_bold()
         self.set_italic()
+        return self.block
     
     def _set_color(self):
         if self.block.type_ in ('dic','wform','speech','transc'):
