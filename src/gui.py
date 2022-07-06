@@ -284,6 +284,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.layout = PyQt5.QtWidgets.QHBoxLayout()
         self.layout.setContentsMargins(4,4,4,4)
         self.ent_src = sh.Entry()
+        self.ent_src.set_min_width(105)
         # A button for newbies, substitutes Enter in search_field
         self.btn_trn = sh.Button (hint = _('Translate')
                                  ,inactive = self.icn_ret
