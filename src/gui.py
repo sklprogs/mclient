@@ -9,6 +9,16 @@ from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 
+class Cell:
+    
+    def get(self,text):
+        return PyQt5.QtWidgets.QTableWidgetItem(text)
+    
+    def align_top(self,icell):
+        icell.setTextAlignment(PyQt5.QtCore.Qt.AlignTop)
+
+
+
 class App(PyQt5.QtWidgets.QWidget):
     
     def __init__(self,*args,**kwargs):
@@ -53,25 +63,6 @@ class Table(PyQt5.QtWidgets.QWidget):
     
     def enter_cell(self,action):
         self.table.cellEntered.connect(action)
-    
-    def set_family(self,ifont,family):
-        ifont.setFamily(family)
-    
-    def get_new_cell(self,text):
-        return PyQt5.QtWidgets.QTableWidgetItem(text)
-    
-    def set_font(self,widget,ifont):
-        widget.setFont(ifont)
-    
-    def align_top(self,widget):
-        widget.setTextAlignment(PyQt5.QtCore.Qt.AlignTop)
-    
-    def get_term_cell(self,text):
-        cell = self.get_new_cell(text)
-        self.set_font(cell,objs.get_term_font())
-        self.set_family(objs.term_font,'Serif')
-        self.align_top(cell)
-        return cell
     
     def set_col_width(self,no,width):
         self.table.setColumnWidth(no,width)
@@ -480,6 +471,7 @@ class Objects:
         self.term_font = None
     
     def get_term_font(self):
+        f = 'get_term_font'
         if self.term_font is None:
             self.term_font = PyQt5.QtGui.QFont()
             self.term_font.setFamily('Serif')

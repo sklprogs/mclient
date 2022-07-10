@@ -10,7 +10,50 @@ import skl_shared_qt.shared as sh
 import logic as lg
 import gui as gi
 
-DEBUG = True
+DEBUG = False
+
+
+class Cell:
+    
+    def __init__(self,block):
+        self.Success = True
+        self.widget = None
+        self.gui = gi.Cell()
+        self.block = block
+    
+    def check(self):
+        f = '[MClient] mclient.Cell.check'
+        if not self.block:
+            sh.com.rep_empty(f)
+            self.Success = False
+    
+    def run(self):
+        self.check()
+        self.set()
+        self.format()
+        
+    def format(self):
+        f = '[MClient] mclient.Cell.format'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        sh.Font(self.widget,self.block.family,self.block.size).run()
+    
+    def fail(self,f,e):
+        self.Success = False
+        mes = _('Third-party module has failed!\n\nDetails: {}')
+        mes = mes.format(e)
+        sh.objs.get_mes(f,mes).show_error()
+    
+    def set(self):
+        f = '[MClient] mclient.Cell.set'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        try:
+            self.widget = self.gui.get(self.block.text)
+        except Exception as e:
+            self.fail(f,e)
 
 
 
@@ -317,13 +360,16 @@ class App:
     def fill(self):
         for row in self.cells:
             for cell in row:
-                #TODO: elaborate
-                text = []
+                #cur
+                if len(cell) != 1:
+                    cell = [cell[0]]
+                    cell[0].text = 'Complex cells are not supported yet'
                 for block in cell:
-                    text.append(block.text)
-                text = ''.join(text)
-                item = self.gui.table.get_term_cell(text)
-                self.gui.table.set_cell(item,block.rowno,block.colno)
+                    icell = Cell(block)
+                    icell.run()
+                    self.gui.table.set_cell (icell.widget,block.rowno
+                                            ,block.colno
+                                            )
         self.gui.table.add_layout()
 
 
