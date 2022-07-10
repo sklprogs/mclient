@@ -10,6 +10,8 @@ import skl_shared_qt.shared as sh
 import logic as lg
 import gui as gi
 
+DEBUG = True
+
 
 
 class Block:
@@ -30,20 +32,34 @@ class Block:
 
 class Cells:
     
-    def __init__(self):
+    def __init__(self,data):
+        self.Success = True
         self.cells = []
         self.cell = []
+        self.data = data
+        self.check()
     
-    def assign(self,data):
-        f = '[MClient] mclient.Cells.assign'
-        if not data:
+    def check(self):
+        f = '[MClient] mclient.Cells.check'
+        if not self.data:
             sh.com.rep_empty(f)
+            self.Success = False
+            return
+    
+    def run(self):
+        self.assign()
+        self.debug()
+    
+    def assign(self):
+        f = '[MClient] mclient.Cells.assign'
+        if not self.Success:
+            sh.com.cancel(f)
             return
         old_cellno = 0
         old_rowno = 0
         cell = []
         row = []
-        for item in data:
+        for item in self.data:
             block = Block()
             block.type_ = item[0]
             block.text = item[1]
@@ -71,6 +87,13 @@ class Cells:
             self.cells.append(row)
     
     def debug(self):
+        f = '[MClient] mclient.Cells.debug'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not DEBUG:
+            sh.com.rep_lazy(f)
+            return
         cells2 = []
         cell2 = []
         for row in self.cells:
@@ -316,8 +339,8 @@ if __name__ == '__main__':
         rownum += 1
     if colnum is not None:
         colnum += 1
-    icells = Cells()
-    icells.assign(data)
+    icells = Cells(data)
+    icells.run()
     app = App()
     app.reset(icells.cells,rownum,colnum)
     app.fill()
