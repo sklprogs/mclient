@@ -217,6 +217,8 @@ class App:
         self.colno = 0
         self.rownum = 0
         self.colnum = 0
+        self.complex = 0
+        self.single = 0
     
     def minimize(self):
         self.gui.minimize()
@@ -358,10 +360,15 @@ class App:
         self.gui.table.clear()
     
     def fill(self):
+        f = '[MClient] mclient.App.fill'
         for row in self.cells:
             for cell in row:
-                #cur
-                if len(cell) != 1:
+                if len(cell) == 1:
+                    if not cell[0].text:
+                        continue
+                    self.single += 1
+                else:
+                    self.complex += 1
                     cell = [cell[0]]
                     cell[0].text = 'Complex cells are not supported yet'
                 for block in cell:
@@ -370,6 +377,10 @@ class App:
                     self.gui.table.set_cell (icell.widget,block.rowno
                                             ,block.colno
                                             )
+        mes = _('Single-block cells: {}').format(self.single)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = _('Multi-block cells: {}').format(self.complex)
+        sh.objs.get_mes(f,mes,True).show_debug()
         self.gui.table.add_layout()
 
 
