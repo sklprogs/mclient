@@ -416,14 +416,24 @@ class App:
     def clear(self,event=None):
         self.gui.table.clear()
     
+    def fail(self,f,e):
+        mes = _('Third-party module has failed!\n\nDetails: {}')
+        mes = mes.format(e)
+        sh.objs.get_mes(f,mes).show_error()
+    
     def create_cell(self,text):
         f = '[MClient] mclient.App.create_cell'
         try:
             return self.gui.table.create_cell(text)
         except Exception as e:
-            mes = _('Third-party module has failed!\n\nDetails: {}')
-            mes = mes.format(e)
-            sh.objs.get_mes(f,mes).show_error()
+            self.fail(f,e)
+    
+    def insert_widget(self,widget,rowno,colno):
+        f = '[MClient] mclient.App.insert_widget'
+        try:
+            self.gui.table.insert_widget(widget,rowno,colno)
+        except Exception as e:
+            self.fail(f,e)
     
     def fill(self):
         f = '[MClient] mclient.App.fill'
@@ -443,11 +453,10 @@ class App:
                     self.complex += 1
                     icell = Cell(cell)
                     icell.run()
-                    #TODO: set in GUI
-                    self.gui.table.table.setCellWidget (block.rowno
-                                                       ,block.colno
-                                                       ,icell.widget
-                                                       )
+                    self.insert_widget (icell.widget
+                                       ,block.rowno
+                                       ,block.colno
+                                       )
         mes = _('Single-block cells: {}').format(self.single)
         sh.objs.get_mes(f,mes,True).show_debug()
         mes = _('Multi-block cells: {}').format(self.complex)

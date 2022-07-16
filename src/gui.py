@@ -58,6 +58,9 @@ class Table(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
+    def insert_widget(self,widget,rowno,colno):
+        self.table.setCellWidget(rowno,colno,widget)
+    
     def create_cell(self,text):
         return PyQt5.QtWidgets.QTableWidgetItem(text)
     
