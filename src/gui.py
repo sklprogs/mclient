@@ -11,10 +11,14 @@ import skl_shared_qt.shared as sh
 
 class Cell:
     
-    def get(self,text):
-        return PyQt5.QtWidgets.QTableWidgetItem(text)
+    def __init__(self):
+        self.widget = PyQt5.QtWidgets.QLabel()
+    
+    def set_text(self,text):
+        self.widget.setText(text)
     
     def align_top(self,icell):
+        #TODO: del
         icell.setTextAlignment(PyQt5.QtCore.Qt.AlignTop)
 
 
@@ -53,6 +57,9 @@ class Table(PyQt5.QtWidgets.QWidget):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.set_gui()
+    
+    def create_cell(self,text):
+        return PyQt5.QtWidgets.QTableWidgetItem(text)
     
     def set_cell_bg(self,cell,bg):
         # 'cell' is QTableWidgetItem

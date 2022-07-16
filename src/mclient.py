@@ -13,31 +13,88 @@ import gui as gi
 DEBUG = False
 
 
-class Cell:
+class Formatter:
     
     def __init__(self,block):
         self.Success = True
-        self.widget = None
-        self.gui = gi.Cell()
+        self.code = ''
         self.block = block
     
     def check(self):
-        f = '[MClient] mclient.Cell.check'
+        f = '[MClientQt] mclient.Formatter.check'
         if not self.block:
+            self.Success = False
+            sh.com.rep_empty(f)
+    
+    def set_code(self):
+        f = '[MClientQt] mclient.Formatter.set_code'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.code = self.block.text
+    
+    def _set_italic(self):
+        if self.block.Italic:
+            self.code = '<i>' + self.code + '</i>'
+    
+    def _set_bold(self):
+        if self.block.Bold:
+            self.code = '<b>' + self.code + '</b>'
+    
+    def _set_size(self):
+        sub = '<p style="font-size:{}pt">{}</p>'
+        self.code = sub.format(self.block.size,self.code)
+    
+    def _set_face(self):
+        sub = '<font face="{}" color="{}">'
+        sub = sub.format(self.block.family,self.block.color)
+        self.code = sub + self.code
+    
+    def format(self):
+        f = '[MClientQt] mclient.Formatter.format'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self._set_italic()
+        self._set_bold()
+        self._set_face()
+        self._set_size()
+    
+    def run(self):
+        self.check()
+        self.set_code()
+        self.format()
+        return self.code
+
+
+
+class Cell:
+    
+    def __init__(self,cell):
+        self.Success = True
+        self.gui = gi.Cell()
+        self.widget = self.gui.widget
+        self.cell = cell
+        self.code = []
+    
+    def check(self):
+        f = '[MClient] mclient.Cell.check'
+        if not self.cell:
             sh.com.rep_empty(f)
             self.Success = False
     
     def run(self):
         self.check()
-        self.set()
         self.format()
+        self.set()
         
     def format(self):
         f = '[MClient] mclient.Cell.format'
         if not self.Success:
             sh.com.cancel(f)
             return
-        sh.Font(self.widget,self.block.family,self.block.size).run()
+        for block in self.cell:
+            self.code.append(Formatter(block).run())
     
     def fail(self,f,e):
         self.Success = False
@@ -51,7 +108,7 @@ class Cell:
             sh.com.cancel(f)
             return
         try:
-            self.widget = self.gui.get(self.block.text)
+            self.gui.set_text(''.join(self.code))
         except Exception as e:
             self.fail(f,e)
 
@@ -359,24 +416,38 @@ class App:
     def clear(self,event=None):
         self.gui.table.clear()
     
+    def create_cell(self,text):
+        f = '[MClient] mclient.App.create_cell'
+        try:
+            return self.gui.table.create_cell(text)
+        except Exception as e:
+            mes = _('Third-party module has failed!\n\nDetails: {}')
+            mes = mes.format(e)
+            sh.objs.get_mes(f,mes).show_error()
+    
     def fill(self):
         f = '[MClient] mclient.App.fill'
         for row in self.cells:
             for cell in row:
+                block = cell[0]
                 if len(cell) == 1:
-                    if not cell[0].text:
+                    if not block.text:
                         continue
                     self.single += 1
-                else:
-                    self.complex += 1
-                    cell = [cell[0]]
-                    cell[0].text = 'Complex cells are not supported yet'
-                for block in cell:
-                    icell = Cell(block)
-                    icell.run()
-                    self.gui.table.set_cell (icell.widget,block.rowno
+                    tabitem = self.create_cell(block.text)
+                    sh.Font(tabitem,block.family,block.size).run()
+                    self.gui.table.set_cell (tabitem,block.rowno
                                             ,block.colno
                                             )
+                else:
+                    self.complex += 1
+                    icell = Cell(cell)
+                    icell.run()
+                    #TODO: set in GUI
+                    self.gui.table.table.setCellWidget (block.rowno
+                                                       ,block.colno
+                                                       ,icell.widget
+                                                       )
         mes = _('Single-block cells: {}').format(self.single)
         sh.objs.get_mes(f,mes,True).show_debug()
         mes = _('Multi-block cells: {}').format(self.complex)
