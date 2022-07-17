@@ -42,7 +42,7 @@ class Formatter:
             self.code = '<b>' + self.code + '</b>'
     
     def _set_size(self):
-        sub = '<p style="font-size:{}pt">{}</p>'
+        sub = '<span style="font-size:{}pt">{}</span>'
         self.code = sub.format(self.block.size,self.code)
     
     def _set_face(self):
@@ -387,10 +387,9 @@ class App:
         self.gui.table.set_col_width(1,65)
         self.gui.table.set_col_width(2,65)
         self.gui.table.set_col_width(3,65)
-        #cur 205
-        self.gui.table.set_col_width(4,500)
-        self.gui.table.set_col_width(5,500)
-        self.gui.table.set_col_width(6,500)
+        self.gui.table.set_col_width(4,205)
+        self.gui.table.set_col_width(5,205)
+        self.gui.table.set_col_width(6,205)
     
     def set_view(self):
         self.set_max_row_height(80)
