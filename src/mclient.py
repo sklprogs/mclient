@@ -387,9 +387,10 @@ class App:
         self.gui.table.set_col_width(1,65)
         self.gui.table.set_col_width(2,65)
         self.gui.table.set_col_width(3,65)
-        self.gui.table.set_col_width(4,205)
-        self.gui.table.set_col_width(5,205)
-        self.gui.table.set_col_width(6,205)
+        #cur 205
+        self.gui.table.set_col_width(4,500)
+        self.gui.table.set_col_width(5,500)
+        self.gui.table.set_col_width(6,500)
     
     def set_view(self):
         self.set_max_row_height(80)
@@ -437,6 +438,8 @@ class App:
     
     def fill(self):
         f = '[MClient] mclient.App.fill'
+        timer = sh.Timer(f)
+        timer.start()
         for row in self.cells:
             for cell in row:
                 block = cell[0]
@@ -457,6 +460,7 @@ class App:
                                        ,block.rowno
                                        ,block.colno
                                        )
+        timer.end()
         mes = _('Single-block cells: {}').format(self.single)
         sh.objs.get_mes(f,mes,True).show_debug()
         mes = _('Multi-block cells: {}').format(self.complex)
@@ -480,7 +484,6 @@ if __name__ == '__main__':
     icells.run()
     app = App()
     app.reset(icells.cells,rownum,colnum)
-    app.fill()
     ''' We can get a constant mouse hovering response only if we install
         the filter like this.
     '''
