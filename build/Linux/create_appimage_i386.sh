@@ -15,12 +15,13 @@ binariesdir="$HOME/binaries"
 appimagedir="$binariesdir/appimage"
 srcdir="$HOME/bin/$product/src"
 resdir="$HOME/bin/$product/resources"
-# /usr/local/lib/python3.9/dist-packages in case of using sudo pip3
-tkhtmldir="$HOME/.local/lib/python3.9/site-packages/tkinterhtml/tkhtml/Linux"
+tkhtmldir="/home/pete/tmp/pythonve/lib/python3.9/site-packages/tkinterhtml/tkhtml/Linux"
 tmpdir="/tmp/$product"   # Will be deleted!
 builddir="$tmpdir/build" # Will be deleted!
 
 export "ARCH=$arch"
+
+source "$HOME/tmp/pythonve/bin/activate"
 
 if [ "`which pyinstaller`" = "" ]; then
     echo "pyinstaller is not installed!"; exit

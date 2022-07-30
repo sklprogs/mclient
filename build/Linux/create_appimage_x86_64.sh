@@ -11,14 +11,16 @@ oslow="linux"
 glibc="2.31"
 binariesdir="$HOME/binaries"
 appimagedir="$binariesdir/appimage"
-srcdir="$HOME/bin/$product/src"
-resdir="$HOME/bin/$product/resources"
+srcdir="$HOME/sklprogs/$product/src"
+resdir="$HOME/sklprogs/$product/resources"
 # /usr/local/lib/python3.9/dist-packages in case of using sudo pip3
-tkhtmldir="$HOME/.local/lib/python3.9/site-packages/tkinterhtml/tkhtml/Linux"
+tkhtmldir="$HOME/tmp/pythonve/lib/python3.9/site-packages/tkinterhtml/tkhtml/Linux/"
 tmpdir="/tmp/$product"   # Will be deleted!
 builddir="$tmpdir/build" # Will be deleted!
 
 export "ARCH=$arch"
+
+source "$HOME/tmp/pythonve/bin/activate"
 
 if [ "`which pyinstaller`" = "" ]; then
     echo "pyinstaller is not installed!"; exit
@@ -52,12 +54,12 @@ if [ ! -e "$appimagedir/appimagetool-$arch.AppImage" ]; then
     echo "File $appimagedir/appimagetool-$arch.AppImage does not exist!"; exit
 fi
 
-if [ ! -e "$HOME/bin/$product/build/$os/$product.desktop" ]; then
-    echo "File $HOME/bin/$product/build/$os/$product.desktop does not exist!"; exit
+if [ ! -e "$HOME/sklprogs/$product/build/$os/$product.desktop" ]; then
+    echo "File $HOME/sklprogs/$product/build/$os/$product.desktop does not exist!"; exit
 fi
 
-if [ ! -e "$HOME/bin/$product/build/$os/$product.png" ]; then
-    echo "File $HOME/bin/$product/build/$os/$product.png does not exist!"; exit
+if [ ! -e "$HOME/sklprogs/$product/build/$os/$product.png" ]; then
+    echo "File $HOME/sklprogs/$product/build/$os/$product.png does not exist!"; exit
 fi
 
 # Build with pyinstaller
@@ -74,8 +76,8 @@ cp -r "$tkhtmldir" "$tmpdir/app/usr/bin/tkinterhtml/tkhtml/"
 cd "$tmpdir/app"
 cp "$appimagedir/AppRun-$arch" "$tmpdir/app/AppRun"
 cp "$appimagedir/appimagetool-$arch.AppImage" "$tmpdir"
-cp "$HOME/bin/$product/build/$os/$product.desktop" "$tmpdir/app"
-cp "$HOME/bin/$product/build/$os/$product.png" "$tmpdir/app"
+cp "$HOME/sklprogs/$product/build/$os/$product.desktop" "$tmpdir/app"
+cp "$HOME/sklprogs/$product/build/$os/$product.png" "$tmpdir/app"
 cd "$tmpdir"
 ./appimagetool-$arch.AppImage app
 read -p "Update the AppImage? (Y/n) " choice

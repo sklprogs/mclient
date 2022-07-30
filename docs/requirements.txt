@@ -6,3 +6,4 @@ pyperclip
 termcolor
 tkinterhtml
 w3lib
+xlib
