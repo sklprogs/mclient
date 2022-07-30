@@ -151,6 +151,25 @@ class Elems:
         self.Debug = Debug
         self.maxrows = maxrows
     
+    def delete_refs(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_refs'
+        if len(self.blocks) < 3:
+            sh.com.rep_lazy(f)
+            return
+        count = 0
+        i = 0
+        while i < len(self.blocks):
+            if self.blocks[i-1].type_ == 'speech' \
+            and self.blocks[i].type_ == 'comment' \
+            and self.blocks[i].text == '|' \
+            and self.blocks[i+1].type_ == 'wform':
+                count += 2
+                del self.blocks[i+1]
+                del self.blocks[i]
+            else:
+                i += 1
+        sh.com.rep_deleted(f,count)
+    
     def _break_word(self,word):
         lst = sh.Text(word).split_by_len(self.max_word_len)
         return ' '.join(lst)
@@ -720,6 +739,7 @@ class Elems:
             self.delete_tail_links()
             self.delete_trash_com()
             self.delete_langs()
+            self.delete_refs()
             # Reassign types
             self.set_phdic()
             self.set_transc()
