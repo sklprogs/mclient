@@ -36,10 +36,14 @@ class Table:
         self.gui.clear()
     
     def fill(self):
+        f = '[MClientQt] mclient.Table.fill'
+        timer = sh.Timer(f)
+        timer.start()
         for cell in self.cells:
             #self.set_cell_by_no(cell.no)
             self.set_cell_by_index(cell.rowno,cell.colno)
             self.gui.fill_cell(cell.code)
+        timer.end()
     
     def set_max_row_height(self,height=80):
         self.gui.set_max_row_height(height)
@@ -297,13 +301,16 @@ if __name__ == '__main__':
     if colnum is not None:
         colnum += 1
     blocks = lg.com.set_blocks(data)
-    cells = lg.Cells(blocks).run() #,True
+    cells = lg.Cells(blocks,True).run()
+    timer = sh.Timer(f + ': Showing GUI')
+    timer.start()
     app = App()
     app.reset(cells,rownum,colnum)
     ''' We can get a constant mouse hovering response only if we install
         the filter like this.
     '''
     sh.objs.get_root().installEventFilter(app.gui.panel)
+    timer.end()
     app.show()
     db.close()
     sh.com.end()

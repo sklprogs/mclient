@@ -76,7 +76,7 @@ class Table(PyQt5.QtWidgets.QTextEdit):
             thrown.
         '''
         cell = self.table.cellAt(rowno,colno)
-        self.cursor = cell.firstCursorPosition()                                                                                                                                                 
+        self.cursor = cell.lastCursorPosition()                                                                                                                                                 
         self.setTextCursor(self.cursor)
         return cell
     

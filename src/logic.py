@@ -1148,16 +1148,20 @@ class Cells:
             rownos.append(cell.rowno)
             colnos.append(cell.colno)
             codes.append(cell.code)
+        #,maxrow = 200
         mes = sh.FastTable (iterable = [nos,rownos,colnos,codes]
                            ,headers = (_('Cell #'),_('Row #'),_('Col #')
                                       ,_('Code')
                                       )
-                           ,maxrow = 100
                            ,FromEnd = True
                            ).run()
         #TODO
+        import skl_shared.shared as leg
+        leg.com.start()
+        leg.com.run_fast_debug(f,mes)
+        leg.com.end()
         #sh.com.run_fast_debug(f,mes)
-        print(mes)
+        #print(mes)
     
     def loop(self):
         f = '[MClient] logic.Cells.loop'
