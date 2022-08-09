@@ -18,6 +18,31 @@ SPORDER = (_('Noun'),_('Verb'),_('Adjective'),_('Abbreviation')
           )
 
 
+class Block:
+    
+    def __init__(self):
+        self.type_ = 'invalid'
+        self.text = ''
+        self.rowno = -1
+        self.colno = -1
+        self.cellno = -1
+        self.family = 'Serif'
+        self.color = 'black'
+        self.size = 12
+        self.Bold = False
+        self.Italic = False
+
+
+
+class Cell:
+    
+    def __init__(self):
+        self.code = ''
+        self.no = -1
+        self.rowno = -1
+        self.colno = -1
+
+
 
 class Font:
     
@@ -858,6 +883,22 @@ class Commands:
     def __init__(self):
         self.use_unverified()
     
+    def set_blocks(self,data):
+        f = '[MClient] logic.Commands.set_blocks'
+        blocks = []
+        if not data:
+            sh.com.rep_empty(f)
+            return blocks
+        for row in data:
+            block = Block()
+            block.type_ = row[0]
+            block.text = row[1]
+            block.rowno = row[2]
+            block.colno = row[3]
+            block.cellno = row[4]
+            blocks.append(block)
+        return blocks
+    
     def set_def_colnum_even(self):
         if objs.get_request().SpecialPage:
             return
@@ -1023,6 +1064,129 @@ class Order(sj.Order):
         sh.WriteTextFile(blackw,True,True).write(text)
         text = '\n'.join(self.priorlst)
         sh.WriteTextFile(priorw,True,True).write(text)
+
+
+
+class Formatter:
+    
+    def __init__(self,block):
+        self.Success = True
+        self.code = ''
+        self.block = block
+    
+    def check(self):
+        f = '[MClientQt] logic.Formatter.check'
+        if not self.block:
+            self.Success = False
+            sh.com.rep_empty(f)
+    
+    def set_code(self):
+        f = '[MClientQt] logic.Formatter.set_code'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.code = self.block.text
+    
+    def _set_italic(self):
+        if self.block.Italic:
+            self.code = '<i>' + self.code + '</i>'
+    
+    def _set_bold(self):
+        if self.block.Bold:
+            self.code = '<b>' + self.code + '</b>'
+    
+    def _set_size(self):
+        sub = '<span style="font-size:{}pt">{}</span>'
+        self.code = sub.format(self.block.size,self.code)
+    
+    def _set_face(self):
+        sub = '<font face="{}" color="{}">'
+        sub = sub.format(self.block.family,self.block.color)
+        self.code = sub + self.code
+    
+    def format(self):
+        f = '[MClientQt] logic.Formatter.format'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self._set_italic()
+        self._set_bold()
+        self._set_face()
+        self._set_size()
+    
+    def run(self):
+        self.check()
+        self.set_code()
+        self.format()
+        return self.code
+
+
+
+class Cells:
+    
+    def __init__(self,blocks,Debug=False):
+        self.Success = True
+        self.cells = []
+        self.cell = Cell()
+        self.blocks = blocks
+        self.Debug = Debug
+    
+    def debug(self):
+        f = '[MClient] logic.Cells.debug'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not self.Debug:
+            sh.com.rep_lazy(f)
+            return
+        nos = []
+        rownos = []
+        colnos = []
+        codes = []
+        for cell in self.cells:
+            nos.append(cell.no)
+            rownos.append(cell.rowno)
+            colnos.append(cell.colno)
+            codes.append(cell.code)
+        mes = sh.FastTable (iterable = [nos,rownos,colnos,codes]
+                           ,headers = (_('Cell #'),_('Row #'),_('Col #')
+                                      ,_('Code')
+                                      )
+                           ,maxrow = 100
+                           ,FromEnd = True
+                           ).run()
+        #TODO
+        #sh.com.run_fast_debug(f,mes)
+        print(mes)
+    
+    def loop(self):
+        f = '[MClient] logic.Cells.loop'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        for block in self.blocks:
+            if block.cellno != self.cell.no:
+                if self.cell.no != -1:
+                    self.cells.append(self.cell)
+                self.cell = Cell()
+                self.cell.no = block.cellno + 1
+                self.cell.rowno = block.rowno
+                self.cell.colno = block.colno
+            self.cell.code = Formatter(block).run()
+        if self.cell.no != -1:
+            self.cells.append(self.cell)
+    
+    def check(self):
+        f = '[MClientQt] logic.Cells.check'
+        if not self.blocks:
+            self.Success = False
+            sh.com.rep_empty(f)
+    
+    def run(self):
+        self.check()
+        self.loop()
+        self.debug()
+        return self.cells
 
 
 objs = Objects()

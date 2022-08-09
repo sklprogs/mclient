@@ -1,12 +1,107 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import sys
 import PyQt5
 import PyQt5.QtWidgets
 
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
+
+
+class Table(PyQt5.QtWidgets.QTextEdit):
+
+    def __init__(self):
+        super().__init__()
+        self.set_gui()
+
+    def set_cell_bg(self,cell,color):
+        cell_fmt = cell.format()
+        cell_fmt.setBackground(PyQt5.QtGui.QColor(color))
+        cell.setFormat(cell_fmt)
+    
+    def clear(self):
+        #TODO
+        f = '[MClientQt] gui.Table.clear'
+        mes = _('Not implemented yet!')
+        sh.objs.get_mes(f,mes,True).show_error()
+    
+    def set_max_row_height(self,height):
+        #TODO
+        f = '[MClientQt] gui.Table.set_max_row_height'
+        mes = _('Not implemented yet!')
+        sh.objs.get_mes(f,mes,True).show_error()
+    
+    def fill_cell(self,code):
+        self.cursor.insertHtml(code)
+    
+    def get_constraint(self,value):
+        return PyQt5.QtGui.QTextLength(PyQt5.QtGui.QTextLength.FixedLength,value)
+    
+    def set_max_col_width(self,constraints):
+        self.fmt.setColumnWidthConstraints(constraints)
+    
+    def enable_borders(self):
+        self.fmt.setBorder(True)
+    
+    def disable_borders(self):
+        self.fmt.setBorder(False)
+    
+    def set_spacing(self,value):
+        # Set a distance between adjacent cells (integer)
+        self.fmt.setCellSpacing(value)
+    
+    def set_widgets(self):
+        self.doc = PyQt5.QtGui.QTextDocument()
+        self.cursor = PyQt5.QtGui.QTextCursor(self.textCursor())
+        self.fmt = PyQt5.QtGui.QTextTableFormat()
+    
+    def set_border_color(self,color):
+        brush = PyQt5.QtGui.QBrush(PyQt5.QtCore.Qt.SolidPattern)
+        color = PyQt5.QtGui.QColor(color)
+        brush.setColor(color)
+        self.fmt.setBorderBrush(brush)
+    
+    def create_table(self,rownum,colnum):
+        # Do this only after 'fmt' is fully adjusted but before selecting cells
+        self.table = self.cursor.insertTable(rownum,colnum,self.fmt)
+    
+    def get_cell_by_no(self,no):
+        self.cursor.setPosition(no)
+        return self.table.cellAt(no)
+    
+    def get_cell_by_index(self,rowno,colno):
+        ''' Return a cell by rowno, colno as PyQt5.QtGui.QTextTableCell. Unlike
+            `setPosition`, numbers start from 0 when using `cellAt`. If a cell
+            number is outside of table boundaries, a segmentation fault will be
+            thrown.
+        '''
+        cell = self.table.cellAt(rowno,colno)
+        self.cursor = cell.firstCursorPosition()                                                                                                                                                 
+        self.setTextCursor(self.cursor)
+        return cell
+    
+    def set_cell_border_color(self,cell,color):
+        # Not working yet
+        # QTextCharFormat
+        cell_fmt = cell.format()
+        pen = cell_fmt.textOutline()
+        brush = pen.brush()
+        qcolor = PyQt5.QtGui.QColor(color)
+        brush.setColor(qcolor)
+        pen.setColor(qcolor)
+        pen.setBrush(brush)
+        cell_fmt.setTextOutline(pen)
+        cell.setFormat(cell_fmt)
+    
+    def disable_cursor(self):
+        self.setReadOnly(True)
+    
+    def enable_cursor(self):
+        self.setReadOnly(False)
+    
+    def set_gui(self):
+        self.set_widgets()
+
 
 
 class Cell:
@@ -27,7 +122,6 @@ class App(PyQt5.QtWidgets.QWidget):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.set_gui()
     
     def minimize(self):
         self.showMinimized()
@@ -38,91 +132,29 @@ class App(PyQt5.QtWidgets.QWidget):
     def set_title(self,title):
         self.setWindowTitle(title)
     
-    def set_gui(self):
+    def create_layout(self):
         self.layout = PyQt5.QtWidgets.QVBoxLayout()
         self.layout.setContentsMargins(0,0,0,0)
-        self.table = Table()
-        self.panel = Panel()
+    
+    def set_layout(self):
         self.layout.addWidget(self.table)
         self.layout.addWidget(self.panel,1)
         self.setLayout(self.layout)
     
+    def set_gui(self,table=None,panel=None):
+        self.create_layout()
+        if table:
+            self.table = table
+        else:
+            self.table = Table()
+        if panel:
+            self.panel = panel
+        else:
+            self.panel = Panel()
+        self.set_layout()
+    
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
-
-
-
-class Table(PyQt5.QtWidgets.QWidget):
-    
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-        self.set_gui()
-    
-    def insert_widget(self,widget,rowno,colno):
-        self.table.setCellWidget(rowno,colno,widget)
-    
-    def create_cell(self,text):
-        return PyQt5.QtWidgets.QTableWidgetItem(text)
-    
-    def set_cell_bg(self,cell,bg):
-        # 'cell' is QTableWidgetItem
-        cell.setBackground(PyQt5.QtGui.QBrush(PyQt5.QtGui.QColor(bg)))
-    
-    def get_cell(self,rowno,colno):
-        return self.table.item(rowno,colno)
-    
-    def enter_cell(self,action):
-        self.table.cellEntered.connect(action)
-    
-    def set_col_width(self,no,width):
-        self.table.setColumnWidth(no,width)
-    
-    def set_row_width(self,no,width):
-        self.table.setRowWidth(no,width)
-    
-    def set_row_num(self,num):
-        self.table.setRowCount(num)
-    
-    def set_col_num(self,num):
-        self.table.setColumnCount(num)
-    
-    def show_grid(self,Show=True):
-        self.table.setShowGrid(Show)
-    
-    def set_max_row_height(self,height):
-        self.vheader.setMaximumSectionSize(height)
-    
-    def resize_fixed(self):
-        # A temporary solution
-        self.vheader.setSectionResizeMode(PyQt5.QtWidgets.QHeaderView.ResizeToContents)
-    
-    def hide_x_header(self):
-        self.hheader.hide()
-    
-    def hide_y_header(self):
-        self.vheader.hide()
-    
-    def set_gui(self):
-        self.layout = PyQt5.QtWidgets.QGridLayout()
-        self.layout.setContentsMargins(0,0,0,0)
-        self.setLayout(self.layout)
-        self.table = PyQt5.QtWidgets.QTableWidget(self)
-        self.hheader = self.table.horizontalHeader()
-        self.vheader = self.table.verticalHeader()
-        # This is required to activate mouse hovering
-        self.table.setMouseTracking(True)
-        #self.xscroll = PyQt5.QtWidgets.QScrollBar(self)
-        #self.table.setHorizontalScrollBar(self.xscroll)
-    
-    def clear(self,event=None):
-        self.table.clear()
-    
-    def set_cell(self,cell,rowno,colno):
-        self.table.setItem(rowno,colno,cell)
-    
-    def add_layout(self):
-        self.layout.addWidget(self.table,0,0)
-        #self.layout.addWidget(self.xscroll)
 
 
 
@@ -494,7 +526,19 @@ objs = Objects()
 
 
 if __name__ == '__main__':
+    import sys
     exe = PyQt5.QtWidgets.QApplication(sys.argv)
     app = App()
+    app.set_gui()
+    app.table.create_table(5,5)
+    rowno = 0
+    while rowno < 5:
+        colno = 0
+        while colno < 5:
+            app.table.get_cell_by_index(rowno,colno)
+            code = '<b>{}</b>:{}'.format(rowno+1,colno+1)
+            app.table.fill_cell(code)
+            colno += 1
+        rowno += 1
     app.show()
     sys.exit(exe.exec_())
