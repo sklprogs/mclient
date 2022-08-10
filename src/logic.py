@@ -891,11 +891,16 @@ class Commands:
             return blocks
         for row in data:
             block = Block()
-            block.type_ = row[0]
-            block.text = row[1]
-            block.rowno = row[2]
-            block.colno = row[3]
-            block.cellno = row[4]
+            block.no = row[0]
+            block.rowno = row[1]
+            block.colno = row[2]
+            block.text = row[3]
+            block.color = row[4]
+            block.family = row[5]
+            #TODO: delete the multiplier
+            block.size = row[6] * 3
+            block.Bold = row[7]
+            block.Italic = row[8]
             blocks.append(block)
         return blocks
     
@@ -1169,15 +1174,18 @@ class Cells:
             sh.com.cancel(f)
             return
         for block in self.blocks:
-            if block.cellno != self.cell.no:
-                if self.cell.no != -1:
+            #if block.cellno != self.cell.no:
+            if block.rowno != self.cell.rowno or block.colno != self.cell.colno:
+                #if self.cell.no != -1:
+                if self.cell.rowno != -1:
                     self.cells.append(self.cell)
                 self.cell = Cell()
-                self.cell.no = block.cellno + 1
+                #self.cell.no = block.cellno + 1
                 self.cell.rowno = block.rowno
                 self.cell.colno = block.colno
             self.cell.code = Formatter(block).run()
-        if self.cell.no != -1:
+        #if self.cell.no != -1:
+        if self.cell.rowno != -1:
             self.cells.append(self.cell)
     
     def check(self):

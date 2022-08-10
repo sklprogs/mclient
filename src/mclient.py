@@ -87,7 +87,7 @@ class Table:
     
     def set_cell_by_index(self,rowno,colno):
         ''' Return a cell by rowno, colno as PyQt5.QtGui.QTextTableCell. Unlike
-            `setPosition`, numbers start from 0 when using `cellAt`. If a cell
+            'setPosition', numbers start from 0 when using 'cellAt'. If a cell
             number is outside of table boundaries, a segmentation fault will be
             thrown.
         '''
@@ -129,12 +129,11 @@ class DB:
     def set_values(self):
         self.artid = 0
         self.Selectable = True
-        #self.path = '/home/pete/tmp/hello3.db'
         self.path = '/home/pete/tmp/set.db'
     
     def fetch(self):
-        query = 'select TYPE,TEXT,ROWNO,COLNO,CELLNO from BLOCKS \
-                 where BLOCK = 0 and IGNORE = 0 order by CELLNO,NO'
+        query = 'select NO,ROWNO,COLNO,TEXT,COLOR,FAMILY,SIZE,BOLD,ITALIC \
+                 from FONTS order by NO'
         self.dbc.execute(query,)
         return self.dbc.fetchall()
     
@@ -150,8 +149,7 @@ class DB:
             for cases when positions are not set yet.
         '''
         f = '[MClient] mclient.DB.get_max_col_no'
-        query = 'select COLNO from BLOCKS where BLOCK = 0 and \
-                        IGNORE = 0 order by COLNO desc'
+        query = 'select COLNO from FONTS order by COLNO desc'
         self.dbc.execute(query,)
         col_no = self.dbc.fetchone()
         if col_no:
@@ -159,8 +157,7 @@ class DB:
     
     def get_max_row_no(self):
         f = '[MClient] mclient.DB.get_max_row_no'
-        query = 'select ROWNO from BLOCKS where BLOCK = 0 \
-                 and IGNORE = 0 order by ROWNO desc'
+        query = 'select ROWNO from FONTS order by ROWNO desc'
         self.dbc.execute(query,)
         result = self.dbc.fetchone()
         if result:
