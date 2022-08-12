@@ -35,6 +35,9 @@ class Table:
     def clear(self):
         self.gui.clear()
     
+    def go_start(self):
+        self.gui.go_start()
+    
     def fill(self):
         f = '[MClientQt] mclient.Table.fill'
         timer = sh.Timer(f)
@@ -43,6 +46,7 @@ class Table:
             #self.set_cell_by_no(cell.no)
             self.set_cell_by_index(cell.rowno,cell.colno)
             self.gui.fill_cell(cell.code)
+        self.go_start()
         timer.end()
     
     def set_max_row_height(self,height=80):
@@ -113,9 +117,8 @@ class Table:
         self.set_max_row_height()
         self.set_spacing(0)
         self.set_border_color()
-        #cur
-        #self.disable_borders()
-        #self.disable_cursor()
+        self.disable_borders()
+        self.disable_cursor()
 
 
 

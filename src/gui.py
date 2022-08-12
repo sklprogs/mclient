@@ -14,6 +14,9 @@ class Table(PyQt5.QtWidgets.QTextEdit):
         super().__init__()
         self.set_gui()
 
+    def go_start(self):
+        self.moveCursor(self.cursor.Start)
+    
     def set_cell_bg(self,cell,color):
         cell_fmt = cell.format()
         cell_fmt.setBackground(PyQt5.QtGui.QColor(color))
