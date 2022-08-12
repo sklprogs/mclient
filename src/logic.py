@@ -1155,8 +1155,8 @@ class Cells:
             codes.append(cell.code)
         #,maxrow = 200
         mes = sh.FastTable (iterable = [nos,rownos,colnos,codes]
-                           ,headers = (_('Cell #'),_('Row #'),_('Col #')
-                                      ,_('Code')
+                           ,headers = (_('CELL #'),_('ROW #'),_('COLUMN #')
+                                      ,_('CODE')
                                       )
                            ,FromEnd = True
                            ).run()
