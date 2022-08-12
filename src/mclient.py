@@ -298,7 +298,7 @@ if __name__ == '__main__':
     if colnum is not None:
         colnum += 1
     blocks = lg.com.set_blocks(data)
-    cells = lg.Cells(blocks,True).run()
+    cells = lg.Cells(blocks).run()
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
     app = App()

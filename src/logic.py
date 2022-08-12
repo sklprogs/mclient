@@ -1183,7 +1183,7 @@ class Cells:
                 #self.cell.no = block.cellno + 1
                 self.cell.rowno = block.rowno
                 self.cell.colno = block.colno
-            self.cell.code = Formatter(block).run()
+            self.cell.code += Formatter(block).run()
         #if self.cell.no != -1:
         if self.cell.rowno != -1:
             self.cells.append(self.cell)
