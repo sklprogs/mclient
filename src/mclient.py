@@ -16,8 +16,22 @@ DEBUG = False
 class Table:
 
     def __init__(self):
+        self.rowno = 0
+        self.colno = 0
         self.gui = gi.Table()
         self.set_gui()
+    
+    def set_mouse_over(self,rowno,colno):
+        if self.rowno == rowno and self.colno == colno:
+            return
+        ''' We need to get and modify a cell instance as soon as possible since
+            it is deleted.
+        '''
+        self.set_cell_bg('white')
+        self.set_cell_by_index(rowno,colno)
+        self.set_cell_bg('cyan')
+        self.rowno = rowno
+        self.colno = colno
     
     def reset(self,cells,rownum,colnum):
         self.cells = cells
@@ -209,24 +223,8 @@ class App:
     def close(self,event=None):
         self.gui.close()
     
-    def set_mouse_over(self,rowno,colno):
-        if self.table.rowno == rowno and self.table.colno == colno:
-            return
-        ''' We need to get and modify a cell instance as soon as
-            possible since it is deleted.
-        '''
-        old_cell = self.table.get_cell(self.rowno,self.colno)
-        new_cell = self.table.get_cell(rowno,colno)
-        if not old_cell or not new_cell:
-            ''' The table item can be None for some reason. We should
-                verify that both old and new items are valid so we
-                would not lose our old cell's background.
-            '''
-            return
-        self.table.set_cell_bg(old_cell,'white')
-        self.table.set_cell_bg(new_cell,'cyan')
-        self.rowno = rowno
-        self.colno = colno
+    def mouse_hover(self):
+        self.table.set_mouse_over(3,3)
     
     def move_down(self):
         #TODO: use smarter logic instead of incrementing a row number
@@ -247,12 +245,11 @@ class App:
     def set_bindings(self):
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.minimize)
-        #TODO
-        #self.table.enter_cell(self.set_mouse_over)
         self.gui.bind('Down',self.move_down)
         self.gui.bind('Up',self.move_up)
         self.gui.bind('Left',self.move_left)
         self.gui.bind('Right',self.move_right)
+        self.table.gui.mouse_hover = self.mouse_hover
     
     def enable_grid(self):
         #TODO
@@ -310,6 +307,7 @@ if __name__ == '__main__':
         the filter like this.
     '''
     sh.objs.get_root().installEventFilter(app.gui.panel)
+    sh.objs.get_root().installEventFilter(app.gui.table)
     timer.end()
     app.show()
     db.close()

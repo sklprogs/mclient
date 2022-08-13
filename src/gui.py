@@ -14,6 +14,15 @@ class Table(PyQt5.QtWidgets.QTextEdit):
         super().__init__()
         self.set_gui()
 
+    def mouse_hover(self):
+        mes = _('This procedure should be overriden externally!')
+        sh.objs.get_mes(f,mes,True).show_error()
+    
+    def eventFilter(self,source,event):
+        if event.type() == PyQt5.QtCore.QEvent.MouseMove:
+            self.mouse_hover()
+        return super().eventFilter(source,event)
+    
     def go_start(self):
         self.moveCursor(self.cursor.Start)
     
@@ -26,13 +35,13 @@ class Table(PyQt5.QtWidgets.QTextEdit):
         #TODO
         f = '[MClientQt] gui.Table.clear'
         mes = _('Not implemented yet!')
-        sh.objs.get_mes(f,mes,True).show_error()
+        sh.objs.get_mes(f,mes,True).show_info()
     
     def set_max_row_height(self,height):
         #TODO
         f = '[MClientQt] gui.Table.set_max_row_height'
         mes = _('Not implemented yet!')
-        sh.objs.get_mes(f,mes,True).show_error()
+        sh.objs.get_mes(f,mes,True).show_info()
     
     def fill_cell(self,code):
         self.cursor.insertHtml(code)

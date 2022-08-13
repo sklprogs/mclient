@@ -898,7 +898,8 @@ class Commands:
             block.color = row[4]
             block.family = row[5]
             #TODO: delete the multiplier
-            block.size = row[6] * 3
+            #block.size = row[6] * 3
+            block.size = row[6]
             block.Bold = row[7]
             block.Italic = row[8]
             blocks.append(block)
@@ -1105,6 +1106,7 @@ class Formatter:
         self.code = sub.format(self.block.size,self.code)
     
     def _set_face(self):
+        # style="letter-spacing: 1px"
         sub = '<font face="{}" color="{}">'
         sub = sub.format(self.block.family,self.block.color)
         self.code = sub + self.code
