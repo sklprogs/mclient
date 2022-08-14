@@ -223,7 +223,7 @@ class App:
     def close(self,event=None):
         self.gui.close()
     
-    def mouse_hover(self):
+    def set_mouse_over(self):
         self.table.set_mouse_over(3,3)
     
     def move_down(self):
@@ -249,7 +249,7 @@ class App:
         self.gui.bind('Up',self.move_up)
         self.gui.bind('Left',self.move_left)
         self.gui.bind('Right',self.move_right)
-        self.table.gui.mouse_hover = self.mouse_hover
+        self.table.gui.set_mouse_over = self.set_mouse_over
     
     def enable_grid(self):
         #TODO

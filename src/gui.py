@@ -14,13 +14,13 @@ class Table(PyQt5.QtWidgets.QTextEdit):
         super().__init__()
         self.set_gui()
 
-    def mouse_hover(self):
+    def set_mouse_over(self):
         mes = _('This procedure should be overriden externally!')
         sh.objs.get_mes(f,mes,True).show_error()
     
     def eventFilter(self,source,event):
         if event.type() == PyQt5.QtCore.QEvent.MouseMove:
-            self.mouse_hover()
+            self.set_mouse_over()
         return super().eventFilter(source,event)
     
     def go_start(self):
