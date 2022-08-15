@@ -20,7 +20,12 @@ class Table(PyQt5.QtWidgets.QTextEdit):
     
     def eventFilter(self,source,event):
         if event.type() == PyQt5.QtCore.QEvent.MouseMove:
-            self.set_mouse_over()
+            pos = event.pos()
+            self.cursor = self.cursorForPosition(pos)
+            self.setTextCursor(self.cursor)
+            cell = self.table.cellAt(self.cursor)
+            self.set_cell_bg(cell,'cyan')
+            #self.set_mouse_over()
         return super().eventFilter(source,event)
     
     def go_start(self):
@@ -88,7 +93,7 @@ class Table(PyQt5.QtWidgets.QTextEdit):
             thrown.
         '''
         cell = self.table.cellAt(rowno,colno)
-        self.cursor = cell.lastCursorPosition()                                                                                                                                                 
+        self.cursor = cell.lastCursorPosition()
         self.setTextCursor(self.cursor)
         return cell
     

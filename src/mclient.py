@@ -21,7 +21,10 @@ class Table:
         self.gui = gi.Table()
         self.set_gui()
     
-    def set_mouse_over(self,rowno,colno):
+    def set_mouse_over(self):
+        pass
+    
+    def set_selection(self,rowno,colno):
         if self.rowno == rowno and self.colno == colno:
             return
         ''' We need to get and modify a cell instance as soon as possible since
@@ -223,24 +226,21 @@ class App:
     def close(self,event=None):
         self.gui.close()
     
-    def set_mouse_over(self):
-        self.table.set_mouse_over(3,3)
-    
     def move_down(self):
         #TODO: use smarter logic instead of incrementing a row number
-        self.set_mouse_over(self.rowno+1,self.colno)
+        self.set_selection(self.rowno+1,self.colno)
     
     def move_up(self):
         #TODO: use smarter logic instead of decrementing a row number
-        self.set_mouse_over(self.rowno-1,self.colno)
+        self.set_selection(self.rowno-1,self.colno)
     
     def move_left(self):
         #TODO: use smarter logic instead of decrementing a column number
-        self.set_mouse_over(self.rowno,self.colno-1)
+        self.set_selection(self.rowno,self.colno-1)
     
     def move_right(self):
         #TODO: use smarter logic instead of decrementing a column number
-        self.set_mouse_over(self.rowno,self.colno+1)
+        self.set_selection(self.rowno,self.colno+1)
     
     def set_bindings(self):
         self.gui.bind('Ctrl+Q',self.close)
@@ -249,7 +249,7 @@ class App:
         self.gui.bind('Up',self.move_up)
         self.gui.bind('Left',self.move_left)
         self.gui.bind('Right',self.move_right)
-        self.table.gui.set_mouse_over = self.set_mouse_over
+        self.table.gui.set_mouse_over = self.table.set_mouse_over
     
     def enable_grid(self):
         #TODO
