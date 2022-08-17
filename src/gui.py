@@ -12,6 +12,8 @@ class Table(PyQt5.QtWidgets.QTextEdit):
 
     def __init__(self):
         super().__init__()
+        self.rowno = 0
+        self.colno = 0
         self.set_gui()
 
     def set_mouse_over(self):
@@ -21,11 +23,16 @@ class Table(PyQt5.QtWidgets.QTextEdit):
     def eventFilter(self,source,event):
         if event.type() == PyQt5.QtCore.QEvent.MouseMove:
             pos = event.pos()
-            self.cursor = self.cursorForPosition(pos)
-            self.setTextCursor(self.cursor)
-            cell = self.table.cellAt(self.cursor)
+            cursor = self.cursorForPosition(pos)
+            cell = self.table.cellAt(cursor)
+            if not cell.isValid() or cell.column() == self.colno and cell.row() == self.rowno:
+                return super().eventFilter(source,event)
+            self.rowno = cell.row()
+            self.colno = cell.column()
             self.set_cell_bg(cell,'cyan')
-            #self.set_mouse_over()
+            cell = self.table.cellAt(self.cursor)
+            self.set_cell_bg(cell,'white')
+            self.cursor = cursor
         return super().eventFilter(source,event)
     
     def go_start(self):
