@@ -140,13 +140,14 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.setWindowTitle(title)
     
     def create_layout(self):
+        self.parent = PyQt5.QtWidgets.QWidget()
         self.layout = PyQt5.QtWidgets.QVBoxLayout()
         self.layout.setContentsMargins(0,0,0,0)
     
     def set_layout(self):
         self.layout.addWidget(self.table)
         self.layout.addWidget(self.panel,1)
-        self.setLayout(self.layout)
+        self.parent.setLayout(self.layout)
     
     def set_gui(self,table=None,panel=None):
         self.create_layout()
@@ -159,6 +160,7 @@ class App(PyQt5.QtWidgets.QMainWindow):
         else:
             self.panel = Panel()
         self.set_layout()
+        self.setCentralWidget(self.parent)
     
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
