@@ -39,7 +39,7 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
 
 
 
-class Table(PyQt5.QtWidgets.QWidget):
+class Table(PyQt5.QtWidgets.QTableWidget):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -53,25 +53,25 @@ class Table(PyQt5.QtWidgets.QWidget):
         cell.setBackground(PyQt5.QtGui.QBrush(PyQt5.QtGui.QColor(bg)))
     
     def get_cell(self,rowno,colno):
-        return self.table.item(rowno,colno)
+        return self.item(rowno,colno)
     
     def enter_cell(self,action):
-        self.table.cellEntered.connect(action)
+        self.cellEntered.connect(action)
     
     def set_col_width(self,no,width):
-        self.table.setColumnWidth(no,width)
+        self.setColumnWidth(no,width)
     
     def set_row_width(self,no,width):
-        self.table.setRowWidth(no,width)
+        self.setRowWidth(no,width)
     
     def set_row_num(self,num):
-        self.table.setRowCount(num)
+        self.setRowCount(num)
     
     def set_col_num(self,num):
-        self.table.setColumnCount(num)
+        self.setColumnCount(num)
     
     def show_grid(self,Show=True):
-        self.table.setShowGrid(Show)
+        self.setShowGrid(Show)
     
     def set_max_row_height(self,height):
         self.vheader.setMaximumSectionSize(height)
@@ -87,26 +87,22 @@ class Table(PyQt5.QtWidgets.QWidget):
         self.vheader.hide()
     
     def set_gui(self):
-        #self.layout = PyQt5.QtWidgets.QGridLayout()
-        #self.layout.setContentsMargins(0,0,0,0)
-        #self.setLayout(self.layout)
-        self.table = PyQt5.QtWidgets.QTableWidget(self)
-        self.table.setItemDelegate(CustomDelegate())
-        self.hheader = self.table.horizontalHeader()
-        self.vheader = self.table.verticalHeader()
+        self.setItemDelegate(CustomDelegate())
+        #self.hheader = self.horizontalHeader()
+        #self.vheader = self.verticalHeader()
         # This is required to activate mouse hovering
-        self.table.setMouseTracking(True)
+        self.setMouseTracking(True)
         #self.xscroll = PyQt5.QtWidgets.QScrollBar(self)
-        #self.table.setHorizontalScrollBar(self.xscroll)
+        #self.setHorizontalScrollBar(self.xscroll)
     
     def clear(self,event=None):
-        self.table.clear()
+        self.clear()
     
     def set_cell(self,cell,rowno,colno):
-        self.table.setItem(rowno,colno,cell)
+        self.setItem(rowno,colno,cell)
     
     def add_layout(self):
-        self.layout.addWidget(self.table,0,0)
+        self.layout.addWidget(self,0,0)
         #self.layout.addWidget(self.xscroll)
 
 
