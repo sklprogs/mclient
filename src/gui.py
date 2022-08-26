@@ -49,6 +49,12 @@ class Table(PyQt5.QtWidgets.QTableWidget):
         self.cell = None
         self.set_gui()
     
+    def get_col_num(self):
+        return self.columnCount()
+    
+    def get_row_num(self):
+        return self.rowCount()
+    
     def eventFilter(self,widget,event):
         # Qt accepts boolean at output, but not NoneType
         if event.type() != PyQt5.QtCore.QEvent.MouseMove:
@@ -88,11 +94,6 @@ class Table(PyQt5.QtWidgets.QTableWidget):
     
     def get_cursor(self,event):
         return event.pos()
-    
-    '''
-    def enter_cell(self,action):
-        self.cellEntered.connect(action)
-    '''
     
     def set_col_width(self,no,width):
         self.setColumnWidth(no,width)

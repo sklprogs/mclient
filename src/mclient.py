@@ -19,44 +19,18 @@ class Table:
         self.gui = gi.Table()
         self.set_gui()
     
-    '''
-    def eventFilter(self,widget,event):
-        print('eventFilter ACTIVATED')
-        if not self.gui.is_mouse_move(event):
-            return self.gui.return_event(widget,event)
-        new_cell = self.gui.get_cell_by_event(event)
-        if new_index == self.last_index:
-            return self.gui.return_event(widget,event)
-        rowno = new_cell.row()
-        colno = new_cell.column()
-        mes = 'Row #: {}. Column #: {}'.format(rowno,colno)
-        print(mes)
-    '''
-    
-    def set_mouse_over(self,event):
-        print('set_mouse_over ACTIVATED')
-        cursor = self.gui.get_cursor(event)
-        new_cell = self.gui.get_cell_by_cursor(cursor)
-        rowno = new_cell.row()
-        colno = new_cell.column()
-        #cur
-        if self.rowno == rowno and self.colno == colno:
-            print('Nothing to do!')
-            return
-        ''' We need to get and modify a cell instance as soon as possible since
-            it is deleted.
-        '''
-        old_cell = self.gui.get_cell_by_index(self.rowno,self.colno)
-        if not old_cell or not new_cell:
-            ''' The table item can be None for some reason. We should verify
-                that both old and new items are valid so we would not lose our
-                old cell's background.
-            '''
-            return
-        self.gui.set_cell_bg(old_cell,'white')
-        self.gui.set_cell_bg(new_cell,'cyan')
-        self.rowno = rowno
-        self.colno = colno
+    def set_col_width(self):
+        col_num = self.gui.get_col_num()
+        mes = _('Number of columns: {}').format(col_num)
+        #TODO: Rework, number of fixed columns can be different
+        for no in range(col_num):
+            if no < 4:
+                width = sh.lg.globs['int']['fixed_col_width']
+            else:
+                width = sh.lg.globs['int']['term_col_width']
+            mes = 'Column #{}; width: {}'.format(no,width)
+            print(mes)
+            self.gui.set_col_width(no,width)
     
     def set_selection(self,rowno,colno):
         if self.rowno == rowno and self.colno == colno:
@@ -76,6 +50,7 @@ class Table:
         self.colnum = colnum
         self.clear()
         self.create_table()
+        self.set_col_width()
         self.fill()
         #self.set_max_col_width()
         self.select_cell()
@@ -293,7 +268,6 @@ class App:
         self.gui.bind('Up',self.move_up)
         self.gui.bind('Left',self.move_left)
         self.gui.bind('Right',self.move_right)
-        self.table.gui.set_mouse_over = self.table.set_mouse_over
     
     def enable_grid(self):
         #TODO
