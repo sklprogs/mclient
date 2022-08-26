@@ -21,8 +21,26 @@ class Table:
         self.gui = gi.Table()
         self.set_gui()
     
-    def set_mouse_over(self):
-        pass
+    def set_mouse_over(self,event):
+        print('set_mouse_over ACTIVATED')
+        #cur
+        if self.rowno == rowno and self.colno == colno:
+            return
+        ''' We need to get and modify a cell instance as soon as possible since
+            it is deleted.
+        '''
+        old_cell = self.gui.get_cell_by_index(self.rowno,self.colno)
+        new_cell = self.gui.get_cell_by_index(rowno,colno)
+        if not old_cell or not new_cell:
+            ''' The table item can be None for some reason. We should verify
+                that both old and new items are valid so we would not lose our
+                old cell's background.
+            '''
+            return
+        self.gui.table.set_cell_bg(old_cell,'white')
+        self.gui.table.set_cell_bg(new_cell,'cyan')
+        self.rowno = rowno
+        self.colno = colno
     
     def set_selection(self,rowno,colno):
         if self.rowno == rowno and self.colno == colno:
@@ -318,7 +336,7 @@ if __name__ == '__main__':
         the filter like this.
     '''
     sh.objs.get_root().installEventFilter(app.gui.panel)
-    sh.objs.get_root().installEventFilter(app.gui.table)
+    app.gui.table.enter_cell(app.table.set_mouse_over)
     timer.end()
     app.show()
     db.close()

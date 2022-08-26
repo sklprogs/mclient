@@ -43,6 +43,7 @@ class Table(PyQt5.QtWidgets.QTableWidget):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+        self.trigger_hover = None
         self.set_gui()
     
     def fill_cell(self,cell,code):
