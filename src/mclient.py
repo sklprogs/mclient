@@ -44,7 +44,7 @@ class Table:
         self.create_table()
         self.fill()
         #self.set_max_col_width()
-        #self.select_cell()
+        self.select_cell()
     
     def set_cell_bg(self,color='cyan'):
         self.gui.set_cell_bg(self.cell,color)
@@ -122,6 +122,8 @@ class Table:
         #cur
         if cell:
             self.cell = cell
+        else:
+            print('NONE!!!!!!')
     
     def set_cell_border_color(self,color='red'):
         # Not working yet
@@ -133,11 +135,11 @@ class Table:
     def enable_cursor(self):
         self.gui.enable_cursor()
     
-    def select_cell(self,no=1):
+    def select_cell(self,rowno=0,colno=0):
         #TODO: elaborate
-        self.set_cell_by_no(no)
+        self.set_cell_by_index(rowno,colno)
         self.set_cell_bg('cyan')
-        self.set_cell_border_color('red')
+        #self.set_cell_border_color('red')
     
     def set_gui(self):
         self.set_max_row_height()
