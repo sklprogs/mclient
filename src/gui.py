@@ -59,6 +59,12 @@ class Table(PyQt5.QtWidgets.QTableWidget):
     def get_cell_by_index(self,rowno,colno):
         return self.item(rowno,colno)
     
+    def get_cell_by_cursor(self,cursor):
+        return self.itemAt(cursor)
+    
+    def get_cursor(self,event):
+        return event.pos()
+    
     def enter_cell(self,action):
         self.cellEntered.connect(action)
     
