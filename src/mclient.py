@@ -43,14 +43,15 @@ class Table:
         self.clear()
         self.create_table()
         self.fill()
-        self.set_max_col_width()
-        self.select_cell()
+        #self.set_max_col_width()
+        #self.select_cell()
     
     def set_cell_bg(self,color='cyan'):
         self.gui.set_cell_bg(self.cell,color)
     
     def clear(self):
-        self.gui.clear()
+        #self.gui.clear()
+        pass
     
     def go_start(self):
         self.gui.go_start()
@@ -61,9 +62,11 @@ class Table:
         timer.start()
         for cell in self.cells:
             #self.set_cell_by_no(cell.no)
-            self.set_cell_by_index(cell.rowno,cell.colno)
-            self.gui.fill_cell(cell.code)
-        self.go_start()
+            #self.set_cell_by_index(cell.rowno,cell.colno)
+            #self.gui.fill_cell(self.cell,cell.code)
+            item = self.gui.create_cell(cell.code)
+            self.gui.setItem(cell.rowno,cell.colno,item)
+        #self.go_start()
         timer.end()
     
     def set_max_row_height(self,height=80):
@@ -93,7 +96,9 @@ class Table:
         self.gui.set_border_color(color)
     
     def create_table(self):
-        self.gui.create_table(self.rownum,self.colnum)
+        #self.gui.create_table(self.rownum,self.colnum)
+        self.gui.set_row_num(self.rownum)
+        self.gui.set_col_num(self.colnum)
     
     def set_cell_by_no(self,no):
         f = '[MClientQt] mclient.Table.set_cell_by_no'
@@ -112,7 +117,11 @@ class Table:
             number is outside of table boundaries, a segmentation fault will be
             thrown.
         '''
-        self.cell = self.gui.get_cell_by_index(rowno,colno)
+        cell = self.gui.get_cell_by_index(rowno,colno)
+        print('type(cell):',type(cell))
+        #cur
+        if cell:
+            self.cell = cell
     
     def set_cell_border_color(self,color='red'):
         # Not working yet
@@ -132,10 +141,10 @@ class Table:
     
     def set_gui(self):
         self.set_max_row_height()
-        self.set_spacing(0)
-        self.set_border_color()
-        self.disable_borders()
-        self.disable_cursor()
+        #self.set_spacing(0)
+        #self.set_border_color()
+        #self.disable_borders()
+        #self.disable_cursor()
 
 
 

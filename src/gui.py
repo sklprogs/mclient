@@ -45,6 +45,9 @@ class Table(PyQt5.QtWidgets.QTableWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
+    def fill_cell(self,cell,code):
+        cell.setText(code)
+    
     def create_cell(self,text):
         return PyQt5.QtWidgets.QTableWidgetItem(text)
     
@@ -52,7 +55,7 @@ class Table(PyQt5.QtWidgets.QTableWidget):
         # 'cell' is QTableWidgetItem
         cell.setBackground(PyQt5.QtGui.QBrush(PyQt5.QtGui.QColor(bg)))
     
-    def get_cell(self,rowno,colno):
+    def get_cell_by_index(self,rowno,colno):
         return self.item(rowno,colno)
     
     def enter_cell(self,action):
@@ -89,7 +92,7 @@ class Table(PyQt5.QtWidgets.QTableWidget):
     def set_gui(self):
         self.setItemDelegate(CustomDelegate())
         #self.hheader = self.horizontalHeader()
-        #self.vheader = self.verticalHeader()
+        self.vheader = self.verticalHeader()
         # This is required to activate mouse hovering
         self.setMouseTracking(True)
         #self.xscroll = PyQt5.QtWidgets.QScrollBar(self)
