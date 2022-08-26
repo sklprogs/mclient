@@ -57,7 +57,7 @@ class Table(PyQt5.QtWidgets.QTableWidget):
         colno = index_.column()
         rowno = index_.row()
         if self.rowno == rowno and self.colno == colno:
-            return False
+            return True
         mes = 'Row #: {}. Column #: {}'.format(rowno,colno)
         print(mes)
         if self.cell:
