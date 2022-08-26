@@ -16,10 +16,22 @@ DEBUG = False
 class Table:
 
     def __init__(self):
-        self.rowno = 0
-        self.colno = 0
         self.gui = gi.Table()
         self.set_gui()
+    
+    '''
+    def eventFilter(self,widget,event):
+        print('eventFilter ACTIVATED')
+        if not self.gui.is_mouse_move(event):
+            return self.gui.return_event(widget,event)
+        new_cell = self.gui.get_cell_by_event(event)
+        if new_index == self.last_index:
+            return self.gui.return_event(widget,event)
+        rowno = new_cell.row()
+        colno = new_cell.column()
+        mes = 'Row #: {}. Column #: {}'.format(rowno,colno)
+        print(mes)
+    '''
     
     def set_mouse_over(self,event):
         print('set_mouse_over ACTIVATED')
@@ -140,7 +152,6 @@ class Table:
             thrown.
         '''
         cell = self.gui.get_cell_by_index(rowno,colno)
-        print('type(cell):',type(cell))
         #cur
         if cell:
             self.cell = cell
@@ -340,7 +351,8 @@ if __name__ == '__main__':
         the filter like this.
     '''
     sh.objs.get_root().installEventFilter(app.gui.panel)
-    app.gui.table.enter_cell(app.table.set_mouse_over)
+    sh.objs.get_root().installEventFilter(app.gui.table)
+    #app.gui.table.enter_cell(app.table.set_mouse_over)
     timer.end()
     app.show()
     db.close()

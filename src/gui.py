@@ -44,7 +44,31 @@ class Table(PyQt5.QtWidgets.QTableWidget):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.trigger_hover = None
+        self.rowno = 0
+        self.colno = 0
+        self.cell = None
         self.set_gui()
+    
+    def eventFilter(self,widget,event):
+        # Qt accepts boolean at output, but not NoneType
+        if event.type() != PyQt5.QtCore.QEvent.MouseMove:
+            return False
+        index_ = self.indexAt(event.pos())
+        colno = index_.column()
+        rowno = index_.row()
+        if self.rowno == rowno and self.colno == colno:
+            return False
+        mes = 'Row #: {}. Column #: {}'.format(rowno,colno)
+        print(mes)
+        if self.cell:
+            self.set_cell_bg(self.cell,'white')
+        cell = self.itemFromIndex(index_)
+        if not cell:
+            return False
+        self.cell = cell
+        self.set_cell_bg(self.cell,'cyan')
+        self.rowno, self.colno = rowno, colno
+        return True
     
     def fill_cell(self,cell,code):
         cell.setText(code)
@@ -65,8 +89,10 @@ class Table(PyQt5.QtWidgets.QTableWidget):
     def get_cursor(self,event):
         return event.pos()
     
+    '''
     def enter_cell(self,action):
         self.cellEntered.connect(action)
+    '''
     
     def set_col_width(self,no,width):
         self.setColumnWidth(no,width)
