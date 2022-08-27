@@ -82,7 +82,7 @@ class Table:
         #self.go_start()
         timer.end()
     
-    def set_max_row_height(self,height=80):
+    def set_max_row_height(self,height=150):
         self.gui.set_max_row_height(height)
     
     def set_max_col_width(self):
