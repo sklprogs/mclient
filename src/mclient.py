@@ -24,8 +24,12 @@ class Table:
         mes = _('Number of columns: {}').format(col_num)
         #TODO: Rework, number of fixed columns can be different
         for no in range(col_num):
-            if no < 4:
+            if no == 0:
+                width = 140
+            elif no == 1:
                 width = sh.lg.globs['int']['fixed_col_width']
+            elif no in (2,3):
+                width = 63
             else:
                 width = sh.lg.globs['int']['term_col_width']
             mes = 'Column #{}; width: {}'.format(no,width)
