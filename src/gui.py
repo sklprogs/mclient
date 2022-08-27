@@ -62,6 +62,8 @@ class Table(PyQt5.QtWidgets.QTableWidget):
         index_ = self.indexAt(event.pos())
         colno = index_.column()
         rowno = index_.row()
+        if colno == -1 or rowno == -1:
+            return False
         if self.rowno == rowno and self.colno == colno:
             return True
         mes = 'Row #: {}. Column #: {}'.format(rowno,colno)
