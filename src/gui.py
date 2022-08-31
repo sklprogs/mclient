@@ -36,6 +36,16 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         doc.documentLayout().draw(painter,ctx)
     
         painter.restore()
+    
+    def sizeHint(self,option,index):
+        options = PyQt5.QtWidgets.QStyleOptionViewItem(option)
+        self.initStyleOption(options, index)
+        
+        doc = PyQt5.QtGui.QTextDocument()
+        doc.setHtml(options.text)
+        doc.setTextWidth(options.rect.width())
+    
+        return PyQt5.QtCore.QSize(doc.idealWidth(),doc.size().height())
 
 
 
@@ -127,8 +137,10 @@ class Table(PyQt5.QtWidgets.QTableWidget):
     
     def set_gui(self):
         self.setItemDelegate(CustomDelegate())
-        #self.hheader = self.horizontalHeader()
+        self.hheader = self.horizontalHeader()
         self.vheader = self.verticalHeader()
+        self.hheader.setVisible(False)
+        self.vheader.setVisible(False)
         # This is required to activate mouse hovering
         self.setMouseTracking(True)
         #self.xscroll = PyQt5.QtWidgets.QScrollBar(self)
