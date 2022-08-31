@@ -22,6 +22,9 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         doc = PyQt5.QtGui.QTextDocument()
         doc.setHtml(options.text)
         options.text = ''
+        
+        # This enables text wrapping in the delegate
+        doc.setTextWidth(options.rect.width())
     
         style.drawControl(PyQt5.QtWidgets.QStyle.CE_ItemViewItem,options,painter)
         ctx = PyQt5.QtGui.QAbstractTextDocumentLayout.PaintContext()

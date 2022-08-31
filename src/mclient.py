@@ -73,11 +73,7 @@ class Table:
         f = '[MClientQt] mclient.Table.fill'
         timer = sh.Timer(f)
         timer.start()
-        self.gui.setWordWrap(True)
         for cell in self.cells:
-            #self.set_cell_by_no(cell.no)
-            #self.set_cell_by_index(cell.rowno,cell.colno)
-            #self.gui.fill_cell(self.cell,cell.code)
             item = self.gui.create_cell(cell.code)
             self.gui.setItem(cell.rowno,cell.colno,item)
         #self.go_start()
