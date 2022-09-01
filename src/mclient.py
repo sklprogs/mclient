@@ -20,10 +20,9 @@ class Table:
         self.set_gui()
     
     def set_col_width(self):
-        col_num = self.gui.get_col_num()
-        mes = _('Number of columns: {}').format(col_num)
+        mes = _('Number of columns: {}').format(self.colnum)
         #TODO: Rework, number of fixed columns can be different
-        for no in range(col_num):
+        for no in range(self.colnum):
             if no == 0:
                 width = 140
             elif no == 1:
@@ -48,16 +47,31 @@ class Table:
         self.rowno = rowno
         self.colno = colno
     
+    def get_matrix(self):
+        old_rowno = 0
+        matrix = []
+        row = []
+        for cell in self.cells:
+            if old_rowno == cell.rowno:
+                row.append(cell.code)
+            else:
+                if row:
+                    matrix.append(row)
+                row = [cell.code]
+                old_rowno = cell.rowno
+        if row:
+            matrix.append(row)
+        return matrix
+    
     def reset(self,cells,rownum,colnum):
         self.cells = cells
         self.rownum = rownum
         self.colnum = colnum
         self.clear()
-        self.create_table()
         self.set_col_width()
         self.fill()
         #self.set_max_col_width()
-        self.select_cell()
+        #self.select_cell()
     
     def set_cell_bg(self,color='cyan'):
         self.gui.set_cell_bg(self.cell,color)
@@ -73,9 +87,8 @@ class Table:
         f = '[MClientQt] mclient.Table.fill'
         timer = sh.Timer(f)
         timer.start()
-        for cell in self.cells:
-            item = self.gui.create_cell(cell.code)
-            self.gui.setItem(cell.rowno,cell.colno,item)
+        self.model = gi.MyTableModel(self.get_matrix())
+        self.gui.setModel(self.model)
         #self.go_start()
         self.gui.resizeRowsToContents()
         timer.end()
@@ -105,11 +118,6 @@ class Table:
     
     def set_border_color(self,color='darkgray'):
         self.gui.set_border_color(color)
-    
-    def create_table(self):
-        #self.gui.create_table(self.rownum,self.colnum)
-        self.gui.set_row_num(self.rownum)
-        self.gui.set_col_num(self.colnum)
     
     def set_cell_by_no(self,no):
         f = '[MClientQt] mclient.Table.set_cell_by_no'
