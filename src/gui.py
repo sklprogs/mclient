@@ -8,6 +8,30 @@ from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 
+class MyTableModel(PyQt5.QtCore.QAbstractTableModel):
+    
+    def __init__(self,datain,parent=None,*args):
+        PyQt5.QtCore.QAbstractTableModel.__init__(self,parent,*args)
+        self.arraydata = datain
+
+    def rowCount(self,parent):
+        return len(self.arraydata)
+
+    def columnCount(self,parent):
+        return len(self.arraydata[0])
+
+    def data(self,index,role):
+        if not index.isValid():
+            return PyQt5.QtCore.QVariant()
+        if role != PyQt5.QtCore.Qt.DisplayRole:
+            return PyQt5.QtCore.QVariant()
+        try:
+            return PyQt5.QtCore.QVariant(self.arraydata[index.row()][index.column()])
+        except:
+            return PyQt5.QtCore.QVariant()
+
+
+
 class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
     # akej74, https://stackoverflow.com/questions/35397943/how-to-make-a-fast-qtableview-with-html-formatted-and-clickable-cells
     def paint(self,painter,option,index):
@@ -52,7 +76,7 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
 
 
 
-class Table(PyQt5.QtWidgets.QTableWidget):
+class Table(PyQt5.QtWidgets.QTableView):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -589,16 +613,13 @@ if __name__ == '__main__':
     exe = PyQt5.QtWidgets.QApplication(sys.argv)
     app = App()
     app.set_gui()
-    app.table.set_row_num(5)
-    app.table.set_col_num(5)
-    rowno = 0
-    while rowno < 5:
-        colno = 0
-        while colno < 5:
-            code = '<b>{}</b>:{}'.format(rowno+1,colno+1)
-            cell = app.table.create_cell(code)
-            app.table.set_cell(cell,rowno,colno)
-            colno += 1
-        rowno += 1
+    
+    data = [['hel<b>L</b>o','I Am Here','Hello there!']
+           ,['distinct','creation','suffering']
+           ,['tree','as;f,d','sdafsdfasdfasdfsdfsdfsd']
+           ]
+    
+    tablemodel = MyTableModel(data)
+    app.table.setModel(tablemodel)
     app.show()
     sys.exit(exe.exec_())
