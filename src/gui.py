@@ -92,6 +92,7 @@ class Table(PyQt5.QtWidgets.QTableView):
     def get_row_num(self):
         return self.rowCount()
     
+    '''
     def eventFilter(self,widget,event):
         # Qt accepts boolean at output, but not NoneType
         if event.type() != PyQt5.QtCore.QEvent.MouseMove:
@@ -114,6 +115,7 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.set_cell_bg(self.cell,'cyan')
         self.rowno, self.colno = rowno, colno
         return True
+    '''
     
     def fill_cell(self,cell,code):
         cell.setText(code)
@@ -137,8 +139,8 @@ class Table(PyQt5.QtWidgets.QTableView):
     def set_col_width(self,no,width):
         self.setColumnWidth(no,width)
     
-    def set_row_width(self,no,width):
-        self.setRowWidth(no,width)
+    def set_row_height(self,no,height):
+        self.setRowHeight(no,height)
     
     def set_row_num(self,num):
         self.setRowCount(num)
@@ -172,6 +174,9 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.setMouseTracking(True)
         #self.xscroll = PyQt5.QtWidgets.QScrollBar(self)
         #self.setHorizontalScrollBar(self.xscroll)
+    
+    def show_borders(self,Show=False):
+        self.setShowGrid(Show)
     
     def clear(self,event=None):
         self.clear()

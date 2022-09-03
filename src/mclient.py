@@ -19,6 +19,10 @@ class Table:
         self.gui = gi.Table()
         self.set_gui()
     
+    def set_row_height(self):
+        for no in range(self.rownum):
+            self.gui.set_row_height(no,45)
+    
     def set_col_width(self):
         # For some reason, this works only after filling cells
         f = '[MClientQt] mclient.Table.set_col_width'
@@ -75,6 +79,7 @@ class Table:
         self.clear()
         self.fill()
         self.set_col_width()
+        self.set_row_height()
         #self.set_max_col_width()
         #self.select_cell()
     
@@ -112,11 +117,8 @@ class Table:
             constraints.append(self.gui.get_constraint(value))
         self.gui.set_max_col_width(constraints)
     
-    def enable_borders(self):
-        self.gui.enable_borders()
-    
-    def disable_borders(self):
-        self.gui.disable_borders()
+    def show_borders(self,Show=False):
+        self.gui.show_borders(Show)
     
     def set_spacing(self,value=0):
         self.gui.set_spacing(value)
@@ -169,7 +171,7 @@ class Table:
         #self.set_max_row_height()
         #self.set_spacing(0)
         #self.set_border_color()
-        #self.disable_borders()
+        #self.show_borders()
         #self.disable_cursor()
 
 
@@ -341,7 +343,7 @@ if __name__ == '__main__':
         the filter like this.
     '''
     sh.objs.get_root().installEventFilter(app.gui.panel)
-    sh.objs.get_root().installEventFilter(app.gui.table)
+    #sh.objs.get_root().installEventFilter(app.gui.table)
     #app.gui.table.enter_cell(app.table.set_mouse_over)
     timer.end()
     app.show()
