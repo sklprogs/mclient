@@ -19,9 +19,9 @@ class Table:
         self.gui = gi.Table()
         self.set_gui()
     
-    def set_row_height(self):
+    def set_row_height(self,height=45):
         for no in range(self.rownum):
-            self.gui.set_row_height(no,45)
+            self.gui.set_row_height(no,height)
     
     def set_col_width(self):
         # For some reason, this works only after filling cells
@@ -79,7 +79,10 @@ class Table:
         self.clear()
         self.fill()
         self.set_col_width()
-        self.set_row_height()
+        #self.gui.resizeRowsToContents()
+        #self.go_start()
+        self.set_row_height(40)
+        self.show_borders(False)
         #self.set_max_col_width()
         #self.select_cell()
     
@@ -99,8 +102,6 @@ class Table:
         timer = sh.Timer(f)
         timer.start()
         self.gui.setModel(self.model)
-        #self.go_start()
-        #self.gui.resizeRowsToContents()
         timer.end()
     
     def set_max_row_height(self,height=150):
@@ -171,7 +172,6 @@ class Table:
         #self.set_max_row_height()
         #self.set_spacing(0)
         #self.set_border_color()
-        #self.show_borders()
         #self.disable_cursor()
 
 
