@@ -31,8 +31,8 @@ class Table:
                 width = 63
             else:
                 width = sh.lg.globs['int']['term_col_width']
-            mes = 'Column #{}; width: {}'.format(no,width)
-            print(mes)
+            #mes = 'Column #{}; width: {}'.format(no,width)
+            #print(mes)
             self.gui.set_col_width(no,width)
     
     def set_selection(self,rowno,colno):
@@ -48,17 +48,19 @@ class Table:
         self.colno = colno
     
     def get_matrix(self):
-        old_rowno = 0
+        f = '[MClientQt] mclient.Table.get_matrix'
+        old_rowno = 1
         matrix = []
         row = []
         for cell in self.cells:
-            if old_rowno == cell.rowno:
-                row.append(cell.code)
-            else:
+            if old_rowno != cell.rowno:
                 if row:
                     matrix.append(row)
-                row = [cell.code]
+                    row = []
+                for j in range(cell.colno):
+                    row.append('')
                 old_rowno = cell.rowno
+            row.append(cell.code)
         if row:
             matrix.append(row)
         return matrix
@@ -68,7 +70,7 @@ class Table:
         self.rownum = rownum
         self.colnum = colnum
         self.clear()
-        self.set_col_width()
+        #self.set_col_width()
         self.fill()
         #self.set_max_col_width()
         #self.select_cell()
@@ -85,9 +87,9 @@ class Table:
     
     def fill(self):
         f = '[MClientQt] mclient.Table.fill'
+        self.model = gi.MyTableModel(self.get_matrix())
         timer = sh.Timer(f)
         timer.start()
-        self.model = gi.MyTableModel(self.get_matrix())
         self.gui.setModel(self.model)
         #self.go_start()
         self.gui.resizeRowsToContents()

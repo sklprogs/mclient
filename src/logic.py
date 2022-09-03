@@ -38,6 +38,7 @@ class Cell:
     
     def __init__(self):
         self.code = ''
+        self.plain = ''
         self.no = -1
         self.rowno = -1
         self.colno = -1
@@ -1186,6 +1187,7 @@ class Cells:
                 self.cell.rowno = block.rowno
                 self.cell.colno = block.colno
             self.cell.code += Formatter(block).run()
+            self.cell.plain += block.text
         #if self.cell.no != -1:
         if self.cell.rowno != -1:
             self.cells.append(self.cell)
