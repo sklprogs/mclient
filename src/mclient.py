@@ -20,7 +20,10 @@ class Table:
         self.set_gui()
     
     def set_col_width(self):
+        # For some reason, this works only after filling cells
+        f = '[MClientQt] mclient.Table.set_col_width'
         mes = _('Number of columns: {}').format(self.colnum)
+        sh.objs.get_mes(f,mes,True).show_debug()
         #TODO: Rework, number of fixed columns can be different
         for no in range(self.colnum):
             if no == 0:
@@ -70,8 +73,8 @@ class Table:
         self.rownum = rownum
         self.colnum = colnum
         self.clear()
-        #self.set_col_width()
         self.fill()
+        self.set_col_width()
         #self.set_max_col_width()
         #self.select_cell()
     
@@ -92,7 +95,7 @@ class Table:
         timer.start()
         self.gui.setModel(self.model)
         #self.go_start()
-        self.gui.resizeRowsToContents()
+        #self.gui.resizeRowsToContents()
         timer.end()
     
     def set_max_row_height(self,height=150):
@@ -162,7 +165,8 @@ class Table:
         #self.set_cell_border_color('red')
     
     def set_gui(self):
-        self.set_max_row_height()
+        pass
+        #self.set_max_row_height()
         #self.set_spacing(0)
         #self.set_border_color()
         #self.disable_borders()
