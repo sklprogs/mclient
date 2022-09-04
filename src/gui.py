@@ -23,16 +23,23 @@ class MyTableModel(PyQt5.QtCore.QAbstractTableModel):
     def data(self,index,role):
         if not index.isValid():
             return PyQt5.QtCore.QVariant()
-        if role != PyQt5.QtCore.Qt.DisplayRole:
-            return PyQt5.QtCore.QVariant()
-        try:
+        if role == PyQt5.QtCore.Qt.DisplayRole:
             return PyQt5.QtCore.QVariant(self.arraydata[index.row()][index.column()])
-        except:
-            return PyQt5.QtCore.QVariant()
+        '''
+        elif role == PyQt5.QtCore.Qt.BackgroundRole:
+            print('BackgroundRole!!!')
+            return PyQt5.QtGui.QBrush(PyQt5.QtCore.Qt.yellow)
+        '''
 
 
 
 class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.rowno = 0
+        self.colno = 0
+    
     # akej74, https://stackoverflow.com/questions/35397943/how-to-make-a-fast-qtableview-with-html-formatted-and-clickable-cells
     def paint(self,painter,option,index):
         options = PyQt5.QtWidgets.QStyleOptionViewItem(option)
@@ -56,6 +63,14 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         textRect = style.subElementRect(PyQt5.QtWidgets.QStyle.SE_ItemViewItemText,options)
     
         painter.save()
+        
+        if option.state and PyQt5.QtWidgets.QStyle.State_MouseOver:
+            if index.row() == self.rowno and index.column() == self.colno:
+                mes = 'Hovering on ({},{})!'.format(self.rowno,self.colno)
+                print(mes)
+                option.backgroundBrush = PyQt5.QtGui.QBrush(PyQt5.QtGui.QColor('red'))
+                painter.setBrush(option.backgroundBrush)
+                painter.drawRect(option.rect)
     
         painter.translate(textRect.topLeft())
         painter.setClipRect(textRect.translated(-textRect.topLeft()))
@@ -80,10 +95,6 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.trigger_hover = None
-        self.rowno = 0
-        self.colno = 0
-        self.cell = None
         self.set_gui()
     
     def get_col_num(self):
@@ -92,11 +103,17 @@ class Table(PyQt5.QtWidgets.QTableView):
     def get_row_num(self):
         return self.rowCount()
     
-    '''
     def eventFilter(self,widget,event):
         # Qt accepts boolean at output, but not NoneType
         if event.type() != PyQt5.QtCore.QEvent.MouseMove:
             return False
+        pos = event.pos()
+        self.delegate.colno = self.columnAt(pos.x())
+        self.delegate.rowno = self.columnAt(pos.y())
+        mes = 'To set: row #{}, col #{}'.format(self.delegate.rowno,self.delegate.colno)
+        print(mes)
+        
+        '''
         index_ = self.indexAt(event.pos())
         colno = index_.column()
         rowno = index_.row()
@@ -114,8 +131,8 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.cell = cell
         self.set_cell_bg(self.cell,'cyan')
         self.rowno, self.colno = rowno, colno
+        '''
         return True
-    '''
     
     def fill_cell(self,cell,code):
         cell.setText(code)
@@ -165,7 +182,8 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.vheader.hide()
     
     def set_gui(self):
-        self.setItemDelegate(CustomDelegate())
+        self.delegate = CustomDelegate()
+        self.setItemDelegate(self.delegate)
         self.hheader = self.horizontalHeader()
         self.vheader = self.verticalHeader()
         self.hheader.setVisible(False)
