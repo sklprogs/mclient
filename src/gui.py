@@ -112,29 +112,7 @@ class Table(PyQt5.QtWidgets.QTableView):
             return False
         pos = event.pos()
         self.delegate.colno = self.columnAt(pos.x())
-        self.delegate.rowno = self.columnAt(pos.y())
-        mes = 'To set: row #{}, col #{}'.format(self.delegate.rowno,self.delegate.colno)
-        print(mes)
-        
-        '''
-        index_ = self.indexAt(event.pos())
-        colno = index_.column()
-        rowno = index_.row()
-        if colno == -1 or rowno == -1:
-            return False
-        if self.rowno == rowno and self.colno == colno:
-            return True
-        mes = 'Row #: {}. Column #: {}'.format(rowno,colno)
-        print(mes)
-        if self.cell:
-            self.set_cell_bg(self.cell,'white')
-        cell = self.itemFromIndex(index_)
-        if not cell:
-            return False
-        self.cell = cell
-        self.set_cell_bg(self.cell,'cyan')
-        self.rowno, self.colno = rowno, colno
-        '''
+        self.delegate.rowno = self.rowAt(pos.y())
         return True
     
     def fill_cell(self,cell,code):
