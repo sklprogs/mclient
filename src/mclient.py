@@ -122,6 +122,7 @@ class Table:
     def fill(self):
         f = '[MClientQt] mclient.Table.fill'
         self.model = gi.MyTableModel(self.get_matrix())
+        self.gui.model = self.model
         timer = sh.Timer(f)
         timer.start()
         self.gui.setModel(self.model)

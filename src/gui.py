@@ -30,11 +30,9 @@ class MyTableModel(PyQt5.QtCore.QAbstractTableModel):
                 mes = 'List out of bounds at row #{}, col #{}'.format(index.row(),index.column())
                 print(mes)
                 return PyQt5.QtCore.QVariant()
-        '''
-        elif role == PyQt5.QtCore.Qt.BackgroundRole:
-            print('BackgroundRole!!!')
-            return PyQt5.QtGui.QBrush(PyQt5.QtCore.Qt.yellow)
-        '''
+    
+    def update(self):
+        self.layoutChanged.emit()
 
 
 
@@ -67,13 +65,13 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
     
         textRect = style.subElementRect(PyQt5.QtWidgets.QStyle.SE_ItemViewItemText,options)
     
-        painter.save()
-        
         if index.row() == self.rowno and index.column() == self.colno:
             color = PyQt5.QtGui.QColor('red')
             pen = PyQt5.QtGui.QPen(color,2)
             painter.setPen(pen)
             painter.drawRect(option.rect)
+        
+        painter.save()
     
         painter.translate(textRect.topLeft())
         painter.setClipRect(textRect.translated(-textRect.topLeft()))
@@ -111,8 +109,14 @@ class Table(PyQt5.QtWidgets.QTableView):
         if event.type() != PyQt5.QtCore.QEvent.MouseMove:
             return False
         pos = event.pos()
-        self.delegate.colno = self.columnAt(pos.x())
-        self.delegate.rowno = self.rowAt(pos.y())
+        colno = self.columnAt(pos.x())
+        rowno = self.rowAt(pos.y())
+        if rowno == self.delegate.rowno and colno == self.delegate.colno:
+            return False
+        self.delegate.rowno = rowno
+        self.delegate.colno = colno
+        #NOTE: The model should be assigned from the controller
+        self.model.update()
         return True
     
     def fill_cell(self,cell,code):
