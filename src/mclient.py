@@ -54,20 +54,43 @@ class Table:
         self.rowno = rowno
         self.colno = colno
     
+    def debug_cells(self):
+        f = '[MClientQt] mclient.Table.debug_cells'
+        codes = []
+        rownos = []
+        colnos = []
+        for cell in self.cells:
+            codes.append(cell.code)
+            rownos.append(cell.rowno)
+            colnos.append(cell.colno)
+        headers = (_('ROW #'),_('COLUMN #'),_('CODE'))
+        mes = sh.FastTable (headers = headers
+                           ,iterable = [rownos,colnos,codes]
+                           ,maxrow = 70
+                           ).run()
+        #TODO: implement 'run_fast_debug'
+    
     def get_matrix(self):
+        ''' Empty cells must be recreated since QTableView throws an error
+            otherwise.
+        '''
         f = '[MClientQt] mclient.Table.get_matrix'
         old_rowno = 1
         matrix = []
         row = []
-        for cell in self.cells:
-            if old_rowno != cell.rowno:
+        for i in range(len(self.cells)):
+            if old_rowno != self.cells[i].rowno:
                 if row:
+                    if i > 0:
+                        delta = self.colnum - self.cells[i-1].colno - 1
+                        for no in range(delta):
+                            row.append('')
                     matrix.append(row)
                     row = []
-                for j in range(cell.colno):
+                for j in range(self.cells[i].colno):
                     row.append('')
-                old_rowno = cell.rowno
-            row.append(cell.code)
+                old_rowno = self.cells[i].rowno
+            row.append(self.cells[i].code)
         if row:
             matrix.append(row)
         return matrix
