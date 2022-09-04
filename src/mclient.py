@@ -106,15 +106,6 @@ class Table:
         #self.go_start()
         self.set_row_height(40)
         self.show_borders(False)
-        '''
-        import PyQt5
-        color = PyQt5.QtGui.QColor(PyQt5.QtCore.Qt.red)
-        self.model.setData(self.model.index(5,5),color,PyQt5.QtCore.Qt.BackgroundRole)
-        
-        import PyQt5
-        item_model = PyQt5.QtGui.QStandardItemModel()
-        self.gui.setSelectionMode(PyQt5.QtWidgets.QAbstractItemView.SingleSelection)
-        '''
         #self.set_max_col_width()
         #self.select_cell()
     

@@ -69,13 +69,11 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
     
         painter.save()
         
-        if option.state and PyQt5.QtWidgets.QStyle.State_MouseOver:
-            if index.row() == self.rowno and index.column() == self.colno:
-                mes = 'Hovering on ({},{})!'.format(self.rowno,self.colno)
-                print(mes)
-                option.backgroundBrush = PyQt5.QtGui.QBrush(PyQt5.QtGui.QColor('cyan'))
-                painter.setBrush(option.backgroundBrush)
-                painter.drawRect(option.rect)
+        if index.row() == self.rowno and index.column() == self.colno:
+            color = PyQt5.QtGui.QColor('red')
+            pen = PyQt5.QtGui.QPen(color,2)
+            painter.setPen(pen)
+            painter.drawRect(option.rect)
     
         painter.translate(textRect.topLeft())
         painter.setClipRect(textRect.translated(-textRect.topLeft()))
