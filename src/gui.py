@@ -24,7 +24,12 @@ class MyTableModel(PyQt5.QtCore.QAbstractTableModel):
         if not index.isValid():
             return PyQt5.QtCore.QVariant()
         if role == PyQt5.QtCore.Qt.DisplayRole:
-            return PyQt5.QtCore.QVariant(self.arraydata[index.row()][index.column()])
+            try:
+                return PyQt5.QtCore.QVariant(self.arraydata[index.row()][index.column()])
+            except Exception as e:
+                mes = 'List out of bounds at row #{}, col #{}'.format(index.row(),index.column())
+                print(mes)
+                return PyQt5.QtCore.QVariant()
         '''
         elif role == PyQt5.QtCore.Qt.BackgroundRole:
             print('BackgroundRole!!!')
@@ -68,7 +73,7 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
             if index.row() == self.rowno and index.column() == self.colno:
                 mes = 'Hovering on ({},{})!'.format(self.rowno,self.colno)
                 print(mes)
-                option.backgroundBrush = PyQt5.QtGui.QBrush(PyQt5.QtGui.QColor('red'))
+                option.backgroundBrush = PyQt5.QtGui.QBrush(PyQt5.QtGui.QColor('cyan'))
                 painter.setBrush(option.backgroundBrush)
                 painter.drawRect(option.rect)
     
