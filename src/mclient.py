@@ -121,11 +121,10 @@ class Table:
     
     def fill(self):
         f = '[MClientQt] mclient.Table.fill'
-        self.model = gi.MyTableModel(self.get_matrix())
-        self.gui.model = self.model
+        gi.model = gi.MyTableModel(self.get_matrix())
         timer = sh.Timer(f)
         timer.start()
-        self.gui.setModel(self.model)
+        self.gui.setModel(gi.model)
         timer.end()
     
     def set_max_row_height(self,height=150):

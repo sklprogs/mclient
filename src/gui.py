@@ -116,8 +116,8 @@ class Table(PyQt5.QtWidgets.QTableView):
             return False
         self.delegate.rowno = rowno
         self.delegate.colno = colno
-        #NOTE: The model should be assigned from the controller
-        self.model.update()
+        # Global variable
+        model.update()
         return True
     
     def fill_cell(self,cell,code):
@@ -628,7 +628,8 @@ if __name__ == '__main__':
            ,['tree','as;f,d','sdafsdfasdfasdfsdfsdfsd']
            ]
     
-    tablemodel = MyTableModel(data)
-    app.table.setModel(tablemodel)
+    global model
+    model = MyTableModel(data)
+    app.table.setModel(model)
     app.show()
     sys.exit(exe.exec_())
