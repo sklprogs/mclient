@@ -75,7 +75,6 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
     
         painter.translate(textRect.topLeft())
         painter.setClipRect(textRect.translated(-textRect.topLeft()))
-        painter.translate(0,0.5*(options.rect.height() - doc.size().height()))
         doc.documentLayout().draw(painter,ctx)
     
         painter.restore()
