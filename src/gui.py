@@ -37,13 +37,12 @@ class MyTableModel(PyQt5.QtCore.QAbstractTableModel):
 
 
 class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
-    
+    # akej74, https://stackoverflow.com/questions/35397943/how-to-make-a-fast-qtableview-with-html-formatted-and-clickable-cells
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.rowno = 0
         self.colno = 0
     
-    # akej74, https://stackoverflow.com/questions/35397943/how-to-make-a-fast-qtableview-with-html-formatted-and-clickable-cells
     def paint(self,painter,option,index):
         options = PyQt5.QtWidgets.QStyleOptionViewItem(option)
         self.initStyleOption(options,index)
@@ -74,21 +73,23 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         painter.save()
     
         painter.translate(textRect.topLeft())
-        # Hide text that is too long; do not allow cells to overlap
+        # Hide too long text; do not allow cells to overlap
         painter.setClipRect(textRect.translated(-textRect.topLeft()))
         doc.documentLayout().draw(painter,ctx)
     
         painter.restore()
     
+    '''
     def sizeHint(self,option,index):
         options = PyQt5.QtWidgets.QStyleOptionViewItem(option)
-        self.initStyleOption(options, index)
+        self.initStyleOption(options,index)
         
         doc = PyQt5.QtGui.QTextDocument()
         doc.setHtml(options.text)
         doc.setTextWidth(options.rect.width())
     
         return PyQt5.QtCore.QSize(doc.idealWidth(),doc.size().height())
+    '''
 
 
 
