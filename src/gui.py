@@ -74,6 +74,7 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         painter.save()
     
         painter.translate(textRect.topLeft())
+        # Hide text that is too long; do not allow cells to overlap
         painter.setClipRect(textRect.translated(-textRect.topLeft()))
         doc.documentLayout().draw(painter,ctx)
     
