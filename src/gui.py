@@ -108,6 +108,10 @@ class Table(PyQt5.QtWidgets.QTableView):
     def get_row_num(self):
         return self.rowCount()
     
+    def _add_poses(self,poses):
+        if not poses in self.poses:
+            self.poses.append(poses)
+    
     def eventFilter(self,widget,event):
         # Qt accepts boolean at output, but not NoneType
         if event.type() != PyQt5.QtCore.QEvent.MouseMove:
@@ -120,10 +124,11 @@ class Table(PyQt5.QtWidgets.QTableView):
         ''' If we update the view for only two cells - the previous and last
             ones - we will have artifacts where these cells coincide, so we
             need to update at least 3 latest cells. The more cells we have to
-            update, the slower this will be, so we just keep 3 latest cells.
+            update, the slower this will be, so we truncate the list.
         '''
-        self.poses.append((rowno,colno))
-        self.poses = self.poses[-3:]
+        self._add_poses((self.delegate.rowno,self.delegate.colno))
+        self._add_poses((rowno,colno))
+        self.poses = self.poses[-4:]
         # Global variable
         model.update(self.poses)
         self.delegate.rowno = rowno
