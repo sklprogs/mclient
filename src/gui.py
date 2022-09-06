@@ -31,10 +31,9 @@ class MyTableModel(PyQt5.QtCore.QAbstractTableModel):
                 print(mes)
                 return PyQt5.QtCore.QVariant()
     
-    def update(self,cells):
-        for cell in cells:
-            index_ = self.index(cell[0],cell[1])
-            self.dataChanged.emit(index_,index_)
+    def update(self,rowno,colno):
+        index_ = self.index(rowno,colno)
+        self.dataChanged.emit(index_,index_)
 
 
 
@@ -70,6 +69,13 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
             color = PyQt5.QtGui.QColor('red')
             pen = PyQt5.QtGui.QPen(color,2)
             painter.setPen(pen)
+            # Avoid intersecting cell borders and artifacts as the result
+            x1, y1, x2, y2 = option.rect.getCoords()
+            x1 += 1
+            y1 += 1
+            x2 -= 1
+            y2 -= 1
+            option.rect.setCoords(x1,y1,x2,y2)
             painter.drawRect(option.rect)
         
         painter.save()
@@ -108,10 +114,6 @@ class Table(PyQt5.QtWidgets.QTableView):
     def get_row_num(self):
         return self.rowCount()
     
-    def _add_poses(self,poses):
-        if not poses in self.poses:
-            self.poses.append(poses)
-    
     def eventFilter(self,widget,event):
         # Qt accepts boolean at output, but not NoneType
         if event.type() != PyQt5.QtCore.QEvent.MouseMove:
@@ -121,16 +123,9 @@ class Table(PyQt5.QtWidgets.QTableView):
         rowno = self.rowAt(pos.y())
         if rowno == self.delegate.rowno and colno == self.delegate.colno:
             return False
-        ''' If we update the view for only two cells - the previous and last
-            ones - we will have artifacts where these cells coincide, so we
-            need to update at least 3 latest cells. The more cells we have to
-            update, the slower this will be, so we truncate the list.
-        '''
-        self._add_poses((self.delegate.rowno,self.delegate.colno))
-        self._add_poses((rowno,colno))
-        self.poses = self.poses[-4:]
         # Global variable
-        model.update(self.poses)
+        model.update(self.delegate.rowno,self.delegate.colno)
+        model.update(rowno,colno)
         self.delegate.rowno = rowno
         self.delegate.colno = colno
         return True
