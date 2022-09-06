@@ -31,9 +31,10 @@ class MyTableModel(PyQt5.QtCore.QAbstractTableModel):
                 print(mes)
                 return PyQt5.QtCore.QVariant()
     
-    def update(self,rowno,colno):
-        index_ = self.index(rowno,colno)
-        self.dataChanged.emit(index_,index_)
+    def update(self,cells):
+        for cell in cells:
+            index_ = self.index(cell[0],cell[1])
+            self.dataChanged.emit(index_,index_)
 
 
 
@@ -98,6 +99,7 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+        self.poses = []
         self.set_gui()
     
     def get_col_num(self):
@@ -115,10 +117,17 @@ class Table(PyQt5.QtWidgets.QTableView):
         rowno = self.rowAt(pos.y())
         if rowno == self.delegate.rowno and colno == self.delegate.colno:
             return False
+        ''' If we update the view for only two cells - the previous and last
+            ones - we will have artifacts where these cells coincide, so we
+            need to update at least 3 latest cells. The more cells we have to
+            update, the slower this will be, so we just keep 3 latest cells.
+        '''
+        self.poses.append((rowno,colno))
+        self.poses = self.poses[-3:]
+        # Global variable
+        model.update(self.poses)
         self.delegate.rowno = rowno
         self.delegate.colno = colno
-        # Global variable
-        model.update(rowno,colno)
         return True
     
     def fill_cell(self,cell,code):
