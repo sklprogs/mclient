@@ -31,8 +31,9 @@ class MyTableModel(PyQt5.QtCore.QAbstractTableModel):
                 print(mes)
                 return PyQt5.QtCore.QVariant()
     
-    def update(self):
-        self.layoutChanged.emit()
+    def update(self,rowno,colno):
+        index_ = self.index(rowno,colno)
+        self.dataChanged.emit(index_,index_)
 
 
 
@@ -117,7 +118,7 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.delegate.rowno = rowno
         self.delegate.colno = colno
         # Global variable
-        model.update()
+        model.update(rowno,colno)
         return True
     
     def fill_cell(self,cell,code):
@@ -174,8 +175,6 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.vheader = self.verticalHeader()
         self.hheader.setVisible(False)
         self.vheader.setVisible(False)
-        # This is required to activate mouse hovering
-        self.setMouseTracking(True)
         #self.xscroll = PyQt5.QtWidgets.QScrollBar(self)
         #self.setHorizontalScrollBar(self.xscroll)
     
