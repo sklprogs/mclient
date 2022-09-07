@@ -32,6 +32,14 @@ class FontsDB:
         self.dbc = self.db.cursor()
         self.create_fonts()
     
+    def substitute_term_font(self):
+        query = 'select FAMILY,SIZE from FONTS' #where COLNO > 3
+        # DejaVu Sans 12, FreeSans 13
+        #self.dbc.execute(query,)
+        #query = 'update FONTS set FAMILY = "Noto Sans Mono" where FAMILY = "Latin Modern Mono" and COLNO > 3'
+        self.dbc.execute(query,)
+        print(self.dbc.fetchall())
+    
     def create_fonts(self):
         # 9 columns for now
         query = 'create table if not exists FONTS (       \
@@ -126,6 +134,11 @@ class Commands:
         lg.com.save_config()
         mes = _('Goodbye!')
         sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def substitute_term_font(self):
+        objs.get_db().substitute_term_font()
+        objs.db.save()
+        objs.db.close()
         
 
 
@@ -136,6 +149,7 @@ objs = Objects()
 if __name__ == '__main__':
     f = '[MClient] utils.__main__'
     sh.com.start()
-    com.export_fonts()
+    #com.export_fonts()
+    com.substitute_term_font()
     sh.com.end()
                 

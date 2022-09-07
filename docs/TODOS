@@ -2,7 +2,7 @@
 
 mclient:
 - Control row width, good example: MT, EN-RU, environmentalism, inner city,
-  fairness doctrine
+  fairness doctrine, record, constituency
 - Improve main icon quality
 - Fix colorizing
 - Make a cell fully visible when mousing over it
