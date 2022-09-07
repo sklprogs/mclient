@@ -44,7 +44,22 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         self.rowno = 0
         self.colno = 0
     
+    def set_line_spacing(self,doc):
+        f = '[MClient] gui.CustomDelegate.set_line_spacing'
+        cursor = PyQt5.QtGui.QTextCursor(doc)
+        block = doc.firstBlock()
+        if not block.isValid():
+            mes = _('An invalid block!')
+            sh.objs.get_mes(f,mes,True).show_debug()
+            return
+        format_ = block.blockFormat()
+        format_.setLineHeight(19,2)
+        cursor.setBlockFormat(format_)
+    
     def paint(self,painter,option,index):
+        # index:   PyQt5.QtCore.QModelIndex
+        # painter: PyQt5.QtGui.QPainter
+        # option:  PyQt5.QtWidgets.QStyleOptionViewItem
         options = PyQt5.QtWidgets.QStyleOptionViewItem(option)
         self.initStyleOption(options,index)
     
@@ -56,6 +71,8 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         doc = PyQt5.QtGui.QTextDocument()
         doc.setHtml(options.text)
         options.text = ''
+        
+        self.set_line_spacing(doc)
         
         # This enables text wrapping in the delegate
         doc.setTextWidth(options.rect.width())

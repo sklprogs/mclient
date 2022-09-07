@@ -104,7 +104,7 @@ class Table:
         self.set_col_width()
         #self.gui.resizeRowsToContents()
         #self.go_start()
-        self.set_row_height(40)
+        self.set_row_height(42)
         self.show_borders(False)
         #self.set_max_col_width()
         #self.select_cell()
