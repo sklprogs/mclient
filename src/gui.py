@@ -49,7 +49,7 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         cursor = PyQt5.QtGui.QTextCursor(doc)
         block = doc.firstBlock()
         if not block.isValid():
-            mes = _('An invalid block!')
+            mes = _('Wrong input data!')
             sh.objs.get_mes(f,mes,True).show_debug()
             return
         format_ = block.blockFormat()
