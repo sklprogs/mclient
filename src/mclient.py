@@ -20,10 +20,6 @@ class Table:
         self.set_gui()
     
     def select(self,rowno,colno):
-        f = '[MClientQt] mclient.Table.select'
-        if not rowno or not colno:
-            sh.com.rep_empty(f)
-            return
         if rowno == self.gui.delegate.rowno and colno == self.gui.delegate.colno:
             return
         gi.model.update(self.gui.delegate.rowno,self.gui.delegate.colno)
