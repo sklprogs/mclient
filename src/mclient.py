@@ -19,6 +19,18 @@ class Table:
         self.gui = gi.Table()
         self.set_gui()
     
+    def select(self,rowno,colno):
+        f = '[MClientQt] mclient.Table.select'
+        if not rowno or not colno:
+            sh.com.rep_empty(f)
+            return
+        if rowno == self.gui.delegate.rowno and colno == self.gui.delegate.colno:
+            return
+        gi.model.update(self.gui.delegate.rowno,self.gui.delegate.colno)
+        gi.model.update(rowno,colno)
+        self.gui.delegate.rowno = rowno
+        self.gui.delegate.colno = colno
+    
     def clear(self):
         self.gui.clear()
     
@@ -94,6 +106,7 @@ class Table:
         self.rownum = rownum
         self.colnum = colnum
         self.clear()
+        gi.model = gi.TableModel(self.get_matrix())
         self.fill()
         self.set_col_width()
         self.set_row_height(42)
@@ -104,7 +117,6 @@ class Table:
     
     def fill(self):
         f = '[MClientQt] mclient.Table.fill'
-        gi.model = gi.TableModel(self.get_matrix())
         timer = sh.Timer(f)
         timer.start()
         self.gui.set_model(gi.model)
@@ -128,7 +140,7 @@ class Table:
         self.gui.show_borders(Show)
     
     def set_gui(self):
-        pass
+        self.gui.select = self.select
         #self.set_max_row_height()
 
 

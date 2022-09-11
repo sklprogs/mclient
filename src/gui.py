@@ -110,6 +110,7 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+        self.select = None
         self.set_gui()
     
     def go_start(self):
@@ -120,19 +121,18 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.setModel(model)
     
     def eventFilter(self,widget,event):
+        f = '[MClientQt] gui.Table.eventFilter'
+        if self.select is None:
+            mes = _('This function must be set externally!')
+            sh.objs.get_mes(f,mes,True).show_error()
+            return False
         # Qt accepts boolean at output, but not NoneType
         if event.type() != PyQt5.QtCore.QEvent.MouseMove:
             return False
         pos = event.pos()
-        colno = self.columnAt(pos.x())
         rowno = self.rowAt(pos.y())
-        if rowno == self.delegate.rowno and colno == self.delegate.colno:
-            return False
-        # Global variable
-        model.update(self.delegate.rowno,self.delegate.colno)
-        model.update(rowno,colno)
-        self.delegate.rowno = rowno
-        self.delegate.colno = colno
+        colno = self.columnAt(pos.x())
+        self.select(rowno,colno)
         return True
     
     def set_col_width(self,no,width):
