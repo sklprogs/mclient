@@ -62,12 +62,12 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         # option:  PyQt5.QtWidgets.QStyleOptionViewItem
         options = PyQt5.QtWidgets.QStyleOptionViewItem(option)
         self.initStyleOption(options,index)
-    
+        
         if options.widget:
             style = options.widget.style()
         else:
             style = PyQt5.QtWidgets.QApplication.style()
-    
+        
         doc = PyQt5.QtGui.QTextDocument()
         doc.setHtml(options.text)
         options.text = ''
@@ -76,12 +76,12 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         
         # This enables text wrapping in the delegate
         doc.setTextWidth(options.rect.width())
-    
+        
         style.drawControl(PyQt5.QtWidgets.QStyle.CE_ItemViewItem,options,painter)
         ctx = PyQt5.QtGui.QAbstractTextDocumentLayout.PaintContext()
-    
+        
         textRect = style.subElementRect(PyQt5.QtWidgets.QStyle.SE_ItemViewItemText,options)
-    
+        
         if index.row() == self.rowno and index.column() == self.colno:
             color = PyQt5.QtGui.QColor('red')
             pen = PyQt5.QtGui.QPen(color,2)
@@ -107,6 +107,9 @@ class Table(PyQt5.QtWidgets.QTableView):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.select = None
+        self.click_left = None
+        self.click_right = None
+        self.click_middle = None
         self.set_gui()
     
     def go_start(self):
@@ -116,20 +119,51 @@ class Table(PyQt5.QtWidgets.QTableView):
     def set_model(self,model):
         self.setModel(model)
     
-    def eventFilter(self,widget,event):
-        f = '[MClientQt] gui.Table.eventFilter'
-        if self.select is None:
-            mes = _('This function must be set externally!')
-            sh.objs.get_mes(f,mes,True).show_error()
-            return False
-        # Qt accepts boolean at output, but not NoneType
-        if event.type() != PyQt5.QtCore.QEvent.MouseMove:
-            return False
+    def _use_mouse(self,event):
         pos = event.pos()
         rowno = self.rowAt(pos.y())
         colno = self.columnAt(pos.x())
         self.select(rowno,colno)
-        return True
+    
+    def _report_external(self):
+        f = '[MClientQt] gui.Table._report_external'
+        mes = _('An external function is required!')
+        sh.objs.get_mes(f,mes,True).show_error()
+    
+    def eventFilter(self,widget,event):
+        # Qt accepts boolean at output, but not NoneType
+        # NOTE: Return True for matches only, otherwise the app will freeze!
+        type_ = event.type()
+        if type_ == PyQt5.QtCore.QEvent.MouseMove:
+            if not self.select:
+                self._report_external()
+                return False
+            self._use_mouse(event)
+            return True
+        elif type_ == PyQt5.QtCore.QEvent.MouseButtonPress:
+            button = event.button()
+            if button == PyQt5.QtCore.Qt.LeftButton:
+                if self.click_left:
+                    self._use_mouse(event)
+                    self.click_left()
+                else:
+                    self._report_external()
+                return True
+            elif button == PyQt5.QtCore.Qt.RightButton:
+                if self.click_right:
+                    self._use_mouse(event)
+                    self.click_right()
+                else:
+                    self._report_external()
+                return True
+            elif button == PyQt5.QtCore.Qt.MiddleButton:
+                if self.click_middle:
+                    self._use_mouse(event)
+                    self.click_middle()
+                else:
+                    self._report_external()
+                return True
+        return False
     
     def set_col_width(self,no,width):
         self.setColumnWidth(no,width)

@@ -26,6 +26,14 @@ class Table:
         self.rownum = 1
         self.colnum = 1
     
+    def go_cell(self):
+        print('go_cell')
+    
+    def copy_cell(self):
+        mes = self.plain[self.gui.delegate.rowno][self.gui.delegate.colno]
+        mes = '"{}"'.format(mes)
+        print(mes)
+    
     def select(self,rowno,colno):
         if rowno == self.gui.delegate.rowno and colno == self.gui.delegate.colno:
             return
@@ -187,6 +195,8 @@ class Table:
     
     def set_gui(self):
         self.gui.select = self.select
+        self.gui.click_left = self.go_cell
+        self.gui.click_right = self.copy_cell
         #self.set_max_row_height()
 
 
@@ -274,12 +284,14 @@ class App:
         self.gui.close()
     
     def set_bindings(self):
+        # Mouse buttons cannot be bound
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.minimize)
         self.gui.bind('Down',self.table.go_down)
         self.gui.bind('Up',self.table.go_up)
         self.gui.bind('Left',self.table.go_left)
         self.gui.bind('Right',self.table.go_right)
+        self.table.gui.click_middle = self.minimize
     
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)
