@@ -88,11 +88,7 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
             painter.setPen(pen)
             # Avoid intersecting cell borders and artifacts as the result
             x1, y1, x2, y2 = option.rect.getCoords()
-            x1 += 1
-            y1 += 1
-            x2 -= 1
-            y2 -= 1
-            option.rect.setCoords(x1,y1,x2,y2)
+            option.rect.setCoords(x1+1,y1+1,x2-1,y2-1)
             painter.drawRect(option.rect)
         
         painter.save()
