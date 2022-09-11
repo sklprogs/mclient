@@ -22,6 +22,7 @@ class Table:
     
     def set_values(self):
         self.matrix = []
+        self.plain = []
         self.rownum = 1
         self.colnum = 1
     
@@ -36,11 +37,41 @@ class Table:
     def clear(self):
         self.gui.clear()
     
+    def _get_last_useful_row(self,rowno,colno):
+        last_rowno = self.rownum - 1
+        while last_rowno >= rowno:
+            if self.plain[last_rowno][colno]:
+                mes = '"{}"'.format(self.plain[last_rowno][colno])
+                print(mes)
+                print('last_rowno (fast):',last_rowno)
+                return last_rowno
+            last_rowno -= 1
+        print('last_rowno:',last_rowno)
+        return last_rowno
+    
+    def _get_next_useful_row(self,rowno,colno):
+        next_rowno = rowno
+        while next_rowno + 1 < self.rownum:
+            next_rowno += 1
+            if self.plain[next_rowno][colno]:
+                print('next_rowno:',next_rowno)
+                mes = '"{}"'.format(self.plain[next_rowno][colno])
+                print(mes)
+                return next_rowno
+        print('next_rowno:',rowno)
+        mes = '"{}"'.format(self.plain[next_rowno][colno])
+        print(mes)
+        return rowno
+    
     def go_down(self):
         rowno = self.gui.delegate.rowno
         colno = self.gui.delegate.colno
-        if rowno + 1 < self.rownum:
-            rowno += 1
+        next_rowno = self._get_next_useful_row(rowno,colno)
+        if rowno == next_rowno:
+            print('Need to start over!')
+            rowno = 0
+        else:
+            rowno = next_rowno
         self.select(rowno,colno)
     
     def go_up(self):
@@ -86,7 +117,9 @@ class Table:
         old_rowno = 1
         # Reset old articles
         self.matrix = []
+        self.plain = []
         row = []
+        plain_row = []
         for i in range(len(self.cells)):
             if old_rowno != self.cells[i].rowno:
                 if row:
@@ -94,14 +127,20 @@ class Table:
                         delta = self.colnum - self.cells[i-1].colno - 1
                         for no in range(delta):
                             row.append('')
+                            plain_row.append('')
                     self.matrix.append(row)
+                    self.plain.append(plain_row)
                     row = []
+                    plain_row = []
                 for j in range(self.cells[i].colno):
                     row.append('')
+                    plain_row.append('')
                 old_rowno = self.cells[i].rowno
             row.append(self.cells[i].code)
+            plain_row.append(self.cells[i].plain.strip())
         if row:
             self.matrix.append(row)
+            self.plain.append(plain_row)
     
     def reset(self,cells,rownum,colnum):
         f = '[MClientQt] mclient.Table.reset'
