@@ -19,6 +19,21 @@ class Table:
         self.gui = gi.Table()
         self.set_gui()
     
+    def clear(self):
+        self.gui.clear()
+    
+    def go_down(self):
+        pass
+    
+    def go_up(self):
+        pass
+    
+    def go_left(self):
+        pass
+    
+    def go_right(self):
+        pass
+    
     def set_row_height(self,height=45):
         for no in range(self.rownum):
             self.gui.set_row_height(no,height)
@@ -45,30 +60,9 @@ class Table:
     def set_selection(self,rowno,colno):
         if self.rowno == rowno and self.colno == colno:
             return
-        ''' We need to get and modify a cell instance as soon as possible since
-            it is deleted.
-        '''
-        self.set_cell_bg('white')
-        self.set_cell_by_index(rowno,colno)
-        self.set_cell_bg('cyan')
+        #TODO: implement
         self.rowno = rowno
         self.colno = colno
-    
-    def debug_cells(self):
-        f = '[MClientQt] mclient.Table.debug_cells'
-        codes = []
-        rownos = []
-        colnos = []
-        for cell in self.cells:
-            codes.append(cell.code)
-            rownos.append(cell.rowno)
-            colnos.append(cell.colno)
-        headers = (_('ROW #'),_('COLUMN #'),_('CODE'))
-        mes = sh.FastTable (headers = headers
-                           ,iterable = [rownos,colnos,codes]
-                           ,maxrow = 70
-                           ).run()
-        #TODO: implement 'run_fast_debug'
     
     def get_matrix(self):
         ''' Empty cells must be recreated since QTableView throws an error
@@ -102,29 +96,18 @@ class Table:
         self.clear()
         self.fill()
         self.set_col_width()
-        #self.gui.resizeRowsToContents()
-        #self.go_start()
         self.set_row_height(42)
         self.show_borders(False)
-        #self.set_max_col_width()
-        #self.select_cell()
-    
-    def set_cell_bg(self,color='cyan'):
-        self.gui.set_cell_bg(self.cell,color)
-    
-    def clear(self):
-        #self.gui.clear()
-        pass
     
     def go_start(self):
         self.gui.go_start()
     
     def fill(self):
         f = '[MClientQt] mclient.Table.fill'
-        gi.model = gi.MyTableModel(self.get_matrix())
+        gi.model = gi.TableModel(self.get_matrix())
         timer = sh.Timer(f)
         timer.start()
-        self.gui.setModel(gi.model)
+        self.gui.set_model(gi.model)
         timer.end()
     
     def set_max_row_height(self,height=150):
@@ -144,58 +127,9 @@ class Table:
     def show_borders(self,Show=False):
         self.gui.show_borders(Show)
     
-    def set_spacing(self,value=0):
-        self.gui.set_spacing(value)
-    
-    def set_border_color(self,color='darkgray'):
-        self.gui.set_border_color(color)
-    
-    def set_cell_by_no(self,no):
-        f = '[MClientQt] mclient.Table.set_cell_by_no'
-        ''' Go to a cell by its number starting from 1. If the cell number is
-            outside of table boundaries, only a warning is shown, but no
-            exception is thrown. -1 is automatically corrected to 1, positions
-            after the end - to the end.
-        '''
-        self.cell = self.gui.get_cell_by_no(no)
-        if not self.cell:
-            sh.com.rep_empty(f)
-    
-    def set_cell_by_index(self,rowno,colno):
-        ''' Return a cell by rowno, colno as PyQt5.QtGui.QTextTableCell. Unlike
-            'setPosition', numbers start from 0 when using 'cellAt'. If a cell
-            number is outside of table boundaries, a segmentation fault will be
-            thrown.
-        '''
-        cell = self.gui.get_cell_by_index(rowno,colno)
-        #cur
-        if cell:
-            self.cell = cell
-        else:
-            print('NONE!!!!!!')
-    
-    def set_cell_border_color(self,color='red'):
-        # Not working yet
-        self.gui.set_cell_border_color(self.cell,color)
-    
-    def disable_cursor(self):
-        self.gui.disable_cursor()
-    
-    def enable_cursor(self):
-        self.gui.enable_cursor()
-    
-    def select_cell(self,rowno=0,colno=0):
-        #TODO: elaborate
-        self.set_cell_by_index(rowno,colno)
-        self.set_cell_bg('cyan')
-        #self.set_cell_border_color('red')
-    
     def set_gui(self):
         pass
         #self.set_max_row_height()
-        #self.set_spacing(0)
-        #self.set_border_color()
-        #self.disable_cursor()
 
 
 
@@ -248,23 +182,18 @@ class DB:
 class App:
     
     def __init__(self):
-        self.set_values()
         self.gui = gi.App()
         self.set_gui()
         self.update_ui()
     
-    def set_values(self):
-        self.complex = 0
-        self.single = 0
+    def reset(self,cells,rownum,colnum):
+        f = '[MClientQt] mclient.App.reset'
+        mes = _('Table sizes: {}x{}').format(rownum,colnum)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        self.table.reset(cells,rownum,colnum)
     
     def minimize(self):
         self.gui.minimize()
-    
-    def reset(self,cells,rownum,colnum):
-        mes = _('Table sizes: {}x{}').format(rownum,colnum)
-        #sh.objs.get_mes(f,mes,True).show_debug()
-        print(mes)
-        self.table.reset(cells,rownum,colnum)
     
     def update_ui(self):
         self.gui.panel.ent_src.focus()
@@ -286,45 +215,13 @@ class App:
     def close(self,event=None):
         self.gui.close()
     
-    def move_down(self):
-        #TODO: use smarter logic instead of incrementing a row number
-        self.set_selection(self.rowno+1,self.colno)
-    
-    def move_up(self):
-        #TODO: use smarter logic instead of decrementing a row number
-        self.set_selection(self.rowno-1,self.colno)
-    
-    def move_left(self):
-        #TODO: use smarter logic instead of decrementing a column number
-        self.set_selection(self.rowno,self.colno-1)
-    
-    def move_right(self):
-        #TODO: use smarter logic instead of decrementing a column number
-        self.set_selection(self.rowno,self.colno+1)
-    
     def set_bindings(self):
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.minimize)
-        self.gui.bind('Down',self.move_down)
-        self.gui.bind('Up',self.move_up)
-        self.gui.bind('Left',self.move_left)
-        self.gui.bind('Right',self.move_right)
-    
-    def enable_grid(self):
-        #TODO
-        #self.table.show_grid(True)
-        pass
-    
-    def disable_grid(self):
-        #TODO
-        #self.table.show_grid(False)
-        pass
-    
-    def hide_headers(self):
-        #TODO
-        #self.table.hide_x_header()
-        #self.table.hide_y_header()
-        pass
+        self.gui.bind('Down',self.table.go_down)
+        self.gui.bind('Up',self.table.go_up)
+        self.gui.bind('Left',self.table.go_left)
+        self.gui.bind('Right',self.table.go_right)
     
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)
@@ -334,14 +231,7 @@ class App:
         self.panel = gi.Panel()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title()
-        self.hide_headers()
-        self.disable_grid()
         self.set_bindings()
-    
-    def fail(self,f,e):
-        mes = _('Third-party module has failed!\n\nDetails: {}')
-        mes = mes.format(e)
-        sh.objs.get_mes(f,mes).show_error()
 
 
 if __name__ == '__main__':

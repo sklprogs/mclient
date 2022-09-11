@@ -8,7 +8,7 @@ from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 
-class MyTableModel(PyQt5.QtCore.QAbstractTableModel):
+class TableModel(PyQt5.QtCore.QAbstractTableModel):
     
     def __init__(self,datain,parent=None,*args):
         PyQt5.QtCore.QAbstractTableModel.__init__(self,parent,*args)
@@ -37,7 +37,7 @@ class MyTableModel(PyQt5.QtCore.QAbstractTableModel):
 
 
 
-class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
+class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
     # akej74, https://stackoverflow.com/questions/35397943/how-to-make-a-fast-qtableview-with-html-formatted-and-clickable-cells
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -45,7 +45,7 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         self.colno = 0
     
     def set_line_spacing(self,doc):
-        f = '[MClient] gui.CustomDelegate.set_line_spacing'
+        f = '[MClient] gui.TableDelegate.set_line_spacing'
         cursor = PyQt5.QtGui.QTextCursor(doc)
         block = doc.firstBlock()
         if not block.isValid():
@@ -103,18 +103,6 @@ class CustomDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         doc.documentLayout().draw(painter,ctx)
     
         painter.restore()
-    
-    '''
-    def sizeHint(self,option,index):
-        options = PyQt5.QtWidgets.QStyleOptionViewItem(option)
-        self.initStyleOption(options,index)
-        
-        doc = PyQt5.QtGui.QTextDocument()
-        doc.setHtml(options.text)
-        doc.setTextWidth(options.rect.width())
-    
-        return PyQt5.QtCore.QSize(doc.idealWidth(),doc.size().height())
-    '''
 
 
 
@@ -122,14 +110,14 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.poses = []
         self.set_gui()
     
-    def get_col_num(self):
-        return self.columnCount()
+    def go_start(self):
+        #TODO: implement
+        pass
     
-    def get_row_num(self):
-        return self.rowCount()
+    def set_model(self,model):
+        self.setModel(model)
     
     def eventFilter(self,widget,event):
         # Qt accepts boolean at output, but not NoneType
@@ -147,89 +135,28 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.delegate.colno = colno
         return True
     
-    def fill_cell(self,cell,code):
-        cell.setText(code)
-    
-    def create_cell(self,text):
-        return PyQt5.QtWidgets.QTableWidgetItem(text)
-    
-    def set_cell_bg(self,cell,bg):
-        # 'cell' is QTableWidgetItem
-        cell.setBackground(PyQt5.QtGui.QBrush(PyQt5.QtGui.QColor(bg)))
-    
-    def get_cell_by_index(self,rowno,colno):
-        return self.item(rowno,colno)
-    
-    def get_cell_by_cursor(self,cursor):
-        return self.itemAt(cursor)
-    
-    def get_cursor(self,event):
-        return event.pos()
-    
     def set_col_width(self,no,width):
         self.setColumnWidth(no,width)
     
     def set_row_height(self,no,height):
         self.setRowHeight(no,height)
     
-    def set_row_num(self,num):
-        self.setRowCount(num)
-    
-    def set_col_num(self,num):
-        self.setColumnCount(num)
-    
-    def show_grid(self,Show=True):
-        self.setShowGrid(Show)
-    
     def set_max_row_height(self,height):
         self.vheader.setMaximumSectionSize(height)
     
-    def resize_fixed(self):
-        # A temporary solution
-        self.vheader.setSectionResizeMode(PyQt5.QtWidgets.QHeaderView.ResizeToContents)
-    
-    def hide_x_header(self):
-        self.hheader.hide()
-    
-    def hide_y_header(self):
-        self.vheader.hide()
-    
     def set_gui(self):
-        self.delegate = CustomDelegate()
+        self.delegate = TableDelegate()
         self.setItemDelegate(self.delegate)
         self.hheader = self.horizontalHeader()
         self.vheader = self.verticalHeader()
         self.hheader.setVisible(False)
         self.vheader.setVisible(False)
-        #self.xscroll = PyQt5.QtWidgets.QScrollBar(self)
-        #self.setHorizontalScrollBar(self.xscroll)
     
     def show_borders(self,Show=False):
         self.setShowGrid(Show)
     
-    def clear(self,event=None):
-        self.clear()
-    
-    def set_cell(self,cell,rowno,colno):
-        self.setItem(rowno,colno,cell)
-    
-    def add_layout(self):
-        self.layout.addWidget(self,0,0)
-        #self.layout.addWidget(self.xscroll)
-
-
-
-class Cell:
-    
-    def __init__(self):
-        self.widget = PyQt5.QtWidgets.QLabel()
-    
-    def set_text(self,text):
-        self.widget.setText(text)
-    
-    def align_top(self,icell):
-        #TODO: del
-        icell.setTextAlignment(PyQt5.QtCore.Qt.AlignTop)
+    def clear(self):
+        pass
 
 
 
@@ -247,18 +174,18 @@ class App(PyQt5.QtWidgets.QMainWindow):
     def set_title(self,title):
         self.setWindowTitle(title)
     
-    def create_layout(self):
+    def set_layout(self):
         self.parent = PyQt5.QtWidgets.QWidget()
         self.layout = PyQt5.QtWidgets.QVBoxLayout()
         self.layout.setContentsMargins(0,0,0,0)
     
-    def set_layout(self):
+    def add_widgets(self):
         self.layout.addWidget(self.table)
         self.layout.addWidget(self.panel,1)
         self.parent.setLayout(self.layout)
     
     def set_gui(self,table=None,panel=None):
-        self.create_layout()
+        self.set_layout()
         if table:
             self.table = table
         else:
@@ -267,7 +194,7 @@ class App(PyQt5.QtWidgets.QMainWindow):
             self.panel = panel
         else:
             self.panel = Panel()
-        self.set_layout()
+        self.add_widgets()
         self.setCentralWidget(self.parent)
     
     def bind(self,hotkey,action):
@@ -388,11 +315,11 @@ class Panel(PyQt5.QtWidgets.QWidget):
                                         )
     
     def set_delta(self):
-        ''' Set a delta value between a label size and a main widget
-            size. This should be called only after the widget is drawn,
-            otherwise, Qt will return bogus geometry of 640x480.
-            #TODO (?): do not update each time on hovering, update only
-            when the window size is changed.
+        ''' Set a delta value between a label size and a main widget size. This
+            should be called only after the widget is drawn, otherwise, Qt will
+            return bogus geometry of 640x480.
+            #TODO (?): do not update each time on hovering, update only when
+            the window size is changed.
         '''
         self.delta = self.width() - self.panel.width()
     
@@ -407,9 +334,9 @@ class Panel(PyQt5.QtWidgets.QWidget):
             self.panel.move(self.pos,0)
     
     def trigger_hover(self,event):
-        ''' We shouldn't use event.x since this returns x relative to
-            the widget that caused the event, and this is widget will be
-            any we have mouse over.
+        ''' We shouldn't use event.x since this returns x relative to the
+            widget that caused the event, and this widget will be any we have
+            mouse over.
         '''
         self.set_delta()
         geom = self.geometry()
@@ -602,46 +529,6 @@ class Panel(PyQt5.QtWidgets.QWidget):
         print('PyQt5 button click')
 
 
-
-class Commands:
-    
-    def debug_memory(self,data):
-        f = 'controller.Commands.debug_memory'
-        if not data:
-            sh.com.rep_empty(f)
-            return
-        #TYPE,TEXT,ROWNO,COLNO,CELLNO
-        headers = (_('TYPE'),_('TEXT'),_('ROW #'),_('COLUMN #')
-                  ,_('CELL #')
-                  )
-        mes = sh.FastTable (headers = headers
-                           ,iterable = data
-                           ,maxrows = 1000
-                           ,maxrow = 40
-                           ,Transpose = 1
-                           ).run()
-        sh.com.run_fast_debug(f,mes)
-
-
-
-class Objects:
-    
-    def __init__(self):
-        self.term_font = None
-    
-    def get_term_font(self):
-        f = 'get_term_font'
-        if self.term_font is None:
-            self.term_font = PyQt5.QtGui.QFont()
-            self.term_font.setFamily('Serif')
-            self.term_font.setPixelSize(16)
-        return self.term_font
-
-
-com = Commands()
-objs = Objects()
-
-
 if __name__ == '__main__':
     import sys
     exe = PyQt5.QtWidgets.QApplication(sys.argv)
@@ -654,7 +541,7 @@ if __name__ == '__main__':
            ]
     
     global model
-    model = MyTableModel(data)
+    model = TableModel(data)
     app.table.setModel(model)
     app.show()
     sys.exit(exe.exec_())
