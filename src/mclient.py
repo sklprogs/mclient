@@ -16,8 +16,14 @@ DEBUG = False
 class Table:
 
     def __init__(self):
+        self.set_values()
         self.gui = gi.Table()
         self.set_gui()
+    
+    def set_values(self):
+        self.matrix = []
+        self.rownum = 1
+        self.colnum = 1
     
     def select(self,rowno,colno):
         if rowno == self.gui.delegate.rowno and colno == self.gui.delegate.colno:
@@ -31,10 +37,18 @@ class Table:
         self.gui.clear()
     
     def go_down(self):
-        pass
+        rowno = self.gui.delegate.rowno
+        colno = self.gui.delegate.colno
+        if rowno + 1 < self.rownum:
+            rowno += 1
+        self.select(rowno,colno)
     
     def go_up(self):
-        pass
+        rowno = self.gui.delegate.rowno
+        colno = self.gui.delegate.colno
+        if rowno > 0:
+            rowno -= 1
+        self.select(rowno,colno)
     
     def go_left(self):
         pass
@@ -65,20 +79,13 @@ class Table:
             #print(mes)
             self.gui.set_col_width(no,width)
     
-    def set_selection(self,rowno,colno):
-        if self.rowno == rowno and self.colno == colno:
-            return
-        #TODO: implement
-        self.rowno = rowno
-        self.colno = colno
-    
-    def get_matrix(self):
+    def set_matrix(self):
         ''' Empty cells must be recreated since QTableView throws an error
             otherwise.
         '''
-        f = '[MClientQt] mclient.Table.get_matrix'
         old_rowno = 1
-        matrix = []
+        # Reset old articles
+        self.matrix = []
         row = []
         for i in range(len(self.cells)):
             if old_rowno != self.cells[i].rowno:
@@ -87,22 +94,26 @@ class Table:
                         delta = self.colnum - self.cells[i-1].colno - 1
                         for no in range(delta):
                             row.append('')
-                    matrix.append(row)
+                    self.matrix.append(row)
                     row = []
                 for j in range(self.cells[i].colno):
                     row.append('')
                 old_rowno = self.cells[i].rowno
             row.append(self.cells[i].code)
         if row:
-            matrix.append(row)
-        return matrix
+            self.matrix.append(row)
     
     def reset(self,cells,rownum,colnum):
+        f = '[MClientQt] mclient.Table.reset'
+        if not cells or not rownum or not colnum:
+            sh.com.rep_empty(f)
+            return
         self.cells = cells
         self.rownum = rownum
         self.colnum = colnum
         self.clear()
-        gi.model = gi.TableModel(self.get_matrix())
+        self.set_matrix()
+        gi.model = gi.TableModel(self.matrix)
         self.fill()
         self.set_col_width()
         self.set_row_height(42)
