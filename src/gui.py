@@ -112,6 +112,12 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.click_middle = None
         self.set_gui()
     
+    def show_cell(self,rowno,colno):
+        x = self.columnViewportPosition(colno)
+        y = self.rowViewportPosition(rowno)
+        mes = 'x: {}; y: {}'.format(x,y)
+        print(mes)
+    
     def go_start(self):
         #TODO: implement
         pass

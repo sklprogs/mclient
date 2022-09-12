@@ -30,6 +30,7 @@ class Table:
         print('go_cell')
     
     def copy_cell(self):
+        print('copy_cell')
         mes = self.plain[self.gui.delegate.rowno][self.gui.delegate.colno]
         mes = '"{}"'.format(mes)
         print(mes)
@@ -50,11 +51,11 @@ class Table:
         while last_rowno >= rowno:
             if self.plain[last_rowno][colno]:
                 mes = '"{}"'.format(self.plain[last_rowno][colno])
-                print(mes)
-                print('last_rowno (fast):',last_rowno)
+                #print(mes)
+                #print('last_rowno (fast):',last_rowno)
                 return last_rowno
             last_rowno -= 1
-        print('last_rowno:',last_rowno)
+        #print('last_rowno:',last_rowno)
         return last_rowno
     
     def _get_next_useful_row(self,rowno,colno):
@@ -62,12 +63,12 @@ class Table:
         while next_rowno + 1 < self.rownum:
             next_rowno += 1
             if self.plain[next_rowno][colno]:
-                print('next_rowno:',next_rowno)
-                mes = '"{}"'.format(self.plain[next_rowno][colno])
-                print(mes)
+                #print('next_rowno:',next_rowno)
+                #mes = '"{}"'.format(self.plain[next_rowno][colno])
+                #print(mes)
                 return next_rowno
-        print('next_rowno:',rowno)
-        mes = '"{}"'.format(self.plain[next_rowno][colno])
+        #print('next_rowno:',rowno)
+        #mes = '"{}"'.format(self.plain[next_rowno][colno])
         print(mes)
         return rowno
     
@@ -81,6 +82,7 @@ class Table:
         else:
             rowno = next_rowno
         self.select(rowno,colno)
+        self.gui.show_cell(rowno,colno)
     
     def go_up(self):
         rowno = self.gui.delegate.rowno
@@ -88,6 +90,7 @@ class Table:
         if rowno > 0:
             rowno -= 1
         self.select(rowno,colno)
+        self.gui.show_cell(rowno,colno)
     
     def go_left(self):
         pass
