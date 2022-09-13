@@ -201,6 +201,9 @@ class App(PyQt5.QtWidgets.QMainWindow):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
+    def resizeEvent(self,event):
+        print('Window has been resized')
+    
     def minimize(self):
         self.showMinimized()
     
