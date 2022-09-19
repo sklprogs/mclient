@@ -113,6 +113,13 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.vscroll_value = 0
         self.set_gui()
     
+    def get_cell_coords(self,rowno,colno):
+        x = self.columnViewportPosition(colno)
+        y = self.rowViewportPosition(rowno)
+        mes = 'x: {}; y: {}'.format(x,y)
+        print(mes)
+        return(x,y)
+    
     def show_cell(self,rowno,colno):
         x = self.columnViewportPosition(colno)
         y = self.rowViewportPosition(rowno)
@@ -205,6 +212,8 @@ class App(PyQt5.QtWidgets.QMainWindow):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+        self.height_ = 0
+        self.width_ = 0
     
     def resizeEvent(self,event):
         print('Window has been resized')

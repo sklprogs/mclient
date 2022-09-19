@@ -253,15 +253,34 @@ class DB:
 class App:
     
     def __init__(self):
+        self.last_rowno = 0
+        self.last_colno = 0
         self.gui = gi.App()
         self.set_gui()
         self.update_ui()
+    
+    def set_last_cell(self,rowno,colno):
+        self.last_rowno = rowno
+        self.last_colno = colno
+    
+    def get_page_num(self):
+        f = 'get_page_num'
+        lastx, lasty = self.table.gui.get_cell_coords(self.last_rowno,self.last_colno)
+        height = self.gui.height()
+        print('height:',height)
+        if not height:
+            sh.com.rep_empty(f)
+            return
+        page_num = int(lasty / height)
+        print('page_num:',page_num)
+        return page_num
     
     def reset(self,cells,rownum,colnum):
         f = '[MClientQt] mclient.App.reset'
         mes = _('Table sizes: {}x{}').format(rownum,colnum)
         sh.objs.get_mes(f,mes,True).show_debug()
         self.table.reset(cells,rownum,colnum)
+        self.set_last_cell(cells[-1].rowno,cells[-1].colno)
     
     def minimize(self):
         self.gui.minimize()
@@ -332,6 +351,7 @@ if __name__ == '__main__':
     sh.objs.get_root().installEventFilter(app.gui.table)
     #app.gui.table.enter_cell(app.table.set_mouse_over)
     timer.end()
+    app.get_page_num()
     app.show()
     db.close()
     sh.com.end()
