@@ -110,6 +110,7 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.click_left = None
         self.click_right = None
         self.click_middle = None
+        self.vscroll_value = 0
         self.set_gui()
     
     def show_cell(self,rowno,colno):
@@ -117,6 +118,8 @@ class Table(PyQt5.QtWidgets.QTableView):
         y = self.rowViewportPosition(rowno)
         mes = 'x: {}; y: {}'.format(x,y)
         print(mes)
+        #self.vscroll_value += 10
+        #self.vscroll.setValue(self.vscroll_value)
     
     def go_start(self):
         #TODO: implement
@@ -187,6 +190,8 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.vheader = self.verticalHeader()
         self.hheader.setVisible(False)
         self.vheader.setVisible(False)
+        self.hscroll = self.horizontalScrollBar()
+        self.vscroll = self.verticalScrollBar()
     
     def show_borders(self,Show=False):
         self.setShowGrid(Show)
@@ -203,6 +208,12 @@ class App(PyQt5.QtWidgets.QMainWindow):
     
     def resizeEvent(self,event):
         print('Window has been resized')
+        geometry = self.geometry()
+        print('Geometry:',geometry)
+        self.width_ = self.width()
+        self.height_ = self.height()
+        print('width:',self.width_)
+        print('height:',self.height_)
     
     def minimize(self):
         self.showMinimized()
