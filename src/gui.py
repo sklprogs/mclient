@@ -113,20 +113,11 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.vscroll_value = 0
         self.set_gui()
     
-    def get_cell_coords(self,rowno,colno):
-        x = self.columnViewportPosition(colno)
-        y = self.rowViewportPosition(rowno)
-        mes = 'x: {}; y: {}'.format(x,y)
-        print(mes)
-        return(x,y)
+    def get_cell_x(self,colno):
+        return self.columnViewportPosition(colno)
     
-    def show_cell(self,rowno,colno):
-        x = self.columnViewportPosition(colno)
-        y = self.rowViewportPosition(rowno)
-        mes = 'x: {}; y: {}'.format(x,y)
-        print(mes)
-        #self.vscroll_value += 10
-        #self.vscroll.setValue(self.vscroll_value)
+    def get_cell_y(self,rowno):
+        return self.rowViewportPosition(rowno)
     
     def go_start(self):
         #TODO: implement
@@ -212,17 +203,19 @@ class App(PyQt5.QtWidgets.QMainWindow):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.height_ = 0
-        self.width_ = 0
     
-    def resizeEvent(self,event):
-        print('Window has been resized')
-        geometry = self.geometry()
-        print('Geometry:',geometry)
-        self.width_ = self.width()
-        self.height_ = self.height()
-        print('width:',self.width_)
-        print('height:',self.height_)
+    def get_page_num(self):
+        f = '[MClient] gui.App.get_page_num'
+        lastx = self.table.get_cell_x(self.last_colno)
+        lasty = self.table.get_cell_y(self.last_rowno)
+        height_ = self.height()
+        print('height:',height_)
+        if not height_:
+            sh.com.rep_empty(f)
+            return
+        page_num = int(lasty / height_)
+        print('page_num:',page_num)
+        return page_num
     
     def minimize(self):
         self.showMinimized()

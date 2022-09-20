@@ -72,32 +72,6 @@ class Table:
         print(mes)
         return rowno
     
-    def go_down(self):
-        rowno = self.gui.delegate.rowno
-        colno = self.gui.delegate.colno
-        next_rowno = self._get_next_useful_row(rowno,colno)
-        if rowno == next_rowno:
-            print('Need to start over!')
-            rowno = 0
-        else:
-            rowno = next_rowno
-        self.select(rowno,colno)
-        self.gui.show_cell(rowno,colno)
-    
-    def go_up(self):
-        rowno = self.gui.delegate.rowno
-        colno = self.gui.delegate.colno
-        if rowno > 0:
-            rowno -= 1
-        self.select(rowno,colno)
-        self.gui.show_cell(rowno,colno)
-    
-    def go_left(self):
-        pass
-    
-    def go_right(self):
-        pass
-    
     def set_row_height(self,height=45):
         for no in range(self.rownum):
             self.gui.set_row_height(no,height)
@@ -259,21 +233,43 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def show_cell(self,rowno,colno):
+        mes = _('Row #{}. Column #{}').format(rowno,colno)
+        print(mes)
+        x = self.table.gui.get_cell_x(colno)
+        y = self.table.gui.get_cell_y(rowno)
+        mes = _('x: {}; y: {}').format(x,y)
+        print(mes)
+    
+    def go_down(self):
+        rowno = self.table.gui.delegate.rowno
+        colno = self.table.gui.delegate.colno
+        next_rowno = self.table._get_next_useful_row(rowno,colno)
+        if rowno == next_rowno:
+            print('Need to start over!')
+            rowno = 0
+        else:
+            rowno = next_rowno
+        self.table.select(rowno,colno)
+        self.show_cell(rowno,colno)
+    
+    def go_up(self):
+        rowno = self.gui.delegate.rowno
+        colno = self.gui.delegate.colno
+        if rowno > 0:
+            rowno -= 1
+        self.select(rowno,colno)
+        self.show_cell(rowno,colno)
+    
+    def go_left(self):
+        pass
+    
+    def go_right(self):
+        pass
+    
     def set_last_cell(self,rowno,colno):
         self.last_rowno = rowno
         self.last_colno = colno
-    
-    def get_page_num(self):
-        f = 'get_page_num'
-        lastx, lasty = self.table.gui.get_cell_coords(self.last_rowno,self.last_colno)
-        height = self.gui.height()
-        print('height:',height)
-        if not height:
-            sh.com.rep_empty(f)
-            return
-        page_num = int(lasty / height)
-        print('page_num:',page_num)
-        return page_num
     
     def reset(self,cells,rownum,colnum):
         f = '[MClientQt] mclient.App.reset'
@@ -309,10 +305,10 @@ class App:
         # Mouse buttons cannot be bound
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.minimize)
-        self.gui.bind('Down',self.table.go_down)
-        self.gui.bind('Up',self.table.go_up)
-        self.gui.bind('Left',self.table.go_left)
-        self.gui.bind('Right',self.table.go_right)
+        self.gui.bind('Down',self.go_down)
+        self.gui.bind('Up',self.go_up)
+        self.gui.bind('Left',self.go_left)
+        self.gui.bind('Right',self.go_right)
         self.table.gui.click_middle = self.minimize
     
     def set_title(self,title='MClientQt'):
@@ -349,9 +345,7 @@ if __name__ == '__main__':
     '''
     sh.objs.get_root().installEventFilter(app.gui.panel)
     sh.objs.get_root().installEventFilter(app.gui.table)
-    #app.gui.table.enter_cell(app.table.set_mouse_over)
     timer.end()
-    app.get_page_num()
     app.show()
     db.close()
     sh.com.end()
