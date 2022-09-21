@@ -233,6 +233,14 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def get_page_range(self):
+        page_num = self.gui.get_page_num(self.last_rowno,self.last_colno)
+        height = self.gui.get_height()
+        range_ = []
+        for i in range(page_num):
+            range_.append(height*i)
+        print('Range:',range_)
+    
     def show_cell(self,rowno,colno):
         mes = _('Row #{}. Column #{}').format(rowno,colno)
         print(mes)
@@ -240,6 +248,7 @@ class App:
         y = self.table.gui.get_cell_y(rowno)
         mes = _('x: {}; y: {}').format(x,y)
         print(mes)
+        self.get_page_range()
     
     def go_down(self):
         rowno = self.table.gui.delegate.rowno
