@@ -233,6 +233,26 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def get_scroll(self,y):
+        f = '[MClient] mclient.App.get_scroll'
+        range_ = self.get_page_range()
+        if not range_:
+            sh.com.rep_empty(f)
+            return 0
+        delta = [item - y for item in range_]
+        index_ = self._get_page_index(delta)
+        print('page index:',index_)
+        val = range_[index_]
+        print('val:',val)
+        print('max:',range_[-1])
+        scrolly = int((100*val)/range_[-1])
+        print('Final y:',scrolly)
+        return scrolly
+    
+    def set_scroll(self,y):
+        percent = self.get_scroll(y)
+        self.gui.table.vscroll.setValue(percent)
+    
     def _get_page_index(self,delta):
         f = '[MClient] mclient.App._get_page_index'
         delta = [item for item in delta if item <= 0]
@@ -247,6 +267,7 @@ class App:
         index_ = self._get_page_index(range_)
         mes = _('Page #{}').format(index_)
         print(mes)
+        return index_
     
     def get_page_range(self):
         page_num = self.gui.get_page_num(self.last_rowno,self.last_colno)
@@ -263,7 +284,7 @@ class App:
         y = self.table.gui.get_cell_y(rowno)
         mes = _('y: {}').format(y)
         print(mes)
-        self.get_cur_page(y)
+        self.set_scroll(y)
     
     def go_down(self):
         rowno = self.table.gui.delegate.rowno
