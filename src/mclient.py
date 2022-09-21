@@ -233,6 +233,21 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def _get_page_index(self,delta):
+        f = '[MClient] mclient.App._get_page_index'
+        delta = [item for item in delta if item <= 0]
+        if not delta:
+            sh.com.rep_empty(f)
+            return 0
+        return delta.index(delta[-1])
+    
+    def get_cur_page(self,y):
+        range_ = self.get_page_range()
+        range_ = [item - y for item in range_]
+        index_ = self._get_page_index(range_)
+        mes = _('Page #{}').format(index_)
+        print(mes)
+    
     def get_page_range(self):
         page_num = self.gui.get_page_num(self.last_rowno,self.last_colno)
         height = self.gui.get_height()
@@ -240,15 +255,15 @@ class App:
         for i in range(page_num):
             range_.append(height*i)
         print('Range:',range_)
+        return range_
     
-    def show_cell(self,rowno,colno):
-        mes = _('Row #{}. Column #{}').format(rowno,colno)
+    def show_row(self,rowno):
+        mes = _('Row #{}').format(rowno)
         print(mes)
-        x = self.table.gui.get_cell_x(colno)
         y = self.table.gui.get_cell_y(rowno)
-        mes = _('x: {}; y: {}').format(x,y)
+        mes = _('y: {}').format(y)
         print(mes)
-        self.get_page_range()
+        self.get_cur_page(y)
     
     def go_down(self):
         rowno = self.table.gui.delegate.rowno
@@ -260,15 +275,15 @@ class App:
         else:
             rowno = next_rowno
         self.table.select(rowno,colno)
-        self.show_cell(rowno,colno)
+        self.show_row(rowno)
     
     def go_up(self):
-        rowno = self.gui.delegate.rowno
-        colno = self.gui.delegate.colno
+        rowno = self.table.gui.delegate.rowno
+        colno = self.table.gui.delegate.colno
         if rowno > 0:
             rowno -= 1
-        self.select(rowno,colno)
-        self.show_cell(rowno,colno)
+        self.table.select(rowno,colno)
+        self.show_row(rowno)
     
     def go_left(self):
         pass
