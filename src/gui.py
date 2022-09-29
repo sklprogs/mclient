@@ -205,7 +205,8 @@ class App(PyQt5.QtWidgets.QMainWindow):
         super().__init__(*args,**kwargs)
     
     def get_height(self):
-        return self.height()
+        #return self.height()
+        return self.table.height()
     
     def get_width(self):
         return self.width()
@@ -214,7 +215,8 @@ class App(PyQt5.QtWidgets.QMainWindow):
         f = '[MClient] gui.App.get_page_num'
         lastx = self.table.get_cell_x(colno)
         lasty = self.table.get_cell_y(rowno)
-        height_ = self.height()
+        height_ = self.table.height()
+        #height_ = self.height()
         print('height:',height_)
         if not height_:
             sh.com.rep_empty(f)

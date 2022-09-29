@@ -26,6 +26,13 @@ class Table:
         self.rownum = 1
         self.colnum = 1
     
+    def set_all_y(self):
+        self.y = []
+        for rowno in range(self.rownum):
+            self.y.append(self.gui.get_cell_y(rowno))
+        #cur
+        print('self.y:',self.y)
+    
     def go_cell(self):
         print('go_cell')
     
@@ -142,6 +149,7 @@ class Table:
         self.set_col_width()
         self.set_row_height(42)
         self.show_borders(False)
+        self.set_all_y()
     
     def go_start(self):
         self.gui.go_start()
@@ -235,27 +243,37 @@ class App:
     
     def get_scroll(self,y):
         f = '[MClient] mclient.App.get_scroll'
+        '''
         range_ = self.get_page_range()
         if not range_:
             sh.com.rep_empty(f)
             return 0
+        mes = 'Y: {}'.format(y)
+        print(mes)
         delta = [item - y for item in range_]
-        index_ = self._get_page_index(delta)
-        print('page index:',index_)
+        print('Delta:',delta)
+        index_ = self._get_page_no(delta)
+        mes = _('Page #{}').format(index_)
+        print(mes)
         val = range_[index_]
         print('val:',val)
         print('max:',range_[-1])
         scrolly = int((100*val)/range_[-1])
-        print('Final y:',scrolly)
+        '''
+        scrolly = int((100*y)/self.table.y[-1])
+        print('Scrolling percent:',scrolly)
         return scrolly
     
     def set_scroll(self,y):
         percent = self.get_scroll(y)
         self.gui.table.vscroll.setValue(percent)
+        self.table.copy_cell()
     
-    def _get_page_index(self,delta):
-        f = '[MClient] mclient.App._get_page_index'
+    def _get_page_no(self,delta):
+        f = '[MClient] mclient.App._get_page_no'
         delta = [item for item in delta if item <= 0]
+        print('Delta 2:',delta)
+        print('Last item of delta:',delta[-1])
         if not delta:
             sh.com.rep_empty(f)
             return 0
@@ -271,7 +289,11 @@ class App:
     
     def get_page_range(self):
         page_num = self.gui.get_page_num(self.last_rowno,self.last_colno)
+        mes = _('Number of pages: {}').format(page_num)
+        print(mes)
         height = self.gui.get_height()
+        mes = _('Window height: {}').format(height)
+        print(mes)
         range_ = []
         for i in range(page_num):
             range_.append(height*i)
@@ -281,7 +303,8 @@ class App:
     def show_row(self,rowno):
         mes = _('Row #{}').format(rowno)
         print(mes)
-        y = self.table.gui.get_cell_y(rowno)
+        #y = self.table.gui.get_cell_y(rowno)
+        y = self.table.y[rowno]
         mes = _('y: {}').format(y)
         print(mes)
         self.set_scroll(y)
@@ -289,12 +312,19 @@ class App:
     def go_down(self):
         rowno = self.table.gui.delegate.rowno
         colno = self.table.gui.delegate.colno
+        print()
+        mes = _('Current row #: {}').format(rowno)
+        print(mes)
+        mes = _('Current col #: {}').format(colno)
+        print(mes)
         next_rowno = self.table._get_next_useful_row(rowno,colno)
         if rowno == next_rowno:
             print('Need to start over!')
             rowno = 0
         else:
             rowno = next_rowno
+        mes = _('Changed to row #: {}').format(rowno)
+        print(mes)
         self.table.select(rowno,colno)
         self.show_row(rowno)
     
