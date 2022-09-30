@@ -27,11 +27,12 @@ class Table:
         self.colnum = 1
     
     def set_all_y(self):
+        ''' For some reason, Y depends on a scrollbar position, so we need to
+            precalculate coordinates of all rows.
+        '''
         self.y = []
         for rowno in range(self.rownum):
             self.y.append(self.gui.get_cell_y(rowno))
-        #cur
-        print('self.y:',self.y)
     
     def go_cell(self):
         print('go_cell')
@@ -260,13 +261,17 @@ class App:
         print('max:',range_[-1])
         scrolly = int((100*val)/range_[-1])
         '''
-        scrolly = int((100*y)/self.table.y[-1])
-        print('Scrolling percent:',scrolly)
+        max_ = self.gui.table.get_max_scroll()
+        #TODO: do not hardcode row height
+        y += 42
+        scrolly = int((max_*y)/(self.table.y[-1]+42))
+        mes = _('Scrolling percentage: {}').format(scrolly)
+        sh.objs.get_mes(f,mes,True).show_debug()
         return scrolly
     
     def set_scroll(self,y):
         percent = self.get_scroll(y)
-        self.gui.table.vscroll.setValue(percent)
+        self.table.gui.set_scroll(percent)
         self.table.copy_cell()
     
     def _get_page_no(self,delta):

@@ -113,6 +113,12 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.vscroll_value = 0
         self.set_gui()
     
+    def get_max_scroll(self):
+        return self.vscroll.maximum()
+    
+    def set_scroll(self,percent):
+        self.vscroll.setValue(percent)
+    
     def get_cell_x(self,colno):
         return self.columnViewportPosition(colno)
     
