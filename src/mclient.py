@@ -71,13 +71,7 @@ class Table:
         while next_rowno + 1 < self.rownum:
             next_rowno += 1
             if self.plain[next_rowno][colno]:
-                #print('next_rowno:',next_rowno)
-                #mes = '"{}"'.format(self.plain[next_rowno][colno])
-                #print(mes)
                 return next_rowno
-        #print('next_rowno:',rowno)
-        #mes = '"{}"'.format(self.plain[next_rowno][colno])
-        print(mes)
         return rowno
     
     def set_row_height(self,height=45):
@@ -106,6 +100,7 @@ class Table:
     def set_matrix(self):
         ''' Empty cells must be recreated since QTableView throws an error
             otherwise.
+            #TODO: create empty cells with the 'cells' module
         '''
         old_rowno = 1
         # Reset old articles
@@ -132,6 +127,10 @@ class Table:
             row.append(self.cells[i].code)
             plain_row.append(self.cells[i].plain.strip())
         if row:
+            delta = self.colnum - len(row) - 1
+            for no in range(delta):
+                row.append('')
+                plain_row.append('')
             self.matrix.append(row)
             self.plain.append(plain_row)
     
