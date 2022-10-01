@@ -249,10 +249,12 @@ class App:
             sh.com.rep_empty(f)
             return 0
         print('Table height:',height)
+        y += 42
         page_no = int(y/height)
         mes = _('Page #{}').format(page_no)
         print(mes)
-        y = page_no * height
+        #y = page_no * height
+        y = page_no * height + (page_no + 1) * 42
         mes = _('Page Y: {}').format(y)
         print(mes)
         return y
@@ -278,18 +280,26 @@ class App:
         '''
         max_ = self.gui.table.get_max_scroll()
         #TODO: do not hardcode row height
-        y += 42
+        #y += 42
         y = self.get_page_y(y)
-        scrolly = int((max_*y)/(self.table.y[-1]+42))
+        scrolly = int((max_*y)/(self.table.y[-1]))
+        #scrolly = int((max_*y)/(self.table.y[-1]+42))
         #scrolly = int((max_*y)/(self.table.y[-1]))
         mes = _('Scrolling percentage: {}').format(scrolly)
         sh.objs.get_mes(f,mes,True).show_debug()
         return scrolly
     
     def set_scroll(self,y):
+        timer = sh.Timer('set_scroll')
+        timer.start()
+        self.table.gui.vscroll.setMinimum(0)
+        self.table.gui.vscroll.setMaximum(368)
+        self.table.gui.vscroll.setValue(0)
+        self.table.gui.vscroll.setPageStep(981)
         percent = self.get_scroll(y)
         self.table.gui.set_scroll(percent)
         self.table.copy_cell()
+        timer.end()
     
     def _get_page_no(self,delta):
         f = '[MClient] mclient.App._get_page_no'
