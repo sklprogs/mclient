@@ -33,6 +33,7 @@ class Table:
         self.y = []
         for rowno in range(self.rownum):
             self.y.append(self.gui.get_cell_y(rowno))
+        print(self.y)
     
     def go_cell(self):
         print('go_cell')
@@ -241,6 +242,21 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def get_page_y(self,y):
+        f = '[MClientQt] mclient.App.get_page_y'
+        height = self.table.gui.get_height()
+        if not height:
+            sh.com.rep_empty(f)
+            return 0
+        print('Table height:',height)
+        page_no = int(y/height)
+        mes = _('Page #{}').format(page_no)
+        print(mes)
+        y = page_no * height
+        mes = _('Page Y: {}').format(y)
+        print(mes)
+        return y
+    
     def get_scroll(self,y):
         f = '[MClient] mclient.App.get_scroll'
         '''
@@ -263,7 +279,9 @@ class App:
         max_ = self.gui.table.get_max_scroll()
         #TODO: do not hardcode row height
         y += 42
+        y = self.get_page_y(y)
         scrolly = int((max_*y)/(self.table.y[-1]+42))
+        #scrolly = int((max_*y)/(self.table.y[-1]))
         mes = _('Scrolling percentage: {}').format(scrolly)
         sh.objs.get_mes(f,mes,True).show_debug()
         return scrolly

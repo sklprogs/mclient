@@ -21,14 +21,16 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
         return len(self.arraydata[0])
 
     def data(self,index,role):
+        f = '[MClientQt] gui.TableModel.data'
         if not index.isValid():
             return PyQt5.QtCore.QVariant()
         if role == PyQt5.QtCore.Qt.DisplayRole:
             try:
                 return PyQt5.QtCore.QVariant(self.arraydata[index.row()][index.column()])
             except Exception as e:
-                mes = 'List out of bounds at row #{}, col #{}'.format(index.row(),index.column())
-                print(mes)
+                mes = _('List out of bounds at row #{}, column #{}!')
+                mes = mes.format(index.row(),index.column())
+                sh.objs.get_mes(f,mes,True).show_warning()
                 return PyQt5.QtCore.QVariant()
     
     def update(self,rowno,colno):
@@ -112,6 +114,9 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.click_middle = None
         self.vscroll_value = 0
         self.set_gui()
+    
+    def get_height(self):
+        return self.height()
     
     def get_max_scroll(self):
         return self.vscroll.maximum()
@@ -211,8 +216,7 @@ class App(PyQt5.QtWidgets.QMainWindow):
         super().__init__(*args,**kwargs)
     
     def get_height(self):
-        #return self.height()
-        return self.table.height()
+        return self.height()
     
     def get_width(self):
         return self.width()
