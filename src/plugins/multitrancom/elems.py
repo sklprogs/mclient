@@ -353,50 +353,46 @@ class Elems:
         # Takes ~0.0126s for 'set' (EN-RU) on AMD E-300
         f = '[MClient] plugins.multitrancom.elems.Elems.set_separate'
         head = self.get_separate_head()
-        if head:
-            tail = self.get_separate_tail()
-            if tail:
-                self.blocks = self.blocks[head[1]:tail+1]
-                self.blocks = [block for block in self.blocks \
-                               if not block.text in ('+','|')
-                              ]
-                for block in self.blocks:
-                    ''' Those words that were not found will not have
-                        a URL and should be kept as comments (as in
-                        a source). However, SAME should be 0 everywhere.
-                    '''
-                    if block.url:
-                        block.type_ = 'term'
-                    else:
-                        block.text = block.text.replace(' - найдены отдельные слова','')
-                        block.text = block.text.replace(' - only individual words found','')
-                    block.same = 0
-                block = Block()
-                block.type_ = 'dic'
-                block.text = block.dic = block.dicf = _('Separate words')
-                block.same = 0
-                if self.blocks:
-                    ''' This allows to avoid a bug when only separate
-                        words were found but the 1st word should remain
-                        a comment since it was not found (e.g., EN-RU,
-                        "Ouest Bureau").
-                    '''
-                    block.rowno = self.blocks[0].rowno
-                self.blocks.insert(0,block)
-                ''' The last matching block may be a comment with no
-                    text since we have deleted ' - найдены отдельные
-                    слова'. Zero-length blocks are not visible in
-                    a one-row table, so this may be needed just to
-                    output a correct number of matches.
-                '''
-                self.blocks = [block for block in self.blocks \
-                               if block.text
-                              ]
-                sh.com.rep_matches(f,len(self.blocks))
-            else:
-                sh.com.rep_lazy(f)
-        else:
+        if not head:
             sh.com.rep_lazy(f)
+            return
+        tail = self.get_separate_tail()
+        if not tail:
+            sh.com.rep_lazy(f)
+            return
+        self.blocks = self.blocks[head[1]:tail+1]
+        self.blocks = [block for block in self.blocks \
+                       if not block.text in ('+','|')
+                      ]
+        for block in self.blocks:
+            ''' Those words that were not found will not have a URL and should
+                be kept as comments (as in a source). However, SAME should be 0
+                everywhere.
+            '''
+            if block.url:
+                block.type_ = 'term'
+            else:
+                block.text = block.text.replace(' - найдены отдельные слова','')
+                block.text = block.text.replace(' - only individual words found','')
+            block.same = 0
+        block = Block()
+        block.type_ = 'dic'
+        block.text = block.dic = block.dicf = _('Separate words')
+        block.same = 0
+        if self.blocks:
+            ''' This allows to avoid a bug when only separate words were found
+                but the 1st word should remain a comment since it was not found
+                (e.g., EN-RU, "Ouest Bureau").
+            '''
+            block.rowno = self.blocks[0].rowno
+        self.blocks.insert(0,block)
+        ''' The last matching block may be a comment with no text since we have
+            deleted ' - найдены отдельные слова'. Zero-length blocks are not
+            visible in a one-row table, so this may be needed just to output a
+            correct number of matches.
+        '''
+        self.blocks = [block for block in self.blocks if block.text]
+        sh.com.rep_matches(f,len(self.blocks))
     
     def make_fixed(self):
         # Takes ~0.0065s for 'set' (EN-RU) on AMD E-300
