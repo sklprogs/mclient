@@ -23,12 +23,12 @@ class CleanUp:
     
     def fix_href(self):
         ''' Fix a malformed URL, e.g., 'href="/m.exe?a=110&l1=1&l2=2&s=process (<редк.>)&sc=671"'
-            multitran.com provides for URLs that are not entirely
-            correct: they still can contain spaces and unquoted symbols
-            (such as 'à' or 'ф'). Browsers deal with this correctly but
-            we must perform this additional step of quoting. Some
-            symbols like '=', however, should not be quoted.
-            Takes ~0.056s for 'set' (EN-RU) on AMD E-300
+            multitran.com provides for URLs that are not entirely correct: they
+            still can contain spaces and unquoted symbols (such as 'à' or 'ф').
+            Browsers deal with this correctly but we must perform this
+            additional step of quoting. Some symbols like '=', however, should
+            not be quoted.
+            Takes ~0.056s for 'set' (EN-RU) on AMD E-300.
         '''
         f = '[MClient] plugins.multitrancom.cleanup.CleanUp.fix_href'
         if self.text:
@@ -61,8 +61,8 @@ class CleanUp:
             sh.com.rep_empty(f)
     
     def fix_tags(self):
-        ''' - Multitran does not escape '<' and '>' in user
-              terms/comments properly. We try to fix this here.
+        ''' - Multitran does not escape '<' and '>' in user terms/comments
+              properly. We try to fix this here.
             - Takes ~0.0044s for 'set' (EN-RU) on AMD E-300.
         '''
         self.text = re.sub(' >+',r' &gt',self.text)
@@ -90,10 +90,9 @@ class CleanUp:
             self.fix_href()
             self.fix_tags()
             self.run_common()
-            ''' #TODO: do we really need this heaviest operation (takes
-                ~0.53s for 'set' (EN-RU) on AMD E-300, whereas the
-                entire module takes ~0.58s, since we have already
-                deleted unicode control codes?
+            ''' #TODO: do we really need this heaviest operation (takes ~0.53s
+                for 'set' (EN-RU) on AMD E-300, whereas the entire module takes
+                ~0.58s, since we have already deleted unicode control codes?
             '''
             # Delete a non-breaking space before a user name
             self.text = self.text.replace('&nbsp;',' ')

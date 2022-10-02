@@ -51,11 +51,11 @@ class UniteFixed:
                 return block.type_
     
     def run(self):
-        ''' - We should unite items in 'fixed+comment (SAME=1)'
-              structures directly since fixed columns having
-              supplementary SAME=1 blocks cannot be properly sorted.
-            - Running the entire class takes ~0.0131s for 'set' (EN-RU)
-              on AMD E-300
+        ''' - We should unite items in 'fixed+comment (SAME=1)' structures
+              directly since fixed columns having supplementary SAME=1 blocks
+              cannot be properly sorted.
+            - Running the entire class takes ~0.0131s for 'set' (EN-RU) on
+              AMD E-300.
         '''
         f = '[MClient] plugins.multitrancom.elems.UniteFixed.run'
         count = 0
@@ -118,26 +118,25 @@ class Block:
 class Elems:
     ''' Process blocks before dumping to DB.
         About filling 'term':
-        - We fill 'term' from the start in order to ensure the correct
-          'term' value for blocks having 'same == 1'
-        - We fill 'term' from the end in order to ensure that 'term'
-          of blocks of non-selectable types will have the value of
-          the 'term' AFTER those blocks
-        - We fill 'term' from the end in order to ensure that 'term'
-          is also filled for blocks having 'same == 0'
-        - When filling 'term' from the start to the end, in order
-          to set a default 'term' value, we also search for blocks of
-          the 'phrase' type (just to be safe in such cases when
-          'phrase' blocks anticipate 'term' blocks). However, we fill
-          'term' for 'phrase' blocks from the end to the start because
-          we want the 'phrase' subject to have the 'term' value of
-          the first 'phrase' block AFTER it
-        - Finally, we clear TERM values for fixed columns. Sqlite
-          sorts '' before a non-empty string, so we ensure thereby that
-          sorting by TERM will be correct. Otherwise, we would have to
-          correctly calculate TERM values for fixed columns that will
-          vary depending on the view. Incorrect sorting by TERM may
-          result in putting a 'term' item before fixed columns.
+        - We fill 'term' from the start in order to ensure the correct 'term'
+          value for blocks having 'same == 1'.
+        - We fill 'term' from the end in order to ensure that 'term' of blocks
+          of non-selectable types will have the value of the 'term' AFTER those
+          blocks.
+        - We fill 'term' from the end in order to ensure that 'term' is also
+          filled for blocks having 'same == 0'.
+        - When filling 'term' from the start to the end, in order to set a
+          default 'term' value, we also search for blocks of the 'phrase' type
+          (just to be safe in such cases when 'phrase' blocks anticipate 'term'
+          blocks). However, we fill 'term' for 'phrase' blocks from the end to
+          the start because we want the 'phrase' subject to have the 'term'
+          value of the first 'phrase' block AFTER it.
+        - Finally, we clear TERM values for fixed columns. Sqlite sorts ''
+          before a non-empty string, so we ensure thereby that sorting by TERM
+          will be correct. Otherwise, we would have to correctly calculate TERM
+          values for fixed columns that will vary depending on the view.
+          Incorrect sorting by TERM may result in putting a 'term' item before
+          fixed columns.
     '''
     def __init__(self,blocks,Debug=False,maxrows=1000):
         ''' 30 is the maximum to correctly show EN-RU, 'entity'
