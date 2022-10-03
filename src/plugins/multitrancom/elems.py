@@ -315,24 +315,8 @@ class Elems:
                 sh.objs.get_mes(f,mes,True).show_debug()
                 self.blocks = self.blocks[2:]
     
-    def set_not_found(self):
-        ''' - This is actually not needed since 'self.delete_head' will
-              remove the entire article if it consists of comments only.
-              We keep this code just to be on a safe side (e.g., in case
-              the author of MT adds non-comment blocks).
-            - Takes ~0.007s for 'set' (EN-RU) on AMD E-300
-        '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.set_not_found'
-        texts = [block.text for block in self.blocks]
-        ru = ('Forvo','|','+','\xa0Не найдено')
-        en = ('Forvo','|','+','\xa0Not found')
-        if sh.List(texts,ru).find() or sh.List(texts,en).find():
-            sh.com.rep_deleted(f,len(self.blocks))
-            self.blocks = []
-        else:
-            sh.com.rep_lazy(f)
-    
     def get_separate_head(self):
+        #blocks = ('G','o','o','g','l','e','|','Forvo','|','+')
         blocks = ('Forvo','|','+')
         texts = [block.text for block in self.blocks]
         return sh.List(texts,blocks).find()
@@ -349,32 +333,7 @@ class Elems:
                 return i
             i += 1
     
-    def set_separate(self):
-        # Takes ~0.0126s for 'set' (EN-RU) on AMD E-300
-        f = '[MClient] plugins.multitrancom.elems.Elems.set_separate'
-        head = self.get_separate_head()
-        if not head:
-            sh.com.rep_lazy(f)
-            return
-        tail = self.get_separate_tail()
-        if not tail:
-            sh.com.rep_lazy(f)
-            return
-        self.blocks = self.blocks[head[1]:tail+1]
-        self.blocks = [block for block in self.blocks \
-                       if not block.text in ('+','|')
-                      ]
-        for block in self.blocks:
-            ''' Those words that were not found will not have a URL and should
-                be kept as comments (as in a source). However, SAME should be 0
-                everywhere.
-            '''
-            if block.url:
-                block.type_ = 'term'
-            else:
-                block.text = block.text.replace(' - найдены отдельные слова','')
-                block.text = block.text.replace(' - only individual words found','')
-            block.same = 0
+    def _add_sep_subject(self):
         block = Block()
         block.type_ = 'dic'
         block.text = block.dic = block.dicf = _('Separate words')
@@ -386,13 +345,55 @@ class Elems:
             '''
             block.rowno = self.blocks[0].rowno
         self.blocks.insert(0,block)
-        ''' The last matching block may be a comment with no text since we have
-            deleted ' - найдены отдельные слова'. Zero-length blocks are not
-            visible in a one-row table, so this may be needed just to output a
-            correct number of matches.
-        '''
-        self.blocks = [block for block in self.blocks if block.text]
-        sh.com.rep_matches(f,len(self.blocks))
+    
+    def _set_separate(self):
+        blocks = []
+        for i in range(len(self.blocks)):
+            if self.blocks[i].url.startswith('l'):
+                blocks.append(self.blocks[i])
+            elif self.blocks[i].text == '|':
+                if not self.blocks[i-1].url:
+                    blocks.append(self.blocks[i-1])
+                if not self.blocks[i+1].url:
+                    blocks.append(self.blocks[i+1])
+        self.blocks = blocks
+
+    def _delete_separate(self):
+        for block in self.blocks:
+            ''' Those words that were not found will not have a URL and should
+                be kept as comments (as in a source). However, SAME should be 0
+                everywhere.
+            '''
+            if block.url:
+                block.type_ = 'term'
+            else:
+                block.text = block.text.replace(' - найдены отдельные слова','')
+                block.text = block.text.replace(' - only individual words found','')
+            block.same = 0
+        self.blocks = [block for block in self.blocks \
+                       if block.text and block.text != '|'
+                      ]
+    
+    def set_separate(self):
+        # Takes ~0.0126s for 'set' (EN-RU) on AMD E-300
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_separate'
+        old_len = len(self.blocks)
+        tail = self.get_separate_tail()
+        if not tail:
+            sh.com.rep_lazy(f)
+            return
+        head = self.get_separate_head()
+        if not head:
+            sh.com.rep_lazy(f)
+            return
+        self.blocks = self.blocks[head[1]:tail+1]
+        if len(self.blocks) < 3:
+            sh.com.rep_lazy(f)
+            return
+        self._set_separate()
+        self._delete_separate()
+        sh.com.rep_deleted(f,old_len-len(self.blocks))
+        self._add_sep_subject()
     
     def make_fixed(self):
         # Takes ~0.0065s for 'set' (EN-RU) on AMD E-300
@@ -585,9 +586,7 @@ class Elems:
         # I don't like '; ' in special pages, so I delete it everywhere
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_semi'
         len_ = len(self.blocks)
-        self.blocks = [block for block in self.blocks \
-                       if block.text != '; '
-                      ]
+        self.blocks = [block for block in self.blocks if block.text != '; ']
         sh.com.rep_deleted(f,len_-len(self.blocks))
     
     def set_semino(self):
@@ -719,7 +718,6 @@ class Elems:
         f = '[MClient] plugins.multitrancom.elems.Elems.run'
         if self.check():
             # Process special pages before deleting anything
-            self.set_not_found()
             self.set_suggested()
             self.set_separate()
             # Do this before deleting ';'
@@ -793,7 +791,7 @@ class Elems:
             # 23'' monitor: 20 symbols per a column
             mes = sh.FastTable (headers = headers
                                ,iterable = rows
-                               ,maxrow = 12
+                               ,maxrow = 23
                                ,maxrows = self.maxrows
                                ,Transpose = True
                                ).run()
