@@ -3,10 +3,9 @@
 
 ''' This module prepares blocks after extracting tags for permanently
     storing in DB.
-    Needs attributes in blocks: DIC,DICF,SAMECELL,SPEECH,TERM,TRANSC
-                               ,TYPE,WFORM
-    Modifies attributes: DIC,DICF,SAMECELL,SELECTABLE,SPEECH,TERM,TEXT
-                        ,TRANSC,TYPE,WFORM
+    Needs attributes in blocks: DIC,DICF,SAMECELL,SPEECH,TERM,TRANSC,TYPE,WFORM
+    Modifies attributes: DIC,DICF,SAMECELL,SELECTABLE,SPEECH,TERM,TEXT,TRANSC
+                        ,TYPE,WFORM
     Since TYPE is modified here, SAMECELL is filled here.
 '''
 
@@ -143,6 +142,9 @@ class Elems:
         '''
         self.max_word_len = 30
         self.fixed = ('dic','wform','transc','speech')
+        self.sep_words = (' - найдены отдельные слова'
+                         ,' - only individual words found'
+                         )
         self.dicurls = {}
         self.phdic = ''
         self.blocks = blocks
@@ -249,8 +251,8 @@ class Elems:
         sh.com.rep_deleted(f,len(geds))
     
     def delete_trash_com(self):
-        ''' Sometimes it's not enough to delete comment-only tail since
-            there might be no 'phdic' type which serves as an indicator.
+        ''' Sometimes it's not enough to delete comment-only tail since there
+            might be no 'phdic' type which serves as an indicator.
         '''
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_trash_com'
         len_ = len(self.blocks)
@@ -283,16 +285,15 @@ class Elems:
         sh.com.rep_matches(f,count)
     
     def delete_langs(self):
-        ''' - This procedure deletes blocks describing languages in
-              an original or localized form. After a comment-only head
-              was deleted, we will have either a 'dic' + 'term' + 'term'
-              or 'term' + 'term' structure, wherein 'dic' is "Subject
-              area", and terms have an empty URL. We should delete only
-              the first two term occurrences since there could be other
-              terms with an empty URL that should not be deleted, e.g.,
-              those related to "БЭС".
-            - Since we don't have to search for anything, and have
-              predermined indexes, this procedure is very fast.
+        ''' - This procedure deletes blocks describing languages in an original
+              or localized form. After a comment-only head was deleted, we will
+              have either a 'dic' + 'term' + 'term' or 'term' + 'term'
+              structure, wherein 'dic' is "Subject area", and terms have an
+              empty URL. We should delete only the first two term occurrences
+              since there could be other terms with an empty URL that should
+              not be deleted, e.g., those related to "БЭС".
+            - Since we don't have to search for anything, and have predermined
+              indexes, this procedure is very fast.
         '''
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_langs'
         if len(self.blocks) > 2:
@@ -367,8 +368,8 @@ class Elems:
             if block.url:
                 block.type_ = 'term'
             else:
-                block.text = block.text.replace(' - найдены отдельные слова','')
-                block.text = block.text.replace(' - only individual words found','')
+                for phrase in self.sep_words:
+                    block.text = block.text.replace(phrase,'')
             block.same = 0
         self.blocks = [block for block in self.blocks \
                        if block.text and block.text != '|'
@@ -404,13 +405,13 @@ class Elems:
             if self.blocks[i-1].rowno != self.blocks[i].rowno:
                 if self.blocks[i].type_ == 'user':
                     self.blocks[i].type_ = 'dic'
-                    ''' If DICF was not extracted for a user-type block
-                        which is actually a subject, we may set such
-                        field here, however, such entries as 'Gruzovik,
-                        inform.' will not be expanded (due to a bug at
-                        multitran.com, 'Informal' will be used). Thus,
-                        we correct such entries in SUBJECTS and just
-                        try in 'self.expand_dic_file' to expand them.
+                    ''' If DICF was not extracted for a user-type block which
+                        is actually a subject, we may set such field here,
+                        however, such entries as 'Gruzovik, inform.' will not
+                        be expanded (due to a bug at multitran.com, 'Informal'
+                        will be used). Thus, we correct such entries in
+                        SUBJECTS and just try in 'self.expand_dic_file' to
+                        expand them.
                     '''
                     self.blocks[i].dic = self.blocks[i].text
                     count += 1
@@ -472,10 +473,9 @@ class Elems:
             sh.com.rep_deleted(f,pos2-pos1)
     
     def delete_tail_links(self):
-        ''' - Sometimes it's not enough to delete comment-only tail
-              since there might be no 'phdic' type which serves as
-              an indicator.
-            - Takes ~0.02s for 'set' (EN-RU) on Intel Atom
+        ''' - Sometimes it's not enough to delete comment-only tail since there
+              might be no 'phdic' type which serves as an indicator.
+            - Takes ~0.02s for 'set' (EN-RU) on Intel Atom.
         '''
         ru = ('Добавить','|','Сообщить об ошибке','|'
              ,'Ссылка на эту страницу','|'
@@ -541,11 +541,11 @@ class Elems:
             i -= 1
     
     def delete_head(self):
-        ''' #NOTE: This will actually delete the entire article if it
-            consists of comments only but this looks more like a feature
-            since only service articles (nothing was found, suggestions
-            in case nothing was found, only separate words were found)
-            consist of comments only.
+        ''' #NOTE: This will actually delete the entire article if it consists
+            of comments only but this looks more like a feature since only
+            service articles (nothing was found, suggestions in case nothing
+            was found, only separate words were found) consist of comments
+            only.
         '''
         # Takes ~0.003s for 'set' (EN-RU) on AMD E-300
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_head'
@@ -604,11 +604,10 @@ class Elems:
             sh.com.rep_empty(f)
     
     def reassign_brackets(self):
-        ''' It is a common case when an opening bracket, a phrase and 
-            a closing bracket are 3 separate blocks. Tkinter (unlike
-            popular web browsers) wraps these blocks after ')'.
-            We just fix this behavior. This also allows to skip user
-            names without showing extra brackets.
+        ''' It is a common case when an opening bracket, a phrase and a closing
+            bracket are 3 separate blocks. Tkinter (unlike popular web
+            browsers) wraps these blocks after ')'. We just fix this behavior.
+            This also allows to skip user names without showing extra brackets.
         '''
         f = '[MClient] plugins.multitrancom.elems.Elems.reassign_brackets'
         count = 0
@@ -653,25 +652,22 @@ class Elems:
                       ]
     
     def delete_empty(self):
-        ''' - Empty blocks are useless since we recreate fixed columns
-              anyways.
-            - This is required since we decode HTM entities after
-              extracting tags now. Empty blocks may lead to a wrong
-              analysis of blocks, e.g.,
-              'comment (SAME=0) - comment (SAME=1)' structure, where
-              the second block is empty, will be mistakenly converted
-              to 'wform - comment'.
-            - Do not strip blocks to check for emptiness since 'comment'
-              from a 'wform+comment' structure where 'wform' is a space
-              cannot be further converted to 'wform', see RU-EN,
-              'цепь: провод'.
+        ''' - Empty blocks are useless since we recreate fixed columns anyways.
+            - This is required since we decode HTM entities after extracting
+              tags now. Empty blocks may lead to a wrong analysis of blocks,
+              e.g., 'comment (SAME=0) - comment (SAME=1)' structure, where the
+              second block is empty, will be mistakenly converted to
+              'wform - comment'.
+            - Do not strip blocks to check for emptiness since 'comment' from a
+              'wform+comment' structure where 'wform' is a space cannot be
+              further converted to 'wform', see RU-EN, 'цепь: провод'.
         '''
         self.blocks = [block for block in self.blocks if block.text]
     
     def set_term_same(self):
         ''' #NOTE: all blocks of the same cell must have the same TERM,
-            otherwise, alphabetizing may put blocks with SAME=1 outside
-            of their cells.
+            otherwise, alphabetizing may put blocks with SAME=1 outside of
+            their cells.
         '''
         term = ''
         for block in self.blocks:
@@ -682,9 +678,7 @@ class Elems:
     
     def get_suggested(self):
         for i in range(len(self.blocks)):
-            if self.blocks[i].text in (' Варианты замены: '
-                                      ,' Suggest: '
-                                      ):
+            if self.blocks[i].text in (' Варианты замены: ',' Suggest: '):
                 return i
     
     def set_suggested(self):
@@ -862,8 +856,8 @@ class Elems:
                 speech = block.text
             elif block.type_ == 'transc':
                 transc = block.text
-                ''' #TODO: Is there a difference if we use both
-                    term/phrase here or the term only?
+                ''' #TODO: Is there a difference if we use both term/phrase
+                    here or the term only?
                 '''
             elif block.type_ in ('term','phrase'):
                 term = block.text
@@ -877,9 +871,8 @@ class Elems:
     
     def fill_term(self):
         term = ''
-        ''' This is just to get a non-empty value of 'term' if some
-            other types besides 'phrase' and 'term' follow them in the
-            end.
+        ''' This is just to get a non-empty value of 'term' if some other types
+            besides 'phrase' and 'term' follow them in the end.
         '''
         i = len(self.blocks) - 1
         while i >= 0:
@@ -907,8 +900,8 @@ class Elems:
             if dic != self.blocks[i].dic \
             or wform != self.blocks[i].wform \
             or speech != self.blocks[i].speech:
-                ''' #NOTE: We do not inherit SEMINO here since it's not
-                    needed anymore.
+                ''' #NOTE: We do not inherit SEMINO here since it's not needed
+                    anymore.
                 '''
                 block = Block()
                 block.type_ = 'speech'
