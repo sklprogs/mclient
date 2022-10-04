@@ -225,12 +225,12 @@ class Elems:
                 return block
     
     def convert_ged(self):
-        ''' - Reassign a subject title for blocks from the Great
-              encyclopedic dictionary.
-            - It's not enough just to get CELLNO of the Great
-              encyclopedic dictionary and change DIC and DICF since
-              DIC and DICF will be reassigned at 'self.fill'.
-            - Takes ~0.0014s for 'set' (EN-RU) on AMD E-300
+        ''' - Reassign a subject title for blocks from the Great encyclopedic
+              dictionary.
+            - It's not enough just to get CELLNO of the Great encyclopedic
+              dictionary and change DIC and DICF since DIC and DICF will be
+              reassigned at 'self.fill'.
+            - Takes ~0.0014s for 'set' (EN-RU) on AMD E-300.
         '''
         f = '[MClient] plugins.multitrancom.elems.Elems.convert_ged'
         count = 0
@@ -243,8 +243,8 @@ class Elems:
                 count += 1
             else:
                 sh.com.rep_empty(f)
-            ''' The dictionary will be renamed, we do not need
-                the comment duplicating it.
+            ''' The dictionary will be renamed, we do not need the comment
+                duplicating it.
             '''
             self.blocks.remove(ged)
         sh.com.rep_matches(f,count)
@@ -270,8 +270,8 @@ class Elems:
         sh.com.rep_deleted(f,len_-len(self.blocks))
     
     def convert_speech(self):
-        ''' Blocks inherent to <em> tag are usually 'speech' but not
-            always, see, for example, EN-RU, 'blemish'.
+        ''' Blocks inherent to <em> tag are usually 'speech' but not always,
+            see, for example, EN-RU, 'blemish'.
         '''
         f = '[MClient] plugins.multitrancom.elems.Elems.convert_speech'
         count = 0
@@ -347,6 +347,11 @@ class Elems:
             block.rowno = self.blocks[0].rowno
         self.blocks.insert(0,block)
     
+    def _has_separate(self,text):
+        for phrase in self.sep_words:
+            if phrase in text:
+                return True
+    
     def _set_separate(self):
         blocks = []
         for i in range(len(self.blocks)):
@@ -357,6 +362,8 @@ class Elems:
                     blocks.append(self.blocks[i-1])
                 if not self.blocks[i+1].url:
                     blocks.append(self.blocks[i+1])
+            elif self._has_separate(self.blocks[i].text):
+                blocks.append(self.blocks[i])
         self.blocks = blocks
 
     def _delete_separate(self):
