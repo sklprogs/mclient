@@ -734,14 +734,15 @@ class Elems:
             self.delete_langs()
             self.delete_refs()
             # Reassign types
-            self.set_phdic()
-            self.set_transc()
-            self.set_see_also()
-            self.convert_speech()
-            self.convert_ged()
-            self.make_fixed()
-            self.set_same()
-            self.set_phcom()
+            if self.blocks and self.blocks[0].dicf != _('Separate words'):
+                self.set_phdic()
+                self.set_transc()
+                self.set_see_also()
+                self.convert_speech()
+                self.convert_ged()
+                self.make_fixed()
+                self.set_same()
+                self.set_phcom()
             # Prepare contents
             self.set_dic_urls()
             self.set_phcount()
