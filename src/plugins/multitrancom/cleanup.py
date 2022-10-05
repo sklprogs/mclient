@@ -15,11 +15,13 @@ class CleanUp:
         self.text = text
     
     def delete_trash_tags(self):
-        # Do not separate a single block into parts
+        # Do not divide a single block into parts
         self.text = self.text.replace('<i>','')
         self.text = self.text.replace('</i>','')
         self.text = self.text.replace('<u>','')
         self.text = self.text.replace('</u>','')
+        self.text = self.text.replace('<b>','')
+        self.text = self.text.replace('</b>','')
     
     def fix_href(self):
         ''' Fix a malformed URL, e.g., 'href="/m.exe?a=110&l1=1&l2=2&s=process (<редк.>)&sc=671"'
