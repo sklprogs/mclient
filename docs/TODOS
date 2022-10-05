@@ -1,8 +1,9 @@
 
 
 mclient:
-- Control row width, good example: MT, EN-RU, environmentalism, inner city,
-  fairness doctrine, record, constituency, stay put, amalgamation
+- Control row width, good example: MT, EN-RU: environmentalism, inner city,
+  fairness doctrine, record, constituency, stay put, amalgamation, overhauling,
+  стоимость, дезориентировать, режим, sat
 - Improve main icon quality
 - Fix colorizing
 - Make a cell fully visible when mousing over it
@@ -13,11 +14,7 @@ mclient:
   add titles everywhere
 
 multitrancom:
-- RU-EN, Overhauling: check new table layout in Qt
 - RU-EN, закрыть соединение: enable copying a comment block url
-- RU-EN, bying: no suitable mode, wrong types (not subjects or wforms)
-- RU-EN, стоимость: make cell height constant
-- RU-EN, дезориентировать, режим, sat: test how too wide fixed columns will look in Qt
 - RU-EN, Makarov: colorize phdics even when prioritizing is off since
   there are no subjects to prioritize
 - Add new mode: RU-EN, nederlands: "перевод с других языков"
