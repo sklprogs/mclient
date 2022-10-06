@@ -1,6 +1,10 @@
 (in development)
 * 
 
+6.14.3
+* Fix mode of showing separate words only
+* Fix selecting blocks in "Phrases" section
+
 6.14.1
 * A different number of columns is used for common and special articles.
   Special articles are those that have only an even number of columns
