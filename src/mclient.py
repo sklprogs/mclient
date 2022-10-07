@@ -75,7 +75,7 @@ class Table:
                 return next_rowno
         return rowno
     
-    def set_row_height(self,height=45):
+    def set_row_height(self,height=42):
         for no in range(self.rownum):
             self.gui.set_row_height(no,height)
     
