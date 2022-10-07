@@ -3,18 +3,15 @@
 
 ''' This module prepares blocks after extracting tags for permanently
     storing in DB.
-    Needs attributes in blocks: DIC,DICF,SAMECELL,SPEECH,TERM,TRANSC
-                               ,TYPE,WFORM
-    Modifies attributes: DIC,DICF,SAMECELL,SELECTABLE,SPEECH,TERM,TEXT
-                        ,TRANSC,TYPE,WFORM
+    Needs attributes in blocks: DIC,DICF,SAMECELL,SPEECH,TERM,TRANSC,TYPE,WFORM
+    Modifies attributes: DIC,DICF,SAMECELL,SELECTABLE,SPEECH,TERM,TEXT,TRANSC
+                        ,TYPE,WFORM
     Since TYPE is modified here, SAMECELL is filled here.
 '''
 
 import re
-
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
-
 import plugins.multitrancom.subjects as sj
 
 
@@ -53,13 +50,13 @@ class UniteFixed:
                 return block.type_
     
     def run(self):
-        ''' - We should unite items in 'fixed+comment (SAME=1)'
-              structures directly since fixed columns having
-              supplementary SAME=1 blocks cannot be properly sorted.
-            - Running the entire class takes ~0.0131s for 'set' (EN-RU)
-              on AMD E-300
+        ''' - We should unite items in 'fixed+comment (SAME=1)' structures
+              directly since fixed columns having supplementary SAME=1 blocks
+              cannot be properly sorted.
+            - Running the entire class takes ~0.0131s for 'set' (EN-RU) on
+              AMD E-300.
         '''
-        f = '[MClient] plugins.multitrancom.elems.UniteFixed.run'
+        f = '[MClientQt] plugins.multitrancom.elems.UniteFixed.run'
         count = 0
         self.set_cells()
         for i in range(len(self.cells)):
@@ -98,9 +95,8 @@ class Block:
         self.last = -1
         self.no = -1
         self.same = -1
-        ''' 'select' is an attribute of a *cell* which is valid
-            if the cell has a non-blocked block of types 'term',
-            'phrase' or 'transc'
+        ''' 'select' is an attribute of a *cell* which is valid if the cell has
+            a non-blocked block of types 'term', 'phrase' or 'transc'.
         '''
         self.select = -1
         self.speech = ''
@@ -108,8 +104,8 @@ class Block:
         self.term = ''
         self.text = ''
         self.transc = ''
-        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase',
-            'speech', 'term', 'transc', 'user', 'wform'
+        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
+            'term', 'transc', 'user', 'wform'.
         '''
         self.type_ = 'invalid'
         self.url = ''
@@ -120,26 +116,25 @@ class Block:
 class Elems:
     ''' Process blocks before dumping to DB.
         About filling 'term':
-        - We fill 'term' from the start in order to ensure the correct
-          'term' value for blocks having 'same == 1'
-        - We fill 'term' from the end in order to ensure that 'term'
-          of blocks of non-selectable types will have the value of
-          the 'term' AFTER those blocks
-        - We fill 'term' from the end in order to ensure that 'term'
-          is also filled for blocks having 'same == 0'
-        - When filling 'term' from the start to the end, in order
-          to set a default 'term' value, we also search for blocks of
-          the 'phrase' type (just to be safe in such cases when
-          'phrase' blocks anticipate 'term' blocks). However, we fill
-          'term' for 'phrase' blocks from the end to the start because
-          we want the 'phrase' subject to have the 'term' value of
-          the first 'phrase' block AFTER it
-        - Finally, we clear TERM values for fixed columns. Sqlite
-          sorts '' before a non-empty string, so we ensure thereby that
-          sorting by TERM will be correct. Otherwise, we would have to
-          correctly calculate TERM values for fixed columns that will
-          vary depending on the view. Incorrect sorting by TERM may
-          result in putting a 'term' item before fixed columns.
+        - We fill 'term' from the start in order to ensure the correct 'term'
+          value for blocks having 'same == 1'.
+        - We fill 'term' from the end in order to ensure that 'term' of blocks
+          of non-selectable types will have the value of the 'term' AFTER those
+          blocks.
+        - We fill 'term' from the end in order to ensure that 'term' is also
+          filled for blocks having 'same == 0'.
+        - When filling 'term' from the start to the end, in order to set a
+          default 'term' value, we also search for blocks of the 'phrase' type
+          (just to be safe in such cases when 'phrase' blocks anticipate 'term'
+          blocks). However, we fill 'term' for 'phrase' blocks from the end to
+          the start because we want the 'phrase' subject to have the 'term'
+          value of the first 'phrase' block AFTER it.
+        - Finally, we clear TERM values for fixed columns. Sqlite sorts ''
+          before a non-empty string, so we ensure thereby that sorting by TERM
+          will be correct. Otherwise, we would have to correctly calculate TERM
+          values for fixed columns that will vary depending on the view.
+          Incorrect sorting by TERM may result in putting a 'term' item before
+          fixed columns.
     '''
     def __init__(self,blocks,Debug=False,maxrows=1000):
         ''' 30 is the maximum to correctly show EN-RU, 'entity'
@@ -147,6 +142,9 @@ class Elems:
         '''
         self.max_word_len = 30
         self.fixed = ('dic','wform','transc','speech')
+        self.sep_words = (' - найдены отдельные слова'
+                         ,' - only individual words found'
+                         )
         self.dicurls = {}
         self.phdic = ''
         self.blocks = blocks
@@ -179,7 +177,7 @@ class Elems:
     def break_long_words(self):
         # Break too long words (e.g., URLs) that spoil the page layout
         # Takes ~0.023s for 'set' on Intel Atom
-        f = '[MClient] plugins.multitrancom.elems.Elems.break_long_words'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.break_long_words'
         count = 0
         for block in self.blocks:
             Match = False
@@ -199,7 +197,7 @@ class Elems:
                 return i
     
     def set_phcom(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.set_phcom'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_phcom'
         count = 0
         i = self.get_phdic_set()
         if i is None:
@@ -227,14 +225,14 @@ class Elems:
                 return block
     
     def convert_ged(self):
-        ''' - Reassign a subject title for blocks from the Great
-              encyclopedic dictionary.
-            - It's not enough just to get CELLNO of the Great
-              encyclopedic dictionary and change DIC and DICF since
-              DIC and DICF will be reassigned at 'self.fill'.
-            - Takes ~0.0014s for 'set' (EN-RU) on AMD E-300
+        ''' - Reassign a subject title for blocks from the Great encyclopedic
+              dictionary.
+            - It's not enough just to get CELLNO of the Great encyclopedic
+              dictionary and change DIC and DICF since DIC and DICF will be
+              reassigned at 'self.fill'.
+            - Takes ~0.0014s for 'set' (EN-RU) on AMD E-300.
         '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.convert_ged'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.convert_ged'
         count = 0
         geds = self._get_ged()
         for ged in geds:
@@ -245,18 +243,18 @@ class Elems:
                 count += 1
             else:
                 sh.com.rep_empty(f)
-            ''' The dictionary will be renamed, we do not need
-                the comment duplicating it.
+            ''' The dictionary will be renamed, we do not need the comment
+                duplicating it.
             '''
             self.blocks.remove(ged)
         sh.com.rep_matches(f,count)
         sh.com.rep_deleted(f,len(geds))
     
     def delete_trash_com(self):
-        ''' Sometimes it's not enough to delete comment-only tail since
-            there might be no 'phdic' type which serves as an indicator.
+        ''' Sometimes it's not enough to delete comment-only tail since there
+            might be no 'phdic' type which serves as an indicator.
         '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.delete_trash_com'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_trash_com'
         len_ = len(self.blocks)
         self.blocks = [block for block in self.blocks \
                        if not (block.type_ == 'comment' \
@@ -272,10 +270,10 @@ class Elems:
         sh.com.rep_deleted(f,len_-len(self.blocks))
     
     def convert_speech(self):
-        ''' Blocks inherent to <em> tag are usually 'speech' but not
-            always, see, for example, EN-RU, 'blemish'.
+        ''' Blocks inherent to <em> tag are usually 'speech' but not always,
+            see, for example, EN-RU, 'blemish'.
         '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.convert_speech'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.convert_speech'
         count = 0
         i = 1
         while i < len(self.blocks):
@@ -287,18 +285,17 @@ class Elems:
         sh.com.rep_matches(f,count)
     
     def delete_langs(self):
-        ''' - This procedure deletes blocks describing languages in
-              an original or localized form. After a comment-only head
-              was deleted, we will have either a 'dic' + 'term' + 'term'
-              or 'term' + 'term' structure, wherein 'dic' is "Subject
-              area", and terms have an empty URL. We should delete only
-              the first two term occurrences since there could be other
-              terms with an empty URL that should not be deleted, e.g.,
-              those related to "БЭС".
-            - Since we don't have to search for anything, and have
-              predermined indexes, this procedure is very fast.
+        ''' - This procedure deletes blocks describing languages in an original
+              or localized form. After a comment-only head was deleted, we will
+              have either a 'dic' + 'term' + 'term' or 'term' + 'term'
+              structure, wherein 'dic' is "Subject area", and terms have an
+              empty URL. We should delete only the first two term occurrences
+              since there could be other terms with an empty URL that should
+              not be deleted, e.g., those related to "БЭС".
+            - Since we don't have to search for anything, and have predermined
+              indexes, this procedure is very fast.
         '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.delete_langs'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_langs'
         if len(self.blocks) > 2:
             if self.blocks[0].type_ == 'dic' \
             and self.blocks[0].text in ('Тематика','Subject area') \
@@ -319,24 +316,8 @@ class Elems:
                 sh.objs.get_mes(f,mes,True).show_debug()
                 self.blocks = self.blocks[2:]
     
-    def set_not_found(self):
-        ''' - This is actually not needed since 'self.delete_head' will
-              remove the entire article if it consists of comments only.
-              We keep this code just to be on a safe side (e.g., in case
-              the author of MT adds non-comment blocks).
-            - Takes ~0.007s for 'set' (EN-RU) on AMD E-300
-        '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.set_not_found'
-        texts = [block.text for block in self.blocks]
-        ru = ('Forvo','|','+','\xa0Не найдено')
-        en = ('Forvo','|','+','\xa0Not found')
-        if sh.List(texts,ru).find() or sh.List(texts,en).find():
-            sh.com.rep_deleted(f,len(self.blocks))
-            self.blocks = []
-        else:
-            sh.com.rep_lazy(f)
-    
     def get_separate_head(self):
+        #blocks = ('G','o','o','g','l','e','|','Forvo','|','+')
         blocks = ('Forvo','|','+')
         texts = [block.text for block in self.blocks]
         return sh.List(texts,blocks).find()
@@ -353,71 +334,91 @@ class Elems:
                 return i
             i += 1
     
+    def _add_sep_subject(self):
+        block = Block()
+        block.type_ = 'dic'
+        block.text = block.dic = block.dicf = _('Separate words')
+        block.same = 0
+        if self.blocks:
+            ''' This allows to avoid a bug when only separate words were found
+                but the 1st word should remain a comment since it was not found
+                (e.g., EN-RU, "Ouest Bureau").
+            '''
+            block.rowno = self.blocks[0].rowno
+        self.blocks.insert(0,block)
+    
+    def _has_separate(self,text):
+        for phrase in self.sep_words:
+            if phrase in text:
+                return True
+    
+    def _set_separate(self):
+        blocks = []
+        for i in range(len(self.blocks)):
+            if self.blocks[i].url.startswith('l'):
+                blocks.append(self.blocks[i])
+            elif self.blocks[i].text == '|':
+                if not self.blocks[i-1].url:
+                    blocks.append(self.blocks[i-1])
+                if not self.blocks[i+1].url:
+                    blocks.append(self.blocks[i+1])
+            elif self._has_separate(self.blocks[i].text):
+                blocks.append(self.blocks[i])
+        self.blocks = blocks
+
+    def _delete_separate(self):
+        for block in self.blocks:
+            ''' Those words that were not found will not have a URL and should
+                be kept as comments (as in a source). However, SAME should be 0
+                everywhere.
+            '''
+            if block.url:
+                block.type_ = 'term'
+            else:
+                for phrase in self.sep_words:
+                    block.text = block.text.replace(phrase,'')
+            block.same = 0
+        self.blocks = [block for block in self.blocks \
+                       if block.text and block.text != '|'
+                      ]
+    
     def set_separate(self):
         # Takes ~0.0126s for 'set' (EN-RU) on AMD E-300
-        f = '[MClient] plugins.multitrancom.elems.Elems.set_separate'
-        head = self.get_separate_head()
-        if head:
-            tail = self.get_separate_tail()
-            if tail:
-                self.blocks = self.blocks[head[1]:tail+1]
-                self.blocks = [block for block in self.blocks \
-                               if not block.text in ('+','|')
-                              ]
-                for block in self.blocks:
-                    ''' Those words that were not found will not have
-                        a URL and should be kept as comments (as in
-                        a source). However, SAME should be 0 everywhere.
-                    '''
-                    if block.url:
-                        block.type_ = 'term'
-                    else:
-                        block.text = block.text.replace(' - найдены отдельные слова','')
-                        block.text = block.text.replace(' - only individual words found','')
-                    block.same = 0
-                block = Block()
-                block.type_ = 'dic'
-                block.text = block.dic = block.dicf = _('Separate words')
-                block.same = 0
-                if self.blocks:
-                    ''' This allows to avoid a bug when only separate
-                        words were found but the 1st word should remain
-                        a comment since it was not found (e.g., EN-RU,
-                        "Ouest Bureau").
-                    '''
-                    block.rowno = self.blocks[0].rowno
-                self.blocks.insert(0,block)
-                ''' The last matching block may be a comment with no
-                    text since we have deleted ' - найдены отдельные
-                    слова'. Zero-length blocks are not visible in
-                    a one-row table, so this may be needed just to
-                    output a correct number of matches.
-                '''
-                self.blocks = [block for block in self.blocks \
-                               if block.text
-                              ]
-                sh.com.rep_matches(f,len(self.blocks))
-            else:
-                sh.com.rep_lazy(f)
-        else:
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_separate'
+        old_len = len(self.blocks)
+        tail = self.get_separate_tail()
+        if not tail:
             sh.com.rep_lazy(f)
+            return
+        head = self.get_separate_head()
+        if not head:
+            sh.com.rep_lazy(f)
+            return
+        self.blocks = self.blocks[head[1]:tail+1]
+        if len(self.blocks) < 3:
+            sh.com.rep_lazy(f)
+            return
+        self._set_separate()
+        self._delete_separate()
+        sh.com.rep_deleted(f,old_len-len(self.blocks))
+        self._add_sep_subject()
     
     def make_fixed(self):
         # Takes ~0.0065s for 'set' (EN-RU) on AMD E-300
-        f = '[MClient] plugins.multitrancom.elems.Elems.make_fixed'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.make_fixed'
         count = 0
         i = 1
         while i < len(self.blocks):
             if self.blocks[i-1].rowno != self.blocks[i].rowno:
                 if self.blocks[i].type_ == 'user':
                     self.blocks[i].type_ = 'dic'
-                    ''' If DICF was not extracted for a user-type block
-                        which is actually a subject, we may set such
-                        field here, however, such entries as 'Gruzovik,
-                        inform.' will not be expanded (due to a bug at
-                        multitran.com, 'Informal' will be used). Thus,
-                        we correct such entries in SUBJECTS and just
-                        try in 'self.expand_dic_file' to expand them.
+                    ''' If DICF was not extracted for a user-type block which
+                        is actually a subject, we may set such field here,
+                        however, such entries as 'Gruzovik, inform.' will not
+                        be expanded (due to a bug at multitran.com, 'Informal'
+                        will be used). Thus, we correct such entries in
+                        SUBJECTS and just try in 'self.expand_dic_file' to
+                        expand them.
                     '''
                     self.blocks[i].dic = self.blocks[i].text
                     count += 1
@@ -428,7 +429,7 @@ class Elems:
         sh.com.rep_matches(f,count)
     
     def set_see_also(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.set_see_also'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_see_also'
         count = 0
         i = 2
         while i < len(self.blocks):
@@ -452,7 +453,7 @@ class Elems:
                 block.same = 1
     
     def set_same(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.set_same'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_same'
         # I have witnessed this error despite 'self.check' was passed
         if self.blocks:
             self.blocks[0].same = 0
@@ -472,17 +473,16 @@ class Elems:
             sh.com.rep_empty(f)
     
     def _delete_tail_links(self,poses):
-        f = '[MClient] plugins.multitrancom.elems.Elems._delete_tail_links'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems._delete_tail_links'
         if poses:
             pos1, pos2 = poses[0], poses[1] + 1
             self.blocks[pos1:pos2] = []
             sh.com.rep_deleted(f,pos2-pos1)
     
     def delete_tail_links(self):
-        ''' - Sometimes it's not enough to delete comment-only tail
-              since there might be no 'phdic' type which serves as
-              an indicator.
-            - Takes ~0.02s for 'set' (EN-RU) on Intel Atom
+        ''' - Sometimes it's not enough to delete comment-only tail since there
+              might be no 'phdic' type which serves as an indicator.
+            - Takes ~0.02s for 'set' (EN-RU) on Intel Atom.
         '''
         ru = ('Добавить','|','Сообщить об ошибке','|'
              ,'Ссылка на эту страницу','|'
@@ -514,7 +514,7 @@ class Elems:
     
     def set_phdic(self):
         # Takes ~0.001s for 'set' (EN-RU) on AMD E-300
-        f = '[MClient] plugins.multitrancom.elems.Elems.set_phdic'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_phdic'
         index_ = self.get_phdic()
         if index_ is None:
             sh.com.rep_lazy(f)
@@ -537,7 +537,7 @@ class Elems:
               case 'phcount' relates to a preceding 'phrase'.
             - This will not work when 'phdic' type is already set
         '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.get_phdic'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.get_phdic'
         i = len(self.blocks) - 1
         while i > 3:
             if self.blocks[i-3].type_ == 'comment' \
@@ -548,14 +548,14 @@ class Elems:
             i -= 1
     
     def delete_head(self):
-        ''' #NOTE: This will actually delete the entire article if it
-            consists of comments only but this looks more like a feature
-            since only service articles (nothing was found, suggestions
-            in case nothing was found, only separate words were found)
-            consist of comments only.
+        ''' #NOTE: This will actually delete the entire article if it consists
+            of comments only but this looks more like a feature since only
+            service articles (nothing was found, suggestions in case nothing
+            was found, only separate words were found) consist of comments
+            only.
         '''
         # Takes ~0.003s for 'set' (EN-RU) on AMD E-300
-        f = '[MClient] plugins.multitrancom.elems.Elems.delete_head'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_head'
         count = 0
         i = 0
         while i < len(self.blocks):
@@ -578,7 +578,7 @@ class Elems:
     
     def delete_tail(self):
         # Takes ~0.0004s for 'set' (EN-RU) on AMD E-300
-        f = '[MClient] plugins.multitrancom.elems.Elems.delete_tail'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_tail'
         count = 0
         last = self.get_tail()
         if last is None or last + 1 == len(self.blocks):
@@ -591,11 +591,9 @@ class Elems:
     
     def delete_semi(self):
         # I don't like '; ' in special pages, so I delete it everywhere
-        f = '[MClient] plugins.multitrancom.elems.Elems.delete_semi'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_semi'
         len_ = len(self.blocks)
-        self.blocks = [block for block in self.blocks \
-                       if block.text != '; '
-                      ]
+        self.blocks = [block for block in self.blocks if block.text != '; ']
         sh.com.rep_deleted(f,len_-len(self.blocks))
     
     def set_semino(self):
@@ -606,20 +604,19 @@ class Elems:
             block.semino = semino
     
     def check(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.check'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.check'
         if self.blocks:
             return True
         else:
             sh.com.rep_empty(f)
     
     def reassign_brackets(self):
-        ''' It is a common case when an opening bracket, a phrase and 
-            a closing bracket are 3 separate blocks. Tkinter (unlike
-            popular web browsers) wraps these blocks after ')'.
-            We just fix this behavior. This also allows to skip user
-            names without showing extra brackets.
+        ''' It is a common case when an opening bracket, a phrase and a closing
+            bracket are 3 separate blocks. Tkinter (unlike popular web
+            browsers) wraps these blocks after ')'. We just fix this behavior.
+            This also allows to skip user names without showing extra brackets.
         '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.reassign_brackets'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.reassign_brackets'
         count = 0
         i = 2
         while i < len(self.blocks):
@@ -642,7 +639,7 @@ class Elems:
         ''' Do not delete this, since 'multitran.com' does not provide
             full subject titles in phrase articles!
         '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.expand_dic_file'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.expand_dic_file'
         for block in self.blocks:
             if block.dic and not block.dicf:
                 title = sj.objs.get_subjects().get_title(block.dic)
@@ -662,25 +659,22 @@ class Elems:
                       ]
     
     def delete_empty(self):
-        ''' - Empty blocks are useless since we recreate fixed columns
-              anyways.
-            - This is required since we decode HTM entities after
-              extracting tags now. Empty blocks may lead to a wrong
-              analysis of blocks, e.g.,
-              'comment (SAME=0) - comment (SAME=1)' structure, where
-              the second block is empty, will be mistakenly converted
-              to 'wform - comment'.
-            - Do not strip blocks to check for emptiness since 'comment'
-              from a 'wform+comment' structure where 'wform' is a space
-              cannot be further converted to 'wform', see RU-EN,
-              'цепь: провод'.
+        ''' - Empty blocks are useless since we recreate fixed columns anyways.
+            - This is required since we decode HTM entities after extracting
+              tags now. Empty blocks may lead to a wrong analysis of blocks,
+              e.g., 'comment (SAME=0) - comment (SAME=1)' structure, where the
+              second block is empty, will be mistakenly converted to
+              'wform - comment'.
+            - Do not strip blocks to check for emptiness since 'comment' from a
+              'wform+comment' structure where 'wform' is a space cannot be
+              further converted to 'wform', see RU-EN, 'цепь: провод'.
         '''
         self.blocks = [block for block in self.blocks if block.text]
     
     def set_term_same(self):
         ''' #NOTE: all blocks of the same cell must have the same TERM,
-            otherwise, alphabetizing may put blocks with SAME=1 outside
-            of their cells.
+            otherwise, alphabetizing may put blocks with SAME=1 outside of
+            their cells.
         '''
         term = ''
         for block in self.blocks:
@@ -691,14 +685,12 @@ class Elems:
     
     def get_suggested(self):
         for i in range(len(self.blocks)):
-            if self.blocks[i].text in (' Варианты замены: '
-                                      ,' Suggest: '
-                                      ):
+            if self.blocks[i].text in (' Варианты замены: ',' Suggest: '):
                 return i
     
     def set_suggested(self):
         # Takes ~0.005s for 'set' (EN-RU) on AMD E-300
-        f = '[MClient] plugins.multitrancom.elems.Elems.set_suggested'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_suggested'
         count = 0
         i = self.get_suggested()
         if i is None:
@@ -724,10 +716,9 @@ class Elems:
         sh.com.rep_matches(f,count)
     
     def run(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.run'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.run'
         if self.check():
             # Process special pages before deleting anything
-            self.set_not_found()
             self.set_suggested()
             self.set_separate()
             # Do this before deleting ';'
@@ -743,14 +734,15 @@ class Elems:
             self.delete_langs()
             self.delete_refs()
             # Reassign types
-            self.set_phdic()
-            self.set_transc()
-            self.set_see_also()
-            self.convert_speech()
-            self.convert_ged()
-            self.make_fixed()
-            self.set_same()
-            self.set_phcom()
+            if self.blocks and self.blocks[0].dicf != _('Separate words'):
+                self.set_phdic()
+                self.set_transc()
+                self.set_see_also()
+                self.convert_speech()
+                self.convert_ged()
+                self.make_fixed()
+                self.set_same()
+                self.set_phcom()
             # Prepare contents
             self.set_dic_urls()
             self.set_phcount()
@@ -801,7 +793,7 @@ class Elems:
             # 23'' monitor: 20 symbols per a column
             mes = sh.FastTable (headers = headers
                                ,iterable = rows
-                               ,maxrow = 12
+                               ,maxrow = 23
                                ,maxrows = self.maxrows
                                ,Transpose = True
                                ).run()
@@ -809,7 +801,7 @@ class Elems:
         
     def set_transc(self):
         # Takes ~0.003s for 'set' (EN-RU) on AMD E-300
-        f = '[MClient] plugins.multitrancom.elems.Elems.set_transc'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_transc'
         count = 0
         for block in self.blocks:
             if block.type_ == 'comment' and block.text.startswith('[') \
@@ -819,7 +811,7 @@ class Elems:
         sh.com.rep_matches(f,count)
     
     def add_space(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.add_space'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.add_space'
         count = 0
         i = 1
         while i < len(self.blocks):
@@ -872,8 +864,8 @@ class Elems:
                 speech = block.text
             elif block.type_ == 'transc':
                 transc = block.text
-                ''' #TODO: Is there a difference if we use both
-                    term/phrase here or the term only?
+                ''' #TODO: Is there a difference if we use both term/phrase
+                    here or the term only?
                 '''
             elif block.type_ in ('term','phrase'):
                 term = block.text
@@ -887,9 +879,8 @@ class Elems:
     
     def fill_term(self):
         term = ''
-        ''' This is just to get a non-empty value of 'term' if some
-            other types besides 'phrase' and 'term' follow them in the
-            end.
+        ''' This is just to get a non-empty value of 'term' if some other types
+            besides 'phrase' and 'term' follow them in the end.
         '''
         i = len(self.blocks) - 1
         while i >= 0:
@@ -917,8 +908,8 @@ class Elems:
             if dic != self.blocks[i].dic \
             or wform != self.blocks[i].wform \
             or speech != self.blocks[i].speech:
-                ''' #NOTE: We do not inherit SEMINO here since it's not
-                    needed anymore.
+                ''' #NOTE: We do not inherit SEMINO here since it's not needed
+                    anymore.
                 '''
                 block = Block()
                 block.type_ = 'speech'
