@@ -33,8 +33,7 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
                 sh.objs.get_mes(f,mes,True).show_warning()
                 return PyQt5.QtCore.QVariant()
     
-    def update(self,rowno,colno):
-        index_ = self.index(rowno,colno)
+    def update(self,index_):
         self.dataChanged.emit(index_,index_)
 
 
@@ -115,14 +114,36 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.vscroll_value = 0
         self.set_gui()
     
+    def scroll2index(self,index_):
+        self.scrollTo(index_,PyQt5.QtWidgets.QAbstractItemView.PositionAtTop)
+    
+    def get_row_by_y(self,y):
+        return self.rowAt(y)
+    
+    def get_row_height(self,rowno):
+        return self.rowHeight(rowno)
+    
+    def get_row_y(self,rowno):
+        return self.rowViewportPosition(rowno)
+    
+    def get_row(self,index_):
+        return index_.row()
+    
+    def get_column(self,index_):
+        return index_.column()
+    
+    def set_index(self,index_):
+        self.setCurrentIndex(index_)
+    
+    def get_index(self):
+        return self.currentIndex()
+    
+    def get_cell(self):
+        index_ = self.currentIndex()
+        return(index_.row(),index_.column())
+    
     def get_height(self):
         return self.height()
-    
-    def get_max_scroll(self):
-        return self.vscroll.maximum()
-    
-    def set_scroll(self,percent):
-        self.vscroll.setValue(percent)
     
     def get_cell_x(self,colno):
         return self.columnViewportPosition(colno)
@@ -134,14 +155,17 @@ class Table(PyQt5.QtWidgets.QTableView):
         #TODO: implement
         pass
     
-    def set_model(self,model):
-        self.setModel(model)
+    def set_model(self,mymodel):
+        # Do not overwrite built-in 'model'
+        self.mymodel = mymodel
+        self.setModel(mymodel)
     
     def _use_mouse(self,event):
         pos = event.pos()
         rowno = self.rowAt(pos.y())
         colno = self.columnAt(pos.x())
-        self.select(rowno,colno)
+        index_ = self.mymodel.index(rowno,colno)
+        self.set_index(index_)
     
     def _report_external(self):
         f = '[MClientQt] gui.Table._report_external'
@@ -610,8 +634,7 @@ if __name__ == '__main__':
            ,['tree','as;f,d','sdafsdfasdfasdfsdfsdfsd']
            ]
     
-    global model
-    model = TableModel(data)
-    app.table.setModel(model)
+    mymodel = TableModel(data)
+    app.table.setModel(mymodel)
     app.show()
     sys.exit(exe.exec_())

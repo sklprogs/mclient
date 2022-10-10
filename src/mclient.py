@@ -26,45 +26,96 @@ class Table:
         self.rownum = 1
         self.colnum = 1
     
-    def set_all_y(self):
-        ''' For some reason, Y depends on a scrollbar position, so we need to
-            precalculate coordinates of all rows.
-        '''
-        self.y = []
-        for rowno in range(self.rownum):
-            self.y.append(self.gui.get_cell_y(rowno))
-        print(self.y)
+    def go_down(self):
+        rowno, colno = self.get_cell()
+        next_rowno = self._get_next_useful_row(rowno,colno)
+        if rowno == next_rowno:
+            print('Need to start over!')
+            rowno = 0
+        else:
+            rowno = next_rowno
+        self.select(rowno,colno)
+    
+    def select(self,rowno,colno):
+        old_index = self.gui.get_index()
+        new_index = self.model.index(rowno,colno)
+        self.gui.set_index(new_index)
+        self.gui.delegate.match_index = new_index
+        self.model.update(old_index)
+        self.model.update(new_index)
+    
+    def go_up(self):
+        rowno, colno = self.get_cell()
+        if rowno > 0:
+            rowno -= 1
+        self.select(rowno,colno)
+    
+    def go_left(self):
+        rowno, colno = self.get_cell()
+        if colno > 0:
+            colno -= 1
+        self.select(rowno,colno)
+    
+    def go_right(self):
+        rowno, colno = self.get_cell()
+        if colno + 1 < self.colnum:
+            colno += 1
+        self.select(rowno,colno)
+    
+    def scroll_top(self):
+        f = '[MClientQt] mclient.Table.scroll_top'
+        height = self.gui.get_height()
+        rowno, colno = self.get_cell()
+        y = self.gui.get_row_y(rowno)
+        row_height = self.gui.get_row_height(rowno)
+        page_y = y - height + 2 * row_height
+        page_row_no = self.gui.get_row_by_y(page_y)
+        new_index = self.model.index(page_row_no,colno)
+        mes = _('Table height: {}, row #{}, column #{}, row height: {}, row Y: {}, page Y: {}, page row #{}')
+        mes = mes.format(height,rowno,colno,row_height,y,page_y,page_row_no)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        self.gui.scroll2index(new_index)
+    
+    def go_down(self):
+        f = '[MClientQt] mclient.Table.go_down'
+        old_index = self.gui.get_index()
+        rowno, colno = self.get_cell()
+        #TODO: elaborate
+        rowno += 1
+        new_index = self.model.index(rowno,colno)
+        self.gui.set_index(new_index)
+        self.gui.delegate.match_index = new_index
+        self.model.update(old_index)
+        self.model.update(new_index)
     
     def go_cell(self):
         print('go_cell')
     
-    def copy_cell(self):
-        print('copy_cell')
-        mes = self.plain[self.gui.delegate.rowno][self.gui.delegate.colno]
-        mes = '"{}"'.format(mes)
-        print(mes)
+    def get_cell(self):
+        f = '[MClientQt] mclient.Table.get_cell'
+        try:
+            return self.gui.get_cell()
+        except Exception as e:
+            sh.com.rep_third_party(f,e)
+            return(0,0)
     
-    def select(self,rowno,colno):
-        if rowno == self.gui.delegate.rowno and colno == self.gui.delegate.colno:
-            return
-        gi.model.update(self.gui.delegate.rowno,self.gui.delegate.colno)
-        gi.model.update(rowno,colno)
-        self.gui.delegate.rowno = rowno
-        self.gui.delegate.colno = colno
+    def copy_cell(self):
+        f = '[MClientQt] mclient.Table.copy_cell'
+        rowno, colno = self.gui.get_cell()
+        mes = '"' + self.plain[rowno][colno] + '"'
+        sh.objs.get_mes(f,mes,True).show_debug()
     
     def clear(self):
         self.gui.clear()
     
     def _get_last_useful_row(self,rowno,colno):
+        f = '[MClientQt] mclient.Table._get_last_useful_row'
         last_rowno = self.rownum - 1
         while last_rowno >= rowno:
             if self.plain[last_rowno][colno]:
-                mes = '"{}"'.format(self.plain[last_rowno][colno])
-                #print(mes)
-                #print('last_rowno (fast):',last_rowno)
+                sh.objs.get_mes(f,last_rowno,True).show_debug()
                 return last_rowno
             last_rowno -= 1
-        #print('last_rowno:',last_rowno)
         return last_rowno
     
     def _get_next_useful_row(self,rowno,colno):
@@ -145,12 +196,11 @@ class Table:
         self.colnum = colnum
         self.clear()
         self.set_matrix()
-        gi.model = gi.TableModel(self.matrix)
+        self.model = gi.TableModel(self.matrix)
         self.fill()
         self.set_col_width()
         self.set_row_height(42)
         self.show_borders(False)
-        self.set_all_y()
     
     def go_start(self):
         self.gui.go_start()
@@ -159,7 +209,7 @@ class Table:
         f = '[MClientQt] mclient.Table.fill'
         timer = sh.Timer(f)
         timer.start()
-        self.gui.set_model(gi.model)
+        self.gui.set_model(self.model)
         timer.end()
     
     def set_max_row_height(self,height=150):
@@ -236,154 +286,15 @@ class DB:
 class App:
     
     def __init__(self):
-        self.last_rowno = 0
-        self.last_colno = 0
         self.gui = gi.App()
         self.set_gui()
         self.update_ui()
-    
-    def get_page_y(self,y):
-        f = '[MClientQt] mclient.App.get_page_y'
-        height = self.table.gui.get_height()
-        if not height:
-            sh.com.rep_empty(f)
-            return 0
-        print('Table height:',height)
-        y += 42
-        page_no = int(y/height)
-        mes = _('Page #{}').format(page_no)
-        print(mes)
-        #y = page_no * height
-        y = page_no * height + (page_no + 1) * 42
-        mes = _('Page Y: {}').format(y)
-        print(mes)
-        return y
-    
-    def get_scroll(self,y):
-        f = '[MClient] mclient.App.get_scroll'
-        '''
-        range_ = self.get_page_range()
-        if not range_:
-            sh.com.rep_empty(f)
-            return 0
-        mes = 'Y: {}'.format(y)
-        print(mes)
-        delta = [item - y for item in range_]
-        print('Delta:',delta)
-        index_ = self._get_page_no(delta)
-        mes = _('Page #{}').format(index_)
-        print(mes)
-        val = range_[index_]
-        print('val:',val)
-        print('max:',range_[-1])
-        scrolly = int((100*val)/range_[-1])
-        '''
-        max_ = self.gui.table.get_max_scroll()
-        #TODO: do not hardcode row height
-        #y += 42
-        y = self.get_page_y(y)
-        scrolly = int((max_*y)/(self.table.y[-1]))
-        #scrolly = int((max_*y)/(self.table.y[-1]+42))
-        #scrolly = int((max_*y)/(self.table.y[-1]))
-        mes = _('Scrolling percentage: {}').format(scrolly)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        return scrolly
-    
-    def set_scroll(self,y):
-        timer = sh.Timer('set_scroll')
-        timer.start()
-        self.table.gui.vscroll.setMinimum(0)
-        self.table.gui.vscroll.setMaximum(368)
-        self.table.gui.vscroll.setValue(0)
-        self.table.gui.vscroll.setPageStep(981)
-        percent = self.get_scroll(y)
-        self.table.gui.set_scroll(percent)
-        self.table.copy_cell()
-        timer.end()
-    
-    def _get_page_no(self,delta):
-        f = '[MClient] mclient.App._get_page_no'
-        delta = [item for item in delta if item <= 0]
-        print('Delta 2:',delta)
-        print('Last item of delta:',delta[-1])
-        if not delta:
-            sh.com.rep_empty(f)
-            return 0
-        return delta.index(delta[-1])
-    
-    def get_cur_page(self,y):
-        range_ = self.get_page_range()
-        range_ = [item - y for item in range_]
-        index_ = self._get_page_index(range_)
-        mes = _('Page #{}').format(index_)
-        print(mes)
-        return index_
-    
-    def get_page_range(self):
-        page_num = self.gui.get_page_num(self.last_rowno,self.last_colno)
-        mes = _('Number of pages: {}').format(page_num)
-        print(mes)
-        height = self.gui.get_height()
-        mes = _('Window height: {}').format(height)
-        print(mes)
-        range_ = []
-        for i in range(page_num):
-            range_.append(height*i)
-        print('Range:',range_)
-        return range_
-    
-    def show_row(self,rowno):
-        mes = _('Row #{}').format(rowno)
-        print(mes)
-        #y = self.table.gui.get_cell_y(rowno)
-        y = self.table.y[rowno]
-        mes = _('y: {}').format(y)
-        print(mes)
-        self.set_scroll(y)
-    
-    def go_down(self):
-        rowno = self.table.gui.delegate.rowno
-        colno = self.table.gui.delegate.colno
-        print()
-        mes = _('Current row #: {}').format(rowno)
-        print(mes)
-        mes = _('Current col #: {}').format(colno)
-        print(mes)
-        next_rowno = self.table._get_next_useful_row(rowno,colno)
-        if rowno == next_rowno:
-            print('Need to start over!')
-            rowno = 0
-        else:
-            rowno = next_rowno
-        mes = _('Changed to row #: {}').format(rowno)
-        print(mes)
-        self.table.select(rowno,colno)
-        self.show_row(rowno)
-    
-    def go_up(self):
-        rowno = self.table.gui.delegate.rowno
-        colno = self.table.gui.delegate.colno
-        if rowno > 0:
-            rowno -= 1
-        self.table.select(rowno,colno)
-        self.show_row(rowno)
-    
-    def go_left(self):
-        pass
-    
-    def go_right(self):
-        pass
-    
-    def set_last_cell(self,rowno,colno):
-        self.last_rowno = rowno
-        self.last_colno = colno
     
     def reset(self,cells,rownum,colnum):
         f = '[MClientQt] mclient.App.reset'
         mes = _('Table sizes: {}x{}').format(rownum,colnum)
         sh.objs.get_mes(f,mes,True).show_debug()
         self.table.reset(cells,rownum,colnum)
-        self.set_last_cell(cells[-1].rowno,cells[-1].colno)
     
     def minimize(self):
         self.gui.minimize()
@@ -412,10 +323,10 @@ class App:
         # Mouse buttons cannot be bound
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.minimize)
-        self.gui.bind('Down',self.go_down)
-        self.gui.bind('Up',self.go_up)
-        self.gui.bind('Left',self.go_left)
-        self.gui.bind('Right',self.go_right)
+        self.gui.bind('Down',self.table.go_down)
+        self.gui.bind('Up',self.table.go_up)
+        self.gui.bind('Left',self.table.go_left)
+        self.gui.bind('Right',self.table.go_right)
         self.table.gui.click_middle = self.minimize
     
     def set_title(self,title='MClientQt'):
