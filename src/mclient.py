@@ -40,7 +40,6 @@ class Table:
         old_index = self.gui.get_index()
         new_index = self.model.index(rowno,colno)
         self.gui.set_index(new_index)
-        self.gui.delegate.match_index = new_index
         self.model.update(old_index)
         self.model.update(new_index)
     
@@ -75,18 +74,6 @@ class Table:
         mes = mes.format(height,rowno,colno,row_height,y,page_y,page_row_no)
         sh.objs.get_mes(f,mes,True).show_debug()
         self.gui.scroll2index(new_index)
-    
-    def go_down(self):
-        f = '[MClientQt] mclient.Table.go_down'
-        old_index = self.gui.get_index()
-        rowno, colno = self.get_cell()
-        #TODO: elaborate
-        rowno += 1
-        new_index = self.model.index(rowno,colno)
-        self.gui.set_index(new_index)
-        self.gui.delegate.match_index = new_index
-        self.model.update(old_index)
-        self.model.update(new_index)
     
     def go_cell(self):
         print('go_cell')
@@ -201,6 +188,8 @@ class Table:
         self.set_col_width()
         self.set_row_height(42)
         self.show_borders(False)
+        #TODO: set first text cell
+        self.select(0,0)
     
     def go_start(self):
         self.gui.go_start()

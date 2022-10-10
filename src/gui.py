@@ -42,8 +42,7 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
     # akej74, https://stackoverflow.com/questions/35397943/how-to-make-a-fast-qtableview-with-html-formatted-and-clickable-cells
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.rowno = 0
-        self.colno = 0
+        self.index = None
     
     def set_line_spacing(self,doc):
         f = '[MClient] gui.TableDelegate.set_line_spacing'
@@ -58,6 +57,7 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         cursor.setBlockFormat(format_)
     
     def paint(self,painter,option,index):
+        f = '[MClientQt] gui.TableDelegate.paint'
         # index:   PyQt5.QtCore.QModelIndex
         # painter: PyQt5.QtGui.QPainter
         # option:  PyQt5.QtWidgets.QStyleOptionViewItem
@@ -83,7 +83,10 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         
         textRect = style.subElementRect(PyQt5.QtWidgets.QStyle.SE_ItemViewItemText,options)
         
-        if index.row() == self.rowno and index.column() == self.colno:
+        if self.index is None:
+            mes = _('Index must be set externally!')
+            sh.objs.get_mes(f,mes,True).show_error()
+        elif index == self.index:
             color = PyQt5.QtGui.QColor('red')
             pen = PyQt5.QtGui.QPen(color,2)
             painter.setPen(pen)
@@ -134,6 +137,7 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     def set_index(self,index_):
         self.setCurrentIndex(index_)
+        self.delegate.index = index_
     
     def get_index(self):
         return self.currentIndex()
