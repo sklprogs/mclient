@@ -114,7 +114,6 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.click_left = None
         self.click_right = None
         self.click_middle = None
-        self.vscroll_value = 0
         self.set_gui()
     
     def scroll2index(self,index_):
@@ -227,8 +226,7 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.vheader = self.verticalHeader()
         self.hheader.setVisible(False)
         self.vheader.setVisible(False)
-        self.hscroll = self.horizontalScrollBar()
-        self.vscroll = self.verticalScrollBar()
+        self.setStyleSheet('QTableView { selection-background-color: white; }')
     
     def show_borders(self,Show=False):
         self.setShowGrid(Show)
