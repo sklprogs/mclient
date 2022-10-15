@@ -26,6 +26,21 @@ class Table:
         self.rownum = 1
         self.colnum = 1
     
+    def get_page_num(self):
+        f = '[MClient] mclient.Table.get_page_num'
+        rowno, colno = self._get_end()
+        lasty = self.gui.get_cell_y(rowno)
+        height_ = self.gui.get_height()
+        mes = _('Screen height: {}').format(height_)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        if not height_:
+            sh.com.rep_empty(f)
+            return 0
+        page_num = int(lasty / height_)
+        mes = _('Number of pages: {}').format(page_num)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return page_num
+    
     def go_end(self):
         rowno, colno = self._get_end()
         self.select(rowno,colno)
@@ -102,6 +117,9 @@ class Table:
     
     def scroll_top(self):
         f = '[MClientQt] mclient.Table.scroll_top'
+        page_num = self.get_page_num()
+        #rowno, colno = self.get_cell()
+        '''
         height = self.gui.get_height()
         rowno, colno = self.get_cell()
         y = self.gui.get_row_y(rowno)
@@ -113,6 +131,7 @@ class Table:
         mes = mes.format(height,rowno,colno,row_height,y,page_y,page_row_no)
         sh.objs.get_mes(f,mes,True).show_debug()
         self.gui.scroll2index(new_index)
+        '''
     
     def go_cell(self):
         print('go_cell')

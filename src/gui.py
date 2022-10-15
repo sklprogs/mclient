@@ -258,20 +258,6 @@ class App(PyQt5.QtWidgets.QMainWindow):
     def get_width(self):
         return self.width()
     
-    def get_page_num(self,rowno,colno):
-        f = '[MClient] gui.App.get_page_num'
-        lastx = self.table.get_cell_x(colno)
-        lasty = self.table.get_cell_y(rowno)
-        height_ = self.table.height()
-        #height_ = self.height()
-        print('height:',height_)
-        if not height_:
-            sh.com.rep_empty(f)
-            return
-        page_num = int(lasty / height_)
-        print('page_num:',page_num)
-        return page_num
-    
     def minimize(self):
         self.showMinimized()
     
