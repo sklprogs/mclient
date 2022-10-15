@@ -34,7 +34,10 @@ class Table:
             rowno = 0
         else:
             rowno = next_rowno
+        mes = 'Go down. Row #{}. Column #{}'.format(rowno,colno)
+        print(mes)
         self.select(rowno,colno)
+        self.scroll_top()
     
     def select(self,rowno,colno):
         old_index = self.gui.get_index()
@@ -47,18 +50,26 @@ class Table:
         rowno, colno = self.get_cell()
         if rowno > 0:
             rowno -= 1
+        mes = 'Go up. Row #{}. Column #{}'.format(rowno,colno)
+        print(mes)
         self.select(rowno,colno)
     
     def go_left(self):
+        print('GO LEFT')
         rowno, colno = self.get_cell()
         if colno > 0:
             colno -= 1
+        mes = 'Go left. Row #{}. Column #{}'.format(rowno,colno)
+        print(mes)
         self.select(rowno,colno)
     
     def go_right(self):
+        print('GO RIGHT')
         rowno, colno = self.get_cell()
         if colno + 1 < self.colnum:
             colno += 1
+        mes = 'Go right. Row #{}. Column #{}'.format(rowno,colno)
+        print(mes)
         self.select(rowno,colno)
     
     def scroll_top(self):
@@ -222,6 +233,8 @@ class Table:
         self.gui.select = self.select
         self.gui.click_left = self.go_cell
         self.gui.click_right = self.copy_cell
+        self.gui.click_left_arrow = self.go_left
+        self.gui.click_right_arrow = self.go_right
         #self.set_max_row_height()
 
 
@@ -312,10 +325,10 @@ class App:
         # Mouse buttons cannot be bound
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.minimize)
-        self.gui.bind('Down',self.table.go_down)
-        self.gui.bind('Up',self.table.go_up)
         self.gui.bind('Left',self.table.go_left)
         self.gui.bind('Right',self.table.go_right)
+        self.gui.bind('Down',self.table.go_down)
+        self.gui.bind('Up',self.table.go_up)
         self.table.gui.click_middle = self.minimize
     
     def set_title(self,title='MClientQt'):

@@ -114,6 +114,8 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.click_left = None
         self.click_right = None
         self.click_middle = None
+        self.click_left_arrow = None
+        self.click_right_arrow = None
         self.set_gui()
     
     def scroll2index(self,index_):
@@ -176,8 +178,9 @@ class Table(PyQt5.QtWidgets.QTableView):
         sh.objs.get_mes(f,mes,True).show_error()
     
     def eventFilter(self,widget,event):
-        # Qt accepts boolean at output, but not NoneType
-        # NOTE: Return True for matches only, otherwise the app will freeze!
+        ''' #NOTE: Return True for matches only, otherwise the app will freeze!
+            Qt accepts boolean at output, but not NoneType.
+        '''
         type_ = event.type()
         if type_ == PyQt5.QtCore.QEvent.MouseMove:
             if not self.select:
@@ -205,6 +208,18 @@ class Table(PyQt5.QtWidgets.QTableView):
                 if self.click_middle:
                     self._use_mouse(event)
                     self.click_middle()
+                else:
+                    self._report_external()
+                return True
+            elif button == PyQt5.QtCore.Qt.Qt_Left:
+                if self.click_left_arrow:
+                    self.click_left_arrow()
+                else:
+                    self._report_external()
+                return True
+            elif button == PyQt5.QtCore.Qt.Qt_Right:
+                if self.click_right_arrow:
+                    self.click_right_arrow()
                 else:
                     self._report_external()
                 return True
@@ -430,7 +445,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
             self.panel.move(self.pos,0)
     
     def trigger_hover(self,event):
-        ''' We shouldn't use event.x since this returns x relative to the
+        ''' We should not use event.x since this returns x relative to the
             widget that caused the event, and this widget will be any we have
             mouse over.
         '''
