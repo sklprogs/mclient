@@ -55,7 +55,6 @@ class Table:
         self.select(rowno,colno)
     
     def go_left(self):
-        print('GO LEFT')
         rowno, colno = self.get_cell()
         if colno > 0:
             colno -= 1
@@ -64,7 +63,6 @@ class Table:
         self.select(rowno,colno)
     
     def go_right(self):
-        print('GO RIGHT')
         rowno, colno = self.get_cell()
         if colno + 1 < self.colnum:
             colno += 1
@@ -302,7 +300,10 @@ class App:
         self.gui.minimize()
     
     def update_ui(self):
-        self.gui.panel.ent_src.focus()
+        ''' #TODO: Focusing on the entry will disable left-right arrow keys
+            since the table must have a focus for these keys to work.
+        '''
+        #self.gui.panel.ent_src.focus()
         #TODO: load from logic
         sources = (_('Multitran'),_('Stardict'),'Lingvo (DSL)'
                   ,_('Local MT')
