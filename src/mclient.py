@@ -32,24 +32,12 @@ class Table:
     
     def _get_end(self):
         f = '[MClient] mclient.Table._get_end'
-        rowno = self.rownum - 1
-        while rowno >= 0:
-            colno = self.colnum - 1
-            while colno >= 0:
-                try:
-                    if self.plain[rowno][colno]:
-                        mes = _('Row #{}. Column #{}').format(rowno,colno)
-                        sh.objs.get_mes(f,mes,True).show_debug()
-                        return(rowno,colno)
-                except IndexError:
-                    #TODO: why we still may have IndexError here?
-                    mes = _('List out of bounds at row #{}, column #{}!')
-                    mes = mes.format(rowno,colno)
-                    sh.objs.get_mes(f,mes,True).show_error()
-                colno -= 1
-            rowno -= 1
-        mes = _('Row #{}. Column #{}').format(0,0)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        for cell in self.cells[::-1]:
+            #TODO: implement 'cell.type_'
+            if cell.plain and cell.colno > 3:
+                mes = _('Row #{}. Column #{}').format(cell.rowno,cell.colno)
+                sh.objs.get_mes(f,mes,True).show_debug()
+                return(cell.rowno,cell.colno)
         return(0,0)
     
     def go_start(self):
@@ -58,24 +46,14 @@ class Table:
     
     def _get_start(self):
         f = '[MClient] mclient.Table._get_start'
-        rowno = 0
-        while rowno < self.rownum:
-            colno = 0
-            while colno < self.colnum:
-                try:
-                    if self.plain[rowno][colno]:
-                        mes = _('Row #{}. Column #{}').format(rowno,colno)
-                        sh.objs.get_mes(f,mes,True).show_debug()
-                        return(rowno,colno)
-                except IndexError:
-                    #TODO: why we still may have IndexError here?
-                    mes = _('List out of bounds at row #{}, column #{}!')
-                    mes = mes.format(rowno,colno)
-                    sh.objs.get_mes(f,mes,True).show_error()
-                colno += 1
-            rowno += 1
-        mes = _('Row #{}. Column #{}').format(0,0)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        for cell in self.cells:
+            #TODO: set types in cells
+            #if cell.type_ == 'term' and cell.plain:
+            #if cell.plain and cell.colno > 3:
+            if cell.plain:
+                mes = _('Row #{}. Column #{}').format(cell.rowno,cell.colno)
+                sh.objs.get_mes(f,mes,True).show_debug()
+                return(cell.rowno,cell.colno)
         return(0,0)
     
     def go_down(self):
@@ -249,8 +227,7 @@ class Table:
         self.set_col_width()
         self.set_row_height(42)
         self.show_borders(False)
-        #TODO: set first text cell
-        self.select(0,0)
+        self.go_start()
     
     def fill(self):
         f = '[MClientQt] mclient.Table.fill'
