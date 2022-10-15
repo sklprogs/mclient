@@ -156,10 +156,6 @@ class Table(PyQt5.QtWidgets.QTableView):
     def get_cell_y(self,rowno):
         return self.rowViewportPosition(rowno)
     
-    def go_start(self):
-        #TODO: implement
-        pass
-    
     def set_model(self,mymodel):
         # Do not overwrite built-in 'model'
         self.mymodel = mymodel

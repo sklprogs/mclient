@@ -36,11 +36,6 @@ class Table:
         while rowno >= 0:
             colno = self.colnum - 1
             while colno >= 0:
-                mes = _('Row #{}. Column #{}').format(rowno,colno)
-                sh.objs.get_mes(f,mes,True).show_debug()
-                mes = _('Rows in total: {}. Columns in total: {}')
-                mes = mes.format(self.rownum,self.colnum)
-                sh.objs.get_mes(f,mes,True).show_debug()
                 try:
                     if self.plain[rowno][colno]:
                         mes = _('Row #{}. Column #{}').format(rowno,colno)
@@ -53,6 +48,32 @@ class Table:
                     sh.objs.get_mes(f,mes,True).show_error()
                 colno -= 1
             rowno -= 1
+        mes = _('Row #{}. Column #{}').format(0,0)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return(0,0)
+    
+    def go_start(self):
+        rowno, colno = self._get_start()
+        self.select(rowno,colno)
+    
+    def _get_start(self):
+        f = '[MClient] mclient.Table._get_start'
+        rowno = 0
+        while rowno < self.rownum:
+            colno = 0
+            while colno < self.colnum:
+                try:
+                    if self.plain[rowno][colno]:
+                        mes = _('Row #{}. Column #{}').format(rowno,colno)
+                        sh.objs.get_mes(f,mes,True).show_debug()
+                        return(rowno,colno)
+                except IndexError:
+                    #TODO: why we still may have IndexError here?
+                    mes = _('List out of bounds at row #{}, column #{}!')
+                    mes = mes.format(rowno,colno)
+                    sh.objs.get_mes(f,mes,True).show_error()
+                colno += 1
+            rowno += 1
         mes = _('Row #{}. Column #{}').format(0,0)
         sh.objs.get_mes(f,mes,True).show_debug()
         return(0,0)
@@ -231,9 +252,6 @@ class Table:
         #TODO: set first text cell
         self.select(0,0)
     
-    def go_start(self):
-        self.gui.go_start()
-    
     def fill(self):
         f = '[MClientQt] mclient.Table.fill'
         timer = sh.Timer(f)
@@ -361,6 +379,7 @@ class App:
         self.gui.bind('Right',self.table.go_right)
         self.gui.bind('Down',self.table.go_down)
         self.gui.bind('Up',self.table.go_up)
+        self.gui.bind('Ctrl+Home',self.table.go_start)
         self.gui.bind('Ctrl+End',self.table.go_end)
         self.table.gui.click_middle = self.minimize
     
