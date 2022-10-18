@@ -132,7 +132,8 @@ class Table:
     def scroll_top(self):
         f = '[MClientQt] mclient.Table.scroll_top'
         rowno, colno = self.gui.get_cell()
-        index_ = self.model.index(colno,self.coords[rowno])
+        print('rowno -> page_rowno:',rowno,self.coords[rowno])
+        index_ = self.model.index(self.coords[rowno],colno)
         self.gui.scroll2index(index_)
         '''
         range_ = self.get_page_range()
@@ -307,9 +308,11 @@ class Table:
             page_y = pageno * height
             page_rowno = self.gui.get_row_by_y(page_y)
             self.coords[rowno] = page_rowno
+            mes = 'Row #{}. Y: {}. Page #{}. Page row #{}'
+            mes = mes.format(rowno,y,pageno,page_rowno)
             #cur
             #mes = 'Row #{}. Page row #{}'.format(rowno,page_rowno)
-            #print(mes)
+            print(mes)
         timer.end()
     
     def fill(self):
