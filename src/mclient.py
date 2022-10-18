@@ -197,8 +197,6 @@ class Table:
                 width = 63
             else:
                 width = sh.lg.globs['int']['term_col_width']
-            #mes = 'Column #{}; width: {}'.format(no,width)
-            #print(mes)
             self.gui.set_col_width(no,width)
     
     def set_matrix(self):
@@ -257,9 +255,7 @@ class Table:
         self.go_start()
     
     def set_coords(self):
-        # Calculating Y for each row is very fast even for long articles
-        timer = sh.Timer('set_coords')
-        timer.start()
+        # Calculating Y is very fast (~0.05s for 'set' on Intel Atom)
         height = self.gui.get_height()
         for rowno in range(self.rownum):
             y = self.gui.get_cell_y(rowno) + self.gui.get_row_height(rowno)
@@ -267,12 +263,6 @@ class Table:
             page_y = pageno * height
             page_rowno = self.gui.get_row_by_y(page_y)
             self.coords[rowno] = page_rowno
-            mes = 'Row #{}. Y: {}. Page #{}. Page row #{}'
-            mes = mes.format(rowno,y,pageno,page_rowno)
-            #cur
-            #mes = 'Row #{}. Page row #{}'.format(rowno,page_rowno)
-            print(mes)
-        timer.end()
     
     def fill(self):
         f = '[MClientQt] mclient.Table.fill'
