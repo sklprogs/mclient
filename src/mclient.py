@@ -212,11 +212,17 @@ class Table:
         return last_rowno
     
     def _get_next_useful_row(self,rowno,colno):
+        f = '[MClientQt] mclient.Table._get_next_useful_row'
         next_rowno = rowno
         while next_rowno + 1 < self.rownum:
             next_rowno += 1
-            if self.plain[next_rowno][colno]:
-                return next_rowno
+            try:
+                if self.plain[next_rowno][colno]:
+                    return next_rowno
+            except IndexError:
+                mes = _('Wrong input data: "{}"!').format((next_rowno,colno))
+                sh.objs.get_mes(f,mes,True).show_warning()
+                return rowno
         return rowno
     
     def set_row_height(self,height=42):
