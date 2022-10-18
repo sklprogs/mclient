@@ -130,56 +130,9 @@ class Table:
         self.select(rowno,colno)
     
     def scroll_top(self):
-        f = '[MClientQt] mclient.Table.scroll_top'
         rowno, colno = self.gui.get_cell()
-        print('rowno -> page_rowno:',rowno,self.coords[rowno])
         index_ = self.model.index(self.coords[rowno],colno)
         self.gui.scroll2index(index_)
-        '''
-        range_ = self.get_page_range()
-        rowno, colno = self.gui.get_cell()
-        print()
-        mes = _('Row #{}. Column #{}').format(rowno,colno)
-        print(mes)
-        y = self.gui.get_cell_y(rowno)
-        print('rowno:',rowno,'; Y:',y)
-        delta = [item - y for item in range_]
-        print('delta:',delta)
-        delta = [item for item in delta if item < 0]
-        print('delta2:',delta)
-        print('delta value:',delta[-1])
-        page_no = delta.index(delta[-1])
-        print('page no:',page_no,'; page Y:',range_[page_no])
-        '''
-        '''
-        indexes = []
-        # Calculating indexes, even many of them, is fast
-        for y in range_:
-            colno = self.gui.rowAt(y)
-            indexes.append(self.model.index(0,colno))
-        print('indexes:',indexes)
-        '''
-        '''
-        index_ = self.gui.get_index()
-        print('diff1:',indexes[0]-index_)
-        print('diff2:',indexes[1]-index_)
-        print('index_diff:',indexes[1]-indexes[0])
-        '''
-        #page_num = self.get_page_num()
-        #rowno, colno = self.get_cell()
-        '''
-        height = self.gui.get_height()
-        rowno, colno = self.get_cell()
-        y = self.gui.get_row_y(rowno)
-        row_height = self.gui.get_row_height(rowno)
-        page_y = y - height + 2 * row_height
-        page_row_no = self.gui.get_row_by_y(page_y)
-        new_index = self.model.index(page_row_no,colno)
-        mes = _('Table height: {}, row #{}, column #{}, row height: {}, row Y: {}, page Y: {}, page row #{}')
-        mes = mes.format(height,rowno,colno,row_height,y,page_y,page_row_no)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        self.gui.scroll2index(new_index)
-        '''
     
     def go_cell(self):
         print('go_cell')
