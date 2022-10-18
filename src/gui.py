@@ -121,6 +121,9 @@ class Table(PyQt5.QtWidgets.QTableView):
     def scroll2index(self,index_):
         self.scrollTo(index_,PyQt5.QtWidgets.QAbstractItemView.PositionAtTop)
     
+    def get_col_by_x(self,x):
+        return self.columnAt(x)
+    
     def get_row_by_y(self,y):
         return self.rowAt(y)
     

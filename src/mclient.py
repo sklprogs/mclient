@@ -25,6 +25,20 @@ class Table:
         self.plain = []
         self.rownum = 1
         self.colnum = 1
+        self.coords = {}
+    
+    def get_page_range(self):
+        f = '[MClient] mclient.Table.get_page_range'
+        page_num = self.get_page_num()
+        height = self.gui.get_height()
+        if not page_num or not height:
+            sh.com.rep_empty(f)
+            return []
+        range_ = []
+        for i in range(page_num):
+            range_.append(height*i)
+        print('Range:',range_)
+        return range_
     
     def get_page_num(self):
         f = '[MClient] mclient.Table.get_page_num'
@@ -117,7 +131,40 @@ class Table:
     
     def scroll_top(self):
         f = '[MClientQt] mclient.Table.scroll_top'
-        page_num = self.get_page_num()
+        rowno, colno = self.gui.get_cell()
+        index_ = self.model.index(colno,self.coords[rowno])
+        self.gui.scroll2index(index_)
+        '''
+        range_ = self.get_page_range()
+        rowno, colno = self.gui.get_cell()
+        print()
+        mes = _('Row #{}. Column #{}').format(rowno,colno)
+        print(mes)
+        y = self.gui.get_cell_y(rowno)
+        print('rowno:',rowno,'; Y:',y)
+        delta = [item - y for item in range_]
+        print('delta:',delta)
+        delta = [item for item in delta if item < 0]
+        print('delta2:',delta)
+        print('delta value:',delta[-1])
+        page_no = delta.index(delta[-1])
+        print('page no:',page_no,'; page Y:',range_[page_no])
+        '''
+        '''
+        indexes = []
+        # Calculating indexes, even many of them, is fast
+        for y in range_:
+            colno = self.gui.rowAt(y)
+            indexes.append(self.model.index(0,colno))
+        print('indexes:',indexes)
+        '''
+        '''
+        index_ = self.gui.get_index()
+        print('diff1:',indexes[0]-index_)
+        print('diff2:',indexes[1]-index_)
+        print('index_diff:',indexes[1]-indexes[0])
+        '''
+        #page_num = self.get_page_num()
         #rowno, colno = self.get_cell()
         '''
         height = self.gui.get_height()
@@ -246,7 +293,24 @@ class Table:
         self.set_col_width()
         self.set_row_height(42)
         self.show_borders(False)
+        self.set_coords()
         self.go_start()
+    
+    def set_coords(self):
+        # Calculating Y for each row is very fast even for long articles
+        timer = sh.Timer('set_coords')
+        timer.start()
+        height = self.gui.get_height()
+        for rowno in range(self.rownum):
+            y = self.gui.get_cell_y(rowno) + self.gui.get_row_height(rowno)
+            pageno = int(y / height)
+            page_y = pageno * height
+            page_rowno = self.gui.get_row_by_y(page_y)
+            self.coords[rowno] = page_rowno
+            #cur
+            #mes = 'Row #{}. Page row #{}'.format(rowno,page_rowno)
+            #print(mes)
+        timer.end()
     
     def fill(self):
         f = '[MClientQt] mclient.Table.fill'
