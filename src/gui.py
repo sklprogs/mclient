@@ -103,6 +103,16 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         doc.documentLayout().draw(painter,ctx)
     
         painter.restore()
+    
+    def sizeHint(self,option,index):
+        options = PyQt5.QtWidgets.QStyleOptionViewItem(option)
+        self.initStyleOption(options,index)
+        
+        doc = PyQt5.QtGui.QTextDocument()
+        doc.setHtml(options.text)
+        doc.setTextWidth(options.rect.width())
+        
+        return PyQt5.QtCore.QSize(doc.idealWidth(),doc.size().height())
 
 
 

@@ -252,7 +252,24 @@ class Table:
         self.set_row_height(42)
         self.show_borders(False)
         self.set_coords()
+        self.set_limited()
         self.go_start()
+    
+    def set_limited(self):
+        ''' This is slow ('set' on Intel Atom without debugging: ~2.68s with
+            default sizeHint and ~5.57s with custom sizeHint.
+        '''
+        f = 'set_limited'
+        limited = []
+        timer = sh.Timer(f)
+        timer.start()
+        #self.gui.delegate.sizeHint()
+        for rowno in range(self.rownum):
+            #self.gui.sizeHintForRow(rowno)
+            mes = 'Row #{}. Size hint: {}'
+            mes = mes.format(rowno,self.gui.sizeHintForRow(rowno))
+            sh.objs.get_mes(f,mes,True).show_debug()
+        timer.end()
     
     def set_coords(self):
         # Calculating Y is very fast (~0.05s for 'set' on Intel Atom)
