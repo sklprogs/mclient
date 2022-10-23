@@ -26,6 +26,8 @@ class Table:
         self.rownum = 1
         self.colnum = 1
         self.coords = {}
+        self.long = []
+        self.row_height = 42
     
     def get_page_range(self):
         f = '[MClient] mclient.Table.get_page_range'
@@ -249,27 +251,31 @@ class Table:
         self.model = gi.TableModel(self.matrix)
         self.fill()
         self.set_col_width()
-        self.set_row_height(42)
+        self.set_row_height(self.row_height)
         self.show_borders(False)
         self.set_coords()
-        self.set_limited()
+        self.set_long()
         self.go_start()
     
-    def set_limited(self):
+    def set_long(self):
         ''' This is slow ('set' on Intel Atom without debugging: ~2.68s with
             default sizeHint and ~5.57s with custom sizeHint.
         '''
-        f = 'set_limited'
-        limited = []
+        f = '[MClient] mclient.Table.set_long'
         timer = sh.Timer(f)
         timer.start()
         for rowno in range(self.rownum):
-            hint_height = self.gui.get_row_hint(rowno)
-            mes = 'Row #{}. Size hint: {}'
-            mes = mes.format(rowno,hint_height)
-            sh.objs.get_mes(f,mes,True).show_debug()
-            self.gui.set_row_height(rowno,hint_height)
+            for colno in range(self.colnum):
+                index_ = self.model.index(rowno,colno)
+                height = self.gui.get_cell_hint(index_)
+                mes = 'Row #{}. Column #{}. Size hint: {}'
+                mes = mes.format(rowno,colno,height)
+                sh.objs.get_mes(f,mes,True).show_debug()
+                if height > self.row_height:
+                    self.long.append(index_)
         timer.end()
+        mes = _('Number of long cells: {}').format(len(self.long))
+        sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_coords(self):
         # Calculating Y is very fast (~0.05s for 'set' on Intel Atom)

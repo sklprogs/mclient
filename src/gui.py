@@ -128,6 +128,10 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.click_right_arrow = None
         self.set_gui()
     
+    def get_cell_hint(self,index_):
+        option = PyQt5.QtWidgets.QStyleOptionViewItem()
+        return self.delegate.sizeHint(option,index_).height()
+    
     def scroll2index(self,index_):
         self.scrollTo(index_,PyQt5.QtWidgets.QAbstractItemView.PositionAtTop)
     
