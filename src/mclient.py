@@ -263,12 +263,12 @@ class Table:
         limited = []
         timer = sh.Timer(f)
         timer.start()
-        #self.gui.delegate.sizeHint()
         for rowno in range(self.rownum):
-            #self.gui.sizeHintForRow(rowno)
+            hint_height = self.gui.get_row_hint(rowno)
             mes = 'Row #{}. Size hint: {}'
-            mes = mes.format(rowno,self.gui.sizeHintForRow(rowno))
+            mes = mes.format(rowno,hint_height)
             sh.objs.get_mes(f,mes,True).show_debug()
+            self.gui.set_row_height(rowno,hint_height)
         timer.end()
     
     def set_coords(self):

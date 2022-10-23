@@ -137,6 +137,9 @@ class Table(PyQt5.QtWidgets.QTableView):
     def get_row_by_y(self,y):
         return self.rowAt(y)
     
+    def get_row_hint(self,rowno):
+        return self.sizeHintForRow(rowno)
+    
     def get_row_height(self,rowno):
         return self.rowHeight(rowno)
     
