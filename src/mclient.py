@@ -26,7 +26,6 @@ class Table:
         self.rownum = 1
         self.colnum = 1
         self.coords = {}
-        self.long = []
         self.row_height = 42
     
     def get_page_range(self):
@@ -264,17 +263,21 @@ class Table:
         f = '[MClient] mclient.Table.set_long'
         timer = sh.Timer(f)
         timer.start()
+        self.gui.delegate.long = []
         for rowno in range(self.rownum):
             for colno in range(self.colnum):
                 index_ = self.model.index(rowno,colno)
                 height = self.gui.get_cell_hint(index_)
-                mes = 'Row #{}. Column #{}. Size hint: {}'
-                mes = mes.format(rowno,colno,height)
-                sh.objs.get_mes(f,mes,True).show_debug()
-                if height > self.row_height:
-                    self.long.append(index_)
+                #mes = 'Row #{}. Column #{}. Size hint: {}'
+                #mes = mes.format(rowno,colno,height)
+                #sh.objs.get_mes(f,mes,True).show_debug()
+                #if height > self.row_height:
+                if height > 200:
+                    self.gui.delegate.long.append(index_)
         timer.end()
-        mes = _('Number of long cells: {}').format(len(self.long))
+        mes = _('Number of cells: {}').format(self.rownum*self.colnum)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = _('Number of long cells: {}').format(len(self.gui.delegate.long))
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_coords(self):

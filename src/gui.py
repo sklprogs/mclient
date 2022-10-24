@@ -43,6 +43,7 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.index = None
+        self.long = []
     
     def set_line_spacing(self,doc):
         f = '[MClient] gui.TableDelegate.set_line_spacing'
@@ -93,6 +94,15 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
             # Avoid intersecting cell borders and artifacts as the result
             x1, y1, x2, y2 = option.rect.getCoords()
             option.rect.setCoords(x1+1,y1+1,x2-1,y2-1)
+            painter.drawRect(option.rect)
+        
+        if self.long and index in self.long:
+            color = PyQt5.QtGui.QColor('blue')
+            pen = PyQt5.QtGui.QPen(color,2)
+            painter.setPen(pen)
+            # Avoid intersecting cell borders and artifacts as the result
+            x1, y1, x2, y2 = option.rect.getCoords()
+            option.rect.setCoords(x1+4,y1+4,x2-4,y2-4)
             painter.drawRect(option.rect)
         
         painter.save()
