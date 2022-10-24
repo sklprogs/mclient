@@ -272,7 +272,7 @@ class Table:
                 #mes = mes.format(rowno,colno,height)
                 #sh.objs.get_mes(f,mes,True).show_debug()
                 #if height > self.row_height:
-                if height > 200:
+                if height > 380:
                     self.gui.delegate.long.append(index_)
         timer.end()
         mes = _('Number of cells: {}').format(self.rownum*self.colnum)
