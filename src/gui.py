@@ -99,11 +99,13 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         if self.long and index in self.long:
             color = PyQt5.QtGui.QColor('blue')
             pen = PyQt5.QtGui.QPen(color,2)
+            pen.setStyle(PyQt5.QtCore.Qt.DashDotLine)
             painter.setPen(pen)
             # Avoid intersecting cell borders and artifacts as the result
             x1, y1, x2, y2 = option.rect.getCoords()
             option.rect.setCoords(x1+4,y1+4,x2-4,y2-4)
             painter.drawRect(option.rect)
+            #painter.drawLine(x1-1,y2-1,x2-1,y2-1)
         
         painter.save()
     
