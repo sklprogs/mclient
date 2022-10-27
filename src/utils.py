@@ -36,9 +36,9 @@ class FontsDB:
         query = 'select FAMILY,SIZE from FONTS' #where COLNO > 3
         # DejaVu Sans 12, FreeSans 13
         #self.dbc.execute(query,)
-        #query = 'update FONTS set FAMILY = "Noto Sans Mono" where FAMILY = "Latin Modern Mono" and COLNO > 3'
+        query = 'update FONTS set FAMILY = "Nimbus Sans"'
         self.dbc.execute(query,)
-        print(self.dbc.fetchall())
+        #print(self.dbc.fetchall())
     
     def create_fonts(self):
         # 9 columns for now
