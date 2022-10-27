@@ -484,8 +484,7 @@ class Elems:
               might be no 'phdic' type which serves as an indicator.
             - Takes ~0.02s for 'set' (EN-RU) on Intel Atom.
         '''
-        ru = ('Добавить','|','Сообщить об ошибке','|'
-             ,'Ссылка на эту страницу','|'
+        ru = ('Добавить','|','Сообщить об ошибке','|','Короткая ссылка','|'
              ,'Способы выбора языков'
              )
         en = ('Add','|','Report an error','|','Get short URL','|'
