@@ -260,8 +260,7 @@ class Elems:
                        if not (block.type_ == 'comment' \
                        and block.text in ('спросить в форуме'
                                          ,'ask in forum','<!--','-->'
-                                         ,'Ссылка на эту страницу'
-                                         ,'Get short URL'
+                                         ,'Короткая ссылка','Get short URL'
                                          ,' (у некоторых значений из тезауруса нет переводов в словаре)'
                                          ,' (there may be no translations for some thesaurus entries in the bilingual dictionary)'
                                          )
@@ -484,8 +483,7 @@ class Elems:
               might be no 'phdic' type which serves as an indicator.
             - Takes ~0.02s for 'set' (EN-RU) on Intel Atom.
         '''
-        ru = ('Добавить','|','Сообщить об ошибке','|'
-             ,'Ссылка на эту страницу','|'
+        ru = ('Добавить','|','Сообщить об ошибке','|','Короткая ссылка','|'
              ,'Способы выбора языков'
              )
         en = ('Add','|','Report an error','|','Get short URL','|'
