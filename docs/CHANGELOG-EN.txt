@@ -1,6 +1,10 @@
 (in development)
 * 
 
+6.14.4
+* Remove "Get short URL" block
+* Remove extra blocks at the end of the article
+
 6.14.3
 * Fix mode of showing separate words only
 * Fix selecting blocks in "Phrases" section
