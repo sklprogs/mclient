@@ -260,8 +260,7 @@ class Elems:
                        if not (block.type_ == 'comment' \
                        and block.text in ('спросить в форуме'
                                          ,'ask in forum','<!--','-->'
-                                         ,'Ссылка на эту страницу'
-                                         ,'Get short URL'
+                                         ,'Короткая ссылка','Get short URL'
                                          ,' (у некоторых значений из тезауруса нет переводов в словаре)'
                                          ,' (there may be no translations for some thesaurus entries in the bilingual dictionary)'
                                          )
