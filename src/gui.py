@@ -180,6 +180,10 @@ class Table(PyQt5.QtWidgets.QTableView):
         return(index_.row(),index_.column())
     
     def get_height(self):
+        ''' #NOTE: Run only after events since Qt returns dummy geometry values
+            right after startup. This is claimed to be fixed by showing the
+            window, but I have not managed this yet.
+        '''
         return self.height()
     
     def get_cell_x(self,colno):

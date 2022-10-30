@@ -87,6 +87,11 @@ class Table:
         return(0,0)
     
     def go_down(self):
+        ''' #TODO: Recalculate pages only when necessary. This should run only
+            after the event since Qt returns dummy geometry values right after
+            startup.
+        '''
+        self.set_coords()
         rowno, colno = self.get_cell()
         next_rowno = self._get_next_useful_row(rowno,colno)
         if rowno == next_rowno:
@@ -252,8 +257,7 @@ class Table:
         self.set_col_width()
         self.set_row_height(self.row_height)
         self.show_borders(False)
-        self.set_coords()
-        self.set_long()
+        #self.set_long()
         self.go_start()
     
     def set_long(self):
