@@ -91,7 +91,6 @@ class Table:
             after the event since Qt returns dummy geometry values right after
             startup.
         '''
-        self.set_coords()
         rowno, colno = self.get_cell()
         next_rowno = self._get_next_useful_row(rowno,colno)
         if rowno == next_rowno:
@@ -284,9 +283,15 @@ class Table:
         mes = _('Number of long cells: {}').format(len(self.gui.delegate.long))
         sh.objs.get_mes(f,mes,True).show_debug()
     
-    def set_coords(self):
-        # Calculating Y is very fast (~0.05s for 'set' on Intel Atom)
+    def set_coords(self,event=None):
+        f = '[MClientQt] mclient.Table.set_coords'
+        ''' Calculating Y is very fast (~0.05s for 'set' on Intel Atom). We
+            need None since this procedure overrides
+            self.gui.parent.resizeEvent.
+        '''
         height = self.gui.get_height()
+        mes = _('Window height: {}').format(height)
+        sh.objs.get_mes(f,mes,True).show_debug()
         for rowno in range(self.rownum):
             y = self.gui.get_cell_y(rowno) + self.gui.get_row_height(rowno)
             pageno = int(y / height)
@@ -424,6 +429,11 @@ class App:
         self.gui.bind('Ctrl+Home',self.table.go_start)
         self.gui.bind('Ctrl+End',self.table.go_end)
         self.table.gui.click_middle = self.minimize
+        ''' Recalculate pages each time the main window is resized. This allows
+            to save resources and avoid getting dummy geometry which will be
+            returned before the window is shown.
+        '''
+        self.gui.parent.resizeEvent = self.table.set_coords
     
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)
