@@ -28,34 +28,6 @@ class Table:
         self.coords = {}
         self.row_height = 42
     
-    def get_page_range(self):
-        f = '[MClient] mclient.Table.get_page_range'
-        page_num = self.get_page_num()
-        height = self.gui.get_height()
-        if not page_num or not height:
-            sh.com.rep_empty(f)
-            return []
-        range_ = []
-        for i in range(page_num):
-            range_.append(height*i)
-        print('Range:',range_)
-        return range_
-    
-    def get_page_num(self):
-        f = '[MClient] mclient.Table.get_page_num'
-        rowno, colno = self._get_end()
-        lasty = self.gui.get_cell_y(rowno)
-        height_ = self.gui.get_height()
-        mes = _('Screen height: {}').format(height_)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        if not height_:
-            sh.com.rep_empty(f)
-            return 0
-        page_num = int(lasty / height_)
-        mes = _('Number of pages: {}').format(page_num)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        return page_num
-    
     def go_end(self):
         rowno, colno = self._get_end()
         self.select(rowno,colno)
@@ -135,6 +107,10 @@ class Table:
         self.select(rowno,colno)
     
     def scroll_top(self):
+        f = '[MClientQt] mclient.Table.scroll_top'
+        if not self.coords:
+            sh.com.rep_empty(f)
+            return
         rowno, colno = self.gui.get_cell()
         index_ = self.model.index(self.coords[rowno],colno)
         self.gui.scroll2index(index_)
