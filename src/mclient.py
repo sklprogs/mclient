@@ -17,46 +17,21 @@ class Table:
 
     def __init__(self):
         self.set_values()
+        self.logic = lg.Table()
         self.gui = gi.Table()
         self.set_gui()
     
     def set_values(self):
-        self.matrix = []
-        self.plain = []
-        self.rownum = 1
-        self.colnum = 1
         self.coords = {}
         self.row_height = 42
     
     def go_end(self):
-        rowno, colno = self._get_end()
+        rowno, colno = self.logic.get_end()
         self.select(rowno,colno)
-    
-    def _get_end(self):
-        f = '[MClient] mclient.Table._get_end'
-        for cell in self.cells[::-1]:
-            #TODO: implement 'cell.type_'
-            if cell.plain and cell.colno > 3:
-                mes = _('Row #{}. Column #{}').format(cell.rowno,cell.colno)
-                sh.objs.get_mes(f,mes,True).show_debug()
-                return(cell.rowno,cell.colno)
-        return(0,0)
     
     def go_start(self):
-        rowno, colno = self._get_start()
+        rowno, colno = self.logic.get_start()
         self.select(rowno,colno)
-    
-    def _get_start(self):
-        f = '[MClient] mclient.Table._get_start'
-        for cell in self.cells:
-            #TODO: set types in cells
-            #if cell.type_ == 'term' and cell.plain:
-            #if cell.plain and cell.colno > 3:
-            if cell.plain:
-                mes = _('Row #{}. Column #{}').format(cell.rowno,cell.colno)
-                sh.objs.get_mes(f,mes,True).show_debug()
-                return(cell.rowno,cell.colno)
-        return(0,0)
     
     def go_down(self):
         ''' #TODO: Recalculate pages only when necessary. This should run only
@@ -64,14 +39,7 @@ class Table:
             startup.
         '''
         rowno, colno = self.get_cell()
-        next_rowno = self._get_next_useful_row(rowno,colno)
-        if rowno == next_rowno:
-            print('Need to start over!')
-            rowno = 0
-        else:
-            rowno = next_rowno
-        mes = 'Go down. Row #{}. Column #{}'.format(rowno,colno)
-        print(mes)
+        rowno, colno = self.logic.get_next_row(rowno,colno)
         self.select(rowno,colno)
         self.scroll_top()
     
@@ -84,26 +52,17 @@ class Table:
     
     def go_up(self):
         rowno, colno = self.get_cell()
-        if rowno > 0:
-            rowno -= 1
-        mes = 'Go up. Row #{}. Column #{}'.format(rowno,colno)
-        print(mes)
+        rowno, colno = self.logic.get_prev_row(rowno,colno)
         self.select(rowno,colno)
     
     def go_left(self):
         rowno, colno = self.get_cell()
-        if colno > 0:
-            colno -= 1
-        mes = 'Go left. Row #{}. Column #{}'.format(rowno,colno)
-        print(mes)
+        rowno, colno = self.logic.get_prev_col(rowno,colno)
         self.select(rowno,colno)
     
     def go_right(self):
         rowno, colno = self.get_cell()
-        if colno + 1 < self.colnum:
-            colno += 1
-        mes = 'Go right. Row #{}. Column #{}'.format(rowno,colno)
-        print(mes)
+        rowno, colno = self.logic.get_next_col(rowno,colno)
         self.select(rowno,colno)
     
     def scroll_top(self):
@@ -135,41 +94,17 @@ class Table:
     def clear(self):
         self.gui.clear()
     
-    def _get_last_useful_row(self,rowno,colno):
-        f = '[MClientQt] mclient.Table._get_last_useful_row'
-        last_rowno = self.rownum - 1
-        while last_rowno >= rowno:
-            if self.plain[last_rowno][colno]:
-                sh.objs.get_mes(f,last_rowno,True).show_debug()
-                return last_rowno
-            last_rowno -= 1
-        return last_rowno
-    
-    def _get_next_useful_row(self,rowno,colno):
-        f = '[MClientQt] mclient.Table._get_next_useful_row'
-        next_rowno = rowno
-        while next_rowno + 1 < self.rownum:
-            next_rowno += 1
-            try:
-                if self.plain[next_rowno][colno]:
-                    return next_rowno
-            except IndexError:
-                mes = _('Wrong input data: "{}"!').format((next_rowno,colno))
-                sh.objs.get_mes(f,mes,True).show_warning()
-                return rowno
-        return rowno
-    
     def set_row_height(self,height=42):
-        for no in range(self.rownum):
+        for no in range(self.logic.rownum):
             self.gui.set_row_height(no,height)
     
     def set_col_width(self):
         # For some reason, this works only after filling cells
         f = '[MClientQt] mclient.Table.set_col_width'
-        mes = _('Number of columns: {}').format(self.colnum)
+        mes = _('Number of columns: {}').format(self.logic.colnum)
         sh.objs.get_mes(f,mes,True).show_debug()
         #TODO: Rework, number of fixed columns can be different
-        for no in range(self.colnum):
+        for no in range(self.logic.colnum):
             if no == 0:
                 width = 140
             elif no == 1:
@@ -180,54 +115,14 @@ class Table:
                 width = sh.lg.globs['int']['term_col_width']
             self.gui.set_col_width(no,width)
     
-    def set_matrix(self):
-        ''' Empty cells must be recreated since QTableView throws an error
-            otherwise.
-            #TODO: create empty cells with the 'cells' module
-        '''
-        old_rowno = 1
-        # Reset old articles
-        self.matrix = []
-        self.plain = []
-        row = []
-        plain_row = []
-        for i in range(len(self.cells)):
-            if old_rowno != self.cells[i].rowno:
-                if row:
-                    if i > 0:
-                        delta = self.colnum - self.cells[i-1].colno - 1
-                        for no in range(delta):
-                            row.append('')
-                            plain_row.append('')
-                    self.matrix.append(row)
-                    self.plain.append(plain_row)
-                    row = []
-                    plain_row = []
-                for j in range(self.cells[i].colno):
-                    row.append('')
-                    plain_row.append('')
-                old_rowno = self.cells[i].rowno
-            row.append(self.cells[i].code)
-            plain_row.append(self.cells[i].plain.strip())
-        if row:
-            delta = self.colnum - len(row) - 1
-            for no in range(delta):
-                row.append('')
-                plain_row.append('')
-            self.matrix.append(row)
-            self.plain.append(plain_row)
-    
-    def reset(self,cells,rownum,colnum):
+    def reset(self,cells):
         f = '[MClientQt] mclient.Table.reset'
-        if not cells or not rownum or not colnum:
+        if not cells:
             sh.com.rep_empty(f)
             return
-        self.cells = cells
-        self.rownum = rownum
-        self.colnum = colnum
         self.clear()
-        self.set_matrix()
-        self.model = gi.TableModel(self.matrix)
+        self.logic.reset(cells)
+        self.model = gi.TableModel(self.logic.table)
         self.fill()
         self.set_col_width()
         self.set_row_height(self.row_height)
@@ -243,8 +138,8 @@ class Table:
         timer = sh.Timer(f)
         timer.start()
         self.gui.delegate.long = []
-        for rowno in range(self.rownum):
-            for colno in range(self.colnum):
+        for rowno in range(self.logic.rownum):
+            for colno in range(self.logic.colnum):
                 index_ = self.model.index(rowno,colno)
                 height = self.gui.get_cell_hint(index_)
                 #mes = 'Row #{}. Column #{}. Size hint: {}'
@@ -254,7 +149,7 @@ class Table:
                 if height > 380:
                     self.gui.delegate.long.append(index_)
         timer.end()
-        mes = _('Number of cells: {}').format(self.rownum*self.colnum)
+        mes = _('Number of cells: {}').format(self.logic.rownum*self.logic.colnum)
         sh.objs.get_mes(f,mes,True).show_debug()
         mes = _('Number of long cells: {}').format(len(self.gui.delegate.long))
         sh.objs.get_mes(f,mes,True).show_debug()
@@ -268,7 +163,7 @@ class Table:
         height = self.gui.get_height()
         mes = _('Window height: {}').format(height)
         sh.objs.get_mes(f,mes,True).show_debug()
-        for rowno in range(self.rownum):
+        for rowno in range(self.logic.rownum):
             y = self.gui.get_cell_y(rowno) + self.gui.get_row_height(rowno)
             pageno = int(y / height)
             page_y = pageno * height
@@ -287,7 +182,7 @@ class Table:
     
     def set_max_col_width(self):
         constraints = []
-        for cell in self.cells:
+        for cell in self.logic.cells:
             #TODO: elaborate
             if cell.no < 5:
                 value = 63
@@ -362,11 +257,9 @@ class App:
         self.set_gui()
         self.update_ui()
     
-    def reset(self,cells,rownum,colnum):
+    def reset(self,cells):
         f = '[MClientQt] mclient.App.reset'
-        mes = _('Table sizes: {}x{}').format(rownum,colnum)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        self.table.reset(cells,rownum,colnum)
+        self.table.reset(cells)
     
     def minimize(self):
         self.gui.minimize()
@@ -428,18 +321,12 @@ if __name__ == '__main__':
     lg.objs.get_plugins(Debug=False,maxrows=1000)
     db = DB()
     data = db.fetch()
-    rownum = db.get_max_row_no()
-    colnum = db.get_max_col_no()
-    if rownum is not None:
-        rownum += 1
-    if colnum is not None:
-        colnum += 1
     blocks = lg.com.set_blocks(data)
     cells = lg.Cells(blocks).run()
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
     app = App()
-    app.reset(cells,rownum,colnum)
+    app.reset(cells)
     ''' We can get a constant mouse hovering response only if we install
         the filter like this.
     '''

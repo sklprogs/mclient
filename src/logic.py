@@ -1205,6 +1205,188 @@ class Cells:
         return self.cells
 
 
+
+class Table:
+    
+    def __init__(self):
+        self.set_values()
+    
+    def reset(self,cells):
+        self.set_values()
+        self.cells = cells
+        self.check()
+        self.set_size()
+        self.set_table()
+    
+    def set_values(self):
+        self.table = []
+        self.plain = []
+        self.cells = []
+        self.Success = True
+        self.rownum = 0
+        self.colnum = 0
+    
+    def get_next_col(self,rowno,colno):
+        f = '[MClientQt] logic.Table.get_next_col'
+        if not self.Success:
+            sh.com.cancel(f)
+            return(rowno,colno)
+        #TODO: elaborate
+        if colno + 1 < self.colnum:
+            colno += 1
+        mes = _('Row #{}. Column #{}').format(rowno,colno)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return(rowno,colno)
+    
+    def get_prev_col(self,rowno,colno):
+        f = '[MClientQt] logic.Table.get_prev_col'
+        if not self.Success:
+            sh.com.cancel(f)
+            return rowno
+        #TODO: elaborate
+        if colno > 0:
+            colno -= 1
+        mes = _('Row #{}. Column #{}').format(rowno,colno)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return(rowno,colno)
+    
+    def get_prev_row(self,rowno,colno):
+        f = '[MClientQt] logic.Table.get_prev_row'
+        if not self.Success:
+            sh.com.cancel(f)
+            return rowno
+        #TODO: elaborate
+        if rowno > 0:
+            rowno -= 1
+        mes = _('Row #{}. Column #{}').format(rowno,colno)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return(rowno,colno)
+    
+    def get_next_row(self,rowno,colno):
+        f = '[MClientQt] logic.Table.get_next_row'
+        if not self.Success:
+            sh.com.cancel(f)
+            return(rowno,colno)
+        next_rowno = rowno
+        while next_rowno + 1 < self.rownum:
+            next_rowno += 1
+            try:
+                if self.plain[next_rowno][colno]:
+                    return(next_rowno,colno)
+            except IndexError:
+                mes = _('Wrong input data: "{}"!').format((next_rowno,colno))
+                sh.objs.get_mes(f,mes,True).show_warning()
+                return(rowno,colno)
+        if rowno == next_rowno:
+            mes = _('Start over')
+            sh.objs.get_mes(f,mes,True).show_debug()
+            rowno = 0
+        else:
+            rowno = next_rowno
+        mes = _('Row #{}. Column #{}').format(rowno,colno)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return(rowno,colno)
+    
+    def get_last_row(self,rowno,colno):
+        f = '[MClientQt] logic.Table.get_last_row'
+        if not self.Success:
+            sh.com.cancel(f)
+            return rowno
+        last_rowno = self.rownum - 1
+        while last_rowno >= rowno:
+            if self.plain[last_rowno][colno]:
+                sh.objs.get_mes(f,last_rowno,True).show_debug()
+                return last_rowno
+            last_rowno -= 1
+        return last_rowno
+    
+    def get_start(self):
+        f = '[MClientQt] logic.Table.get_start'
+        if not self.Success:
+            sh.com.cancel(f)
+            return(0,0)
+        for cell in self.cells:
+            #TODO: set types in cells
+            #if cell.type_ == 'term' and cell.plain:
+            #if cell.plain and cell.colno > 3:
+            if cell.plain:
+                mes = _('Row #{}. Column #{}').format(cell.rowno,cell.colno)
+                sh.objs.get_mes(f,mes,True).show_debug()
+                return(cell.rowno,cell.colno)
+        return(0,0)
+    
+    def set_size(self):
+        f = '[MClientQt] logic.Table.set_size'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.rownum = self.cells[-1].rowno + 1
+        colnos = [cell.colno for cell in self.cells]
+        self.colnum = max(colnos) + 1
+        mes = _('Table size: {}×{}').format(self.rownum,self.colnum)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def check(self):
+        f = '[MClientQt] logic.Table.check'
+        if not self.cells:
+            self.Success = False
+            sh.com.rep_empty(f)
+    
+    def set_table(self):
+        ''' Empty cells must be recreated since QTableView throws an error
+            otherwise.
+            #TODO: create empty cells with the 'cells' module
+        '''
+        f = '[MClientQt] logic.Table.set_table'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        old_rowno = 1
+        row = []
+        plain_row = []
+        for i in range(len(self.cells)):
+            if old_rowno != self.cells[i].rowno:
+                if row:
+                    if i > 0:
+                        delta = self.colnum - self.cells[i-1].colno - 1
+                        for no in range(delta):
+                            row.append('')
+                            plain_row.append('')
+                    self.table.append(row)
+                    self.plain.append(plain_row)
+                    row = []
+                    plain_row = []
+                for j in range(self.cells[i].colno):
+                    row.append('')
+                    plain_row.append('')
+                old_rowno = self.cells[i].rowno
+            row.append(self.cells[i].code)
+            plain_row.append(self.cells[i].plain.strip())
+        if row:
+            delta = self.colnum - len(row) - 1
+            for no in range(delta):
+                row.append('')
+                plain_row.append('')
+            self.table.append(row)
+            self.plain.append(plain_row)
+        if not self.table:
+            self.Success = False
+            sh.com.rep_out(f)
+        
+    def get_end(self):
+        f = '[MClientQt] logic.Table.get_end'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        for cell in self.cells[::-1]:
+            #TODO: implement 'cell.type_'
+            if cell.plain and cell.colno > 3:
+                mes = _('Row #{}. Column #{}').format(cell.rowno,cell.colno)
+                sh.objs.get_mes(f,mes,True).show_debug()
+                return(cell.rowno,cell.colno)
+        return(0,0)
+
+
 objs = Objects()
 com = Commands()
 cf.DefaultKeys()
