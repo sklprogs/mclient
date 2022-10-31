@@ -195,7 +195,6 @@ class Table:
         self.gui.show_borders(Show)
     
     def set_gui(self):
-        self.gui.select = self.select
         self.gui.click_left = self.go_cell
         self.gui.click_right = self.copy_cell
         self.gui.click_left_arrow = self.go_left
@@ -330,8 +329,8 @@ if __name__ == '__main__':
     ''' We can get a constant mouse hovering response only if we install
         the filter like this.
     '''
-    sh.objs.get_root().installEventFilter(app.gui.panel)
     sh.objs.get_root().installEventFilter(app.gui.table)
+    sh.objs.get_root().installEventFilter(app.gui.panel)
     timer.end()
     app.show()
     db.close()

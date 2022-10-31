@@ -132,7 +132,6 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.select = None
         self.click_left = None
         self.click_right = None
         self.click_middle = None
@@ -215,9 +214,6 @@ class Table(PyQt5.QtWidgets.QTableView):
         '''
         type_ = event.type()
         if type_ == PyQt5.QtCore.QEvent.MouseMove:
-            if not self.select:
-                self._report_external()
-                return False
             self._use_mouse(event)
             return True
         elif type_ == PyQt5.QtCore.QEvent.MouseButtonPress:
