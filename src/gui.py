@@ -197,11 +197,13 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.setModel(mymodel)
     
     def _use_mouse(self,event):
+        if not self.select:
+            self._report_external()
+            return
         pos = event.pos()
         rowno = self.rowAt(pos.y())
         colno = self.columnAt(pos.x())
-        index_ = self.mymodel.index(rowno,colno)
-        self.set_index(index_)
+        self.select(rowno,colno)
     
     def _report_external(self):
         f = '[MClientQt] gui.Table._report_external'

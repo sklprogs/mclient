@@ -38,16 +38,27 @@ class Table:
             after the event since Qt returns dummy geometry values right after
             startup.
         '''
-        rowno, colno = self.get_cell()
+        f = '[MClientQt] mclient.Table.go_down'
+        if not self.gui.delegate.index:
+            sh.com.rep_empty(f)
+            return
+        rowno = self.gui.get_row(self.gui.delegate.index)
+        colno = self.gui.get_column(self.gui.delegate.index)
+        #rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_next_row(rowno,colno)
         self.select(rowno,colno)
         self.scroll_top()
     
     def select(self,rowno,colno):
-        old_index = self.gui.get_index()
+        f = '[MClientQt] mclient.Table.select'
+        if self.gui.delegate.index:
+            self.model.update(self.gui.delegate.index)
+        else:
+            sh.com.rep_lazy(f)
+        #old_index = self.gui.get_index()
         new_index = self.model.index(rowno,colno)
-        self.gui.set_index(new_index)
-        self.model.update(old_index)
+        self.gui.delegate.index = new_index
+        #self.gui.set_index(new_index)
         self.model.update(new_index)
     
     def go_up(self):
@@ -199,6 +210,7 @@ class Table:
         self.gui.click_right = self.copy_cell
         self.gui.click_left_arrow = self.go_left
         self.gui.click_right_arrow = self.go_right
+        self.gui.select = self.select
         #self.set_max_row_height()
 
 
