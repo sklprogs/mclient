@@ -167,16 +167,25 @@ class Table(PyQt5.QtWidgets.QTableView):
     def get_column(self,index_):
         return index_.column()
     
-    def set_index(self,index_):
+    def set_cur_index(self,index_):
         self.setCurrentIndex(index_)
         self.delegate.index = index_
     
     def get_index(self):
+        return self.delegate.index
+    
+    def set_index(self,index_):
+        self.delegate.index = index_
+    
+    def get_cur_index(self):
         return self.currentIndex()
     
-    def get_cell(self):
+    def get_cur_cell(self):
         index_ = self.currentIndex()
         return(index_.row(),index_.column())
+    
+    def get_cell(self):
+        return(self.delegate.index.row(),self.delegate.index.column())
     
     def get_height(self):
         ''' #NOTE: Run only after events since Qt returns dummy geometry values
@@ -266,6 +275,7 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     def set_gui(self):
         self.delegate = TableDelegate()
+        self.delegate.index = self.get_cur_index()
         self.setItemDelegate(self.delegate)
         self.hheader = self.horizontalHeader()
         self.vheader = self.verticalHeader()

@@ -34,31 +34,18 @@ class Table:
         self.select(rowno,colno)
     
     def go_down(self):
-        ''' #TODO: Recalculate pages only when necessary. This should run only
-            after the event since Qt returns dummy geometry values right after
-            startup.
+        ''' #NOTE: This should run only after the event since Qt returns dummy
+            geometry values right after startup.
         '''
-        f = '[MClientQt] mclient.Table.go_down'
-        if not self.gui.delegate.index:
-            sh.com.rep_empty(f)
-            return
-        rowno = self.gui.get_row(self.gui.delegate.index)
-        colno = self.gui.get_column(self.gui.delegate.index)
-        #rowno, colno = self.get_cell()
+        rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_next_row(rowno,colno)
         self.select(rowno,colno)
         self.scroll_top()
     
     def select(self,rowno,colno):
-        f = '[MClientQt] mclient.Table.select'
-        if self.gui.delegate.index:
-            self.model.update(self.gui.delegate.index)
-        else:
-            sh.com.rep_lazy(f)
-        #old_index = self.gui.get_index()
+        self.model.update(self.gui.get_index())
         new_index = self.model.index(rowno,colno)
-        self.gui.delegate.index = new_index
-        #self.gui.set_index(new_index)
+        self.gui.set_index(new_index)
         self.model.update(new_index)
     
     def go_up(self):
