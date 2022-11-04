@@ -167,14 +167,14 @@ class Table(PyQt5.QtWidgets.QTableView):
     def get_column(self,index_):
         return index_.column()
     
-    def set_cur_index(self,index_):
-        self.setCurrentIndex(index_)
-        self.delegate.index = index_
-    
     def get_index(self):
         return self.delegate.index
     
     def set_index(self,index_):
+        self.delegate.index = index_
+    
+    def set_cur_index(self,index_):
+        self.setCurrentIndex(index_)
         self.delegate.index = index_
     
     def get_cur_index(self):
@@ -212,7 +212,7 @@ class Table(PyQt5.QtWidgets.QTableView):
         pos = event.pos()
         rowno = self.rowAt(pos.y())
         colno = self.columnAt(pos.x())
-        self.select(rowno,colno)
+        self.select(rowno,colno,True)
     
     def _report_external(self):
         f = '[MClientQt] gui.Table._report_external'

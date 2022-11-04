@@ -42,10 +42,13 @@ class Table:
         self.select(rowno,colno)
         self.scroll_top()
     
-    def select(self,rowno,colno):
+    def select(self,rowno,colno,Mouse=False):
         self.model.update(self.gui.get_index())
         new_index = self.model.index(rowno,colno)
-        self.gui.set_index(new_index)
+        if Mouse:
+            self.gui.set_index(new_index)
+        else:
+            self.gui.set_cur_index(new_index)
         self.model.update(new_index)
     
     def go_up(self):
