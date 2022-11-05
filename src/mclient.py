@@ -267,7 +267,10 @@ class App:
     
     def update_ui(self):
         ''' #TODO: Focusing on the entry will disable left-right arrow keys
-            since the table must have a focus for these keys to work.
+            since the table must have a focus for these keys to work. Looks
+            like this happen owing to that Qt already has internal left-right
+            arrow bindings for the entry, and we need to subclass the entry
+            and override these bindings.
         '''
         #self.gui.panel.ent_src.focus()
         #TODO: load from logic
