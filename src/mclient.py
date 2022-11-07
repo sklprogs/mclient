@@ -25,6 +25,21 @@ class Table:
         self.coords = {}
         self.row_height = 42
     
+    def go_url(self):
+        #TODO: implement
+        pass
+    
+    def go_keyboard(self):
+        #TODO: implement
+        self.go_url()
+    
+    def go(self,Mouse=False):
+        # Process either the search string or the URL
+        if Mouse:
+            self.go_url()
+        else:
+            self.go_keyboard()
+    
     def go_end(self):
         rowno, colno = self.logic.get_end()
         self.select(rowno,colno)
@@ -196,11 +211,11 @@ class Table:
         self.gui.show_borders(Show)
     
     def set_gui(self):
-        self.gui.click_left = self.go_cell
         self.gui.click_right = self.copy_cell
         self.gui.click_left_arrow = self.go_left
         self.gui.click_right_arrow = self.go_right
         self.gui.select = self.select
+        self.gui.clicked.connect(self.go_cell)
         #self.set_max_row_height()
 
 
@@ -258,6 +273,11 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def clear_search_field(self):
+        #TODO: implement
+        #objs.get_suggest().get_gui().close()
+        self.panel.ent_src.clear()
+    
     def reset(self,cells):
         f = '[MClientQt] mclient.App.reset'
         self.table.reset(cells)
@@ -307,6 +327,10 @@ class App:
             returned before the window is shown.
         '''
         self.gui.parent.resizeEvent = self.table.set_coords
+        self.panel.btn_trn.action = self.table.go
+        self.panel.btn_clr.action = self.clear_search_field
+        self.panel.btn_trn.set_action()
+        self.panel.btn_clr.set_action()
     
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)

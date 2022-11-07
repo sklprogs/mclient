@@ -132,7 +132,6 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.click_left = None
         self.click_right = None
         self.click_middle = None
         self.click_left_arrow = None
@@ -229,14 +228,7 @@ class Table(PyQt5.QtWidgets.QTableView):
             return True
         elif type_ == PyQt5.QtCore.QEvent.MouseButtonPress:
             button = event.button()
-            if button == PyQt5.QtCore.Qt.LeftButton:
-                if self.click_left:
-                    self._use_mouse(event)
-                    self.click_left()
-                else:
-                    self._report_external()
-                return True
-            elif button == PyQt5.QtCore.Qt.RightButton:
+            if button == PyQt5.QtCore.Qt.RightButton:
                 if self.click_right:
                     self._use_mouse(event)
                     self.click_right()
@@ -250,13 +242,13 @@ class Table(PyQt5.QtWidgets.QTableView):
                 else:
                     self._report_external()
                 return True
-            elif button == PyQt5.QtCore.Qt.Qt_Left:
+            elif button == PyQt5.QtCore.Qt.LeftArrow:
                 if self.click_left_arrow:
                     self.click_left_arrow()
                 else:
                     self._report_external()
                 return True
-            elif button == PyQt5.QtCore.Qt.Qt_Right:
+            elif button == PyQt5.QtCore.Qt.RightArrow:
                 if self.click_right_arrow:
                     self.click_right_arrow()
                 else:
