@@ -1251,16 +1251,27 @@ class Table:
         sh.objs.get_mes(f,mes,True).show_debug()
         return(rowno,colno)
     
+    def _get_prev_row(self,rowno,colno):
+        f = '[MClientQt] logic.Table._get_prev_row'
+        while rowno > 0:
+            rowno -= 1
+            if self.plain[rowno][colno]:
+                return(rowno,colno)
+    
     def get_prev_row(self,rowno,colno):
         f = '[MClientQt] logic.Table.get_prev_row'
         if not self.Success:
             sh.com.cancel(f)
-            return rowno
-        #TODO: elaborate
-        if rowno > 0:
-            rowno -= 1
-        mes = _('Row #{}. Column #{}').format(rowno,colno)
-        sh.objs.get_mes(f,mes,True).show_debug()
+            return(rowno,colno)
+        start = colno
+        while colno >= 0:
+            if start == colno:
+                tuple_ = self._get_prev_row(rowno,colno)
+            else:
+                tuple_ = self._get_prev_row(self.rownum-1,colno)
+            if tuple_:
+                return tuple_
+            colno -= 1
         return(rowno,colno)
     
     def _get_next_row(self,rowno,colno):
