@@ -1217,6 +1217,7 @@ class Table:
         self.check()
         self.set_size()
         self.set_table()
+        self.avoid_index_error()
     
     def set_values(self):
         self.table = []
@@ -1262,29 +1263,26 @@ class Table:
         sh.objs.get_mes(f,mes,True).show_debug()
         return(rowno,colno)
     
+    def _get_next_row(self,rowno,colno):
+        while rowno + 1 < self.rownum:
+            rowno += 1
+            if self.plain[rowno][colno]:
+                return(rowno,colno)
+    
     def get_next_row(self,rowno,colno):
         f = '[MClientQt] logic.Table.get_next_row'
         if not self.Success:
             sh.com.cancel(f)
             return(rowno,colno)
-        next_rowno = rowno
-        while next_rowno + 1 < self.rownum:
-            next_rowno += 1
-            try:
-                if self.plain[next_rowno][colno]:
-                    return(next_rowno,colno)
-            except IndexError:
-                mes = _('Wrong input data: "{}"!').format((next_rowno,colno))
-                sh.objs.get_mes(f,mes,True).show_warning()
-                return(rowno,colno)
-        if rowno == next_rowno:
-            mes = _('Start over')
-            sh.objs.get_mes(f,mes,True).show_debug()
-            rowno = 0
-        else:
-            rowno = next_rowno
-        mes = _('Row #{}. Column #{}').format(rowno,colno)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        start = colno
+        while colno < self.colnum:
+            if start == colno:
+                tuple_ = self._get_next_row(rowno,colno)
+            else:
+                tuple_ = self._get_next_row(-1,colno)
+            if tuple_:
+                return tuple_
+            colno += 1
         return(rowno,colno)
     
     def get_last_row(self,rowno,colno):
@@ -1331,6 +1329,29 @@ class Table:
         if not self.cells:
             self.Success = False
             sh.com.rep_empty(f)
+    
+    def avoid_index_error(self):
+        f = '[MClientQt] logic.Table.avoid_index_error'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        plain = []
+        table = []
+        for rowno in range(self.rownum):
+            row = []
+            for colno in range(self.colnum):
+                row.append('')
+            plain.append(row)
+            table.append(row)
+        for rowno in range(self.rownum):
+            for colno in range(self.colnum):
+                try:
+                    table[rowno][colno] = self.table[rowno][colno]
+                    plain[rowno][colno] = self.plain[rowno][colno]
+                except IndexError:
+                    pass
+        #self.plain = plain
+        #self.table = table
     
     def set_table(self):
         ''' Empty cells must be recreated since QTableView throws an error
