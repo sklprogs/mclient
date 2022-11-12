@@ -292,7 +292,7 @@ class App:
             arrow bindings for the entry, and we need to subclass the entry
             and override these bindings.
         '''
-        #self.gui.panel.ent_src.focus()
+        self.gui.panel.ent_src.focus()
         #TODO: load from logic
         sources = (_('Multitran'),_('Stardict'),'Lingvo (DSL)'
                   ,_('Local MT')
@@ -315,8 +315,6 @@ class App:
         # Mouse buttons cannot be bound
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.minimize)
-        self.gui.bind('Left',self.table.go_left)
-        self.gui.bind('Right',self.table.go_right)
         self.gui.bind('Down',self.table.go_down)
         self.gui.bind('Up',self.table.go_up)
         self.gui.bind('Ctrl+Home',self.table.go_start)
