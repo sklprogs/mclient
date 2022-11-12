@@ -1227,11 +1227,26 @@ class Table:
         self.rownum = 0
         self.colnum = 0
     
+    def _get_next_col(self,rowno,colno):
+        while colno + 1 < self.colnum:
+            colno += 1
+            if self.plain[rowno][colno]:
+                return(rowno,colno)
+    
     def get_next_col(self,rowno,colno):
         f = '[MClientQt] logic.Table.get_next_col'
         if not self.Success:
             sh.com.cancel(f)
             return(rowno,colno)
+        start = rowno
+        while rowno < self.rownum:
+            if rowno == start:
+                tuple_ = self._get_next_col(rowno,colno)
+            else:
+                tuple_ = self._get_next_col(rowno,-1)
+            if tuple_:
+                return tuple_
+            rowno += 1
         #TODO: elaborate
         if colno + 1 < self.colnum:
             colno += 1
