@@ -1247,23 +1247,32 @@ class Table:
             if tuple_:
                 return tuple_
             rowno += 1
-        #TODO: elaborate
         if colno + 1 < self.colnum:
             colno += 1
-        mes = _('Row #{}. Column #{}').format(rowno,colno)
-        sh.objs.get_mes(f,mes,True).show_debug()
         return(rowno,colno)
+    
+    def _get_prev_col(self,rowno,colno):
+        while colno > 0:
+            colno -= 1
+            if self.plain[rowno][colno]:
+                return(rowno,colno)
     
     def get_prev_col(self,rowno,colno):
         f = '[MClientQt] logic.Table.get_prev_col'
         if not self.Success:
             sh.com.cancel(f)
-            return rowno
-        #TODO: elaborate
+            return(rowno,colno)
+        start = rowno
+        while rowno >= 0:
+            if rowno == start:
+                tuple_ = self._get_prev_col(rowno,colno)
+            else:
+                tuple_ = self._get_prev_col(rowno,self.colnum)
+            if tuple_:
+                return tuple_
+            rowno -= 1
         if colno > 0:
             colno -= 1
-        mes = _('Row #{}. Column #{}').format(rowno,colno)
-        sh.objs.get_mes(f,mes,True).show_debug()
         return(rowno,colno)
     
     def _get_prev_row(self,rowno,colno):
@@ -1283,7 +1292,7 @@ class Table:
             if start == colno:
                 tuple_ = self._get_prev_row(rowno,colno)
             else:
-                tuple_ = self._get_prev_row(self.rownum-1,colno)
+                tuple_ = self._get_prev_row(self.rownum,colno)
             if tuple_:
                 return tuple_
             colno -= 1
