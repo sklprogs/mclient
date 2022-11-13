@@ -1334,19 +1334,7 @@ class Table:
         return last_rowno
     
     def get_start(self):
-        f = '[MClientQt] logic.Table.get_start'
-        if not self.Success:
-            sh.com.cancel(f)
-            return(0,0)
-        for cell in self.cells:
-            #TODO: set types in cells
-            #if cell.type_ == 'term' and cell.plain:
-            #if cell.plain and cell.colno > 3:
-            if cell.plain:
-                mes = _('Row #{}. Column #{}').format(cell.rowno,cell.colno)
-                sh.objs.get_mes(f,mes,True).show_debug()
-                return(cell.rowno,cell.colno)
-        return(0,0)
+        return self.get_next_col(0,-1)
     
     def set_size(self):
         f = '[MClientQt] logic.Table.set_size'
@@ -1419,7 +1407,7 @@ class Table:
             row.append(self.cells[i].code)
             plain_row.append(self.cells[i].plain.strip())
         if row:
-            delta = self.colnum - len(row) - 1
+            delta = self.colnum - len(row)
             for no in range(delta):
                 row.append('')
                 plain_row.append('')
@@ -1430,17 +1418,7 @@ class Table:
             sh.com.rep_out(f)
         
     def get_end(self):
-        f = '[MClientQt] logic.Table.get_end'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        for cell in self.cells[::-1]:
-            #TODO: implement 'cell.type_'
-            if cell.plain and cell.colno > 3:
-                mes = _('Row #{}. Column #{}').format(cell.rowno,cell.colno)
-                sh.objs.get_mes(f,mes,True).show_debug()
-                return(cell.rowno,cell.colno)
-        return(0,0)
+        return self.get_prev_col(self.rownum-1,self.colnum)
 
 
 objs = Objects()
