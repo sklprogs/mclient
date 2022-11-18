@@ -33,15 +33,38 @@ class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
+    def act_on_left(self):
+        f = '[MClientQt] gui.MinEntryCore.act_on_left'
+        mes = _('This procedure should be overridden!')
+        sh.objs.get_mes(f,mes,True).show_warning()
+    
+    def act_on_right(self):
+        f = '[MClientQt] gui.MinEntryCore.act_on_right'
+        mes = _('This procedure should be overridden!')
+        sh.objs.get_mes(f,mes,True).show_warning()
+    
+    def act_on_ctrl_home(self):
+        f = '[MClientQt] gui.MinEntryCore.act_on_ctrl_home'
+        mes = _('This procedure should be overridden!')
+        sh.objs.get_mes(f,mes,True).show_warning()
+    
     def act_on_ctrl_end(self):
         f = '[MClientQt] gui.MinEntryCore.act_on_ctrl_end'
         mes = _('This procedure should be overridden!')
         sh.objs.get_mes(f,mes,True).show_warning()
     
     def keyPressEvent(self,event):
-        if event.key() == PyQt5.QtCore.Qt.Key_End and event.modifiers() \
-        & PyQt5.QtCore.Qt.ControlModifier:
-            self.act_on_ctrl_end()
+        key = event.key()
+        modifiers = event.modifiers()
+        if modifiers & PyQt5.QtCore.Qt.ControlModifier:
+            if key == PyQt5.QtCore.Qt.Key_Home:
+                self.act_on_ctrl_home()
+            elif key == PyQt5.QtCore.Qt.Key_End:
+                self.act_on_ctrl_end()
+        elif key == PyQt5.QtCore.Qt.Key_Left:
+            self.act_on_left()
+        elif key == PyQt5.QtCore.Qt.Key_Right:
+            self.act_on_right()
         return super().keyPressEvent(event)
 
 
@@ -280,6 +303,7 @@ class Table(PyQt5.QtWidgets.QTableView):
                 else:
                     self._report_external()
                 return True
+        '''
         elif type_ == PyQt5.QtCore.QEvent.KeyPress:
             key = event.key()
             if key == PyQt5.QtCore.Qt.Key_Right:
@@ -294,6 +318,7 @@ class Table(PyQt5.QtWidgets.QTableView):
                 else:
                     self._report_external()
                 return True
+        '''
         return False
     
     def set_col_width(self,no,width):

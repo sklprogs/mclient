@@ -329,6 +329,10 @@ class App:
         self.panel.btn_clr.action = self.clear_search_field
         self.panel.btn_trn.set_action()
         self.panel.btn_clr.set_action()
+        self.panel.ent_src.widget.act_on_ctrl_home = self.table.go_start
+        self.panel.ent_src.widget.act_on_ctrl_end = self.table.go_end
+        self.panel.ent_src.widget.act_on_left = self.table.go_left
+        self.panel.ent_src.widget.act_on_right = self.table.go_right
     
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)
@@ -352,7 +356,6 @@ if __name__ == '__main__':
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
     app = App()
-    app.panel.ent_src.widget.act_on_ctrl_end = app.table.go_end
     ''' We can get a constant mouse hovering response only if we install
         the filter like this.
     '''
