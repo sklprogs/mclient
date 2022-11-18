@@ -8,6 +8,38 @@ from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 
+class Entry(sh.Entry):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.parent = None
+        self.set_gui()
+    
+    def set_gui(self):
+        self.widget = MinEntry(self.parent)
+
+
+
+class MinEntry(PyQt5.QtWidgets.QLineEdit):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def act_on_ctrl_end(self):
+        f = '[MClientQt] gui.MinEntry.act_on_ctrl_end'
+        mes = _('This procedure should be overridden!')
+        sh.objs.get_mes(f,mes,True).show_warning()
+    
+    def keyPressEvent(self,event):
+        print('Some key triggered')
+        if event.key() == PyQt5.QtCore.Qt.Key_End and event.modifiers() \
+        & PyQt5.QtCore.Qt.ControlModifier:
+            print('Hotkey triggered')
+            self.act_on_ctrl_end()
+        super(PyQt5.QtWidgets.QLineEdit,self).keyPressEvent(event)
+
+
+
 class TableModel(PyQt5.QtCore.QAbstractTableModel):
     
     def __init__(self,datain,parent=None,*args):
@@ -490,7 +522,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.panel = PyQt5.QtWidgets.QWidget(self)
         self.layout = PyQt5.QtWidgets.QHBoxLayout()
         self.layout.setContentsMargins(4,4,4,4)
-        self.ent_src = sh.Entry()
+        self.ent_src = Entry()
         self.ent_src.set_min_width(105)
         # A button for newbies, substitutes Enter in search_field
         self.btn_trn = sh.Button (hint = _('Translate')

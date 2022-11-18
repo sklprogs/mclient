@@ -352,12 +352,13 @@ if __name__ == '__main__':
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
     app = App()
-    app.reset(cells)
+    app.panel.ent_src.widget.act_on_ctrl_end = app.table.go_end
     ''' We can get a constant mouse hovering response only if we install
         the filter like this.
     '''
     sh.objs.get_root().installEventFilter(app.gui.table)
     sh.objs.get_root().installEventFilter(app.gui.panel)
+    app.reset(cells)
     timer.end()
     app.show()
     db.close()
