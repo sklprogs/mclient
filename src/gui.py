@@ -33,25 +33,25 @@ class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
-    def act_on_left(self):
-        f = '[MClientQt] gui.MinEntryCore.act_on_left'
+    def _rep_act(self,f):
         mes = _('This procedure should be overridden!')
         sh.objs.get_mes(f,mes,True).show_warning()
+    
+    def act_on_left(self):
+        f = '[MClientQt] gui.MinEntryCore.act_on_left'
+        self._rep_act(f)
     
     def act_on_right(self):
         f = '[MClientQt] gui.MinEntryCore.act_on_right'
-        mes = _('This procedure should be overridden!')
-        sh.objs.get_mes(f,mes,True).show_warning()
+        self._rep_act(f)
     
     def act_on_ctrl_home(self):
         f = '[MClientQt] gui.MinEntryCore.act_on_ctrl_home'
-        mes = _('This procedure should be overridden!')
-        sh.objs.get_mes(f,mes,True).show_warning()
+        self._rep_act(f)
     
     def act_on_ctrl_end(self):
         f = '[MClientQt] gui.MinEntryCore.act_on_ctrl_end'
-        mes = _('This procedure should be overridden!')
-        sh.objs.get_mes(f,mes,True).show_warning()
+        self._rep_act(f)
     
     def keyPressEvent(self,event):
         key = event.key()
