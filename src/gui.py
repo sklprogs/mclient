@@ -12,31 +12,37 @@ class Entry(sh.Entry):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+        self.gui = MinEntry()
+        self.widget = self.gui.widget
         self.parent = None
-        self.set_gui()
+
+
+
+class MinEntry(sh.gi.Entry):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
     
     def set_gui(self):
-        self.widget = MinEntry(self.parent)
+        self.widget = MinEntryCore()
 
 
 
-class MinEntry(PyQt5.QtWidgets.QLineEdit):
+class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
     def act_on_ctrl_end(self):
-        f = '[MClientQt] gui.MinEntry.act_on_ctrl_end'
+        f = '[MClientQt] gui.MinEntryCore.act_on_ctrl_end'
         mes = _('This procedure should be overridden!')
         sh.objs.get_mes(f,mes,True).show_warning()
     
     def keyPressEvent(self,event):
-        print('Some key triggered')
         if event.key() == PyQt5.QtCore.Qt.Key_End and event.modifiers() \
         & PyQt5.QtCore.Qt.ControlModifier:
-            print('Hotkey triggered')
             self.act_on_ctrl_end()
-        super(PyQt5.QtWidgets.QLineEdit,self).keyPressEvent(event)
+        return super().keyPressEvent(event)
 
 
 
