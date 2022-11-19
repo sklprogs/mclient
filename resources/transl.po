@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-19 19:04+0300\n"
-"PO-Revision-Date: 2022-11-19 19:08+0300\n"
+"POT-Creation-Date: 2022-11-19 19:39+0300\n"
+"PO-Revision-Date: 2022-11-19 19:40+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -1124,7 +1124,7 @@ msgid "Create a printer-friendly page"
 msgstr "Печать (предварительный просмотр)"
 
 #: mclient/src/config.py:420 mclient/src/gui.py:497 mclient/src/logic.py:408
-#: mclientqt/src/config.py:420 mclientqt/src/gui.py:673
+#: mclientqt/src/config.py:420 mclientqt/src/gui.py:664
 #: mclientqt/src/logic.py:604
 msgid "Quit the program"
 msgstr "Выйти из программы"
@@ -1170,19 +1170,19 @@ msgid "About the program"
 msgstr "Информация о программе"
 
 #: mclient/src/config.py:480 mclient/src/gui.py:337 mclient/src/logic.py:470
-#: mclientqt/src/config.py:480 mclientqt/src/gui.py:578
+#: mclientqt/src/config.py:480 mclientqt/src/gui.py:569
 #: mclientqt/src/logic.py:666 skl_shared/src/shared.py:2175
 msgid "Paste a special symbol"
 msgstr "Вставить специальный символ"
 
 #: mclient/src/config.py:484 mclient/src/gui.py:357 mclient/src/logic.py:498
-#: mclientqt/src/config.py:484 mclientqt/src/gui.py:586
+#: mclientqt/src/config.py:484 mclientqt/src/gui.py:577
 #: mclientqt/src/logic.py:694
 msgid "Swap source and target languages"
 msgstr "Поменять местами языки оригинала и перевода"
 
 #: mclient/src/config.py:488 mclient/src/gui.py:406 mclient/src/logic.py:472
-#: mclientqt/src/config.py:488 mclientqt/src/gui.py:608
+#: mclientqt/src/config.py:488 mclientqt/src/gui.py:599
 #: mclientqt/src/logic.py:668
 msgid "Toggle alphabetizing"
 msgstr "Включить/отключить сортировку по алфавиту"
@@ -1366,7 +1366,7 @@ msgstr "Удаление записей статьи №{} из {}"
 #: mclient/src/plugins/multitrandem/utils.py:1217
 #: mclient/src/plugins/multitrandem/utils.py:1339
 #: mclient/src/subjects/subjects.py:22 mclientqt/src/db.py:1013
-#: mclientqt/src/gui.py:126 mclientqt/src/plugins/multitrancom/pairs.py:2861
+#: mclientqt/src/gui.py:122 mclientqt/src/plugins/multitrancom/pairs.py:2861
 #: mclientqt/src/plugins/multitrancom/utils/subjects/fix.py:29
 #: mclientqt/src/plugins/multitrandem/get.py:682
 #: mclientqt/src/plugins/multitrandem/get.py:698
@@ -1459,7 +1459,7 @@ msgstr "Выберите действие:"
 msgid "History"
 msgstr "История"
 
-#: mclient/src/gui.py:299 mclient/src/gui.py:300 mclientqt/src/gui.py:553
+#: mclient/src/gui.py:299 mclient/src/gui.py:300 mclientqt/src/gui.py:544
 msgid "Translate"
 msgstr "Перевести"
 
@@ -1470,7 +1470,7 @@ msgstr "Перевести"
 msgid "Clear"
 msgstr "Очистить"
 
-#: mclient/src/gui.py:308 mclientqt/src/gui.py:558
+#: mclient/src/gui.py:308 mclientqt/src/gui.py:549
 msgid "Clear search field"
 msgstr "Очистить строку поиска"
 
@@ -1478,15 +1478,15 @@ msgstr "Очистить строку поиска"
 msgid "Paste"
 msgstr "Вставить"
 
-#: mclient/src/gui.py:316 mclientqt/src/gui.py:563
+#: mclient/src/gui.py:316 mclientqt/src/gui.py:554
 msgid "Paste text from clipboard"
 msgstr "Вставить текст из буфера обмена"
 
-#: mclient/src/gui.py:323 mclientqt/src/gui.py:568
+#: mclient/src/gui.py:323 mclientqt/src/gui.py:559
 msgid "Paste current request"
 msgstr "Вставить текущий запрос"
 
-#: mclient/src/gui.py:330 mclientqt/src/gui.py:573
+#: mclient/src/gui.py:330 mclientqt/src/gui.py:564
 msgid "Paste previous request"
 msgstr "Вставить предыдущий запрос"
 
@@ -1502,7 +1502,7 @@ msgstr "Поменять местами"
 msgid "Settings"
 msgstr "Настройки"
 
-#: mclient/src/gui.py:385 mclientqt/src/gui.py:593
+#: mclient/src/gui.py:385 mclientqt/src/gui.py:584
 msgid "Tune up view settings"
 msgstr "Изменить настройки вида"
 
@@ -1510,7 +1510,7 @@ msgstr "Изменить настройки вида"
 msgid "Blacklist"
 msgstr "Черный список"
 
-#: mclient/src/gui.py:392 mclientqt/src/gui.py:598
+#: mclient/src/gui.py:392 mclientqt/src/gui.py:589
 msgid "Configure blacklisting"
 msgstr "Настроить черный список"
 
@@ -1518,7 +1518,7 @@ msgstr "Настроить черный список"
 msgid "Prioritize"
 msgstr "Приоритеты"
 
-#: mclient/src/gui.py:399 mclientqt/src/gui.py:603
+#: mclient/src/gui.py:399 mclientqt/src/gui.py:594
 msgid "Configure prioritization"
 msgstr "Настроить приоритизацию"
 
@@ -1530,16 +1530,16 @@ msgstr "По алфавиту"
 msgid "Toggle view"
 msgstr "Смена вида"
 
-#: mclient/src/gui.py:413 mclientqt/src/gui.py:613
+#: mclient/src/gui.py:413 mclientqt/src/gui.py:604
 msgid "Toggle the article view mode"
 msgstr "Переключить вид отображения статьи"
 
-#: mclient/src/gui.py:420 mclient/src/logic.py:432 mclientqt/src/gui.py:618
+#: mclient/src/gui.py:420 mclient/src/logic.py:432 mclientqt/src/gui.py:609
 #: mclientqt/src/logic.py:628
 msgid "Go to the preceding article"
 msgstr "Предыдущая статья"
 
-#: mclient/src/gui.py:427 mclient/src/logic.py:434 mclientqt/src/gui.py:623
+#: mclient/src/gui.py:427 mclient/src/logic.py:434 mclientqt/src/gui.py:614
 #: mclientqt/src/logic.py:630
 msgid "Go to the following article"
 msgstr "Следующая статья"
@@ -1551,7 +1551,7 @@ msgstr "Следующая статья"
 msgid "Reload"
 msgstr "Обновить"
 
-#: mclient/src/gui.py:440 mclientqt/src/gui.py:633
+#: mclient/src/gui.py:440 mclientqt/src/gui.py:624
 msgid "Reload the article"
 msgstr "Перезагрузить статью"
 
@@ -1559,7 +1559,7 @@ msgstr "Перезагрузить статью"
 msgid "Search"
 msgstr "Искать"
 
-#: mclient/src/gui.py:447 mclientqt/src/gui.py:638
+#: mclient/src/gui.py:447 mclientqt/src/gui.py:629
 msgid "Find in the current article"
 msgstr "Найти в текущей статье"
 
@@ -1567,7 +1567,7 @@ msgstr "Найти в текущей статье"
 msgid "Save"
 msgstr "Сохранить"
 
-#: mclient/src/gui.py:454 mclientqt/src/gui.py:643
+#: mclient/src/gui.py:454 mclientqt/src/gui.py:634
 msgid "Save the current article"
 msgstr "Сохранить текущую статью"
 
@@ -1575,7 +1575,7 @@ msgstr "Сохранить текущую статью"
 msgid "Browse"
 msgstr "В браузере"
 
-#: mclient/src/gui.py:461 mclientqt/src/gui.py:648
+#: mclient/src/gui.py:461 mclientqt/src/gui.py:639
 msgid "Open the current article in a browser"
 msgstr "Открыть текущую статью в браузере"
 
@@ -1583,7 +1583,7 @@ msgstr "Открыть текущую статью в браузере"
 msgid "Print"
 msgstr "Печать"
 
-#: mclient/src/gui.py:468 mclientqt/src/gui.py:653
+#: mclient/src/gui.py:468 mclientqt/src/gui.py:644
 msgid "Create a print-ready preview"
 msgstr "Печать (предварительный просмотр)"
 
@@ -1591,7 +1591,7 @@ msgstr "Печать (предварительный просмотр)"
 msgid "Define"
 msgstr "Что это?"
 
-#: mclient/src/gui.py:475 mclientqt/src/gui.py:658
+#: mclient/src/gui.py:475 mclientqt/src/gui.py:649
 msgid "Define the current term"
 msgstr "Дать определение термину"
 
@@ -1599,11 +1599,11 @@ msgstr "Дать определение термину"
 msgid "Clipboard"
 msgstr "Буфер обмена"
 
-#: mclient/src/gui.py:482 mclient/src/mclient.py:252 mclientqt/src/gui.py:663
+#: mclient/src/gui.py:482 mclient/src/mclient.py:252 mclientqt/src/gui.py:654
 msgid "Capture Ctrl-c-c and Ctrl-Ins-Ins"
 msgstr "Перехватывать Ctrl-c-c и Ctrl-Ins-Ins"
 
-#: mclient/src/gui.py:490 mclientqt/src/gui.py:668
+#: mclient/src/gui.py:490 mclientqt/src/gui.py:659
 msgid "View About"
 msgstr "Информация о программе"
 
@@ -28179,31 +28179,31 @@ msgstr "Сработало!"
 msgid "Export Fonts to DB"
 msgstr "Экспорт Fonts в БД"
 
-#: mclientqt/src/gui.py:37
-msgid "This procedure should be overridden!"
-msgstr "Данная процедура должна быть переопределена!"
-
-#: mclientqt/src/gui.py:104
+#: mclientqt/src/gui.py:100
 msgid "List out of bounds at row #{}, column #{}!"
 msgstr "Выход за границы массива, ряд №{}, столбец №{}!"
 
-#: mclientqt/src/gui.py:161
+#: mclientqt/src/gui.py:157
 msgid "Index must be set externally!"
 msgstr "Индекс должен быть задан извне!"
 
-#: mclientqt/src/gui.py:289
-msgid "An external function is required!"
-msgstr "Внешняя функция не задана!"
-
-#: mclientqt/src/gui.py:628
+#: mclientqt/src/gui.py:619
 msgid "Toggle history"
 msgstr "Показать/закрыть историю"
+
+#: mclientqt/src/gui.py:714
+msgid "This procedure should be overridden!"
+msgstr "Данная процедура должна быть переопределена!"
 
 #: mclientqt/src/logic.py:1353
 msgid "Table size: {}×{}"
 msgstr "Размеры таблицы: {}×{}"
 
-#: mclientqt/src/logic.py:1461 mclientqt/src/logic.py:1469
+#: mclientqt/src/logic.py:1461
+msgid "Row #{}. Column #{}: \"{}\""
+msgstr "Строка №{}, столбец №{}: \"{}\""
+
+#: mclientqt/src/logic.py:1469
 msgid "Row #{}. Column #{}. Text: \"{}\""
 msgstr "Строка №{}, столбец №{}. Текст: \"{}\""
 
@@ -29236,6 +29236,9 @@ msgstr "Вопрос"
 #: skl_shared_qt/src/shared.py:641
 msgid "Code block: {}"
 msgstr "Блок кода: {}"
+
+#~ msgid "An external function is required!"
+#~ msgstr "Внешняя функция не задана!"
 
 #~ msgid "[Autosave] Use a custom table width"
 #~ msgstr "[Автосохранение] Использовать особую ширину таблицы"
