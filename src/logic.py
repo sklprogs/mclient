@@ -1324,6 +1324,8 @@ class Table:
             if tuple_:
                 return tuple_
             colno += 1
+        if colno >= self.colnum:
+            return self.get_start()
         return(rowno,colno)
     
     def get_last_row(self,rowno,colno):
