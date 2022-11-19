@@ -1249,6 +1249,8 @@ class Table:
             rowno += 1
         if colno + 1 < self.colnum:
             colno += 1
+        if rowno >= self.rownum:
+            return self.get_start()
         return(rowno,colno)
     
     def _get_prev_col(self,rowno,colno):
@@ -1273,6 +1275,8 @@ class Table:
             rowno -= 1
         if colno > 0:
             colno -= 1
+        if rowno < 0:
+            return self.get_end()
         return(rowno,colno)
     
     def _get_prev_row(self,rowno,colno):
