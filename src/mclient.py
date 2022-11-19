@@ -294,9 +294,7 @@ class App:
         '''
         self.gui.panel.ent_src.focus()
         #TODO: load from logic
-        sources = (_('Multitran'),_('Stardict'),'Lingvo (DSL)'
-                  ,_('Local MT')
-                  )
+        sources = (_('Multitran'),_('Stardict'),'Lingvo (DSL)',_('Local MT'))
         self.gui.panel.opt_src.reset(sources)
         self.gui.panel.opt_col.reset((1,2,3,4,5,6,7,8,9,10),4)
         #TODO: load from logic
@@ -319,6 +317,8 @@ class App:
         self.gui.bind('Up',self.table.go_up)
         self.gui.bind('Ctrl+Home',self.table.go_start)
         self.gui.bind('Ctrl+End',self.table.go_end)
+        self.gui.bind('Left',self.table.go_left)
+        self.gui.bind('Right',self.table.go_right)
         self.table.gui.click_middle = self.minimize
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be

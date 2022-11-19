@@ -303,22 +303,6 @@ class Table(PyQt5.QtWidgets.QTableView):
                 else:
                     self._report_external()
                 return True
-        '''
-        elif type_ == PyQt5.QtCore.QEvent.KeyPress:
-            key = event.key()
-            if key == PyQt5.QtCore.Qt.Key_Right:
-                if self.click_right_arrow:
-                    self.click_right_arrow()
-                else:
-                    self._report_external()
-                return True
-            elif key == PyQt5.QtCore.Qt.Key_Left:
-                if self.click_left_arrow:
-                    self.click_left_arrow()
-                else:
-                    self._report_external()
-                return True
-        '''
         return False
     
     def set_col_width(self,no,width):
