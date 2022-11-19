@@ -1437,8 +1437,20 @@ class SearchArticle(Table):
         self.colno = 0
         self.pattern = ''
     
+    def _has_pattern(self):
+        for rowno in range(self.rownum):
+            for colno in range(self.colnum):
+                if self.pattern in self.plain[rowno][colno]:
+                    return True
+    
     def search_next(self):
         f = '[MClientQt] logic.SearchArticle.search_next'
+        if not self.Success:
+            sh.com.cancel(f)
+            return(self.rowno,self.colno)
+        # Avoid infinite recursion
+        if not self._has_pattern():
+            return(self.rowno,self.colno)
         rowno, colno = self.get_next_col(self.rowno,self.colno)
         mes = _('Row #{}. Column #{}: "{}"')
         mes = mes.format(rowno,colno,self.plain[rowno][colno])
@@ -1447,6 +1459,12 @@ class SearchArticle(Table):
     
     def search_prev(self):
         f = '[MClientQt] logic.SearchArticle.search_prev'
+        if not self.Success:
+            sh.com.cancel(f)
+            return(self.rowno,self.colno)
+        # Avoid infinite recursion
+        if not self._has_pattern():
+            return(self.rowno,self.colno)
         rowno, colno = self.get_prev_col(self.rowno,self.colno)
         mes = _('Row #{}. Column #{}. Text: "{}"')
         mes = mes.format(rowno,colno,self.plain[rowno][colno])
