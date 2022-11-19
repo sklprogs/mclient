@@ -380,13 +380,30 @@ class SearchArticle:
     def reset(self,cells,plain,rowno,colno):
         #TODO: implement input
         self.pattern = 'групп'
+        #self.pattern = 'группп'
         self.logic.reset(cells,plain,self.pattern,rowno,colno)
     
     def search_next(self):
-        return self.logic.search_next()
+        f = '[MClientQt] mclient.SearchArticle.search_next'
+        rowno, colno = self.logic.search_next()
+        if rowno < self.logic.rowno:
+            mes = _('The end has been reached. Searching from the start.')
+            sh.objs.get_mes(f,mes).show_info()
+        elif rowno == self.logic.rowno and colno == self.logic.colno:
+            mes = _('No matches!')
+            sh.objs.get_mes(f,mes).show_info()
+        return(rowno,colno)
     
     def search_prev(self):
-        return self.logic.search_prev()
+        f = '[MClientQt] mclient.SearchArticle.search_prev'
+        rowno, colno = self.logic.search_prev()
+        if rowno > self.logic.rowno:
+            mes = _('The start has been reached. Searching from the end.')
+            sh.objs.get_mes(f,mes).show_info()
+        elif rowno == self.logic.rowno and colno == self.logic.colno:
+            mes = _('No matches!')
+            sh.objs.get_mes(f,mes).show_info()
+        return(rowno,colno)
 
 
 if __name__ == '__main__':
