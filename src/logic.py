@@ -1300,6 +1300,8 @@ class Table:
             if tuple_:
                 return tuple_
             colno -= 1
+        if colno < 0:
+            return self.get_end()
         return(rowno,colno)
     
     def _get_next_row(self,rowno,colno):
