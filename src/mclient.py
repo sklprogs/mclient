@@ -24,13 +24,13 @@ class Table:
     
     def search_next(self):
         rowno, colno = self.get_cell()
-        self.search.reset(self.logic.cells,rowno,colno)
+        self.search.reset(self.logic.plain,rowno,colno)
         rowno, colno = self.search.search_next()
         self.select(rowno,colno)
     
     def search_prev(self):
         rowno, colno = self.get_cell()
-        self.search.reset(self.logic.cells,rowno,colno)
+        self.search.reset(self.logic.plain,rowno,colno)
         rowno, colno = self.search.search_prev()
         self.select(rowno,colno)
     
@@ -377,13 +377,10 @@ class SearchArticle:
     def __init__(self):
         self.logic = lg.SearchArticle()
     
-    def reset(self,cells,rowno,colno):
+    def reset(self,plain,rowno,colno):
         #TODO: implement input
         self.pattern = 'групп'
-        self.cells = cells
-        self.rowno = rowno
-        self.colno = colno
-        self.logic.reset(self.cells,self.pattern,self.rowno,self.colno)
+        self.logic.reset(plain,self.pattern,rowno,colno)
     
     def search_next(self):
         return self.logic.search_next()

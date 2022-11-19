@@ -1429,25 +1429,26 @@ class Table:
 
 
 class SearchArticle(Table):
-    #TODO: Use shared tabled cells
+    
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
-    def reset(self,cells,pattern,rowno,colno):
+    def check(self):
+        f = '[MClientQt] logic.SearchArticle.check'
+        if not self.plain or not self.rownum or not self.colnum:
+            self.Success = False
+            sh.com.rep_empty(f)
+    
+    def reset(self,plain,pattern,rowno,colno):
         self.set_values()
-        self.cells = cells
+        self.plain = plain
         self.pattern = pattern
         self.rowno = rowno
         self.colno = colno
         self.check()
-        self.set_size()
-        self.set_table()
-        self.avoid_index_error()
     
     def set_values(self):
-        self.table = []
         self.plain = []
-        self.cells = []
         self.Success = True
         self.rownum = 0
         self.colnum = 0
