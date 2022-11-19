@@ -1336,6 +1336,12 @@ class Table:
     def get_start(self):
         return self.get_next_col(0,-1)
     
+    def get_line_start(self,rowno):
+        return self.get_next_col(rowno,-1)
+    
+    def get_line_end(self,rowno):
+        return self.get_prev_col(rowno,self.colnum)
+    
     def set_size(self):
         f = '[MClientQt] logic.Table.set_size'
         if not self.Success:

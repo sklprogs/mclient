@@ -45,6 +45,14 @@ class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
         f = '[MClientQt] gui.MinEntryCore.act_on_right'
         self._rep_act(f)
     
+    def act_on_home(self):
+        f = '[MClientQt] gui.MinEntryCore.act_on_home'
+        self._rep_act(f)
+    
+    def act_on_end(self):
+        f = '[MClientQt] gui.MinEntryCore.act_on_end'
+        self._rep_act(f)
+    
     def act_on_ctrl_home(self):
         f = '[MClientQt] gui.MinEntryCore.act_on_ctrl_home'
         self._rep_act(f)
@@ -65,6 +73,10 @@ class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
             self.act_on_left()
         elif key == PyQt5.QtCore.Qt.Key_Right:
             self.act_on_right()
+        elif key == PyQt5.QtCore.Qt.Key_Home:
+            self.act_on_home()
+        elif key == PyQt5.QtCore.Qt.Key_End:
+            self.act_on_end()
         return super().keyPressEvent(event)
 
 
@@ -195,8 +207,6 @@ class Table(PyQt5.QtWidgets.QTableView):
         super().__init__(*args,**kwargs)
         self.click_right = None
         self.click_middle = None
-        self.click_left_arrow = None
-        self.click_right_arrow = None
         self.set_gui()
     
     def get_cell_hint(self,index_):

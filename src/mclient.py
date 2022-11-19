@@ -71,6 +71,16 @@ class Table:
         rowno, colno = self.logic.get_prev_row(rowno,colno)
         self.select(rowno,colno)
     
+    def go_line_start(self):
+        rowno, colno = self.get_cell()
+        rowno, colno = self.logic.get_line_start(rowno)
+        self.select(rowno,colno)
+    
+    def go_line_end(self):
+        rowno, colno = self.get_cell()
+        rowno, colno = self.logic.get_line_end(rowno)
+        self.select(rowno,colno)
+    
     def go_left(self):
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_prev_col(rowno,colno)
@@ -211,11 +221,9 @@ class Table:
         self.gui.show_borders(Show)
     
     def set_gui(self):
-        self.gui.click_right = self.copy_cell
-        self.gui.click_left_arrow = self.go_left
-        self.gui.click_right_arrow = self.go_right
-        self.gui.select = self.select
         self.gui.clicked.connect(self.go_cell)
+        self.gui.click_right = self.copy_cell
+        self.gui.select = self.select
         #self.set_max_row_height()
 
 
@@ -317,6 +325,8 @@ class App:
         self.gui.bind('Up',self.table.go_up)
         self.gui.bind('Ctrl+Home',self.table.go_start)
         self.gui.bind('Ctrl+End',self.table.go_end)
+        self.gui.bind('Home',self.table.go_line_start)
+        self.gui.bind('End',self.table.go_line_end)
         self.gui.bind('Left',self.table.go_left)
         self.gui.bind('Right',self.table.go_right)
         self.table.gui.click_middle = self.minimize
@@ -329,6 +339,8 @@ class App:
         self.panel.btn_clr.action = self.clear_search_field
         self.panel.btn_trn.set_action()
         self.panel.btn_clr.set_action()
+        self.panel.ent_src.widget.act_on_home = self.table.go_line_start
+        self.panel.ent_src.widget.act_on_end = self.table.go_line_end
         self.panel.ent_src.widget.act_on_ctrl_home = self.table.go_start
         self.panel.ent_src.widget.act_on_ctrl_end = self.table.go_end
         self.panel.ent_src.widget.act_on_left = self.table.go_left
