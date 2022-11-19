@@ -1217,7 +1217,6 @@ class Table:
         self.check()
         self.set_size()
         self.set_table()
-        self.avoid_index_error()
     
     def set_values(self):
         self.table = []
@@ -1366,29 +1365,6 @@ class Table:
         if not self.cells:
             self.Success = False
             sh.com.rep_empty(f)
-    
-    def avoid_index_error(self):
-        f = '[MClientQt] logic.Table.avoid_index_error'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        plain = []
-        table = []
-        for rowno in range(self.rownum):
-            row = []
-            for colno in range(self.colnum):
-                row.append('')
-            plain.append(row)
-            table.append(row)
-        for rowno in range(self.rownum):
-            for colno in range(self.colnum):
-                try:
-                    table[rowno][colno] = self.table[rowno][colno]
-                    plain[rowno][colno] = self.plain[rowno][colno]
-                except IndexError:
-                    pass
-        #self.plain = plain
-        #self.table = table
     
     def set_table(self):
         ''' Empty cells must be recreated since QTableView throws an error
