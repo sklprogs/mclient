@@ -33,33 +33,29 @@ class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
-    def _rep_act(self,f):
-        mes = _('This procedure should be overridden!')
-        sh.objs.get_mes(f,mes,True).show_warning()
-    
     def act_on_left(self):
         f = '[MClientQt] gui.MinEntryCore.act_on_left'
-        self._rep_act(f)
+        com.report_external(f)
     
     def act_on_right(self):
         f = '[MClientQt] gui.MinEntryCore.act_on_right'
-        self._rep_act(f)
+        com.report_external(f)
     
     def act_on_home(self):
         f = '[MClientQt] gui.MinEntryCore.act_on_home'
-        self._rep_act(f)
+        com.report_external(f)
     
     def act_on_end(self):
         f = '[MClientQt] gui.MinEntryCore.act_on_end'
-        self._rep_act(f)
+        com.report_external(f)
     
     def act_on_ctrl_home(self):
         f = '[MClientQt] gui.MinEntryCore.act_on_ctrl_home'
-        self._rep_act(f)
+        com.report_external(f)
     
     def act_on_ctrl_end(self):
         f = '[MClientQt] gui.MinEntryCore.act_on_ctrl_end'
-        self._rep_act(f)
+        com.report_external(f)
     
     def keyPressEvent(self,event):
         key = event.key()
@@ -277,17 +273,12 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     def _use_mouse(self,event):
         if not self.select:
-            self._report_external()
+            com.report_external('[MClientQt] gui.Table.select')
             return
         pos = event.pos()
         rowno = self.rowAt(pos.y())
         colno = self.columnAt(pos.x())
         self.select(rowno,colno,True)
-    
-    def _report_external(self):
-        f = '[MClientQt] gui.Table._report_external'
-        mes = _('An external function is required!')
-        sh.objs.get_mes(f,mes,True).show_error()
     
     def eventFilter(self,widget,event):
         ''' #NOTE: Return True for matches only, otherwise the app will freeze!
@@ -304,14 +295,14 @@ class Table(PyQt5.QtWidgets.QTableView):
                     self._use_mouse(event)
                     self.click_right()
                 else:
-                    self._report_external()
+                    com.report_external('[MClientQt] gui.Table.click_right')
                 return True
             elif button == PyQt5.QtCore.Qt.MiddleButton:
                 if self.click_middle:
                     self._use_mouse(event)
                     self.click_middle()
                 else:
-                    self._report_external()
+                    com.report_external('[MClientQt] gui.Table.click_middle')
                 return True
         return False
     
@@ -714,6 +705,17 @@ class Panel(PyQt5.QtWidgets.QWidget):
     @PyQt5.QtCore.pyqtSlot()
     def on_click(self):
         print('PyQt5 button click')
+
+
+
+class Commands:
+    
+    def report_external(self,f):
+        mes = _('This procedure should be overridden!')
+        sh.objs.get_mes(f,mes,True).show_error()
+
+
+com = Commands()
 
 
 if __name__ == '__main__':

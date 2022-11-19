@@ -1458,7 +1458,7 @@ class SearchArticle(Table):
     def search_next(self):
         f = '[MClientQt] logic.SearchArticle.search_next'
         rowno, colno = self.get_next_col(self.rowno,self.colno)
-        mes = _('Row #{}. Column #{}. Text: "{}"')
+        mes = _('Row #{}. Column #{}: "{}"')
         mes = mes.format(rowno,colno,self.plain[rowno][colno])
         sh.objs.get_mes(f,mes,True).show_debug()
         return(rowno,colno)
