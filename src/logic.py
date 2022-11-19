@@ -1463,6 +1463,14 @@ class SearchArticle(Table):
         sh.objs.get_mes(f,mes,True).show_debug()
         return(rowno,colno)
     
+    def search_prev(self):
+        f = '[MClientQt] logic.SearchArticle.search_prev'
+        rowno, colno = self.get_prev_col(self.rowno,self.colno)
+        mes = _('Row #{}. Column #{}. Text: "{}"')
+        mes = mes.format(rowno,colno,self.plain[rowno][colno])
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return(rowno,colno)
+    
     def _get_next_col(self,rowno,colno):
         while colno + 1 < self.colnum:
             colno += 1

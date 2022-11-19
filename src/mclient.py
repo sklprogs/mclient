@@ -28,6 +28,12 @@ class Table:
         rowno, colno = self.search.search_next()
         self.select(rowno,colno)
     
+    def search_prev(self):
+        rowno, colno = self.get_cell()
+        self.search.reset(self.logic.cells,rowno,colno)
+        rowno, colno = self.search.search_prev()
+        self.select(rowno,colno)
+    
     def set_values(self):
         self.coords = {}
         self.row_height = 42
@@ -337,6 +343,7 @@ class App:
         self.gui.bind('Left',self.table.go_left)
         self.gui.bind('Right',self.table.go_right)
         self.gui.bind('F3',self.table.search_next)
+        self.gui.bind('Shift+F3',self.table.search_prev)
         self.table.gui.click_middle = self.minimize
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be
@@ -380,6 +387,9 @@ class SearchArticle:
     
     def search_next(self):
         return self.logic.search_next()
+    
+    def search_prev(self):
+        return self.logic.search_prev()
 
 
 if __name__ == '__main__':
