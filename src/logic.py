@@ -1427,6 +1427,54 @@ class Table:
         return self.get_prev_col(self.rownum-1,self.colnum)
 
 
+
+class SearchArticle(Table):
+    #TODO: Use shared tabled cells
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def reset(self,cells,pattern,rowno,colno):
+        self.set_values()
+        self.cells = cells
+        self.pattern = pattern
+        self.rowno = rowno
+        self.colno = colno
+        self.check()
+        self.set_size()
+        self.set_table()
+        self.avoid_index_error()
+    
+    def set_values(self):
+        self.table = []
+        self.plain = []
+        self.cells = []
+        self.Success = True
+        self.rownum = 0
+        self.colnum = 0
+        self.rowno = 0
+        self.colno = 0
+        self.pattern = ''
+    
+    def search_next(self):
+        f = '[MClientQt] logic.SearchArticle.search_next'
+        self.rowno, self.colno = self.get_next_col(self.rowno,self.colno)
+        mes = _('Row #{}. Column #{}. Text: "{}"')
+        mes = mes.format(self.rowno,self.colno,self.plain[self.rowno][self.colno])
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def _get_next_col(self,rowno,colno):
+        while colno + 1 < self.colnum:
+            colno += 1
+            if self.pattern in self.plain[rowno][colno]:
+                return(rowno,colno)
+    
+    def _get_prev_col(self,rowno,colno):
+        while colno > 0:
+            colno -= 1
+            if self.pattern in self.plain[rowno][colno]:
+                return(rowno,colno)
+
+
 objs = Objects()
 com = Commands()
 cf.DefaultKeys()

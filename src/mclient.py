@@ -19,7 +19,13 @@ class Table:
         self.set_values()
         self.logic = lg.Table()
         self.gui = gi.Table()
+        self.search = SearchArticle()
         self.set_gui()
+    
+    def search_next(self):
+        rowno, colno = self.get_cell()
+        self.search.reset(self.logic.cells,rowno,colno)
+        self.search.search_next()
     
     def set_values(self):
         self.coords = {}
@@ -329,6 +335,7 @@ class App:
         self.gui.bind('End',self.table.go_line_end)
         self.gui.bind('Left',self.table.go_left)
         self.gui.bind('Right',self.table.go_right)
+        self.gui.bind('F3',self.table.search_next)
         self.table.gui.click_middle = self.minimize
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be
@@ -355,6 +362,23 @@ class App:
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title()
         self.set_bindings()
+
+
+class SearchArticle:
+    
+    def __init__(self):
+        self.logic = lg.SearchArticle()
+    
+    def reset(self,cells,rowno,colno):
+        #TODO: implement input
+        self.pattern = 'групп'
+        self.cells = cells
+        self.rowno = rowno
+        self.colno = colno
+        self.logic.reset(self.cells,self.pattern,self.rowno,self.colno)
+    
+    def search_next(self):
+        self.logic.search_next()
 
 
 if __name__ == '__main__':
