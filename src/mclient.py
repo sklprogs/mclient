@@ -25,7 +25,8 @@ class Table:
     def search_next(self):
         rowno, colno = self.get_cell()
         self.search.reset(self.logic.cells,rowno,colno)
-        self.search.search_next()
+        rowno, colno = self.search.search_next()
+        self.select(rowno,colno)
     
     def set_values(self):
         self.coords = {}
@@ -378,7 +379,7 @@ class SearchArticle:
         self.logic.reset(self.cells,self.pattern,self.rowno,self.colno)
     
     def search_next(self):
-        self.logic.search_next()
+        return self.logic.search_next()
 
 
 if __name__ == '__main__':

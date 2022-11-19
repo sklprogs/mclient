@@ -1457,10 +1457,11 @@ class SearchArticle(Table):
     
     def search_next(self):
         f = '[MClientQt] logic.SearchArticle.search_next'
-        self.rowno, self.colno = self.get_next_col(self.rowno,self.colno)
+        rowno, colno = self.get_next_col(self.rowno,self.colno)
         mes = _('Row #{}. Column #{}. Text: "{}"')
-        mes = mes.format(self.rowno,self.colno,self.plain[self.rowno][self.colno])
+        mes = mes.format(rowno,colno,self.plain[rowno][colno])
         sh.objs.get_mes(f,mes,True).show_debug()
+        return(rowno,colno)
     
     def _get_next_col(self,rowno,colno):
         while colno + 1 < self.colnum:
