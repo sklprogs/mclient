@@ -23,6 +23,7 @@ class Table:
         self.set_gui()
     
     def reset_search(self):
+        self.search.clear()
         self.search.show()
         self.search_next()
     
@@ -383,6 +384,9 @@ class SearchArticle:
         self.logic = lg.SearchArticle()
         self.gui = gi.SearchArticle()
         self.set_bindings()
+    
+    def clear(self):
+        self.gui.clear()
     
     def close(self):
         self.gui.close()

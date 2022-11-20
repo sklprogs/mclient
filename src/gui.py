@@ -713,6 +713,9 @@ class SearchArticle:
     def __init__(self):
         self.set_gui()
     
+    def clear(self):
+        self.ent_src.clear()
+    
     def set_layout(self):
         self.widget = PyQt5.QtWidgets.QWidget()
         self.layout = PyQt5.QtWidgets.QVBoxLayout()
