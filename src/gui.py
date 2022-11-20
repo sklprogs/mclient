@@ -708,6 +708,42 @@ class Panel(PyQt5.QtWidgets.QWidget):
 
 
 
+class SearchArticle:
+
+    def __init__(self):
+        self.set_gui()
+    
+    def set_layout(self):
+        self.widget = PyQt5.QtWidgets.QWidget()
+        self.layout = PyQt5.QtWidgets.QVBoxLayout()
+    
+    def set_title(self,title=_('Search:')):
+        self.widget.setWindowTitle(title)
+    
+    def show(self):
+        self.widget.show()
+    
+    def close(self):
+        self.widget.close()
+    
+    def add_widgets(self):
+        self.ent_src = sh.Entry()
+        self.layout.addWidget(self.ent_src.widget)
+        self.widget.setLayout(self.layout)
+    
+    def set_gui(self):
+        self.set_layout()
+        self.add_widgets()
+        self.set_title()
+    
+    def bind(self,hotkey,action):
+        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self.widget).activated.connect(action)
+    
+    def get(self):
+        return self.ent_src.get()
+
+
+
 class Commands:
     
     def report_external(self,f):

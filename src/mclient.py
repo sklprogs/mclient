@@ -22,6 +22,10 @@ class Table:
         self.search = SearchArticle()
         self.set_gui()
     
+    def reset_search(self):
+        self.search.show()
+        self.search_next()
+    
     def search_next(self):
         rowno, colno = self.get_cell()
         self.search.reset(self.logic.cells,self.logic.plain,rowno,colno)
@@ -344,6 +348,7 @@ class App:
         self.gui.bind('Right',self.table.go_right)
         self.gui.bind('F3',self.table.search_next)
         self.gui.bind('Shift+F3',self.table.search_prev)
+        self.gui.bind('Ctrl+F',self.table.reset_search)
         self.table.gui.click_middle = self.minimize
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be
@@ -376,11 +381,22 @@ class SearchArticle:
     
     def __init__(self):
         self.logic = lg.SearchArticle()
+        self.gui = gi.SearchArticle()
+        self.set_bindings()
+    
+    def close(self):
+        self.gui.close()
+    
+    def show(self):
+        self.gui.show()
+    
+    def set_bindings(self):
+        self.gui.bind('Ctrl+Q',self.close)
+        self.gui.bind('Esc',self.close)
+        self.gui.bind('Enter',self.close)
     
     def reset(self,cells,plain,rowno,colno):
-        #TODO: implement input
-        self.pattern = 'групп'
-        #self.pattern = 'группп'
+        self.pattern = self.gui.ent_src.get()
         self.logic.reset(cells,plain,self.pattern,rowno,colno)
     
     def search_next(self):
