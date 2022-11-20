@@ -716,10 +716,6 @@ class SearchArticle:
     def clear(self):
         self.ent_src.clear()
     
-    def set_layout(self):
-        self.widget = PyQt5.QtWidgets.QWidget()
-        self.layout = PyQt5.QtWidgets.QVBoxLayout()
-    
     def set_title(self,title=_('Search:')):
         self.widget.setWindowTitle(title)
     
@@ -730,12 +726,15 @@ class SearchArticle:
         self.widget.close()
     
     def add_widgets(self):
+        self.widget = PyQt5.QtWidgets.QWidget()
+        self.layout = PyQt5.QtWidgets.QVBoxLayout()
         self.ent_src = sh.Entry()
+        self.cbx_cas = sh.CheckBox(_('Ignore case'))
         self.layout.addWidget(self.ent_src.widget)
+        self.layout.addWidget(self.cbx_cas.widget)
         self.widget.setLayout(self.layout)
     
     def set_gui(self):
-        self.set_layout()
         self.add_widgets()
         self.set_title()
     
@@ -758,6 +757,11 @@ com = Commands()
 
 
 if __name__ == '__main__':
+    '''
+    sh.com.start()
+    SearchArticle().show()
+    sh.com.end()
+    '''
     import sys
     exe = PyQt5.QtWidgets.QApplication(sys.argv)
     app = App()
