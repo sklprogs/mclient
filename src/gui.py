@@ -724,14 +724,31 @@ class SearchArticle:
     
     def close(self):
         self.widget.close()
+        
     
     def add_widgets(self):
         self.widget = PyQt5.QtWidgets.QWidget()
         self.layout = PyQt5.QtWidgets.QVBoxLayout()
         self.ent_src = sh.Entry()
         self.cbx_cas = sh.CheckBox(_('Ignore case'))
+        self.btn_cls = sh.Button (text = _('Close')
+                                 ,action = self.close
+                                 )
+        self.btn_clr = sh.Button (text = _('Clear')
+                                 ,action = self.clear
+                                 )
+        self.btn_src = sh.Button (text = _('Search')
+                                 )
         self.layout.addWidget(self.ent_src.widget)
         self.layout.addWidget(self.cbx_cas.widget)
+        self.panel = PyQt5.QtWidgets.QWidget(self.widget)
+        self.btn_lay = PyQt5.QtWidgets.QHBoxLayout()
+        self.btn_lay.setContentsMargins(4,4,4,4)
+        self.btn_lay.addWidget(self.btn_cls.widget)
+        self.btn_lay.addWidget(self.btn_clr.widget)
+        self.btn_lay.addWidget(self.btn_src.widget)
+        self.panel.setLayout(self.btn_lay)
+        self.layout.addWidget(self.panel)
         self.widget.setLayout(self.layout)
     
     def set_gui(self):
