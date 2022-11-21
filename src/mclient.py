@@ -79,6 +79,8 @@ class Table:
         self.scroll_top()
     
     def select(self,rowno,colno,Mouse=False):
+        if Mouse and self.search.Shown:
+            return
         self.model.update(self.gui.get_index())
         new_index = self.model.index(rowno,colno)
         if Mouse:
@@ -389,6 +391,7 @@ class App:
 class SearchArticle:
     
     def __init__(self):
+        self.Shown = False
         self.logic = lg.SearchArticle()
         self.gui = gi.SearchArticle()
         self.set_bindings()
@@ -398,9 +401,11 @@ class SearchArticle:
         self.gui.clear()
     
     def close(self):
+        self.Shown = False
         self.gui.close()
     
     def show(self):
+        self.Shown = True
         self.gui.show()
     
     def set_bindings(self):
