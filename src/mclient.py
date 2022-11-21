@@ -20,22 +20,28 @@ class Table:
         self.logic = lg.Table()
         self.gui = gi.Table()
         self.search = SearchArticle()
+        self.search.close_search_next = self.close_search_next
+        self.search.search_next_ui = self.search_next
+        self.search.search_prev_ui = self.search_prev
         self.set_gui()
     
-    def reset_search(self):
-        self.search.clear()
-        self.search.show()
-        self.search_next()
+    def close_search_next(self):
+        self.search.close()
+        self.reset_search()
+        rowno, colno = self.search.search_next()
+        self.select(rowno,colno)
     
-    def search_next(self):
+    def reset_search(self):
         rowno, colno = self.get_cell()
         self.search.reset(self.logic.cells,self.logic.plain,rowno,colno)
+    
+    def search_next(self):
+        self.reset_search()
         rowno, colno = self.search.search_next()
         self.select(rowno,colno)
     
     def search_prev(self):
-        rowno, colno = self.get_cell()
-        self.search.reset(self.logic.cells,self.logic.plain,rowno,colno)
+        self.reset_search()
         rowno, colno = self.search.search_prev()
         self.select(rowno,colno)
     
@@ -349,7 +355,7 @@ class App:
         self.gui.bind('Right',self.table.go_right)
         self.gui.bind('F3',self.table.search_next)
         self.gui.bind('Shift+F3',self.table.search_prev)
-        self.gui.bind('Ctrl+F',self.table.reset_search)
+        self.gui.bind('Ctrl+F',self.table.search.show)
         self.table.gui.click_middle = self.minimize
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be
@@ -384,6 +390,7 @@ class SearchArticle:
         self.logic = lg.SearchArticle()
         self.gui = gi.SearchArticle()
         self.set_bindings()
+        self.gui.ent_src.focus()
     
     def clear(self):
         self.gui.clear()
@@ -397,11 +404,27 @@ class SearchArticle:
     def set_bindings(self):
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.close)
-        self.gui.bind('Enter',self.close)
+        self.gui.bind('Return',self.close_search_next)
+        self.gui.btn_srp.action = self.search_prev_ui
+        self.gui.btn_srn.action = self.search_next_ui
+        self.gui.btn_srp.set_action()
+        self.gui.btn_srn.set_action()
     
     def reset(self,cells,plain,rowno,colno):
         self.pattern = self.gui.ent_src.get()
         self.logic.reset(cells,plain,self.pattern,rowno,colno)
+    
+    def close_search_next(self):
+        f = '[MClientQt] mclient.SearchArticle.close_search_next'
+        gi.com.report_external(f)
+    
+    def search_next_ui(self):
+        f = '[MClientQt] mclient.SearchArticle.search_next_ui'
+        gi.com.report_external(f)
+    
+    def search_prev_ui(self):
+        f = '[MClientQt] mclient.SearchArticle.search_prev_ui'
+        gi.com.report_external(f)
     
     def search_next(self):
         f = '[MClientQt] mclient.SearchArticle.search_next'
