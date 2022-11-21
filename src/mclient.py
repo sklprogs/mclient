@@ -20,9 +20,6 @@ class Table:
         self.logic = lg.Table()
         self.gui = gi.Table()
         self.search = SearchArticle()
-        self.search.close_search_next = self.close_search_next
-        self.search.search_next_ui = self.search_next
-        self.search.search_prev_ui = self.search_prev
         self.set_gui()
     
     def close_search_next(self):
@@ -248,6 +245,11 @@ class Table:
         self.gui.clicked.connect(self.go_cell)
         self.gui.click_right = self.copy_cell
         self.gui.select = self.select
+        self.search.gui.ent_src.bind('Return',self.close_search_next)
+        self.search.gui.btn_srp.action = self.search_prev
+        self.search.gui.btn_srn.action = self.search_next
+        self.search.gui.btn_srp.set_action()
+        self.search.gui.btn_srn.set_action()
         #self.set_max_row_height()
 
 
@@ -404,27 +406,14 @@ class SearchArticle:
     def set_bindings(self):
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.close)
-        self.gui.bind('Return',self.close_search_next)
-        self.gui.btn_srp.action = self.search_prev_ui
-        self.gui.btn_srn.action = self.search_next_ui
-        self.gui.btn_srp.set_action()
-        self.gui.btn_srn.set_action()
+        self.gui.btn_cls.action = self.close
+        self.gui.btn_clr.action = self.clear
+        self.gui.btn_cls.set_action()
+        self.gui.btn_clr.set_action()
     
     def reset(self,cells,plain,rowno,colno):
         self.pattern = self.gui.ent_src.get()
         self.logic.reset(cells,plain,self.pattern,rowno,colno)
-    
-    def close_search_next(self):
-        f = '[MClientQt] mclient.SearchArticle.close_search_next'
-        gi.com.report_external(f)
-    
-    def search_next_ui(self):
-        f = '[MClientQt] mclient.SearchArticle.search_next_ui'
-        gi.com.report_external(f)
-    
-    def search_prev_ui(self):
-        f = '[MClientQt] mclient.SearchArticle.search_prev_ui'
-        gi.com.report_external(f)
     
     def search_next(self):
         f = '[MClientQt] mclient.SearchArticle.search_next'
