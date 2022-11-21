@@ -1417,6 +1417,12 @@ class SearchArticle(Table):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
+    def check(self):
+        f = '[MClientQt] logic.SearchArticle.check'
+        if not self.cells or not self.plain or not self.pattern.strip():
+            self.Success = False
+            sh.com.rep_empty(f)
+    
     def reset(self,cells,plain,pattern,rowno,colno):
         self.set_values()
         self.cells = cells
