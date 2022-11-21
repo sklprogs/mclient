@@ -1423,20 +1423,36 @@ class SearchArticle(Table):
             self.Success = False
             sh.com.rep_empty(f)
     
-    def reset(self,cells,plain,pattern,rowno,colno):
+    def lower(self):
+        f = '[MClientQt] logic.SearchArticle.lower'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not self.Case:
+            self.pattern = self.pattern.lower()
+            plain = []
+            for row in self.plain:
+                row = [item.lower() for item in row]
+                plain.append(row)
+            self.plain = plain
+    
+    def reset(self,cells,plain,pattern,rowno,colno,Case=False):
         self.set_values()
         self.cells = cells
         self.plain = plain
         self.pattern = pattern
         self.rowno = rowno
         self.colno = colno
+        self.Case = Case
         self.check()
         self.set_size()
+        self.lower()
     
     def set_values(self):
         self.cells = []
         self.plain = []
         self.Success = True
+        self.Case = False
         self.rownum = 0
         self.colnum = 0
         self.rowno = 0

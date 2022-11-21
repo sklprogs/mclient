@@ -413,7 +413,8 @@ class SearchArticle:
     
     def reset(self,cells,plain,rowno,colno):
         self.pattern = self.gui.ent_src.get()
-        self.logic.reset(cells,plain,self.pattern,rowno,colno)
+        Case = self.gui.cbx_cas.get()
+        self.logic.reset(cells,plain,self.pattern,rowno,colno,Case)
     
     def search_next(self):
         f = '[MClientQt] mclient.SearchArticle.search_next'
