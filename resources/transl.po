@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-19 19:39+0300\n"
-"PO-Revision-Date: 2022-11-19 19:40+0300\n"
+"POT-Creation-Date: 2022-11-21 04:04+0300\n"
+"PO-Revision-Date: 2022-11-21 04:06+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -124,7 +124,7 @@ msgstr "Приоритет части речи \"{}\" не определен!"
 #: skl_shared/src/shared.py:4113 skl_shared_qt/src/logic.py:346
 #: skl_shared_qt/src/logic.py:1101 skl_shared_qt/src/logic.py:1120
 #: skl_shared_qt/src/logic.py:2606 skl_shared_qt/src/logic.py:2626
-#: skl_shared_qt/src/shared.py:768
+#: skl_shared_qt/src/shared.py:767
 msgid "The condition \"{}\" is not observed!"
 msgstr "Условие \"{}\" не выполнено!"
 
@@ -406,7 +406,7 @@ msgstr "Транскрипция"
 #: mclient/src/plugins/multitrandem/run.py:85
 #: mclient/src/plugins/multitrandem/run.py:138
 #: mclient/src/plugins/multitrandem/run.py:142 mclientqt/src/config.py:136
-#: mclientqt/src/mclient.py:322 mclientqt/src/mclient.py:323
+#: mclientqt/src/mclient.py:333 mclientqt/src/mclient.py:334
 #: mclientqt/src/plugins/multitrancom/pairs.py:7
 #: mclientqt/src/plugins/multitrancom/pairs.py:21
 #: mclientqt/src/plugins/multitrancom/pairs.py:60
@@ -662,7 +662,7 @@ msgstr "Русский"
 #: mclient/src/plugins/multitrandem/run.py:85
 #: mclient/src/plugins/multitrandem/run.py:138
 #: mclient/src/plugins/multitrandem/run.py:142 mclientqt/src/config.py:137
-#: mclientqt/src/mclient.py:322 mclientqt/src/mclient.py:323
+#: mclientqt/src/mclient.py:333 mclientqt/src/mclient.py:334
 #: mclientqt/src/plugins/multitrancom/pairs.py:8
 #: mclientqt/src/plugins/multitrancom/pairs.py:55
 #: mclientqt/src/plugins/multitrancom/pairs.py:91
@@ -793,7 +793,7 @@ msgstr "Английский"
 #: mclient/src/settings/gui.py:128 mclient/src/tests.py:586
 #: mclient/src/tests.py:646 mclient/src/tests.py:688 mclient/src/tests.py:779
 #: mclientqt/src/config.py:140 mclientqt/src/manager.py:204
-#: mclientqt/src/manager.py:256 mclientqt/src/mclient.py:318
+#: mclientqt/src/manager.py:256 mclientqt/src/mclient.py:329
 #: mclientqt/src/settings/gui.py:25 mclientqt/src/settings/gui.py:113
 #: mclientqt/src/settings/gui.py:128 mclientqt/src/tests.py:586
 #: mclientqt/src/tests.py:646 mclientqt/src/tests.py:688
@@ -1323,7 +1323,7 @@ msgstr "Адрес для поиска в Интернете"
 #: skl_shared/src/shared.py:3331 skl_shared/src/tests.py:106
 #: skl_shared_qt/src/logic.py:134 skl_shared_qt/src/logic.py:148
 #: skl_shared_qt/src/logic.py:904 skl_shared_qt/src/logic.py:2463
-#: skl_shared_qt/src/shared.py:182 skl_shared_qt/src/tests.py:107
+#: skl_shared_qt/src/shared.py:181 skl_shared_qt/src/tests.py:107
 msgid ""
 "An unknown mode \"{}\"!\n"
 "\n"
@@ -1389,7 +1389,7 @@ msgstr "Удаление записей статьи №{} из {}"
 #: skl_shared_qt/src/logic.py:1328 skl_shared_qt/src/logic.py:2071
 #: skl_shared_qt/src/logic.py:2537 skl_shared_qt/src/logic.py:3412
 #: skl_shared_qt/src/logic.py:3744 skl_shared_qt/src/logic.py:4305
-#: skl_shared_qt/src/shared.py:137 skl_shared_qt/src/shared.py:816
+#: skl_shared_qt/src/shared.py:136 skl_shared_qt/src/shared.py:815
 #: skl_shared_qt/src/tests.py:85
 msgid "Wrong input data!"
 msgstr "Недопустимые входные данные!"
@@ -1464,7 +1464,7 @@ msgid "Translate"
 msgstr "Перевести"
 
 #: mclient/src/gui.py:307 mclient/src/subjects/blacklist/gui.py:208
-#: mclient/src/subjects/priorities/gui.py:256
+#: mclient/src/subjects/priorities/gui.py:256 mclientqt/src/gui.py:736
 #: mclientqt/src/subjects/blacklist/gui.py:200
 #: mclientqt/src/subjects/priorities/gui.py:240 skl_shared/src/shared.py:1302
 msgid "Clear"
@@ -1781,14 +1781,14 @@ msgstr "работает"
 #: mclient/src/logic.py:346 mclient/src/manager.py:204
 #: mclient/src/manager.py:253 mclientqt/src/logic.py:542
 #: mclientqt/src/manager.py:205 mclientqt/src/manager.py:254
-#: mclientqt/src/mclient.py:318
+#: mclientqt/src/mclient.py:329
 msgid "Stardict"
 msgstr "Stardict"
 
 #: mclient/src/logic.py:351 mclient/src/manager.py:206
 #: mclient/src/manager.py:259 mclientqt/src/logic.py:547
 #: mclientqt/src/manager.py:207 mclientqt/src/manager.py:260
-#: mclientqt/src/mclient.py:318
+#: mclientqt/src/mclient.py:329
 msgid "Local MT"
 msgstr "Локальный МТ"
 
@@ -2033,7 +2033,8 @@ msgstr "Операция отменена пользователем."
 #: mclient/src/plugins/multitrandem/utils.py:612
 #: mclient/src/plugins/multitrandem/utils.py:622
 #: mclient/src/plugins/multitrandem/utils.py:635
-#: mclient/src/plugins/multitrandem/utils.py:672
+#: mclient/src/plugins/multitrandem/utils.py:672 mclientqt/src/mclient.py:436
+#: mclientqt/src/mclient.py:447
 #: mclientqt/src/plugins/multitrancom/utils/utils.py:150
 #: mclientqt/src/plugins/multitrancom/utils/utils.py:193
 #: mclientqt/src/plugins/multitrandem/utils.py:266
@@ -2047,11 +2048,11 @@ msgstr "Операция отменена пользователем."
 msgid "No matches!"
 msgstr "Совпадений нет!"
 
-#: mclient/src/mclient.py:658
+#: mclient/src/mclient.py:658 mclientqt/src/mclient.py:433
 msgid "The end has been reached. Searching from the start."
 msgstr "Достигнут конец. Поиск производится с начала."
 
-#: mclient/src/mclient.py:688
+#: mclient/src/mclient.py:688 mclientqt/src/mclient.py:444
 msgid "The start has been reached. Searching from the end."
 msgstr "Достигнуто начало. Поиск производится с конца."
 
@@ -4577,7 +4578,7 @@ msgstr "Финский"
 #: mclient/src/plugins/multitrancom/pairs.py:2696
 #: mclient/src/plugins/multitrancom/utils/utils.py:345
 #: mclient/src/plugins/multitrancom/utils/utils.py:350
-#: mclientqt/src/mclient.py:322 mclientqt/src/mclient.py:323
+#: mclientqt/src/mclient.py:333 mclientqt/src/mclient.py:334
 #: mclientqt/src/plugins/multitrancom/pairs.py:56
 #: mclientqt/src/plugins/multitrancom/pairs.py:93
 #: mclientqt/src/plugins/multitrancom/pairs.py:136
@@ -27124,7 +27125,7 @@ msgstr "Ключ \"{}\" уже существует!"
 #: mclientqt/src/plugins/multitrancom/utils/subjects/compile.py:455
 #: mclientqt/src/plugins/multitrancom/utils/subjects/extract.py:477
 #: mclientqt/src/subjects/subjects.py:82 skl_shared/src/shared.py:4089
-#: skl_shared_qt/src/shared.py:744
+#: skl_shared_qt/src/shared.py:743
 msgid "KEY"
 msgstr "КЛЮЧ"
 
@@ -27330,7 +27331,7 @@ msgstr "Пределы страницы: [{}:{}]"
 #: skl_shared/src/web.py:26 skl_shared_qt/src/image/controller.py:35
 #: skl_shared_qt/src/logic.py:3059 skl_shared_qt/src/logic.py:3186
 #: skl_shared_qt/src/logic.py:3354 skl_shared_qt/src/logic.py:4777
-#: skl_shared_qt/src/shared.py:32 skl_shared_qt/src/shared.py:713
+#: skl_shared_qt/src/shared.py:32 skl_shared_qt/src/shared.py:712
 #: skl_shared_qt/src/web.py:26
 msgid ""
 "Third-party module has failed!\n"
@@ -27360,7 +27361,7 @@ msgstr "Длина части №{}: {}"
 msgid "Open \"{}\""
 msgstr "Открытие \"{}\""
 
-#: mclient/src/plugins/multitrandem/get.py:657 mclientqt/src/mclient.py:264
+#: mclient/src/plugins/multitrandem/get.py:657 mclientqt/src/mclient.py:275
 #: mclientqt/src/plugins/multitrandem/get.py:657
 msgid "Close \"{}\""
 msgstr "Закрытие \"{}\""
@@ -27440,7 +27441,7 @@ msgstr "Статьи не найдены!"
 
 #: mclient/src/plugins/multitrandem/tags.py:47
 #: mclientqt/src/plugins/multitrandem/tags.py:47 skl_shared/src/shared.py:4158
-#: skl_shared_qt/src/shared.py:813
+#: skl_shared_qt/src/shared.py:812
 msgid "Wrong input data: \"{}\""
 msgstr "Недопустимые входные данные: \"{}\"!"
 
@@ -27495,7 +27496,7 @@ msgstr "Страницы:"
 #: mclientqt/src/plugins/multitrandem/tests.py:146
 #: mclientqt/src/plugins/multitrandem/tests.py:147
 #: mclientqt/src/plugins/multitrandem/tests.py:148
-#: skl_shared/src/shared.py:4077 skl_shared_qt/src/shared.py:732
+#: skl_shared/src/shared.py:4077 skl_shared_qt/src/shared.py:731
 msgid "N/A"
 msgstr "Н/Д"
 
@@ -28028,7 +28029,7 @@ msgid "Reload settings"
 msgstr "Перезагрузить настройки"
 
 #: mclient/src/subjects/blacklist/gui.py:223
-#: mclient/src/subjects/priorities/gui.py:271
+#: mclient/src/subjects/priorities/gui.py:271 mclientqt/src/gui.py:733
 #: mclientqt/src/subjects/blacklist/gui.py:215
 #: mclientqt/src/subjects/priorities/gui.py:255 skl_shared/src/shared.py:628
 #: skl_shared/src/shared.py:702 skl_shared/src/shared.py:1295
@@ -28191,15 +28192,31 @@ msgstr "Индекс должен быть задан извне!"
 msgid "Toggle history"
 msgstr "Показать/закрыть историю"
 
-#: mclientqt/src/gui.py:714
+#: mclientqt/src/gui.py:719 skl_shared/src/shared.py:4520
+msgid "Search:"
+msgstr "Поиск:"
+
+#: mclientqt/src/gui.py:732
+msgid "Ignore case"
+msgstr "Игнорировать регистр"
+
+#: mclientqt/src/gui.py:739
+msgid "Back"
+msgstr "Назад"
+
+#: mclientqt/src/gui.py:741
+msgid "Forward"
+msgstr "Вперед"
+
+#: mclientqt/src/gui.py:771
 msgid "This procedure should be overridden!"
 msgstr "Данная процедура должна быть переопределена!"
 
-#: mclientqt/src/logic.py:1353
+#: mclientqt/src/logic.py:1360
 msgid "Table size: {}×{}"
 msgstr "Размеры таблицы: {}×{}"
 
-#: mclientqt/src/logic.py:1461
+#: mclientqt/src/logic.py:1455
 msgid "Row #{}. Column #{}: \"{}\""
 msgstr "Строка №{}, столбец №{}: \"{}\""
 
@@ -28207,19 +28224,19 @@ msgstr "Строка №{}, столбец №{}: \"{}\""
 msgid "Row #{}. Column #{}. Text: \"{}\""
 msgstr "Строка №{}, столбец №{}. Текст: \"{}\""
 
-#: mclientqt/src/mclient.py:143
+#: mclientqt/src/mclient.py:154
 msgid "Number of columns: {}"
 msgstr "Число столбцов: {}"
 
-#: mclientqt/src/mclient.py:191
+#: mclientqt/src/mclient.py:202
 msgid "Number of cells: {}"
 msgstr "Число ячеек: {}"
 
-#: mclientqt/src/mclient.py:193
+#: mclientqt/src/mclient.py:204
 msgid "Number of long cells: {}"
 msgstr "Число длинных ячеек: {}"
 
-#: mclientqt/src/mclient.py:203
+#: mclientqt/src/mclient.py:214
 msgid "Window height: {}"
 msgstr "Высота окна: {}"
 
@@ -28884,7 +28901,7 @@ msgstr "Подождите..."
 msgid "The required widget has not been created yet!"
 msgstr "Требуемый виджет еще не был создан!"
 
-#: skl_shared/src/shared.py:2145 skl_shared_qt/src/shared.py:555
+#: skl_shared/src/shared.py:2145 skl_shared_qt/src/shared.py:554
 msgid "Clipboard is empty!"
 msgstr "Буфер обмена пуст!"
 
@@ -28934,7 +28951,7 @@ msgstr "Восстановление геометрии: {}"
 
 #: skl_shared/src/shared.py:3668 skl_shared/src/shared.py:3678
 #: skl_shared/src/shared.py:3688 skl_shared/src/shared.py:4137
-#: skl_shared_qt/src/shared.py:792
+#: skl_shared_qt/src/shared.py:791
 msgid ""
 "The operation has failed!\n"
 "\n"
@@ -28945,29 +28962,25 @@ msgstr ""
 "Подробности: {}"
 
 #: skl_shared/src/shared.py:3764 skl_shared/src/shared.py:4122
-#: skl_shared_qt/src/shared.py:578 skl_shared_qt/src/shared.py:777
+#: skl_shared_qt/src/shared.py:577 skl_shared_qt/src/shared.py:776
 msgid "Test:"
 msgstr "Тест:"
 
-#: skl_shared/src/shared.py:4089 skl_shared_qt/src/shared.py:744
+#: skl_shared/src/shared.py:4089 skl_shared_qt/src/shared.py:743
 msgid "SECTION"
 msgstr "СЕКЦИЯ"
 
-#: skl_shared/src/shared.py:4089 skl_shared_qt/src/shared.py:744
+#: skl_shared/src/shared.py:4089 skl_shared_qt/src/shared.py:743
 msgid "VALUE"
 msgstr "ЗНАЧЕНИЕ"
 
-#: skl_shared/src/shared.py:4109 skl_shared_qt/src/shared.py:764
+#: skl_shared/src/shared.py:4109 skl_shared_qt/src/shared.py:763
 msgid "An unknown color \"{}\"!"
 msgstr "Неизвестный цвет \"{}\"!"
 
-#: skl_shared/src/shared.py:4154 skl_shared_qt/src/shared.py:809
+#: skl_shared/src/shared.py:4154 skl_shared_qt/src/shared.py:808
 msgid "Failed to enable key combination \"{}\"!"
 msgstr "Не удалось задействовать сочетание клавиш \"{}\"!"
-
-#: skl_shared/src/shared.py:4520
-msgid "Search:"
-msgstr "Поиск:"
 
 #: skl_shared/src/shared.py:4542
 msgid "Case-sensitive search"
@@ -29233,7 +29246,7 @@ msgstr "Отладка"
 msgid "Question"
 msgstr "Вопрос"
 
-#: skl_shared_qt/src/shared.py:641
+#: skl_shared_qt/src/shared.py:640
 msgid "Code block: {}"
 msgstr "Блок кода: {}"
 
