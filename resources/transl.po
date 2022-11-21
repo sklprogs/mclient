@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-21 04:04+0300\n"
-"PO-Revision-Date: 2022-11-21 04:06+0300\n"
+"POT-Creation-Date: 2022-11-21 04:09+0300\n"
+"PO-Revision-Date: 2022-11-21 04:10+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -28197,8 +28197,8 @@ msgid "Search:"
 msgstr "Поиск:"
 
 #: mclientqt/src/gui.py:732
-msgid "Ignore case"
-msgstr "Игнорировать регистр"
+msgid "Case-sensitive"
+msgstr "С учетом регистра"
 
 #: mclientqt/src/gui.py:739
 msgid "Back"
@@ -29249,6 +29249,9 @@ msgstr "Вопрос"
 #: skl_shared_qt/src/shared.py:640
 msgid "Code block: {}"
 msgstr "Блок кода: {}"
+
+#~ msgid "Ignore case"
+#~ msgstr "Игнорировать регистр"
 
 #~ msgid "An external function is required!"
 #~ msgstr "Внешняя функция не задана!"

@@ -729,7 +729,7 @@ class SearchArticle:
         self.widget = PyQt5.QtWidgets.QWidget()
         self.layout = PyQt5.QtWidgets.QVBoxLayout()
         self.ent_src = sh.Entry()
-        self.cbx_cas = sh.CheckBox(_('Ignore case'))
+        self.cbx_cas = sh.CheckBox(_('Case-sensitive'))
         self.btn_cls = sh.Button (text = _('Close')
                                  ,action = self.close
                                  )
