@@ -22,6 +22,12 @@ class Table:
         self.search = SearchArticle()
         self.set_gui()
     
+    def insert_repeat_sign(self):
+        pass
+    
+    def insert_repeat_sign2(self):
+        pass
+    
     def close_search_next(self):
         self.search.close()
         self.reset_search()
@@ -48,18 +54,8 @@ class Table:
     
     def go_url(self):
         #TODO: implement
-        pass
-    
-    def go_keyboard(self):
-        #TODO: implement
-        self.go_url()
-    
-    def go(self,Mouse=False):
-        # Process either the search string or the URL
-        if Mouse:
-            self.go_url()
-        else:
-            self.go_keyboard()
+        f = '[MClientQt] mclient.Table.go_url'
+        print(f)
     
     def go_end(self):
         rowno, colno = self.logic.get_end()
@@ -123,9 +119,6 @@ class Table:
         index_ = self.model.index(self.coords[rowno],colno)
         self.gui.scroll2index(index_)
     
-    def go_cell(self):
-        print('go_cell')
-    
     def get_cell(self):
         f = '[MClientQt] mclient.Table.get_cell'
         try:
@@ -137,7 +130,7 @@ class Table:
     def copy_cell(self):
         f = '[MClientQt] mclient.Table.copy_cell'
         rowno, colno = self.gui.get_cell()
-        mes = '"' + self.plain[rowno][colno] + '"'
+        mes = '"' + self.logic.plain[rowno][colno] + '"'
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def clear(self):
@@ -244,7 +237,7 @@ class Table:
         self.gui.show_borders(Show)
     
     def set_gui(self):
-        self.gui.clicked.connect(self.go_cell)
+        self.gui.clicked.connect(self.go_url)
         self.gui.click_right = self.copy_cell
         self.gui.select = self.select
         self.search.gui.ent_src.bind('Return',self.close_search_next)
@@ -309,6 +302,36 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def go_keyboard(self):
+        #f = '[MClientQt] mclient.Table.go_keyboard'
+        search = self.panel.ent_src.get().strip()
+        if search == '':
+            self.table.go_url()
+        elif search == sh.lg.globs['str']['repeat_sign']:
+            self.insert_repeat_sign()
+        elif search == sh.lg.globs['str']['repeat_sign2']:
+            self.insert_repeat_sign2()
+        else:
+            lg.objs.get_request().search = search
+            self.go_search()
+    
+    def go_search(self):
+        f = '[MClientQt] mclient.App.go_search'
+        print(f)
+        '''
+        if lg.objs.get_request().search is None:
+            lg.objs.request.search = ''
+        lg.objs.request.search = lg.objs.request.search.strip()
+        if self.control_length():
+            self.update_lang1()
+            self.update_lang2()
+            self.auto_swap()
+            self.get_url()
+            mes = '"{}"'.format(lg.objs.request.search)
+            sh.objs.get_mes(f,mes,True).show_debug()
+            self.load_article()
+        '''
+    
     def clear_search_field(self):
         #TODO: implement
         #objs.get_suggest().get_gui().close()
@@ -360,13 +383,14 @@ class App:
         self.gui.bind('F3',self.table.search_next)
         self.gui.bind('Shift+F3',self.table.search_prev)
         self.gui.bind('Ctrl+F',self.table.search.show)
+        self.gui.bind('Return',self.go_keyboard)
         self.table.gui.click_middle = self.minimize
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be
             returned before the window is shown.
         '''
         self.gui.parent.resizeEvent = self.table.set_coords
-        self.panel.btn_trn.action = self.table.go
+        self.panel.btn_trn.action = self.go_keyboard
         self.panel.btn_clr.action = self.clear_search_field
         self.panel.btn_trn.set_action()
         self.panel.btn_clr.set_action()
