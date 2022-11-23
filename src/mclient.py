@@ -302,6 +302,10 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def toggle_about(self):
+        f = '[MClientQt] mclient.Table.toggle_about'
+        print(f)
+    
     def go_keyboard(self):
         #f = '[MClientQt] mclient.Table.go_keyboard'
         search = self.panel.ent_src.get().strip()
@@ -380,6 +384,7 @@ class App:
         self.gui.bind('End',self.table.go_line_end)
         self.gui.bind('Left',self.table.go_left)
         self.gui.bind('Right',self.table.go_right)
+        self.gui.bind('F1',self.toggle_about)
         self.gui.bind('F3',self.table.search_next)
         self.gui.bind('Shift+F3',self.table.search_prev)
         self.gui.bind('Ctrl+F',self.table.search.show)
@@ -392,6 +397,8 @@ class App:
         self.gui.parent.resizeEvent = self.table.set_coords
         self.panel.btn_trn.action = self.go_keyboard
         self.panel.btn_clr.action = self.clear_search_field
+        self.panel.btn_abt.action = self.toggle_about
+        self.panel.btn_abt.set_action()
         self.panel.btn_trn.set_action()
         self.panel.btn_clr.set_action()
         self.panel.ent_src.widget.act_on_home = self.table.go_line_start
