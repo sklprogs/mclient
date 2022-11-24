@@ -303,8 +303,7 @@ class App:
         self.update_ui()
     
     def toggle_about(self):
-        f = '[MClientQt] mclient.Table.toggle_about'
-        print(f)
+        self.about.toggle()
     
     def go_keyboard(self):
         #f = '[MClientQt] mclient.Table.go_keyboard'
@@ -414,6 +413,7 @@ class App:
     def set_gui(self):
         self.table = Table()
         self.panel = gi.Panel()
+        self.about = About()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title()
         self.set_bindings()
@@ -473,6 +473,34 @@ class SearchArticle:
             mes = _('No matches!')
             sh.objs.get_mes(f,mes).show_info()
         return(rowno,colno)
+
+
+
+class About:
+    
+    def __init__(self):
+        self.Shown = False
+        self.gui = gi.About()
+        self.set_bindings()
+    
+    def set_bindings(self):
+        self.gui.bind('Ctrl+Q',self.close)
+        self.gui.bind('Esc',self.close)
+        self.gui.bind('F1',self.toggle)
+    
+    def show(self):
+        self.Shown = True
+        self.gui.show()
+    
+    def close(self):
+        self.Shown = False
+        self.gui.close()
+    
+    def toggle(self):
+        if self.Shown:
+            self.close()
+        else:
+            self.show()
 
 
 if __name__ == '__main__':

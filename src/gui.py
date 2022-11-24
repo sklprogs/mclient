@@ -7,6 +7,10 @@ import PyQt5.QtWidgets
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
+VERSION = '7.0'
+CURYEAR = 2022
+ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
+
 
 class Entry(sh.Entry):
     
@@ -756,6 +760,37 @@ class SearchArticle:
     
     def get(self):
         return self.ent_src.get()
+
+
+
+class About(PyQt5.QtWidgets.QWidget):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.set_gui()
+    
+    def bind(self,hotkey,action):
+        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
+    
+    def set_text(self,text=''):
+        if not text:
+            text = _('Programming: Peter Sklyar, 2015-{}.\nVersion: {}\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n')
+            text = text.format(CURYEAR,VERSION)
+        self.lbl_abt.set_text(text)
+    
+    def set_gui(self):
+        self.lbl_abt = sh.Label()
+        self.set_text()
+        self.layout = PyQt5.QtWidgets.QVBoxLayout()
+        self.layout.addWidget(self.lbl_abt.widget)
+        #self.panel = PyQt5.QtWidgets.QWidget(self.widget)
+        #self.btn_lay = PyQt5.QtWidgets.QHBoxLayout()
+        #self.btn_lay.setContentsMargins(4,4,4,4)
+        #self.btn_lay.addWidget(self.btn_cls.widget)
+        #self.panel.setLayout(self.btn_lay)
+        #self.layout.addWidget(self.panel)
+        self.layout.addWidget(self.lbl_abt.widget)
+        self.setLayout(self.layout)
 
 
 
