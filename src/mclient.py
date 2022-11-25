@@ -419,6 +419,7 @@ class App:
         self.set_bindings()
 
 
+
 class SearchArticle:
     
     def __init__(self):
@@ -480,8 +481,15 @@ class About:
     
     def __init__(self):
         self.Shown = False
+        self.logic = lg.About()
         self.gui = gi.About()
+        self.set_text()
         self.set_bindings()
+    
+    def set_text(self,text=''):
+        if not text:
+            text = self.logic.set_code()
+        self.gui.set_text(text)
     
     def set_bindings(self):
         self.gui.bind('Ctrl+Q',self.close)

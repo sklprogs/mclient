@@ -7,8 +7,6 @@ import PyQt5.QtWidgets
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-VERSION = '7.0'
-CURYEAR = 2022
 ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
 
 
@@ -772,15 +770,11 @@ class About(PyQt5.QtWidgets.QWidget):
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
     
-    def set_text(self,text=''):
-        if not text:
-            text = _('Programming: Peter Sklyar, 2015-{}.\nVersion: {}\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n')
-            text = text.format(CURYEAR,VERSION)
+    def set_text(self,text):
         self.lbl_abt.set_text(text)
     
     def set_gui(self):
         self.lbl_abt = sh.Label()
-        self.set_text()
         self.layout = PyQt5.QtWidgets.QVBoxLayout()
         self.layout.addWidget(self.lbl_abt.widget)
         #self.panel = PyQt5.QtWidgets.QWidget(self.widget)
