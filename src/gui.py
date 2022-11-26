@@ -777,6 +777,9 @@ class About(PyQt5.QtWidgets.QWidget):
         self.lbl_abt = sh.Label()
         self.layout = PyQt5.QtWidgets.QVBoxLayout()
         self.panel = PyQt5.QtWidgets.QWidget(self)
+        policy = PyQt5.QtWidgets.QSizePolicy (PyQt5.QtWidgets.QSizePolicy.Fixed
+                                             ,PyQt5.QtWidgets.QSizePolicy.Fixed
+                                             )
         # Show the license
         self.btn_thd = sh.Button (text = _('Third parties')
                                  ,hint = _('Third-party licenses')
@@ -788,6 +791,9 @@ class About(PyQt5.QtWidgets.QWidget):
         self.btn_eml = sh.Button (text = _('Contact the author')
                                  ,hint = _('Draft an email to the author')
                                  )
+        self.btn_thd.widget.setSizePolicy(policy)
+        self.btn_lic.widget.setSizePolicy(policy)
+        self.btn_eml.widget.setSizePolicy(policy)
         self.btn_lay = PyQt5.QtWidgets.QHBoxLayout()
         self.btn_lay.setContentsMargins(4,4,4,4)
         self.btn_lay.addWidget(self.btn_thd.widget)
