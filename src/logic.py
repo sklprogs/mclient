@@ -1519,7 +1519,7 @@ class About:
         self.set_license()
         self.set_contact()
         self.code = '<br>'.join(self.code)
-        self.code = '<span style="font-size:{}pt">{}</span>'.format(12,self.code)
+        self.code = '<span style="font-family: Serif; font-size:{}pt">{}</span>'.format(12,self.code)
         return self.code
     
     def set_group(self):
