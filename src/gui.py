@@ -776,7 +776,6 @@ class About(PyQt5.QtWidgets.QWidget):
     def set_gui(self):
         self.lbl_abt = sh.Label()
         self.layout = PyQt5.QtWidgets.QVBoxLayout()
-        self.layout.addWidget(self.lbl_abt.widget)
         self.panel = PyQt5.QtWidgets.QWidget(self)
         # Show the license
         self.btn_thd = sh.Button (text = _('Third parties')
@@ -795,8 +794,8 @@ class About(PyQt5.QtWidgets.QWidget):
         self.btn_lay.addWidget(self.btn_lic.widget)
         self.btn_lay.addWidget(self.btn_eml.widget)
         self.panel.setLayout(self.btn_lay)
-        self.layout.addWidget(self.panel)
         self.layout.addWidget(self.lbl_abt.widget)
+        self.layout.addWidget(self.panel)
         self.setLayout(self.layout)
 
 
