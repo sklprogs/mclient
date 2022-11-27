@@ -767,6 +767,9 @@ class About(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
+    def set_title(self,title=_('About the program')):
+        self.setWindowTitle(title)
+    
     def centralize(self):
         self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
     

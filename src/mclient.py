@@ -484,6 +484,7 @@ class About:
         self.logic = lg.About()
         self.gui = gi.About()
         self.set_text()
+        self.gui.set_title()
         self.set_bindings()
     
     def set_text(self,text=''):
