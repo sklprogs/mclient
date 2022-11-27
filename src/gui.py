@@ -767,6 +767,9 @@ class About(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
+    def centralize(self):
+        self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
+    
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
     

@@ -496,9 +496,13 @@ class About:
         self.gui.bind('Esc',self.close)
         self.gui.bind('F1',self.toggle)
     
+    def centralize(self):
+        self.gui.centralize()
+    
     def show(self):
         self.Shown = True
         self.gui.show()
+        self.centralize()
     
     def close(self):
         self.Shown = False
