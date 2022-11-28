@@ -439,7 +439,7 @@ class App:
         lg.objs.get_column_width().reset()
         lg.objs.column_width.run()
         
-        data = lg.objs.blocksdb.fetch()
+        blocks = lg.com.set_blocks(lg.objs.blocksdb.fetch())
         
         ''' Empty article is not added either to DB or history, so we
             just do not clear the search field to be able to correct

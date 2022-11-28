@@ -904,15 +904,11 @@ class Commands:
             return blocks
         for row in data:
             block = Block()
-            block.no = row[0]
-            block.rowno = row[1]
-            block.colno = row[2]
-            block.text = row[3]
-            block.color = row[4]
-            block.family = row[5]
-            block.size = row[6]
-            block.Bold = row[7]
-            block.Italic = row[8]
+            block.type_ = row[0]
+            block.text = row[1]
+            block.rowno = row[2]
+            block.colno = row[3]
+            block.no = row[4]
             blocks.append(block)
         return blocks
     
