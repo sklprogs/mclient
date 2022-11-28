@@ -23,6 +23,7 @@ class Block:
     def __init__(self):
         self.type_ = 'invalid'
         self.text = ''
+        self.no = -1
         self.rowno = -1
         self.colno = -1
         self.cellno = -1
@@ -884,6 +885,17 @@ class Commands:
     def __init__(self):
         self.use_unverified()
     
+    def control_length(self):
+        # Confirm too long requests
+        f = '[MClientQt] logic.Commands.control_length'
+        Confirmed = True
+        if len(objs.get_request().search) >= 150:
+            mes = _('The request is long ({} symbols). Do you really want to send it?')
+            mes = mes.format(len(objs.request.search))
+            if not sh.objs.get_mes(f,mes).show_question():
+                Confirmed = False
+        return Confirmed
+    
     def set_blocks(self,data):
         f = '[MClient] logic.Commands.set_blocks'
         blocks = []
@@ -898,8 +910,6 @@ class Commands:
             block.text = row[3]
             block.color = row[4]
             block.family = row[5]
-            #TODO: delete the multiplier
-            #block.size = row[6] * 3
             block.size = row[6]
             block.Bold = row[7]
             block.Italic = row[8]

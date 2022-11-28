@@ -10,6 +10,13 @@ import skl_shared_qt.shared as sh
 import logic as lg
 import gui as gi
 
+import cells as cl
+import subjects.priorities.controller as pr
+import subjects.blacklist.controller as bl
+import subjects.subjects as sj
+import settings.controller as st
+import suggest.controller as sg
+
 DEBUG = False
 
 
@@ -302,6 +309,152 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def get_url(self):
+        f = '[MClientQt] mclient.WebFrame.get_url'
+        #NOTE: update source and target languages first
+        lg.objs.get_request().url = lg.objs.get_plugins().get_url(lg.objs.request.search)
+        mes = lg.objs.request.url
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def load_article(self):
+        f = '[MClientQt] mclient.App.load_article'
+        ''' #NOTE: each time the contents of the current page is changed
+            (e.g., due to prioritizing), bookmarks must be deleted.
+        '''
+        # Suppress useless error output
+        if not lg.objs.get_request().search:
+            return
+        timer = sh.Timer(f)
+        timer.start()
+        # Do not allow selection positions from previous articles
+        self.pos = -1
+        '''
+        order = objs.get_settings().get_speech_prior()
+        lg.objs.get_speech_prior().reset(order)
+        '''
+        artid = lg.objs.get_blocksdb().is_present (source = sh.lg.globs['str']['source']
+                                                  ,title = lg.objs.request.search
+                                                  ,url = lg.objs.request.url
+                                                  )
+        if artid:
+            mes = _('Load article No. {} from memory').format(artid)
+            sh.objs.get_mes(f,mes,True).show_info()
+            lg.objs.blocksdb.artid = artid
+            #self.get_bookmark()
+        else:
+            blocks = lg.objs.get_plugins().request (search = lg.objs.request.search
+                                                   ,url = lg.objs.request.url
+                                                   )
+            # 'None' skips the autoincrement
+            data = (None                              # (00) ARTICLEID
+                   ,sh.lg.globs['str']['source']      # (01) SOURCE
+                   ,lg.objs.request.search            # (02) TITLE
+                   ,lg.objs.request.url               # (03) URL
+                   ,lg.objs.get_plugins().get_lang1() # (04) LANG1
+                   ,lg.objs.plugins.get_lang2()       # (05) LANG2
+                   ,self.pos                          # (06) BOOKMARK
+                   ,lg.objs.plugins.get_htm()         # (07) CODE
+                   )
+            lg.objs.blocksdb.fill_articles(data)
+            lg.objs.blocksdb.artid = lg.objs.blocksdb.get_max_artid()
+            data = lg.com.dump_elems (blocks = blocks
+                                     ,artid = lg.objs.blocksdb.artid
+                                     )
+            if data:
+                lg.objs.blocksdb.fill_blocks(data)
+            
+            lg.objs.blocksdb.update_phterm()
+            
+        self.phdic = lg.objs.blocksdb.get_phdic()
+        if self.phdic:
+            if sh.lg.globs['bool']['ShortSubjects']:
+                self.phdic = self.phdic[0]
+            else:
+                self.phdic = self.phdic[1]
+        else:
+            self.phdic = ''
+        
+        old_special = lg.objs.request.SpecialPage
+        if self.phdic:
+            lg.objs.request.SpecialPage = False
+        else:
+            # Otherwise, 'SpecialPage' will be inherited
+            lg.objs.request.SpecialPage = True
+        lg.objs.request.NewPageType = old_special != lg.objs.request.SpecialPage
+        #self.update_columns()
+        
+        SortTerms = sh.lg.globs['bool']['AlphabetizeTerms'] \
+                    and not lg.objs.request.SpecialPage
+        ''' We must reset DB as early as possible after setting 'elems',
+            otherwise, real and loaded settings may not coincide, which,
+            in turn, may lead to a data loss, see, for example, RU-EN:
+            "цепь: провод".
+        '''
+        lg.objs.blocksdb.reset (cols = lg.objs.request.cols
+                               ,SortRows = sh.lg.globs['bool']['SortByColumns']
+                               ,SortTerms = SortTerms
+                               ,ExpandDic = not sh.lg.globs['bool']['ShortSubjects']
+                               ,ShowUsers = sh.lg.globs['bool']['ShowUserNames']
+                               ,PhraseCount = sh.lg.globs['bool']['PhraseCount']
+                               )
+        sj.objs.get_article().reset (pairs = lg.objs.blocksdb.get_dic_pairs()
+                                    ,Debug = lg.objs.get_plugins().Debug
+                                    )
+        sj.objs.article.run()
+        data = lg.objs.blocksdb.assign_bp()
+        spdic = lg.objs.get_speech_prior().get_all2prior()
+        bp = cl.BlockPrioritize (data = data
+                                ,Block = sh.lg.globs['bool']['BlockSubjects']
+                                ,Prioritize = sh.lg.globs['bool']['PrioritizeSubjects']
+                                ,phdic = self.phdic
+                                ,spdic = spdic
+                                ,Debug = lg.objs.plugins.Debug
+                                ,maxrows = lg.objs.plugins.maxrows
+                                )
+        bp.run()
+        lg.objs.blocksdb.update(bp.query)
+        
+        lg.objs.blocksdb.unignore()
+        lg.objs.blocksdb.ignore()
+        
+        data = lg.objs.blocksdb.assign_cells()
+
+        if sh.lg.globs['bool']['ShortSpeech']:
+            spdic = {}
+        else:
+            spdic = lg.objs.speech_prior.get_abbr2full()
+        
+        cells = cl.Cells (data = data
+                         ,cols = lg.objs.request.cols
+                         ,collimit = lg.objs.request.collimit
+                         ,phdic = self.phdic
+                         ,spdic = spdic
+                         ,Reverse = sh.lg.globs['bool']['VerticalView']
+                         ,Debug = lg.objs.plugins.Debug
+                         ,maxrows = lg.objs.plugins.maxrows
+                         )
+        cells.run()
+        cells.dump(lg.objs.blocksdb)
+        
+        lg.objs.get_column_width().reset()
+        lg.objs.column_width.run()
+        
+        data = lg.objs.blocksdb.fetch()
+        
+        ''' Empty article is not added either to DB or history, so we
+            just do not clear the search field to be able to correct
+            the typo.
+        '''
+        '''
+        if pages.blocks or com.get_skipped_terms():
+            self.gui.ent_src.clear_text()
+        '''
+        #objs.get_suggest().close()
+        #self.update_buttons()
+        timer.end()
+        #self.run_final_debug()
+        #self.debug_settings()
+    
     def toggle_about(self):
         self.about.toggle()
     
@@ -319,21 +472,19 @@ class App:
             self.go_search()
     
     def go_search(self):
-        f = '[MClientQt] mclient.App.go_search'
-        print(f)
-        '''
         if lg.objs.get_request().search is None:
             lg.objs.request.search = ''
         lg.objs.request.search = lg.objs.request.search.strip()
-        if self.control_length():
+        if lg.com.control_length():
+            '''
             self.update_lang1()
             self.update_lang2()
             self.auto_swap()
+            '''
             self.get_url()
             mes = '"{}"'.format(lg.objs.request.search)
             sh.objs.get_mes(f,mes,True).show_debug()
             self.load_article()
-        '''
     
     def clear_search_field(self):
         #TODO: implement
