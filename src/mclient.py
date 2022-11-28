@@ -309,13 +309,6 @@ class App:
         self.set_gui()
         self.update_ui()
     
-    def get_url(self):
-        f = '[MClientQt] mclient.WebFrame.get_url'
-        #NOTE: update source and target languages first
-        lg.objs.get_request().url = lg.objs.get_plugins().get_url(lg.objs.request.search)
-        mes = lg.objs.request.url
-        sh.objs.get_mes(f,mes,True).show_debug()
-    
     def load_article(self):
         f = '[MClientQt] mclient.App.load_article'
         ''' #NOTE: each time the contents of the current page is changed
@@ -325,7 +318,7 @@ class App:
         if not lg.objs.get_request().search:
             return
         timer = sh.Timer(f)
-        timer.start()
+        #timer.start()
         # Do not allow selection positions from previous articles
         self.pos = -1
         '''
@@ -365,6 +358,7 @@ class App:
             
             lg.objs.blocksdb.update_phterm()
             
+        timer.start()
         self.phdic = lg.objs.blocksdb.get_phdic()
         if self.phdic:
             if sh.lg.globs['bool']['ShortSubjects']:
@@ -441,6 +435,8 @@ class App:
         
         blocks = lg.com.set_blocks(lg.objs.blocksdb.fetch())
         
+        
+        
         ''' Empty article is not added either to DB or history, so we
             just do not clear the search field to be able to correct
             the typo.
@@ -454,6 +450,7 @@ class App:
         timer.end()
         #self.run_final_debug()
         #self.debug_settings()
+        return blocks
     
     def toggle_about(self):
         self.about.toggle()
@@ -481,7 +478,7 @@ class App:
             self.update_lang2()
             self.auto_swap()
             '''
-            self.get_url()
+            lg.com.get_url()
             mes = '"{}"'.format(lg.objs.request.search)
             sh.objs.get_mes(f,mes,True).show_debug()
             self.load_article()
@@ -671,10 +668,12 @@ if __name__ == '__main__':
     f = '[MClient] mclient.__main__'
     sh.com.start()
     lg.objs.get_plugins(Debug=False,maxrows=1000)
+    '''
     db = DB()
     data = db.fetch()
     blocks = lg.com.set_blocks(data)
-    cells = lg.Cells(blocks).run()
+    '''
+    lg.objs.get_request().search = 'h'
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
     app = App()
@@ -683,8 +682,11 @@ if __name__ == '__main__':
     '''
     sh.objs.get_root().installEventFilter(app.gui.table)
     sh.objs.get_root().installEventFilter(app.gui.panel)
+    lg.com.get_url()
+    blocks = app.load_article()
+    cells = lg.Cells(blocks).run()
     app.reset(cells)
     timer.end()
     app.show()
-    db.close()
+    #db.close()
     sh.com.end()
