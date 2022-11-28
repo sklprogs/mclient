@@ -17,6 +17,7 @@ import subjects.subjects as sj
 import settings.controller as st
 import suggest.controller as sg
 
+
 DEBUG = False
 
 
@@ -433,9 +434,9 @@ class App:
         lg.objs.get_column_width().reset()
         lg.objs.column_width.run()
         
-        blocks = lg.com.set_blocks(lg.objs.blocksdb.fetch())
+        blocks = lg.com.assign_blocks(lg.objs.blocksdb.fetch())
         
-        
+        blocks = lg.com.add_formatting(blocks)
         
         ''' Empty article is not added either to DB or history, so we
             just do not clear the search field to be able to correct
