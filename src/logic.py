@@ -660,8 +660,14 @@ class Objects:
     def __init__(self):
         self.online = self.request = self.order = self.default \
                     = self.plugins = self.speech_prior = self.config \
-                    = self.order = self.blocksdb = self.column_width = None
+                    = self.order = self.blocksdb = self.column_width \
+                    = self.colors = None
 
+    def get_colors(self):
+        if self.colors is None:
+            self.colors = Colors()
+        return self.colors
+    
     def get_column_width(self):
         if self.column_width is None:
             self.column_width = ColumnWidth()
@@ -757,7 +763,16 @@ class Commands:
             sh.com.rep_empty(f)
             return []
         for i in range(len(blocks)):
-            blocks[i] = Font(blocks[i]).run()
+            blocks[i] = Font (block = blocks[i]
+                             ,blocked_color1 = objs.get_colors().blocked_color1
+                             ,blocked_color2 = objs.colors.blocked_color2
+                             ,blocked_color3 = objs.colors.blocked_color3
+                             ,blocked_color4 = objs.colors.blocked_color4
+                             ,priority_color1 = objs.colors.priority_color1
+                             ,priority_color2 = objs.colors.priority_color2
+                             ,priority_color3 = objs.colors.priority_color3
+                             ,priority_color4 = objs.colors.priority_color4
+                             ).run()
         return blocks
     
     def set_def_colnum_even(self):
@@ -1573,6 +1588,85 @@ class Font:
             self.block.size = sh.lg.globs['int']['font_comments_size']
         elif self.block.type_ in ('phrase','term'):
             self.block.size = sh.lg.globs['int']['font_terms_size']
+
+
+
+class Colors:
+    
+    def __init__(self):
+        self.set_blocked_colors()
+        self.set_priority_colors()
+    
+    def set_priority_colors(self):
+        delta = -76
+        # Column 1 color
+        default_color = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col1']
+                                             ,delta = delta
+                                             )
+        if not default_color:
+            default_color = 'red'
+        
+        self.priority_color1 = default_color
+        # Column 2 color
+        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col2']
+                                      ,delta = delta
+                                      )
+        if result:
+            self.priority_color2 = result
+        else:
+            self.priority_color2 = default_color
+        # Column 3 color
+        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col3']
+                                      ,delta = delta
+                                      )
+        if result:
+            self.priority_color3 = result
+        else:
+            self.priority_color3 = default_color
+        # Column 4 color
+        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col4']
+                                      ,delta = delta
+                                      )
+        if result:
+            self.priority_color4 = result
+        else:
+            self.priority_color4 = default_color
+            
+    def set_blocked_colors(self):
+        default_color = 'dim gray'
+        delta = 76
+        # Column 1 color
+        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col1']
+                                      ,delta = delta
+                                      )
+        if result:
+            self.blocked_color1 = result
+        else:
+            self.blocked_color1 = default_color
+        # Column 2 color
+        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col2']
+                                      ,delta = delta
+                                      )
+        if result:
+            self.blocked_color2 = result
+        else:
+            self.blocked_color2 = default_color
+        # Column 3 color
+        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col3']
+                                      ,delta = delta
+                                      )
+        if result:
+            self.blocked_color3 = result
+        else:
+            self.blocked_color3 = default_color
+        # Column 4 color
+        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col4']
+                                      ,delta = delta
+                                      )
+        if result:
+            self.blocked_color4 = result
+        else:
+            self.blocked_color4 = default_color
 
 
 objs = Objects()
