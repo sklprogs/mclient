@@ -1460,13 +1460,7 @@ class Font:
         elif self.block.type_ == 'correction':
             self.block.color = 'green'
         elif self.block.type_ == 'user':
-            color = sh.lg.globs['str']['color_comments']
-            result = sh.com.get_mod_color (color = color
-                                          ,delta = 75
-                                          )
-            if result:
-                color = result
-            self.block.color = color
+            self.block.color = objs.get_colors().user
     
     def _set_color_p(self):
         if self.block.type_ in ('dic','phdic','wform','transc','speech'):
@@ -1595,15 +1589,15 @@ class Colors:
     
     def __init__(self):
         self.set_values()
-        self.set_cols()
+        self.set_colors()
     
     def set_values(self):
         self.factor = 140
         # No need to set default colors, Qt ignores empty names at input
         self.p1 = self.p2 = self.p3 = self.p4 = self.b1 = self.b2 = self.b3 \
-        = self.b4 = ''
+        = self.b4 = self.user = ''
     
-    def set_cols(self):
+    def set_colors(self):
         self.p1, self.b1 = sh.com.get_mod_colors (color = sh.lg.globs['str']['color_col1']
                                                  ,factor = self.factor
                                                  )
@@ -1616,6 +1610,9 @@ class Colors:
         self.p4, self.b4 = sh.com.get_mod_colors (color = sh.lg.globs['str']['color_col4']
                                                  ,factor = self.factor
                                                  )
+        darker, self.user = sh.com.get_mod_colors (color = sh.lg.globs['str']['color_comments']
+                                                  ,factor = self.factor
+                                                  )
 
 
 objs = Objects()

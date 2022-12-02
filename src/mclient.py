@@ -322,10 +322,12 @@ class App:
         #timer.start()
         # Do not allow selection positions from previous articles
         self.pos = -1
+
         '''
         order = objs.get_settings().get_speech_prior()
         lg.objs.get_speech_prior().reset(order)
         '''
+
         artid = lg.objs.get_blocksdb().is_present (source = sh.lg.globs['str']['source']
                                                   ,title = lg.objs.request.search
                                                   ,url = lg.objs.request.url
@@ -438,9 +440,8 @@ class App:
         
         blocks = lg.com.add_formatting(blocks)
         
-        ''' Empty article is not added either to DB or history, so we
-            just do not clear the search field to be able to correct
-            the typo.
+        ''' Empty article is not added either to DB or history, so we just do
+            not clear the search field to be able to correct the typo.
         '''
         '''
         if pages.blocks or com.get_skipped_terms():
@@ -674,7 +675,7 @@ if __name__ == '__main__':
     data = db.fetch()
     blocks = lg.com.set_blocks(data)
     '''
-    lg.objs.get_request().search = 'h'
+    lg.objs.get_request().search = 'hello'
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
     app = App()
