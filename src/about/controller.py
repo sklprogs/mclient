@@ -1,73 +1,49 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared.localize import _
-import skl_shared.shared as sh
-from . import gui as gi
+from skl_shared_qt.localize import _
+import skl_shared_qt.shared as sh
 
-VERSION = gi.VERSION
+from . import gui as gi
+from . import logic as lg
 
 
 class About:
-
-    def __init__(self):
-        self.Active = False
-        self.gui = None
     
-    def toggle(self,event=None):
-        if self.Active:
+    def __init__(self):
+        self.gui = gi.About()
+        self.logic = lg.About()
+        self.Shown = False
+        self.set_text()
+        self.set_title()
+        self.set_bindings()
+    
+    def set_title(self,title=_('About the program')):
+        self.gui.set_title(title)
+    
+    def set_text(self,text=''):
+        if not text:
+            text = self.logic.set_code()
+        self.gui.set_text(text)
+    
+    def set_bindings(self):
+        self.gui.bind('Esc',self.close)
+        self.gui.bind('F1',self.toggle)
+    
+    def centralize(self):
+        self.gui.centralize()
+    
+    def show(self):
+        self.Shown = True
+        self.gui.show()
+        self.centralize()
+    
+    def close(self):
+        self.Shown = False
+        self.gui.close()
+    
+    def toggle(self):
+        if self.Shown:
             self.close()
         else:
             self.show()
-    
-    def get_gui(self):
-        if self.gui is None:
-            self.set_gui()
-        return self.gui
-    
-    def close(self,event=None):
-        self.Active = False
-        self.get_gui().close()
-    
-    def show(self,event=None):
-        self.Active = True
-        self.get_gui().show()
-    
-    def set_gui(self):
-        self.gui = gi.About()
-        self.gui.lbl_abt.set_font(sh.lg.globs['str']['font_style'])
-        self.set_bindings()
-        
-    def set_bindings(self):
-        f = '[MClient] about.controller.About.set_bindings'
-        if self.gui is None:
-            sh.com.rep_empty(f)
-            return
-        sh.com.bind (obj = self.gui.obj
-                    ,bindings = sh.lg.globs['str']['bind_show_about']
-                    ,action = self.toggle
-                    )
-        sh.com.bind (obj = self.gui.obj
-                    ,bindings = ('<Escape>','<Control-q>','<Control-w>')
-                    ,action = self.close
-                    )
-        self.gui.btn_thd.action = self.show_third_parties
-        self.gui.btn_lic.action = self.open_license_url
-        self.gui.btn_eml.action = self.send_feedback
-        self.gui.widget.protocol('WM_DELETE_WINDOW',self.close)
-
-    def send_feedback(self,event=None):
-        # Compose an email to the author
-        sh.Email (email = sh.lg.email
-                 ,subject = _('On MClient')
-                 ).create()
-
-    def open_license_url(self,event=None):
-        # Open a license web-page
-        ionline = sh.Online()
-        ionline.url = sh.lg.globs['license_url']
-        ionline.browse()
-
-    def show_third_parties(self,event=None):
-        # Show info about third-party licenses
-        pass

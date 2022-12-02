@@ -16,10 +16,25 @@ import subjects.blacklist.controller as bl
 import subjects.subjects as sj
 import settings.controller as st
 import suggest.controller as sg
+import about.controller as ab
 import third_parties.controller as tp
 
 
 DEBUG = False
+
+
+class About(ab.About):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.parties = tp.ThirdParties()
+        self.add_bindings()
+
+    def add_bindings(self):
+        self.gui.btn_thd.set_action(self.parties.show)
+        self.gui.btn_lic.set_action(self.parties.open_license_url)
+        self.gui.btn_eml.set_action(self.parties.send_feedback)
+
 
 
 class Table:
@@ -624,49 +639,6 @@ class SearchArticle:
             mes = _('No matches!')
             sh.objs.get_mes(f,mes).show_info()
         return(rowno,colno)
-
-
-
-class About:
-    
-    def __init__(self):
-        self.gui = gi.About()
-        self.logic = lg.About()
-        self.parties = tp.ThirdParties()
-        self.Shown = False
-        self.set_text()
-        self.gui.set_title()
-        self.set_bindings()
-    
-    def set_text(self,text=''):
-        if not text:
-            text = self.logic.set_code()
-        self.gui.set_text(text)
-    
-    def set_bindings(self):
-        self.gui.bind('Esc',self.close)
-        self.gui.bind('F1',self.toggle)
-        self.gui.btn_thd.set_action(self.parties.show)
-        self.gui.btn_lic.set_action(self.parties.open_license_url)
-        self.gui.btn_eml.set_action(self.parties.send_feedback)
-    
-    def centralize(self):
-        self.gui.centralize()
-    
-    def show(self):
-        self.Shown = True
-        self.gui.show()
-        self.centralize()
-    
-    def close(self):
-        self.Shown = False
-        self.gui.close()
-    
-    def toggle(self):
-        if self.Shown:
-            self.close()
-        else:
-            self.show()
 
 
 if __name__ == '__main__':
