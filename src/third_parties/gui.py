@@ -42,6 +42,7 @@ class ThirdParties(PyQt5.QtWidgets.QWidget):
         self.cursor = PyQt5.QtGui.QTextCursor(self.doc)
         self.char_fmt = self.cursor.charFormat()
         self.textbox.setDocument(self.doc)
+        self.textbox.setReadOnly(True)
         self.font = PyQt5.QtGui.QFont('Serif',12)
         self.char_fmt.setFont(self.font)
         self.add_widgets()
