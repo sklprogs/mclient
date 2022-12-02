@@ -1493,8 +1493,8 @@ class Font:
         if not self.Success:
             sh.com.cancel(f)
             return
-        if self.block.colno == 0 and \
-        self.block.type_ in ('dic','phdic','wform','transc','speech'):
+        if self.block.type_ == 'wform' or self.block.colno == 0 \
+        and self.block.type_ in ('dic','phdic','transc','speech'):
             self.block.Bold = True
     
     def set_italic(self):

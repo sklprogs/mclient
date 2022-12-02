@@ -675,7 +675,7 @@ if __name__ == '__main__':
     data = db.fetch()
     blocks = lg.com.set_blocks(data)
     '''
-    lg.objs.get_request().search = 'hello'
+    lg.objs.get_request().search = 'h'
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
     app = App()
