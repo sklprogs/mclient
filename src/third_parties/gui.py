@@ -1,35 +1,44 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared.localize import _
-import skl_shared.shared as sh
+import PyQt5
+import PyQt5.QtWidgets
 
-ICON = sh.objs.get_pdir().add('..','resources','icon_64x64_mclient.gif')
+from skl_shared_qt.localize import _
+import skl_shared_qt.shared as sh
+
+ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
 
 
-class ThirdParties:
+class ThirdParties(PyQt5.QtWidgets.QWidget):
     
-    def __init__(self):
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
         self.set_gui()
-        
-    def set_bindings(self):
-        sh.com.bind (obj = self.obj
-                    ,bindings = ('<Escape>','<Control-q>','<Control-w>')
-                    ,action = self.close
-                    )
+    
+    def centralize(self):
+        self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
+    
+    def fill(self,text):
+        self.textbox.clear()
+        self.textbox.setPlainText(text)
+    
+    def set_title(self,title):
+        self.setWindowTitle(title)
+    
+    def set_layout(self):
+        self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
+        self.layout_.setContentsMargins(0,0,0,0)
+    
+    def add_widgets(self):
+        self.layout_.addWidget(self.textbox)
+        self.setLayout(self.layout_)
     
     def set_gui(self):
-        title = _('Third parties') + ':'
-        self.obj = sh.TextBoxRO (title = title
-                                ,icon = ICON
-                                )
-        self.parent = self.obj.parent
-        sh.Geometry(self.parent).set('800x600')
-        self.set_bindings()
-        self.obj.focus()
+        self.set_layout()
+        self.textbox = PyQt5.QtWidgets.QTextEdit()
+        self.textbox.setDocument(PyQt5.QtGui.QTextDocument())
+        self.add_widgets()
     
-    def show(self,event=None):
-        self.obj.show()
-    
-    def close(self,event=None):
-        self.obj.close()
+    def bind(self,hotkey,action):
+        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)

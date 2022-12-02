@@ -10,41 +10,6 @@ import skl_shared_qt.shared as sh
 ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
 
 
-class ThirdParties(PyQt5.QtWidgets.QWidget):
-    
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-        self.set_gui()
-    
-    def centralize(self):
-        self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
-    
-    def fill(self,text):
-        self.textbox.clear()
-        self.textbox.setPlainText(text)
-    
-    def set_title(self,title):
-        self.setWindowTitle(title)
-    
-    def set_layout(self):
-        self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
-        self.layout_.setContentsMargins(0,0,0,0)
-    
-    def add_widgets(self):
-        self.layout_.addWidget(self.textbox)
-        self.setLayout(self.layout_)
-    
-    def set_gui(self):
-        self.set_layout()
-        self.textbox = PyQt5.QtWidgets.QTextEdit()
-        self.textbox.setDocument(PyQt5.QtGui.QTextDocument())
-        self.add_widgets()
-    
-    def bind(self,hotkey,action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
-
-
-
 class Entry(sh.Entry):
     
     def __init__(self,*args,**kwargs):

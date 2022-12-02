@@ -16,6 +16,7 @@ import subjects.blacklist.controller as bl
 import subjects.subjects as sj
 import settings.controller as st
 import suggest.controller as sg
+import third_parties.controller as tp
 
 
 DEBUG = False
@@ -631,7 +632,7 @@ class About:
     def __init__(self):
         self.gui = gi.About()
         self.logic = lg.About()
-        self.parties = ThirdParties()
+        self.parties = tp.ThirdParties()
         self.Shown = False
         self.set_text()
         self.gui.set_title()
@@ -647,7 +648,7 @@ class About:
         self.gui.bind('F1',self.toggle)
         self.gui.btn_thd.set_action(self.parties.show)
         self.gui.btn_lic.set_action(self.parties.open_license_url)
-        self.gui.btn_lic.set_action(self.parties.send_feedback)
+        self.gui.btn_eml.set_action(self.parties.send_feedback)
     
     def centralize(self):
         self.gui.centralize()
@@ -666,42 +667,6 @@ class About:
             self.close()
         else:
             self.show()
-
-
-
-class ThirdParties:
-    
-    def __init__(self):
-        self.gui = gi.ThirdParties()
-        self.logic = lg.ThirdParties()
-        self.set_gui()
-    
-    def send_feedback(self):
-        self.logic.send_feedback()
-
-    def open_license_url(self):
-        self.logic.open_license_url()
-    
-    def fill(self):
-        self.gui.fill(self.logic.fill())
-    
-    def set_title(self,title=_('Third parties')):
-        self.gui.set_title(title)
-    
-    def set_gui(self):
-        self.set_bindings()
-        self.set_title()
-        self.fill()
-    
-    def show(self):
-        self.gui.show()
-        self.gui.centralize()
-    
-    def close(self):
-        self.gui.close()
-    
-    def set_bindings(self):
-        self.gui.bind('Esc',self.close)
 
 
 if __name__ == '__main__':
