@@ -45,6 +45,7 @@ class ThirdParties(PyQt5.QtWidgets.QWidget):
         self.font = PyQt5.QtGui.QFont('Serif',12)
         self.char_fmt.setFont(self.font)
         self.add_widgets()
+        self.resize(600,400)
     
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
