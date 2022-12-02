@@ -28,7 +28,7 @@ class About(PyQt5.QtWidgets.QWidget):
     
     def set_gui(self):
         self.lbl_abt = sh.Label()
-        self.layout = PyQt5.QtWidgets.QVBoxLayout()
+        self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
         self.panel = PyQt5.QtWidgets.QWidget(self)
         policy = PyQt5.QtWidgets.QSizePolicy (PyQt5.QtWidgets.QSizePolicy.Fixed
                                              ,PyQt5.QtWidgets.QSizePolicy.Fixed
@@ -53,6 +53,6 @@ class About(PyQt5.QtWidgets.QWidget):
         self.btn_lay.addWidget(self.btn_lic.widget)
         self.btn_lay.addWidget(self.btn_eml.widget)
         self.panel.setLayout(self.btn_lay)
-        self.layout.addWidget(self.lbl_abt.widget)
-        self.layout.addWidget(self.panel)
-        self.setLayout(self.layout)
+        self.layout_.addWidget(self.lbl_abt.widget)
+        self.layout_.addWidget(self.panel)
+        self.setLayout(self.layout_)
