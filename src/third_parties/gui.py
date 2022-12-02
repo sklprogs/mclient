@@ -21,7 +21,8 @@ class ThirdParties(PyQt5.QtWidgets.QWidget):
     
     def fill(self,text):
         self.textbox.clear()
-        self.textbox.setPlainText(text)
+        self.cursor.insertText(text,self.char_fmt)
+        self.textbox.moveCursor(self.cursor.Start)
     
     def set_title(self,title):
         self.setWindowTitle(title)
@@ -37,7 +38,12 @@ class ThirdParties(PyQt5.QtWidgets.QWidget):
     def set_gui(self):
         self.set_layout()
         self.textbox = PyQt5.QtWidgets.QTextEdit()
-        self.textbox.setDocument(PyQt5.QtGui.QTextDocument())
+        self.doc = PyQt5.QtGui.QTextDocument()
+        self.cursor = PyQt5.QtGui.QTextCursor(self.doc)
+        self.char_fmt = self.cursor.charFormat()
+        self.textbox.setDocument(self.doc)
+        self.font = PyQt5.QtGui.QFont('Serif',12)
+        self.char_fmt.setFont(self.font)
         self.add_widgets()
     
     def bind(self,hotkey,action):
