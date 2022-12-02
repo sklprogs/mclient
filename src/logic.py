@@ -764,14 +764,14 @@ class Commands:
             return []
         for i in range(len(blocks)):
             blocks[i] = Font (block = blocks[i]
-                             ,blocked_color1 = objs.get_colors().blocked_color1
-                             ,blocked_color2 = objs.colors.blocked_color2
-                             ,blocked_color3 = objs.colors.blocked_color3
-                             ,blocked_color4 = objs.colors.blocked_color4
-                             ,priority_color1 = objs.colors.priority_color1
-                             ,priority_color2 = objs.colors.priority_color2
-                             ,priority_color3 = objs.colors.priority_color3
-                             ,priority_color4 = objs.colors.priority_color4
+                             ,blocked_color1 = objs.get_colors().b1
+                             ,blocked_color2 = objs.colors.b2
+                             ,blocked_color3 = objs.colors.b3
+                             ,blocked_color4 = objs.colors.b4
+                             ,priority_color1 = objs.colors.p1
+                             ,priority_color2 = objs.colors.p2
+                             ,priority_color3 = objs.colors.p3
+                             ,priority_color4 = objs.colors.p4
                              ).run()
         return blocks
     
@@ -1594,79 +1594,28 @@ class Font:
 class Colors:
     
     def __init__(self):
-        self.set_blocked_colors()
-        self.set_priority_colors()
+        self.set_values()
+        self.set_cols()
     
-    def set_priority_colors(self):
-        delta = -76
-        # Column 1 color
-        default_color = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col1']
-                                             ,delta = delta
-                                             )
-        if not default_color:
-            default_color = 'red'
-        
-        self.priority_color1 = default_color
-        # Column 2 color
-        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col2']
-                                      ,delta = delta
-                                      )
-        if result:
-            self.priority_color2 = result
-        else:
-            self.priority_color2 = default_color
-        # Column 3 color
-        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col3']
-                                      ,delta = delta
-                                      )
-        if result:
-            self.priority_color3 = result
-        else:
-            self.priority_color3 = default_color
-        # Column 4 color
-        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col4']
-                                      ,delta = delta
-                                      )
-        if result:
-            self.priority_color4 = result
-        else:
-            self.priority_color4 = default_color
-            
-    def set_blocked_colors(self):
-        default_color = 'dim gray'
-        delta = 76
-        # Column 1 color
-        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col1']
-                                      ,delta = delta
-                                      )
-        if result:
-            self.blocked_color1 = result
-        else:
-            self.blocked_color1 = default_color
-        # Column 2 color
-        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col2']
-                                      ,delta = delta
-                                      )
-        if result:
-            self.blocked_color2 = result
-        else:
-            self.blocked_color2 = default_color
-        # Column 3 color
-        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col3']
-                                      ,delta = delta
-                                      )
-        if result:
-            self.blocked_color3 = result
-        else:
-            self.blocked_color3 = default_color
-        # Column 4 color
-        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col4']
-                                      ,delta = delta
-                                      )
-        if result:
-            self.blocked_color4 = result
-        else:
-            self.blocked_color4 = default_color
+    def set_values(self):
+        self.factor = 140
+        # No need to set default colors, Qt ignores empty names at input
+        self.p1 = self.p2 = self.p3 = self.p4 = self.b1 = self.b2 = self.b3 \
+        = self.b4 = ''
+    
+    def set_cols(self):
+        self.p1, self.b1 = sh.com.get_mod_colors (color = sh.lg.globs['str']['color_col1']
+                                                 ,factor = self.factor
+                                                 )
+        self.p2, self.b2 = sh.com.get_mod_colors (color = sh.lg.globs['str']['color_col2']
+                                                 ,factor = self.factor
+                                                 )
+        self.p3, self.b3 = sh.com.get_mod_colors (color = sh.lg.globs['str']['color_col3']
+                                                 ,factor = self.factor
+                                                 )
+        self.p4, self.b4 = sh.com.get_mod_colors (color = sh.lg.globs['str']['color_col4']
+                                                 ,factor = self.factor
+                                                 )
 
 
 objs = Objects()
