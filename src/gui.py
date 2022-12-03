@@ -205,7 +205,12 @@ class Table(PyQt5.QtWidgets.QTableView):
         super().__init__(*args,**kwargs)
         self.click_right = None
         self.click_middle = None
+        self.setMouseTracking(True)
         self.set_gui()
+    
+    def mouseMoveEvent(self,event):
+        self._use_mouse(event)
+        return super().mouseMoveEvent(event)
     
     def get_cell_hint(self,index_):
         option = PyQt5.QtWidgets.QStyleOptionViewItem()

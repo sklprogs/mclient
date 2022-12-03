@@ -654,10 +654,6 @@ if __name__ == '__main__':
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
     app = App()
-    ''' We can get a constant mouse hovering response only if we install
-        the filter like this.
-    '''
-    sh.objs.get_root().installEventFilter(app.gui.table)
     sh.objs.get_root().installEventFilter(app.gui.panel)
     lg.com.get_url()
     blocks = app.load_article()
