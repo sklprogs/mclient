@@ -29,6 +29,7 @@ class About:
     def set_bindings(self):
         self.gui.bind('Esc',self.close)
         self.gui.bind('F1',self.toggle)
+        self.gui.close_about.connect(self.close)
     
     def centralize(self):
         self.gui.centralize()

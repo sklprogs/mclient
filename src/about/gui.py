@@ -10,9 +10,15 @@ import skl_shared_qt.shared as sh
 
 class About(PyQt5.QtWidgets.QWidget):
     
+    close_about = PyQt5.QtCore.pyqtSignal()
+    
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.set_gui()
+    
+    def closeEvent(self,event):
+        self.close_about.emit()
+        return super().closeEvent(event)
     
     def set_title(self,title):
         self.setWindowTitle(title)
