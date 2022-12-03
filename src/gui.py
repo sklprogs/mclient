@@ -717,9 +717,15 @@ class Panel(PyQt5.QtWidgets.QWidget):
 
 class SearchArticle(PyQt5.QtWidgets.QWidget):
 
+    close_search = PyQt5.QtCore.pyqtSignal()
+    
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.set_gui()
+    
+    def closeEvent(self,event):
+        self.close_search.emit()
+        return super().closeEvent(event)
     
     def clear(self):
         self.ent_src.clear()

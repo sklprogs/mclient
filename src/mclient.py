@@ -612,6 +612,7 @@ class SearchArticle:
         self.gui.btn_clr.action = self.clear
         self.gui.btn_cls.set_action()
         self.gui.btn_clr.set_action()
+        self.gui.close_search.connect(self.close)
     
     def reset(self,cells,plain,rowno,colno):
         self.pattern = self.gui.ent_src.get()
