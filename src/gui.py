@@ -715,35 +715,29 @@ class Panel(PyQt5.QtWidgets.QWidget):
 
 
 
-class SearchArticle:
+class SearchArticle(PyQt5.QtWidgets.QWidget):
 
-    def __init__(self):
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
         self.set_gui()
     
     def clear(self):
         self.ent_src.clear()
     
     def set_title(self,title=_('Search:')):
-        self.widget.setWindowTitle(title)
-    
-    def show(self):
-        self.widget.show()
-    
-    def close(self):
-        self.widget.close()
+        self.setWindowTitle(title)
     
     def add_widgets(self):
-        self.widget = PyQt5.QtWidgets.QWidget()
-        self.layout = PyQt5.QtWidgets.QVBoxLayout()
+        self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
         self.ent_src = sh.Entry()
         self.cbx_cas = sh.CheckBox(_('Case-sensitive'))
         self.btn_cls = sh.Button(_('Close'))
         self.btn_clr = sh.Button(_('Clear'))
         self.btn_srp = sh.Button(_('Back'))
         self.btn_srn = sh.Button(_('Forward'))
-        self.layout.addWidget(self.ent_src.widget)
-        self.layout.addWidget(self.cbx_cas.widget)
-        self.panel = PyQt5.QtWidgets.QWidget(self.widget)
+        self.layout_.addWidget(self.ent_src.widget)
+        self.layout_.addWidget(self.cbx_cas.widget)
+        self.panel = PyQt5.QtWidgets.QWidget()
         self.btn_lay = PyQt5.QtWidgets.QHBoxLayout()
         self.btn_lay.setContentsMargins(4,4,4,4)
         self.btn_lay.addWidget(self.btn_cls.widget)
@@ -751,15 +745,15 @@ class SearchArticle:
         self.btn_lay.addWidget(self.btn_srp.widget)
         self.btn_lay.addWidget(self.btn_srn.widget)
         self.panel.setLayout(self.btn_lay)
-        self.layout.addWidget(self.panel)
-        self.widget.setLayout(self.layout)
+        self.layout_.addWidget(self.panel)
+        self.setLayout(self.layout_)
     
     def set_gui(self):
         self.add_widgets()
         self.set_title()
     
     def bind(self,hotkey,action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self.widget).activated.connect(action)
+        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
     
     def get(self):
         return self.ent_src.get()
