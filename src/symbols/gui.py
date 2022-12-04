@@ -48,8 +48,11 @@ class Symbols(PyQt5.QtWidgets.QWidget):
         self.layout_.addWidget(self.table)
         self.setLayout(self.layout_)
     
+    def resize_to_contents(self):
+        self.table.resizeColumnsToContents()
+    
     def set_size(self):
-        self.resize(800,400)
+        self.resize(700,400)
     
     def set_model(self,model):
         self.table.setModel(model)

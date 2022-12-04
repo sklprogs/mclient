@@ -26,6 +26,7 @@ class Symbols:
     def fill(self):
         model = gi.TableModel(self.logic.run())
         self.gui.set_model(model)
+        self.gui.resize_to_contents()
     
     def set_bindings(self):
         self.gui.bind('Esc',self.close)
