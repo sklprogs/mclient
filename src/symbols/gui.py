@@ -48,6 +48,9 @@ class Symbols(PyQt5.QtWidgets.QWidget):
         self.layout_.addWidget(self.table)
         self.setLayout(self.layout_)
     
+    def set_size(self):
+        self.resize(800,400)
+    
     def set_model(self,model):
         self.table.setModel(model)
     

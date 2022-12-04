@@ -28,11 +28,11 @@ class Symbols:
         self.gui.set_model(model)
     
     def set_bindings(self):
-        self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.close)
     
     def show(self):
         self.gui.show()
+        self.gui.set_size()
         self.gui.centralize()
     
     def set_title(self,title=_('Special symbols')):
