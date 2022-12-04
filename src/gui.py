@@ -342,8 +342,14 @@ class Table(PyQt5.QtWidgets.QTableView):
 
 class App(PyQt5.QtWidgets.QMainWindow):
     
+    close_app = PyQt5.QtCore.pyqtSignal()
+    
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+    
+    def closeEvent(self,event):
+        self.close_app.emit()
+        return super().closeEvent(event)
     
     def get_height(self):
         return self.height()

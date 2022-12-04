@@ -326,6 +326,12 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def quit(self):
+        lg.objs.get_order().save()
+        lg.com.save_config()
+        mes = _('Goodbye!')
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
     def load_article(self):
         f = '[MClientQt] mclient.App.load_article'
         ''' #NOTE: each time the contents of the current page is changed
@@ -572,6 +578,7 @@ class App:
         self.panel.ent_src.widget.act_on_ctrl_end = self.table.go_end
         self.panel.ent_src.widget.act_on_left = self.table.go_left
         self.panel.ent_src.widget.act_on_right = self.table.go_right
+        self.gui.close_app.connect(self.quit)
     
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)
