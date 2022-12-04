@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared.localize import _
-import skl_shared.shared as sh
+from skl_shared_qt.localize import _
+import skl_shared_qt.shared as sh
 
 DEBUG = True
 
@@ -380,6 +380,12 @@ class Plugin:
 
 
 class Commands:
+    
+    def run_symbols(self):
+        import symbols.controller as sc
+        sym = sc.Symbols()
+        sym.show()
+        sh.com.end()
     
     def run_settings(self):
         import config as cf
@@ -933,6 +939,7 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] tests.__main__'
     sh.com.start()
+    com.run_symbols()
     #ArticleSubjects().run()
     #com.check_width()
     #com.edit_blacklist()
@@ -942,7 +949,7 @@ if __name__ == '__main__':
     #com.get_modified_subjects()
     #com.get_priority()
     #com.get_subjects_wo_majors()
-    com.run_settings()
+    #com.run_settings()
     #com.run_sources()
     #com.show_about()
     #Get().run_dsl()
