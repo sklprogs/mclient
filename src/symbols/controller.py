@@ -11,13 +11,21 @@ from . import logic as lg
 class Symbols:
     
     def __init__(self):
-        self.logic = lg.Symbols()
+        self.set_logic()
+        self.set_gui()
+        self.fill()
+    
+    def set_gui(self):
         self.gui = gi.Symbols()
         self.set_title()
         self.set_bindings()
     
+    def set_logic(self):
+        self.logic = lg.Symbols()
+    
     def fill(self):
-        self.gui.set_model(self.logic.model)
+        model = gi.TableModel(self.logic.run())
+        self.gui.set_model(model)
     
     def set_bindings(self):
         self.gui.bind('Ctrl+Q',self.close)
