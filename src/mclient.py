@@ -24,6 +24,24 @@ import symbols.controller as sm
 DEBUG = False
 
 
+class Symbols(sm.Symbols):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.add_bindings()
+    
+    def copy(self):
+        print('Symbols.copy')
+    
+    def paste(self):
+        print('Symbols.paste')
+    
+    def add_bindings(self):
+        self.gui.table.clicked.connect(self.paste)
+        self.gui.table.right_mouse.connect(self.copy)
+
+
+
 class About(ab.About):
     
     def __init__(self,*args,**kwargs):
@@ -596,7 +614,7 @@ class App:
         self.table = Table()
         self.panel = gi.Panel()
         self.about = About()
-        self.symbols = sm.Symbols()
+        self.symbols = Symbols()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title()
         self.set_bindings()

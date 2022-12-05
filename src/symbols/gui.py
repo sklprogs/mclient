@@ -13,7 +13,7 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
     def __init__(self,datain,parent=None,*args):
         PyQt5.QtCore.QAbstractTableModel.__init__(self,parent,*args)
         self.arraydata = datain
-
+    
     def rowCount(self,parent):
         return len(self.arraydata)
 
@@ -35,6 +35,21 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
 
 
 
+class Table(PyQt5.QtWidgets.QTableView):
+    
+    right_mouse = PyQt5.QtCore.pyqtSignal()
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def mousePressEvent(self,event):
+        button = event.button()
+        if button == PyQt5.QtCore.Qt.RightButton:
+            self.right_mouse.emit()
+        super().mousePressEvent(event)
+
+
+
 class Symbols(PyQt5.QtWidgets.QWidget):
     
     def __init__(self,*args,**kwargs):
@@ -44,9 +59,10 @@ class Symbols(PyQt5.QtWidgets.QWidget):
     def set_gui(self):
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
         self.layout_.setContentsMargins(5,5,5,5)
-        self.table = PyQt5.QtWidgets.QTableView()
+        self.table = Table()
         self.layout_.addWidget(self.table)
         self.setLayout(self.layout_)
+        self.table.setFocus()
     
     def resize_to_contents(self):
         self.table.resizeColumnsToContents()
