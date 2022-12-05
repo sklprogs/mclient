@@ -45,7 +45,7 @@ class Symbols:
             sh.com.rep_empty(f)
             return
         rownum = len(self.line) / 10
-        if rownum % 10 == 0:
+        if rownum % 10 != 0:
             rownum += 1
         self.rownum = int(rownum)
         mes = _('Table size: {}×{}').format(self.rownum,self.colnum)
