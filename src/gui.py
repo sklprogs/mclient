@@ -32,6 +32,8 @@ class MinEntry(sh.gi.Entry):
 
 class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
     
+    ctrl_e = PyQt5.QtCore.pyqtSignal()
+    
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
@@ -67,6 +69,9 @@ class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
                 self.act_on_ctrl_home()
             elif key == PyQt5.QtCore.Qt.Key_End:
                 self.act_on_ctrl_end()
+            elif key == PyQt5.QtCore.Qt.Key_E:
+                self.ctrl_e.emit()
+                return
         elif key == PyQt5.QtCore.Qt.Key_Left:
             self.act_on_left()
         elif key == PyQt5.QtCore.Qt.Key_Right:

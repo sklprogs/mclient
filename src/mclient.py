@@ -563,8 +563,13 @@ class App:
         self.gui.bind('Ctrl+F',self.table.search.show)
         self.gui.bind('Return',self.go_keyboard)
         self.gui.bind(sh.lg.globs['str']['bind_spec_symbol'],self.symbols.show)
-        #TODO: override internal 'Ctrl+E'
-        self.gui.panel.ent_src.bind('Alt+X',self.symbols.show)
+        #TODO: iterate through all keys
+        if sh.lg.globs['str']['bind_spec_symbol'] == 'Ctrl+E':
+            self.gui.panel.ent_src.widget.ctrl_e.connect(self.symbols.show)
+        else:
+            self.gui.panel.ent_src.bind (sh.lg.globs['str']['bind_spec_symbol']
+                                        ,self.symbols.show
+                                        )
         self.table.gui.click_middle = self.minimize
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be
