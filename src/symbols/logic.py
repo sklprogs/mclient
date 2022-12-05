@@ -47,7 +47,7 @@ class Symbols:
         rownum = len(self.line) / 10
         if rownum % 10 == 0:
             rownum += 1
-        self.rownum = rownum
+        self.rownum = int(rownum)
         mes = _('Table size: {}×{}').format(self.rownum,self.colnum)
         sh.objs.get_mes(f,mes,True).show_debug()
     
