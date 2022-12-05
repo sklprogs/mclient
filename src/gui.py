@@ -675,7 +675,6 @@ class Panel(PyQt5.QtWidgets.QWidget):
                                  )
         # A button to quit the program
         self.btn_qit = sh.Button (hint = _('Quit the program')
-                                 ,action = self.close
                                  ,inactive = self.icn_qit
                                  ,active = self.icn_qit
                                  )

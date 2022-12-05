@@ -328,6 +328,7 @@ class App:
         self.update_ui()
     
     def quit(self):
+        self.close()
         lg.objs.get_order().save()
         lg.com.save_config()
         mes = _('Goodbye!')
@@ -570,12 +571,10 @@ class App:
             returned before the window is shown.
         '''
         self.gui.parent.resizeEvent = self.table.set_coords
-        self.panel.btn_trn.action = self.go_keyboard
-        self.panel.btn_clr.action = self.clear_search_field
-        self.panel.btn_abt.action = self.toggle_about
-        self.panel.btn_abt.set_action()
-        self.panel.btn_trn.set_action()
-        self.panel.btn_clr.set_action()
+        self.panel.btn_abt.set_action(self.toggle_about)
+        self.panel.btn_trn.set_action(self.go_keyboard)
+        self.panel.btn_clr.set_action(self.clear_search_field)
+        self.panel.btn_qit.set_action(self.quit)
         self.panel.ent_src.widget.act_on_home = self.table.go_line_start
         self.panel.ent_src.widget.act_on_end = self.table.go_line_end
         self.panel.ent_src.widget.act_on_ctrl_home = self.table.go_start
