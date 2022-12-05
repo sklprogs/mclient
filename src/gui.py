@@ -33,53 +33,40 @@ class MinEntry(sh.gi.Entry):
 class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
     
     ctrl_e = PyQt5.QtCore.pyqtSignal()
+    ctrl_home = PyQt5.QtCore.pyqtSignal()
+    ctrl_end = PyQt5.QtCore.pyqtSignal()
+    left_arrow = PyQt5.QtCore.pyqtSignal()
+    right_arrow = PyQt5.QtCore.pyqtSignal()
+    home_key = PyQt5.QtCore.pyqtSignal()
+    end_key = PyQt5.QtCore.pyqtSignal()
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
-    def act_on_left(self):
-        f = '[MClientQt] gui.MinEntryCore.act_on_left'
-        com.report_external(f)
-    
-    def act_on_right(self):
-        f = '[MClientQt] gui.MinEntryCore.act_on_right'
-        com.report_external(f)
-    
-    def act_on_home(self):
-        f = '[MClientQt] gui.MinEntryCore.act_on_home'
-        com.report_external(f)
-    
-    def act_on_end(self):
-        f = '[MClientQt] gui.MinEntryCore.act_on_end'
-        com.report_external(f)
-    
-    def act_on_ctrl_home(self):
-        f = '[MClientQt] gui.MinEntryCore.act_on_ctrl_home'
-        com.report_external(f)
-    
-    def act_on_ctrl_end(self):
-        f = '[MClientQt] gui.MinEntryCore.act_on_ctrl_end'
-        com.report_external(f)
-    
     def keyPressEvent(self,event):
         key = event.key()
         modifiers = event.modifiers()
+        ''' Internal Ctrl+ bindings are not needed, so they are ignored. Other
+            bindings (such as Home, End, Left and Right) must be preserved.
+        '''
         if modifiers & PyQt5.QtCore.Qt.ControlModifier:
             if key == PyQt5.QtCore.Qt.Key_Home:
-                self.act_on_ctrl_home()
+                self.ctrl_home.emit()
+                return
             elif key == PyQt5.QtCore.Qt.Key_End:
-                self.act_on_ctrl_end()
+                self.ctrl_end.emit()
+                return
             elif key == PyQt5.QtCore.Qt.Key_E:
                 self.ctrl_e.emit()
                 return
         elif key == PyQt5.QtCore.Qt.Key_Left:
-            self.act_on_left()
+            self.left_arrow.emit()
         elif key == PyQt5.QtCore.Qt.Key_Right:
-            self.act_on_right()
+            self.right_arrow.emit()
         elif key == PyQt5.QtCore.Qt.Key_Home:
-            self.act_on_home()
+            self.home_key.emit()
         elif key == PyQt5.QtCore.Qt.Key_End:
-            self.act_on_end()
+            self.end_key.emit()
         return super().keyPressEvent(event)
 
 

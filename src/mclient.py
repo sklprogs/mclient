@@ -580,12 +580,12 @@ class App:
         self.panel.btn_trn.set_action(self.go_keyboard)
         self.panel.btn_clr.set_action(self.clear_search_field)
         self.panel.btn_qit.set_action(self.quit)
-        self.panel.ent_src.widget.act_on_home = self.table.go_line_start
-        self.panel.ent_src.widget.act_on_end = self.table.go_line_end
-        self.panel.ent_src.widget.act_on_ctrl_home = self.table.go_start
-        self.panel.ent_src.widget.act_on_ctrl_end = self.table.go_end
-        self.panel.ent_src.widget.act_on_left = self.table.go_left
-        self.panel.ent_src.widget.act_on_right = self.table.go_right
+        self.panel.ent_src.widget.home_key.connect(self.table.go_line_start)
+        self.panel.ent_src.widget.end_key.connect(self.table.go_line_end)
+        self.panel.ent_src.widget.ctrl_home.connect(self.table.go_start)
+        self.panel.ent_src.widget.ctrl_end.connect(self.table.go_end)
+        self.panel.ent_src.widget.left_arrow.connect(self.table.go_left)
+        self.panel.ent_src.widget.right_arrow.connect(self.table.go_right)
         self.gui.close_app.connect(self.quit)
     
     def set_title(self,title='MClientQt'):
