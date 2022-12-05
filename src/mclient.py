@@ -262,15 +262,16 @@ class Table:
         self.gui.show_borders(Show)
     
     def set_gui(self):
-        self.gui.clicked.connect(self.go_url)
-        self.gui.click_right = self.copy_cell
-        self.gui.select = self.select
-        self.search.gui.ent_src.bind('Return',self.close_search_next)
-        self.search.gui.btn_srp.action = self.search_prev
-        self.search.gui.btn_srn.action = self.search_next
-        self.search.gui.btn_srp.set_action()
-        self.search.gui.btn_srn.set_action()
         #self.set_max_row_height()
+        self.set_bindings()
+    
+    def set_bindings(self):
+        self.gui.clicked.connect(self.go_url)
+        self.gui.right_mouse_key.connect(self.copy_cell)
+        self.gui.select.connect(self.select)
+        self.search.gui.ent_src.bind('Return',self.close_search_next)
+        self.search.gui.btn_srp.set_action(self.search_prev)
+        self.search.gui.btn_srn.set_action(self.search_next)
 
 
 
@@ -570,7 +571,7 @@ class App:
             self.gui.panel.ent_src.bind (sh.lg.globs['str']['bind_spec_symbol']
                                         ,self.symbols.show
                                         )
-        self.table.gui.click_middle = self.minimize
+        self.table.gui.middle_mouse_key.connect(self.minimize)
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be
             returned before the window is shown.

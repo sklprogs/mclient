@@ -193,12 +193,20 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
 
 class Table(PyQt5.QtWidgets.QTableView):
     
+    select = PyQt5.QtCore.pyqtSignal(int,int,bool)
+    right_mouse_key = PyQt5.QtCore.pyqtSignal()
+    middle_mouse_key = PyQt5.QtCore.pyqtSignal()
+    
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.click_right = None
-        self.click_middle = None
         self.setMouseTracking(True)
         self.set_gui()
+    
+    def _use_mouse(self,event):
+        pos = event.pos()
+        rowno = self.rowAt(pos.y())
+        colno = self.columnAt(pos.x())
+        self.select.emit(rowno,colno,True)
     
     def mouseMoveEvent(self,event):
         self._use_mouse(event)
@@ -210,9 +218,6 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     def scroll2index(self,index_):
         self.scrollTo(index_,PyQt5.QtWidgets.QAbstractItemView.PositionAtTop)
-    
-    def get_col_by_x(self,x):
-        return self.columnAt(x)
     
     def get_row_by_y(self,y):
         return self.rowAt(y)
@@ -270,40 +275,13 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.mymodel = mymodel
         self.setModel(mymodel)
     
-    def _use_mouse(self,event):
-        if not self.select:
-            com.report_external('[MClientQt] gui.Table.select')
-            return
-        pos = event.pos()
-        rowno = self.rowAt(pos.y())
-        colno = self.columnAt(pos.x())
-        self.select(rowno,colno,True)
-    
-    def eventFilter(self,widget,event):
-        ''' #NOTE: Return True for matches only, otherwise the app will freeze!
-            Qt accepts boolean at output, but not NoneType.
-        '''
-        type_ = event.type()
-        if type_ == PyQt5.QtCore.QEvent.MouseMove:
-            self._use_mouse(event)
-            return True
-        elif type_ == PyQt5.QtCore.QEvent.MouseButtonPress:
-            button = event.button()
-            if button == PyQt5.QtCore.Qt.RightButton:
-                if self.click_right:
-                    self._use_mouse(event)
-                    self.click_right()
-                else:
-                    com.report_external('[MClientQt] gui.Table.click_right')
-                return True
-            elif button == PyQt5.QtCore.Qt.MiddleButton:
-                if self.click_middle:
-                    self._use_mouse(event)
-                    self.click_middle()
-                else:
-                    com.report_external('[MClientQt] gui.Table.click_middle')
-                return True
-        return False
+    def mousePressEvent(self,event):
+        button = event.button()
+        if button == PyQt5.QtCore.Qt.RightButton:
+            self.right_mouse_key.emit()
+        elif button == PyQt5.QtCore.Qt.MiddleButton:
+            self.middle_mouse_key.emit()
+        super().mousePressEvent(event)
     
     def set_col_width(self,no,width):
         self.setColumnWidth(no,width)
