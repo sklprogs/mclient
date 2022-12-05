@@ -56,10 +56,12 @@ class Symbols:
         if not self.Success:
             sh.com.cancel(f)
             return
-        row = []
-        for i in range(len(self.line)):
+        row = [self.line[0]]
+        i = 1
+        while i < len(self.line):
             row.append(self.line[i])
-            if i % self.colnum == 0 and i > 0:
+            i += 1
+            if i % self.colnum == 0:
                 self.table.append(row)
                 row = []
         if row:

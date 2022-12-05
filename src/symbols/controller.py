@@ -36,7 +36,7 @@ class Symbols:
         self.gui.set_size()
         self.gui.centralize()
     
-    def set_title(self,title=_('Special symbols')):
+    def set_title(self,title=_('Paste symbols')):
         self.gui.set_title(title)
     
     def close(self):
