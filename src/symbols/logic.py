@@ -20,7 +20,6 @@ class Symbols:
     def run(self):
         if not self.table:
             self.load()
-            self.set_size()
             self.set_table()
         return self.table
     
@@ -34,22 +33,6 @@ class Symbols:
         if not self.line:
             self.Success = False
             sh.com.rep_out(f)
-    
-    def set_size(self):
-        f = '[MClientQt] symbols.logic.Symbols.set_size'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        if not self.colnum:
-            self.Success = False
-            sh.com.rep_empty(f)
-            return
-        rownum = len(self.line) / 10
-        if rownum % 10 != 0:
-            rownum += 1
-        self.rownum = int(rownum)
-        mes = _('Table size: {}×{}').format(self.rownum,self.colnum)
-        sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_table(self):
         f = '[MClientQt] symbols.logic.Symbols.set_table'
