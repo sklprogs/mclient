@@ -11,33 +11,21 @@ class Symbols:
         self.set_values()
     
     def set_values(self):
-        self.Success = True
-        self.line = ''
-        self.table = []
-        self.rownum = 0
         self.colnum = 10
+        self.line = sh.lg.globs['str']['spec_syms']
+        self.table = []
     
     def run(self):
-        if not self.table:
-            self.load()
-            self.set_table()
+        self.set_table()
         return self.table
-    
-    def load(self):
-        f = '[MClientQt] symbols.logic.Symbols.load'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        #TODO: Load sh.lg.globs['str']['spec_syms']
-        self.line = 'àáâäāæßćĉçèéêēёëəғĝģĥìíîïīĵķļñņòóôõöōœøšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒЁËƏҒĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒØŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ'
-        if not self.line:
-            self.Success = False
-            sh.com.rep_out(f)
     
     def set_table(self):
         f = '[MClientQt] symbols.logic.Symbols.set_table'
-        if not self.Success:
-            sh.com.cancel(f)
+        if self.table:
+            sh.com.rep_lazy(f)
+            return
+        if not self.line or not self.colnum:
+            sh.com.rep_empty(f)
             return
         row = [self.line[0]]
         i = 1
