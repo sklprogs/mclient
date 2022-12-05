@@ -43,7 +43,7 @@ class Symbols(PyQt5.QtWidgets.QWidget):
     
     def set_gui(self):
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
-        self.layout_.setContentsMargins(0,0,0,0)
+        self.layout_.setContentsMargins(5,5,5,5)
         self.table = PyQt5.QtWidgets.QTableView()
         self.layout_.addWidget(self.table)
         self.setLayout(self.layout_)
@@ -52,7 +52,7 @@ class Symbols(PyQt5.QtWidgets.QWidget):
         self.table.resizeColumnsToContents()
     
     def set_size(self):
-        self.resize(700,400)
+        self.resize(300,400)
     
     def set_model(self,model):
         self.table.setModel(model)
