@@ -15,6 +15,14 @@ class Symbols:
         self.line = sh.lg.globs['str']['spec_syms']
         self.table = []
     
+    def get(self,rowno,colno):
+        try:
+            return self.table[rowno][colno]
+        except IndexError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+            return ''
+    
     def run(self):
         self.set_table()
         return self.table

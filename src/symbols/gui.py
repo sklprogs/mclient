@@ -43,6 +43,10 @@ class Table(PyQt5.QtWidgets.QTableView):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
+    def get_cur_cell(self):
+        index_ = self.currentIndex()
+        return(index_.row(),index_.column())
+    
     def mousePressEvent(self,event):
         button = event.button()
         if button == PyQt5.QtCore.Qt.RightButton:

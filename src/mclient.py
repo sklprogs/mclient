@@ -24,27 +24,6 @@ import symbols.controller as sm
 DEBUG = False
 
 
-class Symbols(sm.Symbols):
-    
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-        self.add_bindings()
-    
-    def copy(self):
-        print('Symbols.copy')
-    
-    def paste(self):
-        print('Symbols.paste')
-    
-    def add_bindings(self):
-        self.gui.table.clicked.connect(self.paste)
-        self.gui.table.space.connect(self.paste)
-        self.gui.return_.connect(self.paste)
-        self.gui.table.right_mouse.connect(self.copy)
-        self.gui.ctrl_return.connect(self.copy)
-
-
-
 class About(ab.About):
     
     def __init__(self,*args,**kwargs):
@@ -349,6 +328,13 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def copy_symbol(self):
+        print('Symbols.copy')
+    
+    def paste_symbol(self):
+        symbol = self.symbols.get()
+        self.gui.panel.ent_src.insert(symbol)
+    
     def quit(self):
         self.close()
         lg.objs.get_order().save()
@@ -536,6 +522,10 @@ class App:
         #objs.get_suggest().get_gui().close()
         self.panel.ent_src.clear()
     
+    def paste(self,text):
+        self.panel.ent_src.clear()
+        self.panel.ent_src.insert(text)
+    
     def reset(self,cells):
         f = '[MClientQt] mclient.App.reset'
         self.table.reset(cells)
@@ -609,6 +599,11 @@ class App:
         self.panel.ent_src.widget.left_arrow.connect(self.table.go_left)
         self.panel.ent_src.widget.right_arrow.connect(self.table.go_right)
         self.gui.close_app.connect(self.quit)
+        self.symbols.gui.table.clicked.connect(self.paste_symbol)
+        self.symbols.gui.table.space.connect(self.paste_symbol)
+        self.symbols.gui.return_.connect(self.paste_symbol)
+        self.symbols.gui.table.right_mouse.connect(self.copy_symbol)
+        self.symbols.gui.ctrl_return.connect(self.copy_symbol)
     
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)
@@ -617,7 +612,7 @@ class App:
         self.table = Table()
         self.panel = gi.Panel()
         self.about = About()
-        self.symbols = Symbols()
+        self.symbols = sm.Symbols()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title()
         self.set_bindings()

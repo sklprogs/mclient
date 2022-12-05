@@ -20,6 +20,10 @@ class Symbols:
         self.set_title()
         self.set_bindings()
     
+    def get(self):
+        rowno, colno = self.gui.table.get_cur_cell()
+        return self.logic.get(rowno,colno)
+    
     def set_logic(self):
         self.logic = lg.Symbols()
     
