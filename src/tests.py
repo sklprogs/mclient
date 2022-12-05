@@ -384,10 +384,10 @@ class Commands:
     def run_symbols(self):
         import config as cf
         import logic as lg
-        import symbols.controller as sc
+        import symbols.controller as sm
         cf.DefaultKeys()
         lg.com.load_config()
-        sym = sc.Symbols()
+        sym = sm.Symbols()
         sym.show()
         sh.com.end()
     

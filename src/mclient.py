@@ -18,6 +18,7 @@ import settings.controller as st
 import suggest.controller as sg
 import about.controller as ab
 import third_parties.controller as tp
+import symbols.controller as sm
 
 
 DEBUG = False
@@ -560,6 +561,9 @@ class App:
         self.gui.bind('Shift+F3',self.table.search_prev)
         self.gui.bind('Ctrl+F',self.table.search.show)
         self.gui.bind('Return',self.go_keyboard)
+        self.gui.bind(sh.lg.globs['str']['bind_spec_symbol'],self.symbols.show)
+        #TODO: override internal 'Ctrl+E'
+        self.gui.panel.ent_src.bind('Alt+X',self.symbols.show)
         self.table.gui.click_middle = self.minimize
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be
@@ -587,6 +591,7 @@ class App:
         self.table = Table()
         self.panel = gi.Panel()
         self.about = About()
+        self.symbols = sm.Symbols()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title()
         self.set_bindings()
