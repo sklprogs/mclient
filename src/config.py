@@ -50,68 +50,66 @@ class DefaultKeys(sh.DefaultKeys):
         sh.lg.globs['int'].update ({
             'colnum'            :4
            ,'fixed_col_width'   :63
-           ,'font_col1_size'    :4
-           ,'font_col2_size'    :4
-           ,'font_col3_size'    :3
-           ,'font_col4_size'    :3
-           ,'font_comments_size':3
-           ,'font_terms_size'   :4
+           ,'font_col1_size'    :12
+           ,'font_col2_size'    :12
+           ,'font_col3_size'    :11
+           ,'font_col4_size'    :11
+           ,'font_comments_size':11
+           ,'font_terms_size'   :12
            ,'term_col_width'    :157
            ,'hotkey_delay'      :600
                                   })
     
     def _load_str(self):
         sh.lg.globs['str'].update ({
-            'bind_clear_history'          :'<Control-Shift-Delete>'
-           ,'bind_clear_search_field'     :'<ButtonRelease-3>'
-           ,'bind_col1_down'              :'<Control-Down>'
-           ,'bind_col1_up'                :'<Control-Up>'
-           ,'bind_col2_down'              :'<Alt-Down>'
-           ,'bind_col2_up'                :'<Alt-Up>'
-           ,'bind_col3_down'              :'<Shift-Down>'
-           ,'bind_col3_up'                :'<Shift-Up>'
-           ,'bind_copy_article_url'       :'<Control-F7>'
-           ,'bind_copy_nominative'        :'<Control-w>'
-           ,'bind_copy_sel'               :'<Control-Return>'
-           ,'bind_copy_sel_alt'           :'<Control-KP_Enter>'
-           ,'bind_copy_url'               :'<Shift-F7>'
-           ,'bind_define'                 :'<Control-d>'
-           ,'bind_go_back'                :'<Alt-Left>'
-           ,'bind_go_forward'             :'<Alt-Right>'
-           ,'bind_go_phrases'             :'<Alt-f>'
-           ,'bind_next_lang1'             :'<F8>'
-           ,'bind_next_lang1_alt'         :'<Control-k>'
-           ,'bind_next_lang2'             :'<F9>'
-           ,'bind_next_lang2_alt'         :'<Control-l>'
-           ,'bind_prev_lang1'             :'<Shift-F8>'
-           ,'bind_prev_lang1_alt'         :'<Control-K>'
-           ,'bind_prev_lang2'             :'<Shift-F9>'
-           ,'bind_prev_lang2_alt'         :'<Control-L>'
-           ,'bind_open_in_browser'        :'<F7>'
-           ,'bind_open_in_browser_alt'    :'<Control-b>'
-           ,'bind_paste_search_field'     :'<ButtonRelease-2>'
-           ,'bind_print'                  :'<Control-p>'
-           ,'bind_quit'                   :'<F10>'
-           ,'bind_re_search_article'      :'<Control-F3>'
-           ,'bind_reload_article_alt'     :'<Control-r>'
-           ,'bind_reload_article'         :'<F5>'
-           ,'bind_save_article_alt'       :'<Control-s>'
-           ,'bind_save_article'           :'<F2>'
-           ,'bind_search_article_backward':'<Shift-F3>'
-           ,'bind_search_article_forward' :'<F3>'
-           ,'bind_settings'               :'<Alt-s>'
-           ,'bind_settings_alt'           :'<F12>'
-           ,'bind_show_about'             :'<F1>'
-           ,'bind_spec_symbol'            :'<Control-e>'
-           ,'bind_swap_langs'             :'<Control-space>'
-           ,'bind_toggle_alphabet'        :'<Alt-a>'
-           ,'bind_toggle_block'           :'<Alt-b>'
-           ,'bind_toggle_history'         :'<F4>'
-           ,'bind_toggle_history_alt'     :'<Control-h>'
-           ,'bind_toggle_priority'        :'<Alt-p>'
-           ,'bind_toggle_sel'             :'<Control-t>'
-           ,'bind_toggle_view'            :'<F6>'
-           ,'bind_toggle_view_alt'        :'<Alt-v>'
+            'bind_clear_history'          :'Ctrl+Shift+Del'
+           ,'bind_col1_down'              :'Ctrl+Down'
+           ,'bind_col1_up'                :'Ctrl+Up'
+           ,'bind_col2_down'              :'Alt+Down'
+           ,'bind_col2_up'                :'Alt+Up'
+           ,'bind_col3_down'              :'Shift+Down'
+           ,'bind_col3_up'                :'Shift+Up'
+           ,'bind_copy_article_url'       :'Ctrl+F7'
+           ,'bind_copy_nominative'        :'Ctrl+W'
+           ,'bind_copy_sel'               :'Ctrl+Return'
+           ,'bind_copy_sel_alt'           :'Ctrl+Enter'
+           ,'bind_copy_url'               :'Shift+F7'
+           ,'bind_define'                 :'Ctrl+D'
+           ,'bind_go_back'                :'Alt+Left'
+           ,'bind_go_forward'             :'Alt+Right'
+           ,'bind_go_phrases'             :'Alt+F'
+           ,'bind_next_lang1'             :'F8'
+           ,'bind_next_lang1_alt'         :'Ctrl+K'
+           ,'bind_next_lang2'             :'F9'
+           ,'bind_next_lang2_alt'         :'Ctrl+L'
+           ,'bind_prev_lang1'             :'Shift+F8'
+           ,'bind_prev_lang1_alt'         :'Ctrl+K'
+           ,'bind_prev_lang2'             :'Shift+F9'
+           ,'bind_prev_lang2_alt'         :'Ctrl+L'
+           ,'bind_open_in_browser'        :'F7'
+           ,'bind_open_in_browser_alt'    :'Ctrl+B'
+           ,'bind_print'                  :'Ctrl+P'
+           ,'bind_quit'                   :'F10'
+           ,'bind_re_search_article'      :'Ctrl+F3'
+           ,'bind_reload_article_alt'     :'Ctrl+R'
+           ,'bind_reload_article'         :'F5'
+           ,'bind_save_article_alt'       :'Ctrl+S'
+           ,'bind_save_article'           :'F2'
+           ,'bind_search_article_backward':'Shift+F3'
+           ,'bind_search_article_forward' :'F3'
+           ,'bind_settings'               :'Alt+S'
+           ,'bind_settings_alt'           :'F12'
+           ,'bind_show_about'             :'F1'
+           ,'bind_spec_symbol'            :'Ctrl+E'
+           ,'bind_swap_langs'             :'Ctrl+Space'
+           ,'bind_toggle_alphabet'        :'Alt+A'
+           ,'bind_toggle_block'           :'Alt+B'
+           ,'bind_toggle_history'         :'F4'
+           ,'bind_toggle_history_alt'     :'Ctrl+H'
+           ,'bind_toggle_priority'        :'Alt+P'
+           ,'bind_toggle_sel'             :'Ctrl+T'
+           ,'bind_toggle_view'            :'F6'
+           ,'bind_toggle_view_alt'        :'Alt+V'
            ,'col1_type'                   :_('Subjects')
            ,'col2_type'                   :_('Word forms')
            ,'col3_type'                   :_('Parts of speech')
@@ -299,10 +297,6 @@ class CreateConfig(sh.CreateConfig):
         comment = _('Clear History')
         self.add_key(section,section_abbr,key,comment)
         
-        key = 'bind_clear_search_field'
-        comment = _('Clear the search field')
-        self.add_key(section,section_abbr,key,comment)
-        
         key = 'bind_col1_down'
         comment = _('Go to the next section of column #{}').format(1)
         self.add_key(section,section_abbr,key,comment)
@@ -386,10 +380,6 @@ class CreateConfig(sh.CreateConfig):
         key = 'bind_next_lang2_alt'
         comment = _('Set next language {} (combination {})')
         comment = comment.format(2,2)
-        self.add_key(section,section_abbr,key,comment)
-        
-        key = 'bind_paste_search_field'
-        comment = _('Paste clipboard contents into the search field (system combination: Ctrl-V)')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'bind_prev_lang1'
