@@ -38,7 +38,10 @@ class Symbols(sm.Symbols):
     
     def add_bindings(self):
         self.gui.table.clicked.connect(self.paste)
+        self.gui.table.space.connect(self.paste)
+        self.gui.return_.connect(self.paste)
         self.gui.table.right_mouse.connect(self.copy)
+        self.gui.ctrl_return.connect(self.copy)
 
 
 

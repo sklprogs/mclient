@@ -38,6 +38,7 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
 class Table(PyQt5.QtWidgets.QTableView):
     
     right_mouse = PyQt5.QtCore.pyqtSignal()
+    space = PyQt5.QtCore.pyqtSignal()
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -47,10 +48,18 @@ class Table(PyQt5.QtWidgets.QTableView):
         if button == PyQt5.QtCore.Qt.RightButton:
             self.right_mouse.emit()
         super().mousePressEvent(event)
+    
+    def keyPressEvent(self,event):
+        if event.key() == PyQt5.QtCore.Qt.Key_Space:
+            self.space.emit()
+        return super().keyPressEvent(event)
 
 
 
 class Symbols(PyQt5.QtWidgets.QWidget):
+    
+    return_ = PyQt5.QtCore.pyqtSignal()
+    ctrl_return = PyQt5.QtCore.pyqtSignal()
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -62,7 +71,16 @@ class Symbols(PyQt5.QtWidgets.QWidget):
         self.table = Table()
         self.layout_.addWidget(self.table)
         self.setLayout(self.layout_)
-        self.table.setFocus()
+    
+    def keyPressEvent(self,event):
+        key = event.key()
+        modifiers = event.modifiers()
+        if key in (PyQt5.QtCore.Qt.Key_Return,PyQt5.QtCore.Qt.Key_Enter):
+            if modifiers & PyQt5.QtCore.Qt.ControlModifier:
+                self.ctrl_return.emit()
+            else:
+                self.return_.emit()
+        return super().keyPressEvent(event)
     
     def resize_to_contents(self):
         self.table.resizeColumnsToContents()
