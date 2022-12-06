@@ -1095,6 +1095,26 @@ class Table:
         self.rownum = 0
         self.colnum = 0
     
+    def get_next_row_by_col(self,rowno,colno):
+        f = '[MClientQt] logic.Table.get_next_row_by_col'
+        if not self.Success:
+            sh.com.cancel(f)
+            return(rowno,colno)
+        for cell in self.cells:
+            if cell.colno == colno and cell.rowno > rowno and cell.plain:
+                return(cell.rowno,cell.colno)
+        return(rowno,colno)
+    
+    def get_prev_row_by_col(self,rowno,colno):
+        f = '[MClientQt] logic.Table.get_prev_row_by_col'
+        if not self.Success:
+            sh.com.cancel(f)
+            return(rowno,colno)
+        for cell in self.cells:
+            if cell.colno == colno and cell.rowno < rowno and cell.plain:
+                return(cell.rowno,cell.colno)
+        return(rowno,colno)
+    
     def _get_next_col(self,rowno,colno):
         while colno + 1 < self.colnum:
             colno += 1

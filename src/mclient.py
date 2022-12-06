@@ -53,6 +53,16 @@ class Table:
     def insert_repeat_sign2(self):
         pass
     
+    def go_next_section(self,no):
+        rowno, colno = self.get_cell()
+        rowno, colno = self.logic.get_next_row_by_col(rowno,no)
+        self.select(rowno,colno)
+    
+    def go_prev_section(self,no):
+        rowno, colno = self.get_cell()
+        rowno, colno = self.logic.get_prev_row_by_col(rowno,no)
+        self.select(rowno,colno)
+    
     def close_search_next(self):
         self.search.close()
         self.reset_search()
@@ -575,6 +585,25 @@ class App:
         self.gui.bind('Ctrl+F',self.table.search.show)
         self.gui.bind('Return',self.go_keyboard)
         self.gui.bind(sh.lg.globs['str']['bind_spec_symbol'],self.symbols.show)
+        self.gui.bind (sh.lg.globs['str']['bind_col1_down']
+                      ,lambda:self.table.go_next_section(0)
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_col2_down']
+                      ,lambda:self.table.go_next_section(1)
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_col3_down']
+                      ,lambda:self.table.go_next_section(2)
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_col1_up']
+                      ,lambda:self.table.go_prev_section(0)
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_col2_up']
+                      ,lambda:self.table.go_prev_section(1)
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_col3_up']
+                      ,lambda:self.table.go_prev_section(2)
+                      )
+                      
         #TODO: iterate through all keys
         if sh.lg.globs['str']['bind_spec_symbol'] == 'Ctrl+E':
             self.gui.panel.ent_src.widget.ctrl_e.connect(self.symbols.show)
