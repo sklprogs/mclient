@@ -1196,19 +1196,6 @@ class Table:
             return self.get_start()
         return(rowno,colno)
     
-    def get_last_row(self,rowno,colno):
-        f = '[MClientQt] logic.Table.get_last_row'
-        if not self.Success:
-            sh.com.cancel(f)
-            return rowno
-        last_rowno = self.rownum - 1
-        while last_rowno >= rowno:
-            if self.plain[last_rowno][colno]:
-                sh.objs.get_mes(f,last_rowno,True).show_debug()
-                return last_rowno
-            last_rowno -= 1
-        return last_rowno
-    
     def get_start(self):
         return self.get_next_col(0,-1)
     
