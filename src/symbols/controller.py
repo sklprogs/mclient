@@ -15,6 +15,10 @@ class Symbols:
         self.set_gui()
         self.fill()
     
+    def select(self,rowno,colno):
+        index_ = self.model.index(rowno,colno)
+        self.gui.table.set_cur_index(index_)
+    
     def set_gui(self):
         self.gui = gi.Symbols()
         self.set_title()
@@ -28,12 +32,13 @@ class Symbols:
         self.logic = lg.Symbols()
     
     def fill(self):
-        model = gi.TableModel(self.logic.run())
-        self.gui.set_model(model)
+        self.model = gi.TableModel(self.logic.run())
+        self.gui.set_model(self.model)
         self.gui.resize_to_contents()
     
     def set_bindings(self):
         self.gui.bind('Esc',self.close)
+        self.gui.table.select.connect(self.select)
     
     def show(self):
         self.gui.show()

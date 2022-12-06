@@ -39,9 +39,28 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     right_mouse = PyQt5.QtCore.pyqtSignal()
     space = PyQt5.QtCore.pyqtSignal()
+    select = PyQt5.QtCore.pyqtSignal(int,int)
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+        self.setMouseTracking(True)
+    
+    def set_cur_index(self,index_):
+        self.setCurrentIndex(index_)
+    
+    def _use_mouse(self,event):
+        pos = event.pos()
+        rowno = self.rowAt(pos.y())
+        colno = self.columnAt(pos.x())
+        self.select.emit(rowno,colno)
+    
+    def mouseMoveEvent(self,event):
+        ''' In order to properly process a symbol, its cell should be selected
+            ('setCurrentIndex' should be used). Without that, copying a symbol
+            with right click will not work as expected.
+        '''
+        self._use_mouse(event)
+        return super().mouseMoveEvent(event)
     
     def get_cur_cell(self):
         index_ = self.currentIndex()

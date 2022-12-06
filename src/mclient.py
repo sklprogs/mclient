@@ -329,7 +329,8 @@ class App:
         self.update_ui()
     
     def copy_symbol(self):
-        print('Symbols.copy')
+        symbol = self.symbols.get()
+        sh.Clipboard().copy(symbol)
     
     def paste_symbol(self):
         symbol = self.symbols.get()
