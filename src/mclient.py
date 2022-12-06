@@ -124,6 +124,7 @@ class Table:
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_prev_row(rowno,colno)
         self.select(rowno,colno)
+        self.scroll_top()
     
     def go_line_start(self):
         rowno, colno = self.get_cell()
