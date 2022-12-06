@@ -1110,7 +1110,7 @@ class Table:
         if not self.Success:
             sh.com.cancel(f)
             return(rowno,colno)
-        for cell in self.cells:
+        for cell in self.cells[::-1]:
             if cell.colno == colno and cell.rowno < rowno and cell.plain:
                 return(cell.rowno,cell.colno)
         return(rowno,colno)
