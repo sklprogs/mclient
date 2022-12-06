@@ -523,9 +523,8 @@ class App:
         #objs.get_suggest().get_gui().close()
         self.panel.ent_src.clear()
     
-    def paste(self,text):
-        self.panel.ent_src.clear()
-        self.panel.ent_src.insert(text)
+    def paste(self):
+        self.panel.ent_src.set_text(sh.Clipboard().paste())
     
     def reset(self,cells):
         f = '[MClientQt] mclient.App.reset'
@@ -592,6 +591,7 @@ class App:
         self.panel.btn_abt.set_action(self.toggle_about)
         self.panel.btn_trn.set_action(self.go_keyboard)
         self.panel.btn_clr.set_action(self.clear_search_field)
+        self.panel.btn_ins.set_action(self.paste)
         self.panel.btn_qit.set_action(self.quit)
         self.panel.ent_src.widget.home_key.connect(self.table.go_line_start)
         self.panel.ent_src.widget.end_key.connect(self.table.go_line_end)
