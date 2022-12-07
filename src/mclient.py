@@ -206,6 +206,10 @@ class Table:
         self.set_row_height(self.row_height)
         self.show_borders(False)
         #self.set_long()
+        ''' Coordinates are recreated each time the app window is resized. Here
+            we merely suppress a warning at 'self.go_start'.
+        '''
+        self.set_coords()
         self.go_start()
     
     def set_long(self):
