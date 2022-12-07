@@ -621,6 +621,8 @@ class App:
         self.gui.bind('Shift+F3',self.table.search_prev)
         self.gui.bind('Ctrl+F',self.table.search.show)
         self.gui.bind('Return',self.go_keyboard)
+        self.gui.bind('Ctrl+Return',self.copy_cell)
+        self.gui.bind('Ctrl+Enter',self.copy_cell)
         self.gui.bind(sh.lg.globs['str']['bind_spec_symbol'],self.symbols.show)
         self.gui.bind (sh.lg.globs['str']['bind_col1_down']
                       ,lambda:self.table.go_next_section(0)
