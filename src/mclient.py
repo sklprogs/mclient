@@ -84,6 +84,7 @@ class Table:
         self.select(rowno,colno)
     
     def set_values(self):
+        self.model = None
         self.coords = {}
         self.row_height = 42
     
@@ -101,7 +102,7 @@ class Table:
         self.select(rowno,colno)
     
     def go_down(self):
-        ''' #NOTE: This should run only after the event since Qt returns dummy
+        ''' #NOTE: This should run only after an event since Qt returns dummy
             geometry values right after startup.
         '''
         rowno, colno = self.get_cell()
@@ -148,10 +149,13 @@ class Table:
     
     def scroll_top(self):
         f = '[MClientQt] mclient.Table.scroll_top'
-        if not self.coords:
+        if not self.coords or not self.model:
             sh.com.rep_empty(f)
             return
         rowno, colno = self.gui.get_cell()
+        ''' #FIX: Getting KeyError: -1 here when copying a cell, pasting it,
+            setting focus to ent_src and pressing Home.
+        '''
         index_ = self.model.index(self.coords[rowno],colno)
         self.gui.scroll2index(index_)
     
@@ -163,11 +167,32 @@ class Table:
             sh.com.rep_third_party(f,e)
             return(0,0)
     
+    def get_cell_text(self):
+        f = '[MClientQt] mclient.Table.get_cell_text'
+        if not self.logic.cells:
+            sh.com.rep_empty(f)
+            return ''
+        rowno, colno = self.get_cell()
+        try:
+            #return self.logic.cells[rowno][colno].plain
+            return self.logic.plain[rowno][colno]
+        except IndexError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_debug()
+        return ''
+    
     def copy_cell(self):
         f = '[MClientQt] mclient.Table.copy_cell'
-        rowno, colno = self.gui.get_cell()
-        mes = '"' + self.logic.plain[rowno][colno] + '"'
-        sh.objs.get_mes(f,mes,True).show_debug()
+        text = self.get_cell_text()
+        if text:
+            sh.Clipboard().copy(text)
+            return True
+        # Do not warn when there are no articles yet
+        elif lg.objs.blocksdb.artid == 0:
+            sh.com.rep_lazy(f)
+        else:
+            mes = _('This cell does not contain any text!')
+            sh.objs.get_mes(f,mes).show_warning()
     
     def clear(self):
         self.gui.clear()
@@ -282,7 +307,6 @@ class Table:
     
     def set_bindings(self):
         self.gui.clicked.connect(self.go_url)
-        self.gui.right_mouse_key.connect(self.copy_cell)
         self.gui.select.connect(self.select)
         self.search.gui.ent_src.bind('Return',self.close_search_next)
         self.search.gui.btn_srp.set_action(self.search_prev)
@@ -342,6 +366,14 @@ class App:
         self.gui = gi.App()
         self.set_gui()
         self.update_ui()
+    
+    def copy_cell(self):
+        ''' Do not combine these conditions with 'and' since the interpreter
+            may decide to check the lighter condition first.
+        '''
+        if self.table.copy_cell():
+            if sh.lg.globs['bool']['Iconify']:
+                self.minimize()
     
     def copy_symbol(self):
         symbol = self.symbols.get()
@@ -640,6 +672,7 @@ class App:
         self.panel.ent_src.widget.left_arrow.connect(self.table.go_left)
         self.panel.ent_src.widget.right_arrow.connect(self.table.go_right)
         self.gui.close_app.connect(self.quit)
+        self.table.gui.right_mouse_key.connect(self.copy_cell)
         self.symbols.gui.table.clicked.connect(self.paste_symbol)
         self.symbols.gui.table.space.connect(self.paste_symbol)
         self.symbols.gui.return_.connect(self.paste_symbol)
