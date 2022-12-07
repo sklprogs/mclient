@@ -24,7 +24,6 @@ class DefaultKeys(sh.DefaultKeys):
         sh.lg.globs['bool'].update ({
             'AdjustByWidth'      :True
            ,'AlphabetizeTerms'   :True
-           ,'AutoCloseSpecSymbol':False
            ,'Autocompletion'     :True
            ,'Autoswap'           :False
            ,'BlockSubjects'      :True
@@ -169,10 +168,6 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'AlphabetizeTerms'
         comment = _('[Autosave] Sort terms by alphabet')
-        self.add_key(section,section_abbr,key,comment)
-        
-        key = 'AutoCloseSpecSymbol'
-        comment = _('Hide the window with special characters after the 1st symbol is inserted')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'Autocompletion'
