@@ -69,6 +69,8 @@ class DefaultKeys(sh.DefaultKeys):
            ,'bind_col2_up'                :'Alt+Up'
            ,'bind_col3_down'              :'Shift+Down'
            ,'bind_col3_up'                :'Shift+Up'
+           ,'bind_col4_down'              :'Ctrl+Shift+Down'
+           ,'bind_col4_up'                :'Ctrl+Shift+Up'
            ,'bind_copy_article_url'       :'Ctrl+F7'
            ,'bind_copy_nominative'        :'Ctrl+W'
            ,'bind_copy_sel'               :'Ctrl+Return'
@@ -322,6 +324,15 @@ class CreateConfig(sh.CreateConfig):
         key = 'bind_col3_up'
         comment = _('Go to the previous section of column #{}')
         comment = comment.format(3)
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'bind_col4_down'
+        comment = _('Go to the next section of column #{}').format(4)
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'bind_col4_up'
+        comment = _('Go to the previous section of column #{}')
+        comment = comment.format(4)
         self.add_key(section,section_abbr,key,comment)
         
         key = 'bind_copy_article_url'

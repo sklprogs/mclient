@@ -3,6 +3,7 @@
 
 7.0
 * Переход на Qt
+* Добавлены ключи bind_col4_down и bind_col4_up
 * Удалены ключи bind_clear_search_field и bind_paste_search_field
 
 6.14.4

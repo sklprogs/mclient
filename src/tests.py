@@ -55,6 +55,7 @@ class ArticleSubjects:
         import mclient
         # Lists will be automatically read from files on import
         import logic as lg
+        lg.com.start()
         #search = 'hello'
         #url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
         search = 'messenger'
@@ -173,6 +174,7 @@ class Get:
         f = '[MClient] tests.Get.run_stardict'
         import logic as lg
         import plugins.stardict.get as sd
+        lg.com.start()
         #search = 'компьютер'
         search = 'computer'
         timer = sh.Timer(f)
@@ -385,8 +387,7 @@ class Commands:
         import config as cf
         import logic as lg
         import symbols.controller as sm
-        cf.DefaultKeys()
-        lg.com.load_config()
+        lg.com.start()
         sym = sm.Symbols()
         sym.show()
         sh.com.end()
@@ -395,14 +396,14 @@ class Commands:
         import config as cf
         import logic as lg
         import settings.controller as st
-        cf.DefaultKeys()
-        lg.com.load_config()
+        lg.com.start()
         st.objs.get_settings().show()
     
     def get_priority(self):
         f = '[MClient] tests.Commands.get_priority'
         import logic as lg
         import subjects.subjects as sj
+        lg.com.start()
         title = 'Gruzovik, История'
         result = sj.objs.get_order().get_priority(title)
         sh.objs.get_mes(f,result,True).show_debug()
@@ -410,6 +411,7 @@ class Commands:
     def get_column_width(self):
         f = '[MClient] tests.Commands.get_column_width'
         import logic as lg
+        lg.com.start()
         #sh.lg.globs['int']['colnum'] = 0
         width = lg.com.get_column_width()
         mes = '"{}%"'.format(width)
@@ -478,6 +480,7 @@ class Commands:
     
     def run_speech(self):
         import logic as lg
+        lg.com.start()
         order = (_('Noun'),_('Verb'),_('Adjective'))
         lg.objs.get_speech_prior().reset(order)
         lg.objs.speech_prior.debug()
@@ -489,6 +492,7 @@ class Commands:
     def edit_priorities(self):
         import mclient as mc
         import logic as lg
+        lg.com.start()
         mc.objs.get_priorities().reset (lst1 = lg.objs.get_order().priorlst
                                        ,lst2 = lg.objs.get_plugins().get_subjects()
                                        ,art_subjects = []
@@ -499,6 +503,7 @@ class Commands:
     def edit_blacklist(self):
         import mclient as mc
         import logic as lg
+        lg.com.start()
         mc.objs.get_blacklist().reset (lst1 = lg.objs.get_order().blacklst
                                       ,lst2 = lg.objs.get_plugins().get_subjects()
                                       ,art_subjects = []
@@ -971,6 +976,7 @@ if __name__ == '__main__':
     import logic as lg
     import subjects.subjects as sj
     import cells as cl
+    lg.com.start()
     DB(0).run()
     '''
     sh.com.end()

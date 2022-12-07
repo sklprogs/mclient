@@ -723,6 +723,16 @@ class Commands:
     def __init__(self):
         self.use_unverified()
     
+    def start(self):
+        ''' Either run sh.com.start as early as possible, or this, since
+            warnings about the invalid config file need GUI.
+        '''
+        cf.DefaultKeys()
+        self.load_config()
+        # Load lists from files
+        objs.get_order()
+        self.set_def_colnum_even()
+    
     def get_url(self):
         f = '[MClientQt] logic.Commands.get_url'
         #NOTE: update source and target languages first
@@ -1599,8 +1609,3 @@ class Colors:
 
 objs = Objects()
 com = Commands()
-cf.DefaultKeys()
-com.load_config()
-# Load lists from files
-objs.get_order()
-com.set_def_colnum_even()

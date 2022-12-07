@@ -599,6 +599,9 @@ class App:
         self.gui.bind (sh.lg.globs['str']['bind_col3_down']
                       ,lambda:self.table.go_next_section(2)
                       )
+        self.gui.bind (sh.lg.globs['str']['bind_col4_down']
+                      ,lambda:self.table.go_next_section(3)
+                      )
         self.gui.bind (sh.lg.globs['str']['bind_col1_up']
                       ,lambda:self.table.go_prev_section(0)
                       )
@@ -607,6 +610,9 @@ class App:
                       )
         self.gui.bind (sh.lg.globs['str']['bind_col3_up']
                       ,lambda:self.table.go_prev_section(2)
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_col4_up']
+                      ,lambda:self.table.go_prev_section(3)
                       )
                       
         #TODO: iterate through all keys
@@ -713,6 +719,7 @@ class SearchArticle:
 if __name__ == '__main__':
     f = '[MClient] mclient.__main__'
     sh.com.start()
+    lg.com.start()
     lg.objs.get_plugins(Debug=False,maxrows=1000)
     '''
     db = DB()
