@@ -55,12 +55,12 @@ class Table:
     
     def go_next_section(self,no):
         rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_next_row_by_col(rowno,no)
+        rowno, colno = self.logic.get_next_row_by_col(rowno,colno,no)
         self.select(rowno,colno)
     
     def go_prev_section(self,no):
         rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_prev_row_by_col(rowno,no)
+        rowno, colno = self.logic.get_prev_row_by_col(rowno,colno,no)
         self.select(rowno,colno)
     
     def close_search_next(self):
@@ -107,7 +107,6 @@ class Table:
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_next_row(rowno,colno)
         self.select(rowno,colno)
-        self.scroll_top()
     
     def select(self,rowno,colno,Mouse=False):
         if Mouse and self.search.Shown:
@@ -119,12 +118,13 @@ class Table:
         else:
             self.gui.set_cur_index(new_index)
         self.model.update(new_index)
+        if not Mouse:
+            self.scroll_top()
     
     def go_up(self):
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_prev_row(rowno,colno)
         self.select(rowno,colno)
-        self.scroll_top()
     
     def go_line_start(self):
         rowno, colno = self.get_cell()
@@ -715,7 +715,7 @@ if __name__ == '__main__':
     data = db.fetch()
     blocks = lg.com.set_blocks(data)
     '''
-    lg.objs.get_request().search = 'hello'
+    lg.objs.get_request().search = 'tuple'
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
     app = App()

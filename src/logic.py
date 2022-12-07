@@ -1095,24 +1095,34 @@ class Table:
         self.rownum = 0
         self.colnum = 0
     
-    def get_next_row_by_col(self,rowno,colno):
+    def get_next_row_by_col(self,rowno,colno,ref_colno):
         f = '[MClientQt] logic.Table.get_next_row_by_col'
         if not self.Success:
             sh.com.cancel(f)
             return(rowno,colno)
-        for cell in self.cells:
-            if cell.colno == colno and cell.rowno > rowno and cell.plain:
-                return(cell.rowno,cell.colno)
+        tuple_ = self._get_next_row(rowno,ref_colno)
+        if tuple_:
+            rowno = tuple_[0]
+            tuple_ = self._get_next_row(rowno-1,colno)
+            if tuple_:
+                return tuple_
+        elif rowno > 0:
+            return self.get_next_row_by_col(-1,colno,ref_colno)
         return(rowno,colno)
     
-    def get_prev_row_by_col(self,rowno,colno):
+    def get_prev_row_by_col(self,rowno,colno,ref_colno):
         f = '[MClientQt] logic.Table.get_prev_row_by_col'
         if not self.Success:
             sh.com.cancel(f)
             return(rowno,colno)
-        for cell in self.cells[::-1]:
-            if cell.colno == colno and cell.rowno < rowno and cell.plain:
-                return(cell.rowno,cell.colno)
+        tuple_ = self._get_prev_row(rowno,ref_colno)
+        if tuple_:
+            rowno = tuple_[0]
+            tuple_ = self._get_prev_row(rowno+1,colno)
+            if tuple_:
+                return tuple_
+        elif rowno < self.rownum:
+            return self.get_prev_row_by_col(self.rownum,colno,ref_colno)
         return(rowno,colno)
     
     def _get_next_col(self,rowno,colno):
