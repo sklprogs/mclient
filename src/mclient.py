@@ -409,13 +409,6 @@ class App:
         symbol = self.symbols.get()
         self.gui.panel.ent_src.insert(symbol)
     
-    def quit(self):
-        self.close()
-        lg.objs.get_order().save()
-        lg.com.save_config()
-        mes = _('Goodbye!')
-        sh.objs.get_mes(f,mes,True).show_debug()
-    
     def load_article(self):
         f = '[MClientQt] mclient.App.load_article'
         ''' #NOTE: each time the contents of the current page is changed
@@ -628,14 +621,21 @@ class App:
         self.gui.panel.opt_lg1.reset(langs1)
         self.gui.panel.opt_lg2.reset(langs2)
     
-    def show(self,event=None):
+    def show(self):
         self.gui.show()
     
-    def close(self,event=None):
+    def quit(self):
+        lg.objs.get_order().save()
+        lg.com.save_config()
+        mes = _('Goodbye!')
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def close(self):
         self.gui.close()
     
     def set_bindings(self):
         # Mouse buttons cannot be bound
+        self.gui.close_app.connect(self.quit)
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.minimize)
         self.gui.bind('Down',self.table.go_down)
@@ -697,14 +697,14 @@ class App:
         self.panel.btn_trn.set_action(self.go_keyboard)
         self.panel.btn_clr.set_action(self.clear_search_field)
         self.panel.btn_ins.set_action(self.paste)
-        self.panel.btn_qit.set_action(self.quit)
+        self.panel.btn_qit.set_action(self.close)
         self.panel.ent_src.widget.home_key.connect(self.table.go_line_start)
         self.panel.ent_src.widget.end_key.connect(self.table.go_line_end)
         self.panel.ent_src.widget.ctrl_home.connect(self.table.go_start)
         self.panel.ent_src.widget.ctrl_end.connect(self.table.go_end)
         self.panel.ent_src.widget.left_arrow.connect(self.table.go_left)
         self.panel.ent_src.widget.right_arrow.connect(self.table.go_right)
-        self.gui.close_app.connect(self.quit)
+        
         self.table.gui.right_mouse_key.connect(self.copy_cell)
         self.symbols.gui.table.clicked.connect(self.paste_symbol)
         self.symbols.gui.table.space.connect(self.paste_symbol)
