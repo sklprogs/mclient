@@ -47,12 +47,6 @@ class Table:
         self.search = SearchArticle()
         self.set_gui()
     
-    def insert_repeat_sign(self):
-        pass
-    
-    def insert_repeat_sign2(self):
-        pass
-    
     def go_next_section(self,no):
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_next_row_by_col(rowno,colno,no)
@@ -356,6 +350,28 @@ class App:
         self.gui = gi.App()
         self.set_gui()
         self.update_ui()
+    
+    def insert_repeat_sign2(self):
+        # Insert the previous search string
+        f = '[MClientQt] mclient.App.insert_repeat_sign2'
+        result = lg.objs.get_blocksdb().get_prev_id()
+        if result:
+            old = lg.objs.blocksdb.artid
+            lg.objs.blocksdb.artid = result
+            result = lg.objs.blocksdb.get_article()
+            if result:
+                sh.Clipboard().copy(result[1])
+                self.paste()
+            else:
+                sh.com.rep_empty(f)
+            lg.objs.blocksdb.artid = old
+        else:
+            sh.com.rep_empty(f)
+    
+    def insert_repeat_sign(self):
+        # Insert the current search string
+        sh.Clipboard().copy(lg.objs.get_request().search)
+        self.paste()
     
     def go_url(self):
         f = '[MClientQt] mclient.App.go_url'
