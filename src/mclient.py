@@ -194,9 +194,6 @@ class Table:
             mes = _('This cell does not contain any text!')
             sh.objs.get_mes(f,mes).show_warning()
     
-    def clear(self):
-        self.gui.clear()
-    
     def set_row_height(self,height=42):
         for no in range(self.logic.rownum):
             self.gui.set_row_height(no,height)
@@ -223,7 +220,6 @@ class Table:
         if not cells:
             sh.com.rep_empty(f)
             return
-        self.clear()
         self.logic.reset(cells)
         self.model = gi.TableModel(self.logic.table)
         self.fill()

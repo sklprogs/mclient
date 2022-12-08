@@ -304,9 +304,6 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     def show_borders(self,Show=False):
         self.setShowGrid(Show)
-    
-    def clear(self):
-        pass
 
 
 
