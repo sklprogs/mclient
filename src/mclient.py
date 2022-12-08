@@ -520,6 +520,9 @@ class App:
         
         blocks = lg.com.add_formatting(blocks)
         
+        cells = lg.Cells(blocks).run()
+        self.table.reset(cells)
+        
         ''' Empty article is not added either to DB or history, so we just do
             not clear the search field to be able to correct the typo.
         '''
@@ -767,9 +770,7 @@ if __name__ == '__main__':
     app = App()
     sh.objs.get_root().installEventFilter(app.gui.panel)
     lg.com.get_url()
-    blocks = app.load_article()
-    cells = lg.Cells(blocks).run()
-    app.reset(cells)
+    app.load_article()
     timer.end()
     app.show()
     #db.close()
