@@ -604,12 +604,6 @@ class App:
         self.gui.minimize()
     
     def update_ui(self):
-        ''' #NOTE: Focusing on the entry will disable left-right arrow keys
-            since the table must have a focus for these keys to work. This
-            happens owing to that Qt already has internal left-right
-            arrow bindings for the entry, and we need to subclass the entry
-            and override these bindings.
-        '''
         self.gui.panel.ent_src.focus()
         #TODO: load from logic
         sources = (_('Multitran'),_('Stardict'),'Lingvo (DSL)',_('Local MT'))
@@ -792,13 +786,13 @@ if __name__ == '__main__':
     data = db.fetch()
     blocks = lg.com.set_blocks(data)
     '''
-    lg.objs.get_request().search = 'tuple'
+    #lg.objs.get_request().search = 'tuple'
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
     app = App()
     sh.objs.get_root().installEventFilter(app.gui.panel)
-    lg.com.get_url()
-    app.load_article()
+    #lg.com.get_url()
+    #app.load_article()
     timer.end()
     app.show()
     #db.close()
