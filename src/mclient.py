@@ -88,11 +88,6 @@ class Table:
         self.coords = {}
         self.row_height = 42
     
-    def go_url(self):
-        #TODO: implement
-        f = '[MClientQt] mclient.Table.go_url'
-        print(f)
-    
     def go_end(self):
         rowno, colno = self.logic.get_end()
         self.select(rowno,colno)
@@ -302,7 +297,6 @@ class Table:
         self.set_bindings()
     
     def set_bindings(self):
-        self.gui.clicked.connect(self.go_url)
         self.gui.select.connect(self.select)
         self.search.gui.ent_src.bind('Return',self.close_search_next)
         self.search.gui.btn_srp.set_action(self.search_prev)
@@ -362,6 +356,26 @@ class App:
         self.gui = gi.App()
         self.set_gui()
         self.update_ui()
+    
+    def go_url(self):
+        f = '[MClientQt] mclient.App.go_url'
+        rowno, colno = self.table.get_cell()
+        cell = lg.com.get_cell(self.table.logic.cells,rowno,colno)
+        if not cell:
+            sh.com.rep_empty(f)
+            return
+        if cell.url:
+            lg.objs.request.search = self.table.get_cell_text()
+            lg.objs.request.url = cell.url
+            mes = _('Open link: {}').format(lg.objs.request.url)
+            sh.objs.get_mes(f,mes,True).show_info()
+            self.load_article()
+        elif lg.objs.blocksdb.artid == 0:
+            # Do not warn when there are no articles yet
+            sh.com.rep_lazy(f)
+        else:
+            lg.objs.request.search = self.table.get_cell_text()
+            self.go_search()
     
     def copy_cell(self):
         ''' Do not combine these conditions with 'and' since the interpreter
@@ -537,10 +551,10 @@ class App:
         self.about.toggle()
     
     def go_keyboard(self):
-        #f = '[MClientQt] mclient.Table.go_keyboard'
+        f = '[MClientQt] mclient.App.go_keyboard'
         search = self.panel.ent_src.get().strip()
         if search == '':
-            self.table.go_url()
+            self.go_url()
         elif search == sh.lg.globs['str']['repeat_sign']:
             self.insert_repeat_sign()
         elif search == sh.lg.globs['str']['repeat_sign2']:
@@ -550,6 +564,7 @@ class App:
             self.go_search()
     
     def go_search(self):
+        f = '[MClientQt] mclient.App.go_search'
         if lg.objs.get_request().search is None:
             lg.objs.request.search = ''
         lg.objs.request.search = lg.objs.request.search.strip()
@@ -655,6 +670,7 @@ class App:
             self.gui.panel.ent_src.bind (sh.lg.globs['str']['bind_spec_symbol']
                                         ,self.symbols.show
                                         )
+        self.table.gui.clicked.connect(self.go_url)
         self.table.gui.middle_mouse_key.connect(self.minimize)
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be

@@ -288,7 +288,7 @@ class DB:
         self.dbc.execute(query,data)
 
     def fetch(self):
-        query = 'select TYPE,TEXT,ROWNO,COLNO,NO from BLOCKS \
+        query = 'select TYPE,TEXT,ROWNO,COLNO,NO,URL from BLOCKS \
                  where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 \
                  order by CELLNO,NO'
         self.dbc.execute(query,(self.artid,))

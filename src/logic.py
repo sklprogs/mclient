@@ -23,6 +23,7 @@ class Block:
     def __init__(self):
         self.type_ = 'invalid'
         self.text = ''
+        self.url = ''
         self.no = -1
         self.rowno = -1
         self.colno = -1
@@ -40,6 +41,7 @@ class Cell:
     def __init__(self):
         self.code = ''
         self.plain = ''
+        self.url = ''
         self.no = -1
         self.rowno = -1
         self.colno = -1
@@ -723,6 +725,16 @@ class Commands:
     def __init__(self):
         self.use_unverified()
     
+    def get_cell(self,cells,rowno,colno):
+        #TODO: Convert cells to have list-in-list structure and delete
+        f = '[MClientQt] logic.Commands.get_cell'
+        if not cells:
+            sh.com.rep_empty(f)
+            return
+        for cell in cells:
+            if cell.rowno == rowno and cell.colno == colno:
+                return cell
+    
     def start(self):
         ''' Either run sh.com.start as early as possible, or this, since
             warnings about the invalid config file need GUI.
@@ -764,6 +776,7 @@ class Commands:
             block.rowno = row[2]
             block.colno = row[3]
             block.no = row[4]
+            block.url = row[5]
             blocks.append(block)
         return blocks
     
@@ -1067,6 +1080,9 @@ class Cells:
                 self.cell.colno = block.colno
             self.cell.code += Formatter(block).run()
             self.cell.plain += block.text
+            if block.url:
+                #TODO (?): Process multiple URLs
+                self.cell.url = block.url
         #if self.cell.no != -1:
         if self.cell.rowno != -1:
             self.cells.append(self.cell)
