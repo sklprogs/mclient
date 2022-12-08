@@ -681,10 +681,6 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.set_hint_bg()
         self.show()
 
-    @PyQt5.QtCore.pyqtSlot()
-    def on_click(self):
-        print('PyQt5 button click')
-
 
 
 class SearchArticle(PyQt5.QtWidgets.QWidget):

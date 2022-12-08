@@ -645,6 +645,7 @@ class App:
         self.gui.bind('Shift+F3',self.table.search_prev)
         self.gui.bind('Ctrl+F',self.table.search.show)
         self.gui.bind('Return',self.go_keyboard)
+        self.gui.bind('Enter',self.go_keyboard)
         self.gui.bind('Ctrl+Return',self.copy_cell)
         self.gui.bind('Ctrl+Enter',self.copy_cell)
         self.gui.bind(sh.lg.globs['str']['bind_spec_symbol'],self.symbols.show)
@@ -687,11 +688,16 @@ class App:
             returned before the window is shown.
         '''
         self.gui.parent.resizeEvent = self.table.set_coords
+        
         self.panel.btn_abt.set_action(self.toggle_about)
         self.panel.btn_trn.set_action(self.go_keyboard)
         self.panel.btn_clr.set_action(self.clear_search_field)
         self.panel.btn_ins.set_action(self.paste)
+        self.panel.btn_rp1.set_action(self.insert_repeat_sign)
+        self.panel.btn_rp2.set_action(self.insert_repeat_sign2)
+        self.panel.btn_sym.set_action(self.symbols.show)
         self.panel.btn_qit.set_action(self.close)
+        
         self.panel.ent_src.widget.home_key.connect(self.table.go_line_start)
         self.panel.ent_src.widget.end_key.connect(self.table.go_line_end)
         self.panel.ent_src.widget.ctrl_home.connect(self.table.go_start)
@@ -700,6 +706,7 @@ class App:
         self.panel.ent_src.widget.right_arrow.connect(self.table.go_right)
         
         self.table.gui.right_mouse_key.connect(self.copy_cell)
+        
         self.symbols.gui.table.clicked.connect(self.paste_symbol)
         self.symbols.gui.table.space.connect(self.paste_symbol)
         self.symbols.gui.return_.connect(self.paste_symbol)
