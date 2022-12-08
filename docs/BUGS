@@ -1,0 +1,69 @@
+mclient:
+- Fix Stardict (nothing is found)
+- Vertical mode icon is not changed upon toggling the vertical mode on
+  a welcome screen
+- Fix wrong 1st position of a speech part in the Cut-to-the chase mode
+
+multitrancom:
+- EN-RU, hoove: loosing selection when moving mouse pointer at the end of the
+  article
+- If a number of columns is changed to an even value in the special-page
+  mode (e.g., 2 -> 4 columns), the common-page mode after that will have
+  +1 in the number of columns 
+- RU-EN, phytophotodermatitis -> Медицина: wrong colors
+- RU-EN, в режиме -> Биржевой термин: incorrect colorization of
+  "automatic trading"
+- RU-EN, в режиме -> SAP финансы: selecting wforms without 
+  the specialized mode
+- RU-EN, hello: IT phdics are prioritized but not colored
+- RU-EN, set: 'Обработка данных' is prioritized but not colored (phdic)
+- (MClient mode) RU-EN, reproducibility: ')' in the beginning
+- (Clarity mode) RU-EN, frame rate: too wide fixed columns
+- RU-CN: suggestions are provided for RU-EN
+- "Hello, handsome!": fix URL of "Hello, beautiful!"
+- Do not fill history when search is empty (e.g., when changing
+  the source to 'Offline')
+- Do not move at the beginning of the article after cancelling
+  the search
+- Mclient mode: transcription must be set after parts of speechs, but
+  actually it is set before
+- vertical view, RU-EN: "поцелуй": fix Moves.up for the 1st element
+- for vertical view: concerning coloring, rely on row numbers instead of
+  column numbers
+- (DB) Fix Moves on 'рабочая документация' (SelectTermsOnly=0), selects
+  ')' twice, but does not select corrections
+- NODE1 < NODE2 in some rare cases
+- Changing node still sometimes fails
+- shift_y does not work properly when changing sizes on-the-fly
+- Vertical view (maybe, with Styles): 1st column can be a single entry
+  of 'dic' type
+
+stardict:
+- RU-EN, "Akrotiri Government" from CIA World Factbook 2014: https://tuxor1337.frama.io/firedict/dictionaries.html: some text was not found
+- RU-EN, full: search gate: found by 'Suggest' and logged as found by
+  'AllDics.get', but could not be shown
+- Unknown mode "" in Elems.order_speech when using local dictionaries
+  (Stardict 2)
+- Do not open a Multitran-based URL for local dictionaries (F7)
+- Blocks from '<tr>̈ɪkʌt</tr><em>гл.</em>'
+  (sdict_EnRu_full - cut (manual).txt) are not separated when sorting
+
+dsl:
+- Cannot find anything in Ozhegov's and Ushakov's dictionaries
+- Fix the wrong position (at top) of a phrase section
+
+multitrandem:
+- Throws an error during a search when Stardict/DSL dics (but not MT)
+  are available
+- RU-EN, 'цепь: провод': fails when no dics are available (option menus
+  have available pairs though)
+- AS: an abbreviation, not a conjunction
+- DARE: an abbreviation, not a noun
+- kick: a noun, not a verb
+- mad: "бешеный (о животном)" is missing
+- go, work: not found
+- easternize: "ориентальный характер" is present, but
+  "подвергать влиянию восточных штатов" is missing
+- lack: verb, not a noun
+- backwash: verb, not a noun
+- academic: adjective, not a noun
