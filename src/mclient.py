@@ -247,11 +247,11 @@ class Table:
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_coords(self,event=None):
-        f = '[MClientQt] mclient.Table.set_coords'
         ''' Calculating Y is very fast (~0.05s for 'set' on Intel Atom). We
             need None since this procedure overrides
             self.gui.parent.resizeEvent.
         '''
+        f = '[MClientQt] mclient.Table.set_coords'
         height = self.gui.get_height()
         mes = _('Window height: {}').format(height)
         sh.objs.get_mes(f,mes,True).show_debug()
@@ -392,7 +392,7 @@ class App:
         self.update_lang1()
         self.update_lang2()
     
-    def set_prev_lang2(self,event=None):
+    def set_prev_lang2(self):
         # We want to navigate through the limited list here
         self.update_lang1()
         self.update_lang2()
@@ -430,7 +430,7 @@ class App:
         self.gui.panel.opt_lg1.set(lang1)
         self.set_lang1()
     
-    def update_lang2(self,event=None):
+    def update_lang2(self):
         f = '[MClientQt] mclient.App.update_lang2'
         self.set_lang1()
         self.set_lang2()
