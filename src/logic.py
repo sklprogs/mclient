@@ -611,12 +611,12 @@ class CurRequest:
     def set_values(self):
         self.cols = ('dic','wform','transc','speech')
         self.collimit = sh.lg.globs['int']['colnum'] + len(self.cols)
-        ''' Toggling blacklisting should not depend on a number of
-            blocked subjects (otherwise, it is not clear how
-            blacklisting should be toggled).
-            *Temporarily* turn off prioritizing and terms sorting for
-            articles with 'sep_words_found' and in phrases; use previous
-            settings for new articles.
+        ''' Toggling blacklisting should not depend on a number of blocked
+            subjects (otherwise, it is not clear how blacklisting should be
+            toggled).
+            *Temporarily* turn off prioritizing and terms sorting for articles
+            with 'sep_words_found' and in phrases; use previous settings for
+            new articles.
         '''
         self.SpecialPage = False
         self.NewPageType = False

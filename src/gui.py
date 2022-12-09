@@ -270,10 +270,8 @@ class Table(PyQt5.QtWidgets.QTableView):
     def get_cell_y(self,rowno):
         return self.rowViewportPosition(rowno)
     
-    def set_model(self,mymodel):
-        # Do not overwrite built-in 'model'
-        self.mymodel = mymodel
-        self.setModel(mymodel)
+    def set_model(self,model):
+        self.setModel(model)
     
     def mousePressEvent(self,event):
         button = event.button()
