@@ -305,6 +305,38 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def set_source(self):
+        f = '[MClientQt] mclient.App.set_source'
+        sh.lg.globs['str']['source'] = self.gui.panel.opt_src.get()
+        mes = _('Set source to "{}"').format(sh.lg.globs['str']['source'])
+        sh.objs.get_mes(f,mes,True).show_info()
+        lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
+        self.reset_opt(sh.lg.globs['str']['source'])
+        self.go_search_focus()
+    
+    def auto_swap(self):
+        f = '[MClientQt] mclient.App.auto_swap'
+        lang1 = self.gui.panel.opt_lg1.get()
+        lang2 = self.gui.panel.opt_lg2.get()
+        if lg.objs.get_plugins().is_oneway() \
+        or not sh.lg.globs['bool']['Autoswap'] \
+        or not lg.objs.get_request().search:
+            sh.com.rep_lazy(f)
+            return
+        if sh.Text(lg.objs.request.search).has_cyrillic():
+            if lang2 in (_('Russian'),'Russian'):
+                mes = '{}-{} -> {}-{}'.format(lang1,lang2,lang2,lang1)
+                sh.objs.get_mes(f,mes,True).show_info()
+                self.swap_langs()
+        elif lang1 in (_('Russian'),'Russian'):
+            mes = '{}-{} -> {}-{}'.format(lang1,lang2,lang2,lang1)
+            sh.objs.get_mes(f,mes,True).show_info()
+            self.swap_langs()
+    
+    def go_search_focus(self):
+        self.go_search()
+        self.gui.panel.ent_src.focus()
+    
     def reset_opt(self,default=_('Multitran')):
         f = '[MClientQt] mclient.App.reset_opt'
         # Reset OptionMenus
@@ -378,7 +410,7 @@ class App:
     
     def set_lang2(self):
         f = '[MClientQt] mclient.App.set_lang2'
-        lang = self.gui.opt_lg2.get()
+        lang = self.gui.panel.opt_lg2.get()
         if lg.objs.get_plugins().get_lang2() != lang:
             mes = _('Set language: {}').format(lang)
             sh.objs.get_mes(f,mes,True).show_info()
@@ -410,7 +442,7 @@ class App:
             return
         if not lang2 in langs2:
             lang2 = langs2[0]
-        self.panel.gui.opt_lg2.reset (items = langs2
+        self.gui.panel.opt_lg2.reset (items = langs2
                                      ,default = lang2
                                      )
         self.set_lang2()
@@ -423,8 +455,8 @@ class App:
             return
         self.update_lang1()
         self.update_lang2()
-        lang1 = self.gui.opt_lg1.get()
-        lang2 = self.gui.opt_lg2.get()
+        lang1 = self.gui.panel.opt_lg1.get()
+        lang2 = self.gui.panel.opt_lg2.get()
         lang1, lang2 = lang2, lang1
         langs1 = lg.objs.get_plugins().get_langs1()
         langs2 = lg.objs.plugins.get_langs2(lang1)
@@ -435,12 +467,12 @@ class App:
             mes = _('Pair {}-{} is not supported!').format(lang1,lang2)
             sh.objs.get_mes(f,mes).show_warning()
             return
-        self.gui.opt_lg1.reset (items = langs1
-                               ,default = lang1
-                               )
-        self.gui.opt_lg2.reset (items = langs2
-                               ,default = lang2
-                               )
+        self.gui.panel.opt_lg1.reset (items = langs1
+                                     ,default = lang1
+                                     )
+        self.gui.panel.opt_lg2.reset (items = langs2
+                                     ,default = lang2
+                                     )
         self.update_lang1()
         self.update_lang2()
     
@@ -671,11 +703,9 @@ class App:
             lg.objs.request.search = ''
         lg.objs.request.search = lg.objs.request.search.strip()
         if lg.com.control_length():
-            '''
             self.update_lang1()
             self.update_lang2()
             self.auto_swap()
-            '''
             lg.com.get_url()
             mes = '"{}"'.format(lg.objs.request.search)
             sh.objs.get_mes(f,mes,True).show_debug()
@@ -769,6 +799,9 @@ class App:
         self.gui.bind (sh.lg.globs['str']['bind_col4_up']
                       ,lambda:self.table.go_prev_section(3)
                       )
+        self.gui.bind (sh.lg.globs['str']['bind_swap_langs']
+                      ,self.swap_langs
+                      )
                       
         #TODO: iterate through all keys
         if sh.lg.globs['str']['bind_spec_symbol'] == 'Ctrl+E':
@@ -777,6 +810,7 @@ class App:
             self.gui.panel.ent_src.bind (sh.lg.globs['str']['bind_spec_symbol']
                                         ,self.symbols.show
                                         )
+        
         self.table.gui.clicked.connect(self.go_url)
         self.table.gui.middle_mouse_key.connect(self.minimize)
         ''' Recalculate pages each time the main window is resized. This allows
@@ -792,6 +826,7 @@ class App:
         self.panel.btn_rp1.set_action(self.insert_repeat_sign)
         self.panel.btn_rp2.set_action(self.insert_repeat_sign2)
         self.panel.btn_sym.set_action(self.symbols.show)
+        self.panel.btn_swp.set_action(self.swap_langs)
         self.panel.btn_qit.set_action(self.close)
         
         self.panel.ent_src.widget.home_key.connect(self.table.go_line_start)
@@ -800,6 +835,9 @@ class App:
         self.panel.ent_src.widget.ctrl_end.connect(self.table.go_end)
         self.panel.ent_src.widget.left_arrow.connect(self.table.go_left)
         self.panel.ent_src.widget.right_arrow.connect(self.table.go_right)
+        self.panel.opt_lg1.widget.activated.connect(self.go_search_focus)
+        self.panel.opt_lg2.widget.activated.connect(self.go_search_focus)
+        self.panel.opt_src.widget.activated.connect(self.set_source)
         
         self.table.gui.right_mouse_key.connect(self.copy_cell)
         
