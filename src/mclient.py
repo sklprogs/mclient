@@ -298,52 +298,6 @@ class Table:
 
 
 
-class DB:
-    
-    def __init__(self):
-        self.set_values()
-        self.db = sqlite3.connect(self.path)
-        self.dbc = self.db.cursor()
-    
-    def set_values(self):
-        self.artid = 0
-        self.Selectable = True
-        self.path = '/home/pete/tmp/set.db'
-    
-    def fetch(self):
-        query = 'select NO,ROWNO,COLNO,TEXT,COLOR,FAMILY,SIZE,BOLD,ITALIC \
-                 from FONTS order by NO'
-        self.dbc.execute(query,)
-        return self.dbc.fetchall()
-    
-    def close(self):
-        f = '[MClient] mclient.DB.close'
-        mes = _('Close "{}"').format(self.path)
-        #sh.objs.get_mes(f,mes,True).show_info()
-        print(mes)
-        self.dbc.close()
-    
-    def get_max_col_no(self):
-        ''' This is a less advanced alternative to 'self.get_max_col'
-            for cases when positions are not set yet.
-        '''
-        f = '[MClient] mclient.DB.get_max_col_no'
-        query = 'select COLNO from FONTS order by COLNO desc'
-        self.dbc.execute(query,)
-        col_no = self.dbc.fetchone()
-        if col_no:
-            return col_no[0]
-    
-    def get_max_row_no(self):
-        f = '[MClient] mclient.DB.get_max_row_no'
-        query = 'select ROWNO from FONTS order by ROWNO desc'
-        self.dbc.execute(query,)
-        result = self.dbc.fetchone()
-        if result:
-            return result[0]
-
-
-
 class App:
     
     def __init__(self):
@@ -930,11 +884,6 @@ if __name__ == '__main__':
     sh.com.start()
     lg.com.start()
     lg.objs.get_plugins(Debug=False,maxrows=1000)
-    '''
-    db = DB()
-    data = db.fetch()
-    blocks = lg.com.set_blocks(data)
-    '''
     lg.objs.get_request().search = 'tuple'
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
@@ -944,5 +893,4 @@ if __name__ == '__main__':
     app.load_article()
     timer.end()
     app.show()
-    #db.close()
     sh.com.end()
