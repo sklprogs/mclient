@@ -351,6 +351,145 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def reset_opt(self,default=_('Multitran')):
+        f = '[MClientQt] mclient.App.reset_opt'
+        # Reset OptionMenus
+        lang1 = lg.objs.get_plugins().get_lang1()
+        lang2 = lg.objs.plugins.get_lang2()
+        langs1 = lg.objs.plugins.get_langs1()
+        langs2 = lg.objs.plugins.get_langs2(lang1)
+        sources = lg.objs.plugins.get_sources()
+        if not (langs1 and langs2 and lang1 and lang2 and sources):
+            sh.com.rep_empty(f)
+            return
+        self.gui.panel.opt_lg1.reset (items = langs1
+                                     ,default = lang1
+                                     )
+        self.gui.panel.opt_lg2.reset (items = langs2
+                                     ,default = lang2
+                                     )
+        #NOTE: change this upon the change of the default source
+        self.gui.panel.opt_src.reset (items = sources
+                                     ,default = default
+                                     )
+    
+    def set_next_lang1(self):
+        ''' We want to navigate through the full list of supported languages
+            rather than through the list of 'lang2' pairs so we reset the
+            widget first.
+        '''
+        old = self.gui.panel.opt_lg1.get()
+        self.gui.panel.opt_lg1.reset (items = lg.objs.get_plugins().get_langs1()
+                                     ,default = old
+                                     )
+        self.gui.panel.opt_lg1.set_next()
+        self.update_lang1()
+        self.update_lang2()
+    
+    def set_next_lang2(self):
+        # We want to navigate through the limited list here
+        self.update_lang1()
+        self.update_lang2()
+        self.gui.panel.opt_lg2.set_next()
+        self.update_lang2()
+    
+    def set_prev_lang1(self):
+        ''' We want to navigate through the full list of supported languages
+            rather than through the list of 'lang2' pairs so we reset the
+            widget first.
+        '''
+        old = self.gui.panel.opt_lg1.get()
+        self.gui.panel.opt_lg1.reset (items = lg.objs.get_plugins().get_langs1()
+                                     ,default = old
+                                     )
+        self.gui.panel.opt_lg1.set_prev()
+        self.update_lang1()
+        self.update_lang2()
+    
+    def set_prev_lang2(self,event=None):
+        # We want to navigate through the limited list here
+        self.update_lang1()
+        self.update_lang2()
+        self.gui.panel.opt_lg2.set_prev()
+        self.update_lang2()
+    
+    def set_lang1(self):
+        f = '[MClientQt] mclient.App.set_lang1'
+        lang = self.gui.panel.opt_lg1.get()
+        if lg.objs.get_plugins().get_lang1() != lang:
+            mes = _('Set language: {}').format(lang)
+            sh.objs.get_mes(f,mes,True).show_info()
+            sh.lg.globs['str']['lang1'] = lang
+            lg.objs.get_plugins().set_lang1(lang)
+    
+    def set_lang2(self):
+        f = '[MClientQt] mclient.App.set_lang2'
+        lang = self.gui.opt_lg2.get()
+        if lg.objs.get_plugins().get_lang2() != lang:
+            mes = _('Set language: {}').format(lang)
+            sh.objs.get_mes(f,mes,True).show_info()
+            sh.lg.globs['str']['lang2'] = lang
+            lg.objs.get_plugins().set_lang2(lang)
+    
+    def update_lang1(self):
+        f = '[MClientQt] mclient.App.update_lang1'
+        self.set_lang1()
+        self.set_lang2()
+        lang1 = lg.objs.get_plugins().get_lang1()
+        lang2 = lg.objs.plugins.get_lang2()
+        langs1 = lg.objs.plugins.get_langs1()
+        if not langs1:
+            sh.com.rep_empty(f)
+            return
+        self.gui.panel.opt_lg1.set(lang1)
+        self.set_lang1()
+    
+    def update_lang2(self,event=None):
+        f = '[MClientQt] mclient.App.update_lang2'
+        self.set_lang1()
+        self.set_lang2()
+        lang1 = lg.objs.get_plugins().get_lang1()
+        lang2 = lg.objs.plugins.get_lang2()
+        langs2 = lg.objs.plugins.get_langs2(lang1)
+        if not langs2:
+            sh.com.rep_empty(f)
+            return
+        if not lang2 in langs2:
+            lang2 = langs2[0]
+        self.panel.gui.opt_lg2.reset (items = langs2
+                                     ,default = lang2
+                                     )
+        self.set_lang2()
+    
+    def swap_langs(self):
+        f = '[MClientQt] mclient.App.swap_langs'
+        if lg.objs.get_plugins().is_oneway():
+            mes = _('Cannot swap languages, this is a one-way dictionary!')
+            sh.objs.get_mes(f,mes).show_info()
+            return
+        self.update_lang1()
+        self.update_lang2()
+        lang1 = self.gui.opt_lg1.get()
+        lang2 = self.gui.opt_lg2.get()
+        lang1, lang2 = lang2, lang1
+        langs1 = lg.objs.get_plugins().get_langs1()
+        langs2 = lg.objs.plugins.get_langs2(lang1)
+        if not langs1:
+            sh.com.rep_empty(f)
+            return
+        if not (langs2 and lang1 in langs1 and lang2 in langs2):
+            mes = _('Pair {}-{} is not supported!').format(lang1,lang2)
+            sh.objs.get_mes(f,mes).show_warning()
+            return
+        self.gui.opt_lg1.reset (items = langs1
+                               ,default = lang1
+                               )
+        self.gui.opt_lg2.reset (items = langs2
+                               ,default = lang2
+                               )
+        self.update_lang1()
+        self.update_lang2()
+    
     def insert_repeat_sign2(self):
         # Insert the previous search string
         f = '[MClientQt] mclient.App.insert_repeat_sign2'
@@ -605,6 +744,8 @@ class App:
     
     def update_ui(self):
         self.gui.panel.ent_src.focus()
+        self.reset_opt()
+        '''
         #TODO: load from logic
         sources = (_('Multitran'),_('Stardict'),'Lingvo (DSL)',_('Local MT'))
         self.gui.panel.opt_src.reset(sources)
@@ -614,6 +755,7 @@ class App:
         langs2 = (_('Russian'),_('English'),_('French'))
         self.gui.panel.opt_lg1.reset(langs1)
         self.gui.panel.opt_lg2.reset(langs2)
+        '''
     
     def show(self):
         self.gui.show()
@@ -793,13 +935,13 @@ if __name__ == '__main__':
     data = db.fetch()
     blocks = lg.com.set_blocks(data)
     '''
-    #lg.objs.get_request().search = 'tuple'
+    lg.objs.get_request().search = 'tuple'
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
     app = App()
     sh.objs.get_root().installEventFilter(app.gui.panel)
-    #lg.com.get_url()
-    #app.load_article()
+    lg.com.get_url()
+    app.load_article()
     timer.end()
     app.show()
     #db.close()
