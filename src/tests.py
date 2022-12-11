@@ -383,6 +383,15 @@ class Plugin:
 
 class Commands:
     
+    def run_welcome(self):
+        import config as cf
+        import logic as lg
+        import welcome.controller as wc
+        lg.com.start()
+        iwelcome = wc.Welcome()
+        iwelcome.reset()
+        iwelcome.show()
+    
     def run_symbols(self):
         import config as cf
         import logic as lg
@@ -948,7 +957,8 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] tests.__main__'
     sh.com.start()
-    com.run_symbols()
+    com.run_welcome()
+    #com.run_symbols()
     #ArticleSubjects().run()
     #com.check_width()
     #com.edit_blacklist()
