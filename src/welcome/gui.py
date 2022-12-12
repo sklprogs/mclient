@@ -106,13 +106,13 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
     
     def set_gui(self):
-        self.parent = PyQt5.QtWidgets.QWidget()
+        self.parent_ = PyQt5.QtWidgets.QWidget()
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
         self.layout_.setContentsMargins(0,0,0,0)
         self.welcome = Welcome()
         self.layout_.addWidget(self.welcome)
-        self.parent.setLayout(self.layout_)
-        self.setCentralWidget(self.parent)
+        self.parent_.setLayout(self.layout_)
+        self.setCentralWidget(self.parent_)
 
 
 
