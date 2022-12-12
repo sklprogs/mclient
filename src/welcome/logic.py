@@ -14,24 +14,22 @@ class Hotkeys:
         self.hotkeys.append((desc,bindings))
     
     def get(self):
-        f = '[MClientQt] logic.Hotkeys.get'
+        f = '[MClientQt] welcome.logic.Hotkeys.get'
         #return self.hotkeys
         if not self.hotkeys:
             sh.com.rep_empty(f)
             return []
-        rows = []
-        item = (self.hotkeys[0][0],'; '.join(self.hotkeys[0][1]))
-        row = [item]
+        rows = [self.hotkeys[0][0],'; '.join(self.hotkeys[0][1])]
+        row = []
         i = 1
         while i < len(self.hotkeys):
-            item = (self.hotkeys[i][0],'; '.join(self.hotkeys[i][1]))
-            row.append(item)
+            row += [self.hotkeys[i][0],'; '.join(self.hotkeys[i][1])]
             if i % 2 == 0:
                 rows.append(row)
                 row = []
             i += 1
         if row:
-            row.append(('',''))
+            row += ['','']
             rows.append(row)
         return rows
 
@@ -63,7 +61,7 @@ class Welcome:
         self.desc = ''
     
     def try_sources(self):
-        f = '[MClientQt] logic.Welcome.try_sources'
+        f = '[MClientQt] welcome.logic.Welcome.try_sources'
         old = objs.get_plugins().source
         if sh.lg.globs['bool']['Ping']:
             dics = objs.plugins.get_online_sources()
@@ -291,7 +289,7 @@ class Welcome:
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Clear History')
-        hotkey = sh.lg.globs['str']['bind_clear_history']
+        hotkeys = (sh.lg.globs['str']['bind_clear_history'])
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Next target language')

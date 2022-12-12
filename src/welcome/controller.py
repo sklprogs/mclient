@@ -12,7 +12,7 @@ from . import gui as gi
 
 class Welcome:
     
-    def __init__(self,*args,**kwargs):
+    def __init__(self):
         self.logic = lg.Welcome()
         self.gui = gi.App()
         self.set_bindings()
@@ -32,13 +32,12 @@ class Welcome:
         self.gui.set_span(0,0,2,4)
     
     def fill(self):
-        table = [['<b>Welcome to MClient!</b>','','','']
-                ,['','','','']
-                ,['Ctrl+O','Open','Ctrl+S','Save']
-                ,['Ctrl+C','Copy','Ctrl+X','Cut the following line in half']
-                ]
+        f = '[MClientQt] welcome.controller.Welcome.fill'
+        table = [['<b>Welcome to MClient!</b>','','',''],['','','','']]
         add = self.logic.run()
         if add:
             table += add
+        else:
+            sh.com.rep_empty(f)
         model = gi.TableModel(table)
         self.gui.set_model(model)
