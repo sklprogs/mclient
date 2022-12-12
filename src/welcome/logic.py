@@ -15,12 +15,11 @@ class Hotkeys:
     
     def get(self):
         f = '[MClientQt] welcome.logic.Hotkeys.get'
-        #return self.hotkeys
         if not self.hotkeys:
             sh.com.rep_empty(f)
             return []
-        rows = [self.hotkeys[0][0],'; '.join(self.hotkeys[0][1])]
-        row = []
+        rows = []
+        row = [self.hotkeys[0][0],'; '.join(self.hotkeys[0][1])]
         i = 1
         while i < len(self.hotkeys):
             row += [self.hotkeys[i][0],'; '.join(self.hotkeys[i][1])]
@@ -137,7 +136,7 @@ class Welcome:
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Show the program window (system-wide)')
-        hotkeys = ('Alt+~')
+        hotkeys = ('Alt+~',)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Translate selection from an external program')
@@ -145,7 +144,7 @@ class Welcome:
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Minimize the program window')
-        hotkeys = ('Esc')
+        hotkeys = ('Esc',)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Quit the program')
@@ -153,51 +152,51 @@ class Welcome:
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Copy the URL of the selected term')
-        hotkeys = (sh.lg.globs['str']['bind_copy_url'])
+        hotkeys = (sh.lg.globs['str']['bind_copy_url'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Copy the URL of the current article')
-        hotkeys = (sh.lg.globs['str']['bind_copy_article_url'])
+        hotkeys = (sh.lg.globs['str']['bind_copy_article_url'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Go to the previous section of column #{}').format(1)
-        hotkeys = (sh.lg.globs['str']['bind_col1_up'])
+        hotkeys = (sh.lg.globs['str']['bind_col1_up'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Go to the next section of column #{}').format(1)
-        hotkeys = (sh.lg.globs['str']['bind_col1_down'])
+        hotkeys = (sh.lg.globs['str']['bind_col1_down'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Go to the previous section of column #{}').format(2)
-        hotkeys = (sh.lg.globs['str']['bind_col2_up'])
+        hotkeys = (sh.lg.globs['str']['bind_col2_up'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Go to the next section of column #{}').format(2)
-        hotkeys = (sh.lg.globs['str']['bind_col2_down'])
+        hotkeys = (sh.lg.globs['str']['bind_col2_down'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Go to the previous section of column #{}').format(3)
-        hotkeys = (sh.lg.globs['str']['bind_col3_up'])
+        hotkeys = (sh.lg.globs['str']['bind_col3_up'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Go to the next section of column #{}').format(3)
-        hotkeys = (sh.lg.globs['str']['bind_col3_down'])
+        hotkeys = (sh.lg.globs['str']['bind_col3_down'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Open a webpage with a definition of the current term')
-        hotkeys = (sh.lg.globs['str']['bind_define'])
+        hotkeys = (sh.lg.globs['str']['bind_define'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Look up phrases')
-        hotkeys = (sh.lg.globs['str']['bind_go_phrases'])
+        hotkeys = (sh.lg.globs['str']['bind_go_phrases'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Go to the preceding article')
-        hotkeys = (sh.lg.globs['str']['bind_go_back'])
+        hotkeys = (sh.lg.globs['str']['bind_go_back'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Go to the following article')
-        hotkeys = (sh.lg.globs['str']['bind_go_forward'])
+        hotkeys = (sh.lg.globs['str']['bind_go_forward'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Next source language')
@@ -213,7 +212,7 @@ class Welcome:
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Create a printer-friendly page')
-        hotkeys = (sh.lg.globs['str']['bind_print'])
+        hotkeys = (sh.lg.globs['str']['bind_print'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Open the current article in a default browser')
@@ -235,15 +234,15 @@ class Welcome:
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Start a new search in the current article')
-        hotkeys = (sh.lg.globs['str']['bind_re_search_article'])
+        hotkeys = (sh.lg.globs['str']['bind_re_search_article'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Search the article forward')
-        hotkeys = (sh.lg.globs['str']['bind_search_article_forward'])
+        hotkeys = (sh.lg.globs['str']['bind_search_article_forward'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Search the article backward')
-        hotkeys = (sh.lg.globs['str']['bind_search_article_backward'])
+        hotkeys = (sh.lg.globs['str']['bind_search_article_backward'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Show settings')
@@ -253,19 +252,19 @@ class Welcome:
         ihotkeys.add(hint,hotkeys)
         
         hint = _('About the program')
-        hotkey = (sh.lg.globs['str']['bind_show_about'])
+        hotkey = (sh.lg.globs['str']['bind_show_about'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Paste a special symbol')
-        hotkeys = (sh.lg.globs['str']['bind_spec_symbol'])
+        hotkeys = (sh.lg.globs['str']['bind_spec_symbol'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Toggle alphabetizing')
-        hotkeys = (sh.lg.globs['str']['bind_toggle_alphabet'])
+        hotkeys = (sh.lg.globs['str']['bind_toggle_alphabet'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Toggle blacklisting')
-        hotkeys = (sh.lg.globs['str']['bind_toggle_block'])
+        hotkeys = (sh.lg.globs['str']['bind_toggle_block'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Toggle History')
@@ -275,11 +274,11 @@ class Welcome:
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Toggle prioritizing')
-        hotkey = (sh.lg.globs['str']['bind_toggle_priority'])
+        hotkeys = (sh.lg.globs['str']['bind_toggle_priority'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Toggle terms-only selection')
-        hotkey = sh.lg.globs['str']['bind_toggle_sel']
+        hotkeys = (sh.lg.globs['str']['bind_toggle_sel'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Toggle the current article view')
@@ -289,7 +288,7 @@ class Welcome:
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Clear History')
-        hotkeys = (sh.lg.globs['str']['bind_clear_history'])
+        hotkeys = (sh.lg.globs['str']['bind_clear_history'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Next target language')
@@ -305,11 +304,11 @@ class Welcome:
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Swap source and target languages')
-        hotkeys = (sh.lg.globs['str']['bind_swap_langs'])
+        hotkeys = (sh.lg.globs['str']['bind_swap_langs'],)
         ihotkeys.add(hint,hotkeys)
         
         hint = _('Copy the nominative case')
-        hotkeys = (sh.lg.globs['str']['bind_copy_nominative'])
+        hotkeys = (sh.lg.globs['str']['bind_copy_nominative'],)
         ihotkeys.add(hint,hotkeys)
         
         return ihotkeys.get()
