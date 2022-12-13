@@ -127,6 +127,8 @@ class Welcome(PyQt5.QtWidgets.QTableView):
     
     def set_gui(self):
         self.setItemDelegate(TableDelegate())
+        vheader = self.verticalHeader()
+        vheader.setSectionResizeMode(vheader.ResizeToContents)
     
     def set_model(self,model):
         self.setModel(model)
