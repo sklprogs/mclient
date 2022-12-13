@@ -53,6 +53,7 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         
         doc = PyQt5.QtGui.QTextDocument()
         doc.setHtml(options.text)
+        doc.setDefaultFont(PyQt5.QtGui.QFont('Sans',12))
         options.text = ''
         
         # This enables text wrapping in the delegate
