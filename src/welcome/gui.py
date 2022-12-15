@@ -123,6 +123,9 @@ class Welcome(PyQt5.QtWidgets.QTableView):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
+    def resize_rows(self):
+        self.resizeRowsToContents()
+    
     def set_span(self,rowno,colno,rowspan,colspan):
         self.setSpan(rowno,colno,rowspan,colspan)
     
