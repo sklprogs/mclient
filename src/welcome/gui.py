@@ -125,15 +125,16 @@ class Welcome(PyQt5.QtWidgets.QTableView):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
-    def resize_rows(self):
-        self.resizeRowsToContents()
-    
     def set_span(self,rowno,colno,rowspan,colspan):
         self.setSpan(rowno,colno,rowspan,colspan)
     
     def set_gui(self):
         self.setItemDelegate(TableDelegate())
+        hheader = self.horizontalHeader()
         vheader = self.verticalHeader()
+        hheader.setVisible(False)
+        vheader.setVisible(False)
+        self.setStyleSheet('QTableView { selection-background-color: white; }')
         vheader.setSectionResizeMode(vheader.ResizeToContents)
     
     def set_model(self,model):

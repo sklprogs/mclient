@@ -17,9 +17,6 @@ class Welcome:
         self.gui = gi.App()
         self.set_bindings()
     
-    def resize_rows(self):
-        self.gui.welcome.resize_rows()
-    
     def close(self):
         self.gui.close()
     
@@ -33,7 +30,6 @@ class Welcome:
     def reset(self):
         self.fill()
         self.gui.set_span(0,0,2,4)
-        self.resize_rows()
     
     def fill(self):
         f = '[MClientQt] welcome.controller.Welcome.fill'
