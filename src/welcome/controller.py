@@ -37,10 +37,12 @@ class Welcome:
         self.gui.set_col_width(1,100)
         self.gui.set_col_width(2,200)
         self.gui.set_col_width(3,100)
+        self.gui.set_col_width(4,200)
+        self.gui.set_col_width(5,100)
     
     def fill(self):
         f = '[MClientQt] welcome.controller.Welcome.fill'
-        table = [['<b>Welcome to MClient!</b>','','',''],['','','','']]
+        table = [['<b>Welcome to MClient!</b>','','','','',''],['','','','','','']]
         add = self.logic.run()
         if add:
             table += add

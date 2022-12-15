@@ -23,12 +23,12 @@ class Hotkeys:
         i = 1
         while i < len(self.hotkeys):
             row += [self.hotkeys[i][0],'; '.join(self.hotkeys[i][1])]
-            if i % 2 == 0:
+            if i % 6 == 0:
                 rows.append(row)
                 row = []
             i += 1
         if row:
-            row += ['','']
+            row += ['','','','','','']
             rows.append(row)
         return rows
 
