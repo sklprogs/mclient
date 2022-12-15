@@ -32,7 +32,7 @@ class Welcome:
     
     def reset(self):
         self.fill()
-        self.gui.set_span(0,0,2,4)
+        self.gui.set_span(0,0,2,6)
         self.gui.set_col_width(0,200)
         self.gui.set_col_width(1,100)
         self.gui.set_col_width(2,200)
