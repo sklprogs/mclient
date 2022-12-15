@@ -134,8 +134,12 @@ class Welcome(PyQt5.QtWidgets.QTableView):
         vheader = self.verticalHeader()
         hheader.setVisible(False)
         vheader.setVisible(False)
+        self.show_borders(False)
         self.setStyleSheet('QTableView { selection-background-color: white; }')
         vheader.setSectionResizeMode(vheader.ResizeToContents)
     
     def set_model(self,model):
         self.setModel(model)
+    
+    def show_borders(self,Show=False):
+        self.setShowGrid(Show)
