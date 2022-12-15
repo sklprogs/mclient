@@ -14,6 +14,9 @@ class Welcome:
     
     def __init__(self):
         self.logic = lg.Welcome()
+        self.set_gui()
+    
+    def set_gui(self):
         self.gui = gi.App()
         self.set_bindings()
     
@@ -30,6 +33,10 @@ class Welcome:
     def reset(self):
         self.fill()
         self.gui.set_span(0,0,2,4)
+        self.gui.set_col_width(0,200)
+        self.gui.set_col_width(1,100)
+        self.gui.set_col_width(2,200)
+        self.gui.set_col_width(3,100)
     
     def fill(self):
         f = '[MClientQt] welcome.controller.Welcome.fill'

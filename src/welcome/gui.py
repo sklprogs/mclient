@@ -93,6 +93,9 @@ class App(PyQt5.QtWidgets.QMainWindow):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
+    def set_col_width(self,no,width):
+        self.welcome.set_col_width(no,width)
+    
     def set_span(self,rowno,colno,rowspan,colspan):
         self.welcome.set_span(rowno,colno,rowspan,colspan)
     
@@ -137,6 +140,9 @@ class Welcome(PyQt5.QtWidgets.QTableView):
         self.show_borders(False)
         self.setStyleSheet('QTableView { selection-background-color: white; }')
         vheader.setSectionResizeMode(vheader.ResizeToContents)
+    
+    def set_col_width(self,no,width):
+        self.setColumnWidth(no,width)
     
     def set_model(self,model):
         self.setModel(model)
