@@ -19,16 +19,16 @@ class Hotkeys:
             sh.com.rep_empty(f)
             return []
         rows = []
-        row = [self.hotkeys[0][0],'; '.join(self.hotkeys[0][1])]
+        row = [self.hotkeys[0][0],'; '.join(self.hotkeys[0][1]),'']
         i = 1
         while i < len(self.hotkeys):
-            row += [self.hotkeys[i][0],'; '.join(self.hotkeys[i][1])]
+            row += [self.hotkeys[i][0],'; '.join(self.hotkeys[i][1]),'']
             if i % 6 == 0:
                 rows.append(row)
                 row = []
             i += 1
         if row:
-            row += ['','','','','','']
+            row += ['','','','','','','','']
             rows.append(row)
         return rows
 
