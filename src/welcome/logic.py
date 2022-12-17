@@ -14,7 +14,7 @@ class Hotkeys:
         self.hotkeys.append((desc,bindings))
     
     def _format_hotkeys(self,text):
-        return f'<p align="center" style="font-family: Mono; font-size: 11pt; margin-left: 4px; margin-right: 45px">{text}</p>'
+        return f'<p align="center" style="font-family: Mono; font-size: 11pt; margin-left: 5px; margin-right: 44px">{text}</p>'
     
     def get(self):
         f = '[MClientQt] welcome.logic.Hotkeys.get'
