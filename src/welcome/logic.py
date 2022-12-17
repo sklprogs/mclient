@@ -14,7 +14,7 @@ class Hotkeys:
         self.hotkeys.append((desc,bindings))
     
     def _add_indent(self,text):
-        return f'<p align="center" style="margin-left: 15px">{text}</p>'
+        return f'<p align="center" style="margin-left: 3px">{text}</p>'
     
     def get(self):
         f = '[MClientQt] welcome.logic.Hotkeys.get'
