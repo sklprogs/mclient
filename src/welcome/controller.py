@@ -34,7 +34,7 @@ class Welcome:
         self.fill()
         self.gui.set_span(0,0,1,6)
         for i in range(6):
-            self.gui.set_col_width(i,150)
+            self.gui.set_col_width(i,165)
     
     def fill(self):
         f = '[MClientQt] welcome.controller.Welcome.fill'
