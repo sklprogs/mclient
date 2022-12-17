@@ -13,16 +13,23 @@ class Hotkeys:
     def add(self,desc,bindings):
         self.hotkeys.append((desc,bindings))
     
+    def _add_indent(self,text):
+        return '<p style="margin-left: 15px">{}</p>'.format(text)
+    
     def get(self):
         f = '[MClientQt] welcome.logic.Hotkeys.get'
         if not self.hotkeys:
             sh.com.rep_empty(f)
             return []
         rows = []
-        row = [self.hotkeys[0][0],'; '.join(self.hotkeys[0][1]),'']
+        hotkeys = '; '.join(self.hotkeys[0][1])
+        hotkeys = self._add_indent(hotkeys)
+        row = [self.hotkeys[0][0],hotkeys,'']
         i = 1
         while i < len(self.hotkeys):
-            row += [self.hotkeys[i][0],'; '.join(self.hotkeys[i][1]),'']
+            hotkeys = '; '.join(self.hotkeys[i][1])
+            hotkeys = self._add_indent(hotkeys)
+            row += [self.hotkeys[i][0],hotkeys,'']
             if i % 6 == 0:
                 rows.append(row)
                 row = []
