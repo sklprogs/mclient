@@ -14,7 +14,7 @@ class Hotkeys:
         self.hotkeys.append((desc,bindings))
     
     def _add_indent(self,text):
-        return f'<p align="center" style="margin-left: 3px">{text}</p>'
+        return f'<p align="center" style="margin-left: 3px; margin-right: 45px">{text}</p>'
     
     def get(self):
         f = '[MClientQt] welcome.logic.Hotkeys.get'
@@ -24,18 +24,18 @@ class Hotkeys:
         rows = []
         hotkeys = '; '.join(self.hotkeys[0][1])
         hotkeys = self._add_indent(hotkeys)
-        row = [self.hotkeys[0][0],hotkeys,'']
+        row = [self.hotkeys[0][0],hotkeys]
         i = 1
         while i < len(self.hotkeys):
             hotkeys = '; '.join(self.hotkeys[i][1])
             hotkeys = self._add_indent(hotkeys)
-            row += [self.hotkeys[i][0],hotkeys,'']
+            row += [self.hotkeys[i][0],hotkeys]
             if i % 6 == 0:
                 rows.append(row)
                 row = []
             i += 1
         if row:
-            row += ['','','','','','','','']
+            row += ['','','','','','']
             rows.append(row)
         return rows
 
