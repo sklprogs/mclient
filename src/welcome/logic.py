@@ -324,6 +324,12 @@ class Welcome:
         
         self.table += ihotkeys.get()
     
+    def set_about(self):
+        sub = [_('This program retrieves translation from online/offline sources.')]
+        self.table.append(sub)
+        sub = [_('Use an entry area below to enter a word/phrase to be translated.')]
+        self.table.append(sub)
+    
     def generate(self):
         f = '[MClient] logic.Welcome.generate'
         self.istr = io.StringIO()
@@ -365,16 +371,16 @@ class Welcome:
         return code
 
     def set_heading(self):
-        f = '[MClient] logic.Welcome.set_heading'
         row = [f'<h2>Welcome to {self.desc}!</h2>']
-        delta = COLNUM - len(row)
-        if delta <= 0:
-            mes = f'{delta} > 0'
-            sh.com.rep_condition(f,mes)
-            return
-        for i in range(delta):
-            row.append('')
         self.table.append(row)
+    
+    def add_cols(self):
+        f = '[MClient] logic.Welcome.add_cols'
+        for i in range(len(self.table)):
+            delta = COLNUM - len(self.table[i])
+            if delta > 0:
+                for j in range(delta):
+                    self.table[i].append('')
     
     def run(self):
         self.set_heading()
@@ -382,5 +388,7 @@ class Welcome:
         self.try_sources()
         return self.generate()
         '''
+        self.set_about()
         self.set_hotkeys()
+        self.add_cols()
         return self.table

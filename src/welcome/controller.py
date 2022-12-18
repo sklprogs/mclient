@@ -30,11 +30,19 @@ class Welcome:
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.close)
     
-    def reset(self):
-        self.fill()
+    def set_spans(self):
         self.gui.set_span(0,0,1,lg.COLNUM)
+        self.gui.set_span(1,0,1,lg.COLNUM)
+        self.gui.set_span(2,0,1,lg.COLNUM)
+    
+    def set_col_widths(self):
         for i in range(lg.COLNUM):
             self.gui.set_col_width(i,166)
+    
+    def reset(self):
+        self.fill()
+        self.set_spans()
+        self.set_col_widths()
     
     def fill(self):
         model = gi.TableModel(self.logic.run())
