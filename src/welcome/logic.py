@@ -5,6 +5,9 @@ from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 
+COLNUM = 6
+
+
 class Hotkeys:
     
     def __init__(self):
@@ -30,12 +33,12 @@ class Hotkeys:
             hotkeys = '; '.join(self.hotkeys[i][1])
             hotkeys = self._format_hotkeys(hotkeys)
             row += [self.hotkeys[i][0],hotkeys]
-            if i % 6 == 0:
+            if i % COLNUM == 0:
                 rows.append(row)
                 row = []
             i += 1
         if row:
-            row += ['','','','','','']
+            row += ['' * COLNUM]
             rows.append(row)
         return rows
 
@@ -55,6 +58,7 @@ class Welcome:
                             ).space_items()
 
     def set_values(self):
+        self.table = []
         self.sources = []
         self.sdstat = 0
         self.mtbstat = 0
@@ -129,7 +133,7 @@ class Welcome:
             self.gen_hotkey(hotkey2)
         self.istr.write('</tr>')
     
-    def get_hotkeys(self):
+    def set_hotkeys(self):
         ihotkeys = Hotkeys()
         
         hint = _('Translate the current input or selection')
@@ -318,7 +322,7 @@ class Welcome:
         hotkeys = (sh.lg.globs['str']['bind_copy_nominative'],)
         ihotkeys.add(hint,hotkeys)
         
-        return ihotkeys.get()
+        self.table += ihotkeys.get()
     
     def generate(self):
         f = '[MClient] logic.Welcome.generate'
@@ -360,9 +364,23 @@ class Welcome:
         self.istr.close()
         return code
 
+    def set_heading(self):
+        f = '[MClient] logic.Welcome.set_heading'
+        row = [f'<h2>Welcome to {self.desc}!</h2>']
+        delta = COLNUM - len(row)
+        if delta <= 0:
+            mes = f'{delta} > 0'
+            sh.com.rep_condition(f,mes)
+            return
+        for i in range(delta):
+            row.append('')
+        self.table.append(row)
+    
     def run(self):
+        self.set_heading()
         '''
         self.try_sources()
         return self.generate()
         '''
-        return self.get_hotkeys()
+        self.set_hotkeys()
+        return self.table

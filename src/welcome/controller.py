@@ -32,17 +32,10 @@ class Welcome:
     
     def reset(self):
         self.fill()
-        self.gui.set_span(0,0,1,6)
-        for i in range(6):
+        self.gui.set_span(0,0,1,lg.COLNUM)
+        for i in range(lg.COLNUM):
             self.gui.set_col_width(i,166)
     
     def fill(self):
-        f = '[MClientQt] welcome.controller.Welcome.fill'
-        table = [['<h2>Welcome to MClient!</h2>','','','','','']]
-        add = self.logic.run()
-        if add:
-            table += add
-        else:
-            sh.com.rep_empty(f)
-        model = gi.TableModel(table)
+        model = gi.TableModel(self.logic.run())
         self.gui.set_model(model)
