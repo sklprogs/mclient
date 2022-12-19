@@ -93,6 +93,17 @@ class App(PyQt5.QtWidgets.QMainWindow):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
+    def show_rows(self,rownos):
+        for rowno in rownos:
+            self.welcome.show_row(rowno)
+    
+    def hide_rows(self,rownos):
+        for rowno in rownos:
+            self.welcome.hide_row(rowno)
+    
+    def resize_rows(self):
+        self.welcome.resize_rows()
+    
     def set_col_width(self,no,width):
         self.welcome.set_col_width(no,width)
     
@@ -128,6 +139,12 @@ class Welcome(PyQt5.QtWidgets.QTableView):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
+    def show_row(self,rowno):
+        self.setRowHidden(rowno,False)
+    
+    def hide_row(self,rowno):
+        self.setRowHidden(rowno,True)
+    
     def set_span(self,rowno,colno,rowspan,colspan):
         self.setSpan(rowno,colno,rowspan,colspan)
     
@@ -139,7 +156,9 @@ class Welcome(PyQt5.QtWidgets.QTableView):
         vheader.setVisible(False)
         self.show_borders(False)
         self.setStyleSheet('QTableView { selection-background-color: white; }')
-        vheader.setSectionResizeMode(vheader.ResizeToContents)
+    
+    def resize_rows(self):
+        self.resizeRowsToContents()
     
     def set_col_width(self,no,width):
         self.setColumnWidth(no,width)

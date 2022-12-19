@@ -39,10 +39,27 @@ class Welcome:
         for i in range(lg.COLNUM):
             self.gui.set_col_width(i,166)
     
+    def resize_rows(self):
+        ''' This strange workaround allows to avoid too much space caused by
+            spanning rows and resizing them to contents. I have also tried the
+            following to no avail:
+            vheader = self.verticalHeader()
+            vheader.setSectionResizeMode(vheader.ResizeToContents)
+            and
+            vheader.setSectionResizeMode(vheader.Stretch)
+            The first one doesn't work and the second one does not make row
+            borders fully visible.
+            https://stackoverflow.com/questions/52166539/qtablewidget-respect-span-when-sizing-to-contents
+        '''
+        self.gui.hide_rows((0,1,2))
+        self.gui.resize_rows()
+        self.gui.show_rows((0,1,2))
+    
     def reset(self):
         self.fill()
         self.set_spans()
         self.set_col_widths()
+        self.resize_rows()
     
     def fill(self):
         model = gi.TableModel(self.logic.run())
