@@ -19,9 +19,108 @@ import suggest.controller as sg
 import about.controller as ab
 import third_parties.controller as tp
 import symbols.controller as sm
+import welcome.controller as wl
 
 
 DEBUG = False
+
+
+class Welcome(wl.Welcome):
+
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def gen_source_code(self,title,status,color):
+        sub = ' {}'.format(status)
+        code = '<b>{}</b><font face="Serif" size="11" color="{}">{}'
+        code = code.format(title,color,sub)
+        code += '</font>.<br>'
+        self.table.append([code])
+    
+    def try_sources(self):
+        f = '[MClient] mclient.Welcome.try_sources'
+        old = lg.objs.get_plugins().source
+        if sh.lg.globs['bool']['Ping']:
+            dics = lg.objs.plugins.get_online_sources()
+            if dics:
+                for dic in dics:
+                    lg.objs.plugins.set(dic)
+                    source = lg.Source()
+                    source.title = dic
+                    if lg.objs.plugins.is_accessible():
+                        source.status = _('running')
+                        source.color = 'green'
+                    self.sources.append(source)
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.rep_lazy(f)
+        # Try Stardict
+        lg.objs.plugins.set(_('Stardict'))
+        self.sdstat = lg.objs.get_plugins().is_accessible()
+        if self.sdstat:
+            self.sdcolor = 'green'
+        # Try local Multitran
+        lg.objs.plugins.set(_('Local MT'))
+        self.mtbstat = lg.objs.plugins.is_accessible()
+        if self.mtbstat:
+            self.mtbcolor = 'green'
+        # Try DSL
+        lg.objs.plugins.set('Lingvo (DSL)')
+        self.lgstat = lg.objs.plugins.is_accessible()
+        if self.lgstat:
+            self.lgcolor = 'green'
+        lg.objs.plugins.set(old)
+
+    def run(self):
+        self.set_heading()
+        self.set_about()
+        self.try_sources()
+        self.set_sources()
+        self.set_hotkeys()
+        self.add_cols()
+        return self.table
+    
+    def generate(self):
+        f = '[MClient] logic.Welcome.generate'
+        self.istr = io.StringIO()
+        sub = _('Welcome to {}!').format(self.desc)
+        code = '<html><body><h1>{}</h1><font face="Serif" size="6"><br>'
+        code = code.format(sub)
+        self.istr.write(code)
+        sub = _('This program retrieves translation from online/offline sources.')
+        self.istr.write(sub)
+        sub = _('Use an entry area below to enter a word/phrase to be translated.')
+        code = '<br>{}<br><br>'
+        code = code.format(sub)
+        self.istr.write(code)
+        for source in self.sources:
+            self.gen_source_code (title = source.title
+                                 ,status = source.status
+                                 ,color = source.color
+                                 )
+        sub1 = _('Offline dictionaries loaded:')
+        sub2 = ' Stardict: '
+        sub3 = ', Lingvo (DSL): '
+        code = '{}{}<font color="{}">{}</font>{}'
+        code = code.format(sub1,sub2,self.sdcolor,self.sdstat,sub3)
+        self.istr.write(code)
+        sub = ', Multitran (Demo): '
+        code = '<font color="{}">{}</font>{}<font color="{}'
+        code = code.format(self.lgcolor,self.lgstat,sub,self.mtbcolor)
+        self.istr.write(code)
+        sub1 = _('Main hotkeys')
+        sub2 = _('(see documentation for other hotkeys, mouse bindings and functions)')
+        code = '">{}</font>{}<br><br><br><br><h1>{}</h1><h2>{}</h2>'
+        code = code.format(self.mtbstat,'.',sub1,sub2)
+        self.istr.write(code)
+        self.set_hotkeys()
+        code = '</body></html>'
+        self.istr.write(code)
+        code = self.istr.getvalue()
+        self.istr.close()
+        return code
+
 
 
 class About(ab.About):

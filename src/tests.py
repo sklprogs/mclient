@@ -953,9 +953,11 @@ if __name__ == '__main__':
     '''
     import config as cf
     import logic as lg
-    import welcome.controller as wc
+    import mclient as mc
+    #import welcome.controller as wl
     lg.com.start()
-    iwelcome = wc.Welcome()
+    #iwelcome = wl.Welcome()
+    iwelcome = mc.Welcome()
     iwelcome.reset()
     iwelcome.show()
     #com.run_symbols()

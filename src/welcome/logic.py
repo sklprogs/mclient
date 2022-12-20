@@ -70,68 +70,12 @@ class Welcome:
         self.version = ''
         self.desc = ''
     
-    def try_sources(self):
-        f = '[MClientQt] welcome.logic.Welcome.try_sources'
-        old = objs.get_plugins().source
-        if sh.lg.globs['bool']['Ping']:
-            dics = objs.plugins.get_online_sources()
-            if dics:
-                for dic in dics:
-                    objs.plugins.set(dic)
-                    source = Source()
-                    source.title = dic
-                    if objs.plugins.is_accessible():
-                        source.status = _('running')
-                        source.color = 'green'
-                    self.sources.append(source)
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.rep_lazy(f)
-        # Try Stardict
-        objs.plugins.set(_('Stardict'))
-        self.sdstat = objs.get_plugins().is_accessible()
-        if self.sdstat:
-            self.sdcolor = 'green'
-        # Try local Multitran
-        objs.plugins.set(_('Local MT'))
-        self.mtbstat = objs.plugins.is_accessible()
-        if self.mtbstat:
-            self.mtbcolor = 'green'
-        # Try DSL
-        objs.plugins.set('Lingvo (DSL)')
-        self.lgstat = objs.plugins.is_accessible()
-        if self.lgstat:
-            self.lgcolor = 'green'
-        objs.plugins.set(old)
-
-    def gen_source_code(self,title,status,color):
-        sub = ' {}'.format(status)
-        code = '<b>{}</b><font face="Serif" color="{}" size="6">{}'
-        code = code.format(title,color,sub)
-        self.istr.write(code)
-        code = '</font>.<br>'
-        self.istr.write(code)
-    
-    def gen_hint(self,hint):
-        code = '<td align="left" valign="top" col width="200">{}</td>'
-        code = code.format(hint)
-        self.istr.write(code)
-    
-    def gen_hotkey(self,hotkey):
-        code = '<td align="center" valign="top" col width="100">{}</td>'
-        code = code.format(sh.Hotkeys(hotkey).run())
-        self.istr.write(code)
-    
-    def gen_row(self,hint1,hotkey1,hint2,hotkey2):
-        self.istr.write('<tr>')
-        self.gen_hint(hint1)
-        self.gen_hotkey(hotkey1)
-        # Suppress useless warnings since the 2nd column may be empty
-        if hotkey2:
-            self.gen_hint(hint2)
-            self.gen_hotkey(hotkey2)
-        self.istr.write('</tr>')
+    def run(self):
+        self.set_heading()
+        self.set_about()
+        self.set_hotkeys()
+        self.add_cols()
+        return self.table
     
     def set_hotkeys(self):
         ihotkeys = Hotkeys()
@@ -329,46 +273,6 @@ class Welcome:
         self.table.append(sub)
         sub = [_('Use an entry area below to enter a word/phrase to be translated.')]
         self.table.append(sub)
-    
-    def generate(self):
-        f = '[MClient] logic.Welcome.generate'
-        self.istr = io.StringIO()
-        sub = _('Welcome to {}!').format(self.desc)
-        code = '<html><body><h1>{}</h1><font face="Serif" size="6"><br>'
-        code = code.format(sub)
-        self.istr.write(code)
-        sub = _('This program retrieves translation from online/offline sources.')
-        self.istr.write(sub)
-        sub = _('Use an entry area below to enter a word/phrase to be translated.')
-        code = '<br>{}<br><br>'
-        code = code.format(sub)
-        self.istr.write(code)
-        for source in self.sources:
-            self.gen_source_code (title = source.title
-                                 ,status = source.status
-                                 ,color = source.color
-                                 )
-        sub1 = _('Offline dictionaries loaded:')
-        sub2 = ' Stardict: '
-        sub3 = ', Lingvo (DSL): '
-        code = '{}{}<font color="{}">{}</font>{}'
-        code = code.format(sub1,sub2,self.sdcolor,self.sdstat,sub3)
-        self.istr.write(code)
-        sub = ', Multitran (Demo): '
-        code = '<font color="{}">{}</font>{}<font color="{}'
-        code = code.format(self.lgcolor,self.lgstat,sub,self.mtbcolor)
-        self.istr.write(code)
-        sub1 = _('Main hotkeys')
-        sub2 = _('(see documentation for other hotkeys, mouse bindings and functions)')
-        code = '">{}</font>{}<br><br><br><br><h1>{}</h1><h2>{}</h2>'
-        code = code.format(self.mtbstat,'.',sub1,sub2)
-        self.istr.write(code)
-        self.set_hotkeys()
-        code = '</body></html>'
-        self.istr.write(code)
-        code = self.istr.getvalue()
-        self.istr.close()
-        return code
 
     def set_heading(self):
         row = [f'<h2>Welcome to {self.desc}!</h2>']
@@ -381,14 +285,3 @@ class Welcome:
             if delta > 0:
                 for j in range(delta):
                     self.table[i].append('')
-    
-    def run(self):
-        self.set_heading()
-        '''
-        self.try_sources()
-        return self.generate()
-        '''
-        self.set_about()
-        self.set_hotkeys()
-        self.add_cols()
-        return self.table
