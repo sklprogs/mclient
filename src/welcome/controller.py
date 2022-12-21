@@ -29,9 +29,12 @@ class Welcome:
     
     def set_head(self):
         self.logic.set_heading()
+        self.logic.table.append([''])
         self.logic.set_about()
+        self.logic.table.append([''])
     
     def set_tail(self):
+        self.logic.table.append([''])
         sub = '<h3>{}</h3>'.format(_('Main hotkeys'))
         self.logic.table.append([sub])
         sub = _('(see documentation for other hotkeys, mouse bindings and functions)')
@@ -54,13 +57,8 @@ class Welcome:
         self.gui.bind('Esc',self.close)
     
     def set_spans(self):
-        self.gui.set_span(0,0,1,lg.COLNUM)
-        self.gui.set_span(1,0,1,lg.COLNUM)
-        self.gui.set_span(2,0,1,lg.COLNUM)
-        self.gui.set_span(3,0,1,lg.COLNUM)
-        self.gui.set_span(4,0,1,lg.COLNUM)
-        self.gui.set_span(5,0,1,lg.COLNUM)
-        self.gui.set_span(6,0,1,lg.COLNUM)
+        for i in range(10):
+            self.gui.set_span(i,0,1,lg.COLNUM)
     
     def set_col_widths(self):
         for i in range(lg.COLNUM):
@@ -78,9 +76,9 @@ class Welcome:
             borders fully visible.
             https://stackoverflow.com/questions/52166539/qtablewidget-respect-span-when-sizing-to-contents
         '''
-        self.gui.hide_rows((0,1,2,3,4,5,6))
+        self.gui.hide_rows((0,1,2,3,4,5,6,7,8,9))
         self.gui.resize_rows()
-        self.gui.show_rows((0,1,2,3,4,5,6))
+        self.gui.show_rows((0,1,2,3,4,5,6,7,8,9))
     
     def reset(self):
         self.fill()
