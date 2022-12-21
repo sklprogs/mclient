@@ -41,18 +41,19 @@ class Welcome(wl.Welcome):
         self.desc = sh.List(lst1 = [product,version]).space_items()
     
     def loop_sources(self):
+        code = []
         for source in self.sources:
-            self.gen_source_code (title = source.title
-                                 ,status = source.status
-                                 ,color = source.color
-                                 )
+            desc = self.gen_source_code (title = source.title
+                                        ,status = source.status
+                                        ,color = source.color
+                                        )
+            code.append(desc)
+        self.logic.table.append([', '.join(code)])
     
     def gen_source_code(self,title,status,color):
-        sub = ' {}'.format(status)
-        code = '<b>{}</b><font face="Serif" color="{}">{}'
-        code = code.format(title,color,sub)
-        code += '</font>.'
-        self.logic.table.append([code])
+        code = '{}: <font face="Serif" color="{}">{}</font>'
+        code = code.format(title,color,status)
+        return code
     
     def fill(self):
         model = wl.TableModel(self.run())
@@ -79,6 +80,7 @@ class Welcome(wl.Welcome):
         lg.objs.plugins.set(old)
     
     def set_offline_sources(self):
+        f = '[MClient] mclient.Welcome.set_offline_sources'
         dics = lg.objs.plugins.get_offline_sources()
         if not dics:
             sh.com.rep_empty(f)
@@ -88,15 +90,16 @@ class Welcome(wl.Welcome):
             lg.objs.plugins.set(dic)
             isource = lg.Source()
             isource.title = dic
-            if lg.objs.plugins.is_accessible():
-                isource.status = _('running')
+            dic_num = lg.objs.plugins.is_accessible()
+            isource.status = dic_num
+            if dic_num:
                 isource.color = 'green'
             self.sources.append(isource)
         lg.objs.plugins.set(old)
     
     def set_sources(self):
         self.set_online_sources()
-        #self.set_offline_sources()
+        self.set_offline_sources()
 
     def set_middle(self):
         self.set_sources()
@@ -108,46 +111,6 @@ class Welcome(wl.Welcome):
         self.set_middle()
         self.set_tail()
         return self.logic.table
-    
-    def generate(self):
-        f = '[MClient] mclient.Welcome.generate'
-        self.istr = io.StringIO()
-        sub = _('Welcome to {}!').format(self.desc)
-        code = '<html><body><h1>{}</h1><font face="Serif" size="6"><br>'
-        code = code.format(sub)
-        self.istr.write(code)
-        sub = _('This program retrieves translation from online/offline sources.')
-        self.istr.write(sub)
-        sub = _('Use an entry area below to enter a word/phrase to be translated.')
-        code = '<br>{}<br><br>'
-        code = code.format(sub)
-        self.istr.write(code)
-        for source in self.sources:
-            self.gen_source_code (title = source.title
-                                 ,status = source.status
-                                 ,color = source.color
-                                 )
-        sub1 = _('Offline dictionaries loaded:')
-        sub2 = ' Stardict: '
-        sub3 = ', Lingvo (DSL): '
-        code = '{}{}<font color="{}">{}</font>{}'
-        code = code.format(sub1,sub2,self.sdcolor,self.sdstat,sub3)
-        self.istr.write(code)
-        sub = ', Multitran (Demo): '
-        code = '<font color="{}">{}</font>{}<font color="{}'
-        code = code.format(self.lgcolor,self.lgstat,sub,self.mtbcolor)
-        self.istr.write(code)
-        sub1 = _('Main hotkeys')
-        sub2 = _('(see documentation for other hotkeys, mouse bindings and functions)')
-        code = '">{}</font>{}<br><br><br><br><h1>{}</h1><h2>{}</h2>'
-        code = code.format(self.mtbstat,'.',sub1,sub2)
-        self.istr.write(code)
-        self.set_hotkeys()
-        code = '</body></html>'
-        self.istr.write(code)
-        code = self.istr.getvalue()
-        self.istr.close()
-        return code
 
 
 
