@@ -32,10 +32,10 @@ class Welcome:
         self.logic.set_about()
     
     def set_tail(self):
-        sub = '<h2>{}</h2>'.format(_('Main hotkeys'))
+        sub = '<h3>{}</h3>'.format(_('Main hotkeys'))
         self.logic.table.append([sub])
         sub = _('(see documentation for other hotkeys, mouse bindings and functions)')
-        sub = '<h3>{}</h3>'.format(sub)
+        sub = '<h4>{}</h4>'.format(sub)
         self.logic.table.append([sub])
         self.logic.set_hotkeys()
         self.logic.add_cols()
@@ -60,6 +60,7 @@ class Welcome:
         self.gui.set_span(3,0,1,lg.COLNUM)
         self.gui.set_span(4,0,1,lg.COLNUM)
         self.gui.set_span(5,0,1,lg.COLNUM)
+        self.gui.set_span(6,0,1,lg.COLNUM)
     
     def set_col_widths(self):
         for i in range(lg.COLNUM):
@@ -77,9 +78,9 @@ class Welcome:
             borders fully visible.
             https://stackoverflow.com/questions/52166539/qtablewidget-respect-span-when-sizing-to-contents
         '''
-        self.gui.hide_rows((0,1,2,3,4,5))
+        self.gui.hide_rows((0,1,2,3,4,5,6))
         self.gui.resize_rows()
-        self.gui.show_rows((0,1,2,3,4,5))
+        self.gui.show_rows((0,1,2,3,4,5,6))
     
     def reset(self):
         self.fill()
