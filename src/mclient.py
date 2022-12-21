@@ -50,6 +50,7 @@ class Welcome(wl.Welcome):
                                               )
                 code.append(desc)
         code = ', '.join(code) + '.'
+        code = self.set_font(code)
         self.logic.table.append([code])
     
     def loop_offline_sources(self):
@@ -62,15 +63,16 @@ class Welcome(wl.Welcome):
                                                )
                 code.append(desc)
         code = _('Offline dictionaries loaded: ') + ', '.join(code) + '.'
+        code = self.set_font(code)
         self.logic.table.append([code])
     
     def gen_online_source(self,title,status,color):
-        code = '{} <font face="Serif" color="{}">{}</font>'
+        code = '{} <font color="{}">{}</font>'
         code = code.format(title,color,status)
         return code
     
     def gen_offline_source(self,title,status,color):
-        code = '{}: <font face="Serif" color="{}">{}</font>'
+        code = '{}: <font color="{}">{}</font>'
         code = code.format(title,color,status)
         return code
     

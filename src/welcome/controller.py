@@ -27,6 +27,9 @@ class Welcome:
         self.gui = gi.App()
         self.set_bindings()
     
+    def set_font(self,text):
+        return self.logic.set_font(text)
+    
     def set_head(self):
         self.logic.set_head()
     

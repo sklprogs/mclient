@@ -273,15 +273,15 @@ class Welcome:
         
         self.table += ihotkeys.get()
     
-    def _set_font(self,text):
+    def set_font(self,text):
         return f'<p style="font-family: Sans; font-size: 12pt">{text}</p>'
     
     def set_about(self):
         sub = _('This program retrieves translation from online/offline sources.')
-        sub = self._set_font(sub)
+        sub = self.set_font(sub)
         self.table.append([sub])
         sub = _('Use an entry area below to enter a word/phrase to be translated.')
-        sub = self._set_font(sub)
+        sub = self.set_font(sub)
         self.table.append([sub])
 
     def set_heading(self):
