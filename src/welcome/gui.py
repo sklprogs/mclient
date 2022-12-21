@@ -156,7 +156,9 @@ class Welcome(PyQt5.QtWidgets.QTableView):
         hheader.setVisible(False)
         vheader.setVisible(False)
         self.show_borders(False)
-        self.setStyleSheet('QTableView { selection-background-color: white; }')
+        # Disable selecting cells
+        self.setFocusPolicy(PyQt5.QtCore.Qt.NoFocus)
+        self.setSelectionMode(PyQt5.QtWidgets.QAbstractItemView.NoSelection)
     
     def resize_rows(self):
         self.resizeRowsToContents()
