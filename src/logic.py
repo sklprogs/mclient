@@ -24,6 +24,7 @@ class Source:
         self.title = ''
         self.status = _('not running')
         self.color = 'red'
+        self.Online = False
 
 
 

@@ -40,17 +40,36 @@ class Welcome(wl.Welcome):
         version = 'latest'
         self.desc = sh.List(lst1 = [product,version]).space_items()
     
-    def loop_sources(self):
+    def loop_online_sources(self):
         code = []
         for source in self.sources:
-            desc = self.gen_source_code (title = source.title
-                                        ,status = source.status
-                                        ,color = source.color
-                                        )
-            code.append(desc)
-        self.logic.table.append([', '.join(code)])
+            if source.Online:
+                desc = self.gen_online_source (title = source.title
+                                              ,status = source.status
+                                              ,color = source.color
+                                              )
+                code.append(desc)
+        code = ', '.join(code) + '.'
+        self.logic.table.append([code])
     
-    def gen_source_code(self,title,status,color):
+    def loop_offline_sources(self):
+        code = []
+        for source in self.sources:
+            if not source.Online:
+                desc = self.gen_offline_source (title = source.title
+                                               ,status = source.status
+                                               ,color = source.color
+                                               )
+                code.append(desc)
+        code = _('Offline dictionaries loaded: ') + ', '.join(code) + '.'
+        self.logic.table.append([code])
+    
+    def gen_online_source(self,title,status,color):
+        code = '{} <font face="Serif" color="{}">{}</font>'
+        code = code.format(title,color,status)
+        return code
+    
+    def gen_offline_source(self,title,status,color):
         code = '{}: <font face="Serif" color="{}">{}</font>'
         code = code.format(title,color,status)
         return code
@@ -73,6 +92,7 @@ class Welcome(wl.Welcome):
             lg.objs.plugins.set(dic)
             isource = lg.Source()
             isource.title = dic
+            isource.Online = True
             if lg.objs.plugins.is_accessible():
                 isource.status = _('running')
                 isource.color = 'green'
@@ -103,7 +123,8 @@ class Welcome(wl.Welcome):
 
     def set_middle(self):
         self.set_sources()
-        self.loop_sources()
+        self.loop_online_sources()
+        self.loop_offline_sources()
     
     def run(self):
         self.set_product()
