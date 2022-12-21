@@ -58,7 +58,7 @@ class Welcome(wl.Welcome):
         self.logic.table.append([code])
     
     def gen_online_source(self,title,status,color):
-        code = '{} <font color="{}">{}</font>'
+        code = '<b>{} <font color="{}">{}</font></b>'
         code = code.format(title,color,status)
         return code
     
