@@ -201,11 +201,10 @@ class Plugins:
             sh.com.rep_empty(f)
     
     def get_sources(self):
-        return (_('Multitran')
-               ,_('Stardict')
-               ,'Lingvo (DSL)'
-               ,_('Local MT')
-               )
+        return (_('Multitran'),_('Stardict'),'Lingvo (DSL)',_('Local MT'))
+    
+    def get_offline_sources(self):
+        return (_('Stardict'),'Lingvo (DSL)',_('Local MT'))
     
     def get_online_sources(self):
         ''' This is used by lg.Welcome to check the availability of

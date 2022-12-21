@@ -33,12 +33,6 @@ class Welcome(wl.Welcome):
         
     def set_values(self):
         self.sources = []
-        self.sdstat = 0
-        self.mtbstat = 0
-        self.lgstat = 0
-        self.sdcolor = 'red'
-        self.mtbcolor = 'red'
-        self.lgcolor = 'red'
         self.desc = 'Product Current Version'
     
     def set_product(self):
@@ -64,43 +58,48 @@ class Welcome(wl.Welcome):
         model = wl.TableModel(self.run())
         self.set_model(model)
     
-    def try_sources(self):
-        f = '[MClient] mclient.Welcome.try_sources'
-        old = lg.objs.get_plugins().source
-        if sh.lg.globs['bool']['Ping']:
-            dics = lg.objs.plugins.get_online_sources()
-            if dics:
-                for dic in dics:
-                    lg.objs.plugins.set(dic)
-                    source = lg.Source()
-                    source.title = dic
-                    if lg.objs.plugins.is_accessible():
-                        source.status = _('running')
-                        source.color = 'green'
-                    self.sources.append(source)
-            else:
-                sh.com.rep_empty(f)
-        else:
+    def set_online_sources(self):
+        f = '[MClient] mclient.Welcome.set_online_sources'
+        if not sh.lg.globs['bool']['Ping']:
             sh.com.rep_lazy(f)
-        # Try Stardict
-        lg.objs.plugins.set(_('Stardict'))
-        self.sdstat = lg.objs.get_plugins().is_accessible()
-        if self.sdstat:
-            self.sdcolor = 'green'
-        # Try local Multitran
-        lg.objs.plugins.set(_('Local MT'))
-        self.mtbstat = lg.objs.plugins.is_accessible()
-        if self.mtbstat:
-            self.mtbcolor = 'green'
-        # Try DSL
-        lg.objs.plugins.set('Lingvo (DSL)')
-        self.lgstat = lg.objs.plugins.is_accessible()
-        if self.lgstat:
-            self.lgcolor = 'green'
+            return
+        old = lg.objs.get_plugins().source
+        dics = lg.objs.plugins.get_online_sources()
+        if not dics:
+            sh.com.rep_empty(f)
+            return
+        for dic in dics:
+            lg.objs.plugins.set(dic)
+            isource = lg.Source()
+            isource.title = dic
+            if lg.objs.plugins.is_accessible():
+                isource.status = _('running')
+                isource.color = 'green'
+            self.sources.append(isource)
         lg.objs.plugins.set(old)
+    
+    def set_offline_sources(self):
+        dics = lg.objs.plugins.get_offline_sources()
+        if not dics:
+            sh.com.rep_empty(f)
+            return
+        old = lg.objs.get_plugins().source
+        for dic in dics:
+            lg.objs.plugins.set(dic)
+            isource = lg.Source()
+            isource.title = dic
+            if lg.objs.plugins.is_accessible():
+                isource.status = _('running')
+                isource.color = 'green'
+            self.sources.append(isource)
+        lg.objs.plugins.set(old)
+    
+    def set_sources(self):
+        self.set_online_sources()
+        self.set_offline_sources()
 
     def set_middle(self):
-        self.try_sources()
+        self.set_sources()
         self.loop_sources()
     
     def run(self):
