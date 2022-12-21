@@ -19,8 +19,9 @@ class TableModel(gi.TableModel):
 
 class Welcome:
     
-    def __init__(self):
+    def __init__(self,desc='Product Current Version'):
         self.logic = lg.Welcome()
+        self.logic.desc = desc
         self.set_gui()
     
     def set_gui(self):

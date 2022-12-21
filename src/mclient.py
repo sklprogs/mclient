@@ -29,16 +29,7 @@ class Welcome(wl.Welcome):
 
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.set_values()
-        
-    def set_values(self):
         self.sources = []
-        self.desc = 'Product Current Version'
-    
-    def set_product(self):
-        product = 'MClient'
-        version = 'latest'
-        self.desc = sh.List(lst1 = [product,version]).space_items()
     
     def loop_online_sources(self):
         code = []
@@ -129,7 +120,6 @@ class Welcome(wl.Welcome):
         self.loop_offline_sources()
     
     def run(self):
-        self.set_product()
         self.set_head()
         self.set_middle()
         self.set_tail()
@@ -957,6 +947,7 @@ class App:
         self.panel = gi.Panel()
         self.about = About()
         self.symbols = sm.Symbols()
+        self.welcome = Welcome(self.about.get_product())
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title()
         self.set_bindings()

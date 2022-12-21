@@ -8,9 +8,13 @@ import skl_shared_qt.shared as sh
 class About:
     
     def __init__(self):
+        self.product = 'MClient'
         self.version = '7.0'
         self.curyear = 2022
         self.code = []
+    
+    def get_product(self):
+        return sh.List(lst1=[self.product,self.version]).space_items()
     
     def set_code(self):
         self.set_group()

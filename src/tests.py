@@ -957,7 +957,7 @@ if __name__ == '__main__':
     #import welcome.controller as wl
     lg.com.start()
     #iwelcome = wl.Welcome()
-    iwelcome = mc.Welcome()
+    iwelcome = mc.Welcome(mc.About().get_product())
     iwelcome.reset()
     iwelcome.show()
     #com.run_symbols()

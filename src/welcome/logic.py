@@ -52,9 +52,6 @@ class Hotkeys:
 class Welcome:
 
     def __init__ (self):
-        self.set_values()
-
-    def set_values(self):
         self.table = []
         self.desc = 'Product Current Version'
     
@@ -285,8 +282,9 @@ class Welcome:
         self.table.append([sub])
 
     def set_heading(self):
-        row = [f'<h1>Welcome to {self.desc}!</h1>']
-        self.table.append(row)
+        mes = _('Welcome to {}!').format(self.desc)
+        mes = f'<h1>{mes}</h1>'
+        self.table.append([mes])
     
     def add_cols(self):
         f = '[MClient] logic.Welcome.add_cols'

@@ -18,6 +18,9 @@ class About:
         self.set_title()
         self.set_bindings()
     
+    def get_product(self):
+        return self.logic.get_product()
+    
     def set_title(self,title=_('About the program')):
         self.gui.set_title(title)
     
