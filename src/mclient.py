@@ -55,9 +55,9 @@ class Welcome(wl.Welcome):
     
     def gen_source_code(self,title,status,color):
         sub = ' {}'.format(status)
-        code = '<b>{}</b><font face="Serif" size="11" color="{}">{}'
+        code = '<b>{}</b><font face="Serif" color="{}">{}'
         code = code.format(title,color,sub)
-        code += '</font>.<br>'
+        code += '</font>.'
         self.logic.table.append([code])
     
     def fill(self):

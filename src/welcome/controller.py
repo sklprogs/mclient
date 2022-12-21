@@ -52,6 +52,7 @@ class Welcome:
         self.gui.set_span(0,0,1,lg.COLNUM)
         self.gui.set_span(1,0,1,lg.COLNUM)
         self.gui.set_span(2,0,1,lg.COLNUM)
+        self.gui.set_span(3,0,1,lg.COLNUM)
     
     def set_col_widths(self):
         for i in range(lg.COLNUM):
