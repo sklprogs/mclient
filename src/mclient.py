@@ -29,13 +29,40 @@ class Welcome(wl.Welcome):
 
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+        self.set_values()
+        
+    def set_values(self):
+        self.sources = []
+        self.sdstat = 0
+        self.mtbstat = 0
+        self.lgstat = 0
+        self.sdcolor = 'red'
+        self.mtbcolor = 'red'
+        self.lgcolor = 'red'
+        self.desc = 'Product Current Version'
+    
+    def set_product(self):
+        product = 'MClient'
+        version = 'latest'
+        self.desc = sh.List(lst1 = [product,version]).space_items()
+    
+    def loop_sources(self):
+        for source in self.sources:
+            self.gen_source_code (title = source.title
+                                 ,status = source.status
+                                 ,color = source.color
+                                 )
     
     def gen_source_code(self,title,status,color):
         sub = ' {}'.format(status)
         code = '<b>{}</b><font face="Serif" size="11" color="{}">{}'
         code = code.format(title,color,sub)
         code += '</font>.<br>'
-        self.table.append([code])
+        self.logic.table.append([code])
+    
+    def fill(self):
+        model = wl.TableModel(self.run())
+        self.set_model(model)
     
     def try_sources(self):
         f = '[MClient] mclient.Welcome.try_sources'
@@ -72,17 +99,19 @@ class Welcome(wl.Welcome):
             self.lgcolor = 'green'
         lg.objs.plugins.set(old)
 
-    def run(self):
-        self.set_heading()
-        self.set_about()
+    def set_middle(self):
         self.try_sources()
-        self.set_sources()
-        self.set_hotkeys()
-        self.add_cols()
-        return self.table
+        self.loop_sources()
+    
+    def run(self):
+        self.set_product()
+        self.set_head()
+        self.set_middle()
+        self.set_tail()
+        return self.logic.table
     
     def generate(self):
-        f = '[MClient] logic.Welcome.generate'
+        f = '[MClient] mclient.Welcome.generate'
         self.istr = io.StringIO()
         sub = _('Welcome to {}!').format(self.desc)
         code = '<html><body><h1>{}</h1><font face="Serif" size="6"><br>'

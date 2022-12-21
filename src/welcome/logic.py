@@ -46,31 +46,15 @@ class Hotkeys:
 
 class Welcome:
 
-    def __init__ (self,product='MClient'
-                 ,version='current'
-                 ):
+    def __init__ (self):
         self.set_values()
-        self.product = product
-        self.version = version
-        self.desc = sh.List (lst1 = [self.product
-                                    ,self.version
-                                    ]
-                            ).space_items()
 
     def set_values(self):
         self.table = []
-        self.sources = []
-        self.sdstat = 0
-        self.mtbstat = 0
-        self.lgstat = 0
-        self.sdcolor = 'red'
-        self.mtbcolor = 'red'
-        self.lgcolor = 'red'
-        self.product = ''
-        self.version = ''
-        self.desc = ''
+        self.desc = 'Product Current Version'
     
     def run(self):
+        # This function is called only during standalone tests
         self.set_heading()
         self.set_about()
         self.set_hotkeys()

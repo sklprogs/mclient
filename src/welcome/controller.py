@@ -10,6 +10,13 @@ from . import logic as lg
 from . import gui as gi
 
 
+class TableModel(gi.TableModel):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
 class Welcome:
     
     def __init__(self):
@@ -19,6 +26,17 @@ class Welcome:
     def set_gui(self):
         self.gui = gi.App()
         self.set_bindings()
+    
+    def set_head(self):
+        self.logic.set_heading()
+        self.logic.set_about()
+    
+    def set_tail(self):
+        self.logic.set_hotkeys()
+        self.logic.add_cols()
+    
+    def set_model(self,model):
+        self.gui.set_model(model)
     
     def close(self):
         self.gui.close()
