@@ -16,6 +16,9 @@ class Hotkeys:
     def add(self,desc,bindings):
         self.hotkeys.append((desc,bindings))
     
+    def _format_desc(self,text):
+        return f'<p style="font-family: Sans; font-size: 12pt">{text}</p>'
+    
     def _format_hotkeys(self,text):
         return f'<p align="center" style="font-family: Mono; font-size: 11pt; margin-left: 5px; margin-right: 44px">{text}</p>'
     
@@ -27,12 +30,14 @@ class Hotkeys:
         rows = []
         hotkeys = '; '.join(self.hotkeys[0][1])
         hotkeys = self._format_hotkeys(hotkeys)
-        row = [self.hotkeys[0][0],hotkeys]
+        desc = self._format_desc(self.hotkeys[0][0])
+        row = [desc,hotkeys]
         i = 1
         while i < len(self.hotkeys):
             hotkeys = '; '.join(self.hotkeys[i][1])
             hotkeys = self._format_hotkeys(hotkeys)
-            row += [self.hotkeys[i][0],hotkeys]
+            desc = self._format_desc(self.hotkeys[i][0])
+            row += [desc,hotkeys]
             if i % COLNUM == 0:
                 rows.append(row)
                 row = []
@@ -52,6 +57,22 @@ class Welcome:
     def set_values(self):
         self.table = []
         self.desc = 'Product Current Version'
+    
+    def set_head(self):
+        self.set_heading()
+        self.table.append([''])
+        self.set_about()
+        self.table.append([''])
+    
+    def set_tail(self):
+        self.table.append([''])
+        sub = '<h2>{}</h2>'.format(_('Main hotkeys'))
+        self.table.append([sub])
+        sub = _('(see documentation for other hotkeys, mouse bindings and functions)')
+        sub = '<h3>{}</h3>'.format(sub)
+        self.table.append([sub])
+        self.set_hotkeys()
+        self.add_cols()
     
     def run(self):
         # This function is called only during standalone tests
@@ -252,14 +273,19 @@ class Welcome:
         
         self.table += ihotkeys.get()
     
+    def _set_font(self,text):
+        return f'<p style="font-family: Sans; font-size: 12pt">{text}</p>'
+    
     def set_about(self):
-        sub = [_('This program retrieves translation from online/offline sources.')]
-        self.table.append(sub)
-        sub = [_('Use an entry area below to enter a word/phrase to be translated.')]
-        self.table.append(sub)
+        sub = _('This program retrieves translation from online/offline sources.')
+        sub = self._set_font(sub)
+        self.table.append([sub])
+        sub = _('Use an entry area below to enter a word/phrase to be translated.')
+        sub = self._set_font(sub)
+        self.table.append([sub])
 
     def set_heading(self):
-        row = [f'<h2>Welcome to {self.desc}!</h2>']
+        row = [f'<h1>Welcome to {self.desc}!</h1>']
         self.table.append(row)
     
     def add_cols(self):

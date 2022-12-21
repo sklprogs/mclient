@@ -34,10 +34,13 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
 
 
 class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
-    # akej74, https://stackoverflow.com/questions/35397943/how-to-make-a-fast-qtableview-with-html-formatted-and-clickable-cells
+    ''' akej74, https://stackoverflow.com/questions/35397943/how-to-make-a-fast-qtableview-with-html-formatted-and-clickable-cells
+        #NOTE: Do not set a default font here since Welcome has rows with
+        different fonts and wrong sizeHint will be returned causing rows not to
+        be fully visible.
+    '''
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.font = PyQt5.QtGui.QFont('Sans',12)
     
     def paint(self,painter,option,index):
         f = '[MClientQt] gui.TableDelegate.paint'
@@ -54,7 +57,6 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         
         doc = PyQt5.QtGui.QTextDocument()
         doc.setHtml(options.text)
-        doc.setDefaultFont(self.font)
         options.text = ''
         
         # This enables text wrapping in the delegate
@@ -80,7 +82,6 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         
         doc = PyQt5.QtGui.QTextDocument()
         doc.setHtml(options.text)
-        doc.setDefaultFont(self.font)
         doc.setTextWidth(options.rect.width())
         
         return PyQt5.QtCore.QSize(doc.idealWidth(),doc.size().height())

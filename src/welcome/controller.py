@@ -28,20 +28,10 @@ class Welcome:
         self.set_bindings()
     
     def set_head(self):
-        self.logic.set_heading()
-        self.logic.table.append([''])
-        self.logic.set_about()
-        self.logic.table.append([''])
+        self.logic.set_head()
     
     def set_tail(self):
-        self.logic.table.append([''])
-        sub = '<h3>{}</h3>'.format(_('Main hotkeys'))
-        self.logic.table.append([sub])
-        sub = _('(see documentation for other hotkeys, mouse bindings and functions)')
-        sub = '<h4>{}</h4>'.format(sub)
-        self.logic.table.append([sub])
-        self.logic.set_hotkeys()
-        self.logic.add_cols()
+        self.logic.set_tail()
     
     def set_model(self,model):
         self.gui.set_model(model)
