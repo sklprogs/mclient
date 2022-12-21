@@ -259,7 +259,7 @@ class Welcome:
         self.table.append(sub)
 
     def set_heading(self):
-        row = [f'<h2>Welcome to {self.desc}!</h2>']
+        row = [f'<h1>Welcome to {self.desc}!</h1>']
         self.table.append(row)
     
     def add_cols(self):

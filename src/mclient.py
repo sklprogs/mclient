@@ -96,7 +96,7 @@ class Welcome(wl.Welcome):
     
     def set_sources(self):
         self.set_online_sources()
-        self.set_offline_sources()
+        #self.set_offline_sources()
 
     def set_middle(self):
         self.set_sources()
