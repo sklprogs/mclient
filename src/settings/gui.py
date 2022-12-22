@@ -5,7 +5,7 @@ from skl_shared.localize import _
 import skl_shared.shared as sh
 
 PRODUCT = 'MClient'
-ICON = sh.objs.get_pdir().add('..','resources','icon_64x64_mclient.gif')
+ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
 
 
 class Settings:
@@ -35,10 +35,10 @@ class Settings:
         self.spallow = []
 
     def update_col1(self):
-        f = '[MClient] settings.gui.Settings.update_col1'
-        if self.opt_cl1.choice != _('Do not set'):
-            if self.opt_cl1.choice in self.allowed:
-                self.allowed.remove(self.opt_cl1.choice)
+        f = '[MClientQt] settings.gui.Settings.update_col1'
+        if self.opt_cl1.get() != _('Do not set'):
+            if self.opt_cl1.get() in self.allowed:
+                self.allowed.remove(self.opt_cl1.get())
             elif _('Subjects') in self.allowed:
                 self.opt_cl1.set(_('Subjects'))
                 self.allowed.remove(_('Subjects'))
@@ -50,9 +50,9 @@ class Settings:
                 sh.objs.get_mes(f,mes).show_error()
 
     def update_col2(self):
-        f = '[MClient] settings.gui.Settings.update_col2'
-        if self.opt_cl2.choice != _('Do not set'):
-            if self.opt_cl2.choice in self.allowed:
+        f = '[MClientQt] settings.gui.Settings.update_col2'
+        if self.opt_cl2.get() != _('Do not set'):
+            if self.opt_cl2.get() in self.allowed:
                 self.allowed.remove(self.opt_cl2.choice)
             elif _('Word forms') in self.allowed:
                 self.opt_cl2.set(_('Word forms'))
@@ -65,7 +65,7 @@ class Settings:
                 sh.objs.get_mes(f,mes).show_error()
 
     def update_col3(self):
-        f = '[MClient] settings.gui.Settings.update_col3'
+        f = '[MClientQt] settings.gui.Settings.update_col3'
         if self.opt_cl3.choice != _('Do not set'):
             if self.opt_cl3.choice in self.allowed:
                 self.allowed.remove(self.opt_cl3.choice)
@@ -80,10 +80,10 @@ class Settings:
                 sh.objs.get_mes(f,mes).show_error()
 
     def update_col4(self):
-        f = '[MClient] settings.gui.Settings.update_col4'
-        if self.opt_cl4.choice != _('Do not set'):
-            if self.opt_cl4.choice in self.allowed:
-                self.allowed.remove(self.opt_cl4.choice)
+        f = '[MClientQt] settings.gui.Settings.update_col4'
+        if self.opt_cl4.get() != _('Do not set'):
+            if self.opt_cl4.get() in self.allowed:
+                self.allowed.remove(self.opt_cl4.get())
             elif _('Transcription') in self.allowed:
                 self.opt_cl4.set(_('Transcription'))
                 self.allowed.remove(_('Transcription'))
@@ -94,19 +94,29 @@ class Settings:
                 mes = _('Empty input is not allowed!')
                 sh.objs.get_mes(f,mes).show_error()
 
-    def update_sc(self,event=None):
-        cond11 = self.opt_cl1.choice == _('Subjects')
-        cond12 = self.opt_cl1.choice == _('Word forms')
-        cond13 = self.opt_cl1.choice == _('Parts of speech')
-        cond21 = self.opt_cl2.choice == _('Word forms')
-        cond22 = self.opt_cl2.choice == _('Transcription')
-        cond31 = self.opt_cl3.choice == _('Transcription')
-        cond32 = self.opt_cl3.choice == _('Parts of speech')
-        cond33 = self.opt_cl3.choice == _('Do not set')
-        cond41 = self.opt_cl4.choice == _('Parts of speech')
-        cond42 = self.opt_cl4.choice == _('Subjects')
-        cond43 = self.opt_cl4.choice == _('Do not set')
-
+    def update_sc(self):
+        cond11 = _('Subjects')
+        cond12 = _('Word forms')
+        cond13 = _('Parts of speech')
+        cond21 = _('Word forms')
+        cond22 = _('Transcription')
+        cond31 = _('Transcription')
+        cond32 = _('Parts of speech')
+        cond33 = _('Do not set')
+        cond41 = _('Parts of speech')
+        cond42 = _('Subjects')
+        cond43 = _('Do not set')
+        self.opt_cl1.set(cond11)
+        self.opt_cl1.set(cond12)
+        self.opt_cl1.set(cond13)
+        self.opt_cl2.set(cond21)
+        self.opt_cl2.set(cond22)
+        self.opt_cl3.set(cond31)
+        self.opt_cl3.set(cond32)
+        self.opt_cl3.set(cond33)
+        self.opt_cl4.set(cond41)
+        self.opt_cl4.set(cond42)
+        self.opt_cl4.set(cond43)
         if cond11 and cond21 and cond31 and cond41:
             self.opt_scm.set(PRODUCT)
         elif cond12 and cond22 and cond32 and cond42:
@@ -118,36 +128,35 @@ class Settings:
         else:
             self.opt_scm.set(_('Custom'))
 
-    def update_by_sc(self,event=None):
-        f = '[MClient] settings.gui.Settings.update_by_sc'
-        if self.opt_scm.choice == PRODUCT:
+    def update_by_sc(self):
+        f = '[MClientQt] settings.gui.Settings.update_by_sc'
+        value = self.opt_scm.get()
+        if value == PRODUCT:
             self.opt_cl1.set(_('Subjects'))
             self.opt_cl2.set(_('Word forms'))
             self.opt_cl3.set(_('Transcription'))
             self.opt_cl4.set(_('Parts of speech'))
-        elif self.opt_scm.choice == _('Multitran'):
+        elif value == _('Multitran'):
             self.opt_cl1.set(_('Word forms'))
             self.opt_cl2.set(_('Transcription'))
             self.opt_cl3.set(_('Parts of speech'))
             self.opt_cl4.set(_('Subjects'))
-        elif self.opt_scm.choice == _('Cut to the chase'):
+        elif value == _('Cut to the chase'):
             self.opt_cl1.set(_('Parts of speech'))
             self.opt_cl2.set(_('Word forms'))
             self.opt_cl3.set(_('Transcription'))
             self.opt_cl4.set(_('Subjects'))
-        elif self.opt_scm.choice == _('Clearness'):
+        elif value == _('Clearness'):
             self.opt_cl1.set(_('Parts of speech'))
             self.opt_cl2.set(_('Word forms'))
             self.opt_cl3.set(_('Do not set'))
             self.opt_cl4.set(_('Do not set'))
-        elif self.opt_scm.choice == _('Custom'):
-            pass
-        else:
+        elif self.opt_scm.get() != _('Custom'):
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(self.opt_scm.choice,self.scitems)
+            mes = mes.format(value,self.scitems)
             sh.objs.get_mes(f,mes).show_error()
 
-    def update_by_col1(self,event=None):
+    def update_by_col1(self):
         self.allowed = list(self.items)
         self.update_col1()
         self.update_col2()
@@ -155,7 +164,7 @@ class Settings:
         self.update_col4()
         self.update_sc()
 
-    def update_by_col2(self,event=None):
+    def update_by_col2(self):
         self.allowed = list(self.items)
         self.update_col2()
         self.update_col1()
@@ -163,7 +172,7 @@ class Settings:
         self.update_col4()
         self.update_sc()
 
-    def update_by_col3(self,event=None):
+    def update_by_col3(self):
         self.allowed = list(self.items)
         self.update_col3()
         self.update_col1()
@@ -171,7 +180,7 @@ class Settings:
         self.update_col4()
         self.update_sc()
 
-    def update_by_col4(self,event=None):
+    def update_by_col4(self):
         self.allowed = list(self.items)
         self.update_col4()
         self.update_col1()
@@ -179,7 +188,7 @@ class Settings:
         self.update_col3()
         self.update_sc()
         
-    def update_by_sp1(self,event=None):
+    def update_by_sp1(self):
         self.spallow = list(self.spitems)
         self.update_sp1()
         self.update_sp2()
@@ -189,7 +198,7 @@ class Settings:
         self.update_sp6()
         self.update_sp7()
         
-    def update_by_sp2(self,event=None):
+    def update_by_sp2(self):
         self.spallow = list(self.spitems)
         self.update_sp2()
         self.update_sp1()
@@ -199,7 +208,7 @@ class Settings:
         self.update_sp6()
         self.update_sp7()
         
-    def update_by_sp3(self,event=None):
+    def update_by_sp3(self):
         self.spallow = list(self.spitems)
         self.update_sp3()
         self.update_sp1()
@@ -209,7 +218,7 @@ class Settings:
         self.update_sp6()
         self.update_sp7()
         
-    def update_by_sp4(self,event=None):
+    def update_by_sp4(self):
         self.spallow = list(self.spitems)
         self.update_sp4()
         self.update_sp1()
@@ -219,7 +228,7 @@ class Settings:
         self.update_sp6()
         self.update_sp7()
         
-    def update_by_sp5(self,event=None):
+    def update_by_sp5(self):
         self.spallow = list(self.spitems)
         self.update_sp5()
         self.update_sp1()
@@ -229,7 +238,7 @@ class Settings:
         self.update_sp6()
         self.update_sp7()
         
-    def update_by_sp6(self,event=None):
+    def update_by_sp6(self):
         self.spallow = list(self.spitems)
         self.update_sp6()
         self.update_sp1()
@@ -239,7 +248,7 @@ class Settings:
         self.update_sp5()
         self.update_sp7()
         
-    def update_by_sp7(self,event=None):
+    def update_by_sp7(self):
         self.spallow = list(self.spitems)
         self.update_sp7()
         self.update_sp1()
@@ -250,8 +259,7 @@ class Settings:
         self.update_sp6()
 
     def set_gui(self):
-        self.parent = sh.Top (AutoCr = True
-                             ,title = _('View Settings')
+        self.parent = sh.Top (title = _('View Settings')
                              ,icon = ICON
                              )
         self.widget = self.parent.widget
@@ -311,7 +319,7 @@ class Settings:
                  ,width = 4
                  )
 
-    def reset(self,event=None):
+    def reset(self):
         self.opt_scm.set(PRODUCT)
         self.opt_cl1.set(_('Subjects'))
         self.opt_cl2.set(_('Word forms'))
@@ -826,17 +834,17 @@ class Settings:
                     ,action = self.click_label14
                     )
 
-    def click_label14(self,event=None):
+    def click_label14(self):
         self.cbx_no14.toggle()
     
-    def show(self,event=None):
+    def show(self):
         self.parent.show()
 
-    def close(self,event=None):
+    def close(self):
         self.parent.close()
 
     def update_sp1(self):
-        f = '[MClient] settings.gui.Settings.update_sp1'
+        f = '[MClientQt] settings.gui.Settings.update_sp1'
         if self.opt_sp1.choice in self.spallow:
             self.spallow.remove(self.opt_sp1.choice)
         elif _('Noun') in self.spallow:
@@ -850,7 +858,7 @@ class Settings:
             sh.objs.get_mes(f,mes).show_error()
     
     def update_sp2(self):
-        f = '[MClient] settings.gui.Settings.update_sp2'
+        f = '[MClientQt] settings.gui.Settings.update_sp2'
         if self.opt_sp2.choice in self.spallow:
             self.spallow.remove(self.opt_sp2.choice)
         elif _('Verb') in self.spallow:
@@ -864,7 +872,7 @@ class Settings:
             sh.objs.get_mes(f,mes).show_error()
                        
     def update_sp3(self):
-        f = '[MClient] settings.gui.Settings.update_sp3'
+        f = '[MClientQt] settings.gui.Settings.update_sp3'
         if self.opt_sp3.choice in self.spallow:
             self.spallow.remove(self.opt_sp3.choice)
         elif _('Adjective') in self.spallow:
@@ -878,7 +886,7 @@ class Settings:
             sh.objs.get_mes(f,mes).show_error()
                        
     def update_sp4(self):
-        f = '[MClient] settings.gui.Settings.update_sp4'
+        f = '[MClientQt] settings.gui.Settings.update_sp4'
         if self.opt_sp4.choice in self.spallow:
             self.spallow.remove(self.opt_sp4.choice)
         elif _('Abbreviation') in self.spallow:
@@ -892,7 +900,7 @@ class Settings:
             sh.objs.get_mes(f,mes).show_error()
                        
     def update_sp5(self):
-        f = '[MClient] settings.gui.Settings.update_sp5'
+        f = '[MClientQt] settings.gui.Settings.update_sp5'
         if self.opt_sp5.choice in self.spallow:
             self.spallow.remove(self.opt_sp5.choice)
         elif _('Adverb') in self.spallow:
@@ -906,7 +914,7 @@ class Settings:
             sh.objs.get_mes(f,mes).show_error()
                        
     def update_sp6(self):
-        f = '[MClient] settings.gui.Settings.update_sp6'
+        f = '[MClientQt] settings.gui.Settings.update_sp6'
         if self.opt_sp6.choice in self.spallow:
             self.spallow.remove(self.opt_sp6.choice)
         elif _('Preposition') in self.spallow:
@@ -920,7 +928,7 @@ class Settings:
             sh.objs.get_mes(f,mes).show_error()
                        
     def update_sp7(self):
-        f = '[MClient] settings.gui.Settings.update_sp7'
+        f = '[MClientQt] settings.gui.Settings.update_sp7'
         if self.opt_sp7.choice in self.spallow:
             self.spallow.remove(self.opt_sp7.choice)
         elif _('Pronoun') in self.spallow:

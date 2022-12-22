@@ -62,20 +62,20 @@ class UpdateSettingsUI:
 class ExportSettingsUI:
     
     def export_speech_area(self):
-        sh.lg.globs['str']['speech1'] = objs.get_settings_ui().opt_sp1.choice
-        sh.lg.globs['str']['speech2'] = objs.settings_ui.opt_sp2.choice
-        sh.lg.globs['str']['speech3'] = objs.settings_ui.opt_sp3.choice
-        sh.lg.globs['str']['speech4'] = objs.settings_ui.opt_sp4.choice
-        sh.lg.globs['str']['speech5'] = objs.settings_ui.opt_sp5.choice
-        sh.lg.globs['str']['speech6'] = objs.settings_ui.opt_sp6.choice
-        sh.lg.globs['str']['speech7'] = objs.settings_ui.opt_sp7.choice
+        sh.lg.globs['str']['speech1'] = objs.get_settings_ui().opt_sp1.get()
+        sh.lg.globs['str']['speech2'] = objs.settings_ui.opt_sp2.get()
+        sh.lg.globs['str']['speech3'] = objs.settings_ui.opt_sp3.get()
+        sh.lg.globs['str']['speech4'] = objs.settings_ui.opt_sp4.get()
+        sh.lg.globs['str']['speech5'] = objs.settings_ui.opt_sp5.get()
+        sh.lg.globs['str']['speech6'] = objs.settings_ui.opt_sp6.get()
+        sh.lg.globs['str']['speech7'] = objs.settings_ui.opt_sp7.get()
     
     def export_style_area(self):
-        sh.lg.globs['str']['style'] = objs.get_settings_ui().opt_scm.choice
-        sh.lg.globs['str']['col1_type'] = objs.settings_ui.opt_cl1.choice
-        sh.lg.globs['str']['col2_type'] = objs.settings_ui.opt_cl2.choice
-        sh.lg.globs['str']['col3_type'] = objs.settings_ui.opt_cl3.choice
-        sh.lg.globs['str']['col4_type'] = objs.settings_ui.opt_cl4.choice
+        sh.lg.globs['str']['style'] = objs.get_settings_ui().opt_scm.get()
+        sh.lg.globs['str']['col1_type'] = objs.settings_ui.opt_cl1.get()
+        sh.lg.globs['str']['col2_type'] = objs.settings_ui.opt_cl2.get()
+        sh.lg.globs['str']['col3_type'] = objs.settings_ui.opt_cl3.get()
+        sh.lg.globs['str']['col4_type'] = objs.settings_ui.opt_cl4.get()
     
     def export_checkboxes(self):
         sh.lg.globs['bool']['SortByColumns'] = objs.get_settings_ui().cbx_no1.get()
@@ -99,7 +99,7 @@ class ExportSettingsUI:
         sh.objs.get_mes(f,mes).show_warning()
     
     def export_col_num(self):
-        f = '[MClient] settings.controller.ExportSettingsUI.export_col_num'
+        f = '[MClientQt] settings.controller.ExportSettingsUI.export_col_num'
         if not sh.lg.globs['bool']['AdjustByWidth']:
             sh.com.rep_lazy(f)
             return
@@ -113,7 +113,7 @@ class ExportSettingsUI:
         sh.lg.globs['int']['colnum'] = col_num
     
     def export_fixed_col_width(self):
-        f = '[MClient] settings.controller.ExportSettingsUI.export_fixed_col_width'
+        f = '[MClientQt] settings.controller.ExportSettingsUI.export_fixed_col_width'
         width = objs.get_settings_ui().ent_fcw.get()
         width = sh.Input(f,width).get_integer()
         if not 50 <= width <= 512:
@@ -124,7 +124,7 @@ class ExportSettingsUI:
         sh.lg.globs['int']['fixed_col_width'] = width
     
     def export_term_col_width(self):
-        f = '[MClient] settings.controller.ExportSettingsUI.export_term_col_width'
+        f = '[MClientQt] settings.controller.ExportSettingsUI.export_term_col_width'
         width = objs.get_settings_ui().ent_tcw.get()
         width = sh.Input(f,width).get_integer()
         if not 50 <= width <= 512:
@@ -135,7 +135,7 @@ class ExportSettingsUI:
         sh.lg.globs['int']['term_col_width'] = width
     
     def run(self):
-        f = '[MClient] settings.controller.ExportSettingsUI.run'
+        f = '[MClientQt] settings.controller.ExportSettingsUI.run'
         # 'objs.get_settings_ui' may not be used so often
         if objs.settings is None or objs.settings.gui is None:
             sh.com.rep_lazy(f)
@@ -182,7 +182,7 @@ class Settings:
         self.get_gui().close()
 
     def apply(self,event=None):
-        f = '[MClient] settings.controller.Settings.apply'
+        f = '[MClientQt] settings.controller.Settings.apply'
         mes = _('This procedure should be overridden')
         sh.objs.get_mes(f,mes,True).show_error()
     
@@ -193,7 +193,7 @@ class Settings:
             return 5
     
     def get_table_width(self):
-        f = '[MClient] settings.controller.Settings.get_table_width'
+        f = '[MClientQt] settings.controller.Settings.get_table_width'
         if self.get_win_width:
             return self.get_win_width()
         else:
@@ -202,7 +202,7 @@ class Settings:
             return 1050
     
     def suggest_col_widths(self,event=None):
-        f = '[MClient] settings.controller.Settings.suggest_col_widths'
+        f = '[MClientQt] settings.controller.Settings.suggest_col_widths'
         table_width = self.get_table_width()
         col_num = self.get_gui().ent_num.get()
         if not col_num:
@@ -239,7 +239,7 @@ class Settings:
         self.gui.ent_tcw.insert(term_width)
     
     def set_bindings(self):
-        f = '[MClient] settings.controller.Settings.set_bindings'
+        f = '[MClientQt] settings.controller.Settings.set_bindings'
         if self.gui is None:
             sh.com.rep_empty(f)
             return
