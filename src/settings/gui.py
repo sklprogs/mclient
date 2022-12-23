@@ -206,12 +206,6 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.opt_sp5.change_font_size(1)
         self.opt_sp6.change_font_size(1)
         self.opt_sp7.change_font_size(1)
-        
-        policy = PyQt5.QtWidgets.QSizePolicy (PyQt5.QtWidgets.QSizePolicy.Fixed
-                                             ,PyQt5.QtWidgets.QSizePolicy.Fixed
-                                             )
-        self.btn_res.widget.setSizePolicy(policy)
-        self.btn_apl.widget.setSizePolicy(policy)
     
     def set_buttons(self):
         self.btn_res = sh.Button(_('Reset'))
