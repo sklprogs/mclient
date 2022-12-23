@@ -155,11 +155,16 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.lay_sug.addWidget(self.ent_trm.widget)
         self.lay_sug.addWidget(self.btn_sug.widget)
     
+    def _add_buttons(self):
+        self.lay_btn.addWidget(self.btn_res.widget)
+        self.lay_btn.addWidget(self.btn_apl.widget)
+    
     def add_widgets(self):
         self._add_columns()
         self._add_speech()
         self._add_checkboxes()
         self._add_suggest()
+        self._add_buttons()
     
     def configure(self):
         self.bg_col.setStyleSheet('background-color: #3a5fcd')
@@ -197,6 +202,16 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.opt_sp5.change_font_size(1)
         self.opt_sp6.change_font_size(1)
         self.opt_sp7.change_font_size(1)
+        
+        policy = PyQt5.QtWidgets.QSizePolicy (PyQt5.QtWidgets.QSizePolicy.Fixed
+                                             ,PyQt5.QtWidgets.QSizePolicy.Fixed
+                                             )
+        self.btn_res.widget.setSizePolicy(policy)
+        self.btn_apl.widget.setSizePolicy(policy)
+    
+    def set_buttons(self):
+        self.btn_res = sh.Button(_('Reset'))
+        self.btn_apl = sh.Button(_('Apply'))
     
     def set_gui(self):
         self.set_layouts()
@@ -205,6 +220,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.set_bg()
         self.set_checkboxes()
         self.set_suggest()
+        self.set_buttons()
         self.add_widgets()
         self.configure()
         # The window width will be larger than 1024px otherwise 
