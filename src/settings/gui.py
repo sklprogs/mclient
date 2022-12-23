@@ -73,7 +73,14 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.lay_psp = PyQt5.QtWidgets.QGridLayout()
         self.lay_cbx = PyQt5.QtWidgets.QVBoxLayout()
         self.lay_sug = PyQt5.QtWidgets.QHBoxLayout()
+        self.lay_sgl = PyQt5.QtWidgets.QHBoxLayout()
+        ''' Position widgets in "Suggest" row correctly for different languages
+            irrespectively of label widths.
+        '''
+        self.fml_sug = PyQt5.QtWidgets.QFormLayout()
+        self.fml_sug.addRow(self.lay_sgl)
         self.lay_btn = PyQt5.QtWidgets.QHBoxLayout()
+        self.lay_sug.addLayout(self.fml_sug)
         self.lay_prm.addLayout(self.lay_col)
         self.lay_prm.addLayout(self.lay_psp)
         self.lay_prm.addLayout(self.lay_cbx)
@@ -147,12 +154,12 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.lay_cbx.addWidget(self.cbx_op9.widget)
     
     def _add_suggest(self):
-        self.lay_sug.addWidget(self.lbl_num.widget)
-        self.lay_sug.addWidget(self.ent_num.widget)
-        self.lay_sug.addWidget(self.lbl_fix.widget)
-        self.lay_sug.addWidget(self.ent_fix.widget)
-        self.lay_sug.addWidget(self.lbl_trm.widget)
-        self.lay_sug.addWidget(self.ent_trm.widget)
+        self.lay_sgl.addWidget(self.lbl_num.widget)
+        self.lay_sgl.addWidget(self.ent_num.widget)
+        self.lay_sgl.addWidget(self.lbl_fix.widget)
+        self.lay_sgl.addWidget(self.ent_fix.widget)
+        self.lay_sgl.addWidget(self.lbl_trm.widget)
+        self.lay_sgl.addWidget(self.ent_trm.widget)
         self.lay_sug.addWidget(self.btn_sug.widget)
     
     def _add_buttons(self):
@@ -206,6 +213,9 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.opt_sp5.change_font_size(1)
         self.opt_sp6.change_font_size(1)
         self.opt_sp7.change_font_size(1)
+        
+        # Prevent layout from taking all available space
+        self.lay_sgl.addStretch(0)
     
     def set_buttons(self):
         self.btn_res = sh.Button(_('Reset'))
