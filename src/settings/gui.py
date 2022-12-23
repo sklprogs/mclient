@@ -1,19 +1,21 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared.localize import _
-import skl_shared.shared as sh
+import PyQt5.QtWidgets
+
+from skl_shared_qt.localize import _
+import skl_shared_qt.shared as sh
 
 PRODUCT = 'MClient'
-ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
 
 
-class Settings:
-
-    def __init__(self):
+class Settings(PyQt5.QtWidgets.QWidget):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
         self.set_values()
         self.set_gui()
-
+    
     def set_values(self):
         self.items = (_('Subjects')
                      ,_('Word forms')
@@ -21,926 +23,203 @@ class Settings:
                      ,_('Parts of speech')
                      ,_('Do not set')
                      )
-        self.scitems = (PRODUCT
+        self.stitems = (PRODUCT
                        ,_('Multitran')
                        ,_('Cut to the chase')
                        ,_('Clearness')
                        ,_('Custom')
                        )
         self.spitems = (_('Noun'),_('Verb'),_('Adjective')
-                       ,_('Abbreviation'),_('Adverb'),_('Preposition')
-                       ,_('Pronoun')
+                       ,_('Abbreviation'),_('Adverb')
+                       ,_('Preposition'),_('Pronoun')
                        )
-        self.allowed = []
-        self.spallow = []
-
-    def update_col1(self):
-        f = '[MClientQt] settings.gui.Settings.update_col1'
-        if self.opt_cl1.get() != _('Do not set'):
-            if self.opt_cl1.get() in self.allowed:
-                self.allowed.remove(self.opt_cl1.get())
-            elif _('Subjects') in self.allowed:
-                self.opt_cl1.set(_('Subjects'))
-                self.allowed.remove(_('Subjects'))
-            elif self.allowed:
-                self.opt_cl1.set(self.allowed[0])
-                self.allowed.remove(self.allowed[0])
-            else:
-                mes = _('Empty input is not allowed!')
-                sh.objs.get_mes(f,mes).show_error()
-
-    def update_col2(self):
-        f = '[MClientQt] settings.gui.Settings.update_col2'
-        if self.opt_cl2.get() != _('Do not set'):
-            if self.opt_cl2.get() in self.allowed:
-                self.allowed.remove(self.opt_cl2.choice)
-            elif _('Word forms') in self.allowed:
-                self.opt_cl2.set(_('Word forms'))
-                self.allowed.remove(_('Word forms'))
-            elif self.allowed:
-                self.opt_cl2.set(self.allowed[0])
-                self.allowed.remove(self.allowed[0])
-            else:
-                mes = _('Empty input is not allowed!')
-                sh.objs.get_mes(f,mes).show_error()
-
-    def update_col3(self):
-        f = '[MClientQt] settings.gui.Settings.update_col3'
-        if self.opt_cl3.choice != _('Do not set'):
-            if self.opt_cl3.choice in self.allowed:
-                self.allowed.remove(self.opt_cl3.choice)
-            elif _('Parts of speech') in self.allowed:
-                self.opt_cl3.set(_('Parts of speech'))
-                self.allowed.remove(_('Parts of speech'))
-            elif self.allowed:
-                self.opt_cl3.set(self.allowed[0])
-                self.allowed.remove(self.allowed[0])
-            else:
-                mes = _('Empty input is not allowed!')
-                sh.objs.get_mes(f,mes).show_error()
-
-    def update_col4(self):
-        f = '[MClientQt] settings.gui.Settings.update_col4'
-        if self.opt_cl4.get() != _('Do not set'):
-            if self.opt_cl4.get() in self.allowed:
-                self.allowed.remove(self.opt_cl4.get())
-            elif _('Transcription') in self.allowed:
-                self.opt_cl4.set(_('Transcription'))
-                self.allowed.remove(_('Transcription'))
-            elif self.allowed:
-                self.opt_cl4.set(self.allowed[0])
-                self.allowed.remove(self.allowed[0])
-            else:
-                mes = _('Empty input is not allowed!')
-                sh.objs.get_mes(f,mes).show_error()
-
-    def update_sc(self):
-        cond11 = _('Subjects')
-        cond12 = _('Word forms')
-        cond13 = _('Parts of speech')
-        cond21 = _('Word forms')
-        cond22 = _('Transcription')
-        cond31 = _('Transcription')
-        cond32 = _('Parts of speech')
-        cond33 = _('Do not set')
-        cond41 = _('Parts of speech')
-        cond42 = _('Subjects')
-        cond43 = _('Do not set')
-        self.opt_cl1.set(cond11)
-        self.opt_cl1.set(cond12)
-        self.opt_cl1.set(cond13)
-        self.opt_cl2.set(cond21)
-        self.opt_cl2.set(cond22)
-        self.opt_cl3.set(cond31)
-        self.opt_cl3.set(cond32)
-        self.opt_cl3.set(cond33)
-        self.opt_cl4.set(cond41)
-        self.opt_cl4.set(cond42)
-        self.opt_cl4.set(cond43)
-        if cond11 and cond21 and cond31 and cond41:
-            self.opt_scm.set(PRODUCT)
-        elif cond12 and cond22 and cond32 and cond42:
-            self.opt_scm.set(_('Multitran'))
-        elif cond13 and cond21 and cond31 and cond42:
-            self.opt_scm.set(_('Cut to the chase'))
-        elif cond13 and cond21 and cond33 and cond43:
-            self.opt_scm.set(_('Clearness'))
-        else:
-            self.opt_scm.set(_('Custom'))
-
-    def update_by_sc(self):
-        f = '[MClientQt] settings.gui.Settings.update_by_sc'
-        value = self.opt_scm.get()
-        if value == PRODUCT:
-            self.opt_cl1.set(_('Subjects'))
-            self.opt_cl2.set(_('Word forms'))
-            self.opt_cl3.set(_('Transcription'))
-            self.opt_cl4.set(_('Parts of speech'))
-        elif value == _('Multitran'):
-            self.opt_cl1.set(_('Word forms'))
-            self.opt_cl2.set(_('Transcription'))
-            self.opt_cl3.set(_('Parts of speech'))
-            self.opt_cl4.set(_('Subjects'))
-        elif value == _('Cut to the chase'):
-            self.opt_cl1.set(_('Parts of speech'))
-            self.opt_cl2.set(_('Word forms'))
-            self.opt_cl3.set(_('Transcription'))
-            self.opt_cl4.set(_('Subjects'))
-        elif value == _('Clearness'):
-            self.opt_cl1.set(_('Parts of speech'))
-            self.opt_cl2.set(_('Word forms'))
-            self.opt_cl3.set(_('Do not set'))
-            self.opt_cl4.set(_('Do not set'))
-        elif self.opt_scm.get() != _('Custom'):
-            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(value,self.scitems)
-            sh.objs.get_mes(f,mes).show_error()
-
-    def update_by_col1(self):
-        self.allowed = list(self.items)
-        self.update_col1()
-        self.update_col2()
-        self.update_col3()
-        self.update_col4()
-        self.update_sc()
-
-    def update_by_col2(self):
-        self.allowed = list(self.items)
-        self.update_col2()
-        self.update_col1()
-        self.update_col3()
-        self.update_col4()
-        self.update_sc()
-
-    def update_by_col3(self):
-        self.allowed = list(self.items)
-        self.update_col3()
-        self.update_col1()
-        self.update_col2()
-        self.update_col4()
-        self.update_sc()
-
-    def update_by_col4(self):
-        self.allowed = list(self.items)
-        self.update_col4()
-        self.update_col1()
-        self.update_col2()
-        self.update_col3()
-        self.update_sc()
-        
-    def update_by_sp1(self):
-        self.spallow = list(self.spitems)
-        self.update_sp1()
-        self.update_sp2()
-        self.update_sp3()
-        self.update_sp4()
-        self.update_sp5()
-        self.update_sp6()
-        self.update_sp7()
-        
-    def update_by_sp2(self):
-        self.spallow = list(self.spitems)
-        self.update_sp2()
-        self.update_sp1()
-        self.update_sp3()
-        self.update_sp4()
-        self.update_sp5()
-        self.update_sp6()
-        self.update_sp7()
-        
-    def update_by_sp3(self):
-        self.spallow = list(self.spitems)
-        self.update_sp3()
-        self.update_sp1()
-        self.update_sp2()
-        self.update_sp4()
-        self.update_sp5()
-        self.update_sp6()
-        self.update_sp7()
-        
-    def update_by_sp4(self):
-        self.spallow = list(self.spitems)
-        self.update_sp4()
-        self.update_sp1()
-        self.update_sp2()
-        self.update_sp3()
-        self.update_sp5()
-        self.update_sp6()
-        self.update_sp7()
-        
-    def update_by_sp5(self):
-        self.spallow = list(self.spitems)
-        self.update_sp5()
-        self.update_sp1()
-        self.update_sp2()
-        self.update_sp3()
-        self.update_sp4()
-        self.update_sp6()
-        self.update_sp7()
-        
-    def update_by_sp6(self):
-        self.spallow = list(self.spitems)
-        self.update_sp6()
-        self.update_sp1()
-        self.update_sp2()
-        self.update_sp3()
-        self.update_sp4()
-        self.update_sp5()
-        self.update_sp7()
-        
-    def update_by_sp7(self):
-        self.spallow = list(self.spitems)
-        self.update_sp7()
-        self.update_sp1()
-        self.update_sp2()
-        self.update_sp3()
-        self.update_sp4()
-        self.update_sp5()
-        self.update_sp6()
-
-    def set_gui(self):
-        self.parent = sh.Top (title = _('View Settings')
-                             ,icon = ICON
-                             )
-        self.widget = self.parent.widget
-        self.set_frames()
-        self.set_cboxes()
-        self.set_labels()
-        self.set_columns()
-        self.set_buttons()
-        self.set_bindings()
-
-    def set_cboxes(self):
-        self.cbx_no1 = sh.CheckBox (parent = self.frm_cb1
-                                   ,side = 'left'
-                                   )
-        self.cbx_no2 = sh.CheckBox (parent = self.frm_cb2
-                                   ,side = 'left'
-                                   )
-        self.cbx_no3 = sh.CheckBox (parent = self.frm_cb3
-                                   ,side = 'left'
-                                   )
-        self.cbx_no4 = sh.CheckBox (parent = self.frm_cb4
-                                   ,side = 'left'
-                                   )
-        self.cbx_no5 = sh.CheckBox (parent = self.frm_cb5
-                                   ,side = 'left'
-                                   )
-        self.cbx_no6 = sh.CheckBox (parent = self.frm_cb6
-                                   ,side = 'left'
-                                   )
-        self.cbx_no7 = sh.CheckBox (parent = self.frm_cb7
-                                   ,side = 'left'
-                                   )
-        self.cbx_no8 = sh.CheckBox (parent = self.frm_cb8
-                                   ,side = 'left'
-                                   )
-        self.cbx_no9 = sh.CheckBox (parent = self.frm_cb9
-                                   ,side = 'left'
-                                   )
-        self.cbx_no10 = sh.CheckBox (parent = self.frm_cb10
-                                    ,side = 'left'
-                                    )
-        self.cbx_no11 = sh.CheckBox (parent = self.frm_cb11
-                                    ,side = 'left'
-                                    )
-        self.cbx_no12 = sh.CheckBox (parent = self.frm_cb12
-                                    ,side = 'left'
-                                    )
-        self.cbx_no13 = sh.CheckBox (parent = self.frm_cb13
-                                    ,side = 'left'
-                                    )
-        self.cbx_no14 = sh.CheckBox (parent = self.frm_cb14
-                                    ,side = 'left'
-                                    )
-        sh.Label (parent = self.frm_cb15
-                 ,side = 'left'
-                 ,text = ''
-                 ,width = 4
-                 )
-
-    def reset(self):
-        self.opt_scm.set(PRODUCT)
-        self.opt_cl1.set(_('Subjects'))
-        self.opt_cl2.set(_('Word forms'))
-        self.opt_cl3.set(_('Parts of speech'))
-        self.opt_cl4.set(_('Transcription'))
-        self.opt_sp1.set(_('Noun'))
-        self.opt_sp2.set(_('Verb'))
-        self.opt_sp3.set(_('Adjective'))
-        self.opt_sp4.set(_('Abbreviation'))
-        self.opt_sp5.set(_('Adverb'))
-        self.opt_sp6.set(_('Preposition'))
-        self.opt_sp7.set(_('Pronoun'))
-        self.cbx_no1.enable()
-        self.cbx_no2.enable()
-        self.cbx_no3.enable()
-        self.cbx_no4.enable()
-        self.cbx_no5.disable()
-        self.cbx_no6.disable()
-        self.cbx_no7.disable()
-        self.cbx_no8.enable()
-        self.cbx_no9.enable()
-        self.cbx_no10.enable()
-        self.cbx_no11.enable()
-        self.cbx_no12.disable()
-        self.cbx_no13.enable()
-        self.cbx_no14.enable()
-
-    def set_buttons(self):
-        sh.Button (parent = self.frm_btn
-                  ,action = self.reset
-                  ,hint = _('Reset settings')
-                  ,text = _('Reset')
-                  ,side = 'left'
-                  )
-
-        self.btn_apl = sh.Button (parent = self.frm_btn
-                                 ,hint = _('Apply settings')
-                                 ,text = _('Apply')
-                                 ,side = 'right'
-                                 )
-
-    def set_frames(self):
-        self.frm_col = sh.Frame (parent = self.parent
-                                ,expand = True
-                                ,fill = 'both'
-                                )
-        self.frm_spc = sh.Frame (parent = self.parent
-                                ,expand = True
-                                ,fill = 'both'
-                                )
-        self.frm_scm = sh.Frame (parent = self.frm_col
-                                ,side = 'left'
-                                ,expand = False
-                                ,fill = 'both'
-                                )
-        self.frm_cl1 = sh.Frame (parent = self.frm_col
-                                ,side = 'left'
-                                ,expand = False
-                                ,fill = 'both'
-                                )
-        self.frm_cl2 = sh.Frame (parent = self.frm_col
-                                ,side = 'left'
-                                ,expand = False
-                                ,fill = 'both'
-                                )
-        self.frm_cl3 = sh.Frame (parent = self.frm_col
-                                ,expand = False
-                                ,side = 'left'
-                                ,fill = 'both'
-                                )
-        self.frm_cl4 = sh.Frame (parent = self.frm_col
-                                ,side = 'left'
-                                ,expand = False
-                                ,fill = 'both'
-                                )
-        self.frm_sp1 = sh.Frame (parent = self.frm_spc
-                                ,side = 'left'
-                                ,expand = False
-                                ,fill = 'both'
-                                )
-        self.frm_sp2 = sh.Frame (parent = self.frm_spc
-                                ,side = 'left'
-                                ,expand = False
-                                ,fill = 'both'
-                                )
-        self.frm_sp3 = sh.Frame (parent = self.frm_spc
-                                ,side = 'left'
-                                ,expand = False
-                                ,fill = 'both'
-                                )
-        self.frm_sp4 = sh.Frame (parent = self.frm_spc
-                                ,side = 'left'
-                                ,expand = False
-                                ,fill = 'both'
-                                )
-        self.frm_sp5 = sh.Frame (parent = self.frm_spc
-                                ,side = 'left'
-                                ,expand = False
-                                ,fill = 'both'
-                                )
-        self.frm_sp6 = sh.Frame (parent = self.frm_spc
-                                ,side = 'left'
-                                ,expand = False
-                                ,fill = 'both'
-                                )
-        self.frm_sp7 = sh.Frame (parent = self.frm_spc
-                                ,side = 'left'
-                                ,expand = False
-                                ,fill = 'both'
-                                )
-        self.frm_cb1 = sh.Frame (parent = self.parent
-                                ,expand = False
-                                ,fill = 'x'
-                                )
-        self.frm_cb2 = sh.Frame (parent = self.parent
-                                ,expand = False
-                                ,fill = 'x'
-                                )
-        self.frm_cb3 = sh.Frame (parent = self.parent
-                                ,expand = False
-                                ,fill = 'x'
-                                )
-        self.frm_cb4 = sh.Frame (parent = self.parent
-                                ,expand = False
-                                ,fill = 'x'
-                                )
-        self.frm_cb5 = sh.Frame (parent = self.parent
-                                ,expand = False
-                                ,fill = 'x'
-                                )
-        self.frm_cb6 = sh.Frame (parent = self.parent
-                                ,expand = False
-                                ,fill = 'x'
-                                )
-        self.frm_cb7 = sh.Frame (parent = self.parent
-                                ,expand = False
-                                ,fill = 'x'
-                                )
-        self.frm_cb8 = sh.Frame (parent = self.parent
-                                ,expand = False
-                                ,fill = 'x'
-                                )
-        self.frm_cb9 = sh.Frame (parent = self.parent
-                                ,expand = False
-                                ,fill = 'x'
-                                )
-        self.frm_cb10 = sh.Frame (parent = self.parent
-                                 ,expand = False
-                                 ,fill = 'x'
-                                 )
-        self.frm_cb11 = sh.Frame (parent = self.parent
-                                 ,expand = False
-                                 ,fill = 'x'
-                                 )
-        self.frm_cb12 = sh.Frame (parent = self.parent
-                                 ,expand = False
-                                 ,fill = 'x'
-                                 )
-        self.frm_cb13 = sh.Frame (parent = self.parent
-                                 ,expand = False
-                                 ,fill = 'x'
-                                 )
-        self.frm_cb14 = sh.Frame (parent = self.parent
-                                 ,expand = False
-                                 ,fill = 'x'
-                                 )
-        self.frm_cb15 = sh.Frame (parent = self.parent
-                                 ,expand = False
-                                 ,fill = 'x'
-                                 )
-        self.frm_btn = sh.Frame (parent = self.parent
-                                ,expand = False
-                                ,fill = 'x'
-                                ,side = 'bottom'
-                                )
-
+    
+    def centralize(self):
+        self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
+    
     def set_labels(self):
-        ''' Other possible color schemes:
-            font = 'Sans 9 italic', fg = 'khaki4'
-        '''
-        sh.Label (parent = self.frm_scm
-                 ,text = _('Style:')
-                 ,font = 'Sans 9'
-                 ,side = 'top'
-                 ,fill = 'both'
-                 ,expand = True
-                 ,fg = 'PaleTurquoise1'
-                 ,bg = 'RoyalBlue3'
-                 )
-        sh.Label (parent = self.frm_cl1
-                 ,text = _('Column') + ' 1:'
-                 ,font = 'Sans 9'
-                 ,side = 'top'
-                 ,fill = 'both'
-                 ,expand = True
-                 ,fg = 'PaleTurquoise1'
-                 ,bg = 'RoyalBlue3'
-                 )
-        sh.Label (parent = self.frm_cl2
-                 ,text = _('Column') + ' 2:'
-                 ,font = 'Sans 9'
-                 ,side = 'top'
-                 ,fill = 'both'
-                 ,expand = True
-                 ,fg = 'PaleTurquoise1'
-                 ,bg = 'RoyalBlue3'
-                 )
-        sh.Label (parent = self.frm_cl3
-                 ,text = _('Column') + ' 3:'
-                 ,font = 'Sans 9'
-                 ,side = 'top'
-                 ,fill = 'both'
-                 ,expand = True
-                 ,fg = 'PaleTurquoise1'
-                 ,bg = 'RoyalBlue3'
-                 )
-        sh.Label (parent = self.frm_cl4
-                 ,text = _('Column') + ' 4:'
-                 ,font = 'Sans 9'
-                 ,side = 'top'
-                 ,fill = 'both'
-                 ,expand = True
-                 ,fg = 'PaleTurquoise1'
-                 ,bg = 'RoyalBlue3'
-                 )
-        self.lbl_no1 = sh.Label (parent = self.frm_cb1
-                                ,text = _('Sort by each column (if it is set, except for transcription) and order parts of speech')
-                                ,side = 'left'
-                                )
-        self.lbl_no2 = sh.Label (parent = self.frm_cb2
-                                ,text = _('Alphabetize terms')
-                                ,side = 'left'
-                                )
-        self.lbl_no3 = sh.Label (parent = self.frm_cb3
-                                ,text = _('Block subjects from blacklist')
-                                ,side = 'left'
-                                )
-        self.lbl_no4 = sh.Label (parent = self.frm_cb4
-                                ,text = _('Prioritize subjects')
-                                ,side = 'left'
-                                )
-        self.lbl_no5 = sh.Label (parent = self.frm_cb5
-                                ,text = _('Vertical view')
-                                ,side = 'left'
-                                )
-        self.lbl_no6 = sh.Label (parent = self.frm_cb6
-                                ,text = _('Shorten subject titles')
-                                ,side = 'left'
-                                )
-        self.lbl_no7 = sh.Label (parent = self.frm_cb7
-                                ,text = _('Shorten parts of speech')
-                                ,side = 'left'
-                                )
-        self.lbl_no8 = sh.Label (parent = self.frm_cb8
-                                ,text = _('Show user names')
-                                ,side = 'left'
-                                )
-        self.lbl_no9 = sh.Label (parent = self.frm_cb9
-                                ,text = _('Select terms only')
-                                ,side = 'left'
-                                )
-        self.lbl_no10 = sh.Label (parent = self.frm_cb10
-                                 ,text = _('Iconify the program window after copying')
-                                 ,side = 'left'
-                                 )
-        self.lbl_no11 = sh.Label (parent = self.frm_cb11
-                                 ,text = _('Show suggestions on input')
-                                 ,side = 'left'
-                                 )
-        self.lbl_no12 = sh.Label (parent = self.frm_cb12
-                                 ,text = _('Autoswap Russian and the other language if appropriate')
-                                 ,side = 'left'
-                                 )
-        self.lbl_no13 = sh.Label (parent = self.frm_cb13
-                                 ,text = _('Show a phrase count')
-                                 ,side = 'left'
-                                 )
-        self.lbl_no14 = sh.Label (parent = self.frm_cb14
-                                 ,text = _('Adjust columns by width')
-                                 ,side = 'left'
-                                 )
-        sh.Label (parent = self.frm_cb15
-                 ,text = _('Preferred number of columns:')
-                 ,side = 'left'
-                 ,ipadx = 5
-                 )
-        self.ent_num = sh.Entry (parent = self.frm_cb15
-                                ,side = 'left'
-                                ,width = 2
-                                )
-        self.lbl_no15 = sh.Label (parent = self.frm_cb15
-                                 ,text = _('Fixed column width:')
-                                 ,side = 'left'
-                                 ,ipadx = 5
-                                 )
-        self.ent_fcw = sh.Entry (parent = self.frm_cb15
-                                ,side = 'left'
-                                ,width = 3
-                                )
-        self.lbl_tcw = sh.Label (parent = self.frm_cb15
-                                ,text = _('Term column width:')
-                                ,side = 'left'
-                                ,ipadx = 5
-                                )
-        self.ent_tcw = sh.Entry (parent = self.frm_cb15
-                                ,side = 'left'
-                                ,width = 3
-                                )
-        sh.Label (parent = self.frm_cb15
-                 ,side = 'left'
-                 ,text = ''
-                 ,width = 1
-                 )
-        self.btn_sug = sh.Button (parent = self.frm_cb15
-                                 ,text = _('Suggest')
-                                 ,side = 'left'
-                                 ,expand = 0
-                                 )
-        sh.Label (parent = self.frm_sp1
-                 ,text = _('Part of speech') + ' 1:'
-                 ,font = 'Sans 8'
-                 ,side = 'top'
-                 ,fill = 'both'
-                 ,expand = True
-                 ,fg = 'PaleTurquoise1'
-                 ,bg = 'RoyalBlue3'
-                 )
-        sh.Label (parent = self.frm_sp2
-                 ,text = _('Part of speech') + ' 2:'
-                 ,font = 'Sans 8'
-                 ,side = 'top'
-                 ,fill = 'both'
-                 ,expand = True
-                 ,fg = 'PaleTurquoise1'
-                 ,bg = 'RoyalBlue3'
-                 )
-        sh.Label (parent = self.frm_sp3
-                 ,text = _('Part of speech') + ' 3:'
-                 ,font = 'Sans 8'
-                 ,side = 'top'
-                 ,fill = 'both'
-                 ,expand = True
-                 ,fg = 'PaleTurquoise1'
-                 ,bg = 'RoyalBlue3'
-                 )
-        sh.Label (parent = self.frm_sp4
-                 ,text = _('Part of speech') + ' 4:'
-                 ,font = 'Sans 8'
-                 ,side = 'top'
-                 ,fill = 'both'
-                 ,expand = True
-                 ,fg = 'PaleTurquoise1'
-                 ,bg = 'RoyalBlue3'
-                 )
-        sh.Label (parent = self.frm_sp5
-                 ,text = _('Part of speech') + ' 5:'
-                 ,font = 'Sans 8'
-                 ,side = 'top'
-                 ,fill = 'both'
-                 ,expand = True
-                 ,fg = 'PaleTurquoise1'
-                 ,bg = 'RoyalBlue3'
-                 )
-        sh.Label (parent = self.frm_sp6
-                 ,text = _('Part of speech') + ' 6:'
-                 ,font = 'Sans 8'
-                 ,side = 'top'
-                 ,fill = 'both'
-                 ,expand = True
-                 ,fg = 'PaleTurquoise1'
-                 ,bg = 'RoyalBlue3'
-                 )
-        sh.Label (parent = self.frm_sp7
-                 ,text = _('Part of speech') + ' 7:'
-                 ,font = 'Sans 8'
-                 ,side = 'top'
-                 ,fill = 'both'
-                 ,expand = True
-                 ,fg = 'PaleTurquoise1'
-                 ,bg = 'RoyalBlue3'
-                 )
-                 
-    def set_columns(self):
-        self.opt_scm = sh.OptionMenu (parent = self.frm_scm
-                                     ,items = self.scitems
-                                     ,side = 'bottom'
-                                     ,action = self.update_by_sc
-                                     ,default = PRODUCT
-                                     )
-        self.opt_cl1 = sh.OptionMenu (parent = self.frm_cl1
-                                     ,items = self.items
-                                     ,side = 'bottom'
-                                     ,action = self.update_by_col1
-                                     ,default = _('Subjects')
-                                     )
-        self.opt_cl2 = sh.OptionMenu (parent = self.frm_cl2
-                                     ,items = self.items
-                                     ,side = 'bottom'
-                                     ,action = self.update_by_col2
-                                     ,default = _('Word forms')
-                                     )
-        self.opt_cl3 = sh.OptionMenu (parent = self.frm_cl3
-                                     ,items = self.items
-                                     ,side = 'bottom'
-                                     ,action = self.update_by_col3
-                                     ,default = _('Transcription')
-                                     )
-        self.opt_cl4 = sh.OptionMenu (parent = self.frm_cl4
-                                     ,items = self.items
-                                     ,side = 'bottom'
-                                     ,action = self.update_by_col4
-                                     ,default = _('Parts of speech')
-                                     )
-        self.opt_sp1 = sh.OptionMenu (parent = self.frm_sp1
-                                     ,items = self.spitems
-                                     ,side = 'bottom'
-                                     ,action = self.update_by_sp1
-                                     ,default = self.spitems[0]
-                                     )
-        self.opt_sp2 = sh.OptionMenu (parent = self.frm_sp2
-                                     ,items = self.spitems
-                                     ,side = 'bottom'
-                                     ,action = self.update_by_sp2
-                                     ,default = self.spitems[1]
-                                     )
-        self.opt_sp3 = sh.OptionMenu (parent = self.frm_sp3
-                                     ,items = self.spitems
-                                     ,side = 'bottom'
-                                     ,action = self.update_by_sp3
-                                     ,default = self.spitems[2]
-                                     )
-        self.opt_sp4 = sh.OptionMenu (parent = self.frm_sp4
-                                     ,items = self.spitems
-                                     ,side = 'bottom'
-                                     ,action = self.update_by_sp4
-                                     ,default = self.spitems[3]
-                                     )
-        self.opt_sp5 = sh.OptionMenu (parent = self.frm_sp5
-                                     ,items = self.spitems
-                                     ,side = 'bottom'
-                                     ,action = self.update_by_sp5
-                                     ,default = self.spitems[4]
-                                     )
-        self.opt_sp6 = sh.OptionMenu (parent = self.frm_sp6
-                                     ,items = self.spitems
-                                     ,side = 'bottom'
-                                     ,action = self.update_by_sp6
-                                     ,default = self.spitems[5]
-                                     )
-        self.opt_sp7 = sh.OptionMenu (parent = self.frm_sp7
-                                     ,items = self.spitems
-                                     ,side = 'bottom'
-                                     ,action = self.update_by_sp7
-                                     ,default = self.spitems[6]
-                                     )
-
-    def set_bindings(self):
-        sh.com.bind (obj = self.lbl_no1
-                    ,bindings = '<Button-1>'
-                    ,action = self.cbx_no1.toggle
-                    )
-        sh.com.bind (obj = self.lbl_no2
-                    ,bindings = '<Button-1>'
-                    ,action = self.cbx_no2.toggle
-                    )
-        sh.com.bind (obj = self.lbl_no3
-                    ,bindings = '<Button-1>'
-                    ,action = self.cbx_no3.toggle
-                    )
-        sh.com.bind (obj = self.lbl_no4
-                    ,bindings = '<Button-1>'
-                    ,action = self.cbx_no4.toggle
-                    )
-        sh.com.bind (obj = self.lbl_no5
-                    ,bindings = '<Button-1>'
-                    ,action = self.cbx_no5.toggle
-                    )
-        sh.com.bind (obj = self.lbl_no6
-                    ,bindings = '<Button-1>'
-                    ,action = self.cbx_no6.toggle
-                    )
-        sh.com.bind (obj = self.lbl_no7
-                    ,bindings = '<Button-1>'
-                    ,action = self.cbx_no7.toggle
-                    )
-        sh.com.bind (obj = self.lbl_no8
-                    ,bindings = '<Button-1>'
-                    ,action = self.cbx_no8.toggle
-                    )
-        sh.com.bind (obj = self.lbl_no9
-                    ,bindings = '<Button-1>'
-                    ,action = self.cbx_no9.toggle
-                    )
-        sh.com.bind (obj = self.lbl_no10
-                    ,bindings = '<Button-1>'
-                    ,action = self.cbx_no10.toggle
-                    )
-        sh.com.bind (obj = self.lbl_no11
-                    ,bindings = '<Button-1>'
-                    ,action = self.cbx_no11.toggle
-                    )
-        sh.com.bind (obj = self.lbl_no12
-                    ,bindings = '<Button-1>'
-                    ,action = self.cbx_no12.toggle
-                    )
-        sh.com.bind (obj = self.lbl_no13
-                    ,bindings = '<Button-1>'
-                    ,action = self.cbx_no13.toggle
-                    )
-        sh.com.bind (obj = self.lbl_no14
-                    ,bindings = '<Button-1>'
-                    ,action = self.click_label14
-                    )
-
-    def click_label14(self):
-        self.cbx_no14.toggle()
+        self.lbl_stl = sh.Label(_('Style:'))
+        mes = _('Column {}:')
+        self.lbl_cl1 = sh.Label(mes.format(1))
+        self.lbl_cl2 = sh.Label(mes.format(2))
+        self.lbl_cl3 = sh.Label(mes.format(3))
+        self.lbl_cl4 = sh.Label(mes.format(4))
+        mes = _('Part of speech {}:')
+        self.lbl_sp1 = sh.Label(mes.format(1))
+        self.lbl_sp2 = sh.Label(mes.format(2))
+        self.lbl_sp3 = sh.Label(mes.format(3))
+        self.lbl_sp4 = sh.Label(mes.format(4))
+        self.lbl_sp5 = sh.Label(mes.format(5))
+        self.lbl_sp6 = sh.Label(mes.format(6))
+        self.lbl_sp7 = sh.Label(mes.format(7))
     
-    def show(self):
-        self.parent.show()
-
-    def close(self):
-        self.parent.close()
-
-    def update_sp1(self):
-        f = '[MClientQt] settings.gui.Settings.update_sp1'
-        if self.opt_sp1.choice in self.spallow:
-            self.spallow.remove(self.opt_sp1.choice)
-        elif _('Noun') in self.spallow:
-            self.opt_sp1.set(_('Noun'))
-            self.spallow.remove(_('Noun'))
-        elif self.spallow:
-            self.opt_sp1.set(self.spallow[0])
-            self.spallow.remove(self.spallow[0])
-        else:
-            mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f,mes).show_error()
+    def set_menus(self):
+        self.opt_stl = sh.OptionMenu(self.stitems,PRODUCT)
+        self.opt_cl1 = sh.OptionMenu(self.items,_('Subjects'))
+        self.opt_cl2 = sh.OptionMenu(self.items,_('Word forms'))
+        self.opt_cl3 = sh.OptionMenu(self.items,_('Transcription'))
+        self.opt_cl4 = sh.OptionMenu(self.items,_('Parts of speech'))
+        self.opt_sp1 = sh.OptionMenu(self.spitems,_('Noun'))
+        self.opt_sp2 = sh.OptionMenu(self.spitems,_('Verb'))
+        self.opt_sp3 = sh.OptionMenu(self.spitems,_('Adjective'))
+        self.opt_sp4 = sh.OptionMenu(self.spitems,_('Abbreviation'))
+        self.opt_sp5 = sh.OptionMenu(self.spitems,_('Adverb'))
+        self.opt_sp6 = sh.OptionMenu(self.spitems,_('Preposition'))
+        self.opt_sp7 = sh.OptionMenu(self.spitems,_('Pronoun'))
     
-    def update_sp2(self):
-        f = '[MClientQt] settings.gui.Settings.update_sp2'
-        if self.opt_sp2.choice in self.spallow:
-            self.spallow.remove(self.opt_sp2.choice)
-        elif _('Verb') in self.spallow:
-            self.opt_sp2.set(_('Verb'))
-            self.spallow.remove(_('Verb'))
-        elif self.spallow:
-            self.opt_sp2.set(self.spallow[0])
-            self.spallow.remove(self.spallow[0])
-        else:
-            mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f,mes).show_error()
-                       
-    def update_sp3(self):
-        f = '[MClientQt] settings.gui.Settings.update_sp3'
-        if self.opt_sp3.choice in self.spallow:
-            self.spallow.remove(self.opt_sp3.choice)
-        elif _('Adjective') in self.spallow:
-            self.opt_sp3.set(_('Adjective'))
-            self.spallow.remove(_('Adjective'))
-        elif self.spallow:
-            self.opt_sp3.set(self.spallow[0])
-            self.spallow.remove(self.spallow[0])
-        else:
-            mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f,mes).show_error()
-                       
-    def update_sp4(self):
-        f = '[MClientQt] settings.gui.Settings.update_sp4'
-        if self.opt_sp4.choice in self.spallow:
-            self.spallow.remove(self.opt_sp4.choice)
-        elif _('Abbreviation') in self.spallow:
-            self.opt_sp4.set(_('Abbreviation'))
-            self.spallow.remove(_('Abbreviation'))
-        elif self.spallow:
-            self.opt_sp4.set(self.spallow[0])
-            self.spallow.remove(self.spallow[0])
-        else:
-            mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f,mes).show_error()
-                       
-    def update_sp5(self):
-        f = '[MClientQt] settings.gui.Settings.update_sp5'
-        if self.opt_sp5.choice in self.spallow:
-            self.spallow.remove(self.opt_sp5.choice)
-        elif _('Adverb') in self.spallow:
-            self.opt_sp5.set(_('Adverb'))
-            self.spallow.remove(_('Adverb'))
-        elif self.spallow:
-            self.opt_sp5.set(self.spallow[0])
-            self.spallow.remove(self.spallow[0])
-        else:
-            mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f,mes).show_error()
-                       
-    def update_sp6(self):
-        f = '[MClientQt] settings.gui.Settings.update_sp6'
-        if self.opt_sp6.choice in self.spallow:
-            self.spallow.remove(self.opt_sp6.choice)
-        elif _('Preposition') in self.spallow:
-            self.opt_sp6.set(_('Preposition'))
-            self.spallow.remove(_('Preposition'))
-        elif self.spallow:
-            self.opt_sp6.set(self.spallow[0])
-            self.spallow.remove(self.spallow[0])
-        else:
-            mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f,mes).show_error()
-                       
-    def update_sp7(self):
-        f = '[MClientQt] settings.gui.Settings.update_sp7'
-        if self.opt_sp7.choice in self.spallow:
-            self.spallow.remove(self.opt_sp7.choice)
-        elif _('Pronoun') in self.spallow:
-            self.opt_sp7.set(_('Pronoun'))
-            self.spallow.remove(_('Pronoun'))
-        elif self.spallow:
-            self.opt_sp7.set(self.spallow[0])
-            self.spallow.remove(self.spallow[0])
-        else:
-            mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f,mes).show_error()
+    def set_layouts(self):
+        self.lay_prm = PyQt5.QtWidgets.QVBoxLayout(self)
+        self.lay_col = PyQt5.QtWidgets.QGridLayout()
+        self.lay_psp = PyQt5.QtWidgets.QGridLayout()
+        self.lay_cbx = PyQt5.QtWidgets.QVBoxLayout()
+        self.lay_sug = PyQt5.QtWidgets.QHBoxLayout()
+        self.lay_btn = PyQt5.QtWidgets.QHBoxLayout()
+        self.lay_prm.addLayout(self.lay_col)
+        self.lay_prm.addLayout(self.lay_psp)
+        self.lay_prm.addLayout(self.lay_cbx)
+        self.lay_prm.addLayout(self.lay_sug)
+        self.lay_prm.addLayout(self.lay_btn)
+    
+    def set_checkboxes(self):
+        self.cbx_op1 = sh.CheckBox(_('Sort by each column (if it is set, except for transcription) and order parts of speech'))
+        self.cbx_op2 = sh.CheckBox(_('Shorten subject titles'))
+        self.cbx_op3 = sh.CheckBox(_('Shorten parts of speech'))
+        self.cbx_op4 = sh.CheckBox(_('Show user names'))
+        self.cbx_op5 = sh.CheckBox(_('Iconify the program window after copying'))
+        self.cbx_op6 = sh.CheckBox(_('Show suggestions on input'))
+        self.cbx_op7 = sh.CheckBox(_('Autoswap Russian and the other language if appropriate'))
+        self.cbx_op8 = sh.CheckBox(_('Show a phrase count'))
+        self.cbx_op9 = sh.CheckBox(_('Adjust columns by width'))
+    
+    def set_bg(self):
+        self.bg_col = PyQt5.QtWidgets.QWidget()
+        # Cannot reuse the same widget
+        self.bg_psp = PyQt5.QtWidgets.QWidget()
+        self.lay_col.addWidget(self.bg_col,0,0,1,5)
+        self.lay_psp.addWidget(self.bg_psp,0,0,1,7)
+    
+    def set_suggest(self):
+        self.lbl_num = sh.Label(_('Preferred number of columns:'))
+        self.ent_num = sh.Entry()
+        self.lbl_fix = sh.Label(_('Fixed column width:'))
+        self.ent_fix = sh.Entry()
+        self.lbl_trm = sh.Label(_('Term column width:'))
+        self.ent_trm = sh.Entry()
+        self.btn_sug = sh.Button(_('Suggest'))
+    
+    def _add_columns(self):
+        self.lay_col.addWidget(self.lbl_stl.widget,0,0,PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl1.widget,0,1,PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl2.widget,0,2,PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl3.widget,0,3,PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl4.widget,0,4,PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_col.addWidget(self.opt_stl.widget,1,0)
+        self.lay_col.addWidget(self.opt_cl1.widget,1,1)
+        self.lay_col.addWidget(self.opt_cl2.widget,1,2)
+        self.lay_col.addWidget(self.opt_cl3.widget,1,3)
+        self.lay_col.addWidget(self.opt_cl4.widget,1,4)
+    
+    def _add_speech(self):
+        self.lay_psp.addWidget(self.lbl_sp1.widget,0,0,PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp2.widget,0,1,PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp3.widget,0,2,PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp4.widget,0,3,PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp5.widget,0,4,PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp6.widget,0,5,PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp7.widget,0,6,PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_psp.addWidget(self.opt_sp1.widget,1,0)
+        self.lay_psp.addWidget(self.opt_sp2.widget,1,1)
+        self.lay_psp.addWidget(self.opt_sp3.widget,1,2)
+        self.lay_psp.addWidget(self.opt_sp4.widget,1,3)
+        self.lay_psp.addWidget(self.opt_sp5.widget,1,4)
+        self.lay_psp.addWidget(self.opt_sp6.widget,1,5)
+        self.lay_psp.addWidget(self.opt_sp7.widget,1,6)
+    
+    def _add_checkboxes(self):
+        self.lay_cbx.addWidget(self.cbx_op1.widget)
+        self.lay_cbx.addWidget(self.cbx_op2.widget)
+        self.lay_cbx.addWidget(self.cbx_op3.widget)
+        self.lay_cbx.addWidget(self.cbx_op4.widget)
+        self.lay_cbx.addWidget(self.cbx_op5.widget)
+        self.lay_cbx.addWidget(self.cbx_op6.widget)
+        self.lay_cbx.addWidget(self.cbx_op7.widget)
+        self.lay_cbx.addWidget(self.cbx_op8.widget)
+        self.lay_cbx.addWidget(self.cbx_op9.widget)
+    
+    def _add_suggest(self):
+        self.lay_sug.addWidget(self.lbl_num.widget)
+        self.lay_sug.addWidget(self.ent_num.widget)
+        self.lay_sug.addWidget(self.lbl_fix.widget)
+        self.lay_sug.addWidget(self.ent_fix.widget)
+        self.lay_sug.addWidget(self.lbl_trm.widget)
+        self.lay_sug.addWidget(self.ent_trm.widget)
+        self.lay_sug.addWidget(self.btn_sug.widget)
+    
+    def add_widgets(self):
+        self._add_columns()
+        self._add_speech()
+        self._add_checkboxes()
+        self._add_suggest()
+    
+    def configure(self):
+        self.bg_col.setStyleSheet('background-color: #3a5fcd')
+        self.bg_psp.setStyleSheet('background-color: #3a5fcd')
+        self.setStyleSheet('QLabel {color: #bbffff}')
+        
+        self.lbl_num.widget.setStyleSheet('color: black')
+        self.lbl_fix.widget.setStyleSheet('color: black')
+        self.lbl_trm.widget.setStyleSheet('color: black')
+        
+        self.ent_num.set_max_width(20)
+        self.ent_fix.set_max_width(35)
+        self.ent_trm.set_max_width(35)
+        
+        # 9 -> 11
+        self.cbx_op1.change_font_size(2)
+        self.cbx_op2.change_font_size(2)
+        self.cbx_op3.change_font_size(2)
+        self.cbx_op4.change_font_size(2)
+        self.cbx_op5.change_font_size(2)
+        self.cbx_op6.change_font_size(2)
+        self.cbx_op7.change_font_size(2)
+        self.cbx_op8.change_font_size(2)
+        self.cbx_op9.change_font_size(2)
+        
+        self.opt_stl.change_font_size(1)
+        self.opt_cl1.change_font_size(1)
+        self.opt_cl2.change_font_size(1)
+        self.opt_cl3.change_font_size(1)
+        self.opt_cl4.change_font_size(1)
+        self.opt_sp1.change_font_size(1)
+        self.opt_sp2.change_font_size(1)
+        self.opt_sp3.change_font_size(1)
+        self.opt_sp4.change_font_size(1)
+        self.opt_sp5.change_font_size(1)
+        self.opt_sp6.change_font_size(1)
+        self.opt_sp7.change_font_size(1)
+    
+    def set_gui(self):
+        self.set_layouts()
+        self.set_menus()
+        self.set_labels()
+        self.set_bg()
+        self.set_checkboxes()
+        self.set_suggest()
+        self.add_widgets()
+        self.configure()
+        # The window width will be larger than 1024px otherwise 
+        self.setFixedWidth(800)
+    
+    def set_title(self,title):
+        self.setWindowTitle(title)
+    
+    def bind(self,hotkey,action):
+        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
 
 
 if __name__ == '__main__':
-    Settings().show()
+    f = '__main__'
+    sh.com.start()
+    app = Settings()
+    app.show()
+    sh.com.end()

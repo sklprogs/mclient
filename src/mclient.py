@@ -20,6 +20,7 @@ import about.controller as ab
 import third_parties.controller as tp
 import symbols.controller as sm
 import welcome.controller as wl
+import settings.controller as st
 
 
 DEBUG = False
@@ -848,6 +849,7 @@ class App:
     def set_bindings(self):
         # Mouse buttons cannot be bound
         self.gui.close_app.connect(self.quit)
+        
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.minimize)
         self.gui.bind('Down',self.table.go_down)
@@ -866,7 +868,7 @@ class App:
         self.gui.bind('Enter',self.go_keyboard)
         self.gui.bind('Ctrl+Return',self.copy_cell)
         self.gui.bind('Ctrl+Enter',self.copy_cell)
-        self.gui.bind(sh.lg.globs['str']['bind_spec_symbol'],self.symbols.show)
+        
         self.gui.bind (sh.lg.globs['str']['bind_col1_down']
                       ,lambda:self.table.go_next_section(0)
                       )
@@ -890,6 +892,15 @@ class App:
                       )
         self.gui.bind (sh.lg.globs['str']['bind_col4_up']
                       ,lambda:self.table.go_prev_section(3)
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_settings']
+                      ,self.settings.toggle
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_settings_alt']
+                      ,self.settings.toggle
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_spec_symbol']
+                      ,self.symbols.show
                       )
         self.gui.bind (sh.lg.globs['str']['bind_swap_langs']
                       ,self.swap_langs
@@ -948,6 +959,7 @@ class App:
         self.about = About()
         self.symbols = sm.Symbols()
         self.welcome = Welcome(self.about.get_product())
+        self.settings = st.Settings()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title()
         self.set_bindings()

@@ -392,13 +392,6 @@ class Commands:
         sym.show()
         sh.com.end()
     
-    def run_settings(self):
-        import config as cf
-        import logic as lg
-        import settings.controller as st
-        lg.com.start()
-        st.objs.get_settings().show()
-    
     def get_priority(self):
         f = '[MClient] tests.Commands.get_priority'
         import logic as lg
@@ -948,11 +941,18 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] tests.__main__'
     sh.com.start()
-    ''' It seems that putting QMainWindow.show() in a separate procedure, e.g.
-        com.run_welcome, will cause an infinite loop.
+    ''' #NOTE: Putting QMainWindow.show() or QWidget.show() (without
+        explicitly invoking QMainWindow in __main__) in a separate procedure,
+        e.g. com.run_welcome, will cause an infinite loop.
     '''
     import config as cf
     import logic as lg
+    import mclient as mc
+    import settings.controller as st
+    lg.com.start()
+    settings = st.Settings()
+    settings.show()
+    '''
     import mclient as mc
     #import welcome.controller as wl
     lg.com.start()
@@ -960,6 +960,7 @@ if __name__ == '__main__':
     iwelcome = mc.Welcome(mc.About().get_product())
     iwelcome.reset()
     iwelcome.show()
+    '''
     #com.run_symbols()
     #ArticleSubjects().run()
     #com.check_width()
