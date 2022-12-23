@@ -157,6 +157,10 @@ class Settings(PyQt5.QtWidgets.QWidget):
     
     def _add_buttons(self):
         self.lay_btn.addWidget(self.btn_res.widget)
+        ''' This value is picked up manually and depends on the window width.
+            However, we can set a value surpassing the window width.
+        '''
+        self.lay_btn.insertSpacing(1,650)
         self.lay_btn.addWidget(self.btn_apl.widget)
     
     def add_widgets(self):
