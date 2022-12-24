@@ -409,6 +409,21 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def set_col_num(self):
+        ''' #TODO: Do we need this?
+        if not sh.lg.globs['bool']['AdjustByWidth']:
+            sh.com.rep_lazy(f)
+            return
+        '''
+        self.gui.panel.opt_col.set(sh.lg.globs['int']['colnum'])
+    
+    def apply_settings(self):
+        self.settings.close()
+        st.Save().run()
+        lg.com.export_style()
+        self.set_columns()
+        self.set_col_num()
+    
     def change_col_no(self,no):
         self.gui.panel.opt_col.set(no)
         self.set_columns()
@@ -417,7 +432,7 @@ class App:
         self.reset_columns()
         #lg.objs.get_blocksdb().delete_bookmarks()
         self.load_article()
-        self.gui.ent_src.focus()
+        self.gui.panel.ent_src.focus()
 
     def reset_columns(self):
         f = '[MClientQt] mclient.App.reset_columns'
@@ -429,7 +444,7 @@ class App:
                  if col != _('Do not set')
                 ]
         sh.lg.globs['int']['colnum'] = sh.Input (title = f
-                                                ,value = self.gui.opt_col.choice
+                                                ,value = self.gui.panel.opt_col.get()
                                                 ).get_integer()
         lg.objs.request.collimit = sh.lg.globs['int']['colnum'] + len(fixed)
         mes = _('Set the number of columns to {}')
@@ -995,6 +1010,9 @@ class App:
         self.symbols.gui.return_.connect(self.paste_symbol)
         self.symbols.gui.table.right_mouse.connect(self.copy_symbol)
         self.symbols.gui.ctrl_return.connect(self.copy_symbol)
+        
+        self.settings.gui.apply_settings.connect(self.apply_settings)
+        self.settings.gui.close_settings.connect(self.settings.close)
     
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)

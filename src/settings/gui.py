@@ -11,6 +11,9 @@ PRODUCT = 'MClient'
 
 class Settings(PyQt5.QtWidgets.QWidget):
     
+    apply_settings = PyQt5.QtCore.pyqtSignal()
+    close_settings = PyQt5.QtCore.pyqtSignal()
+    
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.set_values()
@@ -33,6 +36,10 @@ class Settings(PyQt5.QtWidgets.QWidget):
                        ,_('Abbreviation'),_('Adverb')
                        ,_('Preposition'),_('Pronoun')
                        )
+    
+    def closeEvent(self,event):
+        self.close_settings.emit()
+        return super().closeEvent(event)
     
     def centralize(self):
         self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
@@ -219,7 +226,9 @@ class Settings(PyQt5.QtWidgets.QWidget):
     
     def set_buttons(self):
         self.btn_res = sh.Button(_('Reset'))
-        self.btn_apl = sh.Button(_('Apply'))
+        self.btn_apl = sh.Button (text = _('Apply')
+                                 ,action = self.apply_settings.emit
+                                 )
     
     def set_gui(self):
         self.set_layouts()

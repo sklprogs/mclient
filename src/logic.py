@@ -84,7 +84,7 @@ class ColumnWidth:
         self.columns = []
     
     def set_col_width(self):
-        f = '[MClient] logic.ColumnWidth.set_col_width'
+        f = '[MClientQt] logic.ColumnWidth.set_col_width'
         if not sh.lg.globs['bool']['AdjustByWidth']:
             sh.com.rep_lazy(f)
             return
@@ -106,7 +106,7 @@ class ColumnWidth:
         self.set_col_width()
     
     def set_fixed_num(self):
-        f = '[MClient] logic.ColumnWidth.set_fixed_num'
+        f = '[MClientQt] logic.ColumnWidth.set_fixed_num'
         if sh.lg.globs['bool']['VerticalView']:
             sh.com.rep_lazy(f)
             return
@@ -120,7 +120,7 @@ class ColumnWidth:
             sh.com.rep_lazy(f)
     
     def set_term_num(self):
-        f = '[MClient] logic.ColumnWidth.set_term_num'
+        f = '[MClientQt] logic.ColumnWidth.set_term_num'
         self.term_num = sh.lg.globs['int']['colnum']
         mes = _('Number of term columns: {}')
         mes = mes.format(self.term_num)
@@ -154,7 +154,7 @@ class SpeechPrior:
         self.prioritize()
     
     def get_abbr2full(self):
-        f = '[MClient] logic.SpeechPrior.get_abbr2full'
+        f = '[MClientQt] logic.SpeechPrior.get_abbr2full'
         if self.Success:
             if not self.abbr2full:
                 for i in range(len(self.abbr)):
@@ -164,7 +164,7 @@ class SpeechPrior:
         return self.abbr2full
     
     def get_full2abbr(self):
-        f = '[MClient] logic.SpeechPrior.get_full2abbr'
+        f = '[MClientQt] logic.SpeechPrior.get_full2abbr'
         if self.Success:
             if not self.full2abbr:
                 for i in range(len(self.full)):
@@ -174,7 +174,7 @@ class SpeechPrior:
         return self.full2abbr
     
     def get_all2prior(self):
-        f = '[MClient] logic.SpeechPrior.get_all2prior'
+        f = '[MClientQt] logic.SpeechPrior.get_all2prior'
         seq = {}
         if self.Success:
             for i in range(len(self.prior)):
@@ -189,7 +189,7 @@ class SpeechPrior:
         self.debug_pairs()
     
     def debug_all2prior(self):
-        f = '[MClient] logic.SpeechPrior.debug_all2prior'
+        f = '[MClientQt] logic.SpeechPrior.debug_all2prior'
         if self.Success:
             all2prior = self.get_all2prior()
             if all2prior:
@@ -205,7 +205,7 @@ class SpeechPrior:
             sh.com.cancel(f)
     
     def _debug_full2abbr(self):
-        f = '[MClient] logic.SpeechPrior._debug_full2abbr'
+        f = '[MClientQt] logic.SpeechPrior._debug_full2abbr'
         full2abbr = self.get_full2abbr()
         if full2abbr:
             full = sorted(full2abbr.keys())
@@ -218,7 +218,7 @@ class SpeechPrior:
             sh.com.rep_empty(f)
     
     def _debug_abbr2full(self):
-        f = '[MClient] logic.SpeechPrior._debug_abbr2full'
+        f = '[MClientQt] logic.SpeechPrior._debug_abbr2full'
         abbr2full = self.get_abbr2full()
         if abbr2full:
             abbr = sorted(abbr2full.keys())
@@ -231,7 +231,7 @@ class SpeechPrior:
             sh.com.rep_empty(f)
     
     def debug_pairs(self):
-        f = '[MClient] logic.SpeechPrior.debug_pairs'
+        f = '[MClientQt] logic.SpeechPrior.debug_pairs'
         if self.Success:
             self._debug_full2abbr()
             self._debug_abbr2full()
@@ -239,7 +239,7 @@ class SpeechPrior:
             sh.com.cancel(f)
     
     def prioritize(self):
-        f = '[MClient] logic.SpeechPrior.prioritize'
+        f = '[MClientQt] logic.SpeechPrior.prioritize'
         if self.Success:
             lst = [i + 1 for i in range(len(self.abbr))]
             for i in range(len(self.order)):
@@ -266,7 +266,7 @@ class SpeechPrior:
             sh.com.cancel(f)
     
     def check(self):
-        f = '[MClient] logic.SpeechPrior.check'
+        f = '[MClientQt] logic.SpeechPrior.check'
         if len(self.abbr):
             if len(self.abbr) == len(self.full):
                 if len(self.order) > len(self.abbr):
@@ -361,13 +361,13 @@ class CurRequest:
 class Lists:
     # Read the blocklist and the prioritize list
     def __init__(self):
-        f = '[MClient] logic.Lists.__init__'
+        f = '[MClientQt] logic.Lists.__init__'
         self.blacklst = objs.get_default().fblock
         self.priorlst = objs.default.fprior
         self.Success = objs.default.Success
     
     def get_blacklist(self):
-        f = '[MClient] logic.Lists.get_blacklist'
+        f = '[MClientQt] logic.Lists.get_blacklist'
         if self.Success:
             text = sh.ReadTextFile(self.blacklst,True).get()
             text = sh.Text(text,True).text
@@ -376,7 +376,7 @@ class Lists:
             sh.com.cancel(f)
 
     def get_priorities(self):
-        f = '[MClient] logic.Lists.get_priorities'
+        f = '[MClientQt] logic.Lists.get_priorities'
         if self.Success:
             text = sh.ReadTextFile(self.priorlst,True).get()
             text = sh.Text(text,True).text
@@ -493,7 +493,7 @@ class Commands:
         return Confirmed
     
     def assign_blocks(self,data):
-        f = '[MClient] logic.Commands.assign_blocks'
+        f = '[MClientQt] logic.Commands.assign_blocks'
         blocks = []
         if not data:
             sh.com.rep_empty(f)
@@ -510,7 +510,7 @@ class Commands:
         return blocks
     
     def add_formatting(self,blocks):
-        f = '[MClient] logic.Commands.add_formatting'
+        f = '[MClientQt] logic.Commands.add_formatting'
         if not blocks:
             sh.com.rep_empty(f)
             return []
@@ -556,7 +556,7 @@ class Commands:
             sh.lg.globs['int']['colnum'] += 1
     
     def export_style(self):
-        f = '[MClient] logic.Commands.export_style'
+        f = '[MClientQt] logic.Commands.export_style'
         ''' Do not use 'gettext' to name internal types - this will make
             the program ~0,6s slower.
         '''
@@ -602,7 +602,7 @@ class Commands:
         cf.CreateConfig(objs.get_default().get_config()).run()
     
     def dump_elems(self,blocks,artid):
-        f = '[MClient] logic.Commands.dump_elems'
+        f = '[MClientQt] logic.Commands.dump_elems'
         if blocks and artid:
             data = []
             for block in blocks:
@@ -645,7 +645,7 @@ class Commands:
             sh.com.rep_empty(f)
     
     def suggest(self,search,limit=0):
-        f = '[MClient] logic.Commands.suggest'
+        f = '[MClientQt] logic.Commands.suggest'
         items = objs.get_plugins().suggest(search)
         if items:
             if limit:
@@ -656,7 +656,7 @@ class Commands:
         return items
         
     def use_unverified(self):
-        f = '[MClient] logic.Commands.use_unverified'
+        f = '[MClientQt] logic.Commands.use_unverified'
         ''' On *some* systems we can get urllib.error.URLError: 
             <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED].
             To get rid of this error, we use this small workaround.
@@ -676,7 +676,7 @@ class Order(sj.Order):
         self._set_lists()
     
     def _set_lists(self):
-        f = '[MClient] logic.Order._set_lists'
+        f = '[MClientQt] logic.Order._set_lists'
         lists = Lists()
         self.blacklst = sh.Input (title = f
                                  ,value = lists.get_blacklist()
@@ -761,7 +761,7 @@ class Cells:
         self.Debug = Debug
     
     def debug(self):
-        f = '[MClient] logic.Cells.debug'
+        f = '[MClientQt] logic.Cells.debug'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -793,7 +793,7 @@ class Cells:
         #print(mes)
     
     def loop(self):
-        f = '[MClient] logic.Cells.loop'
+        f = '[MClientQt] logic.Cells.loop'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -1226,7 +1226,7 @@ class Font:
             self.block.color = 'dim gray'
     
     def set_bold(self):
-        f = '[MClient] logic.Font.set_bold'
+        f = '[MClientQt] logic.Font.set_bold'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -1235,7 +1235,7 @@ class Font:
             self.block.Bold = True
     
     def set_italic(self):
-        f = '[MClient] logic.Font.set_italic'
+        f = '[MClientQt] logic.Font.set_italic'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -1245,7 +1245,7 @@ class Font:
             self.block.Italic = True
     
     def set_color(self):
-        f = '[MClient] logic.Font.set_color'
+        f = '[MClientQt] logic.Font.set_color'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -1261,14 +1261,14 @@ class Font:
             self._set_color()
     
     def set_text(self):
-        f = '[MClient] logic.Font.set_text'
+        f = '[MClientQt] logic.Font.set_text'
         if not self.Success:
             sh.com.cancel(f)
             return
         self.text = self.block.text
     
     def check(self):
-        f = '[MClient] logic.Font.check'
+        f = '[MClientQt] logic.Font.check'
         if self.block and self.blocked_color1 and self.blocked_color2 \
         and self.blocked_color3 and self.blocked_color4 \
         and self.priority_color1 and self.priority_color2 \
@@ -1279,7 +1279,7 @@ class Font:
             sh.com.rep_empty(f)
     
     def set_family(self):
-        f = '[MClient] logic.Font.set_family'
+        f = '[MClientQt] logic.Font.set_family'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -1300,7 +1300,7 @@ class Font:
             self.block.family = sh.lg.globs['str']['font_terms_family']
     
     def set_size(self):
-        f = '[MClient] logic.Font.set_size'
+        f = '[MClientQt] logic.Font.set_size'
         if not self.Success:
             sh.com.cancel(f)
             return
