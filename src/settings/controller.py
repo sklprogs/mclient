@@ -12,7 +12,7 @@ from . import gui as gi
 class Load:
     
     def __init__(self):
-        self.gui = objs.get_settings().get_gui()
+        self.gui = objs.get_settings().gui
     
     def load_style_area(self):
         self.gui.opt_stl.set(sh.lg.globs['str']['style'])
@@ -60,7 +60,7 @@ class Load:
 class Save:
     
     def __init__(self):
-        self.gui = objs.get_settings().get_gui()
+        self.gui = objs.get_settings().gui
     
     def save_speech_area(self):
         sh.lg.globs['str']['speech1'] = self.gui.opt_sp1.get()
@@ -157,6 +157,7 @@ class Settings:
     
     def show(self):
         self.Shown = True
+        Load().run()
         self.gui.show()
         self.gui.centralize()
     
