@@ -557,7 +557,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
                                  ,active = self.icn_swp
                                  )
         self.opt_lg2 = sh.OptionMenu()
-        self.opt_col = sh.OptionMenu()
+        self.opt_col = sh.OptionMenu(range(1,11),5)
         # A settings button
         self.btn_set = sh.Button (hint = _('Tune up view settings')
                                  ,inactive = self.icn_set

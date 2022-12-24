@@ -409,6 +409,51 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def change_col_no(self,no):
+        self.gui.panel.opt_col.set(no)
+        self.set_columns()
+
+    def set_columns(self):
+        self.reset_columns()
+        #lg.objs.get_blocksdb().delete_bookmarks()
+        self.load_article()
+        self.gui.ent_src.focus()
+
+    def reset_columns(self):
+        f = '[MClientQt] mclient.App.reset_columns'
+        ''' Since Combo-type OptionMenus can be edited manually, we must get
+            an actual value first.
+        '''
+        self.gui.panel.opt_col.get()
+        fixed = [col for col in lg.objs.get_request().cols \
+                 if col != _('Do not set')
+                ]
+        sh.lg.globs['int']['colnum'] = sh.Input (title = f
+                                                ,value = self.gui.opt_col.choice
+                                                ).get_integer()
+        lg.objs.request.collimit = sh.lg.globs['int']['colnum'] + len(fixed)
+        mes = _('Set the number of columns to {}')
+        mes = mes.format(lg.objs.request.collimit)
+        sh.objs.get_mes(f,mes,True).show_info()
+    
+    def update_columns(self):
+        ''' Update a column number in GUI; adjust the column number
+            (both logic and GUI) in special cases.
+        '''
+        f = '[MClientQt] mclient.App.update_columns'
+        lg.com.update_colnum()
+        fixed = [col for col in lg.objs.get_request().cols \
+                 if col != _('Do not set')
+                ]
+        lg.objs.get_request().collimit = len(fixed) + sh.lg.globs['int']['colnum']
+        self.gui.panel.opt_col.set(sh.lg.globs['int']['colnum'])
+        mes = _('Set the column limit to {} ({} in total)')
+        mes = mes.format (sh.lg.globs['int']['colnum']
+                         ,lg.objs.request.collimit
+                         )
+        sh.objs.get_mes(f,mes,True).show_info()
+        lg.com.set_def_colnum_even()
+    
     def set_source(self):
         f = '[MClientQt] mclient.App.set_source'
         sh.lg.globs['str']['source'] = self.gui.panel.opt_src.get()
@@ -706,7 +751,7 @@ class App:
             # Otherwise, 'SpecialPage' will be inherited
             lg.objs.request.SpecialPage = True
         lg.objs.request.NewPageType = old_special != lg.objs.request.SpecialPage
-        #self.update_columns()
+        self.update_columns()
         
         SortTerms = sh.lg.globs['bool']['AlphabetizeTerms'] \
                     and not lg.objs.request.SpecialPage
@@ -930,6 +975,7 @@ class App:
         self.panel.btn_rp2.set_action(self.insert_repeat_sign2)
         self.panel.btn_sym.set_action(self.symbols.show)
         self.panel.btn_swp.set_action(self.swap_langs)
+        self.panel.btn_set.set_action(self.settings.toggle)
         self.panel.btn_qit.set_action(self.close)
         
         self.panel.ent_src.widget.home_key.connect(self.table.go_line_start)
@@ -959,7 +1005,7 @@ class App:
         self.about = About()
         self.symbols = sm.Symbols()
         self.welcome = Welcome(self.about.get_product())
-        self.settings = st.Settings()
+        self.settings = st.objs.get_settings()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title()
         self.set_bindings()
