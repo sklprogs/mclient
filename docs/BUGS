@@ -3,6 +3,7 @@ mclient:
 - Vertical mode icon is not changed upon toggling the vertical mode on
   a welcome screen
 - Fix wrong 1st position of a speech part in the Cut-to-the chase mode
+- Changing number of columns causes navigation issues
 
 multitrancom:
 - EN-RU, hoove: loosing selection when moving mouse pointer at the end of the
