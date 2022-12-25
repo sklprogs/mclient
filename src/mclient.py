@@ -421,8 +421,9 @@ class App:
         self.settings.close()
         st.Save().run()
         lg.com.export_style()
-        self.set_columns()
         self.set_col_num()
+        # This loads the article and must come the last
+        self.set_columns()
     
     def change_col_no(self,no):
         self.gui.panel.opt_col.set(no)
@@ -436,10 +437,6 @@ class App:
 
     def reset_columns(self):
         f = '[MClientQt] mclient.App.reset_columns'
-        ''' Since Combo-type OptionMenus can be edited manually, we must get
-            an actual value first.
-        '''
-        self.gui.panel.opt_col.get()
         fixed = [col for col in lg.objs.get_request().cols \
                  if col != _('Do not set')
                 ]
