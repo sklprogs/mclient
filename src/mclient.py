@@ -376,17 +376,6 @@ class Table:
     def set_max_row_height(self,height=150):
         self.gui.set_max_row_height(height)
     
-    def set_max_col_width(self):
-        constraints = []
-        for cell in self.logic.cells:
-            #TODO: elaborate
-            if cell.no < 5:
-                value = 63
-            else:
-                value = 221
-            constraints.append(self.gui.get_constraint(value))
-        self.gui.set_max_col_width(constraints)
-    
     def show_borders(self,Show=False):
         self.gui.show_borders(Show)
     
