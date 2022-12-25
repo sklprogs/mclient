@@ -36,6 +36,29 @@ class Settings(PyQt5.QtWidgets.QWidget):
                        ,_('Preposition'),_('Pronoun')
                        )
     
+    def reset(self):
+        self.opt_stl.set(PRODUCT)
+        self.opt_cl1.set(_('Subjects'))
+        self.opt_cl2.set(_('Word forms'))
+        self.opt_cl3.set(_('Parts of speech'))
+        self.opt_cl4.set(_('Transcription'))
+        self.opt_sp1.set(_('Noun'))
+        self.opt_sp2.set(_('Verb'))
+        self.opt_sp3.set(_('Adjective'))
+        self.opt_sp4.set(_('Abbreviation'))
+        self.opt_sp5.set(_('Adverb'))
+        self.opt_sp6.set(_('Preposition'))
+        self.opt_sp7.set(_('Pronoun'))
+        self.cbx_no1.enable()
+        self.cbx_no2.enable()
+        self.cbx_no3.disable()
+        self.cbx_no4.disable()
+        self.cbx_no5.enable()
+        self.cbx_no6.enable()
+        self.cbx_no7.disable()
+        self.cbx_no8.enable()
+        self.cbx_no9.enable()
+    
     def closeEvent(self,event):
         self.close_settings.emit()
         return super().closeEvent(event)
@@ -224,8 +247,13 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.lay_sgl.addStretch(0)
     
     def set_buttons(self):
-        self.btn_res = sh.Button(_('Reset'))
-        self.btn_apl = sh.Button(_('Apply'))
+        self.btn_res = sh.Button (text = _('Reset')
+                                 ,hint = _('Restore recommended settings')
+                                 ,action = self.reset
+                                 )
+        self.btn_apl = sh.Button (text = _('Apply')
+                                 ,hint = _('Apply current settings and reload the article')
+                                 )
     
     def set_gui(self):
         self.set_layouts()
