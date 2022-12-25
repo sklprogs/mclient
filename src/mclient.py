@@ -997,7 +997,7 @@ class App:
         self.symbols.gui.table.right_mouse.connect(self.copy_symbol)
         self.symbols.gui.ctrl_return.connect(self.copy_symbol)
         
-        self.settings.gui.apply_settings.connect(self.apply_settings)
+        self.settings.gui.btn_apl.set_action(self.apply_settings)
         self.settings.gui.close_settings.connect(self.settings.close)
     
     def set_title(self,title='MClientQt'):

@@ -11,7 +11,6 @@ PRODUCT = 'MClient'
 
 class Settings(PyQt5.QtWidgets.QWidget):
     
-    apply_settings = PyQt5.QtCore.pyqtSignal()
     close_settings = PyQt5.QtCore.pyqtSignal()
     
     def __init__(self,*args,**kwargs):
@@ -226,9 +225,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
     
     def set_buttons(self):
         self.btn_res = sh.Button(_('Reset'))
-        self.btn_apl = sh.Button (text = _('Apply')
-                                 ,action = self.apply_settings.emit
-                                 )
+        self.btn_apl = sh.Button(_('Apply'))
     
     def set_gui(self):
         self.set_layouts()
