@@ -19,6 +19,8 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.set_gui()
     
     def set_values(self):
+        self.allowed = []
+        self.spallow = []
         self.items = (_('Subjects')
                      ,_('Word forms')
                      ,_('Transcription')
@@ -35,6 +37,319 @@ class Settings(PyQt5.QtWidgets.QWidget):
                        ,_('Abbreviation'),_('Adverb')
                        ,_('Preposition'),_('Pronoun')
                        )
+
+    def update_sp1(self):
+        f = '[MClientQt] settings.gui.Settings.update_sp1'
+        if self.opt_sp1.get() in self.spallow:
+            self.spallow.remove(self.opt_sp1.get())
+        elif _('Noun') in self.spallow:
+            self.opt_sp1.set(_('Noun'))
+            self.spallow.remove(_('Noun'))
+        elif self.spallow:
+            self.opt_sp1.set(self.spallow[0])
+            self.spallow.remove(self.spallow[0])
+        else:
+            mes = _('Empty input is not allowed!')
+            sh.objs.get_mes(f,mes).show_error()
+    
+    def update_sp2(self):
+        f = '[MClientQt] settings.gui.Settings.update_sp2'
+        if self.opt_sp2.get() in self.spallow:
+            self.spallow.remove(self.opt_sp2.get())
+        elif _('Verb') in self.spallow:
+            self.opt_sp2.set(_('Verb'))
+            self.spallow.remove(_('Verb'))
+        elif self.spallow:
+            self.opt_sp2.set(self.spallow[0])
+            self.spallow.remove(self.spallow[0])
+        else:
+            mes = _('Empty input is not allowed!')
+            sh.objs.get_mes(f,mes).show_error()
+                       
+    def update_sp3(self):
+        f = '[MClientQt] settings.gui.Settings.update_sp3'
+        if self.opt_sp3.get() in self.spallow:
+            self.spallow.remove(self.opt_sp3.get())
+        elif _('Adjective') in self.spallow:
+            self.opt_sp3.set(_('Adjective'))
+            self.spallow.remove(_('Adjective'))
+        elif self.spallow:
+            self.opt_sp3.set(self.spallow[0])
+            self.spallow.remove(self.spallow[0])
+        else:
+            mes = _('Empty input is not allowed!')
+            sh.objs.get_mes(f,mes).show_error()
+                       
+    def update_sp4(self):
+        f = '[MClientQt] settings.gui.Settings.update_sp4'
+        if self.opt_sp4.get() in self.spallow:
+            self.spallow.remove(self.opt_sp4.get())
+        elif _('Abbreviation') in self.spallow:
+            self.opt_sp4.set(_('Abbreviation'))
+            self.spallow.remove(_('Abbreviation'))
+        elif self.spallow:
+            self.opt_sp4.set(self.spallow[0])
+            self.spallow.remove(self.spallow[0])
+        else:
+            mes = _('Empty input is not allowed!')
+            sh.objs.get_mes(f,mes).show_error()
+                       
+    def update_sp5(self):
+        f = '[MClientQt] settings.gui.Settings.update_sp5'
+        if self.opt_sp5.get() in self.spallow:
+            self.spallow.remove(self.opt_sp5.get())
+        elif _('Adverb') in self.spallow:
+            self.opt_sp5.set(_('Adverb'))
+            self.spallow.remove(_('Adverb'))
+        elif self.spallow:
+            self.opt_sp5.set(self.spallow[0])
+            self.spallow.remove(self.spallow[0])
+        else:
+            mes = _('Empty input is not allowed!')
+            sh.objs.get_mes(f,mes).show_error()
+                       
+    def update_sp6(self):
+        f = '[MClientQt] settings.gui.Settings.update_sp6'
+        if self.opt_sp6.get() in self.spallow:
+            self.spallow.remove(self.opt_sp6.get())
+        elif _('Preposition') in self.spallow:
+            self.opt_sp6.set(_('Preposition'))
+            self.spallow.remove(_('Preposition'))
+        elif self.spallow:
+            self.opt_sp6.set(self.spallow[0])
+            self.spallow.remove(self.spallow[0])
+        else:
+            mes = _('Empty input is not allowed!')
+            sh.objs.get_mes(f,mes).show_error()
+                       
+    def update_sp7(self):
+        f = '[MClientQt] settings.gui.Settings.update_sp7'
+        if self.opt_sp7.get() in self.spallow:
+            self.spallow.remove(self.opt_sp7.get())
+        elif _('Pronoun') in self.spallow:
+            self.opt_sp7.set(_('Pronoun'))
+            self.spallow.remove(_('Pronoun'))
+        elif self.spallow:
+            self.opt_sp7.set(self.spallow[0])
+            self.spallow.remove(self.spallow[0])
+        else:
+            mes = _('Empty input is not allowed!')
+            sh.objs.get_mes(f,mes).show_error()
+    
+    def update_col1(self):
+        f = '[MClientQt] settings.gui.Settings.update_col1'
+        if self.opt_cl1.get() != _('Do not set'):
+            if self.opt_cl1.get() in self.allowed:
+                self.allowed.remove(self.opt_cl1.get())
+            elif _('Subjects') in self.allowed:
+                self.opt_cl1.set(_('Subjects'))
+                self.allowed.remove(_('Subjects'))
+            elif self.allowed:
+                self.opt_cl1.set(self.allowed[0])
+                self.allowed.remove(self.allowed[0])
+            else:
+                mes = _('Empty input is not allowed!')
+                sh.objs.get_mes(f,mes).show_error()
+
+    def update_col2(self):
+        f = '[MClientQt] settings.gui.Settings.update_col2'
+        if self.opt_cl2.get() != _('Do not set'):
+            if self.opt_cl2.get() in self.allowed:
+                self.allowed.remove(self.opt_cl2.get())
+            elif _('Word forms') in self.allowed:
+                self.opt_cl2.set(_('Word forms'))
+                self.allowed.remove(_('Word forms'))
+            elif self.allowed:
+                self.opt_cl2.set(self.allowed[0])
+                self.allowed.remove(self.allowed[0])
+            else:
+                mes = _('Empty input is not allowed!')
+                sh.objs.get_mes(f,mes).show_error()
+
+    def update_col3(self):
+        f = '[MClientQt] settings.gui.Settings.update_col3'
+        if self.opt_cl3.get() != _('Do not set'):
+            if self.opt_cl3.get() in self.allowed:
+                self.allowed.remove(self.opt_cl3.get())
+            elif _('Parts of speech') in self.allowed:
+                self.opt_cl3.set(_('Parts of speech'))
+                self.allowed.remove(_('Parts of speech'))
+            elif self.allowed:
+                self.opt_cl3.set(self.allowed[0])
+                self.allowed.remove(self.allowed[0])
+            else:
+                mes = _('Empty input is not allowed!')
+                sh.objs.get_mes(f,mes).show_error()
+
+    def update_col4(self):
+        f = '[MClientQt] settings.gui.Settings.update_col4'
+        if self.opt_cl4.get() != _('Do not set'):
+            if self.opt_cl4.get() in self.allowed:
+                self.allowed.remove(self.opt_cl4.get())
+            elif _('Transcription') in self.allowed:
+                self.opt_cl4.set(_('Transcription'))
+                self.allowed.remove(_('Transcription'))
+            elif self.allowed:
+                self.opt_cl4.set(self.allowed[0])
+                self.allowed.remove(self.allowed[0])
+            else:
+                mes = _('Empty input is not allowed!')
+                sh.objs.get_mes(f,mes).show_error()
+
+    def update_style(self):
+        cond11 = self.opt_cl1.get() == _('Subjects')
+        cond12 = self.opt_cl1.get() == _('Word forms')
+        cond13 = self.opt_cl1.get() == _('Parts of speech')
+        cond21 = self.opt_cl2.get() == _('Word forms')
+        cond22 = self.opt_cl2.get() == _('Transcription')
+        cond31 = self.opt_cl3.get() == _('Transcription')
+        cond32 = self.opt_cl3.get() == _('Parts of speech')
+        cond33 = self.opt_cl3.get() == _('Do not set')
+        cond41 = self.opt_cl4.get() == _('Parts of speech')
+        cond42 = self.opt_cl4.get() == _('Subjects')
+        cond43 = self.opt_cl4.get() == _('Do not set')
+
+        if cond11 and cond21 and cond31 and cond41:
+            self.opt_stl.set(PRODUCT)
+        elif cond12 and cond22 and cond32 and cond42:
+            self.opt_stl.set(_('Multitran'))
+        elif cond13 and cond21 and cond31 and cond42:
+            self.opt_stl.set(_('Cut to the chase'))
+        elif cond13 and cond21 and cond33 and cond43:
+            self.opt_stl.set(_('Clearness'))
+        else:
+            self.opt_stl.set(_('Custom'))
+
+    def update_by_st(self,event=None):
+        f = '[MClientQt] settings.gui.Settings.update_by_st'
+        if self.opt_stl.get() == PRODUCT:
+            self.opt_cl1.set(_('Subjects'))
+            self.opt_cl2.set(_('Word forms'))
+            self.opt_cl3.set(_('Transcription'))
+            self.opt_cl4.set(_('Parts of speech'))
+        elif self.opt_stl.get() == _('Multitran'):
+            self.opt_cl1.set(_('Word forms'))
+            self.opt_cl2.set(_('Transcription'))
+            self.opt_cl3.set(_('Parts of speech'))
+            self.opt_cl4.set(_('Subjects'))
+        elif self.opt_stl.get() == _('Cut to the chase'):
+            self.opt_cl1.set(_('Parts of speech'))
+            self.opt_cl2.set(_('Word forms'))
+            self.opt_cl3.set(_('Transcription'))
+            self.opt_cl4.set(_('Subjects'))
+        elif self.opt_stl.get() == _('Clearness'):
+            self.opt_cl1.set(_('Parts of speech'))
+            self.opt_cl2.set(_('Word forms'))
+            self.opt_cl3.set(_('Do not set'))
+            self.opt_cl4.set(_('Do not set'))
+        elif self.opt_stl.get() == _('Custom'):
+            pass
+        else:
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(self.opt_stl.get(),self.stitems)
+            sh.objs.get_mes(f,mes).show_error()
+
+    def update_by_col1(self):
+        self.allowed = list(self.items)
+        self.update_col1()
+        self.update_col2()
+        self.update_col3()
+        self.update_col4()
+        self.update_style()
+
+    def update_by_col2(self):
+        self.allowed = list(self.items)
+        self.update_col2()
+        self.update_col1()
+        self.update_col3()
+        self.update_col4()
+        self.update_style()
+
+    def update_by_col3(self):
+        self.allowed = list(self.items)
+        self.update_col3()
+        self.update_col1()
+        self.update_col2()
+        self.update_col4()
+        self.update_style()
+
+    def update_by_col4(self,event=None):
+        self.allowed = list(self.items)
+        self.update_col4()
+        self.update_col1()
+        self.update_col2()
+        self.update_col3()
+        self.update_style()
+        
+    def update_by_sp1(self):
+        self.spallow = list(self.spitems)
+        self.update_sp1()
+        self.update_sp2()
+        self.update_sp3()
+        self.update_sp4()
+        self.update_sp5()
+        self.update_sp6()
+        self.update_sp7()
+        
+    def update_by_sp2(self):
+        self.spallow = list(self.spitems)
+        self.update_sp2()
+        self.update_sp1()
+        self.update_sp3()
+        self.update_sp4()
+        self.update_sp5()
+        self.update_sp6()
+        self.update_sp7()
+        
+    def update_by_sp3(self):
+        self.spallow = list(self.spitems)
+        self.update_sp3()
+        self.update_sp1()
+        self.update_sp2()
+        self.update_sp4()
+        self.update_sp5()
+        self.update_sp6()
+        self.update_sp7()
+        
+    def update_by_sp4(self):
+        self.spallow = list(self.spitems)
+        self.update_sp4()
+        self.update_sp1()
+        self.update_sp2()
+        self.update_sp3()
+        self.update_sp5()
+        self.update_sp6()
+        self.update_sp7()
+        
+    def update_by_sp5(self):
+        self.spallow = list(self.spitems)
+        self.update_sp5()
+        self.update_sp1()
+        self.update_sp2()
+        self.update_sp3()
+        self.update_sp4()
+        self.update_sp6()
+        self.update_sp7()
+        
+    def update_by_sp6(self):
+        self.spallow = list(self.spitems)
+        self.update_sp6()
+        self.update_sp1()
+        self.update_sp2()
+        self.update_sp3()
+        self.update_sp4()
+        self.update_sp5()
+        self.update_sp7()
+        
+    def update_by_sp7(self):
+        self.spallow = list(self.spitems)
+        self.update_sp7()
+        self.update_sp1()
+        self.update_sp2()
+        self.update_sp3()
+        self.update_sp4()
+        self.update_sp5()
+        self.update_sp6()
     
     def reset(self):
         self.opt_stl.set(PRODUCT)
@@ -83,18 +398,54 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.lbl_sp7 = sh.Label(mes.format(7))
     
     def set_menus(self):
-        self.opt_stl = sh.OptionMenu(self.stitems,PRODUCT)
-        self.opt_cl1 = sh.OptionMenu(self.items,_('Subjects'))
-        self.opt_cl2 = sh.OptionMenu(self.items,_('Word forms'))
-        self.opt_cl3 = sh.OptionMenu(self.items,_('Transcription'))
-        self.opt_cl4 = sh.OptionMenu(self.items,_('Parts of speech'))
-        self.opt_sp1 = sh.OptionMenu(self.spitems,_('Noun'))
-        self.opt_sp2 = sh.OptionMenu(self.spitems,_('Verb'))
-        self.opt_sp3 = sh.OptionMenu(self.spitems,_('Adjective'))
-        self.opt_sp4 = sh.OptionMenu(self.spitems,_('Abbreviation'))
-        self.opt_sp5 = sh.OptionMenu(self.spitems,_('Adverb'))
-        self.opt_sp6 = sh.OptionMenu(self.spitems,_('Preposition'))
-        self.opt_sp7 = sh.OptionMenu(self.spitems,_('Pronoun'))
+        self.opt_stl = sh.OptionMenu (items = self.stitems
+                                     ,default = PRODUCT
+                                     ,action = self.update_by_st
+                                     )
+        self.opt_cl1 = sh.OptionMenu (items = self.items
+                                     ,default = _('Subjects')
+                                     ,action = self.update_by_col1
+                                     )
+        self.opt_cl2 = sh.OptionMenu (items = self.items
+                                     ,default = _('Word forms')
+                                     ,action = self.update_by_col2
+                                     )
+        self.opt_cl3 = sh.OptionMenu (items = self.items
+                                     ,default = _('Transcription')
+                                     ,action = self.update_by_col3
+                                     )
+        self.opt_cl4 = sh.OptionMenu (items = self.items
+                                     ,default = _('Parts of speech')
+                                     ,action = self.update_by_col4
+                                     )
+        self.opt_sp1 = sh.OptionMenu (items = self.spitems
+                                     ,default = _('Noun')
+                                     ,action = self.update_by_sp1
+                                     )
+        self.opt_sp2 = sh.OptionMenu (items = self.spitems
+                                     ,default = _('Verb')
+                                     ,action = self.update_by_sp2
+                                     )
+        self.opt_sp3 = sh.OptionMenu (items = self.spitems
+                                     ,default = _('Adjective')
+                                     ,action = self.update_by_sp3
+                                     )
+        self.opt_sp4 = sh.OptionMenu (items = self.spitems
+                                     ,default = _('Abbreviation')
+                                     ,action = self.update_by_sp4
+                                     )
+        self.opt_sp5 = sh.OptionMenu (items = self.spitems
+                                     ,default = _('Adverb')
+                                     ,action = self.update_by_sp5
+                                     )
+        self.opt_sp6 = sh.OptionMenu (items = self.spitems
+                                     ,default = _('Preposition')
+                                     ,action = self.update_by_sp6
+                                     )
+        self.opt_sp7 = sh.OptionMenu (items = self.spitems
+                                     ,default = _('Pronoun')
+                                     ,action = self.update_by_sp7
+                                     )
     
     def set_layouts(self):
         self.lay_prm = PyQt5.QtWidgets.QVBoxLayout(self)
