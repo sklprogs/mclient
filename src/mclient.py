@@ -398,6 +398,52 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def get_width(self):
+        return self.gui.get_width()
+    
+    def _set_col_num(self,window_width):
+        if window_width <= 1024:
+            return 3
+        else:
+            return 5
+    
+    def suggest_col_widths(self):
+        f = '[MClientQt] mclient.App.suggest_col_widths'
+        table_width = self.get_width()
+        if not table_width:
+            sh.com.rep_empty(f)
+            return
+        col_num = self.settings.gui.ent_num.get()
+        if not col_num:
+            col_num = self._set_col_num(table_width)
+        col_num = sh.Input(f,col_num).get_integer()
+        if not 0 < col_num <= 10:
+            mes = _('A value of this field should be within the range of {}-{}!')
+            mes = mes.format(1,10)
+            sh.objs.get_mes(f,mes).show_warning()
+            col_num = self._set_col_num(table_width)
+        
+        ''' How we got this formula. The recommended fixed column width
+            is 63 (provided that there are 4 fixed columns). This value
+            does not depend on a screen size (but is font-dependent).
+            63 * 4 = 252. 79.77% is the recommended value of
+            a calculated term column width. We need this to be less than
+            100% since a width of columns in HTML cannot be less than
+            the text width, and we may have pretty long lines sometimes.
+        '''
+        term_width = 0.7977 * ((table_width - 252) / col_num)
+        # Values in pixels must be integer
+        term_width = int(term_width)
+        
+        mes = _('Table width: {}').format(table_width)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = _('Term column width: {}').format(term_width)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        
+        self.settings.gui.ent_num.set_text(col_num)
+        self.settings.gui.ent_fix.set_text(63)
+        self.settings.gui.ent_trm.set_text(term_width)
+    
     def set_col_num(self):
         ''' #TODO: Do we need this?
         if not sh.lg.globs['bool']['AdjustByWidth']:
@@ -998,6 +1044,7 @@ class App:
         self.symbols.gui.ctrl_return.connect(self.copy_symbol)
         
         self.settings.gui.btn_apl.set_action(self.apply_settings)
+        self.settings.gui.btn_sug.set_action(self.suggest_col_widths)
         self.settings.gui.close_settings.connect(self.settings.close)
     
     def set_title(self,title='MClientQt'):
