@@ -398,6 +398,46 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def go_back(self):
+        f = '[MClientQt] mclient.App.go_back'
+        result = lg.objs.get_blocksdb().get_prev_id()
+        if not result:
+            sh.com.rep_empty(f)
+            return
+        lg.objs.blocksdb.artid = result
+        result = lg.objs.blocksdb.get_article()
+        if not result:
+            sh.com.rep_empty(f)
+            return
+        sh.lg.globs['str']['source'] = result[0]
+        lg.objs.get_request().search = result[1]
+        lg.objs.request.url = result[2]
+        lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
+        lg.objs.plugins.set_lang1(result[4])
+        lg.objs.plugins.set_lang2(result[5])
+        self.reset_opt(sh.lg.globs['str']['source'])
+        self.load_article()
+
+    def go_forward(self):
+        f = '[MClientQt] mclient.App.go_forward'
+        result = lg.objs.get_blocksdb().get_next_id()
+        if not result:
+            sh.com.rep_empty(f)
+            return
+        lg.objs.blocksdb.artid = result
+        result = lg.objs.blocksdb.get_article()
+        if not result:
+            sh.com.rep_empty(f)
+            return
+        sh.lg.globs['str']['source'] = result[0]
+        lg.objs.get_request().search = result[1]
+        lg.objs.request.url = result[2]
+        lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
+        lg.objs.plugins.set_lang1(result[4])
+        lg.objs.plugins.set_lang2(result[5])
+        self.reset_opt(sh.lg.globs['str']['source'])
+        self.load_article()
+    
     def get_width(self):
         return self.gui.get_width()
     
@@ -984,6 +1024,12 @@ class App:
                       )
         self.gui.bind (sh.lg.globs['str']['bind_col4_up']
                       ,lambda:self.table.go_prev_section(3)
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_go_forward']
+                      ,self.go_forward
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_go_back']
+                      ,self.go_back
                       )
         self.gui.bind (sh.lg.globs['str']['bind_settings']
                       ,self.settings.toggle
