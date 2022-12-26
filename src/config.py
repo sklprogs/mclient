@@ -108,7 +108,6 @@ class DefaultKeys(sh.DefaultKeys):
            ,'bind_toggle_history'         :'F4'
            ,'bind_toggle_history_alt'     :'Ctrl+H'
            ,'bind_toggle_priority'        :'Alt+P'
-           ,'bind_toggle_sel'             :'Ctrl+T'
            ,'bind_toggle_view'            :'F6'
            ,'bind_toggle_view_alt'        :'Alt+V'
            ,'col1_type'                   :_('Subjects')
@@ -500,10 +499,6 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'bind_toggle_priority'
         comment = _('Toggle prioritizing')
-        self.add_key(section,section_abbr,key,comment)
-        
-        key = 'bind_toggle_sel'
-        comment = _('Toggle selecting terms only')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'bind_toggle_view'
