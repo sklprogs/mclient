@@ -398,6 +398,11 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def clear_history(self):
+        lg.objs.get_blocksdb().clear()
+        lg.objs.get_request().reset()
+        self.reset()
+    
     def go_back(self):
         f = '[MClientQt] mclient.App.go_back'
         result = lg.objs.get_blocksdb().get_prev_id()
@@ -955,9 +960,9 @@ class App:
     def paste(self):
         self.panel.ent_src.set_text(sh.Clipboard().paste())
     
-    def reset(self,cells):
+    def reset(self):
         f = '[MClientQt] mclient.App.reset'
-        self.table.reset(cells)
+        #TODO: show Welcome
     
     def minimize(self):
         self.gui.minimize()
@@ -1001,6 +1006,9 @@ class App:
         self.gui.bind('Ctrl+Return',self.copy_cell)
         self.gui.bind('Ctrl+Enter',self.copy_cell)
         
+        self.gui.bind (sh.lg.globs['str']['bind_clear_history']
+                      ,self.clear_history
+                      )
         self.gui.bind (sh.lg.globs['str']['bind_col1_down']
                       ,lambda:self.table.go_next_section(0)
                       )
