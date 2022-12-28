@@ -17,7 +17,9 @@ class History(PyQt5.QtWidgets.QWidget):
         self.set_gui()
     
     def add_row(self,no,lang1,lang2,search):
-        self.item = PyQt5.QtWidgets.QTreeWidgetItem(self.history,self.item)
+        # Reuse an empty row created upon initializing History
+        if no != '1':
+            self.item = PyQt5.QtWidgets.QTreeWidgetItem(self.history,self.item)
         self.item.setText(0,no)
         self.item.setText(1,lang1)
         self.item.setText(2,lang2)
