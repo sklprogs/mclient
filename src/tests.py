@@ -967,10 +967,11 @@ if __name__ == '__main__':
     '''
     import history.controller as hs
     ihis = hs.History()
-    item = ihis.add_row(_('English'),_('Russian'),'start')
-    item = ihis.add_row(_('Russian'),_('English'),'hello')
-    item = ihis.add_row(_('French'),_('Esperanto'),'bye')
-    item = ihis.add_row(_('English'),_('Russian'),'end')
+    for i in range(100):
+        ihis.add_row(_('English'),_('Russian'),f'start ({i+1})')
+        ihis.add_row(_('Russian'),_('English'),f'hello ({i+1})')
+        ihis.add_row(_('French'),_('Esperanto'),f'bye ({i+1})')
+        ihis.add_row(_('English'),_('Russian'),f'end ({i+1})')
     ihis.show()
     '''
     import mclient as mc
