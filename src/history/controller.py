@@ -11,11 +11,14 @@ class History:
     
     def __init__(self):
         self.Shown = False
-        self.ids = []
-        self.items = []
+        self.no = 0
         self.gui = gi.History()
         self.set_title()
         self.set_bindings()
+    
+    def add_row(self,lang1,lang2,search):
+        self.no += 1
+        self.gui.add_row(str(self.no),lang1,lang2,search)
     
     def set_title(self,title=_('History')):
         self.gui.set_title(title)

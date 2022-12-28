@@ -16,17 +16,12 @@ class History(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
-    def create_item(self,text1,text2):
-        item = PyQt5.QtWidgets.QTreeWidgetItem(self.history)
-        item.setText(0,text1)
-        item.setText(1,text2)
-        return item
-    
-    def add_item(self,text1,text2,old_item):
-        item = PyQt5.QtWidgets.QTreeWidgetItem(self.history,old_item)
-        item.setText(0,text1)
-        item.setText(1,text2)
-        return item
+    def add_row(self,no,lang1,lang2,search):
+        self.item = PyQt5.QtWidgets.QTreeWidgetItem(self.history,self.item)
+        self.item.setText(0,no)
+        self.item.setText(1,lang1)
+        self.item.setText(2,lang2)
+        self.item.setText(3,search)
     
     def insert(self,index,item):
         self.history.insertTopLevelItem(index,item)
@@ -50,17 +45,19 @@ class History(PyQt5.QtWidgets.QWidget):
     def set_gui(self):
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout(self)
         self.history = PyQt5.QtWidgets.QTreeWidget()
-        self.history.setColumnCount(2)
+        self.history.setColumnCount(4)
         self.layout_.addWidget(self.history)
         self.setLayout(self.layout_)
+        self.item = PyQt5.QtWidgets.QTreeWidgetItem(self.history)
+        self.resize(600,300)
 
 
 if __name__ == '__main__':
     sh.com.start()
     ihis = History()
-    item = ihis.create_item('1','start')
-    item = ihis.add_item('2','hello',item)
-    item = ihis.add_item('3','bye',item)
-    item = ihis.add_item('4','end',item)
+    item = ihis.add_row('1',_('Russian'),_('English'),'start')
+    item = ihis.add_row('2',_('Russian'),_('English'),'hello')
+    item = ihis.add_row('3',_('English'),_('Russian'),'bye')
+    item = ihis.add_row('4',_('Arabic'),_('French'),'end')
     ihis.show()
     sh.com.end()

@@ -27,6 +27,23 @@ import history.controller as hs
 DEBUG = False
 
 
+class History(hs.History):
+
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def add(self):
+        f = '[MClient] mclient.History.add'
+        if not lg.objs.get_request().search:
+            sh.com.rep_lazy(f)
+            return
+        self.add_row (lang1 = lg.objs.get_plugins().get_lang1()
+                     ,lang2 = lg.objs.plugins.get_lang2()
+                     ,search = lg.objs.request.search
+                     )
+
+
+
 class Welcome(wl.Welcome):
 
     def __init__(self,*args,**kwargs):
@@ -909,6 +926,8 @@ class App:
         cells = lg.Cells(blocks).run()
         self.table.reset(cells)
         
+        self.history.add()
+        
         ''' Empty article is not added either to DB or history, so we just do
             not clear the search field to be able to correct the typo.
         '''
@@ -1121,7 +1140,7 @@ class App:
         self.symbols = sm.Symbols()
         self.welcome = Welcome(self.about.get_product())
         self.settings = st.objs.get_settings()
-        self.history = hs.History()
+        self.history = History()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title()
         self.set_bindings()
