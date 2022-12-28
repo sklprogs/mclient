@@ -21,6 +21,7 @@ import third_parties.controller as tp
 import symbols.controller as sm
 import welcome.controller as wl
 import settings.controller as st
+import history.controller as hs
 
 
 DEBUG = False
@@ -1039,6 +1040,12 @@ class App:
         self.gui.bind (sh.lg.globs['str']['bind_go_back']
                       ,self.go_back
                       )
+        self.gui.bind (sh.lg.globs['str']['bind_toggle_history']
+                      ,self.history.toggle
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_toggle_history_alt']
+                      ,self.history.toggle
+                      )
         self.gui.bind (sh.lg.globs['str']['bind_settings']
                       ,self.settings.toggle
                       )
@@ -1077,6 +1084,7 @@ class App:
         self.panel.btn_sym.set_action(self.symbols.show)
         self.panel.btn_swp.set_action(self.swap_langs)
         self.panel.btn_set.set_action(self.settings.toggle)
+        self.panel.btn_hst.set_action(self.history.toggle)
         self.panel.btn_qit.set_action(self.close)
         
         self.panel.ent_src.widget.home_key.connect(self.table.go_line_start)
@@ -1100,6 +1108,8 @@ class App:
         self.settings.gui.btn_apl.set_action(self.apply_settings)
         self.settings.gui.btn_sug.set_action(self.suggest_col_widths)
         self.settings.gui.close_settings.connect(self.settings.close)
+        
+        self.history.gui.close_history.connect(self.history.close)
     
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)
@@ -1111,6 +1121,7 @@ class App:
         self.symbols = sm.Symbols()
         self.welcome = Welcome(self.about.get_product())
         self.settings = st.objs.get_settings()
+        self.history = hs.History()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title()
         self.set_bindings()

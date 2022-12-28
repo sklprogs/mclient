@@ -945,6 +945,7 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
+    '''
     import config as cf
     import logic as lg
     import mclient as mc
@@ -952,6 +953,14 @@ if __name__ == '__main__':
     lg.com.start()
     settings = st.Settings()
     settings.show()
+    '''
+    import history.controller as hs
+    ihis = hs.History()
+    item = ihis.gui.create_item('1','start')
+    item = ihis.gui.add_item('2','hello',item)
+    item = ihis.gui.add_item('3','bye',item)
+    item = ihis.gui.add_item('4','end',item)
+    ihis.show()
     '''
     import mclient as mc
     #import welcome.controller as wl

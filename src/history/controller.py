@@ -4,10 +4,7 @@
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-#from . import gui as gi
-#from . import logic as lg
-
-import gui as gi
+from . import gui as gi
 
 
 class History:
@@ -25,7 +22,6 @@ class History:
     
     def set_bindings(self):
         self.gui.bind('Esc',self.close)
-        self.gui.bind('Ctrl+Q',self.close)
     
     def centralize(self):
         self.gui.centralize()

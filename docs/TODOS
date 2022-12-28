@@ -1,0 +1,80 @@
+
+
+mclient:
+- Control row width, good example: MT, EN-RU: environmentalism, inner city,
+  fairness doctrine, record, constituency, stay put, amalgamation, overhauling,
+  стоимость, дезориентировать, режим, sat, illicit, repeal, по запросу,
+  предусматривать
+- Improve main icon quality
+- Fix colorizing
+- Make a cell fully visible when mousing over it
+- Checking for symbols unsupported in Tk takes too long (when loading
+  dictionaries), do this check only before showing the final article.
+- Clear CurRequest data after clearing history
+- Improve saving the article as a webpage, replace '\n' with '<br>',
+  add titles everywhere
+
+multitrancom:
+- RU-EN, закрыть соединение: enable copying a comment block url
+- RU-EN, Makarov: colorize phdics even when prioritizing is off since
+  there are no subjects to prioritize
+- Add new mode: RU-EN, nederlands: "перевод с других языков"
+- Check bad charachers: RU-EN, счет на оплату
+- Fix links in a saved raw html
+- RU-EN, fall in behind, swoop in: Show phrases when only separate words
+  have been found
+- RU-EN: beg the question: 'which begs the question' is duplicated
+- Get full URL when copying it with Ctrl-F7 or Shift-F7
+- RU-EN, сохранить: "прич." has no full form
+- Make a switchable option for autotoggling language pairs
+  (check for working KZ-RU: үлек)
+- RU-EN: entity, downtime, endpoint (phrases), double-jointed (phrases),
+  span: too wide columns
+- eng-rus, метильное: do not delete the phrase
+  section when only separate words have been found: Найдено во фразах -
+  найдены отдельные слова
+- multitran.com: complement 'abbr' with dictionary titles in both
+  English and Russian (when missing)
+- implement "define:" in the search field
+- Case-insensitive sorting
+- Distinguish between SpecialPage and a PhraseDic page
+- Move selection automatically when using scrollbar arrows
+- Hotkeys for moving to the end of a column
+- CSS for drawing a dash line for each section: mkhtml.py:315
+- (History) Create 2 columns in ListBox instead of using delimiters
+- Create an option to toggle SELECTABLE (no need to update DB) (see
+  WebFrame.select)
+- Loop WebFrame.move_page_up & WebFrame.move_page_down
+- Restore selection upon changing a setting and loading the article again
+- Delete symbols that prevent URL from opening (e.g.,
+  'символ' -> 'pilcrow')
+
+dsl:
+- Test "frame" article (a lot of entries; brackets should be in place)
+- Delete tags like ['], [/']; do not split continuous words
+- Expand dictionary abbreviations (use *_abrv.dsl)
+
+mt-demo:
+- угол: error with local RuEn dics
+
+(Разобрать)
+! При сохранении вида в html изменить заголовок на articles.current().search()
+? Выравнивать виджет истории по правому краю
+! Запретить URL в запросах по Ctrl-c-c (или делать go_url для url по
+  multitran)
+! Alt-F4 и F4 в Linux не конфликтуют, а в Windows - конфликтуют
+
+multitrandem:
+- find separate words
+- implement an autosuggestion
+- add a General subject if none is set
+- implement phrases
+- implement speech parts
+
+stardict:
+- stardict.cleanup: move block-creating code to stardict.parse
+- accelerate suggestions (especially for 2+ passes)
+- alphabetize suggestions from several dictionaries
+- support idx.gz files
+- fix: "Вы попались на удочку" (ComputersRE, EngineeringRE) - found by
+  autosuggestion, but not found by 'plugins.stardict.get.AllDics.get'
