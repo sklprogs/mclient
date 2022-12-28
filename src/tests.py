@@ -954,12 +954,23 @@ if __name__ == '__main__':
     settings = st.Settings()
     settings.show()
     '''
+    '''
+    import config as cf
+    import logic as lg
+    import mclient as mc
+    lg.com.start()
+    ihis = mc.History()
+    ihis.add()
+    ihis.add()
+    ihis.add()
+    ihis.add()
+    '''
     import history.controller as hs
     ihis = hs.History()
-    item = ihis.gui.create_item('1','start')
-    item = ihis.gui.add_item('2','hello',item)
-    item = ihis.gui.add_item('3','bye',item)
-    item = ihis.gui.add_item('4','end',item)
+    item = ihis.add_row(_('English'),_('Russian'),'start')
+    item = ihis.add_row(_('Russian'),_('English'),'hello')
+    item = ihis.add_row(_('French'),_('Esperanto'),'bye')
+    item = ihis.add_row(_('English'),_('Russian'),'end')
     ihis.show()
     '''
     import mclient as mc

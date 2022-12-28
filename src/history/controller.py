@@ -26,13 +26,10 @@ class History:
     def set_bindings(self):
         self.gui.bind('Esc',self.close)
     
-    def centralize(self):
-        self.gui.centralize()
-    
     def show(self):
         self.Shown = True
         self.gui.show()
-        self.centralize()
+        self.gui.centralize()
     
     def close(self):
         self.Shown = False
