@@ -2,8 +2,8 @@
 # -*- coding: UTF-8 -*-
 
 import io
-from skl_shared.localize import _
-import skl_shared.shared as sh
+from skl_shared_qt.localize import _
+import skl_shared_qt.shared as sh
 import plugins.multitrandem.get as gt
 import plugins.multitrandem.tags as tg
 import plugins.multitrandem.elems as el

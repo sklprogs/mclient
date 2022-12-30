@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared.localize import _
-import skl_shared.shared as sh
+from skl_shared_qt.localize import _
+import skl_shared_qt.shared as sh
 from . import gui as gi
 
 

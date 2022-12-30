@@ -6,8 +6,8 @@ import os
 import html
 import operator
 import urllib.request
-from skl_shared.localize import _
-import skl_shared.shared as sh
+from skl_shared_qt.localize import _
+import skl_shared_qt.shared as sh
 
 ''' It seems to be highly difficult to extract short-full title pairs
     since, unlike multitran.ru, there are no '<a title' tags, such

@@ -5,8 +5,8 @@ import struct
 import os
 import gzip
 import zlib
-from skl_shared.localize import _
-import skl_shared.shared as sh
+from skl_shared_qt.localize import _
+import skl_shared_qt.shared as sh
 
 
 ''' A directory storing all stardict files.
@@ -14,7 +14,7 @@ import skl_shared.shared as sh
     calling anything from this module.
 '''
 PATH = ''
-ICON = sh.objs.get_pdir().add('..','resources','icon_64x64_mclient.gif')
+ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
 
 
 class Suggest:
