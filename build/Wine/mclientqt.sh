@@ -1,68 +1,54 @@
 #!/bin/bash
 
 export WINEPREFIX="$HOME/software/wine/build_mclient"
-product="mclientqt"
 python="$WINEPREFIX/drive_c/Python"
 pyinstaller="$python/Scripts/pyinstaller.exe"
+product="mclientqt"
+shared="skl_shared_qt"
 binariesdir="$HOME/binaries"
-srcdir="$HOME/bin/$product/src"
-resdir="$HOME/bin/$product/resources"
-cmd="$HOME/bin/$product/build/Wine/$product.cmd"
-shareddir="$HOME/bin/skl_shared_qt"
-tmpdir="$WINEPREFIX/drive_c/$product" # Will be deleted!
-# Will be deleted! Should not be empty, root may be damaged otherwise
-sharedtmp="$WINEPREFIX/drive_c/skl_shared_qt"
-builddir="$tmpdir/$product" # Will be deleted!
+bindir="$HOME/bin"
+productdir="$bindir/$product"
+shareddir="$bindir/$shared"
+producttmp="$WINEPREFIX/drive_c/$product" # Will be deleted!
+sharedtmp="$WINEPREFIX/drive_c/$shared"   # Will be deleted!
+buildtmp="$producttmp/$product"           # Will be deleted!
 
 if [ ! -e "$pyinstaller" ]; then
     echo "pyinstaller is not installed!"; exit
-fi
-
-if [ ! -e "$cmd" ]; then
-    echo "File $cmd does not exist!"; exit
 fi
 
 if [ ! -d "$binariesdir/$product" ]; then
     echo "Folder $binariesdir/$product does not exist!"; exit
 fi
 
-if [ ! -d "$srcdir" ]; then
-    echo "Folder $srcdir does not exist!"; exit
+if [ ! -d "$productdir" ]; then
+    echo "Folder $productdir does not exist!"; exit
 fi
 
-if [ ! -d "$resdir" ]; then
-    echo "Folder $resdir does not exist!"; exit
+if [ ! -d "$shareddir" ]; then
+    echo "Folder $shareddir does not exist!"; exit
 fi
 
-if [ ! -d "$shareddir/src" ]; then
-    echo "Folder $shareddir/src does not exist!"; exit
-fi
+rsync -aL --delete-before --exclude='.git' "$productdir/" "$producttmp"
+rsync -aL --delete-before --exclude='.git' "$shareddir/" "$sharedtmp"
 
-if [ ! -d "$shareddir/resources" ]; then
-    echo "Folder $shareddir/resources does not exist!"; exit
-fi
+cd "$producttmp"
+# Icon path should be Windows-compliant. Only ICO and EXE formats are supported.
+wine "$pyinstaller" -w -i ./resources/$product.ico "src/$product.py"
 
-# Build with pyinstaller
-rm -rf "$tmpdir"
-rm -rf "$sharedtmp"/*
-mkdir -p "$sharedtmp"/{src,resources}
-cp -r "$shareddir"/src/* "$sharedtmp"/src/
-cp -r "$shareddir"/resources/* "$sharedtmp"/resources/
-cp -r "$srcdir"/* "$tmpdir"
-cp -r "$resdir" "$builddir"
-cp "$cmd" "$builddir"
-cd "$tmpdir"
-# Icon path should be windows-compliant
-wine "$pyinstaller" -w -i ./$product/resources/$product.png "$product.py"
-mv "$tmpdir/dist/$product"/* "$builddir/app"
+mv "$producttmp/build/$product" "$buildtmp"
+
+cp -r "$productdir/resources" "$buildtmp"
+mv "$producttmp/dist/$product" "$buildtmp/app"
+
 # Tesh launch
-cd "$builddir/app"
+cd "$buildtmp/app"
 wine ./$product.exe&
+
 # Update the archive
 read -p "Update the archive? Y/n" choice
 if [ "$choice" = "N" ] || [ "$choice" = "n" ]; then
     exit;
 fi
-rm -f "$binariesdir/$product/windows.7z"
-7z a "$binariesdir/$product/windows.7z" "$builddir"
-rm -rf "$tmpdir"
+rm -f "$binariesdir/$product/$product.7z"
+7z a "$binariesdir/$product/$product.7z" "$buildtmp"
