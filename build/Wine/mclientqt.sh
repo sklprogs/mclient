@@ -53,7 +53,7 @@ cp -r "$resdir" "$builddir"
 cp "$cmd" "$builddir"
 cd "$tmpdir"
 # Icon path should be windows-compliant
-wine "$pyinstaller" -w -i ./$product/resources/mclient.png "$product.py"
+wine "$pyinstaller" -w -i ./$product/resources/$product.png "$product.py"
 mv "$tmpdir/dist/$product"/* "$builddir/app"
 # Tesh launch
 cd "$builddir/app"
