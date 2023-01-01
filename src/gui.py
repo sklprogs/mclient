@@ -359,6 +359,20 @@ class App(PyQt5.QtWidgets.QMainWindow):
 
 
 
+class MinPanel(PyQt5.QtWidgets.QWidget):
+
+    hover = PyQt5.QtCore.pyqtSignal(PyQt5.QtCore.QEvent)
+    
+    def __init__(self,parent):
+        super().__init__(parent)
+        self.setMouseTracking(True)
+    
+    def mouseMoveEvent(self,event):
+        self.hover.emit(event)
+        return super().mouseMoveEvent(event)
+
+
+
 class Panel(PyQt5.QtWidgets.QWidget):
 
     def __init__(self,*args,**kwargs):
@@ -503,17 +517,12 @@ class Panel(PyQt5.QtWidgets.QWidget):
         elif width - 30 <= x <= width:
             self.slide_left()
     
-    def eventFilter(self,source,event):
-        if event.type() == PyQt5.QtCore.QEvent.MouseMove:
-            self.trigger_hover(event)
-        return super().eventFilter(source,event)
-    
     def set_hint_bg(self):
         self.setStyleSheet('QPushButton:hover {background-color: white} QToolTip {background-color: #ffffe0}')
     
     def set_widgets(self):
         self.setMaximumHeight(44)
-        self.panel = PyQt5.QtWidgets.QWidget(self)
+        self.panel = MinPanel(self)
         self.layout_ = PyQt5.QtWidgets.QHBoxLayout()
         self.layout_.setContentsMargins(4,4,4,4)
         self.ent_src = Entry()
@@ -674,9 +683,13 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.layout_.addWidget(self.btn_qit.widget)
         self.panel.setLayout(self.layout_)
     
+    def set_bindings(self):
+        self.panel.hover.connect(self.trigger_hover)
+    
     def set_gui(self):
         self.set_widgets()
         self.set_hint_bg()
+        self.set_bindings()
         self.show()
 
 

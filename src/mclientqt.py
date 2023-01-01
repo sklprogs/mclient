@@ -33,7 +33,7 @@ class History(hs.History):
         super().__init__(*args,**kwargs)
     
     def add(self):
-        f = '[MClient] mclient.History.add'
+        f = '[MClientQt] mclient.History.add'
         if not lg.objs.get_request().search:
             sh.com.rep_lazy(f)
             return
@@ -91,7 +91,7 @@ class Welcome(wl.Welcome):
         self.set_model(model)
     
     def set_online_sources(self):
-        f = '[MClient] mclient.Welcome.set_online_sources'
+        f = '[MClientQt] mclient.Welcome.set_online_sources'
         if not sh.lg.globs['bool']['Ping']:
             sh.com.rep_lazy(f)
             return
@@ -112,7 +112,7 @@ class Welcome(wl.Welcome):
         lg.objs.plugins.set(old)
     
     def set_offline_sources(self):
-        f = '[MClient] mclient.Welcome.set_offline_sources'
+        f = '[MClientQt] mclient.Welcome.set_offline_sources'
         dics = lg.objs.plugins.get_offline_sources()
         if not dics:
             sh.com.rep_empty(f)
@@ -348,7 +348,7 @@ class Table:
         ''' This is slow ('set' on Intel Atom without debugging: ~2.68s with
             default sizeHint and ~5.57s with custom sizeHint.
         '''
-        f = '[MClient] mclient.Table.set_long'
+        f = '[MClientQt] mclient.Table.set_long'
         timer = sh.Timer(f)
         timer.start()
         self.gui.delegate.long = []
@@ -1204,7 +1204,7 @@ class SearchArticle:
 
 
 if __name__ == '__main__':
-    f = '[MClient] mclient.__main__'
+    f = '[MClientQt] mclient.__main__'
     sh.com.start()
     lg.com.start()
     lg.objs.get_plugins(Debug=False,maxrows=1000)
@@ -1212,7 +1212,6 @@ if __name__ == '__main__':
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
     app = App()
-    sh.objs.get_root().installEventFilter(app.gui.panel)
     lg.com.get_url()
     app.load_article()
     timer.end()
