@@ -341,6 +341,9 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.layout_.addWidget(self.panel,1)
         self.parent.setLayout(self.layout_)
     
+    def set_icon(self):
+        self.setWindowIcon(PyQt5.QtGui.QIcon(ICON))
+    
     def set_gui(self,table=None,panel=None):
         self.set_layout()
         if table:
@@ -351,6 +354,7 @@ class App(PyQt5.QtWidgets.QMainWindow):
             self.panel = panel
         else:
             self.panel = Panel()
+        self.set_icon()
         self.add_widgets()
         self.setCentralWidget(self.parent)
     
