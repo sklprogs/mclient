@@ -382,7 +382,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
     
     def set_values(self):
         self.delta = 0
-        self.offset = 32
+        self.offset = 45
         self.pos = 0
         self.icn_al0 = sh.objs.get_pdir().add ('..','resources','buttons'
                                               ,'alphabet_off.png'
