@@ -706,6 +706,9 @@ class SearchArticle(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
+    def set_icon(self):
+        self.setWindowIcon(PyQt5.QtGui.QIcon(ICON))
+    
     def closeEvent(self,event):
         self.close_search.emit()
         return super().closeEvent(event)
@@ -738,6 +741,7 @@ class SearchArticle(PyQt5.QtWidgets.QWidget):
         self.setLayout(self.layout_)
     
     def set_gui(self):
+        self.set_icon()
         self.add_widgets()
         self.set_title()
     
