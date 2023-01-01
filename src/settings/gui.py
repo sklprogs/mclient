@@ -7,6 +7,7 @@ from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 PRODUCT = 'MClient'
+ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
 
 
 class Settings(PyQt5.QtWidgets.QWidget):
@@ -606,7 +607,11 @@ class Settings(PyQt5.QtWidgets.QWidget):
                                  ,hint = _('Apply current settings and reload the article')
                                  )
     
+    def set_icon(self):
+        self.setWindowIcon(PyQt5.QtGui.QIcon(ICON))
+    
     def set_gui(self):
+        self.set_icon()
         self.set_layouts()
         self.set_menus()
         self.set_labels()
