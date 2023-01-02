@@ -170,45 +170,78 @@ class Table:
         self.set_gui()
     
     def go_next_section(self,no):
+        f = '[MClientQt] mclient.Table.go_next_section'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_next_row_by_col(rowno,colno,no)
         self.select(rowno,colno)
     
     def go_prev_section(self,no):
+        f = '[MClientQt] mclient.Table.go_prev_section'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_prev_row_by_col(rowno,colno,no)
         self.select(rowno,colno)
     
     def close_search_next(self):
+        f = '[MClientQt] mclient.Table.close_search_next'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         self.search.close()
         self.reset_search()
         rowno, colno = self.search.search_next()
         self.select(rowno,colno)
     
     def reset_search(self):
+        f = '[MClientQt] mclient.Table.reset_search'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         rowno, colno = self.get_cell()
         self.search.reset(self.logic.cells,self.logic.plain,rowno,colno)
     
     def search_next(self):
+        f = '[MClientQt] mclient.Table.search_next'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         self.reset_search()
         rowno, colno = self.search.search_next()
         self.select(rowno,colno)
     
     def search_prev(self):
+        f = '[MClientQt] mclient.Table.search_prev'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         self.reset_search()
         rowno, colno = self.search.search_prev()
         self.select(rowno,colno)
     
     def set_values(self):
+        self.Success = True
         self.model = None
         self.coords = {}
         self.row_height = 42
     
     def go_end(self):
+        f = '[MClientQt] mclient.Table.go_end'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         rowno, colno = self.logic.get_end()
         self.select(rowno,colno)
     
     def go_start(self):
+        f = '[MClientQt] mclient.Table.go_start'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         rowno, colno = self.logic.get_start()
         self.select(rowno,colno)
     
@@ -216,16 +249,20 @@ class Table:
         ''' #NOTE: This should run only after an event since Qt returns dummy
             geometry values right after startup.
         '''
+        f = '[MClientQt] mclient.Table.go_down'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_next_row(rowno,colno)
         self.select(rowno,colno)
     
     def select(self,rowno,colno,Mouse=False):
         f = '[MClientQt] mclient.Table.select'
-        if Mouse and self.search.Shown:
+        if not self.Success:
+            sh.com.cancel(f)
             return
-        if not self.model:
-            sh.com.rep_empty(f)
+        if Mouse and self.search.Shown:
             return
         self.model.update(self.gui.get_index())
         new_index = self.model.index(rowno,colno)
@@ -238,32 +275,55 @@ class Table:
             self.scroll_top()
     
     def go_up(self):
+        f = '[MClientQt] mclient.Table.go_up'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_prev_row(rowno,colno)
         self.select(rowno,colno)
     
     def go_line_start(self):
+        f = '[MClientQt] mclient.Table.go_line_start'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_line_start(rowno)
         self.select(rowno,colno)
     
     def go_line_end(self):
+        f = '[MClientQt] mclient.Table.go_line_end'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_line_end(rowno)
         self.select(rowno,colno)
     
     def go_left(self):
+        f = '[MClientQt] mclient.Table.go_left'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_prev_col(rowno,colno)
         self.select(rowno,colno)
     
     def go_right(self):
+        f = '[MClientQt] mclient.Table.go_right'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_next_col(rowno,colno)
         self.select(rowno,colno)
     
     def scroll_top(self):
         f = '[MClientQt] mclient.Table.scroll_top'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         if not self.coords or not self.model:
             sh.com.rep_empty(f)
             return
@@ -276,6 +336,9 @@ class Table:
     
     def get_cell(self):
         f = '[MClientQt] mclient.Table.get_cell'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         try:
             return self.gui.get_cell()
         except Exception as e:
@@ -284,6 +347,9 @@ class Table:
     
     def get_cell_text(self):
         f = '[MClientQt] mclient.Table.get_cell_text'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         if not self.logic.cells:
             sh.com.rep_empty(f)
             return ''
@@ -298,6 +364,9 @@ class Table:
     
     def copy_cell(self):
         f = '[MClientQt] mclient.Table.copy_cell'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         text = self.get_cell_text()
         if text:
             sh.Clipboard().copy(text)
@@ -332,10 +401,13 @@ class Table:
     
     def reset(self,cells):
         f = '[MClientQt] mclient.Table.reset'
+        self.set_values()
         if not cells:
+            self.Success = False
             sh.com.rep_empty(f)
             return
         self.logic.reset(cells)
+        self.Success = self.logic.Success
         self.model = gi.TableModel(self.logic.table)
         self.fill()
         self.set_col_width()
@@ -353,6 +425,9 @@ class Table:
             default sizeHint and ~5.57s with custom sizeHint.
         '''
         f = '[MClientQt] mclient.Table.set_long'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         timer = sh.Timer(f)
         timer.start()
         self.gui.delegate.long = []
@@ -378,6 +453,9 @@ class Table:
             self.gui.parent.resizeEvent.
         '''
         f = '[MClientQt] mclient.Table.set_coords'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         height = self.gui.get_height()
         mes = _('Window height: {}').format(height)
         sh.objs.get_mes(f,mes,True).show_debug()
@@ -390,6 +468,9 @@ class Table:
     
     def fill(self):
         f = '[MClientQt] mclient.Table.fill'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         timer = sh.Timer(f)
         timer.start()
         self.gui.set_model(self.model)
