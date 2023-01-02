@@ -221,7 +221,11 @@ class Table:
         self.select(rowno,colno)
     
     def select(self,rowno,colno,Mouse=False):
+        f = '[MClientQt] mclient.Table.select'
         if Mouse and self.search.Shown:
+            return
+        if not self.model:
+            sh.com.rep_empty(f)
             return
         self.model.update(self.gui.get_index())
         new_index = self.model.index(rowno,colno)
