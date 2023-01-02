@@ -1108,6 +1108,7 @@ class App:
         self.panel.btn_swp.set_action(self.swap_langs)
         self.panel.btn_set.set_action(self.settings.toggle)
         self.panel.btn_hst.set_action(self.history.toggle)
+        self.panel.btn_ser.set_action(self.table.search.toggle)
         self.panel.btn_qit.set_action(self.close)
         
         self.panel.ent_src.widget.home_key.connect(self.table.go_line_start)
@@ -1182,6 +1183,12 @@ class SearchArticle:
         self.gui = gi.SearchArticle()
         self.set_bindings()
         self.gui.ent_src.focus()
+    
+    def toggle(self):
+        if self.Shown:
+            self.close()
+        else:
+            self.show()
     
     def clear(self):
         self.gui.clear()
