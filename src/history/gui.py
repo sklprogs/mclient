@@ -54,6 +54,9 @@ class History(PyQt5.QtWidgets.QWidget):
                   ]
         self.history.setHeaderLabels(headers)
     
+    def set_col_width(self):
+        self.history.header().resizeSection(0,50)
+    
     def set_gui(self):
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout(self)
         self.history = PyQt5.QtWidgets.QTreeWidget()
@@ -62,6 +65,7 @@ class History(PyQt5.QtWidgets.QWidget):
         self.layout_.addWidget(self.history)
         self.setLayout(self.layout_)
         self.item = PyQt5.QtWidgets.QTreeWidgetItem(self.history)
+        self.set_col_width()
         self.resize(600,300)
 
 
