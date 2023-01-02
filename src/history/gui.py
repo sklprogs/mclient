@@ -48,10 +48,17 @@ class History(PyQt5.QtWidgets.QWidget):
         # Does not accent None
         self.setWindowIcon(qicon)
     
+    def set_headers(self):
+        headers = [_('#'),_('Source language'),_('Target language')
+                  ,_('Request')
+                  ]
+        self.history.setHeaderLabels(headers)
+    
     def set_gui(self):
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout(self)
         self.history = PyQt5.QtWidgets.QTreeWidget()
         self.history.setColumnCount(4)
+        self.set_headers()
         self.layout_.addWidget(self.history)
         self.setLayout(self.layout_)
         self.item = PyQt5.QtWidgets.QTreeWidgetItem(self.history)
