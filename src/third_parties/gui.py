@@ -7,14 +7,16 @@ import PyQt5.QtWidgets
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
-
 
 class ThirdParties(PyQt5.QtWidgets.QWidget):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.set_gui()
+    
+    def set_icon(self,qicon):
+        # Does not accent None
+        self.setWindowIcon(qicon)
     
     def centralize(self):
         self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())

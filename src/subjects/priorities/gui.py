@@ -4,7 +4,6 @@
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
 icn_btm = sh.objs.pdir.add('..','resources','buttons','bottom.png')
 icn_clr = sh.objs.pdir.add ('..','resources','buttons'
                            ,'clear_selection.png'

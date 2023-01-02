@@ -7,8 +7,6 @@ import PyQt5.QtGui
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
-
 
 class About(PyQt5.QtWidgets.QWidget):
     
@@ -18,8 +16,9 @@ class About(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
-    def set_icon(self):
-        self.setWindowIcon(PyQt5.QtGui.QIcon(ICON))
+    def set_icon(self,qicon):
+        # Does not accent None
+        self.setWindowIcon(qicon)
     
     def closeEvent(self,event):
         self.close_about.emit()
@@ -38,7 +37,6 @@ class About(PyQt5.QtWidgets.QWidget):
         self.lbl_abt.set_text(text)
     
     def set_gui(self):
-        self.set_icon()
         self.lbl_abt = sh.Label()
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
         self.panel = PyQt5.QtWidgets.QWidget(self)

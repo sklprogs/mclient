@@ -95,6 +95,10 @@ class Symbols(PyQt5.QtWidgets.QWidget):
         self.layout_.addWidget(self.table)
         self.setLayout(self.layout_)
     
+    def set_icon(self,qicon):
+        # Does not accent None
+        self.setWindowIcon(qicon)
+    
     def keyPressEvent(self,event):
         key = event.key()
         modifiers = event.modifiers()

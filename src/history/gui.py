@@ -7,8 +7,6 @@ import PyQt5.QtGui
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
-
 
 class History(PyQt5.QtWidgets.QWidget):
     
@@ -46,11 +44,11 @@ class History(PyQt5.QtWidgets.QWidget):
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
     
-    def set_icon(self):
-        self.setWindowIcon(PyQt5.QtGui.QIcon(ICON))
+    def set_icon(self,qicon):
+        # Does not accent None
+        self.setWindowIcon(qicon)
     
     def set_gui(self):
-        self.set_icon()
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout(self)
         self.history = PyQt5.QtWidgets.QTreeWidget()
         self.history.setColumnCount(4)

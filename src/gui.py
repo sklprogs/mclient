@@ -341,8 +341,9 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.layout_.addWidget(self.panel,1)
         self.parent.setLayout(self.layout_)
     
-    def set_icon(self):
-        self.setWindowIcon(PyQt5.QtGui.QIcon(ICON))
+    def set_icon(self,qicon):
+        # Does not accent None
+        self.setWindowIcon(qicon)
     
     def set_gui(self,table=None,panel=None):
         self.set_layout()
@@ -354,7 +355,6 @@ class App(PyQt5.QtWidgets.QMainWindow):
             self.panel = panel
         else:
             self.panel = Panel()
-        self.set_icon()
         self.add_widgets()
         self.setCentralWidget(self.parent)
     
@@ -706,8 +706,9 @@ class SearchArticle(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
-    def set_icon(self):
-        self.setWindowIcon(PyQt5.QtGui.QIcon(ICON))
+    def set_icon(self,qicon):
+        # Does not accent None
+        self.setWindowIcon(qicon)
     
     def closeEvent(self,event):
         self.close_search.emit()
@@ -741,7 +742,6 @@ class SearchArticle(PyQt5.QtWidgets.QWidget):
         self.setLayout(self.layout_)
     
     def set_gui(self):
-        self.set_icon()
         self.add_widgets()
         self.set_title()
     
@@ -758,6 +758,10 @@ class Commands:
     def report_external(self,f):
         mes = _('This procedure should be overridden!')
         sh.objs.get_mes(f,mes,True).show_error()
+    
+    def get_icon(self):
+        # Do not return None; PyQt5.QtGui.QIcon(None) is acceptable, however.
+        return PyQt5.QtGui.QIcon(ICON)
 
 
 com = Commands()

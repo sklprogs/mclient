@@ -1133,6 +1133,28 @@ class App:
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)
     
+    def get_icon(self):
+        f = '[MClientQt] mclient.App.get_icon'
+        try:
+            return gi.com.get_icon()
+        except Exception as e:
+            sh.com.rep_third_party(f,e)
+    
+    def set_icons(self):
+        f = '[MClientQt] mclient.App.set_icons'
+        icon = self.get_icon()
+        if not icon:
+            sh.com.rep_empty(f)
+            return
+        self.gui.set_icon(icon)
+        self.about.gui.set_icon(icon)
+        self.about.parties.gui.set_icon(icon)
+        self.symbols.gui.set_icon(icon)
+        self.welcome.gui.set_icon(icon)
+        self.settings.gui.set_icon(icon)
+        self.history.gui.set_icon(icon)
+        self.table.search.gui.set_icon(icon)
+    
     def set_gui(self):
         self.table = Table()
         self.panel = gi.Panel()
@@ -1142,6 +1164,7 @@ class App:
         self.settings = st.objs.get_settings()
         self.history = History()
         self.gui.set_gui(self.table.gui,self.panel)
+        self.set_icons()
         self.set_title()
         self.set_bindings()
 
