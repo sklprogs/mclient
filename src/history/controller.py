@@ -7,18 +7,18 @@ import skl_shared_qt.shared as sh
 from . import gui as gi
 
 
-class TableModel(gi.TableModel):
-    
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-
-
-
 class History:
     
     def __init__(self):
+        self.set_values()
+        self.set_gui()
+        self.set_model(gi.TableModel([[]]))
+    
+    def set_values(self):
         self.Shown = False
         self.no = 0
+    
+    def set_gui(self):
         self.gui = gi.History()
         self.set_title()
         self.set_bindings()

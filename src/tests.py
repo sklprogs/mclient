@@ -435,7 +435,7 @@ class Commands:
                 ,['1',_('Russian'),_('English'),'start']
                 ,
                 ]
-        model = hs.TableModel(table)
+        model = hs.gi.TableModel(table)
         model.set_headers(headers)
         ihis.set_model(model)
         """
@@ -1015,11 +1015,9 @@ if __name__ == '__main__':
     isettings = com.run_settings()
     isettings.show()
     '''
-    '''
     # History
     ihis = com.run_history()
     ihis.show()
-    '''
     '''
     # History (history.controller)
     ihis = com.run_history_contr()
