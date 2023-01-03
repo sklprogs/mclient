@@ -10,13 +10,9 @@ from . import gui as gi
 class History:
     
     def __init__(self):
-        self.set_values()
+        self.Shown = False
         self.set_gui()
         self.set_model(gi.TableModel([[]]))
-    
-    def set_values(self):
-        self.Shown = False
-        self.no = 0
     
     def set_gui(self):
         self.gui = gi.History()
@@ -26,9 +22,8 @@ class History:
     def set_model(self,model):
         self.gui.set_model(model)
     
-    def add_row(self,lang1,lang2,search):
-        self.no += 1
-        row = [str(self.no),lang1,lang2,search]
+    def add_row(self,id_,lang1,lang2,search):
+        row = [str(id_),lang1,lang2,search]
         model = self.gui.get_model()
         model.items.insert(0,row)
         model.update()

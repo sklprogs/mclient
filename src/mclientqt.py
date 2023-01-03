@@ -37,7 +37,8 @@ class History(hs.History):
         if not lg.objs.get_request().search:
             sh.com.rep_lazy(f)
             return
-        self.add_row (lang1 = lg.objs.get_plugins().get_lang1()
+        self.add_row (id_ = lg.objs.get_blocksdb().artid
+                     ,lang1 = lg.objs.get_plugins().get_lang1()
                      ,lang2 = lg.objs.plugins.get_lang2()
                      ,search = lg.objs.request.search
                      )
