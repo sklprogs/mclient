@@ -967,11 +967,23 @@ if __name__ == '__main__':
     '''
     import history.controller as hs
     ihis = hs.History()
+    headers = [_('#'),_('Source language'),_('Target language'),_('Request')]
+    table = [['3',_('English'),_('Russian'),'bye']
+            ,['2',_('Russian'),_('English'),'hello']
+            ,['1',_('Russian'),_('English'),'start']
+            ,
+            ]
+    model = hs.TableModel(table)
+    model.set_headers(headers)
+    ihis.set_model(model)
+    '''
+    # The model is updated entirely each time, but still this is fast
     for i in range(100):
         ihis.add_row(_('English'),_('Russian'),f'start ({i+1})')
         ihis.add_row(_('Russian'),_('English'),f'hello ({i+1})')
         ihis.add_row(_('French'),_('Esperanto'),f'bye ({i+1})')
         ihis.add_row(_('English'),_('Russian'),f'end ({i+1})')
+    '''
     ihis.show()
     '''
     import mclient as mc

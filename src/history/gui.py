@@ -69,6 +69,9 @@ class History(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
+    def get_model(self):
+        return self.history.model()
+    
     def set_model(self,model):
         self.history.setModel(model)
     
