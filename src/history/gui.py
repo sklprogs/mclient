@@ -16,7 +16,11 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
         self.headers = []
 
     def set_headers(self,headers):
-        self.headers = headers
+        f = '[MClientQt] gui.TableModel.set_headers'
+        if headers:
+            self.headers = headers
+        else:
+            sh.com.rep_empty(f)
     
     def get_header(self,colno):
         f = '[MClientQt] gui.TableModel.get_header'
