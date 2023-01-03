@@ -50,8 +50,8 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
                 sh.objs.get_mes(f,mes,True).show_warning()
                 return PyQt5.QtCore.QVariant()
     
-    def update(self,index_):
-        self.dataChanged.emit(index_,index_)
+    def update(self):
+        self.layoutChanged.emit()
     
     def headerData(self,column,orientation,role=PyQt5.QtCore.Qt.DisplayRole):
         if role != PyQt5.QtCore.Qt.DisplayRole:
@@ -116,4 +116,7 @@ if __name__ == '__main__':
     ihis = History()
     ihis.set_model(model)
     ihis.show()
+    row = ['0',_('Arabic'),_('French'),_('test')]
+    table.insert(0,row)
+    model.update()
     sh.com.end()
