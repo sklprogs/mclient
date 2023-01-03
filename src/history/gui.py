@@ -8,6 +8,36 @@ from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 
+class TableModel(PyQt5.QtCore.QAbstractTableModel):
+    
+    def __init__(self,datain,parent=None,*args):
+        PyQt5.QtCore.QAbstractTableModel.__init__(self,parent,*args)
+        self.arraydata = datain
+
+    def rowCount(self,parent):
+        return len(self.arraydata)
+
+    def columnCount(self,parent):
+        return len(self.arraydata[0])
+
+    def data(self,index,role):
+        f = '[MClientQt] gui.TableModel.data'
+        if not index.isValid():
+            return PyQt5.QtCore.QVariant()
+        if role == PyQt5.QtCore.Qt.DisplayRole:
+            try:
+                return PyQt5.QtCore.QVariant(self.arraydata[index.row()][index.column()])
+            except Exception as e:
+                mes = _('List out of bounds at row #{}, column #{}!')
+                mes = mes.format(index.row(),index.column())
+                sh.objs.get_mes(f,mes,True).show_warning()
+                return PyQt5.QtCore.QVariant()
+    
+    def update(self,index_):
+        self.dataChanged.emit(index_,index_)
+
+
+
 class History(PyQt5.QtWidgets.QWidget):
     
     close_history = PyQt5.QtCore.pyqtSignal()
@@ -16,17 +46,8 @@ class History(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
-    def add_row(self,no,lang1,lang2,search):
-        # Reuse an empty row created upon initializing History
-        if no != '1':
-            self.item = PyQt5.QtWidgets.QTreeWidgetItem(self.history,self.item)
-        self.item.setText(0,no)
-        self.item.setText(1,lang1)
-        self.item.setText(2,lang2)
-        self.item.setText(3,search)
-    
-    def insert(self,index,item):
-        self.history.insertTopLevelItem(index,item)
+    def set_model(self,model):
+        self.history.setModel(model)
     
     def reset(self):
         self.history.clear()
@@ -52,29 +73,27 @@ class History(PyQt5.QtWidgets.QWidget):
         headers = [_('#'),_('Source language'),_('Target language')
                   ,_('Request')
                   ]
-        self.history.setHeaderLabels(headers)
     
     def set_col_width(self):
         self.history.header().resizeSection(0,50)
     
     def set_gui(self):
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout(self)
-        self.history = PyQt5.QtWidgets.QTreeWidget()
-        self.history.setColumnCount(4)
-        self.set_headers()
+        self.history = PyQt5.QtWidgets.QTreeView()
         self.layout_.addWidget(self.history)
         self.setLayout(self.layout_)
-        self.item = PyQt5.QtWidgets.QTreeWidgetItem(self.history)
         self.set_col_width()
         self.resize(600,300)
 
 
 if __name__ == '__main__':
     sh.com.start()
+    table = [['1',_('Russian'),_('English'),'start']
+             ,['2',_('Russian'),_('English'),'hello']
+             ,['3',_('English'),_('Russian'),'bye']
+            ]
+    model = TableModel(table)
     ihis = History()
-    item = ihis.add_row('1',_('Russian'),_('English'),'start')
-    item = ihis.add_row('2',_('Russian'),_('English'),'hello')
-    item = ihis.add_row('3',_('English'),_('Russian'),'bye')
-    item = ihis.add_row('4',_('Arabic'),_('French'),'end')
+    ihis.set_model(model)
     ihis.show()
     sh.com.end()
