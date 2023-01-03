@@ -10,15 +10,28 @@ import skl_shared_qt.shared as sh
 
 class TableModel(PyQt5.QtCore.QAbstractTableModel):
     
-    def __init__(self,datain,parent=None,*args):
+    def __init__(self,data,parent=None,*args):
         PyQt5.QtCore.QAbstractTableModel.__init__(self,parent,*args)
-        self.arraydata = datain
+        self.items = data
+        self.headers = []
 
+    def set_headers(self,headers):
+        self.headers = headers
+    
+    def get_header(self,colno):
+        f = '[MClientQt] gui.TableModel.get_header'
+        try:
+            return self.headers[colno]
+        except IndexError:
+            mes = _('Wrong input data: "{}"!').format(colno)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return _('Header')
+    
     def rowCount(self,parent):
-        return len(self.arraydata)
+        return len(self.items)
 
     def columnCount(self,parent):
-        return len(self.arraydata[0])
+        return len(self.items[0])
 
     def data(self,index,role):
         f = '[MClientQt] gui.TableModel.data'
@@ -26,7 +39,7 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
             return PyQt5.QtCore.QVariant()
         if role == PyQt5.QtCore.Qt.DisplayRole:
             try:
-                return PyQt5.QtCore.QVariant(self.arraydata[index.row()][index.column()])
+                return PyQt5.QtCore.QVariant(self.items[index.row()][index.column()])
             except Exception as e:
                 mes = _('List out of bounds at row #{}, column #{}!')
                 mes = mes.format(index.row(),index.column())
@@ -35,6 +48,12 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
     
     def update(self,index_):
         self.dataChanged.emit(index_,index_)
+    
+    def headerData(self,column,orientation,role=PyQt5.QtCore.Qt.DisplayRole):
+        if role != PyQt5.QtCore.Qt.DisplayRole:
+            return PyQt5.QtCore.QVariant()
+        if orientation == PyQt5.QtCore.Qt.Horizontal:
+            return PyQt5.QtCore.QVariant(self.get_header(column))
 
 
 
@@ -69,11 +88,6 @@ class History(PyQt5.QtWidgets.QWidget):
         # Does not accent None
         self.setWindowIcon(qicon)
     
-    def set_headers(self):
-        headers = [_('#'),_('Source language'),_('Target language')
-                  ,_('Request')
-                  ]
-    
     def set_col_width(self):
         self.history.header().resizeSection(0,50)
     
@@ -88,11 +102,13 @@ class History(PyQt5.QtWidgets.QWidget):
 
 if __name__ == '__main__':
     sh.com.start()
+    headers = [_('#'),_('Source language'),_('Target language'),_('Request')]
     table = [['1',_('Russian'),_('English'),'start']
-             ,['2',_('Russian'),_('English'),'hello']
-             ,['3',_('English'),_('Russian'),'bye']
+            ,['2',_('Russian'),_('English'),'hello']
+            ,['3',_('English'),_('Russian'),'bye']
             ]
     model = TableModel(table)
+    model.set_headers(headers)
     ihis = History()
     ihis.set_model(model)
     ihis.show()
