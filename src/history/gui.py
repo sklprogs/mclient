@@ -13,14 +13,9 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
     def __init__(self,data,parent=None,*args):
         PyQt5.QtCore.QAbstractTableModel.__init__(self,parent,*args)
         self.items = data
-        self.headers = []
-
-    def set_headers(self,headers):
-        f = '[MClientQt] gui.TableModel.set_headers'
-        if headers:
-            self.headers = headers
-        else:
-            sh.com.rep_empty(f)
+        self.headers = [_('#'),_('Source language'),_('Target language')
+                       ,_('Request')
+                       ]
     
     def get_header(self,colno):
         f = '[MClientQt] gui.TableModel.get_header'
@@ -115,7 +110,7 @@ if __name__ == '__main__':
             ,['3',_('English'),_('Russian'),'bye']
             ]
     model = TableModel(table)
-    model.set_headers(headers)
+    model.headers = headers
     ihis = History()
     ihis.set_model(model)
     ihis.show()
