@@ -43,7 +43,7 @@ class ArticleSubjects:
     def set_article(self):
         f = '[MClient] tests.Subjects.set_article'
         import subjects.subjects as sj
-        import mclient
+        import mclientqt
         pairs = mclient.objs.get_blocksdb().get_dic_pairs()
         mes = _('Pairs: {}').format(pairs)
         sh.objs.get_mes(f,mes,True).show_debug()
@@ -52,7 +52,7 @@ class ArticleSubjects:
     
     def set_blocks(self):
         f = '[MClient] tests.Subjects.set_blocks'
-        import mclient
+        import mclientqt
         # Lists will be automatically read from files on import
         import logic as lg
         lg.com.start()
@@ -383,6 +383,71 @@ class Plugin:
 
 class Commands:
     
+    def run_settings(self):
+        import logic as lg
+        import settings.controller as st
+        lg.com.start()
+        settings = st.Settings()
+        return settings
+    
+    def run_history(self):
+        import logic as lg
+        import mclientqt as mc
+        lg.com.start()
+        ihis = mc.History()
+        ihis.add()
+        ihis.add()
+        ihis.add()
+        ihis.add()
+        return ihis
+    
+    def run_db(self):
+        import logic as lg
+        import subjects.subjects as sj
+        import cells as cl
+        lg.com.start()
+        DB(0).run()
+    
+    def run_welcome_contr(self):
+        import logic as lg
+        lg.com.start()
+        import welcome.controller as wl
+        iwelcome = wl.Welcome()
+        #iwelcome.reset()
+        return iwelcome
+    
+    def run_welcome(self):
+        import mclientqt as mc
+        import logic as lg
+        lg.com.start()
+        iwelcome = mc.Welcome(mc.About().get_product())
+        #iwelcome.reset()
+        return iwelcome
+    
+    def run_history_contr(self):
+        import history.controller as hs
+        ihis = hs.History()
+        headers = [_('#'),_('Source language'),_('Target language')
+                  ,_('Request')
+                  ]
+        table = [['3',_('English'),_('Russian'),'bye']
+                ,['2',_('Russian'),_('English'),'hello']
+                ,['1',_('Russian'),_('English'),'start']
+                ,
+                ]
+        model = hs.TableModel(table)
+        model.set_headers(headers)
+        ihis.set_model(model)
+        """
+        # The model is updated entirely each time, but still this is fast
+        for i in range(100):
+            ihis.add_row(_('English'),_('Russian'),f'start ({i+1})')
+            ihis.add_row(_('Russian'),_('English'),f'hello ({i+1})')
+            ihis.add_row(_('French'),_('Esperanto'),f'bye ({i+1})')
+            ihis.add_row(_('English'),_('Russian'),f'end ({i+1})')
+        """
+        return ihis
+    
     def run_symbols(self):
         import config as cf
         import logic as lg
@@ -411,7 +476,7 @@ class Commands:
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def check_width(self):
-        import mclient as mc
+        import mclientqt as mc
         file = '/home/pete/tmp/frame rate.htm'
         #file = '/tmp/f.htm'
         code = sh.ReadTextFile(file).get()
@@ -483,7 +548,7 @@ class Commands:
         cf.CreateConfig().run()
     
     def edit_priorities(self):
-        import mclient as mc
+        import mclientqt as mc
         import logic as lg
         lg.com.start()
         mc.objs.get_priorities().reset (lst1 = lg.objs.get_order().priorlst
@@ -494,7 +559,7 @@ class Commands:
         mc.objs.priorities.show()
     
     def edit_blacklist(self):
-        import mclient as mc
+        import mclientqt as mc
         import logic as lg
         lg.com.start()
         mc.objs.get_blacklist().reset (lst1 = lg.objs.get_order().blacklst
@@ -703,7 +768,7 @@ class Commands:
                       ,search,url
                       ):
         f = '[MClient] tests.Commands.translate_gui'
-        import mclient
+        import mclientqt
         lg.objs.get_plugins().set(source)
         lg.objs.plugins.set_pair(pair)
         lg.objs.get_request().search = search
@@ -946,83 +1011,28 @@ if __name__ == '__main__':
         e.g. com.run_welcome, will cause an infinite loop.
     '''
     '''
-    import config as cf
-    import logic as lg
-    import mclient as mc
-    import settings.controller as st
-    lg.com.start()
-    settings = st.Settings()
-    settings.show()
+    # Settings
+    isettings = com.run_settings()
+    isettings.show()
     '''
     '''
-    import config as cf
-    import logic as lg
-    import mclient as mc
-    lg.com.start()
-    ihis = mc.History()
-    ihis.add()
-    ihis.add()
-    ihis.add()
-    ihis.add()
-    '''
-    import history.controller as hs
-    ihis = hs.History()
-    headers = [_('#'),_('Source language'),_('Target language'),_('Request')]
-    table = [['3',_('English'),_('Russian'),'bye']
-            ,['2',_('Russian'),_('English'),'hello']
-            ,['1',_('Russian'),_('English'),'start']
-            ,
-            ]
-    model = hs.TableModel(table)
-    model.set_headers(headers)
-    ihis.set_model(model)
-    '''
-    # The model is updated entirely each time, but still this is fast
-    for i in range(100):
-        ihis.add_row(_('English'),_('Russian'),f'start ({i+1})')
-        ihis.add_row(_('Russian'),_('English'),f'hello ({i+1})')
-        ihis.add_row(_('French'),_('Esperanto'),f'bye ({i+1})')
-        ihis.add_row(_('English'),_('Russian'),f'end ({i+1})')
-    '''
+    # History
+    ihis = com.run_history()
     ihis.show()
     '''
-    import mclient as mc
-    #import welcome.controller as wl
-    lg.com.start()
-    #iwelcome = wl.Welcome()
-    iwelcome = mc.Welcome(mc.About().get_product())
-    iwelcome.reset()
+    '''
+    # History (history.controller)
+    ihis = com.run_history_contr()
+    ihis.show()
+    '''
+    '''
+    # Welcome (welcome.controller)
+    iwelcome = com.run_welcome_contr()
     iwelcome.show()
     '''
-    #com.run_symbols()
-    #ArticleSubjects().run()
-    #com.check_width()
-    #com.edit_blacklist()
-    #com.edit_priorities()
-    #com.get_column_width()
-    #com.get_majors_en()
-    #com.get_modified_subjects()
-    #com.get_priority()
-    #com.get_subjects_wo_majors()
-    #com.run_settings()
-    #com.run_sources()
-    #com.show_about()
-    #Get().run_dsl()
-    #Get().run_multitrancom()
-    #Offline().run_multitrancom()
-    #Plugin().reinsert_same()
-    #Plugin().run_dsl()
-    #Plugin().run_multitrandem()
-    #Plugin().run_multitrancom()
-    #Tags().analyze_tag()
-    #Tags().run_dsl()
-    #Tags().run_multitrancom()
-    #Tags().run_stardict()
     '''
-    import logic as lg
-    import subjects.subjects as sj
-    import cells as cl
-    lg.com.start()
-    DB(0).run()
+    # Welcome
+    iwelcome = com.run_welcome()
+    iwelcome.show()
     '''
     sh.com.end()
