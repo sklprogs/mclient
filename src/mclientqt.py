@@ -42,6 +42,8 @@ class History(hs.History):
                      ,lang2 = lg.objs.plugins.get_lang2()
                      ,search = lg.objs.request.search
                      )
+        # Setting column width works only after updating the model, see https://stackoverflow.com/questions/8364061/how-do-you-set-the-column-width-on-a-qtreeview
+        self.gui.set_col_width()
 
 
 

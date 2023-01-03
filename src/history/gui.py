@@ -91,14 +91,13 @@ class History(PyQt5.QtWidgets.QWidget):
         self.setWindowIcon(qicon)
     
     def set_col_width(self):
-        self.history.header().resizeSection(0,50)
+        self.history.header().resizeSection(0,30)
     
     def set_gui(self):
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout(self)
         self.history = PyQt5.QtWidgets.QTreeView()
         self.layout_.addWidget(self.history)
         self.setLayout(self.layout_)
-        self.set_col_width()
         self.resize(600,300)
 
 

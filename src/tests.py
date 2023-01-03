@@ -427,16 +427,12 @@ class Commands:
     def run_history_contr(self):
         import history.controller as hs
         ihis = hs.History()
-        headers = [_('#'),_('Source language'),_('Target language')
-                  ,_('Request')
-                  ]
         table = [['3',_('English'),_('Russian'),'bye']
                 ,['2',_('Russian'),_('English'),'hello']
                 ,['1',_('Russian'),_('English'),'start']
                 ,
                 ]
         model = hs.gi.TableModel(table)
-        model.set_headers(headers)
         ihis.set_model(model)
         """
         # The model is updated entirely each time, but still this is fast
@@ -1015,6 +1011,7 @@ if __name__ == '__main__':
     isettings = com.run_settings()
     isettings.show()
     '''
+    '''
     # History
     ihis = com.run_history()
     ihis.show()
@@ -1022,7 +1019,6 @@ if __name__ == '__main__':
     # History (history.controller)
     ihis = com.run_history_contr()
     ihis.show()
-    '''
     '''
     # Welcome (welcome.controller)
     iwelcome = com.run_welcome_contr()
