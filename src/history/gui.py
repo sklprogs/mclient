@@ -13,8 +13,8 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
     def __init__(self,data,parent=None,*args):
         PyQt5.QtCore.QAbstractTableModel.__init__(self,parent,*args)
         self.items = data
-        self.headers = [_('#'),_('Source language'),_('Target language')
-                       ,_('Request')
+        self.headers = [_('#'),_('Source'),_('Source language')
+                       ,_('Target language'),_('Request')
                        ]
     
     def get_header(self,colno):

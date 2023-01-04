@@ -28,10 +28,10 @@ class History:
     def set_model(self,model):
         self.gui.set_model(model)
     
-    def add_row(self,id_,lang1,lang2,search):
+    def add_row(self,id_,source,lang1,lang2,search):
         id_ = str(id_)
         if not self.has_id(id_):
-            row = [id_,lang1,lang2,search]
+            row = [id_,source,lang1,lang2,search]
             self.model.items.insert(0,row)
             self.model.update()
     
