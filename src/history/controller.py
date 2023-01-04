@@ -20,13 +20,20 @@ class History:
         self.set_title()
         self.set_bindings()
     
+    def has_id(self,id_):
+        for row in self.model.items:
+            if row and row[0] == id_:
+                return True
+    
     def set_model(self,model):
         self.gui.set_model(model)
     
     def add_row(self,id_,lang1,lang2,search):
-        row = [str(id_),lang1,lang2,search]
-        self.model.items.insert(0,row)
-        self.model.update()
+        id_ = str(id_)
+        if not self.has_id(id_):
+            row = [id_,lang1,lang2,search]
+            self.model.items.insert(0,row)
+            self.model.update()
     
     def set_title(self,title=_('History')):
         self.gui.set_title(title)
