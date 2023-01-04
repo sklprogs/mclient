@@ -41,7 +41,7 @@ class History:
         index_ = self.model.index(rowno,colno)
         self.gui.set_index(index_)
         self.gui.select_row(index_)
-        mes = _('Row change: {} -> {}').format(old,rowno)
+        mes = _('Change row number: {} → {}').format(old,rowno)
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def go_up(self):
@@ -59,7 +59,7 @@ class History:
         index_ = self.model.index(rowno,colno)
         self.gui.set_index(index_)
         self.gui.select_row(index_)
-        mes = _('Row change: {} -> {}').format(old,rowno)
+        mes = _('Change row number: {} → {}').format(old,rowno)
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def has_id(self,id_):
