@@ -27,22 +27,40 @@ class History:
         self.gui.set_model(self.model)
     
     def go_down(self):
+        # Qt already goes down/up, but without looping
         f = '[MClient] history.controller.History.go_down'
         if not self.model.items or not self.model.items[0]:
             sh.com.rep_empty(f)
             return
         rowno, colno = self.gui.get_cell()
-        mes = _('Current row #{}').format(rowno)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        if rowno + 1 >= len(self.model.items):
+        old = rowno
+        if rowno == len(self.model.items) - 1:
             rowno = -1
         rowno += 1
-        mes = _('Next row #{}').format(rowno)
-        sh.objs.get_mes(f,mes,True).show_debug()
         self.gui.clear_selection()
         index_ = self.model.index(rowno,colno)
         self.gui.set_index(index_)
         self.gui.select_row(index_)
+        mes = _('Row change: {} -> {}').format(old,rowno)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def go_up(self):
+        # Qt already goes down/up, but without looping
+        f = '[MClient] history.controller.History.go_up'
+        if not self.model.items or not self.model.items[0]:
+            sh.com.rep_empty(f)
+            return
+        rowno, colno = self.gui.get_cell()
+        old = rowno
+        if rowno == 0:
+            rowno = len(self.model.items)
+        rowno -= 1
+        self.gui.clear_selection()
+        index_ = self.model.index(rowno,colno)
+        self.gui.set_index(index_)
+        self.gui.select_row(index_)
+        mes = _('Row change: {} -> {}').format(old,rowno)
+        sh.objs.get_mes(f,mes,True).show_debug()
     
     def has_id(self,id_):
         for row in self.model.items:
@@ -62,6 +80,7 @@ class History:
     def set_bindings(self):
         self.gui.bind('Esc',self.close)
         self.gui.bind('Down',self.go_down)
+        self.gui.bind('Up',self.go_up)
     
     def show(self):
         self.Shown = True
