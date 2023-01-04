@@ -64,6 +64,20 @@ class History(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
+    def set_index(self,index_):
+        self.history.setCurrentIndex(index_)
+    
+    def get_cell(self):
+        iindex = self.history.selectionModel().currentIndex()
+        return(iindex.row(),iindex.column())
+    
+    def clear_selection(self):
+        self.history.selectionModel().clearSelection()
+    
+    def select_row(self,index_):
+        mode = PyQt5.QtCore.QItemSelectionModel.Select | PyQt5.QtCore.QItemSelectionModel.Rows
+        self.history.selectionModel().select(index_,mode)
+    
     def get_model(self):
         return self.history.model()
     

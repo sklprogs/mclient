@@ -427,21 +427,25 @@ class Commands:
     def run_history_contr(self):
         import history.controller as hs
         ihis = hs.History()
-        table = [['3',_('English'),_('Russian'),'bye']
+        table = [['1',_('Russian'),_('English'),'start']
                 ,['2',_('Russian'),_('English'),'hello']
-                ,['1',_('Russian'),_('English'),'start']
-                ,
+                ,['3',_('English'),_('Russian'),'bye']
+                ,['4',_('English'),_('Russian'),'fourth']
+                ,['5',_('English'),_('Russian'),'fifth']
                 ]
-        model = hs.gi.TableModel(table)
-        ihis.set_model(model)
-        """
+        ihis.fill_model(table)
         # The model is updated entirely each time, but still this is fast
+        count = 0
+        sub = 'id{}'
         for i in range(100):
-            ihis.add_row(_('English'),_('Russian'),f'start ({i+1})')
-            ihis.add_row(_('Russian'),_('English'),f'hello ({i+1})')
-            ihis.add_row(_('French'),_('Esperanto'),f'bye ({i+1})')
-            ihis.add_row(_('English'),_('Russian'),f'end ({i+1})')
-        """
+            count += 1
+            ihis.add_row(sub.format(count),'Main',_('English'),_('Russian'),'start')
+            count += 1
+            ihis.add_row(sub.format(count),'Main',_('Russian'),_('English'),'hello')
+            count += 1
+            ihis.add_row(sub.format(count),'Main',_('French'),_('Esperanto'),'bye')
+            count += 1
+            ihis.add_row(sub.format(count),'Main',_('English'),_('Russian'),'end')
         return ihis
     
     def run_symbols(self):

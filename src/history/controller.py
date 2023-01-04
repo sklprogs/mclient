@@ -12,21 +12,42 @@ class History:
     def __init__(self):
         self.Shown = False
         self.set_gui()
-        self.model = gi.TableModel([[]])
-        self.set_model(self.model)
+        self.fill_model()
     
     def set_gui(self):
         self.gui = gi.History()
         self.set_title()
         self.set_bindings()
     
+    def fill_model(self,table=[[]]):
+        ''' Do not assign 'gi.TableModel' externally, this will not change
+            the actual model.
+        '''
+        self.model = gi.TableModel(table)
+        self.gui.set_model(self.model)
+    
+    def go_down(self):
+        f = '[MClient] history.controller.History.go_down'
+        if not self.model.items or not self.model.items[0]:
+            sh.com.rep_empty(f)
+            return
+        rowno, colno = self.gui.get_cell()
+        mes = _('Current row #{}').format(rowno)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        if rowno + 1 >= len(self.model.items):
+            rowno = -1
+        rowno += 1
+        mes = _('Next row #{}').format(rowno)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        self.gui.clear_selection()
+        index_ = self.model.index(rowno,colno)
+        self.gui.set_index(index_)
+        self.gui.select_row(index_)
+    
     def has_id(self,id_):
         for row in self.model.items:
             if row and row[0] == id_:
                 return True
-    
-    def set_model(self,model):
-        self.gui.set_model(model)
     
     def add_row(self,id_,source,lang1,lang2,search):
         id_ = str(id_)
@@ -40,6 +61,7 @@ class History:
     
     def set_bindings(self):
         self.gui.bind('Esc',self.close)
+        self.gui.bind('Down',self.go_down)
     
     def show(self):
         self.Shown = True
