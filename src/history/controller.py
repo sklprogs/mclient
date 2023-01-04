@@ -60,16 +60,23 @@ class History:
         mes = _('Change row number: {} → {}').format(old,rowno)
         sh.objs.get_mes(f,mes,True).show_debug()
     
-    def has_id(self,id_):
+    def _has_id(self,id_):
         for row in self.model.items:
             if row and row[0] == id_:
                 return True
     
     def add_row(self,id_,source,lang1,lang2,search):
+        f = '[MClient] history.controller.History.add_row'
+        if not self.model.items:
+            sh.com.rep_empty(f)
+            return
+        # Avoid getting out of bounds, since our table is initially [[]]
+        if self.model.items[0] == []:
+            del self.model.items[0]
         id_ = str(id_)
-        if not self.has_id(id_):
+        if not self._has_id(id_):
             row = [id_,source,lang1,lang2,search]
-            self.model.items.insert(0,row)
+            self.model.items.append(row)
             self.model.update()
     
     def set_title(self,title=_('History')):
