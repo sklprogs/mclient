@@ -1327,12 +1327,12 @@ if __name__ == '__main__':
     sh.com.start()
     lg.com.start()
     lg.objs.get_plugins(Debug=False,maxrows=1000)
-    lg.objs.get_request().search = 'tuple'
+    #lg.objs.get_request().search = 'tuple'
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
     app = App()
-    lg.com.get_url()
-    app.load_article()
+    #lg.com.get_url()
+    #app.load_article()
     timer.end()
     app.show()
     sh.com.end()

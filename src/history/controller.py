@@ -19,12 +19,20 @@ class History:
         self.set_title()
         self.set_bindings()
     
+    def go_start(self):
+        f = '[MClient] history.controller.History.go_start'
+        if not self.model.items:
+            sh.com.rep_lazy(f)
+            return
+        self._go_row(0)
+    
     def fill_model(self,table=[[]]):
         ''' Do not assign 'gi.TableModel' externally, this will not change
             the actual model.
         '''
         self.model = gi.TableModel(table)
         self.gui.set_model(self.model)
+        self.go_start()
     
     def _go_row(self,rowno):
         self.gui.clear_selection()
@@ -78,6 +86,7 @@ class History:
             row = [id_,source,lang1,lang2,search]
             self.model.items.append(row)
             self.model.update()
+        self._go_row(len(self.model.items)-1)
     
     def set_title(self,title=_('History')):
         self.gui.set_title(title)
