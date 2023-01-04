@@ -26,21 +26,23 @@ class History:
         self.model = gi.TableModel(table)
         self.gui.set_model(self.model)
     
+    def _go_row(self,rowno):
+        self.gui.clear_selection()
+        index_ = self.model.index(rowno,0)
+        self.gui.set_index(index_)
+        self.gui.select_row(index_)
+    
     def go_down(self):
         # Qt already goes down/up, but without looping
         f = '[MClient] history.controller.History.go_down'
         if not self.model.items or not self.model.items[0]:
             sh.com.rep_empty(f)
             return
-        rowno, colno = self.gui.get_cell()
-        old = rowno
+        old = rowno = self.gui.get_row()
         if rowno == len(self.model.items) - 1:
             rowno = -1
         rowno += 1
-        self.gui.clear_selection()
-        index_ = self.model.index(rowno,colno)
-        self.gui.set_index(index_)
-        self.gui.select_row(index_)
+        self._go_row(rowno)
         mes = _('Change row number: {} → {}').format(old,rowno)
         sh.objs.get_mes(f,mes,True).show_debug()
     
@@ -50,15 +52,11 @@ class History:
         if not self.model.items or not self.model.items[0]:
             sh.com.rep_empty(f)
             return
-        rowno, colno = self.gui.get_cell()
-        old = rowno
+        old = rowno = self.gui.get_row()
         if rowno == 0:
             rowno = len(self.model.items)
         rowno -= 1
-        self.gui.clear_selection()
-        index_ = self.model.index(rowno,colno)
-        self.gui.set_index(index_)
-        self.gui.select_row(index_)
+        self._go_row(rowno)
         mes = _('Change row number: {} → {}').format(old,rowno)
         sh.objs.get_mes(f,mes,True).show_debug()
     

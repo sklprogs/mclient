@@ -67,9 +67,8 @@ class History(PyQt5.QtWidgets.QWidget):
     def set_index(self,index_):
         self.history.setCurrentIndex(index_)
     
-    def get_cell(self):
-        iindex = self.history.selectionModel().currentIndex()
-        return(iindex.row(),iindex.column())
+    def get_row(self):
+        return self.history.selectionModel().currentIndex().row()
     
     def clear_selection(self):
         self.history.selectionModel().clearSelection()
