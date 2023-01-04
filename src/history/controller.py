@@ -12,7 +12,8 @@ class History:
     def __init__(self):
         self.Shown = False
         self.set_gui()
-        self.set_model(gi.TableModel([[]]))
+        self.model = gi.TableModel([[]])
+        self.set_model(self.model)
     
     def set_gui(self):
         self.gui = gi.History()
@@ -24,9 +25,8 @@ class History:
     
     def add_row(self,id_,lang1,lang2,search):
         row = [str(id_),lang1,lang2,search]
-        model = self.gui.get_model()
-        model.items.insert(0,row)
-        model.update()
+        self.model.items.insert(0,row)
+        self.model.update()
     
     def set_title(self,title=_('History')):
         self.gui.set_title(title)
