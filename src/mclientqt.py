@@ -268,6 +268,9 @@ class Table:
             return
         if Mouse and self.search.Shown:
             return
+        if not self.model:
+            sh.com.rep_empty(f)
+            return
         self.model.update(self.gui.get_index())
         new_index = self.model.index(rowno,colno)
         if Mouse:
@@ -504,6 +507,28 @@ class App:
         self.gui = gi.App()
         self.set_gui()
         self.update_ui()
+    
+    def go_history(self,id_):
+        f = '[MClientQt] mclient.App.go_history'
+        if id_ is None:
+            sh.com.rep_empty(f)
+            return
+        lg.objs.get_blocksdb().artid = id_
+        result = lg.objs.blocksdb.get_article()
+        if not result:
+            sh.com.rep_empty(f)
+            return
+        sh.lg.globs['str']['source'] = result[0] # SOURCE
+        lg.objs.request.search = result[1]       # TITLE
+        lg.objs.request.url = result[2]          # URL
+        mes = _('Set source to "{}"')
+        mes = mes.format(sh.lg.globs['str']['source'])
+        sh.objs.get_mes(f,mes,True).show_info()
+        lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
+        lg.objs.plugins.set_lang1(result[4])
+        lg.objs.plugins.set_lang2(result[5])
+        self.reset_opt(sh.lg.globs['str']['source'])
+        self.load_article()
     
     def clear_history(self):
         lg.objs.get_blocksdb().clear()
@@ -1219,6 +1244,7 @@ class App:
         self.settings.gui.close_settings.connect(self.settings.close)
         
         self.history.gui.close_history.connect(self.history.close)
+        self.history.gui.signal_go.connect(self.go_history)
     
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)

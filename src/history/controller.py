@@ -40,6 +40,16 @@ class History:
         self.gui.set_index(index_)
         self.gui.select_row(index_)
     
+    def _go_article(self,rowno):
+        f = '[MClient] history.controller.History._go_article'
+        try:
+            id_ = self.model.items[rowno][0]
+        except IndexError:
+            mes = _('Wrong input data: "{}"!').format(rowno)
+            sh.objs.get_mes(f,mes).show_warning()
+            return
+        self.gui.signal_go.emit(int(id_))
+    
     def go_down(self):
         # Qt already goes down/up, but without looping
         f = '[MClient] history.controller.History.go_down'
@@ -53,6 +63,7 @@ class History:
         self._go_row(rowno)
         mes = _('Change row number: {} → {}').format(old,rowno)
         sh.objs.get_mes(f,mes,True).show_debug()
+        self._go_article(rowno)
     
     def go_up(self):
         # Qt already goes down/up, but without looping
@@ -67,6 +78,7 @@ class History:
         self._go_row(rowno)
         mes = _('Change row number: {} → {}').format(old,rowno)
         sh.objs.get_mes(f,mes,True).show_debug()
+        self._go_article(rowno)
     
     def _has_id(self,id_):
         for row in self.model.items:
@@ -95,6 +107,8 @@ class History:
         self.gui.bind('Esc',self.close)
         self.gui.bind('Down',self.go_down)
         self.gui.bind('Up',self.go_up)
+        self.gui.bind('Alt+Left',self.go_up)
+        self.gui.bind('Alt+Right',self.go_down)
     
     def show(self):
         self.Shown = True

@@ -59,6 +59,7 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
 class History(PyQt5.QtWidgets.QWidget):
     
     close_history = PyQt5.QtCore.pyqtSignal()
+    signal_go = PyQt5.QtCore.pyqtSignal(int)
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
