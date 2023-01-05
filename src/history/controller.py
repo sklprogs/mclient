@@ -25,6 +25,16 @@ class History:
             sh.com.rep_lazy(f)
             return
         self._go_row(0)
+        self._go_article(0)
+    
+    def go_end(self):
+        f = '[MClient] history.controller.History.go_end'
+        if not self.model.items:
+            sh.com.rep_lazy(f)
+            return
+        rowno = len(self.model.items) - 1
+        self._go_row(rowno)
+        self._go_article(rowno)
     
     def fill_model(self,table=[[]]):
         ''' Do not assign 'gi.TableModel' externally, this will not change
@@ -32,7 +42,8 @@ class History:
         '''
         self.model = gi.TableModel(table)
         self.gui.set_model(self.model)
-        self.go_start()
+        if self.model.items and self.model.items[0]:
+            self._go_row(0)
     
     def _go_row(self,rowno):
         self.gui.clear_selection()
@@ -112,6 +123,12 @@ class History:
         self.gui.bind('Up',self.go_up)
         self.gui.bind('Alt+Left',self.go_up)
         self.gui.bind('Alt+Right',self.go_down)
+        self.gui.bind('Home',self.go_start)
+        self.gui.bind('End',self.go_end)
+        self.gui.bind('Alt+Home',self.go_start)
+        self.gui.bind('Alt+End',self.go_end)
+        self.gui.bind('Ctrl+Home',self.go_start)
+        self.gui.bind('Ctrl+End',self.go_end)
     
     def show(self):
         self.Shown = True
