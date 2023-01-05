@@ -105,7 +105,13 @@ class History(PyQt5.QtWidgets.QWidget):
         self.setWindowIcon(qicon)
     
     def set_col_width(self):
-        self.history.header().resizeSection(0,30)
+        ''' 42 is the minimal column width to store 2-digit numbers. 3-digit
+            numbers require more space; however,
+            1) too wide ID column with a lot of empty space looks ugly;
+            2) IDs > 99 are not always reached;
+            3) the user can manually increase/decrease the column width.
+        '''
+        self.history.header().resizeSection(0,42)
     
     def set_gui(self):
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout(self)
