@@ -37,11 +37,7 @@ class History(hs.History):
         if not lg.objs.get_request().search:
             sh.com.rep_lazy(f)
             return
-        id_ = lg.objs.get_blocksdb().artid
-        #TODO: Start article ID from 1
-        if id_ == 0:
-            id_ += 1
-        self.add_row (id_ = id_
+        self.add_row (id_ = lg.objs.get_blocksdb().artid
                      ,source = lg.objs.get_plugins().source
                      ,lang1 = lg.objs.plugins.get_lang1()
                      ,lang2 = lg.objs.plugins.get_lang2()
@@ -939,7 +935,6 @@ class App:
             lg.objs.blocksdb.artid = artid
             #self.get_bookmark()
         else:
-            self.history.add()
             blocks = lg.objs.get_plugins().request (search = lg.objs.request.search
                                                    ,url = lg.objs.request.url
                                                    )
@@ -962,6 +957,9 @@ class App:
                 lg.objs.blocksdb.fill_blocks(data)
             
             lg.objs.blocksdb.update_phterm()
+            
+            # Do this only after updating DB and setting a new article ID
+            self.history.add()
             
         timer.start()
         self.phdic = lg.objs.blocksdb.get_phdic()
