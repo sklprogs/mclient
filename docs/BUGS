@@ -1,4 +1,5 @@
 mclient:
+- Article IDs > 9 are not shown in History
 - Fix Stardict (nothing is found)
 - Vertical mode icon is not changed upon toggling the vertical mode on
   a welcome screen
@@ -6,6 +7,7 @@ mclient:
 - Changing number of columns causes navigation issues
 
 multitrancom:
+- EN-RU, set -> ряд: Cannot go to start
 - EN-RU, hoove: loosing selection when moving mouse pointer at the end of the
   article
 - If a number of columns is changed to an even value in the special-page
