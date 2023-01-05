@@ -27,12 +27,32 @@ import history.controller as hs
 DEBUG = False
 
 
+class Commands:
+    ''' #NOTE: DB is in controller (not in logic), so DB-related code
+        is here too.
+    '''
+    def get_skipped_terms(self):
+        f = '[MClientQt] mclient.Commands.get_skipped_terms'
+        skipped = lg.objs.get_blocksdb().get_skipped_terms()
+        if not skipped:
+            return []
+        # TERM can be empty for some reason
+        skipped = [item for item in skipped if item]
+        # We already use 'distinct' in DB, no need to use 'set'
+        skipped.sort()
+        mes = '; '.join(skipped)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return skipped
+
+
+
 class History(hs.History):
 
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
     def add(self):
+        # Call this only after assigning an article ID for a new article
         f = '[MClientQt] mclient.History.add'
         if not lg.objs.get_request().search:
             sh.com.rep_lazy(f)
@@ -958,9 +978,6 @@ class App:
             
             lg.objs.blocksdb.update_phterm()
             
-            # Do this only after updating DB and setting a new article ID
-            self.history.add()
-            
         timer.start()
         self.phdic = lg.objs.blocksdb.get_phdic()
         if self.phdic:
@@ -1037,7 +1054,6 @@ class App:
         lg.objs.column_width.run()
         
         blocks = lg.com.assign_blocks(lg.objs.blocksdb.fetch())
-        
         blocks = lg.com.add_formatting(blocks)
         
         cells = lg.Cells(blocks).run()
@@ -1046,10 +1062,11 @@ class App:
         ''' Empty article is not added either to DB or history, so we just do
             not clear the search field to be able to correct the typo.
         '''
-        '''
-        if pages.blocks or com.get_skipped_terms():
-            self.gui.ent_src.clear_text()
-        '''
+        if cells or com.get_skipped_terms():
+            self.gui.panel.ent_src.reset()
+        
+        self.history.add()
+        
         #objs.get_suggest().close()
         #self.update_buttons()
         timer.end()
@@ -1347,6 +1364,9 @@ class SearchArticle:
             mes = _('No matches!')
             sh.objs.get_mes(f,mes).show_info()
         return(rowno,colno)
+
+
+com = Commands()
 
 
 if __name__ == '__main__':

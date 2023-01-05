@@ -80,10 +80,10 @@ class History:
         sh.objs.get_mes(f,mes,True).show_debug()
         self._go_article(rowno)
     
-    def _has_id(self,id_):
-        for row in self.model.items:
-            if row and row[0] == id_:
-                return True
+    def _find_id(self,id_):
+        for i in range(len(self.model.items)):
+            if self.model.items[i] and self.model.items[i][0] == id_:
+                return i
     
     def add_row(self,id_,source,lang1,lang2,search):
         f = '[MClient] history.controller.History.add_row'
@@ -94,11 +94,14 @@ class History:
         if self.model.items[0] == []:
             del self.model.items[0]
         id_ = str(id_)
-        if not self._has_id(id_):
+        rowno = self._find_id(id_)
+        if rowno is None:
             row = [id_,source,lang1,lang2,search]
             self.model.items.append(row)
             self.model.update()
-        self._go_row(len(self.model.items)-1)
+            self._go_row(len(self.model.items)-1)
+        else:
+            self._go_row(rowno)
     
     def set_title(self,title=_('History')):
         self.gui.set_title(title)
