@@ -46,28 +46,6 @@ class Commands:
 
 
 
-class History(hs.History):
-
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-    
-    def add(self):
-        # Call this only after assigning an article ID for a new article
-        f = '[MClientQt] mclient.History.add'
-        if not lg.objs.get_request().search:
-            sh.com.rep_lazy(f)
-            return
-        self.add_row (id_ = lg.objs.get_blocksdb().artid
-                     ,source = lg.objs.get_plugins().source
-                     ,lang1 = lg.objs.plugins.get_lang1()
-                     ,lang2 = lg.objs.plugins.get_lang2()
-                     ,search = lg.objs.request.search
-                     )
-        # Setting column width works only after updating the model, see https://stackoverflow.com/questions/8364061/how-do-you-set-the-column-width-on-a-qtreeview
-        self.gui.set_col_width()
-
-
-
 class Welcome(wl.Welcome):
 
     def __init__(self,*args,**kwargs):
@@ -527,6 +505,21 @@ class App:
         self.gui = gi.App()
         self.set_gui()
         self.update_ui()
+    
+    def add_history(self):
+        # Call this only after assigning an article ID for a new article
+        f = '[MClientQt] mclient.App.add_history'
+        if not lg.objs.get_request().search:
+            sh.com.rep_lazy(f)
+            return
+        self.history.add_row (id_ = lg.objs.get_blocksdb().artid
+                             ,source = lg.objs.get_plugins().source
+                             ,lang1 = lg.objs.plugins.get_lang1()
+                             ,lang2 = lg.objs.plugins.get_lang2()
+                             ,search = lg.objs.request.search
+                             )
+        # Setting column width works only after updating the model, see https://stackoverflow.com/questions/8364061/how-do-you-set-the-column-width-on-a-qtreeview
+        self.history.gui.set_col_width()
     
     def go_history(self,id_):
         f = '[MClientQt] mclient.App.go_history'
@@ -1065,7 +1058,7 @@ class App:
         if cells or com.get_skipped_terms():
             self.gui.panel.ent_src.reset()
         
-        self.history.add()
+        self.add_history()
         
         #objs.get_suggest().close()
         #self.update_buttons()
@@ -1296,7 +1289,7 @@ class App:
         self.symbols = sm.Symbols()
         self.welcome = Welcome(self.about.get_product())
         self.settings = st.objs.get_settings()
-        self.history = History()
+        self.history = hs.History()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_icons()
         self.set_title()
