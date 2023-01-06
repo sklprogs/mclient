@@ -49,6 +49,8 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
         self.layoutChanged.emit()
     
     def headerData(self,column,orientation,role=PyQt5.QtCore.Qt.DisplayRole):
+        if column == 0 and role == PyQt5.QtCore.Qt.TextAlignmentRole:
+            return PyQt5.QtCore.Qt.AlignCenter
         if role != PyQt5.QtCore.Qt.DisplayRole:
             return PyQt5.QtCore.QVariant()
         if orientation == PyQt5.QtCore.Qt.Horizontal:

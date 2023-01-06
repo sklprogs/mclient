@@ -436,16 +436,15 @@ class Commands:
         ihis.fill_model(table)
         # The model is updated entirely each time, but still this is fast
         count = 0
-        sub = 'id{}'
         for i in range(100):
             count += 1
-            ihis.add_row(sub.format(count),'Main',_('English'),_('Russian'),'start')
+            ihis.add_row(str(count),'Main',_('English'),_('Russian'),'start')
             count += 1
-            ihis.add_row(sub.format(count),'Main',_('Russian'),_('English'),'hello')
+            ihis.add_row(str(count),'Main',_('Russian'),_('English'),'hello')
             count += 1
-            ihis.add_row(sub.format(count),'Main',_('French'),_('Esperanto'),'bye')
+            ihis.add_row(str(count),'Main',_('French'),_('Esperanto'),'bye')
             count += 1
-            ihis.add_row(sub.format(count),'Main',_('English'),_('Russian'),'end')
+            ihis.add_row(str(count),'Main',_('English'),_('Russian'),'end')
         return ihis
     
     def run_symbols(self):
