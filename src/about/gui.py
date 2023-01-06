@@ -10,7 +10,7 @@ import skl_shared_qt.shared as sh
 
 class About(PyQt5.QtWidgets.QWidget):
     
-    close_about = PyQt5.QtCore.pyqtSignal()
+    sig_close = PyQt5.QtCore.pyqtSignal()
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -21,7 +21,7 @@ class About(PyQt5.QtWidgets.QWidget):
         self.setWindowIcon(qicon)
     
     def closeEvent(self,event):
-        self.close_about.emit()
+        self.sig_close.emit()
         return super().closeEvent(event)
     
     def set_title(self,title):

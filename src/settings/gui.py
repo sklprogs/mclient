@@ -11,7 +11,7 @@ PRODUCT = 'MClient'
 
 class Settings(PyQt5.QtWidgets.QWidget):
     
-    close_settings = PyQt5.QtCore.pyqtSignal()
+    sig_close = PyQt5.QtCore.pyqtSignal()
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -375,7 +375,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.cbx_no9.enable()
     
     def closeEvent(self,event):
-        self.close_settings.emit()
+        self.sig_close.emit()
         return super().closeEvent(event)
     
     def centralize(self):

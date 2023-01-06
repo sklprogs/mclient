@@ -37,9 +37,9 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
 
 class Table(PyQt5.QtWidgets.QTableView):
     
-    right_mouse = PyQt5.QtCore.pyqtSignal()
-    space = PyQt5.QtCore.pyqtSignal()
-    select = PyQt5.QtCore.pyqtSignal(int,int)
+    sig_rmb = PyQt5.QtCore.pyqtSignal()
+    sig_space = PyQt5.QtCore.pyqtSignal()
+    sig_select = PyQt5.QtCore.pyqtSignal(int,int)
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -52,7 +52,7 @@ class Table(PyQt5.QtWidgets.QTableView):
         pos = event.pos()
         rowno = self.rowAt(pos.y())
         colno = self.columnAt(pos.x())
-        self.select.emit(rowno,colno)
+        self.sig_select.emit(rowno,colno)
     
     def mouseMoveEvent(self,event):
         ''' In order to properly process a symbol, its cell should be selected
@@ -69,20 +69,20 @@ class Table(PyQt5.QtWidgets.QTableView):
     def mousePressEvent(self,event):
         button = event.button()
         if button == PyQt5.QtCore.Qt.RightButton:
-            self.right_mouse.emit()
+            self.sig_rmb.emit()
         super().mousePressEvent(event)
     
     def keyPressEvent(self,event):
         if event.key() == PyQt5.QtCore.Qt.Key_Space:
-            self.space.emit()
+            self.sig_space.emit()
         return super().keyPressEvent(event)
 
 
 
 class Symbols(PyQt5.QtWidgets.QWidget):
     
-    return_ = PyQt5.QtCore.pyqtSignal()
-    ctrl_return = PyQt5.QtCore.pyqtSignal()
+    sig_return = PyQt5.QtCore.pyqtSignal()
+    sig_ctrl_return = PyQt5.QtCore.pyqtSignal()
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -104,9 +104,9 @@ class Symbols(PyQt5.QtWidgets.QWidget):
         modifiers = event.modifiers()
         if key in (PyQt5.QtCore.Qt.Key_Return,PyQt5.QtCore.Qt.Key_Enter):
             if modifiers & PyQt5.QtCore.Qt.ControlModifier:
-                self.ctrl_return.emit()
+                self.sig_ctrl_return.emit()
             else:
-                self.return_.emit()
+                self.sig_return.emit()
         return super().keyPressEvent(event)
     
     def resize_to_contents(self):

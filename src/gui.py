@@ -32,13 +32,13 @@ class MinEntry(sh.gi.Entry):
 
 class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
     
-    ctrl_e = PyQt5.QtCore.pyqtSignal()
-    ctrl_home = PyQt5.QtCore.pyqtSignal()
-    ctrl_end = PyQt5.QtCore.pyqtSignal()
-    left_arrow = PyQt5.QtCore.pyqtSignal()
-    right_arrow = PyQt5.QtCore.pyqtSignal()
-    home_key = PyQt5.QtCore.pyqtSignal()
-    end_key = PyQt5.QtCore.pyqtSignal()
+    sig_ctrl_e = PyQt5.QtCore.pyqtSignal()
+    sig_ctrl_home = PyQt5.QtCore.pyqtSignal()
+    sig_ctrl_end = PyQt5.QtCore.pyqtSignal()
+    sig_left_arrow = PyQt5.QtCore.pyqtSignal()
+    sig_right_arrow = PyQt5.QtCore.pyqtSignal()
+    sig_home = PyQt5.QtCore.pyqtSignal()
+    sig_end = PyQt5.QtCore.pyqtSignal()
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -51,22 +51,22 @@ class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
         '''
         if modifiers & PyQt5.QtCore.Qt.ControlModifier:
             if key == PyQt5.QtCore.Qt.Key_Home:
-                self.ctrl_home.emit()
+                self.sig_ctrl_home.emit()
                 return
             elif key == PyQt5.QtCore.Qt.Key_End:
-                self.ctrl_end.emit()
+                self.sig_ctrl_end.emit()
                 return
             elif key == PyQt5.QtCore.Qt.Key_E:
-                self.ctrl_e.emit()
+                self.sig_ctrl_e.emit()
                 return
         elif key == PyQt5.QtCore.Qt.Key_Left:
-            self.left_arrow.emit()
+            self.sig_left_arrow.emit()
         elif key == PyQt5.QtCore.Qt.Key_Right:
-            self.right_arrow.emit()
+            self.sig_right_arrow.emit()
         elif key == PyQt5.QtCore.Qt.Key_Home:
-            self.home_key.emit()
+            self.sig_home.emit()
         elif key == PyQt5.QtCore.Qt.Key_End:
-            self.end_key.emit()
+            self.sig_end.emit()
         return super().keyPressEvent(event)
 
 
@@ -193,9 +193,9 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
 
 class Table(PyQt5.QtWidgets.QTableView):
     
-    select = PyQt5.QtCore.pyqtSignal(int,int,bool)
-    right_mouse_key = PyQt5.QtCore.pyqtSignal()
-    middle_mouse_key = PyQt5.QtCore.pyqtSignal()
+    sig_select = PyQt5.QtCore.pyqtSignal(int,int,bool)
+    sig_rmb = PyQt5.QtCore.pyqtSignal()
+    sig_mmb = PyQt5.QtCore.pyqtSignal()
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -206,7 +206,7 @@ class Table(PyQt5.QtWidgets.QTableView):
         pos = event.pos()
         rowno = self.rowAt(pos.y())
         colno = self.columnAt(pos.x())
-        self.select.emit(rowno,colno,True)
+        self.sig_select.emit(rowno,colno,True)
     
     def mouseMoveEvent(self,event):
         self._use_mouse(event)
@@ -276,9 +276,9 @@ class Table(PyQt5.QtWidgets.QTableView):
     def mousePressEvent(self,event):
         button = event.button()
         if button == PyQt5.QtCore.Qt.RightButton:
-            self.right_mouse_key.emit()
+            self.sig_rmb.emit()
         elif button == PyQt5.QtCore.Qt.MiddleButton:
-            self.middle_mouse_key.emit()
+            self.sig_mmb.emit()
         super().mousePressEvent(event)
     
     def set_col_width(self,no,width):
@@ -307,13 +307,13 @@ class Table(PyQt5.QtWidgets.QTableView):
 
 class App(PyQt5.QtWidgets.QMainWindow):
     
-    close_app = PyQt5.QtCore.pyqtSignal()
+    sig_close = PyQt5.QtCore.pyqtSignal()
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
     def closeEvent(self,event):
-        self.close_app.emit()
+        self.sig_close.emit()
         return super().closeEvent(event)
     
     def get_height(self):
@@ -365,14 +365,14 @@ class App(PyQt5.QtWidgets.QMainWindow):
 
 class MinPanel(PyQt5.QtWidgets.QWidget):
 
-    hover = PyQt5.QtCore.pyqtSignal(PyQt5.QtCore.QEvent)
+    sig_hover = PyQt5.QtCore.pyqtSignal(PyQt5.QtCore.QEvent)
     
     def __init__(self,parent):
         super().__init__(parent)
         self.setMouseTracking(True)
     
     def mouseMoveEvent(self,event):
-        self.hover.emit(event)
+        self.sig_hover.emit(event)
         return super().mouseMoveEvent(event)
 
 
@@ -688,7 +688,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.panel.setLayout(self.layout_)
     
     def set_bindings(self):
-        self.panel.hover.connect(self.trigger_hover)
+        self.panel.sig_hover.connect(self.trigger_hover)
     
     def set_gui(self):
         self.set_widgets()
@@ -700,7 +700,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
 
 class SearchArticle(PyQt5.QtWidgets.QWidget):
 
-    close_search = PyQt5.QtCore.pyqtSignal()
+    sig_close = PyQt5.QtCore.pyqtSignal()
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -711,7 +711,7 @@ class SearchArticle(PyQt5.QtWidgets.QWidget):
         self.setWindowIcon(qicon)
     
     def closeEvent(self,event):
-        self.close_search.emit()
+        self.sig_close.emit()
         return super().closeEvent(event)
     
     def clear(self):

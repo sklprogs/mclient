@@ -492,7 +492,7 @@ class Table:
         self.set_bindings()
     
     def set_bindings(self):
-        self.gui.select.connect(self.select)
+        self.gui.sig_select.connect(self.select)
         self.search.gui.ent_src.bind('Return',self.close_search_next)
         self.search.gui.btn_srp.set_action(self.search_prev)
         self.search.gui.btn_srn.set_action(self.search_next)
@@ -1130,7 +1130,7 @@ class App:
     
     def set_bindings(self):
         # Mouse buttons cannot be bound
-        self.gui.close_app.connect(self.quit)
+        self.gui.sig_close.connect(self.quit)
         
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.minimize)
@@ -1205,14 +1205,14 @@ class App:
                       
         #TODO: iterate through all keys
         if sh.lg.globs['str']['bind_spec_symbol'] == 'Ctrl+E':
-            self.gui.panel.ent_src.widget.ctrl_e.connect(self.symbols.show)
+            self.gui.panel.ent_src.widget.sig_ctrl_e.connect(self.symbols.show)
         else:
             self.gui.panel.ent_src.bind (sh.lg.globs['str']['bind_spec_symbol']
                                         ,self.symbols.show
                                         )
         
         self.table.gui.clicked.connect(self.go_url)
-        self.table.gui.middle_mouse_key.connect(self.minimize)
+        self.table.gui.sig_mmb.connect(self.minimize)
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be
             returned before the window is shown.
@@ -1232,30 +1232,30 @@ class App:
         self.panel.btn_ser.set_action(self.table.search.toggle)
         self.panel.btn_qit.set_action(self.close)
         
-        self.panel.ent_src.widget.home_key.connect(self.table.go_line_start)
-        self.panel.ent_src.widget.end_key.connect(self.table.go_line_end)
-        self.panel.ent_src.widget.ctrl_home.connect(self.table.go_start)
-        self.panel.ent_src.widget.ctrl_end.connect(self.table.go_end)
-        self.panel.ent_src.widget.left_arrow.connect(self.table.go_left)
-        self.panel.ent_src.widget.right_arrow.connect(self.table.go_right)
+        self.panel.ent_src.widget.sig_home.connect(self.table.go_line_start)
+        self.panel.ent_src.widget.sig_end.connect(self.table.go_line_end)
+        self.panel.ent_src.widget.sig_ctrl_home.connect(self.table.go_start)
+        self.panel.ent_src.widget.sig_ctrl_end.connect(self.table.go_end)
+        self.panel.ent_src.widget.sig_left_arrow.connect(self.table.go_left)
+        self.panel.ent_src.widget.sig_right_arrow.connect(self.table.go_right)
         self.panel.opt_lg1.widget.activated.connect(self.go_search_focus)
         self.panel.opt_lg2.widget.activated.connect(self.go_search_focus)
         self.panel.opt_src.widget.activated.connect(self.set_source)
         
-        self.table.gui.right_mouse_key.connect(self.copy_cell)
+        self.table.gui.sig_rmb.connect(self.copy_cell)
         
         self.symbols.gui.table.clicked.connect(self.paste_symbol)
-        self.symbols.gui.table.space.connect(self.paste_symbol)
-        self.symbols.gui.return_.connect(self.paste_symbol)
-        self.symbols.gui.table.right_mouse.connect(self.copy_symbol)
-        self.symbols.gui.ctrl_return.connect(self.copy_symbol)
+        self.symbols.gui.table.sig_space.connect(self.paste_symbol)
+        self.symbols.gui.sig_return.connect(self.paste_symbol)
+        self.symbols.gui.table.sig_rmb.connect(self.copy_symbol)
+        self.symbols.gui.sig_ctrl_return.connect(self.copy_symbol)
         
         self.settings.gui.btn_apl.set_action(self.apply_settings)
         self.settings.gui.btn_sug.set_action(self.suggest_col_widths)
-        self.settings.gui.close_settings.connect(self.settings.close)
+        self.settings.gui.sig_close.connect(self.settings.close)
         
-        self.history.gui.close_history.connect(self.history.close)
-        self.history.gui.signal_go.connect(self.go_history)
+        self.history.gui.sig_close.connect(self.history.close)
+        self.history.gui.sig_go.connect(self.go_history)
     
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)
@@ -1329,7 +1329,7 @@ class SearchArticle:
         self.gui.btn_clr.action = self.clear
         self.gui.btn_cls.set_action()
         self.gui.btn_clr.set_action()
-        self.gui.close_search.connect(self.close)
+        self.gui.sig_close.connect(self.close)
     
     def reset(self,cells,plain,rowno,colno):
         self.pattern = self.gui.ent_src.get()

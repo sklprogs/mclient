@@ -38,7 +38,7 @@ class Symbols:
     
     def set_bindings(self):
         self.gui.bind('Esc',self.close)
-        self.gui.table.select.connect(self.select)
+        self.gui.table.sig_select.connect(self.select)
     
     def show(self):
         self.gui.show()

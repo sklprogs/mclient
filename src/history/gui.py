@@ -60,8 +60,8 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
 
 class History(PyQt5.QtWidgets.QWidget):
     
-    close_history = PyQt5.QtCore.pyqtSignal()
-    signal_go = PyQt5.QtCore.pyqtSignal(int)
+    sig_close = PyQt5.QtCore.pyqtSignal()
+    sig_go = PyQt5.QtCore.pyqtSignal(int)
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -90,7 +90,7 @@ class History(PyQt5.QtWidgets.QWidget):
         self.history.clear()
     
     def closeEvent(self,event):
-        self.close_history.emit()
+        self.sig_close.emit()
         return super().closeEvent(event)
     
     def set_title(self,title):

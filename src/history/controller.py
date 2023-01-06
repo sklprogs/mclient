@@ -59,7 +59,7 @@ class History:
             mes = _('Wrong input data: "{}"!').format(rowno)
             sh.objs.get_mes(f,mes).show_warning()
             return
-        self.gui.signal_go.emit(int(id_))
+        self.gui.sig_go.emit(int(id_))
     
     def go_down(self):
         # Qt already goes down/up, but without looping
