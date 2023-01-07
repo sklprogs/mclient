@@ -89,8 +89,10 @@ class Save(PyQt5.QtWidgets.QWidget):
     def set_gui(self):
         self.save = PyQt5.QtWidgets.QTreeView()
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
+        self.layout_.setContentsMargins(0,0,0,0)
         self.layout_.addWidget(self.save)
         self.setLayout(self.layout_)
+        self.resize(320,100)
 
 
 if __name__ == '__main__':
@@ -98,5 +100,9 @@ if __name__ == '__main__':
     model = TableModel()
     isave = Save()
     isave.set_model(model)
+    isave.clear_selection()
+    index_ = model.index(0,0)
+    isave.set_index(index_)
+    isave.select_row(index_)
     isave.show()
     sh.com.end()
