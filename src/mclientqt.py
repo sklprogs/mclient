@@ -22,6 +22,7 @@ import symbols.controller as sm
 import welcome.controller as wl
 import settings.controller as st
 import history.controller as hs
+import save.controller as sv
 
 
 DEBUG = False
@@ -1190,6 +1191,12 @@ class App:
         self.gui.bind (sh.lg.globs['str']['bind_toggle_history_alt']
                       ,self.history.toggle
                       )
+        self.gui.bind (sh.lg.globs['str']['bind_save_article']
+                      ,self.save.toggle
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_save_article_alt']
+                      ,self.save.toggle
+                      )
         self.gui.bind (sh.lg.globs['str']['bind_settings']
                       ,self.settings.toggle
                       )
@@ -1290,6 +1297,7 @@ class App:
         self.welcome = Welcome(self.about.get_product())
         self.settings = st.objs.get_settings()
         self.history = hs.History()
+        self.save = sv.Save()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_icons()
         self.set_title()

@@ -95,14 +95,14 @@ class Save:
     
     def set_bindings(self):
         self.gui.bind('Esc',self.close)
-        self.gui.bind('F2',self.toggle)
-        self.gui.bind('Ctrl+S',self.toggle)
         self.gui.bind('Down',self.go_down)
         self.gui.bind('Up',self.go_up)
         self.gui.bind('Home',self.go_start)
         self.gui.bind('End',self.go_end)
         self.gui.bind('Ctrl+Home',self.go_start)
         self.gui.bind('Ctrl+End',self.go_end)
+        self.gui.bind(sh.lg.globs['str']['bind_save_article'],self.toggle)
+        self.gui.bind(sh.lg.globs['str']['bind_save_article_alt'],self.toggle)
         self.gui.sig_close.connect(self.close)
     
     def centralize(self):
