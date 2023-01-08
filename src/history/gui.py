@@ -102,9 +102,9 @@ class History(PyQt5.QtWidgets.QWidget):
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
     
-    def set_icon(self,qicon):
+    def set_icon(self):
         # Does not accent None
-        self.setWindowIcon(qicon)
+        self.setWindowIcon(sh.gi.objs.get_icon())
     
     def set_col_width(self):
         ''' 42 is the minimal column width to store 2-digit numbers. 3-digit
@@ -120,6 +120,7 @@ class History(PyQt5.QtWidgets.QWidget):
         self.history = PyQt5.QtWidgets.QTreeView()
         self.layout_.addWidget(self.history)
         self.setLayout(self.layout_)
+        self.set_icon()
         self.resize(600,300)
 
 

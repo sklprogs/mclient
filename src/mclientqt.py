@@ -1372,19 +1372,6 @@ class App:
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)
     
-    def set_icons(self):
-        f = '[MClientQt] mclient.App.set_icons'
-        icon = sh.gi.objs.get_icon()
-        self.gui.set_icon(icon)
-        self.about.gui.set_icon(icon)
-        self.about.parties.gui.set_icon(icon)
-        self.symbols.gui.set_icon(icon)
-        self.welcome.gui.set_icon(icon)
-        self.settings.gui.set_icon(icon)
-        self.history.gui.set_icon(icon)
-        self.table.search.gui.set_icon(icon)
-        self.save.gui.set_icon(icon)
-    
     def set_gui(self):
         self.table = Table()
         self.panel = gi.Panel()
@@ -1395,7 +1382,6 @@ class App:
         self.history = hs.History()
         self.save = Save()
         self.gui.set_gui(self.table.gui,self.panel)
-        self.set_icons()
         self.set_title()
         self.set_bindings()
 

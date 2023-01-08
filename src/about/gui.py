@@ -16,9 +16,9 @@ class About(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
-    def set_icon(self,qicon):
+    def set_icon(self):
         # Does not accent None
-        self.setWindowIcon(qicon)
+        self.setWindowIcon(sh.gi.objs.get_icon())
     
     def closeEvent(self,event):
         self.sig_close.emit()
@@ -66,3 +66,4 @@ class About(PyQt5.QtWidgets.QWidget):
         self.layout_.addWidget(self.lbl_abt.widget)
         self.layout_.addWidget(self.panel)
         self.setLayout(self.layout_)
+        self.set_icon()

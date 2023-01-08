@@ -14,9 +14,9 @@ class ThirdParties(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
-    def set_icon(self,qicon):
+    def set_icon(self):
         # Does not accent None
-        self.setWindowIcon(qicon)
+        self.setWindowIcon(sh.gi.objs.get_icon())
     
     def centralize(self):
         self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())

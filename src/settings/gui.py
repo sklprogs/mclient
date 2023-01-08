@@ -606,9 +606,9 @@ class Settings(PyQt5.QtWidgets.QWidget):
                                  ,hint = _('Apply current settings and reload the article')
                                  )
     
-    def set_icon(self,qicon):
+    def set_icon(self):
         # Does not accent None
-        self.setWindowIcon(qicon)
+        self.setWindowIcon(sh.gi.objs.get_icon())
     
     def set_gui(self):
         self.set_layouts()
@@ -622,6 +622,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.configure()
         # The window width will be larger than 1024px otherwise 
         self.setFixedWidth(800)
+        self.set_icon()
     
     def set_title(self,title):
         self.setWindowTitle(title)

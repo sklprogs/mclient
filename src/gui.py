@@ -341,9 +341,9 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.layout_.addWidget(self.panel,1)
         self.parent.setLayout(self.layout_)
     
-    def set_icon(self,qicon):
+    def set_icon(self):
         # Does not accent None
-        self.setWindowIcon(qicon)
+        self.setWindowIcon(sh.gi.objs.get_icon())
     
     def set_gui(self,table=None,panel=None):
         self.set_layout()
@@ -357,6 +357,7 @@ class App(PyQt5.QtWidgets.QMainWindow):
             self.panel = Panel()
         self.add_widgets()
         self.setCentralWidget(self.parent)
+        self.set_icon()
     
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
@@ -706,9 +707,9 @@ class SearchArticle(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
-    def set_icon(self,qicon):
+    def set_icon(self):
         # Does not accent None
-        self.setWindowIcon(qicon)
+        self.setWindowIcon(sh.gi.objs.get_icon())
     
     def closeEvent(self,event):
         self.sig_close.emit()
@@ -744,6 +745,7 @@ class SearchArticle(PyQt5.QtWidgets.QWidget):
     def set_gui(self):
         self.add_widgets()
         self.set_title()
+        self.set_icon()
     
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)

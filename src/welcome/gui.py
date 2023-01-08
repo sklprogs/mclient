@@ -94,9 +94,9 @@ class App(PyQt5.QtWidgets.QMainWindow):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
-    def set_icon(self,qicon):
+    def set_icon(self):
         # Does not accent None
-        self.setWindowIcon(qicon)
+        self.setWindowIcon(sh.gi.objs.get_icon())
     
     def show_rows(self,rownos):
         for rowno in rownos:

@@ -69,9 +69,9 @@ class Save(PyQt5.QtWidgets.QWidget):
         mode = PyQt5.QtCore.QItemSelectionModel.Select | PyQt5.QtCore.QItemSelectionModel.Rows
         self.save.selectionModel().select(index_,mode)
     
-    def set_icon(self,qicon):
+    def set_icon(self):
         # Does not accent None
-        self.setWindowIcon(qicon)
+        self.setWindowIcon(sh.gi.objs.get_icon())
     
     def closeEvent(self,event):
         self.sig_close.emit()
@@ -105,6 +105,7 @@ class Save(PyQt5.QtWidgets.QWidget):
         self.layout_.setContentsMargins(0,0,0,0)
         self.layout_.addWidget(self.save)
         self.setLayout(self.layout_)
+        self.set_icon()
         self.resize(550,100)
 
 
