@@ -86,16 +86,26 @@ class Save(PyQt5.QtWidgets.QWidget):
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
     
+    def get_font_size(self):
+        size = self.font().pointSize()
+        # We will get -1 if the font size was specified in pixels
+        if size > 0:
+            return size
+    
+    def set_font_size(self,size):
+        qfont = self.font()
+        qfont.setPointSize(size)
+        self.setFont(qfont)
+    
     def set_gui(self):
         self.save = PyQt5.QtWidgets.QTreeView()
         self.save.header().hide()
-        self.save.setFont(PyQt5.QtGui.QFont('Sans',11))
         self.save.setIndentation(5)
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
         self.layout_.setContentsMargins(0,0,0,0)
         self.layout_.addWidget(self.save)
         self.setLayout(self.layout_)
-        self.resize(320,100)
+        self.resize(550,100)
 
 
 if __name__ == '__main__':
@@ -107,5 +117,7 @@ if __name__ == '__main__':
     index_ = model.index(0,0)
     isave.set_index(index_)
     isave.select_row(index_)
+    # The font size is increased without changing the family in the controller
+    isave.setFont(PyQt5.QtGui.QFont('Sans',11))
     isave.show()
     sh.com.end()

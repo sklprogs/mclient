@@ -18,6 +18,19 @@ class Save:
         self.gui = gi.Save()
         self.set_title()
         self.set_bindings()
+        self.change_font_size(2)
+    
+    def change_font_size(self,delta=1):
+        f = '[MClientQt] save.controller.Save.change_font_size'
+        size = self.gui.get_font_size()
+        if not size:
+            sh.com.rep_empty(f)
+            return
+        if size + delta <= 0:
+            mes = f'{size} + {delta} > 0'
+            sh.com.rep_condition(f,mes)
+            return
+        self.gui.set_font_size(size+delta)
     
     def fill_model(self):
         ''' Do not assign 'gi.TableModel' externally, this will not change
