@@ -7,7 +7,7 @@ import PyQt5.QtWidgets
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
+sh.gi.ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
 
 
 class Entry(sh.Entry):
@@ -750,21 +750,6 @@ class SearchArticle(PyQt5.QtWidgets.QWidget):
     
     def get(self):
         return self.ent_src.get()
-
-
-
-class Commands:
-    
-    def report_external(self,f):
-        mes = _('This procedure should be overridden!')
-        sh.objs.get_mes(f,mes,True).show_error()
-    
-    def get_icon(self):
-        # Do not return None; PyQt5.QtGui.QIcon(None) is acceptable, however.
-        return PyQt5.QtGui.QIcon(ICON)
-
-
-com = Commands()
 
 
 if __name__ == '__main__':
