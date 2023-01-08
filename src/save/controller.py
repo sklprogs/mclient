@@ -20,6 +20,49 @@ class Save:
         self.set_bindings()
         self.change_font_size(2)
     
+    def go_start(self):
+        f = '[MClientQt] save.controller.Save.go_start'
+        if not self.model.items:
+            sh.com.rep_lazy(f)
+            return
+        self._go_row(0)
+    
+    def go_end(self):
+        f = '[MClientQt] save.controller.Save.go_end'
+        if not self.model.items:
+            sh.com.rep_lazy(f)
+            return
+        rowno = len(self.model.items) - 1
+        self._go_row(rowno)
+    
+    def go_down(self):
+        # Qt already goes down/up, but without looping
+        f = '[MClientQt] save.controller.Save.go_down'
+        if not self.model.items:
+            sh.com.rep_empty(f)
+            return
+        old = rowno = self.gui.get_row()
+        if rowno == len(self.model.items) - 1:
+            rowno = -1
+        rowno += 1
+        self._go_row(rowno)
+        mes = _('Change row number: {} → {}').format(old,rowno)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def go_up(self):
+        # Qt already goes down/up, but without looping
+        f = '[MClientQt] save.controller.Save.go_up'
+        if not self.model.items:
+            sh.com.rep_empty(f)
+            return
+        old = rowno = self.gui.get_row()
+        if rowno == 0:
+            rowno = len(self.model.items)
+        rowno -= 1
+        self._go_row(rowno)
+        mes = _('Change row number: {} → {}').format(old,rowno)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
     def change_font_size(self,delta=1):
         f = '[MClientQt] save.controller.Save.change_font_size'
         size = self.gui.get_font_size()
@@ -54,6 +97,12 @@ class Save:
         self.gui.bind('Esc',self.close)
         self.gui.bind('F2',self.toggle)
         self.gui.bind('Ctrl+S',self.toggle)
+        self.gui.bind('Down',self.go_down)
+        self.gui.bind('Up',self.go_up)
+        self.gui.bind('Home',self.go_start)
+        self.gui.bind('End',self.go_end)
+        self.gui.bind('Ctrl+Home',self.go_start)
+        self.gui.bind('Ctrl+End',self.go_end)
         self.gui.sig_close.connect(self.close)
     
     def centralize(self):
