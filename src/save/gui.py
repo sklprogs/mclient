@@ -88,6 +88,7 @@ class Save(PyQt5.QtWidgets.QWidget):
     
     def set_gui(self):
         self.save = PyQt5.QtWidgets.QTreeView()
+        self.save.header().hide()
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
         self.layout_.setContentsMargins(0,0,0,0)
         self.layout_.addWidget(self.save)
