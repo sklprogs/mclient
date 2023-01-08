@@ -20,6 +20,13 @@ class Save:
         self.set_bindings()
         self.change_font_size(2)
     
+    def get(self):
+        f = '[MClientQt] save.controller.Save.get'
+        if not self.model.items:
+            sh.com.rep_lazy(f)
+            return
+        return self.model.items[self.gui.get_row()]
+    
     def go_start(self):
         f = '[MClientQt] save.controller.Save.go_start'
         if not self.model.items:

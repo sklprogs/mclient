@@ -28,6 +28,111 @@ import save.controller as sv
 DEBUG = False
 
 
+class Save(sv.Save):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.add_bindings()
+    
+    def add_bindings(self):
+        self.gui.save.clicked.connect(self.select)
+        self.gui.bind('Return',self.select)
+        self.gui.bind('Enter',self.select)
+    
+    def select(self):
+        f = '[MClientQt] mclient.Save.select'
+        opt = self.get()
+        if not opt:
+            sh.com.rep_empty(f)
+            return
+        self.close()
+        if opt == _('Save the current view as a web-page (*.htm)'):
+            self.save_view_as_htm()
+        elif opt == _('Save the original article as a web-page (*.htm)'):
+            self.save_raw_as_htm()
+        elif opt == _('Save the article as plain text in UTF-8 (*.txt)'):
+            self.save_view_as_txt()
+        elif opt == _('Copy the code of the article to clipboard'):
+            self.copy_raw()
+        elif opt == _('Copy the text of the article to clipboard'):
+            self.copy_txt()
+        else:
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(opt,'; '.join(self.model.items))
+            sh.objs.get_mes(f,mes).show_error()
+
+    def save_view_as_htm(self):
+        f = '[MClientQt] mclient.Save.save_view_as_htm'
+        print(f)
+        return
+        self.file = sh.com.show_save_dialog(self.webtypes)
+        if self.file and lg.objs.get_request().htm:
+            self.fix_ext('.htm')
+            code = lg.objs.request.htm
+            code = wb.WebPage(code).make_pretty()
+            ''' We enable 'Rewrite' because the confirmation is already
+                built in the internal dialog.
+            '''
+            sh.WriteTextFile (file = self.file
+                             ,Rewrite = True
+                             ).write(code)
+        else:
+            sh.com.rep_empty(f)
+
+    def save_raw_as_htm(self):
+        f = '[MClientQt] mclient.Save.save_raw_as_htm'
+        print(f)
+        return
+        ''' Key 'html' may be needed to write a file in the UTF-8
+            encoding, therefore, in order to ensure that the web-page
+            is read correctly, we change the encoding manually. We also
+            replace abbreviated hyperlinks with full ones in order to
+            ensure that they are also valid in the local file.
+        '''
+        self.file = sh.com.show_save_dialog(self.webtypes)
+        code = lg.objs.get_blocksdb().get_code()
+        if self.file and code:
+            self.fix_ext('.htm')
+            lg.objs.get_plugins().set_htm(code)
+            code = lg.objs.plugins.fix_raw_htm()
+            sh.WriteTextFile (file = self.file
+                             ,Rewrite = True
+                             ).write(code)
+        else:
+            sh.com.rep_empty(f)
+
+    def save_view_as_txt(self):
+        f = '[MClientQt] mclient.Save.save_view_as_txt'
+        print(f)
+        return
+        self.file = sh.com.show_save_dialog(self.txttypes)
+        text = objs.get_webframe().get_text()
+        if self.file and text:
+            self.fix_ext('.txt')
+            sh.WriteTextFile (file = self.file
+                             ,Rewrite = True
+                             ).write(text.strip())
+        else:
+            sh.com.rep_empty(f)
+
+    def copy_raw(self):
+        f = '[MClientQt] mclient.Save.copy_raw'
+        print(f)
+        return
+        sh.Clipboard().copy(lg.objs.get_blocksdb().get_code())
+
+    def copy_txt(self):
+        f = '[MClientQt] mclient.Save.copy_txt'
+        print(f)
+        return
+        text = objs.get_webframe().get_text()
+        if text:
+            sh.Clipboard().copy(text.strip())
+        else:
+            sh.com.rep_empty(f)
+
+
+
 class Commands:
     ''' #NOTE: DB is in controller (not in logic), so DB-related code
         is here too.
@@ -1297,7 +1402,7 @@ class App:
         self.welcome = Welcome(self.about.get_product())
         self.settings = st.objs.get_settings()
         self.history = hs.History()
-        self.save = sv.Save()
+        self.save = Save()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_icons()
         self.set_title()
