@@ -383,12 +383,15 @@ class Plugin:
 
 class Commands:
     
+    def run_save(self):
+        import save.controller as sv
+        return sv.Save()
+    
     def run_settings(self):
         import logic as lg
         import settings.controller as st
         lg.com.start()
-        settings = st.Settings()
-        return settings
+        return st.Settings()
     
     def run_history(self):
         import logic as lg
@@ -1009,6 +1012,8 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
+    isave = com.run_save()
+    isave.show()
     '''
     # Settings
     isettings = com.run_settings()
@@ -1019,9 +1024,11 @@ if __name__ == '__main__':
     ihis = com.run_history()
     ihis.show()
     '''
+    '''
     # History (history.controller)
     ihis = com.run_history_contr()
     ihis.show()
+    '''
     '''
     # Welcome (welcome.controller)
     iwelcome = com.run_welcome_contr()

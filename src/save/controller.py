@@ -12,17 +12,18 @@ class Save:
     def __init__(self):
         self.Shown = False
         self.set_gui()
+        self.fill_model()
     
     def set_gui(self):
         self.gui = gi.Save()
         self.set_title()
         self.set_bindings()
     
-    def fill_model(self,table=[]):
+    def fill_model(self):
         ''' Do not assign 'gi.TableModel' externally, this will not change
             the actual model.
         '''
-        self.model = gi.TableModel(table)
+        self.model = gi.TableModel()
         self.gui.set_model(self.model)
         if self.model.items:
             self._go_row(0)
