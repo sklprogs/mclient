@@ -699,7 +699,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
 
 
 
-class SearchArticle(PyQt5.QtWidgets.QWidget):
+class Search(PyQt5.QtWidgets.QWidget):
 
     sig_close = PyQt5.QtCore.pyqtSignal()
     
@@ -757,7 +757,7 @@ class SearchArticle(PyQt5.QtWidgets.QWidget):
 if __name__ == '__main__':
     '''
     sh.com.start()
-    SearchArticle().show()
+    Search().show()
     sh.com.end()
     '''
     import sys

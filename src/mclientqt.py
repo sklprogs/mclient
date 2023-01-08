@@ -274,7 +274,7 @@ class Table:
         self.set_values()
         self.logic = lg.Table()
         self.gui = gi.Table()
-        self.search = SearchArticle()
+        self.search = Search()
         self.set_gui()
     
     def go_next_section(self,no):
@@ -1387,12 +1387,12 @@ class App:
 
 
 
-class SearchArticle:
+class Search:
     
     def __init__(self):
         self.Shown = False
-        self.logic = lg.SearchArticle()
-        self.gui = gi.SearchArticle()
+        self.logic = lg.Search()
+        self.gui = gi.Search()
         self.set_bindings()
         self.gui.ent_src.focus()
     
@@ -1427,7 +1427,7 @@ class SearchArticle:
         self.logic.reset(cells,plain,self.pattern,rowno,colno,Case)
     
     def search_next(self):
-        f = '[MClientQt] mclient.SearchArticle.search_next'
+        f = '[MClientQt] mclient.Search.search_next'
         rowno, colno = self.logic.search_next()
         if rowno < self.logic.rowno:
             mes = _('The end has been reached. Searching from the start.')
@@ -1438,7 +1438,7 @@ class SearchArticle:
         return(rowno,colno)
     
     def search_prev(self):
-        f = '[MClientQt] mclient.SearchArticle.search_prev'
+        f = '[MClientQt] mclient.Search.search_prev'
         rowno, colno = self.logic.search_prev()
         if rowno > self.logic.rowno:
             mes = _('The start has been reached. Searching from the end.')

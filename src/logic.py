@@ -1053,19 +1053,19 @@ class Table:
 
 
 
-class SearchArticle(Table):
+class Search(Table):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
     def check(self):
-        f = '[MClientQt] logic.SearchArticle.check'
+        f = '[MClientQt] logic.Search.check'
         if not self.cells or not self.plain or not self.pattern.strip():
             self.Success = False
             sh.com.rep_empty(f)
     
     def lower(self):
-        f = '[MClientQt] logic.SearchArticle.lower'
+        f = '[MClientQt] logic.Search.lower'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -1107,7 +1107,7 @@ class SearchArticle(Table):
                     return True
     
     def search_next(self):
-        f = '[MClientQt] logic.SearchArticle.search_next'
+        f = '[MClientQt] logic.Search.search_next'
         if not self.Success:
             sh.com.cancel(f)
             return(self.rowno,self.colno)
@@ -1121,7 +1121,7 @@ class SearchArticle(Table):
         return(rowno,colno)
     
     def search_prev(self):
-        f = '[MClientQt] logic.SearchArticle.search_prev'
+        f = '[MClientQt] logic.Search.search_prev'
         if not self.Success:
             sh.com.cancel(f)
             return(self.rowno,self.colno)
