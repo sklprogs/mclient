@@ -105,6 +105,9 @@ class Save(PyQt5.QtWidgets.QWidget):
         self.layout_.setContentsMargins(0,0,0,0)
         self.layout_.addWidget(self.save)
         self.setLayout(self.layout_)
+        self.ask = sh.FileDialog (parent = self
+                                 ,filter_ = _('Web-pages (*.htm, *.html)')
+                                 )
         self.set_icon()
         self.resize(550,100)
 

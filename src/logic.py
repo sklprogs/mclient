@@ -18,6 +18,108 @@ SPORDER = (_('Noun'),_('Verb'),_('Adjective'),_('Abbreviation')
           )
 
 
+class HTM:
+
+    def __init__(self,cells,skipped=0):
+        # 'collimit' includes fixed blocks
+        self.set_values()
+        self.cells = cells
+        self.skipped = skipped
+        
+    def set_landscape(self):
+        f = '[MClientQt] logic.HTM.set_landscape'
+        file = sh.objs.get_pdir().add('..','resources','landscape.html')
+        code = sh.ReadTextFile(file).get()
+        if not code:
+            sh.com.rep_empty(f)
+            return
+        if not '%s' in code:
+            mes = _('Wrong input data: "{}"!').format(code)
+            sh.objs.get_mes(f,mes).show_warning()
+            return
+        # Either don't use 'format' here or double all curly braces in script
+        self.landscape = code % _('Print')
+    
+    def run(self):
+        # Takes ~0.015s for 'set' on Intel Atom
+        self.set_landscape()
+        self.generate()
+        return self.htm
+    
+    def set_values(self):
+        self.htm = ''
+        self.landscape = ''
+        self.skipped = 0
+    
+    def generate(self):
+        f = '[MClientQt] logic.HTM.generate'
+        code = ['<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">']
+        code.append(self.landscape)
+        code.append('<div id="printableArea">')
+        if self.cells:
+            code.append('<table>')
+            old_colno = -1
+            old_rowno = -1
+            for icell in self.cells:
+                if old_rowno != icell.rowno:
+                    if icell.rowno > 0:
+                        code.append('</td></tr>')
+                    code.append('<tr>')
+                ''' #NOTE: Without checking a row number here finding text may
+                    fail in the vertical mode when 2 cells have a different row
+                    number but the same column number.
+                '''
+                if old_rowno != icell.rowno or old_colno != icell.colno:
+                    if icell.colno > 0 and old_rowno == icell.rowno:
+                        code.append('</td>')
+                    ''' #TODO: Port this old code
+                    if old_rowno == icell.rowno:
+                        delta = icell.colno - old_colno - 1
+                    else:
+                        delta = icell.colno
+                    for i in range(delta):
+                        col_width = objs.get_fonts()._get_col_width(i)
+                        sub = '<td width="{}"/>'
+                        sub = sub.format(col_width)
+                        code.append(sub)
+                    sub = '<td{} valign="top"{}>'
+                    if icell.block.Fixed:
+                        sub1 = ' align="center"'
+                    else:
+                        sub1 = ''
+                    if ifont.col_width:
+                        sub2 = ' width="{}"'
+                        sub2 = sub2.format(ifont.col_width)
+                    else:
+                        sub2 = ''
+                    sub = sub.format(sub1,sub2)
+                    '''
+                    sub = '<td valign="top">'
+                    code.append(sub)
+                    old_colno = icell.colno
+                ''' Cannot be modified immediately after a new row was
+                    discovered since 'rowno' is used after that.
+                '''
+                if old_rowno != icell.rowno:
+                    old_rowno = icell.rowno
+                code.append(icell.code)
+            code.append('</td></tr></table>')
+        elif self.skipped:
+            code.append('<h1>')
+            mes = _('Nothing has been found (skipped subjects: {}).')
+            mes = mes.format(self.skipped)
+            code.append(mes)
+            code.append('</h1>')
+        else:
+            code.append('<h1>')
+            code.append(_('Nothing has been found.'))
+            code.append('</h1>')
+        code.append('</div>')
+        code.append('</meta></body></html>')
+        self.htm = ''.join(code)
+
+
+
 class Source:
     
     def __init__(self):

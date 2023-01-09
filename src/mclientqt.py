@@ -6,6 +6,7 @@ import sqlite3
 
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
+import skl_shared_qt.web as wb
 
 import logic as lg
 import gui as gi
@@ -63,21 +64,18 @@ class Save(sv.Save):
 
     def save_view_as_htm(self):
         f = '[MClientQt] mclient.Save.save_view_as_htm'
-        print(f)
-        return
-        self.file = sh.com.show_save_dialog(self.webtypes)
-        if self.file and lg.objs.get_request().htm:
-            self.fix_ext('.htm')
-            code = lg.objs.request.htm
-            code = wb.WebPage(code).make_pretty()
-            ''' We enable 'Rewrite' because the confirmation is already
-                built in the internal dialog.
-            '''
-            sh.WriteTextFile (file = self.file
-                             ,Rewrite = True
-                             ).write(code)
-        else:
+        self.file = self.gui.ask.save()
+        # lg.objs.get_request().htm is allowed to be empty
+        if not self.file:
             sh.com.rep_empty(f)
+            return
+        if not self.file.endswith('.htm') and not self.file.endswith('.html'):
+            self.file += '.htm'
+        timer = sh.Timer(f)
+        timer.start()
+        code = wb.WebPage(lg.objs.request.htm).make_pretty()
+        timer.end()
+        sh.WriteTextFile(self.file).write(code)
 
     def save_raw_as_htm(self):
         f = '[MClientQt] mclient.Save.save_raw_as_htm'
@@ -1158,10 +1156,14 @@ class App:
         cells = lg.Cells(blocks).run()
         self.table.reset(cells)
         
+        skipped = com.get_skipped_terms()
+        # This is fast
+        lg.objs.get_request().htm = lg.HTM(cells,skipped).run()
+        
         ''' Empty article is not added either to DB or history, so we just do
             not clear the search field to be able to correct the typo.
         '''
-        if cells or com.get_skipped_terms():
+        if cells or skipped:
             self.gui.panel.ent_src.reset()
         
         self.add_history()
