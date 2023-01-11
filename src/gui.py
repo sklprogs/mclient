@@ -298,7 +298,7 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.vheader = self.verticalHeader()
         self.hheader.setVisible(False)
         self.vheader.setVisible(False)
-        self.setStyleSheet('QTableView { selection-background-color: white; }')
+        self.setStyleSheet('QTableView { selection-background-color: transparent; }')
     
     def show_borders(self,Show=False):
         self.setShowGrid(Show)
