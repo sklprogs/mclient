@@ -71,10 +71,8 @@ class Save(sv.Save):
             return
         if not self.file.endswith('.htm') and not self.file.endswith('.html'):
             self.file += '.htm'
-        timer = sh.Timer(f)
-        timer.start()
+        # Takes ~0.47s for 'set' on Intel Atom, do not call in 'load_article'
         code = wb.WebPage(lg.objs.request.htm).make_pretty()
-        timer.end()
         sh.WriteTextFile(self.file).write(code)
 
     def save_raw_as_htm(self):
