@@ -825,25 +825,19 @@ class Formatter:
         if self.block.Bold:
             self.code = '<b>' + self.code + '</b>'
     
-    def _set_size(self):
-        sub = '<span style="font-size:{}pt">{}</span>'
-        self.code = sub.format(self.block.size,self.code)
-    
-    def _set_face(self):
-        # style="letter-spacing: 1px"
-        sub = '<font face="{}" color="{}">'
-        sub = sub.format(self.block.family,self.block.color)
-        self.code = sub + self.code
+    def _set_style(self):
+        # Color name must be put in single quotes
+        sub = '''<span style="font-family:{}; font-size:{}pt; color:'{}';">{}</span>'''
+        self.code = sub.format(self.block.family,self.block.size,self.block.color,self.code)
     
     def format(self):
         f = '[MClientQt] logic.Formatter.format'
         if not self.Success:
             sh.com.cancel(f)
             return
+        self._set_style()
         self._set_italic()
         self._set_bold()
-        self._set_face()
-        self._set_size()
     
     def run(self):
         self.check()
