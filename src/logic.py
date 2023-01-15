@@ -1443,12 +1443,9 @@ class Font:
 
 
 class Colors:
-    ''' #NOTE: We convert color names to HEX since browsers in which we open
-        a generated web-page may not understand colors like 'cadet blue'.
-    '''
+    
     def __init__(self):
         self.set_values()
-        self.set_term()
         self.set_tints()
     
     def set_values(self):
@@ -1457,30 +1454,40 @@ class Colors:
         self.p1 = self.p2 = self.p3 = self.p4 = self.b1 = self.b2 = self.b3 \
         = self.b4 = self.user = ''
     
-    def set_term(self):
-        sh.lg.globs['str']['color_terms'] = sh.Color(sh.lg.globs['str']['color_terms']).get_hex()
-    
-    def _get_tints(self,color,factor=150):
-        icolor = sh.Color(color)
-        icolor.get_hex()
-        return icolor.modify(self.factor)
-    
     def set_tints(self):
-        self.p1, self.b1 = self._get_tints (color = sh.lg.globs['str']['color_col1']
-                                           ,factor = self.factor
-                                           )
-        self.p2, self.b2 = self._get_tints (color = sh.lg.globs['str']['color_col2']
-                                           ,factor = self.factor
-                                           )
-        self.p3, self.b3 = self._get_tints (color = sh.lg.globs['str']['color_col3']
-                                           ,factor = self.factor
-                                           )
-        self.p4, self.b4 = self._get_tints (color = sh.lg.globs['str']['color_col4']
-                                           ,factor = self.factor
-                                           )
-        darker, self.user = self._get_tints (color = sh.lg.globs['str']['color_comments']
-                                            ,factor = self.factor
-                                            )
+        ''' Config values should be converted to HEX since they are further
+            used to generate a web-page when saving an article, and browsers,
+            unlike Qt, may not understand colors like 'cadet blue' (with or
+            without quotes).
+        '''
+        # color_terms
+        icolor = sh.Color(sh.lg.globs['str']['color_terms'])
+        sh.lg.globs['str']['color_terms'] = icolor.get_hex()
+        
+        # color_comments
+        icolor = sh.Color(sh.lg.globs['str']['color_comments'])
+        sh.lg.globs['str']['color_comments'] = icolor.get_hex()
+        darker, self.user = icolor.modify(self.factor)
+        
+        # color_col1
+        icolor = sh.Color(sh.lg.globs['str']['color_col1'])
+        sh.lg.globs['str']['color_col1'] = icolor.get_hex()
+        self.p1, self.b1 = icolor.modify(self.factor)
+        
+        # color_col2
+        icolor = sh.Color(sh.lg.globs['str']['color_col2'])
+        sh.lg.globs['str']['color_col2'] = icolor.get_hex()
+        self.p2, self.b2 = icolor.modify(self.factor)
+        
+        # color_col3
+        icolor = sh.Color(sh.lg.globs['str']['color_col3'])
+        sh.lg.globs['str']['color_col3'] = icolor.get_hex()
+        self.p3, self.b3 = icolor.modify(self.factor)
+        
+        # color_col4
+        icolor = sh.Color(sh.lg.globs['str']['color_col4'])
+        sh.lg.globs['str']['color_col4'] = icolor.get_hex()
+        self.p4, self.b4 = icolor.modify(self.factor)
 
 
 objs = Objects()
