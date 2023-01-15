@@ -62,6 +62,10 @@ class Save(sv.Save):
             mes = mes.format(opt,'; '.join(self.model.items))
             sh.objs.get_mes(f,mes).show_error()
 
+    def _add_web_ext(self):
+        if not self.file.endswith('.htm') and not self.file.endswith('.html'):
+            self.file += '.htm'
+    
     def save_view_as_htm(self):
         f = '[MClientQt] mclient.Save.save_view_as_htm'
         self.file = self.gui.ask.save()
@@ -69,33 +73,30 @@ class Save(sv.Save):
         if not self.file:
             sh.com.rep_empty(f)
             return
-        if not self.file.endswith('.htm') and not self.file.endswith('.html'):
-            self.file += '.htm'
+        self._add_web_ext()
         # Takes ~0.47s for 'set' on Intel Atom, do not call in 'load_article'
         code = wb.WebPage(lg.objs.request.htm).make_pretty()
         sh.WriteTextFile(self.file).write(code)
 
     def save_raw_as_htm(self):
         f = '[MClientQt] mclient.Save.save_raw_as_htm'
-        print(f)
-        return
         ''' Key 'html' may be needed to write a file in the UTF-8
             encoding, therefore, in order to ensure that the web-page
             is read correctly, we change the encoding manually. We also
             replace abbreviated hyperlinks with full ones in order to
             ensure that they are also valid in the local file.
         '''
-        self.file = sh.com.show_save_dialog(self.webtypes)
+        self.file = self.gui.ask.save()
         code = lg.objs.get_blocksdb().get_code()
-        if self.file and code:
-            self.fix_ext('.htm')
-            lg.objs.get_plugins().set_htm(code)
-            code = lg.objs.plugins.fix_raw_htm()
-            sh.WriteTextFile (file = self.file
-                             ,Rewrite = True
-                             ).write(code)
-        else:
+        if not self.file or not code:
             sh.com.rep_empty(f)
+            return
+        self._add_web_ext()
+        lg.objs.get_plugins().set_htm(code)
+        code = lg.objs.plugins.fix_raw_htm()
+        sh.WriteTextFile (file = self.file
+                         ,Rewrite = True
+                         ).write(code)
 
     def save_view_as_txt(self):
         f = '[MClientQt] mclient.Save.save_view_as_txt'
