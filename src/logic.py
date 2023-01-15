@@ -556,6 +556,32 @@ class Commands:
     def __init__(self):
         self.use_unverified()
     
+    def fix_colors(self,colors):
+        ''' We need HTML code both in cells and output to be saved. Qt requires
+            that color names are put in quotes; however, browsers do not
+            understand color names in quotes, so we must delete these quotes
+            before saving to a web-page.
+        '''
+        f = '[MClientQt] logic.Commands.fix_colors'
+        if not colors:
+            sh.com.rep_empty(f)
+            return
+        for color in colors:
+            if not color.startswith('#'):
+                continue
+            objs.get_request().htm = objs.request.htm.replace(f"'{color}'",color)
+    
+    def get_colors(self,blocks):
+        f = '[MClientQt] logic.Commands.get_colors'
+        if not blocks:
+            sh.com.rep_empty(f)
+            return
+        colors = []
+        for block in blocks:
+            if not block.color in colors:
+                colors.append(block.color)
+        return colors
+    
     def get_cell(self,cells,rowno,colno):
         #TODO: Convert cells to have list-in-list structure and delete
         f = '[MClientQt] logic.Commands.get_cell'
@@ -1422,7 +1448,7 @@ class Colors:
     
     def __init__(self):
         self.set_values()
-        self.set_colors()
+        self.set_tints()
     
     def set_values(self):
         self.factor = 140
@@ -1430,22 +1456,12 @@ class Colors:
         self.p1 = self.p2 = self.p3 = self.p4 = self.b1 = self.b2 = self.b3 \
         = self.b4 = self.user = ''
     
-    def set_colors(self):
-        self.p1, self.b1 = sh.com.get_mod_colors (color = sh.lg.globs['str']['color_col1']
-                                                 ,factor = self.factor
-                                                 )
-        self.p2, self.b2 = sh.com.get_mod_colors (color = sh.lg.globs['str']['color_col2']
-                                                 ,factor = self.factor
-                                                 )
-        self.p3, self.b3 = sh.com.get_mod_colors (color = sh.lg.globs['str']['color_col3']
-                                                 ,factor = self.factor
-                                                 )
-        self.p4, self.b4 = sh.com.get_mod_colors (color = sh.lg.globs['str']['color_col4']
-                                                 ,factor = self.factor
-                                                 )
-        darker, self.user = sh.com.get_mod_colors (color = sh.lg.globs['str']['color_comments']
-                                                  ,factor = self.factor
-                                                  )
+    def set_tints(self):
+        self.p1, self.b1 = sh.Color(sh.lg.globs['str']['color_col1']).modify(self.factor)
+        self.p2, self.b2 = sh.Color(sh.lg.globs['str']['color_col2']).modify(self.factor)
+        self.p3, self.b3 = sh.Color(sh.lg.globs['str']['color_col3']).modify(self.factor)
+        self.p4, self.b4 = sh.Color(sh.lg.globs['str']['color_col4']).modify(self.factor)
+        darker, self.user = sh.Color(sh.lg.globs['str']['color_comments']).modify(self.factor)
 
 
 objs = Objects()

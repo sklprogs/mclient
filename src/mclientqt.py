@@ -1157,6 +1157,8 @@ class App:
         skipped = com.get_skipped_terms()
         # This is fast
         lg.objs.get_request().htm = lg.HTM(cells,skipped).run()
+        colors = lg.com.get_colors(blocks)
+        lg.com.fix_colors(colors)
         
         ''' Empty article is not added either to DB or history, so we just do
             not clear the search field to be able to correct the typo.
