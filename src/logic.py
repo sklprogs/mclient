@@ -567,8 +567,6 @@ class Commands:
             sh.com.rep_empty(f)
             return
         for color in colors:
-            if not color.startswith('#'):
-                continue
             objs.get_request().htm = objs.request.htm.replace(f"'{color}'",color)
     
     def get_colors(self,blocks):
@@ -1445,9 +1443,12 @@ class Font:
 
 
 class Colors:
-    
+    ''' #NOTE: We convert color names to HEX since browsers in which we open
+        a generated web-page may not understand colors like 'cadet blue'.
+    '''
     def __init__(self):
         self.set_values()
+        self.set_term()
         self.set_tints()
     
     def set_values(self):
@@ -1456,12 +1457,30 @@ class Colors:
         self.p1 = self.p2 = self.p3 = self.p4 = self.b1 = self.b2 = self.b3 \
         = self.b4 = self.user = ''
     
+    def set_term(self):
+        sh.lg.globs['str']['color_terms'] = sh.Color(sh.lg.globs['str']['color_terms']).get_hex()
+    
+    def _get_tints(self,color,factor=150):
+        icolor = sh.Color(color)
+        icolor.get_hex()
+        return icolor.modify(self.factor)
+    
     def set_tints(self):
-        self.p1, self.b1 = sh.Color(sh.lg.globs['str']['color_col1']).modify(self.factor)
-        self.p2, self.b2 = sh.Color(sh.lg.globs['str']['color_col2']).modify(self.factor)
-        self.p3, self.b3 = sh.Color(sh.lg.globs['str']['color_col3']).modify(self.factor)
-        self.p4, self.b4 = sh.Color(sh.lg.globs['str']['color_col4']).modify(self.factor)
-        darker, self.user = sh.Color(sh.lg.globs['str']['color_comments']).modify(self.factor)
+        self.p1, self.b1 = self._get_tints (color = sh.lg.globs['str']['color_col1']
+                                           ,factor = self.factor
+                                           )
+        self.p2, self.b2 = self._get_tints (color = sh.lg.globs['str']['color_col2']
+                                           ,factor = self.factor
+                                           )
+        self.p3, self.b3 = self._get_tints (color = sh.lg.globs['str']['color_col3']
+                                           ,factor = self.factor
+                                           )
+        self.p4, self.b4 = self._get_tints (color = sh.lg.globs['str']['color_col4']
+                                           ,factor = self.factor
+                                           )
+        darker, self.user = self._get_tints (color = sh.lg.globs['str']['color_comments']
+                                            ,factor = self.factor
+                                            )
 
 
 objs = Objects()
