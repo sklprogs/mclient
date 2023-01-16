@@ -56,18 +56,19 @@ class Save(sv.Save):
         elif opt == _('Copy the code of the article to clipboard'):
             self.copy_raw()
         elif opt == _('Copy the text of the article to clipboard'):
-            self.copy_txt()
+            self.copy_view()
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(opt,'; '.join(self.model.items))
             sh.objs.get_mes(f,mes).show_error()
 
     def _add_web_ext(self):
-        if not self.file.endswith('.htm') and not self.file.endswith('.html'):
+        if not sh.Path(self.file).get_ext_low() in ('.htm','.html'):
             self.file += '.htm'
     
     def save_view_as_htm(self):
         f = '[MClientQt] mclient.Save.save_view_as_htm'
+        self.gui.ask.filter = _('Web-pages (*.htm, *.html)')
         self.file = self.gui.ask.save()
         # lg.objs.get_request().htm is allowed to be empty
         if not self.file:
@@ -86,6 +87,7 @@ class Save(sv.Save):
             replace abbreviated hyperlinks with full ones in order to
             ensure that they are also valid in the local file.
         '''
+        self.gui.ask.filter = _('Web-pages (*.htm, *.html)')
         self.file = self.gui.ask.save()
         code = lg.objs.get_blocksdb().get_code()
         if not self.file or not code:
@@ -100,17 +102,17 @@ class Save(sv.Save):
 
     def save_view_as_txt(self):
         f = '[MClientQt] mclient.Save.save_view_as_txt'
-        print(f)
-        return
-        self.file = sh.com.show_save_dialog(self.txttypes)
-        text = objs.get_webframe().get_text()
-        if self.file and text:
-            self.fix_ext('.txt')
-            sh.WriteTextFile (file = self.file
-                             ,Rewrite = True
-                             ).write(text.strip())
-        else:
+        self.gui.ask.filter = _('Plain text (*.txt)')
+        self.file = self.gui.ask.save()
+        if not self.file or not lg.objs.get_request().text:
             sh.com.rep_empty(f)
+            return
+        if not sh.Path(self.file).get_ext_low() == '.txt':
+            self.file += '.txt'
+        text = sh.Text(lg.objs.request.text,True).text
+        sh.WriteTextFile (file = self.file
+                         ,Rewrite = True
+                         ).write(text)
 
     def copy_raw(self):
         f = '[MClientQt] mclient.Save.copy_raw'
@@ -118,8 +120,8 @@ class Save(sv.Save):
         return
         sh.Clipboard().copy(lg.objs.get_blocksdb().get_code())
 
-    def copy_txt(self):
-        f = '[MClientQt] mclient.Save.copy_txt'
+    def copy_view(self):
+        f = '[MClientQt] mclient.Save.copy_view'
         print(f)
         return
         text = objs.get_webframe().get_text()
@@ -1157,7 +1159,8 @@ class App:
         
         skipped = com.get_skipped_terms()
         # This is fast
-        lg.objs.get_request().htm = lg.HTM(cells,skipped).run()
+        lg.objs.request.htm = lg.HTM(cells,skipped).run()
+        lg.objs.request.text = lg.com.get_text(cells)
         colors = lg.com.get_colors(blocks)
         lg.com.fix_colors(colors)
         

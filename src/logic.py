@@ -455,6 +455,7 @@ class CurRequest:
     
     def reset(self):
         self.htm = ''
+        self.text = ''
         self.search = ''
         self.url = ''
 
@@ -555,6 +556,13 @@ class Commands:
     
     def __init__(self):
         self.use_unverified()
+    
+    def get_text(self,cells):
+        f = '[MClientQt] logic.Commands.get_text'
+        if not cells:
+            sh.com.rep_empty(f)
+            return ''
+        return '\n'.join([cell.plain for cell in cells])
     
     def fix_colors(self,colors):
         ''' We need HTML code both in cells and output to be saved. Qt requires
