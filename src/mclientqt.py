@@ -133,9 +133,7 @@ class Save(sv.Save):
 
 
 class Commands:
-    ''' #NOTE: DB is in controller (not in logic), so DB-related code
-        is here too.
-    '''
+    #NOTE: DB is in controller (not in logic), so DB-related code is here too
     def get_skipped_terms(self):
         f = '[MClientQt] mclient.Commands.get_skipped_terms'
         skipped = lg.objs.get_blocksdb().get_skipped_terms()
