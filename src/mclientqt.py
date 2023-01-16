@@ -116,17 +116,17 @@ class Save(sv.Save):
 
     def copy_raw(self):
         f = '[MClientQt] mclient.Save.copy_raw'
-        print(f)
-        return
-        sh.Clipboard().copy(lg.objs.get_blocksdb().get_code())
+        code = lg.objs.get_blocksdb().get_code()
+        if not code:
+            sh.com.rep_empty(f)
+            return
+        sh.Clipboard().copy(code)
 
     def copy_view(self):
         f = '[MClientQt] mclient.Save.copy_view'
-        print(f)
-        return
-        text = objs.get_webframe().get_text()
+        text = sh.Text(lg.objs.get_request().text,True).text
         if text:
-            sh.Clipboard().copy(text.strip())
+            sh.Clipboard().copy(text)
         else:
             sh.com.rep_empty(f)
 
