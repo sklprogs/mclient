@@ -301,6 +301,12 @@ class Priorities(PyQt5.QtWidgets.QWidget):
     def set_gui(self):
         self.set_title(_('Subject prioritization'))
         self.set_icon()
+        self.layout_ = PyQt5.QtWidgets.QGridLayout()
+        self.lbx_lft = PyQt5.QtWidgets.QTreeView()
+        self.lbx_rht = PyQt5.QtWidgets.QTreeView()
+        self.layout_.addWidget(self.lbx_lft,0,0)
+        self.layout_.addWidget(self.lbx_rht,0,2)
+        self.setLayout(self.layout_)
 
 
 if __name__ == '__main__':
