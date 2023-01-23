@@ -173,123 +173,67 @@ class Priorities(PyQt5.QtWidgets.QWidget):
                                   )
     
     def set_buttons(self):
-        self.btn_lft = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Prioritize selection on the right')
+        self.btn_lft = sh.Button (hint = _('Prioritize selection on the right')
                                  ,inactive = icn_lft
                                  ,active = icn_lft
                                  ,text = '←'
-                                 ,side = 'top'
-                                 ,expand = 0
-                                 ,hdir = 'bottom'
                                  )
-        self.btn_rht = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Unprioritize selection on the left')
+        self.btn_rht = sh.Button (hint = _('Unprioritize selection on the left')
                                  ,inactive = icn_rht
                                  ,active = icn_rht
                                  ,text = '→'
-                                 ,side = 'top'
-                                 ,expand = 0
-                                 ,hdir = 'bottom'
                                  )
-        self.btn_grp = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Prioritize related subjects')
+        self.btn_grp = sh.Button (hint = _('Prioritize related subjects')
                                  ,inactive = icn_grp
                                  ,active = icn_grp
                                  ,text = '⟸'
-                                 ,side = 'top'
-                                 ,expand = 0
-                                 ,hdir = 'bottom'
                                  )
-        self.btn_gru = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Unprioritize related subjects')
+        self.btn_gru = sh.Button (hint = _('Unprioritize related subjects')
                                  ,inactive = icn_gru
                                  ,active = icn_gru
                                  ,text = '⇒'
-                                 ,side = 'top'
-                                 ,expand = 0
-                                 ,hdir = 'bottom'
                                  )
-        self.btn_up1 = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Increase priority')
+        self.btn_up1 = sh.Button (hint = _('Increase priority')
                                  ,inactive = icn_up1
                                  ,active = icn_up1
                                  ,text = '↑'
-                                 ,side = 'top'
-                                 ,expand = 0
-                                 ,hdir = 'bottom'
                                  )
-        self.btn_dwn = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Decrease priority')
+        self.btn_dwn = sh.Button (hint = _('Decrease priority')
                                  ,inactive = icn_dwn
                                  ,active = icn_dwn
                                  ,text = '↓'
-                                 ,side = 'top'
-                                 ,expand = 0
-                                 ,hdir = 'bottom'
                                  )
-        self.btn_top = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Move to the top')
+        self.btn_top = sh.Button (hint = _('Move to the top')
                                  ,inactive = icn_top
                                  ,active = icn_top
                                  ,text = '↑↑'
-                                 ,side = 'top'
-                                 ,expand = 0
-                                 ,hdir = 'bottom'
                                  )
-        self.btn_btm = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Move to the bottom')
+        self.btn_btm = sh.Button (hint = _('Move to the bottom')
                                  ,inactive = icn_btm
                                  ,active = icn_btm
                                  ,text = '↓↓'
-                                 ,side = 'top'
-                                 ,expand = 0
-                                 ,hdir = 'bottom'
                                  )
-        self.btn_clr = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Clear selection in both panes')
+        self.btn_clr = sh.Button (hint = _('Clear selection in both panes')
                                  ,inactive = icn_clr
                                  ,active = icn_clr
                                  ,text = _('Clear')
-                                 ,side = 'top'
-                                 ,expand = 0
-                                 ,hdir = 'bottom'
                                  )
-        self.btn_rld = sh.Button (parent = self.frm_cnt
-                                 ,text = _('Reload')
+        self.btn_rld = sh.Button (text = _('Reload')
                                  ,hint = _('Reload settings')
                                  ,inactive = icn_rld
                                  ,active = icn_rld
-                                 ,expand = 0
-                                 ,side = 'top'
-                                 ,hdir = 'bottom'
                                  )
-        self.btn_cls = sh.Button (parent = self.frm_bm1
-                                 ,text = _('Close')
+        self.btn_cls = sh.Button (text = _('Close')
                                  ,hint = _('Close this window')
-                                 ,expand = 0
-                                 ,side = 'left'
-                                 ,hdir = 'top'
                                  )
-        self.btn_all = sh.Button (parent = self.frm_bm3
-                                 ,text = _('All')
+        self.btn_all = sh.Button (text = _('All')
                                  ,hint = _('Show all subjects')
-                                 ,expand = 0
-                                 ,side = 'left'
-                                 ,hdir = 'top'
                                  )
-        self.btn_mjr = sh.Button (parent = self.frm_bm3
-                                 ,text = _('Main')
+        self.btn_mjr = sh.Button (text = _('Main')
                                  ,hint = _('Show main subjects')
-                                 ,expand = 0
-                                 ,side = 'left'
-                                 ,hdir = 'top'
                                  )
-        self.btn_art = sh.Button (parent = self.frm_bm3
-                                 ,text = _('From the article')
+        self.btn_art = sh.Button (text = _('From the article')
                                  ,hint = _('Show subjects from the current article')
-                                 ,expand = 0
-                                 ,side = 'right'
-                                 ,hdir = 'top'
                                  )
     
     def set_widgets(self):
@@ -298,12 +242,31 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.lbx_rht = PyQt5.QtWidgets.QTreeView()
         self.prm_btn = PyQt5.QtWidgets.QWidget()
         self.lay_btn = PyQt5.QtWidgets.QVBoxLayout()
+        self.set_buttons()
     
     def add_widgets(self):
         self.layout_.addWidget(self.lbx_lft,0,0)
         self.layout_.addWidget(self.prm_btn,0,0)
         self.layout_.addWidget(self.lbx_rht,0,2)
+        self.add_buttons()
+        self.prm_btn.setLayout(self.lay_btn)
         self.setLayout(self.layout_)
+    
+    def add_buttons(self):
+        self.lay_btn.addWidget(self.btn_lft.widget)
+        self.lay_btn.addWidget(self.btn_rht.widget)
+        self.lay_btn.addWidget(self.btn_grp.widget)
+        self.lay_btn.addWidget(self.btn_gru.widget)
+        self.lay_btn.addWidget(self.btn_up1.widget)
+        self.lay_btn.addWidget(self.btn_dwn.widget)
+        self.lay_btn.addWidget(self.btn_top.widget)
+        self.lay_btn.addWidget(self.btn_btm.widget)
+        self.lay_btn.addWidget(self.btn_clr.widget)
+        self.lay_btn.addWidget(self.btn_rld.widget)
+        self.lay_btn.addWidget(self.btn_cls.widget)
+        self.lay_btn.addWidget(self.btn_all.widget)
+        self.lay_btn.addWidget(self.btn_mjr.widget)
+        self.lay_btn.addWidget(self.btn_art.widget)
     
     def set_gui(self):
         self.set_title(_('Subject prioritization'))
