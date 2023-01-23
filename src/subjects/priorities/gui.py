@@ -293,20 +293,28 @@ class Priorities(PyQt5.QtWidgets.QWidget):
                                  )
     
     def set_widgets(self):
-        self.set_frames()
-        self.set_listboxes()
-        self.set_buttons()
-        self.set_prioritize()
+        self.layout_ = PyQt5.QtWidgets.QGridLayout()
+        self.lbx_lft = PyQt5.QtWidgets.QTreeView()
+        self.lbx_rht = PyQt5.QtWidgets.QTreeView()
+        self.prm_btn = PyQt5.QtWidgets.QWidget()
+        self.lay_btn = PyQt5.QtWidgets.QVBoxLayout()
+    
+    def add_widgets(self):
+        self.layout_.addWidget(self.lbx_lft,0,0)
+        self.layout_.addWidget(self.prm_btn,0,0)
+        self.layout_.addWidget(self.lbx_rht,0,2)
+        self.setLayout(self.layout_)
     
     def set_gui(self):
         self.set_title(_('Subject prioritization'))
         self.set_icon()
-        self.layout_ = PyQt5.QtWidgets.QGridLayout()
-        self.lbx_lft = PyQt5.QtWidgets.QTreeView()
-        self.lbx_rht = PyQt5.QtWidgets.QTreeView()
-        self.layout_.addWidget(self.lbx_lft,0,0)
-        self.layout_.addWidget(self.lbx_rht,0,2)
-        self.setLayout(self.layout_)
+        self.set_widgets()
+        self.add_widgets()
+        self.customize()
+    
+    def customize(self):
+        self.layout_.setContentsMargins(0,0,0,0)
+        self.lay_btn.setContentsMargins(4,4,4,4)
 
 
 if __name__ == '__main__':
