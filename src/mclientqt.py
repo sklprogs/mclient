@@ -1376,6 +1376,8 @@ class App:
         
         self.history.gui.sig_close.connect(self.history.close)
         self.history.gui.sig_go.connect(self.go_history)
+        
+        self.prior.gui.sig_close.connect(self.prior.close)
     
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)
