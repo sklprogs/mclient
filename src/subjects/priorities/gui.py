@@ -1,18 +1,17 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import PyQt5
+import PyQt5.QtWidgets
+
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-icn_btm = sh.objs.pdir.add('..','resources','buttons','bottom.png')
-icn_clr = sh.objs.pdir.add ('..','resources','buttons'
-                           ,'clear_selection.png'
-                           )
+icn_btm = sh.objs.get_pdir().add('..','resources','buttons','bottom.png')
+icn_clr = sh.objs.pdir.add('..','resources','buttons','clear_selection.png')
 icn_dwn = sh.objs.pdir.add('..','resources','buttons','down.png')
 icn_grp = sh.objs.pdir.add('..','resources','buttons','double_back.png')
-icn_gru = sh.objs.pdir.add ('..','resources','buttons'
-                           ,'double_forward.png'
-                           )
+icn_gru = sh.objs.pdir.add('..','resources','buttons','double_forward.png')
 icn_lft = sh.objs.pdir.add('..','resources','buttons','go_back.png')
 icn_rht = sh.objs.pdir.add('..','resources','buttons','go_forward.png')
 icn_rld = sh.objs.pdir.add('..','resources','buttons','reload.png')
@@ -20,10 +19,30 @@ icn_top = sh.objs.pdir.add('..','resources','buttons','top.png')
 icn_up1 = sh.objs.pdir.add('..','resources','buttons','up.png')
 
 
-class Priorities:
+class Priorities(PyQt5.QtWidgets.QWidget):
     
-    def __init__(self):
+    sig_close = PyQt5.QtCore.pyqtSignal()
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
         self.set_gui()
+    
+    def set_icon(self):
+        # Does not accent None
+        self.setWindowIcon(sh.gi.objs.get_icon())
+    
+    def closeEvent(self,event):
+        self.sig_close.emit()
+        return super().closeEvent(event)
+    
+    def set_title(self,title):
+        self.setWindowTitle(title)
+    
+    def centralize(self):
+        self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
+    
+    def bind(self,hotkey,action):
+        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
     
     def get_checkbox(self):
         return self.cbx_pri.get()
@@ -91,12 +110,6 @@ class Priorities:
     
     def get2(self):
         return self.lbx_rht.lst
-    
-    def show(self,event=None):
-        self.parent.show()
-    
-    def close(self,event=None):
-        self.parent.close()
     
     def set_frames(self):
         self.frm_top = sh.Frame (parent = self.parent
@@ -286,18 +299,15 @@ class Priorities:
         self.set_prioritize()
     
     def set_gui(self):
-        self.parent = sh.Top (icon = ICON
-                             ,title = _('Subject prioritization')
-                             )
-        self.widget = self.parent.widget
-        sh.Geometry(self.parent).set('800x450')
-        self.set_widgets()
-        self.set_scrolly()
-        self.lbx_lft.focus()
+        self.set_title(_('Subject prioritization'))
+        self.set_icon()
 
 
 if __name__ == '__main__':
     f = '[MClient] subjects.priorities.gui.__main__'
     sh.com.start()
-    Priorities().show()
+    iprior = Priorities()
+    iprior.show()
+    iprior.resize(800,450)
+    iprior.centralize()
     sh.com.end()
