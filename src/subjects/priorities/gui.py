@@ -176,53 +176,44 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.btn_lft = sh.Button (hint = _('Prioritize selection on the right')
                                  ,inactive = icn_lft
                                  ,active = icn_lft
-                                 ,text = '←'
                                  )
         self.btn_rht = sh.Button (hint = _('Unprioritize selection on the left')
                                  ,inactive = icn_rht
                                  ,active = icn_rht
-                                 ,text = '→'
                                  )
         self.btn_grp = sh.Button (hint = _('Prioritize related subjects')
                                  ,inactive = icn_grp
                                  ,active = icn_grp
-                                 ,text = '⟸'
                                  )
         self.btn_gru = sh.Button (hint = _('Unprioritize related subjects')
                                  ,inactive = icn_gru
                                  ,active = icn_gru
-                                 ,text = '⇒'
                                  )
         self.btn_up1 = sh.Button (hint = _('Increase priority')
                                  ,inactive = icn_up1
                                  ,active = icn_up1
-                                 ,text = '↑'
                                  )
         self.btn_dwn = sh.Button (hint = _('Decrease priority')
                                  ,inactive = icn_dwn
                                  ,active = icn_dwn
-                                 ,text = '↓'
                                  )
         self.btn_top = sh.Button (hint = _('Move to the top')
                                  ,inactive = icn_top
                                  ,active = icn_top
-                                 ,text = '↑↑'
                                  )
         self.btn_btm = sh.Button (hint = _('Move to the bottom')
                                  ,inactive = icn_btm
                                  ,active = icn_btm
-                                 ,text = '↓↓'
                                  )
         self.btn_clr = sh.Button (hint = _('Clear selection in both panes')
                                  ,inactive = icn_clr
                                  ,active = icn_clr
-                                 ,text = _('Clear')
                                  )
-        self.btn_rld = sh.Button (text = _('Reload')
-                                 ,hint = _('Reload settings')
+        self.btn_rld = sh.Button (hint = _('Reload settings')
                                  ,inactive = icn_rld
                                  ,active = icn_rld
                                  )
+        '''
         self.btn_cls = sh.Button (text = _('Close')
                                  ,hint = _('Close this window')
                                  )
@@ -235,6 +226,7 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.btn_art = sh.Button (text = _('From the article')
                                  ,hint = _('Show subjects from the current article')
                                  )
+        '''
     
     def set_widgets(self):
         self.layout_ = PyQt5.QtWidgets.QGridLayout()
@@ -246,7 +238,7 @@ class Priorities(PyQt5.QtWidgets.QWidget):
     
     def add_widgets(self):
         self.layout_.addWidget(self.lbx_lft,0,0)
-        self.layout_.addWidget(self.prm_btn,0,0)
+        self.layout_.addWidget(self.prm_btn,0,1)
         self.layout_.addWidget(self.lbx_rht,0,2)
         self.add_buttons()
         self.prm_btn.setLayout(self.lay_btn)
@@ -263,10 +255,12 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.lay_btn.addWidget(self.btn_btm.widget)
         self.lay_btn.addWidget(self.btn_clr.widget)
         self.lay_btn.addWidget(self.btn_rld.widget)
+        '''
         self.lay_btn.addWidget(self.btn_cls.widget)
         self.lay_btn.addWidget(self.btn_all.widget)
         self.lay_btn.addWidget(self.btn_mjr.widget)
         self.lay_btn.addWidget(self.btn_art.widget)
+        '''
     
     def set_gui(self):
         self.set_title(_('Subject prioritization'))

@@ -13,7 +13,8 @@ class Priorities:
                  ,majors=[],func_group=None
                  ):
         self.func_group = func_group
-        self.gui = None
+        self.gui = gi.Priorities()
+        self.Shown = False
         self.Colorize2 = True
         self.lst1 = []
         self.lst2 = []
@@ -22,8 +23,11 @@ class Priorities:
         self.copy2 = []
         self.copy_art = []
         self.majors = []
+        '''
+        #cur
         if lst1:
             self.reset(lst1,lst2,art_subjects,majors)
+        '''
     
     def get_checkbox(self):
         return self.gui.get_checkbox()
@@ -240,11 +244,6 @@ class Priorities:
             self.majors = majors
         self.fill()
     
-    def get_gui(self):
-        if self.gui is None:
-            self.set_gui()
-        return self.gui
-    
     def set_gui(self):
         self.gui = gi.Priorities()
         self.set_bindings()
@@ -361,11 +360,21 @@ class Priorities:
         else:
             sh.com.rep_empty(f)
     
-    def show(self,event=None):
-        self.get_gui().show()
+    def show(self):
+        self.Shown = True
+        self.gui.show()
+        self.gui.resize(800,450)
+        self.gui.centralize()
     
-    def close(self,event=None):
-        self.get_gui().close()
+    def close(self):
+        self.Shown = False
+        self.gui.close()
+    
+    def toggle(self):
+        if self.Shown:
+            self.close()
+        else:
+            self.show()
     
     def set_bindings(self):
         f = '[MClient] subjects.priorities.controller.Priorities.set_bindings'

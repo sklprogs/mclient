@@ -1318,6 +1318,9 @@ class App:
         self.gui.bind (sh.lg.globs['str']['bind_swap_langs']
                       ,self.swap_langs
                       )
+        self.gui.bind (sh.lg.globs['str']['bind_toggle_priority']
+                      ,self.prior.toggle
+                      )
                       
         #TODO: iterate through all keys
         if sh.lg.globs['str']['bind_spec_symbol'] == 'Ctrl+E':
@@ -1347,6 +1350,7 @@ class App:
         self.panel.btn_hst.set_action(self.history.toggle)
         self.panel.btn_ser.set_action(self.table.search.toggle)
         self.panel.btn_qit.set_action(self.close)
+        self.panel.btn_pri.set_action(self.prior.toggle)
         
         self.panel.ent_src.widget.sig_home.connect(self.table.go_line_start)
         self.panel.ent_src.widget.sig_end.connect(self.table.go_line_end)
@@ -1385,6 +1389,7 @@ class App:
         self.settings = st.objs.get_settings()
         self.history = hs.History()
         self.save = Save()
+        self.prior = pr.Priorities()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title()
         self.set_bindings()

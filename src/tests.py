@@ -383,6 +383,12 @@ class Plugin:
 
 class Commands:
     
+    def run_prior(self):
+        import logic as lg
+        import subjects.priorities.controller as pr
+        lg.com.start()
+        return pr.Priorities()
+    
     def run_save(self):
         import save.controller as sv
         return sv.Save()
@@ -1012,8 +1018,13 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
+    # Priorities
+    iprior = com.run_prior()
+    iprior.show()
+    '''
     isave = com.run_save()
     isave.show()
+    '''
     '''
     # Settings
     isettings = com.run_settings()
