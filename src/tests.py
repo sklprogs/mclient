@@ -383,6 +383,15 @@ class Plugin:
 
 class Commands:
     
+    def run_popup(self):
+        import popup.controller as pp
+        ipopup = pp.Popup()
+        file = sh.objs.get_pdir().add('..','resources','third parties.txt')
+        text = sh.ReadTextFile(file).get()
+        text = sh.Text(text,True).delete_line_breaks() * 10
+        ipopup.fill(text)
+        return ipopup
+    
     def run_font_limits(self):
         f = '[MClient] tests.Commands.run_font_limits'
         import logic as lg
@@ -1035,7 +1044,8 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
-    com.run_font_limits()
+    ipopup = com.run_popup()
+    ipopup.show()
     '''
     # Priorities
     iprior = com.run_prior()
