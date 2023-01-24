@@ -234,10 +234,6 @@ class Welcome:
         hotkeys = (sh.lg.globs['str']['bind_toggle_priority'],)
         ihotkeys.add(hint,hotkeys)
         
-        hint = _('Toggle terms-only selection')
-        hotkeys = (sh.lg.globs['str']['bind_toggle_sel'],)
-        ihotkeys.add(hint,hotkeys)
-        
         hint = _('Toggle the current article view')
         hotkeys = (sh.lg.globs['str']['bind_toggle_view']
                   ,sh.lg.globs['str']['bind_toggle_view_alt']
@@ -266,6 +262,10 @@ class Welcome:
         
         hint = _('Copy the nominative case')
         hotkeys = (sh.lg.globs['str']['bind_copy_nominative'],)
+        ihotkeys.add(hint,hotkeys)
+        
+        hint = _('Show full cell text')
+        hotkeys = (sh.lg.globs['str']['bind_toggle_popup'],)
         ihotkeys.add(hint,hotkeys)
         
         self.table += ihotkeys.get()

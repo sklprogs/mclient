@@ -10,8 +10,15 @@ from . import gui as gi
 class Popup:
     
     def __init__(self):
+        self.Shown = False
         self.gui = gi.Popup()
         self.set_gui()
+    
+    def toggle(self):
+        if self.Shown:
+            self.close()
+        else:
+            self.show()
     
     def fill(self,text):
         self.gui.fill(text)
@@ -24,11 +31,14 @@ class Popup:
         self.set_title()
     
     def show(self):
+        self.Shown = True
         self.gui.show()
         self.gui.centralize()
     
     def close(self):
+        self.Shown = False
         self.gui.close()
     
     def set_bindings(self):
         self.gui.bind('Esc',self.close)
+        self.gui.bind(sh.lg.globs['str']['bind_toggle_popup'],self.toggle)

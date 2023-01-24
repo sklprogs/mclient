@@ -10,9 +10,15 @@ import skl_shared_qt.shared as sh
 
 class Popup(PyQt5.QtWidgets.QWidget):
     
+    sig_close = PyQt5.QtCore.pyqtSignal()
+    
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.set_gui()
+    
+    def closeEvent(self,event):
+        self.sig_close.emit()
+        return super().closeEvent(event)
     
     def set_icon(self):
         # Does not accent None

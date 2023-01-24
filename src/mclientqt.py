@@ -24,6 +24,7 @@ import welcome.controller as wl
 import settings.controller as st
 import history.controller as hs
 import save.controller as sv
+import popup.controller as pp
 
 
 DEBUG = False
@@ -1365,6 +1366,9 @@ class App:
         self.gui.bind (sh.lg.globs['str']['bind_toggle_priority']
                       ,self.prior.toggle
                       )
+        self.gui.bind (sh.lg.globs['str']['bind_toggle_popup']
+                      ,self.popup.toggle
+                      )
                       
         #TODO: iterate through all keys
         if sh.lg.globs['str']['bind_spec_symbol'] == 'Ctrl+E':
@@ -1422,6 +1426,8 @@ class App:
         self.history.gui.sig_go.connect(self.go_history)
         
         self.prior.gui.sig_close.connect(self.prior.close)
+        
+        self.popup.gui.sig_close.connect(self.popup.toggle)
     
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)
@@ -1436,6 +1442,7 @@ class App:
         self.history = hs.History()
         self.save = Save()
         self.prior = pr.Priorities()
+        self.popup = pp.Popup()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title()
         self.set_bindings()

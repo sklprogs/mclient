@@ -1,4 +1,5 @@
 mclient:
+- Welcome: bind_toggle_popup is not shown
 - Article IDs > 9 are not shown in History
 - Fix Stardict (nothing is found)
 - Vertical mode icon is not changed upon toggling the vertical mode on

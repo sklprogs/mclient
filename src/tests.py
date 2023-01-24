@@ -448,7 +448,7 @@ class Commands:
         lg.com.start()
         import welcome.controller as wl
         iwelcome = wl.Welcome()
-        #iwelcome.reset()
+        iwelcome.reset()
         return iwelcome
     
     def run_welcome(self):
@@ -456,7 +456,7 @@ class Commands:
         import logic as lg
         lg.com.start()
         iwelcome = mc.Welcome(mc.About().get_product())
-        #iwelcome.reset()
+        iwelcome.reset()
         return iwelcome
     
     def run_history_contr(self):
@@ -1044,8 +1044,11 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
+    '''
+    # Popup
     ipopup = com.run_popup()
     ipopup.show()
+    '''
     '''
     # Priorities
     iprior = com.run_prior()
@@ -1075,9 +1078,8 @@ if __name__ == '__main__':
     iwelcome = com.run_welcome_contr()
     iwelcome.show()
     '''
-    '''
     # Welcome
     iwelcome = com.run_welcome()
     iwelcome.show()
-    '''
+    
     sh.com.end()
