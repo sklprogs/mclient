@@ -383,6 +383,23 @@ class Plugin:
 
 class Commands:
     
+    def run_font_limits(self):
+        f = '[MClient] tests.Commands.run_font_limits'
+        import logic as lg
+        lg.com.start()
+        import mclientqt as mc
+        text = 'Раз, два, три, четыре, пять - вышел зайчик погулять'
+        ilimits = mc.FontLimits (family = sh.lg.globs['str']['font_terms_family']
+                                ,size = sh.lg.globs['int']['font_terms_size']
+                                ,Bold = False
+                                ,Italic = False
+                                )
+        timer = sh.Timer(f)
+        timer.start()
+        ilimits.set_text(text)
+        ilimits.get_space()
+        timer.end()
+    
     def run_prior(self):
         import logic as lg
         import subjects.priorities.controller as pr
@@ -1018,9 +1035,12 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
+    com.run_font_limits()
+    '''
     # Priorities
     iprior = com.run_prior()
     iprior.show()
+    '''
     '''
     isave = com.run_save()
     isave.show()

@@ -10,6 +10,24 @@ import skl_shared_qt.shared as sh
 sh.gi.ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
 
 
+class FontLimits:
+    
+    def __init__(self):
+        pass
+    
+    def get_font(self,family,size,weight,italic):
+        return PyQt5.QtGui.QFont (family
+                                 ,pointSize = size
+                                 ,weight = weight
+                                 ,italic = italic
+                                 )
+    
+    def get_space(self,text,qfont):
+        qrect = PyQt5.QtGui.QFontMetrics(qfont).boundingRect(text)
+        return qrect.width() * qrect.height()
+
+
+
 class Entry(sh.Entry):
     
     def __init__(self,*args,**kwargs):
@@ -215,6 +233,11 @@ class Table(PyQt5.QtWidgets.QTableView):
     def get_cell_hint(self,index_):
         option = PyQt5.QtWidgets.QStyleOptionViewItem()
         return self.delegate.sizeHint(option,index_).height()
+    
+    def get_cell_space(self,index_):
+        option = PyQt5.QtWidgets.QStyleOptionViewItem()
+        hint = self.delegate.sizeHint(option,index_)
+        return hint.width() * hint.height()
     
     def scroll2index(self,index_):
         self.scrollTo(index_,PyQt5.QtWidgets.QAbstractItemView.PositionAtTop)

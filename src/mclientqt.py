@@ -29,6 +29,49 @@ import save.controller as sv
 DEBUG = False
 
 
+class FontLimits:
+    
+    def __init__(self,family,size,Bold=False,Italic=False):
+        self.set_values()
+        self.family = family
+        self.size = size
+        self.Bold = Bold
+        self.Italic = Italic
+        self.gui = gi.FontLimits()
+        self.set_font()
+    
+    def set_values(self):
+        self.family = 'Sans'
+        self.text = ''
+        self.font = None
+        self.size = 0
+        self.Bold = False
+        self.Italic = False
+    
+    def set_text(self,text):
+        self.text = str(text)
+    
+    def set_font(self):
+        # 400 is normal, 700 - bold
+        if self.Bold:
+            weight = 700
+        else:
+            weight = 400
+        self.font = self.gui.get_font (self.family
+                                      ,size = self.size
+                                      ,weight = weight
+                                      ,italic = self.Italic
+                                      )
+    
+    def get_space(self):
+        f = '[MClientQt] mclient.FontLimits.get_space'
+        space = self.gui.get_space(self.text,self.font)
+        mes = _('Space: {}').format(space)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return space
+
+
+
 class Save(sv.Save):
     
     def __init__(self,*args,**kwargs):
@@ -521,7 +564,7 @@ class Table:
         self.set_col_width()
         self.set_row_height(self.row_height)
         self.show_borders(False)
-        #self.set_long()
+        self.set_long()
         ''' Coordinates are recreated each time the app window is resized. Here
             we merely suppress a warning at 'self.go_start'.
         '''
@@ -536,19 +579,32 @@ class Table:
         if not self.Success:
             sh.com.cancel(f)
             return
+        ilimits = FontLimits (family = sh.lg.globs['str']['font_terms_family']
+                             ,size = sh.lg.globs['int']['font_terms_size']
+                             ,Bold = False
+                             ,Italic = False
+                             )
         timer = sh.Timer(f)
         timer.start()
         self.gui.delegate.long = []
         for rowno in range(self.logic.rownum):
             for colno in range(self.logic.colnum):
+                ilimits.set_text(self.logic.plain[rowno][colno])
+                space = ilimits.get_space()
                 index_ = self.model.index(rowno,colno)
-                height = self.gui.get_cell_hint(index_)
+                hint_space = self.row_height * col_width
+                #hint_space = self.gui.get_cell_space(index_)
+                #print('text:',self.logic.plain[rowno][colno])
+                #print('hint_space:',hint_space)
+                if space > hint_space:
+                    self.gui.delegate.long.append(index_)
+                #height = self.gui.get_cell_hint(index_)
                 #mes = 'Row #{}. Column #{}. Size hint: {}'
                 #mes = mes.format(rowno,colno,height)
                 #sh.objs.get_mes(f,mes,True).show_debug()
                 #if height > self.row_height:
-                if height > 380:
-                    self.gui.delegate.long.append(index_)
+                #if height > 380:
+                #    self.gui.delegate.long.append(index_)
         timer.end()
         mes = _('Number of cells: {}').format(self.logic.rownum*self.logic.colnum)
         sh.objs.get_mes(f,mes,True).show_debug()
