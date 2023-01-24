@@ -572,7 +572,7 @@ class Table:
         self.go_start()
     
     def set_long(self):
-        # This is slow (takes ~2.36s for 'set' on Intel Atom)
+        # Takes ~0.56s for 'set' on Intel Atom
         f = '[MClientQt] mclient.Table.set_long'
         if not self.Success:
             sh.com.cancel(f)
