@@ -501,7 +501,7 @@ class Table:
         f = '[MClientQt] mclient.Table.get_cell_text'
         if not self.Success:
             sh.com.cancel(f)
-            return
+            return ''
         if not self.logic.cells:
             sh.com.rep_empty(f)
             return ''
@@ -653,6 +653,15 @@ class App:
         self.gui = gi.App()
         self.set_gui()
         self.update_ui()
+    
+    def show_popup(self):
+        f = '[MClientQt] mclient.App.show_popup'
+        text = self.table.get_cell_text()
+        if not text:
+            sh.com.rep_empty(f)
+            return
+        self.popup.fill(text)
+        self.popup.show()
     
     def add_history(self):
         # Call this only after assigning an article ID for a new article
@@ -1364,7 +1373,7 @@ class App:
                       ,self.prior.toggle
                       )
         self.gui.bind (sh.lg.globs['str']['bind_toggle_popup']
-                      ,self.popup.toggle
+                      ,self.show_popup
                       )
                       
         #TODO: iterate through all keys
@@ -1424,7 +1433,7 @@ class App:
         
         self.prior.gui.sig_close.connect(self.prior.close)
         
-        self.popup.gui.sig_close.connect(self.popup.toggle)
+        self.popup.gui.sig_close.connect(self.popup.close)
     
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)
