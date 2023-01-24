@@ -54,6 +54,7 @@ class Popup(PyQt5.QtWidgets.QWidget):
         self.font = PyQt5.QtGui.QFont('Serif',11)
         self.char_fmt.setFont(self.font)
         self.add_widgets()
+        self.set_icon()
         self.resize(300,300)
     
     def bind(self,hotkey,action):
