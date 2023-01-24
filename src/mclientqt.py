@@ -66,8 +66,8 @@ class FontLimits:
     def get_space(self):
         f = '[MClientQt] mclient.FontLimits.get_space'
         space = self.gui.get_space(self.text,self.font)
-        mes = _('Space: {}').format(space)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        #mes = _('Space: {}').format(space)
+        #sh.objs.get_mes(f,mes,True).show_debug()
         return space
 
 
@@ -572,9 +572,7 @@ class Table:
         self.go_start()
     
     def set_long(self):
-        ''' This is slow ('set' on Intel Atom without debugging: ~2.68s with
-            default sizeHint and ~5.57s with custom sizeHint.
-        '''
+        # This is slow (takes ~2.36s for 'set' on Intel Atom)
         f = '[MClientQt] mclient.Table.set_long'
         if not self.Success:
             sh.com.cancel(f)
@@ -592,19 +590,9 @@ class Table:
                 ilimits.set_text(self.logic.plain[rowno][colno])
                 space = ilimits.get_space()
                 index_ = self.model.index(rowno,colno)
-                hint_space = self.row_height * col_width
-                #hint_space = self.gui.get_cell_space(index_)
-                #print('text:',self.logic.plain[rowno][colno])
-                #print('hint_space:',hint_space)
+                hint_space = self.row_height * self.gui.get_col_width(colno)
                 if space > hint_space:
                     self.gui.delegate.long.append(index_)
-                #height = self.gui.get_cell_hint(index_)
-                #mes = 'Row #{}. Column #{}. Size hint: {}'
-                #mes = mes.format(rowno,colno,height)
-                #sh.objs.get_mes(f,mes,True).show_debug()
-                #if height > self.row_height:
-                #if height > 380:
-                #    self.gui.delegate.long.append(index_)
         timer.end()
         mes = _('Number of cells: {}').format(self.logic.rownum*self.logic.colnum)
         sh.objs.get_mes(f,mes,True).show_debug()

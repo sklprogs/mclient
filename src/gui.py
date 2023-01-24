@@ -230,6 +230,9 @@ class Table(PyQt5.QtWidgets.QTableView):
         self._use_mouse(event)
         return super().mouseMoveEvent(event)
     
+    def get_col_width(self,colno):
+        return self.columnWidth(colno)
+    
     def get_cell_hint(self,index_):
         option = PyQt5.QtWidgets.QStyleOptionViewItem()
         return self.delegate.sizeHint(option,index_).height()
