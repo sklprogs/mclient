@@ -27,10 +27,8 @@ class Popup(PyQt5.QtWidgets.QWidget):
     def centralize(self):
         self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
     
-    def fill(self,text):
-        self.textbox.clear()
-        self.cursor.insertText(text,self.char_fmt)
-        self.textbox.moveCursor(self.cursor.Start)
+    def fill(self,code):
+        self.textbox.setHtml(code)
     
     def set_title(self,title):
         self.setWindowTitle(title)

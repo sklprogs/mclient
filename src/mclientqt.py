@@ -514,6 +514,22 @@ class Table:
             sh.objs.get_mes(f,mes).show_debug()
         return ''
     
+    def get_cell_code(self):
+        f = '[MClientQt] mclient.Table.get_cell_code'
+        if not self.Success:
+            sh.com.cancel(f)
+            return ''
+        if not self.logic.cells:
+            sh.com.rep_empty(f)
+            return ''
+        rowno, colno = self.get_cell()
+        try:
+            return self.logic.table[rowno][colno]
+        except IndexError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_debug()
+        return ''
+    
     def copy_cell(self):
         f = '[MClientQt] mclient.Table.copy_cell'
         if not self.Success:
@@ -656,7 +672,7 @@ class App:
     
     def show_popup(self):
         f = '[MClientQt] mclient.App.show_popup'
-        text = self.table.get_cell_text()
+        text = self.table.get_cell_code()
         if not text:
             sh.com.rep_empty(f)
             return
