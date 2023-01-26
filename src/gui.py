@@ -217,13 +217,18 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+        # Do not override internal 'x' and 'y'
+        self.x_ = 0
+        self.y_ = 0
         self.setMouseTracking(True)
         self.set_gui()
     
     def _use_mouse(self,event):
         pos = event.pos()
-        rowno = self.rowAt(pos.y())
-        colno = self.columnAt(pos.x())
+        self.x_ = pos.x()
+        self.y_ = pos.y()
+        rowno = self.rowAt(self.y_)
+        colno = self.columnAt(self.x_)
         self.sig_select.emit(rowno,colno,True)
     
     def mouseMoveEvent(self,event):

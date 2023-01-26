@@ -14,6 +14,9 @@ class Popup:
         self.gui = gi.Popup()
         self.set_gui()
     
+    def adjust_position(self,x,y):
+        self.gui.move(x,y)
+    
     def toggle(self):
         if self.Shown:
             self.close()
@@ -33,7 +36,6 @@ class Popup:
     def show(self):
         self.Shown = True
         self.gui.show()
-        self.gui.centralize()
     
     def close(self):
         self.Shown = False

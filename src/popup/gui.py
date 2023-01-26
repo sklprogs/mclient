@@ -16,6 +16,12 @@ class Popup(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
+    def get_width(self):
+        return self.width()
+    
+    def get_height(self):
+        return self.height()
+    
     def closeEvent(self,event):
         self.sig_close.emit()
         return super().closeEvent(event)

@@ -316,7 +316,17 @@ class Table:
         self.logic = lg.Table()
         self.gui = gi.Table()
         self.search = Search()
+        self.popup = pp.Popup()
         self.set_gui()
+    
+    def show_popup(self):
+        f = '[MClientQt] mclient.Table.show_popup'
+        text = self.get_cell_code()
+        if not text:
+            sh.com.rep_empty(f)
+            return
+        self.popup.fill(text)
+        self.popup.show()
     
     def go_next_section(self,no):
         f = '[MClientQt] mclient.Table.go_next_section'
@@ -425,6 +435,12 @@ class Table:
         self.model.update(new_index)
         if not Mouse:
             self.scroll_top()
+        if Mouse:
+            if new_index in self.gui.delegate.long:
+                self.popup.adjust_position(self.gui.x_,self.gui.y_)
+                self.show_popup()
+            else:
+                self.popup.close()
     
     def go_up(self):
         f = '[MClientQt] mclient.Table.go_up'
@@ -660,6 +676,7 @@ class Table:
         self.search.gui.ent_src.bind('Return',self.close_search_next)
         self.search.gui.btn_srp.set_action(self.search_prev)
         self.search.gui.btn_srn.set_action(self.search_next)
+        self.popup.gui.sig_close.connect(self.popup.close)
 
 
 
@@ -669,15 +686,6 @@ class App:
         self.gui = gi.App()
         self.set_gui()
         self.update_ui()
-    
-    def show_popup(self):
-        f = '[MClientQt] mclient.App.show_popup'
-        text = self.table.get_cell_code()
-        if not text:
-            sh.com.rep_empty(f)
-            return
-        self.popup.fill(text)
-        self.popup.show()
     
     def add_history(self):
         # Call this only after assigning an article ID for a new article
@@ -1390,7 +1398,7 @@ class App:
                       ,self.prior.toggle
                       )
         self.gui.bind (sh.lg.globs['str']['bind_toggle_popup']
-                      ,self.show_popup
+                      ,self.table.show_popup
                       )
                       
         #TODO: iterate through all keys
@@ -1449,8 +1457,6 @@ class App:
         self.history.gui.sig_go.connect(self.go_history)
         
         self.prior.gui.sig_close.connect(self.prior.close)
-        
-        self.popup.gui.sig_close.connect(self.popup.close)
     
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)
@@ -1465,7 +1471,6 @@ class App:
         self.history = hs.History()
         self.save = Save()
         self.prior = pr.Priorities()
-        self.popup = pp.Popup()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title()
         self.set_bindings()
