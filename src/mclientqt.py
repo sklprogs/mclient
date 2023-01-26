@@ -387,6 +387,8 @@ class Table:
         self.model = None
         self.coords = {}
         self.row_height = 42
+        self.old_rowno = -1
+        self.old_colno = -1
     
     def go_end(self):
         f = '[MClientQt] mclient.Table.go_end'
@@ -426,6 +428,10 @@ class Table:
         if not self.model:
             sh.com.rep_empty(f)
             return
+        if rowno == self.old_rowno and colno == self.old_colno:
+            return
+        self.old_rowno = rowno
+        self.old_colno = colno
         self.model.update(self.gui.get_index())
         new_index = self.model.index(rowno,colno)
         if Mouse:
