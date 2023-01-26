@@ -1227,6 +1227,7 @@ class App:
         #objs.get_suggest().close()
         #self.update_buttons()
         timer.end()
+        self.panel.ent_src.focus()
         #self.run_final_debug()
         #self.debug_settings()
         return blocks
