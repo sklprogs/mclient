@@ -324,7 +324,6 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.vheader = self.verticalHeader()
         self.hheader.setVisible(False)
         self.vheader.setVisible(False)
-        self.setStyleSheet('QTableView { selection-background-color: transparent; }')
     
     def show_borders(self,Show=False):
         self.setShowGrid(Show)
@@ -384,6 +383,7 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.add_widgets()
         self.setCentralWidget(self.parent)
         self.set_icon()
+        self.setStyleSheet('QTableView { selection-background-color: transparent; }')
     
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
