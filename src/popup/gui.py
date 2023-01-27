@@ -59,7 +59,7 @@ class Popup(PyQt5.QtWidgets.QWidget):
         self.char_fmt.setFont(self.font)
         self.add_widgets()
         self.set_icon()
-        self.resize(300,300)
+        self.resize(270,150)
     
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
