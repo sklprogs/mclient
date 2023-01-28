@@ -880,6 +880,10 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def reload(self):
+        lg.objs.get_blocksdb().clear_cur()
+        self.load_article()
+    
     def toggle_view(self):
         if sh.lg.globs['bool']['VerticalView']:
             sh.lg.globs['bool']['VerticalView'] = False
@@ -1618,6 +1622,12 @@ class App:
         self.gui.bind (sh.lg.globs['str']['bind_toggle_view_alt']
                       ,self.toggle_view
                       )
+        self.gui.bind (sh.lg.globs['str']['bind_reload_article']
+                      ,self.reload
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_reload_article_alt']
+                      ,self.reload
+                      )
                       
         #TODO: iterate through all keys
         if sh.lg.globs['str']['bind_spec_symbol'] == 'Ctrl+E':
@@ -1644,8 +1654,10 @@ class App:
         self.panel.btn_pri.set_action(self.prior.toggle)
         self.panel.btn_prv.set_action(self.go_back)
         self.panel.btn_qit.set_action(self.close)
+        self.panel.btn_rld.set_action(self.reload)
         self.panel.btn_rp1.set_action(self.insert_repeat_sign)
         self.panel.btn_rp2.set_action(self.insert_repeat_sign2)
+        self.panel.btn_sav.set_action(self.save.toggle)
         self.panel.btn_ser.set_action(self.table.search.toggle)
         self.panel.btn_set.set_action(self.settings.toggle)
         self.panel.btn_sym.set_action(self.symbols.show)
