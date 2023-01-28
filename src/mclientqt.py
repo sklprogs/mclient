@@ -70,11 +70,11 @@ class UpdateUI:
         self.gui.btn_alp.hint = '\n'.join(mes)
         self.gui.btn_alp.set_hint()
     
-    def _update_alphabetization(self):
+    def update_alphabetization(self):
         self._update_alphabet_image()
         self._update_alphabet_hint()
     
-    def _update_vertical_view(self):
+    def update_vertical_view(self):
         mes = [_('Vertical mode')]
         if sh.lg.globs['bool']['VerticalView']:
             self.gui.btn_viw.inactivate()
@@ -85,7 +85,7 @@ class UpdateUI:
         self.gui.btn_viw.hint = '\n'.join(mes)
         self.gui.btn_viw.set_hint()
     
-    def _update_global_hotkey(self):
+    def update_global_hotkey(self):
         mes = [_('Capture Ctrl-c-c and Ctrl-Ins-Ins')]
         if sh.lg.globs['bool']['CaptureHotkey']:
             self.gui.btn_cap.activate()
@@ -96,7 +96,7 @@ class UpdateUI:
         self.gui.btn_cap.hint = '\n'.join(mes)
         self.gui.btn_cap.set_hint()
     
-    def _update_prioritization(self):
+    def update_prioritization(self):
         mes = [_('Subject prioritization')]
         prioritized = com.get_prioritized()
         if sh.lg.globs['bool']['PrioritizeSubjects'] and prioritized \
@@ -119,7 +119,7 @@ class UpdateUI:
         self.gui.btn_pri.hint = '\n'.join(mes)
         self.gui.btn_pri.set_hint()
     
-    def _update_block(self):
+    def update_block(self):
         f = '[MClient] UpdateUI._update_block'
         mes = [_('Subject blocking')]
         skipped_terms = len(com.get_skipped_terms())
@@ -144,27 +144,27 @@ class UpdateUI:
         self.gui.btn_blk.hint = '\n'.join(mes)
         self.gui.btn_blk.set_hint()
     
-    def _update_go_next(self):
+    def update_go_next(self):
         if lg.objs.blocksdb.get_next_id(False):
             self.gui.btn_nxt.activate()
         else:
             self.gui.btn_nxt.inactivate()
     
-    def _update_go_prev(self):
+    def update_go_prev(self):
         # Update the button to move to the previous article
         if lg.objs.get_blocksdb().get_prev_id(False):
             self.gui.btn_prv.activate()
         else:
             self.gui.btn_prv.inactivate()
     
-    def _update_last_search(self,searches):
+    def update_last_search(self,searches):
         # Update the button to insert a current search string
         if searches:
             self.gui.btn_rp1.activate()
         else:
             self.gui.btn_rp1.inactivate()
     
-    def _update_prev_search(self,searches):
+    def update_prev_search(self,searches):
         # Update the button to insert a previous search string
         if searches and len(searches) > 1:
             self.gui.btn_rp2.activate()
@@ -174,19 +174,19 @@ class UpdateUI:
     def update_buttons(self):
         f = '[MClient] mclient.UpdateUI.update_buttons'
         searches = lg.objs.get_blocksdb().get_searches()
-        self._update_last_search(searches)
-        self._update_prev_search(searches)
+        self.update_last_search(searches)
+        self.update_prev_search(searches)
         # Suppress useless error output
         if lg.objs.get_request().search:
-            self._update_go_prev()
-            self._update_go_next()
-            self._update_block()
-            self._update_prioritization()
+            self.update_go_prev()
+            self.update_go_next()
+            self.update_block()
+            self.update_prioritization()
         else:
             sh.com.rep_lazy(f)
-        self._update_global_hotkey()
-        self._update_vertical_view()
-        self._update_alphabetization()
+        self.update_global_hotkey()
+        self.update_vertical_view()
+        self.update_alphabetization()
     
     def run(self):
         self.update_buttons()
@@ -880,6 +880,30 @@ class App:
         self.gui = gi.App()
         self.set_gui()
         self.update_ui()
+    
+    def watch_clipboard(self):
+        # Watch clipboard
+        if sh.lg.globs['bool']['CaptureHotkey']:
+            sh.lg.globs['bool']['CaptureHotkey'] = False
+        else:
+            sh.lg.globs['bool']['CaptureHotkey'] = True
+        UpdateUI(self.panel).update_global_hotkey()
+    
+    def define(self,Selected=True):
+        # Open a web-page with a definition of the current term
+        # Selected: True: Selected term; False: Article title
+        f = '[MClient] mclient.App.define'
+        if Selected:
+            pattern = self.table.get_cell_text()
+        else:
+            pattern = lg.objs.get_request().search
+        if not pattern:
+            sh.com.rep_empty(f)
+            return
+        pattern = _('what is "{}"?').format(pattern)
+        sh.Online (base = sh.lg.globs['str']['web_search_url']
+                  ,pattern = pattern
+                  ).browse()
     
     def reload(self):
         lg.objs.get_blocksdb().clear_cur()
@@ -1638,6 +1662,9 @@ class App:
         self.gui.bind (sh.lg.globs['str']['bind_print']
                       ,self.logic.print
                       )
+        self.gui.bind (sh.lg.globs['str']['bind_define']
+                      ,self.define
+                      )
                       
         #TODO: iterate through all keys
         if sh.lg.globs['str']['bind_spec_symbol'] == 'Ctrl+E':
@@ -1658,7 +1685,9 @@ class App:
         self.panel.btn_abt.set_action(self.about.toggle)
         self.panel.btn_alp.set_action(self.toggle_alphabet)
         self.panel.btn_brw.set_action(self.logic.open_in_browser)
+        self.panel.btn_cap.set_action(self.watch_clipboard)
         self.panel.btn_clr.set_action(self.clear_search_field)
+        self.panel.btn_def.set_action(lambda x:self.define(False))
         self.panel.btn_hst.set_action(self.history.toggle)
         self.panel.btn_ins.set_action(self.paste)
         self.panel.btn_nxt.set_action(self.go_next)
