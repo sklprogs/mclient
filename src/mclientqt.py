@@ -693,6 +693,14 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def toggle_alphabet(self,event=None):
+        if sh.lg.globs['bool']['AlphabetizeTerms']:
+            sh.lg.globs['bool']['AlphabetizeTerms'] = False
+        else:
+            sh.lg.globs['bool']['AlphabetizeTerms'] = True
+        #lg.objs.get_blocksdb().delete_bookmarks()
+        self.load_article()
+    
     def add_history(self):
         # Call this only after assigning an article ID for a new article
         f = '[MClientQt] mclient.App.add_history'
@@ -1406,6 +1414,9 @@ class App:
         self.gui.bind (sh.lg.globs['str']['bind_toggle_popup']
                       ,self.table.show_popup
                       )
+        self.gui.bind (sh.lg.globs['str']['bind_toggle_alphabet']
+                      ,self.toggle_alphabet
+                      )
                       
         #TODO: iterate through all keys
         if sh.lg.globs['str']['bind_spec_symbol'] == 'Ctrl+E':
@@ -1432,6 +1443,7 @@ class App:
         self.panel.btn_sym.set_action(self.symbols.show)
         self.panel.btn_swp.set_action(self.swap_langs)
         self.panel.btn_set.set_action(self.settings.toggle)
+        self.panel.btn_alp.set_action(self.toggle_alphabet)
         self.panel.btn_hst.set_action(self.history.toggle)
         self.panel.btn_ser.set_action(self.table.search.toggle)
         self.panel.btn_qit.set_action(self.close)
