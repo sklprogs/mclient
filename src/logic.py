@@ -6,6 +6,7 @@ import ssl
 
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
+import skl_shared_qt.web as wb
 
 import manager
 import subjects.subjects as sj
@@ -25,6 +26,20 @@ class App:
         url = objs.get_request().url
         ionline.url = objs.get_plugins().fix_url(url)
         ionline.browse()
+    
+    def print(self):
+        f = '[MClient] logic.App.print'
+        code = wb.WebPage(objs.get_request().htm).make_pretty()
+        if not code:
+            sh.com.rep_empty(f)
+            return
+        tmp_file = sh.objs.get_tmpfile (suffix = '.htm'
+                                       ,Delete = 0
+                                       )
+        sh.WriteTextFile (file = tmp_file
+                         ,Rewrite = True
+                         ).write(code)
+        sh.Launch(tmp_file).launch_default()
 
 
 

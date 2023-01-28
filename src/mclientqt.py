@@ -1635,6 +1635,9 @@ class App:
         self.gui.bind (sh.lg.globs['str']['bind_open_in_browser_alt']
                       ,self.logic.open_in_browser
                       )
+        self.gui.bind (sh.lg.globs['str']['bind_print']
+                      ,self.logic.print
+                      )
                       
         #TODO: iterate through all keys
         if sh.lg.globs['str']['bind_spec_symbol'] == 'Ctrl+E':
@@ -1660,6 +1663,7 @@ class App:
         self.panel.btn_ins.set_action(self.paste)
         self.panel.btn_nxt.set_action(self.go_next)
         self.panel.btn_pri.set_action(self.prior.toggle)
+        self.panel.btn_prn.set_action(self.logic.print)
         self.panel.btn_prv.set_action(self.go_back)
         self.panel.btn_qit.set_action(self.close)
         self.panel.btn_rld.set_action(self.reload)
