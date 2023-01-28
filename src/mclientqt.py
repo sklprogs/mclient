@@ -693,7 +693,15 @@ class App:
         self.set_gui()
         self.update_ui()
     
-    def toggle_alphabet(self,event=None):
+    def toggle_view(self):
+        if sh.lg.globs['bool']['VerticalView']:
+            sh.lg.globs['bool']['VerticalView'] = False
+        else:
+            sh.lg.globs['bool']['VerticalView'] = True
+        #lg.objs.get_blocksdb().delete_bookmarks()
+        self.load_article()
+    
+    def toggle_alphabet(self):
         if sh.lg.globs['bool']['AlphabetizeTerms']:
             sh.lg.globs['bool']['AlphabetizeTerms'] = False
         else:
@@ -1417,6 +1425,12 @@ class App:
         self.gui.bind (sh.lg.globs['str']['bind_toggle_alphabet']
                       ,self.toggle_alphabet
                       )
+        self.gui.bind (sh.lg.globs['str']['bind_toggle_view']
+                      ,self.toggle_view
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_toggle_view_alt']
+                      ,self.toggle_view
+                      )
                       
         #TODO: iterate through all keys
         if sh.lg.globs['str']['bind_spec_symbol'] == 'Ctrl+E':
@@ -1448,6 +1462,9 @@ class App:
         self.panel.btn_ser.set_action(self.table.search.toggle)
         self.panel.btn_qit.set_action(self.close)
         self.panel.btn_pri.set_action(self.prior.toggle)
+        self.panel.btn_viw.set_action(self.toggle_view)
+        self.panel.btn_prv.set_action(self.go_back)
+        self.panel.btn_nxt.set_action(self.go_forward)
         
         self.panel.ent_src.widget.sig_home.connect(self.table.go_line_start)
         self.panel.ent_src.widget.sig_end.connect(self.table.go_line_end)
