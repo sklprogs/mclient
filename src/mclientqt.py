@@ -881,6 +881,27 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def edit_blacklist(self):
+        f = '[MClient] mclient.App.edit_blacklist'
+        old_list = lg.objs.get_order().blacklst
+        old_key = sh.lg.globs['bool']['BlockSubjects']
+        self.block.reset (lst1 = old_list
+                         ,lst2 = lg.objs.get_plugins().get_subjects()
+                         ,art_subjects = com.get_article_subjects()
+                         ,majors = lg.objs.plugins.get_majors()
+                         )
+        self.block.set_checkbox(sh.lg.globs['bool']['BlockSubjects'])
+        self.block.show()
+        sh.lg.globs['bool']['BlockSubjects'] = self.block.get_checkbox()
+        new_list = self.block.get1()
+        if (old_list == new_list) \
+        and (old_key == sh.lg.globs['bool']['BlockSubjects']):
+            sh.com.rep_lazy(f)
+        else:
+            lg.objs.order.blacklst = new_list
+            #lg.objs.get_blocksdb().delete_bookmarks()
+            self.load_article()
+    
     def watch_clipboard(self):
         # Watch clipboard
         if sh.lg.globs['bool']['CaptureHotkey']:
@@ -1632,6 +1653,9 @@ class App:
         self.gui.bind (sh.lg.globs['str']['bind_swap_langs']
                       ,self.swap_langs
                       )
+        self.gui.bind (sh.lg.globs['str']['bind_toggle_block']
+                      ,self.block.toggle
+                      )
         self.gui.bind (sh.lg.globs['str']['bind_toggle_priority']
                       ,self.prior.toggle
                       )
@@ -1684,6 +1708,7 @@ class App:
         
         self.panel.btn_abt.set_action(self.about.toggle)
         self.panel.btn_alp.set_action(self.toggle_alphabet)
+        self.panel.btn_blk.set_action(self.block.toggle)
         self.panel.btn_brw.set_action(self.logic.open_in_browser)
         self.panel.btn_cap.set_action(self.watch_clipboard)
         self.panel.btn_clr.set_action(self.clear_search_field)
@@ -1745,6 +1770,7 @@ class App:
         self.settings = st.objs.get_settings()
         self.history = hs.History()
         self.save = Save()
+        self.block = bl.Blacklist(func_group=lg.objs.get_plugins().get_group_with_header)
         self.prior = pr.Priorities()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title()

@@ -12,6 +12,7 @@ class Blacklist:
     def __init__ (self,lst1=[],lst2=[],art_subjects=[]
                  ,majors=[],func_group=None
                  ):
+        self.Shown = False
         self.func_group = func_group
         self.gui = None
         self.Colorize2 = True
@@ -281,11 +282,21 @@ class Blacklist:
         else:
             sh.com.rep_empty(f)
     
-    def show(self,event=None):
-        self.get_gui().show()
+    def show(self):
+        self.Shown = True
+        self.gui.show()
+        self.gui.resize(800,450)
+        self.gui.centralize()
     
-    def close(self,event=None):
-        self.get_gui().close()
+    def close(self):
+        self.Shown = False
+        self.gui.close()
+    
+    def toggle(self):
+        if self.Shown:
+            self.close()
+        else:
+            self.show()
     
     def set_bindings(self):
         f = '[MClient] subjects.blacklist.controller.Blacklist.set_bindings'

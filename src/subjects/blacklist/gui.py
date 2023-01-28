@@ -4,13 +4,9 @@
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-icn_clr = sh.objs.pdir.add ('..','resources','buttons'
-                           ,'clear_selection.png'
-                           )
+icn_clr = sh.objs.pdir.add('..','resources','buttons','clear_selection.png')
 icn_grb = sh.objs.pdir.add('..','resources','buttons','double_back.png')
-icn_gru = sh.objs.pdir.add ('..','resources','buttons'
-                           ,'double_forward.png'
-                           )
+icn_gru = sh.objs.pdir.add('..','resources','buttons','double_forward.png')
 icn_lft = sh.objs.pdir.add('..','resources','buttons','go_back.png')
 icn_rht = sh.objs.pdir.add('..','resources','buttons','go_forward.png')
 icn_rld = sh.objs.pdir.add('..','resources','buttons','reload.png')
