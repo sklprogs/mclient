@@ -693,6 +693,19 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def _update_go_next(self):
+        if lg.objs.blocksdb.get_next_id(False):
+            self.panel.btn_nxt.activate()
+        else:
+            self.panel.btn_nxt.inactivate()
+    
+    def _update_go_back(self):
+        # Update the button to move to the previous article
+        if lg.objs.get_blocksdb().get_prev_id(False):
+            self.panel.btn_prv.activate()
+        else:
+            self.panel.btn_prv.inactivate()
+    
     def toggle_view(self):
         if sh.lg.globs['bool']['VerticalView']:
             sh.lg.globs['bool']['VerticalView'] = False
@@ -771,8 +784,12 @@ class App:
         self.reset_opt(sh.lg.globs['str']['source'])
         self.load_article()
 
-    def go_forward(self):
-        f = '[MClientQt] mclient.App.go_forward'
+    def update_buttons(self):
+        self._update_go_next()
+        self._update_go_back()
+    
+    def go_next(self):
+        f = '[MClientQt] mclient.App.go_next'
         result = lg.objs.get_blocksdb().get_next_id()
         if not result:
             sh.com.rep_empty(f)
@@ -1271,7 +1288,7 @@ class App:
         self.add_history()
         
         #objs.get_suggest().close()
-        #self.update_buttons()
+        self.update_buttons()
         timer.end()
         self.panel.ent_src.focus()
         #self.run_final_debug()
@@ -1386,8 +1403,8 @@ class App:
         self.gui.bind (sh.lg.globs['str']['bind_col4_up']
                       ,lambda:self.table.go_prev_section(3)
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_go_forward']
-                      ,self.go_forward
+        self.gui.bind (sh.lg.globs['str']['bind_go_next']
+                      ,self.go_next
                       )
         self.gui.bind (sh.lg.globs['str']['bind_go_back']
                       ,self.go_back
@@ -1464,7 +1481,7 @@ class App:
         self.panel.btn_pri.set_action(self.prior.toggle)
         self.panel.btn_viw.set_action(self.toggle_view)
         self.panel.btn_prv.set_action(self.go_back)
-        self.panel.btn_nxt.set_action(self.go_forward)
+        self.panel.btn_nxt.set_action(self.go_next)
         
         self.panel.ent_src.widget.sig_home.connect(self.table.go_line_start)
         self.panel.ent_src.widget.sig_end.connect(self.table.go_line_end)

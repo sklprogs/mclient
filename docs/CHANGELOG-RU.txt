@@ -6,6 +6,7 @@
 * Добавлены ключи bind_col4_down, bind_col4_up, bind_toggle_popup
 * Удалены ключи AutoCloseSpecSymbol, bind_clear_search_field,
   bind_paste_search_field, bind_toggle_sel
+* Ключ bind_go_forward переименован в bind_go_next
 
 6.14.4
 * Удален блок "Короткая ссылка"

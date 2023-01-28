@@ -77,7 +77,7 @@ class DefaultKeys(sh.DefaultKeys):
            ,'bind_copy_url'               :'Shift+F7'
            ,'bind_define'                 :'Ctrl+D'
            ,'bind_go_back'                :'Alt+Left'
-           ,'bind_go_forward'             :'Alt+Right'
+           ,'bind_go_next'                :'Alt+Right'
            ,'bind_go_phrases'             :'Alt+F'
            ,'bind_next_lang1'             :'F8'
            ,'bind_next_lang1_alt'         :'Ctrl+K'
@@ -360,7 +360,7 @@ class CreateConfig(sh.CreateConfig):
         comment = _('Go to the previous article')
         self.add_key(section,section_abbr,key,comment)
         
-        key = 'bind_go_forward'
+        key = 'bind_go_next'
         comment = _('Go to the next article')
         self.add_key(section,section_abbr,key,comment)
         
