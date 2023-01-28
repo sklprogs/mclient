@@ -30,6 +30,169 @@ import popup.controller as pp
 DEBUG = False
 
 
+class UpdateUI:
+    
+    def __init__(self,gui):
+        self.gui = gui
+    
+    def restore(self):
+        ''' Set widget values to those autosave values that were not previously
+            restored by other procedures.
+        '''
+        f = '[MClient] mclient.UpdateUI.restore'
+        mes = _('Restore source language: {}')
+        mes = mes.format(sh.lg.globs['str']['lang1'])
+        sh.objs.get_mes(f,mes,True).show_info()
+        lg.objs.get_plugins().set_lang1(sh.lg.globs['str']['lang1'])
+        mes = _('Restore target language: {}')
+        mes = mes.format(sh.lg.globs['str']['lang2'])
+        sh.objs.get_mes(f,mes,True).show_info()
+        lg.objs.plugins.set_lang2(sh.lg.globs['str']['lang2'])
+        self.gui.reset_opt()
+        self.gui.opt_src.set(sh.lg.globs['str']['source'])
+        self.gui.opt_col.set(sh.lg.globs['int']['colnum'])
+    
+    def _update_alphabet_image(self):
+        if sh.lg.globs['bool']['AlphabetizeTerms'] \
+        and not lg.objs.request.SpecialPage:
+            self.gui.btn_alp.activate()
+        else:
+            self.gui.btn_alp.inactivate()
+    
+    def _update_alphabet_hint(self):
+        mes = [_('Sort terms by alphabet')]
+        if sh.lg.globs['bool']['AlphabetizeTerms']:
+            mes.append(_('Status: ON'))
+        else:
+            mes.append(_('Status: OFF'))
+        if lg.objs.request.SpecialPage:
+            mes.append(_('This page is not supported'))
+        self.gui.btn_alp.hint = '\n'.join(mes)
+        self.gui.btn_alp.set_hint()
+    
+    def _update_alphabetization(self):
+        self._update_alphabet_image()
+        self._update_alphabet_hint()
+    
+    def _update_vertical_view(self):
+        mes = [_('Vertical mode')]
+        if sh.lg.globs['bool']['VerticalView']:
+            self.gui.btn_viw.inactivate()
+            mes.append(_('Status: ON'))
+        else:
+            self.gui.btn_viw.activate()
+            mes.append(_('Status: OFF'))
+        self.gui.btn_viw.hint = '\n'.join(mes)
+        self.gui.btn_viw.set_hint()
+    
+    def _update_global_hotkey(self):
+        mes = [_('Capture Ctrl-c-c and Ctrl-Ins-Ins')]
+        if sh.lg.globs['bool']['CaptureHotkey']:
+            self.gui.btn_cap.activate()
+            mes.append(_('Status: ON'))
+        else:
+            self.gui.btn_cap.inactivate()
+            mes.append(_('Status: OFF'))
+        self.gui.btn_cap.hint = '\n'.join(mes)
+        self.gui.btn_cap.set_hint()
+    
+    def _update_prioritization(self):
+        mes = [_('Subject prioritization')]
+        prioritized = com.get_prioritized()
+        if sh.lg.globs['bool']['PrioritizeSubjects'] and prioritized \
+        and not lg.objs.request.SpecialPage:
+            self.gui.btn_pri.activate()
+        else:
+            self.gui.btn_pri.inactivate()
+        if sh.lg.globs['bool']['PrioritizeSubjects']:
+            mes.append(_('Status: ON'))
+        else:
+            mes.append(_('Status: OFF'))
+        if lg.objs.request.SpecialPage:
+            sub = _('This page is not supported')
+        elif prioritized:
+            sub = _('{} subjects were prioritized')
+            sub = sub.format(len(prioritized))
+        else:
+            sub = _('Nothing to prioritize')
+        mes.append(sub)
+        self.gui.btn_pri.hint = '\n'.join(mes)
+        self.gui.btn_pri.set_hint()
+    
+    def _update_block(self):
+        f = '[MClient] UpdateUI._update_block'
+        mes = [_('Subject blocking')]
+        skipped_terms = len(com.get_skipped_terms())
+        skipped_dics = len(com.get_skipped_dics())
+        if sh.lg.globs['bool']['BlockSubjects'] and skipped_terms:
+            self.gui.btn_blk.activate()
+        else:
+            self.gui.btn_blk.inactivate()
+        if sh.lg.globs['bool']['BlockSubjects']:
+            mes.append(_('Status: ON'))
+        else:
+            mes.append(_('Status: OFF'))
+        ''' If this does not work as expected, then TERM might not be
+            filled properply.
+        '''
+        if sh.lg.globs['bool']['BlockSubjects'] and skipped_terms:
+            sub = _('Skipped {} terms in {} subjects')
+            sub = sub.format(skipped_terms,skipped_dics)
+        else:
+            sub = _('Nothing was blocked')
+        mes.append(sub)
+        self.gui.btn_blk.hint = '\n'.join(mes)
+        self.gui.btn_blk.set_hint()
+    
+    def _update_go_next(self):
+        if lg.objs.blocksdb.get_next_id(False):
+            self.gui.btn_nxt.activate()
+        else:
+            self.gui.btn_nxt.inactivate()
+    
+    def _update_go_prev(self):
+        # Update the button to move to the previous article
+        if lg.objs.get_blocksdb().get_prev_id(False):
+            self.gui.btn_prv.activate()
+        else:
+            self.gui.btn_prv.inactivate()
+    
+    def _update_last_search(self,searches):
+        # Update the button to insert a current search string
+        if searches:
+            self.gui.btn_rp1.activate()
+        else:
+            self.gui.btn_rp1.inactivate()
+    
+    def _update_prev_search(self,searches):
+        # Update the button to insert a previous search string
+        if searches and len(searches) > 1:
+            self.gui.btn_rp2.activate()
+        else:
+            self.gui.btn_rp2.inactivate()
+    
+    def update_buttons(self):
+        f = '[MClient] mclient.UpdateUI.update_buttons'
+        searches = lg.objs.get_blocksdb().get_searches()
+        self._update_last_search(searches)
+        self._update_prev_search(searches)
+        # Suppress useless error output
+        if lg.objs.get_request().search:
+            self._update_go_prev()
+            self._update_go_next()
+            self._update_block()
+            self._update_prioritization()
+        else:
+            sh.com.rep_lazy(f)
+        self._update_global_hotkey()
+        self._update_vertical_view()
+        self._update_alphabetization()
+    
+    def run(self):
+        self.update_buttons()
+
+
+
 class FontLimits:
     
     def __init__(self,family,size,Bold=False,Italic=False):
@@ -190,6 +353,30 @@ class Commands:
         mes = '; '.join(skipped)
         sh.objs.get_mes(f,mes,True).show_debug()
         return skipped
+    
+    def get_skipped_dics(self):
+        f = '[MClient] mclient.Commands.get_skipped_dics'
+        skipped = lg.objs.get_blocksdb().get_skipped_dics()
+        if not skipped:
+            return []
+        skipped = ', '.join(skipped)
+        skipped = skipped.split(', ')
+        skipped = sorted(set(skipped))
+        mes = '; '.join(skipped)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return skipped
+    
+    def get_prioritized(self):
+        f = '[MClient] mclient.Commands.get_prioritized'
+        prioritized = lg.objs.get_blocksdb().get_prioritized()
+        if not prioritized:
+            return []
+        prioritized = ', '.join(prioritized)
+        prioritized = prioritized.split(', ')
+        prioritized = set(prioritized)
+        mes = '; '.join(prioritized)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return prioritized
 
 
 
@@ -693,19 +880,6 @@ class App:
         self.set_gui()
         self.update_ui()
     
-    def _update_go_next(self):
-        if lg.objs.blocksdb.get_next_id(False):
-            self.panel.btn_nxt.activate()
-        else:
-            self.panel.btn_nxt.inactivate()
-    
-    def _update_go_back(self):
-        # Update the button to move to the previous article
-        if lg.objs.get_blocksdb().get_prev_id(False):
-            self.panel.btn_prv.activate()
-        else:
-            self.panel.btn_prv.inactivate()
-    
     def toggle_view(self):
         if sh.lg.globs['bool']['VerticalView']:
             sh.lg.globs['bool']['VerticalView'] = False
@@ -783,10 +957,6 @@ class App:
         lg.objs.plugins.set_lang2(result[5])
         self.reset_opt(sh.lg.globs['str']['source'])
         self.load_article()
-
-    def update_buttons(self):
-        self._update_go_next()
-        self._update_go_back()
     
     def go_next(self):
         f = '[MClientQt] mclient.App.go_next'
@@ -1288,7 +1458,7 @@ class App:
         self.add_history()
         
         #objs.get_suggest().close()
-        self.update_buttons()
+        UpdateUI(self.panel).run()
         timer.end()
         self.panel.ent_src.focus()
         #self.run_final_debug()
