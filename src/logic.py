@@ -18,6 +18,16 @@ SPORDER = (_('Noun'),_('Verb'),_('Adjective'),_('Abbreviation')
           )
 
 
+class App:
+    
+    def open_in_browser(self):
+        ionline = sh.Online()
+        url = objs.get_request().url
+        ionline.url = objs.get_plugins().fix_url(url)
+        ionline.browse()
+
+
+
 class HTM:
 
     def __init__(self,cells,skipped=0):

@@ -876,6 +876,7 @@ class Table:
 class App:
     
     def __init__(self):
+        self.logic = lg.App()
         self.gui = gi.App()
         self.set_gui()
         self.update_ui()
@@ -1628,6 +1629,12 @@ class App:
         self.gui.bind (sh.lg.globs['str']['bind_reload_article_alt']
                       ,self.reload
                       )
+        self.gui.bind (sh.lg.globs['str']['bind_open_in_browser']
+                      ,self.logic.open_in_browser
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_open_in_browser_alt']
+                      ,self.logic.open_in_browser
+                      )
                       
         #TODO: iterate through all keys
         if sh.lg.globs['str']['bind_spec_symbol'] == 'Ctrl+E':
@@ -1647,6 +1654,7 @@ class App:
         
         self.panel.btn_abt.set_action(self.about.toggle)
         self.panel.btn_alp.set_action(self.toggle_alphabet)
+        self.panel.btn_brw.set_action(self.logic.open_in_browser)
         self.panel.btn_clr.set_action(self.clear_search_field)
         self.panel.btn_hst.set_action(self.history.toggle)
         self.panel.btn_ins.set_action(self.paste)
