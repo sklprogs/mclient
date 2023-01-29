@@ -13,7 +13,6 @@ class Priorities:
                  ,majors=[],func_group=None
                  ):
         self.func_group = func_group
-        self.gui = gi.Priorities()
         self.Shown = False
         self.Colorize2 = True
         self.lst1 = []
@@ -23,6 +22,7 @@ class Priorities:
         self.copy2 = []
         self.copy_art = []
         self.majors = []
+        self.set_gui()
         '''
         #cur
         if lst1:
@@ -378,18 +378,17 @@ class Priorities:
     
     def set_bindings(self):
         self.gui.bind('Esc',self.close)
-        self.gui.btn_all.action = self.set_all
-        self.gui.btn_art.action = self.set_article
-        self.gui.btn_btm.action = self.move_bottom
-        self.gui.btn_clr.action = self.clear_sel
-        self.gui.btn_cls.action = self.close
-        self.gui.btn_dwn.action = self.decrease
-        self.gui.btn_grp.action = self.prioritize_group
-        self.gui.btn_gru.action = self.unprioritize_group
-        self.gui.btn_lft.action = self.prioritize
-        self.gui.btn_mjr.action = self.set_major
-        self.gui.btn_rht.action = self.unprioritize
-        self.gui.btn_rld.action = self.reload
-        self.gui.btn_top.action = self.move_top
-        self.gui.btn_up1.action = self.increase
-        self.gui.widget.protocol("WM_DELETE_WINDOW",self.close)
+        self.gui.btn_all.set_action(self.set_all)
+        self.gui.btn_art.set_action(self.set_article)
+        self.gui.btn_btm.set_action(self.move_bottom)
+        self.gui.btn_clr.set_action(self.clear_sel)
+        self.gui.btn_cls.set_action(self.close)
+        self.gui.btn_dwn.set_action(self.decrease)
+        self.gui.btn_grp.set_action(self.prioritize_group)
+        self.gui.btn_gru.set_action(self.unprioritize_group)
+        self.gui.btn_lft.set_action(self.prioritize)
+        self.gui.btn_mjr.set_action(self.set_major)
+        self.gui.btn_rht.set_action(self.unprioritize)
+        self.gui.btn_rld.set_action(self.reload)
+        self.gui.btn_top.set_action(self.move_top)
+        self.gui.btn_up1.set_action(self.increase)
