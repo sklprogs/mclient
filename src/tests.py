@@ -1044,15 +1044,13 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
+    # Priorities
+    iprior = com.run_prior()
+    iprior.show()
     '''
     # Popup
     ipopup = com.run_popup()
     ipopup.show()
-    '''
-    '''
-    # Priorities
-    iprior = com.run_prior()
-    iprior.show()
     '''
     '''
     isave = com.run_save()
@@ -1078,8 +1076,9 @@ if __name__ == '__main__':
     iwelcome = com.run_welcome_contr()
     iwelcome.show()
     '''
+    '''
     # Welcome
     iwelcome = com.run_welcome()
     iwelcome.show()
-    
+    '''
     sh.com.end()

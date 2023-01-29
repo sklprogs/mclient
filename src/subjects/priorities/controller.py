@@ -377,18 +377,7 @@ class Priorities:
             self.show()
     
     def set_bindings(self):
-        f = '[MClient] subjects.priorities.controller.Priorities.set_bindings'
-        if self.gui is None:
-            sh.com.rep_empty(f)
-            return
-        sh.com.bind (obj = self.gui.parent
-                    ,bindings = ('<Escape>','<Control-w>','<Control-q>')
-                    ,action = self.close
-                    )
-        sh.com.bind (obj = self.gui.lbl_pri
-                    ,bindings = '<ButtonRelease-1>'
-                    ,action = self.gui.cbx_pri.toggle
-                    )
+        self.gui.bind('Esc',self.close)
         self.gui.btn_all.action = self.set_all
         self.gui.btn_art.action = self.set_article
         self.gui.btn_btm.action = self.move_bottom

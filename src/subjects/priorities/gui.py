@@ -111,59 +111,6 @@ class Priorities(PyQt5.QtWidgets.QWidget):
     def get2(self):
         return self.lbx_rht.lst
     
-    def set_frames(self):
-        self.frm_top = sh.Frame (parent = self.parent
-                                ,side = 'top'
-                                )
-        self.frm_btm = sh.Frame (parent = self.parent
-                                ,side = 'bottom'
-                                ,expand = False
-                                )
-        self.frm_bm1 = sh.Frame (parent = self.frm_btm
-                                ,side = 'left'
-                                )
-        self.frm_bm2 = sh.Frame (parent = self.frm_btm
-                                ,side = 'left'
-                                )
-        self.frm_bm3 = sh.Frame (parent = self.frm_btm
-                                ,side = 'right'
-                                ,expand = False
-                                )
-        self.frm_lft = sh.Frame (parent = self.frm_top
-                                ,side = 'left'
-                                ,propag = False
-                                ,width = 350
-                                )
-        self.frm_vr1 = sh.Frame (parent = self.frm_top
-                                ,side = 'left'
-                                ,expand = False
-                                ,fill = 'y'
-                                )
-        self.frm_cnt = sh.Frame (parent = self.frm_top
-                                ,side = 'left'
-                                ,expand = False
-                                )
-        self.frm_rht = sh.Frame (parent = self.frm_top
-                                ,side = 'left'
-                                ,propag = False
-                                ,width = 350
-                                )
-        self.frm_vr2 = sh.Frame (parent = self.frm_top
-                                ,expand = False
-                                ,fill = 'y'
-                                ,side = 'left'
-                                )
-        self.frm_bt1 = sh.Frame (parent = self.frm_cnt
-                                ,side = 'top'
-                                )
-        self.frm_bt2 = sh.Frame (parent = self.frm_cnt
-                                ,side = 'top'
-                                ,expand = False
-                                )
-        self.frm_bt3 = sh.Frame (parent = self.frm_cnt
-                                ,side = 'bottom'
-                                )
-    
     def set_listboxes(self):
         self.lbx_lft = sh.ListBox (parent = self.frm_lft
                                   ,Multiple = True
@@ -213,7 +160,6 @@ class Priorities(PyQt5.QtWidgets.QWidget):
                                  ,inactive = icn_rld
                                  ,active = icn_rld
                                  )
-        '''
         self.btn_cls = sh.Button (text = _('Close')
                                  ,hint = _('Close this window')
                                  )
@@ -226,7 +172,6 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.btn_art = sh.Button (text = _('From the article')
                                  ,hint = _('Show subjects from the current article')
                                  )
-        '''
     
     def set_widgets(self):
         self.layout_ = PyQt5.QtWidgets.QGridLayout()
@@ -234,14 +179,18 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.lbx_rht = PyQt5.QtWidgets.QTreeView()
         self.prm_btn = PyQt5.QtWidgets.QWidget()
         self.lay_btn = PyQt5.QtWidgets.QVBoxLayout()
+        self.prm_pnl = PyQt5.QtWidgets.QWidget()
+        self.lay_pnl = PyQt5.QtWidgets.QHBoxLayout()
         self.set_buttons()
     
     def add_widgets(self):
         self.layout_.addWidget(self.lbx_lft,0,0)
         self.layout_.addWidget(self.prm_btn,0,1)
         self.layout_.addWidget(self.lbx_rht,0,2)
+        self.layout_.addWidget(self.prm_pnl,1,0,2,PyQt5.QtCore.Qt.AlignHCenter)
         self.add_buttons()
         self.prm_btn.setLayout(self.lay_btn)
+        self.prm_pnl.setLayout(self.lay_pnl)
         self.setLayout(self.layout_)
     
     def add_buttons(self):
@@ -255,11 +204,17 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.lay_btn.addWidget(self.btn_btm.widget)
         self.lay_btn.addWidget(self.btn_clr.widget)
         self.lay_btn.addWidget(self.btn_rld.widget)
+        self.lay_pnl.addWidget(self.btn_cls.widget)
+        spacer = PyQt5.QtWidgets.QSpacerItem(300,20,PyQt5.QtWidgets.QSizePolicy.Minimum,PyQt5.QtWidgets.QSizePolicy.Expanding)
+        self.lay_pnl.addItem(spacer)
+        self.lay_pnl.addWidget(self.btn_all.widget)
+        self.lay_pnl.addWidget(self.btn_mjr.widget)
+        self.lay_pnl.addWidget(self.btn_art.widget)
         '''
-        self.lay_btn.addWidget(self.btn_cls.widget)
-        self.lay_btn.addWidget(self.btn_all.widget)
-        self.lay_btn.addWidget(self.btn_mjr.widget)
-        self.lay_btn.addWidget(self.btn_art.widget)
+        self.lay_pnl.addItem(spacer,1,2)
+        self.lay_pnl.addWidget(self.btn_all.widget,1,3)
+        self.lay_pnl.addWidget(self.btn_mjr.widget,1,4)
+        self.lay_pnl.addWidget(self.btn_art.widget,1,5)
         '''
     
     def set_gui(self):
