@@ -180,6 +180,7 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.setLayout(self.lay_prm)
     
     def add_buttons(self):
+        #NOTE: If run directly, this module will not find icons owing to paths
         self.lay_btn.addWidget(self.btn_lft.widget)
         self.lay_btn.addWidget(self.btn_rht.widget)
         self.lay_btn.addWidget(self.btn_grp.widget)
@@ -207,13 +208,7 @@ class Priorities(PyQt5.QtWidgets.QWidget):
     def customize(self):
         self.lay_sec.setContentsMargins(0,0,0,0)
         self.lay_btn.setContentsMargins(4,4,4,4)
-        '''
-        fixed = PyQt5.QtWidgets.QSizePolicy.Fixed
-        self.btn_cls.widget.setSizePolicy(fixed,fixed)
-        self.btn_all.widget.setSizePolicy(fixed,fixed)
-        self.btn_mjr.widget.setSizePolicy(fixed,fixed)
-        self.btn_art.widget.setSizePolicy(fixed,fixed)
-        '''
+        self.lay_ter.setContentsMargins(0,0,0,0)
 
 
 if __name__ == '__main__':
