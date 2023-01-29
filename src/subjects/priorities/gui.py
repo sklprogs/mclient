@@ -187,6 +187,7 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.prm_ter = PyQt5.QtWidgets.QWidget()
         self.prm_btn = PyQt5.QtWidgets.QWidget()
         self.prm_rht = PyQt5.QtWidgets.QWidget()
+        self.cbx_pri = sh.CheckBox(_('Prioritize subjects'))
     
     def add_widgets(self):
         self.lay_prm.addWidget(self.prm_sec)
@@ -195,7 +196,8 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.lay_sec.addWidget(self.prm_btn,0,1)
         self.lay_sec.addWidget(self.lbx_rht,0,2)
         self.lay_ter.addWidget(self.btn_cls.widget,0,1,PyQt5.QtCore.Qt.AlignLeft)
-        self.lay_ter.addWidget(self.prm_rht,0,2,PyQt5.QtCore.Qt.AlignRight)
+        self.lay_ter.addWidget(self.cbx_pri.widget,0,2,PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_ter.addWidget(self.prm_rht,0,3,PyQt5.QtCore.Qt.AlignRight)
         self.prm_sec.setLayout(self.lay_sec)
         self.prm_btn.setLayout(self.lay_btn)
         self.prm_ter.setLayout(self.lay_ter)
