@@ -173,25 +173,34 @@ class Priorities(PyQt5.QtWidgets.QWidget):
                                  ,hint = _('Show subjects from the current article')
                                  )
     
+    def set_layouts(self):
+        self.lay_prm = PyQt5.QtWidgets.QVBoxLayout()
+        self.lay_sec = PyQt5.QtWidgets.QGridLayout()
+        self.lay_ter = PyQt5.QtWidgets.QGridLayout()
+        self.lay_btn = PyQt5.QtWidgets.QVBoxLayout()
+        self.lay_rht = PyQt5.QtWidgets.QHBoxLayout()
+    
     def set_widgets(self):
-        self.layout_ = PyQt5.QtWidgets.QGridLayout()
         self.lbx_lft = PyQt5.QtWidgets.QTreeView()
         self.lbx_rht = PyQt5.QtWidgets.QTreeView()
+        self.prm_sec = PyQt5.QtWidgets.QWidget()
+        self.prm_ter = PyQt5.QtWidgets.QWidget()
         self.prm_btn = PyQt5.QtWidgets.QWidget()
-        self.lay_btn = PyQt5.QtWidgets.QVBoxLayout()
-        self.prm_pnl = PyQt5.QtWidgets.QWidget()
-        self.lay_pnl = PyQt5.QtWidgets.QHBoxLayout()
-        self.set_buttons()
+        self.prm_rht = PyQt5.QtWidgets.QWidget()
     
     def add_widgets(self):
-        self.layout_.addWidget(self.lbx_lft,0,0)
-        self.layout_.addWidget(self.prm_btn,0,1)
-        self.layout_.addWidget(self.lbx_rht,0,2)
-        self.layout_.addWidget(self.prm_pnl,1,0,2,PyQt5.QtCore.Qt.AlignHCenter)
-        self.add_buttons()
+        self.lay_prm.addWidget(self.prm_sec)
+        self.lay_prm.addWidget(self.prm_ter)
+        self.lay_sec.addWidget(self.lbx_lft,0,0)
+        self.lay_sec.addWidget(self.prm_btn,0,1)
+        self.lay_sec.addWidget(self.lbx_rht,0,2)
+        self.lay_ter.addWidget(self.btn_cls.widget,0,1,PyQt5.QtCore.Qt.AlignLeft)
+        self.lay_ter.addWidget(self.prm_rht,0,2,PyQt5.QtCore.Qt.AlignRight)
+        self.prm_sec.setLayout(self.lay_sec)
         self.prm_btn.setLayout(self.lay_btn)
-        self.prm_pnl.setLayout(self.lay_pnl)
-        self.setLayout(self.layout_)
+        self.prm_ter.setLayout(self.lay_ter)
+        self.prm_rht.setLayout(self.lay_rht)
+        self.setLayout(self.lay_prm)
     
     def add_buttons(self):
         self.lay_btn.addWidget(self.btn_lft.widget)
@@ -204,29 +213,30 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.lay_btn.addWidget(self.btn_btm.widget)
         self.lay_btn.addWidget(self.btn_clr.widget)
         self.lay_btn.addWidget(self.btn_rld.widget)
-        self.lay_pnl.addWidget(self.btn_cls.widget)
-        spacer = PyQt5.QtWidgets.QSpacerItem(300,20,PyQt5.QtWidgets.QSizePolicy.Minimum,PyQt5.QtWidgets.QSizePolicy.Expanding)
-        self.lay_pnl.addItem(spacer)
-        self.lay_pnl.addWidget(self.btn_all.widget)
-        self.lay_pnl.addWidget(self.btn_mjr.widget)
-        self.lay_pnl.addWidget(self.btn_art.widget)
-        '''
-        self.lay_pnl.addItem(spacer,1,2)
-        self.lay_pnl.addWidget(self.btn_all.widget,1,3)
-        self.lay_pnl.addWidget(self.btn_mjr.widget,1,4)
-        self.lay_pnl.addWidget(self.btn_art.widget,1,5)
-        '''
+        self.lay_rht.addWidget(self.btn_all.widget)
+        self.lay_rht.addWidget(self.btn_mjr.widget)
+        self.lay_rht.addWidget(self.btn_art.widget)
     
     def set_gui(self):
         self.set_title(_('Subject prioritization'))
         self.set_icon()
+        self.set_layouts()
         self.set_widgets()
+        self.set_buttons()
         self.add_widgets()
+        self.add_buttons()
         self.customize()
     
     def customize(self):
-        self.layout_.setContentsMargins(0,0,0,0)
+        self.lay_sec.setContentsMargins(0,0,0,0)
         self.lay_btn.setContentsMargins(4,4,4,4)
+        '''
+        fixed = PyQt5.QtWidgets.QSizePolicy.Fixed
+        self.btn_cls.widget.setSizePolicy(fixed,fixed)
+        self.btn_all.widget.setSizePolicy(fixed,fixed)
+        self.btn_mjr.widget.setSizePolicy(fixed,fixed)
+        self.btn_art.widget.setSizePolicy(fixed,fixed)
+        '''
 
 
 if __name__ == '__main__':
