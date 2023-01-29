@@ -50,23 +50,6 @@ class Priorities(PyQt5.QtWidgets.QWidget):
     def set_checkbox(self,Active=False):
         self.cbx_pri.set(Active)
     
-    def set_prioritize(self):
-        self.cbx_pri = sh.CheckBox (parent = self.frm_bm2
-                                   ,side = 'left'
-                                   )
-        self.lbl_pri = sh.Label (parent = self.frm_bm2
-                                ,text = _('Prioritize subjects')
-                                ,side = 'left'
-                                )
-    
-    def set_scrolly(self):
-        sh.Scrollbar (parent = self.frm_vr1
-                     ,scroll = self.lbx_lft
-                     )
-        sh.Scrollbar (parent = self.frm_vr2
-                     ,scroll = self.lbx_rht
-                     )
-    
     def select_mult1(self,indexes):
         self.lbx_lft.select_mult(indexes)
     
@@ -110,14 +93,6 @@ class Priorities(PyQt5.QtWidgets.QWidget):
     
     def get2(self):
         return self.lbx_rht.lst
-    
-    def set_listboxes(self):
-        self.lbx_lft = sh.ListBox (parent = self.frm_lft
-                                  ,Multiple = True
-                                  )
-        self.lbx_rht = sh.ListBox (parent = self.frm_rht
-                                  ,Multiple = True
-                                  )
     
     def set_buttons(self):
         self.btn_lft = sh.Button (hint = _('Prioritize selection on the right')
