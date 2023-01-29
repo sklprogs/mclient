@@ -445,10 +445,10 @@ class Panel(PyQt5.QtWidgets.QWidget):
                                         ,'go_back.png'
                                         )
         self.icn_fw0 = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'go_forward_off.png'
+                                        ,'go_next_off.png'
                                         )
         self.icn_fw1 = sh.objs.pdir.add ('..','resources','buttons'
-                                        ,'go_forward.png'
+                                        ,'go_next.png'
                                         )
         self.icn_ret = sh.objs.pdir.add ('..','resources','buttons'
                                         ,'go_search.png'
