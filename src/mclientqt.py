@@ -45,17 +45,17 @@ class Priorities(pr.Priorities):
         f = '[MClientQt] mclient.Priorities.set_mode'
         mode = self.gui.opt_src.get()
         if mode == _('All subjects'):
-            pass
+            self.lst2 = lg.objs.get_plugins().get_subjects()
         elif mode == _('Main'):
-            pass
+            self.lst2 = lg.objs.plugins.get_majors()
         elif mode == _('From the article'):
-            pass
+            self.lst2 = com.get_article_subjects()
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(mode,'; '.join(self.gui.opt_src.items))
             sh.objs.get_mes(f,mes).show_error()
             return
-        mes = f'Mode: {mode}'
+        mes = _('Mode: "{}"').format(mode)
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def reset(self):
@@ -379,6 +379,29 @@ class Save(sv.Save):
 
 class Commands:
     #NOTE: DB is in controller (not in logic), so DB-related code is here too
+    def get_article_subjects(self):
+        f = '[MClientQt] mclient.Commands.get_article_subjects'
+        new_dics = []
+        dics = lg.objs.get_blocksdb().get_dics(False)
+        if not dics:
+            sh.com.rep_empty(f)
+            return new_dics
+        dics = [item[0] for item in dics]
+        for dic in dics:
+            items = dic.split(', ')
+            new_dics += items
+        new_dics += dics
+        new_dics = [item.strip() for item in new_dics if item.strip()]
+        new_dics = sorted(set(new_dics))
+        phdic = lg.objs.blocksdb.get_phdic()
+        if phdic:
+            try:
+                new_dics.remove(phdic[1])
+            except ValueError:
+                mes = _('Wrong input data: "{}"!').format(phdic[1])
+                sh.objs.get_mes(f,mes,True).show_warning()
+        return new_dics
+
     def get_skipped_terms(self):
         f = '[MClientQt] mclient.Commands.get_skipped_terms'
         skipped = lg.objs.get_blocksdb().get_skipped_terms()
