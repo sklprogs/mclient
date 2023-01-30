@@ -378,8 +378,6 @@ class Priorities:
     
     def set_bindings(self):
         self.gui.bind('Esc',self.close)
-        self.gui.btn_all.set_action(self.set_all)
-        self.gui.btn_art.set_action(self.set_article)
         self.gui.btn_btm.set_action(self.move_bottom)
         self.gui.btn_clr.set_action(self.clear_sel)
         self.gui.btn_cls.set_action(self.close)
@@ -387,7 +385,6 @@ class Priorities:
         self.gui.btn_grp.set_action(self.prioritize_group)
         self.gui.btn_gru.set_action(self.unprioritize_group)
         self.gui.btn_lft.set_action(self.prioritize)
-        self.gui.btn_mjr.set_action(self.set_major)
         self.gui.btn_rht.set_action(self.unprioritize)
         self.gui.btn_rld.set_action(self.reload)
         self.gui.btn_top.set_action(self.move_top)
