@@ -383,6 +383,17 @@ class Plugin:
 
 class Commands:
     
+    def run_prior(self):
+        import mclientqt as mc
+        mc.lg.com.start()
+        return mc.Priorities()
+    
+    def run_prior_contr(self):
+        import logic as lg
+        import subjects.priorities.controller as pr
+        lg.com.start()
+        return pr.Priorities()
+    
     def run_popup(self):
         import popup.controller as pp
         ipopup = pp.Popup()
@@ -408,12 +419,6 @@ class Commands:
         ilimits.set_text(text)
         ilimits.get_space()
         timer.end()
-    
-    def run_prior(self):
-        import logic as lg
-        import subjects.priorities.controller as pr
-        lg.com.start()
-        return pr.Priorities()
     
     def run_save(self):
         import save.controller as sv
@@ -1047,6 +1052,11 @@ if __name__ == '__main__':
     # Priorities
     iprior = com.run_prior()
     iprior.show()
+    '''
+    # Priorities (from the controller)
+    iprior = com.run_prior_contr()
+    iprior.show()
+    '''
     '''
     # Popup
     ipopup = com.run_popup()

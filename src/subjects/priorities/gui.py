@@ -135,8 +135,11 @@ class Priorities(PyQt5.QtWidgets.QWidget):
                                  ,inactive = icn_rld
                                  ,active = icn_rld
                                  )
-        self.btn_cls = sh.Button (text = _('Close')
-                                 ,hint = _('Close this window')
+        self.btn_res = sh.Button (text = _('Reset')
+                                 ,hint = _('Reload subjects')
+                                 )
+        self.btn_apl = sh.Button (text = _('Apply')
+                                 ,hint = _('Save and close')
                                  )
     
     def set_layouts(self):
@@ -144,6 +147,7 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.lay_sec = PyQt5.QtWidgets.QGridLayout()
         self.lay_ter = PyQt5.QtWidgets.QGridLayout()
         self.lay_btn = PyQt5.QtWidgets.QVBoxLayout()
+        self.lay_rht = PyQt5.QtWidgets.QHBoxLayout()
     
     def set_widgets(self):
         self.lbx_lft = PyQt5.QtWidgets.QTreeView()
@@ -151,6 +155,7 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.prm_sec = PyQt5.QtWidgets.QWidget()
         self.prm_ter = PyQt5.QtWidgets.QWidget()
         self.prm_btn = PyQt5.QtWidgets.QWidget()
+        self.prm_rht = PyQt5.QtWidgets.QWidget()
         self.cbx_pri = sh.CheckBox(_('Prioritize subjects'))
         sources = (_('All subjects'),_('Main'),_('From the article'))
         self.opt_src = sh.OptionMenu(sources)
@@ -161,12 +166,15 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.lay_sec.addWidget(self.lbx_lft,0,0)
         self.lay_sec.addWidget(self.prm_btn,0,1)
         self.lay_sec.addWidget(self.lbx_rht,0,2)
-        self.lay_ter.addWidget(self.btn_cls.widget,0,1,PyQt5.QtCore.Qt.AlignLeft)
+        self.lay_ter.addWidget(self.btn_res.widget,0,1,PyQt5.QtCore.Qt.AlignLeft)
         self.lay_ter.addWidget(self.cbx_pri.widget,0,2,PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_ter.addWidget(self.opt_src.widget,0,3,PyQt5.QtCore.Qt.AlignRight)
+        self.lay_ter.addWidget(self.prm_rht,0,3,PyQt5.QtCore.Qt.AlignRight)
+        self.lay_rht.addWidget(self.opt_src.widget)
+        self.lay_rht.addWidget(self.btn_apl.widget)
         self.prm_sec.setLayout(self.lay_sec)
         self.prm_btn.setLayout(self.lay_btn)
         self.prm_ter.setLayout(self.lay_ter)
+        self.prm_rht.setLayout(self.lay_rht)
         self.setLayout(self.lay_prm)
     
     def add_buttons(self):

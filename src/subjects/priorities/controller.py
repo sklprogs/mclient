@@ -380,7 +380,6 @@ class Priorities:
         self.gui.bind('Esc',self.close)
         self.gui.btn_btm.set_action(self.move_bottom)
         self.gui.btn_clr.set_action(self.clear_sel)
-        self.gui.btn_cls.set_action(self.close)
         self.gui.btn_dwn.set_action(self.decrease)
         self.gui.btn_grp.set_action(self.prioritize_group)
         self.gui.btn_gru.set_action(self.unprioritize_group)

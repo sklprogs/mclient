@@ -30,6 +30,44 @@ import popup.controller as pp
 DEBUG = False
 
 
+class Priorities(pr.Priorities):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.add_bindings()
+    
+    def add_bindings(self):
+        self.gui.btn_res.set_action(self.reset)
+        self.gui.btn_apl.set_action(self.apply)
+        self.gui.opt_src.set_action(self.set_mode)
+    
+    def set_mode(self):
+        f = '[MClientQt] mclient.Priorities.set_mode'
+        mode = self.gui.opt_src.get()
+        if mode == _('All subjects'):
+            pass
+        elif mode == _('Main'):
+            pass
+        elif mode == _('From the article'):
+            pass
+        else:
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(mode,'; '.join(self.gui.opt_src.items))
+            sh.objs.get_mes(f,mes).show_error()
+            return
+        mes = f'Mode: {mode}'
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def reset(self):
+        f = '[MClientQt] mclient.Priorities.reset'
+        print(f)
+    
+    def apply(self):
+        f = '[MClientQt] mclient.Priorities.apply'
+        print(f)
+
+
+
 class UpdateUI:
     
     def __init__(self,gui):
@@ -1771,7 +1809,7 @@ class App:
         self.history = hs.History()
         self.save = Save()
         self.block = bl.Blacklist(func_group=lg.objs.get_plugins().get_group_with_header)
-        self.prior = pr.Priorities()
+        self.prior = Priorities()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title()
         self.set_bindings()
