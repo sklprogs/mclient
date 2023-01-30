@@ -228,30 +228,13 @@ class Priorities:
     def get2(self,event=None):
         return self.get_gui().get2()
     
-    def reset(self,lst1=[],lst2=[],art_subjects=[],majors=[]):
-        f = '[MClient] subjects.priorities.controller.Priorities.reset'
-        # Convert tuples to lists at input in order to modify them
-        if lst1:
-            self.lst1 = list(lst1)
-            self.copy1 = list(self.lst1)
-        if lst2:
-            self.lst2 = list(lst2)
-            self.copy2 = list(self.lst2)
-        if art_subjects:
-            self.art_subjects = list(art_subjects)
-            self.copy_art = list(art_subjects)
-        if majors:
-            self.majors = majors
-        self.fill()
-    
     def set_gui(self):
         self.gui = gi.Priorities()
         self.set_bindings()
     
     def fill(self):
-        ''' #NOTE: Since a list of all subjects can be very long,
-            use this code only where necessary. Only affected panes
-            should be reset.
+        ''' #NOTE: Since a list of all subjects can be very long, use this code
+            only where necessary. Only affected panes should be reset.
         '''
         self.get_gui().reset1(self.lst1)
         self.gui.reset2(self.lst2)
