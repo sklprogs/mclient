@@ -201,9 +201,11 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.customize()
     
     def customize(self):
+        #self.lay_prm.setContentsMargins(0,0,0,0)
         self.lay_sec.setContentsMargins(0,0,0,0)
         self.lay_btn.setContentsMargins(4,4,4,4)
         self.lay_ter.setContentsMargins(2,4,2,0)
+        self.lay_rht.setContentsMargins(0,0,0,0)
 
 
 if __name__ == '__main__':
