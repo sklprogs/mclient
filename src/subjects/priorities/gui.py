@@ -19,6 +19,33 @@ icn_top = sh.objs.pdir.add('..','resources','buttons','top.png')
 icn_up1 = sh.objs.pdir.add('..','resources','buttons','up.png')
 
 
+class TableModel(PyQt5.QtCore.QAbstractTableModel):
+    
+    def __init__(self,datain,parent=None,*args):
+        PyQt5.QtCore.QAbstractTableModel.__init__(self,parent,*args)
+        self.arraydata = datain
+    
+    def rowCount(self,parent):
+        return len(self.arraydata)
+
+    def columnCount(self,parent):
+        return 1
+
+    def data(self,index,role):
+        f = '[MClientQt] subjects.priorities.gui.TableModel.data'
+        if not index.isValid():
+            return PyQt5.QtCore.QVariant()
+        if role == PyQt5.QtCore.Qt.DisplayRole:
+            try:
+                return PyQt5.QtCore.QVariant(self.arraydata[index.row()])
+            except Exception as e:
+                mes = _('List out of bounds at row #{}, column #{}!')
+                mes = mes.format(index.row(),index.column())
+                sh.objs.get_mes(f,mes,True).show_warning()
+                return PyQt5.QtCore.QVariant()
+
+
+
 class Priorities(PyQt5.QtWidgets.QWidget):
     
     sig_close = PyQt5.QtCore.pyqtSignal()
@@ -26,6 +53,14 @@ class Priorities(PyQt5.QtWidgets.QWidget):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.set_gui()
+    
+    def fill1(self,lst):
+        model = TableModel(lst)
+        self.lbx_lft.setModel(model)
+    
+    def fill2(self,lst):
+        model = TableModel(lst)
+        self.lbx_rht.setModel(model)
     
     def set_icon(self):
         # Does not accent None

@@ -15,6 +15,16 @@ class Priorities:
         self.lst2 = []
         self.set_gui()
     
+    def fill(self):
+        self.fill1()
+        self.fill2()
+    
+    def fill1(self):
+        self.gui.fill1(self.lst1)
+    
+    def fill2(self):
+        self.gui.fill2(self.lst2)
+    
     def get_checkbox(self):
         return self.gui.get_checkbox()
     
@@ -218,21 +228,6 @@ class Priorities:
         self.gui = gi.Priorities()
         self.set_bindings()
     
-    def fill(self):
-        ''' #NOTE: Since a list of all subjects can be very long, use this code
-            only where necessary. Only affected panes should be reset.
-        '''
-        self.gui.reset1(self.lst1)
-        self.gui.reset2(self.lst2)
-        self.colorize2()
-    
-    def reload(self,event=None):
-        self.Colorize2 = True
-        self.lst1 = list(self.copy1)
-        self.lst2 = list(self.copy2)
-        self.art_subjects = list(self.copy_art)
-        self.fill()
-    
     def move_bottom(self,event=None):
         f = '[MClient] subjects.priorities.controller.Priorities.move_bottom'
         result = self._get_cuts1()
@@ -344,6 +339,10 @@ class Priorities:
             self.close()
         else:
             self.show()
+    
+    def reload(self):
+        f = '[MClientQt] subjects.priorities.controller.Priorities.reload'
+        print(f)
     
     def set_bindings(self):
         self.gui.bind('Esc',self.close)

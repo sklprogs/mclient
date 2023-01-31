@@ -35,6 +35,7 @@ class Priorities(pr.Priorities):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.add_bindings()
+        self.reset()
     
     def add_bindings(self):
         self.gui.btn_res.set_action(self.reset)
@@ -60,7 +61,9 @@ class Priorities(pr.Priorities):
     
     def reset(self):
         f = '[MClientQt] mclient.Priorities.reset'
-        print(f)
+        self.lst1 = lg.objs.get_order().priorlst
+        self.set_mode()
+        self.fill()
     
     def apply(self):
         f = '[MClientQt] mclient.Priorities.apply'
