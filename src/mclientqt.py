@@ -681,6 +681,8 @@ class Table:
             return
         if rowno == self.old_rowno and colno == self.old_colno:
             return
+        if not self.logic.plain[rowno][colno].strip():
+            return
         self.old_rowno = rowno
         self.old_colno = colno
         self.model.update(self.gui.get_index())
