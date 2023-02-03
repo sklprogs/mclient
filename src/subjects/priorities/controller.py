@@ -20,10 +20,10 @@ class Priorities:
         self.fill2()
     
     def fill1(self):
-        self.gui.fill1(self.lst1)
+        self.gui.fill1(self.lst1,_('In use'))
     
     def fill2(self):
-        self.gui.fill2(self.lst2)
+        self.gui.fill2(self.lst2,_('Available'))
     
     def get_checkbox(self):
         return self.gui.get_checkbox()

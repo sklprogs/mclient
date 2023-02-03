@@ -21,9 +21,11 @@ icn_up1 = sh.objs.pdir.add('..','resources','buttons','up.png')
 
 class TableModel(PyQt5.QtCore.QAbstractTableModel):
     
-    def __init__(self,datain,parent=None,*args):
-        PyQt5.QtCore.QAbstractTableModel.__init__(self,parent,*args)
+    def __init__(self,datain,header='',*args):
+        PyQt5.QtCore.QAbstractTableModel.__init__(self,*args)
         self.arraydata = datain
+        # Do not override internal 'header' variable
+        self.header_ = header
     
     def rowCount(self,parent):
         return len(self.arraydata)
@@ -43,6 +45,14 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
                 mes = mes.format(index.row(),index.column())
                 sh.objs.get_mes(f,mes,True).show_warning()
                 return PyQt5.QtCore.QVariant()
+    
+    def headerData(self,column,orientation,role=PyQt5.QtCore.Qt.DisplayRole):
+        if column == 0 and role == PyQt5.QtCore.Qt.TextAlignmentRole:
+            return PyQt5.QtCore.Qt.AlignCenter
+        if role != PyQt5.QtCore.Qt.DisplayRole:
+            return PyQt5.QtCore.QVariant()
+        if column == 0 and orientation == PyQt5.QtCore.Qt.Horizontal:
+            return PyQt5.QtCore.QVariant(self.header_)
 
 
 
@@ -54,12 +64,12 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
-    def fill1(self,lst):
-        model = TableModel(lst)
+    def fill1(self,lst,header):
+        model = TableModel(lst,header)
         self.lbx_lft.setModel(model)
     
-    def fill2(self,lst):
-        model = TableModel(lst)
+    def fill2(self,lst,header):
+        model = TableModel(lst,header)
         self.lbx_rht.setModel(model)
     
     def set_icon(self):
