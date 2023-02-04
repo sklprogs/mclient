@@ -984,14 +984,15 @@ class Cells:
 
 
 class Table:
-    
+    ''' #NOTE: it's not enough to use 'Success' since we do not call 'reset'
+        before loading an article.
+    '''
     def __init__(self):
         self.set_values()
     
     def reset(self,cells):
         self.set_values()
         self.cells = cells
-        self.check()
         self.set_size()
         self.set_table()
     
@@ -999,14 +1000,13 @@ class Table:
         self.table = []
         self.plain = []
         self.cells = []
-        self.Success = True
         self.rownum = 0
         self.colnum = 0
     
     def get_next_row_by_col(self,rowno,colno,ref_colno):
         f = '[MClientQt] logic.Table.get_next_row_by_col'
-        if not self.Success:
-            sh.com.cancel(f)
+        if not self.plain:
+            sh.com.rep_empty(f)
             return(rowno,colno)
         tuple_ = self._get_next_row(rowno,ref_colno)
         if tuple_:
@@ -1020,8 +1020,8 @@ class Table:
     
     def get_prev_row_by_col(self,rowno,colno,ref_colno):
         f = '[MClientQt] logic.Table.get_prev_row_by_col'
-        if not self.Success:
-            sh.com.cancel(f)
+        if not self.plain:
+            sh.com.rep_empty(f)
             return(rowno,colno)
         tuple_ = self._get_prev_row(rowno,ref_colno)
         if tuple_:
@@ -1041,8 +1041,8 @@ class Table:
     
     def get_next_col(self,rowno,colno):
         f = '[MClientQt] logic.Table.get_next_col'
-        if not self.Success:
-            sh.com.cancel(f)
+        if not self.plain:
+            sh.com.rep_empty(f)
             return(rowno,colno)
         start = rowno
         while rowno < self.rownum:
@@ -1067,8 +1067,8 @@ class Table:
     
     def get_prev_col(self,rowno,colno):
         f = '[MClientQt] logic.Table.get_prev_col'
-        if not self.Success:
-            sh.com.cancel(f)
+        if not self.plain:
+            sh.com.rep_empty(f)
             return(rowno,colno)
         start = rowno
         while rowno >= 0:
@@ -1094,8 +1094,8 @@ class Table:
     
     def get_prev_row(self,rowno,colno):
         f = '[MClientQt] logic.Table.get_prev_row'
-        if not self.Success:
-            sh.com.cancel(f)
+        if not self.plain:
+            sh.com.rep_empty(f)
             return(rowno,colno)
         start = colno
         while colno >= 0:
@@ -1118,8 +1118,8 @@ class Table:
     
     def get_next_row(self,rowno,colno):
         f = '[MClientQt] logic.Table.get_next_row'
-        if not self.Success:
-            sh.com.cancel(f)
+        if not self.plain:
+            sh.com.rep_empty(f)
             return(rowno,colno)
         start = colno
         while colno < self.colnum:
@@ -1145,8 +1145,8 @@ class Table:
     
     def set_size(self):
         f = '[MClientQt] logic.Table.set_size'
-        if not self.Success:
-            sh.com.cancel(f)
+        if not self.cells:
+            sh.com.rep_empty(f)
             return
         self.rownum = self.cells[-1].rowno + 1
         colnos = [cell.colno for cell in self.cells]
@@ -1154,20 +1154,14 @@ class Table:
         mes = _('Table size: {}×{}').format(self.rownum,self.colnum)
         sh.objs.get_mes(f,mes,True).show_debug()
     
-    def check(self):
-        f = '[MClientQt] logic.Table.check'
-        if not self.cells:
-            self.Success = False
-            sh.com.rep_empty(f)
-    
     def set_table(self):
         ''' Empty cells must be recreated since QTableView throws an error
             otherwise.
             #TODO: create empty cells with the 'cells' module
         '''
         f = '[MClientQt] logic.Table.set_table'
-        if not self.Success:
-            sh.com.cancel(f)
+        if not self.cells:
+            sh.com.rep_empty(f)
             return
         old_rowno = 1
         row = []
@@ -1197,9 +1191,6 @@ class Table:
                 plain_row.append('')
             self.table.append(row)
             self.plain.append(plain_row)
-        if not self.table:
-            self.Success = False
-            sh.com.rep_out(f)
         
     def get_end(self):
         return self.get_prev_col(self.rownum-1,self.colnum)

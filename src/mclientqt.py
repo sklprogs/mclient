@@ -676,9 +676,6 @@ class Table:
             return
         if Mouse and self.search.Shown:
             return
-        if not self.model:
-            sh.com.rep_empty(f)
-            return
         if rowno == self.old_rowno and colno == self.old_colno:
             return
         if not self.logic.plain[rowno][colno].strip():
@@ -850,7 +847,10 @@ class Table:
             sh.com.rep_empty(f)
             return
         self.logic.reset(cells)
-        self.Success = self.logic.Success
+        if not self.logic.plain:
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
         self.model = gi.TableModel(self.logic.table)
         self.fill()
         self.set_col_width()
