@@ -6,33 +6,30 @@ import locale
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-''' About this dictionary:
+''' About this module:
     - This structure describes subjects at multitran.com.
-    - Use plugins.multitrancom.utils.subjects to extract and process
-      these subjects.
-    - Generating SUBJECTS will warn about duplicate keys. Examine
-      these keys to ensure that all translations within these keys
-      correspond to each other.
-    - multitran.com divides subjects into major and normal ones;
-    - In order to get major subjects, log in to multitran.com, select
-      any article, click "Add". View the source of the web-page and
-      find "MajorToMinor" section. Change the interface language at
-      multitran.com, do the same. Launch the Python shell, copy and
-      paste the contents to a list, e.g., en = [...]. Create lists for
-      all languages. All subjects in this section come in the same
-      order. Use the index method to find subjects and
-      shared.Clipboard.copy to copy them. Do this for all missing
+    - Use plugins.multitrancom.utils.subjects to extract and process these
+      subjects.
+    - Generating SUBJECTS will warn about duplicate keys. Examine these keys to
+      ensure that all translations within these keys correspond to each other.
+    - multitran.com separates subjects into major and normal ones;
+    - In order to get major subjects, log in to multitran.com, select any
+      article, click "Add". View the source of the web-page and find
+      "MajorToMinor" section. Change the interface language at multitran.com,
+      do the same. Launch the Python shell, copy and paste the contents to a
+      list, e.g., en = [...]. Create lists for all languages. All subjects in
+      this section come in the same order. Use the index method to find
+      subjects and shared.Clipboard.copy to copy them. Do this for all missing
       subjects that were not previously processed. Use
       plugins.multitrancom.utils.subjects.check.Check.get_missing_majors
       to get a list of such subjects.
-    - After SUBJECTS is created, run tests.Commands.get_majors_en and
-      review the list of major subject titles. Ensure that no user
-      names are included in this list.
-    - The result will be sorted and freed of duplicates, so subjects
-      may come in any order.
-    - multitran.com has a bug causing that such entries as 'Gruzovik,
-      inform.' will be expanded as 'Informal'. We correct such cases
-      here manually.
+    - After SUBJECTS is created, run tests.Commands.get_majors_en and review
+      the list of major subject titles. Ensure that no user names are included
+      in this list.
+    - The result will be sorted and freed of duplicates, so subjects may come
+      in any order.
+    - multitran.com has a bug causing that such entries as 'Gruzovik, inform.'
+      will be expanded as 'Informal'. We correct such cases here manually.
 '''
 SUBJECTS = {'quot.aph.':
                {'Single': True
@@ -34901,10 +34898,9 @@ class Subjects:
         self.set_lang()
     
     def get_title(self,short):
-        ''' Short titles are more valid than full titles, e.g.,
-            'Gruzovik, obs.' -> 'Obsolete / dated' due to a bug
-            at multitran.com. Thus, it's not necessary to check for
-            'Single' key there.
+        ''' Short titles are more valid than full titles, e.g., 'Gruzovik,
+            obs.' -> 'Obsolete / dated' due to a bug at multitran.com. Thus,
+            it's not necessary to check for 'Single' key there.
         '''
         for key in SUBJECTS.keys():
             if SUBJECTS[key][self.lang]['short'] == short:
@@ -34988,13 +34984,12 @@ class Subjects:
         for major in majors:
             group = self.get_group(major)
             lst += [major]
-            ''' Actually, a group can be empty. This happens when there
-                are subjects related to different major subjects.
-                SUBJECTS does not currently support several major
-                subjects by design. Two major subjects can have
-                intersecting subjects. As a result, such major subjects
-                as "United Nations" or "Travel" can be reported as
-                not comprising any subjects.
+            ''' Actually, a group can be empty. This happens when there are
+                subjects related to different major subjects. SUBJECTS does not
+                currently support several major subjects by design. Two major
+                subjects can have intersecting subjects. As a result, such
+                major subjects as "United Nations" or "Travel" can be reported
+                as not comprising any subjects.
             '''
             lst += group
         return lst
