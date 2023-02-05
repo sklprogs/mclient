@@ -46,17 +46,14 @@ class Priorities(pr.Priorities):
         f = '[MClientQt] mclient.Priorities.set_mode'
         mode = self.gui.opt_src.get()
         if mode == _('All subjects'):
-            #self.lst2 = lg.objs.get_plugins().get_subjects()
-            self.dic2 = {'Major1': {'minor1','minor2','minor3'}
-                        ,'Major2': {'minor4','minor5','minor6','minor7','min8'}
-                        }
+            self.dic2 = lg.objs.get_plugins().get_subjects()
         elif mode == _('Main'):
-            #self.lst2 = lg.objs.plugins.get_majors()
+            #self.dic2 = lg.objs.plugins.get_majors()
             self.dic2 = {'Major1': {'minor1','minor2','minor3'}
                         ,'Major2': {'minor4','minor5','minor6','minor7','min8'}
                         }
         elif mode == _('From the article'):
-            #self.lst2 = com.get_article_subjects()
+            #self.dic2 = com.get_article_subjects()
             self.dic2 = {'Major1': {'minor1','minor2','minor3'}
                         ,'Major2': {'minor4','minor5','minor6','minor7','min8'}
                         }

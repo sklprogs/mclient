@@ -34978,21 +34978,19 @@ class Subjects:
     
     def get_list(self):
         # Takes ~0.15s on Intel Atom
+        ''' Actually, a group can be empty. This happens when there are
+            subjects related to different major subjects. SUBJECTS does not
+            currently support several major subjects by design. Two major
+            subjects can have intersecting subjects. As a result, such major
+            subjects as "United Nations" or "Travel" can be reported as not
+            comprising any subjects.
+        '''
         f = '[MClient] plugins.multitrancom.subjects.Subjects.get_list'
-        lst = []
+        dic = {}
         majors = self.get_majors()
         for major in majors:
-            group = self.get_group(major)
-            lst += [major]
-            ''' Actually, a group can be empty. This happens when there are
-                subjects related to different major subjects. SUBJECTS does not
-                currently support several major subjects by design. Two major
-                subjects can have intersecting subjects. As a result, such
-                major subjects as "United Nations" or "Travel" can be reported
-                as not comprising any subjects.
-            '''
-            lst += group
-        return lst
+            dic[major] = self.get_group(major)
+        return dic
 
 
 
