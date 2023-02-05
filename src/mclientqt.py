@@ -56,10 +56,7 @@ class Priorities(pr.Priorities):
             for major in majors:
                 self.dic2[major] = []
         elif mode == _('From the article'):
-            #self.dic2 = com.get_article_subjects()
-            self.dic2 = {'Major1': {'minor1','minor2','minor3'}
-                        ,'Major2': {'minor4','minor5','minor6','minor7','min8'}
-                        }
+            self.dic2 = com.get_article_subjects()
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(mode,'; '.join(self.gui.opt_src.items))
