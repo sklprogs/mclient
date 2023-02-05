@@ -19,40 +19,47 @@ icn_top = sh.objs.pdir.add('..','resources','buttons','top.png')
 icn_up1 = sh.objs.pdir.add('..','resources','buttons','up.png')
 
 
-class TableModel(PyQt5.QtCore.QAbstractTableModel):
+class Model(PyQt5.QtGui.QStandardItemModel):
     
-    def __init__(self,datain,header='',*args):
-        PyQt5.QtCore.QAbstractTableModel.__init__(self,*args)
-        self.arraydata = datain
-        # Do not override internal 'header' variable
-        self.header_ = header
+    def __init__(self,dic,header='',*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.dic = dic
+        self.header = header
+        self.Success = True
+        self.fill()
     
-    def rowCount(self,parent):
-        return len(self.arraydata)
-
-    def columnCount(self,parent):
-        return 1
-
-    def data(self,index,role):
-        f = '[MClientQt] subjects.priorities.gui.TableModel.data'
-        if not index.isValid():
-            return PyQt5.QtCore.QVariant()
-        if role == PyQt5.QtCore.Qt.DisplayRole:
-            try:
-                return PyQt5.QtCore.QVariant(self.arraydata[index.row()])
-            except Exception as e:
-                mes = _('List out of bounds at row #{}, column #{}!')
-                mes = mes.format(index.row(),index.column())
-                sh.objs.get_mes(f,mes,True).show_warning()
-                return PyQt5.QtCore.QVariant()
+    def fill(self):
+        f = '[MClientQt] subjects.priorities.gui.Model.fill'
+        if not self.dic:
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
+        self.parse_json()
+        self.set_headers()
     
-    def headerData(self,column,orientation,role=PyQt5.QtCore.Qt.DisplayRole):
-        if column == 0 and role == PyQt5.QtCore.Qt.TextAlignmentRole:
-            return PyQt5.QtCore.Qt.AlignCenter
-        if role != PyQt5.QtCore.Qt.DisplayRole:
-            return PyQt5.QtCore.QVariant()
-        if column == 0 and orientation == PyQt5.QtCore.Qt.Horizontal:
-            return PyQt5.QtCore.QVariant(self.header_)
+    def _set_item(self,key):
+        # Multi-level filling: https://stackoverflow.com/questions/57130400/multi-level-qtreeview-using-dictionaries
+        item = PyQt5.QtGui.QStandardItem(str(key))
+        self.root.appendRow(item)
+        for value in self.dic[key]:
+            child = PyQt5.QtGui.QStandardItem(str(value))
+            item.appendRow(child)
+    
+    def parse_json(self):
+        f = '[MClientQt] subjects.priorities.gui.Model.parse_json'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.root = self.invisibleRootItem()
+        for key in self.dic:
+            self._set_item(key)
+    
+    def set_headers(self):
+        f = '[MClientQt] subjects.priorities.gui.Model.set_headers'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.setHorizontalHeaderLabels([self.header])
 
 
 
@@ -64,12 +71,12 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
-    def fill1(self,lst,header):
-        model = TableModel(lst,header)
+    def fill1(self,dic,header):
+        model = Model(dic,header)
         self.lbx_lft.setModel(model)
     
-    def fill2(self,lst,header):
-        model = TableModel(lst,header)
+    def fill2(self,dic,header):
+        model = Model(dic,header)
         self.lbx_rht.setModel(model)
     
     def set_icon(self):

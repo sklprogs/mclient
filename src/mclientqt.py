@@ -46,11 +46,20 @@ class Priorities(pr.Priorities):
         f = '[MClientQt] mclient.Priorities.set_mode'
         mode = self.gui.opt_src.get()
         if mode == _('All subjects'):
-            self.lst2 = lg.objs.get_plugins().get_subjects()
+            #self.lst2 = lg.objs.get_plugins().get_subjects()
+            self.dic2 = {'Major1': {'minor1','minor2','minor3'}
+                        ,'Major2': {'minor4','minor5','minor6','minor7','min8'}
+                        }
         elif mode == _('Main'):
-            self.lst2 = lg.objs.plugins.get_majors()
+            #self.lst2 = lg.objs.plugins.get_majors()
+            self.dic2 = {'Major1': {'minor1','minor2','minor3'}
+                        ,'Major2': {'minor4','minor5','minor6','minor7','min8'}
+                        }
         elif mode == _('From the article'):
-            self.lst2 = com.get_article_subjects()
+            #self.lst2 = com.get_article_subjects()
+            self.dic2 = {'Major1': {'minor1','minor2','minor3'}
+                        ,'Major2': {'minor4','minor5','minor6','minor7','min8'}
+                        }
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(mode,'; '.join(self.gui.opt_src.items))
@@ -61,7 +70,12 @@ class Priorities(pr.Priorities):
     
     def reset(self):
         f = '[MClientQt] mclient.Priorities.reset'
-        self.lst1 = lg.objs.get_order().priorlst
+        #self.lst1 = lg.objs.get_order().priorlst
+        self.dic1 = {'Компьютеры': {'Майкрософт','Программирование','Оракл'}
+                    ,'Разговорная лексика': {'Арго','Грубо','Мат','Возвышенно'
+                                            ,'Поэтически'
+                                            }
+                    }
         self.set_mode()
         self.fill()
     

@@ -11,8 +11,8 @@ class Priorities:
     
     def __init__(self):
         self.Shown = False
-        self.lst1 = []
-        self.lst2 = []
+        self.dic1 = {}
+        self.dic2 = {}
         self.set_gui()
     
     def fill(self):
@@ -20,10 +20,10 @@ class Priorities:
         self.fill2()
     
     def fill1(self):
-        self.gui.fill1(self.lst1,_('In use'))
+        self.gui.fill1(self.dic1,_('In use'))
     
     def fill2(self):
-        self.gui.fill2(self.lst2,_('Available'))
+        self.gui.fill2(self.dic2,_('Available'))
     
     def get_checkbox(self):
         return self.gui.get_checkbox()
