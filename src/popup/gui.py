@@ -59,6 +59,8 @@ class Popup(PyQt5.QtWidgets.QWidget):
         self.char_fmt.setFont(self.font)
         self.add_widgets()
         self.set_icon()
+        flags = self.windowFlags()
+        self.setWindowFlags(flags|PyQt5.QtCore.Qt.FramelessWindowHint)
         self.resize(270,150)
     
     def bind(self,hotkey,action):
