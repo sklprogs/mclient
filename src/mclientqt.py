@@ -40,7 +40,7 @@ class Priorities(pr.Priorities):
     def add_bindings(self):
         self.gui.btn_res.set_action(self.reset)
         self.gui.btn_apl.set_action(self.apply)
-        self.gui.opt_src.set_action(self.set_mode)
+        self.gui.opt_src.set_action(self.reset)
     
     def set_mode(self):
         f = '[MClientQt] mclient.Priorities.set_mode'
@@ -48,10 +48,13 @@ class Priorities(pr.Priorities):
         if mode == _('All subjects'):
             self.dic2 = lg.objs.get_plugins().get_subjects()
         elif mode == _('Main'):
-            #self.dic2 = lg.objs.plugins.get_majors()
-            self.dic2 = {'Major1': {'minor1','minor2','minor3'}
-                        ,'Major2': {'minor4','minor5','minor6','minor7','min8'}
-                        }
+            majors = lg.objs.plugins.get_majors()
+            if not majors:
+                sh.com.rep_empty(f)
+                return
+            self.dic2 = {}
+            for major in majors:
+                self.dic2[major] = []
         elif mode == _('From the article'):
             #self.dic2 = com.get_article_subjects()
             self.dic2 = {'Major1': {'minor1','minor2','minor3'}
