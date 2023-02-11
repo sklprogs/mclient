@@ -5,29 +5,76 @@ from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 
+class Subject:
+    
+    def __init__(self):
+        self.text = ''
+        self.Major = False
+        self.cur_major = 0
+        self.prev_major = 0
+
+
+
 class Priorities:
     
     def __init__(self):
         self.dic1 = {}
         self.dic2 = {}
+        self.subjects = []
+    
+    def debug(self):
+        major = []
+        cur_major = []
+        prev_major = []
+        text = []
+        for subject in self.subjects:
+            text.append(subject.text)
+            major.append(subject.Major)
+            cur_major.append(subject.cur_major)
+            prev_major.append(subject.prev_major)
+        headers = ('text','Major','cur_major','prev_major')
+        iterable = (text,major,cur_major,prev_major)
+        mes = sh.FastTable (iterable = iterable
+                           ,headers = headers
+                           ,maxrow = 50
+                           ).run()
+        #sh.com.run_fast_debug('debug',mes)
+        print(mes)
+    
+    def set_subjects(self):
+        count = 0
+        cur_major = 0
+        prev_major = 0
+        for key in self.dic1.keys():
+            subject = Subject()
+            subject.Major = True
+            cur_major = count
+            subject.text = key
+            subject.cur_major = cur_major
+            subject.prev_major = prev_major
+            self.subjects.append(subject)
+            for key in self.dic1[key]:
+                subject = Subject()
+                subject.text = key
+                subject.cur_major = cur_major
+                subject.prev_major = prev_major
+                self.subjects.append(subject)
+            prev_major = cur_major
+            count += 1
+                
     
     def reset(self,dic1,dic2):
         self.dic1 = dic1
         self.dic2 = dic2
-    
-    def delete1(self):
-        f = '[MClientQt] subjects.priorities.logic.Priorities.delete1'
-        try:
-            del self.dic1[self.pos1]
-            return True
-        except IndexError:
-            mes = _('Wrong input data: "{}"!').format(self.pos1)
-            sh.objs.get_mes(f,mes).show_error()
-    
-    def move_up(self):
-        if not self.delete1():
-            return
-        if self.pos1 == 0:
-            return
-        del self.dic1[self.pos1]
-        self.pos1 -= 1
+        self.set_subjects()
+
+
+if __name__ == '__main__':
+    dic1 = {'Компьютеры': {'Майкрософт','Программирование','Оракл'}
+           ,'Разговорная лексика': {'Арго','Грубо','Мат','Возвышенно'
+                                   ,'Поэтически'
+                                   }
+           }
+    iprior = Priorities()
+    iprior.reset(dic1,{})
+    iprior.debug()
