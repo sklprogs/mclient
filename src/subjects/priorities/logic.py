@@ -53,14 +53,15 @@ class Priorities:
             subject.cur_major = cur_major
             subject.prev_major = prev_major
             self.subjects.append(subject)
+            count += 1
             for key in self.dic1[key]:
                 subject = Subject()
                 subject.text = key
                 subject.cur_major = cur_major
                 subject.prev_major = prev_major
                 self.subjects.append(subject)
+                count += 1
             prev_major = cur_major
-            count += 1
                 
     
     def reset(self,dic1,dic2):
@@ -70,10 +71,16 @@ class Priorities:
 
 
 if __name__ == '__main__':
-    dic1 = {'Компьютеры': {'Майкрософт','Программирование','Оракл'}
-           ,'Разговорная лексика': {'Арго','Грубо','Мат','Возвышенно'
-                                   ,'Поэтически'
-                                   }
+    dic1 = {'Компьютеры':
+               {'Компьютеры','Майкрософт','Программирование','Оракл'}
+           ,'Разговорная лексика':
+               {'Разговорная лексика','Арго','Грубо','Мат','Возвышенно'
+               ,'Поэтически'
+               }
+           ,'Языки':
+               {'Языки','Английский','Французский','Немецкий','Русский'
+               ,'Датский','Японский','Китайский'
+               }
            }
     iprior = Priorities()
     iprior.reset(dic1,{})
