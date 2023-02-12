@@ -63,6 +63,37 @@ class Priorities:
                 count += 1
             prev_major = cur_major
                 
+    def move_group_up(self,pos):
+        f = '[MClientQt] subjects.priorities.logic.Priorities.move_group_up'
+        print(f)
+        print(self.subjects[pos].text)
+    
+    def move_minor_up(self,pos):
+        f = '[MClientQt] subjects.priorities.logic.Priorities.move_minor_up'
+        print(f)
+        print(self.subjects[pos].text)
+        if pos - 1 == self.subjects[pos].cur_major:
+            print('Need to create new group')
+            self.subjects.insert(pos-1,self.subjects[pos])
+            self.subjects.insert(pos-1,self.subjects[self.subjects[pos].cur_major+1])
+            # 21 since we have inserted 2 new items
+            del self.subjects[pos+2]
+        elif pos == 0:
+            # Subject #0 should be major
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes,True).show_debug()
+        elif pos == 1:
+            sh.com.rep_lazy(f)
+        else:
+            self.subjects.insert(pos-1,self.subjects[pos])
+            # +1 since we have inserted a new item
+            del self.subjects[pos+1]
+        
+    def move_up(self,pos):
+        if self.subjects[pos].Major:
+            self.move_group_up(pos)
+        else:
+            self.move_minor_up(pos)
     
     def reset(self,dic1,dic2):
         self.dic1 = dic1
@@ -84,4 +115,6 @@ if __name__ == '__main__':
            }
     iprior = Priorities()
     iprior.reset(dic1,{})
+    print(iprior.dic1)
+    iprior.move_up(6)
     iprior.debug()
