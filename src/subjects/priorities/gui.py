@@ -67,6 +67,13 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
+    def get_index(self):
+        return self.lbx_lft.selectionModel().currentIndex()
+    
+    def get_row(self):
+        index_ = self.get_index()
+        return(index_.row(),index_.column())
+    
     def fill1(self,dic,header):
         model = Model(dic,header)
         self.lbx_lft.setModel(model)

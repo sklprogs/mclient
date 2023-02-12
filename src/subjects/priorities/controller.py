@@ -37,12 +37,6 @@ class Priorities:
         f = '[MClient] subjects.priorities.controller.Priorities.move_top'
         print(f)
     
-    def get1(self):
-        return self.gui.get1()
-    
-    def get2(self):
-        return self.gui.get2()
-    
     def set_gui(self):
         self.gui = gi.Priorities()
         self.set_bindings()
@@ -54,6 +48,8 @@ class Priorities:
     def increase(self):
         f = '[MClient] subjects.priorities.controller.Priorities.increase'
         print(f)
+        print(self.gui.get_index())
+        print(self.gui.get_row())
     
     def decrease(self):
         f = '[MClient] subjects.priorities.controller.Priorities.decrease'
