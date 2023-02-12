@@ -26,15 +26,12 @@ def catch_control_c(*args):
 
 # Determine if hotkeys are pressed (globally in the system)
 class KeyListener(threading.Thread):
-    ''' Usage: 
-        keylistener = KeyListener()
-        Initially:
-        keylistener.addKeyListener("L_CTRL+L_SHIFT+y", callable)
-        Note that it is necessary to bind all possible combinations
-        because an order of key presses can be different, for example,
+    ''' Usage: keylistener = KeyListener()
+        Initially: keylistener.addKeyListener("L_CTRL+L_SHIFT+y", callable)
+        Note that it is necessary to bind all possible combinations because
+        an order of key presses can be different, for example,
         "L_CTRL+y+L_SHIFT"
-        Now:
-        keylistener.addKeyListener("Control_L+c+c", callable)
+        Now: keylistener.addKeyListener("Control_L+c+c", callable)
     '''
     def __init__(self):
         threading.Thread.__init__(self)
@@ -52,9 +49,8 @@ class KeyListener(threading.Thread):
         '''
         self.status = 0
         
-    ''' need the following because XK.keysym_to_string() only does
-        printable chars rather than being the correct inverse of
-        XK.string_to_keysym()
+    ''' Need the following because XK.keysym_to_string() only does printable
+        chars rather than being the correct inverse of XK.string_to_keysym().
     '''
     def lookup_keysym(self, keysym):
         for name in dir(XK):
@@ -115,8 +111,8 @@ class KeyListener(threading.Thread):
                                                          )
 
         ''' Enable the context; this only returns after a call to
-            record_disable_context, while calling the callback function
-            in the meantime
+            record_disable_context, while calling the callback function in the
+            meantime.
         '''
         self.record_dpy.record_enable_context(self.ctx, self.processevents)
         # Finally free the context
@@ -150,7 +146,7 @@ class KeyListener(threading.Thread):
             action()
 
     def release(self):
-        """must be called whenever a key release event has occurred."""
+        # Must be called whenever a key release event has occurred.
         # A released Control key is not taken into account
         # A cyrillic 'с' symbol is recognized as Latin 'c'
         if not self.character in ('c','Insert','grave'):

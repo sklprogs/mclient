@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-''' There was a bug in 'pyhook' which crashed the program if a focus 
-    was set on a program having Cyrillic symbols in its title. We
-    needed to comment out assigning 'win_name' in pyHook's C code and
-    recompile the library. 'pyWinhook' does not have such bug.
+''' There was a bug in 'pyhook' which crashed the program if a focus was set on
+    a program having Cyrillic symbols in its title. We needed to comment out
+    assigning 'win_name' in pyHook's C code and recompile the library.
+    'pyWinhook' does not have such bug.
 '''
 
 from pyWinhook import HookManager
@@ -128,16 +128,15 @@ def wait_example():
     from time import sleep
     while not keylistener.check():
         ''' Do not call 'pythoncom.PumpMessages()' and
-            'pythoncom.PumpWaitingMessages()' simultaneously - they both
-            create loops.
-            Without this the result does not work for some reason
-            (probably, a loop of some kind is required there).
-            If we create a thread, it will not find
-            flags['HotkeyCaught'].
+            'pythoncom.PumpWaitingMessages()' simultaneously - they both create
+            loops.
+            Without this the result does not work for some reason (probably,
+            a loop of some kind is required there).
+            If we create a thread, it will not find flags['HotkeyCaught'].
         '''
         pythoncom.PumpWaitingMessages()
-        ''' If we set a too large interval, e.g., 1, we will have
-            no result at all!
+        ''' If we set a too large interval, e.g., 1, we will have no result at
+            all!
         '''
         sleep(0.1)
     keylistener.cancel()

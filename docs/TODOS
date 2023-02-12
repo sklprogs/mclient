@@ -1,11 +1,6 @@
 
 
 mclient:
-- Control row width, good example: MT, EN-RU: environmentalism, inner city,
-  fairness doctrine, record, constituency, stay put, amalgamation, overhauling,
-  стоимость, дезориентировать, режим, sat, illicit, repeal, по запросу,
-  предусматривать, площадь
-- Improve main icon quality
 - Fix colorizing
 - Make a cell fully visible when mousing over it
 - Checking for symbols unsupported in Tk takes too long (when loading
