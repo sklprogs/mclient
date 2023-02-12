@@ -92,56 +92,6 @@ class Priorities(PyQt5.QtWidgets.QWidget):
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
     
-    def get_checkbox(self):
-        return self.cbx_pri.get()
-    
-    def set_checkbox(self,Active=False):
-        self.cbx_pri.set(Active)
-    
-    def select_mult1(self,indexes):
-        self.lbx_lft.select_mult(indexes)
-    
-    def select_mult2(self,indexes):
-        self.lbx_rht.select_mult(indexes)
-    
-    def colorize1(self,i,bg='cyan'):
-        self.lbx_lft.widget.itemconfig(i,{'bg':bg})
-    
-    def colorize2(self,i,bg='cyan'):
-        self.lbx_rht.widget.itemconfig(i,{'bg':bg})
-    
-    def get_index_mult1(self):
-        return self.lbx_lft.get_index_mult()
-    
-    def get_index_mult2(self):
-        return self.lbx_rht.get_index_mult()
-    
-    def get_sel1(self):
-        return self.lbx_lft.get()
-    
-    def get_sel2(self):
-        return self.lbx_rht.get()
-    
-    def clear_sel1(self):
-        self.lbx_lft.clear_sel()
-    
-    def clear_sel2(self):
-        self.lbx_rht.clear_sel()
-    
-    def reset1(self,lst=[]):
-        self.lbx_lft.reset(lst)
-        self.clear_sel1()
-    
-    def reset2(self,lst=[]):
-        self.lbx_rht.reset(lst)
-        self.clear_sel2()
-    
-    def get1(self):
-        return self.lbx_lft.lst
-    
-    def get2(self):
-        return self.lbx_rht.lst
-    
     def set_buttons(self):
         self.btn_lft = sh.Button (hint = _('Prioritize selection on the right')
                                  ,inactive = icn_lft
