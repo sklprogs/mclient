@@ -8,13 +8,9 @@ from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 icn_btm = sh.objs.get_pdir().add('..','resources','buttons','bottom.png')
-icn_clr = sh.objs.pdir.add('..','resources','buttons','clear_selection.png')
 icn_dwn = sh.objs.pdir.add('..','resources','buttons','down.png')
-icn_grp = sh.objs.pdir.add('..','resources','buttons','double_back.png')
-icn_gru = sh.objs.pdir.add('..','resources','buttons','double_next.png')
 icn_lft = sh.objs.pdir.add('..','resources','buttons','go_back.png')
 icn_rht = sh.objs.pdir.add('..','resources','buttons','go_next.png')
-icn_rld = sh.objs.pdir.add('..','resources','buttons','reload.png')
 icn_top = sh.objs.pdir.add('..','resources','buttons','top.png')
 icn_up1 = sh.objs.pdir.add('..','resources','buttons','up.png')
 
@@ -155,14 +151,6 @@ class Priorities(PyQt5.QtWidgets.QWidget):
                                  ,inactive = icn_rht
                                  ,active = icn_rht
                                  )
-        self.btn_grp = sh.Button (hint = _('Prioritize related subjects')
-                                 ,inactive = icn_grp
-                                 ,active = icn_grp
-                                 )
-        self.btn_gru = sh.Button (hint = _('Unprioritize related subjects')
-                                 ,inactive = icn_gru
-                                 ,active = icn_gru
-                                 )
         self.btn_up1 = sh.Button (hint = _('Increase priority')
                                  ,inactive = icn_up1
                                  ,active = icn_up1
@@ -178,14 +166,6 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.btn_btm = sh.Button (hint = _('Move to the bottom')
                                  ,inactive = icn_btm
                                  ,active = icn_btm
-                                 )
-        self.btn_clr = sh.Button (hint = _('Clear selection in both panes')
-                                 ,inactive = icn_clr
-                                 ,active = icn_clr
-                                 )
-        self.btn_rld = sh.Button (hint = _('Reload settings')
-                                 ,inactive = icn_rld
-                                 ,active = icn_rld
                                  )
         self.btn_res = sh.Button (text = _('Reset')
                                  ,hint = _('Reload subjects')
@@ -233,14 +213,10 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         #NOTE: If run directly, this module will not find icons owing to paths
         self.lay_btn.addWidget(self.btn_lft.widget)
         self.lay_btn.addWidget(self.btn_rht.widget)
-        self.lay_btn.addWidget(self.btn_grp.widget)
-        self.lay_btn.addWidget(self.btn_gru.widget)
         self.lay_btn.addWidget(self.btn_up1.widget)
         self.lay_btn.addWidget(self.btn_dwn.widget)
         self.lay_btn.addWidget(self.btn_top.widget)
         self.lay_btn.addWidget(self.btn_btm.widget)
-        self.lay_btn.addWidget(self.btn_clr.widget)
-        self.lay_btn.addWidget(self.btn_rld.widget)
     
     def set_gui(self):
         self.set_title(_('Subject prioritization'))
