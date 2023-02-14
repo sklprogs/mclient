@@ -771,9 +771,10 @@ class Table:
             sh.com.rep_empty(f)
             return
         rowno, colno = self.gui.get_cell()
-        ''' #FIX: Getting KeyError: -1 here when copying a cell, pasting it,
-            setting focus to ent_src and pressing Home.
-        '''
+        if rowno == -1 or colno == -1:
+            mes = _('No cell is selected!')
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return
         index_ = self.model.index(self.coords[rowno],colno)
         self.gui.scroll2index(index_)
     
