@@ -589,6 +589,44 @@ class Table:
         self.popup = pp.Popup()
         self.set_gui()
     
+    def _get_page_row(self,page):
+        for rowno in self.coords2:
+            if self.coords2[rowno] == page:
+                return rowno
+    
+    def go_page_up(self):
+        f = '[MClientQt] mclient.Table.go_page_up'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        print(f)
+    
+    def go_page_down(self):
+        f = '[MClientQt] mclient.Table.go_page_down'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not self.coords2:
+            self.set_coords()
+        if not self.coords2:
+            sh.com.rep_empty(f)
+            return
+        rowno, colno = self.get_cell()
+        cur_page = self.coords2[rowno]
+        max_page = self.coords2[max(self.coords2.keys())]
+        if cur_page > max_page:
+            mes = '{} >= {}'.format(max_page,cur_page)
+            sh.com.rep_condition(f,mes)
+            return
+        if cur_page == max_page:
+            sh.com.rep_lazy(f)
+            return
+        rowno = self._get_page_row(cur_page+1)
+        if rowno is None:
+            sh.com.rep_empty(f)
+            return
+        self.select(rowno,colno)
+    
     def show_popup(self):
         f = '[MClientQt] mclient.Table.show_popup'
         text = self.get_cell_code()
@@ -913,13 +951,15 @@ class Table:
     
     def set_coords(self,event=None):
         ''' Calculating Y is very fast (~0.05s for 'set' on Intel Atom). We
-            need None since this procedure overrides
+            need 'event' since this procedure overrides
             self.gui.parent.resizeEvent.
         '''
         f = '[MClientQt] mclient.Table.set_coords'
         if not self.Success:
             sh.com.cancel(f)
             return
+        #TODO: Get rid of this
+        self.coords2 = {}
         height = self.gui.get_height()
         mes = _('Window height: {}').format(height)
         sh.objs.get_mes(f,mes,True).show_debug()
@@ -929,6 +969,7 @@ class Table:
             page_y = pageno * height
             page_rowno = self.gui.get_row_by_y(page_y)
             self.coords[rowno] = page_rowno
+            self.coords2[rowno] = pageno
     
     def fill(self):
         f = '[MClientQt] mclient.Table.fill'
@@ -1662,6 +1703,8 @@ class App:
     def set_bindings(self):
         # Mouse buttons cannot be bound
         self.gui.sig_close.connect(self.quit)
+        self.gui.sig_pgdn.connect(self.table.go_page_down)
+        self.gui.sig_pgup.connect(self.table.go_page_up)
         
         self.gui.bind('Ctrl+Q',self.close)
         self.gui.bind('Esc',self.minimize)

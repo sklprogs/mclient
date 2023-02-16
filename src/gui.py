@@ -339,9 +339,18 @@ class Table(PyQt5.QtWidgets.QTableView):
 class App(PyQt5.QtWidgets.QMainWindow):
     
     sig_close = PyQt5.QtCore.pyqtSignal()
+    sig_pgdn = PyQt5.QtCore.pyqtSignal()
+    sig_pgup = PyQt5.QtCore.pyqtSignal()
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+    
+    def keyPressEvent(self,event):
+        if event.key() == PyQt5.QtCore.Qt.Key_PageUp:
+            self.sig_pgup.emit()
+        elif event.key() == PyQt5.QtCore.Qt.Key_PageDown:
+            self.sig_pgdn.emit()
+        return super().keyPressEvent(event)
     
     def closeEvent(self,event):
         self.sig_close.emit()
