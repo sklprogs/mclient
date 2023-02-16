@@ -599,7 +599,25 @@ class Table:
         if not self.Success:
             sh.com.cancel(f)
             return
-        print(f)
+        if not self.coords2:
+            self.set_coords()
+        if not self.coords2:
+            sh.com.rep_empty(f)
+            return
+        rowno, colno = self.get_cell()
+        cur_page = self.coords2[rowno]
+        if cur_page < 0:
+            mes = '{} >= 0'.format(cur_page)
+            sh.com.rep_condition(f,mes)
+            return
+        if cur_page == 0:
+            sh.com.rep_lazy(f)
+            return
+        rowno = self._get_page_row(cur_page-1)
+        if rowno is None:
+            sh.com.rep_empty(f)
+            return
+        self.select(rowno,colno)
     
     def go_page_down(self):
         f = '[MClientQt] mclient.Table.go_page_down'
