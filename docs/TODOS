@@ -11,13 +11,13 @@ mclient:
 
 multitrancom:
 - RU-EN, закрыть соединение: enable copying a comment block url
-- RU-EN, Makarov: colorize phdics even when prioritizing is off since
-  there are no subjects to prioritize
+- RU-EN, Makarov: colorize phdics even when prioritizing is off since there are
+  no subjects to prioritize
 - Add new mode: RU-EN, nederlands: "перевод с других языков"
 - Check bad charachers: RU-EN, счет на оплату
 - Fix links in a saved raw html
-- RU-EN, fall in behind, swoop in: Show phrases when only separate words
-  have been found
+- RU-EN, fall in behind, swoop in: Show phrases when only separate words have
+  been found
 - RU-EN: beg the question: 'which begs the question' is duplicated
 - Get full URL when copying it with Ctrl-F7 or Shift-F7
 - RU-EN, сохранить: "прич." has no full form
@@ -35,14 +35,8 @@ multitrancom:
 - Distinguish between SpecialPage and a PhraseDic page
 - Move selection automatically when using scrollbar arrows
 - Hotkeys for moving to the end of a column
-- CSS for drawing a dash line for each section: mkhtml.py:315
-- (History) Create 2 columns in ListBox instead of using delimiters
-- Create an option to toggle SELECTABLE (no need to update DB) (see
-  WebFrame.select)
 - Loop WebFrame.move_page_up & WebFrame.move_page_down
 - Restore selection upon changing a setting and loading the article again
-- Delete symbols that prevent URL from opening (e.g.,
-  'символ' -> 'pilcrow')
 
 dsl:
 - Test "frame" article (a lot of entries; brackets should be in place)
