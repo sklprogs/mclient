@@ -49,12 +49,13 @@ class KeyListener(threading.Thread):
         '''
         self.status = 0
         
-    ''' Need the following because XK.keysym_to_string() only does printable
-        chars rather than being the correct inverse of XK.string_to_keysym().
-    '''
-    def lookup_keysym(self, keysym):
+    def lookup_keysym(self,keysym):
+        ''' Need the following because XK.keysym_to_string() only does
+            printable chars rather than being the correct inverse of
+            XK.string_to_keysym().
+        '''
         for name in dir(Xlib.XK):
-            if name.startswith("XK_") and getattr(Xlib.XK, name) == keysym:
+            if name.startswith("XK_") and getattr(Xlib.XK,name) == keysym:
                 return name.lstrip("XK_")
         return '[%d]' % keysym
 
@@ -66,13 +67,13 @@ class KeyListener(threading.Thread):
             return
         # I added 'str', since we receive an error without it
         if not len(str(reply.data)) or ord(str(reply.data[0])) < 2:
-            # not an event
+            # Not an event
             return
         data = reply.data
         while len(data):
             event, data = Xlib.protocol.rq.EventField(None).parse_binary_value(data,self.record_dpy.display,None,None)
             keycode = event.detail
-            keysym = self.local_dpy.keycode_to_keysym(event.detail, 0)
+            keysym = self.local_dpy.keycode_to_keysym(event.detail,0)
             self.character = self.lookup_keysym(keysym)
             if self.character:
                 if event.type == Xlib.X.KeyPress:
@@ -85,7 +86,7 @@ class KeyListener(threading.Thread):
         if not self.record_dpy.has_extension('RECORD'):
             print_v('RECORD extension not found')
             sys.exit(1)
-        r = self.record_dpy.record_get_version(0, 0)
+        r = self.record_dpy.record_get_version(0,0)
         mes = 'RECORD extension version {}.{}'.format (r.major_version
                                                       ,r.minor_version
                                                       )
@@ -114,7 +115,7 @@ class KeyListener(threading.Thread):
             record_disable_context, while calling the callback function in the
             meantime.
         '''
-        self.record_dpy.record_enable_context(self.ctx, self.processevents)
+        self.record_dpy.record_enable_context(self.ctx,self.processevents)
         # Finally free the context
         self.record_dpy.record_free_context(self.ctx)
 
@@ -125,9 +126,7 @@ class KeyListener(threading.Thread):
 
     def append(self):
         if len(self.pressed) > 0:
-            if self.pressed[0] in ('Control_L','Control_R','Alt_L'
-                                  ,'Alt_R'
-                                  ):
+            if self.pressed[0] in ('Control_L','Control_R','Alt_L','Alt_R'):
                 self.pressed.append(self.character)
     
     def press(self):
@@ -152,7 +151,7 @@ class KeyListener(threading.Thread):
         if not self.character in ('c','Insert','grave'):
             self.pressed = []
 
-    def addKeyListener(self, hotkeys, callable):
+    def addKeyListener(self,hotkeys,callable):
         keys = tuple(hotkeys.split('+'))
         print_v('Added new keylistener for :',str(keys))
         self.listeners[keys] = callable
@@ -170,7 +169,7 @@ class KeyListener(threading.Thread):
 
 
 Verbose = False
-# do not quit when Control-c is pressed
+# Do not quit when Control-c is pressed
 signal.signal(signal.SIGINT,catch_control_c)
 keylistener = KeyListener()
 keylistener.addKeyListener ('Control_L+c+c'
