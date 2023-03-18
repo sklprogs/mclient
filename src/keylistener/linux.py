@@ -3,10 +3,10 @@
 
 import sys
 import signal
-from Xlib.display import Display
-from Xlib import X, XK
-from Xlib.ext import record
-from Xlib.protocol import rq
+import Xlib
+import Xlib.X
+import Xlib.XK
+import Xlib.display
 import threading
 
 def print_v(*args):
@@ -36,11 +36,11 @@ class KeyListener(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.finished = threading.Event()
-        self.contextEventMask = [X.KeyPress,X.MotionNotify]
+        self.contextEventMask = [Xlib.X.KeyPress,Xlib.X.MotionNotify]
         # Give these some initial values
         # Hook to our display.
-        self.local_dpy = Display()
-        self.record_dpy = Display()
+        self.local_dpy = Xlib.display.Display()
+        self.record_dpy = Xlib.display.Display()
         self.pressed = []
         self.listeners = {}
         self.character = None
@@ -53,13 +53,13 @@ class KeyListener(threading.Thread):
         chars rather than being the correct inverse of XK.string_to_keysym().
     '''
     def lookup_keysym(self, keysym):
-        for name in dir(XK):
-            if name.startswith("XK_") and getattr(XK, name) == keysym:
+        for name in dir(Xlib.XK):
+            if name.startswith("XK_") and getattr(Xlib.XK, name) == keysym:
                 return name.lstrip("XK_")
         return '[%d]' % keysym
 
-    def processevents(self, reply):
-        if reply.category != record.FromServer:
+    def processevents(self,reply):
+        if reply.category != Xlib.ext.record.FromServer:
             return
         if reply.client_swapped:
             print_v('* received swapped protocol data, cowardly ignored')
@@ -70,14 +70,14 @@ class KeyListener(threading.Thread):
             return
         data = reply.data
         while len(data):
-            event, data = rq.EventField(None).parse_binary_value(data,self.record_dpy.display,None,None)
+            event, data = Xlib.protocol.rq.EventField(None).parse_binary_value(data,self.record_dpy.display,None,None)
             keycode = event.detail
             keysym = self.local_dpy.keycode_to_keysym(event.detail, 0)
             self.character = self.lookup_keysym(keysym)
             if self.character:
-                if event.type == X.KeyPress:
+                if event.type == Xlib.X.KeyPress:
                     self.press()
-                elif event.type == X.KeyRelease:
+                elif event.type == Xlib.X.KeyRelease:
                     self.release()
 
     def run(self):
@@ -93,7 +93,7 @@ class KeyListener(threading.Thread):
         # Create a recording context; we only want key events
         self.ctx = self.record_dpy.record_create_context (
                 0
-               ,[record.AllClients]
+               ,[Xlib.ext.record.AllClients]
                ,[{
                   'core_requests'   : (0, 0)
                  ,'core_replies'    : (0, 0)
