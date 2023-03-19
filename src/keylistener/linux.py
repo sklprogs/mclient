@@ -157,26 +157,29 @@ class KeyListener:
         self.status = status
         print_v('Setting status to %d!' % self.status)
 
-
 Verbose = False
-# Do not quit when Control-c is pressed
-signal.signal(signal.SIGINT,catch_control_c)
-keylistener = KeyListener()
-keylistener.add_listener ('Control_L+c+c'
-                         ,lambda:keylistener.set_status(status=1)
-                         )
-keylistener.add_listener ('Control_R+c+c'
-                         ,lambda:keylistener.set_status(status=1)
-                         )
-keylistener.add_listener ('Control_L+Insert+Insert'
-                         ,lambda:keylistener.set_status(status=1)
-                         )
-keylistener.add_listener ('Control_R+Insert+Insert'
-                         ,lambda:keylistener.set_status(status=1)
-                         )
-keylistener.add_listener ('Alt_L+grave'
-                         ,lambda:keylistener.set_status(status=2)
-                         )
-keylistener.add_listener ('Alt_R+grave'
-                         ,lambda:keylistener.set_status(status=2)
-                         )
+
+
+if __name__ == '__main__':
+    Verbose = False
+    # Do not quit when Control-c is pressed
+    #signal.signal(signal.SIGINT,catch_control_c)
+    keylistener = KeyListener()
+    keylistener.add_listener ('Control_L+c+c'
+                             ,lambda:keylistener.set_status(status=1)
+                             )
+    keylistener.add_listener ('Control_R+c+c'
+                             ,lambda:keylistener.set_status(status=1)
+                             )
+    keylistener.add_listener ('Control_L+Insert+Insert'
+                             ,lambda:keylistener.set_status(status=1)
+                             )
+    keylistener.add_listener ('Control_R+Insert+Insert'
+                             ,lambda:keylistener.set_status(status=1)
+                             )
+    keylistener.add_listener ('Alt_L+grave'
+                             ,lambda:keylistener.set_status(status=2)
+                             )
+    keylistener.add_listener ('Alt_R+grave'
+                             ,lambda:keylistener.set_status(status=2)
+                             )
