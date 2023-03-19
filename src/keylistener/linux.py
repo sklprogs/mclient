@@ -7,6 +7,8 @@ import Xlib
 import Xlib.X
 import Xlib.XK
 import Xlib.display
+import threading
+
 
 def print_v(*args):
     if Verbose:
@@ -17,7 +19,7 @@ def catch_control_c(*args):
 
 
 
-class KeyListener:
+class KeyListener(threading.Thread):
     ''' Determine if hotkeys are pressed (globally in the system)
         Usage: keylistener = KeyListener()
         Initially: keylistener.addKeyListener("L_CTRL+L_SHIFT+y",callable)
@@ -27,6 +29,7 @@ class KeyListener:
         Now: keylistener.addKeyListener("Control_L+c+c",callable)
     '''
     def __init__(self):
+        threading.Thread.__init__(self)
         self.contextEventMask = [Xlib.X.KeyPress,Xlib.X.MotionNotify]
         # Give these some initial values
         # Hook to our display.
@@ -157,29 +160,27 @@ class KeyListener:
         self.status = status
         print_v('Setting status to %d!' % self.status)
 
+
 Verbose = False
-
-
-if __name__ == '__main__':
-    Verbose = False
-    # Do not quit when Control-c is pressed
-    #signal.signal(signal.SIGINT,catch_control_c)
-    keylistener = KeyListener()
-    keylistener.add_listener ('Control_L+c+c'
-                             ,lambda:keylistener.set_status(status=1)
-                             )
-    keylistener.add_listener ('Control_R+c+c'
-                             ,lambda:keylistener.set_status(status=1)
-                             )
-    keylistener.add_listener ('Control_L+Insert+Insert'
-                             ,lambda:keylistener.set_status(status=1)
-                             )
-    keylistener.add_listener ('Control_R+Insert+Insert'
-                             ,lambda:keylistener.set_status(status=1)
-                             )
-    keylistener.add_listener ('Alt_L+grave'
-                             ,lambda:keylistener.set_status(status=2)
-                             )
-    keylistener.add_listener ('Alt_R+grave'
-                             ,lambda:keylistener.set_status(status=2)
-                             )
+# Do not quit when Control-c is pressed
+signal.signal(signal.SIGINT,catch_control_c)
+keylistener = KeyListener()
+keylistener.add_listener ('Control_L+c+c'
+                         ,lambda:keylistener.set_status(status=1)
+                         )
+keylistener.add_listener ('Control_R+c+c'
+                         ,lambda:keylistener.set_status(status=1)
+                         )
+keylistener.add_listener ('Control_L+Insert+Insert'
+                         ,lambda:keylistener.set_status(status=1)
+                         )
+keylistener.add_listener ('Control_R+Insert+Insert'
+                         ,lambda:keylistener.set_status(status=1)
+                         )
+keylistener.add_listener ('Alt_L+grave'
+                         ,lambda:keylistener.set_status(status=2)
+                         )
+keylistener.add_listener ('Alt_R+grave'
+                         ,lambda:keylistener.set_status(status=2)
+                         )
+keylistener.start()
