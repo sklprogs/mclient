@@ -43,6 +43,7 @@ class App(PyQt5.QtWidgets.QWidget):
     
     def closeEvent(self,event):
         self.worker.cancel()
+        self.thread.wait()
         return super().closeEvent(event)
     
     def bind(self,hotkey,action):
