@@ -32,10 +32,6 @@ class Worker(PyQt5.QtCore.QObject):
         linux.keylistener.cancel()
         self.Running = False
         self.sig_end.emit()
-    
-    def test(self):
-        linux.keylistener.status = 2
-        self.sig_catch.emit(linux.keylistener.status)
 
 
 
@@ -44,6 +40,10 @@ class App(PyQt5.QtWidgets.QWidget):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.set_gui()
+    
+    def closeEvent(self,event):
+        self.worker.cancel()
+        return super().closeEvent(event)
     
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)

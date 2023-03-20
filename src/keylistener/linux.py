@@ -30,6 +30,7 @@ class KeyListener(threading.Thread):
     '''
     def __init__(self):
         threading.Thread.__init__(self)
+        self.finished = threading.Event()
         self.contextEventMask = [Xlib.X.KeyPress,Xlib.X.MotionNotify]
         # Give these some initial values
         # Hook to our display.
@@ -114,6 +115,7 @@ class KeyListener(threading.Thread):
         self.record_dpy.record_free_context(self.ctx)
 
     def cancel(self):
+        self.finished.set()
         self.local_dpy.record_disable_context(self.ctx)
         self.local_dpy.flush()
 
