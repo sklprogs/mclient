@@ -9,7 +9,7 @@ import PyQt5.QtWidgets
 import linux
 
 
-class Worker(PyQt5.QtCore.QObject):
+class Catcher(PyQt5.QtCore.QObject):
     
     sig_catch = PyQt5.QtCore.pyqtSignal(int)
     sig_end = PyQt5.QtCore.pyqtSignal()
@@ -19,12 +19,10 @@ class Worker(PyQt5.QtCore.QObject):
         self.Running = True
     
     def run(self):
-        print('Running thread...')
         while self.Running:
             # 'linux.keylistener.status' is reset to 0 after catching a hotkey
             status = linux.keylistener.check()
             if status:
-                print('Status changed!')
                 self.sig_catch.emit(status)
             time.sleep(.5)
     
@@ -42,7 +40,7 @@ class App(PyQt5.QtWidgets.QWidget):
         self.set_gui()
     
     def closeEvent(self,event):
-        self.worker.cancel()
+        self.catcher.cancel()
         self.thread.wait()
         return super().closeEvent(event)
     
@@ -62,13 +60,13 @@ class App(PyQt5.QtWidgets.QWidget):
     
     def run_thread(self):
         self.thread = PyQt5.QtCore.QThread()
-        self.worker = Worker()
-        self.worker.moveToThread(self.thread)
-        self.thread.started.connect(self.worker.run)
-        self.worker.sig_catch.connect(self.report)
-        self.worker.sig_end.connect(self.thread.quit)
-        self.worker.sig_end.connect(self.worker.deleteLater)
-        self.worker.sig_end.connect(self.thread.deleteLater)
+        self.catcher = Catcher()
+        self.catcher.moveToThread(self.thread)
+        self.thread.started.connect(self.catcher.run)
+        self.catcher.sig_catch.connect(self.report)
+        self.catcher.sig_end.connect(self.thread.quit)
+        self.catcher.sig_end.connect(self.catcher.deleteLater)
+        self.catcher.sig_end.connect(self.thread.deleteLater)
         self.thread.start()
 
 
