@@ -6,7 +6,16 @@ import time
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 
-import linux
+from skl_shared_qt.localize import _
+import skl_shared_qt.shared as sh
+
+if sh.objs.get_os().is_win():
+    import windows as osid
+elif sh.objs.os.is_lin():
+    import linux as osid
+else:
+    #TODO: create and import dummy module
+    import linux as osid
 
 
 class Catcher(PyQt5.QtCore.QObject):
@@ -20,14 +29,14 @@ class Catcher(PyQt5.QtCore.QObject):
     
     def run(self):
         while self.Running:
-            # 'linux.keylistener.status' is reset to 0 after catching a hotkey
-            status = linux.keylistener.check()
+            # 'osid.keylistener.status' is reset to 0 after catching a hotkey
+            status = osid.keylistener.check()
             if status:
                 self.sig_catch.emit(status)
             time.sleep(.5)
     
     def cancel(self):
-        linux.keylistener.cancel()
+        osid.keylistener.cancel()
         self.Running = False
         self.sig_end.emit()
 
