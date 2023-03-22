@@ -30,13 +30,13 @@ class Catcher:
     def run(self):
         while self.Running:
             # 'osid.keylistener.status' is reset to 0 after catching a hotkey
-            status = osid.keylistener.check()
+            status = osid.objs.get_listener().check()
             if status:
                 self.gui.catch(status)
             time.sleep(.5)
     
     def end(self):
-        osid.keylistener.cancel()
+        osid.objs.get_listener().cancel()
         self.Running = False
         self.gui.end()
     
@@ -59,6 +59,7 @@ class Thread:
     def __init__(self,catch_action):
         self.catcher = Catcher()
         self.thread = gi.Thread()
+        osid.com.start()
         self.bind(catch_action)
     
     def delete_later(self):

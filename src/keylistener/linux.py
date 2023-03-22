@@ -10,15 +10,6 @@ import Xlib.display
 import threading
 
 
-def print_v(*args):
-    if Verbose:
-        print(*args)
-
-def catch_control_c(*args):
-    pass
-
-
-
 class KeyListener(threading.Thread):
     ''' Determine if hotkeys are pressed (globally in the system)
         Usage: keylistener = KeyListener()
@@ -58,7 +49,7 @@ class KeyListener(threading.Thread):
         if reply.category != Xlib.ext.record.FromServer:
             return
         if reply.client_swapped:
-            print_v('* received swapped protocol data, cowardly ignored')
+            com.print_v('* received swapped protocol data, cowardly ignored')
             return
         # I added 'str', since we receive an error without it
         if not len(str(reply.data)) or ord(str(reply.data[0])) < 2:
@@ -79,13 +70,13 @@ class KeyListener(threading.Thread):
     def run(self):
         # Check if the extension is present
         if not self.record_dpy.has_extension('RECORD'):
-            print_v('RECORD extension not found')
+            com.com.print_v('RECORD extension not found')
             sys.exit(1)
         r = self.record_dpy.record_get_version(0,0)
         mes = 'RECORD extension version {}.{}'.format (r.major_version
                                                       ,r.minor_version
                                                       )
-        print_v(mes)
+        com.print_v(mes)
         # Create a recording context; we only want key events
         self.ctx = self.record_dpy.record_create_context (
                 0
@@ -135,7 +126,7 @@ class KeyListener(threading.Thread):
         elif self.character in ('c','Insert','grave'):
             self.append()
         action = self.listeners.get(tuple(self.pressed), False)
-        print_v('Current action:', str(tuple(self.pressed)))
+        com.print_v('Current action:', str(tuple(self.pressed)))
         if action:
             action()
 
@@ -148,41 +139,75 @@ class KeyListener(threading.Thread):
 
     def add_listener(self,hotkeys,callable):
         keys = tuple(hotkeys.split('+'))
-        print_v('Added new keylistener for :',str(keys))
+        com.print_v('Added new keylistener for :',str(keys))
         self.listeners[keys] = callable
         
     def check(self): # Returns 0..2
         if self.status:
-            print_v('Hotkey has been caught!')
+            com.print_v('Hotkey has been caught!')
             status = self.status
             self.status = 0
             return status
             
     def set_status(self,status=0):
         self.status = status
-        print_v('Setting status to %d!' % self.status)
+        com.print_v('Setting status to %d!' % self.status)
+    
+    def set_bindings(self):
+        self.add_listener ('Control_L+c+c'
+                         ,lambda:self.set_status(status=1)
+                         )
+        self.add_listener ('Control_R+c+c'
+                         ,lambda:self.set_status(status=1)
+                         )
+        self.add_listener ('Control_L+Insert+Insert'
+                          ,lambda:self.set_status(status=1)
+                          )
+        self.add_listener ('Control_R+Insert+Insert'
+                          ,lambda:self.set_status(status=1)
+                          )
+        self.add_listener ('Alt_L+grave'
+                          ,lambda:self.set_status(status=2)
+                          )
+        self.add_listener ('Alt_R+grave'
+                          ,lambda:self.set_status(status=2)
+                          )
 
 
-Verbose = False
-# Do not quit when Control-c is pressed
-signal.signal(signal.SIGINT,catch_control_c)
-keylistener = KeyListener()
-keylistener.add_listener ('Control_L+c+c'
-                         ,lambda:keylistener.set_status(status=1)
-                         )
-keylistener.add_listener ('Control_R+c+c'
-                         ,lambda:keylistener.set_status(status=1)
-                         )
-keylistener.add_listener ('Control_L+Insert+Insert'
-                         ,lambda:keylistener.set_status(status=1)
-                         )
-keylistener.add_listener ('Control_R+Insert+Insert'
-                         ,lambda:keylistener.set_status(status=1)
-                         )
-keylistener.add_listener ('Alt_L+grave'
-                         ,lambda:keylistener.set_status(status=2)
-                         )
-keylistener.add_listener ('Alt_R+grave'
-                         ,lambda:keylistener.set_status(status=2)
-                         )
-keylistener.start()
+
+class Commands:
+    
+    def __init__(self):
+        self.Verbose = False
+        self.supress_ctrl_c()
+    
+    def supress_ctrl_c(self):
+        # Do not quit when Control-c is pressed
+        signal.signal(signal.SIGINT,self.catch_control_c)
+    
+    def print_v(self,*args):
+        if self.Verbose:
+            print(*args)
+
+    def catch_control_c(self,*args):
+        pass
+    
+    def start(self):
+        objs.get_listener().set_bindings()
+        objs.listener.start()
+
+
+
+class Objects:
+    
+    def __init__(self):
+        self.listener = None
+    
+    def get_listener(self):
+        if self.listener is None:
+            self.listener = KeyListener()
+        return self.listener
+
+
+objs = Objects()
+com = Commands()
