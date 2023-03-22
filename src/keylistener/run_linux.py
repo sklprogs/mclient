@@ -57,10 +57,9 @@ class Catcher:
 class Thread:
     
     def __init__(self,catch_action):
+        self.catch_action = catch_action
         self.catcher = Catcher()
         self.thread = gi.Thread()
-        osid.com.start()
-        self.bind(catch_action)
     
     def delete_later(self):
         self.catcher.delete_later()
@@ -73,21 +72,23 @@ class Thread:
         self.catcher.bind_end(self.thread.quit)
         self.catcher.bind_end(self.delete_later)
     
-    def _bind_catch(self,catch_action):
-        self.catcher.bind_catch(catch_action)
+    def _bind_catch(self):
+        self.catcher.bind_catch(self.catch_action)
     
-    def bind(self,catch_action):
+    def bind(self):
         self._bind_start()
-        self._bind_catch(catch_action)
+        self._bind_catch()
         self._bind_end()
     
     def start(self):
+        osid.com.start()
         self.catcher.move_to_thread(self.thread)
         self.thread.start()
+        self.bind()
     
     def wait(self):
         # Calling in-built function
-        self.gui.wait()
+        self.thread.wait()
     
     def end(self):
         self.catcher.end()
