@@ -10,11 +10,11 @@ from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 if sh.objs.get_os().is_win():
-    import windows as osid
+    import os_specific.windows as osid
 elif sh.objs.os.is_lin():
-    import linux as osid
+    import os_specific.linux as osid
 else:
-    import unsupported as osid
+    import os_specific.unsupported as osid
 
 
 class Catcher(PyQt5.QtCore.QObject):
