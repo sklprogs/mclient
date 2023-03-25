@@ -27,6 +27,9 @@ class Catcher(PyQt5.QtCore.QObject):
         super().__init__(*args,**kwargs)
         self.Running = True
     
+    def bind_catch(self,action):
+        self.sig_catch.connect(action)
+    
     def delete_later(self):
         self.deleteLater()
     
