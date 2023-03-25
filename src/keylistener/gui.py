@@ -27,6 +27,9 @@ class Catcher(PyQt5.QtCore.QObject):
         super().__init__(*args,**kwargs)
         self.Running = True
     
+    def delete_later(self):
+        self.deleteLater()
+    
     def move_to_thread(self,thread):
         self.moveToThread(thread)
     
@@ -45,10 +48,16 @@ class Catcher(PyQt5.QtCore.QObject):
 
 
 
-class Thread:
+class Thread(PyQt5.QtCore.QThread):
+    # Built-in functions that are called: start, quit, wait
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
     
-    def __init__(self):
-        self.thread = PyQt5.QtCore.QThread()
+    def bind_start(self,action):
+        self.started.connect(action)
+    
+    def delete_later(self):
+        self.deleteLater()
 
 
 
@@ -60,7 +69,7 @@ class App(PyQt5.QtWidgets.QWidget):
     
     def closeEvent(self,event):
         self.catcher.cancel()
-        self.ithread.thread.wait()
+        self.ithread.wait()
         return super().closeEvent(event)
     
     def bind(self,hotkey,action):
@@ -76,8 +85,8 @@ class App(PyQt5.QtWidgets.QWidget):
     def run_thread(self):
         self.ithread = Thread()
         self.catcher = Catcher()
-        self.catcher.move_to_thread(self.ithread.thread)
-        self.ithread.thread.started.connect(self.catcher.run)
-        self.catcher.sig_end.connect(self.ithread.thread.quit)
-        self.catcher.sig_end.connect(self.catcher.deleteLater)
-        self.catcher.sig_end.connect(self.ithread.thread.deleteLater)
+        self.catcher.move_to_thread(self.ithread)
+        self.ithread.bind_start(self.catcher.run)
+        self.catcher.sig_end.connect(self.ithread.quit)
+        self.catcher.sig_end.connect(self.catcher.delete_later)
+        self.catcher.sig_end.connect(self.ithread.delete_later)
