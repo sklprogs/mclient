@@ -27,6 +27,9 @@ class Catcher(PyQt5.QtCore.QObject):
         super().__init__(*args,**kwargs)
         self.Running = True
     
+    def move_to_thread(self,thread):
+        self.moveToThread(thread)
+    
     def run(self):
         while self.Running:
             # 'osid.keylistener.status' is reset to 0 after catching a hotkey
@@ -42,6 +45,13 @@ class Catcher(PyQt5.QtCore.QObject):
 
 
 
+class Thread:
+    
+    def __init__(self):
+        self.thread = PyQt5.QtCore.QThread()
+
+
+
 class App(PyQt5.QtWidgets.QWidget):
     
     def __init__(self,*args,**kwargs):
@@ -50,7 +60,7 @@ class App(PyQt5.QtWidgets.QWidget):
     
     def closeEvent(self,event):
         self.catcher.cancel()
-        self.thread.wait()
+        self.ithread.thread.wait()
         return super().closeEvent(event)
     
     def bind(self,hotkey,action):
@@ -64,10 +74,10 @@ class App(PyQt5.QtWidgets.QWidget):
         self.setLayout(layout_)
     
     def run_thread(self):
-        self.thread = PyQt5.QtCore.QThread()
+        self.ithread = Thread()
         self.catcher = Catcher()
-        self.catcher.moveToThread(self.thread)
-        self.thread.started.connect(self.catcher.run)
-        self.catcher.sig_end.connect(self.thread.quit)
+        self.catcher.move_to_thread(self.ithread.thread)
+        self.ithread.thread.started.connect(self.catcher.run)
+        self.catcher.sig_end.connect(self.ithread.thread.quit)
         self.catcher.sig_end.connect(self.catcher.deleteLater)
-        self.catcher.sig_end.connect(self.thread.deleteLater)
+        self.catcher.sig_end.connect(self.ithread.thread.deleteLater)

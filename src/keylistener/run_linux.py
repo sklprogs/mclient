@@ -24,7 +24,7 @@ class App:
     def run_thread(self):
         self.gui.run_thread()
         self.gui.catcher.sig_catch.connect(self.report)
-        self.gui.thread.start()
+        self.gui.ithread.thread.start()
     
     def show(self):
         self.gui.show()
