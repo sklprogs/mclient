@@ -87,7 +87,7 @@ class Thread:
         self.bind()
     
     def wait(self):
-        # Calling in-built function
+        # Calling built-in function
         self.thread.wait()
     
     def end(self):
@@ -104,7 +104,7 @@ class App(PyQt5.QtWidgets.QWidget):
         self.set_gui()
     
     def closeEvent(self,event):
-        self.thread.end()
+        self.ithread.end()
         return super().closeEvent(event)
     
     def bind(self,hotkey,action):
@@ -122,17 +122,16 @@ class App(PyQt5.QtWidgets.QWidget):
         self.setLayout(layout_)
     
     def set_thread(self):
-        self.thread = Thread(self.report)
-        self.thread.start()
+        # Do not override built-in method
+        self.ithread = Thread(self.report)
+        self.ithread.start()
         
 
 
 if __name__ == '__main__':
     f = '__main__'
     sh.com.start()
-    #exe = PyQt5.QtWidgets.QApplication(sys.argv)
     app = App()
     #app.set_thread()
     app.show()
-    #sys.exit(exe.exec_())
     sh.com.end()
