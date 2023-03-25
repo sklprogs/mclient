@@ -14,8 +14,7 @@ if sh.objs.get_os().is_win():
 elif sh.objs.os.is_lin():
     import linux as osid
 else:
-    #TODO: create and import dummy module
-    import linux as osid
+    import unsupported as osid
 
 
 class Catcher(PyQt5.QtCore.QObject):
