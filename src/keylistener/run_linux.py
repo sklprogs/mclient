@@ -81,8 +81,8 @@ class App(PyQt5.QtWidgets.QWidget):
 
 if __name__ == '__main__':
     f = '__main__'
-    exe = PyQt5.QtWidgets.QApplication(sys.argv)
+    sh.com.start()
     app = App()
     app.show()
     app.run_thread()
-    sys.exit(exe.exec_())
+    sh.com.end()
