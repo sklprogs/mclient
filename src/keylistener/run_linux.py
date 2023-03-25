@@ -9,80 +9,34 @@ import PyQt5.QtWidgets
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-if sh.objs.get_os().is_win():
-    import windows as osid
-elif sh.objs.os.is_lin():
-    import linux as osid
-else:
-    #TODO: create and import dummy module
-    import linux as osid
+import gui as gi
 
 
-class Catcher(PyQt5.QtCore.QObject):
+class App:
     
-    sig_catch = PyQt5.QtCore.pyqtSignal(int)
-    sig_end = PyQt5.QtCore.pyqtSignal()
-    
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-        self.Running = True
-    
-    def run(self):
-        while self.Running:
-            # 'osid.keylistener.status' is reset to 0 after catching a hotkey
-            status = osid.keylistener.check()
-            if status:
-                self.sig_catch.emit(status)
-            time.sleep(.5)
-    
-    def cancel(self):
-        osid.keylistener.cancel()
-        self.Running = False
-        self.sig_end.emit()
-
-
-
-class App(PyQt5.QtWidgets.QWidget):
-    
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-        self.set_gui()
-    
-    def closeEvent(self,event):
-        self.catcher.cancel()
-        self.thread.wait()
-        return super().closeEvent(event)
-    
-    def bind(self,hotkey,action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
+    def __init__(self):
+        self.gui = gi.App()
     
     def report(self):
         print('Triggered')
-        self.button.setText('SUCCESS')
-    
-    def set_gui(self):
-        self.button = PyQt5.QtWidgets.QPushButton()
-        self.button.setText('Click me!')
-        layout_ = PyQt5.QtWidgets.QHBoxLayout()
-        layout_.addWidget(self.button)
-        self.setLayout(layout_)
+        self.gui.button.setText('SUCCESS')
     
     def run_thread(self):
-        self.thread = PyQt5.QtCore.QThread()
-        self.catcher = Catcher()
-        self.catcher.moveToThread(self.thread)
-        self.thread.started.connect(self.catcher.run)
-        self.catcher.sig_catch.connect(self.report)
-        self.catcher.sig_end.connect(self.thread.quit)
-        self.catcher.sig_end.connect(self.catcher.deleteLater)
-        self.catcher.sig_end.connect(self.thread.deleteLater)
-        self.thread.start()
+        self.gui.run_thread()
+        self.gui.catcher.bind_catch(self.report)
+        self.gui.ithread.start()
+    
+    def show(self):
+        self.gui.show()
+    
+    def close(self):
+        self.gui.close()
 
 
 if __name__ == '__main__':
     f = '__main__'
-    exe = PyQt5.QtWidgets.QApplication(sys.argv)
+    sh.com.start()
     app = App()
     app.show()
     app.run_thread()
-    sys.exit(exe.exec_())
+    sh.com.end()
