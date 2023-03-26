@@ -25,6 +25,9 @@ import settings.controller as st
 import history.controller as hs
 import save.controller as sv
 import popup.controller as pp
+# Cannot import 'os_specific' without this
+sys.path.append('keylistener')
+import keylistener.gui as kg
 
 
 DEBUG = False
@@ -1021,10 +1024,18 @@ class Table:
 class App:
     
     def __init__(self):
+        # 'thread' name is OK here, but will override a built-in method in GUI
+        self.thread = kg.Thread()
         self.logic = lg.App()
         self.gui = gi.App()
         self.set_gui()
         self.update_ui()
+    
+    def catch(self):
+        print('Caught!')
+    
+    def run_thread(self):
+        self.thread.run_thread()
     
     def edit_blacklist(self):
         f = '[MClient] mclient.App.edit_blacklist'
@@ -1712,6 +1723,10 @@ class App:
     def quit(self):
         lg.objs.get_order().save()
         lg.com.save_config()
+        self.thread.end()
+        ''' For this code to be executed last, it's not enough to put it in 
+            '__main__' right before 'sh.com.end'.
+        '''
         mes = _('Goodbye!')
         sh.objs.get_mes(f,mes,True).show_debug()
     
@@ -1904,6 +1919,8 @@ class App:
         self.history.gui.sig_go.connect(self.go_history)
         
         self.prior.gui.sig_close.connect(self.prior.close)
+        
+        self.thread.bind_catch(self.catch)
     
     def set_title(self,title='MClientQt'):
         self.gui.set_title(title)
@@ -2003,4 +2020,5 @@ if __name__ == '__main__':
     app.load_article()
     timer.end()
     app.show()
+    app.run_thread()
     sh.com.end()
