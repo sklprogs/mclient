@@ -1,11 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import sys
-import time
-import PyQt5.QtCore
-import PyQt5.QtWidgets
-
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
