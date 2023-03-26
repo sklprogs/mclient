@@ -1039,6 +1039,14 @@ class App:
             sh.com.rep_lazy(f)
             return
         sh.Geometry(self.about.logic.product).activate()
+        if status == 1:
+            new_clipboard = sh.Clipboard().paste()
+            new_clipboard = new_clipboard.strip()
+            if new_clipboard:
+                lg.objs.get_request().search = new_clipboard
+                self.go_search()
+            else:
+                sh.com.rep_empty(f)
     
     def run_thread(self):
         self.thread.run_thread()
