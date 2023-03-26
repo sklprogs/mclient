@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import sys
 import time
 import PyQt5.QtCore
 import PyQt5.QtWidgets
@@ -80,40 +79,3 @@ class Thread(PyQt5.QtCore.QThread):
         self.catcher.sig_end.connect(self.quit)
         self.catcher.sig_end.connect(self.delete_later)
         self.start()
-
-
-
-class App(PyQt5.QtWidgets.QWidget):
-    
-    sig_close = PyQt5.QtCore.pyqtSignal()
-    
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-        self.set_gui()
-    
-    def closeEvent(self,event):
-        self.sig_close.emit()
-        return super().closeEvent(event)
-    
-    def report(self):
-        print('Triggered')
-        self.button.setText('SUCCESS')
-    
-    def bind(self,hotkey,action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
-    
-    def set_gui(self):
-        self.button = PyQt5.QtWidgets.QPushButton()
-        self.button.setText('Click me!')
-        layout_ = PyQt5.QtWidgets.QHBoxLayout()
-        layout_.addWidget(self.button)
-        self.setLayout(layout_)
-
-
-if __name__ == '__main__':
-    f = '__main__'
-    sh.com.start()
-    app = App()
-    app.show()
-    app.run_thread()
-    sh.com.end()
