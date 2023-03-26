@@ -7,13 +7,6 @@ import PyQt5.QtWidgets
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-if sh.objs.get_os().is_win():
-    import os_specific.windows as osid
-elif sh.objs.os.is_lin():
-    import os_specific.linux as osid
-else:
-    import os_specific.unsupported as osid
-
 import gui as gi
 
 
@@ -72,7 +65,7 @@ class Gui(PyQt5.QtWidgets.QWidget):
 
 
 if __name__ == '__main__':
-    f = '[MClientQt] test_listener.__main__'
+    f = '[MClientQt] keylistener.test.__main__'
     sh.com.start()
     app = App()
     app.show()
