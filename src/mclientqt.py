@@ -1031,8 +1031,14 @@ class App:
         self.set_gui()
         self.update_ui()
     
-    def catch(self):
-        print('Caught!')
+    def catch(self,status=0):
+        f = '[MClientQt] mclient.App.catch'
+        mes = _('Status: {}').format(status)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        if not sh.lg.globs['bool']['CaptureHotkey'] or not status:
+            sh.com.rep_lazy(f)
+            return
+        sh.Geometry(self.about.logic.product).activate()
     
     def run_thread(self):
         self.thread.run_thread()
@@ -1922,7 +1928,7 @@ class App:
         
         self.thread.bind_catch(self.catch)
     
-    def set_title(self,title='MClientQt'):
+    def set_title(self,title):
         self.gui.set_title(title)
     
     def set_gui(self):
@@ -1930,14 +1936,15 @@ class App:
         self.panel = gi.Panel()
         self.about = About()
         self.symbols = sm.Symbols()
-        self.welcome = Welcome(self.about.get_product())
+        product = self.about.get_product()
+        self.welcome = Welcome(product)
         self.settings = st.objs.get_settings()
         self.history = hs.History()
         self.save = Save()
         self.block = bl.Blacklist(func_group=lg.objs.get_plugins().get_group_with_header)
         self.prior = Priorities()
         self.gui.set_gui(self.table.gui,self.panel)
-        self.set_title()
+        self.set_title(product)
         self.set_bindings()
 
 
