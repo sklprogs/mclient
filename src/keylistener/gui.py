@@ -16,6 +16,9 @@ elif sh.objs.os.is_lin():
 else:
     import os_specific.unsupported as osid
 
+''' I tried to move non-gui-specific code to 'controller'; however, each time
+    I move 'Catcher.run' out, GUI freezes.
+'''
 
 class Catcher(PyQt5.QtCore.QObject):
     
@@ -74,6 +77,10 @@ class App(PyQt5.QtWidgets.QWidget):
         self.ithread.wait()
         return super().closeEvent(event)
     
+    def report(self):
+        print('Triggered')
+        self.button.setText('SUCCESS')
+    
     def bind(self,hotkey,action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
     
@@ -92,3 +99,14 @@ class App(PyQt5.QtWidgets.QWidget):
         self.catcher.sig_end.connect(self.ithread.quit)
         self.catcher.sig_end.connect(self.catcher.delete_later)
         self.catcher.sig_end.connect(self.ithread.delete_later)
+        self.catcher.bind_catch(self.report)
+        self.ithread.start()
+
+
+if __name__ == '__main__':
+    f = '__main__'
+    sh.com.start()
+    app = App()
+    app.show()
+    app.run_thread()
+    sh.com.end()
