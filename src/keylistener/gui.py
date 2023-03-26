@@ -47,8 +47,9 @@ class Catcher(PyQt5.QtCore.QObject):
             time.sleep(.5)
     
     def cancel(self):
-        osid.keylistener.cancel()
         self.Running = False
+        osid.keylistener.cancel()
+        self.delete_later()
         self.sig_end.emit()
 
 
@@ -77,7 +78,6 @@ class Thread(PyQt5.QtCore.QThread):
         self.catcher.move_to_thread(self)
         self.bind_start(self.catcher.run)
         self.catcher.sig_end.connect(self.quit)
-        self.catcher.sig_end.connect(self.catcher.delete_later)
         self.catcher.sig_end.connect(self.delete_later)
         self.start()
 
