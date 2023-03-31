@@ -9,11 +9,11 @@ from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 if sh.objs.get_os().is_win():
-    import os_specific.windows as osid
+    from . import windows as osid
 elif sh.objs.os.is_lin():
-    import os_specific.linux as osid
+    from . import linux as osid
 else:
-    import os_specific.unsupported as osid
+    from . import unsupported as osid
 
 ''' I tried to move non-gui-specific code to 'controller'; however, each time
     I move 'Catcher.run' out, GUI freezes.

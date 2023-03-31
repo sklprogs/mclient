@@ -25,8 +25,6 @@ import settings.controller as st
 import history.controller as hs
 import save.controller as sv
 import popup.controller as pp
-# Cannot import 'os_specific' without this
-sys.path.append('keylistener')
 import keylistener.gui as kg
 
 
