@@ -202,19 +202,19 @@ class AnalyzeTag:
     
     def set_attr(self):
         f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.set_attr'
-        if self.Success:
-            if self._is_tag():
-                self._set_close()
-                self._set_text()
-                self._set_name()
-                self._set_type()
-                self._set_url()
-                self._set_dicf()
-            else:
-                self.tag.type_ = 'text'
-                self.tag.text = self.fragm
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if self._is_tag():
+            self._set_close()
+            self._set_text()
+            self._set_name()
+            self._set_type()
+            self._set_url()
+            self._set_dicf()
+        else:
+            self.tag.type_ = 'text'
+            self.tag.text = self.fragm
     
     def run(self):
         self.check()
@@ -222,20 +222,21 @@ class AnalyzeTag:
         return self.tag
     
     def _set_url(self):
-        if self.tag.type_ == 'url':
-            self.tag.url = self.tag.text
-            pattern = 'href="/m.exe?'
-            # Can be either 'm.exe' or 'M.exe'
-            ind = self.tag.url.lower().find(pattern)
-            if ind > 0:
-                ind += len(pattern)
-                self.tag.url = self.tag.url[ind:]
-            else:
-                self.tag.url = ''
-            if self.tag.url.endswith('"'):
-                self.tag.url = self.tag.url[:-1]
-            else:
-                self.tag.url = ''
+        if self.tag.type_ != 'url':
+            return
+        self.tag.url = self.tag.text
+        pattern = 'href="/m.exe?'
+        # Can be either 'm.exe' or 'M.exe'
+        ind = self.tag.url.lower().find(pattern)
+        if ind > 0:
+            ind += len(pattern)
+            self.tag.url = self.tag.url[ind:]
+        else:
+            self.tag.url = ''
+        if self.tag.url.endswith('"'):
+            self.tag.url = self.tag.url[:-1]
+        else:
+            self.tag.url = ''
 
 
 
@@ -254,9 +255,8 @@ class Block:
         self.last = -1
         self.no = -1
         self.same = -1
-        ''' 'select' is an attribute of a *cell* which is valid
-            if the cell has a non-blocked block of types 'term',
-            'phrase' or 'transc'.
+        ''' 'select' is an attribute of a *cell* which is valid if the cell has
+            a non-blocked block of types 'term', 'phrase' or 'transc'.
         '''
         self.select = -1
         self.speech = ''
@@ -264,8 +264,8 @@ class Block:
         self.transc = ''
         self.term = ''
         self.text = ''
-        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase',
-            'speech', 'term', 'transc', 'wform'
+        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
+            'term', 'transc', 'wform'.
         '''
         self.type_ = 'comment'
         self.url = ''
@@ -304,39 +304,38 @@ class Tags:
     
     def set_inherent(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.set_inherent'
-        if self.Success:
-            for tag in self.tags:
-                if tag.Close:
-                    self._close(tag.name)
-                elif tag.type_ == 'text':
-                    tag.inherent = list(self.open)
-                elif tag.type_:
-                    self.open.append(tag)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        for tag in self.tags:
+            if tag.Close:
+                self._close(tag.name)
+            elif tag.type_ == 'text':
+                tag.inherent = list(self.open)
+            elif tag.type_:
+                self.open.append(tag)
     
     def set_nos(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.set_nos'
-        if self.Success:
-            currow = -1
-            curcell = -1
-            for tag in self.tags:
-                if not tag.Close:
-                    if tag.name in ('tr','br'):
-                        currow += 1
-                    elif tag.name == 'td':
-                        curcell += 1
-                tag.rowno = currow
-                tag.cellno = curcell
-            """
-            ''' tag.cellno == -1 is actually OK since rows come before
-                any cells.
-            '''
-            for tag in self.tags:
-                if tag.rowno > -1:
-                    tag.cellno += 1
-                break
-            """
+        if not self.Success:
+            return
+        currow = -1
+        curcell = -1
+        for tag in self.tags:
+            if not tag.Close:
+                if tag.name in ('tr','br'):
+                    currow += 1
+                elif tag.name == 'td':
+                    curcell += 1
+            tag.rowno = currow
+            tag.cellno = curcell
+        """
+        # tag.cellno == -1 is actually OK since rows come before any cells.
+        for tag in self.tags:
+            if tag.rowno > -1:
+                tag.cellno += 1
+            break
+        """
     
     def _debug_blocks(self):
         nos = [i + 1 for i in range(len(self.blocks))]
@@ -362,37 +361,37 @@ class Tags:
     
     def set_blocks(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.set_blocks'
-        if self.Success:
-            tags = [tag for tag in self.tags \
-                    if tag.type_ == 'text' and not self._is_script(tag)
-                   ]
-            for tag in tags:
-                block = Block()
-                for subtag in tag.inherent:
-                    if subtag.type_ == 'url':
-                        block.url = subtag.url
-                        block.dicf = subtag.dicf
-                    else:
-                        block.type_ = subtag.type_
-                block.text = tag.text
-                block.rowno = tag.rowno
-                block.cellno = tag.cellno
-                # This is because MT generates invalid links
-                block.url = html.unescape(block.url)
-                block.text = html.unescape(block.text)
-                if block.type_ in ('dic','phdic'):
-                    block.dic = block.text
-                self.blocks.append(block)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        tags = [tag for tag in self.tags if tag.type_ == 'text' \
+                and not self._is_script(tag)
+               ]
+        for tag in tags:
+            block = Block()
+            for subtag in tag.inherent:
+                if subtag.type_ == 'url':
+                    block.url = subtag.url
+                    block.dicf = subtag.dicf
+                else:
+                    block.type_ = subtag.type_
+            block.text = tag.text
+            block.rowno = tag.rowno
+            block.cellno = tag.cellno
+            # This is because MT generates invalid links
+            block.url = html.unescape(block.url)
+            block.text = html.unescape(block.text)
+            if block.type_ in ('dic','phdic'):
+                block.dic = block.text
+            self.blocks.append(block)
     
     def assign(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.assign'
-        if self.Success:
-            for fragm in self.fragms:
-                self.tags.append(AnalyzeTag(fragm).run())
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        for fragm in self.fragms:
+            self.tags.append(AnalyzeTag(fragm).run())
     
     def _debug_code(self):
         return _('Code:') + '\n' + '"{}"'.format(self.code)
@@ -438,17 +437,16 @@ class Tags:
     
     def debug(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.debug'
-        if self.Debug:
-            if self.Success:
-                mes = [self._debug_code(),self._debug_fragms()
-                      ,self._debug_tags(),self._debug_blocks()
-                      ]
-                mes = '\n\n'.join(mes)
-                sh.com.run_fast_debug(f,mes)
-            else:
-                sh.com.cancel(f)
-        else:
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not self.Debug:
             sh.com.rep_lazy(f)
+            return
+        mes = [self._debug_code(),self._debug_fragms()
+              ,self._debug_tags(),self._debug_blocks()
+              ]
+        sh.com.run_fast_debug(f,'\n\n'.join(mes))
     
     def check(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.check'
@@ -460,23 +458,23 @@ class Tags:
     
     def split(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.split'
-        if self.Success:
-            fragm = ''
-            for sym in list(self.code):
-                if sym == '<':
-                    if fragm:
-                        self.fragms.append(fragm)
-                    fragm = sym
-                elif sym == '>':
-                    fragm += sym
-                    self.fragms.append(fragm)
-                    fragm = ''
-                else:
-                    fragm += sym
-            if fragm:
-                self.fragms.append(fragm)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        fragm = ''
+        for sym in list(self.code):
+            if sym == '<':
+                if fragm:
+                    self.fragms.append(fragm)
+                fragm = sym
+            elif sym == '>':
+                fragm += sym
+                self.fragms.append(fragm)
+                fragm = ''
+            else:
+                fragm += sym
+        if fragm:
+            self.fragms.append(fragm)
     
     def fix_non_tags(self):
         ''' - Work around '<' and '>' that can be unquoted at
@@ -485,30 +483,29 @@ class Tags:
             - Takes ~0.024s for 'set' (EN-RU) on AMD E-300
         '''
         f = '[MClient] plugins.multitrancom.tags.Tags.fix_non_tags'
-        if self.Success:
-            count = 0
-            mes = []
-            # <!--, </
-            allowed = sh.lg.lat_alphabet_low + '!' + '/'
-            for i in range(len(self.fragms)):
-                ''' We should check only symbol #1 since 'multitran.com'
-                    uses URI instead of URL (https://stackoverflow.com/questions/1547899/which-characters-make-a-url-invalid),
-                    so URL tags can actually comprise Cyrillic, but not
-                    at the very beginning.
-                '''
-                if self.fragms[i].startswith('<') \
-                and len(self.fragms[i]) > 1 \
-                and not self.fragms[i][1] in allowed:
-                    mes.append(self.fragms[i])
-                    self.fragms[i] = self.fragms[i].replace('<','')
-                    self.fragms[i] = self.fragms[i].replace('>','')
-                    count += 1
-            #mes = sorted(set(mes))
-            mes = '; '.join(mes)
-            sh.objs.get_mes(f,mes,True).show_debug()
-            sh.com.rep_matches(f,count)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        count = 0
+        mes = []
+        # <!--, </
+        allowed = sh.lg.lat_alphabet_low + '!' + '/'
+        for i in range(len(self.fragms)):
+            ''' We should check only symbol #1 since 'multitran.com' uses URI
+                instead of URL (https://stackoverflow.com/questions/1547899/which-characters-make-a-url-invalid),
+                so URL tags can actually comprise Cyrillic, but not at the very
+                beginning.
+            '''
+            if self.fragms[i].startswith('<') and len(self.fragms[i]) > 1 \
+            and not self.fragms[i][1] in allowed:
+                mes.append(self.fragms[i])
+                self.fragms[i] = self.fragms[i].replace('<','')
+                self.fragms[i] = self.fragms[i].replace('>','')
+                count += 1
+        #mes = sorted(set(mes))
+        mes = '; '.join(mes)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.com.rep_matches(f,count)
     
     def run(self):
         self.check()

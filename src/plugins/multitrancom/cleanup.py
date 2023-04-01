@@ -33,34 +33,33 @@ class CleanUp:
             Takes ~0.056s for 'set' (EN-RU) on AMD E-300.
         '''
         f = '[MClientQt] plugins.multitrancom.cleanup.CleanUp.fix_href'
-        if self.text:
-            count = 0
-            isearch = sh.Search (text = self.text
-                                ,pattern = 'href="'
-                                )
-            poses = isearch.get_next_loop()
-            poses = poses[::-1]
-            for pos in poses:
-                pos += len('href="')
-                isearch.reset (text = self.text
-                              ,pattern = '"'
-                              )
-                isearch.i = pos
-                pos1 = isearch.get_next()
-                if str(pos1).isdigit():
-                    fragm = self.text[pos:pos1]
-                    if '<' in fragm or '>' in fragm:
-                        fragm = fragm.replace('<','&lt;')
-                        fragm = fragm.replace('>','&gt;')
-                        self.text = self.text[0:pos] + fragm \
-                                  + self.text[pos1:]
-                        count += 1
-                else:
-                    mes = _('Malformed HTML code!')
-                    sh.objs.get_mes(f,mes,True).show_warning()
-            sh.com.rep_matches(f,count)
-        else:
+        if not self.text:
             sh.com.rep_empty(f)
+            return
+        count = 0
+        isearch = sh.Search (text = self.text
+                            ,pattern = 'href="'
+                            )
+        poses = isearch.get_next_loop()
+        poses = poses[::-1]
+        for pos in poses:
+            pos += len('href="')
+            isearch.reset (text = self.text
+                          ,pattern = '"'
+                          )
+            isearch.i = pos
+            pos1 = isearch.get_next()
+            if not str(pos1).isdigit():
+                mes = _('Malformed HTML code!')
+                sh.objs.get_mes(f,mes,True).show_warning()
+                continue
+            fragm = self.text[pos:pos1]
+            if '<' in fragm or '>' in fragm:
+                fragm = fragm.replace('<','&lt;')
+                fragm = fragm.replace('>','&gt;')
+                self.text = self.text[0:pos] + fragm + self.text[pos1:]
+                count += 1
+        sh.com.rep_matches(f,count)
     
     def fix_tags(self):
         ''' - Multitran does not escape '<' and '>' in user terms/comments
@@ -87,19 +86,18 @@ class CleanUp:
     
     def run(self):
         f = '[MClientQt] plugins.multitrancom.cleanup.CleanUp.run'
-        if self.text:
-            self.delete_trash_tags()
-            self.fix_href()
-            self.fix_tags()
-            self.run_common()
-            ''' #TODO: do we really need this heaviest operation (takes ~0.53s
-                for 'set' (EN-RU) on AMD E-300, whereas the entire module takes
-                ~0.58s, since we have already deleted unicode control codes?
-            '''
-            # Delete a non-breaking space before a user name
-            self.text = self.text.replace('&nbsp;',' ')
-            self.text = sh.Text(self.text).delete_unsupported()
-            return self.text
-        else:
+        if not self.text:
             sh.com.rep_empty(f)
             return ''
+        self.delete_trash_tags()
+        self.fix_href()
+        self.fix_tags()
+        self.run_common()
+        ''' #TODO: do we really need this heaviest operation (takes ~0.53s
+            for 'set' (EN-RU) on AMD E-300, whereas the entire module takes
+            ~0.58s, since we have already deleted unicode control codes?
+        '''
+        # Delete a non-breaking space before a user name
+        self.text = self.text.replace('&nbsp;',' ')
+        self.text = sh.Text(self.text).delete_unsupported()
+        return self.text

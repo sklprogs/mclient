@@ -50,8 +50,8 @@ class Plugin:
     def is_oneway(self):
         return False
     
-    # This is needed only for compliance with a general method
     def quit(self):
+        # This is needed only for compliance with a general method
         pass
     
     def get_lang1(self):
@@ -64,9 +64,7 @@ class Plugin:
         return gt.URL
     
     def is_combined(self):
-        ''' Whether or not the plugin is actually a wrapper over other
-            plugins.
-        '''
+        # Whether or not the plugin is actually a wrapper over other plugins
         return False
     
     def fix_raw_htm(self):
@@ -76,36 +74,35 @@ class Plugin:
         f = '[MClient] plugins.multitrancom.run.Plugin.get_url'
         code1 = pr.objs.get_pairs().get_code(pr.LANG1)
         code2 = pr.objs.pairs.get_code(pr.LANG2)
-        if code1 and code2 and search:
-            return gt.com.get_url (code1 = code1
-                                  ,code2 = code2
-                                  ,search = search
-                                  )
-        else:
+        if not (code1 and code2 and search):
             sh.com.rep_empty(f)
             return ''
+        return gt.com.get_url (code1 = code1
+                              ,code2 = code2
+                              ,search = search
+                              )
     
     def set_lang1(self,lang1):
         f = '[MClient] plugins.multitrancom.run.Plugin.set_lang1'
-        if lang1:
-            if lang1 in pr.LANGS:
-                pr.LANG1 = lang1
-            else:
-                mes = _('Wrong input data: "{}"!').format(lang1)
-                sh.objs.get_mes(f,mes).show_error()
-        else:
+        if not lang1:
             sh.com.rep_empty(f)
+            return
+        if lang1 in pr.LANGS:
+            pr.LANG1 = lang1
+        else:
+            mes = _('Wrong input data: "{}"!').format(lang1)
+            sh.objs.get_mes(f,mes).show_error()
     
     def set_lang2(self,lang2):
         f = '[MClient] plugins.multitrancom.run.Plugin.set_lang2'
-        if lang2:
-            if lang2 in pr.LANGS:
-                pr.LANG2 = lang2
-            else:
-                mes = _('Wrong input data: "{}"!').format(lang2)
-                sh.objs.get_mes(f,mes).show_error()
-        else:
+        if not lang2:
             sh.com.rep_empty(f)
+            return
+        if lang2 in pr.LANGS:
+            pr.LANG2 = lang2
+        else:
+            mes = _('Wrong input data: "{}"!').format(lang2)
+            sh.objs.get_mes(f,mes).show_error()
     
     def set_timeout(self,timeout=6):
         gt.TIMEOUT = timeout

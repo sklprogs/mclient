@@ -86,38 +86,37 @@ class BlockPrioritize:
     def prioritize_speech(self):
         f = '[MClient] cells.BlockPrioritize.prioritize_speech'
         # Takes ~0.0038s for 'set' on AMD E-300
-        if self.Success:
-            ''' It is assumed that we have already reset
-                'logic.SpeechPrior' with the required speech order
-                before.
-            '''
-            unknown_prior = []
-            if self.spdic:
-                for block in self.blocks:
-                    sprior = self.spdic.get(block.speech)
-                    if sprior:
-                        block.sprior = sprior
-                    elif not block.speech in unknown_prior:
-                        mes = _('A priority of the part of speech "{}" is not defined!')
-                        mes = mes.format(block.speech)
-                        sh.objs.get_mes(f,mes,True).show_warning()
-                        unknown_prior.append(block.speech)
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        ''' It is assumed that we have already reset 'logic.SpeechPrior' with
+            the required speech order before.
+        '''
+        unknown_prior = []
+        if not self.spdic:
+            sh.com.rep_empty(f)
+            return
+        for block in self.blocks:
+            sprior = self.spdic.get(block.speech)
+            if sprior:
+                block.sprior = sprior
+            elif not block.speech in unknown_prior:
+                mes = _('A priority of the part of speech "{}" is not defined!')
+                mes = mes.format(block.speech)
+                sh.objs.get_mes(f,mes,True).show_warning()
+                unknown_prior.append(block.speech)
     
     def run(self):
         f = '[MClient] cells.BlockPrioritize.run'
-        if self.Success:
-            self.assign()
-            self.block()
-            self.prioritize_dics()
-            self.prioritize_speech()
-            self.dump()
-            self.debug()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        self.assign()
+        self.block()
+        self.prioritize_dics()
+        self.prioritize_speech()
+        self.dump()
+        self.debug()
     
     def assign(self):
         for item in self.data:
@@ -144,18 +143,18 @@ class BlockPrioritize:
     def prioritize_dics(self):
         f = '[MClient] cells.BlockPrioritize.prioritize_dics'
         for block in self.blocks:
-            if block.dic:
-                if self.phdic == block.dic:
-                    ''' - This value should be set irrespectively of
-                          'self.Prioritize'.
-                        - Set the (presumably) lowest priority for
-                          a 'Phrases' subject. This must be
-                          quite a small value as not to conflict
-                          with other subjects.
-                    '''
-                    block.dprior = -1000
-                elif self.Prioritize:
-                    block.dprior = sj.objs.get_article().get_priority(block.dic)
+            if not block.dic:
+                continue
+            if self.phdic == block.dic:
+                ''' - This value should be set irrespectively of
+                      'self.Prioritize'.
+                    - Set the (presumably) lowest priority for a 'Phrases'
+                      subject. This must be quite a small value as not to
+                      conflict with other subjects.
+                '''
+                block.dprior = -1000
+            elif self.Prioritize:
+                block.dprior = sj.objs.get_article().get_priority(block.dic)
 
     def dump(self):
         tmp = io.StringIO()
@@ -172,23 +171,22 @@ class BlockPrioritize:
 
     def debug(self):
         f = '[MClient] cells.BlockPrioritize.debug'
-        if self.Debug:
-            mes = [self._debug_blocks()]
-            mes = '\n\n'.join(mes)
-            sh.com.run_fast_debug(f,mes)
-        else:
+        if not self.Debug:
             sh.com.rep_lazy(f)
+            return
+        mes = [self._debug_blocks()]
+        mes = '\n\n'.join(mes)
+        sh.com.run_fast_debug(f,mes)
 
 
 
 class Cells:
-    ''' This re-assigns DIC, WFORM, SPEECH, TRANSC types.
-        We assume that sqlite has already sorted DB with
-        'BLOCK IS NOT 1'.
-        Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL, DIC,
-                                    WFORM, SPEECH, SPEECHPR, TRANSC
+    ''' This re-assigns DIC, WFORM, SPEECH, TRANSC types. We assume that sqlite
+        has already sorted DB with 'BLOCK IS NOT 1'.
+        Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL, DIC, WFORM
+                                   ,SPEECH, SPEECHPR, TRANSC.
         Modifies attributes:        TEXT, ROWNO, COLNO, CELLNO
-        #NOTE: collimit at input: fixed columns are included
+        #NOTE: collimit at input: fixed columns are included.
     '''
     def __init__ (self,data,cols,collimit=10
                  ,phdic=None,Reverse=False
@@ -250,11 +248,12 @@ class Cells:
             it inherits fixed columns of the preceding subject which
             are irrelevant. Here we clear them.
         '''
-        if self.phdic:
-            for block in self.blocks:
-                if block.dic == self.phdic:
-                    if block.type_ in ('wform','speech','transc'):
-                        block.text = ''
+        if not self.phdic:
+            return
+        for block in self.blocks:
+            if block.dic == self.phdic \
+            and block.type_ in ('wform','speech','transc'):
+                block.text = ''
 
     def clear_fixed(self):
         dic = wform = speech = transc = ''
@@ -285,34 +284,30 @@ class Cells:
 
     def move_phrases_end(self):
         f = '[MClient] cells.Cells.move_phrases_end'
-        if self.phdic:
-            phrases = [block for block in self.blocks \
-                       if block.dic == self.phdic
-                      ]
-            blocks = [block for block in self.blocks \
-                      if block.dic != self.phdic
-                     ]
-            self.blocks = blocks + phrases
-        else:
+        if not self.phdic:
             sh.com.rep_empty(f)
+            return
+        phrases = [block for block in self.blocks if block.dic == self.phdic]
+        blocks = [block for block in self.blocks if block.dic != self.phdic]
+        self.blocks = blocks + phrases
     
     def run(self):
         f = '[MClient] cells.Cells.run'
-        if self.Success:
-            self.assign()
-            self.restore_fixed()
-            self.clear_fixed()
-            self.set_fixed()
-            self.set_cols()
-            self.clear_phrases()
-            self.expand_speech()
-            self.move_phrases_end()
-            self.wrap()
-            self.sort_cells()
-            self.set_cellno()
-            self.debug()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        self.assign()
+        self.restore_fixed()
+        self.clear_fixed()
+        self.set_fixed()
+        self.set_cols()
+        self.clear_phrases()
+        self.expand_speech()
+        self.move_phrases_end()
+        self.wrap()
+        self.sort_cells()
+        self.set_cellno()
+        self.debug()
         
     def assign(self):
         for item in self.data:
@@ -330,34 +325,36 @@ class Cells:
         
     def debug(self):
         f = '[MClient] cells.Cells.debug'
-        if self.Debug:
-            headers = ('NO','TYPE','FIXED','TEXT','DIC','WFORM','SPEECH'
-                      ,'SPEECHPR','ROWNO','COLNO','CELLNO','SAME'
-                      )
-            rows = []
-            for block in self.blocks:
-                rows.append ([block.no
-                             ,block.type_
-                             ,block.Fixed
-                             ,block.text
-                             ,block.dic
-                             ,block.wform
-                             ,block.speech
-                             ,block.sprior
-                             ,block.i
-                             ,block.j
-                             ,block.cellno
-                             ,block.same
-                             ]
-                            )
-            mes = sh.FastTable (headers = headers
-                               ,iterable = rows
-                               ,maxrow = 15
-                               ,maxrows = self.maxrows
-                               ,Transpose = True
-                               ).run()
-            mes = f + '\n' + mes
-            sh.com.run_fast_debug(f,mes)
+        if not self.Debug:
+            sh.com.rep_lazy(f)
+            return
+        headers = ('NO','TYPE','FIXED','TEXT','DIC','WFORM','SPEECH','SPEECHPR'
+                  ,'ROWNO','COLNO','CELLNO','SAME'
+                  )
+        rows = []
+        for block in self.blocks:
+            rows.append ([block.no
+                         ,block.type_
+                         ,block.Fixed
+                         ,block.text
+                         ,block.dic
+                         ,block.wform
+                         ,block.speech
+                         ,block.sprior
+                         ,block.i
+                         ,block.j
+                         ,block.cellno
+                         ,block.same
+                         ]
+                        )
+        mes = sh.FastTable (headers = headers
+                           ,iterable = rows
+                           ,maxrow = 15
+                           ,maxrows = self.maxrows
+                           ,Transpose = True
+                           ).run()
+        mes = f + '\n' + mes
+        sh.com.run_fast_debug(f,mes)
     
     def wrap(self):
         if self.Reverse:
@@ -370,12 +367,10 @@ class Cells:
         try:
             return self.cols.index(type_)
         except ValueError:
-            ''' The warning about a missing 'dic' type (which was
-                'phdic' before) is natural.
+            ''' The warning about a missing 'dic' type (which was 'phdic'
+                before) is natural.
             '''
-            if type_ == 'dic':
-                pass
-            else:
+            if type_ != 'dic':
                 mes = _('Wrong input data: "{}"!').format(type_)
                 sh.objs.get_mes(f,mes,True).show_warning()
         return 0
@@ -511,19 +506,20 @@ class Cells:
     def expand_speech(self):
         # Takes ~0.002s on 'set'
         f = '[MClient] cells.Cells.expand_speech'
-        if self.spdic:
-            for block in self.blocks:
-                if block.type_ == 'speech' and block.text:
-                    result = self.spdic.get(block.text)
-                    if result:
-                        block.text = result
-                    elif not block.text in self.unsupsp:
-                        self.unsupsp.append(block.text)
-                        mes = _('An unsupported part of speech: "{}"!')
-                        mes = mes.format(block.text)
-                        sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.spdic:
             sh.com.rep_lazy(f)
+            return
+        for block in self.blocks:
+            if not (block.type_ == 'speech' and block.text):
+                continue
+            result = self.spdic.get(block.text)
+            if result:
+                block.text = result
+            elif not block.text in self.unsupsp:
+                self.unsupsp.append(block.text)
+                mes = _('An unsupported part of speech: "{}"!')
+                mes = mes.format(block.text)
+                sh.objs.get_mes(f,mes,True).show_warning()
     
     def restore_fixed(self):
         for block in self.blocks:
@@ -569,13 +565,13 @@ class Pos:
         
     def run(self):
         f = '[MClient] cells.Pos.run'
-        if self.Success:
-            self.assign()
-            self.gen_poses()
-            self.dump()
-            self.debug()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        self.assign()
+        self.gen_poses()
+        self.dump()
+        self.debug()
         
     def assign(self):
         for item in self.data:
@@ -589,25 +585,27 @@ class Pos:
         
     def debug(self):
         f = '[MClient] cells.Pos.debug'
-        if self.Debug:
-            headers = ('NO','TYPE','TEXT','POS1','POS2')
-            rows = []
-            for block in self.blocks:
-                rows.append ([block.no
-                             ,block.type_
-                             ,block.text
-                             ,block.first
-                             ,block.last
-                             ]
-                            )
-            mes = sh.FastTable (headers = headers
-                               ,iterable = rows
-                               ,maxrow = 70
-                               ,maxrows = self.maxrows
-                               ,Transpose = True
-                               ).run()
-            mes = f + '\n' + mes
-            sh.com.run_fast_debug(f,mes)
+        if not self.Debug:
+            sh.com.rep_lazy(f)
+            return
+        headers = ('NO','TYPE','TEXT','POS1','POS2')
+        rows = []
+        for block in self.blocks:
+            rows.append ([block.no
+                         ,block.type_
+                         ,block.text
+                         ,block.first
+                         ,block.last
+                         ]
+                        )
+        mes = sh.FastTable (headers = headers
+                           ,iterable = rows
+                           ,maxrow = 70
+                           ,maxrows = self.maxrows
+                           ,Transpose = True
+                           ).run()
+        mes = f + '\n' + mes
+        sh.com.run_fast_debug(f,mes)
     
     def gen_poses(self):
         ''' We generate positions here according to the text produced by 
@@ -705,29 +703,27 @@ class Pages:
         tmp.write('begin;')
         for block in self.blocks:
             index_ = self.widget.text('index',block.first,block.last)
-            if index_:
-                bbox = self.obj.bbox(index_[0])
-                if bbox:
-                    ''' BBOX: man says: The first two integers are the x
-                        and y coordinates of the top-left corner of
-                        the bounding-box, the later two are the x and y
-                        coordinates of the bottom-right corner of
-                        the same box. If the node does not generate
-                        content, then an empty string is returned.
-                    '''
-                    tmp.write ('update BLOCKS \
-                                set NODE1="%s",NODE2="%s",OFFPOS1=%d\
-                                   ,OFFPOS2=%d,BBOX1=%d,BBOX2=%d\
-                                   ,BBOY1=%d,BBOY2=%d where NO=%d;' \
-                               % (index_[0],index_[2],index_[1]
-                                 ,index_[3],bbox[0],bbox[2],bbox[1]
-                                 ,bbox[3],block.no
-                                 )
-                              )
-                else:
-                    sh.com.rep_empty(f)
-            else:
+            if not index_:
                 sh.com.rep_empty(f)
+                continue
+            bbox = self.obj.bbox(index_[0])
+            if not bbox:
+                sh.com.rep_empty(f)
+                continue
+            ''' BBOX: man says: The first two integers are the x and y
+                coordinates of the top-left corner of the bounding-box, the
+                later two are the x and y coordinates of the bottom-right
+                corner of the same box. If the node does not generate content,
+                then an empty string is returned.
+            '''
+            tmp.write ('update BLOCKS set NODE1="%s",NODE2="%s",OFFPOS1=%d\
+                       ,OFFPOS2=%d,BBOX1=%d,BBOX2=%d,BBOY1=%d,BBOY2=%d \
+                       where NO=%d;' \
+                      % (index_[0],index_[2],index_[1]
+                        ,index_[3],bbox[0],bbox[2],bbox[1]
+                        ,bbox[3],block.no
+                        )
+                      )
         tmp.write('commit;')
         self.query = tmp.getvalue()
         tmp.close()
@@ -735,14 +731,16 @@ class Pages:
             
     def debug(self):
         f = '[MClient] cells.Pages.debug'
-        if self.Debug:
-            mes = self.query.replace(';',';\n')
-            sh.objs.get_mes(f,mes).show_debug()
+        if not self.Debug:
+            sh.com.rep_lazy(f)
+            return
+        mes = self.query.replace(';',';\n')
+        sh.objs.get_mes(f,mes).show_debug()
     
     def run(self):
         f = '[MClient] cells.Pages.run'
-        if self.Success:
-            self.create_index()
-            self.debug()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        self.create_index()
+        self.debug()

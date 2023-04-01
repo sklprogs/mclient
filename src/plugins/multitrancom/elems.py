@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-''' This module prepares blocks after extracting tags for permanently
-    storing in DB.
+''' This module prepares blocks after extracting tags for permanently storing
+    in DB.
     Needs attributes in blocks: DIC,DICF,SAMECELL,SPEECH,TERM,TRANSC,TYPE,WFORM
     Modifies attributes: DIC,DICF,SAMECELL,SELECTABLE,SPEECH,TERM,TEXT,TRANSC
                         ,TYPE,WFORM
@@ -77,9 +77,8 @@ class UniteFixed:
 
 
 
-# A copy of Tags.Block
 class Block:
-    
+    # A copy of Tags.Block
     def __init__(self):
         self.block = -1
         # Applies to non-blocked cells only
@@ -454,22 +453,22 @@ class Elems:
     def set_same(self):
         f = '[MClientQt] plugins.multitrancom.elems.Elems.set_same'
         # I have witnessed this error despite 'self.check' was passed
-        if self.blocks:
-            self.blocks[0].same = 0
-            i = 1
-            while i < len(self.blocks):
-                # multitran.com originally sets some types with SAME = 1
-                if self.blocks[i-1].semino != self.blocks[i].semino \
-                or self.blocks[i-1].rowno != self.blocks[i].rowno \
-                or self.blocks[i-1].cellno != self.blocks[i].cellno \
-                or self.blocks[i].type_ in ('speech','transc'):
-                    self.blocks[i].same = 0
-                elif self.blocks[i].same == -1:
-                    # Do not overwrite SAME of fixed types
-                    self.blocks[i].same = 1
-                i += 1
-        else:
+        if not self.blocks:
             sh.com.rep_empty(f)
+            return
+        self.blocks[0].same = 0
+        i = 1
+        while i < len(self.blocks):
+            # multitran.com originally sets some types with SAME = 1
+            if self.blocks[i-1].semino != self.blocks[i].semino \
+            or self.blocks[i-1].rowno != self.blocks[i].rowno \
+            or self.blocks[i-1].cellno != self.blocks[i].cellno \
+            or self.blocks[i].type_ in ('speech','transc'):
+                self.blocks[i].same = 0
+            elif self.blocks[i].same == -1:
+                # Do not overwrite SAME of fixed types
+                self.blocks[i].same = 1
+            i += 1
     
     def _delete_tail_links(self,poses):
         f = '[MClientQt] plugins.multitrancom.elems.Elems._delete_tail_links'
@@ -516,16 +515,16 @@ class Elems:
         index_ = self.get_phdic()
         if index_ is None:
             sh.com.rep_lazy(f)
-        else:
-            text = self.blocks[index_+1].text + self.blocks[index_+2].text
-            url = self.blocks[index_+1].url
-            del self.blocks[index_]
-            del self.blocks[index_]
-            self.blocks[index_].type_ = 'phdic'
-            self.blocks[index_].url = url
-            self.blocks[index_].select = 1
-            self.blocks[index_].dic = self.phdic = _('phrases')
-            self.blocks[index_].dicf = self.blocks[index_].text = text
+            return
+        text = self.blocks[index_+1].text + self.blocks[index_+2].text
+        url = self.blocks[index_+1].url
+        del self.blocks[index_]
+        del self.blocks[index_]
+        self.blocks[index_].type_ = 'phdic'
+        self.blocks[index_].url = url
+        self.blocks[index_].select = 1
+        self.blocks[index_].dic = self.phdic = _('phrases')
+        self.blocks[index_].dicf = self.blocks[index_].text = text
     
     def get_phdic(self):
         ''' - Sample blocks: "comment"-"comment"-"comment"-"phrase"
@@ -693,109 +692,111 @@ class Elems:
         i = self.get_suggested()
         if i is None:
             sh.com.rep_lazy(f)
-        else:
-            rowno = self.blocks[i].rowno
-            self.blocks[i].type_ = 'dic'
-            self.blocks[i].text = _('Suggestions')
-            self.blocks[i].dic = _('Suggestions')
-            self.blocks[i].dicf = _('Suggestions')
-            self.blocks[i].same = 0
-            count += 1
+            return
+        rowno = self.blocks[i].rowno
+        self.blocks[i].type_ = 'dic'
+        self.blocks[i].text = _('Suggestions')
+        self.blocks[i].dic = _('Suggestions')
+        self.blocks[i].dicf = _('Suggestions')
+        self.blocks[i].same = 0
+        count += 1
+        i += 1
+        while i < len(self.blocks):
+            if self.blocks[i].rowno == rowno:
+                if self.blocks[i].text != '; ':
+                    self.blocks[i].type_ = 'term'
+                    self.blocks[i].same = 0
+                    count += 1
+            else:
+                break
             i += 1
-            while i < len(self.blocks):
-                if self.blocks[i].rowno == rowno:
-                    if self.blocks[i].text != '; ':
-                        self.blocks[i].type_ = 'term'
-                        self.blocks[i].same = 0
-                        count += 1
-                else:
-                    break
-                i += 1
         sh.com.rep_matches(f,count)
     
     def run(self):
         f = '[MClientQt] plugins.multitrancom.elems.Elems.run'
-        if self.check():
-            # Process special pages before deleting anything
-            self.set_suggested()
-            self.set_separate()
-            # Do this before deleting ';'
-            self.set_semino()
-            # Do some cleanup
-            self.delete_head()
-            self.delete_tail()
-            self.delete_empty()
-            self.delete_semi()
-            self.delete_numeration()
-            self.delete_tail_links()
-            self.delete_trash_com()
-            self.delete_langs()
-            self.delete_refs()
-            # Reassign types
-            if self.blocks and self.blocks[0].dicf != _('Separate words'):
-                self.set_phdic()
-                self.set_transc()
-                self.set_see_also()
-                self.convert_speech()
-                self.convert_ged()
-                self.make_fixed()
-                self.set_same()
-                self.set_phcom()
-            # Prepare contents
-            self.set_dic_urls()
-            self.set_phcount()
-            self.blocks = UniteFixed(self.blocks).run()
-            self.reassign_brackets()
-            self.break_long_words()
-            # Prepare for cells
-            self.fill()
-            self.fill_term()
-            self.remove_fixed()
-            self.insert_fixed()
-            self.set_fixed_term()
-            self.expand_dic_file()
-            self.set_term_same()
-            # Extra spaces in the beginning may cause sorting problems
-            self.add_space()
-            #TODO: expand parts of speech (n -> noun, etc.)
-            self.set_selectables()
-            self.restore_dic_urls()
-            self.debug()
-            return self.blocks
-        else:
+        if not self.check():
             sh.com.cancel(f)
+            return
+        # Process special pages before deleting anything
+        self.set_suggested()
+        self.set_separate()
+        # Do this before deleting ';'
+        self.set_semino()
+        # Do some cleanup
+        self.delete_head()
+        self.delete_tail()
+        self.delete_empty()
+        self.delete_semi()
+        self.delete_numeration()
+        self.delete_tail_links()
+        self.delete_trash_com()
+        self.delete_langs()
+        self.delete_refs()
+        # Reassign types
+        if self.blocks and self.blocks[0].dicf != _('Separate words'):
+            self.set_phdic()
+            self.set_transc()
+            self.set_see_also()
+            self.convert_speech()
+            self.convert_ged()
+            self.make_fixed()
+            self.set_same()
+            self.set_phcom()
+        # Prepare contents
+        self.set_dic_urls()
+        self.set_phcount()
+        self.blocks = UniteFixed(self.blocks).run()
+        self.reassign_brackets()
+        self.break_long_words()
+        # Prepare for cells
+        self.fill()
+        self.fill_term()
+        self.remove_fixed()
+        self.insert_fixed()
+        self.set_fixed_term()
+        self.expand_dic_file()
+        self.set_term_same()
+        # Extra spaces in the beginning may cause sorting problems
+        self.add_space()
+        #TODO: expand parts of speech (n -> noun, etc.)
+        self.set_selectables()
+        self.restore_dic_urls()
+        self.debug()
+        return self.blocks
     
     def debug(self):
         f = 'plugins.multitrancom.elems.Elems.debug'
-        if self.Debug:
-            headers = ('NO','TYPE','TEXT','URL','SAME','SEMINO','ROWNO'
-                      ,'CELLNO','SELECT','DIC','DICF','TERM'
-                      )
-            rows = []
-            for i in range(len(self.blocks)):
-                rows.append ([i + 1
-                             ,self.blocks[i].type_
-                             ,'"{}"'.format(self.blocks[i].text)
-                             ,'"{}"'.format(self.blocks[i].url)
-                             ,self.blocks[i].same
-                             ,self.blocks[i].semino
-                             ,self.blocks[i].rowno
-                             ,self.blocks[i].cellno
-                             ,self.blocks[i].select
-                             ,self.blocks[i].dic
-                             ,self.blocks[i].dicf
-                             ,self.blocks[i].term
-                             ]
-                            )
-            # 10'' monitor: 12 symbols per a column
-            # 23'' monitor: 20 symbols per a column
-            mes = sh.FastTable (headers = headers
-                               ,iterable = rows
-                               ,maxrow = 23
-                               ,maxrows = self.maxrows
-                               ,Transpose = True
-                               ).run()
-            sh.com.run_fast_debug(f,mes)
+        if not self.Debug:
+            sh.com.rep_lazy(f)
+            return
+        headers = ('NO','TYPE','TEXT','URL','SAME','SEMINO','ROWNO','CELLNO'
+                  ,'SELECT','DIC','DICF','TERM'
+                  )
+        rows = []
+        for i in range(len(self.blocks)):
+            rows.append ([i + 1
+                         ,self.blocks[i].type_
+                         ,'"{}"'.format(self.blocks[i].text)
+                         ,'"{}"'.format(self.blocks[i].url)
+                         ,self.blocks[i].same
+                         ,self.blocks[i].semino
+                         ,self.blocks[i].rowno
+                         ,self.blocks[i].cellno
+                         ,self.blocks[i].select
+                         ,self.blocks[i].dic
+                         ,self.blocks[i].dicf
+                         ,self.blocks[i].term
+                         ]
+                        )
+        # 10'' monitor: 12 symbols per a column
+        # 23'' monitor: 20 symbols per a column
+        mes = sh.FastTable (headers = headers
+                           ,iterable = rows
+                           ,maxrow = 23
+                           ,maxrows = self.maxrows
+                           ,Transpose = True
+                           ).run()
+        sh.com.run_fast_debug(f,mes)
         
     def set_transc(self):
         # Takes ~0.003s for 'set' (EN-RU) on AMD E-300

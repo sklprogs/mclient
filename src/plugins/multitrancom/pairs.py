@@ -7,10 +7,9 @@ import skl_shared_qt.shared as sh
 LANG1 = _('Russian')
 LANG2 = _('English')
 
-'''
-Bad Gateway:209 (Burmese), 262 (Gothic)
-#NOTE: do not forget to put ',' at the end of a pair tuple (otherwise,
-single symbols will be iterated).
+''' Bad Gateway:209 (Burmese), 262 (Gothic)
+    #NOTE: do not forget to put ',' at the end of a pair tuple (otherwise,
+    single symbols will be iterated).
 '''
 LANGS = {_('Abaza'):
             {'code': 478
@@ -2720,8 +2719,8 @@ LANGS = {_('Abaza'):
             }
         }
 
-''' This is a list of pairs (represented by language codes) that cannot
-    be used owing to network errors.
+''' This is a list of pairs (represented by language codes) that cannot be used
+    owing to network errors.
 '''
 FLAWED = [(209,71),(209,31),(209,47),(209,81),(209,10),(209,41)
          ,(209,82),(209,25),(209,193),(209,68),(209,58),(209,19)
@@ -2783,14 +2782,14 @@ class Pairs:
     
     def get_code(self,lang):
         f = '[MClient] plugins.multitrancom.utils.Pairs.get_code'
-        if lang:
-            try:
-                return LANGS[lang]['code']
-            except KeyError:
-                mes = _('Wrong input data: "{}"!').format(lang)
-                sh.objs.get_mes(f,mes).show_error()
-        else:
+        if not lang:
             sh.com.rep_empty(f)
+            return
+        try:
+            return LANGS[lang]['code']
+        except KeyError:
+            mes = _('Wrong input data: "{}"!').format(lang)
+            sh.objs.get_mes(f,mes).show_error()
     
     def get_alive(self):
         if not self.alive:
@@ -2802,13 +2801,13 @@ class Pairs:
     
     def get_lang(self,code):
         f = '[MClient] plugins.multitrancom.utils.Pairs.get_lang'
-        if isinstance(code,int):
-            for lang in LANGS.keys():
-                if LANGS[lang]['code'] == code:
-                    return lang
-        else:
+        if not isinstance(code,int):
             mes = _('Wrong input data: "{}"!').format(code)
             sh.objs.get_mes(f,mes).show_error()
+            return
+        for lang in LANGS.keys():
+            if LANGS[lang]['code'] == code:
+                return lang
     
     def delete_flawed(self):
         # Takes ~0.06s on AMD E-300
@@ -2854,24 +2853,22 @@ class Pairs:
     
     def get_pairs2(self,lang1):
         f = '[MClient] plugins.multitrancom.Pairs.get_pairs2'
-        if lang1:
-            try:
-                return sorted(LANGS[lang1]['pair'])
-            except KeyError:
-                mes = _('Wrong input data!')
-                sh.objs.get_mes(f,mes).show_error()
-        else:
+        if not lang1:
             sh.com.rep_empty(f)
+            return
+        try:
+            return sorted(LANGS[lang1]['pair'])
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_error()
     
     def get_pairs1(self,lang2):
         f = '[MClient] plugins.multitrancom.Pairs.get_pairs1'
-        if lang2:
-            langs = [xlang for xlang in LANGS \
-                     if lang2 in LANGS[xlang]['pair']
-                    ]
-            return sorted(langs)
-        else:
+        if not lang2:
             sh.com.rep_empty(f)
+            return
+        langs = [xlang for xlang in LANGS if lang2 in LANGS[xlang]['pair']]
+        return sorted(langs)
 
 
 
