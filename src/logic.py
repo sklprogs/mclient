@@ -195,10 +195,10 @@ class Column:
 
 
 class ColumnWidth:
-    ''' Adjust fixed columns to have a constant width. A fixed value
-        in pixels rather than percentage should be used to adjust
-        columns since we cannot say if gaps between columns are too
-        large without calculating a text width first.
+    ''' Adjust fixed columns to have a constant width. A fixed value in pixels
+        rather than percentage should be used to adjust columns since we cannot
+        say if gaps between columns are too large without calculating a text
+        width first.
     '''
     def __init__(self):
         self.set_values()
@@ -238,13 +238,12 @@ class ColumnWidth:
             sh.com.rep_lazy(f)
             return
         columns = objs.get_blocksdb().get_fixed_cols()
-        if columns:
-            self.fixed_num = len(columns)
-            mes = _('An actual number of fixed columns: {}')
-            mes = mes.format(self.fixed_num)
-            sh.objs.get_mes(f,mes,True).show_debug()
-        else:
+        if not columns:
             sh.com.rep_lazy(f)
+            return
+        self.fixed_num = len(columns)
+        mes = _('An actual number of fixed columns: {}').format(self.fixed_num)
+        sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_term_num(self):
         f = '[MClientQt] logic.ColumnWidth.set_term_num'
@@ -282,33 +281,33 @@ class SpeechPrior:
     
     def get_abbr2full(self):
         f = '[MClientQt] logic.SpeechPrior.get_abbr2full'
-        if self.Success:
-            if not self.abbr2full:
-                for i in range(len(self.abbr)):
-                    self.abbr2full[self.abbr[i]] = self.full[i]
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.abbr2full
+        if not self.abbr2full:
+            for i in range(len(self.abbr)):
+                self.abbr2full[self.abbr[i]] = self.full[i]
         return self.abbr2full
     
     def get_full2abbr(self):
         f = '[MClientQt] logic.SpeechPrior.get_full2abbr'
-        if self.Success:
-            if not self.full2abbr:
-                for i in range(len(self.full)):
-                    self.full2abbr[self.full[i]] = self.abbr[i]
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.full2abbr
+        if not self.full2abbr:
+            for i in range(len(self.full)):
+                self.full2abbr[self.full[i]] = self.abbr[i]
         return self.full2abbr
     
     def get_all2prior(self):
         f = '[MClientQt] logic.SpeechPrior.get_all2prior'
         seq = {}
-        if self.Success:
-            for i in range(len(self.prior)):
-                seq[self.abbr[i]] = self.prior[i]
-                seq[self.full[i]] = self.prior[i]
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return seq
+        for i in range(len(self.prior)):
+            seq[self.abbr[i]] = self.prior[i]
+            seq[self.full[i]] = self.prior[i]
         return seq
     
     def debug(self):
@@ -317,102 +316,97 @@ class SpeechPrior:
     
     def debug_all2prior(self):
         f = '[MClientQt] logic.SpeechPrior.debug_all2prior'
-        if self.Success:
-            all2prior = self.get_all2prior()
-            if all2prior:
-                all_ = all2prior.keys()
-                prior = [all2prior.get(key) for key in all2prior.keys()]
-                headers = (_('NAME'),_('PRIORITY'))
-                iterable = [all_,prior]
-                mes = sh.FastTable(iterable,headers).run()
-                sh.com.run_fast_debug(f,mes)
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        all2prior = self.get_all2prior()
+        if not all2prior:
+            sh.com.rep_empty(f)
+            return
+        all_ = all2prior.keys()
+        prior = [all2prior.get(key) for key in all2prior.keys()]
+        headers = (_('NAME'),_('PRIORITY'))
+        iterable = [all_,prior]
+        mes = sh.FastTable(iterable,headers).run()
+        sh.com.run_fast_debug(f,mes)
     
     def _debug_full2abbr(self):
         f = '[MClientQt] logic.SpeechPrior._debug_full2abbr'
         full2abbr = self.get_full2abbr()
-        if full2abbr:
-            full = sorted(full2abbr.keys())
-            abbr = [full2abbr.get(item) for item in full]
-            headers = (_('NAME'),_('ABBREVIATION'))
-            iterable = [full,abbr]
-            mes = sh.FastTable(iterable,headers).run()
-            sh.com.run_fast_debug(f,mes)
-        else:
+        if not full2abbr:
             sh.com.rep_empty(f)
+            return
+        full = sorted(full2abbr.keys())
+        abbr = [full2abbr.get(item) for item in full]
+        headers = (_('NAME'),_('ABBREVIATION'))
+        iterable = [full,abbr]
+        mes = sh.FastTable(iterable,headers).run()
+        sh.com.run_fast_debug(f,mes)
     
     def _debug_abbr2full(self):
         f = '[MClientQt] logic.SpeechPrior._debug_abbr2full'
         abbr2full = self.get_abbr2full()
-        if abbr2full:
-            abbr = sorted(abbr2full.keys())
-            full = [abbr2full.get(item) for item in abbr]
-            headers = (_('ABBREVIATION'),_('NAME'))
-            iterable = [abbr,full]
-            mes = sh.FastTable(iterable,headers).run()
-            sh.com.run_fast_debug(f,mes)
-        else:
+        if not abbr2full:
             sh.com.rep_empty(f)
+            return
+        abbr = sorted(abbr2full.keys())
+        full = [abbr2full.get(item) for item in abbr]
+        headers = (_('ABBREVIATION'),_('NAME'))
+        iterable = [abbr,full]
+        mes = sh.FastTable(iterable,headers).run()
+        sh.com.run_fast_debug(f,mes)
     
     def debug_pairs(self):
         f = '[MClientQt] logic.SpeechPrior.debug_pairs'
-        if self.Success:
-            self._debug_full2abbr()
-            self._debug_abbr2full()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        self._debug_full2abbr()
+        self._debug_abbr2full()
     
     def prioritize(self):
         f = '[MClientQt] logic.SpeechPrior.prioritize'
-        if self.Success:
-            lst = [i + 1 for i in range(len(self.abbr))]
-            for i in range(len(self.order)):
-                try:
-                    ind = self.full.index(self.order[i])
-                    self.prior[ind] = lst[i]
-                except ValueError:
-                    mes = _('Wrong input data: "{}"!')
-                    mes = mes.format(self.order[i])
-                    sh.objs.get_mes(f,mes,True).show_warning()
-            lst = lst[len(self.order):]
-            try:
-                ind = self.full.index(_('Phrase'))
-                self.prior[ind] = 1000
-                lst = lst[:-1]
-            except ValueError:
-                pass
-            j = 0
-            for i in range(len(self.prior)):
-                if self.prior[i] == -1:
-                    self.prior[i] = lst[j]
-                    j += 1
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            returm
+        lst = [i + 1 for i in range(len(self.abbr))]
+        for i in range(len(self.order)):
+            try:
+                ind = self.full.index(self.order[i])
+                self.prior[ind] = lst[i]
+            except ValueError:
+                mes = _('Wrong input data: "{}"!').format(self.order[i])
+                sh.objs.get_mes(f,mes,True).show_warning()
+        lst = lst[len(self.order):]
+        try:
+            ind = self.full.index(_('Phrase'))
+            self.prior[ind] = 1000
+            lst = lst[:-1]
+        except ValueError:
+            pass
+        j = 0
+        for i in range(len(self.prior)):
+            if self.prior[i] == -1:
+                self.prior[i] = lst[j]
+                j += 1
     
     def check(self):
         f = '[MClientQt] logic.SpeechPrior.check'
-        if len(self.abbr):
-            if len(self.abbr) == len(self.full):
-                if len(self.order) > len(self.abbr):
-                    self.Success = False
-                    sub = '{} <= {}'.format (len(self.order)
-                                            ,len(self.abbr)
-                                            )
-                    mes = _('The condition "{}" is not observed!')
-                    mes = mes.format(sub)
-                    sh.objs.get_mes(f,mes).show_error()
-            else:
-                self.Success = False
-                sub = '{} == {}'.format(len(self.abbr),len(self.full))
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.get_mes(f,mes).show_error()
-        else:
+        if not len(self.abbr):
             self.Success = False
             sh.com.rep_empty(f)
+            return
+        if len(self.abbr) != len(self.full):
+            self.Success = False
+            sub = '{} == {}'.format(len(self.abbr),len(self.full))
+            mes = _('The condition "{}" is not observed!').format(sub)
+            sh.objs.get_mes(f,mes).show_error()
+            return
+        if len(self.order) > len(self.abbr):
+            self.Success = False
+            sub = '{} <= {}'.format(len(self.order),len(self.abbr))
+            mes = _('The condition "{}" is not observed!').format(sub)
+            sh.objs.get_mes(f,mes).show_error()
     
     def set_values(self):
         self.abbr = [_('abbr.')
@@ -496,21 +490,21 @@ class Lists:
     
     def get_blacklist(self):
         f = '[MClientQt] logic.Lists.get_blacklist'
-        if self.Success:
-            text = sh.ReadTextFile(self.blacklst,True).get()
-            text = sh.Text(text,True).text
-            return text.splitlines()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        text = sh.ReadTextFile(self.blacklst,True).get()
+        text = sh.Text(text,True).text
+        return text.splitlines()
 
     def get_priorities(self):
         f = '[MClientQt] logic.Lists.get_priorities'
-        if self.Success:
-            text = sh.ReadTextFile(self.priorlst,True).get()
-            text = sh.Text(text,True).text
-            return text.splitlines()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        text = sh.ReadTextFile(self.priorlst,True).get()
+        text = sh.Text(text,True).text
+        return text.splitlines()
 
 
 
@@ -1344,30 +1338,30 @@ class Font:
             self.block.color = objs.get_colors().user
     
     def _set_color_p(self):
-        if self.block.type_ in ('dic','phdic','wform','transc','speech'):
-            if self.block.colno == 0:
-                self.block.color = self.priority_color1
-            elif self.block.colno == 1:
-                self.block.color = self.priority_color2
-            elif self.block.colno == 2:
-                self.block.color = self.priority_color3
-            elif self.block.colno == 3:
-                self.block.color = self.priority_color4
-        else:
+        if not self.block.type_ in ('dic','phdic','wform','transc','speech'):
             self.block.color = self.priority_color1
+            return
+        if self.block.colno == 0:
+            self.block.color = self.priority_color1
+        elif self.block.colno == 1:
+            self.block.color = self.priority_color2
+        elif self.block.colno == 2:
+            self.block.color = self.priority_color3
+        elif self.block.colno == 3:
+            self.block.color = self.priority_color4
     
     def _set_color_b(self):
-        if self.block.type_ in ('dic','phdic','wform','transc','speech'):
-            if self.block.colno == 0:
-                self.block.color = self.blocked_color1
-            elif self.block.colno == 1:
-                self.block.color = self.blocked_color2
-            elif self.block.colno == 2:
-                self.block.color = self.blocked_color3
-            elif self.block.colno == 3:
-                self.block.color = self.blocked_color4
-        else:
+        if not self.block.type_ in ('dic','phdic','wform','transc','speech'):
             self.block.color = 'dim gray'
+            return
+        if self.block.colno == 0:
+            self.block.color = self.blocked_color1
+        elif self.block.colno == 1:
+            self.block.color = self.blocked_color2
+        elif self.block.colno == 2:
+            self.block.color = self.blocked_color3
+        elif self.block.colno == 3:
+            self.block.color = self.blocked_color4
     
     def set_bold(self):
         f = '[MClientQt] logic.Font.set_bold'
