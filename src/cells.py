@@ -446,9 +446,9 @@ class Cells:
                     j += 1
     
     def wrap_y(self):
-        ''' Create a vertically reversed view. This differs from
-            'wrap_x' in that we do not use 'collimit', so we cannot
-            just transpose row numbers to column numbers and vice versa.
+        ''' Create a vertically reversed view. This differs from 'wrap_x' in
+            that we do not use 'collimit', so we cannot just transpose row
+            numbers to column numbers and vice versa.
         '''
         dic = ''
         i = j = oldi = 0

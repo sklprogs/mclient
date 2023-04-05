@@ -93,11 +93,6 @@ class CleanUp:
         self.fix_href()
         self.fix_tags()
         self.run_common()
-        ''' #TODO: do we really need this heaviest operation (takes ~0.53s
-            for 'set' (EN-RU) on AMD E-300, whereas the entire module takes
-            ~0.58s, since we have already deleted unicode control codes?
-        '''
         # Delete a non-breaking space before a user name
         self.text = self.text.replace('&nbsp;',' ')
-        self.text = sh.Text(self.text).delete_unsupported()
         return self.text
