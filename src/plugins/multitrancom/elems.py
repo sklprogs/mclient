@@ -607,34 +607,9 @@ class Elems:
         else:
             sh.com.rep_empty(f)
     
-    def reassign_brackets(self):
-        ''' It is a common case when an opening bracket, a phrase and a closing
-            bracket are 3 separate blocks. Tkinter (unlike popular web
-            browsers) wraps these blocks after ')'. We just fix this behavior.
-            This also allows to skip user names without showing extra brackets.
-        '''
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.reassign_brackets'
-        count = 0
-        i = 2
-        while i < len(self.blocks):
-            if self.blocks[i-2].text == '(' \
-            and self.blocks[i].text == ')' \
-            and self.blocks[i-1].type_ in ('comment','user','correction'
-                                          ):
-                #NOTE: We must inherit i-2 SAME and i-1 TYPE
-                self.blocks[i-2].text = '(' + self.blocks[i-1].text + ')'
-                self.blocks[i-2].type_ = self.blocks[i-1].type_
-                del self.blocks[i-1]
-                i -= 1
-                del self.blocks[i]
-                i -= 1
-                count += 2
-            i += 1
-        sh.com.rep_deleted(f,count)
-    
     def expand_dic_file(self):
-        ''' Do not delete this, since 'multitran.com' does not provide
-            full subject titles in phrase articles!
+        ''' Do not delete this, since 'multitran.com' does not provide full
+            subject titles in phrase articles!
         '''
         f = '[MClientQt] plugins.multitrancom.elems.Elems.expand_dic_file'
         for block in self.blocks:
@@ -746,7 +721,6 @@ class Elems:
         self.set_dic_urls()
         self.set_phcount()
         self.blocks = UniteFixed(self.blocks).run()
-        self.reassign_brackets()
         self.break_long_words()
         # Prepare for cells
         self.fill()
