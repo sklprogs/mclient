@@ -609,9 +609,8 @@ class Elems:
     
     def reassign_brackets(self):
         ''' It is a common case when an opening bracket, a phrase and a closing
-            bracket are 3 separate blocks. Tkinter (unlike popular web
-            browsers) wraps these blocks after ')'. We just fix this behavior.
-            This also allows to skip user names without showing extra brackets.
+            bracket are 3 separate blocks. The following skips user names
+            without showing extra brackets (e.g., гематоген -> Фразы: Пан).
         '''
         f = '[MClientQt] plugins.multitrancom.elems.Elems.reassign_brackets'
         count = 0
