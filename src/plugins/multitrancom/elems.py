@@ -136,10 +136,6 @@ class Elems:
           fixed columns.
     '''
     def __init__(self,blocks,Debug=False,maxrows=1000):
-        ''' 30 is the maximum to correctly show EN-RU, 'entity'
-            (2 or 3 columns).
-        '''
-        self.max_word_len = 30
         self.fixed = ('dic','wform','transc','speech')
         self.sep_words = (' - найдены отдельные слова'
                          ,' - only individual words found'
@@ -172,23 +168,6 @@ class Elems:
     def _break_word(self,word):
         lst = sh.Text(word).split_by_len(self.max_word_len)
         return ' '.join(lst)
-    
-    def break_long_words(self):
-        # Break too long words (e.g., URLs) that spoil the page layout
-        # Takes ~0.023s for 'set' on Intel Atom
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.break_long_words'
-        count = 0
-        for block in self.blocks:
-            Match = False
-            words = block.text.split(' ')
-            for i in range(len(words)):
-                if len(words[i]) > self.max_word_len:
-                    Match = True
-                    count += 1
-                    words[i] = self._break_word(words[i])
-            if Match:
-                block.text = ' '.join(words)
-        sh.com.rep_matches(f,count)
     
     def get_phdic_set(self):
         for i in range(len(self.blocks)):
@@ -746,7 +725,6 @@ class Elems:
         self.set_phcount()
         self.blocks = UniteFixed(self.blocks).run()
         self.reassign_brackets()
-        self.break_long_words()
         # Prepare for cells
         self.fill()
         self.fill_term()
