@@ -439,14 +439,14 @@ class Tags:
         f = '[MClient] plugins.multitrancom.tags.Tags.debug'
         if not self.Success:
             sh.com.cancel(f)
-            return
+            return ''
         if not self.Debug:
             sh.com.rep_lazy(f)
-            return
+            return ''
         mes = [self._debug_code(),self._debug_fragms()
               ,self._debug_tags(),self._debug_blocks()
               ]
-        sh.com.run_fast_debug(f,'\n\n'.join(mes))
+        return '\n\n'.join(mes)
     
     def check(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.check'
@@ -515,5 +515,4 @@ class Tags:
         self.set_nos()
         self.set_inherent()
         self.set_blocks()
-        self.debug()
         return self.blocks
