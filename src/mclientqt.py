@@ -401,7 +401,7 @@ class Save(sv.Save):
 
 
 class Commands:
-    #NOTE: DB is in controller (not in logic), so DB-related code is here too
+    
     def get_article_subjects(self):
         f = '[MClientQt] mclient.Commands.get_article_subjects'
         new_dics = []

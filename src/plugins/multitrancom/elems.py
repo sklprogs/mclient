@@ -107,7 +107,7 @@ class Block:
 
 
 class Elems:
-    # Process blocks before dumping to DB
+    # Process blocks before setting cells
     def __init__(self,blocks,Debug=False,maxrows=1000):
         self.fixed = ('dic','wform','transc','speech')
         self.sep_words = (' - найдены отдельные слова'
