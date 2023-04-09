@@ -4,8 +4,7 @@
 ''' This module prepares blocks after extracting tags for permanently storing
     in DB.
     Needs attributes in blocks: DIC,DICF,SAMECELL,SPEECH,TERM,TRANSC,TYPE,WFORM
-    Modifies attributes: DIC,DICF,SAMECELL,SELECTABLE,SPEECH,TERM,TEXT,TRANSC
-                        ,TYPE,WFORM
+    Modifies attributes: DIC,DICF,SAMECELL,SPEECH,TEXT,TRANSC,TYPE,WFORM
     Since TYPE is modified here, SAMECELL is filled here.
 '''
 
@@ -94,13 +93,8 @@ class Block:
         self.last = -1
         self.no = -1
         self.same = -1
-        ''' 'select' is an attribute of a *cell* which is valid if the cell has
-            a non-blocked block of types 'term', 'phrase' or 'transc'.
-        '''
-        self.select = -1
         self.speech = ''
         self.sprior = -1
-        self.term = ''
         self.text = ''
         self.transc = ''
         ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
@@ -113,28 +107,7 @@ class Block:
 
 
 class Elems:
-    ''' Process blocks before dumping to DB.
-        About filling 'term':
-        - We fill 'term' from the start in order to ensure the correct 'term'
-          value for blocks having 'same == 1'.
-        - We fill 'term' from the end in order to ensure that 'term' of blocks
-          of non-selectable types will have the value of the 'term' AFTER those
-          blocks.
-        - We fill 'term' from the end in order to ensure that 'term' is also
-          filled for blocks having 'same == 0'.
-        - When filling 'term' from the start to the end, in order to set a
-          default 'term' value, we also search for blocks of the 'phrase' type
-          (just to be safe in such cases when 'phrase' blocks anticipate 'term'
-          blocks). However, we fill 'term' for 'phrase' blocks from the end to
-          the start because we want the 'phrase' subject to have the 'term'
-          value of the first 'phrase' block AFTER it.
-        - Finally, we clear TERM values for fixed columns. Sqlite sorts ''
-          before a non-empty string, so we ensure thereby that sorting by TERM
-          will be correct. Otherwise, we would have to correctly calculate TERM
-          values for fixed columns that will vary depending on the view.
-          Incorrect sorting by TERM may result in putting a 'term' item before
-          fixed columns.
-    '''
+    # Process blocks before dumping to DB
     def __init__(self,blocks,Debug=False,maxrows=1000):
         self.fixed = ('dic','wform','transc','speech')
         self.sep_words = (' - найдены отдельные слова'
@@ -501,7 +474,6 @@ class Elems:
         del self.blocks[index_]
         self.blocks[index_].type_ = 'phdic'
         self.blocks[index_].url = url
-        self.blocks[index_].select = 1
         self.blocks[index_].dic = self.phdic = _('phrases')
         self.blocks[index_].dicf = self.blocks[index_].text = text
     
@@ -646,18 +618,6 @@ class Elems:
         '''
         self.blocks = [block for block in self.blocks if block.text]
     
-    def set_term_same(self):
-        ''' #NOTE: all blocks of the same cell must have the same TERM,
-            otherwise, alphabetizing may put blocks with SAME=1 outside of
-            their cells.
-        '''
-        term = ''
-        for block in self.blocks:
-            if block.same == 0:
-                term = block.term
-            elif block.same == 1:
-                block.term = term
-    
     def get_suggested(self):
         for i in range(len(self.blocks)):
             if self.blocks[i].text in (' Варианты замены: ',' Suggest: '):
@@ -727,18 +687,13 @@ class Elems:
         self.reassign_brackets()
         # Prepare for cells
         self.fill()
-        self.fill_term()
         self.remove_fixed()
         self.insert_fixed()
-        self.set_fixed_term()
         self.expand_dic_file()
-        self.set_term_same()
         # Extra spaces in the beginning may cause sorting problems
         self.add_space()
         #TODO: expand parts of speech (n -> noun, etc.)
-        self.set_selectables()
         self.restore_dic_urls()
-        self.debug()
         return self.blocks
     
     def debug(self):
@@ -747,7 +702,7 @@ class Elems:
             sh.com.rep_lazy(f)
             return
         headers = ('NO','TYPE','TEXT','URL','SAME','SEMINO','ROWNO','CELLNO'
-                  ,'SELECT','DIC','DICF','TERM'
+                  ,'DIC','DICF'
                   )
         rows = []
         for i in range(len(self.blocks)):
@@ -759,21 +714,18 @@ class Elems:
                          ,self.blocks[i].semino
                          ,self.blocks[i].rowno
                          ,self.blocks[i].cellno
-                         ,self.blocks[i].select
                          ,self.blocks[i].dic
                          ,self.blocks[i].dicf
-                         ,self.blocks[i].term
                          ]
                         )
         # 10'' monitor: 12 symbols per a column
         # 23'' monitor: 20 symbols per a column
-        mes = sh.FastTable (headers = headers
-                           ,iterable = rows
-                           ,maxrow = 23
-                           ,maxrows = self.maxrows
-                           ,Transpose = True
-                           ).run()
-        sh.com.run_fast_debug(f,mes)
+        return sh.FastTable (headers = headers
+                            ,iterable = rows
+                            ,maxrow = 23
+                            ,maxrows = self.maxrows
+                            ,Transpose = True
+                            ).run()
         
     def set_transc(self):
         # Takes ~0.003s for 'set' (EN-RU) on AMD E-300
@@ -805,7 +757,7 @@ class Elems:
             sh.objs.get_mes(f,mes,True).show_debug()
 
     def fill(self):
-        dic = dicf = wform = speech = transc = term = ''
+        dic = dicf = wform = speech = transc = ''
         
         # Find first non-empty values and set them as default
         for block in self.blocks:
@@ -825,10 +777,6 @@ class Elems:
             if block.type_ == 'transc':
                 transc = block.text
                 break
-        for block in self.blocks:
-            if block.type_ in ('term','phrase'):
-                term = block.text
-                break
         
         for block in self.blocks:
             if block.type_ in ('dic','phdic'):
@@ -840,43 +788,12 @@ class Elems:
                 speech = block.text
             elif block.type_ == 'transc':
                 transc = block.text
-                ''' #TODO: Is there a difference if we use both term/phrase
-                    here or the term only?
-                '''
-            elif block.type_ in ('term','phrase'):
-                term = block.text
             block.dic = dic
             block.dicf = dicf
             block.wform = wform
             block.speech = speech
             block.transc = transc
-            if block.same > 0:
-                block.term = term
     
-    def fill_term(self):
-        term = ''
-        ''' This is just to get a non-empty value of 'term' if some other types
-            besides 'phrase' and 'term' follow them in the end.
-        '''
-        i = len(self.blocks) - 1
-        while i >= 0:
-            if self.blocks[i].type_ in ('term','phrase'):
-                term = self.blocks[i].text
-                break
-            i -= 1
-        i = len(self.blocks) - 1
-        while i >= 0:
-            if self.blocks[i].type_ in ('term','phrase'):
-                term = self.blocks[i].text
-            if not self.blocks[i].same > 0:
-                self.blocks[i].term = term
-            i -= 1
-            
-    def set_fixed_term(self):
-        for block in self.blocks:
-            if block.type_ in self.fixed:
-                block.term = ''
-                
     def insert_fixed(self):
         dic = wform = speech = ''
         i = 0
@@ -895,7 +812,6 @@ class Elems:
                 block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term = self.blocks[i].term
                 block.same = 0
                 self.blocks.insert(i,block)
                 
@@ -907,7 +823,6 @@ class Elems:
                 block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term = self.blocks[i].term
                 block.same = 0
                 self.blocks.insert(i,block)
 
@@ -919,7 +834,6 @@ class Elems:
                 block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term = self.blocks[i].term
                 block.same = 0
                 self.blocks.insert(i,block)
                 
@@ -932,7 +846,6 @@ class Elems:
                     block.wform = self.blocks[i].wform
                     block.speech = self.blocks[i].speech
                     block.transc = self.blocks[i].transc
-                    block.term = self.blocks[i].term
                     block.same = 0
                     self.blocks.insert(i,block)
                 
@@ -947,15 +860,6 @@ class Elems:
                        if block.type_ not in self.fixed
                       ]
                        
-    def set_selectables(self):
-        # block.no is set only after creating DB
-        for block in self.blocks:
-            if block.type_ in ('term','phrase','transc','phdic') \
-            and block.text:
-                block.select = 1
-            else:
-                block.select = 0
-    
     def set_dic_urls(self):
         for block in self.blocks:
             if block.type_ in ('dic','phdic') \

@@ -16,7 +16,7 @@ class Offline:
         import plugins.multitrancom.cleanup as cu
         import plugins.multitrancom.tags as tg
         import plugins.multitrancom.elems as el
-        file = '/home/pete/bin/mclient/tests/multitrancom (saved in browser)/hello (2021-03-14).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/username (2021-03-06).html'
         self.htm = sh.ReadTextFile(file).get()
         self.text = cu.CleanUp(self.htm).run()
         itags = tg.Tags (text = self.text
@@ -24,10 +24,12 @@ class Offline:
                         ,maxrows = self.maxrows
                         )
         blocks = itags.run()
-        blocks = el.Elems (blocks = blocks
+        ielems = el.Elems (blocks = blocks
                           ,Debug = DEBUG
                           ,maxrows = self.maxrows
-                          ).run()
+                          )
+        ielems.run()
+        return ielems.debug()
 
 
 
@@ -925,122 +927,6 @@ class Commands:
 
 
 
-class DB:
-    
-    def __init__(self,Debug=False):
-        # 'mandatory -> Иностранные дела'
-        lg.objs.get_request().search = 'Иностранные дела'
-        lg.objs.request.url = 'https://www.multitran.com/m.exe?a=3&sc=716&s=mandatory&l1=1&l2=2&SHL=2'
-        self.maxrows = 1000
-        lg.objs.get_plugins (Debug = Debug
-                            ,maxrows = self.maxrows
-                            )
-    
-    def get(self):
-        f = '[MClient] tests.DB.get'
-        result = lg.objs.get_blocksdb().get_max_col_no()
-        sh.objs.get_mes(f,result,True).show_debug()
-        lg.objs.blocksdb.print_custom()
-    
-    def run(self):
-        self.fill()
-        self.get()
-    
-    def fill(self):
-        f = '[MClient] tests.DB.fill'
-        blocks = lg.objs.get_plugins().request (search = lg.objs.get_request().search
-                                               ,url = lg.objs.request.url
-                                               )
-        # 'None' skips the autoincrement
-        data = (None                              # (00) ARTICLEID
-               ,sh.lg.globs['str']['source']      # (01) SOURCE
-               ,lg.objs.request.search            # (02) TITLE
-               ,lg.objs.request.url               # (03) URL
-               ,lg.objs.get_plugins().get_lang1() # (04) LANG1
-               ,lg.objs.plugins.get_lang2()       # (05) LANG2
-               ,None                              # (06) BOOKMARK
-               ,lg.objs.plugins.get_htm()         # (07) CODE
-               )
-        lg.objs.get_blocksdb().fill_articles(data)
-        lg.objs.blocksdb.artid = lg.objs.blocksdb.get_max_artid()
-        data = lg.com.dump_elems (blocks = blocks
-                                 ,artid = lg.objs.blocksdb.artid
-                                 )
-        if data:
-            lg.objs.blocksdb.fill_blocks(data)
-            
-        lg.objs.blocksdb.update_phterm()
-        
-        self.phdic = lg.objs.blocksdb.get_phdic()
-        if self.phdic:
-            if sh.lg.globs['bool']['ShortSubjects']:
-                self.phdic = self.phdic[0]
-            else:
-                self.phdic = self.phdic[1]
-        else:
-            self.phdic = ''
-        
-        if self.phdic:
-            lg.objs.request.SpecialPage = False
-        else:
-            # Otherwise, 'SpecialPage' will be inherited
-            lg.objs.request.SpecialPage = True
-        #self.update_columns()
-        
-        SortTerms = sh.lg.globs['bool']['AlphabetizeTerms'] \
-                    and not lg.objs.request.SpecialPage
-        ''' We must reset DB as early as possible after setting 'elems',
-            otherwise, real and loaded settings may not coincide, which,
-            in turn, may lead to a data loss, see, for example, RU-EN:
-            "цепь: провод".
-        '''
-        lg.objs.blocksdb.reset (cols = lg.objs.request.cols
-                               ,SortRows = sh.lg.globs['bool']['SortByColumns']
-                               ,SortTerms = SortTerms
-                               ,ExpandDic = not sh.lg.globs['bool']['ShortSubjects']
-                               ,ShowUsers = sh.lg.globs['bool']['ShowUserNames']
-                               ,PhraseCount = sh.lg.globs['bool']['PhraseCount']
-                               )
-        sj.objs.get_article().reset (pairs = lg.objs.blocksdb.get_dic_pairs()
-                                    ,Debug = lg.objs.get_plugins().Debug
-                                    )
-        sj.objs.article.run()
-        data = lg.objs.blocksdb.assign_bp()
-        spdic = lg.objs.get_speech_prior().get_all2prior()
-        bp = cl.BlockPrioritize (data = data
-                                ,Block = sh.lg.globs['bool']['BlockSubjects']
-                                ,Prioritize = sh.lg.globs['bool']['PrioritizeSubjects']
-                                ,phdic = self.phdic
-                                ,spdic = spdic
-                                ,Debug = lg.objs.plugins.Debug
-                                ,maxrows = lg.objs.plugins.maxrows
-                                )
-        bp.run()
-        lg.objs.blocksdb.update(bp.query)
-        
-        lg.objs.blocksdb.unignore()
-        lg.objs.blocksdb.ignore()
-        
-        data = lg.objs.blocksdb.assign_cells()
-
-        if sh.lg.globs['bool']['ShortSpeech']:
-            spdic = {}
-        else:
-            spdic = lg.objs.speech_prior.get_abbr2full()
-        
-        cells = cl.Cells (data = data
-                         ,cols = lg.objs.request.cols
-                         ,collimit = lg.objs.request.collimit
-                         ,phdic = self.phdic
-                         ,spdic = spdic
-                         ,Reverse = sh.lg.globs['bool']['VerticalView']
-                         ,Debug = lg.objs.plugins.Debug
-                         ,maxrows = lg.objs.plugins.maxrows
-                         )
-        cells.run()
-        cells.dump(lg.objs.blocksdb)
-
-
 com = Commands()
 
 
@@ -1051,9 +937,13 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
+    debug = Offline().run_multitrancom()
+    print(debug)
+    '''
     debug = Tags().run_multitrancom()
     print(debug)
     #sh.objs.get_mes(f,debug).show_debug()
+    '''
     '''
     # Priorities
     iprior = com.run_prior()
