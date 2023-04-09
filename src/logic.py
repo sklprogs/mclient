@@ -810,9 +810,9 @@ class Commands:
         
     def use_unverified(self):
         f = '[MClientQt] logic.Commands.use_unverified'
-        ''' On *some* systems we can get urllib.error.URLError: 
-            <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED].
-            To get rid of this error, we use this small workaround.
+        ''' On *some* systems we can get urllib.error.URLError: <urlopen error
+            [SSL: CERTIFICATE_VERIFY_FAILED]>. To get rid of this error, we use
+            this small workaround.
         '''
         if hasattr(ssl,'_create_unverified_context'):
             ssl._create_default_https_context = ssl._create_unverified_context
@@ -1151,7 +1151,7 @@ class Table:
     def set_table(self):
         ''' Empty cells must be recreated since QTableView throws an error
             otherwise.
-            #TODO: create empty cells with the 'cells' module
+            #TODO: create empty cells with the 'cells' module.
         '''
         f = '[MClientQt] logic.Table.set_table'
         if not self.cells:

@@ -7,9 +7,8 @@ import skl_shared_qt.shared as sh
 import subjects.subjects as sj
 
 
-# Extended from tags.Block
 class Block:
-    
+    # Extended from tags.Block
     def __init__(self):
         self.block = -1
         # Applies to non-blocked cells only
@@ -36,12 +35,11 @@ class Block:
 
 
 class BlockPrioritize:
-    ''' Update Block and Priority in DB before sorting cells.
-        This complements DB with values that must be dumped into DB
-        before sorting it.
+    ''' Update Block and Priority in DB before sorting cells. This complements
+        DB with values that must be dumped into DB before sorting it.
         Needs attributes in blocks: NO, DIC, SPEECH*, TYPE, TEXT*
         * (test purposes only).
-        Modifies attributes: BLOCK, DICPR, SPEECHPR
+        Modifies attributes: BLOCK, DICPR, SPEECHPR.
     '''
     def __init__(self,data,Block=False,Prioritize=False
                 ,phdic=None,Debug=False,maxrows=1000
@@ -132,8 +130,8 @@ class BlockPrioritize:
         f = '[MClient] cells.BlockPrioritize.block'
         for block in self.blocks:
             Blocked = sj.objs.get_article().is_blocked(block.dic)
-            ''' Do not put checking 'self.Block' ahead of the loop
-                since we need to assign 'block' to 0 anyway.
+            ''' Do not put checking 'self.Block' ahead of the loop since we
+                need to assign 'block' to 0 anyway.
             '''
             if self.Block and Blocked:
                 block.block = 1
@@ -212,8 +210,8 @@ class Cells:
             sh.com.rep_empty(f)
 
     def set_cols(self):
-        ''' #TODO (?): change lg.objs.request.cols and
-            lg.objs.request.collimit directly.
+        ''' #TODO (?): change lg.objs.request.cols and lg.objs.request.collimit
+            directly.
         '''
         f = '[MClient] cells.Cells.set_cols'
         fixed = set(block.type_ for block in self.blocks if block.Fixed)
@@ -224,12 +222,8 @@ class Cells:
             if self.collimit > delta:
                 self.collimit -= delta
             else:
-                sub = '{} > {} - {}'.format (self.collimit
-                                            ,old_len
-                                            ,len(self.cols)
-                                            )
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
+                sub = f'{self.collimit} > {old_len} - {len(self.cols)}'
+                mes = _('The condition "{}" is not observed!').format(sub)
                 sh.objs.get_mes(f,mes).show_warning()
         mes = _('Types of actual fixed columns: {}')
         mes = mes.format(', '.join(self.cols))
@@ -244,9 +238,9 @@ class Cells:
                 block.Fixed = True
 
     def clear_phrases(self):
-        ''' The 'Phrases' section comes the latest in MT, therefore,
-            it inherits fixed columns of the preceding subject which
-            are irrelevant. Here we clear them.
+        ''' The 'Phrases' section comes the latest in MT, therefore, it
+            inherits fixed columns of the preceding subject which are
+            irrelevant. Here we clear them.
         '''
         if not self.phdic:
             return
@@ -258,8 +252,8 @@ class Cells:
     def clear_fixed(self):
         dic = wform = speech = transc = ''
         for block in self.blocks:
-            ''' 'phdic' is reassigned to 'dic' in this module (in order
-                to be independent from modes).
+            ''' 'phdic' is reassigned to 'dic' in this module (in order to be
+                independent from modes).
             '''
             if block.type_ == 'dic':
                 if dic == block.dic:

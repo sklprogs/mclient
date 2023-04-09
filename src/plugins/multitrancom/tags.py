@@ -477,10 +477,10 @@ class Tags:
             self.fragms.append(fragm)
     
     def fix_non_tags(self):
-        ''' - Work around '<' and '>' that can be unquoted at
-              'multitran.com' and do not represent tags, e.g., EN-RU,
+        ''' - Work around '<' and '>' that can be unquoted at 'multitran.com'
+              and do not represent tags, e.g., EN-RU,
               'wind up' => '<переносн.>'.
-            - Takes ~0.024s for 'set' (EN-RU) on AMD E-300
+            - Takes ~0.024s for 'set' (EN-RU) on AMD E-300.
         '''
         f = '[MClient] plugins.multitrancom.tags.Tags.fix_non_tags'
         if not self.Success:
