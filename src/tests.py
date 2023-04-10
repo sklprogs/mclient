@@ -937,13 +937,13 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
-    debug = Offline().run_multitrancom()
-    print(debug)
-    '''
+    #debug = Offline().run_multitrancom()
+    #print(debug)
+
     debug = Tags().run_multitrancom()
     print(debug)
     #sh.objs.get_mes(f,debug).show_debug()
-    '''
+
     '''
     # Priorities
     iprior = com.run_prior()

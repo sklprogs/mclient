@@ -53,10 +53,34 @@ class Tag:
         self.name = ''
         self.url = ''
         self.dicf = ''
-        self.rowno = -1
         self.cellno = -1
         self.Close = False
         self.inherent = []
+
+
+
+class Block:
+
+    def __init__(self):
+        self.block = -1
+        # Applies to non-blocked cells only
+        self.cellno = -1
+        self.dic = ''
+        self.dicf = ''
+        self.dprior = 0
+        self.first = -1
+        self.last = -1
+        self.no = -1
+        self.speech = ''
+        self.sprior = -1
+        self.transc = ''
+        self.text = ''
+        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
+            'term', 'transc', 'wform'.
+        '''
+        self.type_ = 'comment'
+        self.url = ''
+        self.wform = ''
 
 
 
@@ -240,40 +264,6 @@ class AnalyzeTag:
 
 
 
-class Block:
-
-    def __init__(self):
-        self.block = -1
-        # Applies to non-blocked cells only
-        self.cellno = -1
-        self.dic = ''
-        self.dicf = ''
-        self.dprior = 0
-        self.first = -1
-        self.i = -1
-        self.j = -1
-        self.last = -1
-        self.no = -1
-        self.same = -1
-        ''' 'select' is an attribute of a *cell* which is valid if the cell has
-            a non-blocked block of types 'term', 'phrase' or 'transc'.
-        '''
-        self.select = -1
-        self.speech = ''
-        self.sprior = -1
-        self.transc = ''
-        self.term = ''
-        self.text = ''
-        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
-            'term', 'transc', 'wform'.
-        '''
-        self.type_ = 'comment'
-        self.url = ''
-        self.urla = ''
-        self.wform = ''
-
-
-
 class Tags:
     
     def __init__(self,text,Debug=False,maxrows=0):
@@ -319,23 +309,12 @@ class Tags:
         f = '[MClient] plugins.multitrancom.tags.Tags.set_nos'
         if not self.Success:
             return
-        currow = -1
         curcell = -1
         for tag in self.tags:
             if not tag.Close:
-                if tag.name in ('tr','br'):
-                    currow += 1
-                elif tag.name == 'td':
+                if tag.name in ('tr','td','br') or tag.text == '; ':
                     curcell += 1
-            tag.rowno = currow
             tag.cellno = curcell
-        """
-        # tag.cellno == -1 is actually OK since rows come before any cells.
-        for tag in self.tags:
-            if tag.rowno > -1:
-                tag.cellno += 1
-            break
-        """
     
     def _debug_blocks(self):
         nos = [i + 1 for i in range(len(self.blocks))]
@@ -344,12 +323,9 @@ class Tags:
         urls = ['"{}"'.format(block.url) for block in self.blocks]
         dics = ['"{}"'.format(block.dic) for block in self.blocks]
         dicfs = ['"{}"'.format(block.dicf) for block in self.blocks]
-        rownos = [block.rowno for block in self.blocks]
         cellnos = [block.cellno for block in self.blocks]
-        iterable = [nos,types,texts,urls,dics,dicfs,rownos,cellnos]
-        headers = (_('#'),_('TYPE'),_('TEXT'),'URL','DIC','DICF'
-                  ,_('ROW #'),_('CELL #')
-                  )
+        iterable = [nos,types,texts,urls,dics,dicfs,cellnos]
+        headers = (_('#'),_('TYPE'),_('TEXT'),'URL','DIC','DICF',_('CELL #'))
         # 10'' monitor: 20 symbols per a column
         # 23'' monitor: 50 symbols per a column
         mes = sh.FastTable (iterable = iterable
@@ -376,7 +352,6 @@ class Tags:
                 else:
                     block.type_ = subtag.type_
             block.text = tag.text
-            block.rowno = tag.rowno
             block.cellno = tag.cellno
             # This is because MT generates invalid links
             block.url = html.unescape(block.url)
@@ -411,7 +386,6 @@ class Tags:
         texts = ['"{}"'.format(tag.text) for tag in self.tags]
         urls = ['"{}"'.format(tag.url) for tag in self.tags]
         dicfs = ['"{}"'.format(tag.dicf) for tag in self.tags]
-        rownos = ['{}'.format(tag.rowno) for tag in self.tags]
         cellnos = ['{}'.format(tag.cellno) for tag in self.tags]
         inherent = []
         for tag in self.tags:
@@ -420,11 +394,9 @@ class Tags:
                 subtags.append(subtag.name)
             subtags = ', '.join(subtags)
             inherent.append(subtags)
-        iterable = [nos,closes,names,types,texts,urls,dicfs,inherent
-                   ,rownos,cellnos
-                   ]
-        headers = (_('#'),_('CLOSING'),_('NAME'),_('TYPE'),_('TEXT')
-                  ,'URL','DICF',_('OPEN'),_('ROW'),_('CELL')
+        iterable = [nos,closes,names,types,texts,urls,dicfs,inherent,cellnos]
+        headers = (_('#'),_('CLOSING'),_('NAME'),_('TYPE'),_('TEXT'),'URL'
+                  ,'DICF',_('OPEN'),_('CELL')
                   )
         # 10'' monitor: 13 symbols per a column
         # 23'' monitor: 30 symbols per a column
@@ -512,7 +484,7 @@ class Tags:
         self.split()
         self.fix_non_tags()
         self.assign()
-        self.set_nos()
         self.set_inherent()
+        self.set_nos()
         self.set_blocks()
         return self.blocks
