@@ -82,14 +82,10 @@ class Block:
         self.block = -1
         # Applies to non-blocked cells only
         self.cellno = -1
-        self.rowno = -1
         self.dic = ''
         self.dicf = ''
         self.dprior = 0
         self.first = -1
-        self.i = -1
-        self.semino = -1
-        self.j = -1
         self.last = -1
         self.no = -1
         self.same = -1

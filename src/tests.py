@@ -7,6 +7,31 @@ import skl_shared_qt.shared as sh
 DEBUG = True
 
 
+class Elems:
+    
+    def run_multitrancom(self):
+        f = '[MClient] tests.Elems.run_multitrancom'
+        import plugins.multitrancom.cleanup as cu
+        import plugins.multitrancom.tags as tg
+        import plugins.multitrancom.elems2 as el
+        ''' #NOTE: The file should be generated with
+            'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
+            to set 'dic' and some other types.
+        '''
+        #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/hello (Компьютерные сети) (2021-03-17).html'
+        #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/generic drug (2021-03-17).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/get out of (2021-03-17).html'
+        text = sh.ReadTextFile(file).get()
+        text = cu.CleanUp(text).run()
+        blocks = tg.Tags (text = text
+                         ,maxrows = 0
+                         ).run()
+        ielems = el.Elems(blocks)
+        ielems.run()
+        return ielems.debug()
+
+
+
 class Offline:
     
     def __init__(self):
@@ -932,17 +957,14 @@ com = Commands()
 
 if __name__ == '__main__':
     f = '[MClient] tests.__main__'
-    #sh.com.start()
+    sh.com.start()
     ''' #NOTE: Putting QMainWindow.show() or QWidget.show() (without
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
-    #debug = Offline().run_multitrancom()
-    #print(debug)
-
-    debug = Tags().run_multitrancom()
-    print(debug)
-    #sh.objs.get_mes(f,debug).show_debug()
+    idebug = sh.Debug(f,Elems().run_multitrancom())
+    # This MUST be on a separate line, the widget will not be shown otherwise
+    idebug.show()
 
     '''
     # Priorities
@@ -988,4 +1010,4 @@ if __name__ == '__main__':
     iwelcome = com.run_welcome()
     iwelcome.show()
     '''
-    #sh.com.end()
+    sh.com.end()
