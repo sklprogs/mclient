@@ -52,6 +52,7 @@ class Elems:
                 if cell.blocks:
                     self.cells.append(cell)
                 cell = Cell()
+                cell.blocks.append(self.blocks[i])
             i += 1
         if cell.blocks:
             self.cells.append(cell)
