@@ -21,7 +21,8 @@ class Elems:
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/hello (Компьютерные сети) (2021-03-17).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/generic drug (2021-03-17).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/get out of (2021-03-17).html'
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/set (2021-03-06).html'
+        #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/set (2021-03-06).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/back (2023-04-12).html'
         text = sh.ReadTextFile(file).get()
         timer = sh.Timer(f)
         timer.start()
@@ -966,6 +967,7 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
+    #idebug = sh.Debug(f,Tags().run_multitrancom())
     idebug = sh.Debug(f,Elems().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
     idebug.show()

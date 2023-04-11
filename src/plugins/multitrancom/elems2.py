@@ -13,7 +13,7 @@ class Cell:
         self.no = -1
         self.blocks = []
         self.Fixed = False
-        self.Ignored = False
+        self.Ignore = False
 
 
 
@@ -23,15 +23,21 @@ class Elems:
         self.cells = []
         self.blocks = blocks
     
-    def _is_fixed(self,cell):
+    def _is_block_fixed(self,block):
+        return block.type_ in ('dic','wform','speech','transc','phdic')
+    
+    def _is_cell_fixed(self,cell):
         for block in cell.blocks:
-            if block.type_ in ('dic','wform','speech','transc','phdic'):
+            if block.Fixed:
                 return True
     
-    def set_fixed(self):
-        f = 'plugins.multitrancom.elems.Elems.set_fixed'
+    def set_fixed_blocks(self):
+        for block in self.blocks:
+            block.Fixed = self._is_block_fixed(block)
+    
+    def set_fixed_cells(self):
         for cell in self.cells:
-            cell.Fixed = self._is_fixed(cell)
+            cell.Fixed = self._is_cell_fixed(cell)
     
     def run_phcount(self):
         f = 'plugins.multitrancom.elems.Elems.run_phcount'
@@ -74,18 +80,18 @@ class Elems:
             self.cells[i].no = i
     
     def debug(self):
-        headers = (_('CELL #'),_('FIXED'),_('IGNORED'),_('TEXT'))
+        headers = (_('CELL #'),_('IGNORE'),_('FIXED'),_('TEXT'))
         nos = []
         texts = []
         fixed = []
-        ignored = []
+        ignore = []
         for cell in self.cells:
             nos.append(cell.no)
             fixed.append(cell.Fixed)
-            ignored.append(cell.Ignored)
+            ignore.append(cell.Ignore)
             texts.append(cell.text)
         return sh.FastTable (headers = headers
-                            ,iterable = (nos,fixed,ignored,texts)
+                            ,iterable = (nos,ignore,fixed,texts)
                             ,maxrow = 130
                             ,maxrows = 0
                             ).run()
@@ -133,12 +139,26 @@ class Elems:
                 i += 1
         sh.com.rep_matches(f,count)
     
+    def separate_fixed(self):
+        f = 'plugins.multitrancom.elems.Elems.separate_fixed'
+        count = 0
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].Fixed and self.blocks[i].Fixed:
+                count += 1
+                # We just need a different 'cellno' (will be reassigned anyway)
+                self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
+            i += 1
+        sh.com.rep_matches(f,count)
+    
     def run(self):
+        self.set_fixed_blocks()
+        self.separate_fixed()
         self.run_phcount()
         self.set_cells()
         self.delete_semi()
         self.unite_brackets()
         self.set_text()
         self.delete_trash()
-        self.set_fixed()
+        self.set_fixed_cells()
         self.renumber()
