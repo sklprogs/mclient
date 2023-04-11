@@ -100,10 +100,28 @@ class Elems:
             del self.cells[0]
         sh.com.rep_matches(f,old_len-len(self.cells))
     
+    def unite_brackets(self):
+        ''' Combine a cell with a preceding or following bracket such that the
+            user would not see '()' when the cell is ignored/blocked.
+        '''
+        f = 'plugins.multitrancom.elems.Elems.unite_brackets'
+        count = 0
+        for cell in self.cells:
+            i = 1
+            while i < len(cell.blocks):
+                if cell.blocks[i-1].text.strip() == '(' \
+                or cell.blocks[i].text.strip() == ')':
+                    count += 1
+                    cell.blocks[i-1].text = cell.blocks[i-1].text + cell.blocks[i].text
+                    del cell.blocks[i]
+                i += 1
+        sh.com.rep_matches(f,count)
+    
     def run(self):
         self.run_phcount()
         self.set_cells()
         self.delete_semi()
+        self.unite_brackets()
         self.set_text()
         self.delete_trash()
         self.renumber()
