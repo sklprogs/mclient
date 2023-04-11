@@ -20,14 +20,18 @@ class Elems:
         '''
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/hello (Компьютерные сети) (2021-03-17).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/generic drug (2021-03-17).html'
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/get out of (2021-03-17).html'
+        #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/get out of (2021-03-17).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/set (2021-03-06).html'
         text = sh.ReadTextFile(file).get()
+        timer = sh.Timer(f)
+        timer.start()
         text = cu.CleanUp(text).run()
         blocks = tg.Tags (text = text
                          ,maxrows = 0
                          ).run()
         ielems = el.Elems(blocks)
         ielems.run()
+        timer.end()
         return ielems.debug()
 
 
