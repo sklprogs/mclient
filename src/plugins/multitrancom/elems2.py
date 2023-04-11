@@ -26,7 +26,7 @@ class Elems:
         count = 0
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i-1].type_ == 'phrase' \
+            if self.blocks[i-1].type_ in ('phrase','comment') \
             and self.blocks[i].type_ == 'phcount':
                 count += 1
                 self.blocks[i].cellno = self.blocks[i-1].cellno
