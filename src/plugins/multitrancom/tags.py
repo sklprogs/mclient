@@ -62,25 +62,16 @@ class Tag:
 class Block:
 
     def __init__(self):
-        self.block = -1
-        # Applies to non-blocked cells only
+        self.Ignore = False
         self.cellno = -1
         self.dic = ''
         self.dicf = ''
-        self.dprior = 0
-        self.first = -1
-        self.last = -1
-        self.no = -1
-        self.speech = ''
-        self.sprior = -1
-        self.transc = ''
         self.text = ''
         ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
             'term', 'transc', 'wform'.
         '''
         self.type_ = 'comment'
         self.url = ''
-        self.wform = ''
 
 
 
