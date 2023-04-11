@@ -88,9 +88,22 @@ class Elems:
             count += old_len - len(cell.blocks)
         sh.com.rep_matches(f,count)
     
+    def delete_trash(self):
+        f = 'plugins.multitrancom.elems.Elems.delete_trash'
+        old_len = len(self.cells)
+        self.cells = [cell for cell in self.cells \
+                      if not '<!-- -->' in cell.text \
+                      and not '<!-- // -->' in cell.text
+                     ]
+        # The first cell represents an article title
+        if len(self.cells) > 1:
+            del self.cells[0]
+        sh.com.rep_matches(f,old_len-len(self.cells))
+    
     def run(self):
         self.run_phcount()
         self.set_cells()
         self.delete_semi()
         self.set_text()
+        self.delete_trash()
         self.renumber()
