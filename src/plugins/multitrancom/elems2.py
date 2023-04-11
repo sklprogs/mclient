@@ -104,6 +104,8 @@ class Elems:
         for cell in self.cells:
             fragms = [block.text for block in cell.blocks]
             cell.text = sh.List(fragms).space_items().strip()
+            # 'phdic' text may have multiple spaces for some reason
+            cell.text = sh.Text(cell.text).delete_duplicate_spaces()
     
     def delete_semi(self):
         f = 'plugins.multitrancom.elems.Elems.delete_semi'
