@@ -79,8 +79,18 @@ class Elems:
             fragms = [block.text for block in cell.blocks]
             cell.text = sh.List(fragms).space_items()
     
+    def delete_semi(self):
+        f = 'plugins.multitrancom.elems.Elems.delete_semi'
+        count = 0
+        for cell in self.cells:
+            old_len = len(cell.blocks)
+            cell.blocks = [block for block in cell.blocks if block.text != '; ']
+            count += old_len - len(cell.blocks)
+        sh.com.rep_matches(f,count)
+    
     def run(self):
         self.run_phcount()
         self.set_cells()
+        self.delete_semi()
         self.set_text()
         self.renumber()
