@@ -77,7 +77,7 @@ class Elems:
     def set_text(self):
         for cell in self.cells:
             fragms = [block.text for block in cell.blocks]
-            cell.text = sh.List(fragms).space_items()
+            cell.text = sh.List(fragms).space_items().strip()
     
     def delete_semi(self):
         f = 'plugins.multitrancom.elems.Elems.delete_semi'
