@@ -12,6 +12,8 @@ class Cell:
         self.text = ''
         self.no = -1
         self.blocks = []
+        self.Fixed = False
+        self.Ignored = False
 
 
 
@@ -20,6 +22,16 @@ class Elems:
     def __init__(self,blocks):
         self.cells = []
         self.blocks = blocks
+    
+    def _is_fixed(self,cell):
+        for block in cell.blocks:
+            if block.type_ in ('dic','wform','speech','transc','phdic'):
+                return True
+    
+    def set_fixed(self):
+        f = 'plugins.multitrancom.elems.Elems.set_fixed'
+        for cell in self.cells:
+            cell.Fixed = self._is_fixed(cell)
     
     def run_phcount(self):
         f = 'plugins.multitrancom.elems.Elems.run_phcount'
@@ -62,16 +74,20 @@ class Elems:
             self.cells[i].no = i
     
     def debug(self):
-        headers = (_('CELL #'),_('TEXT'))
+        headers = (_('CELL #'),_('FIXED'),_('IGNORED'),_('TEXT'))
         nos = []
         texts = []
+        fixed = []
+        ignored = []
         for cell in self.cells:
             nos.append(cell.no)
+            fixed.append(cell.Fixed)
+            ignored.append(cell.Ignored)
             texts.append(cell.text)
         return sh.FastTable (headers = headers
-                            ,iterable = (nos,texts)
-                            ,maxrow = 150
-                            ,maxrows = 1000
+                            ,iterable = (nos,fixed,ignored,texts)
+                            ,maxrow = 130
+                            ,maxrows = 0
                             ).run()
     
     def set_text(self):
@@ -124,4 +140,5 @@ class Elems:
         self.unite_brackets()
         self.set_text()
         self.delete_trash()
+        self.set_fixed()
         self.renumber()
