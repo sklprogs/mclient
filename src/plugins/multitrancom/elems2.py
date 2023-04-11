@@ -80,18 +80,22 @@ class Elems:
             self.cells[i].no = i
     
     def debug(self):
-        headers = (_('CELL #'),_('IGNORE'),_('FIXED'),_('TEXT'))
+        #headers = (_('CELL #'),_('IGNORE'),_('FIXED'),_('TEXT'),_('TYPES'))
+        headers = (_('FIXED'),_('CELL #'),_('TYPES'),_('TEXT'))
         nos = []
         texts = []
         fixed = []
-        ignore = []
+        #ignore = []
+        types = []
         for cell in self.cells:
             nos.append(cell.no)
             fixed.append(cell.Fixed)
-            ignore.append(cell.Ignore)
+            #ignore.append(cell.Ignore)
             texts.append(cell.text)
+            cell_types = [block.type_ for block in cell.blocks]
+            types.append(', '.join(cell_types))
         return sh.FastTable (headers = headers
-                            ,iterable = (nos,ignore,fixed,texts)
+                            ,iterable = (fixed,nos,types,texts)
                             ,maxrow = 130
                             ,maxrows = 0
                             ).run()
@@ -140,7 +144,7 @@ class Elems:
         sh.com.rep_matches(f,count)
     
     def separate_fixed(self):
-        f = 'plugins.multitrancom.elems.Elems.separate_fixed'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.separate_fixed'
         count = 0
         i = 1
         while i < len(self.blocks):
@@ -151,7 +155,25 @@ class Elems:
             i += 1
         sh.com.rep_matches(f,count)
     
+    def set_transc(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_transc'
+        count = 0
+        for block in self.blocks:
+            if block.type_ == 'comment' and block.text.startswith('[') \
+            and block.text.endswith(']'):
+                count += 1
+                block.type_ = 'transc'
+        sh.com.rep_matches(f,count)
+    
+    def delete_empty(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_empty'
+        old_len = len(self.blocks)
+        self.blocks = [block for block in self.blocks if block.text.strip()]
+        sh.com.rep_matches(f,old_len-len(self.blocks))
+    
     def run(self):
+        self.delete_empty()
+        self.set_transc()
         self.set_fixed_blocks()
         self.separate_fixed()
         self.run_phcount()
