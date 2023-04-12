@@ -159,6 +159,24 @@ class Elems:
             i += 1
         sh.com.rep_matches(f,count)
     
+    def convert_wform_dic(self):
+        # We have found something like "English thesaurus" entry
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.convert_wform_dic'
+        count = 0
+        i = 5
+        while i < len(self.blocks):
+            if self.blocks[i-4].type_ == 'wform' \
+            and self.blocks[i-3].type_ == 'wform' \
+            and self.blocks[i-2].type_ == 'transc' \
+            and self.blocks[i-1].type_ == 'speech' \
+            and self.blocks[i].type_ == 'dic':
+                count += 1
+                self.blocks[i].text = self.blocks[i-4].text.strip() + ', ' + self.blocks[i].text.strip()
+                del self.blocks[i-4]
+                i -= 1
+            i += 1
+        sh.com.rep_matches(f,count)
+    
     def separate_speech(self):
         ''' Speech can come in structures like 'wform + comment + speech', but
             it should always take a separate cell.
@@ -191,10 +209,25 @@ class Elems:
         self.blocks = [block for block in self.blocks if block.text.strip()]
         sh.com.rep_matches(f,old_len-len(self.blocks))
     
+    def convert_user_dic(self):
+        # "Gruzovik" and other entries, which function as 'dic'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.convert_user_dic'
+        count = 0
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i].type_ == 'user' \
+            and self.blocks[i-1].cellno != self.blocks[i].cellno:
+                count += 1
+                self.blocks[i].type_ = 'dic'
+            i += 1
+        sh.com.rep_matches(f,count)
+    
     def run(self):
         self.delete_empty()
         self.set_transc()
+        self.convert_wform_dic()
         self.separate_speech()
+        self.convert_user_dic()
         self.set_fixed_blocks()
         self.separate_fixed()
         self.run_phcount()
