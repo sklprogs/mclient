@@ -150,7 +150,25 @@ class Elems:
         count = 0
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i-1].Fixed and self.blocks[i].Fixed:
+            # There can be multiple 'wform' blocks
+            if self.blocks[i-1].Fixed and self.blocks[i].Fixed \
+            and self.blocks[i-1].type_ != self.blocks[i].type_:
+                count += 1
+                # We just need a different 'cellno' (will be reassigned anyway)
+                self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
+            i += 1
+        sh.com.rep_matches(f,count)
+    
+    def separate_speech(self):
+        ''' Speech can come in structures like 'wform + comment + speech', but
+            it should always take a separate cell.
+        '''
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.separate_speech'
+        count = 0
+        i = 1
+        while i < len(self.blocks):
+            # It is not enough to set 'Fixed'
+            if self.blocks[i].type_ == 'speech':
                 count += 1
                 # We just need a different 'cellno' (will be reassigned anyway)
                 self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
@@ -176,6 +194,7 @@ class Elems:
     def run(self):
         self.delete_empty()
         self.set_transc()
+        self.separate_speech()
         self.set_fixed_blocks()
         self.separate_fixed()
         self.run_phcount()
