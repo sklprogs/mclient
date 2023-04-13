@@ -135,13 +135,17 @@ class Elems:
         f = 'plugins.multitrancom.elems.Elems.unite_brackets'
         count = 0
         for cell in self.cells:
-            i = 1
+            i = 2
             while i < len(cell.blocks):
-                if cell.blocks[i-1].text.strip() == '(' \
-                or cell.blocks[i].text.strip() == ')':
+                if cell.blocks[i-2].text.strip() == '(' and cell.blocks[i].text.strip() == ')':
                     count += 1
-                    cell.blocks[i-1].text = cell.blocks[i-1].text + cell.blocks[i].text
+                    ''' Add brackets to text of a cell (usually of the 'user'
+                        type), not vice versa, to preserve its type.
+                    '''
+                    cell.blocks[i-1].text = cell.blocks[i-2].text + cell.blocks[i-1].text + cell.blocks[i].text
                     del cell.blocks[i]
+                    del cell.blocks[i-2]
+                    i -= 2
                 i += 1
         sh.com.rep_matches(f,count)
     
