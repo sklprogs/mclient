@@ -10,6 +10,7 @@ class Cell:
     def __init__(self):
         self.code = ''
         self.text = ''
+        self.url = ''
         self.no = -1
         self.blocks = []
         self.Fixed = False
@@ -81,12 +82,13 @@ class Elems:
     
     def debug(self):
         #headers = (_('CELL #'),_('IGNORE'),_('FIXED'),_('TEXT'),_('TYPES'))
-        headers = (_('FIXED'),_('CELL #'),_('TYPES'),_('TEXT'))
+        headers = (_('FIXED'),_('CELL #'),_('TYPES'),_('TEXT'),'URL')
         nos = []
         texts = []
         fixed = []
         #ignore = []
         types = []
+        urls = []
         for cell in self.cells:
             nos.append(cell.no)
             fixed.append(cell.Fixed)
@@ -94,9 +96,10 @@ class Elems:
             texts.append(cell.text)
             cell_types = [block.type_ for block in cell.blocks]
             types.append(', '.join(cell_types))
+            urls.append(cell.url)
         return sh.FastTable (headers = headers
-                            ,iterable = (fixed,nos,types,texts)
-                            ,maxrow = 130
+                            ,iterable = (fixed,nos,types,texts,urls)
+                            ,maxrow = 70
                             ,maxrows = 0
                             ).run()
     
@@ -236,6 +239,33 @@ class Elems:
                 self.blocks[i-3].type_ = 'phdic'
             i -= 1
     
+    def _are_separate_words(self):
+        for cell in self.cells:
+            if cell.text in ('- найдены отдельные слова'
+                            ,'- only individual words found'
+                            ,'- einzelne Wörter gefunden'
+                            ,'- se han encontrado palabras individuales'
+                            ,'- знайдено окремі слова'
+                            ,'- znaleziono osobne słowa'
+                            ,'- 只找到单语'
+                            ):
+                return True
+    
+    def set_separate_words(self):
+        if self._are_separate_words():
+            pass
+    
+    def _get_url(self,cell):
+        #TODO: Do we need to support several URLs in one cell?
+        for block in cell.blocks:
+            if block.url:
+                return block.url
+        return ''
+    
+    def set_urls(self):
+        for cell in self.cells:
+            cell.url = self._get_url(cell)
+    
     def run(self):
         self.delete_empty()
         self.set_transc()
@@ -247,9 +277,11 @@ class Elems:
         self.separate_fixed()
         self.run_phcount()
         self.set_cells()
+        self.set_urls()
         self.delete_semi()
         self.unite_brackets()
         self.set_text()
         self.delete_trash()
+        self.set_separate_words()
         self.set_fixed_cells()
         self.renumber()
