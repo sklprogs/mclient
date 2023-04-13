@@ -222,12 +222,23 @@ class Elems:
             i += 1
         sh.com.rep_matches(f,count)
     
+    def set_phdic(self):
+        i = len(self.blocks) - 4
+        while i >= 0:
+            if self.blocks[i-3].type_ == 'comment' \
+            and self.blocks[i-2].type_ == 'comment' \
+            and self.blocks[i-1].type_ == 'comment' \
+            and self.blocks[i].type_ == 'phrase':
+                self.blocks[i-3].type_ = 'phdic'
+            i -= 1
+    
     def run(self):
         self.delete_empty()
         self.set_transc()
         self.convert_wform_dic()
         self.separate_speech()
         self.convert_user_dic()
+        self.set_phdic()
         self.set_fixed_blocks()
         self.separate_fixed()
         self.run_phcount()
