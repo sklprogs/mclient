@@ -38,7 +38,7 @@ class Extension:
                 self.ext = '&SHL=33'
             elif 'pl' in result:
                 self.ext = '&SHL=14'
-            elif 'cn' in result:
+            elif 'zh' in result:
                 self.ext = '&SHL=17'
         mes = '{} -> {}'.format(result,self.ext)
         sh.objs.get_mes(f,mes,True).show_debug()
