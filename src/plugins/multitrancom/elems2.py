@@ -4,34 +4,7 @@
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-
-class Block:
-    # A copy of Tags.Block
-    def __init__(self):
-        self.Ignore = False
-        self.cellno = -1
-        self.dic = ''
-        self.dicf = ''
-        self.text = ''
-        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
-            'term', 'transc', 'wform'.
-        '''
-        self.type_ = 'comment'
-        self.url = ''
-
-
-
-class Cell:
-    
-    def __init__(self):
-        self.code = ''
-        self.text = ''
-        self.url = ''
-        self.no = -1
-        self.blocks = []
-        self.Fixed = False
-        self.Ignore = False
-
+import instance as ic
 
 
 class SeparateWords:
@@ -94,7 +67,7 @@ class SeparateWords:
                 return True
     
     def _add_subject(self):
-        block = Block()
+        block = ic.Block()
         block.type_ = 'dic'
         block.text = block.dic = block.dicf = _('Separate words')
         self.blocks.insert(0,block)
@@ -185,7 +158,7 @@ class Elems:
             mes = f'{len(self.blocks)} >= 2'
             sh.com.rep_condition(f,mes)
             return
-        cell = Cell()
+        cell = ic.Cell()
         cell.blocks.append(self.blocks[0])
         i = 1
         while i < len(self.blocks):
@@ -194,7 +167,7 @@ class Elems:
             else:
                 if cell.blocks:
                     self.cells.append(cell)
-                cell = Cell()
+                cell = ic.Cell()
                 cell.blocks.append(self.blocks[i])
             i += 1
         if cell.blocks:

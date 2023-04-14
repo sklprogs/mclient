@@ -6,6 +6,8 @@ import html
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
+import instance as ic
+
 
 ''' Tag patterns:
     •  Short subject titles:
@@ -45,36 +47,6 @@ import skl_shared_qt.shared as sh
     '''
 
 
-class Tag:
-    
-    def __init__(self):
-        self.type_ = ''
-        self.text = ''
-        self.name = ''
-        self.url = ''
-        self.dicf = ''
-        self.cellno = -1
-        self.Close = False
-        self.inherent = []
-
-
-
-class Block:
-
-    def __init__(self):
-        self.Ignore = False
-        self.cellno = -1
-        self.dic = ''
-        self.dicf = ''
-        self.text = ''
-        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
-            'term', 'transc', 'wform'.
-        '''
-        self.type_ = 'comment'
-        self.url = ''
-
-
-
 class AnalyzeTag:
 
     def __init__(self,fragm):
@@ -83,7 +55,7 @@ class AnalyzeTag:
     
     def set_values(self):
         self.Success = True
-        self.tag = Tag()
+        self.tag = ic.Tag()
         self.cur_row = 0
         self.cur_cell = 0
     
@@ -335,7 +307,7 @@ class Tags:
                 and not self._is_script(tag)
                ]
         for tag in tags:
-            block = Block()
+            block = ic.Block()
             for subtag in tag.inherent:
                 if subtag.type_ == 'url':
                     block.url = subtag.url
