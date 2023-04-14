@@ -95,8 +95,8 @@ class AnalyzeTag:
     
     def _set_dicf(self):
         pattern = ' title="'
-        ''' #NOTE: A subject can have 'UserName' in its URL since some
-            user entries were separated into subjects.
+        ''' #NOTE: A subject can have 'UserName' in its URL since some user
+            entries were separated into subjects.
         '''
         if self.tag.url and pattern in self.tag.text:
             pos1 = self.tag.text.index(pattern) + len(pattern)
