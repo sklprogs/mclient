@@ -34,18 +34,109 @@ class Cell:
 
 
 
+class SeparateWords:
+    
+    def __init__(self,blocks):
+        self.patterns = ('- найдены отдельные слова'
+                        ,'- only individual words found'
+                        ,'- einzelne Wörter gefunden'
+                        ,'- se han encontrado palabras individuales'
+                        ,'- знайдено окремі слова'
+                        ,'- znaleziono osobne słowa'
+                        ,'- 只找到单语'
+                        )
+        self.blocks = blocks
+    
+    def _set(self):
+        blocks = []
+        for i in range(len(self.blocks)):
+            if self.blocks[i].url.startswith('l'):
+                blocks.append(self.blocks[i])
+            elif self.blocks[i].text == '|':
+                if not self.blocks[i-1].url:
+                    blocks.append(self.blocks[i-1])
+                if not self.blocks[i+1].url:
+                    blocks.append(self.blocks[i+1])
+            elif self._has(self.blocks[i].text):
+                blocks.append(self.blocks[i])
+        self.blocks = blocks
+
+    def _delete(self):
+        i = 1
+        while i < len(self.blocks):
+            ''' Those words that were not found will not have a URL and should
+                be kept as comments (as in a source). However, 'cellno' should
+                differ from a previous cell.
+            '''
+            if self.blocks[i].url:
+                self.blocks[i].type_ = 'term'
+            else:
+                for pattern in self.patterns:
+                    self.blocks[i].text = self.blocks[i].text.replace(pattern,'')
+            self.blocks[i].cellno = self.blocks[i-1].cellno
+            i += 1
+        self.blocks = [block for block in self.blocks \
+                       if block.text and block.text != '|'
+                      ]
+    
+    def _has(self,text):
+        for pattern in self.patterns:
+            if pattern in text:
+                return True
+    
+    def _add_subject(self):
+        block = Block()
+        block.type_ = 'dic'
+        block.text = block.dic = block.dicf = _('Separate words')
+        self.blocks.insert(0,block)
+    
+    def set(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.set'
+        old_len = len(self.blocks)
+        tail = self.get_tail()
+        if not tail:
+            sh.com.rep_lazy(f)
+            return
+        head = self.get_head()
+        if not head:
+            sh.com.rep_lazy(f)
+            return
+        self.blocks = self.blocks[head[1]:tail+1]
+        if len(self.blocks) < 3:
+            sh.com.rep_lazy(f)
+            return
+        self._set()
+        self._delete()
+        sh.com.rep_deleted(f,old_len-len(self.blocks))
+        self._add_subject()
+    
+    def get_head(self):
+        blocks = ('Forvo','|','+')
+        texts = [block.text for block in self.blocks]
+        return sh.List(texts,blocks).find()
+    
+    def get_tail(self):
+        i = 0
+        while i < len(self.blocks):
+            ''' If the last word is correct, then 'block.text' will be
+                ' - найдены отдельные слова', otherwise, it will be
+                ' wrong_word - найдены отдельные слова'.
+            '''
+            for pattern in self.patterns:
+                if pattern in self.blocks[i].text:
+                    return i
+            i += 1
+    
+    def run(self):
+        self.set()
+        return self.blocks
+
+
+
 class Elems:
     
     def __init__(self,blocks):
         self.cells = []
-        self.sep_words_found = ('- найдены отдельные слова'
-                               ,'- only individual words found'
-                               ,'- einzelne Wörter gefunden'
-                               ,'- se han encontrado palabras individuales'
-                               ,'- знайдено окремі слова'
-                               ,'- znaleziono osobne słowa'
-                               ,'- 只找到单语'
-                               )
         self.blocks = blocks
     
     def _is_block_fixed(self,block):
@@ -267,86 +358,6 @@ class Elems:
                 self.blocks[i-3].type_ = 'phdic'
             i -= 1
     
-    def _set_separate_words(self):
-        blocks = []
-        for i in range(len(self.blocks)):
-            if self.blocks[i].url.startswith('l'):
-                blocks.append(self.blocks[i])
-            elif self.blocks[i].text == '|':
-                if not self.blocks[i-1].url:
-                    blocks.append(self.blocks[i-1])
-                if not self.blocks[i+1].url:
-                    blocks.append(self.blocks[i+1])
-            elif self._has_separate_words(self.blocks[i].text):
-                blocks.append(self.blocks[i])
-        self.blocks = blocks
-
-    def _delete_separate(self):
-        i = 1
-        while i < len(self.blocks):
-            ''' Those words that were not found will not have a URL and should
-                be kept as comments (as in a source). However, 'cellno' should
-                differ from a previous cell.
-            '''
-            if self.blocks[i].url:
-                self.blocks[i].type_ = 'term'
-            else:
-                for phrase in self.sep_words_found:
-                    self.blocks[i].text = self.blocks[i].text.replace(phrase,'')
-            self.blocks[i].cellno = self.blocks[i-1].cellno
-            i += 1
-        self.blocks = [block for block in self.blocks \
-                       if block.text and block.text != '|'
-                      ]
-    
-    def set_separate_words(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_separate_words'
-        old_len = len(self.blocks)
-        tail = self.get_separate_tail()
-        if not tail:
-            sh.com.rep_lazy(f)
-            return
-        head = self.get_separate_head()
-        if not head:
-            sh.com.rep_lazy(f)
-            return
-        self.blocks = self.blocks[head[1]:tail+1]
-        if len(self.blocks) < 3:
-            sh.com.rep_lazy(f)
-            return
-        self._set_separate_words()
-        self._delete_separate()
-        sh.com.rep_deleted(f,old_len-len(self.blocks))
-        self._add_sep_subject()
-    
-    def get_separate_head(self):
-        blocks = ('Forvo','|','+')
-        texts = [block.text for block in self.blocks]
-        return sh.List(texts,blocks).find()
-    
-    def _has_separate_words(self,text):
-        for pattern in self.sep_words_found:
-            if pattern in text:
-                return True
-    
-    def get_separate_tail(self):
-        i = 0
-        while i < len(self.blocks):
-            ''' If the last word is correct, then 'block.text' will be
-                ' - найдены отдельные слова', otherwise, it will be
-                ' wrong_word - найдены отдельные слова'.
-            '''
-            for pattern in self.sep_words_found:
-                if pattern in self.blocks[i].text:
-                    return i
-            i += 1
-    
-    def _add_sep_subject(self):
-        block = Block()
-        block.type_ = 'dic'
-        block.text = block.dic = block.dicf = _('Separate words')
-        self.blocks.insert(0,block)
-    
     def _get_url(self,cell):
         #TODO: Do we need to support several URLs in one cell?
         for block in cell.blocks:
@@ -360,7 +371,7 @@ class Elems:
     
     def run(self):
         self.delete_empty()
-        self.set_separate_words()
+        self.blocks = SeparateWords(self.blocks).run()
         self.set_transc()
         self.convert_wform_dic()
         self.separate_speech()
