@@ -59,6 +59,15 @@ class SeparateWords:
                     blocks.append(self.blocks[i+1])
             elif self._has(self.blocks[i].text):
                 blocks.append(self.blocks[i])
+        ''' Includes an unknown word that comes last. Other unknown words are
+            already included.
+        '''
+        if len(self.blocks) > 1:
+            no = len(self.blocks) - 2
+            if self.blocks[no].type_ == 'comment' \
+            and self.blocks[no].text.startswith(' ') \
+            and not self.blocks[no].url:
+                blocks.append(self.blocks[no])
         self.blocks = blocks
 
     def _delete(self):
@@ -242,7 +251,6 @@ class Elems:
                       and not '<!-- // -->' in cell.text
                      ]
         # The first cell represents an article title
-        # TODO: Check for "Ouest Bureau"
         if len(self.cells) > 1 and not self.cells[0].Fixed:
             del self.cells[0]
         sh.com.rep_matches(f,old_len-len(self.cells))
