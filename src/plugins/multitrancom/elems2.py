@@ -151,7 +151,8 @@ class Elems:
                       and not '<!-- // -->' in cell.text
                      ]
         # The first cell represents an article title
-        if len(self.cells) > 1:
+        # TODO: Check for "Ouest Bureau"
+        if len(self.cells) > 1 and not self.cells[0].Fixed:
             del self.cells[0]
         sh.com.rep_matches(f,old_len-len(self.cells))
     
@@ -370,6 +371,6 @@ class Elems:
         self.delete_semi()
         self.unite_brackets()
         self.set_text()
-        self.delete_trash()
         self.set_fixed_cells()
+        self.delete_trash()
         self.renumber()

@@ -670,6 +670,7 @@ class Elems:
         if self.blocks and self.blocks[0].dicf != _('Separate words'):
             self.set_phdic()
             self.set_transc()
+            #TODO: port this to new version
             self.set_see_also()
             self.convert_speech()
             self.convert_ged()
@@ -677,18 +678,23 @@ class Elems:
             self.set_same()
             self.set_phcom()
         # Prepare contents
+        #TODO: port this to new version
         self.set_dic_urls()
         self.set_phcount()
         self.blocks = UniteFixed(self.blocks).run()
         self.reassign_brackets()
         # Prepare for cells
+        #TODO: port this to new version
         self.fill()
         self.remove_fixed()
+        #TODO: port this to new version
         self.insert_fixed()
+        #TODO: port this to new version
         self.expand_dic_file()
         # Extra spaces in the beginning may cause sorting problems
         self.add_space()
         #TODO: expand parts of speech (n -> noun, etc.)
+        #TODO: port this to new version
         self.restore_dic_urls()
         return self.blocks
     
