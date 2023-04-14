@@ -377,6 +377,20 @@ class Elems:
         for cell in self.cells:
             cell.url = self._get_url(cell)
     
+    def set_see_also(self):
+        # Example: "beg the question"
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].type_ == 'term' \
+            and self.blocks[i-1].text == '⇒ ' \
+            and self.blocks[i].type_ == 'term':
+                self.blocks[i-1].type_ = 'dic'
+                # We just need a different 'cellno' (will be reassigned anyway)
+                self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
+                if not self.blocks[i-1].url:
+                    self.blocks[i-1].url = self.blocks[i].url
+            i += 1
+    
     def run(self):
         self.delete_empty()
         self.blocks = SeparateWords(self.blocks).run()
@@ -385,6 +399,7 @@ class Elems:
         self.separate_speech()
         self.convert_user_dic()
         self.set_phdic()
+        self.set_see_also()
         self.set_fixed_blocks()
         self.separate_fixed()
         self.run_phcount()
