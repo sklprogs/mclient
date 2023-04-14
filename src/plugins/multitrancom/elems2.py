@@ -165,12 +165,15 @@ class Elems:
         for cell in self.cells:
             i = 2
             while i < len(cell.blocks):
-                if cell.blocks[i-2].text.strip() == '(' and cell.blocks[i].text.strip() == ')':
+                if cell.blocks[i-2].text.strip() == '(' \
+                and cell.blocks[i].text.strip() == ')':
                     count += 1
                     ''' Add brackets to text of a cell (usually of the 'user'
                         type), not vice versa, to preserve its type.
                     '''
-                    cell.blocks[i-1].text = cell.blocks[i-2].text + cell.blocks[i-1].text + cell.blocks[i].text
+                    cell.blocks[i-1].text = cell.blocks[i-2].text \
+                                          + cell.blocks[i-1].text \
+                                          + cell.blocks[i].text
                     del cell.blocks[i]
                     del cell.blocks[i-2]
                     i -= 2
@@ -264,7 +267,7 @@ class Elems:
                 self.blocks[i-3].type_ = 'phdic'
             i -= 1
     
-    def _set_separate(self):
+    def _set_separate_words(self):
         blocks = []
         for i in range(len(self.blocks)):
             if self.blocks[i].url.startswith('l'):
@@ -274,7 +277,7 @@ class Elems:
                     blocks.append(self.blocks[i-1])
                 if not self.blocks[i+1].url:
                     blocks.append(self.blocks[i+1])
-            elif self._has_separate(self.blocks[i].text):
+            elif self._has_separate_words(self.blocks[i].text):
                 blocks.append(self.blocks[i])
         self.blocks = blocks
 
@@ -311,7 +314,7 @@ class Elems:
         if len(self.blocks) < 3:
             sh.com.rep_lazy(f)
             return
-        self._set_separate()
+        self._set_separate_words()
         self._delete_separate()
         sh.com.rep_deleted(f,old_len-len(self.blocks))
         self._add_sep_subject()
@@ -321,7 +324,7 @@ class Elems:
         texts = [block.text for block in self.blocks]
         return sh.List(texts,blocks).find()
     
-    def _has_separate(self,text):
+    def _has_separate_words(self,text):
         for pattern in self.sep_words_found:
             if pattern in text:
                 return True
