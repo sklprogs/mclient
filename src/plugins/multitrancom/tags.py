@@ -293,7 +293,7 @@ class Tags:
         # 23'' monitor: 50 symbols per a column
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
-                           ,maxrow = 20
+                           ,maxrow = 50
                            ,maxrows = self.maxrows
                            ).run()
         return _('Blocks:') + '\n' + mes
@@ -378,9 +378,12 @@ class Tags:
         if not self.Debug:
             sh.com.rep_lazy(f)
             return ''
+        '''
         mes = [self._debug_code(),self._debug_fragms()
               ,self._debug_tags(),self._debug_blocks()
               ]
+        '''
+        mes = [self._debug_blocks()]
         return '\n\n'.join(mes)
     
     def check(self):

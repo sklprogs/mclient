@@ -275,7 +275,8 @@ class Tags:
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/hello (Компьютерные сети) (2021-03-17).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/generic drug (2021-03-17).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/get out of (2021-03-17).html'
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/vice vice vice vice lassst (2023-04-14).html'
+        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/vice vice vice vice lassst (2023-04-14).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/beg the question (2023-04-15).html'
         text = sh.ReadTextFile(file).get()
         text = cu.CleanUp(text).run()
         itags = tg.Tags (text = text

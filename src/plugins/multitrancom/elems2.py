@@ -13,10 +13,15 @@ class Thesaurus:
     '''
     def __init__(self,blocks):
         self.no = None
-        self.patterns = ('Английский тезаурус','English thesaurus'
-                        ,'Englisch Thesaurus','Inglés tesauro'
-                        ,'Англійський тезаурус','Angielski tezaurus','英语 词库'
-                        )
+        ''' According to HTML code, there is a non-breaking space at the start,
+            which we further replace with a space in 'cleanup'.
+        '''
+        self.patterns = [' Английский тезаурус',' English thesaurus'
+                        ,' Englisch Thesaurus',' Inglés tesauro'
+                        ,' Англійський тезаурус'
+                        ,' Angielski tezaurus',' 英语 词库'
+                        ]
+        
         self.blocks = blocks
     
     def set_no(self):
@@ -24,7 +29,7 @@ class Thesaurus:
         i = 0
         while i < len(self.blocks):
             if self.blocks[i].type_ == 'wform' \
-            and self.blocks[i].text.strip() in self.patterns:
+            and self.blocks[i].text in self.patterns:
                 self.no = i
                 break
             i += 1
@@ -54,7 +59,6 @@ class Thesaurus:
             del self.blocks[self.no]
         except IndexError:
             # This should never happen. We did the search in the same class.
-            self.Success = False
             mes = _('Wrong input data: "{}"!').format(self.no)
             sh.objs.get_mes(f,mes).show_warning()
     
@@ -249,7 +253,7 @@ class Elems:
             nos.append(cell.no)
             fixed.append(cell.Fixed)
             #ignore.append(cell.Ignore)
-            texts.append(cell.text)
+            texts.append(f'"{cell.text}"')
             cell_types = [block.type_ for block in cell.blocks]
             types.append(', '.join(cell_types))
             urls.append(cell.url)
