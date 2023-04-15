@@ -7,6 +7,65 @@ import skl_shared_qt.shared as sh
 import instance as ic
 
 
+class Thesaurus:
+    ''' - "English thesaurus" 'wform' becoming 'dic'. Run after 'delete_empty';
+        - Thesaurus is optional so we use 'rep_lazy' instead of 'cancel'.
+    '''
+    def __init__(self,blocks):
+        self.no = None
+        self.patterns = ('Английский тезаурус','English thesaurus'
+                        ,'Englisch Thesaurus','Inglés tesauro'
+                        ,'Англійський тезаурус','Angielski tezaurus','英语 词库'
+                        )
+        self.blocks = blocks
+    
+    def set_no(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Thesaurus.set_no'
+        i = 0
+        while i < len(self.blocks):
+            if self.blocks[i].type_ == 'wform' \
+            and self.blocks[i].text.strip() in self.patterns:
+                self.no = i
+                break
+            i += 1
+    
+    def add(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Thesaurus.add'
+        if self.no is None:
+            sh.com.rep_lazy(f)
+            return
+        count = 0
+        i = self.no + 1
+        while i < len(self.blocks):
+            if self.blocks[i].type_ == 'dic':
+                count += 1
+                self.blocks[i].text = sh.List ([self.blocks[self.no].text,','
+                                              ,self.blocks[i].text]
+                                              ).space_items()
+            i += 1
+        sh.com.rep_matches(f,count)
+    
+    def delete(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Thesaurus.delete'
+        if self.no is None:
+            sh.com.rep_lazy(f)
+            return
+        try:
+            del self.blocks[self.no]
+        except IndexError:
+            # This should never happen. We did the search in the same class.
+            self.Success = False
+            mes = _('Wrong input data: "{}"!').format(self.no)
+            sh.objs.get_mes(f,mes).show_warning()
+    
+    def run(self):
+        self.set_no()
+        self.add()
+        self.delete()
+        return self.blocks
+
+
+
 class SeparateWords:
     
     def __init__(self,blocks):
@@ -266,24 +325,6 @@ class Elems:
             i += 1
         sh.com.rep_matches(f,count)
     
-    def convert_wform_dic(self):
-        # We have found something like "English thesaurus" entry
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.convert_wform_dic'
-        count = 0
-        i = 5
-        while i < len(self.blocks):
-            if self.blocks[i-4].type_ == 'wform' \
-            and self.blocks[i-3].type_ == 'wform' \
-            and self.blocks[i-2].type_ == 'transc' \
-            and self.blocks[i-1].type_ == 'speech' \
-            and self.blocks[i].type_ == 'dic':
-                count += 1
-                self.blocks[i].text = self.blocks[i-4].text.strip() + ', ' + self.blocks[i].text.strip()
-                del self.blocks[i-4]
-                i -= 1
-            i += 1
-        sh.com.rep_matches(f,count)
-    
     def separate_speech(self):
         ''' Speech can come in structures like 'wform + comment + speech', but
             it should always take a separate cell.
@@ -368,7 +409,7 @@ class Elems:
         self.delete_empty()
         self.blocks = SeparateWords(self.blocks).run()
         self.set_transc()
-        self.convert_wform_dic()
+        self.blocks = Thesaurus(self.blocks).run()
         self.separate_speech()
         self.convert_user_dic()
         self.set_phdic()
