@@ -1,304 +1,125 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-''' This module prepares blocks after extracting tags for permanently storing
-    in DB.
-    Needs attributes in blocks: DIC,DICF,SAMECELL,SPEECH,TERM,TRANSC,TYPE,WFORM
-    Modifies attributes: DIC,DICF,SAMECELL,SPEECH,TEXT,TRANSC,TYPE,WFORM
-    Since TYPE is modified here, SAMECELL is filled here.
-'''
-
 import re
+
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
-import plugins.multitrancom.subjects as sj
 
 
-class UniteFixed:
+class Cell:
     
-    def __init__(self,blocks):
-        self.fixed = ('dic','wform','transc','speech')
-        self.cells = []
-        self.blocks = blocks
-    
-    def set_cells(self):
-        # Create a temporary structure to help merging blocks
-        cell = []
-        for block in self.blocks:
-            if block.same == 1:
-                cell.append(block)
-            else:
-                if cell:
-                    self.cells.append(cell)
-                cell = [block]
-        if cell:
-            self.cells.append(cell)
-    
-    def has_two_fixed(self,types):
-        HasFixed = False
-        for type_ in types:
-            if type_ in self.fixed:
-                if HasFixed:
-                    return True
-                else:
-                    HasFixed = True
-    
-    def get_first_fixed_type(self,cell):
-        for block in cell:
-            if block.type_ in self.fixed:
-                return block.type_
-    
-    def run(self):
-        ''' - We should unite items in 'fixed+comment (SAME=1)' structures
-              directly since fixed columns having supplementary SAME=1 blocks
-              cannot be properly sorted.
-            - Running the entire class takes ~0.0131s for 'set' (EN-RU) on
-              AMD E-300.
-        '''
-        f = '[MClientQt] plugins.multitrancom.elems.UniteFixed.run'
-        count = 0
-        self.set_cells()
-        for i in range(len(self.cells)):
-            types = [block.type_ for block in self.cells[i]]
-            if self.has_two_fixed(types):
-                count += len(self.cells[i])
-                self.cells[i][0].type_ = self.get_first_fixed_type(self.cells[i])
-                texts = [block.text for block in self.cells[i] \
-                         if block.text
-                        ]
-                self.cells[i][0].text = sh.List(texts).space_items()
-                self.cells[i] = [self.cells[i][0]]
+    def __init__(self):
+        self.code = ''
+        self.text = ''
+        self.url = ''
+        self.no = -1
         self.blocks = []
-        for cell in self.cells:
-            self.blocks += cell
-        sh.com.rep_matches(f,count)
-        return self.blocks
+        self.fixed_block = None
+        self.Ignore = False
+        self.subj = ''
+        self.wform = ''
+        self.transc = ''
+        self.speech = ''
+        self.priority = 500
 
 
 
 class Block:
-    # A copy of Tags.Block
+    ''' A copy of tags.Block. Cannot be put in a separate module since we would
+        need to load it from different places.    
+    '''
     def __init__(self):
-        self.block = -1
-        # Applies to non-blocked cells only
+        self.Ignore = False
         self.cellno = -1
-        self.dic = ''
-        self.dicf = ''
-        self.dprior = 0
-        self.first = -1
-        self.last = -1
-        self.no = -1
-        self.same = -1
-        self.speech = ''
-        self.sprior = -1
+        self.subj = ''
+        self.subjf = ''
         self.text = ''
-        self.transc = ''
-        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
-            'term', 'transc', 'user', 'wform'.
+        ''' 'comment', 'correction', 'subj', 'invalid', 'phrase', 'speech',
+            'term', 'transc', 'wform'.
         '''
-        self.type_ = 'invalid'
+        self.type_ = 'comment'
         self.url = ''
-        self.wform = ''
 
 
 
-class Elems:
-    # Process blocks before setting cells
-    def __init__(self,blocks,Debug=False,maxrows=1000):
-        self.fixed = ('dic','wform','transc','speech')
-        self.sep_words = (' - найдены отдельные слова'
-                         ,' - only individual words found'
-                         )
-        self.dicurls = {}
-        self.phdic = ''
+class Thesaurus:
+    ''' - "English thesaurus" wform becoming subj. Run after 'delete_empty';
+        - Thesaurus is optional so we use 'rep_lazy' instead of 'cancel'.
+    '''
+    def __init__(self,blocks):
+        self.no = None
+        ''' According to HTML code, there is a non-breaking space at the start,
+            which we further replace with a space in 'cleanup'.
+        '''
+        self.patterns = [' Английский тезаурус',' English thesaurus'
+                        ,' Englisch Thesaurus',' Inglés tesauro'
+                        ,' Англійський тезаурус'
+                        ,' Angielski tezaurus',' 英语 词库'
+                        ]
+        
         self.blocks = blocks
-        self.Debug = Debug
-        self.maxrows = maxrows
     
-    def delete_refs(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_refs'
-        if len(self.blocks) < 3:
+    def set_no(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Thesaurus.set_no'
+        i = 0
+        while i < len(self.blocks):
+            if self.blocks[i].type_ == 'wform' \
+            and self.blocks[i].text in self.patterns:
+                self.no = i
+                break
+            i += 1
+    
+    def add(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Thesaurus.add'
+        if self.no is None:
             sh.com.rep_lazy(f)
             return
         count = 0
-        i = 0
+        i = self.no + 1
         while i < len(self.blocks):
-            if self.blocks[i-1].type_ == 'speech' \
-            and self.blocks[i].type_ == 'comment' \
-            and self.blocks[i].text == '|' \
-            and self.blocks[i+1].type_ == 'wform':
-                count += 2
-                del self.blocks[i+1]
-                del self.blocks[i]
-            else:
-                i += 1
-        sh.com.rep_deleted(f,count)
+            if self.blocks[i].type_ == 'subj':
+                count += 1
+                self.blocks[i].text = sh.List ([self.blocks[self.no].text,','
+                                              ,self.blocks[i].text]
+                                              ).space_items()
+            i += 1
+        sh.com.rep_matches(f,count)
     
-    def _break_word(self,word):
-        lst = sh.Text(word).split_by_len(self.max_word_len)
-        return ' '.join(lst)
-    
-    def get_phdic_set(self):
-        for i in range(len(self.blocks)):
-            if self.blocks[i].type_ == 'phdic':
-                return i
-    
-    def set_phcom(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_phcom'
-        count = 0
-        i = self.get_phdic_set()
-        if i is None:
+    def delete(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Thesaurus.delete'
+        if self.no is None:
             sh.com.rep_lazy(f)
-        else:
-            i += 1
-            while i < len(self.blocks):
-                if self.blocks[i].type_ == 'comment':
-                    self.blocks[i].type_ = 'phcom'
-                    count += 1
-                i += 1
-            sh.com.rep_matches(f,count)
-        
-    def _get_ged(self):
-        geds = []
-        for block in self.blocks:
-            if block.type_ == 'comment' \
-            and block.text == 'Большой Энциклопедический словарь ':
-                geds.append(block)
-        return geds
+            return
+        try:
+            del self.blocks[self.no]
+        except IndexError:
+            # This should never happen. We did the search in the same class.
+            mes = _('Wrong input data: "{}"!').format(self.no)
+            sh.objs.get_mes(f,mes).show_warning()
     
-    def _get_first_dic(self,rowno):
-        for block in self.blocks:
-            if block.rowno == rowno and block.type_ == 'dic':
-                return block
+    def run(self):
+        self.set_no()
+        self.add()
+        self.delete()
+        return self.blocks
+
+
+
+class SeparateWords:
     
-    def convert_ged(self):
-        ''' - Reassign a subject title for blocks from the Great encyclopedic
-              dictionary.
-            - It's not enough just to get CELLNO of the Great encyclopedic
-              dictionary and change DIC and DICF since DIC and DICF will be
-              reassigned at 'self.fill'.
-            - Takes ~0.0014s for 'set' (EN-RU) on AMD E-300.
-        '''
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.convert_ged'
-        count = 0
-        geds = self._get_ged()
-        for ged in geds:
-            block = self._get_first_dic(ged.rowno)
-            if block:
-                block.dic = block.text = _('GED')
-                block.dicf = _('Great Encyclopedic Dictionary')
-                count += 1
-            else:
-                sh.com.rep_empty(f)
-            ''' The dictionary will be renamed, we do not need the comment
-                duplicating it.
-            '''
-            self.blocks.remove(ged)
-        sh.com.rep_matches(f,count)
-        sh.com.rep_deleted(f,len(geds))
+    def __init__(self,blocks):
+        self.patterns = ('- найдены отдельные слова'
+                        ,'- only individual words found'
+                        ,'- einzelne Wörter gefunden'
+                        ,'- se han encontrado palabras individuales'
+                        ,'- знайдено окремі слова'
+                        ,'- znaleziono osobne słowa'
+                        ,'- 只找到单语'
+                        )
+        self.blocks = blocks
     
-    def delete_trash_com(self):
-        ''' Sometimes it's not enough to delete comment-only tail since there
-            might be no 'phdic' type which serves as an indicator.
-        '''
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_trash_com'
-        len_ = len(self.blocks)
-        self.blocks = [block for block in self.blocks \
-                       if not (block.type_ == 'comment' \
-                       and block.text in ('спросить в форуме'
-                                         ,'ask in forum','<!--','-->'
-                                         ,'Короткая ссылка','Get short URL'
-                                         ,' (у некоторых значений из тезауруса нет переводов в словаре)'
-                                         ,' (there may be no translations for some thesaurus entries in the bilingual dictionary)'
-                                         )
-                              )
-                      ]
-        sh.com.rep_deleted(f,len_-len(self.blocks))
-    
-    def convert_speech(self):
-        ''' Blocks inherent to <em> tag are usually 'speech' but not always,
-            see, for example, EN-RU, 'blemish'.
-        '''
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.convert_speech'
-        count = 0
-        i = 1
-        while i < len(self.blocks):
-            if self.blocks[i].type_ == 'speech' \
-            and not self.blocks[i-1].type_ in self.fixed:
-                self.blocks[i].type_ = 'comment'
-                count += 1
-            i += 1
-        sh.com.rep_matches(f,count)
-    
-    def delete_langs(self):
-        ''' - This procedure deletes blocks describing languages in an original
-              or localized form. After a comment-only head was deleted, we will
-              have either a 'dic' + 'term' + 'term' or 'term' + 'term'
-              structure, wherein 'dic' is "Subject area", and terms have an
-              empty URL. We should delete only the first two term occurrences
-              since there could be other terms with an empty URL that should
-              not be deleted, e.g., those related to "БЭС".
-            - Since we don't have to search for anything, and have predermined
-              indexes, this procedure is very fast.
-        '''
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_langs'
-        if len(self.blocks) > 2:
-            if self.blocks[0].type_ == 'dic' \
-            and self.blocks[0].text in ('Тематика','Subject area') \
-            and self.blocks[1].type_ == 'term' \
-            and self.blocks[2].type_ == 'term' \
-            and not self.blocks[1].url and not self.blocks[2].url:
-                deleted = self.blocks[:3]
-                deleted = [item.text for item in deleted]
-                mes = '; '.join(deleted)
-                sh.objs.get_mes(f,mes,True).show_debug()
-                self.blocks = self.blocks[3:]
-            elif self.blocks[0].type_ == 'term' \
-            and self.blocks[1].type_ == 'term' \
-            and not self.blocks[0].url and not self.blocks[1].url:
-                deleted = self.blocks[:2]
-                deleted = [item.text for item in deleted]
-                mes = '; '.join(deleted)
-                sh.objs.get_mes(f,mes,True).show_debug()
-                self.blocks = self.blocks[2:]
-    
-    def get_separate_head(self):
-        #blocks = ('G','o','o','g','l','e','|','Forvo','|','+')
-        blocks = ('Forvo','|','+')
-        texts = [block.text for block in self.blocks]
-        return sh.List(texts,blocks).find()
-    
-    def get_separate_tail(self):
-        i = 0
-        while i < len(self.blocks):
-            ''' If the last word is correct, then 'block.text' will be
-                ' - найдены отдельные слова', otherwise, it will be
-                ' wrong_word - найдены отдельные слова'.
-            '''
-            if ' - найдены отдельные слова' in self.blocks[i].text \
-            or ' - only individual words found' in self.blocks[i].text:
-                return i
-            i += 1
-    
-    def _add_sep_subject(self):
-        block = Block()
-        block.type_ = 'dic'
-        block.text = block.dic = block.dicf = _('Separate words')
-        block.same = 0
-        if self.blocks:
-            ''' This allows to avoid a bug when only separate words were found
-                but the 1st word should remain a comment since it was not found
-                (e.g., EN-RU, "Ouest Bureau").
-            '''
-            block.rowno = self.blocks[0].rowno
-        self.blocks.insert(0,block)
-    
-    def _has_separate(self,text):
-        for phrase in self.sep_words:
-            if phrase in text:
-                return True
-    
-    def _set_separate(self):
+    def _set(self):
         blocks = []
         for i in range(len(self.blocks)):
             if self.blocks[i].url.startswith('l'):
@@ -308,35 +129,56 @@ class Elems:
                     blocks.append(self.blocks[i-1])
                 if not self.blocks[i+1].url:
                     blocks.append(self.blocks[i+1])
-            elif self._has_separate(self.blocks[i].text):
+            elif self._has(self.blocks[i].text):
                 blocks.append(self.blocks[i])
+        ''' Includes an unknown word that comes last. Other unknown words are
+            already included.
+        '''
+        if len(self.blocks) > 1:
+            no = len(self.blocks) - 2
+            if self.blocks[no].type_ == 'comment' \
+            and self.blocks[no].text.startswith(' ') \
+            and not self.blocks[no].url:
+                blocks.append(self.blocks[no])
         self.blocks = blocks
 
-    def _delete_separate(self):
-        for block in self.blocks:
+    def _delete(self):
+        i = 1
+        while i < len(self.blocks):
             ''' Those words that were not found will not have a URL and should
-                be kept as comments (as in a source). However, SAME should be 0
-                everywhere.
+                be kept as comments (as in a source). However, 'cellno' should
+                differ from a previous cell.
             '''
-            if block.url:
-                block.type_ = 'term'
+            if self.blocks[i].url:
+                self.blocks[i].type_ = 'term'
             else:
-                for phrase in self.sep_words:
-                    block.text = block.text.replace(phrase,'')
-            block.same = 0
+                for pattern in self.patterns:
+                    self.blocks[i].text = self.blocks[i].text.replace(pattern,'')
+            self.blocks[i].cellno = self.blocks[i-1].cellno
+            i += 1
         self.blocks = [block for block in self.blocks \
                        if block.text and block.text != '|'
                       ]
     
-    def set_separate(self):
-        # Takes ~0.0126s for 'set' (EN-RU) on AMD E-300
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_separate'
+    def _has(self,text):
+        for pattern in self.patterns:
+            if pattern in text:
+                return True
+    
+    def _add_subject(self):
+        block = Block()
+        block.type_ = 'subj'
+        block.text = block.subj = block.subjf = _('Separate words')
+        self.blocks.insert(0,block)
+    
+    def set(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.set'
         old_len = len(self.blocks)
-        tail = self.get_separate_tail()
+        tail = self.get_tail()
         if not tail:
             sh.com.rep_lazy(f)
             return
-        head = self.get_separate_head()
+        head = self.get_head()
         if not head:
             sh.com.rep_lazy(f)
             return
@@ -344,532 +186,347 @@ class Elems:
         if len(self.blocks) < 3:
             sh.com.rep_lazy(f)
             return
-        self._set_separate()
-        self._delete_separate()
+        self._set()
+        self._delete()
         sh.com.rep_deleted(f,old_len-len(self.blocks))
-        self._add_sep_subject()
+        self._add_subject()
     
-    def make_fixed(self):
-        # Takes ~0.0065s for 'set' (EN-RU) on AMD E-300
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.make_fixed'
+    def get_head(self):
+        blocks = ('Forvo','|','+')
+        texts = [block.text for block in self.blocks]
+        return sh.List(texts,blocks).find()
+    
+    def get_tail(self):
+        i = 0
+        while i < len(self.blocks):
+            ''' If the last word is correct, then 'block.text' will be
+                ' - найдены отдельные слова', otherwise, it will be
+                ' wrong_word - найдены отдельные слова'.
+            '''
+            for pattern in self.patterns:
+                if pattern in self.blocks[i].text:
+                    return i
+            i += 1
+    
+    def run(self):
+        self.set()
+        return self.blocks
+
+
+
+class Elems:
+    
+    def __init__(self,blocks):
+        self.cells = []
+        self.blocks = blocks
+    
+    def _is_block_fixed(self,block):
+        return block.type_ in ('subj','wform','speech','transc','phsubj')
+    
+    def _get_fixed_block(self,cell):
+        for block in cell.blocks:
+            if block.Fixed:
+                return block
+    
+    def set_fixed_blocks(self):
+        for block in self.blocks:
+            block.Fixed = self._is_block_fixed(block)
+    
+    def set_fixed_cells(self):
+        for cell in self.cells:
+            cell.fixed_block = self._get_fixed_block(cell)
+    
+    def run_phcount(self):
+        f = 'plugins.multitrancom.elems.Elems.run_phcount'
         count = 0
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i-1].rowno != self.blocks[i].rowno:
-                if self.blocks[i].type_ == 'user':
-                    self.blocks[i].type_ = 'dic'
-                    ''' If DICF was not extracted for a user-type block which
-                        is actually a subject, we may set such field here,
-                        however, such entries as 'Gruzovik, inform.' will not
-                        be expanded (due to a bug at multitran.com, 'Informal'
-                        will be used). Thus, we correct such entries in
-                        SUBJECTS and just try in 'self.expand_dic_file' to
-                        expand them.
-                    '''
-                    self.blocks[i].dic = self.blocks[i].text
-                    count += 1
-                elif self.blocks[i].type_ == 'comment':
-                    self.blocks[i].type_ = 'wform'
-                    count += 1
+            if self.blocks[i-1].type_ in ('phrase','comment') \
+            and self.blocks[i].type_ == 'phcount':
+                count += 1
+                self.blocks[i].cellno = self.blocks[i-1].cellno
             i += 1
         sh.com.rep_matches(f,count)
     
-    def set_see_also(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_see_also'
-        count = 0
-        i = 2
-        while i < len(self.blocks):
-            if self.blocks[i-2].rowno != self.blocks[i-1].rowno \
-            and self.blocks[i-1].text == '⇒ ' \
-            and self.blocks[i-1].rowno == self.blocks[i].rowno \
-            and self.blocks[i-1].cellno == self.blocks[i].cellno:
-                self.blocks[i-1].type_ = 'dic'
-                self.blocks[i-1].text = self.blocks[i-1].dic \
-                                      = self.blocks[i-1].dicf = '⇒'
-                self.blocks[i-1].same = 0
-                self.blocks[i].same = 0
-                count += 2
-            i += 1
-        sh.com.rep_matches(f,count)
-    
-    def set_phcount(self):
-        for block in self.blocks:
-            if block.type_ == 'phcount':
-                block.text = ' [{}]'.format(block.text)
-                block.same = 1
-    
-    def set_same(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_same'
-        # I have witnessed this error despite 'self.check' was passed
+    def set_cells(self):
+        f = 'plugins.multitrancom.elems.Elems.set_cells'
         if not self.blocks:
             sh.com.rep_empty(f)
             return
-        self.blocks[0].same = 0
+        if len(self.blocks) < 2:
+            mes = f'{len(self.blocks)} >= 2'
+            sh.com.rep_condition(f,mes)
+            return
+        cell = Cell()
+        cell.blocks.append(self.blocks[0])
         i = 1
         while i < len(self.blocks):
-            # multitran.com originally sets some types with SAME = 1
-            if self.blocks[i-1].semino != self.blocks[i].semino \
-            or self.blocks[i-1].rowno != self.blocks[i].rowno \
-            or self.blocks[i-1].cellno != self.blocks[i].cellno \
-            or self.blocks[i].type_ in ('speech','transc'):
-                self.blocks[i].same = 0
-            elif self.blocks[i].same == -1:
-                # Do not overwrite SAME of fixed types
-                self.blocks[i].same = 1
-            i += 1
-    
-    def _delete_tail_links(self,poses):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems._delete_tail_links'
-        if poses:
-            pos1, pos2 = poses[0], poses[1] + 1
-            self.blocks[pos1:pos2] = []
-            sh.com.rep_deleted(f,pos2-pos1)
-    
-    def delete_tail_links(self):
-        ''' - Sometimes it's not enough to delete comment-only tail since there
-              might be no 'phdic' type which serves as an indicator.
-            - Takes ~0.02s for 'set' (EN-RU) on Intel Atom.
-        '''
-        ru = ('Добавить','|','Сообщить об ошибке','|','Короткая ссылка','|'
-             ,'Способы выбора языков'
-             )
-        en = ('Add','|','Report an error','|','Get short URL','|'
-             ,'Language Selection Tips'
-             )
-        de = ('Hinzufügen','|','Fehlerhaften Eintrag melden','|'
-             ,'Get short URL','|','Hinweise'
-             )
-        sp = ('Añadir','|','Enviar un mensaje de error','|'
-             ,'Enlace corto a esta página','|'
-             ,'Modos de seleccionar idiomas'
-             )
-        uk = ('Додати','|','Повідомити про помилку','|'
-             ,'Посилання на цю сторінку','|','Способи вибору мов'
-             )
-        texts = [block.text for block in self.blocks]
-        self._delete_tail_links(sh.List(texts,ru).find())
-        self._delete_tail_links(sh.List(texts,en).find())
-        self._delete_tail_links(sh.List(texts,de).find())
-        self._delete_tail_links(sh.List(texts,sp).find())
-        self._delete_tail_links(sh.List(texts,uk).find())
-        ru = ('Добавить','|','Способы выбора языков')
-        en = ('Add','|','Language Selection Tips')
-        self._delete_tail_links(sh.List(texts,ru).find())
-        self._delete_tail_links(sh.List(texts,en).find())
-    
-    def set_phdic(self):
-        # Takes ~0.001s for 'set' (EN-RU) on AMD E-300
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_phdic'
-        index_ = self.get_phdic()
-        if index_ is None:
-            sh.com.rep_lazy(f)
-            return
-        text = self.blocks[index_+1].text + self.blocks[index_+2].text
-        url = self.blocks[index_+1].url
-        del self.blocks[index_]
-        del self.blocks[index_]
-        self.blocks[index_].type_ = 'phdic'
-        self.blocks[index_].url = url
-        self.blocks[index_].dic = self.phdic = _('phrases')
-        self.blocks[index_].dicf = self.blocks[index_].text = text
-    
-    def get_phdic(self):
-        ''' - Sample blocks: "comment"-"comment"-"comment"-"phrase"
-              " process: ", "17416 фраз", " в 327 тематиках", "3D-печать"
-            - Owing to a bug at 'multitran.com', 'phdic' can be followed
-              by 'phcount' and not by 'phrase', although even in this
-              case 'phcount' relates to a preceding 'phrase'.
-            - This will not work when 'phdic' type is already set
-        '''
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.get_phdic'
-        i = len(self.blocks) - 1
-        while i > 3:
-            if self.blocks[i-3].type_ == 'comment' \
-            and self.blocks[i-2].type_ == 'comment' \
-            and self.blocks[i-1].type_ == 'comment' \
-            and self.blocks[i].type_ in ('phrase','phcount'):
-                return i - 3
-            i -= 1
-    
-    def delete_head(self):
-        ''' #NOTE: This will actually delete the entire article if it consists
-            of comments only but this looks more like a feature since only
-            service articles (nothing was found, suggestions in case nothing
-            was found, only separate words were found) consist of comments
-            only.
-        '''
-        # Takes ~0.003s for 'set' (EN-RU) on AMD E-300
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_head'
-        count = 0
-        i = 0
-        while i < len(self.blocks):
-            if self.blocks[i].type_ == 'comment':
-                del self.blocks[i]
-                count += 1
-                i -= 1
+            if self.blocks[i-1].cellno == self.blocks[i].cellno:
+                cell.blocks.append(self.blocks[i])
             else:
-                break
+                if cell.blocks:
+                    self.cells.append(cell)
+                cell = Cell()
+                cell.blocks.append(self.blocks[i])
             i += 1
-        sh.com.rep_deleted(f,count)
+        if cell.blocks:
+            self.cells.append(cell)
     
-    def get_tail(self):
-        i = len(self.blocks) - 1
-        while i > 0:
-            if self.blocks[i-1].type_ == 'phrase' \
-            and self.blocks[i].type_ == 'phcount':
-                return i
-            i -= 1
+    def renumber(self):
+        for i in range(len(self.cells)):
+            self.cells[i].no = i
     
-    def delete_tail(self):
-        # Takes ~0.0004s for 'set' (EN-RU) on AMD E-300
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_tail'
-        count = 0
-        last = self.get_tail()
-        if last is None or last + 1 == len(self.blocks):
-            sh.com.rep_lazy(f)
-        else:
-            last += 1
-            count = len(self.blocks) - last
-            self.blocks = self.blocks[:last]
-            sh.com.rep_deleted(f,count)
+    def debug(self):
+        headers = ('SUBJ','WFORM','SPEECH','TRANSC',_('CELL #'),_('TYPES')
+                  ,_('TEXT'),'URL'
+                  )
+        subj = []
+        wform = []
+        speech = []
+        transc = []
+        nos = []
+        types = []
+        texts = []
+        urls = []
+        for cell in self.cells:
+            subj.append(cell.subj)
+            wform.append(cell.wform)
+            speech.append(cell.speech)
+            transc.append(cell.transc)
+            nos.append(cell.no)
+            texts.append(f'"{cell.text}"')
+            cell_types = [block.type_ for block in cell.blocks]
+            types.append(', '.join(cell_types))
+            urls.append(cell.url)
+        return sh.FastTable (headers = headers
+                            ,iterable = (subj,wform,speech,transc,nos,types
+                                        ,texts,urls
+                                        )
+                            ,maxrow = 40
+                            ,maxrows = 0
+                            ).run()
+    
+    def set_text(self):
+        for cell in self.cells:
+            fragms = [block.text for block in cell.blocks]
+            cell.text = sh.List(fragms).space_items().strip()
+            # 'phsubj' text may have multiple spaces for some reason
+            cell.text = sh.Text(cell.text).delete_duplicate_spaces()
     
     def delete_semi(self):
-        # I don't like '; ' in special pages, so I delete it everywhere
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_semi'
-        len_ = len(self.blocks)
-        self.blocks = [block for block in self.blocks if block.text != '; ']
-        sh.com.rep_deleted(f,len_-len(self.blocks))
-    
-    def set_semino(self):
-        semino = 0
-        for block in self.blocks:
-            if block.text == '; ' and block.type_ == 'term':
-                semino += 1
-            block.semino = semino
-    
-    def check(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.check'
-        if self.blocks:
-            return True
-        else:
-            sh.com.rep_empty(f)
-    
-    def reassign_brackets(self):
-        ''' It is a common case when an opening bracket, a phrase and a closing
-            bracket are 3 separate blocks. The following skips user names
-            without showing extra brackets (e.g., гематоген -> Фразы: Пан).
-        '''
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.reassign_brackets'
+        f = 'plugins.multitrancom.elems.Elems.delete_semi'
         count = 0
-        i = 2
-        while i < len(self.blocks):
-            if self.blocks[i-2].text == '(' \
-            and self.blocks[i].text == ')' \
-            and self.blocks[i-1].type_ in ('comment','user','correction'
-                                          ):
-                #NOTE: We must inherit i-2 SAME and i-1 TYPE
-                self.blocks[i-2].text = '(' + self.blocks[i-1].text + ')'
-                self.blocks[i-2].type_ = self.blocks[i-1].type_
-                del self.blocks[i-1]
-                i -= 1
-                del self.blocks[i]
-                i -= 1
-                count += 2
-            i += 1
-        sh.com.rep_deleted(f,count)
+        for cell in self.cells:
+            old_len = len(cell.blocks)
+            cell.blocks = [block for block in cell.blocks if block.text != '; ']
+            count += old_len - len(cell.blocks)
+        sh.com.rep_matches(f,count)
     
-    def expand_dic_file(self):
-        ''' Do not delete this, since 'multitran.com' does not provide
-            full subject titles in phrase articles!
+    def delete_trash(self):
+        f = 'plugins.multitrancom.elems.Elems.delete_trash'
+        old_len = len(self.cells)
+        self.cells = [cell for cell in self.cells \
+                      if not '<!-- -->' in cell.text \
+                      and not '<!-- // -->' in cell.text
+                     ]
+        # The first cell represents an article title
+        if len(self.cells) > 1 and not self.cells[0].fixed_block:
+            del self.cells[0]
+        sh.com.rep_matches(f,old_len-len(self.cells))
+    
+    def unite_brackets(self):
+        ''' Combine a cell with a preceding or following bracket such that the
+            user would not see '()' when the cell is ignored/blocked.
         '''
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.expand_dic_file'
-        for block in self.blocks:
-            if block.dic and not block.dicf:
-                title = sj.objs.get_subjects().get_title(block.dic)
-                if title == block.dic:                
-                    dics = block.dic.split(', ')
-                    dicfs = []
-                    for dic in dics:
-                        dicfs.append(sj.objs.subjects.get_title(dic))
-                    block.dicf = ', '.join(dicfs)
-                else:
-                    block.dicf = title
-    
-    def delete_numeration(self):
-        # Takes ~0.027s for 'set' (EN-RU) on AMD E-300
-        self.blocks = [block for block in self.blocks \
-                       if not re.match('^\d+\.$',block.text)
-                      ]
-    
-    def delete_empty(self):
-        ''' - Empty blocks are useless since we recreate fixed columns anyways.
-            - This is required since we decode HTM entities after extracting
-              tags now. Empty blocks may lead to a wrong analysis of blocks,
-              e.g., 'comment (SAME=0) - comment (SAME=1)' structure, where the
-              second block is empty, will be mistakenly converted to
-              'wform - comment'.
-            - Do not strip blocks to check for emptiness since 'comment' from a
-              'wform+comment' structure where 'wform' is a space cannot be
-              further converted to 'wform', see RU-EN, 'цепь: провод'.
-        '''
-        self.blocks = [block for block in self.blocks if block.text]
-    
-    def get_suggested(self):
-        for i in range(len(self.blocks)):
-            if self.blocks[i].text in (' Варианты замены: ',' Suggest: '):
-                return i
-    
-    def set_suggested(self):
-        # Takes ~0.005s for 'set' (EN-RU) on AMD E-300
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_suggested'
+        f = 'plugins.multitrancom.elems.Elems.unite_brackets'
         count = 0
-        i = self.get_suggested()
-        if i is None:
-            sh.com.rep_lazy(f)
-            return
-        rowno = self.blocks[i].rowno
-        self.blocks[i].type_ = 'dic'
-        self.blocks[i].text = _('Suggestions')
-        self.blocks[i].dic = _('Suggestions')
-        self.blocks[i].dicf = _('Suggestions')
-        self.blocks[i].same = 0
-        count += 1
-        i += 1
-        while i < len(self.blocks):
-            if self.blocks[i].rowno == rowno:
-                if self.blocks[i].text != '; ':
-                    self.blocks[i].type_ = 'term'
-                    self.blocks[i].same = 0
+        for cell in self.cells:
+            i = 2
+            while i < len(cell.blocks):
+                if cell.blocks[i-2].text.strip() == '(' \
+                and cell.blocks[i].text.strip() == ')':
                     count += 1
-            else:
-                break
+                    ''' Add brackets to text of a cell (usually of the 'user'
+                        type), not vice versa, to preserve its type.
+                    '''
+                    cell.blocks[i-1].text = cell.blocks[i-2].text \
+                                          + cell.blocks[i-1].text \
+                                          + cell.blocks[i].text
+                    del cell.blocks[i]
+                    del cell.blocks[i-2]
+                    i -= 2
+                i += 1
+        sh.com.rep_matches(f,count)
+    
+    def separate_fixed(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.separate_fixed'
+        count = 0
+        i = 1
+        while i < len(self.blocks):
+            # There can be multiple 'wform' blocks
+            if self.blocks[i-1].Fixed and self.blocks[i].Fixed \
+            and self.blocks[i-1].type_ != self.blocks[i].type_:
+                count += 1
+                # We just need a different 'cellno' (will be reassigned anyway)
+                self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
             i += 1
         sh.com.rep_matches(f,count)
     
-    def run(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.run'
-        if not self.check():
-            sh.com.cancel(f)
-            return
-        # Process special pages before deleting anything
-        self.set_suggested()
-        self.set_separate()
-        # Do this before deleting ';'
-        self.set_semino()
-        # Do some cleanup
-        self.delete_head()
-        self.delete_tail()
-        self.delete_empty()
-        self.delete_semi()
-        self.delete_numeration()
-        self.delete_tail_links()
-        self.delete_trash_com()
-        self.delete_langs()
-        self.delete_refs()
-        # Reassign types
-        if self.blocks and self.blocks[0].dicf != _('Separate words'):
-            self.set_phdic()
-            self.set_transc()
-            #TODO: port this to new version
-            self.set_see_also()
-            self.convert_speech()
-            self.convert_ged()
-            self.make_fixed()
-            self.set_same()
-            self.set_phcom()
-        # Prepare contents
-        #TODO: port this to new version
-        self.set_dic_urls()
-        self.set_phcount()
-        self.blocks = UniteFixed(self.blocks).run()
-        self.reassign_brackets()
-        # Prepare for cells
-        #TODO: port this to new version
-        self.fill()
-        self.remove_fixed()
-        #TODO: port this to new version
-        self.insert_fixed()
-        #TODO: port this to new version
-        self.expand_dic_file()
-        # Extra spaces in the beginning may cause sorting problems
-        self.add_space()
-        #TODO: expand parts of speech (n -> noun, etc.)
-        #TODO: port this to new version
-        self.restore_dic_urls()
-        return self.blocks
+    def separate_speech(self):
+        ''' Speech can come in structures like 'wform + comment + speech', but
+            it should always take a separate cell.
+        '''
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.separate_speech'
+        count = 0
+        i = 1
+        while i < len(self.blocks):
+            # It is not enough to set 'Fixed'
+            if self.blocks[i].type_ == 'speech':
+                count += 1
+                # We just need a different 'cellno' (will be reassigned anyway)
+                self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
+            i += 1
+        sh.com.rep_matches(f,count)
     
-    def debug(self):
-        f = 'plugins.multitrancom.elems.Elems.debug'
-        if not self.Debug:
-            sh.com.rep_lazy(f)
-            return
-        headers = ('NO','TYPE','TEXT','URL','SAME','SEMINO','ROWNO','CELLNO'
-                  ,'DIC','DICF'
-                  )
-        rows = []
-        for i in range(len(self.blocks)):
-            rows.append ([i + 1
-                         ,self.blocks[i].type_
-                         ,'"{}"'.format(self.blocks[i].text)
-                         ,'"{}"'.format(self.blocks[i].url)
-                         ,self.blocks[i].same
-                         ,self.blocks[i].semino
-                         ,self.blocks[i].rowno
-                         ,self.blocks[i].cellno
-                         ,self.blocks[i].dic
-                         ,self.blocks[i].dicf
-                         ]
-                        )
-        # 10'' monitor: 12 symbols per a column
-        # 23'' monitor: 20 symbols per a column
-        return sh.FastTable (headers = headers
-                            ,iterable = rows
-                            ,maxrow = 23
-                            ,maxrows = self.maxrows
-                            ,Transpose = True
-                            ).run()
-        
     def set_transc(self):
-        # Takes ~0.003s for 'set' (EN-RU) on AMD E-300
         f = '[MClientQt] plugins.multitrancom.elems.Elems.set_transc'
         count = 0
         for block in self.blocks:
             if block.type_ == 'comment' and block.text.startswith('[') \
             and block.text.endswith(']'):
-                block.type_ = 'transc'
                 count += 1
+                block.type_ = 'transc'
         sh.com.rep_matches(f,count)
     
-    def add_space(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.add_space'
+    def delete_empty(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_empty'
+        old_len = len(self.blocks)
+        self.blocks = [block for block in self.blocks if block.text.strip()]
+        sh.com.rep_matches(f,old_len-len(self.blocks))
+    
+    def convert_user_subj(self):
+        # "Gruzovik" and other entries that function as 'subj'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.convert_user_subj'
         count = 0
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i].same > 0:
-                if self.blocks[i].text and self.blocks[i-1].text \
-                  and not self.blocks[i].text[0].isspace() \
-                  and not self.blocks[i].text[0] in sh.lg.punc_array \
-                  and not self.blocks[i].text[0] in [')',']','}'] \
-                  and not self.blocks[i-1].text[-1] in ['(','[','{']:
-                      count += 1
-                      self.blocks[i].text = ' ' + self.blocks[i].text
+            if self.blocks[i].type_ == 'user' \
+            and self.blocks[i-1].cellno != self.blocks[i].cellno:
+                count += 1
+                self.blocks[i].type_ = 'subj'
             i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-
-    def fill(self):
-        dic = dicf = wform = speech = transc = ''
-        
-        # Find first non-empty values and set them as default
-        for block in self.blocks:
-            if block.type_ in ('dic','phdic'):
-                dic = block.dic
-                dicf = block.dicf
-                break
-        for block in self.blocks:
-            if block.type_ == 'wform':
-                wform = block.text
-                break
-        for block in self.blocks:
-            if block.type_ == 'speech':
-                speech = block.text
-                break
-        for block in self.blocks:
-            if block.type_ == 'transc':
-                transc = block.text
-                break
-        
-        for block in self.blocks:
-            if block.type_ in ('dic','phdic'):
-                dic = block.dic
-                dicf = block.dicf
-            elif block.type_ == 'wform':
-                wform = block.text
-            elif block.type_ == 'speech':
-                speech = block.text
-            elif block.type_ == 'transc':
-                transc = block.text
-            block.dic = dic
-            block.dicf = dicf
-            block.wform = wform
-            block.speech = speech
-            block.transc = transc
+        sh.com.rep_matches(f,count)
     
-    def insert_fixed(self):
-        dic = wform = speech = ''
-        i = 0
+    def set_phsubj(self):
+        i = len(self.blocks) - 4
+        while i >= 0:
+            if self.blocks[i-3].type_ == 'comment' \
+            and self.blocks[i-2].type_ == 'comment' \
+            and self.blocks[i-1].type_ == 'comment' \
+            and self.blocks[i].type_ == 'phrase':
+                self.blocks[i-3].type_ = 'phsubj'
+            i -= 1
+    
+    def _get_url(self,cell):
+        #TODO: Do we need to support several URLs in one cell?
+        for block in cell.blocks:
+            if block.url:
+                return block.url
+        return ''
+    
+    def set_urls(self):
+        for cell in self.cells:
+            cell.url = self._get_url(cell)
+    
+    def set_see_also(self):
+        # Example: "beg the question"
+        i = 1
         while i < len(self.blocks):
-            if dic != self.blocks[i].dic \
-            or wform != self.blocks[i].wform \
-            or speech != self.blocks[i].speech:
-                ''' #NOTE: We do not inherit SEMINO here since it's not needed
-                    anymore.
-                '''
-                block = Block()
-                block.type_ = 'speech'
-                block.text = self.blocks[i].speech
-                block.dic = self.blocks[i].dic
-                block.dicf = self.blocks[i].dicf
-                block.wform = self.blocks[i].wform
-                block.speech = self.blocks[i].speech
-                block.transc = self.blocks[i].transc
-                block.same = 0
-                self.blocks.insert(i,block)
-                
-                block = Block()
-                block.type_ = 'transc'
-                block.text = self.blocks[i].transc
-                block.dic = self.blocks[i].dic
-                block.dicf = self.blocks[i].dicf
-                block.wform = self.blocks[i].wform
-                block.speech = self.blocks[i].speech
-                block.transc = self.blocks[i].transc
-                block.same = 0
-                self.blocks.insert(i,block)
-
-                block = Block()
-                block.type_ = 'wform'
-                block.text = self.blocks[i].wform
-                block.dic = self.blocks[i].dic
-                block.dicf = self.blocks[i].dicf
-                block.wform = self.blocks[i].wform
-                block.speech = self.blocks[i].speech
-                block.transc = self.blocks[i].transc
-                block.same = 0
-                self.blocks.insert(i,block)
-                
-                if self.blocks[i].dic != self.phdic:
-                    block = Block()
-                    block.type_ = 'dic'
-                    block.text = self.blocks[i].dic
-                    block.dic = self.blocks[i].dic
-                    block.dicf = self.blocks[i].dicf
-                    block.wform = self.blocks[i].wform
-                    block.speech = self.blocks[i].speech
-                    block.transc = self.blocks[i].transc
-                    block.same = 0
-                    self.blocks.insert(i,block)
-                
-                dic = self.blocks[i].dic
-                wform = self.blocks[i].wform
-                speech = self.blocks[i].speech
-                i += 4
+            if self.blocks[i-1].type_ == 'term' \
+            and self.blocks[i-1].text == '⇒ ' \
+            and self.blocks[i].type_ == 'term':
+                self.blocks[i-1].type_ = 'subj'
+                # We just need a different 'cellno' (will be reassigned anyway)
+                self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
+                if not self.blocks[i-1].url:
+                    self.blocks[i-1].url = self.blocks[i].url
             i += 1
-            
-    def remove_fixed(self):
-        self.blocks = [block for block in self.blocks \
-                       if block.type_ not in self.fixed
-                      ]
-                       
-    def set_dic_urls(self):
-        for block in self.blocks:
-            if block.type_ in ('dic','phdic') \
-            and not block.text in self.dicurls:
-                self.dicurls[block.text] = block.url
     
-    def restore_dic_urls(self):
-        for i in range(len(self.blocks)):
-            if self.blocks[i].type_ in ('dic','phdic') \
-            and self.blocks[i].text in self.dicurls:
-                self.blocks[i].url = self.dicurls[self.blocks[i].text]
+    def fill_fixed(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.fill_fixed'
+        subj = wform = transc = speech = ''
+        for cell in self.cells:
+            if cell.fixed_block:
+                if cell.fixed_block.type_ in ('subj','phsubj'):
+                    subj = cell.fixed_block.text
+                elif cell.fixed_block.type_ == 'wform':
+                    wform = cell.fixed_block.text
+                elif cell.fixed_block.type_ == 'speech':
+                    speech = cell.fixed_block.text
+                elif cell.fixed_block.type_ == 'transc':
+                    transc = cell.fixed_block.text
+                else:
+                    mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+                    mes = mes.format (cell.fixed_block.type_
+                                     ,'; '.join (['subj','phsubj','wform'
+                                                 ,'speech','transc'
+                                                 ]
+                                                )
+                                     )
+                    sh.objs.get_mes(f,mes,True).show_warning()
+            cell.subj = subj
+            cell.wform = wform
+            cell.speech = speech
+            cell.transc = transc
+    
+    def delete_fixed(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_fixed'
+        count = 0
+        i = 0
+        while i < len(self.cells):
+            if self.cells[i].fixed_block and len(self.cells[i].blocks) == 1:
+                count += 1
+                del self.cells[i]
+                i -= 1
+            i += 1
+        sh.com.rep_matches(f,count)
+    
+    def strip_blocks(self):
+        # Needed for 'phsubj' and such 'wform' as 'English Thesaurus'
+        for block in self.blocks:
+            if not block.Fixed:
+                continue
+            block.text = block.text.strip()
+    
+    def rename_phsubj(self):
+        for cell in self.cells:
+            if cell.fixed_block and cell.fixed_block.type_ == 'phsubj':
+                match = re.search(r'(\d+)',cell.text)
+                if match:
+                    # 'fill_fixed' is block-oriented
+                    cell.text = cell.fixed_block.text = match.group(1) + ' ' + _('phrases')
+    
+    def run(self):
+        self.delete_empty()
+        self.blocks = SeparateWords(self.blocks).run()
+        self.set_transc()
+        self.blocks = Thesaurus(self.blocks).run()
+        self.separate_speech()
+        self.convert_user_subj()
+        self.set_phsubj()
+        self.set_see_also()
+        self.set_fixed_blocks()
+        self.separate_fixed()
+        self.run_phcount()
+        self.strip_blocks()
+        self.set_cells()
+        self.set_urls()
+        self.delete_semi()
+        self.unite_brackets()
+        self.set_text()
+        self.set_fixed_cells()
+        self.delete_trash()
+        self.rename_phsubj()
+        self.fill_fixed()
+        self.delete_fixed()
+        self.renumber()
