@@ -466,7 +466,10 @@ class Elems:
                 else:
                     mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
                     mes = mes.format (cell.fixed_block.type_
-                                     ,'; '.join(['dic','phdic','wform','speech','transc'])
+                                     ,'; '.join (['dic','phdic','wform'
+                                                 ,'speech','transc'
+                                                 ]
+                                                )
                                      )
                     sh.objs.get_mes(f,mes,True).show_warning()
             cell.subj = subj
@@ -486,6 +489,13 @@ class Elems:
             i += 1
         sh.com.rep_matches(f,count)
     
+    def strip_blocks(self):
+        # Needed for 'phdic' and such 'wform' as 'English Thesaurus'
+        for block in self.blocks:
+            if not block.Fixed:
+                continue
+            block.text = block.text.strip()
+    
     def run(self):
         self.delete_empty()
         self.blocks = SeparateWords(self.blocks).run()
@@ -498,6 +508,7 @@ class Elems:
         self.set_fixed_blocks()
         self.separate_fixed()
         self.run_phcount()
+        self.strip_blocks()
         self.set_cells()
         self.set_urls()
         self.delete_semi()
