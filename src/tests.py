@@ -7,13 +7,41 @@ import skl_shared_qt.shared as sh
 DEBUG = True
 
 
+class Cells:
+    
+    def run_multitrancom(self):
+        f = '[MClient] tests.Cells.run_multitrancom'
+        import plugins.multitrancom.cleanup as cu
+        import plugins.multitrancom.tags as tg
+        import plugins.multitrancom.elems as el
+        import cells2 as cl
+        ''' #NOTE: The file should be generated with
+            'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
+            to set 'dic' and some other types.
+        '''
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/back (2023-04-12).html'
+        text = sh.ReadTextFile(file).get()
+        timer = sh.Timer(f)
+        timer.start()
+        text = cu.CleanUp(text).run()
+        blocks = tg.Tags (text = text
+                         ,maxrows = 0
+                         ).run()
+        cells = el.Elems(blocks).run()
+        isort = cl.Sort(cl.com.set_view(cells))
+        isort.run()
+        timer.end()
+        return isort.debug()
+
+
+
 class Elems:
     
     def run_multitrancom(self):
         f = '[MClient] tests.Elems.run_multitrancom'
         import plugins.multitrancom.cleanup as cu
         import plugins.multitrancom.tags as tg
-        import plugins.multitrancom.elems2 as el
+        import plugins.multitrancom.elems as el
         ''' #NOTE: The file should be generated with
             'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
             to set 'dic' and some other types.
@@ -978,7 +1006,8 @@ if __name__ == '__main__':
         e.g. com.run_welcome, will cause an infinite loop.
     '''
     #idebug = sh.Debug(f,Tags().run_multitrancom())
-    idebug = sh.Debug(f,Elems().run_multitrancom())
+    #idebug = sh.Debug(f,Elems().run_multitrancom())
+    idebug = sh.Debug(f,Cells().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
     idebug.show()
 

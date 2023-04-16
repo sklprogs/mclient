@@ -61,7 +61,6 @@ class Thesaurus:
         self.blocks = blocks
     
     def set_no(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Thesaurus.set_no'
         i = 0
         while i < len(self.blocks):
             if self.blocks[i].type_ == 'wform' \
@@ -530,3 +529,4 @@ class Elems:
         self.fill_fixed()
         self.delete_fixed()
         self.renumber()
+        return self.cells
