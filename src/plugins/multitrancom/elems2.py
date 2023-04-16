@@ -35,7 +35,7 @@ class Block:
         self.dic = ''
         self.dicf = ''
         self.text = ''
-        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
+        ''' 'comment', 'correction', 'subj', 'invalid', 'phrase', 'speech',
             'term', 'transc', 'wform'.
         '''
         self.type_ = 'comment'
@@ -44,7 +44,7 @@ class Block:
 
 
 class Thesaurus:
-    ''' - "English thesaurus" 'wform' becoming 'dic'. Run after 'delete_empty';
+    ''' - "English thesaurus" wform becoming subj. Run after 'delete_empty';
         - Thesaurus is optional so we use 'rep_lazy' instead of 'cancel'.
     '''
     def __init__(self,blocks):
@@ -78,7 +78,7 @@ class Thesaurus:
         count = 0
         i = self.no + 1
         while i < len(self.blocks):
-            if self.blocks[i].type_ == 'dic':
+            if self.blocks[i].type_ == 'subj':
                 count += 1
                 self.blocks[i].text = sh.List ([self.blocks[self.no].text,','
                                               ,self.blocks[i].text]
@@ -167,7 +167,7 @@ class SeparateWords:
     
     def _add_subject(self):
         block = Block()
-        block.type_ = 'dic'
+        block.type_ = 'subj'
         block.text = block.dic = block.dicf = _('Separate words')
         self.blocks.insert(0,block)
     
@@ -221,7 +221,7 @@ class Elems:
         self.blocks = blocks
     
     def _is_block_fixed(self,block):
-        return block.type_ in ('dic','wform','speech','transc','phdic')
+        return block.type_ in ('subj','wform','speech','transc','phsubj')
     
     def _get_fixed_block(self,cell):
         for block in cell.blocks:
@@ -310,7 +310,7 @@ class Elems:
         for cell in self.cells:
             fragms = [block.text for block in cell.blocks]
             cell.text = sh.List(fragms).space_items().strip()
-            # 'phdic' text may have multiple spaces for some reason
+            # 'phsubj' text may have multiple spaces for some reason
             cell.text = sh.Text(cell.text).delete_duplicate_spaces()
     
     def delete_semi(self):
@@ -405,7 +405,7 @@ class Elems:
         sh.com.rep_matches(f,old_len-len(self.blocks))
     
     def convert_user_dic(self):
-        # "Gruzovik" and other entries that function as 'dic'
+        # "Gruzovik" and other entries that function as 'subj'
         f = '[MClientQt] plugins.multitrancom.elems.Elems.convert_user_dic'
         count = 0
         i = 1
@@ -413,7 +413,7 @@ class Elems:
             if self.blocks[i].type_ == 'user' \
             and self.blocks[i-1].cellno != self.blocks[i].cellno:
                 count += 1
-                self.blocks[i].type_ = 'dic'
+                self.blocks[i].type_ = 'subj'
             i += 1
         sh.com.rep_matches(f,count)
     
@@ -424,7 +424,7 @@ class Elems:
             and self.blocks[i-2].type_ == 'comment' \
             and self.blocks[i-1].type_ == 'comment' \
             and self.blocks[i].type_ == 'phrase':
-                self.blocks[i-3].type_ = 'phdic'
+                self.blocks[i-3].type_ = 'phsubj'
             i -= 1
     
     def _get_url(self,cell):
@@ -445,7 +445,7 @@ class Elems:
             if self.blocks[i-1].type_ == 'term' \
             and self.blocks[i-1].text == '⇒ ' \
             and self.blocks[i].type_ == 'term':
-                self.blocks[i-1].type_ = 'dic'
+                self.blocks[i-1].type_ = 'subj'
                 # We just need a different 'cellno' (will be reassigned anyway)
                 self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
                 if not self.blocks[i-1].url:
@@ -457,7 +457,7 @@ class Elems:
         subj = wform = transc = speech = ''
         for cell in self.cells:
             if cell.fixed_block:
-                if cell.fixed_block.type_ in ('dic','phdic'):
+                if cell.fixed_block.type_ in ('subj','phsubj'):
                     subj = cell.fixed_block.text
                 elif cell.fixed_block.type_ == 'wform':
                     wform = cell.fixed_block.text
@@ -468,7 +468,7 @@ class Elems:
                 else:
                     mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
                     mes = mes.format (cell.fixed_block.type_
-                                     ,'; '.join (['dic','phdic','wform'
+                                     ,'; '.join (['subj','phsubj','wform'
                                                  ,'speech','transc'
                                                  ]
                                                 )
@@ -492,7 +492,7 @@ class Elems:
         sh.com.rep_matches(f,count)
     
     def strip_blocks(self):
-        # Needed for 'phdic' and such 'wform' as 'English Thesaurus'
+        # Needed for 'phsubj' and such 'wform' as 'English Thesaurus'
         for block in self.blocks:
             if not block.Fixed:
                 continue
@@ -500,7 +500,7 @@ class Elems:
     
     def rename_phsubj(self):
         for cell in self.cells:
-            if cell.fixed_block and cell.fixed_block.type_ == 'phdic':
+            if cell.fixed_block and cell.fixed_block.type_ == 'phsubj':
                 match = re.search(r'(\d+)',cell.text)
                 if match:
                     # 'fill_fixed' is block-oriented

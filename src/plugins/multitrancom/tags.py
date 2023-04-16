@@ -67,7 +67,7 @@ class Block:
         self.dic = ''
         self.dicf = ''
         self.text = ''
-        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
+        ''' 'comment', 'correction', 'subj', 'invalid', 'phrase', 'speech',
             'term', 'transc', 'wform'.
         '''
         self.type_ = 'comment'
@@ -190,7 +190,7 @@ class AnalyzeTag:
         elif self._is_comment():
             self.tag.type_ = 'comment'
         elif self._is_dic():
-            self.tag.type_ = 'dic'
+            self.tag.type_ = 'subj'
         elif self._is_wform():
             self.tag.type_ = 'wform'
         elif self._is_correction():
@@ -205,7 +205,7 @@ class AnalyzeTag:
         elif self._is_speech():
             self.tag.type_ = 'speech'
         elif self._is_phrase_dic():
-            self.tag.type_ = 'phdic'
+            self.tag.type_ = 'phsubj'
         elif self._is_script():
             self.tag.type_ = 'script'
         elif self._is_phcount():
@@ -347,8 +347,8 @@ class Tags:
             # This is because MT generates invalid links
             block.url = html.unescape(block.url)
             block.text = html.unescape(block.text)
-            if block.type_ in ('dic','phdic'):
-                block.dic = block.text
+            if block.type_ in ('subj','phsubj'):
+                block.subj = block.text
             self.blocks.append(block)
     
     def assign(self):
