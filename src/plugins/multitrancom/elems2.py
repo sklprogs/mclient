@@ -462,7 +462,7 @@ class Elems:
                 elif cell.fixed_block.type_ == 'speech':
                     speech = cell.fixed_block.text
                 elif cell.fixed_block.type_ == 'transc':
-                    trasc = cell.fixed_block.text
+                    transc = cell.fixed_block.text
                 else:
                     mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
                     mes = mes.format (cell.fixed_block.type_
@@ -471,8 +471,8 @@ class Elems:
                     sh.objs.get_mes(f,mes,True).show_warning()
             cell.subj = subj
             cell.wform = wform
-            cell.transc = transc
             cell.speech = speech
+            cell.transc = transc
     
     def delete_fixed(self):
         f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_fixed'
