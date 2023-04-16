@@ -74,7 +74,7 @@ class CleanUp:
         self.text = re.sub(r'[\x00-\x1f\x7f-\x9f]','',self.text)
         self.text = self.text.replace('\r\n','')
         self.text = self.text.replace('\n','')
-        #TODO: Why this does not work?
+        #TODO: Why does this not work?
         self.text = self.text.replace(r'\xa0',' ')
         while '  ' in self.text:
             self.text = self.text.replace('  ',' ')

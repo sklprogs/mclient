@@ -187,10 +187,10 @@ class Elems:
     def _is_block_fixed(self,block):
         return block.type_ in ('dic','wform','speech','transc','phdic')
     
-    def _is_cell_fixed(self,cell):
+    def _get_fixed_block(self,cell):
         for block in cell.blocks:
             if block.Fixed:
-                return True
+                return block
     
     def set_fixed_blocks(self):
         for block in self.blocks:
@@ -198,7 +198,7 @@ class Elems:
     
     def set_fixed_cells(self):
         for cell in self.cells:
-            cell.Fixed = self._is_cell_fixed(cell)
+            cell.fixed_block = self._get_fixed_block(cell)
     
     def run_phcount(self):
         f = 'plugins.multitrancom.elems.Elems.run_phcount'
@@ -287,7 +287,7 @@ class Elems:
                       and not '<!-- // -->' in cell.text
                      ]
         # The first cell represents an article title
-        if len(self.cells) > 1 and not self.cells[0].Fixed:
+        if len(self.cells) > 1 and not self.cells[0].fixed_block:
             del self.cells[0]
         sh.com.rep_matches(f,old_len-len(self.cells))
     
@@ -409,6 +409,42 @@ class Elems:
                     self.blocks[i-1].url = self.blocks[i].url
             i += 1
     
+    def fill_fixed(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.fill_fixed'
+        subj = wform = transc = speech = ''
+        for cell in self.cells:
+            if cell.fixed_block:
+                if cell.fixed_block.type_ in ('dic','phic'):
+                    subj = cell.fixed_block.text
+                elif cell.fixed_block.type_ == 'wform':
+                    wform = cell.fixed_block.text
+                elif cell.fixed_block.type_ == 'speech':
+                    speech = cell.fixed_block.text
+                elif cell.fixed_block.type_ == 'transc':
+                    trasc = cell.fixed_block.text
+                else:
+                    mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+                    mes = mes.format (cell.fixed_block.type_
+                                     ,'; '.join('dic','phdic','wform','speech','transc')
+                                     )
+                    sh.objs.get_mes(f,mes,True).show_warning()
+            cell.subj = subj
+            cell.wform = wform
+            cell.transc = transc
+            cell.speech = speech
+    
+    def delete_fixed(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_fixed'
+        count = 0
+        i = 0
+        while i < len(self.cells):
+            if self.cells[i].fixed_block and len(self.cells[i].blocks) == 1:
+                count += 1
+                del self.cells[i]
+                i -= 1
+            i += 1
+        sh.com.rep_matches(f,count)
+    
     def run(self):
         self.delete_empty()
         self.blocks = SeparateWords(self.blocks).run()
@@ -428,4 +464,6 @@ class Elems:
         self.set_text()
         self.set_fixed_cells()
         self.delete_trash()
+        self.fill_fixed()
+        self.delete_fixed()
         self.renumber()

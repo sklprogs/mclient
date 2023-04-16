@@ -22,7 +22,7 @@ class Elems:
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/generic drug (2021-03-17).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/get out of (2021-03-17).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/set (2021-03-06).html'
-        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/back (2023-04-12).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/back (2023-04-12).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/vice vice (2023-04-14).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/vice vice vice (2023-04-14).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/vice vice vice vice lassst (2023-04-14).html'
@@ -30,7 +30,7 @@ class Elems:
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/vice sdasa vice cook sdasa sdasa (2023-04-14).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/Ouest Bureau (2023-04-14).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/dfsgdghfj (2023-04-15).html'
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/beg the question (2023-04-15).html'
+        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/beg the question (2023-04-15).html'
         text = sh.ReadTextFile(file).get()
         timer = sh.Timer(f)
         timer.start()

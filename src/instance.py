@@ -39,5 +39,10 @@ class Cell:
         self.url = ''
         self.no = -1
         self.blocks = []
-        self.Fixed = False
+        self.fixed_block = None
         self.Ignore = False
+        self.subj = ''
+        self.wform = ''
+        self.transc = ''
+        self.speech = ''
+        self.priority = 500
