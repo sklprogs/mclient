@@ -275,25 +275,32 @@ class Elems:
             self.cells[i].no = i
     
     def debug(self):
-        #headers = (_('CELL #'),_('IGNORE'),_('FIXED'),_('TEXT'),_('TYPES'))
-        headers = (_('FIXED'),_('CELL #'),_('TYPES'),_('TEXT'),'URL')
+        headers = ('SUBJ','WFORM','SPEECH','TRANSC',_('CELL #'),_('TYPES')
+                  ,_('TEXT'),'URL'
+                  )
+        subj = []
+        wform = []
+        speech = []
+        transc = []
         nos = []
-        texts = []
-        fixed = []
-        #ignore = []
         types = []
+        texts = []
         urls = []
         for cell in self.cells:
+            subj.append(cell.subj)
+            wform.append(cell.wform)
+            speech.append(cell.speech)
+            transc.append(cell.transc)
             nos.append(cell.no)
-            fixed.append(cell.Fixed)
-            #ignore.append(cell.Ignore)
             texts.append(f'"{cell.text}"')
             cell_types = [block.type_ for block in cell.blocks]
             types.append(', '.join(cell_types))
             urls.append(cell.url)
         return sh.FastTable (headers = headers
-                            ,iterable = (fixed,nos,types,texts,urls)
-                            ,maxrow = 60
+                            ,iterable = (subj,wform,speech,transc,nos,types
+                                        ,texts,urls
+                                        )
+                            ,maxrow = 40
                             ,maxrows = 0
                             ).run()
     
@@ -448,7 +455,7 @@ class Elems:
         subj = wform = transc = speech = ''
         for cell in self.cells:
             if cell.fixed_block:
-                if cell.fixed_block.type_ in ('dic','phic'):
+                if cell.fixed_block.type_ in ('dic','phdic'):
                     subj = cell.fixed_block.text
                 elif cell.fixed_block.type_ == 'wform':
                     wform = cell.fixed_block.text
@@ -459,7 +466,7 @@ class Elems:
                 else:
                     mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
                     mes = mes.format (cell.fixed_block.type_
-                                     ,'; '.join('dic','phdic','wform','speech','transc')
+                                     ,'; '.join(['dic','phdic','wform','speech','transc'])
                                      )
                     sh.objs.get_mes(f,mes,True).show_warning()
             cell.subj = subj
