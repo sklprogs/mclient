@@ -37,9 +37,9 @@ import skl_shared_qt.shared as sh
     •  Transcription:
          <td colspan="2" class="gray">&nbsp;computer <span style="color:gray">kəm'pju:tə</span> <em>n</em> <span style="color:gray">|</span>
          (same as word forms) ', ə and other marks
-    •  Full dic titles:
+    •  Full subj titles:
          ' title="Религия, Латынь">рел., лат.</a></td>'
-    •  Phrase dics (25 is the number of entries in the dic)
+    •  Phrase subjects (25 is the number of entries in the subject)
          <td class="phras"><a href="/m.exe?a=3&amp;sc=448&amp;s=computer&amp;l1=1&amp;l2=2">Chemical weapons</a></td><td class="phras_cnt">25</td>
          td class="phras"
     '''
@@ -52,7 +52,7 @@ class Tag:
         self.text = ''
         self.name = ''
         self.url = ''
-        self.dicf = ''
+        self.subjf = ''
         self.cellno = -1
         self.Close = False
         self.inherent = []
@@ -64,8 +64,8 @@ class Block:
     def __init__(self):
         self.Ignore = False
         self.cellno = -1
-        self.dic = ''
-        self.dicf = ''
+        self.subj = ''
+        self.subjf = ''
         self.text = ''
         ''' 'comment', 'correction', 'subj', 'invalid', 'phrase', 'speech',
             'term', 'transc', 'wform'.
@@ -93,7 +93,7 @@ class AnalyzeTag:
             self.Success = False
             sh.com.rep_empty(f)
     
-    def _set_dicf(self):
+    def _set_subjf(self):
         pattern = ' title="'
         ''' #NOTE: A subject can have 'UserName' in its URL since some user
             entries were separated into subjects.
@@ -101,7 +101,7 @@ class AnalyzeTag:
         if self.tag.url and pattern in self.tag.text:
             pos1 = self.tag.text.index(pattern) + len(pattern)
             pos2 = self.tag.text.rfind('">')
-            self.tag.dicf = self.tag.text[pos1:pos2]
+            self.tag.subjf = self.tag.text[pos1:pos2]
     
     def _set_name(self):
         # Do this before setting a URL
@@ -146,7 +146,7 @@ class AnalyzeTag:
         or 'class="phraselist1"' in self.tag.text \
         or 'class="phraselist2"' in self.tag.text
     
-    def _is_dic(self):
+    def _is_subj(self):
         # An abbreviated subject title
         return 'class="subj"' in self.tag.text \
         or 'class="phraselist0"' in self.tag.text
@@ -175,7 +175,7 @@ class AnalyzeTag:
     def _is_speech(self):
         return self.tag.text == 'em'
     
-    def _is_phrase_dic(self):
+    def _is_phrase_subj(self):
         return 'name="phrases"' in self.tag.text
     
     def _is_phcount(self):
@@ -189,7 +189,7 @@ class AnalyzeTag:
             self.tag.type_ = 'term'
         elif self._is_comment():
             self.tag.type_ = 'comment'
-        elif self._is_dic():
+        elif self._is_subj():
             self.tag.type_ = 'subj'
         elif self._is_wform():
             self.tag.type_ = 'wform'
@@ -204,7 +204,7 @@ class AnalyzeTag:
             self.tag.type_ = 'url'
         elif self._is_speech():
             self.tag.type_ = 'speech'
-        elif self._is_phrase_dic():
+        elif self._is_phrase_subj():
             self.tag.type_ = 'phsubj'
         elif self._is_script():
             self.tag.type_ = 'script'
@@ -226,7 +226,7 @@ class AnalyzeTag:
             self._set_name()
             self._set_type()
             self._set_url()
-            self._set_dicf()
+            self._set_subjf()
         else:
             self.tag.type_ = 'text'
             self.tag.text = self.fragm
@@ -312,10 +312,10 @@ class Tags:
         types = [block.type_ for block in self.blocks]
         texts = ['"{}"'.format(block.text) for block in self.blocks]
         urls = ['"{}"'.format(block.url) for block in self.blocks]
-        dics = ['"{}"'.format(block.dic) for block in self.blocks]
-        dicfs = ['"{}"'.format(block.dicf) for block in self.blocks]
+        subjs = ['"{}"'.format(block.subj) for block in self.blocks]
+        subjfs = ['"{}"'.format(block.subjf) for block in self.blocks]
         cellnos = [block.cellno for block in self.blocks]
-        iterable = [nos,types,texts,urls,dics,dicfs,cellnos]
+        iterable = [nos,types,texts,urls,subjs,subjfs,cellnos]
         headers = (_('#'),_('TYPE'),_('TEXT'),'URL','DIC','DICF',_('CELL #'))
         # 10'' monitor: 20 symbols per a column
         # 23'' monitor: 50 symbols per a column
@@ -339,7 +339,7 @@ class Tags:
             for subtag in tag.inherent:
                 if subtag.type_ == 'url':
                     block.url = subtag.url
-                    block.dicf = subtag.dicf
+                    block.subjf = subtag.subjf
                 else:
                     block.type_ = subtag.type_
             block.text = tag.text
@@ -376,7 +376,7 @@ class Tags:
         types = ['"{}"'.format(tag.type_) for tag in self.tags]
         texts = ['"{}"'.format(tag.text) for tag in self.tags]
         urls = ['"{}"'.format(tag.url) for tag in self.tags]
-        dicfs = ['"{}"'.format(tag.dicf) for tag in self.tags]
+        subjfs = ['"{}"'.format(tag.subjf) for tag in self.tags]
         cellnos = ['{}'.format(tag.cellno) for tag in self.tags]
         inherent = []
         for tag in self.tags:
@@ -385,7 +385,7 @@ class Tags:
                 subtags.append(subtag.name)
             subtags = ', '.join(subtags)
             inherent.append(subtags)
-        iterable = [nos,closes,names,types,texts,urls,dicfs,inherent,cellnos]
+        iterable = [nos,closes,names,types,texts,urls,subjfs,inherent,cellnos]
         headers = (_('#'),_('CLOSING'),_('NAME'),_('TYPE'),_('TEXT'),'URL'
                   ,'DICF',_('OPEN'),_('CELL')
                   )

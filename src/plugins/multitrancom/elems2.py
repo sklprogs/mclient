@@ -32,8 +32,8 @@ class Block:
     def __init__(self):
         self.Ignore = False
         self.cellno = -1
-        self.dic = ''
-        self.dicf = ''
+        self.subj = ''
+        self.subjf = ''
         self.text = ''
         ''' 'comment', 'correction', 'subj', 'invalid', 'phrase', 'speech',
             'term', 'transc', 'wform'.
@@ -168,7 +168,7 @@ class SeparateWords:
     def _add_subject(self):
         block = Block()
         block.type_ = 'subj'
-        block.text = block.dic = block.dicf = _('Separate words')
+        block.text = block.subj = block.subjf = _('Separate words')
         self.blocks.insert(0,block)
     
     def set(self):
@@ -404,9 +404,9 @@ class Elems:
         self.blocks = [block for block in self.blocks if block.text.strip()]
         sh.com.rep_matches(f,old_len-len(self.blocks))
     
-    def convert_user_dic(self):
+    def convert_user_subj(self):
         # "Gruzovik" and other entries that function as 'subj'
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.convert_user_dic'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.convert_user_subj'
         count = 0
         i = 1
         while i < len(self.blocks):
@@ -417,7 +417,7 @@ class Elems:
             i += 1
         sh.com.rep_matches(f,count)
     
-    def set_phdic(self):
+    def set_phsubj(self):
         i = len(self.blocks) - 4
         while i >= 0:
             if self.blocks[i-3].type_ == 'comment' \
@@ -512,8 +512,8 @@ class Elems:
         self.set_transc()
         self.blocks = Thesaurus(self.blocks).run()
         self.separate_speech()
-        self.convert_user_dic()
-        self.set_phdic()
+        self.convert_user_subj()
+        self.set_phsubj()
         self.set_see_also()
         self.set_fixed_blocks()
         self.separate_fixed()
