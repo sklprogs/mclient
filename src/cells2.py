@@ -13,6 +13,25 @@ class Omit:
     
     def __init__(self,cells):
         self.cells = cells
+    
+    def run(self):
+        return self.cells
+
+
+
+class Prioritize:
+    
+    def __init__(self,cells):
+        self.cells = cells
+    
+    def set_phrases(self):
+        for cell in self.cells:
+            if cell.fixed_block and cell.fixed_block.type_ == 'phsubj':
+                cell.priority = 1000
+    
+    def run(self):
+        self.set_phrases()
+        return self.cells
 
 
 
@@ -30,6 +49,12 @@ class Commands:
                   ]
             view.append(row)
         return view
+    
+    def order(self,cells):
+        cells = Omit(cells).run()
+        cells = Prioritize(cells).run()
+        cells = Sort(self.set_view(cells)).run()
+        return cells
 
 
 
@@ -83,4 +108,6 @@ com = Commands()
 
 
 if __name__ == '__main__':
-    Sort().run()
+    sh.com.start()
+    com.order(cells)
+    sh.com.end()

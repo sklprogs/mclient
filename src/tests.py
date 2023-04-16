@@ -28,6 +28,8 @@ class Cells:
                          ,maxrows = 0
                          ).run()
         cells = el.Elems(blocks).run()
+        cells = cl.Omit(cells).run()
+        cells = cl.Prioritize(cells).run()
         isort = cl.Sort(cl.com.set_view(cells))
         isort.run()
         timer.end()
