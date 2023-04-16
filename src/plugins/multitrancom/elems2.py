@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import re
+
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
@@ -496,6 +498,14 @@ class Elems:
                 continue
             block.text = block.text.strip()
     
+    def rename_phsubj(self):
+        for cell in self.cells:
+            if cell.fixed_block and cell.fixed_block.type_ == 'phdic':
+                match = re.search(r'(\d+)',cell.text)
+                if match:
+                    # 'fill_fixed' is block-oriented
+                    cell.text = cell.fixed_block.text = match.group(1) + ' ' + _('phrases')
+    
     def run(self):
         self.delete_empty()
         self.blocks = SeparateWords(self.blocks).run()
@@ -516,6 +526,7 @@ class Elems:
         self.set_text()
         self.set_fixed_cells()
         self.delete_trash()
+        self.rename_phsubj()
         self.fill_fixed()
         self.delete_fixed()
         self.renumber()
