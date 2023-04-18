@@ -14,6 +14,7 @@ class Cell:
         self.text = ''
         self.url = ''
         self.no = -1
+        self.rowno = -1
         self.blocks = []
         self.fixed_block = None
         self.Ignore = False
@@ -276,13 +277,14 @@ class Elems:
             self.cells[i].no = i
     
     def debug(self):
-        headers = ('SUBJ','WFORM','SPEECH','TRANSC',_('CELL #'),_('TYPES')
-                  ,_('TEXT'),'URL'
+        headers = ('SUBJ','WFORM','SPEECH','TRANSC',_('ROW #'),_('CELL #')
+                  ,_('TYPES'),_('TEXT'),'URL'
                   )
         subj = []
         wform = []
         speech = []
         transc = []
+        rownos = []
         nos = []
         types = []
         texts = []
@@ -292,14 +294,15 @@ class Elems:
             wform.append(cell.wform)
             speech.append(cell.speech)
             transc.append(cell.transc)
+            rownos.append(cell.rowno)
             nos.append(cell.no)
             texts.append(f'"{cell.text}"')
             cell_types = [block.type_ for block in cell.blocks]
             types.append(', '.join(cell_types))
             urls.append(cell.url)
         return sh.FastTable (headers = headers
-                            ,iterable = (subj,wform,speech,transc,nos,types
-                                        ,texts,urls
+                            ,iterable = (subj,wform,speech,transc,rownos,nos
+                                        ,types,texts,urls
                                         )
                             ,maxrow = 40
                             ,maxrows = 0
@@ -515,6 +518,23 @@ class Elems:
             if self._is_phrase_type(cell):
                 cell.priority = 1000
     
+    def set_row_nos(self):
+        # Run this before deleting fixed types
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_row_nos'
+        count = 0
+        if self.cells:
+            count += 1
+            self.cells[0].rowno = 0
+        rowno = 0
+        i = 1
+        while i < len(self.cells):
+            if not self.cells[i-1].fixed_block and self.cells[i].fixed_block:
+                count += 1
+                rowno += 1
+            self.cells[i].rowno = rowno
+            i += 1
+        sh.com.rep_matches(f,count)
+    
     def run(self):
         self.delete_empty()
         self.blocks = SeparateWords(self.blocks).run()
@@ -536,6 +556,7 @@ class Elems:
         self.set_fixed_cells()
         self.delete_trash()
         self.rename_phsubj()
+        self.set_row_nos()
         self.fill_fixed()
         self.delete_fixed()
         self.set_phrase_priority()
