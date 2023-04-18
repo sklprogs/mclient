@@ -6,7 +6,7 @@ import operator
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-import subjects.subjects as sj
+#import subjects.subjects as sj
 
 
 class Omit:
@@ -105,6 +105,14 @@ class View:
                              )
             sh.objs.get_mes(f,mes,True).show_warning()
     
+    def _create_fixed_first(self,no):
+        new_row = list(self.view[0])
+        new_row[0] = 0
+        new_row[1] = self.view[0][no]
+        # HTML code must be generated at the formatting step coming the last
+        new_row[2] = ''
+        return new_row
+    
     def _create_fixed(self,i,no,cellno):
         new_row = list(self.view[i])
         new_row[0] = cellno
@@ -143,6 +151,22 @@ class View:
                     self.view.insert(i,row)
                     i += 1
             i += 1
+        # Add fixed cells for the very first row
+        if self.view:
+            add = []
+            i = 0
+            cellno = 0
+            for type_ in self.fixed_types:
+                no = self._get_fixed_type_no(type_)
+                if no is None:
+                    sh.com.rep_empty(f)
+                    return
+                cellno += 0.1
+                add.append(self._create_fixed_first(no))
+                count += 1
+            for row in add:
+                self.view.insert(i,row)
+                i += 1
         sh.com.rep_matches(f,count)
     
     def debug(self):
