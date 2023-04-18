@@ -7,10 +7,10 @@ import skl_shared_qt.shared as sh
 DEBUG = True
 
 
-class Cells:
+class View:
     
     def run_multitrancom(self):
-        f = '[MClient] tests.Cells.run_multitrancom'
+        f = '[MClient] tests.View.run_multitrancom'
         import plugins.multitrancom.cleanup as cu
         import plugins.multitrancom.tags as tg
         import plugins.multitrancom.elems as el
@@ -30,10 +30,10 @@ class Cells:
         cells = el.Elems(blocks).run()
         cells = cl.Omit(cells).run()
         cells = cl.Prioritize(cells).run()
-        isort = cl.Sort(cl.com.set_view(cells))
-        isort.run()
+        iview = cl.View(cl.com.set_view(cells))
+        iview.run()
         timer.end()
-        return isort.debug()
+        return iview.debug()
 
 
 
@@ -1009,7 +1009,7 @@ if __name__ == '__main__':
     '''
     #idebug = sh.Debug(f,Tags().run_multitrancom())
     #idebug = sh.Debug(f,Elems().run_multitrancom())
-    idebug = sh.Debug(f,Cells().run_multitrancom())
+    idebug = sh.Debug(f,View().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
     idebug.show()
 
