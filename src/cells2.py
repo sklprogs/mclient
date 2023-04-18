@@ -45,7 +45,7 @@ class Commands:
         view = []
         for cell in cells:
             row = [cell.no,cell.text,cell.code,cell.url,cell.subj,cell.wform
-                  ,cell.transc,cell.speech,cell.priority
+                  ,cell.transc,cell.speech,cell.priority,cell.rowno
                   ]
             view.append(row)
         return view
@@ -62,7 +62,7 @@ class View:
     # Create user-specific data set
     def __init__(self,view,fixed_types=('subj','wform','transc','speech')):
         ''' 0: no, 1: text, 2: code, 3: url, 4: subj, 5: wform, 6: transc,
-            7: speech, 8: priority.
+            7: speech, 8: priority, 9: rowno.
         '''
         self.Success = True
         self.view = view
@@ -74,9 +74,9 @@ class View:
             self.Success = False
             sh.com.rep_empty(f)
             return
-        if len(self.view[0]) != 9:
+        if len(self.view[0]) != 10:
             self.Success = False
-            mes = f'{len(self.view[0])} = 9'
+            mes = f'{len(self.view[0])} = 10'
             sh.com.rep_condition(f,mes)
     
     def sort(self):
@@ -117,11 +117,7 @@ class View:
     
     def _is_new_row(self,i):
         # 'i > 0' condition is observed in 'restore_fixed'
-        if self.view[i-1][4] != self.view[i][4] \
-        or self.view[i-1][5] != self.view[i][5] \
-        or self.view[i-1][6] != self.view[i][6] \
-        or self.view[i-1][7] != self.view[i][7]:
-            return True
+        return self.view[i-1][9] != self.view[i][9]
     
     def restore_fixed(self):
         f = '[MClientQt] cells.View.restore_fixed'
@@ -131,20 +127,18 @@ class View:
         count = 0
         i = 1
         while i < len(self.view):
-            if not self._is_new_row(i):
-                i += 1
-                continue
-            add = []
-            for type_ in self.fixed_types:
-                no = self._get_fixed_type_no(type_)
-                if no is None:
-                    sh.com.rep_empty(f)
-                    return
-                add.append(self._create_fixed(i,no))
-                count += 1
-            for row in add:
-                self.view.insert(i,row)
-                i += 1
+            if self._is_new_row(i):
+                add = []
+                for type_ in self.fixed_types:
+                    no = self._get_fixed_type_no(type_)
+                    if no is None:
+                        sh.com.rep_empty(f)
+                        return
+                    add.append(self._create_fixed(i,no))
+                    count += 1
+                for row in add:
+                    self.view.insert(i,row)
+                    i += 1
             i += 1
         sh.com.rep_matches(f,count)
     
@@ -154,7 +148,7 @@ class View:
             sh.com.cancel(f)
             return
         headers = (_('CELL #'),_('TEXT'),_('CODE'),_('URL'),'SUBJ','WFORM'
-                  ,'TRANSC','SPEECH','PRIORITY'
+                  ,'TRANSC','SPEECH','PRIORITY',_('ROW #')
                   )
         return sh.FastTable (headers = headers
                             ,iterable = self.view
