@@ -11,9 +11,10 @@ import skl_shared_qt.shared as sh
 
 class Omit:
     
-    def __init__(self,cells,subjects=[]):
+    def __init__(self,cells,subjects=[],OmitUsers=False):
         self.cells = cells
         self.subjects = subjects
+        self.OmitUsers = OmitUsers
     
     def _is_blocked(self,text):
         if text in self.subjects:
@@ -31,8 +32,26 @@ class Omit:
                      ]
         sh.com.rep_matches(f,old_len-len(self.cells))
     
+    def omit_users(self):
+        f = '[MClientQt] cells.Omit.omit_users'
+        count = 0
+        for cell in self.cells:
+            old_len = len(cell.blocks)
+            cell.blocks = [block for block in cell.blocks \
+                           if block.type_ != 'user'
+                          ]
+            delta = old_len - len(cell.blocks)
+            if delta:
+                fragms = [block.text for block in cell.blocks]
+                cell.text = sh.List(fragms).space_items().strip()
+                #FIX: Get rid of this completely
+                cell.text = cell.text.replace(' )',')')
+            count += delta
+        sh.com.rep_matches(f,count)
+    
     def run(self):
         self.omit_subjects()
+        self.omit_users()
         return self.cells
 
 
