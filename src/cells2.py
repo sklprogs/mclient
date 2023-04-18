@@ -11,10 +11,28 @@ import skl_shared_qt.shared as sh
 
 class Omit:
     
-    def __init__(self,cells):
+    def __init__(self,cells,subjects=[]):
         self.cells = cells
+        self.subjects = subjects
+    
+    def _is_blocked(self,text):
+        if text in self.subjects:
+            return True
+        parts = text.split(', ')
+        for part in parts:
+            if part in self.subjects:
+                return True
+    
+    def omit_subjects(self):
+        f = '[MClientQt] cells.Omit.omit_subjects'
+        old_len = len(self.cells)
+        self.cells = [cell for cell in self.cells \
+                      if not self._is_blocked(cell.subj)
+                     ]
+        sh.com.rep_matches(f,old_len-len(self.cells))
     
     def run(self):
+        self.omit_subjects()
         return self.cells
 
 
