@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import sys
-import sqlite3
-
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 import skl_shared_qt.web as wb
@@ -21,7 +18,6 @@ import about.controller as ab
 import third_parties.controller as tp
 import symbols.controller as sm
 import welcome.controller as wl
-import settings.controller as st
 import history.controller as hs
 import save.controller as sv
 import popup.controller as pp
@@ -69,7 +65,6 @@ class Priorities(pr.Priorities):
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def reset(self):
-        f = '[MClientQt] mclient.Priorities.reset'
         #self.lst1 = lg.objs.get_order().priorlst
         self.dic1 = {'Компьютеры':
                         ['Компьютеры','Майкрософт','Программирование','Оракл']
@@ -181,7 +176,6 @@ class UpdateUI:
         self.gui.btn_pri.set_hint()
     
     def update_block(self):
-        f = '[MClient] UpdateUI._update_block'
         mes = [_('Subject blocking')]
         skipped_terms = len(com.get_skipped_terms())
         skipped_dics = len(com.get_skipped_dics())
@@ -289,7 +283,6 @@ class FontLimits:
                                       )
     
     def get_space(self):
-        f = '[MClientQt] mclient.FontLimits.get_space'
         space = self.gui.get_space(self.text,self.font)
         #mes = _('Space: {}').format(space)
         #sh.objs.get_mes(f,mes,True).show_debug()
@@ -1416,7 +1409,6 @@ class App:
         self.set_lang1()
         self.set_lang2()
         lang1 = lg.objs.get_plugins().get_lang1()
-        lang2 = lg.objs.plugins.get_lang2()
         langs1 = lg.objs.plugins.get_langs1()
         if not langs1:
             sh.com.rep_empty(f)
@@ -1684,7 +1676,6 @@ class App:
         return blocks
     
     def go_keyboard(self):
-        f = '[MClientQt] mclient.App.go_keyboard'
         search = self.panel.ent_src.get().strip()
         if search == '':
             self.go_url()
@@ -1719,8 +1710,8 @@ class App:
         self.panel.ent_src.set_text(sh.Clipboard().paste())
     
     def reset(self):
-        f = '[MClientQt] mclient.App.reset'
         #TODO: show Welcome
+        pass
     
     def minimize(self):
         self.gui.minimize()
