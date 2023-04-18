@@ -454,32 +454,75 @@ class Elems:
                     self.blocks[i-1].url = self.blocks[i].url
             i += 1
     
+    def _get_last_subj(self):
+        for cell in self.cells[::-1]:
+            if cell.fixed_block and cell.fixed_block.type_ in ('subj','phsubj'):
+                return cell.fixed_block.text
+    
+    def _get_last_wform(self):
+        for cell in self.cells[::-1]:
+            if cell.fixed_block and cell.fixed_block.type_ == 'wform':
+                return cell.fixed_block.text
+    
+    def _get_last_speech(self):
+        for cell in self.cells[::-1]:
+            if cell.fixed_block and cell.fixed_block.type_ == 'speech':
+                return cell.fixed_block.text
+    
+    def _get_last_transc(self):
+        for cell in self.cells[::-1]:
+            if cell.fixed_block and cell.fixed_block.type_ == 'transc':
+                return cell.fixed_block.text
+    
+    def _get_prev_subj(self,i):
+        while i >= 0:
+            if self.cells[i].fixed_block \
+            and self.cells[i].fixed_block.type_ in ('subj','phsubj'):
+                return self.cells[i].fixed_block.text
+            i -= 1
+        return ''
+    
+    def _get_prev_wform(self,i):
+        while i >= 0:
+            if self.cells[i].fixed_block \
+            and self.cells[i].fixed_block.type_ == 'wform':
+                return self.cells[i].fixed_block.text
+            i -= 1
+        return ''
+    
+    def _get_prev_speech(self,i):
+        while i >= 0:
+            if self.cells[i].fixed_block \
+            and self.cells[i].fixed_block.type_ == 'speech':
+                return self.cells[i].fixed_block.text
+            i -= 1
+        return ''
+    
+    def _get_prev_transc(self,i):
+        while i >= 0:
+            if self.cells[i].fixed_block \
+            and self.cells[i].fixed_block.type_ == 'transc':
+                return self.cells[i].fixed_block.text
+            i -= 1
+        return ''
+    
     def fill_fixed(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.fill_fixed'
-        subj = wform = transc = speech = ''
-        for cell in self.cells:
-            if cell.fixed_block:
-                if cell.fixed_block.type_ in ('subj','phsubj'):
-                    subj = cell.fixed_block.text
-                elif cell.fixed_block.type_ == 'wform':
-                    wform = cell.fixed_block.text
-                elif cell.fixed_block.type_ == 'speech':
-                    speech = cell.fixed_block.text
-                elif cell.fixed_block.type_ == 'transc':
-                    transc = cell.fixed_block.text
-                else:
-                    mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-                    mes = mes.format (cell.fixed_block.type_
-                                     ,'; '.join (['subj','phsubj','wform'
-                                                 ,'speech','transc'
-                                                 ]
-                                                )
-                                     )
-                    sh.objs.get_mes(f,mes,True).show_warning()
-            cell.subj = subj
-            cell.wform = wform
-            cell.speech = speech
-            cell.transc = transc
+        subj = self._get_last_subj()
+        wform = self._get_last_wform()
+        transc = self._get_last_transc()
+        speech = self._get_last_speech()
+        i = len(self.cells) - 1
+        while i >= 0:
+            if not self.cells[i].fixed_block:
+                subj = self._get_prev_subj(i)
+                wform = self._get_prev_wform(i)
+                speech = self._get_prev_speech(i)
+                transc = self._get_prev_transc(i)
+            self.cells[i].subj = subj
+            self.cells[i].wform = wform
+            self.cells[i].speech = speech
+            self.cells[i].transc = transc
+            i -= 1
     
     def delete_fixed(self):
         f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_fixed'
