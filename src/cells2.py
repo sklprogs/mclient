@@ -186,7 +186,7 @@ class View:
         if not self.Success:
             sh.com.cancel(f)
             return
-        headers = (_('CELL #'),_('TEXT'),_('CODE'),_('URL'),'SUBJ','WFORM'
+        headers = (_('CELL #'),_('TEXT'),_('CODE'),'URL','SUBJ','WFORM'
                   ,'TRANSC','SPEECH','PRIORITY',_('ROW #')
                   )
         return sh.FastTable (headers = headers

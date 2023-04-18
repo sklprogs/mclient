@@ -507,8 +507,9 @@ class Elems:
             if cell.fixed_block and cell.fixed_block.type_ == 'phsubj':
                 match = re.search(r'(\d+)',cell.text)
                 if match:
+                    title = _('Phrases ({})').format(match.group(1))
                     # 'fill_fixed' is block-oriented
-                    cell.text = cell.fixed_block.text = match.group(1) + ' ' + _('phrases')
+                    cell.text = cell.fixed_block.text = title
     
     def _is_phrase_type(self,cell):
         for block in cell.blocks:
