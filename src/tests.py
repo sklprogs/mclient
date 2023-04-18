@@ -30,8 +30,9 @@ class View:
                          ,maxrows = 0
                          ).run()
         cells = el.Elems(blocks).run()
-        blocked = ['Gruzovik']
-        OmitUsers = True
+        #blocked = ['Gruzovik']
+        blocked = []
+        OmitUsers = 1
         cells = cl.Omit(cells,blocked,OmitUsers).run()
         cells = cl.Prioritize(cells).run()
         iview = cl.View(cl.com.set_view(cells))

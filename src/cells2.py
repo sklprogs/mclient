@@ -34,18 +34,25 @@ class Omit:
     
     def omit_users(self):
         f = '[MClientQt] cells.Omit.omit_users'
+        if not self.OmitUsers:
+            sh.com.rep_lazy(f)
+            return
         count = 0
         for cell in self.cells:
             old_len = len(cell.blocks)
-            cell.blocks = [block for block in cell.blocks \
-                           if block.type_ != 'user'
-                          ]
+            i = 1
+            while i < len(cell.blocks):
+                if cell.blocks[i].type_ == 'user':
+                    del cell.blocks[i]
+                    i -= 1
+                if cell.blocks[i-1].text.endswith(' ') \
+                and cell.blocks[i].text == ')':
+                    cell.blocks[i-1].text = cell.blocks[i-1].text.rstrip()
+                i += 1
             delta = old_len - len(cell.blocks)
             if delta:
                 fragms = [block.text for block in cell.blocks]
                 cell.text = sh.List(fragms).space_items().strip()
-                #FIX: Get rid of this completely
-                cell.text = cell.text.replace(' )',')')
             count += delta
         sh.com.rep_matches(f,count)
     
