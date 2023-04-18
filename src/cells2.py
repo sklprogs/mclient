@@ -159,13 +159,32 @@ class View:
                             ,maxrow = 50
                             ).run()
     
+    def _renumber_cell_nos(self):
+        for i in range(len(self.view)):
+            self.view[i][0] = i
+    
+    def _renumber_row_nos(self):
+        # Actually, we do this for prettier debug output
+        rownos = [0]
+        rowno = 0
+        i = 1
+        while i < len(self.view):
+            if self.view[i-1][9] != self.view[i][9]:
+                rowno += 1
+            rownos.append(rowno)
+            i += 1
+        i = 0
+        while i < len(self.view):
+            self.view[i][9] = rownos[i]
+            i += 1
+    
     def renumber(self):
         f = '[MClientQt] cells.View.renumber'
         if not self.Success:
             sh.com.cancel(f)
             return
-        for i in range(len(self.view)):
-            self.view[i][0] = i
+        self._renumber_cell_nos()
+        self._renumber_row_nos()
     
     def run(self):
         self.check()
