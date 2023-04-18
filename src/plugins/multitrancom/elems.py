@@ -486,10 +486,12 @@ class Elems:
         count = 0
         i = 0
         while i < len(self.cells):
-            if self.cells[i].fixed_block and len(self.cells[i].blocks) == 1:
-                count += 1
-                del self.cells[i]
-                i -= 1
+            if self.cells[i].fixed_block:
+                if len(self.cells[i].blocks) == 1 \
+                or self.cells[i].fixed_block.type_ == 'phsubj':
+                    count += 1
+                    del self.cells[i]
+                    i -= 1
             i += 1
         sh.com.rep_matches(f,count)
     
