@@ -457,28 +457,28 @@ class Elems:
     def _get_last_subj(self):
         for cell in self.cells[::-1]:
             if cell.fixed_block and cell.fixed_block.type_ in ('subj','phsubj'):
-                return cell.fixed_block.text
+                return cell.text
     
     def _get_last_wform(self):
         for cell in self.cells[::-1]:
             if cell.fixed_block and cell.fixed_block.type_ == 'wform':
-                return cell.fixed_block.text
+                return cell.text
     
     def _get_last_speech(self):
         for cell in self.cells[::-1]:
             if cell.fixed_block and cell.fixed_block.type_ == 'speech':
-                return cell.fixed_block.text
+                return cell.text
     
     def _get_last_transc(self):
         for cell in self.cells[::-1]:
             if cell.fixed_block and cell.fixed_block.type_ == 'transc':
-                return cell.fixed_block.text
+                return cell.text
     
     def _get_prev_subj(self,i):
         while i >= 0:
             if self.cells[i].fixed_block \
             and self.cells[i].fixed_block.type_ in ('subj','phsubj'):
-                return self.cells[i].fixed_block.text
+                return self.cells[i].text
             i -= 1
         return ''
     
@@ -486,7 +486,7 @@ class Elems:
         while i >= 0:
             if self.cells[i].fixed_block \
             and self.cells[i].fixed_block.type_ == 'wform':
-                return self.cells[i].fixed_block.text
+                return self.cells[i].text
             i -= 1
         return ''
     
@@ -494,7 +494,7 @@ class Elems:
         while i >= 0:
             if self.cells[i].fixed_block \
             and self.cells[i].fixed_block.type_ == 'speech':
-                return self.cells[i].fixed_block.text
+                return self.cells[i].text
             i -= 1
         return ''
     
@@ -502,7 +502,7 @@ class Elems:
         while i >= 0:
             if self.cells[i].fixed_block \
             and self.cells[i].fixed_block.type_ == 'transc':
-                return self.cells[i].fixed_block.text
+                return self.cells[i].text
             i -= 1
         return ''
     
@@ -530,11 +530,9 @@ class Elems:
         i = 0
         while i < len(self.cells):
             if self.cells[i].fixed_block:
-                if len(self.cells[i].blocks) == 1 \
-                or self.cells[i].fixed_block.type_ == 'phsubj':
-                    count += 1
-                    del self.cells[i]
-                    i -= 1
+                count += 1
+                del self.cells[i]
+                i -= 1
             i += 1
         sh.com.rep_matches(f,count)
     
