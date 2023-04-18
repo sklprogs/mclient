@@ -105,8 +105,9 @@ class View:
                              )
             sh.objs.get_mes(f,mes,True).show_warning()
     
-    def _create_fixed(self,i,no):
+    def _create_fixed(self,i,no,cellno):
         new_row = list(self.view[i])
+        new_row[0] = cellno
         # HTML code must be generated at the formatting step coming the last
         new_row[2] = ''
         if self.view[i-1][no] == self.view[i][no]:
@@ -129,12 +130,14 @@ class View:
         while i < len(self.view):
             if self._is_new_row(i):
                 add = []
+                cellno = self.view[i][0] - 0.5
                 for type_ in self.fixed_types:
                     no = self._get_fixed_type_no(type_)
                     if no is None:
                         sh.com.rep_empty(f)
                         return
-                    add.append(self._create_fixed(i,no))
+                    cellno += 0.1
+                    add.append(self._create_fixed(i,no,cellno))
                     count += 1
                 for row in add:
                     self.view.insert(i,row)
@@ -156,10 +159,19 @@ class View:
                             ,maxrow = 50
                             ).run()
     
+    def renumber(self):
+        f = '[MClientQt] cells.View.renumber'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        for i in range(len(self.view)):
+            self.view[i][0] = i
+    
     def run(self):
         self.check()
         self.sort()
         self.restore_fixed()
+        self.renumber()
         return self.view
 
 
