@@ -505,6 +505,16 @@ class Elems:
                     # 'fill_fixed' is block-oriented
                     cell.text = cell.fixed_block.text = match.group(1) + ' ' + _('phrases')
     
+    def _is_phrase_type(self,cell):
+        for block in cell.blocks:
+            if block.type_ in ('phsubj','phrase','phcount'):
+                return True
+    
+    def set_phrase_priority(self):
+        for cell in self.cells:
+            if self._is_phrase_type(cell):
+                cell.priority = 1000
+    
     def run(self):
         self.delete_empty()
         self.blocks = SeparateWords(self.blocks).run()
@@ -528,5 +538,6 @@ class Elems:
         self.rename_phsubj()
         self.fill_fixed()
         self.delete_fixed()
+        self.set_phrase_priority()
         self.renumber()
         return self.cells
