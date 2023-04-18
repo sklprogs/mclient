@@ -128,11 +128,8 @@ class View:
         # 'i > 0' condition is observed in 'restore_fixed'
         return self.view[i-1][9] != self.view[i][9]
     
-    def restore_fixed(self):
-        f = '[MClientQt] cells.View.restore_fixed'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
+    def _restore_fixed(self):
+        f = '[MClientQt] cells.View._restore_fixed'
         count = 0
         i = 1
         while i < len(self.view):
@@ -151,23 +148,38 @@ class View:
                     self.view.insert(i,row)
                     i += 1
             i += 1
-        # Add fixed cells for the very first row
-        if self.view:
-            add = []
-            i = 0
-            cellno = 0
-            for type_ in self.fixed_types:
-                no = self._get_fixed_type_no(type_)
-                if no is None:
-                    sh.com.rep_empty(f)
-                    return
-                cellno += 0.1
-                add.append(self._create_fixed_first(no))
-                count += 1
-            for row in add:
-                self.view.insert(i,row)
-                i += 1
         sh.com.rep_matches(f,count)
+    
+    def _restore_fixed_first(self):
+        f = '[MClientQt] cells.View._restore_fixed_first'
+        # Add fixed cells for the very first row
+        if not self.view:
+            sh.com.rep_empty(f)
+            return
+        count = 0
+        add = []
+        i = 0
+        cellno = 0
+        for type_ in self.fixed_types:
+            no = self._get_fixed_type_no(type_)
+            if no is None:
+                sh.com.rep_empty(f)
+                return
+            cellno += 0.1
+            add.append(self._create_fixed_first(no))
+            count += 1
+        for row in add:
+            self.view.insert(i,row)
+            i += 1
+        sh.com.rep_matches(f,count)
+    
+    def restore_fixed(self):
+        f = '[MClientQt] cells.View.restore_fixed'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self._restore_fixed()
+        self._restore_fixed_first()
     
     def debug(self):
         f = '[MClientQt] cells.View.debug'
