@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import io
 import ssl
 
 from skl_shared_qt.localize import _
@@ -14,8 +13,8 @@ import config as cf
 import db
 
 
-SPORDER = (_('Noun'),_('Verb'),_('Adjective'),_('Abbreviation')
-          ,_('Adverb'),_('Preposition'),_('Pronoun')
+SPORDER = (_('Noun'),_('Verb'),_('Adjective'),_('Abbreviation'),_('Adverb')
+          ,_('Preposition'),_('Pronoun')
           )
 
 
@@ -77,7 +76,6 @@ class HTM:
         self.skipped = 0
     
     def generate(self):
-        f = '[MClientQt] logic.HTM.generate'
         code = ['<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">']
         code.append(self.landscape)
         code.append('<div id="printableArea">')
@@ -152,36 +150,6 @@ class Source:
         self.status = _('not running')
         self.color = 'red'
         self.Online = False
-
-
-
-class Block:
-    
-    def __init__(self):
-        self.type_ = 'invalid'
-        self.text = ''
-        self.url = ''
-        self.no = -1
-        self.rowno = -1
-        self.colno = -1
-        self.cellno = -1
-        self.family = 'Serif'
-        self.color = 'black'
-        self.size = 12
-        self.Bold = False
-        self.Italic = False
-
-
-
-class Cell:
-    
-    def __init__(self):
-        self.code = ''
-        self.plain = ''
-        self.url = ''
-        self.no = -1
-        self.rowno = -1
-        self.colno = -1
 
 
 
@@ -898,85 +866,6 @@ class Formatter:
 
 
 
-class Cells:
-    
-    def __init__(self,blocks,Debug=False):
-        self.Success = True
-        self.cells = []
-        self.cell = Cell()
-        self.blocks = blocks
-        self.Debug = Debug
-    
-    def debug(self):
-        f = '[MClientQt] logic.Cells.debug'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        if not self.Debug:
-            sh.com.rep_lazy(f)
-            return
-        nos = []
-        rownos = []
-        colnos = []
-        codes = []
-        for cell in self.cells:
-            nos.append(cell.no)
-            rownos.append(cell.rowno)
-            colnos.append(cell.colno)
-            codes.append(cell.code)
-        #,maxrow = 200
-        mes = sh.FastTable (iterable = [nos,rownos,colnos,codes]
-                           ,headers = (_('CELL #'),_('ROW #'),_('COLUMN #')
-                                      ,_('CODE')
-                                      )
-                           ,FromEnd = True
-                           ).run()
-        #TODO
-        import skl_shared.shared as leg
-        leg.com.start()
-        leg.com.run_fast_debug(f,mes)
-        leg.com.end()
-        #sh.com.run_fast_debug(f,mes)
-        #print(mes)
-    
-    def loop(self):
-        f = '[MClientQt] logic.Cells.loop'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        for block in self.blocks:
-            #if block.cellno != self.cell.no:
-            if block.rowno != self.cell.rowno or block.colno != self.cell.colno:
-                #if self.cell.no != -1:
-                if self.cell.rowno != -1:
-                    self.cells.append(self.cell)
-                self.cell = Cell()
-                #self.cell.no = block.cellno + 1
-                self.cell.rowno = block.rowno
-                self.cell.colno = block.colno
-            self.cell.code += Formatter(block).run()
-            self.cell.plain += block.text
-            if block.url:
-                #TODO (?): Process multiple URLs
-                self.cell.url = block.url
-        #if self.cell.no != -1:
-        if self.cell.rowno != -1:
-            self.cells.append(self.cell)
-    
-    def check(self):
-        f = '[MClientQt] logic.Cells.check'
-        if not self.blocks:
-            self.Success = False
-            sh.com.rep_empty(f)
-    
-    def run(self):
-        self.check()
-        self.loop()
-        self.debug()
-        return self.cells
-
-
-
 class Table:
     ''' #NOTE: it's not enough to use 'Success' since we do not call 'reset'
         before loading an article.
@@ -1080,7 +969,6 @@ class Table:
         return(rowno,colno)
     
     def _get_prev_row(self,rowno,colno):
-        f = '[MClientQt] logic.Table._get_prev_row'
         while rowno > 0:
             rowno -= 1
             if self.plain[rowno][colno]:
@@ -1407,12 +1295,10 @@ class Font:
     
     def check(self):
         f = '[MClientQt] logic.Font.check'
-        if self.block and self.blocked_color1 and self.blocked_color2 \
+        if not (self.block and self.blocked_color1 and self.blocked_color2 \
         and self.blocked_color3 and self.blocked_color4 \
         and self.priority_color1 and self.priority_color2 \
-        and self.priority_color3 and self.priority_color4:
-            pass
-        else:
+        and self.priority_color3 and self.priority_color4):
             self.Success = False
             sh.com.rep_empty(f)
     
