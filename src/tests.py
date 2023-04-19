@@ -19,9 +19,9 @@ class View:
             'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
             to set 'dic' and some other types.
         '''
-        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/back (2023-04-12).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/back (2023-04-12).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/beg the question (2023-04-15).html'
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/hello (2023-04-19).html'
+        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/hello (2023-04-19).html'
         text = sh.ReadTextFile(file).get()
         timer = sh.Timer(f)
         timer.start()
@@ -32,10 +32,12 @@ class View:
         cells = el.Elems(blocks).run()
         #blocked = ['Gruzovik']
         blocked = []
-        prioritized = ['Общая лексика','общ.']
+        subjects = ['Общая лексика','общ.']
+        # Full forms as well
+        speech = ['сущ.','глаг.','прил.','сокр.','нареч.','предл.','мест.']
         OmitUsers = 0
         cells = cl.Omit(cells,blocked,OmitUsers).run()
-        cells = cl.Prioritize(cells,prioritized).run()
+        cells = cl.Prioritize(cells,subjects,speech).run()
         iview = cl.View(cl.com.set_view(cells))
         iview.run()
         timer.end()

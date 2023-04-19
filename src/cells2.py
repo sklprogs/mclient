@@ -65,9 +65,10 @@ class Omit:
 
 class Prioritize:
     
-    def __init__(self,cells,subjects=[]):
+    def __init__(self,cells,subjects=[],speech=[]):
         self.all_subj = []
         self.subj_pri = subjects
+        self.speech_pri = speech
         self.cells = cells
     
     def set_subjects(self):
@@ -80,6 +81,17 @@ class Prioritize:
             for cell in self.cells:
                 if cell.subj == self.all_subj[i]:
                     cell.subjpr = i
+    
+    def set_speech(self):
+        all_speech = sorted(set([cell.speech for cell in self.cells]))
+        speech_unp = [speech for speech in all_speech \
+                      if not speech in self.speech_pri
+                     ]
+        all_speech = self.speech_pri + speech_unp
+        for i in range(len(all_speech)):
+            for cell in self.cells:
+                if cell.speech == all_speech[i]:
+                    cell.speechpr = i
     
     def _is_phrase_type(self,cell):
         for block in cell.blocks:
@@ -94,6 +106,7 @@ class Prioritize:
     
     def run(self):
         self.set_subjects()
+        self.set_speech()
         self.set_phrases()
         return self.cells
 
