@@ -459,7 +459,7 @@ class CurRequest:
         self.reset()
     
     def set_values(self):
-        self.cols = ('dic','wform','transc','speech')
+        self.cols = ('subj','wform','transc','speech')
         self.collimit = sh.lg.globs['int']['colnum'] + len(self.cols)
         ''' Toggling blacklisting should not depend on a number of blocked
             subjects (otherwise, it is not clear how blacklisting should be
@@ -727,7 +727,7 @@ class Commands:
         '''
         for i in range(len(lst)):
             if lst[i] == _('Subjects'):
-                lst[i] = 'dic'
+                lst[i] = 'subj'
             elif lst[i] == _('Word forms'):
                 lst[i] = 'wform'
             elif lst[i] == _('Parts of speech'):
@@ -1319,7 +1319,7 @@ class Font:
         return self.block
     
     def _set_color(self):
-        if self.block.type_ in ('dic','phdic','wform','speech'):
+        if self.block.type_ in ('subj','phsubj','wform','speech'):
             if self.block.colno == 0:
                 self.block.color = sh.lg.globs['str']['color_col1']
             elif self.block.colno == 1:
@@ -1338,7 +1338,7 @@ class Font:
             self.block.color = objs.get_colors().user
     
     def _set_color_p(self):
-        if not self.block.type_ in ('dic','phdic','wform','transc','speech'):
+        if not self.block.type_ in ('subj','phsubj','wform','transc','speech'):
             self.block.color = self.priority_color1
             return
         if self.block.colno == 0:
@@ -1351,7 +1351,7 @@ class Font:
             self.block.color = self.priority_color4
     
     def _set_color_b(self):
-        if not self.block.type_ in ('dic','phdic','wform','transc','speech'):
+        if not self.block.type_ in ('subj','phsubj','wform','transc','speech'):
             self.block.color = 'dim gray'
             return
         if self.block.colno == 0:
@@ -1369,7 +1369,7 @@ class Font:
             sh.com.cancel(f)
             return
         if self.block.type_ == 'wform' or self.block.colno == 0 \
-        and self.block.type_ in ('dic','phdic','transc','speech'):
+        and self.block.type_ in ('subj','phsubj','transc','speech'):
             self.block.Bold = True
     
     def set_italic(self):
@@ -1421,7 +1421,7 @@ class Font:
         if not self.Success:
             sh.com.cancel(f)
             return
-        if self.block.type_ in ('dic','phdic','wform','speech'):
+        if self.block.type_ in ('subj','phsubj','wform','speech'):
             if self.block.colno == 0:
                 self.block.family = sh.lg.globs['str']['font_col1_family']
             elif self.block.colno == 1:
@@ -1442,7 +1442,7 @@ class Font:
         if not self.Success:
             sh.com.cancel(f)
             return
-        if self.block.type_ in ('dic','phdic','wform','speech'):
+        if self.block.type_ in ('subj','phsubj','wform','speech'):
             if self.block.colno == 0:
                 self.block.size = sh.lg.globs['int']['font_col1_size']
             elif self.block.colno == 1:
