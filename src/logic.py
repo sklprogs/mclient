@@ -10,7 +10,6 @@ import skl_shared_qt.web as wb
 import manager
 import subjects.subjects as sj
 import config as cf
-import db
 
 
 SPORDER = (_('Noun'),_('Verb'),_('Adjective'),_('Abbreviation'),_('Adverb')
@@ -816,7 +815,7 @@ class Order(sj.Order):
 
 
 
-class Formatter:
+class Format:
     
     def __init__(self,block):
         self.Success = True
@@ -824,13 +823,13 @@ class Formatter:
         self.block = block
     
     def check(self):
-        f = '[MClientQt] logic.Formatter.check'
+        f = '[MClientQt] logic.Format.check'
         if not self.block:
             self.Success = False
             sh.com.rep_empty(f)
     
     def set_code(self):
-        f = '[MClientQt] logic.Formatter.set_code'
+        f = '[MClientQt] logic.Format.set_code'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -847,10 +846,12 @@ class Formatter:
     def _set_style(self):
         # Color name must be put in single quotes
         sub = '''<span style="font-family:{}; font-size:{}pt; color:'{}';">{}</span>'''
-        self.code = sub.format(self.block.family,self.block.size,self.block.color,self.code)
+        self.code = sub.format (self.block.family,self.block.size
+                               ,self.block.color,self.code
+                               )
     
     def format(self):
-        f = '[MClientQt] logic.Formatter.format'
+        f = '[MClientQt] logic.Format.format'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -1256,9 +1257,14 @@ class Font:
         if not self.Success:
             sh.com.cancel(f)
             return
+        #TODO: elaborate
+        if self.block.Fixed:
+            self.block.Bold = True
+        '''
         if self.block.type_ == 'wform' or self.block.colno == 0 \
         and self.block.type_ in ('subj','phsubj','transc','speech'):
             self.block.Bold = True
+        '''
     
     def set_italic(self):
         f = '[MClientQt] logic.Font.set_italic'

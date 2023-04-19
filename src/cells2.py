@@ -6,6 +6,8 @@ import operator
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
+import logic as lg
+
 #import subjects.subjects as sj
 
 
@@ -59,6 +61,38 @@ class Omit:
     def run(self):
         self.omit_subjects()
         self.omit_users()
+        return self.cells
+
+
+
+class Format:
+    
+    def __init__(self,cells):
+        self.Success = True
+        self.cells = cells
+
+    def check(self):
+        f = '[MClientQt] cells.Format.check'
+        if not self.cells:
+            self.Success = False
+            sh.com.rep_empty(f)
+
+    def format(self):
+        f = '[MClientQt] cells.Format.format'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        for cell in self.cells:
+            cell_code = []
+            for block in cell.blocks:
+                block = lg.Font(block).run()
+                block.code = lg.Format(block).run()
+                cell_code.append(block.code)
+            cell.code = ''.join(cell_code)
+
+    def run(self):
+        self.check()
+        self.format()
         return self.cells
 
 
@@ -130,8 +164,9 @@ class Commands:
     def order(self,cells):
         cells = Omit(cells).run()
         cells = Prioritize(cells).run()
-        cells = View(self.set_view(cells)).run()
-        return cells
+        cells = Format(cells).run()
+        view = View(self.set_view(cells)).run()
+        return view
 
 
 
@@ -183,23 +218,52 @@ class View:
                              )
             sh.objs.get_mes(f,mes,True).show_warning()
     
-    def _create_fixed_first(self,no):
+    def _get_fixed_col_no(self,type_):
+        f = '[MClientQt] cells.View._get_fixed_col_no'
+        try:
+            return self.fixed_types.index(type_)
+        except ValueError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes,True).show_warning()
+    
+    def _get_color(self,colno):
+        #TODO: Elaborate
+        if colno == 0:
+            return sh.lg.globs['str']['color_col1']
+        elif colno == 1:
+            return sh.lg.globs['str']['color_col2']
+        elif colno == 2:
+            return sh.lg.globs['str']['color_col3']
+        elif colno == 3:
+            return sh.lg.globs['str']['color_col4']
+        return 'black'
+    
+    def _format_fixed(self,text,type_):
+        #TODO: Do we need to support multi-format fixed cells?
+        #TODO: Elaborate
+        family = 'Sans'
+        size = 11
+        colno = self._get_fixed_col_no(type_)
+        color = self._get_color(colno)
+        code = '''<span style="font-family:{}; font-size:{}pt; color:'{}';">{}</span>'''
+        code = code.format(family,size,color,text)
+        return code
+    
+    def _create_fixed_first(self,no,type_):
         new_row = list(self.view[0])
         new_row[1] = 0
         new_row[2] = self.view[0][no]
-        # HTML code must be generated at the formatting step coming the last
-        new_row[3] = ''
+        new_row[3] = self._format_fixed(new_row[2],type_)
         return new_row
     
-    def _create_fixed(self,i,no,cellno):
+    def _create_fixed(self,i,no,cellno,type_):
         new_row = list(self.view[i])
         new_row[1] = cellno
         if self.view[i-1][no] == self.view[i][no]:
             new_row[2] = ''
         else:
             new_row[2] = self.view[i][no]
-        # HTML code must be generated at the formatting step coming the last
-        new_row[3] = ''
+        new_row[3] = self._format_fixed(new_row[2],type_)
         return new_row
     
     def _is_new_row(self,i):
@@ -220,7 +284,7 @@ class View:
                         sh.com.rep_empty(f)
                         return
                     cellno += 0.1
-                    add.append(self._create_fixed(i,no,cellno))
+                    add.append(self._create_fixed(i,no,cellno,type_))
                     count += 1
                 for row in add:
                     self.view.insert(i,row)
@@ -244,7 +308,7 @@ class View:
                 sh.com.rep_empty(f)
                 return
             cellno += 0.1
-            add.append(self._create_fixed_first(no))
+            add.append(self._create_fixed_first(no,type_))
             count += 1
         for row in add:
             self.view.insert(i,row)
@@ -313,5 +377,5 @@ com = Commands()
 
 if __name__ == '__main__':
     sh.com.start()
-    com.order(cells)
+    com.order([])
     sh.com.end()

@@ -62,16 +62,23 @@ class Tag:
 class Block:
 
     def __init__(self):
-        self.Ignore = False
+        ''' Cannot be put in a separate module since we would need to load it
+            from different places.    
+        '''
         self.cellno = -1
         self.subj = ''
         self.subjf = ''
         self.text = ''
-        ''' 'comment', 'correction', 'subj', 'invalid', 'phrase', 'speech',
-            'term', 'transc', 'wform'.
+        ''' 'comment', 'correction', 'invalid', 'phcount', 'phrase', 'phsubj',
+            'speech', 'subj', 'term', 'transc', 'wform'.
         '''
         self.type_ = 'comment'
         self.url = ''
+        self.family = 'Serif'
+        self.color = 'black'
+        self.size = 12
+        self.Bold = False
+        self.Italic = False
 
 
 

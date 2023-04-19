@@ -31,16 +31,20 @@ class Block:
         need to load it from different places.    
     '''
     def __init__(self):
-        self.Ignore = False
         self.cellno = -1
         self.subj = ''
         self.subjf = ''
         self.text = ''
-        ''' 'comment', 'correction', 'subj', 'invalid', 'phrase', 'speech',
-            'term', 'transc', 'wform'.
+        ''' 'comment', 'correction', 'invalid', 'phcount', 'phrase', 'phsubj',
+            'speech', 'subj', 'term', 'transc', 'wform'.
         '''
         self.type_ = 'comment'
         self.url = ''
+        self.family = 'Serif'
+        self.color = 'black'
+        self.size = 12
+        self.Bold = False
+        self.Italic = False
 
 
 
@@ -304,7 +308,7 @@ class Elems:
                             ,iterable = (subj,wform,speech,transc,rownos,nos
                                         ,types,texts,urls
                                         )
-                            ,maxrow = 40
+                            ,maxrow = 30
                             ,maxrows = 0
                             ).run()
     
