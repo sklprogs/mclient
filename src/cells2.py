@@ -372,6 +372,79 @@ class View:
         return self.view
 
 
+
+class Wrap:
+    
+    def __init__(self,view,collimit=9):
+        ''' Since we create even empty columns, the number of fixed cells in
+            a row should always be 4 (unless new fixed types are added).
+        '''
+        self.fixed_len = 4
+        #NOTE: Synchronize with View
+        self.max_len = 11
+        self.Success = True
+        self.plain = []
+        self.view = view
+        self.collimit = collimit
+    
+    def check(self):
+        f = '[MClientQt] cells.Wrap.check'
+        if not self.view:
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
+        if len(self.view[0]) != self.max_len:
+            self.Success = False
+            mes = f'{len(self.view[0])} = {self.max_len}'
+            sh.com.rep_condition(f,mes)
+        if self.collimit <= self.fixed_len:
+            self.Success = False
+            mes = f'{self.collimit} > {self.fixed_len}'
+            sh.com.rep_condition(f,mes)
+    
+    def wrap_x(self):
+        f = '[MClientQt] cells.Wrap.wrap_x'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        row = []
+        rowno = 0
+        for cell in self.view:
+            row.append(cell[2])
+            cond = len(row) == self.collimit
+            if cell[0] != rowno or cond:
+                delta = self.collimit - len(row)
+                row += [''] * delta
+                self.plain.append(row)
+                if cond:
+                    row = [''] * self.fixed_len + [cell[2]]
+                else:
+                    row = [cell[2]]
+                rowno = cell[0]
+        if row:
+            delta = self.collimit - len(row)
+            row += [''] * delta
+            self.plain.append(row)
+    
+    def debug(self):
+        f = '[MClientQt] cells.Wrap.debug'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        debug = []
+        for row in self.plain:
+            new_row = []
+            for i in range(len(row)):
+                item = f'{i+1}: {row[i]}'
+                new_row.append(item)
+            debug.append(new_row)
+        return str(debug)
+    
+    def run(self):
+        self.wrap_x()
+        return self.plain
+
+
 com = Commands()
 
 

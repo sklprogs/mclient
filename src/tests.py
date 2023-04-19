@@ -7,6 +7,51 @@ import skl_shared_qt.shared as sh
 DEBUG = True
 
 
+class Wrap:
+    
+    def run_multitrancom(self):
+        f = '[MClient] tests.Wrap.run_multitrancom'
+        import logic as lg
+        import plugins.multitrancom.cleanup as cu
+        import plugins.multitrancom.tags as tg
+        import plugins.multitrancom.elems as el
+        import cells2 as cl
+        
+        lg.com.start()
+        
+        ''' #NOTE: The file should be generated with
+            'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
+            to set 'dic' and some other types.
+        '''
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/back (2023-04-12).html'
+        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/beg the question (2023-04-15).html'
+        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/hello (2023-04-19).html'
+        text = sh.ReadTextFile(file).get()
+        timer = sh.Timer(f)
+        timer.start()
+        text = cu.CleanUp(text).run()
+        blocks = tg.Tags (text = text
+                         ,maxrows = 0
+                         ).run()
+        cells = el.Elems(blocks).run()
+        #blocked = ['Gruzovik']
+        blocked = []
+        subjects = ['Общая лексика','общ.']
+        # Full forms as well
+        speech = ['сущ.','глаг.','прил.','сокр.','нареч.','предл.','мест.']
+        OmitUsers = 0
+        cells = cl.Omit(cells,blocked,OmitUsers).run()
+        cells = cl.Prioritize(cells,subjects,speech).run()
+        cells = cl.Format(cells).run()
+        iview = cl.View(cl.com.set_view(cells))
+        iview.run()
+        timer.end()
+        iwrap = cl.Wrap(iview.view)
+        iwrap.run()
+        return iwrap.debug()
+
+
+
 class View:
     
     def run_multitrancom(self):
@@ -46,13 +91,7 @@ class View:
         iview = cl.View(cl.com.set_view(cells))
         iview.run()
         timer.end()
-        #cur
-        mes = []
-        for i in range(len(iview.view)):
-            sub = f'{i+1}: {iview.view[i][3]}'
-            mes.append(sub)
-        return '\n'.join(mes)
-        #return iview.debug()
+        return iview.debug()
 
 
 
@@ -1028,8 +1067,8 @@ if __name__ == '__main__':
     '''
     #idebug = sh.Debug(f,Tags().run_multitrancom())
     #idebug = sh.Debug(f,Elems().run_multitrancom())
-    #View().run_multitrancom()
-    idebug = sh.Debug(f,View().run_multitrancom())
+    #idebug = sh.Debug(f,View().run_multitrancom())
+    idebug = sh.Debug(f,Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
     idebug.show()
 
