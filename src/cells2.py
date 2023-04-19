@@ -65,15 +65,29 @@ class Omit:
 
 class Prioritize:
     
-    def __init__(self,cells):
+    def __init__(self,cells,subjects=[]):
         self.cells = cells
+        self.subjects = subjects
+    
+    def set_subjects(self):
+        f = '[MClientQt] cells.Prioritize.set_subjects'
+        if not self.subjects:
+            sh.com.rep_lazy(f)
+            return
+    
+    def _is_phrase_type(self,cell):
+        for block in cell.blocks:
+            if block.type_ in ('phsubj','phrase','phcount'):
+                return True
     
     def set_phrases(self):
+        subjpr = len(self.subjects) + 1
         for cell in self.cells:
-            if cell.fixed_block and cell.fixed_block.type_ == 'phsubj':
-                cell.priority = 1000
+            if self._is_phrase_type(cell):
+                cell.subjpr = subjpr
     
     def run(self):
+        self.set_subjects()
         self.set_phrases()
         return self.cells
 

@@ -21,7 +21,7 @@ class Cell:
         self.wform = ''
         self.transc = ''
         self.speech = ''
-        self.subjpr = 500
+        self.subjpr = 0
         self.speechpr = -1
 
 
@@ -552,16 +552,6 @@ class Elems:
                     # 'fill_fixed' is block-oriented
                     cell.text = cell.fixed_block.text = title
     
-    def _is_phrase_type(self,cell):
-        for block in cell.blocks:
-            if block.type_ in ('phsubj','phrase','phcount'):
-                return True
-    
-    def set_phrase_priority(self):
-        for cell in self.cells:
-            if self._is_phrase_type(cell):
-                cell.subjpr = 1000
-    
     def set_row_nos(self):
         # Run this before deleting fixed types
         f = '[MClientQt] plugins.multitrancom.elems.Elems.set_row_nos'
@@ -603,6 +593,5 @@ class Elems:
         self.set_row_nos()
         self.fill_fixed()
         self.delete_fixed()
-        self.set_phrase_priority()
         self.renumber()
         return self.cells
