@@ -17,12 +17,12 @@ class Cell:
         self.rowno = -1
         self.blocks = []
         self.fixed_block = None
-        self.Ignore = False
         self.subj = ''
         self.wform = ''
         self.transc = ''
         self.speech = ''
-        self.priority = 500
+        self.subjpr = 500
+        self.speechpr = -1
 
 
 
@@ -560,7 +560,7 @@ class Elems:
     def set_phrase_priority(self):
         for cell in self.cells:
             if self._is_phrase_type(cell):
-                cell.priority = 1000
+                cell.subjpr = 1000
     
     def set_row_nos(self):
         # Run this before deleting fixed types
