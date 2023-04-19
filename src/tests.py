@@ -32,9 +32,10 @@ class View:
         cells = el.Elems(blocks).run()
         #blocked = ['Gruzovik']
         blocked = []
+        prioritized = ['Общая лексика','общ.']
         OmitUsers = 0
         cells = cl.Omit(cells,blocked,OmitUsers).run()
-        cells = cl.Prioritize(cells).run()
+        cells = cl.Prioritize(cells,prioritized).run()
         iview = cl.View(cl.com.set_view(cells))
         iview.run()
         timer.end()
