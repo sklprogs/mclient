@@ -335,7 +335,7 @@ class SpeechPrior:
         f = '[MClientQt] logic.SpeechPrior.prioritize'
         if not self.Success:
             sh.com.cancel(f)
-            returm
+            return
         lst = [i + 1 for i in range(len(self.abbr))]
         for i in range(len(self.order)):
             try:
@@ -450,7 +450,6 @@ class CurRequest:
 class Lists:
     # Read the blocklist and the prioritize list
     def __init__(self):
-        f = '[MClientQt] logic.Lists.__init__'
         self.blacklst = objs.get_default().fblock
         self.priorlst = objs.default.fprior
         self.Success = objs.default.Success
@@ -480,8 +479,7 @@ class Objects:
     def __init__(self):
         self.online = self.request = self.order = self.default \
                     = self.plugins = self.speech_prior = self.config \
-                    = self.order = self.blocksdb = self.column_width \
-                    = self.colors = None
+                    = self.order = self.column_width = self.colors = None
 
     def get_colors(self):
         if self.colors is None:
@@ -492,12 +490,6 @@ class Objects:
         if self.column_width is None:
             self.column_width = ColumnWidth()
         return self.column_width
-    
-    def get_blocksdb(self):
-        if self.blocksdb is None:
-            self.blocksdb = db.Moves()
-            self.blocksdb.Selectable = sh.lg.globs['bool']['SelectTermsOnly']
-        return self.blocksdb
     
     def get_order(self):
         if self.order is None:
@@ -611,23 +603,6 @@ class Commands:
             if not sh.objs.get_mes(f,mes).show_question():
                 Confirmed = False
         return Confirmed
-    
-    def assign_blocks(self,data):
-        f = '[MClientQt] logic.Commands.assign_blocks'
-        blocks = []
-        if not data:
-            sh.com.rep_empty(f)
-            return blocks
-        for row in data:
-            block = Block()
-            block.type_ = row[0]
-            block.text = row[1]
-            block.rowno = row[2]
-            block.colno = row[3]
-            block.no = row[4]
-            block.url = row[5]
-            blocks.append(block)
-        return blocks
     
     def add_formatting(self,blocks):
         f = '[MClientQt] logic.Commands.add_formatting'

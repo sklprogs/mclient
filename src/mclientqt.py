@@ -13,7 +13,7 @@ import subjects.priorities.controller as pr
 import subjects.blacklist.controller as bl
 import subjects.subjects as sj
 import settings.controller as st
-import suggest.controller as sg
+#import suggest.controller as sg
 import about.controller as ab
 import third_parties.controller as tp
 import symbols.controller as sm

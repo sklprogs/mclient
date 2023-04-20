@@ -172,7 +172,7 @@ class ArticleSubjects:
     def set_article(self):
         f = '[MClient] tests.Subjects.set_article'
         import subjects.subjects as sj
-        import mclientqt
+        import mclientqt as mclient
         pairs = mclient.objs.get_blocksdb().get_dic_pairs()
         mes = _('Pairs: {}').format(pairs)
         sh.objs.get_mes(f,mes,True).show_debug()
@@ -181,7 +181,7 @@ class ArticleSubjects:
     
     def set_blocks(self):
         f = '[MClient] tests.Subjects.set_blocks'
-        import mclientqt
+        import mclientqt as mclient
         # Lists will be automatically read from files on import
         import logic as lg
         lg.com.start()
@@ -196,10 +196,10 @@ class ArticleSubjects:
         data = lg.com.dump_elems (blocks = blocks
                                  ,artid = mclient.objs.blocksdb.artid
                                  )
-        if data:
-            mclient.objs.blocksdb.fill_blocks(data)
-        else:
+        if not data:
             sh.com.rep_empty(f)
+            return
+        mclient.objs.blocksdb.fill_blocks(data)
 
 
 
@@ -277,7 +277,6 @@ class Block:
 class Get:
     
     def run_dsl(self):
-        f = '[MClient] tests.Get.run_dsl'
         import plugins.dsl.get as gt
         gt.PATH = sh.Home('mclient').add_config('dics')
         gt.Get (pattern = 'computer'
@@ -317,7 +316,6 @@ class Get:
 class Tags:
     
     def run_dsl(self):
-        f = '[MClient] tests.Tags.run_dsl'
         import plugins.dsl.get as gt
         import plugins.dsl.cleanup as cu
         import plugins.dsl.tags as tg
@@ -343,7 +341,6 @@ class Tags:
         itag.debug()
     
     def run_stardict(self):
-        f = '[MClient] tests.Tags.run_stardict'
         import plugins.stardict.cleanup as sdcleanup
         import plugins.stardict.tags as sdtags
         file = '/home/pete/bin/mclient/tests/stardict/EnRu full cut.txt'
@@ -354,7 +351,6 @@ class Tags:
                     ).run()
     
     def run_multitrancom(self):
-        f = '[MClient] tests.Tags.run_multitrancom'
         import plugins.multitrancom.cleanup as cu
         import plugins.multitrancom.tags as tg
         ''' #NOTE: The file should be generated with
@@ -380,7 +376,6 @@ class Tags:
 class Plugin:
     
     def run_multitrandem(self):
-        f = '[MClient] tests.Plugin.run_multitrandem'
         import plugins.multitrandem.get
         import plugins.multitrandem.run as mb
         #search = 'Kafir'
@@ -418,7 +413,6 @@ class Plugin:
             print(mes)
     
     def run_stardict(self):
-        f = '[MClient] tests.Plugin.run_stardict'
         import plugins.stardict.run as sr
         search = 'about'
         iplug = sr.Plugin(Debug=DEBUG)
@@ -444,7 +438,6 @@ class Plugin:
         sh.com.run_fast_debug(f,mes)
     
     def run_multitrancom(self):
-        f = '[MClient] tests.Plugin.run_multitrancom'
         import plugins.multitrancom.run as mc
         #url = 'https://www.multitran.com/m.exe?s=memory%20pressure&l1=2&l2=1&SHL=2'
         #search = 'memory pressure'
@@ -574,13 +567,6 @@ class Commands:
         ihis.add()
         return ihis
     
-    def run_db(self):
-        import logic as lg
-        import subjects.subjects as sj
-        import cells as cl
-        lg.com.start()
-        DB(0).run()
-    
     def run_welcome_contr(self):
         import logic as lg
         lg.com.start()
@@ -621,7 +607,6 @@ class Commands:
         return ihis
     
     def run_symbols(self):
-        import config as cf
         import logic as lg
         import symbols.controller as sm
         lg.com.start()
@@ -773,7 +758,6 @@ class Commands:
         sh.objs.get_mes(f,mes,True).show_info()
     
     def compare_elems(self):
-        f = '[MClient] tests.Commands.compare_elems'
         import plugins.multitran.elems as el
         data1 = []
         data2 = []
@@ -827,6 +811,7 @@ class Commands:
         sh.com.run_fast_txt(data)
     
     def request(self):
+        import logic as lg
         f = '[MClient] tests.Commands.request'
         source = _('Multitran')
         pair = 'DEU <=> RUS'
@@ -847,6 +832,7 @@ class Commands:
             sh.com.rep_empty(f)
     
     def get_url(self):
+        import logic as lg
         f = '[MClient] tests.Commands.get_url'
         source = 'multitran.com'
         pair = 'RUS <=> XAL'
@@ -859,6 +845,7 @@ class Commands:
         lg.objs.plugins.get_url(search)
     
     def suggest(self):
+        import logic as lg
         f = '[MClient] tests.Commands.suggest'
         source = 'multitran.com'
         pair = 'DEU <=> RUS'
@@ -871,6 +858,7 @@ class Commands:
         lg.com.suggest(search)
     
     def _set_timeout(self,module,source,timeout):
+        import logic as lg
         f = '[MClient] tests.Commands._set_timeout'
         lg.objs.get_plugins().set(source)
         lg.objs.plugins.set_timeout(timeout)
@@ -880,7 +868,6 @@ class Commands:
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_timeout(self):
-        f = '[MClient] tests.Commands.set_timeout'
         import plugins.multitrancom.get as mc
         import plugins.stardict.get as sd
         self._set_timeout (module = sd
@@ -897,6 +884,7 @@ class Commands:
                           )
     
     def is_accessible(self):
+        import logic as lg
         f = '[MClient] tests.Commands.is_accessible'
         source = _('Offline')
         lg.objs.get_plugins().set(source)
@@ -910,6 +898,7 @@ class Commands:
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def welcome(self):
+        import logic as lg
         f = '[MClient] tests.Commands.welcome'
         file_w = '/tmp/test.html'
         code = lg.Welcome().run()
@@ -920,6 +909,7 @@ class Commands:
             sh.com.rep_empty(f)
     
     def set_pair(self):
+        import logic as lg
         f = '[MClient] tests.Commands.set_pair'
         import plugins.multitrancom.get
         pair = 'RUS <=> XAL'
@@ -939,8 +929,8 @@ class Commands:
     def translate_gui (self,source,pair
                       ,search,url
                       ):
-        f = '[MClient] tests.Commands.translate_gui'
-        import mclientqt
+        import logic as lg
+        import mclientqt as mclient
         lg.objs.get_plugins().set(source)
         lg.objs.plugins.set_pair(pair)
         lg.objs.get_request().search = search
@@ -951,7 +941,7 @@ class Commands:
     def translate_cli (self,source,pair
                       ,search,url,maxrows=100
                       ):
-        f = '[MClient] tests.Commands.translate_cli'
+        import logic as lg
         import cells as cl
         lg.objs.get_plugins().set(source)
         lg.objs.plugins.set_pair(pair)
