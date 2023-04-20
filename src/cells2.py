@@ -384,6 +384,7 @@ class Wrap:
         self.max_len = 11
         self.Success = True
         self.plain = []
+        self.code = []
         self.view = view
         self.collimit = collimit
     
@@ -408,29 +409,33 @@ class Wrap:
             sh.com.cancel(f)
             return
         row = []
+        rowc = []
         rowno = 0
         for cell in self.view:
             row.append(cell[2])
+            rowc.append(cell[3])
             cond = len(row) == self.collimit
             if cell[0] != rowno or cond:
                 delta = self.collimit - len(row)
                 row += [''] * delta
+                rowc += [''] * delta
                 self.plain.append(row)
+                self.code.append(rowc)
                 if cond:
                     row = [''] * self.fixed_len + [cell[2]]
+                    rowc = [''] * self.fixed_len + [cell[3]]
                 else:
                     row = [cell[2]]
+                    rowc = [cell[3]]
                 rowno = cell[0]
         if row:
             delta = self.collimit - len(row)
             row += [''] * delta
+            rowc += [''] * delta
             self.plain.append(row)
+            self.code.append(rowc)
     
-    def debug(self):
-        f = '[MClientQt] cells.Wrap.debug'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
+    def _debug_plain(self):
         debug = []
         for row in self.plain:
             new_row = []
@@ -439,6 +444,31 @@ class Wrap:
                 new_row.append(item)
             debug.append(new_row)
         return str(debug)
+    
+    def _debug_code(self):
+        debug = []
+        for row in self.code:
+            new_row = []
+            for i in range(len(row)):
+                item = f'{i+1}: {row[i]}'
+                new_row.append(item)
+            debug.append(new_row)
+        return str(debug)
+    
+    def debug(self):
+        f = '[MClientQt] cells.Wrap.debug'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        mes = []
+        mes.append(_('Cell text:'))
+        mes.append(str(self._debug_plain()))
+        mes.append('')
+        '''
+        mes.append(_('Cell code:'))
+        mes.append(str(self._debug_code()))
+        '''
+        return '\n'.join(mes)
     
     def run(self):
         self.wrap_x()
