@@ -27,9 +27,7 @@ class Plugins:
         self.sdpath = sdpath
         self.timeout = timeout
         self.load()
-        ''' #NOTE: either put this on top of 'self.sources' or
-            synchronize with GUI.
-        '''
+        #NOTE: either put this on top of 'self.sources' or synchronize with GUI
         self.set(self.source)
         self.set_timeout(self.timeout)
     
@@ -42,68 +40,62 @@ class Plugins:
     
     def get_subjects(self):
         f = '[MClient] manager.Plugins.get_subjects'
-        if self.plugin:
-            return self.plugin.get_subjects()
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
-        return []
+            return []
+        return self.plugin.get_subjects()
     
     def get_group_with_header(self,subject=''):
         f = '[MClient] manager.Plugins.get_group_with_header'
-        if self.plugin:
-            result = self.plugin.get_group_with_header(subject)
-            mes = '"{}" -> {}'.format(subject,'; '.join(result))
-            sh.objs.get_mes(f,mes,True).show_debug()
-            return result
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
-        return []
+            return []
+        result = self.plugin.get_group_with_header(subject)
+        mes = '"{}" -> {}'.format(subject,'; '.join(result))
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return result
     
     def get_majors(self):
         f = '[MClient] manager.Plugins.get_majors'
-        if self.plugin:
-            return self.plugin.get_majors()
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
-        return []
+            return []
+        return self.plugin.get_majors()
     
     def get_search(self):
         f = '[MClient] manager.Plugins.get_search'
-        if self.plugin:
-            return self.plugin.get_search()
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
-        return ''
+            return ''
+        return self.plugin.get_search()
     
     def set_htm(self,htm):
         f = '[MClient] manager.Plugins.set_htm'
-        if self.plugin and htm:
-            self.plugin.set_htm(htm)
-        else:
+        if not self.plugin or not htm:
             sh.com.rep_empty(f)
+            return
+        self.plugin.set_htm(htm)
     
     def fix_url(self,url):
         f = '[MClient] manager.Plugins.fix_url'
-        if self.plugin:
-            return self.plugin.fix_url(url)
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
-        return url
+            return url
+        return self.plugin.fix_url(url)
     
     def is_oneway(self):
         f = '[MClient] manager.Plugins.is_oneway'
-        if self.plugin:
-            return self.plugin.is_oneway()
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
+            return
+        return self.plugin.is_oneway()
     
     def get_title(self,short):
         f = '[MClient] manager.Plugins.get_title'
-        if self.plugin:
-            return self.plugin.get_title(short)
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
-        return short
+            return short
+        return self.plugin.get_title(short)
     
     def quit(self,event=None):
         self.mbplugin.quit()
@@ -113,27 +105,25 @@ class Plugins:
     
     def get_lang1(self):
         f = '[MClient] manager.Plugins.get_lang1'
-        if self.plugin:
-            return self.plugin.get_lang1()
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
+            return
+        return self.plugin.get_lang1()
     
     def get_lang2(self):
         f = '[MClient] manager.Plugins.get_lang2'
-        if self.plugin:
-            return self.plugin.get_lang2()
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
+            return
+        return self.plugin.get_lang2()
     
     def is_combined(self):
-        ''' Whether or not the plugin is actually a wrapper over other
-            plugins.
-        '''
+        # Whether or not the plugin is actually a wrapper over other plugins
         f = '[MClient] manager.Plugins.is_combined'
-        if self.plugin:
-            return self.plugin.is_combined()
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
+            return
+        return self.plugin.is_combined()
     
     def fix_raw_htm(self):
         f = '[MClient] manager.Plugins.fix_raw_htm'
@@ -156,17 +146,16 @@ class Plugins:
     
     def get_url(self,search):
         f = '[MClient] manager.Plugins.get_url'
-        url = ''
-        if self.plugin:
-            url = self.plugin.get_url(search)
-            if not url:
-                url = ''
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
+            return ''
+        url = self.plugin.get_url(search)
+        if not url:
+            return ''
         return url
     
-    # Return all non-combined plugins
     def get_unique(self):
+        # Return all non-combined plugins
         return (self.sdplugin
                ,self.mcplugin
                ,self.mbplugin
@@ -181,24 +170,24 @@ class Plugins:
     
     def set_timeout(self,timeout=5.0):
         f = '[MClient] manager.Plugins.set_timeout'
-        if self.plugin:
-            self.plugin.set_timeout(timeout)
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
+            return
+        self.plugin.set_timeout(timeout)
     
     def is_accessible(self):
         f = '[MClient] manager.Plugins.is_accessible'
-        if self.plugin:
-            return self.plugin.is_accessible()
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
-    
+            return
+        return self.plugin.is_accessible()
+
     def suggest(self,search):
         f = '[MClient] manager.Plugins.suggest'
-        if self.plugin:
-            return self.plugin.suggest(search)
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
+            return
+        return self.plugin.suggest(search)
     
     def get_sources(self):
         return (_('Multitran'),_('Stardict'),'Lingvo (DSL)',_('Local MT'))
@@ -207,25 +196,25 @@ class Plugins:
         return (_('Stardict'),'Lingvo (DSL)',_('Local MT'))
     
     def get_online_sources(self):
-        ''' This is used by lg.Welcome to check the availability of
-            online sources. Do not put combined sources here.
+        ''' This is used by lg.Welcome to check the availability of online
+            sources. Do not put combined sources here.
         '''
         return ['multitran.com']
     
     def get_langs1(self,lang2=''):
         f = '[MClient] manager.Plugins.get_langs1'
-        if self.plugin:
-            return self.plugin.get_langs1(lang2)
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
+            return
+        return self.plugin.get_langs1(lang2)
     
     def get_langs2(self,lang1=''):
         f = '[MClient] manager.Plugins.get_langs2'
-        if self.plugin:
-            return self.plugin.get_langs2(lang1)
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
-    
+            return
+        return self.plugin.get_langs2(lang1)
+
     def load(self):
         plugins.stardict.get.PATH = self.sdpath
         plugins.dsl.get.PATH = self.lgpath
@@ -248,42 +237,42 @@ class Plugins:
     
     def set(self,source):
         f = '[MClient] manager.Plugins.set'
-        if source:
-            self.source = source
-            if source == _('Stardict'):
-                self.plugin = self.sdplugin
-            elif source in (_('Multitran'),'multitran.com'):
-                self.plugin = self.mcplugin
-            elif source == 'Lingvo (DSL)':
-                self.plugin = self.lgplugin
-            elif source == _('Local MT'):
-                self.plugin = self.mbplugin
-            else:
-                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-                mes = mes.format(self.source,self.get_sources())
-                sh.objs.get_mes(f,mes).show_error()
-        else:
+        if not source:
             sh.com.rep_empty(f)
+            return
+        self.source = source
+        if source == _('Stardict'):
+            self.plugin = self.sdplugin
+        elif source in (_('Multitran'),'multitran.com'):
+            self.plugin = self.mcplugin
+        elif source == 'Lingvo (DSL)':
+            self.plugin = self.lgplugin
+        elif source == _('Local MT'):
+            self.plugin = self.mbplugin
+        else:
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(self.source,self.get_sources())
+            sh.objs.get_mes(f,mes).show_error()
     
     def get_text(self):
         f = '[MClient] manager.Plugins.get_text'
-        if self.plugin:
-            return self.plugin.text
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
+            return
+        return self.plugin.text
     
     def get_htm(self):
         f = '[MClient] manager.Plugins.get_htm'
-        if self.plugin:
-            return self.plugin.htm
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
+            return
+        return self.plugin.htm
     
     def request(self,search='',url=''):
         f = '[MClient] manager.Plugins.request'
-        if self.plugin:
-            return self.plugin.request (search = search
-                                       ,url = url
-                                       )
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
+            return
+        return self.plugin.request (search = search
+                                   ,url = url
+                                   )
