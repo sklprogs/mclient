@@ -4,7 +4,7 @@
 from skl_shared.localize import _
 import skl_shared.shared as sh
 
-DEBUG = True
+DEBUG = False
 
 
 class Offline:
@@ -16,7 +16,8 @@ class Offline:
         import plugins.multitrancom.cleanup as cu
         import plugins.multitrancom.tags as tg
         import plugins.multitrancom.elems as el
-        file = '/home/pete/bin/mclient/tests/multitrancom (saved in browser)/hello (2021-03-14).html'
+        #file = '/home/pete/bin/mclient/tests/multitrancom (saved in browser)/hello (2021-03-14).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/set (2023-04-19).html'
         self.htm = sh.ReadTextFile(file).get()
         self.text = cu.CleanUp(self.htm).run()
         itags = tg.Tags (text = self.text
@@ -933,6 +934,12 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] tests.__main__'
     sh.com.start()
+    import logic as lg
+    lg.objs.get_plugins(Debug=False,maxrows=1000)
+    timer = sh.Timer(f)
+    timer.start()
+    Offline().run_multitrancom()
+    timer.end()
     #ArticleSubjects().run()
     #com.check_width()
     #com.edit_blacklist()
@@ -942,7 +949,7 @@ if __name__ == '__main__':
     #com.get_modified_subjects()
     #com.get_priority()
     #com.get_subjects_wo_majors()
-    com.run_settings()
+    #com.run_settings()
     #com.run_sources()
     #com.show_about()
     #Get().run_dsl()
