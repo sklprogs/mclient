@@ -871,19 +871,18 @@ class Table:
     ''' #NOTE: it's not enough to use 'Success' since we do not call 'reset'
         before loading an article.
     '''
-    def __init__(self):
-        self.set_values()
+    def __init__(self,plain,code):
+        self.reset(plain,code)
     
-    def reset(self,cells):
+    def reset(self,plain,code):
         self.set_values()
-        self.cells = cells
+        self.plain = plain
+        self.code = code
         self.set_size()
-        self.set_table()
     
     def set_values(self):
-        self.table = []
         self.plain = []
-        self.cells = []
+        self.code = []
         self.rownum = 0
         self.colnum = 0
     
@@ -1028,53 +1027,14 @@ class Table:
     
     def set_size(self):
         f = '[MClientQt] logic.Table.set_size'
-        if not self.cells:
+        if not self.plain:
             sh.com.rep_empty(f)
             return
-        self.rownum = self.cells[-1].rowno + 1
-        colnos = [cell.colno for cell in self.cells]
-        self.colnum = max(colnos) + 1
+        self.rownum = len(self.plain)
+        self.colnum = len(self.plain[0])
         mes = _('Table size: {}×{}').format(self.rownum,self.colnum)
         sh.objs.get_mes(f,mes,True).show_debug()
     
-    def set_table(self):
-        ''' Empty cells must be recreated since QTableView throws an error
-            otherwise.
-            #TODO: create empty cells with the 'cells' module.
-        '''
-        f = '[MClientQt] logic.Table.set_table'
-        if not self.cells:
-            sh.com.rep_empty(f)
-            return
-        old_rowno = 1
-        row = []
-        plain_row = []
-        for i in range(len(self.cells)):
-            if old_rowno != self.cells[i].rowno:
-                if row:
-                    if i > 0:
-                        delta = self.colnum - self.cells[i-1].colno - 1
-                        for no in range(delta):
-                            row.append('')
-                            plain_row.append('')
-                    self.table.append(row)
-                    self.plain.append(plain_row)
-                    row = []
-                    plain_row = []
-                for j in range(self.cells[i].colno):
-                    row.append('')
-                    plain_row.append('')
-                old_rowno = self.cells[i].rowno
-            row.append(self.cells[i].code)
-            plain_row.append(self.cells[i].plain.strip())
-        if row:
-            delta = self.colnum - len(row)
-            for no in range(delta):
-                row.append('')
-                plain_row.append('')
-            self.table.append(row)
-            self.plain.append(plain_row)
-        
     def get_end(self):
         return self.get_prev_col(self.rownum-1,self.colnum)
 
@@ -1087,7 +1047,7 @@ class Search(Table):
     
     def check(self):
         f = '[MClientQt] logic.Search.check'
-        if not self.cells or not self.plain or not self.pattern.strip():
+        if not self.plain or not self.pattern.strip():
             self.Success = False
             sh.com.rep_empty(f)
     
@@ -1104,9 +1064,8 @@ class Search(Table):
                 plain.append(row)
             self.plain = plain
     
-    def reset(self,cells,plain,pattern,rowno,colno,Case=False):
+    def reset(self,plain,pattern,rowno,colno,Case=False):
         self.set_values()
-        self.cells = cells
         self.plain = plain
         self.pattern = pattern
         self.rowno = rowno
@@ -1117,7 +1076,6 @@ class Search(Table):
         self.lower()
     
     def set_values(self):
-        self.cells = []
         self.plain = []
         self.Success = True
         self.Case = False
