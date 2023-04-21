@@ -11,7 +11,7 @@ import gui as gi
 import cells as cl
 import subjects.priorities.controller as pr
 import subjects.blacklist.controller as bl
-import subjects.subjects as sj
+#import subjects.subjects as sj
 import settings.controller as st
 #import suggest.controller as sg
 import about.controller as ab
@@ -200,37 +200,36 @@ class UpdateUI:
         self.gui.btn_blk.set_hint()
     
     def update_go_next(self):
-        if lg.objs.blocksdb.get_next_id(False):
-            self.gui.btn_nxt.activate()
-        else:
+        if lg.objs.get_articles().is_last():
             self.gui.btn_nxt.inactivate()
+        else:
+            self.gui.btn_nxt.activate()
     
     def update_go_prev(self):
         # Update the button to move to the previous article
-        if lg.objs.get_blocksdb().get_prev_id(False):
+        if lg.objs.get_articles().get_len():
             self.gui.btn_prv.activate()
         else:
             self.gui.btn_prv.inactivate()
     
-    def update_last_search(self,searches):
+    def update_last_search(self):
         # Update the button to insert a current search string
-        if searches:
+        if lg.objs.get_articles().get_len():
             self.gui.btn_rp1.activate()
         else:
             self.gui.btn_rp1.inactivate()
     
-    def update_prev_search(self,searches):
+    def update_prev_search(self):
         # Update the button to insert a previous search string
-        if searches and len(searches) > 1:
+        if lg.objs.get_articles().get_len() > 1:
             self.gui.btn_rp2.activate()
         else:
             self.gui.btn_rp2.inactivate()
     
     def update_buttons(self):
         f = '[MClient] mclient.UpdateUI.update_buttons'
-        searches = lg.objs.get_blocksdb().get_searches()
-        self.update_last_search(searches)
-        self.update_prev_search(searches)
+        self.update_last_search()
+        self.update_prev_search()
         # Suppress useless error output
         if lg.objs.get_request().search:
             self.update_go_prev()
@@ -342,15 +341,15 @@ class Save(sv.Save):
 
     def save_raw_as_htm(self):
         f = '[MClientQt] mclient.Save.save_raw_as_htm'
-        ''' Key 'html' may be needed to write a file in the UTF-8
-            encoding, therefore, in order to ensure that the web-page
-            is read correctly, we change the encoding manually. We also
-            replace abbreviated hyperlinks with full ones in order to
-            ensure that they are also valid in the local file.
+        ''' Key 'html' may be needed to write a file in the UTF-8 encoding,
+            therefore, in order to ensure that the web-page is read correctly,
+            we change the encoding manually. We also replace abbreviated
+            hyperlinks with full ones in order to ensure that they are also
+            valid in the local file.
         '''
         self.gui.ask.filter = _('Web-pages (*.htm, *.html)')
         self.file = self.gui.ask.save()
-        code = lg.objs.get_blocksdb().get_code()
+        code = lg.objs.get_articles().get_raw_code()
         if not self.file or not code:
             sh.com.rep_empty(f)
             return
@@ -377,7 +376,7 @@ class Save(sv.Save):
 
     def copy_raw(self):
         f = '[MClientQt] mclient.Save.copy_raw'
-        code = lg.objs.get_blocksdb().get_code()
+        code = lg.objs.get_articles().get_raw_code()
         if not code:
             sh.com.rep_empty(f)
             return
@@ -396,30 +395,15 @@ class Save(sv.Save):
 class Commands:
     
     def get_article_subjects(self):
-        f = '[MClientQt] mclient.Commands.get_article_subjects'
-        new_dics = []
-        dics = lg.objs.get_blocksdb().get_dics(False)
-        if not dics:
-            sh.com.rep_empty(f)
-            return new_dics
-        dics = [item[0] for item in dics]
-        for dic in dics:
-            items = dic.split(', ')
-            new_dics += items
-        new_dics += dics
-        new_dics = [item.strip() for item in new_dics if item.strip()]
-        new_dics = sorted(set(new_dics))
-        phdic = lg.objs.blocksdb.get_phdic()
-        if phdic:
-            try:
-                new_dics.remove(phdic[1])
-            except ValueError:
-                mes = _('Wrong input data: "{}"!').format(phdic[1])
-                sh.objs.get_mes(f,mes,True).show_warning()
-        return new_dics
+        cells = lg.objs.get_articles().get_cells()
+        return sorted(set([cell.subj for cell in cells]))
 
     def get_skipped_terms(self):
         f = '[MClientQt] mclient.Commands.get_skipped_terms'
+        #TODO: implement
+        print(f)
+        return []
+        '''
         skipped = lg.objs.get_blocksdb().get_skipped_terms()
         if not skipped:
             return []
@@ -430,9 +414,14 @@ class Commands:
         mes = '; '.join(skipped)
         sh.objs.get_mes(f,mes,True).show_debug()
         return skipped
+        '''
     
     def get_skipped_dics(self):
         f = '[MClient] mclient.Commands.get_skipped_dics'
+        #TODO: implement
+        print(f)
+        return []
+        '''
         skipped = lg.objs.get_blocksdb().get_skipped_dics()
         if not skipped:
             return []
@@ -442,9 +431,14 @@ class Commands:
         mes = '; '.join(skipped)
         sh.objs.get_mes(f,mes,True).show_debug()
         return skipped
+        '''
     
     def get_prioritized(self):
         f = '[MClient] mclient.Commands.get_prioritized'
+        #TODO: implement
+        print(f)
+        return []
+        '''
         prioritized = lg.objs.get_blocksdb().get_prioritized()
         if not prioritized:
             return []
@@ -454,6 +448,7 @@ class Commands:
         mes = '; '.join(prioritized)
         sh.objs.get_mes(f,mes,True).show_debug()
         return prioritized
+        '''
 
 
 
@@ -577,7 +572,7 @@ class Table:
 
     def __init__(self):
         self.set_values()
-        self.logic = lg.Table()
+        self.logic = lg.Table(self.plain, self.code)
         self.gui = gi.Table()
         self.search = Search()
         self.popup = pp.Popup()
@@ -706,6 +701,8 @@ class Table:
         self.Success = True
         self.model = None
         self.coords = {}
+        self.plain = []
+        self.code = []
         self.row_height = 42
         self.old_rowno = -1
         self.old_colno = -1
@@ -861,12 +858,12 @@ class Table:
         if not self.Success:
             sh.com.cancel(f)
             return ''
-        if not self.logic.cells:
+        if not self.logic.code:
             sh.com.rep_empty(f)
             return ''
         rowno, colno = self.get_cell()
         try:
-            return self.logic.table[rowno][colno]
+            return self.logic.code[rowno][colno]
         except IndexError:
             mes = _('Wrong input data!')
             sh.objs.get_mes(f,mes).show_debug()
@@ -881,8 +878,8 @@ class Table:
         if text:
             sh.Clipboard().copy(text)
             return True
-        # Do not warn when there are no articles yet
-        elif lg.objs.blocksdb.artid == 0:
+        elif not lg.objs.get_articles().get_len():
+            # Do not warn when there are no articles yet
             sh.com.rep_lazy(f)
         else:
             mes = _('This cell does not contain any text!')
@@ -909,19 +906,20 @@ class Table:
                 width = sh.lg.globs['int']['term_col_width']
             self.gui.set_col_width(no,width)
     
-    def reset(self,cells):
+    def reset(self, plain, code):
         f = '[MClientQt] mclient.Table.reset'
         self.set_values()
-        if not cells:
+        if not plain or not code:
             self.Success = False
             sh.com.rep_empty(f)
             return
-        self.logic.reset(cells)
+        self.logic.reset(plain, code)
+        #TODO: Do we need this?
         if not self.logic.plain:
             self.Success = False
             sh.com.rep_empty(f)
             return
-        self.model = gi.TableModel(self.logic.table)
+        self.model = gi.TableModel(self.logic.code)
         self.fill()
         self.set_col_width()
         self.set_row_height(self.row_height)
@@ -1060,7 +1058,7 @@ class App:
             sh.com.rep_lazy(f)
         else:
             lg.objs.order.blacklst = new_list
-            #lg.objs.get_blocksdb().delete_bookmarks()
+            lg.objs.get_articles().delete_bookmarks()
             self.load_article()
     
     def watch_clipboard(self):
@@ -1088,7 +1086,7 @@ class App:
                   ).browse()
     
     def reload(self):
-        lg.objs.get_blocksdb().clear_cur()
+        lg.objs.get_articles().clear_cur()
         self.load_article()
     
     def toggle_view(self):
@@ -1096,7 +1094,7 @@ class App:
             sh.lg.globs['bool']['VerticalView'] = False
         else:
             sh.lg.globs['bool']['VerticalView'] = True
-        #lg.objs.get_blocksdb().delete_bookmarks()
+        lg.objs.get_articles().delete_bookmarks()
         self.load_article()
     
     def toggle_alphabet(self):
@@ -1104,7 +1102,7 @@ class App:
             sh.lg.globs['bool']['AlphabetizeTerms'] = False
         else:
             sh.lg.globs['bool']['AlphabetizeTerms'] = True
-        #lg.objs.get_blocksdb().delete_bookmarks()
+        lg.objs.get_articles().delete_bookmarks()
         self.load_article()
     
     def add_history(self):
@@ -1113,11 +1111,11 @@ class App:
         if not lg.objs.get_request().search:
             sh.com.rep_lazy(f)
             return
-        self.history.add_row (id_ = lg.objs.get_blocksdb().artid
+        self.history.add_row (id_ = lg.objs.get_articles().id
                              ,source = lg.objs.get_plugins().source
                              ,lang1 = lg.objs.plugins.get_lang1()
                              ,lang2 = lg.objs.plugins.get_lang2()
-                             ,search = lg.objs.request.search
+                             ,search = lg.objs.articles.get_search()
                              )
         # Setting column width works only after updating the model, see https://stackoverflow.com/questions/8364061/how-do-you-set-the-column-width-on-a-qtreeview
         self.history.gui.set_col_width()
@@ -1127,65 +1125,63 @@ class App:
         if id_ is None:
             sh.com.rep_empty(f)
             return
-        lg.objs.get_blocksdb().artid = id_
-        result = lg.objs.blocksdb.get_article()
-        if not result:
+        lg.objs.get_articles().set_id(id_)
+        source = lg.objs.articles.get_source()
+        lang1 = lg.objs.articles.get_lang1()
+        lang2 = lg.objs.articles.get_lang2()
+        if not source or not lang1 or not lang2:
             sh.com.rep_empty(f)
             return
-        sh.lg.globs['str']['source'] = result[0] # SOURCE
-        lg.objs.request.search = result[1]       # TITLE
-        lg.objs.request.url = result[2]          # URL
+        sh.lg.globs['str']['source'] = source
         mes = _('Set source to "{}"')
         mes = mes.format(sh.lg.globs['str']['source'])
         sh.objs.get_mes(f,mes,True).show_info()
         lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
-        lg.objs.plugins.set_lang1(result[4])
-        lg.objs.plugins.set_lang2(result[5])
+        lg.objs.plugins.set_lang1(lang1)
+        lg.objs.plugins.set_lang2(lang2)
         self.reset_opt(sh.lg.globs['str']['source'])
         self.load_article()
     
     def clear_history(self):
-        lg.objs.get_blocksdb().clear()
+        lg.objs.get_articles().reset()
         lg.objs.get_request().reset()
         self.reset()
     
     def go_back(self):
         f = '[MClientQt] mclient.App.go_back'
-        result = lg.objs.get_blocksdb().get_prev_id()
-        if not result:
+        if lg.objs.get_articles().get_len() == 0:
+            sh.com.rep_lazy(f)
+            return
+        lg.objs.articles.set_id(lg.objs.articles.id-1)
+        source = lg.objs.articles.get_source()
+        lang1 = lg.objs.articles.get_lang1()
+        lang2 = lg.objs.articles.get_lang2()
+        if not source or not lang1 or not lang2:
             sh.com.rep_empty(f)
             return
-        lg.objs.blocksdb.artid = result
-        result = lg.objs.blocksdb.get_article()
-        if not result:
-            sh.com.rep_empty(f)
-            return
-        sh.lg.globs['str']['source'] = result[0]
-        lg.objs.get_request().search = result[1]
-        lg.objs.request.url = result[2]
+        sh.lg.globs['str']['source'] = source
         lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
-        lg.objs.plugins.set_lang1(result[4])
-        lg.objs.plugins.set_lang2(result[5])
+        lg.objs.plugins.set_lang1(lang1)
+        lg.objs.plugins.set_lang2(lang2)
         self.reset_opt(sh.lg.globs['str']['source'])
         self.load_article()
     
     def go_next(self):
         f = '[MClientQt] mclient.App.go_next'
-        result = lg.objs.get_blocksdb().get_next_id()
-        if not result:
+        if lg.objs.get_articles().is_last():
+            sh.com.rep_lazy(f)
+            return
+        lg.objs.articles.set_id(lg.objs.articles.id+1)
+        source = lg.objs.articles.get_source()
+        lang1 = lg.objs.articles.get_lang1()
+        lang2 = lg.objs.articles.get_lang2()
+        if not source or not lang1 or not lang2:
             sh.com.rep_empty(f)
             return
-        lg.objs.blocksdb.artid = result
-        result = lg.objs.blocksdb.get_article()
-        if not result:
-            sh.com.rep_empty(f)
-            return
-        sh.lg.globs['str']['source'] = result[0]
-        lg.objs.get_request().search = result[1]
-        lg.objs.request.url = result[2]
+        sh.lg.globs['str']['source'] = source
         lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
-        lg.objs.plugins.set_lang1(result[4])
-        lg.objs.plugins.set_lang2(result[5])
+        lg.objs.plugins.set_lang1(lang1)
+        lg.objs.plugins.set_lang2(lang2)
         self.reset_opt(sh.lg.globs['str']['source'])
         self.load_article()
     
@@ -1257,7 +1253,7 @@ class App:
 
     def set_columns(self):
         self.reset_columns()
-        #lg.objs.get_blocksdb().delete_bookmarks()
+        lg.objs.get_articles().delete_bookmarks()
         self.load_article()
         self.gui.panel.ent_src.focus()
 
@@ -1465,23 +1461,17 @@ class App:
     def insert_repeat_sign2(self):
         # Insert the previous search string
         f = '[MClientQt] mclient.App.insert_repeat_sign2'
-        result = lg.objs.get_blocksdb().get_prev_id()
-        if result:
-            old = lg.objs.blocksdb.artid
-            lg.objs.blocksdb.artid = result
-            result = lg.objs.blocksdb.get_article()
-            if result:
-                sh.Clipboard().copy(result[1])
-                self.paste()
-            else:
-                sh.com.rep_empty(f)
-            lg.objs.blocksdb.artid = old
-        else:
+        if lg.objs.get_articles().get_len() < 2:
             sh.com.rep_empty(f)
+            return
+        lg.objs.articles.set_id(lg.objs.articles.id-1)
+        sh.Clipboard().copy(lg.objs.articles.get_search())
+        self.paste()
+        lg.objs.articles.set_id(lg.objs.articles.id+1)
     
     def insert_repeat_sign(self):
         # Insert the current search string
-        sh.Clipboard().copy(lg.objs.get_request().search)
+        sh.Clipboard().copy(lg.objs.get_articles().get_search())
         self.paste()
     
     def go_url(self):
@@ -1497,7 +1487,7 @@ class App:
             mes = _('Open link: {}').format(lg.objs.request.url)
             sh.objs.get_mes(f,mes,True).show_info()
             self.load_article()
-        elif lg.objs.blocksdb.artid == 0:
+        elif lg.objs.get_articles().get_len() == 0:
             # Do not warn when there are no articles yet
             sh.com.rep_lazy(f)
         else:
@@ -1520,58 +1510,57 @@ class App:
         symbol = self.symbols.get()
         self.gui.panel.ent_src.insert(symbol)
     
-    def load_article(self):
+    def load_article(self, search='', url=''):
         f = '[MClientQt] mclient.App.load_article'
         ''' #NOTE: each time the contents of the current page is changed
             (e.g., due to prioritizing), bookmarks must be deleted.
         '''
-        # Suppress useless error output
-        if not lg.objs.get_request().search:
-            return
         timer = sh.Timer(f)
-        #timer.start()
-        # Do not allow selection positions from previous articles
-        self.pos = -1
+        timer.start()
 
         '''
         order = objs.get_settings().get_speech_prior()
         lg.objs.get_speech_prior().reset(order)
         '''
 
-        artid = lg.objs.get_blocksdb().is_present (source = sh.lg.globs['str']['source']
-                                                  ,title = lg.objs.request.search
-                                                  ,url = lg.objs.request.url
+        if search or url:
+            artid = lg.objs.get_articles().find (source = sh.lg.globs['str']['source']
+                                                ,search = search
+                                                ,url = url
+                                                )
+        else:
+            # Just reload the article if no parameters are provided
+            artid = lg.objs.get_articles().id
+            
+        if artid == -1:
+            cells = lg.objs.get_plugins().request (search = search
+                                                  ,url = url
                                                   )
-        if artid:
+            lg.objs.articles.add (search = search
+                                 ,url = url
+                                 ,cells = cells
+                                 ,raw_code = ''
+                                 )
+            #TODO: elaborate
+            blocked = []
+            subjects = ['Общая лексика','общ.']
+            # Full forms as well
+            speech = ['сущ.','глаг.','прил.','сокр.','нареч.','предл.','мест.']
+            OmitUsers = 0
+            cells = cl.Omit(cells,blocked,OmitUsers).run()
+            cells = cl.Prioritize(cells,subjects,speech).run()
+            cells = cl.Format(cells).run()
+            #lg.objs.blocksdb.update_phterm()
+        else:
             mes = _('Load article No. {} from memory').format(artid)
             sh.objs.get_mes(f,mes,True).show_info()
-            lg.objs.blocksdb.artid = artid
-            #self.get_bookmark()
-        else:
-            blocks = lg.objs.get_plugins().request (search = lg.objs.request.search
-                                                   ,url = lg.objs.request.url
-                                                   )
-            # 'None' skips the autoincrement
-            data = (None                              # (00) ARTICLEID
-                   ,sh.lg.globs['str']['source']      # (01) SOURCE
-                   ,lg.objs.request.search            # (02) TITLE
-                   ,lg.objs.request.url               # (03) URL
-                   ,lg.objs.get_plugins().get_lang1() # (04) LANG1
-                   ,lg.objs.plugins.get_lang2()       # (05) LANG2
-                   ,self.pos                          # (06) BOOKMARK
-                   ,lg.objs.plugins.get_htm()         # (07) CODE
-                   )
-            lg.objs.blocksdb.fill_articles(data)
-            lg.objs.blocksdb.artid = lg.objs.blocksdb.get_max_artid()
-            data = lg.com.dump_elems (blocks = blocks
-                                     ,artid = lg.objs.blocksdb.artid
-                                     )
-            if data:
-                lg.objs.blocksdb.fill_blocks(data)
-            
-            lg.objs.blocksdb.update_phterm()
+            lg.objs.articles.set_id(artid)
+            cells = lg.objs.articles.get_cells()
             
         timer.start()
+        #TODO: implement
+        self.phdic = ''
+        '''
         self.phdic = lg.objs.blocksdb.get_phdic()
         if self.phdic:
             if sh.lg.globs['bool']['ShortSubjects']:
@@ -1580,6 +1569,7 @@ class App:
                 self.phdic = self.phdic[1]
         else:
             self.phdic = ''
+        '''
         
         old_special = lg.objs.request.SpecialPage
         if self.phdic:
@@ -1590,79 +1580,45 @@ class App:
         lg.objs.request.NewPageType = old_special != lg.objs.request.SpecialPage
         self.update_columns()
         
+        '''
         SortTerms = sh.lg.globs['bool']['AlphabetizeTerms'] \
                     and not lg.objs.request.SpecialPage
-        ''' We must reset DB as early as possible after setting 'elems',
-            otherwise, real and loaded settings may not coincide, which,
-            in turn, may lead to a data loss, see, for example, RU-EN:
-            "цепь: провод".
         '''
-        lg.objs.blocksdb.reset (cols = lg.objs.request.cols
-                               ,SortRows = sh.lg.globs['bool']['SortByColumns']
-                               ,SortTerms = SortTerms
-                               ,ExpandDic = not sh.lg.globs['bool']['ShortSubjects']
-                               ,ShowUsers = sh.lg.globs['bool']['ShowUserNames']
-                               ,PhraseCount = sh.lg.globs['bool']['PhraseCount']
-                               )
-        sj.objs.get_article().reset (pairs = lg.objs.blocksdb.get_dic_pairs()
-                                    ,Debug = lg.objs.get_plugins().Debug
-                                    )
-        sj.objs.article.run()
-        data = lg.objs.blocksdb.assign_bp()
-        spdic = lg.objs.get_speech_prior().get_all2prior()
-        bp = cl.BlockPrioritize (data = data
-                                ,Block = sh.lg.globs['bool']['BlockSubjects']
-                                ,Prioritize = sh.lg.globs['bool']['PrioritizeSubjects']
-                                ,phdic = self.phdic
-                                ,spdic = spdic
-                                ,Debug = lg.objs.plugins.Debug
-                                ,maxrows = lg.objs.plugins.maxrows
-                                )
-        bp.run()
-        lg.objs.blocksdb.update(bp.query)
         
-        lg.objs.blocksdb.unignore()
-        lg.objs.blocksdb.ignore()
+        view = cl.View(cl.com.set_view(cells)).run()
+        iwrap = cl.Wrap(view)
+        iwrap.run()
         
-        data = lg.objs.blocksdb.assign_cells()
+#        sj.objs.get_article().reset (pairs = lg.objs.blocksdb.get_dic_pairs()
+#                                    ,Debug = lg.objs.get_plugins().Debug
+#                                    )
+#        sj.objs.article.run()
+        
+#        spdic = lg.objs.get_speech_prior().get_all2prior()
 
-        if sh.lg.globs['bool']['ShortSpeech']:
-            spdic = {}
-        else:
-            spdic = lg.objs.speech_prior.get_abbr2full()
-        
-        cells = cl.Cells (data = data
-                         ,cols = lg.objs.request.cols
-                         ,collimit = lg.objs.request.collimit
-                         ,phdic = self.phdic
-                         ,spdic = spdic
-                         ,Reverse = sh.lg.globs['bool']['VerticalView']
-                         ,Debug = lg.objs.plugins.Debug
-                         ,maxrows = lg.objs.plugins.maxrows
-                         )
-        cells.run()
-        cells.dump(lg.objs.blocksdb)
+#        if sh.lg.globs['bool']['ShortSpeech']:
+#            spdic = {}
+#        else:
+#            spdic = lg.objs.speech_prior.get_abbr2full()
         
         lg.objs.get_column_width().reset()
         lg.objs.column_width.run()
         
-        blocks = lg.com.assign_blocks(lg.objs.blocksdb.fetch())
-        blocks = lg.com.add_formatting(blocks)
+        self.table.reset(iwrap.plain, iwrap.code)
         
-        cells = lg.Cells(blocks).run()
-        self.table.reset(cells)
-        
-        skipped = com.get_skipped_terms()
+        #TODO: elaborate
+        skipped = []
+        #skipped = com.get_skipped_terms()
         # This is fast
-        lg.objs.request.htm = lg.HTM(cells,skipped).run()
-        lg.objs.request.text = lg.com.get_text(cells)
-        colors = lg.com.get_colors(blocks)
-        lg.com.fix_colors(colors)
+        #lg.objs.request.htm = lg.HTM(cells,skipped).run()
+        #lg.objs.request.text = lg.com.get_text(cells)
+        #colors = lg.com.get_colors(blocks)
+        #lg.com.fix_colors(colors)
         
-        ''' Empty article is not added either to DB or history, so we just do
-            not clear the search field to be able to correct the typo.
+        ''' Empty article is not added either to memory or history, so we just
+            do not clear the search field to be able to correct the typo.
         '''
-        if cells or skipped:
+        if iwrap.plain or skipped:
             self.gui.panel.ent_src.reset()
         
         self.add_history()
@@ -1673,7 +1629,6 @@ class App:
         self.panel.ent_src.focus()
         #self.run_final_debug()
         #self.debug_settings()
-        return blocks
     
     def go_keyboard(self):
         search = self.panel.ent_src.get().strip()
@@ -2021,7 +1976,9 @@ if __name__ == '__main__':
     timer.start()
     app = App()
     lg.com.get_url()
-    app.load_article()
+    app.load_article (search = lg.objs.get_request().search
+                     ,url = lg.objs.request.url
+                     )
     timer.end()
     app.show()
     app.run_thread()

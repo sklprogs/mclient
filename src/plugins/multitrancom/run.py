@@ -131,13 +131,6 @@ class Plugin:
                           ,url = url
                           ).run()
         self.text = cu.CleanUp(self.htm).run()
-        itags = tg.Tags (text = self.text
-                        ,Debug = self.Debug
-                        ,maxrows = self.maxrows
-                        )
-        self.blocks = itags.run()
-        self.blocks = el.Elems (blocks = self.blocks
-                               ,Debug = self.Debug
-                               ,maxrows = self.maxrows
-                               ).run()
+        self.blocks = tg.Tags(self.text).run()
+        self.blocks = el.Elems(self.blocks).run()
         return self.blocks

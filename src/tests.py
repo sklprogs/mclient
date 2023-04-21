@@ -110,8 +110,8 @@ class Elems:
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/hello (Компьютерные сети) (2021-03-17).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/generic drug (2021-03-17).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/get out of (2021-03-17).html'
-        #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/set (2021-03-06).html'
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/back (2023-04-12).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/set (2023-04-19).html'
+        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/back (2023-04-12).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/vice vice (2023-04-14).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/vice vice vice (2023-04-14).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/vice vice vice vice lassst (2023-04-14).html'
@@ -1057,8 +1057,9 @@ if __name__ == '__main__':
         e.g. com.run_welcome, will cause an infinite loop.
     '''
     #idebug = sh.Debug(f,Tags().run_multitrancom())
+    Elems().run_multitrancom()
     #idebug = sh.Debug(f,Elems().run_multitrancom())
-    Wrap().run_multitrancom()
+    #Wrap().run_multitrancom()
     #idebug = sh.Debug(f,View().run_multitrancom())
     #idebug = sh.Debug(f,Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise

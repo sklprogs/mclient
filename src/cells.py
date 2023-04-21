@@ -471,6 +471,7 @@ class Wrap:
         return '\n'.join(mes)
     
     def run(self):
+        self.check()
         self.wrap_x()
         return self.plain
 

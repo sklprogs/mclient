@@ -24,7 +24,7 @@ class Articles:
     
     def set_values(self):
         self.id = -1
-        self.articles = {'ids':{}}
+        self.articles = {'ids' : {}}
     
     def reset(self):
         self.set_values()
@@ -45,17 +45,17 @@ class Articles:
     def get_len(self):
         return self.get_max_id() + 1
     
-    def add(self, source='', search='', url='', cells=[], raw_code=''):
+    def add(self, search='', url='', cells=[], raw_code=''):
         id_ = self.get_max_id() + 1
-        self.articles['ids'][id_] = {'source' : source
-                                    ,'search' : search
-                                    ,'url' : url
-                                    ,'cells' : cells
+        self.articles['ids'][id_] = {'source'   : sh.lg.globs['str']['source']
+                                    ,'search'   : search
+                                    ,'url'      : url
+                                    ,'cells'    : cells
                                     ,'raw_code' : raw_code
-                                    ,'rowno' : -1
-                                    ,'colno' : -1
-                                    ,'lang1' : ''
-                                    ,'lang2' : ''
+                                    ,'rowno'    : -1
+                                    ,'colno'    : -1
+                                    ,'lang1'    : objs.get_plugins().get_lang1()
+                                    ,'lang2'    : objs.plugins.get_lang2()
                                     }
         self.set_id(id_)
     
@@ -175,6 +175,7 @@ class Articles:
             and self.articles['ids'][id_]['search'] == search \
             and self.articles['ids'][id_]['url'] == url:
                 return id_
+        return -1
 
 
 
@@ -344,12 +345,16 @@ class ColumnWidth:
             sh.com.rep_lazy(f)
             return
         for column in self.columns:
-            if objs.get_blocksdb().is_col_empty(column.no):
-                column.width = self.min_width
-            elif column.Fixed:
+            if column.Fixed:
                 column.width = sh.lg.globs['int']['fixed_col_width']
             else:
                 column.width = sh.lg.globs['int']['term_col_width']
+#            if objs.get_blocksdb().is_col_empty(column.no):
+#                column.width = self.min_width
+#            elif column.Fixed:
+#                column.width = sh.lg.globs['int']['fixed_col_width']
+#            else:
+#                column.width = sh.lg.globs['int']['term_col_width']
     
     def reset(self):
         self.set_values()
@@ -365,11 +370,12 @@ class ColumnWidth:
         if sh.lg.globs['bool']['VerticalView']:
             sh.com.rep_lazy(f)
             return
-        columns = objs.get_blocksdb().get_fixed_cols()
-        if not columns:
-            sh.com.rep_lazy(f)
-            return
-        self.fixed_num = len(columns)
+        self.fixed_num = 4
+#        columns = objs.get_blocksdb().get_fixed_cols()
+#        if not columns:
+#            sh.com.rep_lazy(f)
+#            return
+#        self.fixed_num = len(columns)
         mes = _('An actual number of fixed columns: {}').format(self.fixed_num)
         sh.objs.get_mes(f,mes,True).show_debug()
     
@@ -733,16 +739,6 @@ class Commands:
                 colors.append(block.color)
         return colors
     
-    def get_cell(self,cells,rowno,colno):
-        #TODO: Convert cells to have list-in-list structure and delete
-        f = '[MClientQt] logic.Commands.get_cell'
-        if not cells:
-            sh.com.rep_empty(f)
-            return
-        for cell in cells:
-            if cell.rowno == rowno and cell.colno == colno:
-                return cell
-    
     def start(self):
         ''' Either run sh.com.start as early as possible, or this, since
             warnings about the invalid config file need GUI.
@@ -1013,8 +1009,9 @@ class Table:
     ''' #NOTE: it's not enough to use 'Success' since we do not call 'reset'
         before loading an article.
     '''
-    def __init__(self,plain,code):
-        self.reset(plain,code)
+    def __init__(self,plain=[],code=[]):
+        if plain and code:
+            self.reset(plain,code)
     
     def reset(self,plain,code):
         self.set_values()
