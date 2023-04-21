@@ -17,6 +17,167 @@ SPORDER = (_('Noun'),_('Verb'),_('Adjective'),_('Abbreviation'),_('Adverb')
           )
 
 
+class Articles:
+    
+    def __init__(self):
+        self.reset()
+    
+    def set_values(self):
+        self.id = -1
+        self.articles = {'ids':{}}
+    
+    def reset(self):
+        self.set_values()
+    
+    def is_last(self):
+        return self.id == self.get_max_id()
+    
+    def get_max_id(self):
+        f = '[MClientQt] logic.Articles.get_max_id'
+        try:
+            # Do not use 'max' on an empty sequence
+            return len(self.articles['ids']) - 1
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+        return -1
+    
+    def get_len(self):
+        return self.get_max_id() + 1
+    
+    def add(self, source='', search='', url='', cells=[], raw_code=''):
+        id_ = self.get_max_id() + 1
+        self.articles['ids'][id_] = {'source' : source
+                                    ,'search' : search
+                                    ,'url' : url
+                                    ,'cells' : cells
+                                    ,'raw_code' : raw_code
+                                    ,'rowno' : -1
+                                    ,'colno' : -1
+                                    ,'lang1' : ''
+                                    ,'lang2' : ''
+                                    }
+        self.set_id(id_)
+    
+    def clear_article(self):
+        f = '[MClientQt] logic.Articles.clear_article'
+        try:
+            self.articles['ids'][self.id]['raw_code'] = ''
+            self.articles['ids'][self.id]['cells'] = []
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+    
+    def delete_bookmarks(self):
+        f = '[MClientQt] logic.Articles.delete_bookmarks'
+        try:
+            self.articles['ids']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+            return
+        for id_ in self.articles['ids']:
+            self.articles['ids'][id_]['rowno'] = -1
+            self.articles['ids'][id_]['colno'] = -1
+    
+    def set_bookmark(self, rowno, colno):
+        f = '[MClientQt] logic.Articles.set_bookmark'
+        try:
+            self.articles['ids'][self.id]['rowno'] = rowno
+            self.articles['ids'][self.id]['colno'] = colno
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+    
+    def set_id(self, id_):
+        f = '[MClientQt] logic.Articles.set_id'
+        try:
+            self.articles['ids'][id_]
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+            return
+        self.id = id_
+    
+    def get_search(self):
+        f = '[MClientQt] logic.Articles.get_search'
+        try:
+            return self.articles['ids'][self.id]['search']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+        return ''
+    
+    def get_source(self):
+        f = '[MClientQt] logic.Articles.get_source'
+        try:
+            return self.articles['ids'][self.id]['source']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+        return ''
+    
+    def get_url(self):
+        f = '[MClientQt] logic.Articles.get_url'
+        try:
+            return self.articles['ids'][self.id]['url']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+        return ''
+    
+    def get_lang1(self):
+        f = '[MClientQt] logic.Articles.get_lang1'
+        try:
+            return self.articles['ids'][self.id]['lang1']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+        return ''
+    
+    def get_lang2(self):
+        f = '[MClientQt] logic.Articles.get_lang2'
+        try:
+            return self.articles['ids'][self.id]['lang2']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+        return ''
+    
+    def get_raw_code(self):
+        f = '[MClientQt] logic.Articles.get_raw_code'
+        try:
+            return self.articles['ids'][self.id]['raw_code']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+        return ''
+    
+    def get_cells(self):
+        f = '[MClientQt] logic.Articles.get_cells'
+        try:
+            return self.articles['ids'][self.id]['cells']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+        return []
+    
+    def find(self, source, search, url):
+        f = '[MClientQt] logic.Articles.find'
+        try:
+            self.articles['ids']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+            return
+        for id_ in self.articles['ids']:
+            if self.articles['ids'][id_]['source'] == source \
+            and self.articles['ids'][id_]['search'] == search \
+            and self.articles['ids'][id_]['url'] == url:
+                return id_
+
+
+
 class App:
     
     def open_in_browser(self):
@@ -479,8 +640,14 @@ class Objects:
     def __init__(self):
         self.online = self.request = self.order = self.default \
                     = self.plugins = self.speech_prior = self.config \
-                    = self.order = self.column_width = self.colors = None
+                    = self.order = self.column_width = self.colors \
+                    = self.articles = None
 
+    def get_articles(self):
+        if self.articles is None:
+            self.articles = Articles()
+        return self.articles
+    
     def get_colors(self):
         if self.colors is None:
             self.colors = Colors()
