@@ -1018,12 +1018,34 @@ class Table:
         self.plain = plain
         self.code = code
         self.set_size()
+        self.set_empty_cols()
     
     def set_values(self):
         self.plain = []
         self.code = []
+        self.empty_cols = []
         self.rownum = 0
         self.colnum = 0
+    
+    def _is_col_empty(self, colno):
+        for rowno in range(self.rownum):
+            # Cell texts should already be stripped
+            if self.plain[rowno][colno]:
+                return
+        return True
+    
+    def set_empty_cols(self):
+        f = '[MClientQt] logic.Table.set_empty_cols'
+        #TODO: Should we run this for fixed columns only?
+        for colno in range(self.colnum):
+            if self._is_col_empty(colno):
+                self.empty_cols.append()
+        if self.empty_cols:
+            mes = _('Columns with no text: {}')
+            mes = mes.format(', '.join(self.empty_cols))
+        else:
+            mes = _('All columns have texts')
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def get_next_row_by_col(self,rowno,colno,ref_colno):
         f = '[MClientQt] logic.Table.get_next_row_by_col'
