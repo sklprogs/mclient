@@ -891,17 +891,17 @@ class Table:
     
     def set_col_width(self):
         # For some reason, this works only after filling cells
-        f = '[MClientQt] mclient.Table.set_col_width'
-        mes = _('Number of columns: {}').format(self.logic.colnum)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        #TODO: Rework, number of fixed columns can be different
         for no in range(self.logic.colnum):
-            if no == 0:
-                width = 140
+            if no in self.logic.empty_cols:
+                #TODO: Check this for articles prepared for printing
+                width = 0
+            elif no == 0:
+                #TODO: Constant widths should depend on types
+                width = 123
             elif no == 1:
                 width = sh.lg.globs['int']['fixed_col_width']
             elif no in (2,3):
-                width = 63
+                width = 80
             else:
                 width = sh.lg.globs['int']['term_col_width']
             self.gui.set_col_width(no,width)

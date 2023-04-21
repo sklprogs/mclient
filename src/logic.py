@@ -1026,6 +1026,10 @@ class Table:
         self.empty_cols = []
         self.rownum = 0
         self.colnum = 0
+        ''' This is a constant value and should be manually changed only when
+            new fixed types are introduced.
+        '''
+        self.fixed_num = 4
     
     def _is_col_empty(self, colno):
         for rowno in range(self.rownum):
