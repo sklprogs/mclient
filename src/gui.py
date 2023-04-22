@@ -108,7 +108,7 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
         if role == PyQt5.QtCore.Qt.DisplayRole:
             try:
                 return PyQt5.QtCore.QVariant(self.arraydata[index.row()][index.column()])
-            except Exception as e:
+            except Exception:
                 mes = _('List out of bounds at row #{}, column #{}!')
                 mes = mes.format(index.row(),index.column())
                 sh.objs.get_mes(f,mes,True).show_warning()
