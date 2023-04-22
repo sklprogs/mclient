@@ -148,20 +148,21 @@ class Prioritize:
 
 class Commands:
     
-    def set_view(self,cells):
+    def set_view(self, cells):
         f = '[MClientQt] cells.Commands.set_view'
         if not cells:
             sh.com.rep_empty(f)
             return
         view = []
         for cell in cells:
-            row = [cell.rowno,cell.no,cell.text,cell.code,cell.url,cell.subj
-                  ,cell.subjpr,cell.wform,cell.transc,cell.speech,cell.speechpr
+            row = [cell.rowno, cell.no, cell.text, cell.code, cell.url
+                  ,cell.subj, cell.subjpr, cell.wform, cell.transc, cell.speech
+                  ,cell.speechpr
                   ]
             view.append(row)
         return view
     
-    def order(self,cells):
+    def order(self, cells):
         cells = Omit(cells).run()
         cells = Prioritize(cells).run()
         cells = Format(cells).run()
@@ -412,28 +413,31 @@ class Wrap:
         rowc = []
         rowno = 0
         for cell in self.view:
-            row.append(cell[2])
-            rowc.append(cell[3])
-            cond = len(row) == self.collimit
-            if cell[0] != rowno or cond:
+            if len(row) == self.collimit:
+                self.plain.append(row)
+                self.code.append(rowc)
+                if cell[0] == rowno:
+                    row = [''] * self.fixed_len
+                    rowc = [''] * self.fixed_len
+                else:
+                    row = []
+                    rowc = []
+            elif cell[0] != rowno:
                 delta = self.collimit - len(row)
                 row += [''] * delta
                 rowc += [''] * delta
                 self.plain.append(row)
                 self.code.append(rowc)
-                if cond:
-                    row = [''] * self.fixed_len + [cell[2]]
-                    rowc = [''] * self.fixed_len + [cell[3]]
-                else:
-                    row = [cell[2]]
-                    rowc = [cell[3]]
-                rowno = cell[0]
-        if row:
-            delta = self.collimit - len(row)
-            row += [''] * delta
-            rowc += [''] * delta
-            self.plain.append(row)
-            self.code.append(rowc)
+                row = []
+                rowc = []
+            row.append(cell[2])
+            rowc.append(cell[3])
+            rowno = cell[0]
+        delta = self.collimit - len(row)
+        row += [''] * delta
+        rowc += [''] * delta
+        self.plain.append(row)
+        self.code.append(rowc)
     
     def _debug_plain(self):
         debug = []
