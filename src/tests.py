@@ -69,9 +69,9 @@ class View:
             'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
             to set 'dic' and some other types.
         '''
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/back (2023-04-12).html'
+        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/back (2023-04-12).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/beg the question (2023-04-15).html'
-        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/hello (2023-04-19).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/hello (2023-04-19).html'
         text = sh.ReadTextFile(file).get()
         timer = sh.Timer(f)
         timer.start()
@@ -88,8 +88,8 @@ class View:
         OmitUsers = 0
         cells = cl.Omit(cells,blocked,OmitUsers).run()
         cells = cl.Prioritize(cells,subjects,speech).run()
-        cells = cl.Format(cells).run()
-        iview = cl.View(cl.com.set_view(cells))
+        #cells = cl.Format(cells).run()
+        iview = cl.View(cells)
         iview.run()
         timer.end()
         return iview.debug()
@@ -1059,8 +1059,8 @@ if __name__ == '__main__':
     #idebug = sh.Debug(f,Tags().run_multitrancom())
     #idebug = sh.Debug(f,Elems().run_multitrancom())
     #Wrap().run_multitrancom()
-    #idebug = sh.Debug(f,View().run_multitrancom())
-    idebug = sh.Debug(f,Wrap().run_multitrancom())
+    idebug = sh.Debug(f,View().run_multitrancom())
+    #idebug = sh.Debug(f,Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
     idebug.show()
 

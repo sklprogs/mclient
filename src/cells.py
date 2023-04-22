@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import operator
-
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
@@ -148,76 +146,37 @@ class Prioritize:
 
 class Commands:
     
-    def set_view(self, cells):
-        f = '[MClientQt] cells.Commands.set_view'
-        if not cells:
-            sh.com.rep_empty(f)
-            return
-        view = []
-        for cell in cells:
-            row = [cell.rowno, cell.no, cell.text, cell.code, cell.url
-                  ,cell.subj, cell.subjpr, cell.wform, cell.transc, cell.speech
-                  ,cell.speechpr
-                  ]
-            view.append(row)
-        return view
-    
     def order(self, cells):
         cells = Omit(cells).run()
         cells = Prioritize(cells).run()
         cells = Format(cells).run()
-        view = View(self.set_view(cells)).run()
-        return view
+        cells = View(cells).run()
+        return cells
 
 
 
 class View:
-    # Create user-specific data set
-    def __init__(self,view,fixed_types=('subj','wform','transc','speech')):
-        ''' 0: rowno, 1: cellno, 2: text, 3: code, 4: url, 5: subj,
-            6: subj_prior, 7: wform, 8: transc, 9: speech, 10: speech_prior.
-        '''
+    # Create user-specific cells
+    def __init__(self, cells, fixed_types=('subj', 'wform', 'transc', 'speech')):
         self.Success = True
         self.max_len = 11
-        self.view = view
+        self.view = []
+        self.cells = cells
         self.fixed_types = fixed_types
 
     def check(self):
         f = '[MClientQt] cells.View.check'
-        if not self.view:
+        if not self.cells:
             self.Success = False
             sh.com.rep_empty(f)
             return
-        if len(self.view[0]) != self.max_len:
-            self.Success = False
-            mes = f'{len(self.view[0])} = {self.max_len}'
-            sh.com.rep_condition(f,mes)
     
     def sort(self):
         f = '[MClientQt] cells.View.sort'
         if not self.Success:
             sh.com.cancel(f)
             return
-        self.view.sort(key=operator.itemgetter(6,5,7,8,10,9,2,1))
-    
-    def _get_fixed_type_no(self,type_):
-        f = '[MClientQt] cells.View._get_fixed_type_no'
-        if type_ in ('subj','phsubj'):
-            return 5
-        elif type_ == 'wform':
-            return 7
-        elif type_ == 'transc':
-            return 8
-        elif type_ == 'speech':
-            return 9
-        else:
-            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format (type_,'; '.join (['subj','phsubj','wform'
-                                               ,'speech','transc'
-                                               ]
-                                              )
-                             )
-            sh.objs.get_mes(f,mes,True).show_warning()
+        self.cells.sort(key=lambda x: (x.subjpr, x.wform, x.transc, x.speechpr, x.text))
     
     def _get_fixed_col_no(self,type_):
         f = '[MClientQt] cells.View._get_fixed_col_no'
@@ -251,7 +210,7 @@ class View:
         return code
     
     def _create_fixed_first(self,no,type_):
-        new_row = list(self.view[0])
+        new_row = list(self.cells[0])
         new_row[1] = 0
         new_row[2] = self.view[0][no]
         new_row[3] = self._format_fixed(new_row[2],type_)
@@ -332,29 +291,54 @@ class View:
         headers = (_('ROW #'),_('CELL #'),_('TEXT'),_('CODE'),'URL','SUBJ'
                   ,'SUBJPR','WFORM','TRANSC','SPEECH','SPEECHPR'
                   )
+        rowno = []
+        no = []
+        text = []
+        code = []
+        url = []
+        subj = []
+        subjpr = []
+        wform = []
+        transc = []
+        speech = []
+        speechpr = []
+        for cell in self.cells:
+            rowno.append(cell.rowno)
+            no.append(cell.no)
+            text.append(cell.text)
+            code.append(cell.code)
+            url.append(cell.url)
+            subj.append(cell.subj)
+            subjpr.append(cell.subjpr)
+            wform.append(cell.wform)
+            transc.append(cell.transc)
+            speech.append(cell.speech)
+            speechpr.append(cell.speechpr)
+        iterable = [rowno, no, text, code, url, subj, subjpr, wform, transc
+                   ,speech, speechpr
+                   ]
         return sh.FastTable (headers = headers
-                            ,iterable = self.view
-                            ,Transpose = True
+                            ,iterable = iterable
                             ,maxrow = 30
                             ).run()
     
     def _renumber_cell_nos(self):
-        for i in range(len(self.view)):
-            self.view[i][1] = i
+        for i in range(len(self.cells)):
+            self.cells[i].no = i
     
     def _renumber_row_nos(self):
         # Actually, we do this for prettier debug output
         rownos = [0]
         rowno = 0
         i = 1
-        while i < len(self.view):
-            if self.view[i-1][0] != self.view[i][0]:
+        while i < len(self.cells):
+            if self.cells[i-1].rowno != self.cells[i].rowno:
                 rowno += 1
             rownos.append(rowno)
             i += 1
         i = 0
-        while i < len(self.view):
-            self.view[i][0] = rownos[i]
+        while i < len(self.cells):
+            self.cells[i].rowno = rownos[i]
             i += 1
     
     def renumber(self):
@@ -368,9 +352,9 @@ class View:
     def run(self):
         self.check()
         self.sort()
-        self.restore_fixed()
+        #self.restore_fixed()
         self.renumber()
-        return self.view
+        return self.cells
 
 
 
