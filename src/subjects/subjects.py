@@ -15,44 +15,44 @@ class ArticleSubjects:
     
     def check(self):
         f = '[MClient] subjects.subjects.ArticleSubjects.check'
-        if self.pairs:
-            for pair in self.pairs:
-                if len(pair) != 2:
-                    self.Success = False
-                    mes = _('Wrong input data!')
-                    sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.pairs:
             self.Success = False
             sh.com.rep_empty(f)
+            return
+        for pair in self.pairs:
+            if len(pair) != 2:
+                self.Success = False
+                mes = _('Wrong input data!')
+                sh.objs.get_mes(f,mes,True).show_warning()
     
     def get_priority(self,item):
         f = '[MClient] subjects.subjects.ArticleSubjects.get_priority'
-        if self.Success:
-            try:
-                return self.subjects[item]['priority']
-            except KeyError:
-                '''
-                mes = _('Wrong input data: "{}"!').format(item)
-                sh.objs.get_mes(f,mes,True).show_warning()
-                '''
-                pass
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return 0
+        try:
+            return self.subjects[item]['priority']
+        except KeyError:
+            '''
+            mes = _('Wrong input data: "{}"!').format(item)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            '''
+            pass
         return 0
     
     def is_blocked(self,item):
         f = '[MClient] subjects.subjects.ArticleSubjects.is_blocked'
-        if self.Success:
-            try:
-                return self.subjects[item]['block']
-            except KeyError:
-                '''
-                mes = _('Wrong input data: "{}"!').format(item)
-                sh.objs.get_mes(f,mes,True).show_warning()
-                '''
-                pass
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        try:
+            return self.subjects[item]['block']
+        except KeyError:
+            '''
+            mes = _('Wrong input data: "{}"!').format(item)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            '''
+            pass
     
     def set_values(self):
         self.Success = True
@@ -92,15 +92,15 @@ class ArticleSubjects:
     
     def debug(self):
         f = '[MClient] subjects.subjects.ArticleSubjects.debug'
-        if self.Success:
-            if self.Debug:
-                mes = [self._debug_subjects()]
-                mes = '\n\n'.join(mes)
-                sh.com.run_fast_debug(f,mes)
-            else:
-                sh.com.rep_lazy(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not self.Debug:
+            sh.com.rep_lazy(f)
+            return
+        mes = [self._debug_subjects()]
+        mes = '\n\n'.join(mes)
+        sh.com.run_fast_debug(f,mes)
     
     def run(self):
         self.check()
@@ -110,38 +110,38 @@ class ArticleSubjects:
     def fill(self):
         # Takes ~0.007s for 'set' on Intel Atom
         f = '[MClient] subjects.subjects.ArticleSubjects.fill'
-        if self.Success:
-            for pair in self.pairs:
-                if pair[0] and not pair[0] in self.subjects:
-                    if objs.get_order().is_blocked(pair[1]):
-                        Blocked = True
-                        priority = objs.order.get_priority(pair[1])
-                    elif objs.order.is_prioritized(pair[1]):
-                        Blocked = objs.order.is_blocked(pair[1])
-                        priority = objs.order.get_priority(pair[1])
-                    else:
-                        count1 = pair[0].count(', ')
-                        count2 = pair[1].count(', ')
-                        if count1 and count1 == count2:
-                            short_lst = pair[0].split(', ')
-                            title_lst = pair[1].split(', ')
-                            Blocked = self._is_list_blocked(title_lst)
-                            priority = self._get_list_priority(title_lst)
-                        else:
-                            Blocked = False
-                            priority = 0
-                    self.subjects[pair[0]] = {}
-                    self.subjects[pair[1]] = {}
-                    self.subjects[pair[0]]['short'] = pair[0]
-                    self.subjects[pair[1]]['short'] = pair[0]
-                    self.subjects[pair[0]]['title'] = pair[1]
-                    self.subjects[pair[1]]['title'] = pair[1]
-                    self.subjects[pair[0]]['block'] = Blocked
-                    self.subjects[pair[1]]['block'] = Blocked
-                    self.subjects[pair[0]]['priority'] = priority
-                    self.subjects[pair[1]]['priority'] = priority
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        for pair in self.pairs:
+            if not pair[0] or pair[0] in self.subjects:
+                continue
+            if objs.get_order().is_blocked(pair[1]):
+                Blocked = True
+                priority = objs.order.get_priority(pair[1])
+            elif objs.order.is_prioritized(pair[1]):
+                Blocked = objs.order.is_blocked(pair[1])
+                priority = objs.order.get_priority(pair[1])
+            else:
+                count1 = pair[0].count(', ')
+                count2 = pair[1].count(', ')
+                if count1 and count1 == count2:
+                    title_lst = pair[1].split(', ')
+                    Blocked = self._is_list_blocked(title_lst)
+                    priority = self._get_list_priority(title_lst)
+                else:
+                    Blocked = False
+                    priority = 0
+            self.subjects[pair[0]] = {}
+            self.subjects[pair[1]] = {}
+            self.subjects[pair[0]]['short'] = pair[0]
+            self.subjects[pair[1]]['short'] = pair[0]
+            self.subjects[pair[0]]['title'] = pair[1]
+            self.subjects[pair[1]]['title'] = pair[1]
+            self.subjects[pair[0]]['block'] = Blocked
+            self.subjects[pair[1]]['block'] = Blocked
+            self.subjects[pair[0]]['priority'] = priority
+            self.subjects[pair[1]]['priority'] = priority
     
     def _is_list_blocked(self,lst):
         for item in lst:
