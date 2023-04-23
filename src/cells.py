@@ -180,44 +180,6 @@ class View:
         #TODO: Elaborate
         self.cells.sort(key=lambda x: (x.subjpr, x.wform, x.transc, x.speechpr, x.text))
     
-    def _get_fixed_col_no(self,type_):
-        f = '[MClientQt] cells.View._get_fixed_col_no'
-        try:
-            return self.fixed_types.index(type_)
-        except ValueError:
-            mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes,True).show_warning()
-    
-    def _get_color(self,colno):
-        #TODO: Elaborate
-        if colno == 0:
-            return sh.lg.globs['str']['color_col1']
-        elif colno == 1:
-            return sh.lg.globs['str']['color_col2']
-        elif colno == 2:
-            return sh.lg.globs['str']['color_col3']
-        elif colno == 3:
-            return sh.lg.globs['str']['color_col4']
-        return 'black'
-    
-    def _format_fixed(self,text,type_):
-        #TODO: Do we need to support multi-format fixed cells?
-        #TODO: Elaborate
-        family = 'Sans'
-        size = 11
-        colno = self._get_fixed_col_no(type_)
-        color = self._get_color(colno)
-        code = '''<span style="font-family:{}; font-size:{}pt; color:'{}';">{}</span>'''
-        code = code.format(family,size,color,text)
-        return code
-    
-    def _create_fixed_first(self,no,type_):
-        new_row = list(self.cells[0])
-        new_row[1] = 0
-        new_row[2] = self.view[0][no]
-        new_row[3] = self._format_fixed(new_row[2],type_)
-        return new_row
-    
     def _create_fixed(self, i, type_, rowno):
         f = '[MClientQt] cells.View._create_fixed'
         cell = ic.Cell()
@@ -245,8 +207,11 @@ class View:
             sh.objs.get_mes(f,mes).show_warning()
         return cell
     
-    def _restore_fixed(self):
-        f = '[MClientQt] cells.View._restore_fixed'
+    def restore_fixed(self):
+        f = '[MClientQt] cells.View.restore_fixed'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         count = 0
         i = 1
         while i < len(self.cells):
@@ -260,11 +225,11 @@ class View:
             i += 1
         sh.com.rep_matches(f,count)
     
-    def _restore_fixed_first(self):
-        f = '[MClientQt] cells.View._restore_fixed_first'
+    def restore_first(self):
         # Add fixed cells for the very first row
-        if not self.cells:
-            sh.com.rep_empty(f)
+        f = '[MClientQt] cells.View.restore_first'
+        if not self.Success:
+            sh.com.cancel(f)
             return
         count = 0
         rowno = self.cells[0].rowno
@@ -273,14 +238,6 @@ class View:
             cell = self._create_fixed(0, type_, rowno)
             self.cells.insert(0,cell)
         sh.com.rep_matches(f,count)
-    
-    def restore_fixed(self):
-        f = '[MClientQt] cells.View.restore_fixed'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self._restore_fixed()
-        self._restore_fixed_first()
     
     def debug(self):
         f = '[MClientQt] cells.View.debug'
@@ -352,6 +309,7 @@ class View:
         self.check()
         self.sort()
         self.restore_fixed()
+        self.restore_first()
         self.renumber()
         return self.cells
 
