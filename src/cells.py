@@ -184,6 +184,7 @@ class View:
         f = '[MClientQt] cells.View._create_fixed'
         cell = ic.Cell()
         block = ic.Block()
+        block.type_ = type_
         cell.fixed_block = block
         cell.blocks = [block]
         cell.rowno = rowno
@@ -305,11 +306,42 @@ class View:
         self._renumber_cell_nos()
         self._renumber_row_nos()
     
+    def clear_duplicates(self):
+        f = '[MClientQt] cells.View.clear_duplicates'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        subj = wform = transc = speech = ''
+        for cell in self.cells:
+            if not cell.fixed_block:
+               continue
+            if cell.fixed_block.type_ == 'subj':
+                if cell.text == subj:
+                    cell.text = cell.fixed_block.text = ''
+                else:
+                    subj = cell.subj
+            elif cell.fixed_block.type_ == 'wform':
+                if cell.text == wform:
+                    cell.text = cell.fixed_block.text = ''
+                else:
+                    wform = cell.wform
+            elif cell.fixed_block.type_ == 'transc':
+                if cell.text == transc:
+                    cell.text = cell.fixed_block.text = ''
+                else:
+                    transc = cell.transc
+            elif cell.fixed_block.type_ == 'speech':
+                if cell.text == speech:
+                    cell.text = cell.fixed_block.text = ''
+                else:
+                    speech = cell.speech
+    
     def run(self):
         self.check()
         self.sort()
         self.restore_fixed()
         self.restore_first()
+        self.clear_duplicates()
         self.renumber()
         return self.cells
 
