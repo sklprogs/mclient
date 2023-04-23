@@ -296,7 +296,12 @@ class Get:
                         ,url = url
                         ).run()
         timer.end()
-        sh.com.run_fast_txt(result)
+        basename = f'{search} ({sh.Time().get_date()}).html'
+        file = sh.Home().add ('docs', 'mclient_tests'
+                             ,'multitrancom (saved with Get.get)', basename
+                             )
+        sh.WriteTextFile(file).write(result)
+        sh.Launch(file).launch_default()
     
     def run_stardict(self):
         f = '[MClient] tests.Get.run_stardict'
@@ -1056,9 +1061,9 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
+    #Get().run_multitrancom()
     #idebug = sh.Debug(f,Tags().run_multitrancom())
     #idebug = sh.Debug(f,Elems().run_multitrancom())
-    #Wrap().run_multitrancom()
     idebug = sh.Debug(f,View().run_multitrancom())
     #idebug = sh.Debug(f,Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
