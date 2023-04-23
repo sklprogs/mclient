@@ -6,46 +6,7 @@ import re
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-
-class Cell:
-    
-    def __init__(self):
-        self.code = ''
-        self.text = ''
-        self.url = ''
-        self.no = -1
-        self.rowno = -1
-        self.blocks = []
-        self.fixed_block = None
-        self.subj = ''
-        self.wform = ''
-        self.transc = ''
-        self.speech = ''
-        self.subjpr = 0
-        self.speechpr = -1
-
-
-
-class Block:
-    ''' A copy of tags.Block. Cannot be put in a separate module since we would
-        need to load it from different places.    
-    '''
-    def __init__(self):
-        self.cellno = -1
-        self.subj = ''
-        self.subjf = ''
-        self.text = ''
-        ''' 'comment', 'correction', 'invalid', 'phcount', 'phrase', 'phsubj',
-            'speech', 'subj', 'term', 'transc', 'wform'.
-        '''
-        self.type_ = 'comment'
-        self.url = ''
-        self.family = 'Serif'
-        self.color = 'black'
-        self.size = 12
-        self.Bold = False
-        self.Italic = False
-
+import instance as ic
 
 
 class Thesaurus:
@@ -170,7 +131,7 @@ class SeparateWords:
                 return True
     
     def _add_subject(self):
-        block = Block()
+        block = ic.Block()
         block.type_ = 'subj'
         block.text = block.subj = block.subjf = _('Separate words')
         self.blocks.insert(0,block)
@@ -261,7 +222,7 @@ class Elems:
             mes = f'{len(self.blocks)} >= 2'
             sh.com.rep_condition(f,mes)
             return
-        cell = Cell()
+        cell = ic.Cell()
         cell.blocks.append(self.blocks[0])
         i = 1
         while i < len(self.blocks):
@@ -270,7 +231,7 @@ class Elems:
             else:
                 if cell.blocks:
                     self.cells.append(cell)
-                cell = Cell()
+                cell = ic.Cell()
                 cell.blocks.append(self.blocks[i])
             i += 1
         if cell.blocks:

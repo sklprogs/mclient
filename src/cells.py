@@ -5,6 +5,7 @@ from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 import logic as lg
+import instance as ic
 
 #import subjects.subjects as sj
 
@@ -216,38 +217,45 @@ class View:
         new_row[3] = self._format_fixed(new_row[2],type_)
         return new_row
     
-    def _create_fixed(self,i,no,cellno,type_):
-        new_row = list(self.view[i])
-        new_row[1] = cellno
-        if self.view[i-1][no] == self.view[i][no]:
-            new_row[2] = ''
+    def _create_fixed(self, i, type_, rowno):
+        f = '[MClientQt] cells.View._create_fixed'
+        cell = ic.Cell()
+        block = ic.Block()
+        cell.fixed_block = block
+        cell.blocks = [block]
+        cell.rowno = rowno
+        cell.subj = self.cells[i].subj
+        cell.subjpr = self.cells[i].subjpr
+        cell.wform = self.cells[i].wform
+        cell.transc = self.cells[i].transc
+        cell.speech = self.cells[i].speech
+        cell.speechpr = self.cells[i].speechpr
+        if type_ == 'subj':
+            cell.text = block.text = self.cells[i].subj
+        elif type_ == 'wform':
+            cell.text = block.text = self.cells[i].wform
+        elif type_ == 'transc':
+            cell.text = block.text = self.cells[i].transc
+        elif type_ == 'speech':
+            cell.text = block.text = self.cells[i].speech
         else:
-            new_row[2] = self.view[i][no]
-        new_row[3] = self._format_fixed(new_row[2],type_)
-        return new_row
-    
-    def _is_new_row(self,i):
-        # 'i > 0' condition is observed in 'restore_fixed'
-        return self.view[i-1][0] != self.view[i][0]
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(type_,'subj, wform, trasc, speech')
+            sh.objs.get_mes(f,mes).show_warning()
+        return cell
     
     def _restore_fixed(self):
         f = '[MClientQt] cells.View._restore_fixed'
         count = 0
         i = 1
-        while i < len(self.view):
-            if self._is_new_row(i):
-                add = []
-                cellno = self.view[i][1] - 0.5
+        while i < len(self.cells):
+            if self.cells[i-1].rowno != self.cells[i].rowno:
+                rowno = self.cells[i].rowno
                 for type_ in self.fixed_types:
-                    no = self._get_fixed_type_no(type_)
-                    if no is None:
-                        sh.com.rep_empty(f)
-                        return
-                    cellno += 0.1
-                    add.append(self._create_fixed(i,no,cellno,type_))
                     count += 1
-                for row in add:
-                    self.view.insert(i,row)
+                    rowno -= 0.1
+                    cell = self._create_fixed(i, type_, rowno)
+                    self.cells.insert(i,cell)
                     i += 1
             i += 1
         sh.com.rep_matches(f,count)
@@ -281,7 +289,7 @@ class View:
             sh.com.cancel(f)
             return
         self._restore_fixed()
-        self._restore_fixed_first()
+        #self._restore_fixed_first()
     
     def debug(self):
         f = '[MClientQt] cells.View.debug'
@@ -352,7 +360,7 @@ class View:
     def run(self):
         self.check()
         self.sort()
-        #self.restore_fixed()
+        self.restore_fixed()
         self.renumber()
         return self.cells
 
