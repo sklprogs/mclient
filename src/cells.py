@@ -336,12 +336,30 @@ class View:
                 else:
                     speech = cell.speech
     
+    def restore_urls(self):
+        f = '[MClientQt] cells.View.restore_urls'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        urls = lg.objs.get_articles().get_fixed_urls()
+        if not urls:
+            sh.com.rep_empty(f)
+            return
+        for cell in self.cells:
+            if not cell.fixed_block or not cell.text:
+                continue
+            if cell.fixed_block.type_ in ('subj', 'wform'):
+                cell.url = cell.fixed_block.url = lg.objs.articles.get_fixed_url (cell.fixed_block.type_
+                                                                                 ,cell.text
+                                                                                 )
+    
     def run(self):
         self.check()
         self.sort()
         self.restore_fixed()
         self.restore_first()
         self.clear_duplicates()
+        self.restore_urls()
         self.renumber()
         return self.cells
 

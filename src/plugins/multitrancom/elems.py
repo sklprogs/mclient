@@ -183,7 +183,15 @@ class Elems:
     
     def __init__(self,blocks):
         self.cells = []
+        self.urls = {'subj':{}, 'wform':{}}
         self.blocks = blocks
+    
+    def save_urls(self):
+        for cell in self.cells:
+            if not cell.fixed_block:
+                continue
+            if cell.fixed_block.type_ in ('subj', 'wform') and cell.url:
+                self.urls[cell.fixed_block.type_][cell.text] = cell.url                
     
     def _is_block_fixed(self,block):
         return block.type_ in ('subj','wform','speech','transc','phsubj')
@@ -556,6 +564,7 @@ class Elems:
         self.delete_trash()
         self.rename_phsubj()
         self.set_row_nos()
+        self.save_urls()
         self.fill_fixed()
         self.delete_fixed()
         self.renumber()

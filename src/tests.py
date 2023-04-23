@@ -79,7 +79,19 @@ class View:
         blocks = tg.Tags (text = text
                          ,maxrows = 0
                          ).run()
-        cells = el.Elems(blocks).run()
+        ielems = el.Elems(blocks)
+        cells = ielems.run()
+        ''' #NOTE: Use plugins.multitrancom.run.Plugin.get_fixed_urls in the
+            main controller.
+        '''
+        search = 'hello'
+        url = 'https://www.multitran.com/m.exe?s=hello&l1=2&l2=1'
+        lg.objs.get_articles().add (search = search
+                                   ,url = url
+                                   ,cells = cells
+                                   ,raw_code = ''
+                                   ,fixed_urls = ielems.urls
+                                   )
         #blocked = ['Gruzovik']
         blocked = []
         subjects = ['Общая лексика','общ.']

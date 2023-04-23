@@ -1540,6 +1540,7 @@ class App:
                                  ,url = url
                                  ,cells = cells
                                  ,raw_code = ''
+                                 ,fixed_urls = lg.objs.plugins.get_fixed_urls()
                                  )
             #TODO: elaborate
             blocked = []
@@ -1585,7 +1586,7 @@ class App:
                     and not lg.objs.request.SpecialPage
         '''
         
-        view = cl.View(cl.com.set_view(cells)).run()
+        view = cl.View(cells).run()
         iwrap = cl.Wrap(view)
         iwrap.run()
         

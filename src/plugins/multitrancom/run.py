@@ -22,6 +22,7 @@ class Plugin:
     
     def set_values(self):
         self.blocks = []
+        self.fixed_urls = {}
         self.htm = ''
         self.text = ''
         self.search = ''
@@ -125,6 +126,15 @@ class Plugin:
         else:
             return pr.objs.get_pairs().get_alive()
     
+    def get_fixed_urls(self):
+        f = '[MClient] plugins.multitrancom.run.Plugin.get_fixed_urls'
+        if not self.fixed_urls:
+            mes = _('Run {} first!')
+            mes = mes.format('plugins.multitrancom.run.Plugin.request')
+            sh.objs.get_mes(f,mes,True).show_error()
+            return {}
+        return self.fixed_urls
+    
     def request(self,search='',url=''):
         self.search = search
         self.htm = gt.Get (search = search
@@ -132,5 +142,7 @@ class Plugin:
                           ).run()
         self.text = cu.CleanUp(self.htm).run()
         self.blocks = tg.Tags(self.text).run()
-        self.blocks = el.Elems(self.blocks).run()
+        ielems = el.Elems(self.blocks)
+        self.blocks = ielems.run()
+        self.fixed_urls = ielems.urls
         return self.blocks
