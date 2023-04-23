@@ -177,6 +177,7 @@ class View:
         if not self.Success:
             sh.com.cancel(f)
             return
+        #TODO: Elaborate
         self.cells.sort(key=lambda x: (x.subjpr, x.wform, x.transc, x.speechpr, x.text))
     
     def _get_fixed_col_no(self,type_):
@@ -263,24 +264,16 @@ class View:
     def _restore_fixed_first(self):
         f = '[MClientQt] cells.View._restore_fixed_first'
         # Add fixed cells for the very first row
-        if not self.view:
+        if not self.cells:
             sh.com.rep_empty(f)
             return
         count = 0
-        add = []
-        i = 0
-        cellno = 0
-        for type_ in self.fixed_types:
-            no = self._get_fixed_type_no(type_)
-            if no is None:
-                sh.com.rep_empty(f)
-                return
-            cellno += 0.1
-            add.append(self._create_fixed_first(no,type_))
+        rowno = self.cells[0].rowno
+        for type_ in self.fixed_types[::-1]:
             count += 1
-        for row in add:
-            self.view.insert(i,row)
-            i += 1
+            rowno -= 0.1
+            cell = self._create_fixed(0, type_, rowno)
+            self.cells.insert(0,cell)
         sh.com.rep_matches(f,count)
     
     def restore_fixed(self):
@@ -289,7 +282,7 @@ class View:
             sh.com.cancel(f)
             return
         self._restore_fixed()
-        #self._restore_fixed_first()
+        self._restore_fixed_first()
     
     def debug(self):
         f = '[MClientQt] cells.View.debug'
