@@ -254,7 +254,6 @@ class View:
                 rowno = self.cells[i].rowno
                 for type_ in self.fixed_types:
                     count += 1
-                    rowno -= 0.1
                     cell = self._create_fixed(i, type_, rowno)
                     self.cells.insert(i,cell)
                     i += 1
@@ -271,7 +270,6 @@ class View:
         rowno = self.cells[0].rowno
         for type_ in self.fixed_types[::-1]:
             count += 1
-            rowno -= 0.1
             cell = self._create_fixed(0, type_, rowno)
             self.cells.insert(0,cell)
         sh.com.rep_matches(f,count)
