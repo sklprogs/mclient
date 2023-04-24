@@ -100,16 +100,14 @@ class Prioritize:
     
     def __init__(self,cells,subjects=[],speech=[]):
         self.all_subj = []
-        self.subj_pri = subjects
-        self.speech_pri = speech
+        self.subjects = subjects
+        self.speech = speech
         self.cells = cells
     
     def set_subjects(self):
         self.all_subj = sorted(set([cell.subj for cell in self.cells]))
-        subj_unp = [subj for subj in self.all_subj \
-                    if not subj in self.subj_pri
-                   ]
-        self.all_subj = self.subj_pri + subj_unp
+        subj_unp = [subj for subj in self.all_subj if not subj in self.subjects]
+        self.all_subj = self.subjects + subj_unp
         for i in range(len(self.all_subj)):
             for cell in self.cells:
                 if cell.subj == self.all_subj[i]:
@@ -118,9 +116,9 @@ class Prioritize:
     def set_speech(self):
         all_speech = sorted(set([cell.speech for cell in self.cells]))
         speech_unp = [speech for speech in all_speech \
-                      if not speech in self.speech_pri
+                      if not speech in self.speech
                      ]
-        all_speech = self.speech_pri + speech_unp
+        all_speech = self.speech + speech_unp
         for i in range(len(all_speech)):
             for cell in self.cells:
                 if cell.speech == all_speech[i]:
@@ -128,7 +126,7 @@ class Prioritize:
     
     def _is_phrase_type(self,cell):
         for block in cell.blocks:
-            if block.type_ in ('phsubj','phrase','phcount'):
+            if block.type_ in ('phsubj', 'phrase', 'phcount'):
                 return True
     
     def set_phrases(self):
@@ -158,12 +156,13 @@ class Commands:
 
 class View:
     # Create user-specific cells
-    def __init__(self, cells, fixed_types=('subj', 'wform', 'transc', 'speech')):
+    def __init__(self, cells, fixed_types=('subj', 'wform', 'transc', 'speech'), fixed_urls={}):
         self.Success = True
         self.max_len = 11
         self.view = []
         self.cells = cells
         self.fixed_types = fixed_types
+        self.fixed_urls = fixed_urls
 
     def check(self):
         f = '[MClientQt] cells.View.check'
@@ -239,6 +238,25 @@ class View:
             cell = self._create_fixed(0, type_, rowno)
             self.cells.insert(0,cell)
         sh.com.rep_matches(f,count)
+    
+    def _has_phrase(self):
+        for cell in self.cells[::-1]:
+            for block in cell.blocks:
+                if block.type_ == 'phrase':
+                    return True
+    
+    def restore_phsubj(self):
+        f = '[MClientQt] cells.View.restore_phsubj'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not self._has_phrase():
+            sh.com.rep_lazy(f)
+            return
+        for cell in self.cells[::-1]:
+            if cell.fixed_block and cell.fixed_block.type_ == 'subj':
+                cell.fixed_block.type_ = 'phsubj'
+                return
     
     def debug(self):
         f = '[MClientQt] cells.View.debug'
@@ -336,28 +354,38 @@ class View:
                 else:
                     speech = cell.speech
     
+    def get_fixed_url(self, type_, text):
+        f = '[MClientQt] cells.View.get_fixed_url'
+        try:
+            return self.fixed_urls[type_][text]
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes,True).show_warning()
+        return ''
+    
     def restore_urls(self):
         f = '[MClientQt] cells.View.restore_urls'
         if not self.Success:
             sh.com.cancel(f)
             return
-        urls = lg.objs.get_articles().get_fixed_urls()
-        if not urls:
-            sh.com.rep_empty(f)
+        if not self.fixed_urls:
+            # Fixed cell URLs are relevant for multitrancom plugin only
+            sh.com.rep_lazy(f)
             return
         for cell in self.cells:
             if not cell.fixed_block or not cell.text:
                 continue
-            if cell.fixed_block.type_ in ('subj', 'wform'):
-                cell.url = cell.fixed_block.url = lg.objs.articles.get_fixed_url (cell.fixed_block.type_
-                                                                                 ,cell.text
-                                                                                 )
+            if cell.fixed_block.type_ in ('subj', 'wform', 'phsubj'):
+                cell.url = cell.fixed_block.url = self.get_fixed_url (cell.fixed_block.type_
+                                                                     ,cell.text
+                                                                     )
     
     def run(self):
         self.check()
         self.sort()
         self.restore_fixed()
         self.restore_first()
+        self.restore_phsubj()
         self.clear_duplicates()
         self.restore_urls()
         self.renumber()

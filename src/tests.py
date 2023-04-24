@@ -81,17 +81,6 @@ class View:
                          ).run()
         ielems = el.Elems(blocks)
         cells = ielems.run()
-        ''' #NOTE: Use plugins.multitrancom.run.Plugin.get_fixed_urls in the
-            main controller.
-        '''
-        search = 'hello'
-        url = 'https://www.multitran.com/m.exe?s=hello&l1=2&l2=1'
-        lg.objs.get_articles().add (search = search
-                                   ,url = url
-                                   ,cells = cells
-                                   ,raw_code = ''
-                                   ,fixed_urls = ielems.urls
-                                   )
         #blocked = ['Gruzovik']
         blocked = []
         subjects = ['Общая лексика','общ.']
@@ -101,7 +90,7 @@ class View:
         cells = cl.Omit(cells,blocked,OmitUsers).run()
         cells = cl.Prioritize(cells,subjects,speech).run()
         #cells = cl.Format(cells).run()
-        iview = cl.View(cells)
+        iview = cl.View(cells, fixed_urls=ielems.fixed_urls)
         iview.run()
         timer.end()
         return iview.debug()

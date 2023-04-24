@@ -45,18 +45,17 @@ class Articles:
     def get_len(self):
         return self.get_max_id() + 1
     
-    def add(self, search='', url='', cells=[], raw_code='', fixed_urls={}):
+    def add(self, search='', url='', cells=[], raw_code=''):
         id_ = self.get_max_id() + 1
-        self.articles['ids'][id_] = {'source'     : sh.lg.globs['str']['source']
-                                    ,'search'     : search
-                                    ,'url'        : url
-                                    ,'cells'      : cells
-                                    ,'raw_code'   : raw_code
-                                    ,'rowno'      : -1
-                                    ,'colno'      : -1
-                                    ,'lang1'      : objs.get_plugins().get_lang1()
-                                    ,'lang2'      : objs.plugins.get_lang2()
-                                    ,'fixed_urls' : fixed_urls
+        self.articles['ids'][id_] = {'source'   : sh.lg.globs['str']['source']
+                                    ,'search'   : search
+                                    ,'url'      : url
+                                    ,'cells'    : cells
+                                    ,'raw_code' : raw_code
+                                    ,'rowno'    : -1
+                                    ,'colno'    : -1
+                                    ,'lang1'    : objs.get_plugins().get_lang1()
+                                    ,'lang2'    : objs.plugins.get_lang2()
                                     }
         self.set_id(id_)
     
@@ -86,23 +85,6 @@ class Articles:
         try:
             self.articles['ids'][self.id]['rowno'] = rowno
             self.articles['ids'][self.id]['colno'] = colno
-        except KeyError:
-            mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
-    
-    def get_fixed_url(self, type_, text):
-        f = '[MClientQt] logic.Articles.get_fixed_url'
-        try:
-            return self.articles['ids'][self.id]['fixed_urls'][type_][text]
-        except KeyError:
-            mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes,True).show_warning()
-        return ''
-    
-    def get_fixed_urls(self):
-        f = '[MClientQt] logic.Articles.get_fixed_urls'
-        try:
-            return self.articles['ids'][self.id]['fixed_urls']
         except KeyError:
             mes = _('Wrong input data!')
             sh.objs.get_mes(f,mes).show_warning()
