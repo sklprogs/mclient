@@ -10,6 +10,7 @@ class Cell:
         self.url = ''
         self.no = -1
         self.rowno = -1
+        self.colno = -1
         self.blocks = []
         self.fixed_block = None
         self.subj = ''

@@ -43,10 +43,10 @@ class Wrap:
         OmitUsers = 0
         cells = cl.Omit(cells,blocked,OmitUsers).run()
         cells = cl.Prioritize(cells,subjects,speech).run()
-        #cells = cl.Format(cells).run()
         cells = cl.View(cells, fixed_urls=ielems.fixed_urls).run()
         iwrap = cl.Wrap(cells)
         iwrap.run()
+        cells = cl.Format(iwrap.cells).run()
         timer.end()
         return iwrap.debug()
 
@@ -88,7 +88,6 @@ class View:
         OmitUsers = 0
         cells = cl.Omit(cells,blocked,OmitUsers).run()
         cells = cl.Prioritize(cells,subjects,speech).run()
-        #cells = cl.Format(cells).run()
         iview = cl.View(cells, fixed_urls=ielems.fixed_urls)
         iview.run()
         timer.end()

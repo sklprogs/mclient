@@ -90,8 +90,8 @@ class Format:
             cell.code = ''.join(cell_code)
 
     def run(self):
-        self.check()
-        self.format()
+#        self.check()
+#        self.format()
         return self.cells
 
 
@@ -470,7 +470,37 @@ class Wrap:
         cells.append(row)
         self.cells = cells
     
+    def _debug_cells(self):
+        f = '[MClientQt] cells.Wrap._debug_cells'
+        mes = [f'{f}:']
+        headers = (_('CELL #'), _('ROW #'), _('COLUMN #'), _('TEXT'), _('CODE')
+                  ,'URL'
+                  )
+        no = []
+        rowno = []
+        colno = []
+        text = []
+        code = []
+        url = []
+        for row in self.cells:
+            for cell in row:
+                no.append(cell.no)
+                rowno.append(cell.rowno)
+                colno.append(cell.colno)
+                text.append(cell.text)
+                code.append(cell.code)
+                url.append(cell.url)
+        iterable = [no, rowno,  colno, text, code, url]
+        return sh.FastTable (headers = headers
+                            ,iterable = iterable
+                            ,maxrow = 60
+                            ,maxrows = 700
+                            ).run()
+        return '\n'.join(mes)
+    
     def _debug_plain(self):
+        f = '[MClientQt] cells.Wrap._debug_plain'
+        mes = [f'{f}:']
         plain = []
         for row in self.cells:
             new_row = []
@@ -478,26 +508,53 @@ class Wrap:
                 text = f'({cell.rowno}, {cell.no}): {cell.text}'
                 new_row.append(text)
             plain.append(new_row)
-        return str(plain)
+        mes.append(str(plain))
+        return '\n'.join(mes)
+    
+    def _debug_code(self):
+        f = '[MClientQt] cells.Wrap._debug_code'
+        mes = [f'{f}:']
+        code = []
+        for row in self.cells:
+            new_row = []
+            for cell in row:
+                text = f'({cell.rowno}, {cell.no}): {cell.code}'
+                new_row.append(text)
+            code.append(new_row)
+        mes.append(str(code))
+        return '\n'.join(mes)
     
     def debug(self):
         f = '[MClientQt] cells.Wrap.debug'
         if not self.Success:
             sh.com.cancel(f)
             return
-        mes = []
-        mes.append(_('Cell text:'))
-        mes.append(str(self._debug_plain()))
-        mes.append('')
-        '''
-        mes.append(_('Cell code:'))
-        mes.append(str(self._debug_code()))
-        '''
-        return '\n'.join(mes)
+        mes = [self._debug_cells()]
+        mes.append(self._debug_plain())
+        mes.append(self._debug_code())
+        return '\n\n'.join(mes)
+    
+    def renumber(self):
+        f = '[MClientQt] cells.Wrap.renumber'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not self.cells[0]:
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
+        no = 0
+        for i in range(len(self.cells)):
+            for j in range(len(self.cells[i])):
+                self.cells[i][j].no = no
+                self.cells[i][j].rowno = i
+                self.cells[i][j].colno = j
+                no += 1
     
     def run(self):
         self.check()
         self.wrap_x()
+        self.renumber()
         return self.cells
 
 
