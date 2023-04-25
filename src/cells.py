@@ -159,7 +159,6 @@ class View:
     def __init__(self, cells, fixed_types=('subj', 'wform', 'transc', 'speech'), fixed_urls={}):
         self.Success = True
         self.phi = None
-        self.max_len = 11
         self.view = []
         self.cells = cells
         self.fixed_types = fixed_types
@@ -418,88 +417,68 @@ class View:
 
 class Wrap:
     
-    def __init__(self,view,collimit=9):
+    def __init__(self, cells, collimit=9, fixed_types=('subj', 'wform', 'transc', 'speech')):
         ''' Since we create even empty columns, the number of fixed cells in
             a row should always be 4 (unless new fixed types are added).
         '''
         self.fixed_len = 4
-        #NOTE: Synchronize with View
-        self.max_len = 11
         self.Success = True
-        self.plain = []
-        self.code = []
-        self.view = view
+        self.cells = cells
         self.collimit = collimit
     
     def check(self):
         f = '[MClientQt] cells.Wrap.check'
-        if not self.view:
+        if not self.cells:
             self.Success = False
             sh.com.rep_empty(f)
             return
-        if len(self.view[0]) != self.max_len:
-            self.Success = False
-            mes = f'{len(self.view[0])} = {self.max_len}'
-            sh.com.rep_condition(f,mes)
         if self.collimit <= self.fixed_len:
             self.Success = False
             mes = f'{self.collimit} > {self.fixed_len}'
             sh.com.rep_condition(f,mes)
+    
+    def get_empty_cells(self, delta):
+        row = []
+        for type_ in range(delta):
+            cell = ic.Cell()
+            cell.blocks = [ic.Block()]
+            row.append(cell)
+        return row
     
     def wrap_x(self):
         f = '[MClientQt] cells.Wrap.wrap_x'
         if not self.Success:
             sh.com.cancel(f)
             return
+        cells = []
         row = []
-        rowc = []
         rowno = 0
-        for cell in self.view:
+        for cell in self.cells:
             if len(row) == self.collimit:
-                self.plain.append(row)
-                self.code.append(rowc)
-                if cell[0] == rowno:
-                    row = [''] * self.fixed_len
-                    rowc = [''] * self.fixed_len
+                cells.append(row)
+                if cell.rowno == rowno:
+                    row = self.get_empty_cells(self.fixed_len)
                 else:
                     row = []
-                    rowc = []
-            elif cell[0] != rowno:
-                delta = self.collimit - len(row)
-                row += [''] * delta
-                rowc += [''] * delta
-                self.plain.append(row)
-                self.code.append(rowc)
+            elif cell.rowno != rowno:
+                row += self.get_empty_cells(self.collimit - len(row))
+                cells.append(row)
                 row = []
-                rowc = []
-            row.append(cell[2])
-            rowc.append(cell[3])
-            rowno = cell[0]
-        delta = self.collimit - len(row)
-        row += [''] * delta
-        rowc += [''] * delta
-        self.plain.append(row)
-        self.code.append(rowc)
+            row.append(cell)
+            rowno = cell.rowno
+        row += self.get_empty_cells(self.collimit - len(row))
+        cells.append(row)
+        self.cells = cells
     
     def _debug_plain(self):
-        debug = []
-        for row in self.plain:
+        plain = []
+        for row in self.cells:
             new_row = []
-            for i in range(len(row)):
-                item = f'{i+1}: {row[i]}'
-                new_row.append(item)
-            debug.append(new_row)
-        return str(debug)
-    
-    def _debug_code(self):
-        debug = []
-        for row in self.code:
-            new_row = []
-            for i in range(len(row)):
-                item = f'{i+1}: {row[i]}'
-                new_row.append(item)
-            debug.append(new_row)
-        return str(debug)
+            for cell in row:
+                text = f'({cell.rowno}, {cell.no}): {cell.text}'
+                new_row.append(text)
+            plain.append(new_row)
+        return str(plain)
     
     def debug(self):
         f = '[MClientQt] cells.Wrap.debug'
@@ -519,7 +498,7 @@ class Wrap:
     def run(self):
         self.check()
         self.wrap_x()
-        return self.plain
+        return self.cells
 
 
 com = Commands()
