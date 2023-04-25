@@ -158,6 +158,7 @@ class View:
     # Create user-specific cells
     def __init__(self, cells, fixed_types=('subj', 'wform', 'transc', 'speech'), fixed_urls={}):
         self.Success = True
+        self.phi = None
         self.max_len = 11
         self.view = []
         self.cells = cells
@@ -253,10 +254,14 @@ class View:
         if not self._has_phrase():
             sh.com.rep_lazy(f)
             return
-        for cell in self.cells[::-1]:
-            if cell.fixed_block and cell.fixed_block.type_ == 'subj':
-                cell.fixed_block.type_ = 'phsubj'
+        i = len(self.cells) - 1
+        while i >= 0:
+            if self.cells[i].fixed_block \
+            and self.cells[i].fixed_block.type_ == 'subj':
+                self.cells[i].fixed_block.type_ = 'phsubj'
+                self.phi = i
                 return
+            i -= 1
     
     def debug(self):
         f = '[MClientQt] cells.View.debug'
@@ -380,6 +385,23 @@ class View:
                                                                      ,cell.text
                                                                      )
     
+    def clear_phrase_fields(self):
+        f = '[MClientQt] cells.View.clear_phrase_fields'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if self.phi is None:
+            sh.com.rep_lazy()
+            return
+        i = self.phi
+        while i < len(self.cells):
+            cell = self.cells[i]
+            if cell.fixed_block \
+            and cell.fixed_block.type_ in ('wform', 'transc', 'speech'):
+                cell.text = ''
+            cell.wform = cell.speech = cell.transc = ''
+            i += 1
+    
     def run(self):
         self.check()
         self.sort()
@@ -387,6 +409,7 @@ class View:
         self.restore_first()
         self.restore_phsubj()
         self.clear_duplicates()
+        self.clear_phrase_fields()
         self.restore_urls()
         self.renumber()
         return self.cells
