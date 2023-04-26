@@ -646,18 +646,12 @@ class Objects:
     def __init__(self):
         self.online = self.request = self.order = self.default \
                     = self.plugins = self.speech_prior = self.config \
-                    = self.order = self.column_width = self.colors \
-                    = self.articles = None
+                    = self.order = self.column_width = self.articles = None
 
     def get_articles(self):
         if self.articles is None:
             self.articles = Articles()
         return self.articles
-    
-    def get_colors(self):
-        if self.colors is None:
-            self.colors = Colors()
-        return self.colors
     
     def get_column_width(self):
         if self.column_width is None:
@@ -766,24 +760,6 @@ class Commands:
             if not sh.objs.get_mes(f,mes).show_question():
                 Confirmed = False
         return Confirmed
-    
-    def add_formatting(self,blocks):
-        f = '[MClientQt] logic.Commands.add_formatting'
-        if not blocks:
-            sh.com.rep_empty(f)
-            return []
-        for i in range(len(blocks)):
-            blocks[i] = Font (block = blocks[i]
-                             ,blocked_color1 = objs.get_colors().b1
-                             ,blocked_color2 = objs.colors.b2
-                             ,blocked_color3 = objs.colors.b3
-                             ,blocked_color4 = objs.colors.b4
-                             ,priority_color1 = objs.colors.p1
-                             ,priority_color2 = objs.colors.p2
-                             ,priority_color3 = objs.colors.p3
-                             ,priority_color4 = objs.colors.p4
-                             ).run()
-        return blocks
     
     def set_def_colnum_even(self):
         if objs.get_request().SpecialPage:
@@ -950,58 +926,6 @@ class Order(sj.Order):
         sh.WriteTextFile(blackw,True,True).write(text)
         text = '\n'.join(self.priorlst)
         sh.WriteTextFile(priorw,True,True).write(text)
-
-
-
-class Format:
-    
-    def __init__(self,block):
-        self.Success = True
-        self.code = ''
-        self.block = block
-    
-    def check(self):
-        f = '[MClientQt] logic.Format.check'
-        if not self.block:
-            self.Success = False
-            sh.com.rep_empty(f)
-    
-    def set_code(self):
-        f = '[MClientQt] logic.Format.set_code'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.code = self.block.text
-    
-    def _set_italic(self):
-        if self.block.Italic:
-            self.code = '<i>' + self.code + '</i>'
-    
-    def _set_bold(self):
-        if self.block.Bold:
-            self.code = '<b>' + self.code + '</b>'
-    
-    def _set_style(self):
-        # Color name must be put in single quotes
-        sub = '''<span style="font-family:{}; font-size:{}pt; color:'{}';">{}</span>'''
-        self.code = sub.format (self.block.family,self.block.size
-                               ,self.block.color,self.code
-                               )
-    
-    def format(self):
-        f = '[MClientQt] logic.Format.format'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self._set_style()
-        self._set_italic()
-        self._set_bold()
-    
-    def run(self):
-        self.check()
-        self.set_code()
-        self.format()
-        return self.code
 
 
 
@@ -1295,232 +1219,6 @@ class Search(Table):
             colno -= 1
             if self.pattern in self.plain[rowno][colno]:
                 return(rowno,colno)
-
-
-
-class Font:
-    
-    def __init__ (self,block,blocked_color1='dim gray'
-                 ,blocked_color2='dim gray',blocked_color3='dim gray'
-                 ,blocked_color4='dim gray',priority_color1='red'
-                 ,priority_color2='red',priority_color3='red'
-                 ,priority_color4='red'
-                 ):
-        self.set_values()
-        self.block = block
-        self.blocked_color1 = blocked_color1
-        self.blocked_color2 = blocked_color2
-        self.blocked_color3 = blocked_color3
-        self.blocked_color4 = blocked_color4
-        self.priority_color1 = priority_color1
-        self.priority_color2 = priority_color2
-        self.priority_color3 = priority_color3
-        self.priority_color4 = priority_color4
-    
-    def set_values(self):
-        self.Success = True
-    
-    def run(self):
-        self.check()
-        self.set_text()
-        self.set_family()
-        self.set_size()
-        self.set_color()
-        self.set_bold()
-        self.set_italic()
-        return self.block
-    
-    def _set_color(self):
-        if self.block.type_ in ('subj','phsubj','wform','speech'):
-            if self.block.colno == 0:
-                self.block.color = sh.lg.globs['str']['color_col1']
-            elif self.block.colno == 1:
-                self.block.color = sh.lg.globs['str']['color_col2']
-            elif self.block.colno == 2:
-                self.block.color = sh.lg.globs['str']['color_col3']
-            elif self.block.colno == 3:
-                self.block.color = sh.lg.globs['str']['color_col4']
-        elif self.block.type_ in ('phrase','term'):
-            self.block.color = sh.lg.globs['str']['color_terms']
-        elif self.block.type_ in ('comment','phcom','phcount','transc'):
-            self.block.color = sh.lg.globs['str']['color_comments']
-        elif self.block.type_ == 'correction':
-            self.block.color = 'green'
-        elif self.block.type_ == 'user':
-            self.block.color = objs.get_colors().user
-    
-    def _set_color_p(self):
-        if not self.block.type_ in ('subj','phsubj','wform','transc','speech'):
-            self.block.color = self.priority_color1
-            return
-        if self.block.colno == 0:
-            self.block.color = self.priority_color1
-        elif self.block.colno == 1:
-            self.block.color = self.priority_color2
-        elif self.block.colno == 2:
-            self.block.color = self.priority_color3
-        elif self.block.colno == 3:
-            self.block.color = self.priority_color4
-    
-    def _set_color_b(self):
-        if not self.block.type_ in ('subj','phsubj','wform','transc','speech'):
-            self.block.color = 'dim gray'
-            return
-        if self.block.colno == 0:
-            self.block.color = self.blocked_color1
-        elif self.block.colno == 1:
-            self.block.color = self.blocked_color2
-        elif self.block.colno == 2:
-            self.block.color = self.blocked_color3
-        elif self.block.colno == 3:
-            self.block.color = self.blocked_color4
-    
-    def set_bold(self):
-        f = '[MClientQt] logic.Font.set_bold'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        #TODO: elaborate
-        if self.block.Fixed:
-            self.block.Bold = True
-        '''
-        if self.block.type_ == 'wform' or self.block.colno == 0 \
-        and self.block.type_ in ('subj','phsubj','transc','speech'):
-            self.block.Bold = True
-        '''
-    
-    def set_italic(self):
-        f = '[MClientQt] logic.Font.set_italic'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        if self.block.type_ in ('comment','correction','phcom','phcount'
-                               ,'speech','transc','user'
-                               ):
-            self.block.Italic = True
-    
-    def set_color(self):
-        f = '[MClientQt] logic.Font.set_color'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        ''' We need to determine whether a block is blockable or prioritizable
-            irrespectively of its state in a current view, so we do not rely on
-            'block' values.
-        '''
-        if sj.objs.get_article().is_blocked(self.block.text):
-            self._set_color_b()
-        elif sj.objs.article.get_priority(self.block.text) > 0:
-            self._set_color_p()
-        else:
-            self._set_color()
-    
-    def set_text(self):
-        f = '[MClientQt] logic.Font.set_text'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.text = self.block.text
-    
-    def check(self):
-        f = '[MClientQt] logic.Font.check'
-        if not (self.block and self.blocked_color1 and self.blocked_color2 \
-        and self.blocked_color3 and self.blocked_color4 \
-        and self.priority_color1 and self.priority_color2 \
-        and self.priority_color3 and self.priority_color4):
-            self.Success = False
-            sh.com.rep_empty(f)
-    
-    def set_family(self):
-        f = '[MClientQt] logic.Font.set_family'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        if self.block.type_ in ('subj','phsubj','wform','speech'):
-            if self.block.colno == 0:
-                self.block.family = sh.lg.globs['str']['font_col1_family']
-            elif self.block.colno == 1:
-                self.block.family = sh.lg.globs['str']['font_col2_family']
-            elif self.block.colno == 2:
-                self.block.family = sh.lg.globs['str']['font_col3_family']
-            elif self.block.colno == 3:
-                self.block.family = sh.lg.globs['str']['font_col4_family']
-        elif self.block.type_ in ('comment','correction','phcom'
-                                 ,'phcount','transc','user'
-                                 ):
-            self.block.family = sh.lg.globs['str']['font_comments_family']
-        elif self.block.type_ in ('phrase','term'):
-            self.block.family = sh.lg.globs['str']['font_terms_family']
-    
-    def set_size(self):
-        f = '[MClientQt] logic.Font.set_size'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        if self.block.type_ in ('subj','phsubj','wform','speech'):
-            if self.block.colno == 0:
-                self.block.size = sh.lg.globs['int']['font_col1_size']
-            elif self.block.colno == 1:
-                self.block.size = sh.lg.globs['int']['font_col2_size']
-            elif self.block.colno == 2:
-                self.block.size = sh.lg.globs['int']['font_col3_size']
-            elif self.block.colno == 3:
-                self.block.size = sh.lg.globs['int']['font_col4_size']
-        elif self.block.type_ in ('comment','correction','phcom'
-                                 ,'phcount','transc','user'
-                                 ):
-            self.block.size = sh.lg.globs['int']['font_comments_size']
-        elif self.block.type_ in ('phrase','term'):
-            self.block.size = sh.lg.globs['int']['font_terms_size']
-
-
-
-class Colors:
-    
-    def __init__(self):
-        self.set_values()
-        self.set_tints()
-    
-    def set_values(self):
-        self.factor = 140
-        # No need to set default colors, Qt ignores empty names at input
-        self.p1 = self.p2 = self.p3 = self.p4 = self.b1 = self.b2 = self.b3 \
-        = self.b4 = self.user = ''
-    
-    def set_tints(self):
-        ''' Config values should be converted to HEX since they are further
-            used to generate a web-page when saving an article, and browsers,
-            unlike Qt, may not understand colors like 'cadet blue' (with or
-            without quotes).
-        '''
-        # color_terms
-        icolor = sh.Color(sh.lg.globs['str']['color_terms'])
-        sh.lg.globs['str']['color_terms'] = icolor.get_hex()
-        
-        # color_comments
-        icolor = sh.Color(sh.lg.globs['str']['color_comments'])
-        sh.lg.globs['str']['color_comments'] = icolor.get_hex()
-        darker, self.user = icolor.modify(self.factor)
-        
-        # color_col1
-        icolor = sh.Color(sh.lg.globs['str']['color_col1'])
-        sh.lg.globs['str']['color_col1'] = icolor.get_hex()
-        self.p1, self.b1 = icolor.modify(self.factor)
-        
-        # color_col2
-        icolor = sh.Color(sh.lg.globs['str']['color_col2'])
-        sh.lg.globs['str']['color_col2'] = icolor.get_hex()
-        self.p2, self.b2 = icolor.modify(self.factor)
-        
-        # color_col3
-        icolor = sh.Color(sh.lg.globs['str']['color_col3'])
-        sh.lg.globs['str']['color_col3'] = icolor.get_hex()
-        self.p3, self.b3 = icolor.modify(self.factor)
-        
-        # color_col4
-        icolor = sh.Color(sh.lg.globs['str']['color_col4'])
-        sh.lg.globs['str']['color_col4'] = icolor.get_hex()
-        self.p4, self.b4 = icolor.modify(self.factor)
 
 
 objs = Objects()

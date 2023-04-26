@@ -4,10 +4,8 @@
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-import logic as lg
 import instance as ic
-
-#import subjects.subjects as sj
+import format as fm
 
 
 class Omit:
@@ -63,39 +61,6 @@ class Omit:
         return self.cells
 
 
-
-class Format:
-    
-    def __init__(self,cells):
-        self.Success = True
-        self.cells = cells
-
-    def check(self):
-        f = '[MClientQt] cells.Format.check'
-        if not self.cells:
-            self.Success = False
-            sh.com.rep_empty(f)
-
-    def format(self):
-        f = '[MClientQt] cells.Format.format'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        for cell in self.cells:
-            cell_code = []
-            for block in cell.blocks:
-                block = lg.Font(block).run()
-                block.code = lg.Format(block).run()
-                cell_code.append(block.code)
-            cell.code = ''.join(cell_code)
-
-    def run(self):
-#        self.check()
-#        self.format()
-        return self.cells
-
-
-
 class Prioritize:
     
     def __init__(self,cells,subjects=[],speech=[]):
@@ -142,16 +107,13 @@ class Prioritize:
         return self.cells
 
 
-
 class Commands:
     
     def order(self, cells):
         cells = Omit(cells).run()
         cells = Prioritize(cells).run()
-        cells = Format(cells).run()
         cells = View(cells).run()
         return cells
-
 
 
 class View:
@@ -400,7 +362,7 @@ class View:
                 cell.text = ''
             cell.wform = cell.speech = cell.transc = ''
             i += 1
-    
+
     def run(self):
         self.check()
         self.sort()
@@ -551,10 +513,23 @@ class Wrap:
                 self.cells[i][j].colno = j
                 no += 1
     
+    def format(self):
+        f = '[MClientQt] cells.Wrap.format'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        for row in self.cells:
+            for cell in row:
+                cell_code = []
+                for block in cell.blocks:
+                    cell_code.append(fm.Block(block, cell.colno).run())
+                cell.code = ''.join(cell_code)
+    
     def run(self):
         self.check()
         self.wrap_x()
         self.renumber()
+        self.format()
         return self.cells
 
 

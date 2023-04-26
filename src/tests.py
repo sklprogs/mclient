@@ -46,7 +46,6 @@ class Wrap:
         cells = cl.View(cells, fixed_urls=ielems.fixed_urls).run()
         iwrap = cl.Wrap(cells)
         iwrap.run()
-        cells = cl.Format(iwrap.cells).run()
         timer.end()
         return iwrap.debug()
 
