@@ -525,7 +525,7 @@ class Wrap:
                 cell_code = []
                 for block in cell.blocks:
                     cell_code.append(fm.Block(block, cell.colno).run())
-                cell.code = ''.join(cell_code)
+                cell.code = sh.List(cell_code).space_items()
     
     def set_plain(self):
         f = '[MClientQt] cells.Wrap.set_plain'

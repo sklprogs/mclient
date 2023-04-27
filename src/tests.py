@@ -108,7 +108,7 @@ class Elems:
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/hello (Компьютерные сети) (2021-03-17).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/generic drug (2021-03-17).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/get out of (2021-03-17).html'
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/set (2023-04-19).html'
+        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/set (2023-04-19).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/back (2023-04-12).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/vice vice (2023-04-14).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/vice vice vice (2023-04-14).html'
@@ -118,6 +118,7 @@ class Elems:
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/Ouest Bureau (2023-04-14).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/dfsgdghfj (2023-04-15).html'
         #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/beg the question (2023-04-15).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/hello (2023-04-19).html'
         text = sh.ReadTextFile(file).get()
         timer = sh.Timer(f)
         timer.start()
@@ -1061,9 +1062,9 @@ if __name__ == '__main__':
     '''
     #Get().run_multitrancom()
     #idebug = sh.Debug(f,Tags().run_multitrancom())
-    #idebug = sh.Debug(f,Elems().run_multitrancom())
+    idebug = sh.Debug(f,Elems().run_multitrancom())
     #idebug = sh.Debug(f,View().run_multitrancom())
-    idebug = sh.Debug(f,Wrap().run_multitrancom())
+    #idebug = sh.Debug(f,Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
     idebug.show()
 
