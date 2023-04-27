@@ -780,7 +780,7 @@ class Commands:
         if objs.request.SpecialPage:
             if objs.request.DefColNumEven:
                 return
-            elif sh.lg.globs['int']['colnum'] > 2:
+            if sh.lg.globs['int']['colnum'] > 2:
                 sh.lg.globs['int']['colnum'] -= 1
             else:
                 sh.lg.globs['int']['colnum'] = 2
@@ -823,60 +823,17 @@ class Commands:
                 mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
                 mes = mes.format(lst[i],sub)
                 sh.objs.get_mes(f,mes).show_error()
-        if lst:
-            objs.get_request().cols = tuple(lst)
-            #TODO: Should we change objs.request.collimit here?
-        else:
+        if not lst:
             sh.com.rep_lazy(f)
+            return
+        objs.get_request().cols = tuple(lst)
+        #TODO: Should we change objs.request.collimit here?
     
     def load_config(self):
         objs.get_config()
     
     def save_config(self):
         cf.CreateConfig(objs.get_default().get_config()).run()
-    
-    def dump_elems(self,blocks,artid):
-        f = '[MClientQt] logic.Commands.dump_elems'
-        if blocks and artid:
-            data = []
-            for block in blocks:
-                data.append (
-                  (None               # (00) Skips the autoincrement
-                  ,artid              # (01) ARTICLEID
-                  ,block.dic          # (02) DIC (short title)
-                  ,block.wform        # (03) WFORM
-                  ,block.speech       # (04) SPEECH
-                  ,block.transc       # (05) TRANSC
-                  ,block.term         # (06) TERM
-                  ,block.type_        # (07) TYPE
-                  ,block.text         # (08) TEXT
-                  ,block.url          # (09) URL
-                  ,block.block        # (10) BLOCK
-                  ,block.dprior       # (11) DICPR
-                  ,block.select       # (12) SELECTABLE
-                  ,block.same         # (13) SAMECELL
-                  ,block.cellno       # (14) CELLNO
-                  ,-1                 # (15) ROWNO
-                  ,-1                 # (16) COLNO
-                  ,-1                 # (17) POS1
-                  ,-1                 # (18) POS2
-                  ,''                 # (19) NODE1
-                  ,''                 # (20) NODE2
-                  ,-1                 # (21) OFFPOS1
-                  ,-1                 # (22) OFFPOS2
-                  ,-1                 # (23) BBOX1
-                  ,-1                 # (24) BBOX2
-                  ,-1                 # (25) BBOY1
-                  ,-1                 # (26) BBOY2
-                  ,block.text.lower() # (27) TEXTLOW
-                  ,0                  # (28) IGNORE
-                  ,block.sprior       # (29) SPEECHPR
-                  ,block.dicf         # (30) DIC (full title)
-                  )
-                            )
-            return data
-        else:
-            sh.com.rep_empty(f)
     
     def suggest(self,search,limit=0):
         f = '[MClientQt] logic.Commands.suggest'
@@ -967,6 +924,7 @@ class Table:
         #TODO: Should we run this for fixed columns only?
         for colno in range(self.colnum):
             if self._is_col_empty(colno):
+                #FIX: purping
                 self.empty_cols.append()
         if self.empty_cols:
             mes = _('Columns with no text: {}')

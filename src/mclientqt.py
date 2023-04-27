@@ -1476,6 +1476,10 @@ class App:
     
     def go_url(self):
         f = '[MClientQt] mclient.App.go_url'
+        if lg.objs.get_articles().get_len() == 0:
+            # Do not warn when there are no articles yet
+            sh.com.rep_lazy(f)
+            return
         rowno, colno = self.table.get_cell()
         cell = lg.com.get_cell(self.table.logic.cells,rowno,colno)
         if not cell:
@@ -1487,9 +1491,6 @@ class App:
             mes = _('Open link: {}').format(lg.objs.request.url)
             sh.objs.get_mes(f,mes,True).show_info()
             self.load_article()
-        elif lg.objs.get_articles().get_len() == 0:
-            # Do not warn when there are no articles yet
-            sh.com.rep_lazy(f)
         else:
             lg.objs.request.search = self.table.get_cell_text()
             self.go_search()
@@ -1547,7 +1548,6 @@ class App:
             lg.objs.articles.set_id(artid)
             cells = lg.objs.articles.get_cells()
             
-        timer.start()
         #TODO: elaborate
         blocked = []
         subjects = ['Общая лексика','общ.']
