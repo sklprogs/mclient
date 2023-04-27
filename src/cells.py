@@ -385,6 +385,8 @@ class Wrap:
         '''
         self.fixed_len = 4
         self.Success = True
+        self.plain = []
+        self.code = []
         self.cells = cells
         self.collimit = collimit
     
@@ -525,11 +527,35 @@ class Wrap:
                     cell_code.append(fm.Block(block, cell.colno).run())
                 cell.code = ''.join(cell_code)
     
+    def set_plain(self):
+        f = '[MClientQt] cells.Wrap.set_plain'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        for row in self.cells:
+            new_row = []
+            for cell in row:
+                new_row.append(cell.text)
+            self.plain.append(new_row)
+    
+    def set_code(self):
+        f = '[MClientQt] cells.Wrap.set_code'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        for row in self.cells:
+            new_row = []
+            for cell in row:
+                new_row.append(cell.code)
+            self.code.append(new_row)
+    
     def run(self):
         self.check()
         self.wrap_x()
         self.renumber()
         self.format()
+        self.set_plain()
+        self.set_code()
         return self.cells
 
 

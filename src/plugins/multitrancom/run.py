@@ -144,5 +144,5 @@ class Plugin:
         self.blocks = tg.Tags(self.text).run()
         ielems = el.Elems(self.blocks)
         self.blocks = ielems.run()
-        self.fixed_urls = ielems.urls
+        self.fixed_urls = ielems.fixed_urls
         return self.blocks

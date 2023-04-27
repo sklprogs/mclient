@@ -38,6 +38,13 @@ class Plugins:
         self.sdplugin = None
         self.source = sh.lg.globs['str']['source']
     
+    def get_fixed_urls(self):
+        f = '[MClient] manager.Plugins.get_fixed_urls'
+        if not self.plugin:
+            sh.com.rep_empty(f)
+            return {}
+        return self.plugin.get_fixed_urls()
+    
     def get_subjects(self):
         f = '[MClient] manager.Plugins.get_subjects'
         if not self.plugin:

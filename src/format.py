@@ -12,7 +12,7 @@ class Block:
         self.colors_bl = (objs.get_colors().b1, objs.colors.b2, objs.colors.b3
                          ,objs.colors.b4
                          )
-        self.colors_pr = (objs.get_colors().p1, objs.colors.p2, objs.colors.p3
+        self.colors_pr = (objs.colors.p1, objs.colors.p2, objs.colors.p3
                          ,objs.colors.p4
                          )
         self.code = ''

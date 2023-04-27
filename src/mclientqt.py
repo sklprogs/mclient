@@ -1540,18 +1540,7 @@ class App:
                                  ,url = url
                                  ,cells = cells
                                  ,raw_code = ''
-                                 ,fixed_urls = lg.objs.plugins.get_fixed_urls()
                                  )
-            #TODO: elaborate
-            blocked = []
-            subjects = ['Общая лексика','общ.']
-            # Full forms as well
-            speech = ['сущ.','глаг.','прил.','сокр.','нареч.','предл.','мест.']
-            OmitUsers = 0
-            cells = cl.Omit(cells,blocked,OmitUsers).run()
-            cells = cl.Prioritize(cells,subjects,speech).run()
-            cells = cl.Format(cells).run()
-            #lg.objs.blocksdb.update_phterm()
         else:
             mes = _('Load article No. {} from memory').format(artid)
             sh.objs.get_mes(f,mes,True).show_info()
@@ -1559,6 +1548,15 @@ class App:
             cells = lg.objs.articles.get_cells()
             
         timer.start()
+        #TODO: elaborate
+        blocked = []
+        subjects = ['Общая лексика','общ.']
+        # Full forms as well
+        speech = ['сущ.','глаг.','прил.','сокр.','нареч.','предл.','мест.']
+        OmitUsers = 0
+        cells = cl.Omit(cells,blocked,OmitUsers).run()
+        cells = cl.Prioritize(cells,subjects,speech).run()
+        
         #TODO: implement
         self.phdic = ''
         '''
@@ -1586,8 +1584,16 @@ class App:
                     and not lg.objs.request.SpecialPage
         '''
         
-        view = cl.View(cells).run()
-        iwrap = cl.Wrap(view)
+        #TODO: Read settings from GUI
+        fixed_types = ('subj', 'wform', 'transc', 'speech')
+        cells = cl.View (cells = cells
+                        ,fixed_types = fixed_types
+                        ,fixed_urls = lg.objs.plugins.get_fixed_urls()
+                        ).run()
+        iwrap = cl.Wrap (cells = cells
+                        ,collimit = 9
+                        ,fixed_types = fixed_types
+                        )
         iwrap.run()
         
 #        sj.objs.get_article().reset (pairs = lg.objs.blocksdb.get_dic_pairs()
