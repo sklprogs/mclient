@@ -924,11 +924,10 @@ class Table:
         #TODO: Should we run this for fixed columns only?
         for colno in range(self.colnum):
             if self._is_col_empty(colno):
-                #FIX: purping
-                self.empty_cols.append()
+                self.empty_cols.append(colno)
         if self.empty_cols:
             mes = _('Columns with no text: {}')
-            mes = mes.format(', '.join(self.empty_cols))
+            mes = mes.format(', '.join([str(item) for item in self.empty_cols]))
         else:
             mes = _('All columns have texts')
         sh.objs.get_mes(f, mes, True).show_debug()

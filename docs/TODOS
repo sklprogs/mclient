@@ -10,6 +10,7 @@ mclient:
   add titles everywhere
 
 multitrancom:
+- RU-EN, purping: implement "Варианты замены" mode and following URLs
 - RU-EN, закрыть соединение: enable copying a comment block url
 - RU-EN, Makarov: colorize phdics even when prioritizing is off since there are
   no subjects to prioritize
