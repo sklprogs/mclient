@@ -141,8 +141,6 @@ class Colors:
         = self.b4 = self.user = self.php = self.phb = ''
     
     def set_constants(self):
-        self.php = sh.Color('red').get_hex()
-        self.phb = sh.Color('gray').get_hex()
         self.correction = sh.Color('green').get_hex()
     
     def set_tints(self):
@@ -164,6 +162,8 @@ class Colors:
         icolor = sh.Color(sh.lg.globs['str']['color_col1'])
         sh.lg.globs['str']['color_col1'] = icolor.get_hex()
         self.p1, self.b1 = icolor.modify(self.factor)
+        self.php = self.p1
+        self.phb = self.b1
         
         # color_col2
         icolor = sh.Color(sh.lg.globs['str']['color_col2'])
