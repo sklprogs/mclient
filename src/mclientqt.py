@@ -1658,10 +1658,12 @@ class App:
             self.update_lang1()
             self.update_lang2()
             self.auto_swap()
-            lg.com.get_url()
             mes = '"{}"'.format(lg.objs.request.search)
             sh.objs.get_mes(f,mes,True).show_debug()
-            self.load_article()
+            lg.com.set_url()
+            self.load_article (search = lg.objs.request.search
+                              ,url = lg.objs.request.url
+                              )
     
     def clear_search_field(self):
         #TODO: implement
@@ -1982,7 +1984,7 @@ if __name__ == '__main__':
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
     app = App()
-    lg.com.get_url()
+    lg.com.set_url()
     app.load_article (search = lg.objs.get_request().search
                      ,url = lg.objs.request.url
                      )

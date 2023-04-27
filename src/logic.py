@@ -743,8 +743,8 @@ class Commands:
         objs.get_order()
         self.set_def_colnum_even()
     
-    def get_url(self):
-        f = '[MClientQt] logic.Commands.get_url'
+    def set_url(self):
+        f = '[MClientQt] logic.Commands.set_url'
         #NOTE: update source and target languages first
         objs.get_request().url = objs.get_plugins().get_url(objs.request.search)
         mes = objs.request.url
