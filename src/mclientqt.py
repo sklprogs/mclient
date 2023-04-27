@@ -572,7 +572,7 @@ class Table:
 
     def __init__(self):
         self.set_values()
-        self.logic = lg.Table(self.plain, self.code)
+        self.logic = lg.Table([],[])
         self.gui = gi.Table()
         self.search = Search()
         self.popup = pp.Popup()
@@ -701,8 +701,6 @@ class Table:
         self.Success = True
         self.model = None
         self.coords = {}
-        self.plain = []
-        self.code = []
         self.row_height = 42
         self.old_rowno = -1
         self.old_colno = -1
@@ -841,12 +839,11 @@ class Table:
         if not self.Success:
             sh.com.cancel(f)
             return ''
-        if not self.logic.cells:
+        if not self.logic.plain:
             sh.com.rep_empty(f)
             return ''
         rowno, colno = self.get_cell()
         try:
-            #return self.logic.cells[rowno][colno].plain
             return self.logic.plain[rowno][colno]
         except IndexError:
             mes = _('Wrong input data!')
@@ -874,16 +871,14 @@ class Table:
         if not self.Success:
             sh.com.cancel(f)
             return
+        if not lg.objs.get_articles().get_len():
+            # Do not warn when there are no articles yet
+            sh.com.rep_lazy(f)
+            return
         text = self.get_cell_text()
         if text:
             sh.Clipboard().copy(text)
             return True
-        elif not lg.objs.get_articles().get_len():
-            # Do not warn when there are no articles yet
-            sh.com.rep_lazy(f)
-        else:
-            mes = _('This cell does not contain any text!')
-            sh.objs.get_mes(f,mes).show_warning()
     
     def set_row_height(self,height=42):
         for no in range(self.logic.rownum):
