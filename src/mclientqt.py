@@ -1290,7 +1290,7 @@ class App:
         sh.objs.get_mes(f,mes,True).show_info()
         lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
         self.reset_opt(sh.lg.globs['str']['source'])
-        self.go_search_focus()
+        self.go_search()
     
     def auto_swap(self):
         f = '[MClientQt] mclient.App.auto_swap'
@@ -1310,10 +1310,6 @@ class App:
             mes = '{}-{} -> {}-{}'.format(lang1,lang2,lang2,lang1)
             sh.objs.get_mes(f,mes,True).show_info()
             self.swap_langs()
-    
-    def go_search_focus(self):
-        self.go_search()
-        self.gui.panel.ent_src.focus()
     
     def reset_opt(self,default=_('Multitran')):
         f = '[MClientQt] mclient.App.reset_opt'
@@ -1863,8 +1859,8 @@ class App:
         self.panel.ent_src.widget.sig_ctrl_end.connect(self.table.go_end)
         self.panel.ent_src.widget.sig_left_arrow.connect(self.table.go_left)
         self.panel.ent_src.widget.sig_right_arrow.connect(self.table.go_right)
-        self.panel.opt_lg1.widget.activated.connect(self.go_search_focus)
-        self.panel.opt_lg2.widget.activated.connect(self.go_search_focus)
+        self.panel.opt_lg1.widget.activated.connect(self.go_search)
+        self.panel.opt_lg2.widget.activated.connect(self.go_search)
         self.panel.opt_src.widget.activated.connect(self.set_source)
         
         self.table.gui.sig_rmb.connect(self.copy_cell)
