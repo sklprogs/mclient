@@ -516,6 +516,7 @@ class Wrap:
                 no += 1
     
     def format(self):
+        # Takes ~0.871s for 'set' on AMD E-300
         f = '[MClientQt] cells.Wrap.format'
         if not self.Success:
             sh.com.cancel(f)
