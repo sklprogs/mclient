@@ -112,7 +112,6 @@ class AnalyzeTag:
     
     def _set_name(self):
         # Do this before setting a URL
-        f = '[MClient] plugins.multitrancom.tags.Tags._set_name'
         self.tag.name = self.tag.text
         if self.tag.name.startswith('<'):
             self.tag.name = self.tag.name[1:]
@@ -306,6 +305,7 @@ class Tags:
     def set_nos(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.set_nos'
         if not self.Success:
+            sh.com.cancel(f)
             return
         curcell = -1
         for tag in self.tags:
