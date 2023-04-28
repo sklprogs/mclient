@@ -36,8 +36,3 @@ class Block:
         '''
         self.type_ = 'comment'
         self.url = ''
-        self.family = 'Serif'
-        self.color = 'black'
-        self.size = 12
-        self.Bold = False
-        self.Italic = False
