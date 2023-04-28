@@ -1476,18 +1476,19 @@ class App:
             sh.com.rep_lazy(f)
             return
         rowno, colno = self.table.get_cell()
-        cell = lg.com.get_cell(self.table.logic.cells,rowno,colno)
+        cell = lg.objs.articles.get_cell(rowno, colno)
         if not cell:
             sh.com.rep_empty(f)
             return
+        lg.objs.get_request().search = cell.text
         if cell.url:
-            lg.objs.request.search = self.table.get_cell_text()
             lg.objs.request.url = cell.url
             mes = _('Open link: {}').format(lg.objs.request.url)
             sh.objs.get_mes(f,mes,True).show_info()
-            self.load_article()
+            self.load_article (search = lg.objs.request.search
+                              ,url = lg.objs.request.url
+                              )
         else:
-            lg.objs.request.search = self.table.get_cell_text()
             self.go_search()
     
     def copy_cell(self):
@@ -1535,7 +1536,6 @@ class App:
             lg.objs.articles.add (search = search
                                  ,url = url
                                  ,cells = cells
-                                 ,raw_code = ''
                                  )
         else:
             mes = _('Load article No. {} from memory').format(artid)
@@ -1607,6 +1607,8 @@ class App:
         lg.objs.column_width.run()
         
         self.table.reset(iwrap.plain, iwrap.code)
+        
+        lg.objs.articles.set_table(iwrap.cells)
         
         #TODO: elaborate
         skipped = []

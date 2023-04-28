@@ -42,15 +42,40 @@ class Articles:
             sh.objs.get_mes(f,mes).show_warning()
         return -1
     
+    def set_table(self, table):
+        f = '[MClientQt] logic.Articles.set_table'
+        try:
+            self.articles['ids'][self.id]['table'] = table
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+    
+    def get_table(self):
+        f = '[MClientQt] logic.Articles.set_table'
+        try:
+            return self.articles['ids'][self.id]['table']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+    
+    def get_cell(self, rowno, colno):
+        f = '[MClientQt] logic.Articles.get_cell'
+        try:
+            return self.articles['ids'][self.id]['table'][rowno][colno]
+        except (KeyError, IndexError):
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+    
     def get_len(self):
         return self.get_max_id() + 1
     
-    def add(self, search='', url='', cells=[], raw_code=''):
+    def add(self, search='', url='', cells=[], table=[], raw_code=''):
         id_ = self.get_max_id() + 1
         self.articles['ids'][id_] = {'source'   : sh.lg.globs['str']['source']
                                     ,'search'   : search
                                     ,'url'      : url
                                     ,'cells'    : cells
+                                    ,'table'    : table
                                     ,'raw_code' : raw_code
                                     ,'rowno'    : -1
                                     ,'colno'    : -1
