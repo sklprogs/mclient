@@ -3,7 +3,6 @@
 
 import locale
 
-from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 ''' About this module:
@@ -34924,7 +34923,6 @@ class Subjects:
         sh.objs.get_mes(f,mes,True).show_debug()
 
     def _get_major_en(self,title):
-        f = '[MClient] plugins.multitrancom.subjects.Subjects._get_group_en'
         for key in SUBJECTS.keys():
             if title == SUBJECTS[key][self.lang]['title']:
                 return SUBJECTS[key]['major_en']
@@ -34940,13 +34938,13 @@ class Subjects:
     def get_major(self,title):
         f = '[MClient] plugins.multitrancom.subjects.Subjects.get_major'
         major_en = self._get_major_en(title)
-        if major_en:
-            for key in SUBJECTS.keys():
-                if major_en == SUBJECTS[key]['major_en'] \
-                and SUBJECTS[key]['Major']:
-                    return SUBJECTS[key][self.lang]['title']
-        else:
+        if not major_en:
             sh.com.rep_empty(f)
+            return
+        for key in SUBJECTS.keys():
+            if major_en == SUBJECTS[key]['major_en'] \
+            and SUBJECTS[key]['Major']:
+                return SUBJECTS[key][self.lang]['title']
     
     def get_group_with_header(self,title):
         ''' A possible way to speed up (if needed):
@@ -34955,7 +34953,6 @@ class Subjects:
             3) put the major subject to the top
             4) get titles by the resulting keys
         '''
-        f = '[MClient] plugins.multitrancom.subjects.Subjects.get_group_with_header'
         major = self.get_major(title)
         if not major:
             major = title
@@ -34967,13 +34964,13 @@ class Subjects:
         # Takes ~0.002s on Intel Atom
         group = []
         major_en = self._get_major_en(title)
-        if major_en:
-            for key in SUBJECTS.keys():
-                if major_en == SUBJECTS[key]['major_en'] \
-                and not SUBJECTS[key]['Major']:
-                    group.append(SUBJECTS[key][self.lang]['title'])
-        else:
+        if not major_en:
             sh.com.rep_empty(f)
+            return []
+        for key in SUBJECTS.keys():
+            if major_en == SUBJECTS[key]['major_en'] \
+            and not SUBJECTS[key]['Major']:
+                group.append(SUBJECTS[key][self.lang]['title'])
         return sorted(set(group))
     
     def get_list(self):
@@ -34985,7 +34982,6 @@ class Subjects:
             subjects as "United Nations" or "Travel" can be reported as not
             comprising any subjects.
         '''
-        f = '[MClient] plugins.multitrancom.subjects.Subjects.get_list'
         dic = {}
         majors = self.get_majors()
         for major in majors:
