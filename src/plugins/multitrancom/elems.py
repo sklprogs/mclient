@@ -133,7 +133,8 @@ class SeparateWords:
     def _add_subject(self):
         block = ic.Block()
         block.type_ = 'subj'
-        block.text = block.subj = block.subjf = _('Separate words')
+        block.text = block.subjf = _('Separate words')
+        block.subj = _('sep. words')
         self.blocks.insert(0,block)
     
     def set(self):
