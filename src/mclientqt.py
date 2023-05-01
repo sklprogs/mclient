@@ -1540,13 +1540,13 @@ class App:
             lg.objs.articles.set_id(artid)
             cells = lg.objs.articles.get_cells()
             
-        ExpandSpeech = True
-        cells = cl.Expand(cells, ExpandSpeech).run()
+        cells = cl.Expand(cells).run()
         
         #TODO: elaborate
         blocked = []
         subjects = ['Общая лексика','общ.']
         # Full forms as well
+        #speech = ['сокр.','глаг.','сущ.','прил.','нареч.','предл.','мест.']
         speech = ['сущ.','глаг.','прил.','сокр.','нареч.','предл.','мест.']
         OmitUsers = 0
         cells = cl.Omit(cells,blocked,OmitUsers).run()
