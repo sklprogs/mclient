@@ -45,29 +45,26 @@ class Plugins:
             return {}
         return self.plugin.get_fixed_urls()
     
-    def get_subjects(self):
-        f = '[MClient] manager.Plugins.get_subjects'
-        if not self.plugin:
-            sh.com.rep_empty(f)
-            return []
-        return self.plugin.get_subjects()
-    
-    def get_group_with_header(self,subject=''):
-        f = '[MClient] manager.Plugins.get_group_with_header'
-        if not self.plugin:
-            sh.com.rep_empty(f)
-            return []
-        result = self.plugin.get_group_with_header(subject)
-        mes = '"{}" -> {}'.format(subject,'; '.join(result))
-        sh.objs.get_mes(f,mes,True).show_debug()
-        return result
-    
     def get_majors(self):
         f = '[MClient] manager.Plugins.get_majors'
         if not self.plugin:
             sh.com.rep_empty(f)
             return []
         return self.plugin.get_majors()
+    
+    def get_minors(self):
+        f = '[MClient] manager.Plugins.get_minors'
+        if not self.plugin:
+            sh.com.rep_empty(f)
+            return []
+        return self.plugin.get_minors()
+    
+    def expand_speech(self, short):
+        f = '[MClient] manager.Plugins.expand_speech'
+        if not self.plugin:
+            sh.com.rep_empty(f)
+            return short
+        return self.plugin.expand_speech(short)
     
     def get_search(self):
         f = '[MClient] manager.Plugins.get_search'

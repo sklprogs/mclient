@@ -61,6 +61,22 @@ class Speech:
         self.set_dic()
 
 
+
+class Objects:
+    
+    def __init__(self):
+        self.speech = None
+    
+    def get_speech(self):
+        if self.speech is None:
+            self.speech = Speech()
+            self.speech.run()
+        return self.speech
+
+
+objs = Objects()
+
+
 if __name__ == '__main__':
     f = '[MClientQt] plugins.multitrancom.speech.__main__'
     sh.com.start()

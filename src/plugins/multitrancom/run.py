@@ -10,6 +10,7 @@ import plugins.multitrancom.tags as tg
 import plugins.multitrancom.elems as el
 import plugins.multitrancom.pairs as pr
 import plugins.multitrancom.subjects as sj
+import plugins.multitrancom.speech as sp
 
 
 
@@ -21,7 +22,9 @@ class Plugin:
         self.maxrows = maxrows
     
     def set_values(self):
-        self.blocks = []
+        self.cells = []
+        self.majors = []
+        self.minors = []
         self.fixed_urls = {}
         self.htm = ''
         self.text = ''
@@ -30,14 +33,28 @@ class Plugin:
     def get_title(self,short):
         return sj.objs.get_subjects().get_title(short)
     
-    def get_subjects(self):
-        return sj.objs.get_subjects().get_list()
-    
-    def get_group_with_header(self,subject=''):
-        return sj.objs.get_subjects().get_group_with_header(subject)
-    
     def get_majors(self):
-        return sj.objs.get_subjects().get_majors()
+        f = '[MClient] plugins.multitrancom.run.Plugin.get_majors'
+        if not self.majors:
+            result = sj.objs.get_subjects().get_lists()
+            if not result:
+                sh.com.rep_empty(f)
+                return []
+            self.majors, self.minors = result[0], result[1]
+        return self.majors
+    
+    def get_minors(self):
+        f = '[MClient] plugins.multitrancom.run.Plugin.get_minors'
+        if not self.minors:
+            result = sj.objs.get_subjects().get_lists()
+            if not result:
+                sh.com.rep_empty(f)
+                return []
+            self.majors, self.minors = result[0], result[1]
+        return self.minors
+    
+    def expand_speech(self, short):
+        return sp.objs.get_speech().find(short)
     
     def get_search(self):
         return self.search
@@ -141,8 +158,8 @@ class Plugin:
                           ,url = url
                           ).run()
         self.text = cu.CleanUp(self.htm).run()
-        self.blocks = tg.Tags(self.text).run()
-        ielems = el.Elems(self.blocks)
-        self.blocks = ielems.run()
+        blocks = tg.Tags(self.text).run()
+        ielems = el.Elems(blocks)
+        self.cells = ielems.run()
         self.fixed_urls = ielems.fixed_urls
-        return self.blocks
+        return self.cells
