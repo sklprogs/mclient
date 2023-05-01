@@ -39,7 +39,7 @@ class Subjects:
     def set_values(self):
         self.Success = True
         self.dic = {}
-        self.file = ''
+        self.code = ''
         self.file_ptrn = sh.objs.get_pdir().add ('..', '..', '..'
                                                 ,'resources', 'plugins'
                                                 ,'multitrancom', 'subjects'
@@ -58,24 +58,29 @@ class Subjects:
             minors.append(self.dic[major])
         return(majors, minors)
     
+    def set_dic(self):
+        f = '[MClientQt] plugins.multitrancom.subjects.Subjects.set_dic'
+        try:
+            self.dic = json.loads(self.code)
+        except Exception as e:
+            self.Success = False
+            sh.com.rep_third_party(f,e)
+    
     def load(self):
         f = '[MClientQt] plugins.multitrancom.subjects.Subjects.load'
         if not self.Success:
             sh.com.cancel(f)
             return
-        self.file = self.file_ptrn.format(sh.com.lang)
-        code = sh.ReadTextFile(self.file).get()
-        if not code:
-            sh.com.rep_empty(f)
-            return
-        try:
-            self.dic = json.loads(code)
-        except Exception as e:
+        file = self.file_ptrn.format(sh.com.lang)
+        self.code = sh.ReadTextFile(file).get()
+        if not self.code:
             self.Success = False
-            sh.com.rep_third_party(f,e)
+            sh.com.rep_out(f)
+            return
     
     def run(self):
         self.load()
+        self.set_dic()
 
 
 
