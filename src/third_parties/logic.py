@@ -14,7 +14,7 @@ class ThirdParties:
 
     def open_license_url(self):
         ionline = sh.Online()
-        ionline.url = sh.lg.globs['license_url']
+        ionline.url = sh.com.license_url
         ionline.browse()
     
     def fill(self):
