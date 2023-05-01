@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import PyQt5.QtWidgets
-
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 

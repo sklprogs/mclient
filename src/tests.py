@@ -699,6 +699,7 @@ class Commands:
     
     def run_speech(self):
         import plugins.multitrancom.speech as sp
+        # ru_RU locale is required
         short = 'прил.'
         full = sp.objs.get_speech().find(short)
         mes = f'"{short}" -> "{full}"'
