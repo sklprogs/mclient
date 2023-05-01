@@ -72,6 +72,10 @@ class Subjects:
             sh.com.cancel(f)
             return
         file = self.file_ptrn.format(sh.com.lang)
+        ''' Show the full path in case of not finding the file to make
+            debugging easier.
+        '''
+        file = sh.Path(file).get_absolute()
         self.code = sh.ReadTextFile(file).get()
         if not self.code:
             self.Success = False

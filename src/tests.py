@@ -698,11 +698,11 @@ class Commands:
         print(sj.objs.get_subjects().get_majors())
     
     def run_speech(self):
-        import logic as lg
-        lg.com.start()
-        order = (_('Noun'),_('Verb'),_('Adjective'))
-        lg.objs.get_speech_prior().reset(order)
-        lg.objs.speech_prior.debug()
+        import plugins.multitrancom.speech as sp
+        short = 'прил.'
+        full = sp.objs.get_speech().find(short)
+        mes = f'"{short}" -> "{full}"'
+        return mes
     
     def generate_config(self):
         import config as cf
@@ -1062,11 +1062,14 @@ if __name__ == '__main__':
     '''
     #Get().run_multitrancom()
     #idebug = sh.Debug(f,Tags().run_multitrancom())
-    idebug = sh.Debug(f,Elems().run_multitrancom())
+    #idebug = sh.Debug(f,Elems().run_multitrancom())
     #idebug = sh.Debug(f,View().run_multitrancom())
     #idebug = sh.Debug(f,Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
-    idebug.show()
+    #idebug.show()
+    
+    mes = com.run_speech()
+    sh.objs.get_mes(f,mes).show_debug()
 
     '''
     # Priorities

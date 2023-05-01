@@ -15,8 +15,7 @@ class Speech:
         self.Success = True
         self.code = ''
         self.dic = {}
-        self.file_ptrn = sh.objs.get_pdir().add ('..', '..', '..'
-                                                ,'resources', 'plugins'
+        self.file_ptrn = sh.objs.get_pdir().add ('..', 'resources', 'plugins'
                                                 ,'multitrancom', 'speech'
                                                 ,'{}.json'
                                                 )
@@ -38,6 +37,10 @@ class Speech:
             sh.com.cancel(f)
             return
         file = self.file_ptrn.format(sh.com.lang)
+        ''' Show the full path in case of not finding the file to make
+            debugging easier.
+        '''
+        file = sh.Path(file).get_absolute()
         self.code = sh.ReadTextFile(file).get()
         if not self.code:
             self.Success = False
@@ -45,10 +48,15 @@ class Speech:
             return
     
     def find(self, short):
+        ''' This takes ~0.007s on AMD E-300 for 'set' (processing 'speech'
+            attribute for each block) without debug output, running in terminal
+            (not in IDE). Since the function is used very frequently, debugging
+            can slow it down to ~1s!
+        '''
         f = '[MClientQt] plugins.multitrancom.speech.Speech.find'
         if not self.Success:
             sh.com.cancel(f)
-            return
+            return short
         try:
             return self.dic[short]
         except KeyError:
@@ -75,15 +83,3 @@ class Objects:
 
 
 objs = Objects()
-
-
-if __name__ == '__main__':
-    f = '[MClientQt] plugins.multitrancom.speech.__main__'
-    sh.com.start()
-    ispeech = Speech()
-    ispeech.run()
-    short = 'глаг.'
-    full = ispeech.find(short)
-    mes = f'"{short}" -> "{full}"'
-    sh.objs.get_mes(f,mes).show_debug()
-    sh.com.end()

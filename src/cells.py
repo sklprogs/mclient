@@ -6,6 +6,35 @@ import skl_shared_qt.shared as sh
 
 import instance as ic
 import format as fm
+import logic as lg
+
+
+class Expand:
+    
+    def __init__(self, cells, Speech=False):
+        ''' Run this class before blocking and prioritization since short and
+            full values can be sorted differently (especially this concerns
+            subjects, in which first letters of shortened and full texts may
+            differ).
+        '''
+        self.cells = cells
+        self.Speech = Speech
+    
+    def expand_speech(self):
+        f = '[MClientQt] cells.Expand.expand_speech'
+        if not self.Speech:
+            sh.com.rep_lazy(f)
+            return
+        ''' Runs just after 'elems'. Fixed types are not restored yet at this
+            point.
+        '''
+        for cell in self.cells:
+            cell.speech = lg.objs.get_plugins().expand_speech(cell.speech)
+    
+    def run(self):
+        self.expand_speech()
+        return self.cells
+
 
 
 class Omit:

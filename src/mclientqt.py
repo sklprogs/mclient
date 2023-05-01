@@ -43,7 +43,8 @@ class Priorities(pr.Priorities):
         f = '[MClientQt] mclient.Priorities.set_mode'
         mode = self.gui.opt_src.get()
         if mode == _('All subjects'):
-            self.dic2 = lg.objs.get_plugins().get_subjects()
+            #cur
+            self.dic2 = []
         elif mode == _('Main'):
             majors = lg.objs.plugins.get_majors()
             if not majors:
@@ -1539,6 +1540,9 @@ class App:
             lg.objs.articles.set_id(artid)
             cells = lg.objs.articles.get_cells()
             
+        ExpandSpeech = True
+        cells = cl.Expand(cells, ExpandSpeech).run()
+        
         #TODO: elaborate
         blocked = []
         subjects = ['Общая лексика','общ.']
@@ -1895,7 +1899,8 @@ class App:
         self.settings = st.objs.get_settings()
         self.history = hs.History()
         self.save = Save()
-        self.block = bl.Blacklist(func_group=lg.objs.get_plugins().get_group_with_header)
+        #cur
+        self.block = bl.Blacklist()
         self.prior = Priorities()
         self.gui.set_gui(self.table.gui,self.panel)
         self.set_title(product)
