@@ -3,6 +3,7 @@
 
 import json
 
+from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 ''' About this module:
@@ -45,6 +46,18 @@ class Subjects:
                                                 ,'{}.json'
                                                 )
     
+    def get_lists(self):
+        f = '[MClientQt] plugins.multitrancom.subjects.Subjects.get_lists'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        majors = []
+        minors = []
+        for major in self.dic:
+            majors.append(major)
+            minors.append(self.dic[major])
+        return(majors, minors)
+    
     def load(self):
         f = '[MClientQt] plugins.multitrancom.subjects.Subjects.load'
         if not self.Success:
@@ -84,7 +97,17 @@ objs = Objects()
 if __name__ == '__main__':
     f = '[MClient] plugins.multitrancom.subjects.__main__'
     sh.com.start()
-    objs.get_subjects()
-    mes = 'Ready!'
-    sh.objs.get_mes(f,mes).show_debug()
+    lists = objs.get_subjects().get_lists()
+    mes = []
+    if lists:
+        mes.append(_('Majors:'))
+        mes.append('; '.join(lists[0]))
+        mes.append('')
+        mes.append(_('Grouped minors:'))
+        mes.append(str(lists[1]))
+    mes = '\n'.join(mes)
+    idebug = sh.Debug(f,mes)
+    idebug.show()
+#    mes = _('Ready!')
+#    sh.objs.get_mes(f,mes).show_debug()
     sh.com.end()
