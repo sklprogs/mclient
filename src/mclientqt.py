@@ -1082,8 +1082,10 @@ class App:
                   ).browse()
     
     def reload(self):
-        lg.objs.get_articles().clear_cur()
-        self.load_article()
+        search = lg.objs.get_articles().get_search()
+        url = lg.objs.articles.get_url()
+        lg.objs.articles.clear_article()
+        self.load_article(search, url)
     
     def toggle_view(self):
         if sh.lg.globs['bool']['VerticalView']:

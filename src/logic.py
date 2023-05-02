@@ -87,11 +87,15 @@ class Articles:
     def clear_article(self):
         f = '[MClientQt] logic.Articles.clear_article'
         try:
-            self.articles['ids'][self.id]['raw_code'] = ''
-            self.articles['ids'][self.id]['cells'] = []
+            del self.articles['ids'][self.id]
         except KeyError:
             mes = _('Wrong input data!')
             sh.objs.get_mes(f,mes).show_warning()
+            return
+        if self.id > 0:
+            self.set_id(self.id-1)
+        else:
+            self.id = -1
     
     def delete_bookmarks(self):
         f = '[MClientQt] logic.Articles.delete_bookmarks'
@@ -727,8 +731,9 @@ class Table:
         before loading an article.
     '''
     def __init__(self,plain=[],code=[]):
+        self.set_values()
         if plain and code:
-            self.reset(plain,code)
+            self.reset(plain, code)
     
     def reset(self,plain,code):
         self.set_values()
