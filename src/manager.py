@@ -66,6 +66,13 @@ class Plugins:
             return short
         return self.plugin.expand_speech(short)
     
+    def expand_subject(self, short):
+        f = '[MClient] manager.Plugins.expand_subject'
+        if not self.plugin:
+            sh.com.rep_empty(f)
+            return short
+        return self.plugin.expand_subject(short)
+    
     def get_search(self):
         f = '[MClient] manager.Plugins.get_search'
         if not self.plugin:

@@ -25,13 +25,13 @@ import skl_shared_qt.shared as sh
       moreover, frankly speaking, most people stay on the same locale, and
       blocking/prioritization lists are usually short and can be easily
       recreated.
-    - multitran.com has a bug causing that such entries as 'Gruzovik, inform.'
-      will be expanded as 'Informal'.
+    - multitran.com has a bug causing such entries as 'Gruzovik, inform.' to be
+      expanded as 'Informal'.
 '''
 
 
 
-class Subjects:
+class Groups:
     
     def __init__(self):
         self.set_values()
@@ -47,7 +47,7 @@ class Subjects:
                                                 )
     
     def get_lists(self):
-        f = '[MClientQt] plugins.multitrancom.subjects.Subjects.get_lists'
+        f = '[MClientQt] plugins.multitrancom.subjects.Groups.get_lists'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -59,7 +59,7 @@ class Subjects:
         return(majors, minors)
     
     def set_dic(self):
-        f = '[MClientQt] plugins.multitrancom.subjects.Subjects.set_dic'
+        f = '[MClientQt] plugins.multitrancom.subjects.Groups.set_dic'
         try:
             self.dic = json.loads(self.code)
         except Exception as e:
@@ -67,7 +67,7 @@ class Subjects:
             sh.com.rep_third_party(f,e)
     
     def load(self):
-        f = '[MClientQt] plugins.multitrancom.subjects.Subjects.load'
+        f = '[MClientQt] plugins.multitrancom.subjects.Groups.load'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -88,35 +88,55 @@ class Subjects:
 
 
 
+class Article:
+    
+    def __init__(self):
+        self.set_values()
+    
+    def set_values(self):
+        self.Success = True
+        self.dic = {}
+    
+    def reset(self, dic):
+        self.set_values()
+        self.dic = dic
+    
+    def check(self):
+        f = '[MClientQt] plugins.multitrancom.subjects.Article.check'
+        if not self.dic:
+            sh.com.rep_empty(f)
+    
+    def find(self, short):
+        f = '[MClientQt] plugins.multitrancom.subjects.Article.find'
+        if not self.Success:
+            sh.com.cancel(f)
+            return short
+        if not short:
+            return ''
+        try:
+            return self.dic[short]
+        except KeyError:
+            mes = _('Wrong input data: "{}"!').format(short)
+            sh.objs.get_mes(f,mes,True).show_warning()
+        return short
+
+
+
 class Objects:
     
     def __init__(self):
-        self.subjects = None
+        self.groups = self.article = None
     
-    def get_subjects(self):
-        if self.subjects is None:
-            self.subjects = Subjects()
-            self.subjects.run()
-        return self.subjects
+    def get_article(self):
+        if self.article is None:
+            self.article = Article()
+        return self.article
+    
+    def get_groups(self):
+        if self.groups is None:
+            self.groups = Groups()
+            self.groups.run()
+        return self.groups
 
 
 objs = Objects()
-
-
-if __name__ == '__main__':
-    f = '[MClient] plugins.multitrancom.subjects.__main__'
-    sh.com.start()
-    lists = objs.get_subjects().get_lists()
-    mes = []
-    if lists:
-        mes.append(_('Majors:'))
-        mes.append('; '.join(lists[0]))
-        mes.append('')
-        mes.append(_('Grouped minors:'))
-        mes.append(str(lists[1]))
-    mes = '\n'.join(mes)
-    idebug = sh.Debug(f,mes)
-    idebug.show()
-#    mes = _('Ready!')
-#    sh.objs.get_mes(f,mes).show_debug()
-    sh.com.end()

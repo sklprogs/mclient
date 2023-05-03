@@ -185,6 +185,7 @@ class Elems:
     def __init__(self,blocks):
         self.cells = []
         self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
+        self.art_subj = {}
         self.blocks = blocks
     
     def save_urls(self):
@@ -543,6 +544,15 @@ class Elems:
             i += 1
         sh.com.rep_matches(f,count)
     
+    def set_art_subj(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_art_subj'
+        count = 0
+        for block in self.blocks:
+            if block.type_ == 'subj' and block.subj and block.subjf:
+                count += 1
+                self.art_subj[block.subj] = block.subjf
+        sh.com.rep_matches(f,count)
+    
     def run(self):
         self.delete_empty()
         self.blocks = SeparateWords(self.blocks).run()
@@ -553,6 +563,7 @@ class Elems:
         self.set_phsubj()
         self.set_see_also()
         self.set_fixed_blocks()
+        self.set_art_subj()
         self.separate_fixed()
         self.run_phcount()
         self.strip_blocks()

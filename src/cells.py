@@ -14,7 +14,9 @@ import logic as lg
 class Expand:
     
     def __init__(self, cells):
-        ''' - Run this class before blocking and prioritization since short and
+        ''' - Runs just after 'elems'. Fixed types are not restored yet at this
+              point.
+            - Run this class before blocking and prioritization since short and
               full values can be sorted differently (especially this concerns
               subjects, in which first letters of shortened and full texts may
               differ).
@@ -29,14 +31,21 @@ class Expand:
         if sh.lg.globs['bool']['ShortSpeech']:
             sh.com.rep_lazy(f)
             return
-        ''' Runs just after 'elems'. Fixed types are not restored yet at this
-            point.
-        '''
         for cell in self.cells:
             cell.speech = lg.objs.get_plugins().expand_speech(cell.speech)
     
+    def expand_subject(self):
+        # This takes ~0.00036s for 'set' on AMD E-300 (no IDE, no warnings)
+        f = '[MClientQt] cells.Expand.expand_subject'
+        if sh.lg.globs['bool']['ShortSubjects']:
+            sh.com.rep_lazy(f)
+            return
+        for cell in self.cells:
+            cell.subj = lg.objs.get_plugins().expand_subject(cell.subj)
+    
     def run(self):
         self.expand_speech()
+        self.expand_subject()
         return self.cells
 
 
