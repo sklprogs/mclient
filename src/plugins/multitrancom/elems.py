@@ -32,6 +32,9 @@ class Thesaurus:
             if self.blocks[i].type_ == 'wform' \
             and self.blocks[i].text in self.patterns:
                 self.no = i
+                stripped = self.blocks[i].text.strip()
+                self.blocks[i].text = self.blocks[i].subj = _('Engl. thes.')
+                self.blocks[i].subjf = stripped
                 break
             i += 1
     
@@ -48,6 +51,12 @@ class Thesaurus:
                 self.blocks[i].text = sh.List ([self.blocks[self.no].text,','
                                               ,self.blocks[i].text]
                                               ).space_items()
+                self.blocks[i].subj = sh.List ([self.blocks[self.no].subj,','
+                                              ,self.blocks[i].subj]
+                                              ).space_items()
+                self.blocks[i].subjf = sh.List ([self.blocks[self.no].subjf,','
+                                               ,self.blocks[i].subjf]
+                                               ).space_items()
             i += 1
         sh.com.rep_matches(f,count)
     
@@ -196,7 +205,7 @@ class Elems:
                 self.fixed_urls[cell.fixed_block.type_][cell.text] = cell.url                
     
     def _is_block_fixed(self,block):
-        return block.type_ in ('subj','wform','speech','transc','phsubj')
+        return block.type_ in ('subj', 'wform', 'speech', 'transc', 'phsubj')
     
     def _get_fixed_block(self,cell):
         for block in cell.blocks:
@@ -525,7 +534,10 @@ class Elems:
                 if match:
                     title = _('Phrases ({})').format(match.group(1))
                     # 'fill_fixed' is block-oriented
-                    cell.text = cell.fixed_block.text = title
+                    cell.text = cell.fixed_block.text = cell.fixed_block.subj \
+                              = cell.fixed_block.subjf = title
+                    # There should be only one 'phsubj'
+                    return
     
     def set_row_nos(self):
         # Run this before deleting fixed types
@@ -548,7 +560,7 @@ class Elems:
         f = '[MClientQt] plugins.multitrancom.elems.Elems.set_art_subj'
         count = 0
         for block in self.blocks:
-            if block.type_ == 'subj' and block.subj and block.subjf:
+            if block.type_ in ('subj', 'phsubj') and block.subj and block.subjf:
                 count += 1
                 self.art_subj[block.subj] = block.subjf
         sh.com.rep_matches(f,count)
@@ -563,7 +575,6 @@ class Elems:
         self.set_phsubj()
         self.set_see_also()
         self.set_fixed_blocks()
-        self.set_art_subj()
         self.separate_fixed()
         self.run_phcount()
         self.strip_blocks()
@@ -577,6 +588,7 @@ class Elems:
         self.rename_phsubj()
         self.set_row_nos()
         self.save_urls()
+        self.set_art_subj()
         self.fill_fixed()
         self.delete_fixed()
         self.renumber()
