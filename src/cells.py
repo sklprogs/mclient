@@ -43,10 +43,9 @@ class Expand:
 
 class Omit:
     
-    def __init__(self,cells,subjects=[],OmitUsers=False):
+    def __init__(self,cells,subjects=[]):
         self.cells = cells
         self.subjects = subjects
-        self.OmitUsers = OmitUsers
     
     def _is_blocked(self,text):
         if text in self.subjects:
@@ -66,7 +65,7 @@ class Omit:
     
     def omit_users(self):
         f = '[MClientQt] cells.Omit.omit_users'
-        if not self.OmitUsers:
+        if sh.lg.globs['bool']['ShowUserNames']:
             sh.com.rep_lazy(f)
             return
         count = 0

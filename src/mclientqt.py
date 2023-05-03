@@ -1550,8 +1550,7 @@ class App:
         # Full forms as well
         #speech = ['сокр.','глаг.','сущ.','прил.','нареч.','предл.','мест.']
         speech = ['сущ.','глаг.','прил.','сокр.','нареч.','предл.','мест.']
-        OmitUsers = 0
-        cells = cl.Omit(cells,blocked,OmitUsers).run()
+        cells = cl.Omit(cells,blocked).run()
         cells = cl.Prioritize(cells,subjects,speech).run()
         
         #TODO: implement
