@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import copy
+
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
@@ -12,12 +14,15 @@ import logic as lg
 class Expand:
     
     def __init__(self, cells):
-        ''' Run this class before blocking and prioritization since short and
-            full values can be sorted differently (especially this concerns
-            subjects, in which first letters of shortened and full texts may
-            differ).
+        ''' - Run this class before blocking and prioritization since short and
+              full values can be sorted differently (especially this concerns
+              subjects, in which first letters of shortened and full texts may
+              differ).
+            - Creating a full clone of cells is necessary since blocks and
+              cells change their attributes. 'list' or 'copy.copy' is not
+              enough. Works with None.
         '''
-        self.cells = cells
+        self.cells = copy.deepcopy(cells)
     
     def expand_speech(self):
         f = '[MClientQt] cells.Expand.expand_speech'
