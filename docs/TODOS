@@ -10,6 +10,8 @@ mclient:
   add titles everywhere
 
 multitrancom:
+- RU-EN, математика: Implement "Русский тезаурус"
+- RU-EN, математика -> Картография: Remove "Английский"
 - RU-EN, энка -> Фразы: Delete Тематика-Английский-Русский
 - RU-EN, purping: implement "Варианты замены" mode and following URLs
 - RU-EN, закрыть соединение: enable copying a comment block url

@@ -45,6 +45,20 @@ class Plugins:
             return {}
         return self.plugin.get_fixed_urls()
     
+    def get_article_subjects(self):
+        f = '[MClient] manager.Plugins.get_article_subjects'
+        if not self.plugin:
+            sh.com.rep_empty(f)
+            return {}
+        return self.plugin.get_article_subjects()
+    
+    def get_speeches(self):
+        f = '[MClient] manager.Plugins.get_speeches'
+        if not self.plugin:
+            sh.com.rep_empty(f)
+            return {}
+        return self.plugin.get_speeches()
+    
     def get_majors(self):
         f = '[MClient] manager.Plugins.get_majors'
         if not self.plugin:

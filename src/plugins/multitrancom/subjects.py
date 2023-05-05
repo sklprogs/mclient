@@ -3,7 +3,6 @@
 
 import json
 
-from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 ''' About this module:
@@ -88,49 +87,10 @@ class Groups:
 
 
 
-class Article:
-    
-    def __init__(self):
-        self.set_values()
-    
-    def set_values(self):
-        self.Success = True
-        self.dic = {}
-    
-    def reset(self, dic):
-        self.set_values()
-        self.dic = dic
-    
-    def check(self):
-        f = '[MClientQt] plugins.multitrancom.subjects.Article.check'
-        if not self.dic:
-            sh.com.rep_empty(f)
-    
-    def find(self, short):
-        f = '[MClientQt] plugins.multitrancom.subjects.Article.find'
-        if not self.Success:
-            sh.com.cancel(f)
-            return short
-        if not short:
-            return ''
-        try:
-            return self.dic[short]
-        except KeyError:
-            mes = _('Wrong input data: "{}"!').format(short)
-            sh.objs.get_mes(f,mes,True).show_warning()
-        return short
-
-
-
 class Objects:
     
     def __init__(self):
-        self.groups = self.article = None
-    
-    def get_article(self):
-        if self.article is None:
-            self.article = Article()
-        return self.article
+        self.groups = None
     
     def get_groups(self):
         if self.groups is None:

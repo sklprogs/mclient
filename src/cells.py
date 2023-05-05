@@ -26,26 +26,42 @@ class Expand:
         '''
         self.cells = copy.deepcopy(cells)
     
-    def expand_speech(self):
-        f = '[MClientQt] cells.Expand.expand_speech'
+    def expand_speeches(self):
+        f = '[MClientQt] cells.Expand.expand_speeches'
         if sh.lg.globs['bool']['ShortSpeech']:
             sh.com.rep_lazy(f)
             return
-        for cell in self.cells:
-            cell.speech = lg.objs.get_plugins().expand_speech(cell.speech)
-    
-    def expand_subject(self):
-        # This takes ~0.00036s for 'set' on AMD E-300 (no IDE, no warnings)
-        f = '[MClientQt] cells.Expand.expand_subject'
-        if sh.lg.globs['bool']['ShortSubjects']:
+        speeches = lg.objs.get_plugins().get_speeches()
+        if not speeches:
             sh.com.rep_lazy(f)
             return
         for cell in self.cells:
-            cell.subj = lg.objs.get_plugins().expand_subject(cell.subj)
+            try:
+                cell.speech = speeches[cell.speech]
+            except KeyError:
+                mes = _('Wrong input data: "{}"!').format(cell.speech)
+                sh.objs.get_mes(f,mes,True).show_warning()
+    
+    def expand_subjects(self):
+        # This takes ~?s for 'set' on AMD E-300 (no IDE, no warnings)
+        f = '[MClientQt] cells.Expand.expand_subjects'
+        if sh.lg.globs['bool']['ShortSubjects']:
+            sh.com.rep_lazy(f)
+            return
+        subjects = lg.objs.get_articles().get_subjects()
+        if not subjects:
+            sh.com.rep_lazy(f)
+            return
+        for cell in self.cells:
+            try:
+                cell.subj = subjects[cell.subj]
+            except KeyError:
+                mes = _('Wrong input data: "{}"!').format(cell.subj)
+                sh.objs.get_mes(f,mes,True).show_warning()
     
     def run(self):
-        self.expand_speech()
-        self.expand_subject()
+        self.expand_speeches()
+        self.expand_subjects()
         return self.cells
 
 

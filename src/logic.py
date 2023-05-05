@@ -29,6 +29,22 @@ class Articles:
     def reset(self):
         self.set_values()
     
+    def get_fixed_urls(self):
+        f = '[MClientQt] logic.Articles.get_fixed_urls'
+        try:
+            return self.articles['ids'][self.id]['fixed_urls']
+        except KeyError:
+            sh.com.rep_input(f)
+        return {}
+    
+    def get_subjects(self):
+        f = '[MClientQt] logic.Articles.get_subjects'
+        try:
+            return self.articles['ids'][self.id]['subjects']
+        except KeyError:
+            sh.com.rep_input(f)
+        return {}
+    
     def is_last(self):
         return self.id == self.get_max_id()
     
@@ -71,16 +87,18 @@ class Articles:
     
     def add(self, search='', url='', cells=[], table=[], raw_code=''):
         id_ = self.get_max_id() + 1
-        self.articles['ids'][id_] = {'source'   : sh.lg.globs['str']['source']
-                                    ,'search'   : search
-                                    ,'url'      : url
-                                    ,'cells'    : cells
-                                    ,'table'    : table
-                                    ,'raw_code' : raw_code
-                                    ,'rowno'    : -1
-                                    ,'colno'    : -1
-                                    ,'lang1'    : objs.get_plugins().get_lang1()
-                                    ,'lang2'    : objs.plugins.get_lang2()
+        self.articles['ids'][id_] = {'source'     : sh.lg.globs['str']['source']
+                                    ,'lang1'      : objs.get_plugins().get_lang1()
+                                    ,'lang2'      : objs.plugins.get_lang2()
+                                    ,'fixed_urls' : objs.plugins.get_fixed_urls()
+                                    ,'subjects'   : objs.plugins.get_article_subjects()
+                                    ,'search'     : search
+                                    ,'url'        : url
+                                    ,'cells'      : cells
+                                    ,'table'      : table
+                                    ,'raw_code'   : raw_code
+                                    ,'rowno'      : -1
+                                    ,'colno'      : -1
                                     }
         self.set_id(id_)
     

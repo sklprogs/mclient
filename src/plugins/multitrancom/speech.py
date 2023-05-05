@@ -2,7 +2,6 @@
 
 import json
 
-from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 
@@ -31,6 +30,9 @@ class Speech:
             self.Success = False
             sh.com.rep_third_party(f,e)
     
+    def get_dic(self):
+        return self.dic
+    
     def load(self):
         f = '[MClientQt] plugins.multitrancom.speech.Speech.load'
         if not self.Success:
@@ -46,23 +48,6 @@ class Speech:
             self.Success = False
             sh.com.rep_out(f)
             return
-    
-    def find(self, short):
-        ''' This takes ~0.007s on AMD E-300 for 'set' (processing 'speech'
-            attribute for each block) without debug output, running in terminal
-            (not in IDE). Since the function is used very frequently, debugging
-            can slow it down to ~1s!
-        '''
-        f = '[MClientQt] plugins.multitrancom.speech.Speech.find'
-        if not self.Success:
-            sh.com.cancel(f)
-            return short
-        try:
-            return self.dic[short]
-        except KeyError:
-            mes = _('Wrong input data: "{}"!').format(short)
-            sh.objs.get_mes(f,mes,True).show_warning()
-        return short
     
     def run(self):
         self.load()
