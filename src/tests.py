@@ -35,15 +35,13 @@ class Wrap:
                          ).run()
         ielems = el.Elems(blocks)
         cells = ielems.run()
-        #blocked = ['Gruzovik']
-        blocked = []
+        blocked = ['Gruzovik']
         subjects = ['Общая лексика','общ.']
         # Full forms as well
         speech = ['сущ.','глаг.','прил.','сокр.','нареч.','предл.','мест.']
-        OmitUsers = 0
-        cells = cl.Omit(cells,blocked,OmitUsers).run()
+        cells = cl.Omit(cells, blocked).run()
         cells = cl.Prioritize(cells,subjects,speech).run()
-        cells = cl.View(cells, fixed_urls=ielems.fixed_urls).run()
+        cells = cl.View(cells, fixed_urls=ielems.fixed_urls)
         iwrap = cl.Wrap(cells)
         iwrap.run()
         timer.end()
@@ -67,9 +65,7 @@ class View:
             'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
             to set 'dic' and some other types.
         '''
-        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/back (2023-04-12).html'
-        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/beg the question (2023-04-15).html'
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/hello (2023-04-19).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/run (2023-05-07).html'
         text = sh.ReadTextFile(file).get()
         timer = sh.Timer(f)
         timer.start()
@@ -79,14 +75,13 @@ class View:
                          ).run()
         ielems = el.Elems(blocks)
         cells = ielems.run()
-        #blocked = ['Gruzovik']
-        blocked = []
+        blocked = ['Gruzovik']
         subjects = ['Общая лексика','общ.']
         # Full forms as well
-        speech = ['сущ.','глаг.','прил.','сокр.','нареч.','предл.','мест.']
-        OmitUsers = 0
-        cells = cl.Omit(cells,blocked,OmitUsers).run()
-        cells = cl.Prioritize(cells,subjects,speech).run()
+        #speech = ['сущ.', 'глаг.', 'прил.', 'сокр.', 'нареч.', 'предл.', 'мест.']
+        speech = ['прил.', 'сущ.', 'глаг.', 'сокр.', 'нареч.', 'предл.', 'мест.']
+        cells = cl.Omit(cells, blocked).run()
+        cells = cl.Prioritize(cells, subjects, speech).run()
         iview = cl.View(cells, fixed_urls=ielems.fixed_urls)
         iview.run()
         timer.end()
@@ -1050,8 +1045,8 @@ if __name__ == '__main__':
     '''
     #Get().run_multitrancom()
     #idebug = sh.Debug(f,Tags().run_multitrancom())
-    idebug = sh.Debug(f,Elems().run_multitrancom())
-    #idebug = sh.Debug(f,View().run_multitrancom())
+    #idebug = sh.Debug(f,Elems().run_multitrancom())
+    idebug = sh.Debug(f,View().run_multitrancom())
     #idebug = sh.Debug(f,Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
     idebug.show()
