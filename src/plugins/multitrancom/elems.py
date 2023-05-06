@@ -15,27 +15,23 @@ class Thesaurus:
     '''
     def __init__(self,blocks):
         self.no = None
-        ''' According to HTML code, there is a non-breaking space at the start,
-            which we further replace with a space in 'cleanup'.
-        '''
-        self.patterns = [' Английский тезаурус',' English thesaurus'
-                        ,' Englisch Thesaurus',' Inglés tesauro'
-                        ,' Англійський тезаурус'
-                        ,' Angielski tezaurus',' 英语 词库'
-                        ]
-        
         self.blocks = blocks
     
     def set_no(self):
+        ''' We don't have to delete empty 'wform' blocks since they will be
+            deleted at the next step, 'Elems.delete_empty'.
+        '''
         i = 0
-        while i < len(self.blocks):
-            if self.blocks[i].type_ == 'wform' \
-            and self.blocks[i].text in self.patterns:
-                self.no = i
-                stripped = self.blocks[i].text.strip()
-                self.blocks[i].text = self.blocks[i].subj = _('Engl. thes.')
-                self.blocks[i].subjf = stripped
-                break
+        while i < len(self.blocks) - 2:
+            if self.blocks[i].type_ == 'wform' and self.blocks[i].text == ' ' \
+            and self.blocks[i+1].type_ == 'wform' \
+            and self.blocks[i+1].text.strip() \
+            and self.blocks[i+2].type_ == 'wform' \
+            and self.blocks[i+2].text == ' ':
+                self.no = i + 1
+                self.blocks[self.no].text = self.blocks[self.no].subj = _('Thes.')
+                self.blocks[self.no].subjf = _('Thesaurus')
+                return
             i += 1
     
     def add(self):
@@ -566,10 +562,11 @@ class Elems:
         sh.com.rep_matches(f,count)
     
     def run(self):
+        # Find thesaurus before deleting empty blocks
+        self.blocks = Thesaurus(self.blocks).run()
         self.delete_empty()
         self.blocks = SeparateWords(self.blocks).run()
         self.set_transc()
-        self.blocks = Thesaurus(self.blocks).run()
         self.separate_speech()
         self.convert_user_subj()
         self.set_phsubj()

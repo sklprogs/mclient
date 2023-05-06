@@ -20,8 +20,6 @@ class CleanUp:
         self.text = self.text.replace('</i>','')
         self.text = self.text.replace('<u>','')
         self.text = self.text.replace('</u>','')
-        self.text = self.text.replace('<b>','')
-        self.text = self.text.replace('</b>','')
     
     def fix_href(self):
         ''' Fix a malformed URL, e.g., 'href="/m.exe?a=110&l1=1&l2=2&s=process (<редк.>)&sc=671"'
@@ -93,6 +91,8 @@ class CleanUp:
         self.fix_href()
         self.fix_tags()
         self.run_common()
-        # Delete a non-breaking space before a user name
+        ''' Replace a non-breaking space with a space; can be found before user
+            names or thesaurus titles.
+        '''
         self.text = self.text.replace('&nbsp;',' ')
         return self.text
