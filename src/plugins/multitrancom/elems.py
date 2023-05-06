@@ -14,66 +14,89 @@ class Thesaurus:
         - Thesaurus is optional so we use 'rep_lazy' instead of 'cancel'.
     '''
     def __init__(self,blocks):
-        self.no = None
-        ''' According to HTML code, there is a non-breaking space at the start,
-            which we further replace with a space in 'cleanup'.
+        self.nos = []
+        ''' - According to HTML code, there is a non-breaking space at the
+              start, which we further replace with a space in 'cleanup'.
+            - '&SHL=' values to be added to URL: 1, 2, 3, 5, 33, 14, 17.
         '''
-        self.patterns = [' Английский тезаурус',' English thesaurus'
-                        ,' Englisch Thesaurus',' Inglés tesauro'
-                        ,' Англійський тезаурус'
-                        ,' Angielski tezaurus',' 英语 词库'
-                        ]
+        self.patterns_en = (' Английский тезаурус',' English thesaurus'
+                           ,' Englisch Thesaurus',' Inglés tesauro'
+                           ,' Англійський тезаурус',' Angielski tezaurus'
+                           ,' 英语 词库'
+                           )
+        self.patterns_ru = (' Русский тезаурус', ' Russian thesaurus'
+                           ,' Russisch Thesaurus', ' Ruso tesauro'
+                           ,' Російський тезаурус', ' Rosyjski tezaurus'
+                           ,' 俄语 词库'
+                           )
         
         self.blocks = blocks
     
-    def set_no(self):
+    def set_nos(self):
         i = 0
         while i < len(self.blocks):
-            if self.blocks[i].type_ == 'wform' \
-            and self.blocks[i].text in self.patterns:
-                self.no = i
-                stripped = self.blocks[i].text.strip()
-                self.blocks[i].text = self.blocks[i].subj = _('Engl. thes.')
-                self.blocks[i].subjf = stripped
-                break
+            if self.blocks[i].type_ == 'wform':
+                if self.blocks[i].text in self.patterns_en:
+                    self.nos.append(i)
+                    stripped = self.blocks[i].text.strip()
+                    self.blocks[i].text = self.blocks[i].subj = _('Engl. thes.')
+                    self.blocks[i].subjf = stripped
+                elif self.blocks[i].text in self.patterns_ru:
+                    self.nos.append(i)
+                    stripped = self.blocks[i].text.strip()
+                    self.blocks[i].text = self.blocks[i].subj = _('Rus. thes.')
+                    self.blocks[i].subjf = stripped
             i += 1
+    
+    def _add(self, no, limit):
+        count = 0
+        i = no + 1
+        while i < limit:
+            if self.blocks[i].type_ == 'subj':
+                count += 1
+                self.blocks[i].text = sh.List ([self.blocks[no].text, ','
+                                              ,self.blocks[i].text]
+                                              ).space_items()
+                self.blocks[i].subj = sh.List ([self.blocks[no].subj, ','
+                                              ,self.blocks[i].subj]
+                                              ).space_items()
+                self.blocks[i].subjf = sh.List ([self.blocks[no].subjf, ','
+                                               ,self.blocks[i].subjf]
+                                               ).space_items()
+            i += 1
+        return count
     
     def add(self):
         f = '[MClientQt] plugins.multitrancom.elems.Thesaurus.add'
-        if self.no is None:
+        if not self.nos:
             sh.com.rep_lazy(f)
             return
         count = 0
-        i = self.no + 1
-        while i < len(self.blocks):
-            if self.blocks[i].type_ == 'subj':
-                count += 1
-                self.blocks[i].text = sh.List ([self.blocks[self.no].text,','
-                                              ,self.blocks[i].text]
-                                              ).space_items()
-                self.blocks[i].subj = sh.List ([self.blocks[self.no].subj,','
-                                              ,self.blocks[i].subj]
-                                              ).space_items()
-                self.blocks[i].subjf = sh.List ([self.blocks[self.no].subjf,','
-                                               ,self.blocks[i].subjf]
-                                               ).space_items()
+        i = 0
+        while i < len(self.nos):
+            if i < len(self.nos) - 1:
+                limit = self.nos[i+1]
+            else:
+                limit = len(self.blocks)
+            count += self._add(self.nos[i], limit)
             i += 1
         sh.com.rep_matches(f,count)
     
     def delete(self):
         f = '[MClientQt] plugins.multitrancom.elems.Thesaurus.delete'
-        if self.no is None:
+        if not self.nos:
             sh.com.rep_lazy(f)
             return
         try:
-            del self.blocks[self.no]
+            for no in self.nos[::-1]:
+                del self.blocks[no]
         except IndexError:
             # This should never happen. We did the search in the same class.
-            mes = _('Wrong input data: "{}"!').format(self.no)
+            mes = _('Wrong input data: "{}"!').format(no)
             sh.objs.get_mes(f,mes).show_warning()
     
     def run(self):
-        self.set_no()
+        self.set_nos()
         self.add()
         self.delete()
         return self.blocks
