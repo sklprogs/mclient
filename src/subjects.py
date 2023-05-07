@@ -52,7 +52,7 @@ class Subjects:
     def is_prioritized(self, subject):
         # Determine if we need to colorize 'subj' or 'phrase' types
         if not subject:
-            return ''
+            return
         subject = self.expand(subject)
         if subject in lg.objs.get_default().prior:
             return True
@@ -64,7 +64,7 @@ class Subjects:
     
     def is_blocked(self, subject):
         if not subject:
-            return ''
+            return
         subject = self.expand(subject)
         if subject in lg.objs.get_default().block:
             return True
@@ -73,6 +73,30 @@ class Subjects:
             for part in parts:
                 if self.expand(part) in lg.objs.default.block:
                     return True
+    
+    def _get_priority(self, subject):
+        try:
+            return lg.objs.get_default().prior.index(subject)
+        except ValueError:
+            return
+    
+    def get_priority(self, subject):
+        if not subject:
+            return
+        subject = self.expand(subject)
+        priority = self._get_priority(subject)
+        if priority is not None:
+            return priority
+        if ', ' in subject:
+            priorities = []
+            parts = subject.split(', ')
+            for part in parts:
+                part = self.expand(part)
+                priority = self._get_priority(part)
+                if priority is not None:
+                    priorities.append(priority)
+            if priorities:
+                return min(priorities)
 
 
 
@@ -88,30 +112,3 @@ class Objects:
 
 
 objs = Objects()
-
-
-if __name__ == '__main__':
-#    sh.com.start()
-    #url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
-    #search = 'hello'
-    url = 'https://www.multitran.com/m.exe?s=grubble&l1=2&l2=1&SHL=2'
-    search = 'grubble'
-    lg.com.start()
-    cells = lg.objs.get_plugins().request (search = search
-                                          ,url = url
-                                          )
-    lg.objs.get_articles().add (search = search
-                               ,url = url
-                               ,cells = cells
-                               )
-    subject = 'Устаревшее'
-    #subject = 'уст.'
-    #subject = 'общ., уст.'
-    #subject = 'колос., общ.'
-    #subject = 'Общая лексика'
-    isubj = Subjects()
-    isubj.set_article()
-    print(isubj.is_blocked(subject))
-    #isubj.set_article()
-    #isubj.set_prior()
-#    sh.com.end()

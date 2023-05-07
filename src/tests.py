@@ -468,6 +468,52 @@ class Plugin:
 
 class Commands:
     
+    def get_priority(self):
+        f = '[MClientQt] tests.Commands.get_priority'
+        import logic as lg
+        import subjects as sj
+        #NOTE: the article must comprise example subjects to be expanded
+        search = 'code'
+        url = 'https://www.multitran.com/m.exe?s=code&l1=2&l2=1&SHL=2'
+        lg.com.start()
+        cells = lg.objs.get_plugins().request (search = search
+                                              ,url = url
+                                              )
+        lg.objs.get_articles().add (search = search
+                                   ,url = url
+                                   ,cells = cells
+                                   )
+        mes = []
+        sub = f'{f}:'
+        mes.append(sub)
+        sub = _('Priorities loaded from {}:')
+        sub = sub.format(lg.objs.get_default().fprior)
+        mes.append(sub)
+        sub = '; '.join(lg.objs.get_default().prior)
+        mes.append(sub)
+        mes.append('')
+        subject = 'тест., ИТ., Gruzovik, прогр.'
+        sub = _('Subject: "{}"').format(subject)
+        mes.append(sub)
+        isubj = sj.Subjects()
+        isubj.set_article()
+        priority = isubj.get_priority(subject)
+        sub = _('Highest priority (ascending order): {}').format(priority)
+        mes.append(sub)
+        mes.append('')
+        sub = _('Details:')
+        mes.append(sub)
+        priorities = []
+        parts = subject.split(', ')
+        for part in parts:
+            priorities.append(isubj.get_priority(part))
+        parts = [f'"{part}"' for part in parts]
+        sub = sh.FastTable (headers = (_('SUBJECT'), _('PRIORITY'))
+                           ,iterable = [parts, priorities]
+                           ).run()
+        mes.append(sub)
+        return '\n'.join(mes)
+    
     def run_article_subjects(self):
         f = '[MClientQt] tests.Commands.run_article_subjects'
         import logic as lg
@@ -601,15 +647,6 @@ class Commands:
         sym = sm.Symbols()
         sym.show()
         sh.com.end()
-    
-    def get_priority(self):
-        f = '[MClient] tests.Commands.get_priority'
-        import logic as lg
-        import subjects.subjects as sj
-        lg.com.start()
-        title = 'Gruzovik, История'
-        result = sj.objs.get_order().get_priority(title)
-        sh.objs.get_mes(f,result,True).show_debug()
     
     def get_column_width(self):
         f = '[MClient] tests.Commands.get_column_width'
@@ -1050,7 +1087,7 @@ if __name__ == '__main__':
     #idebug = sh.Debug(f,Elems().run_multitrancom())
     #idebug = sh.Debug(f,View().run_multitrancom())
     #idebug = sh.Debug(f,Wrap().run_multitrancom())
-    idebug = sh.Debug(f,com.run_article_subjects())
+    idebug = sh.Debug(f,com.get_priority())
     # This MUST be on a separate line, the widget will not be shown otherwise
     idebug.show()
     
