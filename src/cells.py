@@ -25,8 +25,10 @@ class Expand:
               enough. Works with None.
         '''
         self.cells = copy.deepcopy(cells)
+        self.no_warn = ('Gruzovik', 'Игорь Миг')
     
     def expand_speeches(self):
+        # This takes ~0.0013s for 'set' on AMD E-300 (no IDE, no warnings)
         f = '[MClientQt] cells.Expand.expand_speeches'
         if sh.lg.globs['bool']['ShortSpeech']:
             sh.com.rep_lazy(f)
@@ -43,7 +45,7 @@ class Expand:
                 sh.objs.get_mes(f,mes,True).show_warning()
     
     def expand_subjects(self):
-        # This takes ~?s for 'set' on AMD E-300 (no IDE, no warnings)
+        # This takes ~0.0025s for 'set' on AMD E-300 (no IDE, no warnings)
         f = '[MClientQt] cells.Expand.expand_subjects'
         if sh.lg.globs['bool']['ShortSubjects']:
             sh.com.rep_lazy(f)
@@ -53,11 +55,27 @@ class Expand:
             sh.com.rep_lazy(f)
             return
         for cell in self.cells:
-            try:
+            if cell.subj in subjects:
                 cell.subj = subjects[cell.subj]
-            except KeyError:
-                mes = _('Wrong input data: "{}"!').format(cell.subj)
-                sh.objs.get_mes(f,mes,True).show_warning()
+            elif not cell.subj in self.no_warn:
+                ''' multitran.com has a bug which causes short subject titles
+                    like 'Gruzovik, СМИ.' to be expanded as 'Средства массовой
+                    информации'. This behavior is misleading and should be
+                    fixed by preserving user-based subjects so as to be able to
+                    prioritize/block them.
+                '''
+                new_parts = []
+                parts = cell.subj.split(', ')
+                for part in parts:
+                    if part in self.no_warn:
+                        new_parts.append(part)
+                    elif part in subjects:
+                        new_parts.append(subjects[part])
+                    else:
+                        mes = _('Wrong input data: "{}"!').format(part)
+                        sh.objs.get_mes(f,mes,True).show_warning()
+                        new_parts.append(part)
+                cell.subj = ', '.join(new_parts)
     
     def run(self):
         self.expand_speeches()

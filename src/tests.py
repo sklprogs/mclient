@@ -463,37 +463,39 @@ class Plugin:
                   ).request (url = url
                             ,search = search
                             )
-    
-    def reinsert_same(self):
-        f = '[MClient] tests.Plugin.reinsert_same'
-        import plugins.multitrancom.run as mc
-        search = 'set'
-        url = 'https://www.multitran.com/m.exe?l1=1&l2=2&s=set'
-        timer = sh.Timer('Getting elems')
-        timer.start()
-        blocks = mc.Plugin().request (url = url
-                                     ,search = search
-                                     )
-        timer.end()
-        same = [block for block in blocks if block.same == 1]
-        separate = [block for block in blocks if block.same == 0]
-        # takes ~1s for 'set' (EN-RU) on AMD E-300
-        timer = sh.Timer(f)
-        timer.start()
-        cells = []
-        for block in separate:
-            cell = [block]
-            for item in same:
-                if item.cellno == block.cellno:
-                    cell.append(item)
-            cells.append(cell)
-        timer.end()
-        print('Number of blocks:',len(blocks))
-        print('Number of cells:',len(cells))
 
 
 
 class Commands:
+    
+    def run_article_subjects(self):
+        f = '[MClientQt] tests.Commands.run_article_subjects'
+        import logic as lg
+        lg.com.start()
+        search = 'set'
+        # SHL should correspond to locale
+        url = 'https://www.multitran.com/m.exe?s=set&l1=2&l2=1'
+        cells = lg.objs.get_plugins().request (search = search
+                                              ,url = url
+                                              )
+        lg.objs.get_articles().add (search = search
+                                   ,url = url
+                                   ,cells = cells
+                                   )
+        subjects = lg.objs.get_articles().get_subjects()
+        if not subjects:
+            sh.com.rep_empty(f)
+            return
+        shorts = []
+        fulls = []
+        for short in subjects:
+            shorts.append(short)
+            fulls.append(subjects[short])
+        mes = sh.FastTable (headers = (_('SHORT'), _('FULL'))
+                           ,iterable = [shorts, fulls]
+                           ,maxrow = 70
+                           ).run()
+        return mes
     
     def run_prior(self):
         import mclientqt as mc
@@ -1046,8 +1048,9 @@ if __name__ == '__main__':
     #Get().run_multitrancom()
     #idebug = sh.Debug(f,Tags().run_multitrancom())
     #idebug = sh.Debug(f,Elems().run_multitrancom())
-    idebug = sh.Debug(f,View().run_multitrancom())
+    #idebug = sh.Debug(f,View().run_multitrancom())
     #idebug = sh.Debug(f,Wrap().run_multitrancom())
+    idebug = sh.Debug(f,com.run_article_subjects())
     # This MUST be on a separate line, the widget will not be shown otherwise
     idebug.show()
     
