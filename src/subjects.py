@@ -61,6 +61,18 @@ class Subjects:
             for part in parts:
                 if self.expand(part) in lg.objs.default.prior:
                     return True
+    
+    def is_blocked(self, subject):
+        if not subject:
+            return ''
+        subject = self.expand(subject)
+        if subject in lg.objs.get_default().block:
+            return True
+        elif ', ' in subject:
+            parts = subject.split(', ')
+            for part in parts:
+                if self.expand(part) in lg.objs.default.block:
+                    return True
 
 
 
@@ -80,8 +92,10 @@ objs = Objects()
 
 if __name__ == '__main__':
 #    sh.com.start()
-    url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
-    search = 'hello'
+    #url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
+    #search = 'hello'
+    url = 'https://www.multitran.com/m.exe?s=grubble&l1=2&l2=1&SHL=2'
+    search = 'grubble'
     lg.com.start()
     cells = lg.objs.get_plugins().request (search = search
                                           ,url = url
@@ -90,11 +104,14 @@ if __name__ == '__main__':
                                ,url = url
                                ,cells = cells
                                )
-    subject = 'колос., общ.'
+    subject = 'Устаревшее'
+    #subject = 'уст.'
+    #subject = 'общ., уст.'
+    #subject = 'колос., общ.'
     #subject = 'Общая лексика'
     isubj = Subjects()
     isubj.set_article()
-    print(isubj.is_prioritized(subject))
+    print(isubj.is_blocked(subject))
     #isubj.set_article()
     #isubj.set_prior()
 #    sh.com.end()
