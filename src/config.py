@@ -696,75 +696,75 @@ class DefaultConfig:
         self.fprior = ''
     
     def get_dics(self):
-        f = '[MClient] logic.DefaultConfig.get_dics'
-        if self.Success:
-            if not self.dics:
-                self.dics = self.ihome.add_config('dics')
-                if self.dics:
-                    if os.path.exists(self.dics):
-                        self.Success = sh.Directory(self.dics).Success
-                    else:
-                        self.Success = sh.Path(self.dics).create()
-                else:
-                    self.Success = False
-                    sh.com.rep_empty(f)
-            return self.dics
-        else:
+        f = '[MClient] config.DefaultConfig.get_dics'
+        if not self.Success:
             sh.com.cancel(f)
-    
-    def set_block(self):
-        f = '[MClient] logic.DefaultConfig.set_block'
-        if self.Success:
-            self.fblock = self.ihome.add_config('block.txt')
-            if self.fblock:
-                if os.path.exists(self.fblock):
-                    self.Success = sh.File(self.fblock).Success
-                else:
-                    iwrite = sh.WriteTextFile (file = self.fblock
-                                              ,Empty = True
-                                              )
-                    iwrite.write('')
-                    self.Success = iwrite.Success
-            else:
+            return
+        if not self.dics:
+            self.dics = self.ihome.add_config('dics')
+            if not self.dics:
                 self.Success = False
                 sh.com.rep_empty(f)
-        else:
+                return
+            if os.path.exists(self.dics):
+                self.Success = sh.Directory(self.dics).Success
+            else:
+                self.Success = sh.Path(self.dics).create()
+        return self.dics
+    
+    def set_block(self):
+        f = '[MClient] config.DefaultConfig.set_block'
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        self.fblock = self.ihome.add_config('block.txt')
+        if not self.fblock:
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
+        if os.path.exists(self.fblock):
+            self.Success = sh.File(self.fblock).Success
+        else:
+            iwrite = sh.WriteTextFile (file = self.fblock
+                                      ,Empty = True
+                                      )
+            iwrite.write('')
+            self.Success = iwrite.Success
     
     def prioritize(self):
-        f = '[MClient] logic.DefaultConfig.prioritize'
-        if self.Success:
-            if not self.fprior:
-                self.fprior = self.ihome.add_config('prioritize.txt')
-                if self.fprior:
-                    if os.path.exists(self.fprior):
-                        self.Success = sh.File(self.fprior).Success
-                    else:
-                        iwrite = sh.WriteTextFile(self.fprior)
-                        iwrite.write(sample_prior)
-                        self.Success = iwrite.Success
-                else:
-                    self.Success = False
-                    sh.com.rep_empty(f)
-            return self.fprior
-        else:
+        f = '[MClient] config.DefaultConfig.prioritize'
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not self.fprior:
+            self.fprior = self.ihome.add_config('prioritize.txt')
+            if not self.fprior:
+                self.Success = False
+                sh.com.rep_empty(f)
+                return
+            if os.path.exists(self.fprior):
+                self.Success = sh.File(self.fprior).Success
+            else:
+                iwrite = sh.WriteTextFile(self.fprior)
+                iwrite.write(sample_prior)
+                self.Success = iwrite.Success
+        return self.fprior
     
     def get_config(self):
-        f = '[MClient] logic.DefaultConfig.get_config'
-        if self.Success:
-            if not self.fconf:
-                self.fconf = self.ihome.add_config('mclientqt.cfg')
-            return self.fconf
-        else:
+        f = '[MClient] config.DefaultConfig.get_config'
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not self.fconf:
+            self.fconf = self.ihome.add_config('mclientqt.cfg')
+        return self.fconf
     
     def run(self):
-        f = '[MClient] logic.DefaultConfig.run'
-        if self.Success:
-            self.get_config()
-            self.get_dics()
-            self.set_block()
-            self.prioritize()
-        else:
+        f = '[MClient] config.DefaultConfig.run'
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        self.get_config()
+        self.get_dics()
+        self.set_block()
+        self.prioritize()
