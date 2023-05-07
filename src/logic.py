@@ -17,6 +17,45 @@ SPORDER = (_('Noun'),_('Verb'),_('Adjective'),_('Abbreviation'),_('Adverb')
           )
 
 
+class Speech:
+    ''' It's OK to recreate this class each time it runs since the speech
+        dictionary is reused and not recreated.
+    '''
+    def __init__(self):
+        self.dic = objs.get_plugins().get_speeches()
+    
+    def _get_short(self, full):
+        f = '[MClientQt] logic.Speech._get_short'
+        for short in self.dic:
+            if self.dic[short] == full:
+                return short
+        mes = _('Wrong input data: "{}"!').format(full)
+        sh.objs.get_mes(f,mes,True).show_warning()
+        return full
+    
+    def get_settings(self):
+        f = '[MClientQt] logic.Speech.get_settings'
+        # Source tuple cannot be concatenated with target list
+        speeches = [sh.lg.globs['str']['speech1']
+                   ,sh.lg.globs['str']['speech2']
+                   ,sh.lg.globs['str']['speech3']
+                   ,sh.lg.globs['str']['speech4']
+                   ,sh.lg.globs['str']['speech5']
+                   ,sh.lg.globs['str']['speech6']
+                   ,sh.lg.globs['str']['speech7']
+                   ]
+        if not self.dic:
+            return speeches
+        if not sh.lg.globs['bool']['ShortSpeech']:
+            return speeches
+        for i in range(len(speeches)):
+            speeches[i] = self._get_short(speeches[i])
+        mes = ', '.join(speeches)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return speeches
+
+
+
 class Articles:
     
     def __init__(self):

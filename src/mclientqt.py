@@ -1506,37 +1506,6 @@ class App:
         symbol = self.symbols.get()
         self.gui.panel.ent_src.insert(symbol)
     
-    def _get_short_speech(self, dic, full):
-        f = '[MClientQt] mclient.App._get_short_speech'
-        for short in dic:
-            if dic[short] == full:
-                return short
-        mes = _('Wrong input data: "{}"!').format(full)
-        sh.objs.get_mes(f,mes,True).show_warning()
-        return full
-    
-    def get_speeches(self):
-        f = '[MClientQt] mclient.App.get_speeches'
-        # Source tuple cannot be concatenated with target list
-        speeches = [sh.lg.globs['str']['speech1']
-                   ,sh.lg.globs['str']['speech2']
-                   ,sh.lg.globs['str']['speech3']
-                   ,sh.lg.globs['str']['speech4']
-                   ,sh.lg.globs['str']['speech5']
-                   ,sh.lg.globs['str']['speech6']
-                   ,sh.lg.globs['str']['speech7']
-                   ]
-        dic = lg.objs.get_plugins().get_speeches()
-        if not dic:
-            return speeches
-        if not sh.lg.globs['bool']['ShortSpeech']:
-            return speeches
-        for i in range(len(speeches)):
-            speeches[i] = self._get_short_speech(dic, speeches[i])
-        mes = ', '.join(speeches)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        return speeches
-    
     def load_article(self, search='', url=''):
         f = '[MClientQt] mclient.App.load_article'
         ''' #NOTE: each time the contents of the current page is changed
@@ -1579,7 +1548,7 @@ class App:
         blocked = []
         subjects = ['Общая лексика','общ.']
         
-        speeches = self.get_speeches()
+        speeches = lg.Speech().get_settings()
         
         cells = cl.Omit(cells, blocked).run()
         cells = cl.Prioritize(cells, subjects, speeches).run()
