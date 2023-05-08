@@ -30,10 +30,21 @@ class Subjects:
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def expand(self, subject):
-        try:
-            return lg.objs.get_articles().get_subjects()[subject]
-        except KeyError:
+        dic = lg.objs.get_articles().get_subjects()
+        if not subject or not dic:
             return subject
+        if subject in dic:
+            return dic[subject]
+        if not ', ' in subject:
+            return subject
+        new_parts = []
+        parts = subject.split(', ')
+        for part in parts:
+            if part in dic:
+                new_parts.append(dic[part])
+            else:
+                new_parts.append(part)
+        return ', '.join(new_parts)
     
     def is_prioritized(self, subject):
         # Determine if we need to colorize 'subj' or 'phrase' types
@@ -45,7 +56,7 @@ class Subjects:
         elif ', ' in subject:
             parts = subject.split(', ')
             for part in parts:
-                if self.expand(part) in lg.objs.default.prior:
+                if part in lg.objs.default.prior:
                     return True
     
     def is_blocked(self, subject):
@@ -57,7 +68,7 @@ class Subjects:
         elif ', ' in subject:
             parts = subject.split(', ')
             for part in parts:
-                if self.expand(part) in lg.objs.default.block:
+                if part in lg.objs.default.block:
                     return True
     
     def _get_priority(self, subject):
@@ -77,7 +88,6 @@ class Subjects:
             priorities = []
             parts = subject.split(', ')
             for part in parts:
-                part = self.expand(part)
                 priority = self._get_priority(part)
                 if priority is not None:
                     priorities.append(priority)

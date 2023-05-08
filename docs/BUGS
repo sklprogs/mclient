@@ -11,6 +11,8 @@ mclient:
 - Changing number of columns causes navigation issues
 
 multitrancom:
+- RU-EN, автоплатеж: no "auto payment (oVoD)" cell
+- EN-RU, keen criticism: the article exists, but is not shown
 - EN-RU, tuple -> энка -> tuple -> энка: phsubj is duplicated
 - EN-RU, set -> ряд: Cannot go to start
 - EN-RU, hoove: loosing selection when moving mouse pointer at the end of the
