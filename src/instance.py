@@ -17,7 +17,7 @@ class Cell:
         self.wform = ''
         self.transc = ''
         self.speech = ''
-        self.subjpr = 0
+        self.subjpr = -1
         self.speechpr = -1
 
 

@@ -8,13 +8,7 @@ import skl_shared_qt.shared as sh
 import skl_shared_qt.web as wb
 
 import manager
-import subjects.subjects as sj
 import config as cf
-
-
-SPORDER = (_('Noun'),_('Verb'),_('Adjective'),_('Abbreviation'),_('Adverb')
-          ,_('Preposition'),_('Pronoun')
-          )
 
 
 class Speech:
@@ -516,39 +510,12 @@ class CurRequest:
 
 
 
-class Lists:
-    # Read the blocklist and the prioritize list
-    def __init__(self):
-        self.blacklst = objs.get_default().fblock
-        self.priorlst = objs.default.fprior
-        self.Success = objs.default.Success
-    
-    def get_blacklist(self):
-        f = '[MClientQt] logic.Lists.get_blacklist'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        text = sh.ReadTextFile(self.blacklst,True).get()
-        text = sh.Text(text,True).text
-        return text.splitlines()
-
-    def get_priorities(self):
-        f = '[MClientQt] logic.Lists.get_priorities'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        text = sh.ReadTextFile(self.priorlst,True).get()
-        text = sh.Text(text,True).text
-        return text.splitlines()
-
-
-
 class Objects:
     
     def __init__(self):
-        self.online = self.request = self.order = self.default \
-                    = self.plugins = self.speech_prior = self.config \
-                    = self.order = self.column_width = self.articles = None
+        self.online = self.request = self.default = self.plugins \
+                    = self.speech_prior = self.config = self.column_width \
+                    = self.articles = None
 
     def get_articles(self):
         if self.articles is None:
@@ -559,11 +526,6 @@ class Objects:
         if self.column_width is None:
             self.column_width = ColumnWidth()
         return self.column_width
-    
-    def get_order(self):
-        if self.order is None:
-            self.order = sj.objs.order = Order()
-        return self.order
     
     def get_config(self):
         if self.config is None:
@@ -635,9 +597,8 @@ class Commands:
             warnings about the invalid config file need GUI.
         '''
         cf.DefaultKeys()
+        objs.get_default()
         self.load_config()
-        # Load lists from files
-        objs.get_order()
         self.set_def_colnum_even()
     
     def set_url(self):
@@ -754,32 +715,6 @@ class Commands:
         else:
             mes = _('Unable to use unverified certificates!')
             sh.objs.get_mes(f,mes,True).show_warning()
-
-
-
-class Order(sj.Order):
-    # Do not fail this class - input files are optional
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-        self._set_lists()
-    
-    def _set_lists(self):
-        f = '[MClientQt] logic.Order._set_lists'
-        lists = Lists()
-        self.blacklst = sh.Input (title = f
-                                 ,value = lists.get_blacklist()
-                                 ).get_list()
-        self.priorlst = sh.Input (title = f
-                                 ,value = lists.get_priorities()
-                                 ).get_list()
-    
-    def save(self):
-        blackw = objs.get_default().fblock
-        priorw = objs.default.fprior
-        text = '\n'.join(self.blacklst)
-        sh.WriteTextFile(blackw,True,True).write(text)
-        text = '\n'.join(self.priorlst)
-        sh.WriteTextFile(priorw,True,True).write(text)
 
 
 

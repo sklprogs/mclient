@@ -10,34 +10,20 @@ import logic as lg
 class Subjects:
     
     def __init__(self):
-        self.art_dic = {}
-        self.article = []
         self.prior = []
-    
-    def set_article(self):
-        f = '[MClientQt] subjects.Subjects.set_article'
-        self.art_dic = lg.objs.get_articles().get_subjects()
-        if not self.art_dic:
-            sh.com.rep_lazy(f)
-            return
-        for short in self.art_dic:
-            self.article.append(self.art_dic[short])
-        mes = '; '.join(self.article)
-        sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_prior(self):
         f = '[MClientQt] subjects.Subjects.set_prior'
-        all_prior = lg.objs.get_default().prior
-        if not all_prior or not self.article:
+        if not lg.objs.get_default().prior or not lg.objs.get_articles().get_subjects():
             sh.com.rep_lazy(f)
             return
-        for subject in self.article:
-            if subject in all_prior:
+        for subject in lg.objs.get_articles().get_subjects():
+            if subject in lg.objs.get_default().prior:
                 self.prior.append(subject)
             elif ', ' in subject:
                 parts = subject.split(', ')
                 for part in parts:
-                    if part in all_prior:
+                    if part in lg.objs.get_default().prior:
                         self.prior.append(subject)
                         break
         mes = '; '.join(self.prior)
@@ -45,7 +31,7 @@ class Subjects:
     
     def expand(self, subject):
         try:
-            return self.art_dic[subject]
+            return lg.objs.get_articles().get_subjects()[subject]
         except KeyError:
             return subject
     

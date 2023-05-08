@@ -690,30 +690,30 @@ class DefaultConfig:
     
     def set_values(self):
         self.dics = ''
-        self.fblock = ''
         self.fconf = ''
-        self.fdconf = ''
+        self.fblock = ''
         self.fprior = ''
+        self.block = ''
+        self.prior = ''
     
     def get_dics(self):
         f = '[MClient] config.DefaultConfig.get_dics'
         if not self.Success:
             sh.com.cancel(f)
             return
+        self.dics = self.ihome.add_config('dics')
         if not self.dics:
-            self.dics = self.ihome.add_config('dics')
-            if not self.dics:
-                self.Success = False
-                sh.com.rep_empty(f)
-                return
-            if os.path.exists(self.dics):
-                self.Success = sh.Directory(self.dics).Success
-            else:
-                self.Success = sh.Path(self.dics).create()
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
+        if os.path.exists(self.dics):
+            self.Success = sh.Directory(self.dics).Success
+        else:
+            self.Success = sh.Path(self.dics).create()
         return self.dics
     
-    def set_block(self):
-        f = '[MClient] config.DefaultConfig.set_block'
+    def set_fblock(self):
+        f = '[MClient] config.DefaultConfig.set_fblock'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -731,23 +731,22 @@ class DefaultConfig:
             iwrite.write('')
             self.Success = iwrite.Success
     
-    def prioritize(self):
-        f = '[MClient] config.DefaultConfig.prioritize'
+    def set_fprior(self):
+        f = '[MClient] config.DefaultConfig.set_fprior'
         if not self.Success:
             sh.com.cancel(f)
             return
+        self.fprior = self.ihome.add_config('prioritize.txt')
         if not self.fprior:
-            self.fprior = self.ihome.add_config('prioritize.txt')
-            if not self.fprior:
-                self.Success = False
-                sh.com.rep_empty(f)
-                return
-            if os.path.exists(self.fprior):
-                self.Success = sh.File(self.fprior).Success
-            else:
-                iwrite = sh.WriteTextFile(self.fprior)
-                iwrite.write(sample_prior)
-                self.Success = iwrite.Success
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
+        if os.path.exists(self.fprior):
+            self.Success = sh.File(self.fprior).Success
+        else:
+            iwrite = sh.WriteTextFile(self.fprior)
+            iwrite.write(sample_prior)
+            self.Success = iwrite.Success
         return self.fprior
     
     def get_config(self):
@@ -755,9 +754,30 @@ class DefaultConfig:
         if not self.Success:
             sh.com.cancel(f)
             return
-        if not self.fconf:
-            self.fconf = self.ihome.add_config('mclientqt.cfg')
+        self.fconf = self.ihome.add_config('mclientqt.cfg')
         return self.fconf
+    
+    def load_block(self):
+        f = '[MClient] config.DefaultConfig.load_block'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.block = sh.ReadTextFile(self.fblock,True).get()
+        self.block = self.block.splitlines()
+        self.block = [item.strip() for item in self.block]
+    
+    def load_prior(self):
+        f = '[MClient] config.DefaultConfig.load_prior'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.prior = sh.ReadTextFile(self.fprior,True).get()
+        self.prior = self.prior.splitlines()
+        self.prior = [item.strip() for item in self.prior]
+    
+    def save(self):
+        sh.WriteTextFile(self.fblock,True,True).write('\n'.join(self.block))
+        sh.WriteTextFile(self.fprior,True,True).write('\n'.join(self.prior))
     
     def run(self):
         f = '[MClient] config.DefaultConfig.run'
@@ -766,5 +786,7 @@ class DefaultConfig:
             return
         self.get_config()
         self.get_dics()
-        self.set_block()
-        self.prioritize()
+        self.set_fblock()
+        self.set_fprior()
+        self.load_block()
+        self.load_prior()

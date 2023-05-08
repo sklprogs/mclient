@@ -65,7 +65,8 @@ class View:
             'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
             to set 'dic' and some other types.
         '''
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/run (2023-05-07).html'
+        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/run (2023-05-07).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/hello (2023-04-19).html'
         text = sh.ReadTextFile(file).get()
         timer = sh.Timer(f)
         timer.start()
@@ -75,13 +76,20 @@ class View:
                          ).run()
         ielems = el.Elems(blocks)
         cells = ielems.run()
-        blocked = ['Gruzovik']
-        subjects = ['Общая лексика','общ.']
+        
+        lg.objs.get_plugins().mcplugin.art_subj = ielems.art_subj
+        lg.objs.plugins.mcplugin.fixed_urls = ielems.fixed_urls
+        
+        lg.objs.get_articles().add (search = 'hello'
+                                   ,url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
+                                   ,cells = cells
+                                   )
+        
         # Full forms as well
         #speech = ['сущ.', 'глаг.', 'прил.', 'сокр.', 'нареч.', 'предл.', 'мест.']
         speech = ['прил.', 'сущ.', 'глаг.', 'сокр.', 'нареч.', 'предл.', 'мест.']
-        cells = cl.Omit(cells, blocked).run()
-        cells = cl.Prioritize(cells, subjects, speech).run()
+        cells = cl.Omit(cells).run()
+        cells = cl.Prioritize(cells, speech).run()
         iview = cl.View(cells, fixed_urls=ielems.fixed_urls)
         iview.run()
         timer.end()
@@ -468,6 +476,22 @@ class Plugin:
 
 class Commands:
     
+    def run_default_config(self):
+        f = '[MClientQt] tests.Commands.run_default_config'
+        import logic as lg
+        lg.objs.get_default()
+        mes = [f'{f}:']
+        sub = f'{lg.objs.default.fprior}:'
+        mes.append(sub)
+        sub = '\n'.join(lg.objs.default.prior)
+        mes.append(sub)
+        mes.append('')
+        sub = f'{lg.objs.default.fblock}:'
+        mes.append(sub)
+        sub = '\n'.join(lg.objs.default.block)
+        mes.append(sub)
+        return '\n'.join(mes)
+    
     def get_priority(self):
         f = '[MClientQt] tests.Commands.get_priority'
         import logic as lg
@@ -486,7 +510,7 @@ class Commands:
         mes = []
         sub = f'{f}:'
         mes.append(sub)
-        sub = _('Priorities loaded from {}:')
+        sub = _('Prioritized subjects loaded from {}:')
         sub = sub.format(lg.objs.get_default().fprior)
         mes.append(sub)
         sub = '; '.join(lg.objs.get_default().prior)
@@ -496,7 +520,6 @@ class Commands:
         sub = _('Subject: "{}"').format(subject)
         mes.append(sub)
         isubj = sj.Subjects()
-        isubj.set_article()
         priority = isubj.get_priority(subject)
         sub = _('Highest priority (ascending order): {}').format(priority)
         mes.append(sub)
@@ -1085,9 +1108,10 @@ if __name__ == '__main__':
     #Get().run_multitrancom()
     #idebug = sh.Debug(f,Tags().run_multitrancom())
     #idebug = sh.Debug(f,Elems().run_multitrancom())
-    #idebug = sh.Debug(f,View().run_multitrancom())
+    idebug = sh.Debug(f,View().run_multitrancom())
+    #idebug = sh.Debug(f,com.run_default_config())
+    #idebug = sh.Debug(f,com.get_priority())
     #idebug = sh.Debug(f,Wrap().run_multitrancom())
-    idebug = sh.Debug(f,com.get_priority())
     # This MUST be on a separate line, the widget will not be shown otherwise
     idebug.show()
     

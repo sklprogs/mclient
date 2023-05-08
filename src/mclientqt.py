@@ -9,8 +9,8 @@ import logic as lg
 import gui as gi
 
 import cells as cl
-import subjects.priorities.controller as pr
-import subjects.blacklist.controller as bl
+import prior_block.priorities.controller as pr
+import prior_block.blacklist.controller as bl
 #import subjects.subjects as sj
 import settings.controller as st
 #import suggest.controller as sg
@@ -66,7 +66,7 @@ class Priorities(pr.Priorities):
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def reset(self):
-        #self.lst1 = lg.objs.get_order().priorlst
+        #self.lst1 = lg.objs.get_default().prior
         self.dic1 = {'Компьютеры':
                         ['Компьютеры','Майкрософт','Программирование','Оракл']
                     ,'Разговорная лексика':
@@ -1038,7 +1038,7 @@ class App:
     
     def edit_blacklist(self):
         f = '[MClient] mclient.App.edit_blacklist'
-        old_list = lg.objs.get_order().blacklst
+        old_list = lg.objs.get_default().block
         old_key = sh.lg.globs['bool']['BlockSubjects']
         self.block.reset (lst1 = old_list
                          ,lst2 = lg.objs.get_plugins().get_subjects()
@@ -1053,7 +1053,7 @@ class App:
         and (old_key == sh.lg.globs['bool']['BlockSubjects']):
             sh.com.rep_lazy(f)
         else:
-            lg.objs.order.blacklst = new_list
+            lg.objs.default.block = new_list
             lg.objs.get_articles().delete_bookmarks()
             self.load_article()
     
@@ -1514,11 +1514,6 @@ class App:
         timer = sh.Timer(f)
         timer.start()
 
-        '''
-        order = objs.get_settings().get_speech_prior()
-        lg.objs.get_speech_prior().reset(order)
-        '''
-
         if search or url:
             artid = lg.objs.get_articles().find (source = sh.lg.globs['str']['source']
                                                 ,search = search
@@ -1544,14 +1539,8 @@ class App:
             
         cells = cl.Expand(cells).run()
         
-        #TODO: elaborate
-        blocked = []
-        subjects = ['Общая лексика','общ.']
-        
-        speeches = lg.Speech().get_settings()
-        
-        cells = cl.Omit(cells, blocked).run()
-        cells = cl.Prioritize(cells, subjects, speeches).run()
+        cells = cl.Omit(cells).run()
+        cells = cl.Prioritize(cells, lg.Speech().get_settings()).run()
         
         #TODO: implement
         self.phdic = ''
@@ -1686,7 +1675,7 @@ class App:
         self.gui.show()
     
     def quit(self):
-        lg.objs.get_order().save()
+        lg.objs.get_default().save()
         lg.com.save_config()
         self.thread.end()
         ''' For this code to be executed last, it's not enough to put it in 

@@ -9,6 +9,7 @@ import skl_shared_qt.shared as sh
 import instance as ic
 import format as fm
 import logic as lg
+import subjects as sj
 
 
 class Expand:
@@ -86,23 +87,17 @@ class Expand:
 
 class Omit:
     
-    def __init__(self,cells,subjects=[]):
+    def __init__(self, cells):
         self.cells = cells
-        self.subjects = subjects
-    
-    def _is_blocked(self,text):
-        if text in self.subjects:
-            return True
-        parts = text.split(', ')
-        for part in parts:
-            if part in self.subjects:
-                return True
     
     def omit_subjects(self):
         f = '[MClientQt] cells.Omit.omit_subjects'
+        if not sh.lg.globs['bool']['BlockSubjects']:
+            sh.com.rep_lazy(f)
+            return
         old_len = len(self.cells)
         self.cells = [cell for cell in self.cells \
-                      if not self._is_blocked(cell.subj)
+                      if not sj.objs.get_subjects().is_blocked(cell.subj)
                      ]
         sh.com.rep_matches(f,old_len-len(self.cells))
     
@@ -136,23 +131,35 @@ class Omit:
         return self.cells
 
 
+
 class Prioritize:
     
-    def __init__(self,cells,subjects=[],speech=[]):
-        self.all_subj = []
-        self.subjects = subjects
+    def __init__(self, cells, speech=[]):
         self.speech = speech
         self.cells = cells
     
     def set_subjects(self):
-        self.all_subj = sorted(set([cell.subj for cell in self.cells]))
-        subj_unp = [subj for subj in self.all_subj if not subj in self.subjects]
-        self.all_subj = self.subjects + subj_unp
-        for i in range(len(self.all_subj)):
-            for cell in self.cells:
-                if cell.subj == self.all_subj[i]:
-                    cell.subjpr = i
-    
+        f = '[MClientQt] cells.Prioritize.set_subjects'
+        priorities = []
+        for cell in self.cells:
+            priority = sj.objs.get_subjects().get_priority(cell.subj)
+            if priority is not None:
+                cell.subjpr = priority
+                priorities.append(priority)
+        # Avoid applying 'max' to an empty sequence
+        if not priorities:
+            sh.com.rep_lazy(f)
+            return
+        priorities.sort()
+        no = max(priorities) + 1
+        for cell in self.cells:
+            if cell.subjpr == -1 and not self._is_phrase_type(cell):
+                cell.subjpr = no
+        no += 1
+        for cell in self.cells:
+            if cell.subjpr == -1 and self._is_phrase_type(cell):
+                cell.subjpr = no
+
     def set_speech(self):
         all_speech = sorted(set([cell.speech for cell in self.cells]))
         speech_unp = [speech for speech in all_speech \
@@ -169,26 +176,11 @@ class Prioritize:
             if block.type_ in ('phsubj', 'phrase', 'phcount'):
                 return True
     
-    def set_phrases(self):
-        subjpr = len(self.all_subj)
-        for cell in self.cells:
-            if self._is_phrase_type(cell):
-                cell.subjpr = subjpr
-    
     def run(self):
         self.set_subjects()
         self.set_speech()
-        self.set_phrases()
         return self.cells
 
-
-class Commands:
-    
-    def order(self, cells):
-        cells = Omit(cells).run()
-        cells = Prioritize(cells).run()
-        cells = View(cells).run()
-        return cells
 
 
 class View:
@@ -214,7 +206,7 @@ class View:
             sh.com.cancel(f)
             return
         #TODO: Elaborate
-        self.cells.sort(key=lambda x: (x.subjpr, x.wform, x.transc, x.speechpr, x.text))
+        self.cells.sort(key=lambda x: (x.subjpr, x.subj, x.wform, x.transc, x.speechpr, x.text))
     
     def _create_fixed(self, i, type_, rowno):
         f = '[MClientQt] cells.View._create_fixed'
@@ -633,12 +625,3 @@ class Wrap:
         self.set_plain()
         self.set_code()
         return self.cells
-
-
-com = Commands()
-
-
-if __name__ == '__main__':
-    sh.com.start()
-    com.order([])
-    sh.com.end()

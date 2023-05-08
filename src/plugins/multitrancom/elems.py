@@ -143,7 +143,7 @@ class SeparateWords:
         self.blocks.insert(0,block)
     
     def set(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.set'
+        f = '[MClientQt] plugins.multitrancom.elems.SeparateWords.set'
         old_len = len(self.blocks)
         tail = self.get_tail()
         if not tail:

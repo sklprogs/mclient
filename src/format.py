@@ -3,7 +3,7 @@
 
 import skl_shared_qt.shared as sh
 
-import subjects.subjects as sj
+import subjects as sj
 
 
 class Block:
@@ -21,21 +21,21 @@ class Block:
     
     def _is_phrase_prior(self):
         if self.block.type_ == 'phrase':
-            return sj.objs.get_order().is_prioritized(self.block.text)
+            return sj.objs.get_subjects().is_prioritized(self.block.text)
     
     def _is_phrase_blocked(self):
         if self.block.type_ == 'phrase':
-            return sj.objs.get_order().is_blocked(self.block.text)
+            return sj.objs.get_subjects().is_blocked(self.block.text)
     
     def _is_subj_prior(self):
         # 'phsubj' cannot be prioritized or blocked
         if self.block.type_ == 'subj':
-            return sj.objs.get_order().is_prioritized(self.block.text)
+            return sj.objs.get_subjects().is_prioritized(self.block.text)
     
     def _is_subj_blocked(self):
         # 'phsubj' cannot be prioritized or blocked
         if self.block.type_ == 'subj':
-            return sj.objs.get_order().is_blocked(self.block.text)
+            return sj.objs.get_subjects().is_blocked(self.block.text)
     
     def get_color(self):
         if self._is_phrase_prior():
