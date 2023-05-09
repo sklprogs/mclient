@@ -30,7 +30,7 @@ class Subjects:
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def expand(self, subject):
-        dic = lg.objs.get_articles().get_subjects()
+        dic = lg.objs.get_default().subj
         if not subject or not dic:
             return subject
         if subject in dic:

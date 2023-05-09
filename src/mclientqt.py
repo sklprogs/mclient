@@ -11,7 +11,6 @@ import gui as gi
 import cells as cl
 import prior_block.priorities.controller as pr
 import prior_block.blacklist.controller as bl
-#import subjects.subjects as sj
 import settings.controller as st
 #import suggest.controller as sg
 import about.controller as ab
@@ -1531,6 +1530,7 @@ class App:
                                  ,url = url
                                  ,cells = cells
                                  )
+            lg.objs.get_default().add_subjects(lg.objs.plugins.get_article_subjects())
         else:
             mes = _('Load article No. {} from memory').format(artid)
             sh.objs.get_mes(f,mes,True).show_info()

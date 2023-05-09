@@ -70,14 +70,6 @@ class Articles:
             sh.com.rep_input(f)
         return {}
     
-    def get_subjects(self):
-        f = '[MClientQt] logic.Articles.get_subjects'
-        try:
-            return self.articles['ids'][self.id]['subjects']
-        except KeyError:
-            sh.com.rep_input(f)
-        return {}
-    
     def is_last(self):
         return self.id == self.get_max_id()
     
@@ -124,7 +116,6 @@ class Articles:
                                     ,'lang1'      : objs.get_plugins().get_lang1()
                                     ,'lang2'      : objs.plugins.get_lang2()
                                     ,'fixed_urls' : objs.plugins.get_fixed_urls()
-                                    ,'subjects'   : objs.plugins.get_article_subjects()
                                     ,'search'     : search
                                     ,'url'        : url
                                     ,'cells'      : cells
@@ -529,7 +520,7 @@ class Objects:
     
     def get_config(self):
         if self.config is None:
-            self.config = sh.Config(objs.get_default().get_config())
+            self.config = sh.Config(objs.get_default().fconf)
             self.config.run()
         return self.config
     
@@ -545,7 +536,8 @@ class Objects:
     
     def get_default(self,product='mclient'):
         if not self.default:
-            self.default = cf.DefaultConfig(product)
+            cf.PRODUCT_LOW = product.lower()
+            self.default = cf.DefaultConfig()
             self.default.run()
         return self.default
     
@@ -691,7 +683,7 @@ class Commands:
         objs.get_config()
     
     def save_config(self):
-        cf.CreateConfig(objs.get_default().get_config()).run()
+        cf.CreateConfig(objs.get_default().fconf).run()
     
     def suggest(self,search,limit=0):
         f = '[MClientQt] logic.Commands.suggest'

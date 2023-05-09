@@ -490,6 +490,15 @@ class Commands:
         mes.append(sub)
         sub = '\n'.join(lg.objs.default.block)
         mes.append(sub)
+        mes.append('')
+        sub = f'{lg.objs.default.fsubj}:'
+        mes.append(sub)
+        pairs = []
+        keys = sorted(lg.objs.default.subj.keys(), key=str.casefold)
+        for key in keys:
+            sub = f'"{key}" <=> "{lg.objs.default.subj[key]}"'
+            pairs.append(sub)
+        mes.append('\n'.join(pairs))
         return '\n'.join(mes)
     
     def get_priority(self):
@@ -1108,7 +1117,8 @@ if __name__ == '__main__':
     #Get().run_multitrancom()
     #idebug = sh.Debug(f,Tags().run_multitrancom())
     #idebug = sh.Debug(f,Elems().run_multitrancom())
-    idebug = sh.Debug(f,View().run_multitrancom())
+    idebug = sh.Debug(f,com.run_default_config())
+    #idebug = sh.Debug(f,View().run_multitrancom())
     #idebug = sh.Debug(f,com.run_default_config())
     #idebug = sh.Debug(f,com.get_priority())
     #idebug = sh.Debug(f,Wrap().run_multitrancom())
