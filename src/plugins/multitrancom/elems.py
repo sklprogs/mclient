@@ -9,6 +9,52 @@ import skl_shared_qt.shared as sh
 import instance as ic
 
 
+class Trash:
+    
+    def __init__(self, blocks):
+        self.blocks = blocks
+    
+    def _get_head(self):
+        pos = None
+        for i in range(len(self.blocks)):
+            if self.blocks[i].type_ == 'wform' and self.blocks[i].text == ' ' \
+            or self.blocks[i].type_ == 'term':
+                pos = i
+                break
+        ''' If 'wform' block firstly occurs at 0 (which is unlikely), there is
+            no trash head and therefore no need to remove it.
+        '''
+        if pos in (None, 0):
+            return
+        if set([block.type_ for block in self.blocks[:pos]]) == {'comment'}:
+            return pos
+    
+    def _get_tail(self):
+        i = len(self.blocks) - 1
+        while i >= 0:
+            if self.blocks[i].type_ != 'comment':
+                return
+            if self.blocks[i].text == '<!--':
+                return i
+            i -= 1
+    
+    def delete(self):
+        f = 'plugins.multitrancom.elems.Trash.delete'
+        old_len = len(self.blocks)
+        head = self._get_head()
+        if head is not None:
+            self.blocks = self.blocks[head:]
+        tail = self._get_tail()
+        if tail is not None:
+            self.blocks = self.blocks[:tail]
+        sh.com.rep_matches(f,old_len-len(self.blocks))
+    
+    def run(self):
+        self.delete()
+        return self.blocks
+
+
+
 class Thesaurus:
     ''' - "English thesaurus" wform becoming subj. Run after 'delete_empty';
         - Thesaurus is optional so we use 'rep_lazy' instead of 'cancel'.
@@ -304,18 +350,6 @@ class Elems:
             count += old_len - len(cell.blocks)
         sh.com.rep_matches(f,count)
     
-    def delete_trash(self):
-        f = 'plugins.multitrancom.elems.Elems.delete_trash'
-        old_len = len(self.cells)
-        self.cells = [cell for cell in self.cells \
-                      if not '<!-- -->' in cell.text \
-                      and not '<!-- // -->' in cell.text
-                     ]
-        # The first cell represents an article title
-        if len(self.cells) > 1 and not self.cells[0].fixed_block:
-            del self.cells[0]
-        sh.com.rep_matches(f,old_len-len(self.cells))
-    
     def unite_brackets(self):
         ''' Combine a cell with a preceding or following bracket such that the
             user would not see '()' when the cell is ignored/blocked.
@@ -400,7 +434,11 @@ class Elems:
         sh.com.rep_matches(f,count)
     
     def set_phsubj(self):
-        i = len(self.blocks) - 4
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_phsubj'
+        if len(self.blocks) < 4:
+            sh.com.rep_lazy(f)
+            return
+        i = len(self.blocks) - 1
         while i >= 0:
             if self.blocks[i-3].type_ == 'comment' \
             and self.blocks[i-2].type_ == 'comment' \
@@ -564,8 +602,11 @@ class Elems:
     def run(self):
         # Find thesaurus before deleting empty blocks
         self.blocks = Thesaurus(self.blocks).run()
-        self.delete_empty()
         self.blocks = SeparateWords(self.blocks).run()
+        # Remove trash only after setting separate words
+        self.blocks = Trash(self.blocks).run()
+        # Remove empty blocks only after removing trash
+        self.delete_empty()
         self.set_transc()
         self.separate_speech()
         self.convert_user_subj()
@@ -581,7 +622,6 @@ class Elems:
         self.unite_brackets()
         self.set_text()
         self.set_fixed_cells()
-        self.delete_trash()
         self.rename_phsubj()
         self.set_row_nos()
         self.save_urls()

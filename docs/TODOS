@@ -10,6 +10,8 @@ mclient:
   add titles everywhere
 
 multitrancom:
+- RU-EN, hell -> Табуированная лексика: Remove terms denoting languages and
+  a space before '!'
 - RU-EN, математика: Implement "Русский тезаурус"
 - RU-EN, математика -> Картография: Remove "Английский"
 - RU-EN, энка -> Фразы: Delete Тематика-Английский-Русский
