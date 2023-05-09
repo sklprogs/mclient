@@ -2,9 +2,12 @@
 # -*- coding: UTF-8 -*-
 
 import os
+import json
+
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
+PRODUCT_LOW = 'mclient'
 sample_prior = _('General')
 
 
@@ -681,20 +684,211 @@ class CreateConfig(sh.CreateConfig):
 
 
 
+class Subjects:
+    
+    def __init__(self):
+        self.set_values()
+        self.ihome = sh.Home(PRODUCT_LOW)
+        self.Success = self.ihome.create_conf()
+    
+    def set_values(self):
+        self.Success = True
+        self.file = ''
+        self.body = {}
+    
+    def add(self, body):
+        f = '[MClient] config.Subjects.add'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not body:
+            sh.com.rep_lazy(f)
+            return
+        count = 0
+        for key in body:
+            # JSON accepts empty keys and values
+            if not key:
+                sh.com.rep_empty(f)
+                continue
+            value = body[key]
+            if not value:
+                sh.com.rep_empty(f)
+                continue
+            ''' 'key' must be different from 'value' since we need new expanded
+                subjects. If the same value is returned after expanding, this
+                means that a short-full subject pair has not been found.
+            '''
+            if not key in self.body and key != value:
+                count += 1
+                self.body[key] = value
+        sh.com.rep_matches(f,count)
+    
+    def set_file(self):
+        f = '[MClient] config.Subjects.set_file'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.file = self.ihome.add_config('subjects.json')
+        if not self.file:
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
+    
+    def create(self):
+        f = '[MClient] config.Subjects.create'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if os.path.exists(self.file):
+            self.Success = sh.File(self.file).Success
+        else:
+            iwrite = sh.WriteTextFile(self.file)
+            # JSON throws an error upon an empty file
+            iwrite.write('{}')
+            self.Success = iwrite.Success
+    
+    def load(self):
+        f = '[MClient] config.Subjects.load'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        code = sh.ReadTextFile(self.file, True).get()
+        try:
+            self.body = json.loads(code)
+        except Exception as e:
+            self.Success = False
+            sh.com.rep_third_party(f,e)
+    
+    def save(self):
+        f = '[MClient] config.Subjects.save'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        mes = _('Write file "{}"').format(self.file)
+        sh.objs.get_mes(f,mes,True).show_info()
+        try:
+            with open(self.file, 'w', encoding='utf-8') as iopen:
+                json.dump(self.body, iopen, ensure_ascii=False, indent=4)
+        except Exception as e:
+            ''' Failing a class which produced a writing error should not fail
+                all writing operations some of which may actually be successful.
+            '''
+            mes = _('Third-party module has failed!\n\nDetails: {}').format(e)
+            sh.objs.get_mes(f,mes).show_error()
+    
+    def run(self):
+        self.set_file()
+        self.create()
+        self.load()
+
+
+
+class PlainList:
+    
+    def __init__(self, basename):
+        self.set_values()
+        self.ihome = sh.Home(PRODUCT_LOW)
+        self.basename = basename
+    
+    def set_values(self):
+        self.Success = True
+        self.basename = ''
+        self.file = ''
+        self.body = []
+    
+    def check(self):
+        self.Success = self.ihome.create_conf() and self.basename
+    
+    def set_file(self):
+        f = '[MClient] config.PlainList.set_file'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.file = self.ihome.add_config(self.basename)
+        if not self.file:
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
+    
+    def create(self):
+        f = '[MClient] config.PlainList.create'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if os.path.exists(self.file):
+            self.Success = sh.File(self.file).Success
+        else:
+            iwrite = sh.WriteTextFile (file = self.file
+                                      ,Empty = True
+                                      )
+            iwrite.write('')
+            self.Success = iwrite.Success
+    
+    def load(self):
+        f = '[MClient] config.PlainList.load'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.body = sh.ReadTextFile(self.file,True).get().splitlines()
+        self.body = [line.strip() for line in self.body]
+    
+    def save(self):
+        f = '[MClient] config.PlainList.save'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        iwrite = sh.WriteTextFile(self.file,True,True)
+        iwrite.write('\n'.join(self.body))
+        self.Success = iwrite.Success
+    
+    def run(self):
+        self.check()
+        self.set_file()
+        self.create()
+        self.load()
+
+
+
 class DefaultConfig:
     
-    def __init__(self,product='mclient'):
+    def __init__(self):
         self.set_values()
-        self.ihome = sh.Home(product.lower())
-        self.Success = self.ihome.create_conf()
     
     def set_values(self):
         self.dics = ''
         self.fconf = ''
         self.fblock = ''
         self.fprior = ''
+        self.fsubj = ''
         self.block = ''
         self.prior = ''
+        self.subj = {}
+    
+    def check(self):
+        self.ihome = sh.Home(PRODUCT_LOW)
+        self.isubj = Subjects()
+        self.iblock = PlainList('block.txt')
+        self.iprior = PlainList('prioritize.txt')
+        self.isubj.run()
+        self.iblock.run()
+        self.iprior.run()
+        self.Success = self.ihome.create_conf() and self.isubj.Success \
+                       and self.iblock.Success and self.iprior.Success
+        
+    
+    def add_subjects(self, dic):
+        self.isubj.add(dic)
+    
+    def set_files(self):
+        self.fconf = self.ihome.add_config('mclientqt.cfg')
+        self.fblock = self.iblock.file
+        self.fprior = self.iprior.file
+        self.fsubj = self.isubj.file
+    
+    def set_bodies(self):
+        self.block = self.iblock.body
+        self.prior = self.iprior.body
+        self.subj = self.isubj.body
     
     def get_dics(self):
         f = '[MClient] config.DefaultConfig.get_dics'
@@ -712,81 +906,13 @@ class DefaultConfig:
             self.Success = sh.Path(self.dics).create()
         return self.dics
     
-    def set_fblock(self):
-        f = '[MClient] config.DefaultConfig.set_fblock'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.fblock = self.ihome.add_config('block.txt')
-        if not self.fblock:
-            self.Success = False
-            sh.com.rep_empty(f)
-            return
-        if os.path.exists(self.fblock):
-            self.Success = sh.File(self.fblock).Success
-        else:
-            iwrite = sh.WriteTextFile (file = self.fblock
-                                      ,Empty = True
-                                      )
-            iwrite.write('')
-            self.Success = iwrite.Success
-    
-    def set_fprior(self):
-        f = '[MClient] config.DefaultConfig.set_fprior'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.fprior = self.ihome.add_config('prioritize.txt')
-        if not self.fprior:
-            self.Success = False
-            sh.com.rep_empty(f)
-            return
-        if os.path.exists(self.fprior):
-            self.Success = sh.File(self.fprior).Success
-        else:
-            iwrite = sh.WriteTextFile(self.fprior)
-            iwrite.write(sample_prior)
-            self.Success = iwrite.Success
-        return self.fprior
-    
-    def get_config(self):
-        f = '[MClient] config.DefaultConfig.get_config'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.fconf = self.ihome.add_config('mclientqt.cfg')
-        return self.fconf
-    
-    def load_block(self):
-        f = '[MClient] config.DefaultConfig.load_block'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.block = sh.ReadTextFile(self.fblock,True).get()
-        self.block = self.block.splitlines()
-        self.block = [item.strip() for item in self.block]
-    
-    def load_prior(self):
-        f = '[MClient] config.DefaultConfig.load_prior'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.prior = sh.ReadTextFile(self.fprior,True).get()
-        self.prior = self.prior.splitlines()
-        self.prior = [item.strip() for item in self.prior]
-    
     def save(self):
-        sh.WriteTextFile(self.fblock,True,True).write('\n'.join(self.block))
-        sh.WriteTextFile(self.fprior,True,True).write('\n'.join(self.prior))
+        self.isubj.save()
+        self.iblock.save()
+        self.iprior.save()
     
     def run(self):
-        f = '[MClient] config.DefaultConfig.run'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.get_config()
+        self.check()
+        self.set_files()
+        self.set_bodies()
         self.get_dics()
-        self.set_fblock()
-        self.set_fprior()
-        self.load_block()
-        self.load_prior()
