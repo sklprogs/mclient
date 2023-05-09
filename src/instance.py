@@ -5,20 +5,20 @@
 class Cell:
     
     def __init__(self):
-        self.code = ''
-        self.text = ''
-        self.url = ''
+        self.fixed_block = None
+        self.blocks = []
         self.no = -1
         self.rowno = -1
         self.colno = -1
-        self.blocks = []
-        self.fixed_block = None
-        self.subj = ''
-        self.wform = ''
-        self.transc = ''
-        self.speech = ''
         self.subjpr = -1
         self.speechpr = -1
+        self.code = ''
+        self.speech = ''
+        self.subj = ''
+        self.text = ''
+        self.transc = ''
+        self.url = ''
+        self.wform = ''
 
 
 
@@ -31,8 +31,8 @@ class Block:
         self.subj = ''
         self.subjf = ''
         self.text = ''
+        self.url = ''
         ''' 'comment', 'correction', 'invalid', 'phcount', 'phrase', 'phsubj',
             'speech', 'subj', 'term', 'transc', 'wform'.
         '''
         self.type_ = 'comment'
-        self.url = ''
