@@ -65,8 +65,7 @@ class View:
             'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
             to set 'dic' and some other types.
         '''
-        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/run (2023-05-07).html'
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/hello (2023-04-19).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/дать затвердеть (2023-05-09).html'
         text = sh.ReadTextFile(file).get()
         timer = sh.Timer(f)
         timer.start()
@@ -80,12 +79,6 @@ class View:
         lg.objs.get_plugins().mcplugin.art_subj = ielems.art_subj
         lg.objs.plugins.mcplugin.fixed_urls = ielems.fixed_urls
         
-        lg.objs.get_articles().add (search = 'hello'
-                                   ,url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
-                                   ,cells = cells
-                                   )
-        
-        # Full forms as well
         #speech = ['сущ.', 'глаг.', 'прил.', 'сокр.', 'нареч.', 'предл.', 'мест.']
         speech = ['прил.', 'сущ.', 'глаг.', 'сокр.', 'нареч.', 'предл.', 'мест.']
         cells = cl.Omit(cells).run()
@@ -108,7 +101,7 @@ class Elems:
             'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
             to set 'dic' and some other types.
         '''
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/математика (2023-05-06).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/дать затвердеть (2023-05-09).html'
         text = sh.ReadTextFile(file).get()
         timer = sh.Timer(f)
         timer.start()
@@ -351,11 +344,7 @@ class Tags:
             'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
             to set 'dic' and some other types.
         '''
-        #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/hello (Компьютерные сети) (2021-03-17).html'
-        #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/generic drug (2021-03-17).html'
-        #file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/get out of (2021-03-17).html'
-        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/vice vice vice vice lassst (2023-04-14).html'
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/beg the question (2023-04-15).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/дать затвердеть (2023-05-09).html'
         text = sh.ReadTextFile(file).get()
         text = cu.CleanUp(text).run()
         itags = tg.Tags (text = text
@@ -1116,8 +1105,7 @@ if __name__ == '__main__':
     '''
     #Get().run_multitrancom()
     #idebug = sh.Debug(f,Tags().run_multitrancom())
-    #idebug = sh.Debug(f,Elems().run_multitrancom())
-    idebug = sh.Debug(f,com.run_default_config())
+    idebug = sh.Debug(f,Elems().run_multitrancom())
     #idebug = sh.Debug(f,View().run_multitrancom())
     #idebug = sh.Debug(f,com.run_default_config())
     #idebug = sh.Debug(f,com.get_priority())

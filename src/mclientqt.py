@@ -677,7 +677,7 @@ class Table:
             sh.com.cancel(f)
             return
         rowno, colno = self.get_cell()
-        self.search.reset(self.logic.cells,self.logic.plain,rowno,colno)
+        self.search.reset(self.logic.plain,rowno,colno)
     
     def search_next(self):
         f = '[MClientQt] mclient.Table.search_next'
@@ -1932,10 +1932,10 @@ class Search:
         self.gui.btn_clr.set_action()
         self.gui.sig_close.connect(self.close)
     
-    def reset(self,cells,plain,rowno,colno):
+    def reset(self, plain, rowno, colno):
         self.pattern = self.gui.ent_src.get()
         Case = self.gui.cbx_cas.get()
-        self.logic.reset(cells,plain,self.pattern,rowno,colno,Case)
+        self.logic.reset(plain,self.pattern,rowno,colno,Case)
     
     def search_next(self):
         f = '[MClientQt] mclient.Search.search_next'

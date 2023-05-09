@@ -28,7 +28,7 @@ class Speech:
         return full
     
     def get_settings(self):
-        f = '[MClientQt] logic.Speech.get_settings'
+        #f = '[MClientQt] logic.Speech.get_settings'
         # Source tuple cannot be concatenated with target list
         speeches = [sh.lg.globs['str']['speech1']
                    ,sh.lg.globs['str']['speech2']
@@ -44,8 +44,8 @@ class Speech:
             return speeches
         for i in range(len(speeches)):
             speeches[i] = self._get_short(speeches[i])
-        mes = ', '.join(speeches)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        #mes = ', '.join(speeches)
+        #sh.objs.get_mes(f,mes,True).show_debug()
         return speeches
 
 
