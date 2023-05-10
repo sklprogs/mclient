@@ -12,13 +12,14 @@ import instance as ic
 class Trash:
     
     def __init__(self, blocks):
+        self.head = self.tail = None
         self.blocks = blocks
     
-    def _get_head(self):
+    def _get_head_wform(self):
+        # Get trash head for common articles
         pos = None
         for i in range(len(self.blocks)):
-            if self.blocks[i].type_ == 'wform' and self.blocks[i].text == ' ' \
-            or self.blocks[i].type_ == 'term':
+            if self.blocks[i].type_ == 'wform' and self.blocks[i].text == ' ':
                 pos = i
                 break
         ''' If 'wform' block firstly occurs at 0 (which is unlikely), there is
@@ -29,27 +30,71 @@ class Trash:
         if set([block.type_ for block in self.blocks[:pos]]) == {'comment'}:
             return pos
     
-    def _get_tail(self):
+    def _get_head_term(self):
+        ''' Get trash head for phrase articles. The first term should be
+            'Subject' and next two terms should denote languages.
+        '''
+        pos = None
+        i = 2
+        while i < len(self.blocks):
+            if self.blocks[i-2].type_ == 'term' and self.blocks[i-2].text \
+            and self.blocks[i-1].type_ == 'term' and self.blocks[i-1].text \
+            and self.blocks[i].type_ == 'term' and self.blocks[i].text:
+                pos = i
+                break
+            i += 1
+        ''' If 'term' block firstly occurs at 0 (which is unlikely), there is
+            no trash head and therefore no need to remove it.
+        '''
+        if pos in (None, 2):
+            return
+        if set([block.type_ for block in self.blocks[:pos-2]]) == {'comment'}:
+            return pos
+    
+    def set_head(self):
+        pos = self._get_head_wform()
+        if pos is not None:
+            self.head = pos
+            return
+        self.head = self._get_head_term()
+    
+    def set_tail(self):
         i = len(self.blocks) - 1
         while i >= 0:
             if self.blocks[i].type_ != 'comment':
                 return
             if self.blocks[i].text == '<!--':
-                return i
+                self.tail = i
+                return
             i -= 1
+    
+    def report(self):
+        f = 'plugins.multitrancom.elems.Trash.report'
+        if self.head is not None:
+            delete = [block.text for block in self.blocks[:self.head]]
+            delete = sh.List(delete).space_items()
+            mes = _('Start fragment: "{}"').format(delete)
+            sh.objs.get_mes(f,mes,True).show_debug()
+        if self.tail is not None:
+            delete = [block.text for block in self.blocks[self.tail:]]
+            delete = sh.List(delete).space_items()
+            mes = _('End fragment: "{}"').format(delete)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def delete(self):
         f = 'plugins.multitrancom.elems.Trash.delete'
         old_len = len(self.blocks)
-        head = self._get_head()
-        if head is not None:
-            self.blocks = self.blocks[head:]
-        tail = self._get_tail()
-        if tail is not None:
-            self.blocks = self.blocks[:tail]
+        # Tail must be deleted first
+        if self.tail is not None:
+            self.blocks = self.blocks[:self.tail]
+        if self.head is not None:
+            self.blocks = self.blocks[self.head:]
         sh.com.rep_matches(f,old_len-len(self.blocks))
     
     def run(self):
+        self.set_head()
+        self.set_tail()
+        self.report()
         self.delete()
         return self.blocks
 
