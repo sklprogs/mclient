@@ -11,11 +11,9 @@ mclient:
 - Changing number of columns causes navigation issues
 
 multitrancom:
-- RU-EN, put a hat on a hat -> Фразы: Remove trash and "Subject" + languages
 - RU-EN, fencing: probably a space before "]" in transcription
 - RU-EN, давать затвердеть: "давать" is marked as not found
 - RU-EN, tuple -> Фразы: source and target phrases do not match
-- RU-EN, автоплатеж: no "auto payment (oVoD)" cell
 - EN-RU, keen criticism: the article exists, but is not shown
 - EN-RU, tuple -> энка -> tuple -> энка: phsubj is duplicated
 - EN-RU, set -> ряд: Cannot go to start

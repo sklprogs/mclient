@@ -30,16 +30,16 @@ class Trash:
         if set([block.type_ for block in self.blocks[:pos]]) == {'comment'}:
             return pos
     
-    def _get_head_term(self):
+    def _get_head_subj(self):
         ''' Get trash head for phrase articles. The first term should be
-            'Subject' and next two terms should denote languages.
+            'Subject' of 'subj' type and next two terms should denote languages.
         '''
         pos = None
         i = 2
         while i < len(self.blocks):
-            if self.blocks[i-2].type_ == 'term' and self.blocks[i-2].text \
-            and self.blocks[i-1].type_ == 'term' and self.blocks[i-1].text \
-            and self.blocks[i].type_ == 'term' and self.blocks[i].text:
+            if self.blocks[i-2].type_ == 'subj' and not self.blocks[i-2].url \
+            and self.blocks[i-1].type_ == 'term' and not self.blocks[i-1].url \
+            and self.blocks[i].type_ == 'term' and not self.blocks[i].url:
                 pos = i
                 break
             i += 1
@@ -56,7 +56,7 @@ class Trash:
         if pos is not None:
             self.head = pos
             return
-        self.head = self._get_head_term()
+        self.head = self._get_head_subj()
     
     def set_tail(self):
         i = len(self.blocks) - 1
@@ -69,7 +69,7 @@ class Trash:
             i -= 1
     
     def report(self):
-        f = 'plugins.multitrancom.elems.Trash.report'
+        f = '[MClientQt] plugins.multitrancom.elems.Trash.report'
         if self.head is not None:
             delete = [block.text for block in self.blocks[:self.head]]
             delete = sh.List(delete).space_items()
@@ -82,13 +82,13 @@ class Trash:
             sh.objs.get_mes(f,mes,True).show_debug()
     
     def delete(self):
-        f = 'plugins.multitrancom.elems.Trash.delete'
+        f = '[MClientQt] plugins.multitrancom.elems.Trash.delete'
         old_len = len(self.blocks)
         # Tail must be deleted first
         if self.tail is not None:
             self.blocks = self.blocks[:self.tail]
         if self.head is not None:
-            self.blocks = self.blocks[self.head:]
+            self.blocks = self.blocks[self.head+1:]
         sh.com.rep_matches(f,old_len-len(self.blocks))
     
     def run(self):
@@ -308,7 +308,7 @@ class Elems:
             cell.fixed_block = self._get_fixed_block(cell)
     
     def run_phcount(self):
-        f = 'plugins.multitrancom.elems.Elems.run_phcount'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.run_phcount'
         count = 0
         i = 1
         while i < len(self.blocks):
@@ -320,7 +320,7 @@ class Elems:
         sh.com.rep_matches(f,count)
     
     def set_cells(self):
-        f = 'plugins.multitrancom.elems.Elems.set_cells'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_cells'
         if not self.blocks:
             sh.com.rep_empty(f)
             return
@@ -387,7 +387,7 @@ class Elems:
             cell.text = sh.Text(cell.text).delete_duplicate_spaces()
     
     def delete_semi(self):
-        f = 'plugins.multitrancom.elems.Elems.delete_semi'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_semi'
         count = 0
         for cell in self.cells:
             old_len = len(cell.blocks)
@@ -399,7 +399,7 @@ class Elems:
         ''' Combine a cell with a preceding or following bracket such that the
             user would not see '()' when the cell is ignored/blocked.
         '''
-        f = 'plugins.multitrancom.elems.Elems.unite_brackets'
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.unite_brackets'
         count = 0
         for cell in self.cells:
             i = 2

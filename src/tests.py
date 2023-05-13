@@ -101,7 +101,7 @@ class Elems:
             'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
             to set 'dic' and some other types.
         '''
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/дать затвердеть (2023-05-09).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/put a hat on a hat (Фразы) (2023-05-12).html'
         text = sh.ReadTextFile(file).get()
         timer = sh.Timer(f)
         timer.start()
@@ -344,7 +344,7 @@ class Tags:
             'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
             to set 'dic' and some other types.
         '''
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/дать затвердеть (2023-05-09).html'
+        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/put a hat on a hat (Фразы) (2023-05-12).html'
         text = sh.ReadTextFile(file).get()
         text = cu.CleanUp(text).run()
         itags = tg.Tags (text = text

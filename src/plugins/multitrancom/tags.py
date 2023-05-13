@@ -318,7 +318,7 @@ class Tags:
         subjfs = ['"{}"'.format(block.subjf) for block in self.blocks]
         cellnos = [block.cellno for block in self.blocks]
         iterable = [nos,types,texts,urls,subjs,subjfs,cellnos]
-        headers = (_('#'),_('TYPE'),_('TEXT'),'URL','DIC','DICF',_('CELL #'))
+        headers = (_('#'),_('TYPE'),_('TEXT'),'URL','SUBJ','SUBJF',_('CELL #'))
         # 10'' monitor: 20 symbols per a column
         # 23'' monitor: 50 symbols per a column
         mes = sh.FastTable (iterable = iterable
