@@ -1542,32 +1542,7 @@ class App:
         cells = cl.Omit(cells).run()
         cells = cl.Prioritize(cells, lg.Speech().get_settings()).run()
         
-        #TODO: implement
-        self.phdic = ''
-        '''
-        self.phdic = lg.objs.blocksdb.get_phdic()
-        if self.phdic:
-            if sh.lg.globs['bool']['ShortSubjects']:
-                self.phdic = self.phdic[0]
-            else:
-                self.phdic = self.phdic[1]
-        else:
-            self.phdic = ''
-        '''
-        
-        old_special = lg.objs.request.SpecialPage
-        if self.phdic:
-            lg.objs.request.SpecialPage = False
-        else:
-            # Otherwise, 'SpecialPage' will be inherited
-            lg.objs.request.SpecialPage = True
-        lg.objs.request.NewPageType = old_special != lg.objs.request.SpecialPage
         self.update_columns()
-        
-        '''
-        SortTerms = sh.lg.globs['bool']['AlphabetizeTerms'] \
-                    and not lg.objs.request.SpecialPage
-        '''
         
         #TODO: Read settings from GUI
         fixed_types = ('subj', 'wform', 'transc', 'speech')
@@ -1580,18 +1555,6 @@ class App:
                         ,fixed_types = fixed_types
                         )
         iwrap.run()
-        
-#        sj.objs.get_article().reset (pairs = lg.objs.blocksdb.get_dic_pairs()
-#                                    ,Debug = lg.objs.get_plugins().Debug
-#                                    )
-#        sj.objs.article.run()
-        
-#        spdic = lg.objs.get_speech_prior().get_all2prior()
-
-#        if sh.lg.globs['bool']['ShortSpeech']:
-#            spdic = {}
-#        else:
-#            spdic = lg.objs.speech_prior.get_abbr2full()
         
         lg.objs.get_column_width().reset()
         lg.objs.column_width.run()

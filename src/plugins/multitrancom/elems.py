@@ -12,6 +12,7 @@ import instance as ic
 class Trash:
     
     def __init__(self, blocks):
+        self.Parallel = False
         self.head = self.tail = None
         self.blocks = blocks
     
@@ -79,9 +80,13 @@ class Trash:
             return
         pos = self._get_head_subj()
         if pos is not None:
+            self.Parallel = True
             self.head = pos
             return
-        self.head = self._get_head_term()
+        pos = self._get_head_term()
+        if pos is not None:
+            self.Parallel = True
+            self.head = pos
     
     def set_tail(self):
         i = len(self.blocks) - 1
@@ -305,8 +310,9 @@ class Elems:
     
     def __init__(self,blocks):
         self.cells = []
-        self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
         self.art_subj = {}
+        self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
+        self.Parallel = False
         self.blocks = blocks
     
     def save_urls(self):
@@ -674,7 +680,9 @@ class Elems:
         self.blocks = Thesaurus(self.blocks).run()
         self.blocks = SeparateWords(self.blocks).run()
         # Remove trash only after setting separate words
-        self.blocks = Trash(self.blocks).run()
+        itrash = Trash(self.blocks)
+        self.blocks = itrash.run()
+        self.Parallel = itrash.Parallel
         # Remove empty blocks only after removing trash
         self.delete_empty()
         self.set_transc()

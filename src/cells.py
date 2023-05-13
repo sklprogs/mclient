@@ -182,8 +182,11 @@ class View:
         if not self.Success:
             sh.com.cancel(f)
             return
-        #TODO: Elaborate
-        self.cells.sort(key=lambda x: (x.subjpr, x.subj, x.wform, x.transc, x.speechpr, x.text))
+        if sh.lg.globs['bool']['AlphabetizeTerms'] \
+        and not lg.objs.get_articles().is_parallel():
+            self.cells.sort(key=lambda x: (x.subjpr, x.subj, x.wform, x.transc, x.speechpr, x.text, x.no))
+        else:
+            self.cells.sort(key=lambda x: (x.subjpr, x.subj, x.wform, x.transc, x.speechpr, x.no))
     
     def _create_fixed(self, i, type_, rowno):
         f = '[MClientQt] cells.View._create_fixed'

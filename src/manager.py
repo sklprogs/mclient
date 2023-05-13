@@ -301,3 +301,10 @@ class Plugins:
         return self.plugin.request (search = search
                                    ,url = url
                                    )
+    
+    def is_parallel(self):
+        f = '[MClient] manager.Plugins.is_parallel'
+        if not self.plugin:
+            sh.com.rep_empty(f)
+            return
+        return self.plugin.is_parallel()

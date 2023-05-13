@@ -1086,8 +1086,8 @@ if __name__ == '__main__':
         e.g. com.run_welcome, will cause an infinite loop.
     '''
     #Get().run_multitrancom()
-    idebug = sh.Debug(f,Tags().run_multitrancom())
-    #idebug = sh.Debug(f,Elems().run_multitrancom())
+    #idebug = sh.Debug(f,Tags().run_multitrancom())
+    idebug = sh.Debug(f,Elems().run_multitrancom())
     #idebug = sh.Debug(f,View().run_multitrancom())
     #idebug = sh.Debug(f,com.run_default_config())
     #idebug = sh.Debug(f,com.get_priority())

@@ -116,6 +116,7 @@ class Articles:
                                     ,'lang1'      : objs.get_plugins().get_lang1()
                                     ,'lang2'      : objs.plugins.get_lang2()
                                     ,'fixed_urls' : objs.plugins.get_fixed_urls()
+                                    ,'Parallel'   : objs.plugins.is_parallel()
                                     ,'search'     : search
                                     ,'url'        : url
                                     ,'cells'      : cells
@@ -247,6 +248,14 @@ class Articles:
             and self.articles['ids'][id_]['url'] == url:
                 return id_
         return -1
+    
+    def is_parallel(self):
+        f = '[MClientQt] logic.Articles.is_parallel'
+        try:
+            return self.articles['ids'][self.id]['Parallel']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
 
 
 

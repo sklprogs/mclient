@@ -22,12 +22,14 @@ class Plugin:
         self.maxrows = maxrows
     
     def set_values(self):
+        ''' #NOTE: 'fixed_urls', 'art_subj' and 'Parallel' are temporary
+            variables that should be externally referred to only after getting
+            a NEW article.
+        '''
+        self.Parallel = False
         self.cells = []
         self.majors = []
         self.minors = []
-        ''' #NOTE: 'fixed_urls' and 'art_subj' are temporary variables that
-            should be externally referred to only after getting a NEW article.
-        '''
         self.fixed_urls = {}
         self.art_subj = {}
         self.htm = ''
@@ -149,6 +151,9 @@ class Plugin:
     def get_speeches(self):
         return sp.objs.get_speech().get_dic()
     
+    def is_parallel(self):
+        return self.Parallel
+    
     def request(self,search='',url=''):
         self.search = search
         self.htm = gt.Get (search = search
@@ -160,4 +165,5 @@ class Plugin:
         self.cells = ielems.run()
         self.fixed_urls = ielems.fixed_urls
         self.art_subj = ielems.art_subj
+        self.Parallel = ielems.Parallel
         return self.cells
