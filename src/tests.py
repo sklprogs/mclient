@@ -6,6 +6,11 @@ import skl_shared_qt.shared as sh
 
 DEBUG = True
 
+''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
+    otherwise, 'Tags' will fail to set 'subj' and some other types.
+'''
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/hello (Клише) (2023-05-13).html'
+
 
 class Wrap:
     
@@ -19,14 +24,7 @@ class Wrap:
         
         lg.com.start()
         
-        ''' #NOTE: The file should be generated with
-            'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
-            to set 'dic' and some other types.
-        '''
-        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/back (2023-04-12).html'
-        #file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/beg the question (2023-04-15).html'
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/hello (2023-04-19).html'
-        text = sh.ReadTextFile(file).get()
+        text = sh.ReadTextFile(HTM_FILE).get()
         timer = sh.Timer(f)
         timer.start()
         text = cu.CleanUp(text).run()
@@ -61,12 +59,7 @@ class View:
         
         lg.com.start()
         
-        ''' #NOTE: The file should be generated with
-            'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
-            to set 'dic' and some other types.
-        '''
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/дать затвердеть (2023-05-09).html'
-        text = sh.ReadTextFile(file).get()
+        text = sh.ReadTextFile(HTM_FILE).get()
         timer = sh.Timer(f)
         timer.start()
         text = cu.CleanUp(text).run()
@@ -97,12 +90,7 @@ class Elems:
         import plugins.multitrancom.cleanup as cu
         import plugins.multitrancom.tags as tg
         import plugins.multitrancom.elems as el
-        ''' #NOTE: The file should be generated with
-            'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
-            to set 'dic' and some other types.
-        '''
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/put a hat on a hat (Фразы) (2023-05-12).html'
-        text = sh.ReadTextFile(file).get()
+        text = sh.ReadTextFile(HTM_FILE).get()
         timer = sh.Timer(f)
         timer.start()
         text = cu.CleanUp(text).run()
@@ -125,8 +113,7 @@ class Offline:
         import plugins.multitrancom.cleanup as cu
         import plugins.multitrancom.tags as tg
         import plugins.multitrancom.elems as el
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/username (2021-03-06).html'
-        self.htm = sh.ReadTextFile(file).get()
+        self.htm = sh.ReadTextFile(HTM_FILE).get()
         self.text = cu.CleanUp(self.htm).run()
         itags = tg.Tags (text = self.text
                         ,Debug = DEBUG
@@ -340,12 +327,7 @@ class Tags:
     def run_multitrancom(self):
         import plugins.multitrancom.cleanup as cu
         import plugins.multitrancom.tags as tg
-        ''' #NOTE: The file should be generated with
-            'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
-            to set 'dic' and some other types.
-        '''
-        file = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/put a hat on a hat (Фразы) (2023-05-12).html'
-        text = sh.ReadTextFile(file).get()
+        text = sh.ReadTextFile(HTM_FILE).get()
         text = cu.CleanUp(text).run()
         itags = tg.Tags (text = text
                         ,Debug = DEBUG
@@ -687,8 +669,8 @@ class Commands:
         mc.objs.webframe.show()
     
     def get_subjects_wo_majors(self):
-        ''' Get subjects not united by a major subject. This is not
-            an error and can be witnessed sometimes at multitran.com.
+        ''' Get subjects not united by a major subject. This is not an error
+            and can be witnessed sometimes at multitran.com.
         '''
         f = '[MClient] tests.Commands.get_subjects_wo_majors'
         import plugins.multitrancom.subjects as sj
@@ -1104,8 +1086,8 @@ if __name__ == '__main__':
         e.g. com.run_welcome, will cause an infinite loop.
     '''
     #Get().run_multitrancom()
-    #idebug = sh.Debug(f,Tags().run_multitrancom())
-    idebug = sh.Debug(f,Elems().run_multitrancom())
+    idebug = sh.Debug(f,Tags().run_multitrancom())
+    #idebug = sh.Debug(f,Elems().run_multitrancom())
     #idebug = sh.Debug(f,View().run_multitrancom())
     #idebug = sh.Debug(f,com.run_default_config())
     #idebug = sh.Debug(f,com.get_priority())

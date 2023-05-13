@@ -16,7 +16,7 @@ class Trash:
         self.blocks = blocks
     
     def _get_head_wform(self):
-        # Get trash head for common articles
+        # Get trash head for general articles
         pos = None
         for i in range(len(self.blocks)):
             if self.blocks[i].type_ == 'wform' and self.blocks[i].text == ' ':
@@ -31,8 +31,9 @@ class Trash:
             return pos
     
     def _get_head_subj(self):
-        ''' Get trash head for phrase articles. The first term should be
-            'Subject' of 'subj' type and next two terms should denote languages.
+        ''' Get trash head (phrase section, all subjects). The first term
+            should be 'Subject' of 'subj' type and next two terms should denote
+            languages.
         '''
         pos = None
         i = 2
@@ -51,12 +52,36 @@ class Trash:
         if set([block.type_ for block in self.blocks[:pos-2]]) == {'comment'}:
             return pos
     
+    def _get_head_term(self):
+        ''' Get trash head (phrase section, single subject). The first two
+            terms should denote languages.
+        '''
+        pos = None
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].type_ == 'term' and not self.blocks[i-1].url \
+            and self.blocks[i].type_ == 'term' and not self.blocks[i].url:
+                pos = i
+                break
+            i += 1
+        ''' If 'term' block firstly occurs at 0 (which is unlikely), there is
+            no trash head and therefore no need to remove it.
+        '''
+        if pos in (None, 1):
+            return
+        if set([block.type_ for block in self.blocks[:pos-1]]) == {'comment'}:
+            return pos
+    
     def set_head(self):
         pos = self._get_head_wform()
         if pos is not None:
             self.head = pos
             return
-        self.head = self._get_head_subj()
+        pos = self._get_head_subj()
+        if pos is not None:
+            self.head = pos
+            return
+        self.head = self._get_head_term()
     
     def set_tail(self):
         i = len(self.blocks) - 1
