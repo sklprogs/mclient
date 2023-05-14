@@ -498,9 +498,6 @@ class CurRequest:
             with 'sep_words_found' and in phrases; use previous settings for
             new articles.
         '''
-        self.SpecialPage = False
-        self.NewPageType = False
-        self.DefColNumEven = False
     
     def reset(self):
         self.htm = ''
@@ -525,6 +522,7 @@ class Objects:
     def get_column_width(self):
         if self.column_width is None:
             self.column_width = ColumnWidth()
+            self.column_width.run()
         return self.column_width
     
     def get_config(self):
@@ -600,7 +598,6 @@ class Commands:
         cf.DefaultKeys()
         objs.get_default()
         self.load_config()
-        self.set_def_colnum_even()
     
     def set_url(self):
         f = '[MClientQt] logic.Commands.set_url'
@@ -620,33 +617,17 @@ class Commands:
                 Confirmed = False
         return Confirmed
     
-    def set_def_colnum_even(self):
-        if objs.get_request().SpecialPage:
-            return
-        if sh.lg.globs['int']['colnum'] % 2 == 0:
-            objs.request.DefColNumEven = True
-        else:
-            objs.request.DefColNumEven = False
-    
     def update_colnum(self):
-        ''' A subject from the 'Phrases' section usually has
-            an 'original + translation' structure, so we need to
-            switch off sorting terms and ensure that the number of
-            columns is divisible by 2.
+        ''' A subject from the 'Phrases' section usually has an 'original +
+            translation' structure, so we need to switch off sorting terms and
+            ensure that the number of columns is divisible by 2.
         '''
-        if not objs.get_request().NewPageType:
-            return
-        if objs.request.SpecialPage:
-            if objs.request.DefColNumEven:
-                return
-            if sh.lg.globs['int']['colnum'] > 2:
-                sh.lg.globs['int']['colnum'] -= 1
-            else:
-                sh.lg.globs['int']['colnum'] = 2
-        elif objs.request.DefColNumEven:
-            return
+        if not objs.get_articles().is_parallel():
+            return sh.lg.globs['int']['colnum']
+        if sh.lg.globs['int']['colnum'] > 2:
+            return sh.lg.globs['int']['colnum'] - 1
         else:
-            sh.lg.globs['int']['colnum'] += 1
+            return 2
     
     def export_style(self):
         f = '[MClientQt] logic.Commands.export_style'

@@ -89,6 +89,8 @@ class Priorities(pr.Priorities):
 class UpdateUI:
     
     def __init__(self,gui):
+        self.Parallel = lg.objs.get_articles().get_len() > 0 \
+                        and lg.objs.articles.is_parallel()
         self.gui = gui
     
     def restore(self):
@@ -109,8 +111,7 @@ class UpdateUI:
         self.gui.opt_col.set(sh.lg.globs['int']['colnum'])
     
     def _update_alphabet_image(self):
-        if sh.lg.globs['bool']['AlphabetizeTerms'] \
-        and not lg.objs.request.SpecialPage:
+        if sh.lg.globs['bool']['AlphabetizeTerms'] and not self.Parallel:
             self.gui.btn_alp.activate()
         else:
             self.gui.btn_alp.inactivate()
@@ -121,7 +122,7 @@ class UpdateUI:
             mes.append(_('Status: ON'))
         else:
             mes.append(_('Status: OFF'))
-        if lg.objs.request.SpecialPage:
+        if self.Parallel:
             mes.append(_('This page is not supported'))
         self.gui.btn_alp.hint = '\n'.join(mes)
         self.gui.btn_alp.set_hint()
@@ -156,7 +157,7 @@ class UpdateUI:
         mes = [_('Subject prioritization')]
         prioritized = com.get_prioritized()
         if sh.lg.globs['bool']['PrioritizeSubjects'] and prioritized \
-        and not lg.objs.request.SpecialPage:
+        and not self.Parallel:
             self.gui.btn_pri.activate()
         else:
             self.gui.btn_pri.inactivate()
@@ -164,9 +165,7 @@ class UpdateUI:
             mes.append(_('Status: ON'))
         else:
             mes.append(_('Status: OFF'))
-        if lg.objs.request.SpecialPage:
-            sub = _('This page is not supported')
-        elif prioritized:
+        if prioritized:
             sub = _('{} subjects were prioritized')
             sub = sub.format(len(prioritized))
         else:
@@ -1255,35 +1254,29 @@ class App:
         self.gui.panel.ent_src.focus()
 
     def reset_columns(self):
+        ''' Count only term columns since fixed columns can now have zero width
+            (they are not visible to the user and are not considered by them).
+        '''
         f = '[MClientQt] mclient.App.reset_columns'
-        fixed = [col for col in lg.objs.get_request().cols \
-                 if col != _('Do not set')
-                ]
         sh.lg.globs['int']['colnum'] = sh.Input (title = f
                                                 ,value = self.gui.panel.opt_col.get()
                                                 ).get_integer()
-        lg.objs.request.collimit = sh.lg.globs['int']['colnum'] + len(fixed)
-        mes = _('Set the number of columns to {}')
-        mes = mes.format(lg.objs.request.collimit)
+        collimit = lg.objs.get_column_width().fixed_num + sh.lg.globs['int']['colnum']
+        mes = _('Set the number of columns to {} ({} in total)')
+        mes = mes.format(sh.lg.globs['int']['colnum'], collimit)
         sh.objs.get_mes(f,mes,True).show_info()
     
     def update_columns(self):
-        ''' Update a column number in GUI; adjust the column number
-            (both logic and GUI) in special cases.
+        ''' Update a column number in GUI; adjust the column number (both logic
+            and GUI) in special cases.
         '''
         f = '[MClientQt] mclient.App.update_columns'
-        lg.com.update_colnum()
-        fixed = [col for col in lg.objs.get_request().cols \
-                 if col != _('Do not set')
-                ]
-        lg.objs.get_request().collimit = len(fixed) + sh.lg.globs['int']['colnum']
+        sh.lg.globs['int']['colnum'] = lg.com.update_colnum()
         self.gui.panel.opt_col.set(sh.lg.globs['int']['colnum'])
-        mes = _('Set the column limit to {} ({} in total)')
-        mes = mes.format (sh.lg.globs['int']['colnum']
-                         ,lg.objs.request.collimit
-                         )
+        collimit = lg.objs.get_column_width().fixed_num + sh.lg.globs['int']['colnum']
+        mes = _('Set the number of columns to {} ({} in total)')
+        mes = mes.format(sh.lg.globs['int']['colnum'], collimit)
         sh.objs.get_mes(f,mes,True).show_info()
-        lg.com.set_def_colnum_even()
     
     def set_source(self):
         f = '[MClientQt] mclient.App.set_source'
@@ -1551,7 +1544,7 @@ class App:
                         ,fixed_urls = lg.objs.plugins.get_fixed_urls()
                         ).run()
         iwrap = cl.Wrap (cells = cells
-                        ,collimit = 9
+                        ,collimit = lg.objs.get_column_width().fixed_num + sh.lg.globs['int']['colnum']
                         ,fixed_types = fixed_types
                         )
         iwrap.run()
