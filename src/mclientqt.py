@@ -89,8 +89,7 @@ class Priorities(pr.Priorities):
 class UpdateUI:
     
     def __init__(self,gui):
-        self.Parallel = lg.objs.get_articles().get_len() > 0 \
-                        and lg.objs.articles.is_parallel()
+        self.Parallel = lg.com.is_parallel()
         self.gui = gui
     
     def restore(self):
@@ -1233,7 +1232,7 @@ class App:
             sh.com.rep_lazy(f)
             return
         '''
-        self.gui.panel.opt_col.set(sh.lg.globs['int']['colnum'])
+        self.gui.panel.opt_col.set(lg.objs.get_column_width().term_num)
     
     def apply_settings(self):
         self.settings.close()
@@ -1258,12 +1257,13 @@ class App:
             (they are not visible to the user and are not considered by them).
         '''
         f = '[MClientQt] mclient.App.reset_columns'
-        sh.lg.globs['int']['colnum'] = sh.Input (title = f
-                                                ,value = self.gui.panel.opt_col.get()
-                                                ).get_integer()
-        collimit = lg.objs.get_column_width().fixed_num + sh.lg.globs['int']['colnum']
+        if not lg.com.is_parallel():
+            sh.lg.globs['int']['colnum'] = sh.Input (title = f
+                                                    ,value = self.gui.panel.opt_col.get()
+                                                    ).get_integer()
+        collimit = lg.objs.get_column_width().fixed_num + lg.objs.column_width.term_num
         mes = _('Set the number of columns to {} ({} in total)')
-        mes = mes.format(sh.lg.globs['int']['colnum'], collimit)
+        mes = mes.format(lg.objs.column_width.term_num, collimit)
         sh.objs.get_mes(f,mes,True).show_info()
     
     def update_columns(self):
@@ -1271,11 +1271,12 @@ class App:
             and GUI) in special cases.
         '''
         f = '[MClientQt] mclient.App.update_columns'
-        sh.lg.globs['int']['colnum'] = lg.com.update_colnum()
-        self.gui.panel.opt_col.set(sh.lg.globs['int']['colnum'])
-        collimit = lg.objs.get_column_width().fixed_num + sh.lg.globs['int']['colnum']
+        if not lg.com.is_parallel():
+            sh.lg.globs['int']['colnum'] = lg.objs.get_column_width().term_num
+        self.gui.panel.opt_col.set(lg.objs.get_column_width().term_num)
+        collimit = lg.objs.get_column_width().fixed_num + lg.objs.column_width.term_num
         mes = _('Set the number of columns to {} ({} in total)')
-        mes = mes.format(sh.lg.globs['int']['colnum'], collimit)
+        mes = mes.format(lg.objs.column_width.term_num, collimit)
         sh.objs.get_mes(f,mes,True).show_info()
     
     def set_source(self):
@@ -1535,6 +1536,9 @@ class App:
         cells = cl.Omit(cells).run()
         cells = cl.Prioritize(cells, lg.Speech().get_settings()).run()
         
+        lg.objs.get_column_width().reset()
+        lg.objs.column_width.run()
+        
         self.update_columns()
         
         #TODO: Read settings from GUI
@@ -1544,13 +1548,10 @@ class App:
                         ,fixed_urls = lg.objs.plugins.get_fixed_urls()
                         ).run()
         iwrap = cl.Wrap (cells = cells
-                        ,collimit = lg.objs.get_column_width().fixed_num + sh.lg.globs['int']['colnum']
+                        ,collimit = lg.objs.get_column_width().fixed_num + lg.objs.column_width.term_num
                         ,fixed_types = fixed_types
                         )
         iwrap.run()
-        
-        lg.objs.get_column_width().reset()
-        lg.objs.column_width.run()
         
         self.table.reset(iwrap.plain, iwrap.code)
         

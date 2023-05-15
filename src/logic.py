@@ -451,17 +451,12 @@ class ColumnWidth:
             sh.com.rep_lazy(f)
             return
         self.fixed_num = 4
-#        columns = objs.get_blocksdb().get_fixed_cols()
-#        if not columns:
-#            sh.com.rep_lazy(f)
-#            return
-#        self.fixed_num = len(columns)
-        mes = _('An actual number of fixed columns: {}').format(self.fixed_num)
+        mes = _('Number of fixed columns: {}').format(self.fixed_num)
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_term_num(self):
         f = '[MClientQt] logic.ColumnWidth.set_term_num'
-        self.term_num = sh.lg.globs['int']['colnum']
+        self.term_num = com.get_colnum()
         mes = _('Number of term columns: {}')
         mes = mes.format(self.term_num)
         sh.objs.get_mes(f,mes,True).show_debug()
@@ -560,6 +555,9 @@ class Commands:
     def __init__(self):
         self.use_unverified()
     
+    def is_parallel(self):
+        return objs.get_articles().get_len() > 0 and objs.articles.is_parallel()
+    
     def get_text(self,cells):
         f = '[MClientQt] logic.Commands.get_text'
         if not cells:
@@ -617,17 +615,16 @@ class Commands:
                 Confirmed = False
         return Confirmed
     
-    def update_colnum(self):
+    def get_colnum(self):
         ''' A subject from the 'Phrases' section usually has an 'original +
             translation' structure, so we need to switch off sorting terms and
             ensure that the number of columns is divisible by 2.
         '''
-        if not objs.get_articles().is_parallel():
+        if not self.is_parallel() or sh.lg.globs['int']['colnum'] % 2 == 0:
             return sh.lg.globs['int']['colnum']
         if sh.lg.globs['int']['colnum'] > 2:
             return sh.lg.globs['int']['colnum'] - 1
-        else:
-            return 2
+        return 2
     
     def export_style(self):
         f = '[MClientQt] logic.Commands.export_style'
