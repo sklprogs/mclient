@@ -1238,6 +1238,8 @@ class App:
         self.settings.close()
         st.Save().run()
         lg.com.export_style()
+        lg.objs.get_column_width().reset()
+        lg.objs.column_width.run()
         self.set_col_num()
         # This loads the article and must come the last
         self.set_columns()
