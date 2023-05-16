@@ -1815,6 +1815,7 @@ class App:
         self.panel.opt_lg1.widget.activated.connect(self.go_search)
         self.panel.opt_lg2.widget.activated.connect(self.go_search)
         self.panel.opt_src.widget.activated.connect(self.set_source)
+        self.panel.opt_col.set_action(self.set_columns)
         
         self.table.gui.sig_rmb.connect(self.copy_cell)
         
