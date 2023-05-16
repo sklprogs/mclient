@@ -555,6 +555,37 @@ class Commands:
     def __init__(self):
         self.use_unverified()
     
+    def _get_col_type(self, type_):
+        f = '[MClientQt] logic.Commands._get_col_type'
+        if type_ == _('Subjects'):
+            return 'subj'
+        elif type_ == _('Word forms'):
+            return 'wform'
+        elif type_ == _('Parts of speech'):
+            return 'speech'
+        elif type_ == _('Transcription'):
+            return 'transc'
+        elif type_ == _('Do not set'):
+            pass
+        else:
+            mes = _('Wrong input data: "{}"!').format(type_)
+            sh.objs.get_mes(f,mes).show_error()
+        #TODO: Elaborate
+        return 'subj'
+    
+    def get_col_types(self):
+        f = '[MClientQt] logic.Commands.get_col_types'
+        types = [sh.lg.globs['str']['col1_type']
+                ,sh.lg.globs['str']['col2_type']
+                ,sh.lg.globs['str']['col3_type']
+                ,sh.lg.globs['str']['col4_type']
+                ]
+        for i in range(len(types)):
+            types[i] = self._get_col_type(types[i])
+        mes = ', '.join(types)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return types
+    
     def is_parallel(self):
         return objs.get_articles().get_len() > 0 and objs.articles.is_parallel()
     

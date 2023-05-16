@@ -1543,8 +1543,7 @@ class App:
         
         self.update_columns()
         
-        #TODO: Read settings from GUI
-        fixed_types = ('subj', 'wform', 'transc', 'speech')
+        fixed_types = lg.com.get_col_types()
         cells = cl.View (cells = cells
                         ,fixed_types = fixed_types
                         ,fixed_urls = lg.objs.plugins.get_fixed_urls()
