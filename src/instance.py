@@ -1,6 +1,19 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+class Tag:
+    
+    def __init__(self):
+        self.type_ = ''
+        self.text = ''
+        self.name = ''
+        self.url = ''
+        self.subjf = ''
+        self.cellno = -1
+        self.Close = False
+        self.inherent = []
+
+
 
 class Cell:
     
