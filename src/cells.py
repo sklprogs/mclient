@@ -111,8 +111,8 @@ class Omit:
 
 class Prioritize:
     
-    def __init__(self, cells, speech=[]):
-        self.speech = speech
+    def __init__(self, cells):
+        self.speech = lg.Speech().get_settings()
         self.cells = cells
     
     def set_subjects(self):
@@ -162,13 +162,13 @@ class Prioritize:
 
 class View:
     # Create user-specific cells
-    def __init__(self, cells, fixed_types=('subj', 'wform', 'transc', 'speech'), fixed_urls={}):
+    def __init__(self, cells):
         self.Success = True
         self.phi = None
         self.view = []
         self.cells = cells
-        self.fixed_types = fixed_types
-        self.fixed_urls = fixed_urls
+        self.fixed_types = lg.com.get_col_types()
+        self.fixed_urls = lg.objs.plugins.get_fixed_urls()
 
     def check(self):
         f = '[MClientQt] cells.View.check'
@@ -189,7 +189,6 @@ class View:
             self.cells.sort(key=lambda x: (x.subjpr, x.subj, x.wform, x.transc, x.speechpr, x.no))
     
     def _create_fixed(self, i, type_, rowno):
-        f = '[MClientQt] cells.View._create_fixed'
         cell = ic.Cell()
         block = ic.Block()
         block.type_ = type_
@@ -202,6 +201,7 @@ class View:
         cell.transc = self.cells[i].transc
         cell.speech = self.cells[i].speech
         cell.speechpr = self.cells[i].speechpr
+        # Empty types are actually allowed since we can have empty columns
         if type_ == 'subj':
             cell.text = block.text = self.cells[i].subj
         elif type_ == 'wform':
@@ -210,10 +210,6 @@ class View:
             cell.text = block.text = self.cells[i].transc
         elif type_ == 'speech':
             cell.text = block.text = self.cells[i].speech
-        else:
-            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(type_,'subj, wform, trasc, speech')
-            sh.objs.get_mes(f,mes).show_warning()
         return cell
     
     def restore_fixed(self):
@@ -426,16 +422,18 @@ class View:
 
 class Wrap:
     
-    def __init__(self, cells, collimit=9, fixed_types=('subj', 'wform', 'transc', 'speech')):
+    def __init__(self, cells):
         ''' Since we create even empty columns, the number of fixed cells in
             a row should always be 4 (unless new fixed types are added).
         '''
-        self.fixed_len = 4
         self.Success = True
         self.plain = []
         self.code = []
         self.cells = cells
-        self.collimit = collimit
+        self.fixed_len = lg.objs.get_column_width().fixed_num
+        self.collimit = lg.objs.column_width.fixed_num \
+                      + lg.objs.column_width.term_num
+        self.fixed_types = lg.com.get_col_types()
     
     def check(self):
         f = '[MClientQt] cells.Wrap.check'

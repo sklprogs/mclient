@@ -1536,22 +1536,15 @@ class App:
         cells = cl.Expand(cells).run()
         
         cells = cl.Omit(cells).run()
-        cells = cl.Prioritize(cells, lg.Speech().get_settings()).run()
+        cells = cl.Prioritize(cells).run()
         
         lg.objs.get_column_width().reset()
         lg.objs.column_width.run()
         
         self.update_columns()
         
-        fixed_types = lg.com.get_col_types()
-        cells = cl.View (cells = cells
-                        ,fixed_types = fixed_types
-                        ,fixed_urls = lg.objs.plugins.get_fixed_urls()
-                        ).run()
-        iwrap = cl.Wrap (cells = cells
-                        ,collimit = lg.objs.get_column_width().fixed_num + lg.objs.column_width.term_num
-                        ,fixed_types = fixed_types
-                        )
+        cells = cl.View(cells).run()
+        iwrap = cl.Wrap(cells)
         iwrap.run()
         
         self.table.reset(iwrap.plain, iwrap.code)

@@ -9,6 +9,8 @@ DEBUG = True
 ''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
     otherwise, 'Tags' will fail to set 'subj' and some other types.
 '''
+SEARCH = 'hello'
+URL = 'https://www.multitran.com/m.exe?a=3&sc=499&s=hello&l1=1&l2=2'
 HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/hello (Клише) (2023-05-13).html'
 
 
@@ -31,15 +33,16 @@ class Wrap:
         blocks = tg.Tags (text = text
                          ,maxrows = 0
                          ).run()
-        ielems = el.Elems(blocks)
-        cells = ielems.run()
-        blocked = ['Gruzovik']
-        subjects = ['Общая лексика','общ.']
-        # Full forms as well
-        speech = ['сущ.','глаг.','прил.','сокр.','нареч.','предл.','мест.']
-        cells = cl.Omit(cells, blocked).run()
-        cells = cl.Prioritize(cells,subjects,speech).run()
-        cells = cl.View(cells, fixed_urls=ielems.fixed_urls)
+        cells = el.Elems(blocks).run()
+        
+        lg.objs.get_articles().add (search = SEARCH
+                                   ,url = URL
+                                   ,cells = cells
+                                   )
+        
+        cells = cl.Omit(cells).run()
+        cells = cl.Prioritize(cells).run()
+        cells = cl.View(cells).run()
         iwrap = cl.Wrap(cells)
         iwrap.run()
         timer.end()
@@ -66,17 +69,16 @@ class View:
         blocks = tg.Tags (text = text
                          ,maxrows = 0
                          ).run()
-        ielems = el.Elems(blocks)
-        cells = ielems.run()
+        cells = el.Elems(blocks).run()
         
-        lg.objs.get_plugins().mcplugin.art_subj = ielems.art_subj
-        lg.objs.plugins.mcplugin.fixed_urls = ielems.fixed_urls
+        lg.objs.get_articles().add (search = SEARCH
+                                   ,url = URL
+                                   ,cells = cells
+                                   )
         
-        #speech = ['сущ.', 'глаг.', 'прил.', 'сокр.', 'нареч.', 'предл.', 'мест.']
-        speech = ['прил.', 'сущ.', 'глаг.', 'сокр.', 'нареч.', 'предл.', 'мест.']
         cells = cl.Omit(cells).run()
-        cells = cl.Prioritize(cells, speech).run()
-        iview = cl.View(cells, fixed_urls=ielems.fixed_urls)
+        cells = cl.Prioritize(cells).run()
+        iview = cl.View(cells)
         iview.run()
         timer.end()
         return iview.debug()
@@ -1085,12 +1087,9 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
-    #Get().run_multitrancom()
     #idebug = sh.Debug(f,Tags().run_multitrancom())
-    idebug = sh.Debug(f,Elems().run_multitrancom())
-    #idebug = sh.Debug(f,View().run_multitrancom())
-    #idebug = sh.Debug(f,com.run_default_config())
-    #idebug = sh.Debug(f,com.get_priority())
+    #idebug = sh.Debug(f,Elems().run_multitrancom())
+    idebug = sh.Debug(f,View().run_multitrancom())
     #idebug = sh.Debug(f,Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
     idebug.show()

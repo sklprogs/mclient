@@ -570,8 +570,7 @@ class Commands:
         else:
             mes = _('Wrong input data: "{}"!').format(type_)
             sh.objs.get_mes(f,mes).show_error()
-        #TODO: Elaborate
-        return 'subj'
+        return ''
     
     def get_col_types(self):
         f = '[MClientQt] logic.Commands.get_col_types'
