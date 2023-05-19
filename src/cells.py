@@ -117,25 +117,29 @@ class Prioritize:
     
     def set_subjects(self):
         f = '[MClientQt] cells.Prioritize.set_subjects'
-        priorities = []
         for cell in self.cells:
             priority = sj.objs.get_subjects().get_priority(cell.subj)
             if priority is not None:
                 cell.subjpr = priority
-                priorities.append(priority)
-        # Avoid applying 'max' to an empty sequence
-        if not priorities:
+        pr_cells = [cell for cell in self.cells if cell.subjpr > -1]
+        unp_cells = [cell for cell in self.cells if cell.subjpr == -1 \
+                     and not self._is_phrase_type(cell)
+                    ]
+        ph_cells = [cell for cell in self.cells if cell.subjpr == -1 \
+                    and self._is_phrase_type(cell)
+                   ]
+        if not pr_cells:
             sh.com.rep_lazy(f)
             return
-        priorities.sort()
-        no = max(priorities) + 1
-        for cell in self.cells:
-            if cell.subjpr == -1 and not self._is_phrase_type(cell):
-                cell.subjpr = no
-        no += 1
-        for cell in self.cells:
-            if cell.subjpr == -1 and self._is_phrase_type(cell):
-                cell.subjpr = no
+        pr_cells.sort(key=lambda x: (x.subjpr, x.no))
+        unp_cells.sort(key=lambda x: (x.subj.lower(), x.no))
+        no = len(pr_cells)
+        for i in range(len(unp_cells)):
+            unp_cells[i].subjpr = no + i
+        no = no + i + 1
+        for i in range(len(ph_cells)):
+            ph_cells[i].subjpr = no + i
+        self.cells = pr_cells + unp_cells + ph_cells
 
     def set_speech(self):
         all_speech = sorted(set([cell.speech for cell in self.cells]))
