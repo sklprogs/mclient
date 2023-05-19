@@ -11,6 +11,7 @@ mclient:
 - Changing number of columns causes navigation issues
 
 multitrancom:
+- RU-EN, redicule: all terms are marked as comments, trash must be removed
 - RU-EN, fencing: probably a space before "]" in transcription
 - RU-EN, давать затвердеть: "давать" is marked as not found
 - RU-EN, tuple -> Фразы: source and target phrases do not match

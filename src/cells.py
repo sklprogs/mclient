@@ -184,9 +184,11 @@ class View:
             return
         if sh.lg.globs['bool']['AlphabetizeTerms'] \
         and not lg.objs.get_articles().is_parallel():
-            self.cells.sort(key=lambda x: (x.subjpr, x.subj, x.wform, x.transc, x.speechpr, x.text, x.no))
+            #self.cells.sort(key=lambda x: (x.subjpr, x.subj, x.wform, x.transc, x.speechpr, x.text, x.no))
+            self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.text, x.no))
         else:
-            self.cells.sort(key=lambda x: (x.subjpr, x.subj, x.wform, x.transc, x.speechpr, x.no))
+            #self.cells.sort(key=lambda x: (x.subjpr, x.subj, x.wform, x.transc, x.speechpr, x.no))
+            self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.no))
     
     def _create_fixed(self, i, type_, rowno):
         cell = ic.Cell()
@@ -272,35 +274,29 @@ class View:
         if not self.Success:
             sh.com.cancel(f)
             return
-        headers = (_('ROW #'),_('CELL #'),_('TEXT'),_('CODE'),'URL','SUBJ'
-                  ,'SUBJPR','WFORM','TRANSC','SPEECH','SPEECHPR'
+        headers = (_('ROW #'), _('CELL #'), _('TEXT'), _('CODE'), 'URL', 'COL1'
+                  ,'COL2', 'COL3', 'COL4'
                   )
         rowno = []
         no = []
         text = []
         code = []
         url = []
-        subj = []
-        subjpr = []
-        wform = []
-        transc = []
-        speech = []
-        speechpr = []
+        col1 = []
+        col2 = []
+        col3 = []
+        col4 = []
         for cell in self.cells:
             rowno.append(cell.rowno)
             no.append(cell.no)
             text.append(cell.text)
             code.append(cell.code)
             url.append(cell.url)
-            subj.append(cell.subj)
-            subjpr.append(cell.subjpr)
-            wform.append(cell.wform)
-            transc.append(cell.transc)
-            speech.append(cell.speech)
-            speechpr.append(cell.speechpr)
-        iterable = [rowno, no, text, code, url, subj, subjpr, wform, transc
-                   ,speech, speechpr
-                   ]
+            col1.append(cell.col1)
+            col2.append(cell.col2)
+            col3.append(cell.col3)
+            col4.append(cell.col4)
+        iterable = [rowno, no, text, code, url, col1, col2, col3, col4]
         return sh.FastTable (headers = headers
                             ,iterable = iterable
                             ,maxrow = 30
@@ -406,9 +402,58 @@ class View:
             cell.wform = cell.speech = cell.transc = ''
             i += 1
 
+    def fill_cols(self):
+        f = '[MClientQt] cells.View.fill_cols'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        types = lg.com.get_col_types()
+        if not types:
+            sh.com.rep_lazy(f)
+            return
+        for cell in self.cells:
+            for i in range(len(types)):
+                if i == 0:
+                    if types[i] == 'subj':
+                        cell.col1 = cell.subjpr
+                    elif types[i] == 'wform':
+                        cell.col1 = cell.wform.lower()
+                    elif types[i] == 'speech':
+                        cell.col1 = cell.speechpr
+                    elif types[i] == 'transc':
+                        cell.col1 = cell.transc.lower()
+                elif i == 1:
+                    if types[i] == 'subj':
+                        cell.col2 = cell.subjpr
+                    elif types[i] == 'wform':
+                        cell.col2 = cell.wform.lower()
+                    elif types[i] == 'speech':
+                        cell.col2 = cell.speechpr
+                    elif types[i] == 'transc':
+                        cell.col2 = cell.transc.lower()
+                elif i == 2:
+                    if types[i] == 'subj':
+                        cell.col3 = cell.subjpr
+                    elif types[i] == 'wform':
+                        cell.col3 = cell.wform.lower()
+                    elif types[i] == 'speech':
+                        cell.col3 = cell.speechpr
+                    elif types[i] == 'transc':
+                        cell.col3 = cell.transc.lower()
+                elif i == 3:
+                    if types[i] == 'subj':
+                        cell.col4 = cell.subjpr
+                    elif types[i] == 'wform':
+                        cell.col4 = cell.wform.lower()
+                    elif types[i] == 'speech':
+                        cell.col4 = cell.speechpr
+                    elif types[i] == 'transc':
+                        cell.col4 = cell.transc.lower()
+    
     def run(self):
         self.check()
         self.sort()
+        self.fill_cols()
         self.restore_fixed()
         self.restore_first()
         self.restore_phsubj()

@@ -32,6 +32,10 @@ class Cell:
         self.transc = ''
         self.url = ''
         self.wform = ''
+        self.col1 = ''
+        self.col2 = ''
+        self.col3 = ''
+        self.col4 = ''
 
 
 
