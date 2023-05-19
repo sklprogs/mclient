@@ -452,8 +452,8 @@ class View:
     
     def run(self):
         self.check()
-        self.sort()
         self.fill_cols()
+        self.sort()
         self.restore_fixed()
         self.restore_first()
         self.restore_phsubj()
