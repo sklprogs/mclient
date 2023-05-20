@@ -59,7 +59,7 @@ class History:
             mes = _('Wrong input data: "{}"!').format(rowno)
             sh.objs.get_mes(f,mes).show_warning()
             return
-        self.gui.sig_go.emit(int(id_))
+        self.gui.sig_go.emit(int(id_) - 1)
     
     def go_down(self):
         # Qt already goes down/up, but without looping
@@ -104,10 +104,9 @@ class History:
         # Avoid getting out of bounds, since our table is initially [[]]
         if self.model.items[0] == []:
             del self.model.items[0]
-        id_ = str(id_)
-        rowno = self._find_id(id_)
+        rowno = self._find_id(str(id_ + 1))
         if rowno is None:
-            row = [id_, source, lang1, lang2, search]
+            row = [str(id_ + 1), source, lang1, lang2, search]
             self.model.items.append(row)
             self.model.update()
             self._go_row(len(self.model.items)-1)

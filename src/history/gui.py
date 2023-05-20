@@ -67,7 +67,7 @@ class History(PyQt5.QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.set_gui()
     
-    def set_index(self,index_):
+    def set_index(self, index_):
         self.history.setCurrentIndex(index_)
     
     def get_row(self):
@@ -83,7 +83,7 @@ class History(PyQt5.QtWidgets.QWidget):
     def get_model(self):
         return self.history.model()
     
-    def set_model(self,model):
+    def set_model(self, model):
         self.history.setModel(model)
     
     def reset(self):
