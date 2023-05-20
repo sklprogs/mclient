@@ -36,7 +36,7 @@ class History:
         self._go_row(rowno)
         self._go_article(rowno)
     
-    def fill_model(self,table=[[]]):
+    def fill_model(self, table=[[]]):
         ''' Do not assign 'gi.TableModel' externally, this will not change
             the actual model.
         '''
@@ -45,7 +45,7 @@ class History:
         if self.model.items and self.model.items[0]:
             self._go_row(0)
     
-    def _go_row(self,rowno):
+    def _go_row(self, rowno):
         self.gui.clear_selection()
         index_ = self.model.index(rowno,0)
         self.gui.set_index(index_)
@@ -91,12 +91,12 @@ class History:
         sh.objs.get_mes(f,mes,True).show_debug()
         self._go_article(rowno)
     
-    def _find_id(self,id_):
+    def _find_id(self, id_):
         for i in range(len(self.model.items)):
             if self.model.items[i] and self.model.items[i][0] == id_:
                 return i
     
-    def add_row(self,id_,source,lang1,lang2,search):
+    def add_row(self, id_, source, lang1, lang2, search):
         f = '[MClient] history.controller.History.add_row'
         if not self.model.items:
             sh.com.rep_empty(f)
@@ -107,14 +107,14 @@ class History:
         id_ = str(id_)
         rowno = self._find_id(id_)
         if rowno is None:
-            row = [id_,source,lang1,lang2,search]
+            row = [id_, source, lang1, lang2, search]
             self.model.items.append(row)
             self.model.update()
             self._go_row(len(self.model.items)-1)
         else:
             self._go_row(rowno)
     
-    def set_title(self,title=_('History')):
+    def set_title(self, title=_('History')):
         self.gui.set_title(title)
     
     def set_bindings(self):
