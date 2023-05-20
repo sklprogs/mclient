@@ -14,7 +14,8 @@ class Subjects:
     
     def set_prior(self):
         f = '[MClientQt] subjects.Subjects.set_prior'
-        if not lg.objs.get_default().prior or not lg.objs.get_articles().get_subjects():
+        if not lg.objs.get_default().prior \
+        or not lg.objs.get_articles().get_subjects():
             sh.com.rep_lazy(f)
             return
         for subject in lg.objs.get_articles().get_subjects():

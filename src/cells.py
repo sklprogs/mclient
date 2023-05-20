@@ -131,8 +131,13 @@ class Prioritize:
         if not pr_cells:
             sh.com.rep_lazy(f)
             return
+        
         pr_cells.sort(key=lambda x: (x.subjpr, x.no))
         unp_cells.sort(key=lambda x: (x.subj.lower(), x.no))
+        
+        for i in range(len(pr_cells)):
+            pr_cells[i].subjpr = i
+        
         no = len(pr_cells)
         for i in range(len(unp_cells)):
             unp_cells[i].subjpr = no + i

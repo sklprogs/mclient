@@ -8,6 +8,9 @@ mclient:
 - Clear CurRequest data after clearing history
 - Improve saving the article as a webpage, replace '\n' with '<br>',
   add titles everywhere
+- "Clarity" mode: move phrases to the end or do not use them
+- Fixed columns are empty (e.g., "Custom" mode): Do not use phrases, sort only
+  by terms (if alphabetization is on)
 
 multitrancom:
 - RU-EN, hell -> Табуированная лексика: Remove terms denoting languages and
