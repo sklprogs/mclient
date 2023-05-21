@@ -251,7 +251,7 @@ class SeparateWords:
                        if block.text and block.text != '|'
                       ]
     
-    def _has(self,text):
+    def _has(self, text):
         for pattern in self.patterns:
             if pattern in text:
                 return True
@@ -261,7 +261,7 @@ class SeparateWords:
         block.type_ = 'subj'
         block.text = block.subjf = _('Separate words')
         block.subj = _('sep. words')
-        self.blocks.insert(0,block)
+        self.blocks.insert(0, block)
     
     def set(self):
         f = '[MClientQt] plugins.multitrancom.elems.SeparateWords.set'
@@ -284,9 +284,9 @@ class SeparateWords:
         self._add_subject()
     
     def get_head(self):
-        blocks = ('Forvo','|','+')
+        blocks = ('Forvo', '|', '+')
         texts = [block.text for block in self.blocks]
-        return sh.List(texts,blocks).find()
+        return sh.List(texts, blocks).find()
     
     def get_tail(self):
         i = 0
@@ -299,6 +299,62 @@ class SeparateWords:
                 if pattern in self.blocks[i].text:
                     return i
             i += 1
+    
+    def run(self):
+        self.set()
+        return self.blocks
+
+
+
+class Suggestions:
+    
+    def __init__(self, blocks):
+        self.patterns = (' Варианты замены: ', ' Suggest: '
+                        ,' Mögliche Varianten: ', ' Variantes de sustitución: '
+                        ,' Варіанти заміни: ', ' Opcje zamiany: ', ' 建议: '
+                        )
+        self.blocks = blocks
+    
+    def _has(self, text):
+        for pattern in self.patterns:
+            if pattern in text:
+                return True
+    
+    def has(self):
+        for block in self.blocks:
+            if block.type_ != 'comment':
+                continue
+            for pattern in self.patterns:
+                if pattern == block.text:
+                    return True
+    
+    def _add_subject(self):
+        block = ic.Block()
+        block.type_ = 'subj'
+        block.text = block.subjf = _('Suggestions:')
+        block.subj = _('sug.')
+        self.blocks.insert(0, block)
+    
+    def set(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Suggestions.set'
+        if not self.has():
+            sh.com.rep_lazy(f)
+            return
+        old_len = len(self.blocks)
+        self.blocks = [block for block in self.blocks \
+                       if block.url.startswith('l1')
+                      ]
+        if not self.blocks:
+            sh.com.rep_empty(f)
+            return
+        for block in self.blocks:
+            ''' Should have only blocks of 'comment' type by now, but we want
+                to be on a safe side.
+            '''
+            if block.type_ == 'comment':
+                block.type_ = 'term'
+        sh.com.rep_deleted(f,old_len-len(self.blocks))
+        self._add_subject()
     
     def run(self):
         self.set()
@@ -679,6 +735,7 @@ class Elems:
         # Find thesaurus before deleting empty blocks
         self.blocks = Thesaurus(self.blocks).run()
         self.blocks = SeparateWords(self.blocks).run()
+        self.blocks = Suggestions(self.blocks).run()
         # Remove trash only after setting separate words
         itrash = Trash(self.blocks)
         self.blocks = itrash.run()

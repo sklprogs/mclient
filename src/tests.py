@@ -9,9 +9,9 @@ DEBUG = True
 ''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
     otherwise, 'Tags' will fail to set 'subj' and some other types.
 '''
-SEARCH = 'tuple'
+SEARCH = 'redicule'
 URL = ''
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/tuple (2023-05-06).html'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/redicule (2023-05-21).html'
 
 
 class Wrap:
@@ -1088,8 +1088,8 @@ if __name__ == '__main__':
         e.g. com.run_welcome, will cause an infinite loop.
     '''
     #idebug = sh.Debug(f,Tags().run_multitrancom())
-    #idebug = sh.Debug(f,Elems().run_multitrancom())
-    idebug = sh.Debug(f,View().run_multitrancom())
+    idebug = sh.Debug(f,Elems().run_multitrancom())
+    #idebug = sh.Debug(f,View().run_multitrancom())
     #idebug = sh.Debug(f,Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
     idebug.show()
