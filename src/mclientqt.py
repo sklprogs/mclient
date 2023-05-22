@@ -1567,6 +1567,13 @@ class App:
         '''
         if iwrap.plain or skipped:
             self.gui.panel.ent_src.reset()
+        elif skipped:
+            mes = _('Nothing has been found (skipped subjects: {}).')
+            mes = mes.format(skipped)
+            sh.objs.get_mes(f,mes).show_info()
+        else:
+            mes = _('Nothing has been found.')
+            sh.objs.get_mes(f,mes).show_info()
         
         self.add_history()
         

@@ -745,6 +745,13 @@ class Elems:
                 self.art_subj[block.subj] = block.subjf
         sh.com.rep_matches(f,count)
     
+    def set_not_found(self):
+        for block in self.blocks:
+            if block.type_ == 'comment' and block.text \
+            and block.url.startswith('a=46&'):
+                self.blocks = []
+                return
+    
     def run(self):
         # Find thesaurus before deleting empty blocks
         self.blocks = Thesaurus(self.blocks).run()
@@ -756,6 +763,7 @@ class Elems:
         self.blocks = itrash.run()
         self.Parallel = itrash.Parallel
         self.Separate = iseparate.Separate
+        self.set_not_found()
         # Remove empty blocks only after removing trash
         self.delete_empty()
         self.set_transc()

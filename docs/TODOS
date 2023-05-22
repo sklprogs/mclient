@@ -11,6 +11,7 @@ mclient:
 - "Clarity" mode: move phrases to the end or do not use them
 - Fixed columns are empty (e.g., "Custom" mode): Do not use phrases, sort only
   by terms (if alphabetization is on)
+- Do not add entries that were not found to history
 
 multitrancom:
 - RU-EN, hell -> Табуированная лексика: Remove terms denoting languages and
