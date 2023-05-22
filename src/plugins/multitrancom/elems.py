@@ -200,27 +200,62 @@ class Thesaurus:
 class SeparateWords:
     
     def __init__(self,blocks):
-        self.patterns = (' - найдены отдельные слова'
-                        ,' - only individual words found'
-                        ,' - einzelne Wörter gefunden'
-                        ,' - se han encontrado palabras individuales'
-                        ,' - знайдено окремі слова'
-                        ,' - znaleziono osobne słowa'
-                        ,' - 只找到单语'
+        self.patterns = ('- найдены отдельные слова'
+                        ,'- only individual words found'
+                        ,'- einzelne Wörter gefunden'
+                        ,'- se han encontrado palabras individuales'
+                        ,'- знайдено окремі слова'
+                        ,'- znaleziono osobne słowa'
+                        ,'- 只找到单语'
                         )
         self.blocks = blocks
     
     def _set(self):
-        self.blocks = [block for block in self.blocks \
-                       if block.url.startswith('l1')
-                      ]
-        for block in self.blocks:
-            ''' Should have only blocks of 'comment' type by now, but we want
-                to be on a safe side.
-            '''
-            if block.type_ == 'comment':
-                block.type_ = 'term'
+        blocks = []
+        for i in range(len(self.blocks)):
+            if self.blocks[i].url.startswith('l'):
+                blocks.append(self.blocks[i])
+            elif self.blocks[i].text == '|':
+                if not self.blocks[i-1].url:
+                    blocks.append(self.blocks[i-1])
+                if not self.blocks[i+1].url:
+                    blocks.append(self.blocks[i+1])
+            elif self._has(self.blocks[i].text):
+                blocks.append(self.blocks[i])
+        ''' Includes an unknown word that comes last. Other unknown words are
+            already included.
+        '''
+        if len(self.blocks) > 1:
+            no = len(self.blocks) - 2
+            if self.blocks[no].type_ == 'comment' \
+            and self.blocks[no].text.startswith(' ') \
+            and not self.blocks[no].url:
+                blocks.append(self.blocks[no])
+        self.blocks = blocks
 
+    def _delete(self):
+        i = 1
+        while i < len(self.blocks):
+            ''' Those words that were not found will not have a URL and should
+                be kept as comments (as in a source). However, 'cellno' should
+                differ from a previous cell.
+            '''
+            if self.blocks[i].url:
+                self.blocks[i].type_ = 'term'
+            else:
+                for pattern in self.patterns:
+                    self.blocks[i].text = self.blocks[i].text.replace(pattern,'')
+            self.blocks[i].cellno = self.blocks[i-1].cellno
+            i += 1
+        self.blocks = [block for block in self.blocks \
+                       if block.text and block.text != '|'
+                      ]
+    
+    def _has(self, text):
+        for pattern in self.patterns:
+            if pattern in text:
+                return True
+    
     def _add_subject(self):
         block = ic.Block()
         block.type_ = 'subj'
@@ -244,6 +279,7 @@ class SeparateWords:
             sh.com.rep_lazy(f)
             return
         self._set()
+        self._delete()
         sh.com.rep_deleted(f,old_len-len(self.blocks))
         self._add_subject()
     
@@ -260,7 +296,7 @@ class SeparateWords:
                 ' wrong_word - найдены отдельные слова'.
             '''
             for pattern in self.patterns:
-                if pattern == self.blocks[i].text:
+                if pattern in self.blocks[i].text:
                     return i
             i += 1
     

@@ -12,7 +12,9 @@ mclient:
 
 multitrancom:
 - RU-EN, full of it: phrases on top; phdic url is invalid
+- RU-EN, redicule: all terms are marked as comments, trash must be removed
 - RU-EN, fencing: probably a space before "]" in transcription
+- RU-EN, давать затвердеть: "давать" is marked as not found
 - RU-EN, tuple -> Фразы: source and target phrases do not match
 - EN-RU, keen criticism: the article exists, but is not shown
 - EN-RU, tuple -> энка -> tuple -> энка: phsubj is duplicated
