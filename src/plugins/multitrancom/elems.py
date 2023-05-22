@@ -208,6 +208,7 @@ class SeparateWords:
                         ,'- znaleziono osobne słowa'
                         ,'- 只找到单语'
                         )
+        self.Separate = False
         self.blocks = blocks
     
     def _set(self):
@@ -293,6 +294,7 @@ class SeparateWords:
         self._set_terms()
         sh.com.rep_deleted(f,old_len-len(self.blocks))
         self._add_subject()
+        self.Separate = True
     
     def get_head(self):
         blocks = ('Forvo', '|', '+')
@@ -380,6 +382,7 @@ class Elems:
         self.art_subj = {}
         self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
         self.Parallel = False
+        self.Separate = False
         self.blocks = blocks
     
     def save_urls(self):
@@ -745,12 +748,14 @@ class Elems:
     def run(self):
         # Find thesaurus before deleting empty blocks
         self.blocks = Thesaurus(self.blocks).run()
-        self.blocks = SeparateWords(self.blocks).run()
+        iseparate = SeparateWords(self.blocks)
+        self.blocks = iseparate.run()
         self.blocks = Suggestions(self.blocks).run()
         # Remove trash only after setting separate words
         itrash = Trash(self.blocks)
         self.blocks = itrash.run()
         self.Parallel = itrash.Parallel
+        self.Separate = iseparate.Separate
         # Remove empty blocks only after removing trash
         self.delete_empty()
         self.set_transc()

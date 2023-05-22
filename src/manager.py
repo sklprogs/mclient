@@ -308,3 +308,10 @@ class Plugins:
             sh.com.rep_empty(f)
             return
         return self.plugin.is_parallel()
+    
+    def is_separate(self):
+        f = '[MClient] manager.Plugins.is_separate'
+        if not self.plugin:
+            sh.com.rep_empty(f)
+            return
+        return self.plugin.is_separate()

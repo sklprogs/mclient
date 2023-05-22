@@ -117,6 +117,7 @@ class Articles:
                                     ,'lang2'      : objs.plugins.get_lang2()
                                     ,'fixed_urls' : objs.plugins.get_fixed_urls()
                                     ,'Parallel'   : objs.plugins.is_parallel()
+                                    ,'Separate'   : objs.plugins.is_separate()
                                     ,'search'     : search
                                     ,'url'        : url
                                     ,'cells'      : cells
@@ -253,6 +254,14 @@ class Articles:
         f = '[MClientQt] logic.Articles.is_parallel'
         try:
             return self.articles['ids'][self.id]['Parallel']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+    
+    def is_separate(self):
+        f = '[MClientQt] logic.Articles.is_separate'
+        try:
+            return self.articles['ids'][self.id]['Separate']
         except KeyError:
             mes = _('Wrong input data!')
             sh.objs.get_mes(f,mes).show_warning()
@@ -587,6 +596,9 @@ class Commands:
     
     def is_parallel(self):
         return objs.get_articles().get_len() > 0 and objs.articles.is_parallel()
+    
+    def is_separate(self):
+        return objs.get_articles().get_len() > 0 and objs.articles.is_separate()
     
     def get_text(self,cells):
         f = '[MClientQt] logic.Commands.get_text'

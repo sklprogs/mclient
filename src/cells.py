@@ -192,11 +192,9 @@ class View:
             sh.com.cancel(f)
             return
         if sh.lg.globs['bool']['AlphabetizeTerms'] \
-        and not lg.objs.get_articles().is_parallel():
-            #self.cells.sort(key=lambda x: (x.subjpr, x.subj, x.wform, x.transc, x.speechpr, x.text, x.no))
+        and not lg.com.is_parallel() and not lg.com.is_separate():
             self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.text, x.no))
         else:
-            #self.cells.sort(key=lambda x: (x.subjpr, x.subj, x.wform, x.transc, x.speechpr, x.no))
             self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.no))
     
     def _create_fixed(self, i, type_, rowno):

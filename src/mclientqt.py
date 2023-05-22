@@ -90,6 +90,7 @@ class UpdateUI:
     
     def __init__(self,gui):
         self.Parallel = lg.com.is_parallel()
+        self.Separate = lg.com.is_separate()
         self.gui = gui
     
     def restore(self):
@@ -110,7 +111,8 @@ class UpdateUI:
         self.gui.opt_col.set(sh.lg.globs['int']['colnum'])
     
     def _update_alphabet_image(self):
-        if sh.lg.globs['bool']['AlphabetizeTerms'] and not self.Parallel:
+        if sh.lg.globs['bool']['AlphabetizeTerms'] and not self.Parallel \
+        and not self.Separate:
             self.gui.btn_alp.activate()
         else:
             self.gui.btn_alp.inactivate()
@@ -121,7 +123,7 @@ class UpdateUI:
             mes.append(_('Status: ON'))
         else:
             mes.append(_('Status: OFF'))
-        if self.Parallel:
+        if self.Parallel or self.Separate:
             mes.append(_('This page is not supported'))
         self.gui.btn_alp.hint = '\n'.join(mes)
         self.gui.btn_alp.set_hint()
@@ -247,7 +249,7 @@ class UpdateUI:
 
 class FontLimits:
     
-    def __init__(self,family,size,Bold=False,Italic=False):
+    def __init__(self, family, size, Bold=False, Italic=False):
         self.set_values()
         self.family = family
         self.size = size
@@ -264,7 +266,7 @@ class FontLimits:
         self.Bold = False
         self.Italic = False
     
-    def set_text(self,text):
+    def set_text(self, text):
         self.text = str(text)
     
     def set_font(self):
@@ -280,7 +282,7 @@ class FontLimits:
                                       )
     
     def get_space(self):
-        space = self.gui.get_space(self.text,self.font)
+        space = self.gui.get_space(self.text, self.font)
         #mes = _('Space: {}').format(space)
         #sh.objs.get_mes(f,mes,True).show_debug()
         return space
@@ -289,8 +291,8 @@ class FontLimits:
 
 class Save(sv.Save):
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.add_bindings()
     
     def add_bindings(self):
@@ -317,11 +319,11 @@ class Save(sv.Save):
             self.copy_view()
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(opt,'; '.join(self.model.items))
+            mes = mes.format(opt, '; '.join(self.model.items))
             sh.objs.get_mes(f,mes).show_error()
 
     def _add_web_ext(self):
-        if not sh.Path(self.file).get_ext_low() in ('.htm','.html'):
+        if not sh.Path(self.file).get_ext_low() in ('.htm', '.html'):
             self.file += '.htm'
     
     def save_view_as_htm(self):

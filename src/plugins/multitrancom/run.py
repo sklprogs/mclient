@@ -22,11 +22,12 @@ class Plugin:
         self.maxrows = maxrows
     
     def set_values(self):
-        ''' #NOTE: 'fixed_urls', 'art_subj' and 'Parallel' are temporary
-            variables that should be externally referred to only after getting
-            a NEW article.
+        ''' #NOTE: 'fixed_urls', 'art_subj', 'Parallel' and 'Separate' are
+            temporary variables that should be externally referred to only
+            after getting a NEW article.
         '''
         self.Parallel = False
+        self.Separate = False
         self.cells = []
         self.majors = []
         self.minors = []
@@ -154,6 +155,9 @@ class Plugin:
     def is_parallel(self):
         return self.Parallel
     
+    def is_separate(self):
+        return self.Separate
+    
     def request(self,search='',url=''):
         self.search = search
         self.htm = gt.Get (search = search
@@ -166,4 +170,5 @@ class Plugin:
         self.fixed_urls = ielems.fixed_urls
         self.art_subj = ielems.art_subj
         self.Parallel = ielems.Parallel
+        self.Separate = ielems.Separate
         return self.cells
