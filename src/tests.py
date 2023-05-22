@@ -9,9 +9,9 @@ DEBUG = True
 ''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
     otherwise, 'Tags' will fail to set 'subj' and some other types.
 '''
-SEARCH = 'redicule'
+SEARCH = 'vice vice vice vice lassst'
 URL = ''
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/redicule (2023-05-21).html'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/vice vice vice vice lassst (2023-04-14).html'
 
 
 class Wrap:

@@ -211,6 +211,9 @@ class SeparateWords:
         self.blocks = blocks
     
     def _set(self):
+        ''' Cannot just limit blocks to those which URL starts with 'l1' since
+            there can be unknown words.
+        '''
         blocks = []
         for i in range(len(self.blocks)):
             if self.blocks[i].url.startswith('l'):
@@ -263,6 +266,13 @@ class SeparateWords:
         block.subj = _('sep. words')
         self.blocks.insert(0, block)
     
+    def _set_terms(self):
+        for i in range(len(self.blocks)):
+            self.blocks[i].cellno = i
+            if self.blocks[i].type_ == 'comment' \
+            and self.blocks[i].url.startswith('l1'):
+                self.blocks[i].type_ = 'term'
+    
     def set(self):
         f = '[MClientQt] plugins.multitrancom.elems.SeparateWords.set'
         old_len = len(self.blocks)
@@ -280,6 +290,7 @@ class SeparateWords:
             return
         self._set()
         self._delete()
+        self._set_terms()
         sh.com.rep_deleted(f,old_len-len(self.blocks))
         self._add_subject()
     
