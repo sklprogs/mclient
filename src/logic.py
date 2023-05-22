@@ -111,6 +111,11 @@ class Articles:
         return self.get_max_id() + 1
     
     def add(self, search='', url='', cells=[], table=[], raw_code=''):
+        f = '[MClientQt] logic.Articles.add'
+        # Do not add articles that were not found to history
+        if not cells:
+            sh.com.rep_lazy(f)
+            return
         id_ = self.get_max_id() + 1
         self.articles['ids'][id_] = {'source'     : sh.lg.globs['str']['source']
                                     ,'lang1'      : objs.get_plugins().get_lang1()
