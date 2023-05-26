@@ -115,8 +115,30 @@ class Prioritize:
         self.speech = lg.Speech().get_settings()
         self.cells = cells
     
+    def debug(self):
+        f = '[MClientQt] cells.Prioritize.debug'
+        subj = []
+        subjpr = []
+        text = []
+        nos = []
+        for cell in self.cells:
+            text.append(cell.text)
+            nos.append(cell.no)
+            subj.append(cell.subj)
+            subjpr.append(cell.subjpr)
+        headers = (_('#'), _('TEXT'), _('SUBJECT'), 'SUBJPR')
+        iterable = [nos, text, subj, subjpr]
+        mes = sh.FastTable (headers = headers
+                           ,iterable = iterable
+                           ).run()
+        return f + ':\n' + mes
+    
     def set_subjects(self):
-        f = '[MClientQt] cells.Prioritize.set_subjects'
+        ''' All cells must have 'subjpr' set since they will not be further
+            sorted by 'subj', so do not cancel this procedure even if there are
+            no prioritized subjects, otherwise there may be sorting bugs, e.g.
+            multitran.com, EN-RU, 'full of it'.
+        '''
         for cell in self.cells:
             priority = sj.objs.get_subjects().get_priority(cell.subj)
             if priority is not None:
@@ -128,9 +150,6 @@ class Prioritize:
         ph_cells = [cell for cell in self.cells if cell.subjpr == -1 \
                     and self._is_phrase_type(cell)
                    ]
-        if not pr_cells:
-            sh.com.rep_lazy(f)
-            return
         
         pr_cells.sort(key=lambda x: (x.subjpr, x.no))
         unp_cells.sort(key=lambda x: (x.subj.lower(), x.no))
@@ -144,6 +163,7 @@ class Prioritize:
         no = no + i + 1
         for i in range(len(ph_cells)):
             ph_cells[i].subjpr = no + i
+        # [] + ['example'] == ['example']
         self.cells = pr_cells + unp_cells + ph_cells
 
     def set_speech(self):

@@ -9,9 +9,9 @@ DEBUG = True
 ''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
     otherwise, 'Tags' will fail to set 'subj' and some other types.
 '''
-SEARCH = 'dfsgdghfj'
+SEARCH = 'full of it'
 URL = ''
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/dfsgdghfj (2023-04-15).html'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/full of it (2023-05-25).html'
 
 
 class Wrap:
@@ -47,6 +47,40 @@ class Wrap:
         iwrap.run()
         timer.end()
         return iwrap.debug()
+
+
+
+class Prioritize:
+    
+    def run_multitrancom(self):
+        f = '[MClient] tests.Prioritize.run_multitrancom'
+        import logic as lg
+        import plugins.multitrancom.cleanup as cu
+        import plugins.multitrancom.tags as tg
+        import plugins.multitrancom.elems as el
+        import cells as cl
+        
+        lg.com.start()
+        
+        text = sh.ReadTextFile(HTM_FILE).get()
+        timer = sh.Timer(f)
+        timer.start()
+        text = cu.CleanUp(text).run()
+        blocks = tg.Tags (text = text
+                         ,maxrows = 0
+                         ).run()
+        cells = el.Elems(blocks).run()
+        
+        lg.objs.get_articles().add (search = SEARCH
+                                   ,url = URL
+                                   ,cells = cells
+                                   )
+
+        cells = cl.Omit(cells).run()
+        iprior = cl.Prioritize(cells)
+        cells = iprior.run()
+        timer.end()
+        return iprior.debug()
 
 
 
@@ -1087,8 +1121,9 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
-    idebug = sh.Debug(f,Tags().run_multitrancom())
+    #idebug = sh.Debug(f,Tags().run_multitrancom())
     #idebug = sh.Debug(f,Elems().run_multitrancom())
+    idebug = sh.Debug(f,Prioritize().run_multitrancom())
     #idebug = sh.Debug(f,View().run_multitrancom())
     #idebug = sh.Debug(f,Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
