@@ -1015,7 +1015,25 @@ class App:
         self.set_gui()
         self.update_ui()
     
-    def catch(self,status=0):
+    def go_phrases(self):
+        f = '[MClientQt] mclient.App.go_phrases'
+        tuple_ = self.logic.get_phsubj()
+        if not tuple_:
+            sh.com.rep_empty(f)
+            return
+        text,  url = tuple_[0], tuple_[1]
+        if not url:
+            sh.com.rep_empty(f)
+            return
+        lg.objs.get_request().search = text
+        lg.objs.request.url = url
+        mes = _('Open link: {}').format(lg.objs.request.url)
+        sh.objs.get_mes(f,mes,True).show_info()
+        self.load_article (search = lg.objs.request.search
+                          ,url = lg.objs.request.url
+                          )
+    
+    def catch(self, status=0):
         f = '[MClientQt] mclient.App.catch'
         mes = _('Status: {}').format(status)
         sh.objs.get_mes(f,mes,True).show_debug()
@@ -1764,6 +1782,9 @@ class App:
                       )
         self.gui.bind (sh.lg.globs['str']['bind_define']
                       ,self.define
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_go_phrases']
+                      ,self.go_phrases
                       )
                       
         #TODO: iterate through all keys

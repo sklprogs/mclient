@@ -275,6 +275,17 @@ class Articles:
 
 class App:
     
+    def get_phsubj(self):
+        f = '[MClientQt] logic.App.get_phsubj'
+        table = objs.get_articles().get_table()
+        if not table:
+            sh.com.rep_empty(f)
+            return
+        for row in table[::-1]:
+            for cell in row:
+                if cell.fixed_block and cell.fixed_block.type_ == 'phsubj':
+                    return(cell.text, cell.fixed_block.url)
+    
     def open_in_browser(self):
         ionline = sh.Online()
         url = objs.get_request().url

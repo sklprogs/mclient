@@ -16,15 +16,11 @@ mclient:
 multitrancom:
 - RU-EN, hell -> Табуированная лексика: Remove terms denoting languages and
   a space before '!'
-- RU-EN, математика: Implement "Русский тезаурус"
-- RU-EN, математика -> Картография: Remove "Английский"
-- RU-EN, энка -> Фразы: Delete Тематика-Английский-Русский
 - RU-EN, purping: implement "Варианты замены" mode and following URLs
 - RU-EN, закрыть соединение: enable copying a comment block url
 - RU-EN, Makarov: colorize phdics even when prioritizing is off since there are
   no subjects to prioritize
 - Add new mode: RU-EN, nederlands: "перевод с других языков"
-- Check bad charachers: RU-EN, счет на оплату
 - Fix links in a saved raw html
 - RU-EN, fall in behind, swoop in: Show phrases when only separate words have
   been found
