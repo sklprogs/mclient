@@ -719,7 +719,7 @@ class Table:
             sh.com.cancel(f)
             return
         rowno, colno = self.logic.get_start()
-        self.select(rowno,colno)
+        self.select(rowno, colno)
     
     def go_down(self):
         ''' #NOTE: This should run only after an event since Qt returns dummy
@@ -733,7 +733,7 @@ class Table:
         rowno, colno = self.logic.get_next_row(rowno,colno)
         self.select(rowno,colno)
     
-    def select(self,rowno,colno,Mouse=False):
+    def select(self, rowno, colno, Mouse=False):
         f = '[MClientQt] mclient.Table.select'
         if not self.Success:
             sh.com.cancel(f)
@@ -747,7 +747,7 @@ class Table:
         self.old_rowno = rowno
         self.old_colno = colno
         self.model.update(self.gui.get_index())
-        new_index = self.model.index(rowno,colno)
+        new_index = self.model.index(rowno, colno)
         if Mouse:
             self.gui.set_index(new_index)
         else:
@@ -757,10 +757,11 @@ class Table:
             self.scroll_top()
         if Mouse:
             if new_index in self.gui.delegate.long:
-                self.popup.adjust_position(self.gui.x_,self.gui.y_)
+                self.popup.adjust_position(self.gui.x_, self.gui.y_)
                 self.show_popup()
             else:
                 self.popup.close()
+        lg.objs.get_articles().set_bookmark(rowno, colno)
     
     def go_up(self):
         f = '[MClientQt] mclient.Table.go_up'
@@ -901,6 +902,17 @@ class Table:
                 width = sh.lg.globs['int']['term_col_width']
             self.gui.set_col_width(no,width)
     
+    def go_bookmark(self):
+        bookmark = lg.objs.get_articles().get_bookmark()
+        if not bookmark:
+            self.go_start()
+            return
+        rowno, colno = bookmark[0], bookmark[1]
+        if rowno > -1 and colno > -1:
+            self.select(rowno, colno)
+        else:
+            self.go_start()
+    
     def reset(self, plain, code):
         f = '[MClientQt] mclient.Table.reset'
         self.set_values()
@@ -924,7 +936,7 @@ class Table:
             we merely suppress a warning at 'self.go_start'.
         '''
         self.set_coords()
-        self.go_start()
+        self.go_bookmark()
     
     def set_long(self):
         # Takes ~0.56s for 'set' on Intel Atom

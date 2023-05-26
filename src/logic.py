@@ -167,6 +167,16 @@ class Articles:
             mes = _('Wrong input data!')
             sh.objs.get_mes(f,mes).show_warning()
     
+    def get_bookmark(self):
+        f = '[MClientQt] logic.Articles.get_bookmark'
+        try:
+            return (self.articles['ids'][self.id]['rowno']
+                   ,self.articles['ids'][self.id]['colno']
+                   )
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+    
     def set_id(self, id_):
         f = '[MClientQt] logic.Articles.set_id'
         try:
@@ -759,7 +769,7 @@ class Table:
     ''' #NOTE: it's not enough to use 'Success' since we do not call 'reset'
         before loading an article.
     '''
-    def __init__(self,plain=[],code=[]):
+    def __init__(self, plain=[], code=[]):
         self.set_values()
         if plain and code:
             self.reset(plain, code)
@@ -800,45 +810,45 @@ class Table:
             mes = mes.format(', '.join([str(item) for item in self.empty_cols]))
         else:
             mes = _('All columns have texts')
-        sh.objs.get_mes(f, mes, True).show_debug()
+        sh.objs.get_mes(f,mes,True).show_debug()
     
-    def get_next_row_by_col(self,rowno,colno,ref_colno):
+    def get_next_row_by_col(self, rowno, colno, ref_colno):
         f = '[MClientQt] logic.Table.get_next_row_by_col'
         if not self.plain:
             sh.com.rep_empty(f)
-            return(rowno,colno)
-        tuple_ = self._get_next_row(rowno,ref_colno)
+            return(rowno, colno)
+        tuple_ = self._get_next_row(rowno, ref_colno)
         if tuple_:
             rowno = tuple_[0]
-            tuple_ = self._get_next_row(rowno-1,colno)
+            tuple_ = self._get_next_row(rowno - 1, colno)
             if tuple_:
                 return tuple_
         elif rowno > 0:
-            return self.get_next_row_by_col(-1,colno,ref_colno)
+            return self.get_next_row_by_col(-1, colno, ref_colno)
         return(rowno,colno)
     
-    def get_prev_row_by_col(self,rowno,colno,ref_colno):
+    def get_prev_row_by_col(self, rowno, colno, ref_colno):
         f = '[MClientQt] logic.Table.get_prev_row_by_col'
         if not self.plain:
             sh.com.rep_empty(f)
-            return(rowno,colno)
-        tuple_ = self._get_prev_row(rowno,ref_colno)
+            return(rowno, colno)
+        tuple_ = self._get_prev_row(rowno, ref_colno)
         if tuple_:
             rowno = tuple_[0]
-            tuple_ = self._get_prev_row(rowno+1,colno)
+            tuple_ = self._get_prev_row(rowno + 1, colno)
             if tuple_:
                 return tuple_
         elif rowno < self.rownum:
-            return self.get_prev_row_by_col(self.rownum,colno,ref_colno)
-        return(rowno,colno)
+            return self.get_prev_row_by_col(self.rownum, colno, ref_colno)
+        return(rowno, colno)
     
-    def _get_next_col(self,rowno,colno):
+    def _get_next_col(self, rowno, colno):
         while colno + 1 < self.colnum:
             colno += 1
             if self.plain[rowno][colno]:
-                return(rowno,colno)
+                return(rowno, colno)
     
-    def get_next_col(self,rowno,colno):
+    def get_next_col(self, rowno, colno):
         f = '[MClientQt] logic.Table.get_next_col'
         if not self.plain:
             sh.com.rep_empty(f)
@@ -846,9 +856,9 @@ class Table:
         start = rowno
         while rowno < self.rownum:
             if rowno == start:
-                tuple_ = self._get_next_col(rowno,colno)
+                tuple_ = self._get_next_col(rowno, colno)
             else:
-                tuple_ = self._get_next_col(rowno,-1)
+                tuple_ = self._get_next_col(rowno, -1)
             if tuple_:
                 return tuple_
             rowno += 1
@@ -858,23 +868,23 @@ class Table:
             return self.get_start()
         return(rowno,colno)
     
-    def _get_prev_col(self,rowno,colno):
+    def _get_prev_col(self, rowno, colno):
         while colno > 0:
             colno -= 1
             if self.plain[rowno][colno]:
-                return(rowno,colno)
+                return(rowno, colno)
     
-    def get_prev_col(self,rowno,colno):
+    def get_prev_col(self, rowno, colno):
         f = '[MClientQt] logic.Table.get_prev_col'
         if not self.plain:
             sh.com.rep_empty(f)
-            return(rowno,colno)
+            return(rowno, colno)
         start = rowno
         while rowno >= 0:
             if rowno == start:
-                tuple_ = self._get_prev_col(rowno,colno)
+                tuple_ = self._get_prev_col(rowno, colno)
             else:
-                tuple_ = self._get_prev_col(rowno,self.colnum)
+                tuple_ = self._get_prev_col(rowno, self.colnum)
             if tuple_:
                 return tuple_
             rowno -= 1
@@ -882,25 +892,25 @@ class Table:
             colno -= 1
         if rowno < 0:
             return self.get_end()
-        return(rowno,colno)
+        return(rowno, colno)
     
-    def _get_prev_row(self,rowno,colno):
+    def _get_prev_row(self, rowno, colno):
         while rowno > 0:
             rowno -= 1
             if self.plain[rowno][colno]:
-                return(rowno,colno)
+                return(rowno, colno)
     
-    def get_prev_row(self,rowno,colno):
+    def get_prev_row(self, rowno, colno):
         f = '[MClientQt] logic.Table.get_prev_row'
         if not self.plain:
             sh.com.rep_empty(f)
-            return(rowno,colno)
+            return(rowno, colno)
         start = colno
         while colno >= 0:
             if start == colno:
-                tuple_ = self._get_prev_row(rowno,colno)
+                tuple_ = self._get_prev_row(rowno, colno)
             else:
-                tuple_ = self._get_prev_row(self.rownum,colno)
+                tuple_ = self._get_prev_row(self.rownum, colno)
             if tuple_:
                 return tuple_
             colno -= 1
@@ -908,23 +918,23 @@ class Table:
             return self.get_end()
         return(rowno,colno)
     
-    def _get_next_row(self,rowno,colno):
+    def _get_next_row(self, rowno, colno):
         while rowno + 1 < self.rownum:
             rowno += 1
             if self.plain[rowno][colno]:
-                return(rowno,colno)
+                return(rowno, colno)
     
-    def get_next_row(self,rowno,colno):
+    def get_next_row(self, rowno, colno):
         f = '[MClientQt] logic.Table.get_next_row'
         if not self.plain:
             sh.com.rep_empty(f)
-            return(rowno,colno)
+            return(rowno, colno)
         start = colno
         while colno < self.colnum:
             if start == colno:
-                tuple_ = self._get_next_row(rowno,colno)
+                tuple_ = self._get_next_row(rowno, colno)
             else:
-                tuple_ = self._get_next_row(-1,colno)
+                tuple_ = self._get_next_row(-1, colno)
             if tuple_:
                 return tuple_
             colno += 1
@@ -933,13 +943,13 @@ class Table:
         return(rowno,colno)
     
     def get_start(self):
-        return self.get_next_col(0,-1)
+        return self.get_next_col(0, -1)
     
-    def get_line_start(self,rowno):
-        return self.get_next_col(rowno,-1)
+    def get_line_start(self, rowno):
+        return self.get_next_col(rowno, -1)
     
-    def get_line_end(self,rowno):
-        return self.get_prev_col(rowno,self.colnum)
+    def get_line_end(self, rowno):
+        return self.get_prev_col(rowno, self.colnum)
     
     def set_size(self):
         f = '[MClientQt] logic.Table.set_size'
@@ -948,18 +958,18 @@ class Table:
             return
         self.rownum = len(self.plain)
         self.colnum = len(self.plain[0])
-        mes = _('Table size: {}×{}').format(self.rownum,self.colnum)
+        mes = _('Table size: {}×{}').format(self.rownum, self.colnum)
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def get_end(self):
-        return self.get_prev_col(self.rownum-1,self.colnum)
+        return self.get_prev_col(self.rownum - 1, self.colnum)
 
 
 
 class Search(Table):
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
     
     def check(self):
         f = '[MClientQt] logic.Search.check'
@@ -980,7 +990,7 @@ class Search(Table):
                 plain.append(row)
             self.plain = plain
     
-    def reset(self,plain,pattern,rowno,colno,Case=False):
+    def reset(self, plain, pattern, rowno, colno, Case=False):
         self.set_values()
         self.plain = plain
         self.pattern = pattern
@@ -1011,13 +1021,13 @@ class Search(Table):
         f = '[MClientQt] logic.Search.search_next'
         if not self.Success:
             sh.com.cancel(f)
-            return(self.rowno,self.colno)
+            return(self.rowno, self.colno)
         # Avoid infinite recursion
         if not self._has_pattern():
-            return(self.rowno,self.colno)
-        rowno, colno = self.get_next_col(self.rowno,self.colno)
+            return(self.rowno, self.colno)
+        rowno, colno = self.get_next_col(self.rowno, self.colno)
         mes = _('Row #{}. Column #{}: "{}"')
-        mes = mes.format(rowno,colno,self.plain[rowno][colno])
+        mes = mes.format(rowno, colno, self.plain[rowno][colno])
         sh.objs.get_mes(f,mes,True).show_debug()
         return(rowno,colno)
     
@@ -1025,27 +1035,27 @@ class Search(Table):
         f = '[MClientQt] logic.Search.search_prev'
         if not self.Success:
             sh.com.cancel(f)
-            return(self.rowno,self.colno)
+            return(self.rowno, self.colno)
         # Avoid infinite recursion
         if not self._has_pattern():
-            return(self.rowno,self.colno)
-        rowno, colno = self.get_prev_col(self.rowno,self.colno)
+            return(self.rowno, self.colno)
+        rowno, colno = self.get_prev_col(self.rowno, self.colno)
         mes = _('Row #{}. Column #{}. Text: "{}"')
-        mes = mes.format(rowno,colno,self.plain[rowno][colno])
+        mes = mes.format(rowno, colno, self.plain[rowno][colno])
         sh.objs.get_mes(f,mes,True).show_debug()
-        return(rowno,colno)
+        return(rowno, colno)
     
-    def _get_next_col(self,rowno,colno):
+    def _get_next_col(self, rowno, colno):
         while colno + 1 < self.colnum:
             colno += 1
             if self.pattern in self.plain[rowno][colno]:
-                return(rowno,colno)
+                return(rowno, colno)
     
-    def _get_prev_col(self,rowno,colno):
+    def _get_prev_col(self, rowno, colno):
         while colno > 0:
             colno -= 1
             if self.pattern in self.plain[rowno][colno]:
-                return(rowno,colno)
+                return(rowno, colno)
 
 
 objs = Objects()
