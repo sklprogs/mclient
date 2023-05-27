@@ -390,7 +390,7 @@ class Elems:
             if not cell.fixed_block:
                 continue
             if cell.fixed_block.type_ in ('subj', 'phsubj', 'wform') and cell.url:
-                self.fixed_urls[cell.fixed_block.type_][cell.text] = cell.url                
+                self.fixed_urls[cell.fixed_block.type_][cell.text] = cell.url
     
     def _is_block_fixed(self,block):
         return block.type_ in ('subj', 'wform', 'speech', 'transc', 'phsubj')
