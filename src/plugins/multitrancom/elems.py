@@ -449,8 +449,8 @@ class Elems:
             self.cells[i].no = i
     
     def debug(self):
-        headers = ('SUBJ','WFORM','SPEECH','TRANSC',_('ROW #'),_('CELL #')
-                  ,_('TYPES'),_('TEXT'),'URL'
+        headers = ('SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #'), _('CELL #')
+                  ,_('TYPES'), _('TEXT'), 'URL'
                   )
         subj = []
         wform = []
@@ -473,8 +473,8 @@ class Elems:
             types.append(', '.join(cell_types))
             urls.append(cell.url)
         return sh.FastTable (headers = headers
-                            ,iterable = (subj,wform,speech,transc,rownos,nos
-                                        ,types,texts,urls
+                            ,iterable = (subj, wform, speech, transc, rownos
+                                        ,nos, types, texts, urls
                                         )
                             ,maxrow = 30
                             ,maxrows = 0
@@ -593,7 +593,7 @@ class Elems:
                 self.blocks[i-3].type_ = 'phsubj'
             i -= 1
     
-    def _get_url(self,cell):
+    def _get_url(self, cell):
         #TODO: Do we need to support several URLs in one cell?
         for block in cell.blocks:
             if block.url:
