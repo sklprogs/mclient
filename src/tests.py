@@ -1123,8 +1123,8 @@ if __name__ == '__main__':
     '''
     #idebug = sh.Debug(f,Tags().run_multitrancom())
     #idebug = sh.Debug(f,Elems().run_multitrancom())
-    idebug = sh.Debug(f,Prioritize().run_multitrancom())
-    #idebug = sh.Debug(f,View().run_multitrancom())
+    #idebug = sh.Debug(f,Prioritize().run_multitrancom())
+    idebug = sh.Debug(f,View().run_multitrancom())
     #idebug = sh.Debug(f,Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
     idebug.show()

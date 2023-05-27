@@ -155,15 +155,32 @@ class Prioritize:
         pr_cells.sort(key=lambda x: (x.subjpr, x.no))
         unp_cells.sort(key=lambda x: (x.subj.lower(), x.no))
         
-        for i in range(len(pr_cells)):
-            pr_cells[i].subjpr = i
-        
-        no = len(pr_cells)
-        for i in range(len(unp_cells)):
-            unp_cells[i].subjpr = no + i
-        no = no + i + 1
-        for i in range(len(ph_cells)):
-            ph_cells[i].subjpr = no + i
+        ''' Keep old 'subjpr' if 'subj' is the same since we may need to
+            alphabetize terms.
+        '''
+        subj = ''
+        subjpr = -1
+        for cell in pr_cells:
+            if cell.subj == subj:
+                cell.subjpr = subjpr
+            else:
+                subj = cell.subj
+                subjpr += 1
+                cell.subjpr = subjpr
+        for cell in unp_cells:
+            if cell.subj == subj:
+                cell.subjpr = subjpr
+            else:
+                subj = cell.subj
+                subjpr += 1
+                cell.subjpr = subjpr
+        for cell in ph_cells:
+            if cell.subj == subj:
+                cell.subjpr = subjpr
+            else:
+                subj = cell.subj
+                subjpr += 1
+                cell.subjpr = subjpr
         # [] + ['example'] == ['example']
         self.cells = pr_cells + unp_cells + ph_cells
 
