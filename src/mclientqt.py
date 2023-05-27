@@ -1049,7 +1049,7 @@ class App:
         if not tuple_:
             sh.com.rep_empty(f)
             return
-        text,  url = tuple_[0], tuple_[1]
+        text, url = tuple_[0], tuple_[1]
         if not url:
             sh.com.rep_empty(f)
             return

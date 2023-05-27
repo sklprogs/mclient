@@ -864,7 +864,7 @@ class Table:
         f = '[MClientQt] logic.Table.get_next_col'
         if not self.plain:
             sh.com.rep_empty(f)
-            return(rowno,colno)
+            return(rowno, colno)
         start = rowno
         while rowno < self.rownum:
             if rowno == start:
@@ -878,7 +878,7 @@ class Table:
             colno += 1
         if rowno >= self.rownum:
             return self.get_start()
-        return(rowno,colno)
+        return(rowno, colno)
     
     def _get_prev_col(self, rowno, colno):
         while colno > 0:
@@ -928,7 +928,7 @@ class Table:
             colno -= 1
         if colno < 0:
             return self.get_end()
-        return(rowno,colno)
+        return(rowno, colno)
     
     def _get_next_row(self, rowno, colno):
         while rowno + 1 < self.rownum:
@@ -952,7 +952,7 @@ class Table:
             colno += 1
         if colno >= self.colnum:
             return self.get_start()
-        return(rowno,colno)
+        return(rowno, colno)
     
     def get_start(self):
         return self.get_next_col(0, -1)
