@@ -319,12 +319,13 @@ class View:
         if not self.Success:
             sh.com.cancel(f)
             return
-        headers = (_('ROW #'), _('CELL #'), _('TEXT'), 'URL', 'COL1' ,'COL2'
-                  ,'COL3', 'COL4'
+        headers = (_('ROW #'), _('CELL #'), _('TEXT'), _('TYPES'), 'URL'
+                  ,'COL1' ,'COL2', 'COL3', 'COL4'
                   )
         rowno = []
         no = []
         text = []
+        types = []
         url = []
         col1 = []
         col2 = []
@@ -339,10 +340,14 @@ class View:
             col2.append(cell.col2)
             col3.append(cell.col3)
             col4.append(cell.col4)
-        iterable = [rowno, no, text, url, col1, col2, col3, col4]
+            cell_types = []
+            for block in cell.blocks:
+                cell_types.append(block.type_)
+            types.append(', '.join(cell_types))
+        iterable = [rowno, no, text, types, url, col1, col2, col3, col4]
         return sh.FastTable (headers = headers
                             ,iterable = iterable
-                            ,maxrow = 70
+                            ,maxrow = 60
                             ).run()
     
     def _renumber_cell_nos(self):
