@@ -130,6 +130,7 @@ class Prioritize:
         iterable = [nos, text, subj, subjpr]
         mes = sh.FastTable (headers = headers
                            ,iterable = iterable
+                           ,maxrow = 60
                            ).run()
         return f + ':\n' + mes
     

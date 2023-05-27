@@ -9,9 +9,9 @@ DEBUG = True
 ''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
     otherwise, 'Tags' will fail to set 'subj' and some other types.
 '''
-SEARCH = 'full of it'
+SEARCH = 'variable'
 URL = ''
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/full of it (2023-05-25).html'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/variable (2023-05-27).html'
 
 
 class Wrap:
@@ -78,7 +78,7 @@ class Prioritize:
 
         cells = cl.Omit(cells).run()
         iprior = cl.Prioritize(cells)
-        cells = iprior.run()
+        iprior.run()
         timer.end()
         return iprior.debug()
 
