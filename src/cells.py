@@ -121,13 +121,19 @@ class Prioritize:
         subjpr = []
         text = []
         nos = []
+        speech = []
+        speechpr = []
         for cell in self.cells:
             text.append(cell.text)
             nos.append(cell.no)
             subj.append(cell.subj)
             subjpr.append(cell.subjpr)
-        headers = (_('#'), _('TEXT'), _('SUBJECT'), 'SUBJPR')
-        iterable = [nos, text, subj, subjpr]
+            speech.append(cell.speech)
+            speechpr.append(cell.speechpr)
+        headers = (_('#'), _('TEXT'), _('SUBJECT'), 'SUBJPR', _('SPEECH')
+                  ,'SPEECHPR'
+                  )
+        iterable = [nos, text, subj, subjpr, speech, speechpr]
         mes = sh.FastTable (headers = headers
                            ,iterable = iterable
                            ,maxrow = 60
@@ -195,7 +201,7 @@ class Prioritize:
                 if cell.speech == all_speech[i]:
                     cell.speechpr = i
     
-    def _is_phrase_type(self,cell):
+    def _is_phrase_type(self, cell):
         for block in cell.blocks:
             if block.type_ in ('phsubj', 'phrase', 'phcount'):
                 return True
