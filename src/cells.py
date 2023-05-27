@@ -156,7 +156,7 @@ class Prioritize:
         unp_cells.sort(key=lambda x: (x.subj.lower(), x.no))
         
         ''' Keep old 'subjpr' if 'subj' is the same since we may need to
-            alphabetize terms.
+            alphabetize terms later.
         '''
         subj = ''
         subjpr = -1
@@ -409,7 +409,11 @@ class View:
         try:
             return self.fixed_urls[type_][text]
         except KeyError:
-            mes = _('Wrong input data!')
+            mes = _('"{}" has not been found in "{}"!')
+            if not type_ in self.fixed_urls:
+                mes = mes.format(type_, self.fixed_urls)
+            elif not text in self.fixed_urls[type_]:
+                mes = mes.format(text, self.fixed_urls[type_])
             sh.objs.get_mes(f,mes,True).show_warning()
         return ''
     

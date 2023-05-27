@@ -30,6 +30,20 @@ class Subjects:
         mes = '; '.join(self.prior)
         sh.objs.get_mes(f,mes,True).show_debug()
     
+    def add_fixed_urls(self):
+        f = '[MClientQt] subjects.Subjects.add_fixed_urls'
+        dic = lg.objs.get_plugins().get_fixed_urls()
+        if not dic or not 'subj' in dic:
+            sh.com.rep_lazy(f)
+            return dic
+        ''' We need to create a separate list of dictionary keys since we will
+            get a "dictionary changed size during iteration" error otherwise.
+        '''
+        for subj in list(dic['subj'].keys()):
+            subjf = self.expand(subj)
+            dic['subj'][subjf] = dic['subj'][subj]
+        return dic
+    
     def expand(self, subject):
         dic = lg.objs.get_default().subj
         if not subject or not dic:

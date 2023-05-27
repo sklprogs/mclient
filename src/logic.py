@@ -110,7 +110,7 @@ class Articles:
     def get_len(self):
         return self.get_max_id() + 1
     
-    def add(self, search='', url='', cells=[], table=[], raw_code=''):
+    def add(self, search='', url='', cells=[], table=[], raw_code='', fixed_urls=[]):
         f = '[MClientQt] logic.Articles.add'
         # Do not add articles that were not found to history
         if not cells:
@@ -120,7 +120,6 @@ class Articles:
         self.articles['ids'][id_] = {'source'     : sh.lg.globs['str']['source']
                                     ,'lang1'      : objs.get_plugins().get_lang1()
                                     ,'lang2'      : objs.plugins.get_lang2()
-                                    ,'fixed_urls' : objs.plugins.get_fixed_urls()
                                     ,'Parallel'   : objs.plugins.is_parallel()
                                     ,'Separate'   : objs.plugins.is_separate()
                                     ,'search'     : search
@@ -128,6 +127,7 @@ class Articles:
                                     ,'cells'      : cells
                                     ,'table'      : table
                                     ,'raw_code'   : raw_code
+                                    ,'fixed_urls' : fixed_urls
                                     ,'rowno'      : -1
                                     ,'colno'      : -1
                                     }

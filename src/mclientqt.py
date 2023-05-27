@@ -21,6 +21,7 @@ import history.controller as hs
 import save.controller as sv
 import popup.controller as pp
 import keylistener.gui as kg
+import subjects as sj
 
 
 DEBUG = False
@@ -28,8 +29,8 @@ DEBUG = False
 
 class Priorities(pr.Priorities):
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.add_bindings()
         self.reset()
     
@@ -1573,6 +1574,7 @@ class App:
             lg.objs.articles.add (search = search
                                  ,url = url
                                  ,cells = cells
+                                 ,fixed_urls = sj.objs.get_subjects().add_fixed_urls()
                                  )
             lg.objs.get_default().add_subjects(lg.objs.plugins.get_article_subjects())
         else:
