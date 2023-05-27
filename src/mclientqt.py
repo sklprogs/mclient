@@ -721,6 +721,19 @@ class Table:
         rowno, colno = self.logic.get_start()
         self.select(rowno, colno)
     
+    def go_first_term(self):
+        f = '[MClientQt] mclient.Table.go_first_term'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        cell = self.logic.get_first_term()
+        if not cell:
+            sh.com.rep_empty(f)
+            self.go_start()
+            return
+        rowno, colno = cell[0], cell[1]
+        self.select(rowno, colno)
+    
     def go_down(self):
         ''' #NOTE: This should run only after an event since Qt returns dummy
             geometry values right after startup.
@@ -730,8 +743,8 @@ class Table:
             sh.com.cancel(f)
             return
         rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_next_row(rowno,colno)
-        self.select(rowno,colno)
+        rowno, colno = self.logic.get_next_row(rowno, colno)
+        self.select(rowno, colno)
     
     def select(self, rowno, colno, Mouse=False):
         f = '[MClientQt] mclient.Table.select'
@@ -833,7 +846,7 @@ class Table:
             return self.gui.get_cell()
         except Exception as e:
             sh.com.rep_third_party(f,e)
-            return(0,0)
+            return(0, 0)
     
     def get_cell_text(self):
         f = '[MClientQt] mclient.Table.get_cell_text'
@@ -881,9 +894,9 @@ class Table:
             sh.Clipboard().copy(text)
             return True
     
-    def set_row_height(self,height=42):
+    def set_row_height(self, height=42):
         for no in range(self.logic.rownum):
-            self.gui.set_row_height(no,height)
+            self.gui.set_row_height(no, height)
     
     def set_col_width(self):
         # For some reason, this works only after filling cells
@@ -896,22 +909,26 @@ class Table:
                 width = 123
             elif no == 1:
                 width = sh.lg.globs['int']['fixed_col_width']
-            elif no in (2,3):
+            elif no in (2, 3):
                 width = 80
             else:
                 width = sh.lg.globs['int']['term_col_width']
-            self.gui.set_col_width(no,width)
+            self.gui.set_col_width(no, width)
     
     def go_bookmark(self):
+        f = '[MClientQt] mclient.Table.go_bookmark'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
         bookmark = lg.objs.get_articles().get_bookmark()
         if not bookmark:
-            self.go_start()
+            self.go_first_term()
             return
         rowno, colno = bookmark[0], bookmark[1]
         if rowno > -1 and colno > -1:
             self.select(rowno, colno)
         else:
-            self.go_start()
+            self.go_first_term()
     
     def reset(self, plain, code):
         f = '[MClientQt] mclient.Table.reset'
@@ -936,7 +953,6 @@ class Table:
             we merely suppress a warning at 'self.go_start'.
         '''
         self.set_coords()
-        self.go_bookmark()
     
     def set_long(self):
         # Takes ~0.56s for 'set' on Intel Atom
@@ -1029,7 +1045,7 @@ class App:
     
     def go_phrases(self):
         f = '[MClientQt] mclient.App.go_phrases'
-        tuple_ = self.logic.get_phsubj()
+        tuple_ = self.table.logic.get_phsubj()
         if not tuple_:
             sh.com.rep_empty(f)
             return
@@ -1613,6 +1629,10 @@ class App:
         self.panel.ent_src.focus()
         #self.run_final_debug()
         #self.debug_settings()
+        ''' Do not put this in 'Table.reset' - that is too early, the article
+            dictionary is not filled yet!
+        '''
+        self.table.go_bookmark()
     
     def go_keyboard(self):
         search = self.panel.ent_src.get().strip()

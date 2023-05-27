@@ -285,17 +285,6 @@ class Articles:
 
 class App:
     
-    def get_phsubj(self):
-        f = '[MClientQt] logic.App.get_phsubj'
-        table = objs.get_articles().get_table()
-        if not table:
-            sh.com.rep_empty(f)
-            return
-        for row in table[::-1]:
-            for cell in row:
-                if cell.fixed_block and cell.fixed_block.type_ == 'phsubj':
-                    return(cell.text, cell.fixed_block.url)
-    
     def open_in_browser(self):
         ionline = sh.Online()
         url = objs.get_request().url
@@ -774,7 +763,7 @@ class Table:
         if plain and code:
             self.reset(plain, code)
     
-    def reset(self,plain,code):
+    def reset(self, plain, code):
         self.set_values()
         self.plain = plain
         self.code = code
@@ -791,6 +780,29 @@ class Table:
             new fixed types are introduced.
         '''
         self.fixed_num = 4
+    
+    def get_phsubj(self):
+        f = '[MClientQt] logic.Table.get_phsubj'
+        table = objs.get_articles().get_table()
+        if not table:
+            sh.com.rep_empty(f)
+            return
+        for row in table[::-1]:
+            for cell in row:
+                if cell.fixed_block and cell.fixed_block.type_ == 'phsubj':
+                    return(cell.text, cell.fixed_block.url)
+    
+    def get_first_term(self):
+        f = '[MClientQt] logic.Table.get_first_term'
+        table = objs.get_articles().get_table()
+        if not table:
+            sh.com.rep_empty(f)
+            return
+        for row in table:
+            for cell in row:
+                for block in cell.blocks:
+                    if block.type_ == 'term' and block.text.strip():
+                        return(cell.rowno, cell.colno)
     
     def _is_col_empty(self, colno):
         for rowno in range(self.rownum):
