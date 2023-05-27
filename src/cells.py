@@ -236,19 +236,20 @@ class View:
             self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.no))
     
     def _create_fixed(self, i, type_, rowno):
+        f = '[MClientQt] cells.View._create_fixed'
         cell = ic.Cell()
         block = ic.Block()
         block.type_ = type_
         cell.fixed_block = block
         cell.blocks = [block]
         cell.rowno = rowno
-        cell.subj = self.cells[i].subj
-        cell.subjpr = self.cells[i].subjpr
-        cell.wform = self.cells[i].wform
-        cell.transc = self.cells[i].transc
-        cell.speech = self.cells[i].speech
-        cell.speechpr = self.cells[i].speechpr
-        # Empty types are actually allowed since we can have empty columns
+        if type_ != 'phsubj':
+            cell.subj = self.cells[i].subj
+            cell.subjpr = self.cells[i].subjpr
+            cell.wform = self.cells[i].wform
+            cell.transc = self.cells[i].transc
+            cell.speech = self.cells[i].speech
+            cell.speechpr = self.cells[i].speechpr
         if type_ == 'subj':
             cell.text = block.text = self.cells[i].subj
         elif type_ == 'wform':
@@ -257,6 +258,15 @@ class View:
             cell.text = block.text = self.cells[i].transc
         elif type_ == 'speech':
             cell.text = block.text = self.cells[i].speech
+        elif type_ == 'phsubj':
+            cell.text = block.text = self.cells[i].text
+        elif not type_:
+            # Empty types are actually allowed since we can have empty columns
+            pass
+        else:
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(type_, 'subj, wform, transc, speech, phsubj, or empty')
+            sh.objs.get_mes(f,mes).show_error()
         return cell
     
     def restore_fixed(self):
@@ -272,7 +282,7 @@ class View:
                 for type_ in self.fixed_types:
                     count += 1
                     cell = self._create_fixed(i, type_, rowno)
-                    self.cells.insert(i,cell)
+                    self.cells.insert(i, cell)
                     i += 1
             i += 1
         sh.com.rep_matches(f,count)
@@ -288,8 +298,8 @@ class View:
         for type_ in self.fixed_types[::-1]:
             count += 1
             cell = self._create_fixed(0, type_, rowno)
-            self.cells.insert(0,cell)
-        sh.com.rep_matches(f,count)
+            self.cells.insert(0, cell)
+        sh.com.rep_matches(f, count)
     
     def _has_phrase(self):
         for cell in self.cells[::-1]:
@@ -311,6 +321,8 @@ class View:
             and self.cells[i].fixed_block.type_ == 'subj':
                 self.cells[i].fixed_block.type_ = 'phsubj'
                 self.phi = i
+                mes = f'"{self.cells[i].fixed_block.text}"'
+                sh.objs.get_mes(f, mes, True).show_debug()
                 return
             i -= 1
     
