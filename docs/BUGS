@@ -9,8 +9,10 @@ mclient:
   a welcome screen
 - Fix wrong 1st position of a speech part in the Cut-to-the chase mode
 - Changing number of columns causes navigation issues
+- Zero scrollbar position before loading article
 
 multitrancom:
+- RU-EN, tuple -> мат.: Fix following fixed URLs
 - RU-EN, fencing: probably a space before "]" in transcription
 - RU-EN, tuple -> Фразы: source and target phrases do not match
 - EN-RU, tuple -> энка -> tuple -> энка: phsubj is duplicated

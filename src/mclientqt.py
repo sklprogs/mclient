@@ -1044,6 +1044,46 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def get_cell(self):
+        f = '[MClientQt] mclient.App.get_cell'
+        table = lg.objs.get_articles().get_table()
+        if not table:
+            sh.com.rep_empty(f)
+            return
+        rowno, colno = self.table.get_cell()
+        try:
+            return table[rowno][colno]
+        except IndexError:
+            mes = _('Wrong input data: "{}"!').format((rowno, colno))
+            sh.objs.get_mes(f, mes).show_warning()
+        return
+    
+    def get_wform(self):
+        f = '[MClientQt] mclient.App.get_wform'
+        table = lg.objs.get_articles().get_table()
+        if not table:
+            sh.com.rep_empty(f)
+            return
+        cell = self.get_cell()
+        if not cell:
+            sh.com.rep_empty(f)
+            return
+        return cell.wform
+    
+    def copy_wform(self):
+        f = '[MClientQt] mclient.App.copy_wform'
+        if not lg.objs.get_articles().get_len():
+            # Do not warn when there are no articles yet
+            sh.com.rep_lazy(f)
+            return
+        wform = self.get_wform()
+        if not wform:
+            sh.com.rep_empty(f)
+            return
+        sh.Clipboard().copy(wform)
+        if sh.lg.globs['bool']['Iconify']:
+            self.minimize()
+    
     def copy_article_url(self):
         f = '[MClientQt] mclient.App.copy_article_url'
         if not lg.objs.get_articles().get_len():
@@ -1061,16 +1101,9 @@ class App:
     
     def get_cell_url(self):
         f = '[MClientQt] mclient.App.get_cell_url'
-        table = lg.objs.get_articles().get_table()
-        if not table:
+        cell = self.get_cell()
+        if not cell:
             sh.com.rep_empty(f)
-            return
-        rowno, colno = self.table.get_cell()
-        try:
-            cell = table[rowno][colno]
-        except IndexError:
-            mes = _('Wrong input data: "{}"!').format((rowno, colno))
-            sh.objs.get_mes(f, mes).show_warning()
             return
         return cell.url
     
@@ -1870,6 +1903,9 @@ class App:
                       )
         self.gui.bind (sh.lg.globs['str']['bind_copy_url']
                       ,self.copy_cell_url
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_copy_nominative']
+                      ,self.copy_wform
                       )
                       
         #TODO: iterate through all keys
