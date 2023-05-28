@@ -846,7 +846,7 @@ class Table:
         try:
             return self.gui.get_cell()
         except Exception as e:
-            sh.com.rep_third_party(f,e)
+            sh.com.rep_third_party(f, e)
             return(0, 0)
     
     def get_cell_text(self):
@@ -862,7 +862,7 @@ class Table:
             return self.logic.plain[rowno][colno]
         except IndexError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_debug()
+            sh.objs.get_mes(f, mes).show_warning()
         return ''
     
     def get_cell_code(self):
@@ -1044,6 +1044,51 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def copy_article_url(self):
+        f = '[MClientQt] mclient.App.copy_article_url'
+        if not lg.objs.get_articles().get_len():
+            # Do not warn when there are no articles yet
+            sh.com.rep_lazy(f)
+            return
+        url = lg.objs.get_articles().get_url()
+        if not url:
+            sh.com.rep_empty(f)
+            return
+        url = lg.objs.get_plugins().fix_url(url)
+        sh.Clipboard().copy(url)
+        if sh.lg.globs['bool']['Iconify']:
+            self.minimize()
+    
+    def get_cell_url(self):
+        f = '[MClientQt] mclient.App.get_cell_url'
+        table = lg.objs.get_articles().get_table()
+        if not table:
+            sh.com.rep_empty(f)
+            return
+        rowno, colno = self.table.get_cell()
+        try:
+            cell = table[rowno][colno]
+        except IndexError:
+            mes = _('Wrong input data: "{}"!').format((rowno, colno))
+            sh.objs.get_mes(f, mes).show_warning()
+            return
+        return cell.url
+    
+    def copy_cell_url(self):
+        f = '[MClientQt] mclient.App.copy_cell_url'
+        if not lg.objs.get_articles().get_len():
+            # Do not warn when there are no articles yet
+            sh.com.rep_lazy(f)
+            return
+        url = self.get_cell_url()
+        if not url:
+            sh.com.rep_empty(f)
+            return
+        url = lg.objs.get_plugins().fix_url(url)
+        sh.Clipboard().copy(url)
+        if sh.lg.globs['bool']['Iconify']:
+            self.minimize()
+    
     def go_phrases(self):
         f = '[MClientQt] mclient.App.go_phrases'
         tuple_ = self.table.logic.get_phsubj()
@@ -1111,7 +1156,7 @@ class App:
             sh.lg.globs['bool']['CaptureHotkey'] = True
         UpdateUI(self.panel).update_global_hotkey()
     
-    def define(self,Selected=True):
+    def define(self, Selected=True):
         # Open a web-page with a definition of the current term
         # Selected: True: Selected term; False: Article title
         f = '[MClient] mclient.App.define'
@@ -1196,7 +1241,7 @@ class App:
         if lg.objs.get_articles().get_len() == 0:
             sh.com.rep_lazy(f)
             return
-        lg.objs.articles.set_id(lg.objs.articles.id-1)
+        lg.objs.articles.set_id(lg.objs.articles.id - 1)
         source = lg.objs.articles.get_source()
         lang1 = lg.objs.articles.get_lang1()
         lang2 = lg.objs.articles.get_lang2()
@@ -1215,7 +1260,7 @@ class App:
         if lg.objs.get_articles().is_last():
             sh.com.rep_lazy(f)
             return
-        lg.objs.articles.set_id(lg.objs.articles.id+1)
+        lg.objs.articles.set_id(lg.objs.articles.id + 1)
         source = lg.objs.articles.get_source()
         lang1 = lg.objs.articles.get_lang1()
         lang2 = lg.objs.articles.get_lang2()
@@ -1247,11 +1292,11 @@ class App:
         col_num = self.settings.gui.ent_num.get()
         if not col_num:
             col_num = self._set_col_num(table_width)
-        col_num = sh.Input(f,col_num).get_integer()
+        col_num = sh.Input(f, col_num).get_integer()
         if not 0 < col_num <= 10:
             mes = _('A value of this field should be within the range of {}-{}!')
-            mes = mes.format(1,10)
-            sh.objs.get_mes(f,mes).show_warning()
+            mes = mes.format(1, 10)
+            sh.objs.get_mes(f, mes).show_warning()
             col_num = self._set_col_num(table_width)
         
         ''' How we got this formula. The recommended fixed column width
@@ -1315,7 +1360,7 @@ class App:
         collimit = lg.objs.get_column_width().fixed_num + lg.objs.column_width.term_num
         mes = _('Set the number of columns to {} ({} in total)')
         mes = mes.format(lg.objs.column_width.term_num, collimit)
-        sh.objs.get_mes(f,mes,True).show_info()
+        sh.objs.get_mes(f, mes, True).show_info()
     
     def update_columns(self):
         ''' Update a column number in GUI; adjust the column number (both logic
@@ -1328,7 +1373,7 @@ class App:
         collimit = lg.objs.get_column_width().fixed_num + lg.objs.column_width.term_num
         mes = _('Set the number of columns to {} ({} in total)')
         mes = mes.format(lg.objs.column_width.term_num, collimit)
-        sh.objs.get_mes(f,mes,True).show_info()
+        sh.objs.get_mes(f, mes, True).show_info()
     
     def set_source(self):
         f = '[MClientQt] mclient.App.set_source'
@@ -1819,6 +1864,12 @@ class App:
                       )
         self.gui.bind (sh.lg.globs['str']['bind_go_phrases']
                       ,self.go_phrases
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_copy_article_url']
+                      ,self.copy_article_url
+                      )
+        self.gui.bind (sh.lg.globs['str']['bind_copy_url']
+                      ,self.copy_cell_url
                       )
                       
         #TODO: iterate through all keys
