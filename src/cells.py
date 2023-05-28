@@ -152,10 +152,10 @@ class Prioritize:
                 cell.subjpr = priority
         pr_cells = [cell for cell in self.cells if cell.subjpr > -1]
         unp_cells = [cell for cell in self.cells if cell.subjpr == -1 \
-                     and not self._is_phrase_type(cell)
+                     and not com.is_phrase_type(cell)
                     ]
         ph_cells = [cell for cell in self.cells if cell.subjpr == -1 \
-                    and self._is_phrase_type(cell)
+                    and com.is_phrase_type(cell)
                    ]
         
         pr_cells.sort(key=lambda x: (x.subjpr, x.no))
@@ -191,7 +191,7 @@ class Prioritize:
         self.cells = pr_cells + unp_cells + ph_cells
 
     def set_speech(self):
-        ph_cells = [cell for cell in self.cells if self._is_phrase_type(cell)]
+        ph_cells = [cell for cell in self.cells if com.is_phrase_type(cell)]
         all_speech = sorted(set([cell.speech for cell in self.cells \
                                  if not cell in ph_cells
                                 ]))
@@ -209,11 +209,6 @@ class Prioritize:
         i += 1
         for cell in ph_cells:
             cell.speechpr = i
-    
-    def _is_phrase_type(self, cell):
-        for block in cell.blocks:
-            if block.type_ in ('phsubj', 'phrase', 'phcount'):
-                return True
     
     def run(self):
         self.set_subjects()
@@ -258,13 +253,18 @@ class View:
         cell.fixed_block = block
         cell.blocks = [block]
         cell.rowno = rowno
-        if type_ != 'phsubj':
-            cell.subj = self.cells[i].subj
+        if com.is_phrase_type(self.cells[i]):
             cell.subjpr = self.cells[i].subjpr
-            cell.wform = self.cells[i].wform
-            cell.transc = self.cells[i].transc
-            cell.speech = self.cells[i].speech
             cell.speechpr = self.cells[i].speechpr
+            if type_ == 'subj':
+                cell.text = block.text = self.cells[i].subj
+            return cell
+        cell.subj = self.cells[i].subj
+        cell.subjpr = self.cells[i].subjpr
+        cell.wform = self.cells[i].wform
+        cell.transc = self.cells[i].transc
+        cell.speech = self.cells[i].speech
+        cell.speechpr = self.cells[i].speechpr
         if type_ == 'subj':
             cell.text = block.text = self.cells[i].subj
         elif type_ == 'wform':
@@ -273,14 +273,12 @@ class View:
             cell.text = block.text = self.cells[i].transc
         elif type_ == 'speech':
             cell.text = block.text = self.cells[i].speech
-        elif type_ == 'phsubj':
-            cell.text = block.text = self.cells[i].text
         elif not type_:
             # Empty types are actually allowed since we can have empty columns
             pass
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(type_, 'subj, wform, transc, speech, phsubj, or empty')
+            mes = mes.format(type_, 'subj, wform, transc, speech, or empty')
             sh.objs.get_mes(f,mes).show_error()
         return cell
     
@@ -727,3 +725,15 @@ class Wrap:
         self.set_plain()
         self.set_code()
         return self.cells
+
+
+
+class Commands:
+    
+    def is_phrase_type(self, cell):
+        for block in cell.blocks:
+            if block.type_ in ('phsubj', 'phrase', 'phcount'):
+                return True
+
+
+com = Commands()
