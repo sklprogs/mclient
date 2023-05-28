@@ -191,7 +191,10 @@ class Prioritize:
         self.cells = pr_cells + unp_cells + ph_cells
 
     def set_speech(self):
-        all_speech = sorted(set([cell.speech for cell in self.cells]))
+        ph_cells = [cell for cell in self.cells if self._is_phrase_type(cell)]
+        all_speech = sorted(set([cell.speech for cell in self.cells \
+                                 if not cell in ph_cells
+                                ]))
         speech_unp = [speech for speech in all_speech \
                       if not speech in self.speech
                      ]
@@ -200,6 +203,12 @@ class Prioritize:
             for cell in self.cells:
                 if cell.speech == all_speech[i]:
                     cell.speechpr = i
+        ''' Phrases must be put at the end, otherwise we will have issues in
+            the "Cut to the chase" mode.
+        '''
+        i += 1
+        for cell in ph_cells:
+            cell.speechpr = i
     
     def _is_phrase_type(self, cell):
         for block in cell.blocks:
