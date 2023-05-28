@@ -1696,10 +1696,10 @@ class App:
         elif skipped:
             mes = _('Nothing has been found (skipped subjects: {}).')
             mes = mes.format(skipped)
-            sh.objs.get_mes(f,mes).show_info()
+            sh.objs.get_mes(f, mes).show_info()
         else:
             mes = _('Nothing has been found.')
-            sh.objs.get_mes(f,mes).show_info()
+            sh.objs.get_mes(f, mes).show_info()
         
         self.add_history()
         
@@ -2070,7 +2070,7 @@ if __name__ == '__main__':
     f = '[MClientQt] mclient.__main__'
     sh.com.start()
     lg.com.start()
-    lg.objs.get_plugins(Debug=False,maxrows=1000)
+    lg.objs.get_plugins(Debug=False, maxrows=1000)
     lg.objs.get_request().search = 'tuple'
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
