@@ -12,6 +12,7 @@ mclient:
 - Zero scrollbar position before loading article
 
 multitrancom:
+- RU-EN, clutch: corrections are not in place
 - RU-EN, tuple -> мат.: Fix following fixed URLs
 - RU-EN, fencing: probably a space before "]" in transcription
 - RU-EN, tuple -> Фразы: source and target phrases do not match
