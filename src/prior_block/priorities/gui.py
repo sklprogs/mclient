@@ -25,7 +25,7 @@ class Model(PyQt5.QtGui.QStandardItemModel):
         self.fill()
     
     def fill(self):
-        f = '[MClientQt] subjects.priorities.gui.Model.fill'
+        f = '[MClientQt] prior_block.priorities.gui.Model.fill'
         if not self.dic:
             self.Success = False
             sh.com.rep_empty(f)
@@ -42,7 +42,7 @@ class Model(PyQt5.QtGui.QStandardItemModel):
             item.appendRow(child)
     
     def parse_json(self):
-        f = '[MClientQt] subjects.priorities.gui.Model.parse_json'
+        f = '[MClientQt] prior_block.priorities.gui.Model.parse_json'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -51,7 +51,7 @@ class Model(PyQt5.QtGui.QStandardItemModel):
             self._set_item(key)
     
     def set_headers(self):
-        f = '[MClientQt] subjects.priorities.gui.Model.set_headers'
+        f = '[MClientQt] prior_block.priorities.gui.Model.set_headers'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -194,7 +194,7 @@ class Priorities(PyQt5.QtWidgets.QWidget):
 
 
 if __name__ == '__main__':
-    f = '[MClient] subjects.priorities.gui.__main__'
+    f = '[MClient] prior_block.priorities.gui.__main__'
     sh.com.start()
     iprior = Priorities()
     iprior.show()
