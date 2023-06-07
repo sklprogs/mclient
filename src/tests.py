@@ -180,7 +180,7 @@ class ArticleSubjects:
         import mclientqt as mclient
         pairs = mclient.objs.get_blocksdb().get_dic_pairs()
         mes = _('Pairs: {}').format(pairs)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         sj.objs.get_article().reset(pairs,DEBUG)
         sj.objs.article.run()
     
@@ -432,11 +432,11 @@ class Plugin:
         iplug = dr.Plugin(Debug=DEBUG)
         iplug.request(search=search)
         mes = _('Number of blocks: {}').format(len(iplug.blocks))
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         mes = _('Web-page:') + '\n' + iplug.htm
-        sh.com.run_fast_debug(f,mes)
+        sh.com.run_fast_debug(f, mes)
         mes = _('Text:') + '\n' + iplug.text
-        sh.com.run_fast_debug(f,mes)
+        sh.com.run_fast_debug(f, mes)
     
     def run_multitrancom(self):
         import plugins.multitrancom.run as mc
@@ -659,11 +659,11 @@ class Commands:
     def run_history_contr(self):
         import history.controller as hs
         ihis = hs.History()
-        table = [['1',_('Russian'),_('English'),'start']
-                ,['2',_('Russian'),_('English'),'hello']
-                ,['3',_('English'),_('Russian'),'bye']
-                ,['4',_('English'),_('Russian'),'fourth']
-                ,['5',_('English'),_('Russian'),'fifth']
+        table = [['1', _('Russian'), _('English'), 'start']
+                ,['2', _('Russian'), _('English'), 'hello']
+                ,['3', _('English'), _('Russian'), 'bye']
+                ,['4', _('English'), _('Russian'), 'fourth']
+                ,['5', _('English'), _('Russian'), 'fifth']
                 ]
         ihis.fill_model(table)
         # The model is updated entirely each time, but still this is fast
@@ -694,7 +694,7 @@ class Commands:
         #sh.lg.globs['int']['colnum'] = 0
         width = lg.com.get_column_width()
         mes = '"{}%"'.format(width)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def check_width(self):
         import mclientqt as mc
@@ -718,7 +718,7 @@ class Commands:
         titles = sorted(set(titles))
         if titles:
             mes = '\n'.join(titles)
-            sh.com.run_fast_debug(f,mes)
+            sh.com.run_fast_debug(f, mes)
         else:
             sh.com.rep_lazy(f)
     
@@ -731,7 +731,7 @@ class Commands:
                 titles.append(sj.SUBJECTS[key]['ru']['title'])
         titles.sort()
         mes = '\n'.join(titles)
-        sh.com.run_fast_debug(f,mes)
+        sh.com.run_fast_debug(f, mes)
     
     def get_majors_en(self):
         f = '[MClient] tests.Commands.get_majors_en'
@@ -751,7 +751,7 @@ class Commands:
                            ,headers = headers
                            ,maxrow = 30
                            ).run()
-        sh.com.run_fast_debug(f,mes)
+        sh.com.run_fast_debug(f, mes)
     
     def get_majors(self):
         import plugins.multitrancom.subjects as sj
@@ -820,7 +820,7 @@ class Commands:
         lst.sort()
         mes = _('The following pairs are not supported:\n{}')
         mes = mes.format(lst)
-        sh.objs.get_mes(f,mes,True).show_info()
+        sh.objs.get_mes(f, mes, True).show_info()
     
     def compare_elems(self):
         import plugins.multitran.elems as el
@@ -887,7 +887,7 @@ class Commands:
                                                               )
         lg.objs.get_plugins().set(source)
         lg.objs.plugins.set_pair(pair)
-        sh.objs.get_mes(f,mes,True).show_info()
+        sh.objs.get_mes(f, mes, True).show_info()
         data = lg.objs.plugins.request (search = search
                                        ,url = ''
                                        )
@@ -906,7 +906,7 @@ class Commands:
         mes = mes.format(source,pair,search)
         lg.objs.get_plugins().set(source)
         lg.objs.plugins.set_pair(pair)
-        sh.objs.get_mes(f,mes,True).show_info()
+        sh.objs.get_mes(f, mes, True).show_info()
         lg.objs.plugins.get_url(search)
     
     def suggest(self):
@@ -919,7 +919,7 @@ class Commands:
         mes = mes.format(source,pair,search)
         lg.objs.get_plugins().set(source)
         lg.objs.plugins.set_pair(pair)
-        sh.objs.get_mes(f,mes,True).show_info()
+        sh.objs.get_mes(f, mes, True).show_info()
         lg.com.suggest(search)
     
     def _set_timeout(self,module,source,timeout):
@@ -930,7 +930,7 @@ class Commands:
         mes = 'Source: {}; Timeout: {}'.format (source
                                                ,module.TIMEOUT
                                                )
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def set_timeout(self):
         import plugins.multitrancom.get as mc
@@ -955,12 +955,12 @@ class Commands:
         lg.objs.get_plugins().set(source)
         result = lg.objs.plugins.is_accessible()
         mes = 'Source: {}; Accessibility: {}'.format(source,result)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         source = 'multitran.com'
         lg.objs.plugins.set(source)
         result = lg.objs.plugins.is_accessible()
         mes = 'Source: {}; Accessibility: {}'.format(source,result)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def welcome(self):
         import logic as lg
@@ -983,131 +983,13 @@ class Commands:
         lg.objs.plugins.set_pair(pair)
         
         mes = '{}: {}'.format(source,plugins.multitrancom.get.PAIR)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         pair = 'XAL <=> RUS'
         source = _('Multitran')
         lg.objs.plugins.set(source)
         lg.objs.plugins.set_pair(pair)
         mes = 'multitrancom: {}'.format(plugins.multitrancom.get.PAIR)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        
-    def translate_gui (self,source,pair
-                      ,search,url
-                      ):
-        import logic as lg
-        import mclientqt as mclient
-        lg.objs.get_plugins().set(source)
-        lg.objs.plugins.set_pair(pair)
-        lg.objs.get_request().search = search
-        lg.objs.request.url = url
-        mclient.objs.webframe().load_article()
-        mclient.objs.webframe.gui.show()
-    
-    def translate_cli (self,source,pair
-                      ,search,url,maxrows=100
-                      ):
-        import logic as lg
-        import cells as cl
-        lg.objs.get_plugins().set(source)
-        lg.objs.plugins.set_pair(pair)
-        lg.objs.get_request().search = search
-        lg.objs.request.url = url
-        data = lg.objs.plugins.request (search = search
-                                       ,url = url
-                                       )
-        cldata = []
-        for i in range(len(data)):
-            row = [i,data[i][7],data[i][8],data[i][13],data[i][2]
-                  ,data[i][3],data[i][4],data[i][5]
-                  ]
-            cldata.append(row)
-        cells = cl.Cells (data = cldata
-                         ,cols = ('dic','wform','transc','speech')
-                         ,collimit = 8
-                         ,phdic = ''
-                         ,Reverse = False
-                         ,ExpandSp = False
-                         ,Debug = DEBUG
-                         ,maxrows = maxrows
-                         )
-        cells.run()
-    
-    def translate (self,source,pair
-                  ,search,url,maxrows=100
-                  ,GUI=False
-                  ):
-        if GUI:
-            self.translate_gui (source = source
-                               ,pair = pair
-                               ,search = search
-                               ,url = url
-                               )
-        else:
-            self.translate_cli (source = source
-                               ,pair = pair
-                               ,search = search
-                               ,url = url
-                               ,maxrows = maxrows
-                               )
-            
-    
-    def run_com_complex(self,GUI=False):
-        self.translate (source = 'multitran.com'
-                       ,pair = 'ENG <=> RUS'
-                       ,search = 'complex'
-                       ,url = 'https://www.multitran.com/m.exe?s=complex&l1=2&l2=1&SHL=2'
-                       ,GUI = GUI
-                       )
-    
-    def run_com_abatis2(self,GUI=False):
-        self.translate (source = 'multitran.com'
-                       ,pair = 'ENG <=> RUS'
-                       ,search = 'abatis'
-                       ,url = 'https://www.multitran.com/m.exe?s=abatis&l1=2&l2=1&SHL=2'
-                       ,GUI = GUI
-                       )
-    
-    def run_com_abatis(self,GUI=False):
-        self.translate (source = 'multitran.com'
-                       ,pair = 'ENG <=> RUS'
-                       ,search = 'засека'
-                       ,url = 'https://www.multitran.com/m.exe?s=%D0%B7%D0%B0%D1%81%D0%B5%D0%BA%D0%B0&l1=2&l2=1&SHL=2'
-                       ,GUI = GUI
-                       )
-    
-    def run_all_ernahrung(self,GUI=False):
-        self.translate (source = _('Multitran')
-                       ,pair = 'DEU <=> RUS'
-                       ,search = 'ernährung'
-                       ,url = 'https://www.multitran.com/m.exe?s=ern%C3%A4hrung&l1=3&l2=2&SHL=2'
-                       ,GUI = GUI
-                       )
-    
-    def run_com_mud(self,GUI=False):
-        self.translate (source = 'multitran.com'
-                       ,pair = 'ENG <=> RUS'
-                       ,search = 'mud'
-                       ,url = 'https://multitran.com/m.exe?s=mud&l1=1&l2=2&SHL=2'
-                       ,GUI = GUI
-                       )
-    
-    def run_com_systemwide(self,GUI=False):
-        self.translate (source = 'multitran.com'
-                       ,pair = 'ENG <=> RUS'
-                       ,search = 'system-wide'
-                       ,url = 'https://www.multitran.com/m.exe?s=system-wide&l1=2&l2=1&SHL=2'
-                       ,GUI = GUI
-                       )
-    
-    def go_keyboard(self,event=None):
-        f = '[MClient] tests.Commands.go_keyboard'
-        mes = _('Triggered!')
-        sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def copy_text(self,event=None):
-        f = '[MClient] tests.Commands.copy_text'
-        mes = _('Triggered!')
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
 
 
 
@@ -1121,22 +1003,21 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
-    #idebug = sh.Debug(f,Tags().run_multitrancom())
-    #idebug = sh.Debug(f,Elems().run_multitrancom())
-    idebug = sh.Debug(f,Prioritize().run_multitrancom())
-    #idebug = sh.Debug(f,View().run_multitrancom())
-    #idebug = sh.Debug(f,Wrap().run_multitrancom())
+    #idebug = sh.Debug(f, Tags().run_multitrancom())
+    #idebug = sh.Debug(f, Elems().run_multitrancom())
+    #idebug = sh.Debug(f, Prioritize().run_multitrancom())
+    #idebug = sh.Debug(f, View().run_multitrancom())
+    #idebug = sh.Debug(f, Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
-    idebug.show()
+    #idebug.show()
     
     #mes = com.run_speech()
-    #sh.objs.get_mes(f,mes).show_debug()
+    #sh.objs.get_mes(f, mes).show_debug()
 
-    '''
     # Priorities
     iprior = com.run_prior()
     iprior.show()
-    '''
+    
     '''
     # Priorities (from the controller)
     iprior = com.run_prior_contr()
