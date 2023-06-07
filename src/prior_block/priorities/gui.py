@@ -7,18 +7,18 @@ import PyQt5.QtWidgets
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-icn_btm = sh.objs.get_pdir().add('..','resources','buttons','bottom.png')
-icn_dwn = sh.objs.pdir.add('..','resources','buttons','down.png')
-icn_lft = sh.objs.pdir.add('..','resources','buttons','go_back.png')
-icn_rht = sh.objs.pdir.add('..','resources','buttons','go_next.png')
-icn_top = sh.objs.pdir.add('..','resources','buttons','top.png')
-icn_up1 = sh.objs.pdir.add('..','resources','buttons','up.png')
+icn_btm = sh.objs.get_pdir().add('..','resources', 'buttons', 'bottom.png')
+icn_dwn = sh.objs.pdir.add('..', 'resources', 'buttons', 'down.png')
+icn_lft = sh.objs.pdir.add('..', 'resources', 'buttons', 'go_back.png')
+icn_rht = sh.objs.pdir.add('..', 'resources', 'buttons', 'go_next.png')
+icn_top = sh.objs.pdir.add('..', 'resources', 'buttons', 'top.png')
+icn_up1 = sh.objs.pdir.add('..', 'resources', 'buttons', 'up.png')
 
 
 class Model(PyQt5.QtGui.QStandardItemModel):
     
-    def __init__(self,dic,header='',*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, dic, header='',*args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.dic = dic
         self.header = header
         self.Success = True
@@ -33,7 +33,7 @@ class Model(PyQt5.QtGui.QStandardItemModel):
         self.parse_json()
         self.set_headers()
     
-    def _set_item(self,key):
+    def _set_item(self, key):
         # Multi-level filling: https://stackoverflow.com/questions/57130400/multi-level-qtreeview-using-dictionaries
         item = PyQt5.QtGui.QStandardItem(str(key))
         self.root.appendRow(item)
@@ -63,8 +63,8 @@ class Priorities(PyQt5.QtWidgets.QWidget):
     
     sig_close = PyQt5.QtCore.pyqtSignal()
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.set_gui()
     
     def get_index(self):
@@ -72,32 +72,32 @@ class Priorities(PyQt5.QtWidgets.QWidget):
     
     def get_row(self):
         index_ = self.get_index()
-        return(index_.row(),index_.column())
+        return(index_.row(), index_.column())
     
     def fill1(self,dic,header):
         model = Model(dic,header)
         self.lbx_lft.setModel(model)
     
-    def fill2(self,dic,header):
-        model = Model(dic,header)
+    def fill2(self, dic, header):
+        model = Model(dic, header)
         self.lbx_rht.setModel(model)
     
     def set_icon(self):
         # Does not accent None
         self.setWindowIcon(sh.gi.objs.get_icon())
     
-    def closeEvent(self,event):
+    def closeEvent(self, event):
         self.sig_close.emit()
         return super().closeEvent(event)
     
-    def set_title(self,title):
+    def set_title(self, title):
         self.setWindowTitle(title)
     
     def centralize(self):
         self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
     
-    def bind(self,hotkey,action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
+    def bind(self, hotkey, action):
+        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def set_buttons(self):
         self.btn_lft = sh.Button (hint = _('Prioritize selection on the right')
@@ -146,18 +146,18 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.prm_btn = PyQt5.QtWidgets.QWidget()
         self.prm_rht = PyQt5.QtWidgets.QWidget()
         self.cbx_pri = sh.CheckBox(_('Prioritize subjects'))
-        sources = (_('All subjects'),_('Main'),_('From the article'))
+        sources = (_('All subjects'), _('Main'), _('From the article'))
         self.opt_src = sh.OptionMenu(sources)
     
     def add_widgets(self):
         self.lay_prm.addWidget(self.prm_sec)
         self.lay_prm.addWidget(self.prm_ter)
-        self.lay_sec.addWidget(self.lbx_lft,0,0)
-        self.lay_sec.addWidget(self.prm_btn,0,1)
-        self.lay_sec.addWidget(self.lbx_rht,0,2)
-        self.lay_ter.addWidget(self.btn_res.widget,0,1,PyQt5.QtCore.Qt.AlignLeft)
-        self.lay_ter.addWidget(self.cbx_pri.widget,0,2,PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_ter.addWidget(self.prm_rht,0,3,PyQt5.QtCore.Qt.AlignRight)
+        self.lay_sec.addWidget(self.lbx_lft, 0, 0)
+        self.lay_sec.addWidget(self.prm_btn, 0, 1)
+        self.lay_sec.addWidget(self.lbx_rht, 0, 2)
+        self.lay_ter.addWidget(self.btn_res.widget, 0, 1, PyQt5.QtCore.Qt.AlignLeft)
+        self.lay_ter.addWidget(self.cbx_pri.widget, 0, 2, PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_ter.addWidget(self.prm_rht, 0, 3, PyQt5.QtCore.Qt.AlignRight)
         self.lay_rht.addWidget(self.opt_src.widget)
         self.lay_rht.addWidget(self.btn_apl.widget)
         self.prm_sec.setLayout(self.lay_sec)
@@ -186,11 +186,11 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.customize()
     
     def customize(self):
-        #self.lay_prm.setContentsMargins(0,0,0,0)
-        self.lay_sec.setContentsMargins(0,0,0,0)
-        self.lay_btn.setContentsMargins(4,4,4,4)
-        self.lay_ter.setContentsMargins(2,4,2,0)
-        self.lay_rht.setContentsMargins(0,0,0,0)
+        #self.lay_prm.setContentsMargins(0, 0, 0, 0)
+        self.lay_sec.setContentsMargins(0, 0, 0, 0)
+        self.lay_btn.setContentsMargins(4, 4, 4, 4)
+        self.lay_ter.setContentsMargins(2, 4, 2, 0)
+        self.lay_rht.setContentsMargins(0, 0, 0, 0)
 
 
 if __name__ == '__main__':
@@ -198,6 +198,6 @@ if __name__ == '__main__':
     sh.com.start()
     iprior = Priorities()
     iprior.show()
-    iprior.resize(800,450)
+    iprior.resize(800, 450)
     iprior.centralize()
     sh.com.end()

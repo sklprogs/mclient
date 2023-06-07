@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+#import skl_shared_qt.shared as sh
 
 from . import gui as gi
 
@@ -20,10 +20,10 @@ class Priorities:
         self.fill2()
     
     def fill1(self):
-        self.gui.fill1(self.dic1,_('In use'))
+        self.gui.fill1(self.dic1, _('In use'))
     
     def fill2(self):
-        self.gui.fill2(self.dic2,_('Available'))
+        self.gui.fill2(self.dic2, _('Available'))
     
     def unprioritize_group(self):
         f = '[MClient] subjects.priorities.controller.Priorities.unprioritize_group'
@@ -59,14 +59,14 @@ class Priorities:
         f = '[MClientQt] subjects.priorities.controller.Priorities.prioritize'
         print(f)
     
-    def unprioritize(self,event=None):
+    def unprioritize(self, event=None):
         f = '[MClient] subjects.priorities.controller.Priorities.unprioritize'
         print(f)
     
     def show(self):
         self.Shown = True
         self.gui.show()
-        self.gui.resize(800,450)
+        self.gui.resize(800, 450)
         self.gui.centralize()
     
     def close(self):
@@ -84,7 +84,7 @@ class Priorities:
         print(f)
     
     def set_bindings(self):
-        self.gui.bind('Esc',self.close)
+        self.gui.bind('Esc', self.close)
         self.gui.btn_btm.set_action(self.move_bottom)
         self.gui.btn_dwn.set_action(self.decrease)
         self.gui.btn_lft.set_action(self.prioritize)
