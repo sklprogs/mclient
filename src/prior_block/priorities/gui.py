@@ -17,7 +17,7 @@ icn_up1 = sh.objs.pdir.add('..', 'resources', 'buttons', 'up.png')
 
 class Model(PyQt5.QtGui.QStandardItemModel):
     
-    def __init__(self, dic, header='',*args, **kwargs):
+    def __init__(self, dic, header='', *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.dic = dic
         self.header = header

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.localize import _
+#from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 import controller as ct
@@ -11,8 +11,7 @@ class External:
     
     def get_group(self,subject=''):
         # A dummy output
-        return ('Информационная безопасность'
-               ,'Компьютерная техника'
+        return ('Информационная безопасность', 'Компьютерная техника'
                ,'Техника'
                )
     
@@ -23,24 +22,24 @@ class External:
     def get_priorities(self):
         #return ('1','2','3','4','5','Subject1','Компьютерная техника','Общая лексика')
         #return [i for i in range(1000)]
-        ''' #NOTE: All items should be preconverted to a string,
-            otherwise, there will be no matches while unprioritizing.
+        ''' #NOTE: All items should be preconverted to a string, otherwise,
+            there will be no matches while unprioritizing.
         '''
         return [str(i) for i in range(40)]
     
     def get_all_subjects(self):
-        lst = ['Биология','Информационная безопасность'
-              ,'Компьютерная техника','Общая лексика','Техника'
+        lst = ['Биология', 'Информационная безопасность'
+              ,'Компьютерная техника', 'Общая лексика', 'Техника'
               ]
         lst_num = ['s' + str(i) for i in range(50)]
         return lst + lst_num
     
     def get_article_subjects(self):
-        return('Компьютерная техника','Общая лексика','Техника')
+        return('Компьютерная техника', 'Общая лексика', 'Техника')
 
 
 if __name__ == '__main__':
-    f = '[MClient] subjects.priorities.tests.External.__main__'
+    f = '[MClient] prior_block.priorities.tests.__main__'
     sh.com.start()
     iext = External()
     iprior = ct.Priorities (lst1 = iext.get_priorities()

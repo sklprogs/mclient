@@ -26,15 +26,15 @@ class Priorities:
         self.gui.fill2(self.dic2, _('Available'))
     
     def unprioritize_group(self):
-        f = '[MClient] subjects.priorities.controller.Priorities.unprioritize_group'
+        f = '[MClient] prior_block.priorities.controller.Priorities.unprioritize_group'
         print(f)
     
     def prioritize_group(self):
-        f = '[MClient] subjects.priorities.controller.Priorities.prioritize_group'
+        f = '[MClient] prior_block.priorities.controller.Priorities.prioritize_group'
         print(f)
     
     def move_top(self):
-        f = '[MClient] subjects.priorities.controller.Priorities.move_top'
+        f = '[MClient] prior_block.priorities.controller.Priorities.move_top'
         print(f)
     
     def set_gui(self):
@@ -42,25 +42,25 @@ class Priorities:
         self.set_bindings()
     
     def move_bottom(self):
-        f = '[MClient] subjects.priorities.controller.Priorities.move_bottom'
+        f = '[MClient] prior_block.priorities.controller.Priorities.move_bottom'
         print(f)
     
     def increase(self):
-        f = '[MClient] subjects.priorities.controller.Priorities.increase'
+        f = '[MClient] prior_block.priorities.controller.Priorities.increase'
         print(f)
         print(self.gui.get_index())
         print(self.gui.get_row())
     
     def decrease(self):
-        f = '[MClient] subjects.priorities.controller.Priorities.decrease'
+        f = '[MClient] prior_block.priorities.controller.Priorities.decrease'
         print(f)
     
     def prioritize(self):
-        f = '[MClientQt] subjects.priorities.controller.Priorities.prioritize'
+        f = '[MClientQt] prior_block.priorities.controller.Priorities.prioritize'
         print(f)
     
     def unprioritize(self, event=None):
-        f = '[MClient] subjects.priorities.controller.Priorities.unprioritize'
+        f = '[MClient] prior_block.priorities.controller.Priorities.unprioritize'
         print(f)
     
     def show(self):
@@ -80,7 +80,7 @@ class Priorities:
             self.show()
     
     def reload(self):
-        f = '[MClientQt] subjects.priorities.controller.Priorities.reload'
+        f = '[MClientQt] prior_block.priorities.controller.Priorities.reload'
         print(f)
     
     def set_bindings(self):
