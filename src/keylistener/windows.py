@@ -142,7 +142,7 @@ def wait_example():
     keylistener.cancel()
     
 def wait_cycle():
-    from time import sleep, time
+    from time import time
     print_v('You have 5 seconds only...')
     timeout = time() + 5
     while timeout > time():
