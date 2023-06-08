@@ -15,6 +15,13 @@ class Priorities:
         self.dic2 = {}
         self.set_gui()
     
+    def centralize(self):
+        self.gui.centralize()
+    
+    def resize(self, width, height):
+        # Directly calling Qt method
+        self.gui.resize(width, height)
+    
     def fill(self):
         self.fill1()
         self.fill2()

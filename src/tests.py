@@ -589,9 +589,13 @@ class Commands:
     
     def run_prior_contr(self):
         import logic as lg
-        import subjects.priorities.controller as pr
+        import prior_block.priorities.controller as pr
         lg.com.start()
-        return pr.Priorities()
+        iprior = pr.Priorities()
+        iprior.fill1()
+        iprior.fill2()
+        iprior.show()
+        return iprior
     
     def run_popup(self):
         import popup.controller as pp
@@ -1014,15 +1018,16 @@ if __name__ == '__main__':
     #mes = com.run_speech()
     #sh.objs.get_mes(f, mes).show_debug()
 
+    '''
     # Priorities
     iprior = com.run_prior()
     iprior.show()
-    
     '''
+
     # Priorities (from the controller)
     iprior = com.run_prior_contr()
     iprior.show()
-    '''
+
     '''
     # Popup
     ipopup = com.run_popup()
