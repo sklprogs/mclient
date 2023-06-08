@@ -337,16 +337,21 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.set_gui()
     
     def set_gui(self):
-        self.set_title(_('Subject prioritization'))
+        self.set_title(_('Prioritization'))
         self.set_icon()
         self.set_layouts()
         self.set_widgets()
         self.set_buttons()
         self.add_widgets()
         self.add_buttons()
+        self.set_headers()
         self.customize()
         self.resize(800, 450)
         self.centralize()
+    
+    def set_headers(self):
+        self.tree1.setHeaderLabel(_('Prioritized subjects'))
+        self.tree2.setHeaderLabel(_('Available subjects'))
     
     def closeEvent(self, event):
         self.sig_close.emit()
@@ -437,7 +442,7 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.prm_ter = PyQt5.QtWidgets.QWidget()
         self.prm_btn = PyQt5.QtWidgets.QWidget()
         self.prm_rht = PyQt5.QtWidgets.QWidget()
-        self.cbx_pri = sh.CheckBox(_('Prioritize subjects'))
+        self.cbx_pri = sh.CheckBox(_('Enable'))
         sources = (_('All subjects'), _('Main'), _('From the article'))
         self.opt_src = sh.OptionMenu(sources)
         self.tree1 = Tree()
