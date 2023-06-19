@@ -1596,7 +1596,11 @@ class App:
             # Do not warn when there are no articles yet
             sh.com.rep_lazy(f)
             return
-        rowno, colno = self.table.get_cell()
+        cell = self.table.get_cell()
+        if not cell:
+            sh.com.rep_empty(f)
+            return
+        rowno, colno = cell[0], cell[1]
         cell = lg.objs.articles.get_cell(rowno, colno)
         if not cell:
             sh.com.rep_empty(f)
