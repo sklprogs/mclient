@@ -50,8 +50,46 @@ class View(PyQt5.QtWidgets.QTreeView):
 
 
 
-class Tree(PyQt5.QtWidgets.QTreeWidget, View):
+class TreeWidget(PyQt5.QtWidgets.QTreeWidget):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    
+    def _dump(self, parent):
+        dic = {}
+        for row in range(parent.childCount()):
+            child = parent.child(row)
+            dic[child.text(0)] = self._dump(child)
+        return dic
+    
+    def dump(self):
+        return self._dump(self.invisibleRootItem())
+    
+    def _set_item(self, parent, section):
+        f = '[MClient] prior_block.priorities.gui.TreeWidget._set_item'
+        if not isinstance(section, dict):
+            mes = _('Unexpected type: {}').format(type(section))
+            sh.objs.get_mes(f, mes, True).show_warning()
+            return
+        for key, value in section.items():
+            item = PyQt5.QtWidgets.QTreeWidgetItem([key])
+            if parent is None:
+                self.addTopLevelItem(item)
+            else:
+                parent.addChild(item)
+            self._set_item(item, value)
+    
+    def fill(self, dic):
+        self.setColumnCount(1)
+        self._set_item(None, dic)
 
+
+
+class Tree(TreeWidget, View):
+
+    def fill(self, dic):
+        TreeWidget.fill(self, dic)
+    
     def startDrag(self, supportedActions):
         listsQModelIndex = self.selectedIndexes()
         if listsQModelIndex:
@@ -117,7 +155,7 @@ class Tree(PyQt5.QtWidgets.QTreeWidget, View):
         item = self.itemAt(pos)
 
         if item is self.currentItem():
-            PyQt5.QtWidgets.QTreeWidget.dropEvent(self, event)
+            TreeWidget.dropEvent(self, event)
             event.accept()
             return
 
@@ -198,7 +236,7 @@ class Tree(PyQt5.QtWidgets.QTreeWidget, View):
 
         event.accept()
 
-        PyQt5.QtWidgets.QTreeWidget.dropEvent(self, event)
+        TreeWidget.dropEvent(self, event)
         self.expandAll()
 
     def position(self, pos, rect, index):
@@ -266,49 +304,6 @@ class Tree(PyQt5.QtWidgets.QTreeWidget, View):
         #if not self.droppingOnItself(event, index):
         return True
 
-
-
-class Model(PyQt5.QtGui.QStandardItemModel):
-    
-    def __init__(self, dic, header='', *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.dic = dic
-        self.header = header
-        self.Success = True
-        self.fill()
-    
-    def fill(self):
-        f = '[MClientQt] prior_block.priorities.gui.Model.fill'
-        if not self.dic:
-            self.Success = False
-            sh.com.rep_empty(f)
-            return
-        self.parse_json()
-        self.set_headers()
-    
-    def _set_item(self, key):
-        # Multi-level filling: https://stackoverflow.com/questions/57130400/multi-level-qtreeview-using-dictionaries
-        item = PyQt5.QtGui.QStandardItem(str(key))
-        self.root.appendRow(item)
-        for value in self.dic[key]:
-            child = PyQt5.QtGui.QStandardItem(str(value))
-            item.appendRow(child)
-    
-    def parse_json(self):
-        f = '[MClientQt] prior_block.priorities.gui.Model.parse_json'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.root = self.invisibleRootItem()
-        for key in self.dic:
-            self._set_item(key)
-    
-    def set_headers(self):
-        f = '[MClientQt] prior_block.priorities.gui.Model.set_headers'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.setHorizontalHeaderLabels([self.header])
 
 
 class Priorities(PyQt5.QtWidgets.QWidget):
@@ -467,25 +462,11 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.prm_rht.setLayout(self.lay_rht)
         self.setLayout(self.lay_prm)
     
-    def fill1(self, dic, header):
-        #model = Model(dic, header)
-        #self.lbx_lft.setModel(model)
-        for i in range(6):
-            item = self.addCmd(self.tree1, i)
-            if i in (3, 4):
-                self.addChildCmd(self.tree1)
-                if i == 4:
-                    self.addCmd(self.tree1, f'{i}-2', parent=item)
+    def fill1(self, dic):
+        self.tree1.fill(dic)
     
-    def fill2(self, dic, header):
-        #model = Model(dic, header)
-        #self.lbx_rht.setModel(model)
-        for i in range(6):
-            item = self.addCmd(self.tree2, i)
-            if i in (3, 4):
-                self.addChildCmd(self.tree2)
-                if i == 4:
-                    self.addCmd(self.tree2, f'{i}-2', parent=item)
+    def fill2(self, dic):
+        self.tree2.fill(dic)
     
     def set_title(self, title):
         self.setWindowTitle(title)
@@ -493,29 +474,7 @@ class Priorities(PyQt5.QtWidgets.QWidget):
     def centralize(self):
         self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
 
-    def addChildCmd(self, tree):
-        parent = tree.currentItem()
-        self.addCmd(tree, parent=parent)
-        tree.setCurrentItem(parent)
-
-    def addCmd(self, tree, i=None, parent=None):
-        # Add a level to tree widget
-        root = tree.invisibleRootItem()
-        if not parent:
-            parent = root
-
-        if i is None:
-            if parent == root:
-                i = tree.topLevelItemCount()
-            else:
-                i = str(parent.text(0))[7:]
-                i = f'{i}-{parent.childCount() + 1}'
-
-        item = PyQt5.QtWidgets.QTreeWidgetItem(parent, [f'script {i}', '1', '150'])
-
-        tree.setCurrentItem(item)
-        tree.expandAll()
-        return item
+    
 
 
 if __name__ == '__main__':

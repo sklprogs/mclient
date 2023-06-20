@@ -592,15 +592,16 @@ class Commands:
         import prior_block.priorities.controller as pr
         lg.com.start()
         iprior = pr.Priorities()
-        iprior.fill1()
-        iprior.fill2()
+        dic1 = {'Общая лексика': {}, 'Компьютеры': {'Компьютеры': {}, 'Майкрософт': {}, 'Программирование': {}, 'Информатика': {}}}
+        iprior.fill1(dic1)
+        iprior.fill2(dic1)
         iprior.show()
         return iprior
     
     def run_popup(self):
         import popup.controller as pp
         ipopup = pp.Popup()
-        file = sh.objs.get_pdir().add('..','resources','third parties.txt')
+        file = sh.objs.get_pdir().add('..', 'resources', 'third parties.txt')
         text = sh.ReadTextFile(file).get()
         text = sh.Text(text,True).delete_line_breaks() * 10
         ipopup.fill(text)

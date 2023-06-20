@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.localize import _
+#from skl_shared_qt.localize import _
 #import skl_shared_qt.shared as sh
 
 from . import gui as gi
@@ -11,8 +11,6 @@ class Priorities:
     
     def __init__(self):
         self.Shown = False
-        self.dic1 = {}
-        self.dic2 = {}
         self.set_gui()
     
     def centralize(self):
@@ -22,15 +20,15 @@ class Priorities:
         # Directly calling Qt method
         self.gui.resize(width, height)
     
-    def fill(self):
-        self.fill1()
-        self.fill2()
+    def fill(self, dic1, dic2):
+        self.fill1(dic1)
+        self.fill2(dic2)
     
-    def fill1(self):
-        self.gui.fill1(self.dic1, _('In use'))
+    def fill1(self, dic1):
+        self.gui.fill1(dic1)
     
-    def fill2(self):
-        self.gui.fill2(self.dic2, _('Available'))
+    def fill2(self, dic2):
+        self.gui.fill2(dic2)
     
     def unprioritize_group(self):
         f = '[MClient] prior_block.priorities.controller.Priorities.unprioritize_group'
