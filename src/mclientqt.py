@@ -59,11 +59,11 @@ class Priorities(pr.Priorities):
                 self.dic2[subject] = []
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(mode,'; '.join(self.gui.opt_src.items))
-            sh.objs.get_mes(f,mes).show_error()
+            mes = mes.format(mode, '; '.join(self.gui.opt_src.items))
+            sh.objs.get_mes(f, mes).show_error()
             return
         mes = _('Mode: "{}"').format(mode)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def reset(self):
         #self.lst1 = lg.objs.get_default().prior

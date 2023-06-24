@@ -593,8 +593,7 @@ class Commands:
         lg.com.start()
         iprior = pr.Priorities()
         dic1 = {'Общая лексика': {}, 'Компьютеры': {'Компьютеры': {}, 'Майкрософт': {}, 'Программирование': {}, 'Информатика': {}}}
-        iprior.fill1(dic1)
-        iprior.fill2(dic1)
+        iprior.fill(dic1, dic1)
         iprior.show()
         return iprior
     
