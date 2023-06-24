@@ -12,6 +12,7 @@ mclient:
 - Zero scrollbar position before loading article
 
 multitrancom:
+- https://www.multitran.com/m.exe?s=coregone&l1=2&l2=1&SHL=2: trash words
 - RU-EN, clutch: corrections are not in place
 - RU-EN, tuple -> мат.: Fix following fixed URLs
 - RU-EN, fencing: probably a space before "]" in transcription
