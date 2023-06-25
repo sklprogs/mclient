@@ -33,40 +33,42 @@ class Tags:
     
     def get_types(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.get_types'
-        if self.Success:
-            if len(self.tags) % 2 == 0:
-                for i in range(len(self.tags)):
-                    if i % 2 == 0:
-                        self.types.append(self.tags[i])
-                    else:
-                        self.content.append(self.tags[i])
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if len(self.tags) % 2 != 0:
+            mes = _('Wrong input data: "{}"').format(self.tags)
+            sh.objs.get_mes(f, mes, True).show_warning()
+            return
+        for i in range(len(self.tags)):
+            if i % 2 == 0:
+                self.types.append(self.tags[i])
             else:
-                mes = _('Wrong input data: "{}"').format(self.tags)
-                sh.objs.get_mes(f, mes, True).show_warning()
+                self.content.append(self.tags[i])
     
     def set_types(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.set_types'
-        if self.Success:
-            for i in range(len(self.content)):
-                self.blocks.append(Block())
-                self.blocks[-1].text = self.content[i]
-                if self.types[i] == self.seplg1:
-                    self.blocks[i].type_ = 'term'
-                    self.blocks[i].lang = self.lang1
-                elif self.types[i] == self.seplg2:
-                    self.blocks[i].type_ = 'term'
-                    self.blocks[i].lang = self.lang2
-                elif self.types[i] == self.sepcom:
-                    self.blocks[i].type_ = 'comment'
-                elif self.types[i] == self.sepdic:
-                    self.blocks[i].type_ = 'dic'
-                else:
-                    self.blocks[i].type_ = 'invalid'
-                    #TODO: convert to a string
-                    mes = _('Unknown type "{}"!').format(self.types[i])
-                    sh.objs.get_mes(f, mes, True).show_warning()    
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        for i in range(len(self.content)):
+            self.blocks.append(Block())
+            self.blocks[-1].text = self.content[i]
+            if self.types[i] == self.seplg1:
+                self.blocks[i].type_ = 'term'
+                self.blocks[i].lang = self.lang1
+            elif self.types[i] == self.seplg2:
+                self.blocks[i].type_ = 'term'
+                self.blocks[i].lang = self.lang2
+            elif self.types[i] == self.sepcom:
+                self.blocks[i].type_ = 'comment'
+            elif self.types[i] == self.sepdic:
+                self.blocks[i].type_ = 'dic'
+            else:
+                self.blocks[i].type_ = 'invalid'
+                #TODO: convert to a string
+                mes = _('Unknown type "{}"!').format(self.types[i])
+                sh.objs.get_mes(f, mes, True).show_warning()
     
     def debug_blocks(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.debug_blocks'
@@ -100,69 +102,68 @@ class Tags:
     
     def decode(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.decode'
-        if self.Success:
-            i = 1
-            while i < len(self.tags):
-                if self.tags[i-1] in self.seps:
-                    self.tags[i] = self.tags[i].decode(CODING, 'replace')
-                i += 1
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        i = 1
+        while i < len(self.tags):
+            if self.tags[i-1] in self.seps:
+                self.tags[i] = self.tags[i].decode(CODING, 'replace')
+            i += 1
     
     def set_seps(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.set_seps'
-        if self.Success:
-            self.seps = [self.seplg1, self.seplg2, self.sepdic, self.sepcom]
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        self.seps = [self.seplg1, self.seplg2, self.sepdic, self.sepcom]
     
     def split(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.split'
-        if self.Success:
-            tmp = b''
-            for i in range(len(self.entry)):
-                if self.entry[i:i+1] in self.seps:
-                    if tmp:
-                        self.tags.append(tmp)
-                        tmp = b''
-                    self.tags.append(self.entry[i:i+1])
-                else:
-                    tmp += self.entry[i:i+1]
-            if tmp:
-                self.tags.append(tmp)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        tmp = b''
+        for i in range(len(self.entry)):
+            if self.entry[i:i+1] in self.seps:
+                if tmp:
+                    self.tags.append(tmp)
+                    tmp = b''
+                self.tags.append(self.entry[i:i+1])
+            else:
+                tmp += self.entry[i:i+1]
+        if tmp:
+            self.tags.append(tmp)
     
     def set_langs(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.set_langs'
-        if self.Success:
-            if self.lang1 and self.lang2:
-                try:
-                    self.seplg1 = struct.pack('<b', self.lang1)
-                    self.seplg2 = struct.pack('<b', self.lang2)
-                except:
-                    self.Success = False
-                    mes = _('Wrong input data!')
-                    sh.objs.get_mes(f, mes).show_warning()
-            else:
-                self.Success = False
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not self.lang1 or not self.lang2:
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
+        try:
+            self.seplg1 = struct.pack('<b', self.lang1)
+            self.seplg2 = struct.pack('<b', self.lang2)
+        except:
+            self.Success = False
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f, mes).show_warning()
     
     def check(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.check'
         # Dictionary section is optional, so we do not check for it
-        if self.entry and self.lang1 and self.lang2:
-            if self.lang1 in self.entry \
-            and self.lang2 in self.entry:
-                return True
-            else:
-                mes = _('Wrong input data: "{}"!').format(self.entry)
-                sh.objs.get_mes(f, mes).show_warning()
-        else:
+        if not self.entry or not self.lang1 or not self.lang2:
             self.Success = False
             sh.com.rep_empty(f)
+            return
+        if not self.lang1 in self.entry or not self.lang2 in self.entry:
+            mes = _('Wrong input data: "{}"!').format(self.entry)
+            sh.objs.get_mes(f, mes).show_warning()
+            return
+        return True
     
     def set_values(self):
         self.blocks = []
