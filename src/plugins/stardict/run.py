@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+#import skl_shared_qt.shared as sh
 import plugins.stardict.get as gt
 import plugins.stardict.cleanup as cu
 import plugins.stardict.tags as tg
@@ -13,13 +13,10 @@ import plugins.stardict.subjects as sj
 
 class Plugin:
     
-    def __init__ (self,Debug=False
-                 ,maxrow=20,maxrows=1000
-                 ):
-        ''' - Extra unused input variables are preserved so it would be
-              easy to use an abstract class for all dictionary sources.
-            - #NOTE: Do not forget to set plugins.stardict.get.PATH
-              earlier.
+    def __init__(self, Debug=False, maxrow=20, maxrows=1000):
+        ''' - Extra unused input variables are preserved so it would be easy to
+              use an abstract class for all dictionary sources.
+            - #NOTE: Do not forget to set plugins.stardict.get.PATH earlier.
         '''
         self.set_values()
         self.Debug = Debug
@@ -36,7 +33,7 @@ class Plugin:
     def get_subjects(self):
         return sj.objs.get_subjects().get_list()
     
-    def get_group_with_header(self,subject=''):
+    def get_group_with_header(self, subject=''):
         return sj.objs.get_subjects().get_group_with_header(subject)
     
     def get_majors(self):
@@ -45,18 +42,18 @@ class Plugin:
     def get_search(self):
         return self.search
     
-    # This is needed only for compliance with a general method
-    def set_htm(self,code):
+    def set_htm(self, code):
+        # This is needed only for compliance with a general method
         self.htm = code
     
-    # This is needed only for compliance with a general method
-    def fix_url(self,url):
+    def fix_url(self, url):
+        # This is needed only for compliance with a general method
         return url
     
     def is_oneway(self):
         return False
     
-    def get_title(self,short):
+    def get_title(self, short):
         #TODO: implement
         return short
     
@@ -64,59 +61,57 @@ class Plugin:
         for idic in gt.objs.get_all_dics().dics:
             idic.unload()
     
-    # This is needed only for compliance with a general method
     def get_lang1(self):
+        # This is needed only for compliance with a general method
         return _('Any')
     
-    # This is needed only for compliance with a general method
     def get_lang2(self):
+        # This is needed only for compliance with a general method
         return _('Any')
     
-    # This is needed only for compliance with a general method
     def get_server(self):
+        # This is needed only for compliance with a general method
         return ''
     
-    # This is needed only for compliance with a general method
     def fix_raw_htm(self):
+        # This is needed only for compliance with a general method
         return self.htm
     
-    # This is needed only for compliance with a general method
-    def get_url(self,search=''):
+    def get_url(self, search=''):
+        # This is needed only for compliance with a general method
         return ''
     
-    # This is needed only for compliance with a general method
-    def set_lang1(self,lang1=''):
+    def set_lang1(self, lang1=''):
+        # This is needed only for compliance with a general method
         pass
     
-    # This is needed only for compliance with a general method
-    def set_lang2(self,lang2=''):
+    def set_lang2(self, lang2=''):
+        # This is needed only for compliance with a general method
         pass
     
-    # This is needed only for compliance with a general method
-    def set_timeout(self,timeout=0):
+    def set_timeout(self, timeout=0):
+        # This is needed only for compliance with a general method
         pass
     
-    # This is needed only for compliance with a general method
-    def get_langs1(self,lang2=''):
+    def get_langs1(self, lang2=''):
+        # This is needed only for compliance with a general method
         return(_('Any'),)
     
-    # This is needed only for compliance with a general method
-    def get_langs2(self,lang1=''):
+    def get_langs2(self, lang1=''):
+        # This is needed only for compliance with a general method
         return(_('Any'),)
     
     def is_combined(self):
-        ''' Whether or not the plugin is actually a wrapper over other
-            plugins.
-        '''
+        # Whether or not the plugin is actually a wrapper over other plugins
         return False
     
     def is_accessible(self):
         return gt.com.is_accessible()
     
-    def suggest(self,search):
+    def suggest(self, search):
         return gt.Suggest(search).run()
     
-    def request(self,search='',url=''):
+    def request(self, search='', url=''):
         self.search = search
         self.htm = self.text = gt.Get(search).run()
         self.text = cu.CleanUp(self.text).run()
