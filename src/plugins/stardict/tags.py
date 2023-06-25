@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import re
 import copy
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
@@ -48,7 +47,7 @@ pph = '<kref>'
 ptr1 = '<tr>'
 ptr2 = '</tr>'
 
-useful_tags = [pdic,pcom,ptr1,pwf,ptm,pph,psp]
+useful_tags = [pdic, pcom, ptr1, pwf, ptm, pph, psp]
 
 
 
@@ -67,9 +66,8 @@ class Block:
         self.last = -1
         self.no = -1
         self.same = -1
-        ''' 'select' is an attribute of a *cell* which is valid
-            if the cell has a non-blocked block of types 'term',
-            'phrase' or 'transc'.
+        ''' 'select' is an attribute of a *cell* which is valid if the cell has
+            a non-blocked block of types 'term', 'phrase' or 'transc'.
         '''
         self.select = -1
         self.speech = ''
@@ -77,8 +75,8 @@ class Block:
         self.term = ''
         self.text = ''
         self.transc = ''
-        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase',
-            'speech', 'term', 'transc', 'wform'
+        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
+            'term', 'transc', 'wform'.
         '''
         self.type_ = 'comment'
         self.url = ''
@@ -89,7 +87,7 @@ class Block:
 
 class AnalyzeTag:
 
-    def __init__(self,tag):
+    def __init__(self, tag):
         self.block = ''
         self.blocks = []
         self.cur = Block()
@@ -97,7 +95,6 @@ class AnalyzeTag:
         self.tag = tag
 
     def set_dic(self):
-        f = '[MClient] plugins.stardict.tags.AnalyzeTag.set_dic'
         if pdic in self.block:
             self.cur.type_ = 'dic'
     
@@ -135,16 +132,15 @@ class AnalyzeTag:
 
     def run_plain(self):
         self.cur.text = self.block
-        ''' #NOTE: The analysis must be reset after '</', otherwise,
-            plain text following it will be marked as 'invalid' rather
-            than 'comment'.
+        ''' #NOTE: The analysis must be reset after '</', otherwise, plain text
+            following it will be marked as 'invalid' rather than 'comment'.
         '''
         if self.cur.type_ != 'invalid':
             self.elems.append(copy.copy(self.cur))
 
     def split(self):
-        ''' Use custom split because we need to preserve delimeters
-            (cannot distinguish tags and contents otherwise).
+        ''' Use custom split because we need to preserve delimeters (cannot
+            distinguish tags and contents otherwise).
         '''
         tmp = ''
         for sym in self.tag:
@@ -181,7 +177,7 @@ class AnalyzeTag:
     def set_transc(self):
         if ptr1 in self.block:
             type_ = 'transc'
-            text = self.block.replace(ptr1,'',1).replace(ptr2,'',1)
+            text = self.block.replace(ptr1, '', 1).replace(ptr2, '', 1)
             # Will be empty for non-Stardict sources
             if text:
                 self.cur.type_, self.cur.text = type_, text
@@ -195,9 +191,7 @@ class AnalyzeTag:
 
 class Tags:
 
-    def __init__ (self,text,Debug=False
-                 ,maxrow=20,maxrows=1000
-                 ):
+    def __init__(self, text, Debug=False, maxrow=20, maxrows=1000):
         if text:
             self.text = list(text)
         else:
@@ -210,8 +204,8 @@ class Tags:
         self.tags = []
 
     def get_tags(self):
-        ''' Split the text by closing tags. To speed up, we remove
-            closing tags right away.
+        ''' Split the text by closing tags. To speed up, we remove closing tags
+            right away.
         '''
         if not self.tags:
             Ignore = False
@@ -242,12 +236,12 @@ class Tags:
         f = '[MClient] plugins.stardict.tags.Tags.debug_tags'
         message = ''
         for i in range(len(self.tags)):
-            message += '%d:%s\n' % (i,self.tags[i])
-        sh.com.run_fast_debug(f,message)
+            message += f'{i}:{self.tags[i]}\n'
+        sh.com.run_fast_debug(f, message)
 
     def debug_blocks (self):
         f = '[MClient] plugins.stardict.tags.Tags.debug_blocks'
-        headers = ('NO','TYPE','TEXT','URL','SAMECELL')
+        headers = ('NO', 'TYPE', 'TEXT', 'URL', 'SAMECELL')
         rows = []
         for i in range(len(self.blocks)):
             rows.append ([i + 1
@@ -264,7 +258,7 @@ class Tags:
                            ,Transpose = True
                            ).run()
         mes = _('Non-DB blocks:') + '\n\n' + mes
-        sh.com.run_fast_debug(f,mes)
+        sh.com.run_fast_debug(f, mes)
 
     def debug(self):
         if self.Debug:
