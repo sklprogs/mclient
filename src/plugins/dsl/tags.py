@@ -95,16 +95,16 @@ class Tags:
     
     def set_dic_block(self):
         f = '[MClient] plugins.dsl.tags.Tags.set_dic_block'
-        if self.Success:
-            if self.blocks:
-                block = Block()
-                block.text = block.dicf = block.dic = self.dicname
-                block.type_ = 'dic'
-                self.blocks.insert(0, block)
-            else:
-                sh.com.rep_lazy(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not self.blocks:
+            sh.com.rep_lazy(f)
+            return
+        block = Block()
+        block.text = block.dicf = block.dic = self.dicname
+        block.type_ = 'dic'
+        self.blocks.insert(0, block)
     
     def set_values(self):
         self.all_types = ['term', 'dic', 'wform', 'transc', 'comment', 'phrase']
@@ -149,68 +149,67 @@ class Tags:
     
     def set_blocks(self):
         f = '[MClient] plugins.dsl.tags.Tags.set_blocks'
-        if self.Success:
-            for item in self.tagged:
-                type_ = self._get_max_type(item.tags)
-                if type_:
-                    block = Block()
-                    block.type_ = type_
-                    block.text = item.text
-                    self.blocks.append(block)
-                else:
-                    sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        for item in self.tagged:
+            type_ = self._get_max_type(item.tags)
+            if not type_:
+                sh.com.rep_empty(f)
+                continue
+            block = Block()
+            block.type_ = type_
+            block.text = item.text
+            self.blocks.append(block)
     
     def delete_empty(self):
         f = '[MClient] plugins.dsl.tags.Tags.delete_empty'
-        if self.Success:
-            deleted = []
-            i = 0
-            while i < len(self.tagged):
-                if self.tagged[i].tags == []:
-                    deleted.append(self.tagged[i].text)
-                    del self.tagged[i]
-                    i -= 1
-                i += 1
-            if deleted:
-                deleted = sorted(set(deleted))
-                deleted = ['"{}"'.format(item) for item in deleted]
-                deleted = ', '.join(deleted)
-                mes = _('Ignore blocks: {}').format(deleted)
-                sh.objs.get_mes(f, mes, True).show_debug()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        deleted = []
+        i = 0
+        while i < len(self.tagged):
+            if self.tagged[i].tags == []:
+                deleted.append(self.tagged[i].text)
+                del self.tagged[i]
+                i -= 1
+            i += 1
+        if deleted:
+            deleted = sorted(set(deleted))
+            deleted = ['"{}"'.format(item) for item in deleted]
+            deleted = ', '.join(deleted)
+            mes = _('Ignore blocks: {}').format(deleted)
+            sh.objs.get_mes(f, mes, True).show_debug()
     
     def keep_useful(self):
         f = '[MClient] plugins.dsl.tags.Tags.keep_useful'
-        if self.Success:
-            useful = ('com', 'ex', 'i', 'p', 'ref', 't', 'term', 'trn', 'wform')
-            for item in self.tagged:
-                item.tags = [tag for tag in item.tags \
-                             if tag in useful or 'ref dict' in tag
-                            ]
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        useful = ('com', 'ex', 'i', 'p', 'ref', 't', 'term', 'trn', 'wform')
+        for item in self.tagged:
+            item.tags = [tag for tag in item.tags \
+                         if tag in useful or 'ref dict' in tag
+                        ]
     
     def rename_types(self):
         f = '[MClient] plugins.dsl.tags.Tags.rename_types'
-        if self.Success:
-            for item in self.tagged:
-                for i in range(len(item.tags)):
-                    if item.tags[i] == 'trn':
-                        item.tags[i] = 'term'
-                    elif item.tags[i] in ('com', 'ex', 'i'):
-                        item.tags[i] = 'comment'
-                    elif item.tags[i] == 'p':
-                        item.tags[i] = 'wform'
-                    elif item.tags[i] == 't':
-                        item.tags[i] = 'transc'
-                    elif item.tags[i] == 'ref' \
-                    or 'ref dict' in item.tags[i]:
-                        item.tags[i] = 'phrase'
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        for item in self.tagged:
+            for i in range(len(item.tags)):
+                if item.tags[i] == 'trn':
+                    item.tags[i] = 'term'
+                elif item.tags[i] in ('com', 'ex', 'i'):
+                    item.tags[i] = 'comment'
+                elif item.tags[i] == 'p':
+                    item.tags[i] = 'wform'
+                elif item.tags[i] == 't':
+                    item.tags[i] = 'transc'
+                elif item.tags[i] == 'ref' or 'ref dict' in item.tags[i]:
+                    item.tags[i] = 'phrase'
     
     def _close_tag(self, tag):
         f = '[MClient] plugins.dsl.tags.Tags._close_tag'
@@ -241,37 +240,36 @@ class Tags:
     
     def set(self):
         f = '[MClient] plugins.dsl.tags.Tags.set'
-        if self.Success:
-            # The 1st fragment should always be an article title
-            i = 1
-            for fragm in self.fragms:
-                if fragm.startswith('['):
-                    tag = self._get_tag_name(fragm)
-                    if fragm.startswith('[/'):
-                        self._close_tag(tag)
-                    elif not tag in self.open:
-                        self.open.append(tag)
-                else:
-                    itag = Tag()
-                    itag.text = fragm
-                    itag.tags = list(self.open)
-                    self.tagged.append(itag)
-                i += 1
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        # The 1st fragment should always be an article title
+        i = 1
+        for fragm in self.fragms:
+            if fragm.startswith('['):
+                tag = self._get_tag_name(fragm)
+                if fragm.startswith('[/'):
+                    self._close_tag(tag)
+                elif not tag in self.open:
+                    self.open.append(tag)
+            else:
+                itag = Tag()
+                itag.text = fragm
+                itag.tags = list(self.open)
+                self.tagged.append(itag)
+            i += 1
     
     def delete_trash(self):
-        ''' Delete unnecessary items by line (as opposite to
-            manipulating the entire code in
-            cleanup.CleanUp.delete_trash).
+        ''' Delete unnecessary items by line (as opposite to manipulating the
+            entire code in cleanup.CleanUp.delete_trash).
         '''
         f = '[MClient] plugins.dsl.tags.Tags.delete_trash'
-        if self.Success:
-            self.fragms = [fragm.strip() for fragm in self.fragms \
-                           if fragm not in ('\n', '\n\t')
-                          ]
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        self.fragms = [fragm.strip() for fragm in self.fragms \
+                       if fragm not in ('\n', '\n\t')
+                      ]
     
     def _debug_code(self):
         return _('Code:') + '\n' + '"{}"'.format(self.code)
@@ -299,8 +297,8 @@ class Tags:
     def debug(self):
         f = '[MClient] plugins.dsl.tags.Tags.debug'
         if not self.Success:
-                sh.com.cancel(f)
-                return
+            sh.com.cancel(f)
+            return
         if not self.Debug:
             sh.com.rep_lazy(f)
             return
@@ -320,23 +318,23 @@ class Tags:
     
     def split(self):
         f = '[MClient] plugins.dsl.tags.Tags.split'
-        if self.Success:
-            fragm = ''
-            for sym in list(self.code):
-                if sym == '[':
-                    if fragm:
-                        self.fragms.append(fragm)
-                    fragm = sym
-                elif sym == ']':
-                    fragm += sym
-                    self.fragms.append(fragm)
-                    fragm = ''
-                else:
-                    fragm += sym
-            if fragm:
-                self.fragms.append(fragm)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        fragm = ''
+        for sym in list(self.code):
+            if sym == '[':
+                if fragm:
+                    self.fragms.append(fragm)
+                fragm = sym
+            elif sym == ']':
+                fragm += sym
+                self.fragms.append(fragm)
+                fragm = ''
+            else:
+                fragm += sym
+        if fragm:
+            self.fragms.append(fragm)
     
     def run(self):
         self.check()
