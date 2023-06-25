@@ -23,9 +23,8 @@ class KeyListener(threading.Thread):
         self.pressed = []
         self.listeners = {}
         self.status = 0
-        ''' Sometimes symbols are uppercased by an unknown reason,
-            however, we lowercase them, therefore it is sufficient
-            to have 'c' here.
+        ''' Sometimes symbols are uppercased by an unknown reason, however, we
+            lowercase them, therefore it is sufficient to have 'c' here.
         '''
         self.addKeyListener ('Lcontrol+c+c'
                             ,lambda:keylistener.set_status(status=1)
@@ -59,7 +58,7 @@ class KeyListener(threading.Thread):
         self.hm.HookKeyboard()
         lock.release()
 
-    def press(self,event):
+    def press(self, event):
         character = str(event.Key)
         if character:
             if len(character) == 1:
@@ -70,11 +69,11 @@ class KeyListener(threading.Thread):
                     self.pressed = []
             elif len(self.pressed) == 3:
                 self.pressed = []
-            if character in ('Lcontrol','Rcontrol','Lmenu','Rmenu'):
+            if character in ('Lcontrol', 'Rcontrol', 'Lmenu', 'Rmenu'):
                 self.pressed = [character]
-            elif character in ('c','C','Insert','Oem_3'):
+            elif character in ('c', 'C', 'Insert', 'Oem_3'):
                 if len(self.pressed) > 0:
-                    if self.pressed[0] in ('Lcontrol','Rcontrol','Lmenu'
+                    if self.pressed[0] in ('Lcontrol', 'Rcontrol', 'Lmenu'
                                           ,'Rmenu'
                                           ):
                         self.pressed.append(character)
@@ -85,7 +84,7 @@ class KeyListener(threading.Thread):
         # We receive an error without this (an integer is required)
         return True
 
-    def release(self,event):
+    def release(self, event):
         """must be called whenever a key release event has occurred."""
         character = str(event.Key)
         if character:
@@ -94,7 +93,7 @@ class KeyListener(threading.Thread):
             print_v('Key released: %s' % str(character))
             # A released Control key is not taken into account
             # A cyrillic 'с' symbol is recognized as Latin 'c'
-            if not character in ('c','C','Insert','Oem_3'):
+            if not character in ('c', 'C', 'Insert', 'Oem_3'):
                 self.pressed = []
         # We receive an error without this (an integer is required)
         return True
@@ -104,7 +103,7 @@ class KeyListener(threading.Thread):
         print_v('Added new keylistener for: {}'.format(keys))
         self.listeners[keys] = callable
         
-    def set_status(self,status=0):
+    def set_status(self, status=0):
         self.status = status
         print_v('Setting status to {}!'.format(self.status))
         

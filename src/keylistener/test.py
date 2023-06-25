@@ -4,7 +4,7 @@
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 
-from skl_shared_qt.localize import _
+#from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 import gui as gi
@@ -41,11 +41,11 @@ class Gui(PyQt5.QtWidgets.QWidget):
     
     sig_close = PyQt5.QtCore.pyqtSignal()
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.set_gui()
     
-    def closeEvent(self,event):
+    def closeEvent(self, event):
         self.sig_close.emit()
         return super().closeEvent(event)
     
@@ -53,8 +53,8 @@ class Gui(PyQt5.QtWidgets.QWidget):
         print('Triggered')
         self.button.setText('SUCCESS')
     
-    def bind(self,hotkey,action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
+    def bind(self, hotkey, action):
+        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def set_gui(self):
         self.button = PyQt5.QtWidgets.QPushButton()

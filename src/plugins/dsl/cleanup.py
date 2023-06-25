@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import re
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
@@ -12,7 +11,7 @@ class TagLike:
         expressions, in particular, r'.*\\\[(.+)\\\].*', but that
         reacts to '\n'.
     '''
-    def __init__(self,code):
+    def __init__(self, code):
         self.code = code
         self.end = []
         self.start = []
@@ -50,12 +49,12 @@ class TagLike:
                 if count:
                     mes = _('Number of invalid tag-like structures: {}')
                     mes = mes.format(count)
-                    sh.objs.get_mes(f,mes,True).show_warning()
+                    sh.objs.get_mes(f, mes, True).show_warning()
             else:
                 self.Success = False
                 mes = _('Tag-like structures are invalid!')
                 mes = mes.format(count)
-                sh.objs.get_mes(f,mes,True).show_warning()
+                sh.objs.get_mes(f, mes, True).show_warning()
         else:
             sh.com.cancel(f)
     
@@ -64,7 +63,7 @@ class TagLike:
         if self.Success:
             pos = 0
             while True:
-                pos = self.code.find('\[',pos)
+                pos = self.code.find('\[', pos)
                 if pos == -1:
                     break
                 else:
@@ -77,7 +76,7 @@ class TagLike:
         f = '[MClient] plugins.dsl.cleanup.TagLike.get_end'
         if self.Success:
             for pos in self.start:
-                self.end.append(self.code.find(']',pos))
+                self.end.append(self.code.find(']', pos))
         else:
             sh.com.cancel(f)
     
@@ -102,18 +101,15 @@ class TagLike:
                         pos2 = self.start[i] + 2
                         self.code[pos1:pos2] = '('
                     else:
-                        sub = '{} < {} < {}'.format (self.start[i]
-                                                    ,self.end[i]
-                                                    ,len(self.code)
-                                                    )
+                        sub = f'{self.start[i]} < {self.end[i]} < {len(self.code)}'
                         mes = _('The condition "{}" is not observed!')
                         mes = mes.format(sub)
-                        sh.objs.get_mes(f,mes).show_error()
+                        sh.objs.get_mes(f, mes).show_error()
                     i -= 1
                 self.code = ''.join(self.code)
                 if count:
                     mes = _('{} matches').format(count)
-                    sh.objs.get_mes(f,mes,True).show_debug()
+                    sh.objs.get_mes(f, mes, True).show_debug()
             else:
                 sh.com.rep_lazy(f)
         else:
@@ -123,12 +119,12 @@ class TagLike:
 
 class CleanUp:
     
-    def __init__(self,text):
+    def __init__(self, text):
         self.text = text
     
     def delete_trash(self):
         while '  ' in self.text:
-            self.text = self.text.replace('  ',' ')
+            self.text = self.text.replace('  ', ' ')
 
     def run(self):
         f = '[MClient] plugins.dsl.cleanup.CleanUp.run'

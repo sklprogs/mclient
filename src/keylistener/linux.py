@@ -22,16 +22,16 @@ def catch_control_c(*args):
 class KeyListener(threading.Thread):
     ''' Determine if hotkeys are pressed (globally in the system)
         Usage: keylistener = KeyListener()
-        Initially: keylistener.addKeyListener("L_CTRL+L_SHIFT+y",callable)
+        Initially: keylistener.addKeyListener("L_CTRL+L_SHIFT+y", callable)
         Note that it is necessary to bind all possible combinations because
         an order of key presses can be different, for example,
         "L_CTRL+y+L_SHIFT"
-        Now: keylistener.addKeyListener("Control_L+c+c",callable)
+        Now: keylistener.addKeyListener("Control_L+c+c", callable)
     '''
     def __init__(self):
         threading.Thread.__init__(self)
         self.finished = threading.Event()
-        self.contextEventMask = [Xlib.X.KeyPress,Xlib.X.MotionNotify]
+        self.contextEventMask = [Xlib.X.KeyPress, Xlib.X.MotionNotify]
         # Give these some initial values
         # Hook to our display.
         self.local_dpy = Xlib.display.Display()
@@ -44,17 +44,17 @@ class KeyListener(threading.Thread):
         '''
         self.status = 0
         
-    def lookup_keysym(self,keysym):
+    def lookup_keysym(self, keysym):
         ''' Need the following because XK.keysym_to_string() only does
             printable chars rather than being the correct inverse of
             XK.string_to_keysym().
         '''
         for name in dir(Xlib.XK):
-            if name.startswith("XK_") and getattr(Xlib.XK,name) == keysym:
+            if name.startswith("XK_") and getattr(Xlib.XK, name) == keysym:
                 return name.lstrip("XK_")
         return '[%d]' % keysym
 
-    def processevents(self,reply):
+    def processevents(self, reply):
         if reply.category != Xlib.ext.record.FromServer:
             return
         if reply.client_swapped:
@@ -66,9 +66,8 @@ class KeyListener(threading.Thread):
             return
         data = reply.data
         while len(data):
-            event, data = Xlib.protocol.rq.EventField(None).parse_binary_value(data,self.record_dpy.display,None,None)
-            keycode = event.detail
-            keysym = self.local_dpy.keycode_to_keysym(event.detail,0)
+            event, data = Xlib.protocol.rq.EventField(None).parse_binary_value(data, self.record_dpy.display, None, None)
+            keysym = self.local_dpy.keycode_to_keysym(event.detail, 0)
             self.character = self.lookup_keysym(keysym)
             if self.character:
                 if event.type == Xlib.X.KeyPress:
@@ -81,7 +80,7 @@ class KeyListener(threading.Thread):
         if not self.record_dpy.has_extension('RECORD'):
             print_v('RECORD extension not found')
             sys.exit(1)
-        r = self.record_dpy.record_get_version(0,0)
+        r = self.record_dpy.record_get_version(0, 0)
         mes = 'RECORD extension version {}.{}'.format (r.major_version
                                                       ,r.minor_version
                                                       )
@@ -110,7 +109,7 @@ class KeyListener(threading.Thread):
             record_disable_context, while calling the callback function in the
             meantime.
         '''
-        self.record_dpy.record_enable_context(self.ctx,self.processevents)
+        self.record_dpy.record_enable_context(self.ctx, self.processevents)
         # Finally free the context
         self.record_dpy.record_free_context(self.ctx)
 
@@ -121,7 +120,7 @@ class KeyListener(threading.Thread):
 
     def append(self):
         if len(self.pressed) > 0:
-            if self.pressed[0] in ('Control_L','Control_R','Alt_L','Alt_R'):
+            if self.pressed[0] in ('Control_L', 'Control_R', 'Alt_L', 'Alt_R'):
                 self.pressed.append(self.character)
     
     def press(self):
@@ -130,9 +129,9 @@ class KeyListener(threading.Thread):
                 self.pressed = []
         elif len(self.pressed) == 3:
             self.pressed = []
-        if self.character in ('Control_L','Control_R','Alt_L','Alt_R'):
+        if self.character in ('Control_L', 'Control_R', 'Alt_L', 'Alt_R'):
             self.pressed = [self.character]
-        elif self.character in ('c','Insert','grave'):
+        elif self.character in ('c', 'Insert', 'grave'):
             self.append()
         action = self.listeners.get(tuple(self.pressed), False)
         print_v('Current action:', str(tuple(self.pressed)))
@@ -143,12 +142,12 @@ class KeyListener(threading.Thread):
         # Must be called whenever a key release event has occurred.
         # A released Control key is not taken into account
         # A cyrillic 'с' symbol is recognized as Latin 'c'
-        if not self.character in ('c','Insert','grave'):
+        if not self.character in ('c', 'Insert', 'grave'):
             self.pressed = []
 
-    def add_listener(self,hotkeys,callable):
+    def add_listener(self, hotkeys, callable):
         keys = tuple(hotkeys.split('+'))
-        print_v('Added new keylistener for :',str(keys))
+        print_v('Added new keylistener for :', str(keys))
         self.listeners[keys] = callable
         
     def check(self): # Returns 0..2
@@ -158,14 +157,14 @@ class KeyListener(threading.Thread):
             self.status = 0
             return status
             
-    def set_status(self,status=0):
+    def set_status(self, status=0):
         self.status = status
         print_v('Setting status to %d!' % self.status)
 
 
 Verbose = False
 # Do not quit when Control-c is pressed
-signal.signal(signal.SIGINT,catch_control_c)
+signal.signal(signal.SIGINT, catch_control_c)
 keylistener = KeyListener()
 keylistener.add_listener ('Control_L+c+c'
                          ,lambda:keylistener.set_status(status=1)

@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+#import skl_shared_qt.shared as sh
 
 from . import gui as gi
 from . import logic as lg
@@ -21,17 +21,17 @@ class About:
     def get_product(self):
         return self.logic.get_product()
     
-    def set_title(self,title=_('About the program')):
+    def set_title(self, title=_('About the program')):
         self.gui.set_title(title)
     
-    def set_text(self,text=''):
+    def set_text(self, text=''):
         if not text:
             text = self.logic.set_code()
         self.gui.set_text(text)
     
     def set_bindings(self):
-        self.gui.bind('Esc',self.close)
-        self.gui.bind('F1',self.toggle)
+        self.gui.bind('Esc', self.close)
+        self.gui.bind('F1', self.toggle)
         self.gui.sig_close.connect(self.close)
     
     def centralize(self):

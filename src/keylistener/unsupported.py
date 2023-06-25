@@ -3,8 +3,8 @@
 
 class KeyListener:
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.status = 0
 
     def check(self):

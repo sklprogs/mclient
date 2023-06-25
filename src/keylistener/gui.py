@@ -5,7 +5,7 @@ import time
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 
-from skl_shared_qt.localize import _
+#from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 if sh.objs.get_os().is_win():
@@ -24,17 +24,17 @@ class Catcher(PyQt5.QtCore.QObject):
     sig_catch = PyQt5.QtCore.pyqtSignal(int)
     sig_end = PyQt5.QtCore.pyqtSignal()
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.Running = True
     
-    def bind_catch(self,action):
+    def bind_catch(self, action):
         self.sig_catch.connect(action)
     
     def delete_later(self):
         self.deleteLater()
     
-    def move_to_thread(self,thread):
+    def move_to_thread(self, thread):
         self.moveToThread(thread)
     
     def run(self):
@@ -55,14 +55,14 @@ class Catcher(PyQt5.QtCore.QObject):
 
 class Thread(PyQt5.QtCore.QThread):
     # Built-in functions that are called: start, quit, wait
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.catcher = Catcher()
     
-    def bind_start(self,action):
+    def bind_start(self, action):
         self.started.connect(action)
     
-    def bind_catch(self,action):
+    def bind_catch(self, action):
         self.catcher.sig_catch.connect(action)
     
     def delete_later(self):

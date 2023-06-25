@@ -11,19 +11,19 @@ import skl_shared_qt.shared as sh
 class TableModel(PyQt5.QtCore.QAbstractTableModel):
     
     def __init__(self, data, parent=None, *args):
-        PyQt5.QtCore.QAbstractTableModel.__init__(self,parent,*args)
+        PyQt5.QtCore.QAbstractTableModel.__init__(self, parent, *args)
         self.items = data
         self.headers = [_('#'), _('Source'), _('Source language')
                        ,_('Target language'), _('Request')
                        ]
     
-    def get_header(self,colno):
+    def get_header(self, colno):
         f = '[MClientQt] history.gui.TableModel.get_header'
         try:
             return self.headers[colno]
         except IndexError:
             mes = _('Wrong input data: "{}"!').format(colno)
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
             return _('Header')
     
     def rowCount(self, parent):
@@ -41,8 +41,8 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
                 return PyQt5.QtCore.QVariant(self.items[index.row()][index.column()])
             except Exception:
                 mes = _('List out of bounds at row #{}, column #{}!')
-                mes = mes.format(index.row(),index.column())
-                sh.objs.get_mes(f,mes,True).show_warning()
+                mes = mes.format(index.row(), index.column())
+                sh.objs.get_mes(f, mes, True).show_warning()
                 return PyQt5.QtCore.QVariant()
     
     def update(self):
@@ -63,8 +63,8 @@ class History(PyQt5.QtWidgets.QWidget):
     sig_close = PyQt5.QtCore.pyqtSignal()
     sig_go = PyQt5.QtCore.pyqtSignal(int)
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.set_gui()
     
     def set_index(self, index_):
@@ -99,7 +99,7 @@ class History(PyQt5.QtWidgets.QWidget):
     def centralize(self):
         self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
     
-    def bind(self,hotkey,action):
+    def bind(self, hotkey, action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def set_icon(self):
@@ -121,7 +121,7 @@ class History(PyQt5.QtWidgets.QWidget):
         self.layout_.addWidget(self.history)
         self.setLayout(self.layout_)
         self.set_icon()
-        self.resize(600,300)
+        self.resize(600, 300)
 
 
 if __name__ == '__main__':
@@ -129,9 +129,9 @@ if __name__ == '__main__':
     headers = [_('#'), _('Source language'), _('Target language')
               ,_('Request')
               ]
-    table = [['1',_('Russian'), _('English'), 'start']
-            ,['2',_('Russian'), _('English'), 'hello']
-            ,['3',_('English'), _('Russian'), 'bye']
+    table = [['1', _('Russian'), _('English'), 'start']
+            ,['2', _('Russian'), _('English'), 'hello']
+            ,['3', _('English'), _('Russian'), 'bye']
             ]
     model = TableModel(table)
     model.headers = headers
@@ -139,6 +139,6 @@ if __name__ == '__main__':
     ihis.set_model(model)
     ihis.show()
     row = ['0', _('Arabic'), _('French'), _('test')]
-    table.insert(0,row)
+    table.insert(0, row)
     model.update()
     sh.com.end()

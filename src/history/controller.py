@@ -47,17 +47,17 @@ class History:
     
     def _go_row(self, rowno):
         self.gui.clear_selection()
-        index_ = self.model.index(rowno,0)
+        index_ = self.model.index(rowno, 0)
         self.gui.set_index(index_)
         self.gui.select_row(index_)
     
-    def _go_article(self,rowno):
+    def _go_article(self, rowno):
         f = '[MClient] history.controller.History._go_article'
         try:
             id_ = self.model.items[rowno][0]
         except IndexError:
             mes = _('Wrong input data: "{}"!').format(rowno)
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
             return
         self.gui.sig_go.emit(int(id_) - 1)
     
@@ -72,8 +72,8 @@ class History:
             rowno = -1
         rowno += 1
         self._go_row(rowno)
-        mes = _('Change row number: {} → {}').format(old,rowno)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = _('Change row number: {} → {}').format(old, rowno)
+        sh.objs.get_mes(f, mes, True).show_debug()
         self._go_article(rowno)
     
     def go_up(self):
@@ -87,8 +87,8 @@ class History:
             rowno = len(self.model.items)
         rowno -= 1
         self._go_row(rowno)
-        mes = _('Change row number: {} → {}').format(old,rowno)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = _('Change row number: {} → {}').format(old, rowno)
+        sh.objs.get_mes(f, mes, True).show_debug()
         self._go_article(rowno)
     
     def _find_id(self, id_):
@@ -117,17 +117,17 @@ class History:
         self.gui.set_title(title)
     
     def set_bindings(self):
-        self.gui.bind('Esc',self.close)
-        self.gui.bind('Down',self.go_down)
-        self.gui.bind('Up',self.go_up)
-        self.gui.bind('Alt+Left',self.go_up)
-        self.gui.bind('Alt+Right',self.go_down)
-        self.gui.bind('Home',self.go_start)
-        self.gui.bind('End',self.go_end)
-        self.gui.bind('Alt+Home',self.go_start)
-        self.gui.bind('Alt+End',self.go_end)
-        self.gui.bind('Ctrl+Home',self.go_start)
-        self.gui.bind('Ctrl+End',self.go_end)
+        self.gui.bind('Esc', self.close)
+        self.gui.bind('Down', self.go_down)
+        self.gui.bind('Up', self.go_up)
+        self.gui.bind('Alt+Left', self.go_up)
+        self.gui.bind('Alt+Right', self.go_down)
+        self.gui.bind('Home', self.go_start)
+        self.gui.bind('End', self.go_end)
+        self.gui.bind('Alt+Home', self.go_start)
+        self.gui.bind('Alt+End', self.go_end)
+        self.gui.bind('Ctrl+Home', self.go_start)
+        self.gui.bind('Ctrl+End', self.go_end)
     
     def show(self):
         self.Shown = True

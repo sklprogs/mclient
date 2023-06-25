@@ -14,19 +14,19 @@ class About:
         self.code = []
     
     def get_product(self):
-        return sh.List(lst1=[self.product,self.version]).space_items()
+        return sh.List(lst1=[self.product, self.version]).space_items()
     
     def set_code(self):
         self.set_group()
         self.set_license()
         self.set_contact()
         self.code = '<br>'.join(self.code)
-        self.code = '<span style="font-family: Serif; font-size:{}pt">{}</span>'.format(12,self.code)
+        self.code = '<span style="font-family: Serif; font-size:{}pt">{}</span>'.format(12, self.code)
         return self.code
     
     def set_group(self):
         sub = _('Programming: Peter Sklyar, 2015-{}.').format(self.curyear)
-        sub = sub.format(self.curyear,self.version)
+        sub = sub.format(self.curyear, self.version)
         sub2 = _('Version: {}').format(self.version)
         text = sub + '<br>' + sub2
         text = '<div align="center">{}</div>'.format(text)
