@@ -79,7 +79,8 @@ class Priorities(pr.Priorities):
                         ]
                     }
         self.set_mode()
-        self.fill()
+        #TODO: Elaborate
+        self.fill(self.dic1, self.dic2)
     
     def apply(self):
         f = '[MClientQt] mclient.Priorities.apply'
