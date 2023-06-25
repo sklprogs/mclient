@@ -22,10 +22,7 @@ ptm2 = b'\x02'
 
 class Tags:
     #TODO: elaborate setting languages
-    def __init__ (self,chunk,Debug=False
-                 ,maxrow=20,maxrows=50
-                 ,lang1=1,lang2=2
-                 ):
+    def __init__(self, chunk, Debug=False, maxrow=20, maxrows=50, lang1=1, lang2=2):
         self.set_values()
         self.Debug = Debug
         self.entry = chunk
@@ -45,7 +42,7 @@ class Tags:
                         self.content.append(self.tags[i])
             else:
                 mes = _('Wrong input data: "{}"').format(self.tags)
-                sh.objs.get_mes(f,mes,True).show_warning()
+                sh.objs.get_mes(f, mes, True).show_warning()
     
     def set_types(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.set_types'
@@ -67,13 +64,13 @@ class Tags:
                     self.blocks[i].type_ = 'invalid'
                     #TODO: convert to a string
                     mes = _('Unknown type "{}"!').format(self.types[i])
-                    sh.objs.get_mes(f,mes,True).show_warning()    
+                    sh.objs.get_mes(f, mes, True).show_warning()    
         else:
             sh.com.cancel(f)
     
     def debug_blocks(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.debug_blocks'
-        headers = ('NO','TYPE','TEXT')
+        headers = ('NO', 'TYPE', 'TEXT')
         rows = []
         for i in range(len(self.blocks)):
             rows.append ([i + 1
@@ -87,7 +84,7 @@ class Tags:
                            ,maxrows = self.maxrows
                            ,Transpose = True
                            ).run()
-        sh.com.run_fast_debug(f,mes)
+        sh.com.run_fast_debug(f, mes)
     
     def debug(self):
         if self.Debug:
@@ -98,8 +95,8 @@ class Tags:
         f = '[MClient] plugins.multitrandem.tags.Tags.debug_tags'
         message = ''
         for i in range(len(self.tags)):
-            message += '{}:{}\n'.format(i,self.tags[i])
-        sh.com.run_fast_debug(f,message)
+            message += f'{i}:{self.tags[i]}\n'
+        sh.com.run_fast_debug(f, message)
     
     def decode(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.decode'
@@ -107,9 +104,7 @@ class Tags:
             i = 1
             while i < len(self.tags):
                 if self.tags[i-1] in self.seps:
-                    self.tags[i] = self.tags[i].decode (CODING
-                                                       ,'replace'
-                                                       )
+                    self.tags[i] = self.tags[i].decode(CODING, 'replace')
                 i += 1
         else:
             sh.com.cancel(f)
@@ -117,9 +112,7 @@ class Tags:
     def set_seps(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.set_seps'
         if self.Success:
-            self.seps = [self.seplg1,self.seplg2
-                        ,self.sepdic,self.sepcom
-                        ]
+            self.seps = [self.seplg1, self.seplg2, self.sepdic, self.sepcom]
         else:
             sh.com.cancel(f)
     
@@ -145,12 +138,12 @@ class Tags:
         if self.Success:
             if self.lang1 and self.lang2:
                 try:
-                    self.seplg1 = struct.pack('<b',self.lang1)
-                    self.seplg2 = struct.pack('<b',self.lang2)
+                    self.seplg1 = struct.pack('<b', self.lang1)
+                    self.seplg2 = struct.pack('<b', self.lang2)
                 except:
                     self.Success = False
                     mes = _('Wrong input data!')
-                    sh.objs.get_mes(f,mes).show_warning()
+                    sh.objs.get_mes(f, mes).show_warning()
             else:
                 self.Success = False
                 sh.com.rep_empty(f)
@@ -166,7 +159,7 @@ class Tags:
                 return True
             else:
                 mes = _('Wrong input data: "{}"!').format(self.entry)
-                sh.objs.get_mes(f,mes).show_warning()
+                sh.objs.get_mes(f, mes).show_warning()
         else:
             self.Success = False
             sh.com.rep_empty(f)
@@ -179,7 +172,7 @@ class Tags:
         self.lang2 = 0
         self.seplg1 = b''
         self.seplg2 = b''
-        # The result of 'struct.pack('<b',15)'
+        # The result of 'struct.pack('<b', 15)'
         self.sepdic = b'\x0f'
         self.sepcom = b'\x06'
         self.seps = []
@@ -215,9 +208,8 @@ class Block:
         self.last = -1
         self.no = -1
         self.same = 0
-        ''' 'select' is an attribute of a *cell* which is valid
-            if the cell has a non-blocked block of types 'term',
-            'phrase' or 'transc'.
+        ''' 'select' is an attribute of a *cell* which is valid if the cell has
+            a non-blocked block of types 'term', 'phrase' or 'transc'.
         '''
         self.select = -1
         self.speech = ''
@@ -225,8 +217,8 @@ class Block:
         self.term = ''
         self.text = ''
         self.transc = ''
-        ''' 'comment', 'dic', 'invalid', 'phrase', 'speech', 'term', 
-            'transc', 'wform'
+        ''' 'comment', 'dic', 'invalid', 'phrase', 'speech', 'term', 'transc',
+            'wform'.
         '''
         self.type_ = ''
         self.url = ''
@@ -241,7 +233,5 @@ if __name__ == '__main__':
     itags.run()
     #itags.debug()
     for i in range(len(itags.blocks)):
-        mes = '{}: {}: "{}"'.format (i,itags.blocks[i].type_
-                                    ,itags.blocks[i].text
-                                    )
+        mes = f'{i}: {itags.blocks[i].type_}: "{itags.blocks[i].text}"'
         print(mes)
