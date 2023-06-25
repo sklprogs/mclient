@@ -68,8 +68,7 @@ class Xor:
             return
         for i in range(len(self.bytes1)):
             decoded = self.bytes1[i:i+1].decode(gt.CODING, 'replace')
-            decoded = '"{}"'.format(decoded)
-            self.syms.append(decoded)
+            self.syms.append(f'"{decoded}"')
             self.ints1.append(self.bytes1[i])
             self.ints2.append(self.bytes2[i])
 
@@ -272,18 +271,18 @@ class Tests:
         matches = [seq for seq in sex if seq in read1]
         if not matches:
             mes = _('No matches!')
-            sh.objs.get_mes(f,mes).show_info()
+            sh.objs.get_mes(f, mes).show_info()
             self.close_dumps()
             return
-        matches = [gt.com.get_string(match,0) for match in matches]
+        matches = [gt.com.get_string(match, 0) for match in matches]
         for i in range(len(matches)):
             matches[i] = f'{i}: {matches[i]}'
         mes = '\n'.join(matches)
-        sh.com.run_fast_debug(f,mes)
+        sh.com.run_fast_debug(f, mes)
         self.close_dumps()
     
     def show_dumps(self):
-        CompareBinaries(DUMP1,DUMP2).show_menu()
+        CompareBinaries(DUMP1, DUMP2).show_menu()
     
     def get_shared_dumps(self):
         f = '[MClient] plugins.multitrandem.utils.Tests.get_shared_dumps'
@@ -293,10 +292,10 @@ class Tests:
             automatically selects the mode based on a file name.
         '''
         iparse1 = Parser(DUMP1)
-        iparse1.run_reader(pos1,pos2)
+        iparse1.run_reader(pos1, pos2)
         iparse1.parse_article()
         iparse2 = Parser(DUMP2)
-        iparse2.run_reader(pos1,pos2)
+        iparse2.run_reader(pos1, pos2)
         iparse2.parse_article()
         if iparse1.chunks1 and iparse1.chunks2 and iparse2.chunks1 \
         and iparse2.chunks2:
@@ -310,7 +309,7 @@ class Tests:
             mes += '\n' + str(shared1) + '\n'
             mes += _('List {}:').format(2)
             mes += '\n' + str(shared2)
-            sh.com.run_fast_debug(f,mes)
+            sh.com.run_fast_debug(f, mes)
         else:
             sh.com.rep_empty(f)
     
@@ -321,17 +320,17 @@ class Tests:
             selects the mode based on a file name.
         '''
         iparse = Parser(DUMP1)
-        iparse.run_reader(pos1,pos2)
+        iparse.run_reader(pos1, pos2)
         iparse.parse_article()
         iparse.debug()
         iparse = Parser(DUMP2)
-        iparse.run_reader(pos1,pos2)
+        iparse.run_reader(pos1, pos2)
         iparse.parse_article()
         iparse.debug()
     
-    def _parse(self,file,pos1,pos2):
+    def _parse(self, file, pos1, pos2):
         iparse = Parser(file)
-        iparse.run_reader(pos1,pos2)
+        iparse.run_reader(pos1, pos2)
         iparse.parse()
         iparse.debug()
     
@@ -339,26 +338,26 @@ class Tests:
         file = gt.objs.get_files().iwalker.get_article()
         pos1 = 655363
         pos2 = 656808
-        self._parse(file,pos1,pos2)
+        self._parse(file, pos1, pos2)
     
     def parse_glue(self):
         file = gt.objs.get_files().iwalker.get_glue1()
         pos1 = 16387
         pos2 = 22119
-        self._parse(file,pos1,pos2)
+        self._parse(file, pos1, pos2)
     
     def parse_stems(self):
         file = gt.objs.get_files().iwalker.get_stems1()
         pos1 = 7479299
         pos2 = 7486690
-        self._parse(file,pos1,pos2)
+        self._parse(file, pos1, pos2)
     
     def compare(self):
         #file1 = '/home/pete/wine/backup/mt/drive_c/setup/mt/network/eng_rus/dict.ert'
         #file2 = '/home/pete/wine/mt/drive_c/setup/mt/network/eng_rus/dict.ert'
         file1 = '/home/pete/tmp/prev.ert'
         file2 = '/home/pete/wine/mt/drive_c/setup/mt/network/eng_rus/dict.ert'
-        CompareBinaries(file1,file2).show_menu()
+        CompareBinaries(file1, file2).show_menu()
     
     def navigate_article(self):
         Navigate(gt.objs.get_files().iwalker.get_article()).show_menu()
@@ -370,37 +369,37 @@ class Tests:
 
 class Parser(gt.Binary):
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.chunks1 = []
         self.chunks2 = []
         self.xplain1 = []
         self.xplain2 = []
     
-    def parsel23(self,chunk):
+    def parsel23(self, chunk):
         f = '[MClient] plugins.multitrandem.utils.Parser.parsel23'
         if not self.Success:
             sh.com.cancel(f)
             return
         # 2 bytes + multiple sequences of 3 bytes
         if len(chunk) > 4 and (len(chunk) - 2) % 3 == 0:
-            add = [struct.unpack('<h',chunk[0:2])[0]]
-            for tmp in gt.com.get_chunks(chunk[2:],3):
+            add = [struct.unpack('<h', chunk[0:2])[0]]
+            for tmp in gt.com.get_chunks(chunk[2:], 3):
                 tmp += b'\x00'
-                add.append(struct.unpack('<L',tmp)[0])
+                add.append(struct.unpack('<L', tmp)[0])
             return add
     
-    def chunk3(self,chunk):
+    def chunk3(self, chunk):
         f = '[MClient] plugins.multitrandem.utils.Parser.chunk3'
         if not self.Success:
             sh.com.cancel(f)
             return
         if len(chunk) % 3 == 0:
-            chunks = gt.com.get_chunks(chunk,3)
+            chunks = gt.com.get_chunks(chunk, 3)
             vals = []
             for chunk in chunks:
                 chunk += b'\x00'
-                vals.append(struct.unpack('<L',chunk)[0])
+                vals.append(struct.unpack('<L', chunk)[0])
             return vals
     
     def parse_glue(self):
@@ -427,10 +426,10 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
             return
         for chunk in self.chunks1:
-            chunk = gt.com.get_string(chunk,0)
+            chunk = gt.com.get_string(chunk, 0)
             self.xplain1.append(chunk)
         for chunk in self.chunks2:
-            chunk = gt.com.get_string(chunk,0)
+            chunk = gt.com.get_string(chunk, 0)
             self.xplain2.append(chunk)
     
     def debug(self):
@@ -445,13 +444,13 @@ class Parser(gt.Binary):
             self.Success = False
             sub = f'{len(self.xplain1)} == {len(self.xplain2)}'
             mes = _('The condition "{}" is not observed!').format(sub)
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
             return
         nos = [i + 1 for i in range(len(self.xplain1))]
         len1 = [len(chunk) for chunk in self.chunks1]
         len2 = [len(chunk) for chunk in self.chunks2]
-        headers = ('NOS','LEN1','PART1','LEN2','PART2')
-        iterable = (nos,len1,self.xplain1,len2,self.xplain2)
+        headers = ('NOS', 'LEN1', 'PART1', 'LEN2', 'PART2')
+        iterable = (nos, len1, self.xplain1, len2, self.xplain2)
         mes = sh.FastTable (headers = headers
                            ,iterable = iterable
                            ,maxrow = 45
@@ -462,34 +461,33 @@ class Parser(gt.Binary):
         sub = _('File: "{}"').format(self.file)
         sub += '\n\n'
         mes = sub + mes
-        sh.com.run_fast_debug(f,mes)
+        sh.com.run_fast_debug(f, mes)
         
-    def get_chunk7(self,chunk):
+    def get_chunk7(self, chunk):
         f = '[MClient] plugins.multitrandem.utils.Parser.chunk7'
         ''' According to "libmtquery-0.0.1alpha3/doc/README.rus":
             the 1st byte - a type designating the use of capital letters
             (not used), further - a vector of 7-byte codes, each code
             including:
-            3 bytes - a word number (4-byte long type compressed to
-            3 bytes)
+            3 bytes - a word number (4-byte long type compressed to 3 bytes)
             2 bytes - sik (terminations)
-            2 bytes - lgk (speech part codes)
+            2 bytes - lgk (speech part codes).
         '''
         if not self.Success:
             sh.com.cancel(f)
             return
         if chunk and (len(chunk) - 1) % 7 == 0:
             tmp = []
-            chunks = gt.com.get_chunks(chunk[1:],7)
+            chunks = gt.com.get_chunks(chunk[1:], 7)
             for item in chunks:
                 delta = 7 - len(item)
                 item = item + b'\x00' * delta
                 word = item[0:3] + b'\x00'
                 sik = item[3:5]
                 lgk = item[5:7]
-                tmp.append(struct.unpack('<L',word)[0])
-                tmp.append(struct.unpack('<h',sik)[0])
-                tmp.append(struct.unpack('<h',lgk)[0])
+                tmp.append(struct.unpack('<L', word)[0])
+                tmp.append(struct.unpack('<h', sik)[0])
+                tmp.append(struct.unpack('<h', lgk)[0])
             return tmp
     
     def parsel1(self):
@@ -498,7 +496,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
             return
         for chunk in self.chunks1:
-            chunk = chunk.decode(gt.CODING,'replace')
+            chunk = chunk.decode(gt.CODING, 'replace')
             self.xplain1.append(chunk)
     
     def parse_stem(self):
@@ -529,16 +527,16 @@ class Parser(gt.Binary):
             self.parse_article()
         else:
             mes = '"{}"'.format(self.bname)
-            sh.objs.get_mes(f,mes,True).show_debug()
+            sh.objs.get_mes(f, mes, True).show_debug()
             mes = _('Not implemented yet!')
-            sh.objs.get_mes(f,mes).show_info()
+            sh.objs.get_mes(f, mes).show_info()
     
-    def run_reader(self,pos1,pos2):
+    def run_reader(self, pos1, pos2):
         f = '[MClient] plugins.multitrandem.utils.Parser.reader'
         if not self.Success:
             sh.com.cancel(f)
             return
-        stream = self.read(pos1,pos2)
+        stream = self.read(pos1, pos2)
         if not stream:
             sh.com.rep_empty(f)
             return
@@ -546,16 +544,14 @@ class Parser(gt.Binary):
         self.chunks2 = []
         pos = 0
         while pos + 2 < len(stream):
-            ''' #NOTE: indexing returns integers, slicing
-                       returns bytes.
-            '''
+            #NOTE: indexing returns integers, slicing returns bytes
             read = stream[pos:pos+2]
             pos += 2
-            len1, len2 = struct.unpack('<2b',read)
+            len1, len2 = struct.unpack('<2b', read)
             len1 = gt.com.overflowb(len1)
             len2 = gt.com.overflowb(len2)
             if pos + len1 + len2 >= len(stream):
-                gt.com.report_status(pos,stream)
+                gt.com.report_status(pos, stream)
                 return
             ''' Do this only after checking the condition, otherwise, resulting
                 lists will have a different length.
@@ -573,12 +569,12 @@ class Parser(gt.Binary):
 
 class Navigate(gt.Binary):
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.chunk = b''
-        self.coms = ['buffer','help','load','quit','pgup','pgdn'
-                    ,'pos','clear','exit','dump','find','findprev'
-                    ,'findnext','findtext','findbytes','same','q'
+        self.coms = ['buffer', 'help', 'load', 'quit', 'pgup', 'pgdn', 'pos'
+                    ,'clear', 'exit', 'dump', 'find', 'findprev', 'findnext'
+                    ,'findtext', 'findbytes', 'same', 'q'
                     ]
         self.buffer = round(BUFFER * 2.5)
         self.border = 20
@@ -598,12 +594,12 @@ class Navigate(gt.Binary):
             return
         if self.spos is None or self.spos == 0:
             mes = _('No matches!')
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
             return
-        spos = self.imap.rfind(self.coded,0,self.spos)
+        spos = self.imap.rfind(self.coded, 0, self.spos)
         if spos == -1:
             mes = _('No matches!')
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
             return
         self.spos = spos
         self._print_found()
@@ -618,17 +614,17 @@ class Navigate(gt.Binary):
             return
         if self.spos is None:
             mes = _('No matches!')
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
             return
         spos = self.spos
         if spos < self.get_file_size() - 1:
             spos += 1
         else:
             spos = self.fsize - len(self.coded)
-        spos = self.find(self.coded,spos)
+        spos = self.find(self.coded, spos)
         if spos is None:
             mes = _('No matches!')
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
             return
         self.spos = spos
         self._print_found()
@@ -637,32 +633,32 @@ class Navigate(gt.Binary):
         f = '[MClient] plugins.multitrandem.utils.Navigate._print_found'
         if self.spos is None:
             mes = _('No matches!')
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
             return
         if self.spos > self.border:
             b1 = pos1 = self.spos - self.border
-            chunk1 = self.read(pos1,self.spos)
+            chunk1 = self.read(pos1, self.spos)
         elif self.spos:
-            chunk1 = self.read(0,self.spos)
+            chunk1 = self.read(0, self.spos)
             b1 = 0
         else:
             chunk1 = b''
             b1 = self.spos
-        min_ = min(self.buffer,self.get_file_size())
+        min_ = min(self.buffer, self.get_file_size())
         ch2_len = min_ - len(chunk1) - len(self.coded)
         if ch2_len > 0:
             pos1 = self.spos + len(self.coded)
             b2 = pos2 = pos1 + ch2_len
-            chunk2 = self.read(pos1,pos2)
+            chunk2 = self.read(pos1, pos2)
         else:
             chunk2 = b''
             b2 = self.spos + len(self.coded)
-        buffer1 = gt.com.get_string(chunk1,0)
-        buffer2 = gt.com.get_string(self.coded,0)
-        buffer2 = termcolor.colored(buffer2,COLOR)
-        buffer3 = gt.com.get_string(chunk2,0)
+        buffer1 = gt.com.get_string(chunk1, 0)
+        buffer2 = gt.com.get_string(self.coded, 0)
+        buffer2 = termcolor.colored(buffer2, COLOR)
+        buffer3 = gt.com.get_string(chunk2, 0)
         mes = f'[{sh.com.set_figure_commas(b1)} : {sh.com.set_figure_commas(b2)}]'
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         sys.stdout.write(buffer1)
         sys.stdout.write(buffer2)
         print(buffer3)
@@ -672,7 +668,7 @@ class Navigate(gt.Binary):
         spos = self.find(self.coded)
         if spos is None:
             mes = _('No matches!')
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
         else:
             self.spos = spos
             self._print_found()
@@ -683,7 +679,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
             return
         pattern = com.input_str(_('Enter text to search for: '))
-        self.coded = bytes(pattern,gt.CODING)
+        self.coded = bytes(pattern, gt.CODING)
         self._find()
     
     def find_bytes(self):
@@ -693,13 +689,13 @@ class Navigate(gt.Binary):
             return
         pattern = com.input_str(_('Enter bytes to search for: '))
         try:
-            pattern = codecs.decode(pattern,'unicode_escape')
+            pattern = codecs.decode(pattern, 'unicode_escape')
             self.coded = pattern.encode('latin1')
         except Exception as e:
             self.coded = b''
             mes = _('Operation has failed!\n\nDetails: {}')
             mes = mes.format(e)
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
         self._find()
     
     def find_nav(self):
@@ -709,9 +705,9 @@ class Navigate(gt.Binary):
             return
         choice = input(_('Search for text instead of bytes? Y/n '))
         choice = choice.strip()
-        if choice in ('','y','Y'):
+        if choice in ('', 'y', 'Y'):
             self.find_text()
-        elif choice in ('n','N'):
+        elif choice in ('n', 'N'):
             self.find_bytes()
         else:
             self.find_nav()
@@ -728,10 +724,9 @@ class Navigate(gt.Binary):
         pos1 = com.input_int(mes1)
         pos2 = com.input_int(mes2)
         if pos1 >= pos2:
-            sub = '{} < {}'.format(pos1,pos2)
-            mes = _('The condition "{}" is not observed!')
-            mes = mes.format(sub)
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sub = f'{pos1} < {pos2}'
+            mes = _('The condition "{}" is not observed!').format(sub)
+            sh.objs.get_mes(f, mes, True).show_warning()
             return
         mes = _('An output file: ')
         filew = com.input_str(mes)
@@ -740,21 +735,21 @@ class Navigate(gt.Binary):
             return
         if not sh.com.rewrite(filew):
             mes = _('Operation has been canceled by the user.')
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
             return
-        chunk = self.read(pos1,pos2)
+        chunk = self.read(pos1, pos2)
         if not chunk:
             sh.com.rep_empty(f)
             return
         try:
             mes = _('Write "{}"').format(filew)
-            sh.objs.get_mes(f,mes,True).show_info()
-            with open(filew,'wb') as fw:
+            sh.objs.get_mes(f, mes, True).show_info()
+            with open(filew, 'wb') as fw:
                 fw.write(chunk)
         except Exception as e:
             mes = _('Operation has failed!\n\nDetails: {}')
             mes = mes.format(e)
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
     
     def go_end(self):
         f = '[MClient] plugins.multitrandem.utils.Navigate.go_end'
@@ -787,7 +782,7 @@ class Navigate(gt.Binary):
         except Exception as e:
             mes = _('Operation has failed!\n\nDetails: {}')
             mes = mes.format(e)
-            sh.objs.get_mes(f,mes,True).show_error()
+            sh.objs.get_mes(f, mes, True).show_error()
     
     def set_pos(self):
         f = '[MClient] plugins.multitrandem.utils.Navigate.set_pos'
@@ -801,10 +796,10 @@ class Navigate(gt.Binary):
         if not val:
             sh.com.rep_lazy(f)
             return
-        val = sh.Input(f,val).get_integer()
+        val = sh.Input(f, val).get_integer()
         if val < 0:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
             return
         self.pos = val
     
@@ -841,7 +836,7 @@ class Navigate(gt.Binary):
             start = 0
         if end > self.get_file_size():
             end = self.get_file_size()
-        self.chunk = self.read(start,end)
+        self.chunk = self.read(start, end)
         self.report()
         self.print()
     
@@ -857,10 +852,10 @@ class Navigate(gt.Binary):
         if not val:
             sh.com.rep_lazy(f)
             return
-        val = sh.Input(f,val).get_integer()
+        val = sh.Input(f, val).get_integer()
         if not val:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
             return
         self.buffer = val
     
@@ -873,7 +868,7 @@ class Navigate(gt.Binary):
         mes = mes.format('; '.join(self.coms))
         print(mes)
     
-    def show_menu(self,command=''):
+    def show_menu(self, command=''):
         f = '[MClient] plugins.multitrandem.utils.Navigate.show_menu'
         if not self.Success:
             sh.com.cancel(f)
@@ -881,12 +876,12 @@ class Navigate(gt.Binary):
         if not command:
             try:
                 command = input(_('Enter a command: '))
-            except (EOFError,KeyboardInterrupt):
+            except (EOFError, KeyboardInterrupt):
                 command = 'quit'
             command = command.strip()
             if command and command != 'same':
                 self.lastcom = command
-        if command in ('exit','quit','q'):
+        if command in ('exit', 'quit', 'q'):
             self.quit()
         elif command == 'buffer':
             self.set_buffer()
@@ -932,7 +927,7 @@ class Navigate(gt.Binary):
             self.set_pos()
             self.load()
             self.show_menu()
-        elif command in ('','same'):
+        elif command in ('', 'same'):
             self.show_menu(self.lastcom)
         elif command == 'start':
             self.go_start()
@@ -949,14 +944,14 @@ class Navigate(gt.Binary):
             return
         self.close()
         mes = _('Goodbye!')
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def print(self):
         f = '[MClient] plugins.multitrandem.utils.Navigate.print'
         if not self.Success:
             sh.com.cancel(f)
             return
-        mes = gt.com.get_string(self.chunk,0)
+        mes = gt.com.get_string(self.chunk, 0)
         print(mes)
     
     def report(self):
@@ -978,31 +973,30 @@ class Commands:
     
     def set_values(self):
         # 'windows-1251' in ascending order
-        self.table = ('!','"','#','$','%','&',"'",'(',')','*','+',','
-                     ,'-','.','/','0','1','2','3','4','5','6','7','8'
-                     ,'9',':',';','<','=','>','?','@','A','B','C','D'
-                     ,'E','F','G','H','I','J','K','L','M','N','O','P'
-                     ,'Q','R','S','T','U','V','W','X','Y','Z','[','\\'
-                     ,']','^','_','`','a','b','c','d','e','f','g','h'
-                     ,'i','j','k','l','m','n','o','p','q','r','s','t'
-                     ,'u','v','w','x','y','z','{','|','}','~',None,'Ђ'
-                     ,'Ѓ','‚','ѓ','„','…','†','‡','€','‰','Љ','‹','Њ'
-                     ,'Ќ','Ћ','Џ','ђ','‘','’','“','”','•','–','—'
-                     ,None,'™','љ','›','њ','ќ','ћ','џ',None,'Ў','ў'
-                     ,'Ћ','¤','Ґ','¦','§','Ё','©','Є','«','¬',None
-                     ,'®','Ї','°','±','І','і','ґ','µ','¶','·','ё'
-                     ,'№','є','»','ј','Ѕ','ѕ','ї','А','Б','В','Г'
-                     ,'Д','Е','Ж','З','И','Й','К','Л','М','Н','О'
-                     ,'П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ'
-                     ,'Ъ','Ы','Ь','Э','Ю','Я','а','б','в','г','д'
-                     ,'е','ж','з','и','й','к','л','м','н','о','п'
-                     ,'р','с','т','у','ф','х','ц','ч','ш','щ','ъ'
-                     ,'ы','ь','э','ю','я'
+        self.table = ('!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+'
+                     ,',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6'
+                     ,'7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A'
+                     ,'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'
+                     ,'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W'
+                     ,'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b'
+                     ,'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'
+                     ,'n', 'o', 'p', 'q',' r', 's', 't', 'u', 'v', 'w', 'x'
+                     ,'y', 'z', '{', '|', '}','~', None, 'Ђ', 'Ѓ','‚ ','ѓ'
+                     ,'„', '…', '†', '‡', '€', '‰', 'Љ', '‹', 'Њ', 'Ќ', 'Ћ'
+                     ,'Џ', 'ђ', '‘', '’', '“', '”', '•', '–', '—', None, '™'
+                     ,'љ', '›', 'њ', 'ќ', 'ћ', 'џ', None, 'Ў', 'ў', 'Ћ', '¤'
+                     ,'Ґ', '¦', '§', 'Ё', '©', 'Є', '«', '¬', None, '®', 'Ї'
+                     ,'°', '±', 'І', 'і', 'ґ', 'µ', '¶', '·', 'ё', '№', 'є'
+                     ,'»', 'ј', 'Ѕ', 'ѕ', 'ї', 'А', 'Б', 'В', 'Г', 'Д', 'Е'
+                     ,'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р'
+                     ,'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы'
+                     ,'Ь', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'ж'
+                     ,'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с'
+                     ,'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь'
+                     ,'э', 'ю', 'я'
                      )
     
-    def gen_patterns (self,i=4,length=5,repeat='!'
-                     ,table=[]
-                     ):
+    def gen_patterns(self, i=4, length=5, repeat='!', table=[]):
         if not table:
             table = self.table
         patterns = []
@@ -1014,7 +1008,7 @@ class Commands:
                 patterns.append(''.join(item))
         return patterns
     
-    def get_patch(self,file,pattern,pos,add_pos=20,sympos=0):
+    def get_patch(self, file, pattern, pos, add_pos=20, sympos=0):
         f = '[MClient] plugins.multitrandem.utils.Commands.get_patch'
         if not file or not pattern:
             sh.com.rep_empty(f)
@@ -1023,21 +1017,21 @@ class Commands:
         if not ibin.Success:
             sh.com.cancel(f)
             return
-        coded = bytes(pattern,gt.CODING,'replace')
+        coded = bytes(pattern, gt.CODING, 'replace')
         pos2 = pos + len(coded)
-        chunk = ibin.read(pos,pos2)
-        lchunk = ibin.read(pos,pos2+add_pos)
+        chunk = ibin.read(pos, pos2)
+        lchunk = ibin.read(pos, pos2 + add_pos)
         string = gt.com.get_string(chunk)
         lstring = gt.com.get_string(lchunk)
-        string = "b'''{}'''".format(string)
-        lstring = "b'''{}'''".format(lstring)
+        string = f"b'''{string}'''"
+        lstring = f"b'''{lstring}'''"
         ibin.close()
         messages = []
-        mes = '"{}"'.format(pattern)
+        mes = f'"{pattern}"'
         messages.append(mes)
         messages.append(string)
         messages.append(lstring)
-        ixor = Xor(coded,chunk)
+        ixor = Xor(coded, chunk)
         ixor.analyze()
         mes = ixor.report()
         if mes:
@@ -1048,16 +1042,16 @@ class Commands:
         except IndexError:
             int1 = int2 = -1
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
-        return('\n'.join(messages),int1,int2)
+            sh.objs.get_mes(f, mes).show_warning()
+        return('\n'.join(messages), int1, int2)
     
-    def corrupt(self,filew,pos,subst=b'\x00'):
+    def corrupt(self, filew, pos, subst=b'\x00'):
         f = '[MClient] plugins.multitrandem.utils.Commands.corrupt'
         if not filew or not subst:
             sh.com.rep_empty(f)
             return
         ibin = gt.Binary(filew)
-        chunk = ibin.read(pos,pos+len(subst))
+        chunk = ibin.read(pos, pos + len(subst))
         ibin.close()
         try:
             mes = _('Replace bytes "{}" with "{}" (file: {}, position: {})')
@@ -1066,44 +1060,44 @@ class Commands:
                              ,filew
                              ,sh.com.set_figure_commas(pos)
                              )
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
             ''' For some reason, opening with 'wb' or 'w+b' causes different
                 results.
             '''
-            with open(filew,'r+b') as fw:
+            with open(filew, 'r+b') as fw:
                 fw.seek(pos)
                 fw.write(subst)
         except Exception as e:
             mes = _('Operation has failed!\n\nDetails: {}')
             mes = mes.format(e)
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
         return chunk
     
-    def input_str(self,mes=''):
+    def input_str(self, mes=''):
         if not mes:
             mes = _('Input a string: ')
         try:
             return input(mes)
-        except (EOFError,KeyboardInterrupt):
+        except (EOFError, KeyboardInterrupt):
             return ''
     
-    def input_int(self,mes=''):
+    def input_int(self, mes=''):
         f = '[MClient] plugins.multitrandem.utils.Commands.input_int'
         if not mes:
             mes = _('Input an integer: ')
         try:
             val = input(mes)
-        except (EOFError,KeyboardInterrupt):
+        except (EOFError, KeyboardInterrupt):
             val = 0
-        return sh.Input(f,val).get_integer()
+        return sh.Input(f, val).get_integer()
 
 
 
 class CompareBinaries:
     
-    def __init__(self,file1='',file2=''):
+    def __init__(self, file1='', file2=''):
         self.set_values()
-        self.reset(file1,file2)
+        self.reset(file1, file2)
     
     def set_files(self):
         f = '[MClient] plugins.multitrandem.utils.CompareBinaries.set_files'
@@ -1118,9 +1112,9 @@ class CompareBinaries:
             self.Success = False
             sh.com.rep_empty(f)
             return
-        self.reset(file1,file2)
+        self.reset(file1, file2)
     
-    def reset(self,file1='',file2=''):
+    def reset(self, file1='', file2=''):
         if self.bin1:
             self.close()
         if file1 and file2:
@@ -1143,29 +1137,28 @@ class CompareBinaries:
         pos1 = com.input_int(mes1)
         pos2 = com.input_int(mes2)
         if pos1 >= pos2:
-            sub = '{} < {}'.format(pos1,pos2)
-            mes = _('The condition "{}" is not observed!')
-            mes = mes.format(sub)
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sub = f'{pos1} < {pos2}'
+            mes = _('The condition "{}" is not observed!').format(sub)
+            sh.objs.get_mes(f, mes, True).show_warning()
             return
-        chunk1 = self.bin1.read(pos1,pos2)
-        chunk2 = self.bin2.read(pos1,pos2)
+        chunk1 = self.bin1.read(pos1, pos2)
+        chunk2 = self.bin2.read(pos1, pos2)
         if not chunk1 or not chunk2:
             sh.com.rep_empty(f)
             return
         try:
             mes = _('Write "{}"').format(DUMP1)
-            sh.objs.get_mes(f,mes,True).show_info()
-            with open(DUMP1,'wb') as f1:
+            sh.objs.get_mes(f, mes, True).show_info()
+            with open(DUMP1, 'wb') as f1:
                 f1.write(chunk1)
             mes = _('Write "{}"').format(DUMP2)
-            sh.objs.get_mes(f,mes,True).show_info()
-            with open(DUMP2,'wb') as f2:
+            sh.objs.get_mes(f, mes, True).show_info()
+            with open(DUMP2, 'wb') as f2:
                 f2.write(chunk2)
         except Exception as e:
             mes = _('Operation has failed!\n\nDetails: {}')
             mes = mes.format(e)
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
     
     def go_end(self):
         f = '[MClient] plugins.multitrandem.utils.CompareBinaries.go_end'
@@ -1199,7 +1192,7 @@ class CompareBinaries:
         except Exception as e:
             mes = _('Operation has failed!\n\nDetails: {}')
             mes = mes.format(e)
-            sh.objs.get_mes(f,mes,True).show_error()
+            sh.objs.get_mes(f, mes, True).show_error()
     
     def set_pos(self):
         f = '[MClient] plugins.multitrandem.utils.CompareBinaries.set_pos'
@@ -1213,10 +1206,10 @@ class CompareBinaries:
         if not val:
             sh.com.rep_lazy(f)
             return
-        val = sh.Input(f,val).get_integer()
+        val = sh.Input(f, val).get_integer()
         if val < 0:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
             return
         self.pos = val
     
@@ -1246,7 +1239,7 @@ class CompareBinaries:
             if start < 0:
                 start = 0
             end = start + self.buffer
-            self.compare(start,end)
+            self.compare(start, end)
             if not self.chunks1 or not self.chunks2 or start <= 0:
                 break
             self.pos -= self.buffer
@@ -1265,7 +1258,7 @@ class CompareBinaries:
         while True:
             start = self.pos + self.buffer
             end = start + self.buffer
-            self.compare(start,end)
+            self.compare(start, end)
             if not self.chunks1 or not self.chunks2:
                 break
             self.pos += self.buffer
@@ -1309,10 +1302,8 @@ class CompareBinaries:
             start = 0
         if end > self.bin1.get_file_size() \
         or end > self.bin2.get_file_size():
-            end = min (self.bin1.get_file_size()
-                      ,self.bin2.get_file_size()
-                      )
-        self.compare(start,end)
+            end = min(self.bin1.get_file_size(), self.bin2.get_file_size())
+        self.compare(start, end)
         self.report()
         self.print()
     
@@ -1333,7 +1324,7 @@ class CompareBinaries:
                        ).get_integer()
         if not val:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
             return
         self.buffer = val
     
@@ -1346,7 +1337,7 @@ class CompareBinaries:
         mes = mes.format('; '.join(self.coms))
         print(mes)
     
-    def show_menu(self,command=''):
+    def show_menu(self, command=''):
         f = '[MClient] plugins.multitrandem.utils.CompareBinaries.show_menu'
         if not self.Success:
             sh.com.cancel(f)
@@ -1354,7 +1345,7 @@ class CompareBinaries:
         if not command:
             try:
                 command = input(_('Enter a command: '))
-            except (EOFError,KeyboardInterrupt):
+            except (EOFError, KeyboardInterrupt):
                 command = 'quit'
             command = command.strip()
             if command and command != 'same':
@@ -1397,9 +1388,9 @@ class CompareBinaries:
         elif command == 'prev':
             self.go_prev()
             self.show_menu()
-        elif command in ('q','exit','quit'):
+        elif command in ('q', 'exit', 'quit'):
             self.quit()
-        elif command in ('','same'):
+        elif command in ('', 'same'):
             self.show_menu(self.lastcom)
         elif command == 'start':
             self.go_start()
@@ -1416,9 +1407,9 @@ class CompareBinaries:
             return
         self.close()
         mes = _('Goodbye!')
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
-    def is_changed(self,i):
+    def is_changed(self, i):
         f = '[MClient] plugins.multitrandem.utils.CompareBinaries.is_changed'
         if not self.Success:
             sh.com.cancel(f)
@@ -1432,21 +1423,21 @@ class CompareBinaries:
             sh.com.cancel(f)
             return
         mes = _('Chunk 1:')
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         for i in range(len(self.chunks1)):
             sym = self.chunks1[i:i+1]
             sym = str(sym)[2:-1]
             if self.is_changed(i):
-                sym = termcolor.colored(sym,COLOR)
+                sym = termcolor.colored(sym, COLOR)
             sys.stdout.write(sym)
         print()
         mes = _('Chunk 2:')
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         for i in range(len(self.chunks2)):
             sym = self.chunks2[i:i+1]
             sym = str(sym)[2:-1]
             if self.is_changed(i):
-                sym = termcolor.colored(sym,COLOR)
+                sym = termcolor.colored(sym, COLOR)
             sys.stdout.write(sym)
         print()
     
@@ -1460,14 +1451,14 @@ class CompareBinaries:
         mes = _('Current position: {}').format(sub)
         print(mes)
     
-    def compare(self,start=0,end=400):
+    def compare(self, start=0, end=400):
         f = '[MClient] plugins.multitrandem.utils.CompareBinaries.compare'
         if not self.Success:
             sh.com.cancel(f)
             return
         self.poses = []
-        self.chunks1 = self.bin1.read(start,end)
-        self.chunks2 = self.bin2.read(start,end)
+        self.chunks1 = self.bin1.read(start, end)
+        self.chunks2 = self.bin2.read(start, end)
         if not self.chunks1 or not self.chunks2:
             self.chunks1 = b''
             self.chunks2 = b''
@@ -1475,7 +1466,7 @@ class CompareBinaries:
             return
         # Checking this condition speeds up processing
         if self.chunks1 != self.chunks2:
-            min_ = min(len(self.chunks1),len(self.chunks2))
+            min_ = min(len(self.chunks1), len(self.chunks2))
             for i in range(min_):
                 if self.chunks1[i:i+1] != self.chunks2[i:i+1]:
                     self.poses.append(i)
@@ -1519,4 +1510,4 @@ if __name__ == '__main__':
     #file1 = '/home/pete/tmp/Multitran/network/eng_rus/dict.ert'
     #file1 = '/tmp/dict.ert (paramount)'
     #file2 = '/tmp/dict.ert (paramounu)'
-    #CompareBinaries(file1,file2).show_menu()
+    #CompareBinaries(file1, file2).show_menu()
