@@ -13,13 +13,10 @@ import plugins.dsl.subjects as sj
 
 class Plugin:
     
-    def __init__ (self,Debug=False
-                 ,maxrow=20,maxrows=1000
-                 ):
-        ''' - Extra unused input variables are preserved so it would be
-              easy to use an abstract class for all dictionary sources.
-            - #NOTE: Do not forget to set plugins.dsl.get.PATH
-              earlier.
+    def __init__(self, Debug=False, maxrow=20, maxrows=1000):
+        ''' - Extra unused input variables are preserved so it would be easy to
+              use an abstract class for all dictionary sources.
+            - #NOTE: Do not forget to set plugins.dsl.get.PATH earlier.
         '''
         self.set_values()
         self.Debug = Debug
@@ -35,7 +32,7 @@ class Plugin:
     def get_subjects(self):
         return sj.objs.get_subjects().get_list()
     
-    def get_group_with_header(self,subject=''):
+    def get_group_with_header(self, subject=''):
         return sj.objs.get_subjects().get_group_with_header(subject)
     
     def get_majors(self):
@@ -45,18 +42,18 @@ class Plugin:
         return self.search
     
     # This is needed only for compliance with a general method
-    def set_htm(self,code):
+    def set_htm(self, code):
         self.htm = code
     
     # This is needed only for compliance with a general method
-    def fix_url(self,url):
+    def fix_url(self, url):
         return url
     
     def is_oneway(self):
         return True
     
     # This is needed only for compliance with a general method
-    def get_title(self,short):
+    def get_title(self, short):
         return short
     
     def quit(self):
@@ -74,7 +71,7 @@ class Plugin:
         else:
             lang = (_('Any'),)
         mes = '"{}"'.format(lang)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         return lang
     
     def get_lang2(self):
@@ -88,7 +85,7 @@ class Plugin:
         else:
             lang = (_('Any'),)
         mes = '"{}"'.format(lang)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         return lang
     
     # This is needed only for compliance with a general method
@@ -100,10 +97,10 @@ class Plugin:
         return self.htm
     
     # This is needed only for compliance with a general method
-    def get_url(self,search=''):
+    def get_url(self, search=''):
         return ''
     
-    def set_lang1(self,lang1=''):
+    def set_lang1(self, lang1=''):
         f = '[MClient] plugins.dsl.run.Plugin.set_lang1'
         if lang1 == _('Any'):
             sh.com.rep_lazy(f)
@@ -113,7 +110,7 @@ class Plugin:
             lang1 = gt.objs.get_all_dics().get_code(lang1)
             gt.LANG1 = lang1
     
-    def set_lang2(self,lang2=''):
+    def set_lang2(self, lang2=''):
         f = '[MClient] plugins.dsl.run.Plugin.set_lang2'
         if lang2 == _('Any'):
             sh.com.rep_lazy(f)
@@ -123,17 +120,17 @@ class Plugin:
             lang2 = gt.objs.get_all_dics().get_code(lang2)
             gt.LANG2 = lang2
     
-    # This is needed only for compliance with a general method
-    def set_timeout(self,timeout=0):
+    def set_timeout(self, timeout=0):
+        # This is needed only for compliance with a general method
         pass
     
-    def get_langs1(self,lang2=''):
+    def get_langs1(self, lang2=''):
         if lang2:
             return gt.objs.get_all_dics().get_pairs(lang2)
         else:
             return gt.objs.get_all_dics().get_langs1()
     
-    def get_langs2(self,lang1=''):
+    def get_langs2(self, lang1=''):
         if lang1:
             return gt.objs.get_all_dics().get_pairs(lang1)
         else:
@@ -148,11 +145,10 @@ class Plugin:
     def is_accessible(self):
         return gt.com.is_accessible()
     
-    def suggest(self,search):
+    def suggest(self, search):
         return gt.Suggest(search).run()
     
-    def request(self,search='',url=''):
-        f = '[MClient] plugins.dsl.run.Plugin.request'
+    def request(self, search='', url=''):
         self.blocks = []
         htm = []
         self.search = search
