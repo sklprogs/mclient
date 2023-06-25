@@ -23,19 +23,19 @@ class Ending(gt.Ending):
     
     def debug(self):
         f = '[MClient] plugins.multitrandem.tests.Ending.debug'
-        if self.Success:
-            ends = list(self.ends)
-            ends = [str(end) for end in ends]
-            headers = ('#','ENDINGS')
-            iterable = (self.nos,ends)
-            mes = sh.FastTable (iterable = iterable
-                               ,headers = headers
-                               ).run()
-            sub = _('File: "{}"').format(self.file)
-            mes = sub + '\n\n' + mes
-            sh.com.run_fast_debug(f,mes)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        ends = list(self.ends)
+        ends = [str(end) for end in ends]
+        headers = ('#','ENDINGS')
+        iterable = (self.nos,ends)
+        mes = sh.FastTable (iterable = iterable
+                           ,headers = headers
+                           ).run()
+        sub = _('File: "{}"').format(self.file)
+        mes = sub + '\n\n' + mes
+        sh.com.run_fast_debug(f,mes)
 
 
 
@@ -46,20 +46,20 @@ class Subject(gt.Subject):
     
     def debug(self):
         f = '[MClient] plugins.multitrandem.tests.Subject.debug'
-        if self.Success:
-            headers = ('#','FULL (1)','ABBR (1)','FULL (2)','ABBR (2)')
-            iterable = (self.dic_nos,self.en_dicf
-                       ,self.en_dic,self.ru_dicf
-                       ,self.ru_dic
-                       )
-            mes = sh.FastTable (headers = headers
-                               ,iterable = iterable
-                               ).run()
-            sub = _('File: "{}"').format(self.file)
-            mes = sub + '\n\n' + mes
-            sh.com.run_fast_debug(f,mes)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        headers = ('#','FULL (1)','ABBR (1)','FULL (2)','ABBR (2)')
+        iterable = (self.dic_nos,self.en_dicf
+                   ,self.en_dic,self.ru_dicf
+                   ,self.ru_dic
+                   )
+        mes = sh.FastTable (headers = headers
+                           ,iterable = iterable
+                           ).run()
+        sub = _('File: "{}"').format(self.file)
+        mes = sub + '\n\n' + mes
+        sh.com.run_fast_debug(f,mes)
 
 
 
@@ -79,141 +79,138 @@ class Binary(gt.Binary):
                    the present function for testing purposes only.
         '''
         f = '[MClient] plugins.multitrandem.tests.Binary.get_max_limits'
-        if self.Success:
-            if page_no is None or not self.get_block_size():
-                sh.com.rep_empty(f)
-            else:
-                mes = _('Page #: {}').format(page_no)
-                sh.objs.get_mes(f,mes,True).show_debug()
-                pos1 = page_no * self.bsize
-                pos2 = pos1 + self.bsize
-                sub1 = sh.com.set_figure_commas(pos1)
-                sub2 = sh.com.set_figure_commas(pos2)
-                mes = _('Page limits: [{}:{}]').format(sub1,sub2)
-                sh.objs.get_mes(f,mes,True).show_debug()
-                return(pos1,pos2)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if page_no is None or not self.get_block_size():
+            sh.com.rep_empty(f)
+            return
+        mes = _('Page #: {}').format(page_no)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        pos1 = page_no * self.bsize
+        pos2 = pos1 + self.bsize
+        sub1 = sh.com.set_figure_commas(pos1)
+        sub2 = sh.com.set_figure_commas(pos2)
+        mes = _('Page limits: [{}:{}]').format(sub1,sub2)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return(pos1,pos2)
     
     def show_info(self):
         f = '[MClient] plugins.multitrandem.tests.Binary.show_info'
         self.get_block_size()
         self.get_file_size()
         self.get_pages()
-        if self.Success:
-            iwrite = io.StringIO()
-            mes = _('File: {}').format(self.file)
-            iwrite.write(mes)
-            iwrite.write('\n')
-            size = sh.com.get_human_size(self.fsize)
-            mes = _('File size: {}').format(size)
-            iwrite.write(mes)
-            iwrite.write('\n')
-            size = sh.com.set_figure_commas(self.bsize)
-            mes = _('Block size: {}').format(size)
-            iwrite.write(mes)
-            iwrite.write('\n\n')
-            mes = _('Pages:')
-            iwrite.write(mes)
-            iwrite.write('\n')
-            nos = []
-            types = []
-            poses1 = []
-            poses2 = []
-            sizes = []
-            for i in range(len(self.pages)):
-                # Page #0 is actually an M area
-                nos.append(i+1)
-                if self.pages[i] in self.upages:
-                    types.append('U')
-                elif self.pages[i] in self.lpages:
-                    types.append('L')
-                elif self.pages[i] in self.zpages:
-                    types.append('Z')
-                else:
-                    types.append(_('N/A'))
-                    mes = _('Wrong input data!')
-                    sh.objs.get_mes(f,mes).show_error()
-                # The first page is actually an M area
-                poses = self.get_page_limits(i+1)
-                if poses:
-                    poses1.append(sh.com.set_figure_commas(poses[0]))
-                    poses2.append(sh.com.set_figure_commas(poses[1]))
-                    delta = poses[1] - poses[0]
-                    sizes.append(sh.com.set_figure_commas(delta))
-                else:
-                    sh.com.rep_empty(f)
-                    poses1.append(_('N/A'))
-                    poses2.append(_('N/A'))
-                    sizes.append(_('N/A'))
-            headers = ('#','TYPE','POS1','POS2','SIZE')
-            iterable = [nos,types,poses1,poses2,sizes]
-            mes = sh.FastTable (headers = headers
-                               ,iterable = iterable
-                               ).run()
-            iwrite.write(mes)
-            iwrite.write('\n')
-            mes = iwrite.getvalue()
-            iwrite.close()
-            sh.com.run_fast_debug(f,mes)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        iwrite = io.StringIO()
+        mes = _('File: {}').format(self.file)
+        iwrite.write(mes)
+        iwrite.write('\n')
+        size = sh.com.get_human_size(self.fsize)
+        mes = _('File size: {}').format(size)
+        iwrite.write(mes)
+        iwrite.write('\n')
+        size = sh.com.set_figure_commas(self.bsize)
+        mes = _('Block size: {}').format(size)
+        iwrite.write(mes)
+        iwrite.write('\n\n')
+        mes = _('Pages:')
+        iwrite.write(mes)
+        iwrite.write('\n')
+        nos = []
+        types = []
+        poses1 = []
+        poses2 = []
+        sizes = []
+        for i in range(len(self.pages)):
+            # Page #0 is actually an M area
+            nos.append(i+1)
+            if self.pages[i] in self.upages:
+                types.append('U')
+            elif self.pages[i] in self.lpages:
+                types.append('L')
+            elif self.pages[i] in self.zpages:
+                types.append('Z')
+            else:
+                types.append(_('N/A'))
+                mes = _('Wrong input data!')
+                sh.objs.get_mes(f,mes).show_error()
+            # The first page is actually an M area
+            poses = self.get_page_limits(i+1)
+            if poses:
+                poses1.append(sh.com.set_figure_commas(poses[0]))
+                poses2.append(sh.com.set_figure_commas(poses[1]))
+                delta = poses[1] - poses[0]
+                sizes.append(sh.com.set_figure_commas(delta))
+            else:
+                sh.com.rep_empty(f)
+                poses1.append(_('N/A'))
+                poses2.append(_('N/A'))
+                sizes.append(_('N/A'))
+        headers = ('#','TYPE','POS1','POS2','SIZE')
+        iterable = [nos,types,poses1,poses2,sizes]
+        mes = sh.FastTable (headers = headers
+                           ,iterable = iterable
+                           ).run()
+        iwrite.write(mes)
+        iwrite.write('\n')
+        mes = iwrite.getvalue()
+        iwrite.close()
+        sh.com.run_fast_debug(f,mes)
     
     def get_pages(self):
         f = '[MClient] plugins.multitrandem.tests.Binary.get_pages'
         self.get_block_size()
-        if self.Success:
-            if not self.pages:
-                limits = self.get_page_limit()
-                if limits:
-                    ''' These limits are based on the binary size, so
-                        we can read it without fearing an empty input.
-                        'if limit' skips 'M' area (page 0).
-                    '''
-                    limits = [limit * self.bsize \
-                              for limit in range(limits) \
-                              if limit
-                             ]
-                    for limit in limits:
-                        node = self.read(limit,limit+1)
-                        if node == b'U':
-                            self.upages.append(limit)
-                        elif node == b'L':
-                            self.lpages.append(limit)
-                        elif node == b'Z':
-                            self.zpages.append(limit)
-                        else:
-                            sub = sh.com.set_figure_commas(limit)
-                            messages = []
-                            mes = _('Position: {}').format(sub)
-                            messages.append(mes)
-                            mes = _('Wrong input data: "{}"!')
-                            mes = mes.format(node)
-                            messages.append(mes)
-                            mes = '\n'.join(messages)
-                            sh.objs.get_mes(f,mes).show_warning()
-                            break
-                    upages = [sh.com.set_figure_commas(item) \
-                              for item in self.upages
-                             ]
-                    lpages = [sh.com.set_figure_commas(item) \
-                              for item in self.lpages
-                             ]
-                    zpages = [sh.com.set_figure_commas(item) \
-                              for item in self.zpages
-                             ]
-                    mes = _('U pages: {}').format(upages)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                    mes = _('L pages: {}').format(lpages)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                    mes = _('Z pages: {}').format(zpages)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                    self.pages = self.upages + self.lpages + self.zpages
-                    self.pages.sort()
-                else:
-                    sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.pages
+        if self.pages:
+            return self.pages
+        limits = self.get_page_limit()
+        if not limits:
+            sh.com.rep_empty(f)
+            return self.pages
+        ''' These limits are based on the binary size, so we can read it
+            without fearing an empty input. 'if limit' skips 'M' area (page 0).
+        '''
+        limits = [limit * self.bsize for limit in range(limits) if limit]
+        for limit in limits:
+            node = self.read(limit,limit+1)
+            if node == b'U':
+                self.upages.append(limit)
+            elif node == b'L':
+                self.lpages.append(limit)
+            elif node == b'Z':
+                self.zpages.append(limit)
+            else:
+                sub = sh.com.set_figure_commas(limit)
+                messages = []
+                mes = _('Position: {}').format(sub)
+                messages.append(mes)
+                mes = _('Wrong input data: "{}"!')
+                mes = mes.format(node)
+                messages.append(mes)
+                mes = '\n'.join(messages)
+                sh.objs.get_mes(f,mes).show_warning()
+                break
+        upages = [sh.com.set_figure_commas(item) \
+                  for item in self.upages
+                 ]
+        lpages = [sh.com.set_figure_commas(item) \
+                  for item in self.lpages
+                 ]
+        zpages = [sh.com.set_figure_commas(item) \
+                  for item in self.zpages
+                 ]
+        mes = _('U pages: {}').format(upages)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = _('L pages: {}').format(lpages)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = _('Z pages: {}').format(zpages)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        self.pages = self.upages + self.lpages + self.zpages
+        self.pages.sort()
         return self.pages
 
 
@@ -481,63 +478,55 @@ class UPage(gt.UPage):
 
     def debug(self):
         f = '[MClient] plugins.multitrandem.tests.UPage.debug'
-        if self.Success:
-            if self.file in (gt.objs.get_files().iwalker.get_stems1()
-                            ,gt.objs.files.iwalker.get_stems2()
-                            ):
-                self.debug_stems()
-            else:
-                self.debug_glue()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if self.file in (gt.objs.get_files().iwalker.get_stems1()
+                        ,gt.objs.files.iwalker.get_stems2()
+                        ):
+            self.debug_stems()
+        else:
+            self.debug_glue()
     
     def debug_glue(self):
         f = '[MClient] plugins.multitrandem.tests.UPage.debug_glue'
-        if self.Success:
-            if self.part2:
-                part1 = [gt.com.get_string(chunk) \
-                         for chunk in self.part1
-                        ]
-                part2 = [struct.unpack('<h',chunk)[0] \
-                         for chunk in self.part2
-                        ]
-                mes = sh.FastTable (headers = ('STEM','PAGEREF')
-                                   ,iterable = (part1,part2)
-                                   ,sep = 3 * ' '
-                                   ).run()
-                if mes:
-                    mes = _('File: {}').format(self.file) + '\n\n' + mes
-                    sh.com.run_fast_debug(f,mes)
-                else:
-                    sh.com.rep_empty(f)
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not self.part2:
+            sh.com.rep_empty(f)
+            return
+        part1 = [gt.com.get_string(chunk) for chunk in self.part1]
+        part2 = [struct.unpack('<h',chunk)[0] for chunk in self.part2]
+        mes = sh.FastTable (headers = ('STEM','PAGEREF')
+                           ,iterable = (part1,part2)
+                           ,sep = 3 * ' '
+                           ).run()
+        if not mes:
+            sh.com.rep_empty(f)
+            return
+        mes = _('File: {}').format(self.file) + '\n\n' + mes
+        sh.com.run_fast_debug(f,mes)
     
     def debug_stems(self):
         f = '[MClient] plugins.multitrandem.tests.UPage.debug_stems'
-        if self.Success:
-            if self.part2:
-                part1 = [chunk.decode(gt.CODING,'ignore') \
-                         for chunk in self.part1
-                        ]
-                part2 = [struct.unpack('<h',chunk)[0] \
-                         for chunk in self.part2
-                        ]
-                mes = sh.FastTable (headers = ('STEM','PAGEREF')
-                                   ,iterable = (part1,part2)
-                                   ,sep = 3 * ' '
-                                   ).run()
-                if mes:
-                    mes = _('File: {}').format(self.file) + '\n\n' + mes
-                    sh.com.run_fast_debug(f,mes)
-                else:
-                    sh.com.rep_empty(f)
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not self.part2:
+            sh.com.rep_empty(f)
+            return
+        part1 = [chunk.decode(gt.CODING,'ignore') for chunk in self.part1]
+        part2 = [struct.unpack('<h',chunk)[0] for chunk in self.part2]
+        mes = sh.FastTable (headers = ('STEM','PAGEREF')
+                           ,iterable = (part1,part2)
+                           ,sep = 3 * ' '
+                           ).run()
+        if not mes:
+            sh.com.rep_empty(f)
+            return
+        mes = _('File: {}').format(self.file) + '\n\n' + mes
+        sh.com.run_fast_debug(f,mes)
 
 
 com = Commands()
