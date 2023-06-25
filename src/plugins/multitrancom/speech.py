@@ -28,7 +28,7 @@ class Speech:
             self.dic = json.loads(self.code)
         except Exception as e:
             self.Success = False
-            sh.com.rep_third_party(f,e)
+            sh.com.rep_third_party(f, e)
     
     def get_dic(self):
         return self.dic
