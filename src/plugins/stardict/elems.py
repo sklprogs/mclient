@@ -94,26 +94,26 @@ class Elems:
     
     def run(self):
         f = '[MClient] plugins.stardict.elems.Elems.run'
-        if self.Success:
-            self.set_phrases()
-            self.delete_straight_line()
-            self.run_comments()
-            ''' These 2 procedures should not be combined (otherwise,
-                corrections will have the same color as comments)
-            '''
-            self.unite_comments()
-            self.set_com_same()
-            self.add_space()
-            self.fill()
-            self.fill_term()
-            self.remove_fixed()
-            self.insert_fixed()
-            self.set_fixed_term()
-            self.expand_dic()
-            self.set_selectables()
-            return self.blocks
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        self.set_phrases()
+        self.delete_straight_line()
+        self.run_comments()
+        ''' These 2 procedures should not be combined (otherwise, corrections
+            will have the same color as comments)
+        '''
+        self.unite_comments()
+        self.set_com_same()
+        self.add_space()
+        self.fill()
+        self.fill_term()
+        self.remove_fixed()
+        self.insert_fixed()
+        self.set_fixed_term()
+        self.expand_dic()
+        self.set_selectables()
+        return self.blocks
     
     def debug(self,maxrow=20,maxrows=1000):
         f = '[MClient] plugins.stardict.elems.Elems.debug'
