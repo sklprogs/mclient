@@ -11,15 +11,15 @@ sep_words_found = 'найдены отдельные слова'
 
 class CleanUp:
     
-    def __init__(self,text):
+    def __init__(self, text):
         self.text = text
     
     def delete_trash_tags(self):
         # Do not divide a single block into parts
-        self.text = self.text.replace('<i>','')
-        self.text = self.text.replace('</i>','')
-        self.text = self.text.replace('<u>','')
-        self.text = self.text.replace('</u>','')
+        self.text = self.text.replace('<i>', '')
+        self.text = self.text.replace('</i>', '')
+        self.text = self.text.replace('<u>', '')
+        self.text = self.text.replace('</u>', '')
     
     def fix_href(self):
         ''' Fix a malformed URL, e.g., 'href="/m.exe?a=110&l1=1&l2=2&s=process (<редк.>)&sc=671"'
@@ -49,34 +49,34 @@ class CleanUp:
             pos1 = isearch.get_next()
             if not str(pos1).isdigit():
                 mes = _('Malformed HTML code!')
-                sh.objs.get_mes(f,mes,True).show_warning()
+                sh.objs.get_mes(f, mes, True).show_warning()
                 continue
             fragm = self.text[pos:pos1]
             if '<' in fragm or '>' in fragm:
-                fragm = fragm.replace('<','&lt;')
-                fragm = fragm.replace('>','&gt;')
+                fragm = fragm.replace('<', '&lt;')
+                fragm = fragm.replace('>', '&gt;')
                 self.text = self.text[0:pos] + fragm + self.text[pos1:]
                 count += 1
-        sh.com.rep_matches(f,count)
+        sh.com.rep_matches(f, count)
     
     def fix_tags(self):
         ''' - Multitran does not escape '<' and '>' in user terms/comments
               properly. We try to fix this here.
             - Takes ~0.0044s for 'set' (EN-RU) on AMD E-300.
         '''
-        self.text = re.sub(' >+',r' &gt',self.text)
+        self.text = re.sub(' >+', r' &gt', self.text)
     
     def run_common(self):
         # Delete unicode control codes
         # Takes ~0.037s for 'set' (EN-RU) on AMD E-300
-        self.text = re.sub(r'[\x00-\x1f\x7f-\x9f]','',self.text)
-        self.text = self.text.replace('\r\n','')
-        self.text = self.text.replace('\n','')
+        self.text = re.sub(r'[\x00-\x1f\x7f-\x9f]', '', self.text)
+        self.text = self.text.replace('\r\n', '')
+        self.text = self.text.replace('\n', '')
         #TODO: Why does this not work?
-        self.text = self.text.replace(r'\xa0',' ')
+        self.text = self.text.replace(r'\xa0', ' ')
         while '  ' in self.text:
-            self.text = self.text.replace('  ',' ')
-        self.text = re.sub(r'\>[\s]{0,1}\<','><',self.text)
+            self.text = self.text.replace('  ', ' ')
+        self.text = re.sub(r'\>[\s]{0,1}\<', '><', self.text)
         # RU-EN: "вспоминать"
         self.text = self.text.replace ('<font color="darkgoldenrod" &gt'
                                       ,'<font color="darkgoldenrod">'
@@ -94,5 +94,5 @@ class CleanUp:
         ''' Replace a non-breaking space with a space; can be found before user
             names or thesaurus titles.
         '''
-        self.text = self.text.replace('&nbsp;',' ')
+        self.text = self.text.replace('&nbsp;', ' ')
         return self.text
