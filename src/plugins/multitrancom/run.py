@@ -16,7 +16,7 @@ import plugins.multitrancom.speech as sp
 
 class Plugin:
     
-    def __init__(self,Debug=False,maxrows=1000):
+    def __init__(self, Debug=False, maxrows=1000):
         self.set_values()
         self.Debug = Debug
         self.maxrows = maxrows
@@ -59,10 +59,10 @@ class Plugin:
     def get_search(self):
         return self.search
     
-    def set_htm(self,code):
+    def set_htm(self, code):
         self.htm = code
     
-    def fix_url(self,url):
+    def fix_url(self, url):
         return gt.com.fix_url(url)
     
     def is_oneway(self):
@@ -88,7 +88,7 @@ class Plugin:
     def fix_raw_htm(self):
         return gt.com.fix_raw_htm(self.htm)
     
-    def get_url(self,search):
+    def get_url(self, search):
         f = '[MClient] plugins.multitrancom.run.Plugin.get_url'
         code1 = pr.objs.get_pairs().get_code(pr.LANG1)
         code2 = pr.objs.pairs.get_code(pr.LANG2)
@@ -100,7 +100,7 @@ class Plugin:
                               ,search = search
                               )
     
-    def set_lang1(self,lang1):
+    def set_lang1(self, lang1):
         f = '[MClient] plugins.multitrancom.run.Plugin.set_lang1'
         if not lang1:
             sh.com.rep_empty(f)
@@ -109,9 +109,9 @@ class Plugin:
             pr.LANG1 = lang1
         else:
             mes = _('Wrong input data: "{}"!').format(lang1)
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
     
-    def set_lang2(self,lang2):
+    def set_lang2(self, lang2):
         f = '[MClient] plugins.multitrancom.run.Plugin.set_lang2'
         if not lang2:
             sh.com.rep_empty(f)
@@ -120,24 +120,24 @@ class Plugin:
             pr.LANG2 = lang2
         else:
             mes = _('Wrong input data: "{}"!').format(lang2)
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
     
-    def set_timeout(self,timeout=6):
+    def set_timeout(self, timeout=6):
         gt.TIMEOUT = timeout
     
     def is_accessible(self):
         return gt.com.is_accessible()
     
-    def suggest(self,search):
+    def suggest(self, search):
         return gt.Suggest(search).run()
     
-    def get_langs1(self,lang2=''):
+    def get_langs1(self, lang2=''):
         if lang2:
             return pr.objs.get_pairs().get_pairs1(lang2)
         else:
             return pr.objs.get_pairs().get_alive()
     
-    def get_langs2(self,lang1=''):
+    def get_langs2(self, lang1=''):
         if lang1:
             return pr.objs.get_pairs().get_pairs2(lang1)
         else:
@@ -158,7 +158,7 @@ class Plugin:
     def is_separate(self):
         return self.Separate
     
-    def request(self,search='',url=''):
+    def request(self, search='', url=''):
         self.search = search
         self.htm = gt.Get (search = search
                           ,url = url
