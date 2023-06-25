@@ -30,103 +30,104 @@ class Ending:
     def overflow(self,no):
         f = '[MClient] plugins.multitrandem.get.Ending.overflow'
         new = no
-        if self.Success:
-            new = com.overflowh(new)
-            if not new in self.ordered and len(self.ordered) > 1:
-                i = 1
-                while i < len(self.ordered):
-                    if self.ordered[i-1] <= no < self.ordered[i]:
-                        break
-                    i += 1
-                i -= 1
-                new = self.ordered[i]
-                if DEBUG:
-                    mes = '{} -> {}'.format(no,new)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return new
+        new = com.overflowh(new)
+        if not new in self.ordered and len(self.ordered) > 1:
+            i = 1
+            while i < len(self.ordered):
+                if self.ordered[i-1] <= no < self.ordered[i]:
+                    break
+                i += 1
+            i -= 1
+            new = self.ordered[i]
+            if DEBUG:
+                mes = f'{no} -> {new}'
+                sh.objs.get_mes(f,mes,True).show_debug()
         return new
     
     def has_match(self,no,pattern):
         f = '[MClient] plugins.multitrandem.get.Ending.has_match'
-        if self.Success:
-            no = self.overflow(no)
-            #TODO: implement 'X' (full pattern match)
-            if not pattern:
-                # An empty ending
-                pattern = '#'
-            # MT (at least demo) can have negatives for some reason
-            if no < 0:
-                # Redirection to an empty class
-                no = 0
-            try:
-                index_ = self.nos.index(no)
-                match = pattern in self.ends[index_]
-                if match:
-                    sub = _('Yes')
-                else:
-                    sub = _('No')
-                if DEBUG:
-                    mes = _('#: {}; Pattern: "{}"; Match: {}')
-                    mes = mes.format(no,pattern,sub)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                return match
-            except ValueError:
-                mes = _('Wrong input data: "{}"!').format(no)
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        no = self.overflow(no)
+        #TODO: implement 'X' (full pattern match)
+        if not pattern:
+            # An empty ending
+            pattern = '#'
+        # MT (at least demo) can have negatives for some reason
+        if no < 0:
+            # Redirection to an empty class
+            no = 0
+        try:
+            index_ = self.nos.index(no)
+            match = pattern in self.ends[index_]
+            if match:
+                sub = _('Yes')
+            else:
+                sub = _('No')
+            if DEBUG:
+                mes = _('#: {}; Pattern: "{}"; Match: {}')
+                mes = mes.format(no,pattern,sub)
+                sh.objs.get_mes(f,mes,True).show_debug()
+            return match
+        except ValueError:
+            mes = _('Wrong input data: "{}"!').format(no)
+            sh.objs.get_mes(f,mes,True).show_warning()
     
     def load(self):
         f = '[MClient] plugins.multitrandem.get.Ending.load'
-        if self.Success:
-            self.text = sh.ReadTextFile(self.file).get()
-            if not self.text:
-                self.Success = False
-                mes = _('Empty output is not allowed!')
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        self.text = sh.ReadTextFile(self.file).get()
+        if not self.text:
+            self.Success = False
+            mes = _('Empty output is not allowed!')
+            sh.objs.get_mes(f,mes,True).show_warning()
     
     def parse(self):
         f = '[MClient] plugins.multitrandem.get.Ending.parse'
-        if self.Success:
-            lines = self.text.splitlines()
-            lines = [line for line in lines if line]
-            if len(lines) > 1:
-                if lines[0] == 'SIK PORTION':
-                    lines = lines[1:]
-                for i in range(len(lines)):
-                    line = lines[i].strip()
-                    line = sh.Text(line).delete_duplicate_spaces()
-                    # Remove comments
-                    line = line.split(';')[0]
-                    # Empty input means the entire line is a comment
-                    if line:
-                        if len(line) < 2:
-                            mes = _('Wrong input data: "{}"!')
-                            mes = mes.format(line)
-                            sh.objs.get_mes(f,mes,True).show_warning()
-                        else:
-                            # Remove a gender separator
-                            line = line.replace('/',' ')
-                            line = line.replace(',',' ')
-                            line = line.split(' ')
-                            line = [item for item in line if item]
-                            no = sh.Input (title = f
-                                            ,value = line[0]
-                                            ).get_integer()
-                            ends = line[1:]
-                            self.nos.append(no)
-                            self.ends.append(ends)
-                self.ordered = sorted(set(self.nos))
-            else:
-                sub = '{} > 1'.format(len(lines))
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        lines = self.text.splitlines()
+        lines = [line for line in lines if line]
+        if len(lines) <= 1:
+            sub = '{} > 1'.format(len(lines))
+            mes = _('The condition "{}" is not observed!')
+            mes = mes.format(sub)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return
+        if lines[0] == 'SIK PORTION':
+            lines = lines[1:]
+        for i in range(len(lines)):
+            line = lines[i].strip()
+            line = sh.Text(line).delete_duplicate_spaces()
+            # Remove comments
+            line = line.split(';')[0]
+            # Empty input means the entire line is a comment
+            if not line:
+                continue
+            if len(line) < 2:
+                mes = _('Wrong input data: "{}"!')
+                mes = mes.format(line)
+                sh.objs.get_mes(f,mes,True).show_warning()
+                continue
+            # Remove a gender separator
+            line = line.replace('/',' ')
+            line = line.replace(',',' ')
+            line = line.split(' ')
+            line = [item for item in line if item]
+            no = sh.Input (title = f
+                            ,value = line[0]
+                            ).get_integer()
+            ends = line[1:]
+            self.nos.append(no)
+            self.ends.append(ends)
+        self.ordered = sorted(set(self.nos))
     
     def set_values(self):
         self.file = ''
@@ -154,32 +155,31 @@ class Subject:
     
     def get_pair(self,code):
         f = '[MClient] plugins.multitrandem.get.Subject.get_pair'
-        if self.Success:
-            if code in self.dic_nos:
-                ind = self.dic_nos.index(code)
-                if self.lang == 'ru':
-                    pair = (self.ru_dic[ind],self.ru_dicf[ind])
-                else:
-                    pair = (self.en_dic[ind],self.en_dicf[ind])
-                mes = '{} -> {}'.format(code,pair)
-                sh.objs.get_mes(f,mes,True).show_debug()
-                return pair
-            else:
-                mes = _('Wrong input data: "{}"!').format(code)
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not code in self.dic_nos:
+            mes = _('Wrong input data: "{}"!').format(code)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return
+        ind = self.dic_nos.index(code)
+        if self.lang == 'ru':
+            pair = (self.ru_dic[ind],self.ru_dicf[ind])
+        else:
+            pair = (self.en_dic[ind],self.en_dicf[ind])
+        mes = f'{code} -> {pair}'
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return pair
     
     def get_locale(self):
         f = '[MClient] plugins.multitrandem.get.Subject.get_locale'
-        if self.Success:
-            info = locale.getdefaultlocale()
-            if info:
-                # 'en' is set in 'set_values' by default
-                if info[0] in ('ru_RU','ru_UA'):
-                    self.lang = 'ru'
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        info = locale.getdefaultlocale()
+        # 'en' is set in 'set_values' by default
+        if info and info[0] in ('ru_RU','ru_UA'):
+            self.lang = 'ru'
     
     def set_values(self):
         self.Success = True
@@ -194,46 +194,45 @@ class Subject:
     
     def parse(self):
         f = '[MClient] plugins.multitrandem.get.Subject.parse'
-        if self.Success:
-            lst = self.text.splitlines()
-            # This should not be needed. We do that just to be safe.
-            lst = [item for item in lst if item]
-            for line in lst:
-                items = line.split(';')
-                # Delete comments (which also start with ';')
-                items = items[0:5]
-                # Fail if items < 5
-                if len(items) == 5:
-                    dic_no = sh.Input(f,items[0]).get_integer()
-                    self.dic_nos.append(dic_no)
-                    self.en_dicf.append(items[1])
-                    self.en_dic.append(items[2])
-                    self.ru_dicf.append(items[3])
-                    self.ru_dic.append(items[4])
-                else:
-                    self.Success = False
-                    mes = _('Wrong input data: "{}"!').format(line)
-                    sh.objs.get_mes(f,mes).show_warning()
-                    break
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        lst = self.text.splitlines()
+        # This should not be needed. We do that just to be safe.
+        lst = [item for item in lst if item]
+        for line in lst:
+            items = line.split(';')
+            # Delete comments (which also start with ';')
+            items = items[0:5]
+            # Fail if items < 5
+            if len(items) != 5:
+                self.Success = False
+                mes = _('Wrong input data: "{}"!').format(line)
+                sh.objs.get_mes(f,mes).show_warning()
+                break
+            dic_no = sh.Input(f,items[0]).get_integer()
+            self.dic_nos.append(dic_no)
+            self.en_dicf.append(items[1])
+            self.en_dic.append(items[2])
+            self.ru_dicf.append(items[3])
+            self.ru_dic.append(items[4])
     
     def load(self):
         f = '[MClient] plugins.multitrandem.get.Subject.load'
-        if self.Success:
-            # We need silent logging here
-            if os.path.exists(self.file):
-                self.text = sh.ReadTextFile(self.file).get()
-                if not self.text:
-                    self.Success = False
-                    mes = _('Empty output is not allowed!')
-                    sh.objs.get_mes(f,mes).show_warning()
-            else:
-                self.Success = False
-                mes = _('File "{}" does not exist!').format(self.file)
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        # We need silent logging here
+        if not os.path.exists(self.file):
+            self.Success = False
+            mes = _('File "{}" does not exist!').format(self.file)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return
+        self.text = sh.ReadTextFile(self.file).get()
+        if not self.text:
+            self.Success = False
+            mes = _('Empty output is not allowed!')
+            sh.objs.get_mes(f,mes).show_warning()
 
 
 
@@ -250,14 +249,14 @@ class Binary:
     
     def get_zero(self,start,end):
         f = '[MClient] plugins.multitrandem.get.Binary.get_zero'
-        result = []
-        if self.Success:
-            pos = self.find(b'\x00',start,end)
-            if pos:
-                #TODO (?): implement finding multiple zero chunks
-                result = [pos+2]
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return []
+        result = []
+        pos = self.find(b'\x00',start,end)
+        if pos:
+            #TODO (?): implement finding multiple zero chunks
+            result = [pos+2]
         return result
     
     def get_parts2(self,pattern,start=0,end=0):
@@ -268,55 +267,58 @@ class Binary:
             mchunks = []
             mpos1 = []
             mpos2 = []
-        if self.Success:
-            if pattern == b'':
-                poses = self.get_zero(start,end)
-            else:
-                poses = self.find_all(pattern,start,end)
-            for pos11 in poses:
-                lengths = self.get_lengths(pos11)
-                if self.check_lengths(pattern,lengths):
-                    pos21 = pos11 + lengths[0]
-                    pos22 = pos21 + lengths[1]
-                    chunk = self.read(pos21,pos22)
-                    if chunk and not chunk in chunks:
-                        chunks.append(chunk)
-                        if DEBUG:
-                            mpos1.append(sh.com.set_figure_commas(pos21))
-                            mpos2.append(sh.com.set_figure_commas(pos22))
-                            mchunks.append(com.get_string(chunk))
-            if DEBUG:
-                if mchunks:
-                    mpattern = ['"{}"'.format(com.get_string(pattern)) \
-                                for i in range(len(mchunks))
-                               ]
-                    mstart = ['{}'.format(sh.com.set_figure_commas(start)) \
-                              for i in range(len(mchunks))
-                             ]
-                    mend = ['{}'.format(sh.com.set_figure_commas(end)) \
-                              for i in range(len(mchunks))
-                           ]
-                    nos = [i + 1 for i in range(len(chunks))]
-                    mchunks = ['"{}"'.format(chunk) \
-                               for chunk in mchunks
-                              ]
-                    headers = ('NO','PATTERN','START'
-                              ,'END','POS1','POS2','CHUNK'
-                              )
-                    iterable = (nos,mpattern,mstart
-                               ,mend,mpos1,mpos2,mchunks
-                               )
-                    mes = sh.FastTable (headers = headers
-                                       ,iterable = iterable
-                                       ,maxrow = 47
-                                       ).run()
-                    mes = '\n\n' + mes
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                else:
-                    mes = _('No debug info')
-                    sh.objs.get_mes(f,mes,True).show_debug()
-        else:
+        if not self.Success:
             sh.com.rep_lazy(f)
+            return chunks
+        if pattern == b'':
+            poses = self.get_zero(start,end)
+        else:
+            poses = self.find_all(pattern,start,end)
+        for pos11 in poses:
+            lengths = self.get_lengths(pos11)
+            if not self.check_lengths(pattern,lengths):
+                continue
+            pos21 = pos11 + lengths[0]
+            pos22 = pos21 + lengths[1]
+            chunk = self.read(pos21,pos22)
+            if not chunk or chunk in chunks:
+                continue
+            chunks.append(chunk)
+            if DEBUG:
+                mpos1.append(sh.com.set_figure_commas(pos21))
+                mpos2.append(sh.com.set_figure_commas(pos22))
+                mchunks.append(com.get_string(chunk))
+        if not DEBUG:
+            return chunks
+        if not mchunks:
+            mes = _('No debug info')
+            sh.objs.get_mes(f,mes,True).show_debug()
+            return chunks
+            mpattern = ['"{}"'.format(com.get_string(pattern)) \
+                        for i in range(len(mchunks))
+                       ]
+            mstart = ['{}'.format(sh.com.set_figure_commas(start)) \
+                      for i in range(len(mchunks))
+                     ]
+            mend = ['{}'.format(sh.com.set_figure_commas(end)) \
+                      for i in range(len(mchunks))
+                   ]
+            nos = [i + 1 for i in range(len(chunks))]
+            mchunks = ['"{}"'.format(chunk) \
+                       for chunk in mchunks
+                      ]
+            headers = ('NO','PATTERN','START'
+                      ,'END','POS1','POS2','CHUNK'
+                      )
+            iterable = (nos,mpattern,mstart
+                       ,mend,mpos1,mpos2,mchunks
+                       )
+            mes = sh.FastTable (headers = headers
+                               ,iterable = iterable
+                               ,maxrow = 47
+                               ).run()
+            mes = '\n\n' + mes
+            sh.objs.get_mes(f,mes,True).show_debug()
         return chunks
     
     def get_parts1(self,pattern,start=0,end=0):
@@ -327,339 +329,335 @@ class Binary:
             mchunks = []
             mpos1 = []
             mpos2 = []
-        if self.Success:
-            if pattern:
-                poses = self.find_all(pattern,start,end)
-                for pos1 in poses:
-                    lengths = self.get_lengths(pos1)
-                    pos2 = pos1 + lengths[0]
-                    chunk = self.read(pos1,pos2)
-                    if chunk and not chunk in chunks:
-                        chunks.append(chunk)
-                        if DEBUG:
-                            mpos1.append(sh.com.set_figure_commas(pos1))
-                            mpos2.append(sh.com.set_figure_commas(pos2))
-                            mchunks.append(com.get_string(chunk))
-            else:
-                sh.com.rep_empty(f)
-            if DEBUG:
-                if mchunks:
-                    mpattern = ['"{}"'.format(com.get_string(pattern)) \
-                                for i in range(len(mchunks))
-                               ]
-                    mstart = ['{}'.format(sh.com.set_figure_commas(start))\
-                              for i in range(len(mchunks))
-                             ]
-                    mend = ['{}'.format(sh.com.set_figure_commas(end)) \
-                            for i in range(len(mchunks))
-                           ]
-                    nos = [i + 1 for i in range(len(chunks))]
-                    mchunks = ['"{}"'.format(chunk) \
-                               for chunk in mchunks
-                              ]
-                    headers = ('NO','PATTERN','START'
-                              ,'END','POS1','POS2','CHUNK'
-                              )
-                    iterable = (nos,mpattern,mstart
-                               ,mend,mpos1,mpos2,mchunks
-                               )
-                    mes = sh.FastTable (headers = headers
-                                       ,iterable = iterable
-                                       ,maxrow = 47
-                                       ).run()
-                    mes = '\n\n' + mes
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                else:
-                    mes = _('No debug info')
-                    sh.objs.get_mes(f,mes,True).show_debug()
-        else:
+        if not self.Success:
             sh.com.rep_lazy(f)
+            return chunks
+        if pattern:
+            poses = self.find_all(pattern,start,end)
+            for pos1 in poses:
+                lengths = self.get_lengths(pos1)
+                pos2 = pos1 + lengths[0]
+                chunk = self.read(pos1,pos2)
+                if not chunk or chunk in chunks:
+                    continue
+                chunks.append(chunk)
+                if DEBUG:
+                    mpos1.append(sh.com.set_figure_commas(pos1))
+                    mpos2.append(sh.com.set_figure_commas(pos2))
+                    mchunks.append(com.get_string(chunk))
+        else:
+            sh.com.rep_empty(f)
+        if not DEBUG:
+            mes = _('No debug info')
+            sh.objs.get_mes(f,mes,True).show_debug()
+            return chunks
+        if not mchunks:
+            return chunks
+        mpattern = ['"{}"'.format(com.get_string(pattern)) \
+                    for i in range(len(mchunks))
+                   ]
+        mstart = ['{}'.format(sh.com.set_figure_commas(start))\
+                  for i in range(len(mchunks))
+                 ]
+        mend = ['{}'.format(sh.com.set_figure_commas(end)) \
+                for i in range(len(mchunks))
+               ]
+        nos = [i + 1 for i in range(len(chunks))]
+        mchunks = ['"{}"'.format(chunk) \
+                   for chunk in mchunks
+                  ]
+        headers = ('NO','PATTERN','START'
+                  ,'END','POS1','POS2','CHUNK'
+                  )
+        iterable = (nos,mpattern,mstart
+                   ,mend,mpos1,mpos2,mchunks
+                   )
+        mes = sh.FastTable (headers = headers
+                           ,iterable = iterable
+                           ,maxrow = 47
+                           ).run()
+        mes = '\n\n' + mes
+        sh.objs.get_mes(f,mes,True).show_debug()
         return chunks
     
     def find_all(self,pattern,start=0,end=0):
         f = '[MClient] plugins.multitrandem.get.Binary.find_all'
         matches = []
-        if self.Success:
-            while True:
-                start = self.find(pattern,start,end)
-                if start:
-                    matches.append(start)
-                    start += 1
-                else:
-                    break
-            if DEBUG:
-                mes = [sh.com.set_figure_commas(item) \
-                       for item in matches
-                      ]
-                sh.objs.get_mes(f,mes,True).show_debug()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return matches
+        while True:
+            start = self.find(pattern,start,end)
+            if not start:
+                break
+            matches.append(start)
+            start += 1
+        if DEBUG:
+            mes = [sh.com.set_figure_commas(item) for item in matches]
+            sh.objs.get_mes(f,mes,True).show_debug()
         return matches
     
     def get_page_limit(self):
         f = '[MClient] plugins.multitrandem.get.Binary.get_page_limit'
         self.get_file_size()
         self.get_block_size()
-        if self.Success:
-            val = self.fsize // self.bsize
-            if DEBUG:
-                mes = sh.com.set_figure_commas(val)
-                sh.objs.get_mes(f,mes,True).show_debug()
-            return val
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        val = self.fsize // self.bsize
+        if DEBUG:
+            mes = sh.com.set_figure_commas(val)
+            sh.objs.get_mes(f,mes,True).show_debug()
+        return val
     
     def get_file_size(self):
         ''' This should be equal to 'sh.File(self.vfile).get_size()'.
             #NOTE: size = max_pos + 1
         '''
         f = '[MClient] plugins.multitrandem.get.Binary.get_file_size'
-        if self.Success:
-            if not self.fsize:
-                self.fsize = sh.File(self.file).get_size()
-                if DEBUG:
-                    mes = _('File "{}" has the size of {}')
-                    size = sh.com.get_human_size(self.fsize)
-                    mes = mes.format(self.file,size)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-            if not self.fsize:
-                self.Success = False
-                mes = _('Empty output is not allowed!')
-                sh.objs.get_mes(f,mes).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.fsize
+        if not self.fsize:
+            self.fsize = sh.File(self.file).get_size()
+            if DEBUG:
+                mes = _('File "{}" has the size of {}')
+                size = sh.com.get_human_size(self.fsize)
+                mes = mes.format(self.file,size)
+                sh.objs.get_mes(f,mes,True).show_debug()
+        if not self.fsize:
+            self.Success = False
+            sh.com.rep_out(f)
         return self.fsize
     
     def get_page_limits(self,page_no):
         # Return positions of a page based on MT indicators
         f = '[MClient] plugins.multitrandem.get.Binary.get_page_limits'
-        if self.Success:
-            if page_no is None or not self.get_block_size():
-                sh.com.rep_empty(f)
-            elif page_no == 0:
-                if DEBUG:
-                    sub = sh.com.get_human_size(self.bsize)
-                    mes = _('Page size: {}').format(sub)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                    pos1 = 0
-                    pos2 = self.bsize
-                    sub = sh.com.set_figure_commas(pos2)
-                    mes = _('Page limits: [{}:{}]')
-                    mes = mes.format(pos1,sub)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                return(0,self.bsize)
-            else:
-                pos = page_no * self.bsize
-                read = self.read(pos+1,pos+3)
-                if read:
-                    if len(read) == 2:
-                        size = struct.unpack('<h',read)[0]
-                        size = com.overflowh(size)
-                        if size > 0:
-                            if DEBUG:
-                                sub = sh.com.get_human_size(size)
-                                mes = _('Page size: {}').format(sub)
-                                sh.objs.get_mes(f,mes,True).show_debug()
-                            pos1 = pos + 3
-                            pos2 = pos1 + size
-                            if DEBUG:
-                                sub1 = sh.com.set_figure_commas(pos1)
-                                sub2 = sh.com.set_figure_commas(pos2)
-                                mes = _('Page limits: [{}:{}]')
-                                mes = mes.format(sub1,sub2)
-                                sh.objs.get_mes(f,mes,True).show_debug()
-                            return(pos1,pos2)
-                        else:
-                            sub = '{} > 0'.format(size)
-                            mes = _('The condition "{}" is not observed!')
-                            mes = mes.format(sub)
-                            sh.objs.get_mes(f,mes,True).show_warning()
-                    else:
-                        sub = '{} == 2'.format(len(read))
-                        mes = _('The condition "{}" is not observed!')
-                        mes = mes.format(sub)
-                        sh.objs.get_mes(f,mes,True).show_warning()
-                else:
-                    sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if page_no is None or not self.get_block_size():
+            sh.com.rep_empty(f)
+            return
+        if page_no == 0:
+            if DEBUG:
+                sub = sh.com.get_human_size(self.bsize)
+                mes = _('Page size: {}').format(sub)
+                sh.objs.get_mes(f,mes,True).show_debug()
+                pos1 = 0
+                pos2 = self.bsize
+                sub = sh.com.set_figure_commas(pos2)
+                mes = _('Page limits: [{}:{}]')
+                mes = mes.format(pos1,sub)
+                sh.objs.get_mes(f,mes,True).show_debug()
+            return(0,self.bsize)
+        pos = page_no * self.bsize
+        read = self.read(pos+1,pos+3)
+        if not read:
+            sh.com.rep_empty(f)
+            return
+        if len(read) != 2:
+            sub = '{} == 2'.format(len(read))
+            mes = _('The condition "{}" is not observed!')
+            mes = mes.format(sub)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return
+        size = struct.unpack('<h',read)[0]
+        size = com.overflowh(size)
+        if size <= 0:
+            sub = '{} > 0'.format(size)
+            mes = _('The condition "{}" is not observed!')
+            mes = mes.format(sub)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return
+        if DEBUG:
+            sub = sh.com.get_human_size(size)
+            mes = _('Page size: {}').format(sub)
+            sh.objs.get_mes(f,mes,True).show_debug()
+        pos1 = pos + 3
+        pos2 = pos1 + size
+        if DEBUG:
+            sub1 = sh.com.set_figure_commas(pos1)
+            sub2 = sh.com.set_figure_commas(pos2)
+            mes = _('Page limits: [{}:{}]')
+            mes = mes.format(sub1,sub2)
+            sh.objs.get_mes(f,mes,True).show_debug()
+        return(pos1,pos2)
     
     def get_block_size(self):
         f = '[MClient] plugins.multitrandem.get.Binary.get_block_size'
-        if self.Success:
-            if not self.bsize:
-                read = self.read(28,30)
-                if read:
-                    try:
-                        self.bsize = struct.unpack('<h',read)[0]
-                    except Exception as e:
-                        self.Success = False
-                        mes = _('Third-party module has failed!\n\nDetails: {}')
-                        mes = mes.format(e)
-                        sh.objs.get_mes(f,mes,True).show_warning()
-                    if DEBUG:
-                        mes = sh.com.set_figure_commas(self.bsize)
-                        sh.objs.get_mes(f,mes,True).show_debug()
-                else:
-                    self.Success = False
-                    sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.bsize
+        if self.bsize:
+            return self.bsize
+        read = self.read(28,30)
+        if not read:
+            self.Success = False
+            sh.com.rep_empty(f)
+            return self.bsize
+        try:
+            self.bsize = struct.unpack('<h',read)[0]
+        except Exception as e:
+            self.Success = False
+            mes = _('Third-party module has failed!\n\nDetails: {}')
+            mes = mes.format(e)
+            sh.objs.get_mes(f,mes,True).show_warning()
+        if DEBUG:
+            mes = sh.com.set_figure_commas(self.bsize)
+            sh.objs.get_mes(f,mes,True).show_debug()
         return self.bsize
     
     def check_lengths(self,pattern,lengths):
         f = '[MClient] plugins.multitrandem.get.Binary.check_lengths'
-        if self.Success:
-            if lengths:
-                if lengths[0] == len(pattern) and lengths[1] > 0:
-                    return True
-                elif DEBUG:
-                    mes = _('The check has failed!')
-                    sh.objs.get_mes(f,mes,True).show_warning()
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not lengths:
+            sh.com.rep_empty(f)
+            return
+        if lengths[0] == len(pattern) and lengths[1] > 0:
+            return True
+        if DEBUG:
+            mes = _('The check has failed!')
+            sh.objs.get_mes(f,mes,True).show_warning()
     
     def get_part2(self,pattern,start=0,end=0):
         f = '[MClient] plugins.multitrandem.get.Binary.get_part2'
-        if self.Success:
-            pos11 = self.find(pattern,start,end)
-            if pos11 is None:
-                ''' We look for combinations of stems, so a mismatch is
-                    a common case.
-                '''
-                if DEBUG:
-                    sh.com.rep_lazy(f)
-            else:
-                lengths = self.get_lengths(pos11)
-                if self.check_lengths(pattern,lengths):
-                    pos21 = pos11 + lengths[0]
-                    pos22 = pos21 + lengths[1]
-                    return self.read(pos21,pos22)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        pos11 = self.find(pattern,start,end)
+        if pos11 is None:
+            # We look for combinations of stems, so a mismatch is a common case
+            if DEBUG:
+                sh.com.rep_lazy(f)
+            return
+        lengths = self.get_lengths(pos11)
+        if self.check_lengths(pattern,lengths):
+            pos21 = pos11 + lengths[0]
+            pos22 = pos21 + lengths[1]
+            return self.read(pos21,pos22)
     
     def get_lengths(self,index_):
         f = '[MClient] plugins.multitrandem.get.Binary.get_lengths'
-        if self.Success:
-            ''' There are 'M' pages at the beginning, so an index of
-                the 1st part will always be positive.
-            '''
-            if index_ is None:
-                sh.com.rep_empty(f)
-            elif index_ > 2:
-                pos1 = index_ - 2
-                pos2 = index_ - 1
-                len1 = self.read(pos1,pos1+1)
-                len2 = self.read(pos2,pos2+1)
-                if len1 and len2:
-                    len1 = struct.unpack('<b',len1)[0]
-                    len2 = struct.unpack('<b',len2)[0]
-                    ''' The 2nd value of the index part can be negative
-                        (at least in demo, e.g., dict.ert: 723,957 ->
-                        b'\x03\x8a' -> (3; -118) -> (3; 138)).
-                    '''
-                    len1 = com.overflowb(len1)
-                    len2 = com.overflowb(len2)
-                    if DEBUG:
-                        mes = _('Part #{} length: {}').format(1,len1)
-                        sh.objs.get_mes(f,mes,True).show_debug()
-                        mes = _('Part #{} length: {}').format(2,len2)
-                        sh.objs.get_mes(f,mes,True).show_debug()
-                    return(len1,len2)
-                else:
-                    sh.com.rep_empty(f)
-            else:
-                sub = '{} > 2'.format(index_)
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        ''' There are 'M' pages at the beginning, so an index of
+            the 1st part will always be positive.
+        '''
+        if index_ is None:
+            sh.com.rep_empty(f)
+            return
+        if index_ <= 2:
+            sub = '{} > 2'.format(index_)
+            mes = _('The condition "{}" is not observed!')
+            mes = mes.format(sub)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return
+        pos1 = index_ - 2
+        pos2 = index_ - 1
+        len1 = self.read(pos1,pos1+1)
+        len2 = self.read(pos2,pos2+1)
+        if not len1 or not len2:
+            sh.com.rep_empty(f)
+            return
+        len1 = struct.unpack('<b',len1)[0]
+        len2 = struct.unpack('<b',len2)[0]
+        ''' The 2nd value of the index part can be negative
+            (at least in demo, e.g., dict.ert: 723,957 ->
+            b'\x03\x8a' -> (3; -118) -> (3; 138)).
+        '''
+        len1 = com.overflowb(len1)
+        len2 = com.overflowb(len2)
+        if DEBUG:
+            mes = _('Part #{} length: {}').format(1,len1)
+            sh.objs.get_mes(f,mes,True).show_debug()
+            mes = _('Part #{} length: {}').format(2,len2)
+            sh.objs.get_mes(f,mes,True).show_debug()
+        return(len1,len2)
     
     def read(self,start,end):
         f = '[MClient] plugins.multitrandem.get.Binary.read'
-        if self.Success:
-            if start is None or end is None:
-                sh.com.rep_empty(f)
-            elif 0 <= start < end <= self.get_file_size():
-                self.imap.seek(start)
-                chunk = self.imap.read(end-start)
-                if DEBUG:
-                    mes = '"{}"'.format(com.get_string(chunk))
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                return chunk
-            else:
-                self.Success = False
-                sub1 = sh.com.set_figure_commas(start)
-                sub2 = sh.com.set_figure_commas(end)
-                sub3 = sh.com.set_figure_commas(self.fsize)
-                sub = '0 <= {} < {} <= {}'.format(sub1,sub2,sub3)
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.get_mes(f,mes).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if start is None or end is None:
+            sh.com.rep_empty(f)
+            return
+        if not (0 <= start < end <= self.get_file_size()):
+            self.Success = False
+            sub1 = sh.com.set_figure_commas(start)
+            sub2 = sh.com.set_figure_commas(end)
+            sub3 = sh.com.set_figure_commas(self.fsize)
+            sub = '0 <= {} < {} <= {}'.format(sub1,sub2,sub3)
+            mes = _('The condition "{}" is not observed!')
+            mes = mes.format(sub)
+            sh.objs.get_mes(f,mes).show_warning()
+            return
+        self.imap.seek(start)
+        chunk = self.imap.read(end-start)
+        if DEBUG:
+            mes = '"{}"'.format(com.get_string(chunk))
+            sh.objs.get_mes(f,mes,True).show_debug()
+        return chunk
     
     def find(self,pattern,start=0,end=0):
         f = '[MClient] plugins.multitrandem.get.Binary.find'
-        if self.Success:
-            if pattern:
-                if not end:
-                    end = self.get_file_size()
-                result = self.imap.find(pattern,start,end)
-                if DEBUG:
-                    if end == -1:
-                        mes = '{}, "{}" => {}'
-                        mes = mes.format (self.bname
-                                         ,com.get_string(pattern)
-                                         ,sh.com.set_figure_commas(result)
-                                         )
-                    else:
-                        mes = '{}, [{}:{}], "{}" => {}'
-                        mes = mes.format (self.bname
-                                         ,sh.com.set_figure_commas(start)
-                                         ,sh.com.set_figure_commas(end)
-                                         ,com.get_string(pattern)
-                                         ,sh.com.set_figure_commas(result)
-                                         )
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                if result >= 0:
-                    return result
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not pattern:
+            sh.com.rep_empty(f)
+            return
+        if not end:
+            end = self.get_file_size()
+        result = self.imap.find(pattern,start,end)
+        if DEBUG:
+            if end == -1:
+                mes = '{}, "{}" => {}'
+                mes = mes.format (self.bname
+                                 ,com.get_string(pattern)
+                                 ,sh.com.set_figure_commas(result)
+                                 )
+            else:
+                mes = '{}, [{}:{}], "{}" => {}'
+                mes = mes.format (self.bname
+                                 ,sh.com.set_figure_commas(start)
+                                 ,sh.com.set_figure_commas(end)
+                                 ,com.get_string(pattern)
+                                 ,sh.com.set_figure_commas(result)
+                                 )
+            sh.objs.get_mes(f,mes,True).show_debug()
+        if result >= 0:
+            return result
     
     def open(self):
         f = '[MClient] plugins.multitrandem.get.Binary.open'
-        if self.Success:
-            mes = _('Open "{}"').format(self.file)
-            sh.objs.get_mes(f,mes,True).show_info()
-            self.bin = open(self.file,'rb')
-            # 'mmap' fails upon opening an empty file!
-            try:
-                self.imap = mmap.mmap (self.bin.fileno(),0
-                                      ,access=mmap.ACCESS_READ
-                                      )
-            except Exception as e:
-                self.Success = False
-                mes = _('Third-party module has failed!\n\nDetails: {}')
-                mes = mes.format(e)
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        mes = _('Open "{}"').format(self.file)
+        sh.objs.get_mes(f,mes,True).show_info()
+        self.bin = open(self.file,'rb')
+        # 'mmap' fails upon opening an empty file!
+        try:
+            self.imap = mmap.mmap(self.bin.fileno(), 0, access=mmap.ACCESS_READ)
+        except Exception as e:
+            self.Success = False
+            mes = _('Third-party module has failed!\n\nDetails: {}').format(e)
+            sh.objs.get_mes(f,mes,True).show_warning()
     
     def close(self):
         f = '[MClient] plugins.multitrandem.get.Binary.close'
-        if self.Success:
-            mes = _('Close "{}"').format(self.file)
-            sh.objs.get_mes(f,mes,True).show_info()
-            self.imap.flush()
-            self.bin.close()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        mes = _('Close "{}"').format(self.file)
+        sh.objs.get_mes(f,mes,True).show_info()
+        self.imap.flush()
+        self.bin.close()
 
 
 
@@ -687,16 +685,16 @@ class UPage(Binary):
         f = '[MClient] plugins.multitrandem.get.UPage._get_ref'
         if i is None:
             sh.com.rep_empty(f)
-        else:
-            try:
-                page_ref = struct.unpack('<h',self.part2[i])[0]
-                if DEBUG:
-                    mes = _('#{}: {}').format(i,page_ref)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                return page_ref
-            except IndexError:
-                mes = _('Wrong input data!')
-                sh.objs.get_mes(f,mes).show_error()
+            return
+        try:
+            page_ref = struct.unpack('<h',self.part2[i])[0]
+            if DEBUG:
+                mes = _('#{}: {}').format(i,page_ref)
+                sh.objs.get_mes(f,mes,True).show_debug()
+            return page_ref
+        except IndexError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_error()
     
     def _decode(self,pattern):
         if self.file in (objs.get_files().iwalker.get_stems1()
@@ -716,145 +714,137 @@ class UPage(Binary):
         if self.part1[i] == b'':
             stem1 = _('Start')
         else:
-            stem1 = _('{} (#{})')
-            stem1 = stem1.format (self._decode(self.part1[i])
-                                 ,self._get_no(self.part1[i])
-                                 )
+            stem1 = _('{} (#{})').format (self._decode(self.part1[i])
+                                         ,self._get_no(self.part1[i])
+                                         )
         if i + 1 < len(self.part1):
-            stem2 = _('{} (#{})')
-            stem2 = stem2.format (self._decode(self.part1[i+1])
-                                 ,self._get_no(self.part1[i+1])
-                                 )
+            stem2 = _('{} (#{})').format (self._decode(self.part1[i+1])
+                                         ,self._get_no(self.part1[i+1])
+                                         )
         else:
             stem2 = _('End')
-        mes = '{} {} {} {} {}'.format (stem1,oper
-                                      ,self._decode(pattern)
-                                      ,'<',stem2
-                                      )
+        mes = f'{stem1} {oper} {self._decode(pattern)} < {stem2}'
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def searchu(self,pattern):
         f = '[MClient] plugins.multitrandem.get.UPage.searchu'
-        if self.Success:
-            self.get_parts()
-            if self.part1:
-                i = 1
-                while i < len(self.part1):
-                    if self.part1[i-1] <= pattern < self.part1[i]:
-                        break
-                    i += 1
-                i -= 1
-                if DEBUG:
-                    self._log(pattern,i)
-                return self.get_page_limits(self._get_ref(i))
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        self.get_parts()
+        if not self.part1:
+            sh.com.rep_empty(f)
+            return
+        i = 1
+        while i < len(self.part1):
+            if self.part1[i-1] <= pattern < self.part1[i]:
+                break
+            i += 1
+        i -= 1
+        if DEBUG:
+            self._log(pattern,i)
+        return self.get_page_limits(self._get_ref(i))
     
     def get_parts(self):
         f = '[MClient] plugins.multitrandem.get.UPage.get_parts'
-        if self.Success:
-            if not self.part2:
-                if self.get_page():
-                    pos = 0
-                    while pos + 2 < len(self.page):
-                        ''' #NOTE: indexing returns integers, slicing
-                            returns bytes.
-                        '''
-                        read = self.page[pos:pos+2]
-                        pos += 2
-                        len1, len2 = struct.unpack('<2b',read)
-                        len1 = com.overflowb(len1)
-                        len2 = com.overflowb(len2)
-                        if pos + len1 + len2 < len(self.page):
-                            ''' Do this only after checking
-                                the condition, otherwise, resulting
-                                lists will have a different length.
-                            '''
-                            chunk1 = self.page[pos:pos+len1]
-                            pos += len1
-                            chunk2 = self.page[pos:pos+len2]
-                            pos += len2
-                            ''' #NOTE: Instructions for zero-length
-                                chunks should be allowed - I encountered
-                                such and they were necessary to parse
-                                the page correctly to the end. However,
-                                at least one of the chunks should be
-                                non-empty, otherwise, checking output
-                                will fail.
-                            '''
-                            if chunk1 or chunk2:
-                                self.part1.append(chunk1)
-                                self.part2.append(chunk2)
-                        else:
-                            com.report_status(pos,self.page)
-                            if len(self.page) - pos > 1:
-                                mes = _('Processing the pattern has not been completed, but the end of the file has already been reached!')
-                                sh.objs.get_mes(f,mes,True).show_warning()
-                            break
-                    self.conform_parts()
-                else:
-                    sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if self.part2:
+            return
+        if not self.get_page():
+            sh.com.rep_empty(f)
+            return
+        pos = 0
+        while pos + 2 < len(self.page):
+            ''' #NOTE: indexing returns integers, slicing
+                returns bytes.
+            '''
+            read = self.page[pos:pos+2]
+            pos += 2
+            len1, len2 = struct.unpack('<2b',read)
+            len1 = com.overflowb(len1)
+            len2 = com.overflowb(len2)
+            if pos + len1 + len2 < len(self.page):
+                ''' Do this only after checking
+                    the condition, otherwise, resulting
+                    lists will have a different length.
+                '''
+                chunk1 = self.page[pos:pos+len1]
+                pos += len1
+                chunk2 = self.page[pos:pos+len2]
+                pos += len2
+                ''' #NOTE: Instructions for zero-length
+                    chunks should be allowed - I encountered
+                    such and they were necessary to parse
+                    the page correctly to the end. However,
+                    at least one of the chunks should be
+                    non-empty, otherwise, checking output
+                    will fail.
+                '''
+                if chunk1 or chunk2:
+                    self.part1.append(chunk1)
+                    self.part2.append(chunk2)
+            else:
+                com.report_status(pos,self.page)
+                if len(self.page) - pos > 1:
+                    mes = _('Processing the pattern has not been completed, but the end of the file has already been reached!')
+                    sh.objs.get_mes(f,mes,True).show_warning()
+                break
+        self.conform_parts()
     
     def get_page(self):
         f = '[MClient] plugins.multitrandem.get.UPage.get_page'
-        if self.Success:
-            if not self.page:
-                if self.get_size():
-                    page = self.read(self.pos1,self.pos2)
-                    # Keep 'self.page' iterable
-                    if page is None:
-                        sh.com.rep_empty(f)
-                    else:
-                        self.page = page
-                else:
-                    sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.page
+        if self.page:
+            return self.page
+        if not self.get_size():
+            sh.com.rep_empty(f)
+            return self.page
+        page = self.read(self.pos1,self.pos2)
+        # Keep 'self.page' iterable
+        if page is None:
+            sh.com.rep_empty(f)
+            return self.page
+        self.page = page
         return self.page
     
     def get_size(self):
         f = '[MClient] plugins.multitrandem.get.UPage.get_size'
-        if self.Success:
-            if not self.psize:
-                ''' The 1st page is an area with M identifier.
-                    The 2nd page is an intermediate page with
-                    U identifier.
-                '''
-                poses = self.get_page_limits(1)
-                if poses:
-                    self.pos1 = poses[0]
-                    self.pos2 = poses[1]
-                    self.psize = self.pos2 - self.pos1
-                else:
-                    sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.psize
+        if self.psize:
+            return self.psize
+        ''' The 1st page is an area with M identifier.
+            The 2nd page is an intermediate page with U identifier.
+        '''
+        poses = self.get_page_limits(1)
+        if not poses:
+            sh.com.rep_empty(f)
+            return self.psize
+        self.pos1 = poses[0]
+        self.pos2 = poses[1]
+        self.psize = self.pos2 - self.pos1
         return self.psize
     
     def check_parts(self):
         f = '[MClient] plugins.multitrandem.get.UPage.check_parts'
-        if self.Success:
-            if len(self.part1) == len(self.part2):
-                Check = True
-                for item in self.part2:
-                    if len(item) != 2:
-                        Check = False
-                        break
-                return Check
-            else:
-                self.Success = False
-                sub = '{} == {}'.format (len(self.part1)
-                                        ,len(self.part2)
-                                        )
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.get_mes(f,mes).show_error()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if len(self.part1) != len(self.part2):
+            self.Success = False
+            sub = f'{len(self.part1)} == {len(self.part2)}'
+            mes = _('The condition "{}" is not observed!').format(sub)
+            sh.objs.get_mes(f,mes).show_error()
+            return
+        for item in self.part2:
+            if len(item) != 2:
+                return
+        return True
     
     def _get_missing(self):
         ''' Get the 1st page number that is not described in U page or
@@ -864,7 +854,7 @@ class UPage(Binary):
         unpacked = sorted(set(self.part2))
         unpacked = [struct.unpack('<h',item)[0] for item in unpacked]
         # We need +1 for a new item and +1 for 'range'
-        compare = [i for i in range(max(unpacked)+2)]
+        compare = [i for i in range(max(unpacked) + 2)]
         # Page #0 is an M page area, and page #1 is U page
         compare = compare[2:]
         for item in compare:
@@ -874,22 +864,22 @@ class UPage(Binary):
     
     def conform_parts(self):
         f = '[MClient] plugins.multitrandem.get.UPage.conform_parts'
-        if self.Success:
-            if self.part1:
-                if self.check_parts():
-                    old = self._get_missing()
-                    new = struct.pack('<h',old)
-                    mes = '{} -> "{}"'.format(old,new)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                    self.part1.insert(0,b'')
-                    self.part2.append(new)
-                else:
-                    mes = _('The check has failed!')
-                    sh.objs.get_mes(f,mes,True).show_warning()
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not self.part1:
+            sh.com.rep_empty(f)
+            return
+        if not self.check_parts():
+            mes = _('The check has failed!')
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return
+        old = self._get_missing()
+        new = struct.pack('<h',old)
+        mes = f'{old} -> "{new}"'
+        sh.objs.get_mes(f,mes,True).show_debug()
+        self.part1.insert(0,b'')
+        self.part2.append(new)
 
 
 
@@ -902,138 +892,142 @@ class Walker:
     
     def get_ending(self):
         f = '[MClient] plugins.multitrandem.get.Walker.get_ending'
-        if self.Success:
-            if not self.ending:
-                bname = 'sik.' + self.lang13
-                file = self.get_file(bname)
-                if file:
-                    self.ending = file
-                else:
-                    self.Success = False
-                    mes = _('File "{}" does not exist!').format(bname)
-                    sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.ending
+        if self.ending:
+            return self.ending
+        bname = 'sik.' + self.lang13
+        file = self.get_file(bname)
+        if not file:
+            self.Success = False
+            mes = _('File "{}" does not exist!').format(bname)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return self.ending
+        self.ending = file
         return self.ending
     
     def get_subject(self):
         f = '[MClient] plugins.multitrandem.get.Walker.get_subject'
-        if self.Success:
-            # Suppress useless error output
-            if self.bnames:
-                if not self.subject:
-                    bname = 'subjects.txt'
-                    file = self.get_file(bname)
-                    if file:
-                        self.subject = file
-                    else:
-                        self.Success = False
-                        mes = _('File "{}" does not exist!')
-                        mes = mes.format(bname)
-                        sh.objs.get_mes(f,mes,True).show_warning()
-            else:
-                sh.com.rep_lazy(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.subject
+        # Suppress useless error output
+        if not self.bnames:
+            sh.com.rep_lazy(f)
+            return self.subject
+        if self.subject:
+            return self.subject
+        bname = 'subjects.txt'
+        file = self.get_file(bname)
+        if not file:
+            self.Success = False
+            mes = _('File "{}" does not exist!').format(bname)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return self.subject
+        self.subject = file
         return self.subject
     
     def get_typein1(self):
         f = '[MClient] plugins.multitrandem.get.Walker.get_typein1'
-        if self.Success:
-            if not self.typein1:
-                bname = 'typein.' + self.lang11 + self.lang21
-                file = self.get_file(bname)
-                if file:
-                    self.typein1 = file
-                    sh.objs.get_mes(f,self.typein1,True).show_debug()
-                else:
-                    self.Success = False
-                    mes = _('File "{}" does not exist!').format(bname)
-                    sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.typein1
+        if self.typein1:
+            return self.typein1
+        bname = 'typein.' + self.lang11 + self.lang21
+        file = self.get_file(bname)
+        if not file:
+            self.Success = False
+            mes = _('File "{}" does not exist!').format(bname)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return self.typein1
+        self.typein1 = file
+        sh.objs.get_mes(f,self.typein1,True).show_debug()
         return self.typein1
 
     def get_typein2(self):
         f = '[MClient] plugins.multitrandem.get.Walker.get_typein2'
-        if self.Success:
-            if not self.typein2:
-                bname = 'typein.' + self.lang21 + self.lang11
-                file = self.get_file(bname)
-                if file:
-                    self.typein2 = file
-                    sh.objs.get_mes(f,self.typein2,True).show_debug()
-                else:
-                    self.Success = False
-                    mes = _('File "{}" does not exist!').format(bname)
-                    sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.typein2
+        if self.typein2:
+            return self.typein2
+        bname = 'typein.' + self.lang21 + self.lang11
+        file = self.get_file(bname)
+        if not file:
+            self.Success = False
+            mes = _('File "{}" does not exist!').format(bname)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return self.typein2
+        self.typein2 = file
+        sh.objs.get_mes(f,self.typein2,True).show_debug()
         return self.typein2
     
     def get_files(self):
         f = '[MClient] plugins.multitrandem.get.Walker.get_files'
-        if self.Success:
-            return [self.get_typein1(),self.get_typein2()
-                   ,self.get_stems1(),self.get_stems2()
-                   ,self.get_glue1(),self.get_glue2()
-                   ,self.get_article()
-                   ]
-        else:
+        if not self.Success:
             sh.com.cancel(f)
             return []
+        return [self.get_typein1(), self.get_typein2(), self.get_stems1()
+               ,self.get_stems2(), self.get_glue1(), self.get_glue2()
+               ,self.get_article()
+               ]
     
     def get_article(self):
         f = '[MClient] plugins.multitrandem.get.Walker.get_article'
-        if self.Success:
-            if not self.article:
-                bname = 'dict.' + self.lang11 + self.lang21 + 't'
-                if not bname in self.bnames:
-                    bname = 'dict.' + self.lang21 + self.lang11 + 't'
-                file = self.get_file(bname)
-                if file:
-                    self.article = file
-                    sh.objs.get_mes(f,self.article,True).show_debug()
-                else:
-                    self.Success = False
-                    mes = _('File "{}" does not exist!').format(bname)
-                    sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.article
+        if self.article:
+            return self.article
+        bname = 'dict.' + self.lang11 + self.lang21 + 't'
+        if not bname in self.bnames:
+            bname = 'dict.' + self.lang21 + self.lang11 + 't'
+        file = self.get_file(bname)
+        if not file:
+            self.Success = False
+            mes = _('File "{}" does not exist!').format(bname)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return self.article
+        self.article = file
+        sh.objs.get_mes(f,self.article,True).show_debug()
         return self.article
     
     def get_glue1(self):
         f = '[MClient] plugins.multitrandem.get.Walker.get_glue1'
-        if self.Success:
-            if not self.glue1:
-                bname = 'dict.' + self.lang11 + self.lang21 + 'd'
-                file = self.get_file(bname)
-                if file:
-                    self.glue1 = file
-                    sh.objs.get_mes(f,self.glue1,True).show_debug()
-                else:
-                    self.Success = False
-                    mes = _('File "{}" does not exist!').format(bname)
-                    sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.glue1
+        if self.glue1:
+            return self.glue1
+        bname = 'dict.' + self.lang11 + self.lang21 + 'd'
+        file = self.get_file(bname)
+        if not file:
+            self.Success = False
+            mes = _('File "{}" does not exist!').format(bname)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return self.glue1
+        self.glue1 = file
+        sh.objs.get_mes(f,self.glue1,True).show_debug()
         return self.glue1
     
     def get_glue2(self):
         f = '[MClient] plugins.multitrandem.get.Walker.get_glue2'
-        if self.Success:
-            if not self.glue2:
-                bname = 'dict.' + self.lang21 + self.lang11 + 'd'
-                file = self.get_file(bname)
-                if file:
-                    self.glue2 = file
-                    sh.objs.get_mes(f,self.glue2,True).show_debug()
-                else:
-                    self.Success = False
-                    mes = _('File "{}" does not exist!').format(bname)
-                    sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.glue2
+        if self.glue2:
+            return self.glue2
+        bname = 'dict.' + self.lang21 + self.lang11 + 'd'
+        file = self.get_file(bname)
+        if not file:
+            self.Success = False
+            mes = _('File "{}" does not exist!').format(bname)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return self.glue2
+        self.glue2 = file
+        sh.objs.get_mes(f,self.glue2,True).show_debug()
         return self.glue2
     
     def reset(self):
@@ -1044,68 +1038,70 @@ class Walker:
     
     def set_langs(self):
         f = '[MClient] plugins.multitrandem.get.Walker.set_langs'
-        if self.Success:
-            lang1 = LANG1.lower()
-            lang2 = LANG2.lower()
-            self.lang11 = lang1[0:1]
-            self.lang21 = lang2[0:1]
-            self.lang13 = lang1[0:3]
-            self.lang23 = lang2[0:3]
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        lang1 = LANG1.lower()
+        lang2 = LANG2.lower()
+        self.lang11 = lang1[0:1]
+        self.lang21 = lang2[0:1]
+        self.lang13 = lang1[0:3]
+        self.lang23 = lang2[0:3]
     
     def check(self):
         f = '[MClient] plugins.multitrandem.get.Walker.check'
-        if PATH and LANG1 and LANG2:
-            self.idir = sh.Directory(PATH)
-            self.Success = self.idir.Success
-        else:
+        if not PATH or not LANG1 or not LANG2:
             self.Success = False
             sh.com.rep_empty(f)
+            return
+        self.idir = sh.Directory(PATH)
+        self.Success = self.idir.Success
     
     def get_stems1(self):
         f = '[MClient] plugins.multitrandem.get.Walker.get_stems1'
-        if self.Success:
-            if not self.stems1:
-                bname = 'stem.' + self.lang13
-                file = self.get_file(bname)
-                if file:
-                    self.stems1 = file
-                else:
-                    self.Success = False
-                    mes = _('File "{}" does not exist!').format(bname)
-                    sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.stems1
+        if self.stems1:
+            return self.stems1
+        bname = 'stem.' + self.lang13
+        file = self.get_file(bname)
+        if not file:
+            self.Success = False
+            mes = _('File "{}" does not exist!').format(bname)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return self.stems1
+        self.stems1 = file
         return self.stems1
     
     def get_stems2(self):
         f = '[MClient] plugins.multitrandem.get.Walker.get_stems2'
-        if self.Success:
-            if not self.stems2:
-                bname = 'stem.' + self.lang23
-                file = self.get_file(bname)
-                if file:
-                    self.stems2 = file
-                else:
-                    self.Success = False
-                    mes = _('File "{}" does not exist!').format(bname)
-                    sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.stems2
+        if self.stems2:
+            return self.stems2
+        bname = 'stem.' + self.lang23
+        file = self.get_file(bname)
+        if not file:
+            self.Success = False
+            mes = _('File "{}" does not exist!').format(bname)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return self.stems2
+        self.stems2 = file
         return self.stems2
     
     def get_file(self,bname):
         f = '[MClient] plugins.multitrandem.get.Walker.get_file'
-        if self.Success:
-            try:
-                ind = self.bnames.index(bname)
-                return self.files[ind]
-            except (ValueError,IndexError):
-                mes = _('Wrong input data!')
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        try:
+            ind = self.bnames.index(bname)
+            return self.files[ind]
+        except (ValueError,IndexError):
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes,True).show_warning()
     
     def set_values(self):
         self.article = ''
@@ -1128,17 +1124,17 @@ class Walker:
     
     def walk(self):
         f = '[MClient] plugins.multitrandem.get.Walker.walk'
-        if self.Success:
-            self.files = self.idir.get_subfiles()
-            for file in self.files:
-                self.bnames.append(sh.Path(file).get_basename_low())
-            self.Success = False
-            for bname in self.bnames:
-                if bname.startswith('dict.') and bname.endswith('t'):
-                    self.Success = True
-                    break
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.files
+        self.files = self.idir.get_subfiles()
+        for file in self.files:
+            self.bnames.append(sh.Path(file).get_basename_low())
+        self.Success = False
+        for bname in self.bnames:
+            if bname.startswith('dict.') and bname.endswith('t'):
+                self.Success = True
+                break
         return self.files
 
 
@@ -1150,78 +1146,75 @@ class TypeIn(UPage):
     
     def search(self,pattern):
         f = '[MClient] plugins.multitrandem.get.TypeIn.search'
-        if self.Success:
-            if pattern:
-                coded = bytes(pattern,CODING)
-                poses = self.searchu(coded)
-                chunks = self.run_reader(poses)
-                if chunks:
-                    matches = []
-                    for chunk in chunks:
-                        if chunk.startswith(coded):
-                            matches.append(chunk)
-                    decoded = [match.decode(CODING,'replace') \
-                               for match in matches if match
-                              ]
-                    for i in range(len(decoded)):
-                        ''' Sometimes MT provides for suggestions in
-                            different case, e.g., 'aafc', 'AAFC'
-                            separated by b'\x00'.
-                        '''
-                        decoded[i] = decoded[i].split('\x00')
-                        decoded[i] = [item for item in decoded[i] \
-                                      if item
-                                     ]
-                        if decoded[i][-1]:
-                            decoded[i] = decoded[i][-1]
-                        else:
-                            decoded[i] = decoded[i][0]
-                    if DEBUG:
-                        sh.objs.get_mes(f,decoded,True).show_debug()
-                    return decoded
-                else:
-                    sh.com.rep_empty(f)
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not pattern:
+            sh.com.rep_empty(f)
+            return
+        coded = bytes(pattern,CODING)
+        poses = self.searchu(coded)
+        chunks = self.run_reader(poses)
+        if not chunks:
+            sh.com.rep_empty(f)
+            return
+        matches = []
+        for chunk in chunks:
+            if chunk.startswith(coded):
+                matches.append(chunk)
+        decoded = [match.decode(CODING,'replace') \
+                   for match in matches if match
+                  ]
+        for i in range(len(decoded)):
+            ''' Sometimes MT provides for suggestions in different case, e.g.,
+                'aafc', 'AAFC' separated by b'\x00'.
+            '''
+            decoded[i] = decoded[i].split('\x00')
+            decoded[i] = [item for item in decoded[i] \
+                          if item
+                         ]
+            if decoded[i][-1]:
+                decoded[i] = decoded[i][-1]
+            else:
+                decoded[i] = decoded[i][0]
+        if DEBUG:
+            sh.objs.get_mes(f,decoded,True).show_debug()
+        return decoded
     
     def run_reader(self,poses):
         f = '[MClient] plugins.multitrandem.get.TypeIn.reader'
-        if self.Success:
-            if poses:
-                stream = self.read(poses[0],poses[1])
-                if stream:
-                    chunks = []
-                    pos = 0
-                    while pos + 2 < len(stream):
-                        ''' #NOTE: indexing returns integers,
-                            slicing returns bytes.
-                        '''
-                        read = stream[pos:pos+2]
-                        pos += 2
-                        len1, len2 = struct.unpack('<2b',read)
-                        len1 = com.overflowb(len1)
-                        len2 = com.overflowb(len2)
-                        if pos + len1 + len2 < len(stream):
-                            ''' Do this only after checking
-                                the condition, otherwise, resulting
-                                lists will have a different length.
-                            '''
-                            chunk = stream[pos:pos+len1]
-                            pos += len1 + len2
-                            if chunk:
-                                chunks.append(chunk)
-                        else:
-                            com.report_status(pos,stream)
-                            break
-                    return chunks
-                else:
-                    sh.com.rep_empty(f)
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not poses:
+            sh.com.rep_empty(f)
+            return
+        stream = self.read(poses[0],poses[1])
+        if not stream:
+            sh.com.rep_empty(f)
+            return
+        chunks = []
+        pos = 0
+        while pos + 2 < len(stream):
+            ''' #NOTE: indexing returns integers,
+                slicing returns bytes.
+            '''
+            read = stream[pos:pos+2]
+            pos += 2
+            len1, len2 = struct.unpack('<2b',read)
+            len1 = com.overflowb(len1)
+            len2 = com.overflowb(len2)
+            if pos + len1 + len2 >= len(stream):
+                com.report_status(pos,stream)
+                return chunks
+            ''' Do this only after checking the condition, otherwise, resulting
+                lists will have a different length.
+            '''
+            chunk = stream[pos:pos+len1]
+            pos += len1 + len2
+            if chunk:
+                chunks.append(chunk)
+        return chunks
 
 
 
@@ -1245,12 +1238,12 @@ class Suggest:
     
     def get(self,limit=20):
         f = '[MClient] plugins.multitrandem.get.Suggest.get'
-        if self.Success:
-            suggestions = objs.get_files().get_typein1().search(self.pattern)
-            if suggestions:
-                return suggestions[0:20]
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        suggestions = objs.get_files().get_typein1().search(self.pattern)
+        if suggestions:
+            return suggestions[0:20]
     
     def run(self):
         self.pattern = com.strip(self.pattern)
@@ -1267,17 +1260,17 @@ class AllDics:
     def get_langs(self):
         # Return all available languages
         f = '[MClient] plugins.multitrandem.get.AllDics.langs'
-        if self.Success:
-            #TODO: elaborate
-            if not self.langs:
-                if objs.get_files().iwalker.Success:
-                    for bname in objs.files.iwalker.bnames:
-                        # Relative paths are already lowercased
-                        if bname.startswith('dict.') \
-                        and bname.endswith('t'):
-                            self.langs.append(bname)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.langs
+        #TODO: elaborate
+        if self.langs:
+            return self.langs
+        if objs.get_files().iwalker.Success:
+            for bname in objs.files.iwalker.bnames:
+                # Relative paths are already lowercased
+                if bname.startswith('dict.') and bname.endswith('t'):
+                    self.langs.append(bname)
         return self.langs
     
     def set_values(self):
@@ -1303,108 +1296,101 @@ class Xor:
     
     def dexor(self):
         f = '[MClient] plugins.multitrandem.get.Xor.dexor'
-        if self.data:
-            poses = []
-            pos11 = 0
-            pos12 = 0
-            pos21 = 0
-            coef = 0
-            for i in range(len(self.data)):
-                pos21 = self.data[i]
-                pos = self.data[i] + self.offset - i * self.step \
-                                      + coef
-                if not 0 <= pos <= 255:
-                    pos = abs(pos)
-                    overhead = pos - (pos // 255) * 255 - 1
-                    pos = 255 - overhead
-                    delta = pos11 - pos12 - pos21 + pos
-                    ''' This is a hack to comply with Multitran's
-                        internal logic.
-                    '''
-                    if delta == 249:
-                        pos  += 1
-                        coef += 1
-                    elif delta == -261:
-                        pos  -= 1
-                        coef -= 1
-                    if DEBUG:
-                        mes = _('Overflow: {} -> {}').format(pos21,pos)
-                        sh.objs.get_mes(f,mes,True).show_debug()
-                if DEBUG:
-                    mes = '{} -> {}'.format(self.data[i],pos)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                poses.append(pos)
-                pos11 = self.data[i]
-                pos12 = pos
-            ''' If the algorithm is correct, this should not be needed.
-                I keep this code, however, because a ValueError will
-                be raised otherwise.
-            '''
-            for i in range(len(poses)):
-                if not 0 <= poses[i] <= 255:
-                    mes = _('Invalid value "{}" at position {}!')
-                    mes = mes.format(poses[i],i)
-                    sh.objs.get_mes(f,mes,True).show_error()
-                    poses[i] = 0
-            result = bytes(poses)
-            if DEBUG:
-                mes = com.get_string(result)
-                sh.objs.get_mes(f,mes,True).show_debug()
-            return result
-        else:
+        if not self.data:
             sh.com.rep_empty(f)
+            return
+        poses = []
+        pos11 = 0
+        pos12 = 0
+        pos21 = 0
+        coef = 0
+        for i in range(len(self.data)):
+            pos21 = self.data[i]
+            pos = self.data[i] + self.offset - i * self.step + coef
+            if not 0 <= pos <= 255:
+                pos = abs(pos)
+                overhead = pos - (pos // 255) * 255 - 1
+                pos = 255 - overhead
+                delta = pos11 - pos12 - pos21 + pos
+                # This is a hack to comply with Multitran's internal logic
+                if delta == 249:
+                    pos  += 1
+                    coef += 1
+                elif delta == -261:
+                    pos  -= 1
+                    coef -= 1
+                if DEBUG:
+                    mes = _('Overflow: {} -> {}').format(pos21,pos)
+                    sh.objs.get_mes(f,mes,True).show_debug()
+            if DEBUG:
+                mes = f'{self.data[i]} -> {pos}'
+                sh.objs.get_mes(f,mes,True).show_debug()
+            poses.append(pos)
+            pos11 = self.data[i]
+            pos12 = pos
+        ''' If the algorithm is correct, this should not be needed. I keep this
+            code, however, because a ValueError will be raised otherwise.
+        '''
+        for i in range(len(poses)):
+            if not 0 <= poses[i] <= 255:
+                mes = _('Invalid value "{}" at position {}!')
+                mes = mes.format(poses[i],i)
+                sh.objs.get_mes(f,mes,True).show_error()
+                poses[i] = 0
+        result = bytes(poses)
+        if DEBUG:
+            mes = com.get_string(result)
+            sh.objs.get_mes(f,mes,True).show_debug()
+        return result
     
     def xor(self):
+        #TODO: Is this orphaned? Undefined 'data' was used.
         f = '[MClient] plugins.multitrandem.get.Xor.xor'
-        if data:
-            poses = []
-            pos11 = 0
-            pos12 = 0
-            pos21 = 0
-            coef = 0
-            for i in range(len(self.data)):
-                pos21 = self.data[i]
-                pos = self.data[i] + self.offset + i * self.step \
-                                      + coef
-                if not 0 <= pos <= 255:
-                    pos = abs(pos)
-                    pos = pos - (pos // 255) * 255 - 1
-                    delta = pos11 - pos12 - pos21 + pos
-                    ''' This is a hack to comply with Multitran's
-                        internal logic.
-                    '''
-                    if delta == -249:
-                        pos  -= 1
-                        coef -= 1
-                    elif delta == 261:
-                        pos  += 1
-                        coef += 1
-                    if DEBUG:
-                        mes = _('Overflow: {} -> {}').format(pos21,pos)
-                        sh.objs.get_mes(f,mes,True).show_debug()
-                if DEBUG:
-                    mes = '{} -> {}'.format(data[i],pos)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                poses.append(pos)
-                pos11 = data[i]
-                pos12 = pos
-            ''' If the algorithm is correct, this should not be needed.
-                I keep this code, however, because a ValueError will
-                be raised otherwise.
-            '''
-            for i in range(len(poses)):
-                if not 0 <= poses[i] <= 255:
-                    mes = _('Invalid value "{}" at position {}!')
-                    mes = mes.format(poses[i],i)
-                    sh.objs.get_mes(f,mes,True).show_error()
-                    poses[i] = 0
-            result = bytes(poses)
-            if DEBUG:
-                mes = com.get_string(result)
-                sh.objs.get_mes(f,mes,True).show_debug()
-            return result
-        else:
+        if not self.data:
             sh.com.rep_empty(f)
+            return
+        poses = []
+        pos11 = 0
+        pos12 = 0
+        pos21 = 0
+        coef = 0
+        for i in range(len(self.data)):
+            pos21 = self.data[i]
+            pos = self.data[i] + self.offset + i * self.step + coef
+            if not 0 <= pos <= 255:
+                pos = abs(pos)
+                pos = pos - (pos // 255) * 255 - 1
+                delta = pos11 - pos12 - pos21 + pos
+                # This is a hack to comply with Multitran's internal logic
+                if delta == -249:
+                    pos  -= 1
+                    coef -= 1
+                elif delta == 261:
+                    pos  += 1
+                    coef += 1
+                if DEBUG:
+                    mes = _('Overflow: {} -> {}').format(pos21,pos)
+                    sh.objs.get_mes(f,mes,True).show_debug()
+            if DEBUG:
+                mes = f'{self.data[i]} -> {pos}'
+                sh.objs.get_mes(f,mes,True).show_debug()
+            poses.append(pos)
+            pos11 = self.data[i]
+            pos12 = pos
+        ''' If the algorithm is correct, this should not be needed. I keep this
+            code, however, because a ValueError will be raised otherwise.
+        '''
+        for i in range(len(poses)):
+            if not 0 <= poses[i] <= 255:
+                mes = _('Invalid value "{}" at position {}!')
+                mes = mes.format(poses[i],i)
+                sh.objs.get_mes(f,mes,True).show_error()
+                poses[i] = 0
+        result = bytes(poses)
+        if DEBUG:
+            mes = com.get_string(result)
+            sh.objs.get_mes(f,mes,True).show_debug()
+        return result
 
 
 
@@ -1415,34 +1401,34 @@ class Articles(UPage):
     
     def parse(self,chunk):
         f = '[MClient] plugins.multitrandem.get.Articles.parse'
-        if self.Success:
-            if chunk:
-                return Xor (data = chunk
-                           ,offset = -251
-                           ).dexor()
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not chunk:
+            sh.com.rep_empty(f)
+            return
+        return Xor (data = chunk
+                   ,offset = -251
+                   ).dexor()
     
     def search(self,coded):
         # Do not fail the whole class upon a failed search
         f = '[MClient] plugins.multitrandem.get.Articles.search'
-        if self.Success:
-            if coded:
-                poses = self.searchu(coded)
-                if poses:
-                    chunk = self.get_part2 (pattern = coded
-                                           ,start = poses[0]
-                                           ,end = poses[1]
-                                           )
-                    return self.parse(chunk)
-                else:
-                    sh.com.rep_empty(f)
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not coded:
+            sh.com.rep_empty(f)
+            return
+        poses = self.searchu(coded)
+        if not poses:
+            sh.com.rep_empty(f)
+            return
+        chunk = self.get_part2 (pattern = coded
+                               ,start = poses[0]
+                               ,end = poses[1]
+                               )
+        return self.parse(chunk)
 
 
 
@@ -1454,52 +1440,50 @@ class Glue(UPage):
     def search(self,coded):
         # Do not fail the whole class upon a failed search
         f = '[MClient] plugins.multitrandem.get.Glue.search'
-        if self.Success:
-            if coded:
-                poses = self.searchu(coded)
-                if poses:
-                    chunk = self.get_part2 (pattern = coded
-                                           ,start = poses[0]
-                                           ,end = poses[1]
-                                           )
-                    if chunk:
-                        return self.parse(chunk)
-                    else:
-                        ''' 'dict.erd' sometimes does not comprise
-                            stem numbers provided by 'stem.eng'
-                            (at least in the demo version).
-                        '''
-                        if DEBUG:
-                            sh.com.rep_lazy(f)
-                else:
-                    sh.com.rep_empty(f)
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not coded:
+            sh.com.rep_empty(f)
+            return
+        poses = self.searchu(coded)
+        if not poses:
+            sh.com.rep_empty(f)
+            return
+        chunk = self.get_part2 (pattern = coded
+                               ,start = poses[0]
+                               ,end = poses[1]
+                               )
+        if chunk:
+            return self.parse(chunk)
+        ''' 'dict.erd' sometimes does not comprise stem numbers provided by
+            'stem.eng' (at least in the demo version).
+        '''
+        if DEBUG:
+            sh.com.rep_lazy(f)
     
     def parse(self,chunk):
         f = '[MClient] plugins.multitrandem.get.Glue.parse'
-        if self.Success:
-            if chunk:
-                if (len(chunk) - 2) % 3 == 0 and len(chunk) != 2:
-                    chunk = chunk[2:]
-                    nos = []
-                    chnos = com.get_chunks(chunk,3)
-                    for chno in chnos:
-                        nos.append(com.unpack(chno))
-                    if DEBUG:
-                        sh.objs.get_mes(f,chnos,True).show_debug()
-                        sh.objs.get_mes(f,nos,True).show_debug()
-                    return chnos
-                else:
-                    mes = _('Wrong input data: "{}"!')
-                    mes = mes.format(com.get_string(chunk))
-                    sh.objs.get_mes(f,mes).show_warning()
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not chunk:
+            sh.com.rep_empty(f)
+            return
+        if (len(chunk) - 2) % 3 != 0 or len(chunk) == 2:
+            mes = _('Wrong input data: "{}"!')
+            mes = mes.format(com.get_string(chunk))
+            sh.objs.get_mes(f,mes).show_warning()
+            return
+        chunk = chunk[2:]
+        nos = []
+        chnos = com.get_chunks(chunk,3)
+        for chno in chnos:
+            nos.append(com.unpack(chno))
+        if DEBUG:
+            sh.objs.get_mes(f,chnos,True).show_debug()
+            sh.objs.get_mes(f,nos,True).show_debug()
+        return chnos
 
 
 
@@ -1518,17 +1502,16 @@ class Commands:
     
     def report_status(self,pos,stream):
         f = '[MClient] plugins.multitrandem.get.Commands.report_status'
-        if stream:
-            mes = _('{}/{} bytes have been processed')
-            mes = mes.format(pos,len(stream))
-            sh.objs.get_mes(f,mes,True).show_info()
-            if DEBUG:
-                remains = stream[pos:len(stream)]
-                remains = com.get_string(remains)
-                mes = _('Unprocessed fragment: "{}"').format(remains)
-                sh.objs.get_mes(f,mes,True).show_debug()
-        else:
+        if not stream:
             sh.com.rep_empty(f)
+            return
+        mes = _('{}/{} bytes have been processed').format(pos,len(stream))
+        sh.objs.get_mes(f,mes,True).show_info()
+        if DEBUG:
+            remains = stream[pos:len(stream)]
+            remains = com.get_string(remains)
+            mes = _('Unprocessed fragment: "{}"').format(remains)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def unpackh(self,chno):
         return self.unpack(chno,'<h')
@@ -1536,44 +1519,41 @@ class Commands:
     def overflowh(self,no):
         # Limits: -32768 <= no <= 32767
         f = '[MClient] plugins.multitrandem.get.Commands.overflowh'
-        if no < 0:
-            result = 32768 + no
-            if DEBUG:
-                mes = '{} -> {}'.format(no,result)
-                sh.objs.get_mes(f,mes,True).show_debug()
-            return result
-        else:
+        if no >= 0:
             return no
+        result = 32768 + no
+        if DEBUG:
+            mes = f'{no} -> {result}'
+            sh.objs.get_mes(f,mes,True).show_debug()
+        return result
     
     def overflowb(self,no):
         f = '[MClient] plugins.multitrandem.get.Commands.overflowb'
-        if no < 0:
-            ''' Byte format requires -128 <= no <= 127, so it looks
-                like, when a page size value is negative, it has just
-                overflown the minimum negative -128, e.g., -106 actually
-                means 150: 128 - 106 = 22 => 127 + 22 + 1 = 150.
-            '''
-            new = 256 + no
-            if DEBUG:
-                mes = '{} -> {}'.format(no,new)
-                sh.objs.get_mes(f,mes,True).show_debug()
-            return new
-        else:
+        if no >= 0:
             return no
+        ''' Byte format requires -128 <= no <= 127, so it looks like, when
+            a page size value is negative, it has just overflown the minimum
+            negative -128, e.g., -106 actually means 150:
+            128 - 106 = 22 => 127 + 22 + 1 = 150.
+        '''
+        new = 256 + no
+        if DEBUG:
+            mes = '{} -> {}'.format(no,new)
+            sh.objs.get_mes(f,mes,True).show_debug()
+        return new
     
     def unpack(self,chno,mode='<L'):
         f = '[MClient] plugins.multitrandem.get.Commands.unpack'
-        if chno:
-            if mode == '<L':
-                chno += b'\x00'
-            try:
-                return struct.unpack(mode,chno)[0]
-            except Exception as e:
-                mes = _('Third-party module has failed!\n\nDetails: {}')
-                mes = mes.format(e)
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
+        if not chno:
             sh.com.rep_empty(f)
+            return
+        if mode == '<L':
+            chno += b'\x00'
+        try:
+            return struct.unpack(mode,chno)[0]
+        except Exception as e:
+            mes = _('Third-party module has failed!\n\nDetails: {}').format(e)
+            sh.objs.get_mes(f,mes,True).show_warning()
     
     def is_accessible(self):
         return len(objs.get_all_dics().get_langs())
@@ -1583,19 +1563,20 @@ class Commands:
             for example, '\x00' will be treated like b'\x00').
         '''
         f = '[MClient] plugins.multitrandem.get.Commands.get_string'
+        if not chunk:
+            return ''
         result = ''
-        if chunk:
-            try:
-                chunk = chunk.decode('latin1')
-                result = codecs.encode(chunk,'unicode_escape')
-                result = str(result)
-                result = result.replace('\\\\','\\')
-                result = result[2:-1]
-                if limit:
-                    result = sh.Text(result).shorten(limit)
-            except Exception as e:
-                sh.objs.get_mes(f,str(e)).show_warning()
-                result = str(chunk)
+        try:
+            chunk = chunk.decode('latin1')
+            result = codecs.encode(chunk,'unicode_escape')
+            result = str(result)
+            result = result.replace('\\\\','\\')
+            result = result[2:-1]
+            if limit:
+                result = sh.Text(result).shorten(limit)
+        except Exception as e:
+            sh.objs.get_mes(f,str(e)).show_warning()
+            result = str(chunk)
         return result
     
     def get_chunks(self,iterable,limit=3):
@@ -1603,19 +1584,15 @@ class Commands:
             - Output chunks may have different lengths.
         '''
         f = '[MClient] plugins.multitrandem.get.Commands.get_chunks'
-        if iterable:
-            return [iterable[i:i+limit] \
-                    for i in range(0,len(iterable),limit)
-                   ]
-        else:
+        if not iterable:
             sh.com.rep_empty(f)
             return []
+        return [iterable[i:i+limit] for i in range(0, len(iterable), limit)]
     
-    # Orphan
     def get_subseq(self,iterable,length):
-        ''' - Unlike 'self.get_chunks', this provides for combinations
-              of chunks at different positions instead of slicing
-              an iterable.
+        # Orphaned
+        ''' - Unlike 'self.get_chunks', this provides for combinations of
+              chunks at different positions instead of slicing an iterable.
             - All chunk will have the same length.
         '''
         return [iterable[i: i + length] \
@@ -1684,29 +1661,29 @@ class Files:
     
     def open(self):
         f = '[MClient] plugins.multitrandem.get.Files.open'
-        if self.Success:
-            self.get_typein1()
-            self.get_typein2()
-            self.get_stems1()
-            self.get_stems2()
-            self.get_glue1()
-            self.get_glue2()
-            self.get_article()
-        else:
+        if not self.Success:
             sh.com.rep_lazy(f)
+            return
+        self.get_typein1()
+        self.get_typein2()
+        self.get_stems1()
+        self.get_stems2()
+        self.get_glue1()
+        self.get_glue2()
+        self.get_article()
     
     def close(self):
         f = '[MClient] plugins.multitrandem.get.Files.close'
-        if self.Success:
-            self.get_typein1().close()
-            self.get_typein2().close()
-            self.get_stems1().close()
-            self.get_stems2().close()
-            self.get_glue1().close()
-            self.get_glue2().close()
-            self.get_article().close()
-        else:
+        if not self.Success:
             sh.com.rep_lazy(f)
+            return
+        self.get_typein1().close()
+        self.get_typein2().close()
+        self.get_stems1().close()
+        self.get_stems2().close()
+        self.get_glue1().close()
+        self.get_glue2().close()
+        self.get_article().close()
     
     def reset(self):
         self.set_values()
@@ -1757,16 +1734,16 @@ class Stems(UPage):
     
     def get_speech(self,chno):
         f = '[MClient] plugins.multitrandem.get.Stems.get_speech'
-        if self.Success:
-            if chno in self.speech:
-                result = self.speech[chno]
-                result = com.unpackh(result)
-                if DEBUG:
-                    mes = '{} -> {}'.format(com.get_string(chno),result)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                return result
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if chno in self.speech:
+            result = self.speech[chno]
+            result = com.unpackh(result)
+            if DEBUG:
+                mes = f'{com.get_string(chno)} -> {result}'
+                sh.objs.get_mes(f,mes,True).show_debug()
+            return result
     
     def parse(self,chunk):
         ''' According to "libmtquery-0.0.1alpha3/doc/README.rus":
@@ -1779,121 +1756,120 @@ class Stems(UPage):
             2 bytes - lgk (speech part codes)
         '''
         f = '[MClient] plugins.multitrandem.get.Stems.parse'
-        if self.Success:
-            if chunk:
-                nos = []
-                chnos = []
-                ends = []
-                #NOTE: 0 % 7 == 0
-                if len(chunk) > 1 and (len(chunk) - 1) % 7 == 0:
-                    chunks = com.get_chunks(chunk[1:],7)
-                    for i in range(len(chunks)):
-                        chnos.append(chunks[i][0:3])
-                        ends.append(chunks[i][3:5])
-                        self.speech[chunks[i][0:3]] = chunks[i][5:7]
-                    ends = [struct.unpack('<h',end)[0] for end in ends]
-                    if DEBUG:
-                        for chno in chnos:
-                            nos.append(com.unpack(chno))
-                        if chnos:
-                            ids = [i + 1 for i in range(len(nos))]
-                            tmp = [sh.com.set_figure_commas(no) \
-                                   for no in nos
-                                  ]
-                            mends = [sh.com.set_figure_commas(end) \
-                                     for end in ends
-                                    ]
-                            mchnos = ['"' + com.get_string(chno) + '"' \
-                                      for chno in chnos
-                                     ]
-                            initial = ['"{}"'.format(com.get_string(chunk))\
-                                       for i in range(len(mchnos))
-                                      ]
-                            headers = ('NO','INITIAL','CHUNK'
-                                       ,'UNPACKED','END'
-                                       )
-                            iterable = (ids,initial,mchnos,tmp,mends)
-                            mes = sh.FastTable (headers = headers
-                                               ,iterable = iterable
-                                               ,maxrow = 50
-                                               ).run()
-                            mes = '\n\n' + mes
-                            sh.objs.get_mes(f,mes,True).show_debug()
-                        else:
-                            mes = _('No debug info')
-                            sh.objs.get_mes(f,mes,True).show_debug()
-                    return(chnos,ends)
-                else:
-                    sub = com.get_string(chunk)
-                    mes = _('Wrong input data: "{}"!').format(sub)
-                    sh.objs.get_mes(f,mes,True).show_warning()
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not chunk:
+            sh.com.rep_empty(f)
+            return
+        nos = []
+        chnos = []
+        ends = []
+        #NOTE: 0 % 7 == 0
+        if len(chunk) > 1 and (len(chunk) - 1) % 7 != 0:
+            sub = com.get_string(chunk)
+            mes = _('Wrong input data: "{}"!').format(sub)
+            sh.objs.get_mes(f,mes,True).show_warning()
+            return
+        chunks = com.get_chunks(chunk[1:],7)
+        for i in range(len(chunks)):
+            chnos.append(chunks[i][0:3])
+            ends.append(chunks[i][3:5])
+            self.speech[chunks[i][0:3]] = chunks[i][5:7]
+        ends = [struct.unpack('<h',end)[0] for end in ends]
+        if DEBUG:
+            for chno in chnos:
+                nos.append(com.unpack(chno))
+            if chnos:
+                ids = [i + 1 for i in range(len(nos))]
+                tmp = [sh.com.set_figure_commas(no) \
+                       for no in nos
+                      ]
+                mends = [sh.com.set_figure_commas(end) \
+                         for end in ends
+                        ]
+                mchnos = ['"' + com.get_string(chno) + '"' \
+                          for chno in chnos
+                         ]
+                initial = ['"{}"'.format(com.get_string(chunk))\
+                           for i in range(len(mchnos))
+                          ]
+                headers = ('NO','INITIAL','CHUNK'
+                           ,'UNPACKED','END'
+                           )
+                iterable = (ids,initial,mchnos,tmp,mends)
+                mes = sh.FastTable (headers = headers
+                                   ,iterable = iterable
+                                   ,maxrow = 50
+                                   ).run()
+                mes = '\n\n' + mes
+                sh.objs.get_mes(f,mes,True).show_debug()
+            else:
+                mes = _('No debug info')
+                sh.objs.get_mes(f,mes,True).show_debug()
+        return(chnos,ends)
     
     def search(self,stem,end=''):
         # Do not fail the whole class upon a failed search
         f = '[MClient] plugins.multitrandem.get.Stems.search'
-        if self.Success:
-            ''' MT demo does not comprise stem #3 ('-') at all,
-                so we use this workaround.
-            '''
-            if stem == '-':
-                return [b'\x03\x00\x00']
-            else:
-                # Zero-length stems should be allowed
-                coded = bytes(stem,CODING,'ignore')
-                poses = self.searchu(coded)
-                if poses:
-                    chunks = self.get_parts2 (pattern = coded
-                                             ,start = poses[0]
-                                             ,end = poses[1]
-                                             )
-                    matches = []
-                    unpacked = []
-                    for chunk in chunks:
-                        result = self.parse(chunk)
-                        if result:
-                            chnos, endnos = result[0], result[1]
-                            for i in range(len(endnos)):
-                                if objs.get_files().get_ending().has_match(endnos[i],end):
-                                    if DEBUG:
-                                        no = com.unpack(chnos[i])
-                                        no = sh.com.set_figure_commas(no)
-                                        unpacked.append(no)
-                                    matches.append(chnos[i])
-                    if DEBUG:
-                        if matches:
-                            mmatches = ['"' + com.get_string(match) + '"'\
-                                        for match in matches
-                                       ]
-                            mnos = [i + 1 for i in range(len(mmatches))]
-                            headers = ('NO','STEM','END'
-                                      ,'CHUNK','UNPACKED'
-                                      )
-                            mstems = ['"{}"'.format(stem) \
-                                      for i in range(len(mnos))
-                                     ]
-                            mends = ['"{}"'.format(end) \
-                                      for i in range(len(mnos))
-                                     ]
-                            iterable = (mnos,mstems,mends
-                                       ,mmatches,unpacked
-                                       )
-                            mes = sh.FastTable (headers = headers
-                                               ,iterable = iterable
-                                               ).run()
-                            mes = '\n\n' + mes
-                            sh.objs.get_mes(f,mes,True).show_debug()
-                        else:
-                            mes = _('No debug info')
-                            sh.objs.get_mes(f,mes,True).show_debug()
-                    return matches
-                else:
-                    sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        ''' MT demo does not comprise stem #3 ('-') at all,
+            so we use this workaround.
+        '''
+        if stem == '-':
+            return [b'\x03\x00\x00']
+        # Zero-length stems should be allowed
+        coded = bytes(stem,CODING,'ignore')
+        poses = self.searchu(coded)
+        if not poses:
+            sh.com.rep_empty(f)
+            return
+        chunks = self.get_parts2 (pattern = coded
+                                 ,start = poses[0]
+                                 ,end = poses[1]
+                                 )
+        matches = []
+        unpacked = []
+        for chunk in chunks:
+            result = self.parse(chunk)
+            if result:
+                chnos, endnos = result[0], result[1]
+                for i in range(len(endnos)):
+                    if objs.get_files().get_ending().has_match(endnos[i],end):
+                        if DEBUG:
+                            no = com.unpack(chnos[i])
+                            no = sh.com.set_figure_commas(no)
+                            unpacked.append(no)
+                        matches.append(chnos[i])
+        if DEBUG:
+            if matches:
+                mmatches = ['"' + com.get_string(match) + '"'\
+                            for match in matches
+                           ]
+                mnos = [i + 1 for i in range(len(mmatches))]
+                headers = ('NO','STEM','END'
+                          ,'CHUNK','UNPACKED'
+                          )
+                mstems = ['"{}"'.format(stem) \
+                          for i in range(len(mnos))
+                         ]
+                mends = ['"{}"'.format(end) \
+                          for i in range(len(mnos))
+                         ]
+                iterable = (mnos,mstems,mends
+                           ,mmatches,unpacked
+                           )
+                mes = sh.FastTable (headers = headers
+                                   ,iterable = iterable
+                                   ).run()
+                mes = '\n\n' + mes
+                sh.objs.get_mes(f,mes,True).show_debug()
+            else:
+                mes = _('No debug info')
+                sh.objs.get_mes(f,mes,True).show_debug()
+        return matches
 
 
 
@@ -1907,103 +1883,105 @@ class Get:
     
     def set_speech(self):
         f = '[MClient] plugins.multitrandem.get.Get.set_speech'
-        if self.Success:
-            if self.stemnos:
-                chno = self.stemnos[0][0:3]
-                speech = objs.get_files().get_stems1().get_speech(chno)
-                if DEBUG:
-                    mes = '{} -> {}'.format (com.get_string(chno)
-                                            ,speech
-                                            )
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                if speech is None:
-                    sh.com.rep_empty(f)
-                elif speech == 0:
-                    # MT: phrase;phrase
-                    self.speech = _('Phrase')
-                    self.spabbr = _('phrase')
-                elif speech == 1:
-                    # MT: Abbreviation;abbr;Сокращение;сокр.
-                    self.speech = _('Abbreviation')
-                    self.spabbr = _('abbr.')
-                elif speech == 2:
-                    # MT: Adverb;adv;Наречие;нареч.
-                    self.speech = _('Adverb')
-                    self.spabbr = _('adv.')
-                elif speech == 3:
-                    # MT: Interjection;interj.;
-                    # My translation: Междометие;межд.
-                    self.speech = _('Interjection')
-                    self.spabbr = _('interj.')
-                elif speech == 4:
-                    # MT: Conjunction;conj.
-                    # My translation: Союз;союз
-                    self.speech = _('Conjunction')
-                    self.spabbr = _('conj.')
-                elif speech == 5:
-                    # MT: Article;article
-                    # My translation: Артикль;арт.
-                    self.speech = _('Article')
-                    self.spabbr = _('art.')
-                elif speech == 6:
-                    # MT: Numeral;num;
-                    # My translation: Числительное;числ.
-                    self.speech = _('Numeral')
-                    self.spabbr = _('num.')
-                elif speech == 7:
-                    # MT: Ord Numeral;ord.num;
-                    # My translation: Порядковое числительное;поряд.числ.
-                    self.speech = _('Ordinal Numeral')
-                    self.spabbr = _('ord.num.')
-                elif speech == 8:
-                    # MT: Preposition;prepos.;Предлог;предл.
-                    self.speech = _('Preposition')
-                    self.spabbr = _('prepos.')
-                elif speech == 9:
-                    # MT: Form;form
-                    # My translation: Форма;форма (?)
-                    self.speech = _('Form')
-                    self.spabbr = _('form')
-                elif speech == 10:
-                    # MT: Particle;part.;
-                    # My translation: Частица;част.
-                    self.speech = _('Particle')
-                    self.spabbr = _('part.')
-                elif 11 <= speech < 16:
-                    # MT: Predicative;predic.
-                    # My translation: Предикатив;предик.
-                    self.speech = _('Predicative')
-                    self.spabbr = _('predic.')
-                elif 16 <= speech < 32:
-                    # MT: Pronoun;pron;Местоимение;мест.
-                    self.speech = _('Pronoun')
-                    self.spabbr = _('pron')
-                elif 32 <= speech < 64:
-                    # MT: Adjective;adj;Прилагательное;прил.
-                    self.speech = _('Adjective')
-                    self.spabbr = _('adj')
-                elif 64 <= speech < 128:
-                    # MT: Noun;n;Существительное;сущ.
-                    self.speech = _('Noun')
-                    self.spabbr = _('n')
-                elif 128 <= speech:
-                    # MT: Verb;v;Глагол,гл.
-                    self.speech = _('Verb')
-                    self.spabbr = _('v')
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not self.stemnos:
+            sh.com.rep_empty(f)
+            return
+        chno = self.stemnos[0][0:3]
+        stems1 = objs.get_files().get_stems1()
+        if not stems1:
+            sh.com.rep_lazy(f)
+            return
+        speech = stems1.get_speech(chno)
+        if DEBUG:
+            mes = f'{com.get_string(chno)} -> {speech}'
+            sh.objs.get_mes(f,mes,True).show_debug()
+        if speech is None:
+            sh.com.rep_empty(f)
+        elif speech == 0:
+            # MT: phrase;phrase
+            self.speech = _('Phrase')
+            self.spabbr = _('phrase')
+        elif speech == 1:
+            # MT: Abbreviation;abbr;Сокращение;сокр.
+            self.speech = _('Abbreviation')
+            self.spabbr = _('abbr.')
+        elif speech == 2:
+            # MT: Adverb;adv;Наречие;нареч.
+            self.speech = _('Adverb')
+            self.spabbr = _('adv.')
+        elif speech == 3:
+            # MT: Interjection;interj.;
+            # My translation: Междометие;межд.
+            self.speech = _('Interjection')
+            self.spabbr = _('interj.')
+        elif speech == 4:
+            # MT: Conjunction;conj.
+            # My translation: Союз;союз
+            self.speech = _('Conjunction')
+            self.spabbr = _('conj.')
+        elif speech == 5:
+            # MT: Article;article
+            # My translation: Артикль;арт.
+            self.speech = _('Article')
+            self.spabbr = _('art.')
+        elif speech == 6:
+            # MT: Numeral;num;
+            # My translation: Числительное;числ.
+            self.speech = _('Numeral')
+            self.spabbr = _('num.')
+        elif speech == 7:
+            # MT: Ord Numeral;ord.num;
+            # My translation: Порядковое числительное;поряд.числ.
+            self.speech = _('Ordinal Numeral')
+            self.spabbr = _('ord.num.')
+        elif speech == 8:
+            # MT: Preposition;prepos.;Предлог;предл.
+            self.speech = _('Preposition')
+            self.spabbr = _('prepos.')
+        elif speech == 9:
+            # MT: Form;form
+            # My translation: Форма;форма (?)
+            self.speech = _('Form')
+            self.spabbr = _('form')
+        elif speech == 10:
+            # MT: Particle;part.;
+            # My translation: Частица;част.
+            self.speech = _('Particle')
+            self.spabbr = _('part.')
+        elif 11 <= speech < 16:
+            # MT: Predicative;predic.
+            # My translation: Предикатив;предик.
+            self.speech = _('Predicative')
+            self.spabbr = _('predic.')
+        elif 16 <= speech < 32:
+            # MT: Pronoun;pron;Местоимение;мест.
+            self.speech = _('Pronoun')
+            self.spabbr = _('pron')
+        elif 32 <= speech < 64:
+            # MT: Adjective;adj;Прилагательное;прил.
+            self.speech = _('Adjective')
+            self.spabbr = _('adj')
+        elif 64 <= speech < 128:
+            # MT: Noun;n;Существительное;сущ.
+            self.speech = _('Noun')
+            self.spabbr = _('n')
+        elif 128 <= speech:
+            # MT: Verb;v;Глагол,гл.
+            self.speech = _('Verb')
+            self.spabbr = _('v')
     
     def get_combos(self):
         f = '[MClient] plugins.multitrandem.get.Get.get_combos'
-        if self.Success:
-            self.stemnos = list(itertools.product(*self.stemnos))
-            self.stemnos = [b''.join(item) for item in self.stemnos]
-            if DEBUG:
-                sh.objs.get_mes(f,self.stemnos,True).show_debug()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        self.stemnos = list(itertools.product(*self.stemnos))
+        self.stemnos = [b''.join(item) for item in self.stemnos]
+        if DEBUG:
+            sh.objs.get_mes(f,self.stemnos,True).show_debug()
     
     def check(self):
         f = '[MClient] plugins.multitrandem.get.Get.check'
@@ -2013,52 +1991,56 @@ class Get:
     
     def strip(self):
         f = '[MClient] plugins.multitrandem.get.Get.strip'
-        if self.Success:
-            # Split hyphened words as if they were separate words
-            self.pattern = self.pattern.replace('-',' - ')
-            self.pattern = com.strip(self.pattern)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        # Split hyphened words as if they were separate words
+        self.pattern = self.pattern.replace('-',' - ')
+        self.pattern = com.strip(self.pattern)
     
     def get_stems(self):
         f = '[MClient] plugins.multitrandem.get.Get.get_stems'
-        if self.Success:
-            words = self.pattern.split(' ')
-            for word in words:
-                count = 0
-                word_stems = []
-                i = len(word)
-                # Zero-length stems should be allowed
-                while i >= 0:
-                    #NOTE: nltk: according -> accord -> No matches!
-                    stem = word[0:i]
-                    end = word[i:]
-                    mes = _('Try for "{}|{}"').format(stem,end)
-                    sh.objs.get_mes(f,mes,True).show_info()
-                    ''' Since we swap languages, the needed stems will
-                        always be stored in stem file #1.
-                    '''
-                    stemnos = objs.get_files().get_stems1().search(stem,end)
-                    if stemnos:
-                        mes = _('Found stem: "{}"').format(stem)
-                        sh.objs.get_mes(f,mes,True).show_info()
-                        word_stems += stemnos
-                        ''' There can be several valid stems, e.g.,
-                            'absolute' and 'absolut' (test on
-                            'absolute measurements'). Since finding
-                            valid stems significantly slows down
-                            performance, we allow only 2 valid stems
-                            of the same word.
-                        '''
-                        if count == MAXSTEMS:
-                            break
-                    i -= 1
-                self.stemnos.append(word_stems)
-            self.stemnos = [item for item in self.stemnos if item]
-            if DEBUG:
-                sh.objs.get_mes(f,self.stemnos,True).show_debug()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        words = self.pattern.split(' ')
+        for word in words:
+            count = 0
+            word_stems = []
+            i = len(word)
+            # Zero-length stems should be allowed
+            while i >= 0:
+                #NOTE: nltk: according -> accord -> No matches!
+                stem = word[0:i]
+                end = word[i:]
+                mes = _('Try for "{}|{}"').format(stem,end)
+                sh.objs.get_mes(f,mes,True).show_info()
+                ''' Since we swap languages, the needed stems will always be
+                    stored in stem file #1.
+                '''
+                stems1 = objs.get_files().get_stems1()
+                if not stems1:
+                    sh.com.rep_lazy(f)
+                    return
+                stemnos = stems1.search(stem,end)
+                if stemnos:
+                    mes = _('Found stem: "{}"').format(stem)
+                    sh.objs.get_mes(f,mes,True).show_info()
+                    word_stems += stemnos
+                    ''' There can be several valid stems, e.g.,
+                        'absolute' and 'absolut' (test on
+                        'absolute measurements'). Since finding
+                        valid stems significantly slows down
+                        performance, we allow only 2 valid stems
+                        of the same word.
+                    '''
+                    if count == MAXSTEMS:
+                        break
+                i -= 1
+            self.stemnos.append(word_stems)
+        self.stemnos = [item for item in self.stemnos if item]
+        if DEBUG:
+            sh.objs.get_mes(f,self.stemnos,True).show_debug()
     
     def set_values(self):
         self.Success = True
@@ -2068,25 +2050,29 @@ class Get:
     
     def search(self):
         f = '[MClient] plugins.multitrandem.get.Get.search'
-        if self.Success:
-            art_nos = []
-            for combo in self.stemnos:
-                art_no = objs.get_files().get_glue1().search(combo)
-                if art_no:
-                    art_nos += art_no
-            if art_nos:
-                mes = _('Found articles: {}').format(art_nos)
-            else:
-                mes = _('No articles have been found!')
-            sh.objs.get_mes(f,mes,True).show_info()
-            articles = []
-            for art_no in art_nos:
-                article = objs.get_files().get_article().search(art_no)
-                if article:
-                    articles.append(article)
-            return articles
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        glue1 = objs.get_files().get_glue1()
+        if not glue1:
+            sh.com.rep_lazy(f)
+            return
+        art_nos = []
+        for combo in self.stemnos:
+            art_no = glue1.search(combo)
+            if art_no:
+                art_nos += art_no
+        if art_nos:
+            mes = _('Found articles: {}').format(art_nos)
+        else:
+            mes = _('No articles have been found!')
+        sh.objs.get_mes(f,mes,True).show_info()
+        articles = []
+        for art_no in art_nos:
+            article = objs.get_files().get_article().search(art_no)
+            if article:
+                articles.append(article)
+        return articles
     
     def run(self):
         self.check()
