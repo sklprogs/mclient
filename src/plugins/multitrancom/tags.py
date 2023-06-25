@@ -49,7 +49,7 @@ import instance as ic
 
 class AnalyzeTag:
 
-    def __init__(self,fragm):
+    def __init__(self, fragm):
         self.set_values()
         self.fragm = fragm
     
@@ -94,12 +94,12 @@ class AnalyzeTag:
             self.tag.text = self.tag.text[1:]
         else:
             mes = _('Pattern "{}" is not a tag!').format(self.tag.text)
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
         if self.tag.text.endswith('>'):
             self.tag.text = self.tag.text[:-1]
         else:
             mes = _('Pattern "{}" is not a tag!').format(self.tag.text)
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
 
     def _is_tag(self):
         if self.fragm.startswith('<') and self.fragm.endswith('>'):
@@ -228,7 +228,7 @@ class AnalyzeTag:
 
 class Tags:
     
-    def __init__(self,text,Debug=False,maxrows=0):
+    def __init__(self, text, Debug=False, maxrows=0):
         self.set_values()
         self.code = text
         self.Debug = Debug
@@ -241,12 +241,12 @@ class Tags:
         self.tags = []
         self.open = []
     
-    def _is_script(self,tag):
+    def _is_script(self, tag):
         for subtag in tag.inherent:
             if subtag.name == 'script':
                 return True
     
-    def _close(self,name):
+    def _close(self, name):
         i = len(self.open) - 1
         while i >= 0:
             if self.open[i].name == name:
@@ -275,7 +275,7 @@ class Tags:
         curcell = -1
         for tag in self.tags:
             if not tag.Close:
-                if tag.name in ('tr','td','br') or tag.text == '; ':
+                if tag.name in ('tr', 'td', 'br') or tag.text == '; ':
                     curcell += 1
             tag.cellno = curcell
     
@@ -287,8 +287,10 @@ class Tags:
         subjs = ['"{}"'.format(block.subj) for block in self.blocks]
         subjfs = ['"{}"'.format(block.subjf) for block in self.blocks]
         cellnos = [block.cellno for block in self.blocks]
-        iterable = [nos,types,texts,urls,subjs,subjfs,cellnos]
-        headers = (_('#'),_('TYPE'),_('TEXT'),'URL','SUBJ','SUBJF',_('CELL #'))
+        iterable = [nos, types, texts, urls, subjs, subjfs, cellnos]
+        headers = (_('#'), _('TYPE'), _('TEXT'), 'URL', 'SUBJ', 'SUBJF'
+                  ,_('CELL #')
+                  )
         # 10'' monitor: 20 symbols per a column
         # 23'' monitor: 50 symbols per a column
         mes = sh.FastTable (iterable = iterable
@@ -319,7 +321,7 @@ class Tags:
             # This is because MT generates invalid links
             block.url = html.unescape(block.url)
             block.text = html.unescape(block.text)
-            if block.type_ in ('subj','phsubj'):
+            if block.type_ in ('subj', 'phsubj'):
                 block.subj = block.text
             self.blocks.append(block)
     
@@ -337,7 +339,7 @@ class Tags:
     def _debug_fragms(self):
         mes = []
         for i in range(len(self.fragms)):
-            sub = '{}: "{}"'.format(i+1,self.fragms[i])
+            sub = '{}: "{}"'.format(i + 1, self.fragms[i])
             mes.append(sub)
         return _('Fragments:') + '\n' + '\n'.join(mes)
     
@@ -357,9 +359,11 @@ class Tags:
                 subtags.append(subtag.name)
             subtags = ', '.join(subtags)
             inherent.append(subtags)
-        iterable = [nos,closes,names,types,texts,urls,subjfs,inherent,cellnos]
-        headers = (_('#'),_('CLOSING'),_('NAME'),_('TYPE'),_('TEXT'),'URL'
-                  ,'DICF',_('OPEN'),_('CELL')
+        iterable = [nos, closes, names, types, texts, urls, subjfs, inherent
+                   ,cellnos
+                   ]
+        headers = (_('#'), _('CLOSING'), _('NAME'), _('TYPE'), _('TEXT'), 'URL'
+                  ,'DICF', _('OPEN'), _('CELL')
                   )
         # 10'' monitor: 13 symbols per a column
         # 23'' monitor: 30 symbols per a column
@@ -379,8 +383,8 @@ class Tags:
             sh.com.rep_lazy(f)
             return ''
         '''
-        mes = [self._debug_code(),self._debug_fragms()
-              ,self._debug_tags(),self._debug_blocks()
+        mes = [self._debug_code(), self._debug_fragms()
+              ,self._debug_tags(), self._debug_blocks()
               ]
         '''
         mes = [self._debug_blocks()]
@@ -437,13 +441,13 @@ class Tags:
             if self.fragms[i].startswith('<') and len(self.fragms[i]) > 1 \
             and not self.fragms[i][1] in allowed:
                 mes.append(self.fragms[i])
-                self.fragms[i] = self.fragms[i].replace('<','')
-                self.fragms[i] = self.fragms[i].replace('>','')
+                self.fragms[i] = self.fragms[i].replace('<', '')
+                self.fragms[i] = self.fragms[i].replace('>', '')
                 count += 1
         #mes = sorted(set(mes))
         mes = '; '.join(mes)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        sh.com.rep_matches(f,count)
+        sh.objs.get_mes(f, mes, True).show_debug()
+        sh.com.rep_matches(f, count)
     
     def run(self):
         self.check()
