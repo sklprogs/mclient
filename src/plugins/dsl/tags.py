@@ -56,9 +56,8 @@ class Block:
         self.last = -1
         self.no = -1
         self.same = -1
-        ''' 'select' is an attribute of a *cell* which is valid
-            if the cell has a non-blocked block of types 'term',
-            'phrase' or 'transc'.
+        ''' 'select' is an attribute of a *cell* which is valid if the cell has
+            a non-blocked block of types 'term', 'phrase' or 'transc'.
         '''
         self.select = -1
         self.speech = ''
@@ -66,8 +65,8 @@ class Block:
         self.transc = ''
         self.term = ''
         self.text = ''
-        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase',
-            'speech', 'term', 'transc', 'wform'
+        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
+            'term', 'transc', 'wform'.
         '''
         self.type_ = 'comment'
         self.url = ''
@@ -86,7 +85,7 @@ class Tag:
 
 class Tags:
     
-    def __init__(self,code,dicname='',Debug=False,maxrows=0):
+    def __init__(self, code, dicname='', Debug=False, maxrows=0):
         self.set_values()
         self.all_prior = [i for i in range(len(self.all_types))]
         self.code = code
@@ -101,16 +100,14 @@ class Tags:
                 block = Block()
                 block.text = block.dicf = block.dic = self.dicname
                 block.type_ = 'dic'
-                self.blocks.insert(0,block)
+                self.blocks.insert(0, block)
             else:
                 sh.com.rep_lazy(f)
         else:
             sh.com.cancel(f)
     
     def set_values(self):
-        self.all_types = ['term','dic','wform','transc','comment'
-                         ,'phrase'
-                         ]
+        self.all_types = ['term', 'dic', 'wform', 'transc', 'comment', 'phrase']
         self.blocks = []
         self.fragms = []
         self.open = []
@@ -121,8 +118,8 @@ class Tags:
         nos = [i + 1 for i in range(len(self.blocks))]
         texts = [block.text for block in self.blocks]
         types = [block.type_ for block in self.blocks]
-        iterable = [nos,types,texts]
-        headers = (_('#'),_('TYPES'),_('TEXT'))
+        iterable = [nos, types, texts]
+        headers = (_('#'), _('TYPES'), _('TEXT'))
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
                            ,maxrow = 50
@@ -130,7 +127,7 @@ class Tags:
                            ).run()
         return _('Blocks:') + '\n' + mes
     
-    def _get_max_type(self,types):
+    def _get_max_type(self, types):
         f = '[MClient] plugins.dsl.tags.Tags._get_max_type'
         prior = []
         i = 0
@@ -140,7 +137,7 @@ class Tags:
                 prior.append(self.all_prior[index_])
             except ValueError:
                 mes = _('Wrong input data: "{}"!').format(types[i])
-                sh.objs.get_mes(f,mes,True).show_warning()
+                sh.objs.get_mes(f, mes, True).show_warning()
                 del types[i]
                 i -= 1
             i += 1
@@ -181,14 +178,14 @@ class Tags:
                 deleted = ['"{}"'.format(item) for item in deleted]
                 deleted = ', '.join(deleted)
                 mes = _('Ignore blocks: {}').format(deleted)
-                sh.objs.get_mes(f,mes,True).show_debug()
+                sh.objs.get_mes(f, mes, True).show_debug()
         else:
             sh.com.cancel(f)
     
     def keep_useful(self):
         f = '[MClient] plugins.dsl.tags.Tags.keep_useful'
         if self.Success:
-            useful = ('com','ex','i','p','ref','t','term','trn','wform')
+            useful = ('com', 'ex', 'i', 'p', 'ref', 't', 'term', 'trn', 'wform')
             for item in self.tagged:
                 item.tags = [tag for tag in item.tags \
                              if tag in useful or 'ref dict' in tag
@@ -203,7 +200,7 @@ class Tags:
                 for i in range(len(item.tags)):
                     if item.tags[i] == 'trn':
                         item.tags[i] = 'term'
-                    elif item.tags[i] in ('com','ex','i'):
+                    elif item.tags[i] in ('com', 'ex', 'i'):
                         item.tags[i] = 'comment'
                     elif item.tags[i] == 'p':
                         item.tags[i] = 'wform'
@@ -215,13 +212,13 @@ class Tags:
         else:
             sh.com.cancel(f)
     
-    def _close_tag(self,tag):
+    def _close_tag(self, tag):
         f = '[MClient] plugins.dsl.tags.Tags._close_tag'
         if tag in self.open:
             self.open.remove(tag)
         elif tag == 'm':
             for item in self.open:
-                if re.match('m\d+',item):
+                if re.match('m\d+', item):
                     self.open.remove(item)
         elif tag == 'ref':
             for item in self.open:
@@ -233,11 +230,11 @@ class Tags:
                     self.open.remove(item)
         else:
             mes = _('Tag "{}" has not been opened yet!').format(tag)
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
     
-    def _get_tag_name(self,tag):
+    def _get_tag_name(self, tag):
         tag = tag[:-1]
-        tag = tag.replace('[','',1)
+        tag = tag.replace('[', '', 1)
         if tag.startswith('/'):
             tag = tag[1:]
         return tag
@@ -271,7 +268,7 @@ class Tags:
         f = '[MClient] plugins.dsl.tags.Tags.delete_trash'
         if self.Success:
             self.fragms = [fragm.strip() for fragm in self.fragms \
-                           if fragm not in ('\n','\n\t')
+                           if fragm not in ('\n', '\n\t')
                           ]
         else:
             sh.com.cancel(f)
@@ -282,7 +279,7 @@ class Tags:
     def _debug_fragms(self):
         mes = []
         for i in range(len(self.fragms)):
-            sub = '{}: "{}"'.format(i+1,self.fragms[i])
+            sub = '{}: "{}"'.format(i + 1, self.fragms[i])
             mes.append(sub)
         return _('Fragments:') + '\n' + '\n'.join(mes)
     
@@ -290,8 +287,8 @@ class Tags:
         nos = [i + 1 for i in range(len(self.tagged))]
         texts = [item.text for item in self.tagged]
         tags = [', '.join(item.tags) for item in self.tagged]
-        iterable = [nos,tags,texts]
-        headers = (_('#'),_('TAGS'),_('TEXT'))
+        iterable = [nos, tags, texts]
+        headers = (_('#'), _('TAGS'), _('TEXT'))
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
                            ,maxrow = 50
@@ -301,17 +298,17 @@ class Tags:
     
     def debug(self):
         f = '[MClient] plugins.dsl.tags.Tags.debug'
-        if self.Debug:
-            if self.Success:
-                mes = [self._debug_code(),self._debug_fragms()
-                      ,self._debug_tagged(),self._debug_blocks()
-                      ]
-                mes = '\n\n'.join(mes)
-                sh.com.run_fast_debug(f,mes)
-            else:
+        if not self.Success:
                 sh.com.cancel(f)
-        else:
+                return
+        if not self.Debug:
             sh.com.rep_lazy(f)
+            return
+        mes = [self._debug_code(), self._debug_fragms()
+              ,self._debug_tagged(), self._debug_blocks()
+              ]
+        mes = '\n\n'.join(mes)
+        sh.com.run_fast_debug(f, mes)
     
     def check(self):
         f = '[MClient] plugins.dsl.tags.Tags.check'
@@ -362,5 +359,5 @@ if __name__ == '__main__':
     code = sh.ReadTextFile(file).get()
     code = cu.CleanUp(code).run()
     code = cu.TagLike(code).run()
-    Tags(code,True).run()
+    Tags(code, True).run()
     sh.com.end()
