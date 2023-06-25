@@ -87,12 +87,12 @@ class Elems:
                     and self.blocks[i].lang == 2:
                         self.blocks[i-1], self.blocks[i] = self.blocks[i], self.blocks[i-1]
     
-    def _get_pair(self,text):
+    def _get_pair(self, text):
         f = '[MClient] plugins.multitrandem.elems.Elems._get_pair'
-        code = sh.Input(f,text).get_integer()
+        code = sh.Input(f, text).get_integer()
         return self.abbr.get_pair(code)
     
-    def _check_dic_codes(self,text):
+    def _check_dic_codes(self, text):
         # Emptyness check is performed before that
         if text[0] == ' ' or text[-1] == ' ' or '  ' in text:
             return
@@ -118,7 +118,7 @@ class Elems:
             if not self._check_dic_codes(block.text):
                 mes = _('Wrong input data: "{}"!')
                 mes = mes.format(block.text)
-                sh.objs.get_mes(f,mes,True).show_warning()
+                sh.objs.get_mes(f, mes, True).show_warning()
                 continue
             abbr = []
             full = []
@@ -168,7 +168,7 @@ class Elems:
             sh.com.rep_lazy(f)
             return
         mes = _('Debug table:')
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         headers = ('NO', 'TYPE', 'TEXT', 'SAME', 'CELLNO', 'ROWNO', 'COLNO'
                   ,'POS1', 'POS2'
                   )
@@ -191,7 +191,7 @@ class Elems:
                            ,maxrows = self.maxrows
                            ,Transpose = True
                            ).run()
-        sh.com.run_fast_debug(f,mes)
+        sh.com.run_fast_debug(f, mes)
         
     def set_transc(self):
         pass
@@ -199,7 +199,7 @@ class Elems:
     
     def add_brackets(self):
         for block in self.blocks:
-            if block.type_ in ('comment','user','correction'):
+            if block.type_ in ('comment', 'user', 'correction'):
                 block.same = 1
                 if not block.text.startswith('(') \
                 and not block.text.endswith(')'):
@@ -211,7 +211,7 @@ class Elems:
                 continue
             cond = False
             if i > 0 and self.blocks[i-1].text:
-                if self.blocks[i-1].text[-1] in ['(','[','{']:
+                if self.blocks[i-1].text[-1] in ['(', '[', '{']:
                     cond = True
             if self.blocks[i].text and not self.blocks[i].text[0].isspace() \
             and not self.blocks[i].text[0] in sh.lg.punc_array \
@@ -257,7 +257,7 @@ class Elems:
                 ''' #TODO: Is there a difference if we use both
                     term/phrase here or the term only?
                 '''
-            elif block.type_ in ('term','phrase'):
+            elif block.type_ in ('term', 'phrase'):
                 term = block.text
             block.dic = dic
             block.dicf = dicf
@@ -284,7 +284,7 @@ class Elems:
                 block.transc = self.blocks[i].transc
                 block.term = self.blocks[i].term
                 block.same = 0
-                self.blocks.insert(i,block)
+                self.blocks.insert(i, block)
                 
                 block = Block()
                 block.type_ = 'transc'
@@ -296,7 +296,7 @@ class Elems:
                 block.transc = self.blocks[i].transc
                 block.term = self.blocks[i].term
                 block.same = 0
-                self.blocks.insert(i,block)
+                self.blocks.insert(i, block)
 
                 block = Block()
                 block.type_ = 'wform'
@@ -308,7 +308,7 @@ class Elems:
                 block.transc = self.blocks[i].transc
                 block.term = self.blocks[i].term
                 block.same = 0
-                self.blocks.insert(i,block)
+                self.blocks.insert(i, block)
                 
                 block = Block()
                 block.type_ = 'dic'
@@ -320,7 +320,7 @@ class Elems:
                 block.transc = self.blocks[i].transc
                 block.term = self.blocks[i].term
                 block.same = 0
-                self.blocks.insert(i,block)
+                self.blocks.insert(i, block)
                 
                 dic = self.blocks[i].dic
                 wform = self.blocks[i].wform
@@ -330,13 +330,13 @@ class Elems:
             
     def remove_fixed(self):
         self.blocks = [block for block in self.blocks if block.type_ \
-                       not in ('dic','wform','transc','speech')
+                       not in ('dic', 'wform', 'transc', 'speech')
                       ]
                        
     def set_selectables(self):
         # block.no is set only after creating DB
         for block in self.blocks:
-            if block.type_ in ('phrase','term','transc') \
+            if block.type_ in ('phrase', 'term', 'transc') \
             and block.text and block.select < 1:
                 block.select = 1
             else:
@@ -365,7 +365,7 @@ if __name__ == '__main__':
                    ,Debug = True
                    ).run()
     for i in range(len(blocks)):
-        mes = '{}: {}: "{}"'.format (i,blocks[i].type_
+        mes = '{}: {}: "{}"'.format (i, blocks[i].type_
                                     ,blocks[i].text
                                     )
         print(mes)
