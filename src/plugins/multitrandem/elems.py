@@ -1,15 +1,12 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import re
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 
-
-# A copy of Tags.Block
 class Block:
-    
+    # A copy of Tags.Block
     def __init__(self):
         self.block = -1
         # Applies to non-blocked cells only
@@ -24,9 +21,8 @@ class Block:
         self.last = -1
         self.no = -1
         self.same = -1
-        ''' '_select' is an attribute of a *cell* which is valid
-            if the cell has a non-blocked block of types 'term',
-            'phrase' or 'transc'
+        ''' '_select' is an attribute of a *cell* which is valid if the cell
+            has a non-blocked block of types 'term', 'phrase' or 'transc'.
         '''
         self.select = -1
         self.speech = ''
@@ -34,8 +30,8 @@ class Block:
         self.term = ''
         self.text = ''
         self.transc = ''
-        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase',
-            'speech', 'term', 'transc', 'user', 'wform'
+        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
+            'term', 'transc', 'user', 'wform'.
         '''
         self.type_ = 'invalid'
         self.url = ''
@@ -45,10 +41,9 @@ class Block:
 
 class Elems:
     # Process blocks before dumping to DB
-    def __init__ (self,blocks,abbr,langs=[]
-                 ,Debug=False,maxrow=20
-                 ,maxrows=20,search=''
-                 ):
+    def __init__(self, blocks, abbr, langs=[], Debug=False, maxrow=20
+                ,maxrows=20, search=''
+                ):
         f = '[MClient] plugins.multitrandem.elems.Elems.__init__'
         self.abbr = abbr
         self.Debug = Debug
@@ -111,34 +106,35 @@ class Elems:
     
     def set_dic_titles(self):
         f = '[MClient] plugins.multitrandem.elems.Elems.set_dic_titles'
-        if self.abbr:
-            if self.abbr.Success:
-                for block in self.blocks:
-                    if block.type_ == 'dic' and block.text:
-                        if self._check_dic_codes(block.text):
-                            abbr = []
-                            full = []
-                            dics = block.text.split(' ')
-                            for dic in dics:
-                                pair = self._get_pair(dic)
-                                if pair:
-                                    abbr.append(pair[0])
-                                    full.append(pair[1])
-                                else:
-                                    sh.com.rep_empty(f)
-                            abbr = '; '.join(abbr)
-                            full = '; '.join(full)
-                            block.text = abbr
-                            block.dic = abbr
-                            block.dicf = full
-                        else:
-                            mes = _('Wrong input data: "{}"!')
-                            mes = mes.format(block.text)
-                            sh.objs.get_mes(f,mes,True).show_warning()
-            else:
-                sh.com.cancel(f)
-        else:
+        if not self.abbr:
             sh.com.rep_empty(f)
+            return
+        if not self.abbr.Success:
+            sh.com.cancel(f)
+            return
+        for block in self.blocks:
+            if block.type_ != 'dic' or not block.text:
+                continue
+            if not self._check_dic_codes(block.text):
+                mes = _('Wrong input data: "{}"!')
+                mes = mes.format(block.text)
+                sh.objs.get_mes(f,mes,True).show_warning()
+                continue
+            abbr = []
+            full = []
+            dics = block.text.split(' ')
+            for dic in dics:
+                pair = self._get_pair(dic)
+                if pair:
+                    abbr.append(pair[0])
+                    full.append(pair[1])
+                else:
+                    sh.com.rep_empty(f)
+            abbr = '; '.join(abbr)
+            full = '; '.join(full)
+            block.text = abbr
+            block.dic = abbr
+            block.dicf = full
     
     def strip(self):
         for block in self.blocks:
@@ -146,54 +142,56 @@ class Elems:
     
     def run(self):
         f = '[MClient] plugins.multitrandem.elems.Elems.run'
-        if self.Success:
-            # Do some cleanup
-            self.strip()
-            # Prepare contents
-            self.reorder()
-            self.set_dic_titles()
-            self.add_brackets()
-            # Prepare for cells
-            self.fill()
-            self.remove_fixed()
-            self.insert_fixed()
-            # Extra spaces in the beginning may cause sorting problems
-            self.add_space()
-            #TODO: expand parts of speech (n -> noun, etc.)
-            self.set_selectables()
-            self.debug()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return self.blocks
+        # Do some cleanup
+        self.strip()
+        # Prepare contents
+        self.reorder()
+        self.set_dic_titles()
+        self.add_brackets()
+        # Prepare for cells
+        self.fill()
+        self.remove_fixed()
+        self.insert_fixed()
+        # Extra spaces in the beginning may cause sorting problems
+        self.add_space()
+        #TODO: expand parts of speech (n -> noun, etc.)
+        self.set_selectables()
+        self.debug()
         return self.blocks
     
     def debug(self):
         f = 'plugins.multitrandem.elems.Elems.debug'
-        if self.Debug:
-            mes = _('Debug table:')
-            sh.objs.get_mes(f,mes,True).show_debug()
-            headers = ('NO','TYPE','TEXT','SAME','CELLNO','ROWNO'
-                      ,'COLNO','POS1','POS2'
-                      )
-            rows = []
-            for i in range(len(self.blocks)):
-                rows.append ([i + 1
-                             ,self.blocks[i].type_
-                             ,self.blocks[i].text
-                             ,self.blocks[i].same
-                             ,self.blocks[i].cellno
-                             ,self.blocks[i].i
-                             ,self.blocks[i].j
-                             ,self.blocks[i].first
-                             ,self.blocks[i].last
-                             ]
-                            )
-            mes = sh.FastTable (headers = headers
-                               ,iterable = rows
-                               ,maxrow = self.maxrow
-                               ,maxrows = self.maxrows
-                               ,Transpose = True
-                               ).run()
-            sh.com.run_fast_debug(f,mes)
+        if not self.Debug:
+            sh.com.rep_lazy(f)
+            return
+        mes = _('Debug table:')
+        sh.objs.get_mes(f,mes,True).show_debug()
+        headers = ('NO', 'TYPE', 'TEXT', 'SAME', 'CELLNO', 'ROWNO', 'COLNO'
+                  ,'POS1', 'POS2'
+                  )
+        rows = []
+        for i in range(len(self.blocks)):
+            rows.append ([i + 1
+                         ,self.blocks[i].type_
+                         ,self.blocks[i].text
+                         ,self.blocks[i].same
+                         ,self.blocks[i].cellno
+                         ,self.blocks[i].i
+                         ,self.blocks[i].j
+                         ,self.blocks[i].first
+                         ,self.blocks[i].last
+                         ]
+                        )
+        mes = sh.FastTable (headers = headers
+                           ,iterable = rows
+                           ,maxrow = self.maxrow
+                           ,maxrows = self.maxrows
+                           ,Transpose = True
+                           ).run()
+        sh.com.run_fast_debug(f,mes)
         
     def set_transc(self):
         pass
@@ -209,17 +207,16 @@ class Elems:
     
     def add_space(self):
         for i in range(len(self.blocks)):
-            if self.blocks[i].same > 0:
-                cond = False
-                if i > 0 and self.blocks[i-1].text:
-                    if self.blocks[i-1].text[-1] in ['(','[','{']:
-                        cond = True
-                if self.blocks[i].text \
-                  and not self.blocks[i].text[0].isspace() \
-                  and not self.blocks[i].text[0] in sh.lg.punc_array \
-                  and not self.blocks[i].text[0] in [')',']','}'] \
-                  and not cond:
-                    self.blocks[i].text = ' ' + self.blocks[i].text
+            if self.blocks[i].same <= 0:
+                continue
+            cond = False
+            if i > 0 and self.blocks[i-1].text:
+                if self.blocks[i-1].text[-1] in ['(','[','{']:
+                    cond = True
+            if self.blocks[i].text and not self.blocks[i].text[0].isspace() \
+            and not self.blocks[i].text[0] in sh.lg.punc_array \
+            and not self.blocks[i].text[0] in [')', ']', '}'] and not cond:
+                self.blocks[i].text = ' ' + self.blocks[i].text
                 
     def fill(self):
         dic = dicf = wform = speech = transc = term = ''
@@ -274,8 +271,7 @@ class Elems:
         dic = wform = speech = ''
         i = 0
         while i < len(self.blocks):
-            if dic != self.blocks[i].dic \
-            or wform != self.blocks[i].wform \
+            if dic != self.blocks[i].dic or wform != self.blocks[i].wform \
             or speech != self.blocks[i].speech:
                 
                 block = Block()
@@ -327,7 +323,6 @@ class Elems:
                 self.blocks.insert(i,block)
                 
                 dic = self.blocks[i].dic
-                dicf = self.blocks[i].dicf
                 wform = self.blocks[i].wform
                 speech = self.blocks[i].speech
                 i += 4
