@@ -104,12 +104,12 @@ class Trash:
             delete = [block.text for block in self.blocks[:self.head]]
             delete = sh.List(delete).space_items()
             mes = _('Start fragment: "{}"').format(delete)
-            sh.objs.get_mes(f,mes,True).show_debug()
+            sh.objs.get_mes(f, mes, True).show_debug()
         if self.tail is not None:
             delete = [block.text for block in self.blocks[self.tail:]]
             delete = sh.List(delete).space_items()
             mes = _('End fragment: "{}"').format(delete)
-            sh.objs.get_mes(f,mes,True).show_debug()
+            sh.objs.get_mes(f, mes, True).show_debug()
     
     def delete(self):
         f = '[MClientQt] plugins.multitrancom.elems.Trash.delete'
@@ -119,7 +119,7 @@ class Trash:
             self.blocks = self.blocks[:self.tail]
         if self.head is not None:
             self.blocks = self.blocks[self.head+1:]
-        sh.com.rep_matches(f,old_len-len(self.blocks))
+        sh.com.rep_matches(f, old_len-len(self.blocks))
     
     def run(self):
         self.set_head()
@@ -134,7 +134,7 @@ class Thesaurus:
     ''' - "English thesaurus" wform becoming subj. Run after 'delete_empty';
         - Thesaurus is optional so we use 'rep_lazy' instead of 'cancel'.
     '''
-    def __init__(self,blocks):
+    def __init__(self, blocks):
         self.no = None
         self.blocks = blocks
     
@@ -165,17 +165,17 @@ class Thesaurus:
         while i < len(self.blocks):
             if self.blocks[i].type_ == 'subj':
                 count += 1
-                self.blocks[i].text = sh.List ([self.blocks[self.no].text,','
+                self.blocks[i].text = sh.List ([self.blocks[self.no].text, ','
                                               ,self.blocks[i].text]
                                               ).space_items()
-                self.blocks[i].subj = sh.List ([self.blocks[self.no].subj,','
+                self.blocks[i].subj = sh.List ([self.blocks[self.no].subj, ','
                                               ,self.blocks[i].subj]
                                               ).space_items()
-                self.blocks[i].subjf = sh.List ([self.blocks[self.no].subjf,','
-                                               ,self.blocks[i].subjf]
+                self.blocks[i].subjf = sh.List ([self.blocks[self.no].subjf
+                                               ,',', self.blocks[i].subjf]
                                                ).space_items()
             i += 1
-        sh.com.rep_matches(f,count)
+        sh.com.rep_matches(f, count)
     
     def delete(self):
         f = '[MClientQt] plugins.multitrancom.elems.Thesaurus.delete'
@@ -187,7 +187,7 @@ class Thesaurus:
         except IndexError:
             # This should never happen. We did the search in the same class.
             mes = _('Wrong input data: "{}"!').format(self.no)
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
     
     def run(self):
         self.set_no()
@@ -199,7 +199,7 @@ class Thesaurus:
 
 class SeparateWords:
     
-    def __init__(self,blocks):
+    def __init__(self, blocks):
         self.patterns = ('- найдены отдельные слова'
                         ,'- only individual words found'
                         ,'- einzelne Wörter gefunden'
@@ -248,7 +248,7 @@ class SeparateWords:
                 self.blocks[i].type_ = 'term'
             else:
                 for pattern in self.patterns:
-                    self.blocks[i].text = self.blocks[i].text.replace(pattern,'')
+                    self.blocks[i].text = self.blocks[i].text.replace(pattern, '')
             self.blocks[i].cellno = self.blocks[i-1].cellno
             i += 1
         self.blocks = [block for block in self.blocks \
@@ -292,7 +292,7 @@ class SeparateWords:
         self._set()
         self._delete()
         self._set_terms()
-        sh.com.rep_deleted(f,old_len-len(self.blocks))
+        sh.com.rep_deleted(f, old_len - len(self.blocks))
         self._add_subject()
         self.Separate = True
     
@@ -366,7 +366,7 @@ class Suggestions:
             '''
             if block.type_ == 'comment':
                 block.type_ = 'term'
-        sh.com.rep_deleted(f,old_len-len(self.blocks))
+        sh.com.rep_deleted(f, old_len - len(self.blocks))
         self._add_subject()
     
     def run(self):
@@ -377,7 +377,7 @@ class Suggestions:
 
 class Elems:
     
-    def __init__(self,blocks):
+    def __init__(self, blocks):
         self.cells = []
         self.art_subj = {}
         self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
@@ -392,10 +392,10 @@ class Elems:
             if cell.fixed_block.type_ in ('subj', 'phsubj', 'wform') and cell.url:
                 self.fixed_urls[cell.fixed_block.type_][cell.text] = cell.url
     
-    def _is_block_fixed(self,block):
+    def _is_block_fixed(self, block):
         return block.type_ in ('subj', 'wform', 'speech', 'transc', 'phsubj')
     
-    def _get_fixed_block(self,cell):
+    def _get_fixed_block(self, cell):
         for block in cell.blocks:
             if block.Fixed:
                 return block
@@ -413,12 +413,12 @@ class Elems:
         count = 0
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i-1].type_ in ('phrase','comment') \
+            if self.blocks[i-1].type_ in ('phrase', 'comment') \
             and self.blocks[i].type_ == 'phcount':
                 count += 1
                 self.blocks[i].cellno = self.blocks[i-1].cellno
             i += 1
-        sh.com.rep_matches(f,count)
+        sh.com.rep_matches(f, count)
     
     def set_cells(self):
         f = '[MClientQt] plugins.multitrancom.elems.Elems.set_cells'
@@ -427,7 +427,7 @@ class Elems:
             return
         if len(self.blocks) < 2:
             mes = f'{len(self.blocks)} >= 2'
-            sh.com.rep_condition(f,mes)
+            sh.com.rep_condition(f, mes)
             return
         cell = ic.Cell()
         cell.blocks.append(self.blocks[0])
@@ -494,7 +494,7 @@ class Elems:
             old_len = len(cell.blocks)
             cell.blocks = [block for block in cell.blocks if block.text != '; ']
             count += old_len - len(cell.blocks)
-        sh.com.rep_matches(f,count)
+        sh.com.rep_matches(f, count)
     
     def unite_brackets(self):
         ''' Combine a cell with a preceding or following bracket such that the
@@ -518,7 +518,7 @@ class Elems:
                     del cell.blocks[i-2]
                     i -= 2
                 i += 1
-        sh.com.rep_matches(f,count)
+        sh.com.rep_matches(f, count)
     
     def separate_fixed(self):
         f = '[MClientQt] plugins.multitrancom.elems.Elems.separate_fixed'
@@ -532,7 +532,7 @@ class Elems:
                 # We just need a different 'cellno' (will be reassigned anyway)
                 self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
             i += 1
-        sh.com.rep_matches(f,count)
+        sh.com.rep_matches(f, count)
     
     def separate_speech(self):
         ''' Speech can come in structures like 'wform + comment + speech', but
@@ -548,7 +548,7 @@ class Elems:
                 # We just need a different 'cellno' (will be reassigned anyway)
                 self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
             i += 1
-        sh.com.rep_matches(f,count)
+        sh.com.rep_matches(f, count)
     
     def set_transc(self):
         f = '[MClientQt] plugins.multitrancom.elems.Elems.set_transc'
@@ -558,13 +558,13 @@ class Elems:
             and block.text.endswith(']'):
                 count += 1
                 block.type_ = 'transc'
-        sh.com.rep_matches(f,count)
+        sh.com.rep_matches(f, count)
     
     def delete_empty(self):
         f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_empty'
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks if block.text.strip()]
-        sh.com.rep_matches(f,old_len-len(self.blocks))
+        sh.com.rep_matches(f, old_len - len(self.blocks))
     
     def convert_user_subj(self):
         # "Gruzovik" and other entries that function as 'subj'
@@ -577,7 +577,7 @@ class Elems:
                 count += 1
                 self.blocks[i].type_ = 'subj'
             i += 1
-        sh.com.rep_matches(f,count)
+        sh.com.rep_matches(f, count)
     
     def set_phsubj(self):
         f = '[MClientQt] plugins.multitrancom.elems.Elems.set_phsubj'
@@ -620,7 +620,7 @@ class Elems:
     
     def _get_last_subj(self):
         for cell in self.cells[::-1]:
-            if cell.fixed_block and cell.fixed_block.type_ in ('subj','phsubj'):
+            if cell.fixed_block and cell.fixed_block.type_ in ('subj', 'phsubj'):
                 return cell.text
     
     def _get_last_wform(self):
@@ -638,15 +638,15 @@ class Elems:
             if cell.fixed_block and cell.fixed_block.type_ == 'transc':
                 return cell.text
     
-    def _get_prev_subj(self,i):
+    def _get_prev_subj(self, i):
         while i >= 0:
             if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type_ in ('subj','phsubj'):
+            and self.cells[i].fixed_block.type_ in ('subj', 'phsubj'):
                 return self.cells[i].text
             i -= 1
         return ''
     
-    def _get_prev_wform(self,i):
+    def _get_prev_wform(self, i):
         while i >= 0:
             if self.cells[i].fixed_block \
             and self.cells[i].fixed_block.type_ == 'wform':
@@ -654,7 +654,7 @@ class Elems:
             i -= 1
         return ''
     
-    def _get_prev_speech(self,i):
+    def _get_prev_speech(self, i):
         while i >= 0:
             if self.cells[i].fixed_block \
             and self.cells[i].fixed_block.type_ == 'speech':
@@ -662,7 +662,7 @@ class Elems:
             i -= 1
         return ''
     
-    def _get_prev_transc(self,i):
+    def _get_prev_transc(self, i):
         while i >= 0:
             if self.cells[i].fixed_block \
             and self.cells[i].fixed_block.type_ == 'transc':
@@ -698,7 +698,7 @@ class Elems:
                 del self.cells[i]
                 i -= 1
             i += 1
-        sh.com.rep_matches(f,count)
+        sh.com.rep_matches(f, count)
     
     def strip_blocks(self):
         # Needed for 'phsubj' and such 'wform' as 'English Thesaurus'
@@ -710,7 +710,7 @@ class Elems:
     def rename_phsubj(self):
         for cell in self.cells:
             if cell.fixed_block and cell.fixed_block.type_ == 'phsubj':
-                match = re.search(r'(\d+)',cell.text)
+                match = re.search(r'(\d+)', cell.text)
                 if match:
                     title = _('Phrases ({})').format(match.group(1))
                     # 'fill_fixed' is block-oriented
@@ -734,7 +734,7 @@ class Elems:
                 rowno += 1
             self.cells[i].rowno = rowno
             i += 1
-        sh.com.rep_matches(f,count)
+        sh.com.rep_matches(f, count)
     
     def set_art_subj(self):
         f = '[MClientQt] plugins.multitrancom.elems.Elems.set_art_subj'
@@ -743,7 +743,7 @@ class Elems:
             if block.type_ in ('subj', 'phsubj') and block.subj and block.subjf:
                 count += 1
                 self.art_subj[block.subj] = block.subjf
-        sh.com.rep_matches(f,count)
+        sh.com.rep_matches(f, count)
     
     def set_not_found(self):
         for block in self.blocks:
