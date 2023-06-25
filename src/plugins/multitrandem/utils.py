@@ -14,13 +14,13 @@ import get as gt
 
 COLOR = 'cyan'
 BUFFER = 200
-DUMP1 = sh.Home().add('tmp','dump1')
-DUMP2 = sh.Home().add('tmp','dump2')
+DUMP1 = sh.Home().add('tmp', 'dump1')
+DUMP2 = sh.Home().add('tmp', 'dump2')
 
 
 class Xor:
     
-    def __init__(self,bytes1,bytes2):
+    def __init__(self, bytes1, bytes2):
         self.set_values()
         self.bytes1 = bytes1
         self.bytes2 = bytes2
@@ -45,16 +45,16 @@ class Xor:
         self.Success = False
         sub = f'{len(self.bytes1)} == {len(self.bytes2)}'
         mes = _('The condition "{}" is not observed!').format(sub)
-        sh.objs.get_mes(f,mes,True).show_warning()
+        sh.objs.get_mes(f, mes, True).show_warning()
         
     def report(self):
         f = '[MClient] plugins.multitrandem.utils.Xor.report'
         if not self.Success:
             sh.com.cancel(f)
             return
-        headers = ('NO','ORIG','INT1','INT2')
+        headers = ('NO', 'ORIG', 'INT1', 'INT2')
         nos = [i + 1 for i in range(len(self.syms))]
-        iterable = (nos,self.syms,self.ints1,self.ints2)
+        iterable = (nos, self.syms, self.ints1, self.ints2)
         mes = sh.FastTable (headers = headers
                            ,iterable = iterable
                            ,sep = sh.lg.nbspace * 2
@@ -67,7 +67,7 @@ class Xor:
             sh.com.cancel(f)
             return
         for i in range(len(self.bytes1)):
-            decoded = self.bytes1[i:i+1].decode(gt.CODING,'replace')
+            decoded = self.bytes1[i:i+1].decode(gt.CODING, 'replace')
             decoded = '"{}"'.format(decoded)
             self.syms.append(decoded)
             self.ints1.append(self.bytes1[i])
@@ -76,6 +76,9 @@ class Xor:
 
 
 class Tests:
+    
+    def __init__(self):
+        self.dump1 = self.dump2 = None
     
     def gen_patterns(self):
         f = '[MClient] plugins.multitrandem.utils.Tests.gen_patterns'
@@ -86,16 +89,16 @@ class Tests:
                                   ,length = len_
                                   ,table = table
                                   )
-        sh.com.run_fast_debug(f,str(result))
+        sh.com.run_fast_debug(f, str(result))
     
     def analyze_xor(self):
         f = '[MClient] plugins.multitrandem.utils.Tests.analyze_xor'
         bytes1 = b'Bullshit!'
         bytes2 = b'-fcivqx\x89<'
-        ixor = Xor(bytes1,bytes2)
+        ixor = Xor(bytes1, bytes2)
         ixor.analyze()
         mes = ixor.report()
-        sh.com.run_fast_debug(f,mes)
+        sh.com.run_fast_debug(f, mes)
     
     def get_patch(self):
         #f = '[MClient] plugins.multitrandem.utils.Tests.get_patch'
@@ -139,9 +142,9 @@ class Tests:
         messages.append(str(ints2))
         mes = '\n'.join(messages)
         sh.Clipboard().copy(str(ints2))
-        #sh.com.run_fast_debug(f,mes)
+        #sh.com.run_fast_debug(f, mes)
         filew = '/tmp/result.txt'
-        sh.WriteTextFile(filew,True).write(mes)
+        sh.WriteTextFile(filew, True).write(mes)
         sh.Launch(filew).launch_default()
     
     def corrupt(self):
@@ -158,9 +161,9 @@ class Tests:
                           ,subst = subst
                           )
         mes = _('Restore the damaged file?')
-        if not sh.objs.get_mes(f,mes,True).show_question():
+        if not sh.objs.get_mes(f, mes, True).show_question():
             mes = _('Operation has been canceled by the user.')
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
             return
         com.corrupt (filew = file
                     ,pos = pos
@@ -175,9 +178,9 @@ class Tests:
         iparse1 = Parser(DUMP1)
         iparse2 = Parser(DUMP2)
         pos1 = 0
-        pos2 = min(iparse1.get_file_size(),iparse2.get_file_size())
-        iparse1.run_reader(pos1,pos2)
-        iparse2.run_reader(pos1,pos2)
+        pos2 = min(iparse1.get_file_size(), iparse2.get_file_size())
+        iparse1.run_reader(pos1, pos2)
+        iparse2.run_reader(pos1, pos2)
         iparse1.parse_article()
         iparse2.parse_article()
         if not iparse1.Success or not iparse2.Success:
@@ -193,27 +196,27 @@ class Tests:
         len12 = len(iparse1.chunks2)
         len21 = len(iparse2.chunks1)
         len22 = len(iparse2.chunks2)
-        mes = 'len(iparse1.chunks1): {}'.format(len11)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        mes = 'len(iparse1.chunks2): {}'.format(len12)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        mes = 'len(iparse2.chunks1): {}'.format(len21)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        mes = 'len(iparse2.chunks2): {}'.format(len22)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        max_ = max(len11,len12,len21,len22)
+        mes = f'len(iparse1.chunks1): {len11}'
+        sh.objs.get_mes(f, mes, True).show_debug()
+        mes = f'len(iparse1.chunks2): {len12}'
+        sh.objs.get_mes(f, mes, True).show_debug()
+        mes = f'len(iparse2.chunks1): {len21}'
+        sh.objs.get_mes(f, mes, True).show_debug()
+        mes = f'len(iparse2.chunks2): {len22}'
+        sh.objs.get_mes(f, mes, True).show_debug()
+        max_ = max(len11, len12, len21, len22)
         nos = [i + 1 for i in range(max_)]
-        headers = ('NO','D1P1','D1P2','D2P1','D2P2')
-        iterable = [nos,lens11,lens12,lens21,lens22]
+        headers = ('NO', 'D1P1', 'D1P2', 'D2P1', 'D2P2')
+        iterable = [nos, lens11, lens12, lens21, lens22]
         mes = sh.FastTable (headers = headers
                            ,iterable = iterable
                            ).run()
-        sh.com.run_fast_debug(f,mes)
-        mes = 'len11: {}'.format(len11) + '\n'
-        mes += 'len12: {}'.format(len12) + '\n'
-        mes += 'len21: {}'.format(len21) + '\n'
-        mes += 'len22: {}'.format(len22) + '\n'
-        sh.com.run_fast_debug(f,mes)
+        sh.com.run_fast_debug(f, mes)
+        mes = f'len11: {len11}\n'
+        mes += f'len12: {len12}\n'
+        mes += f'len21: {len21}\n'
+        mes += f'len22: {len22}\n'
+        sh.com.run_fast_debug(f, mes)
         '''
         lens11 = sorted(set(lens11))
         lens12 = sorted(set(lens12))
@@ -236,39 +239,48 @@ class Tests:
         lens22 = [item for item in lens22 if item in lens12]
         mes = 'SHARED lens21:\n' + str(lens21) + '\n\n'
         mes += 'SHARED lens22:\n' + str(lens22) + '\n\n'
-        sh.com.run_fast_debug(f,mes)
+        sh.com.run_fast_debug(f, mes)
         iparse1.close()
         iparse2.close()
     
-    def compare_bytes(self,maxlen=10):
-        f = '[MClient] plugins.multitrandem.utils.Tests.compare_bytes'
-        dump1 = gt.Binary(DUMP1)
-        dump2 = gt.Binary(DUMP2)
-        end1 = dump1.get_file_size()
-        end2 = dump2.get_file_size()
-        read1 = dump1.read(0,end1)
-        read2 = dump2.read(0,end2)
-        if read1 and read2:
-            if len(read1) > maxlen and len(read2) > maxlen:
-                sex = gt.com.get_subseq(read2,maxlen)
-                matches = [seq for seq in sex if seq in read1]
-                if matches:
-                    matches = [gt.com.get_string(match,0) \
-                               for match in matches
-                              ]
-                    for i in range(len(matches)):
-                        matches[i] = '{}: {}'.format(i,matches[i])
-                    mes = '\n'.join(matches)
-                    sh.com.run_fast_debug(f,mes)
-                else:
-                    mes = _('No matches!')
-                    sh.objs.get_mes(f,mes).show_info()
-            else:
-                sh.com.rep_lazy(f)
-        else:
+    def close_dumps(self):
+        f = '[MClient] plugins.multitrandem.utils.Tests.close_dumps'
+        if self.dump1 is None:
             sh.com.rep_empty(f)
-        dump1.close()
-        dump2.close()
+        self.dump1.close()
+        if self.dump2 is None:
+            sh.com.rep_empty(f)
+        self.dump2.close()
+    
+    def compare_bytes(self, maxlen=10):
+        f = '[MClient] plugins.multitrandem.utils.Tests.compare_bytes'
+        self.dump1 = gt.Binary(DUMP1)
+        self.dump2 = gt.Binary(DUMP2)
+        end1 = self.dump1.get_file_size()
+        end2 = self.dump2.get_file_size()
+        read1 = self.dump1.read(0, end1)
+        read2 = self.dump2.read(0, end2)
+        if not read1 or not read2:
+            sh.com.rep_empty(f)
+            self.close_dumps()
+            return
+        if len(read1) <= maxlen or len(read2) <= maxlen:
+            sh.com.rep_lazy(f)
+            self.close_dumps()
+            return
+        sex = gt.com.get_subseq(read2, maxlen)
+        matches = [seq for seq in sex if seq in read1]
+        if not matches:
+            mes = _('No matches!')
+            sh.objs.get_mes(f,mes).show_info()
+            self.close_dumps()
+            return
+        matches = [gt.com.get_string(match,0) for match in matches]
+        for i in range(len(matches)):
+            matches[i] = f'{i}: {matches[i]}'
+        mes = '\n'.join(matches)
+        sh.com.run_fast_debug(f,mes)
+        self.close_dumps()
     
     def show_dumps(self):
         CompareBinaries(DUMP1,DUMP2).show_menu()
