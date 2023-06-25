@@ -24,7 +24,7 @@ class Speech:
             if self.dic[short] == full:
                 return short
         mes = _('Wrong input data: "{}"!').format(full)
-        sh.objs.get_mes(f,mes,True).show_warning()
+        sh.objs.get_mes(f, mes, True).show_warning()
         return full
     
     def get_settings(self):
@@ -45,7 +45,7 @@ class Speech:
         for i in range(len(speeches)):
             speeches[i] = self._get_short(speeches[i])
         #mes = ', '.join(speeches)
-        #sh.objs.get_mes(f,mes,True).show_debug()
+        #sh.objs.get_mes(f, mes, True).show_debug()
         return speeches
 
 
@@ -80,7 +80,7 @@ class Articles:
             return len(self.articles['ids']) - 1
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
         return -1
     
     def set_table(self, table):
@@ -89,7 +89,7 @@ class Articles:
             self.articles['ids'][self.id]['table'] = table
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
     
     def get_table(self):
         f = '[MClientQt] logic.Articles.set_table'
@@ -97,7 +97,7 @@ class Articles:
             return self.articles['ids'][self.id]['table']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
     
     def get_cell(self, rowno, colno):
         f = '[MClientQt] logic.Articles.get_cell'
@@ -105,7 +105,7 @@ class Articles:
             return self.articles['ids'][self.id]['table'][rowno][colno]
         except (KeyError, IndexError):
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
     
     def get_len(self):
         return self.get_max_id() + 1
@@ -139,7 +139,7 @@ class Articles:
             del self.articles['ids'][self.id]
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
             return
         if self.id > 0:
             self.set_id(self.id-1)
@@ -152,7 +152,7 @@ class Articles:
             self.articles['ids']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
             return
         for id_ in self.articles['ids']:
             self.articles['ids'][id_]['rowno'] = -1
@@ -165,7 +165,7 @@ class Articles:
             self.articles['ids'][self.id]['colno'] = colno
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
     
     def get_bookmark(self):
         f = '[MClientQt] logic.Articles.get_bookmark'
@@ -175,7 +175,7 @@ class Articles:
                    )
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
     
     def set_id(self, id_):
         f = '[MClientQt] logic.Articles.set_id'
@@ -183,7 +183,7 @@ class Articles:
             self.articles['ids'][id_]
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
             return
         self.id = id_
     
@@ -193,7 +193,7 @@ class Articles:
             return self.articles['ids'][self.id]['search']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
         return ''
     
     def get_source(self):
@@ -202,7 +202,7 @@ class Articles:
             return self.articles['ids'][self.id]['source']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
         return ''
     
     def get_url(self):
@@ -211,7 +211,7 @@ class Articles:
             return self.articles['ids'][self.id]['url']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
         return ''
     
     def get_lang1(self):
@@ -220,7 +220,7 @@ class Articles:
             return self.articles['ids'][self.id]['lang1']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
         return ''
     
     def get_lang2(self):
@@ -229,7 +229,7 @@ class Articles:
             return self.articles['ids'][self.id]['lang2']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
         return ''
     
     def get_raw_code(self):
@@ -238,7 +238,7 @@ class Articles:
             return self.articles['ids'][self.id]['raw_code']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
         return ''
     
     def get_cells(self):
@@ -247,7 +247,7 @@ class Articles:
             return self.articles['ids'][self.id]['cells']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
         return []
     
     def find(self, source, search, url):
@@ -256,7 +256,7 @@ class Articles:
             self.articles['ids']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
             return
         for id_ in self.articles['ids']:
             if self.articles['ids'][id_]['source'] == source \
@@ -271,7 +271,7 @@ class Articles:
             return self.articles['ids'][self.id]['Parallel']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
     
     def is_separate(self):
         f = '[MClientQt] logic.Articles.is_separate'
@@ -279,7 +279,7 @@ class Articles:
             return self.articles['ids'][self.id]['Separate']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
 
 
 
@@ -309,7 +309,7 @@ class App:
 
 class HTM:
 
-    def __init__(self,cells,skipped=0):
+    def __init__(self, cells, skipped=0):
         # 'collimit' includes fixed blocks
         self.set_values()
         self.cells = cells
@@ -317,14 +317,14 @@ class HTM:
         
     def set_landscape(self):
         f = '[MClientQt] logic.HTM.set_landscape'
-        file = sh.objs.get_pdir().add('..','resources','landscape.html')
+        file = sh.objs.get_pdir().add('..', 'resources', 'landscape.html')
         code = sh.ReadTextFile(file).get()
         if not code:
             sh.com.rep_empty(f)
             return
         if not '%s' in code:
             mes = _('Wrong input data: "{}"!').format(code)
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
             return
         # Either don't use 'format' here or double all curly braces in script
         self.landscape = code % _('Print')
@@ -380,7 +380,7 @@ class HTM:
                         sub2 = sub2.format(ifont.col_width)
                     else:
                         sub2 = ''
-                    sub = sub.format(sub1,sub2)
+                    sub = sub.format(sub1, sub2)
                     '''
                     sub = '<td valign="top">'
                     code.append(sub)
@@ -476,14 +476,14 @@ class ColumnWidth:
             return
         self.fixed_num = 4
         mes = _('Number of fixed columns: {}').format(self.fixed_num)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def set_term_num(self):
         f = '[MClientQt] logic.ColumnWidth.set_term_num'
         self.term_num = com.get_colnum()
         mes = _('Number of term columns: {}')
         mes = mes.format(self.term_num)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def set_columns(self):
         col_nos = self.fixed_num + self.term_num
@@ -508,7 +508,7 @@ class CurRequest:
         self.reset()
     
     def set_values(self):
-        self.cols = ('subj','wform','transc','speech')
+        self.cols = ('subj', 'wform', 'transc', 'speech')
         self.collimit = sh.lg.globs['int']['colnum'] + len(self.cols)
         ''' Toggling blacklisting should not depend on a number of blocked
             subjects (otherwise, it is not clear how blacklisting should be
@@ -550,7 +550,7 @@ class Objects:
             self.config.run()
         return self.config
     
-    def get_plugins(self,Debug=False,maxrows=1000):
+    def get_plugins(self, Debug=False, maxrows=1000):
         if self.plugins is None:
             self.plugins = manager.Plugins (sdpath = self.get_default().get_dics()
                                            ,mbpath = self.default.get_dics()
@@ -560,7 +560,7 @@ class Objects:
                                            )
         return self.plugins
     
-    def get_default(self,product='mclient'):
+    def get_default(self, product='mclient'):
         if not self.default:
             cf.PRODUCT_LOW = product.lower()
             self.default = cf.DefaultConfig()
@@ -593,7 +593,7 @@ class Commands:
             pass
         else:
             mes = _('Wrong input data: "{}"!').format(type_)
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
         return ''
     
     def get_col_types(self):
@@ -606,7 +606,7 @@ class Commands:
         for i in range(len(types)):
             types[i] = self._get_col_type(types[i])
         mes = ', '.join(types)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         return types
     
     def is_parallel(self):
@@ -615,14 +615,14 @@ class Commands:
     def is_separate(self):
         return objs.get_articles().get_len() > 0 and objs.articles.is_separate()
     
-    def get_text(self,cells):
+    def get_text(self, cells):
         f = '[MClientQt] logic.Commands.get_text'
         if not cells:
             sh.com.rep_empty(f)
             return ''
         return '\n'.join([cell.plain for cell in cells])
     
-    def fix_colors(self,colors):
+    def fix_colors(self, colors):
         ''' We need HTML code both in cells and output to be saved. Qt requires
             that color names are put in quotes; however, browsers do not
             understand color names in quotes, so we must delete these quotes
@@ -633,9 +633,9 @@ class Commands:
             sh.com.rep_empty(f)
             return
         for color in colors:
-            objs.get_request().htm = objs.request.htm.replace(f"'{color}'",color)
+            objs.get_request().htm = objs.request.htm.replace(f"'{color}'", color)
     
-    def get_colors(self,blocks):
+    def get_colors(self, blocks):
         f = '[MClientQt] logic.Commands.get_colors'
         if not blocks:
             sh.com.rep_empty(f)
@@ -659,7 +659,7 @@ class Commands:
         #NOTE: update source and target languages first
         objs.get_request().url = objs.get_plugins().get_url(objs.request.search)
         mes = objs.request.url
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def control_length(self):
         # Confirm too long requests
@@ -668,7 +668,7 @@ class Commands:
         if len(objs.get_request().search) >= 150:
             mes = _('The request is long ({} symbols). Do you really want to send it?')
             mes = mes.format(len(objs.request.search))
-            if not sh.objs.get_mes(f,mes).show_question():
+            if not sh.objs.get_mes(f, mes).show_question():
                 Confirmed = False
         return Confirmed
     
@@ -686,7 +686,7 @@ class Commands:
     def export_style(self):
         f = '[MClientQt] logic.Commands.export_style'
         ''' Do not use 'gettext' to name internal types - this will make
-            the program ~0,6s slower.
+            the program ~0.6s slower.
         '''
         lst = [choice for choice in (sh.lg.globs['str']['col1_type']
                                     ,sh.lg.globs['str']['col2_type']
@@ -710,13 +710,13 @@ class Commands:
             elif lst[i] == _('Transcription'):
                 lst[i] = 'transc'
             else:
-                sub = (_('Subjects'),_('Word forms'),_('Transcription')
+                sub = (_('Subjects'), _('Word forms'), _('Transcription')
                       ,_('Parts of speech')
                       )
                 sub = '; '.join(sub)
                 mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-                mes = mes.format(lst[i],sub)
-                sh.objs.get_mes(f,mes).show_error()
+                mes = mes.format(lst[i], sub)
+                sh.objs.get_mes(f, mes).show_error()
         if not lst:
             sh.com.rep_lazy(f)
             return
@@ -729,7 +729,7 @@ class Commands:
     def save_config(self):
         cf.CreateConfig(objs.get_default().fconf).run()
     
-    def suggest(self,search,limit=0):
+    def suggest(self, search, limit=0):
         f = '[MClientQt] logic.Commands.suggest'
         items = objs.get_plugins().suggest(search)
         if items:
@@ -746,11 +746,11 @@ class Commands:
             [SSL: CERTIFICATE_VERIFY_FAILED]>. To get rid of this error, we use
             this small workaround.
         '''
-        if hasattr(ssl,'_create_unverified_context'):
+        if hasattr(ssl, '_create_unverified_context'):
             ssl._create_default_https_context = ssl._create_unverified_context
         else:
             mes = _('Unable to use unverified certificates!')
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
 
 
 
@@ -822,7 +822,7 @@ class Table:
             mes = mes.format(', '.join([str(item) for item in self.empty_cols]))
         else:
             mes = _('All columns have texts')
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def get_next_row_by_col(self, rowno, colno, ref_colno):
         f = '[MClientQt] logic.Table.get_next_row_by_col'
@@ -837,7 +837,7 @@ class Table:
                 return tuple_
         elif rowno > 0:
             return self.get_next_row_by_col(-1, colno, ref_colno)
-        return(rowno,colno)
+        return(rowno, colno)
     
     def get_prev_row_by_col(self, rowno, colno, ref_colno):
         f = '[MClientQt] logic.Table.get_prev_row_by_col'
@@ -971,7 +971,7 @@ class Table:
         self.rownum = len(self.plain)
         self.colnum = len(self.plain[0])
         mes = _('Table size: {}×{}').format(self.rownum, self.colnum)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def get_end(self):
         return self.get_prev_col(self.rownum - 1, self.colnum)
@@ -1040,8 +1040,8 @@ class Search(Table):
         rowno, colno = self.get_next_col(self.rowno, self.colno)
         mes = _('Row #{}. Column #{}: "{}"')
         mes = mes.format(rowno, colno, self.plain[rowno][colno])
-        sh.objs.get_mes(f,mes,True).show_debug()
-        return(rowno,colno)
+        sh.objs.get_mes(f, mes, True).show_debug()
+        return(rowno, colno)
     
     def search_prev(self):
         f = '[MClientQt] logic.Search.search_prev'
@@ -1054,7 +1054,7 @@ class Search(Table):
         rowno, colno = self.get_prev_col(self.rowno, self.colno)
         mes = _('Row #{}. Column #{}. Text: "{}"')
         mes = mes.format(rowno, colno, self.plain[rowno][colno])
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         return(rowno, colno)
     
     def _get_next_col(self, rowno, colno):

@@ -68,14 +68,14 @@ class Priorities(pr.Priorities):
     def reset(self):
         #self.lst1 = lg.objs.get_default().prior
         self.dic1 = {'Компьютеры':
-                        ['Компьютеры','Майкрософт','Программирование','Оракл']
+                        ['Компьютеры', 'Майкрософт', 'Программирование', 'Оракл']
                     ,'Разговорная лексика':
-                        ['Разговорная лексика','Арго','Грубо','Мат'
-                        ,'Возвышенно','Поэтически'
+                        ['Разговорная лексика', 'Арго', 'Грубо', 'Мат'
+                        ,'Возвышенно', 'Поэтически'
                         ]
                     ,'Языки':
-                        ['Языки','Английский','Французский','Немецкий'
-                        ,'Русский','Датский','Японский','Китайский'
+                        ['Языки', 'Английский', 'Французский', 'Немецкий'
+                        ,'Русский', 'Датский', 'Японский', 'Китайский'
                         ]
                     }
         self.set_mode()
@@ -89,7 +89,7 @@ class Priorities(pr.Priorities):
 
 class UpdateUI:
     
-    def __init__(self,gui):
+    def __init__(self, gui):
         self.Parallel = lg.com.is_parallel()
         self.Separate = lg.com.is_separate()
         self.gui = gui
@@ -101,11 +101,11 @@ class UpdateUI:
         f = '[MClient] mclient.UpdateUI.restore'
         mes = _('Restore source language: {}')
         mes = mes.format(sh.lg.globs['str']['lang1'])
-        sh.objs.get_mes(f,mes,True).show_info()
+        sh.objs.get_mes(f, mes, True).show_info()
         lg.objs.get_plugins().set_lang1(sh.lg.globs['str']['lang1'])
         mes = _('Restore target language: {}')
         mes = mes.format(sh.lg.globs['str']['lang2'])
-        sh.objs.get_mes(f,mes,True).show_info()
+        sh.objs.get_mes(f, mes, True).show_info()
         lg.objs.plugins.set_lang2(sh.lg.globs['str']['lang2'])
         self.gui.reset_opt()
         self.gui.opt_src.set(sh.lg.globs['str']['source'])
@@ -193,7 +193,7 @@ class UpdateUI:
         '''
         if sh.lg.globs['bool']['BlockSubjects'] and skipped_terms:
             sub = _('Skipped {} terms in {} subjects')
-            sub = sub.format(skipped_terms,skipped_dics)
+            sub = sub.format(skipped_terms, skipped_dics)
         else:
             sub = _('Nothing was blocked')
         mes.append(sub)
@@ -285,7 +285,7 @@ class FontLimits:
     def get_space(self):
         space = self.gui.get_space(self.text, self.font)
         #mes = _('Space: {}').format(space)
-        #sh.objs.get_mes(f,mes,True).show_debug()
+        #sh.objs.get_mes(f, mes, True).show_debug()
         return space
 
 
@@ -298,8 +298,8 @@ class Save(sv.Save):
     
     def add_bindings(self):
         self.gui.save.clicked.connect(self.select)
-        self.gui.bind('Return',self.select)
-        self.gui.bind('Enter',self.select)
+        self.gui.bind('Return', self.select)
+        self.gui.bind('Enter', self.select)
     
     def select(self):
         f = '[MClientQt] mclient.Save.select'
@@ -321,7 +321,7 @@ class Save(sv.Save):
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(opt, '; '.join(self.model.items))
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
 
     def _add_web_ext(self):
         if not sh.Path(self.file).get_ext_low() in ('.htm', '.html'):
@@ -370,7 +370,7 @@ class Save(sv.Save):
             return
         if not sh.Path(self.file).get_ext_low() == '.txt':
             self.file += '.txt'
-        text = sh.Text(lg.objs.request.text,True).text
+        text = sh.Text(lg.objs.request.text, True).text
         sh.WriteTextFile (file = self.file
                          ,Rewrite = True
                          ).write(text)
@@ -385,7 +385,7 @@ class Save(sv.Save):
 
     def copy_view(self):
         f = '[MClientQt] mclient.Save.copy_view'
-        text = sh.Text(lg.objs.get_request().text,True).text
+        text = sh.Text(lg.objs.get_request().text, True).text
         if text:
             sh.Clipboard().copy(text)
         else:
@@ -413,7 +413,7 @@ class Commands:
         # We already use 'distinct' in DB, no need to use 'set'
         skipped.sort()
         mes = '; '.join(skipped)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         return skipped
         '''
     
@@ -430,7 +430,7 @@ class Commands:
         skipped = skipped.split(', ')
         skipped = sorted(set(skipped))
         mes = '; '.join(skipped)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         return skipped
         '''
     
@@ -447,7 +447,7 @@ class Commands:
         prioritized = prioritized.split(', ')
         prioritized = set(prioritized)
         mes = '; '.join(prioritized)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         return prioritized
         '''
 
@@ -455,8 +455,8 @@ class Commands:
 
 class Welcome(wl.Welcome):
 
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.sources = []
     
     def loop_online_sources(self):
@@ -485,14 +485,14 @@ class Welcome(wl.Welcome):
         code = self.set_font(code)
         self.logic.table.append([code])
     
-    def gen_online_source(self,title,status,color):
+    def gen_online_source(self, title, status, color):
         code = '<b>{} <font color="{}">{}</font></b>'
-        code = code.format(title,color,status)
+        code = code.format(title, color, status)
         return code
     
-    def gen_offline_source(self,title,status,color):
+    def gen_offline_source(self, title, status, color):
         code = '{}: <font color="{}">{}</font>'
-        code = code.format(title,color,status)
+        code = code.format(title, color, status)
         return code
     
     def fill(self):
@@ -557,8 +557,8 @@ class Welcome(wl.Welcome):
 
 class About(ab.About):
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.parties = tp.ThirdParties()
         self.add_bindings()
 
@@ -573,13 +573,13 @@ class Table:
 
     def __init__(self):
         self.set_values()
-        self.logic = lg.Table([],[])
+        self.logic = lg.Table([], [])
         self.gui = gi.Table()
         self.search = Search()
         self.popup = pp.Popup()
         self.set_gui()
     
-    def _get_page_row(self,page):
+    def _get_page_row(self, page):
         for rowno in self.coords2:
             if self.coords2[rowno] == page:
                 return rowno
@@ -598,7 +598,7 @@ class Table:
         cur_page = self.coords2[rowno]
         if cur_page < 0:
             mes = '{} >= 0'.format(cur_page)
-            sh.com.rep_condition(f,mes)
+            sh.com.rep_condition(f, mes)
             return
         if cur_page == 0:
             sh.com.rep_lazy(f)
@@ -607,7 +607,7 @@ class Table:
         if rowno is None:
             sh.com.rep_empty(f)
             return
-        self.select(rowno,colno)
+        self.select(rowno, colno)
     
     def go_page_down(self):
         f = '[MClientQt] mclient.Table.go_page_down'
@@ -623,8 +623,8 @@ class Table:
         cur_page = self.coords2[rowno]
         max_page = self.coords2[max(self.coords2.keys())]
         if cur_page > max_page:
-            mes = '{} >= {}'.format(max_page,cur_page)
-            sh.com.rep_condition(f,mes)
+            mes = '{} >= {}'.format(max_page, cur_page)
+            sh.com.rep_condition(f, mes)
             return
         if cur_page == max_page:
             sh.com.rep_lazy(f)
@@ -633,7 +633,7 @@ class Table:
         if rowno is None:
             sh.com.rep_empty(f)
             return
-        self.select(rowno,colno)
+        self.select(rowno, colno)
     
     def show_popup(self):
         f = '[MClientQt] mclient.Table.show_popup'
@@ -644,23 +644,23 @@ class Table:
         self.popup.fill(text)
         self.popup.show()
     
-    def go_next_section(self,no):
+    def go_next_section(self, no):
         f = '[MClientQt] mclient.Table.go_next_section'
         if not self.Success:
             sh.com.cancel(f)
             return
         rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_next_row_by_col(rowno,colno,no)
-        self.select(rowno,colno)
+        rowno, colno = self.logic.get_next_row_by_col(rowno, colno, no)
+        self.select(rowno, colno)
     
-    def go_prev_section(self,no):
+    def go_prev_section(self, no):
         f = '[MClientQt] mclient.Table.go_prev_section'
         if not self.Success:
             sh.com.cancel(f)
             return
         rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_prev_row_by_col(rowno,colno,no)
-        self.select(rowno,colno)
+        rowno, colno = self.logic.get_prev_row_by_col(rowno, colno, no)
+        self.select(rowno, colno)
     
     def close_search_next(self):
         f = '[MClientQt] mclient.Table.close_search_next'
@@ -670,7 +670,7 @@ class Table:
         self.search.close()
         self.reset_search()
         rowno, colno = self.search.search_next()
-        self.select(rowno,colno)
+        self.select(rowno, colno)
     
     def reset_search(self):
         f = '[MClientQt] mclient.Table.reset_search'
@@ -678,7 +678,7 @@ class Table:
             sh.com.cancel(f)
             return
         rowno, colno = self.get_cell()
-        self.search.reset(self.logic.plain,rowno,colno)
+        self.search.reset(self.logic.plain, rowno, colno)
     
     def search_next(self):
         f = '[MClientQt] mclient.Table.search_next'
@@ -687,7 +687,7 @@ class Table:
             return
         self.reset_search()
         rowno, colno = self.search.search_next()
-        self.select(rowno,colno)
+        self.select(rowno, colno)
     
     def search_prev(self):
         f = '[MClientQt] mclient.Table.search_prev'
@@ -696,7 +696,7 @@ class Table:
             return
         self.reset_search()
         rowno, colno = self.search.search_prev()
-        self.select(rowno,colno)
+        self.select(rowno, colno)
     
     def set_values(self):
         self.Success = True
@@ -712,7 +712,7 @@ class Table:
             sh.com.cancel(f)
             return
         rowno, colno = self.logic.get_end()
-        self.select(rowno,colno)
+        self.select(rowno, colno)
     
     def go_start(self):
         f = '[MClientQt] mclient.Table.go_start'
@@ -783,8 +783,8 @@ class Table:
             sh.com.cancel(f)
             return
         rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_prev_row(rowno,colno)
-        self.select(rowno,colno)
+        rowno, colno = self.logic.get_prev_row(rowno, colno)
+        self.select(rowno, colno)
     
     def go_line_start(self):
         f = '[MClientQt] mclient.Table.go_line_start'
@@ -793,7 +793,7 @@ class Table:
             return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_line_start(rowno)
-        self.select(rowno,colno)
+        self.select(rowno, colno)
     
     def go_line_end(self):
         f = '[MClientQt] mclient.Table.go_line_end'
@@ -802,7 +802,7 @@ class Table:
             return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_line_end(rowno)
-        self.select(rowno,colno)
+        self.select(rowno, colno)
     
     def go_left(self):
         f = '[MClientQt] mclient.Table.go_left'
@@ -810,8 +810,8 @@ class Table:
             sh.com.cancel(f)
             return
         rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_prev_col(rowno,colno)
-        self.select(rowno,colno)
+        rowno, colno = self.logic.get_prev_col(rowno, colno)
+        self.select(rowno, colno)
     
     def go_right(self):
         f = '[MClientQt] mclient.Table.go_right'
@@ -819,8 +819,8 @@ class Table:
             sh.com.cancel(f)
             return
         rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_next_col(rowno,colno)
-        self.select(rowno,colno)
+        rowno, colno = self.logic.get_next_col(rowno, colno)
+        self.select(rowno, colno)
     
     def scroll_top(self):
         f = '[MClientQt] mclient.Table.scroll_top'
@@ -833,9 +833,9 @@ class Table:
         rowno, colno = self.gui.get_cell()
         if rowno == -1 or colno == -1:
             mes = _('No cell is selected!')
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
             return
-        index_ = self.model.index(self.coords[rowno],colno)
+        index_ = self.model.index(self.coords[rowno], colno)
         self.gui.scroll2index(index_)
     
     def get_cell(self):
@@ -878,7 +878,7 @@ class Table:
             return self.logic.code[rowno][colno]
         except IndexError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_debug()
+            sh.objs.get_mes(f, mes).show_debug()
         return ''
     
     def copy_cell(self):
@@ -973,17 +973,17 @@ class Table:
             for colno in range(self.logic.colnum):
                 ilimits.set_text(self.logic.plain[rowno][colno])
                 space = ilimits.get_space()
-                index_ = self.model.index(rowno,colno)
+                index_ = self.model.index(rowno, colno)
                 hint_space = self.row_height * self.gui.get_col_width(colno)
                 if space > hint_space:
                     self.gui.delegate.long.append(index_)
         timer.end()
         mes = _('Number of cells: {}').format(self.logic.rownum*self.logic.colnum)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         mes = _('Number of long cells: {}').format(len(self.gui.delegate.long))
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
-    def set_coords(self,event=None):
+    def set_coords(self, event=None):
         ''' Calculating Y is very fast (~0.05s for 'set' on Intel Atom). We
             need 'event' since this procedure overrides
             self.gui.parent.resizeEvent.
@@ -996,7 +996,7 @@ class Table:
         self.coords2 = {}
         height = self.gui.get_height()
         mes = _('Window height: {}').format(height)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         for rowno in range(self.logic.rownum):
             y = self.gui.get_cell_y(rowno) + self.gui.get_row_height(rowno)
             pageno = int(y / height)
@@ -1015,10 +1015,10 @@ class Table:
         self.gui.set_model(self.model)
         timer.end()
     
-    def set_max_row_height(self,height=150):
+    def set_max_row_height(self, height=150):
         self.gui.set_max_row_height(height)
     
-    def show_borders(self,Show=False):
+    def show_borders(self, Show=False):
         self.gui.show_borders(Show)
     
     def set_gui(self):
@@ -1027,7 +1027,7 @@ class Table:
     
     def set_bindings(self):
         self.gui.sig_select.connect(self.select)
-        self.search.gui.ent_src.bind('Return',self.close_search_next)
+        self.search.gui.ent_src.bind('Return', self.close_search_next)
         self.search.gui.btn_srp.set_action(self.search_prev)
         self.search.gui.btn_srn.set_action(self.search_next)
         self.popup.gui.sig_close.connect(self.popup.close)
@@ -1135,7 +1135,7 @@ class App:
         lg.objs.get_request().search = text
         lg.objs.request.url = url
         mes = _('Open link: {}').format(lg.objs.request.url)
-        sh.objs.get_mes(f,mes,True).show_info()
+        sh.objs.get_mes(f, mes, True).show_info()
         self.load_article (search = lg.objs.request.search
                           ,url = lg.objs.request.url
                           )
@@ -1143,7 +1143,7 @@ class App:
     def catch(self, status=0):
         f = '[MClientQt] mclient.App.catch'
         mes = _('Status: {}').format(status)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         if not sh.lg.globs['bool']['CaptureHotkey'] or not status:
             sh.com.rep_lazy(f)
             return
@@ -1242,7 +1242,7 @@ class App:
         # Setting column width works only after updating the model, see https://stackoverflow.com/questions/8364061/how-do-you-set-the-column-width-on-a-qtreeview
         self.history.gui.set_col_width()
     
-    def go_history(self,id_):
+    def go_history(self, id_):
         f = '[MClientQt] mclient.App.go_history'
         if id_ is None:
             sh.com.rep_empty(f)
@@ -1257,7 +1257,7 @@ class App:
         sh.lg.globs['str']['source'] = source
         mes = _('Set source to "{}"')
         mes = mes.format(sh.lg.globs['str']['source'])
-        sh.objs.get_mes(f,mes,True).show_info()
+        sh.objs.get_mes(f, mes, True).show_info()
         lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
         lg.objs.plugins.set_lang1(lang1)
         lg.objs.plugins.set_lang2(lang2)
@@ -1310,7 +1310,7 @@ class App:
     def get_width(self):
         return self.gui.get_width()
     
-    def _set_col_num(self,window_width):
+    def _set_col_num(self, window_width):
         if window_width <= 1024:
             return 3
         else:
@@ -1345,9 +1345,9 @@ class App:
         term_width = int(term_width)
         
         mes = _('Table width: {}').format(table_width)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         mes = _('Term column width: {}').format(term_width)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         
         self.settings.gui.ent_num.set_text(col_num)
         self.settings.gui.ent_fix.set_text(63)
@@ -1412,7 +1412,7 @@ class App:
         f = '[MClientQt] mclient.App.set_source'
         sh.lg.globs['str']['source'] = self.gui.panel.opt_src.get()
         mes = _('Set source to "{}"').format(sh.lg.globs['str']['source'])
-        sh.objs.get_mes(f,mes,True).show_info()
+        sh.objs.get_mes(f, mes, True).show_info()
         lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
         self.reset_opt(sh.lg.globs['str']['source'])
         self.go_search()
@@ -1427,16 +1427,16 @@ class App:
             sh.com.rep_lazy(f)
             return
         if sh.Text(lg.objs.request.search).has_cyrillic():
-            if lang2 in (_('Russian'),'Russian'):
-                mes = '{}-{} -> {}-{}'.format(lang1,lang2,lang2,lang1)
-                sh.objs.get_mes(f,mes,True).show_info()
+            if lang2 in (_('Russian'), 'Russian'):
+                mes = f'{lang1}-{lang2} -> {lang2}-{lang1}'
+                sh.objs.get_mes(f, mes, True).show_info()
                 self.swap_langs()
-        elif lang1 in (_('Russian'),'Russian'):
-            mes = '{}-{} -> {}-{}'.format(lang1,lang2,lang2,lang1)
-            sh.objs.get_mes(f,mes,True).show_info()
+        elif lang1 in (_('Russian'), 'Russian'):
+            mes = f'{lang1}-{lang2} -> {lang2}-{lang1}'
+            sh.objs.get_mes(f, mes, True).show_info()
             self.swap_langs()
     
-    def reset_opt(self,default=_('Multitran')):
+    def reset_opt(self, default=_('Multitran')):
         f = '[MClientQt] mclient.App.reset_opt'
         # Reset OptionMenus
         lang1 = lg.objs.get_plugins().get_lang1()
@@ -1503,7 +1503,7 @@ class App:
         lang = self.gui.panel.opt_lg1.get()
         if lg.objs.get_plugins().get_lang1() != lang:
             mes = _('Set language: {}').format(lang)
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
             sh.lg.globs['str']['lang1'] = lang
             lg.objs.get_plugins().set_lang1(lang)
     
@@ -1512,7 +1512,7 @@ class App:
         lang = self.gui.panel.opt_lg2.get()
         if lg.objs.get_plugins().get_lang2() != lang:
             mes = _('Set language: {}').format(lang)
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
             sh.lg.globs['str']['lang2'] = lang
             lg.objs.get_plugins().set_lang2(lang)
     
@@ -1549,7 +1549,7 @@ class App:
         f = '[MClientQt] mclient.App.swap_langs'
         if lg.objs.get_plugins().is_oneway():
             mes = _('Cannot swap languages, this is a one-way dictionary!')
-            sh.objs.get_mes(f,mes).show_info()
+            sh.objs.get_mes(f, mes).show_info()
             return
         self.update_lang1()
         self.update_lang2()
@@ -1562,8 +1562,8 @@ class App:
             sh.com.rep_empty(f)
             return
         if not (langs2 and lang1 in langs1 and lang2 in langs2):
-            mes = _('Pair {}-{} is not supported!').format(lang1,lang2)
-            sh.objs.get_mes(f,mes).show_warning()
+            mes = _('Pair {}-{} is not supported!').format(lang1, lang2)
+            sh.objs.get_mes(f, mes).show_warning()
             return
         self.gui.panel.opt_lg1.reset (items = langs1
                                      ,default = lang1
@@ -1609,7 +1609,7 @@ class App:
         if cell.url:
             lg.objs.request.url = cell.url
             mes = _('Open link: {}').format(lg.objs.request.url)
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
             self.load_article (search = lg.objs.request.search
                               ,url = lg.objs.request.url
                               )
@@ -1661,7 +1661,7 @@ class App:
             lg.objs.get_default().add_subjects(lg.objs.plugins.get_article_subjects())
         else:
             mes = _('Load article No. {} from memory').format(artid)
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
             lg.objs.articles.set_id(artid)
             cells = lg.objs.articles.get_cells()
             
@@ -1687,7 +1687,7 @@ class App:
         skipped = []
         #skipped = com.get_skipped_terms()
         # This is fast
-        #lg.objs.request.htm = lg.HTM(cells,skipped).run()
+        #lg.objs.request.htm = lg.HTM(cells, skipped).run()
         #lg.objs.request.text = lg.com.get_text(cells)
         #colors = lg.com.get_colors(blocks)
         #lg.com.fix_colors(colors)
@@ -1740,7 +1740,7 @@ class App:
             self.update_lang2()
             self.auto_swap()
             mes = '"{}"'.format(lg.objs.request.search)
-            sh.objs.get_mes(f,mes,True).show_debug()
+            sh.objs.get_mes(f, mes, True).show_debug()
             lg.com.set_url()
             self.load_article (search = lg.objs.request.search
                               ,url = lg.objs.request.url
@@ -1776,7 +1776,7 @@ class App:
             '__main__' right before 'sh.com.end'.
         '''
         mes = _('Goodbye!')
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def close(self):
         self.gui.close()
@@ -1994,7 +1994,7 @@ class App:
         
         self.thread.bind_catch(self.catch)
     
-    def set_title(self,title):
+    def set_title(self, title):
         self.gui.set_title(title)
     
     def set_gui(self):
@@ -2010,7 +2010,7 @@ class App:
         #cur
         self.block = bl.Blacklist()
         self.prior = Priorities()
-        self.gui.set_gui(self.table.gui,self.panel)
+        self.gui.set_gui(self.table.gui, self.panel)
         self.set_title(product)
         self.set_bindings()
 
@@ -2043,7 +2043,7 @@ class Search:
         self.gui.show()
     
     def set_bindings(self):
-        self.gui.bind('Esc',self.close)
+        self.gui.bind('Esc', self.close)
         self.gui.btn_cls.action = self.close
         self.gui.btn_clr.action = self.clear
         self.gui.btn_cls.set_action()
@@ -2060,22 +2060,22 @@ class Search:
         rowno, colno = self.logic.search_next()
         if rowno < self.logic.rowno:
             mes = _('The end has been reached. Searching from the start.')
-            sh.objs.get_mes(f,mes).show_info()
+            sh.objs.get_mes(f, mes).show_info()
         elif rowno == self.logic.rowno and colno == self.logic.colno:
             mes = _('No matches!')
-            sh.objs.get_mes(f,mes).show_info()
-        return(rowno,colno)
+            sh.objs.get_mes(f, mes).show_info()
+        return(rowno, colno)
     
     def search_prev(self):
         f = '[MClientQt] mclient.Search.search_prev'
         rowno, colno = self.logic.search_prev()
         if rowno > self.logic.rowno:
             mes = _('The start has been reached. Searching from the end.')
-            sh.objs.get_mes(f,mes).show_info()
+            sh.objs.get_mes(f, mes).show_info()
         elif rowno == self.logic.rowno and colno == self.logic.colno:
             mes = _('No matches!')
-            sh.objs.get_mes(f,mes).show_info()
-        return(rowno,colno)
+            sh.objs.get_mes(f, mes).show_info()
+        return(rowno, colno)
 
 
 com = Commands()

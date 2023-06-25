@@ -7,7 +7,7 @@ import PyQt5.QtWidgets
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-sh.gi.ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
+sh.gi.ICON = sh.objs.get_pdir().add('..', 'resources', 'mclient.png')
 
 
 class FontLimits:
@@ -15,14 +15,14 @@ class FontLimits:
     def __init__(self):
         pass
     
-    def get_font(self,family,size,weight,italic):
+    def get_font(self, family, size, weight, italic):
         return PyQt5.QtGui.QFont (family
                                  ,pointSize = size
                                  ,weight = weight
                                  ,italic = italic
                                  )
     
-    def get_space(self,text,qfont):
+    def get_space(self, text, qfont):
         qrect = PyQt5.QtGui.QFontMetrics(qfont).boundingRect(text)
         return qrect.width() * qrect.height()
 
@@ -30,8 +30,8 @@ class FontLimits:
 
 class Entry(sh.Entry):
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.gui = MinEntry()
         self.widget = self.gui.widget
         self.parent = None
@@ -40,8 +40,8 @@ class Entry(sh.Entry):
 
 class MinEntry(sh.gi.Entry):
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
     
     def set_gui(self):
         self.widget = MinEntryCore()
@@ -58,10 +58,10 @@ class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
     sig_home = PyQt5.QtCore.pyqtSignal()
     sig_end = PyQt5.QtCore.pyqtSignal()
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
     
-    def keyPressEvent(self,event):
+    def keyPressEvent(self, event):
         key = event.key()
         modifiers = event.modifiers()
         ''' Internal Ctrl+ bindings are not needed, so they are ignored. Other
@@ -91,17 +91,17 @@ class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
 
 class TableModel(PyQt5.QtCore.QAbstractTableModel):
     
-    def __init__(self,datain,parent=None,*args):
-        PyQt5.QtCore.QAbstractTableModel.__init__(self,parent,*args)
+    def __init__(self, datain, parent=None, *args):
+        PyQt5.QtCore.QAbstractTableModel.__init__(self, parent, *args)
         self.arraydata = datain
 
-    def rowCount(self,parent):
+    def rowCount(self, parent):
         return len(self.arraydata)
 
-    def columnCount(self,parent):
+    def columnCount(self, parent):
         return len(self.arraydata[0])
 
-    def data(self,index,role):
+    def data(self, index, role):
         f = '[MClientQt] gui.TableModel.data'
         if not index.isValid():
             return PyQt5.QtCore.QVariant()
@@ -110,41 +110,41 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
                 return PyQt5.QtCore.QVariant(self.arraydata[index.row()][index.column()])
             except Exception:
                 mes = _('List out of bounds at row #{}, column #{}!')
-                mes = mes.format(index.row(),index.column())
-                sh.objs.get_mes(f,mes,True).show_warning()
+                mes = mes.format(index.row(), index.column())
+                sh.objs.get_mes(f, mes, True).show_warning()
                 return PyQt5.QtCore.QVariant()
     
-    def update(self,index_):
-        self.dataChanged.emit(index_,index_)
+    def update(self, index_):
+        self.dataChanged.emit(index_, index_)
 
 
 
 class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
     # akej74, https://stackoverflow.com/questions/35397943/how-to-make-a-fast-qtableview-with-html-formatted-and-clickable-cells
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.index = None
         self.long = []
     
-    def set_line_spacing(self,doc):
+    def set_line_spacing(self, doc):
         f = '[MClient] gui.TableDelegate.set_line_spacing'
         cursor = PyQt5.QtGui.QTextCursor(doc)
         block = doc.firstBlock()
         if not block.isValid():
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes,True).show_debug()
+            sh.objs.get_mes(f, mes, True).show_debug()
             return
         format_ = block.blockFormat()
-        format_.setLineHeight(19,2)
+        format_.setLineHeight(19, 2)
         cursor.setBlockFormat(format_)
     
-    def paint(self,painter,option,index):
+    def paint(self, painter, option, index):
         f = '[MClientQt] gui.TableDelegate.paint'
         # index:   PyQt5.QtCore.QModelIndex
         # painter: PyQt5.QtGui.QPainter
         # option:  PyQt5.QtWidgets.QStyleOptionViewItem
         options = PyQt5.QtWidgets.QStyleOptionViewItem(option)
-        self.initStyleOption(options,index)
+        self.initStyleOption(options, index)
         
         if options.widget:
             style = options.widget.style()
@@ -160,119 +160,119 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         # This enables text wrapping in the delegate
         doc.setTextWidth(options.rect.width())
         
-        style.drawControl(PyQt5.QtWidgets.QStyle.CE_ItemViewItem,options,painter)
+        style.drawControl(PyQt5.QtWidgets.QStyle.CE_ItemViewItem, options, painter)
         ctx = PyQt5.QtGui.QAbstractTextDocumentLayout.PaintContext()
         
-        textRect = style.subElementRect(PyQt5.QtWidgets.QStyle.SE_ItemViewItemText,options)
+        textRect = style.subElementRect(PyQt5.QtWidgets.QStyle.SE_ItemViewItemText, options)
         
         if self.index is None:
             mes = _('Index must be set externally!')
-            sh.objs.get_mes(f,mes,True).show_error()
+            sh.objs.get_mes(f, mes, True).show_error()
         elif index == self.index:
             color = PyQt5.QtGui.QColor('red')
-            pen = PyQt5.QtGui.QPen(color,2)
+            pen = PyQt5.QtGui.QPen(color, 2)
             painter.setPen(pen)
             # Avoid intersecting cell borders and artifacts as the result
             x1, y1, x2, y2 = option.rect.getCoords()
-            option.rect.setCoords(x1+1,y1+1,x2-1,y2-1)
+            option.rect.setCoords(x1 + 1, y1 + 1, x2 - 1, y2 - 1)
             painter.drawRect(option.rect)
         
         if self.long and index in self.long:
             color = PyQt5.QtGui.QColor('gray')
-            pen = PyQt5.QtGui.QPen(color,2)
+            pen = PyQt5.QtGui.QPen(color, 2)
             pen.setStyle(PyQt5.QtCore.Qt.DashDotDotLine)
             painter.setPen(pen)
             # Avoid intersecting cell borders and artifacts as the result
             x1, y1, x2, y2 = option.rect.getCoords()
-            painter.drawLine(x1+5,y2-1,x1+50,y2-1)
+            painter.drawLine(x1 + 5, y2 - 1, x1 + 50, y2 - 1)
         
         painter.save()
     
         painter.translate(textRect.topLeft())
         # Hide too long text; do not allow cells to overlap
         painter.setClipRect(textRect.translated(-textRect.topLeft()))
-        doc.documentLayout().draw(painter,ctx)
+        doc.documentLayout().draw(painter, ctx)
     
         painter.restore()
     
-    def sizeHint(self,option,index):
+    def sizeHint(self, option, index):
         options = PyQt5.QtWidgets.QStyleOptionViewItem(option)
-        self.initStyleOption(options,index)
+        self.initStyleOption(options, index)
         
         doc = PyQt5.QtGui.QTextDocument()
         doc.setHtml(options.text)
         doc.setTextWidth(options.rect.width())
         
-        return PyQt5.QtCore.QSize(doc.idealWidth(),doc.size().height())
+        return PyQt5.QtCore.QSize(doc.idealWidth(), doc.size().height())
 
 
 
 class Table(PyQt5.QtWidgets.QTableView):
     
-    sig_select = PyQt5.QtCore.pyqtSignal(int,int,bool)
+    sig_select = PyQt5.QtCore.pyqtSignal(int, int, bool)
     sig_rmb = PyQt5.QtCore.pyqtSignal()
     sig_mmb = PyQt5.QtCore.pyqtSignal()
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         # Do not override internal 'x' and 'y'
         self.x_ = 0
         self.y_ = 0
         self.setMouseTracking(True)
         self.set_gui()
     
-    def _use_mouse(self,event):
+    def _use_mouse(self, event):
         pos = event.pos()
         self.x_ = pos.x()
         self.y_ = pos.y()
         rowno = self.rowAt(self.y_)
         colno = self.columnAt(self.x_)
-        self.sig_select.emit(rowno,colno,True)
+        self.sig_select.emit(rowno, colno, True)
     
-    def mouseMoveEvent(self,event):
+    def mouseMoveEvent(self, event):
         self._use_mouse(event)
         return super().mouseMoveEvent(event)
     
-    def get_col_width(self,colno):
+    def get_col_width(self, colno):
         return self.columnWidth(colno)
     
-    def get_cell_hint(self,index_):
+    def get_cell_hint(self, index_):
         option = PyQt5.QtWidgets.QStyleOptionViewItem()
-        return self.delegate.sizeHint(option,index_).height()
+        return self.delegate.sizeHint(option, index_).height()
     
-    def get_cell_space(self,index_):
+    def get_cell_space(self, index_):
         option = PyQt5.QtWidgets.QStyleOptionViewItem()
-        hint = self.delegate.sizeHint(option,index_)
+        hint = self.delegate.sizeHint(option, index_)
         return hint.width() * hint.height()
     
-    def scroll2index(self,index_):
-        self.scrollTo(index_,PyQt5.QtWidgets.QAbstractItemView.PositionAtTop)
+    def scroll2index(self, index_):
+        self.scrollTo(index_, PyQt5.QtWidgets.QAbstractItemView.PositionAtTop)
     
-    def get_row_by_y(self,y):
+    def get_row_by_y(self, y):
         return self.rowAt(y)
     
-    def get_row_hint(self,rowno):
+    def get_row_hint(self, rowno):
         return self.sizeHintForRow(rowno)
     
-    def get_row_height(self,rowno):
+    def get_row_height(self, rowno):
         return self.rowHeight(rowno)
     
-    def get_row_y(self,rowno):
+    def get_row_y(self, rowno):
         return self.rowViewportPosition(rowno)
     
-    def get_row(self,index_):
+    def get_row(self, index_):
         return index_.row()
     
-    def get_column(self,index_):
+    def get_column(self, index_):
         return index_.column()
     
     def get_index(self):
         return self.delegate.index
     
-    def set_index(self,index_):
+    def set_index(self, index_):
         self.delegate.index = index_
     
-    def set_cur_index(self,index_):
+    def set_cur_index(self, index_):
         self.setCurrentIndex(index_)
         self.delegate.index = index_
     
@@ -281,10 +281,10 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     def get_cur_cell(self):
         index_ = self.currentIndex()
-        return(index_.row(),index_.column())
+        return(index_.row(), index_.column())
     
     def get_cell(self):
-        return(self.delegate.index.row(),self.delegate.index.column())
+        return(self.delegate.index.row(), self.delegate.index.column())
     
     def get_height(self):
         ''' #NOTE: Run only after events since Qt returns dummy geometry values
@@ -293,16 +293,16 @@ class Table(PyQt5.QtWidgets.QTableView):
         '''
         return self.height()
     
-    def get_cell_x(self,colno):
+    def get_cell_x(self, colno):
         return self.columnViewportPosition(colno)
     
-    def get_cell_y(self,rowno):
+    def get_cell_y(self, rowno):
         return self.rowViewportPosition(rowno)
     
-    def set_model(self,model):
+    def set_model(self, model):
         self.setModel(model)
     
-    def mousePressEvent(self,event):
+    def mousePressEvent(self, event):
         button = event.button()
         if button == PyQt5.QtCore.Qt.RightButton:
             self.sig_rmb.emit()
@@ -310,13 +310,13 @@ class Table(PyQt5.QtWidgets.QTableView):
             self.sig_mmb.emit()
         super().mousePressEvent(event)
     
-    def set_col_width(self,no,width):
-        self.setColumnWidth(no,width)
+    def set_col_width(self, no, width):
+        self.setColumnWidth(no, width)
     
-    def set_row_height(self,no,height):
-        self.setRowHeight(no,height)
+    def set_row_height(self, no, height):
+        self.setRowHeight(no, height)
     
-    def set_max_row_height(self,height):
+    def set_max_row_height(self, height):
         self.vheader.setMaximumSectionSize(height)
     
     def set_gui(self):
@@ -331,7 +331,7 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.setFocusPolicy(PyQt5.QtCore.Qt.NoFocus)
         self.setSelectionMode(PyQt5.QtWidgets.QAbstractItemView.NoSelection)
     
-    def show_borders(self,Show=False):
+    def show_borders(self, Show=False):
         self.setShowGrid(Show)
 
 
@@ -342,17 +342,17 @@ class App(PyQt5.QtWidgets.QMainWindow):
     sig_pgdn = PyQt5.QtCore.pyqtSignal()
     sig_pgup = PyQt5.QtCore.pyqtSignal()
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
     
-    def keyPressEvent(self,event):
+    def keyPressEvent(self, event):
         if event.key() == PyQt5.QtCore.Qt.Key_PageUp:
             self.sig_pgup.emit()
         elif event.key() == PyQt5.QtCore.Qt.Key_PageDown:
             self.sig_pgdn.emit()
         return super().keyPressEvent(event)
     
-    def closeEvent(self,event):
+    def closeEvent(self, event):
         self.sig_close.emit()
         return super().closeEvent(event)
     
@@ -368,24 +368,24 @@ class App(PyQt5.QtWidgets.QMainWindow):
     def show(self):
         self.showMaximized()
     
-    def set_title(self,title):
+    def set_title(self, title):
         self.setWindowTitle(title)
     
     def set_layout(self):
         self.parent = PyQt5.QtWidgets.QWidget()
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
-        self.layout_.setContentsMargins(0,0,0,0)
+        self.layout_.setContentsMargins(0, 0, 0, 0)
     
     def add_widgets(self):
         self.layout_.addWidget(self.table)
-        self.layout_.addWidget(self.panel,1)
+        self.layout_.addWidget(self.panel, 1)
         self.parent.setLayout(self.layout_)
     
     def set_icon(self):
         # Does not accent None
         self.setWindowIcon(sh.gi.objs.get_icon())
     
-    def set_gui(self,table=None,panel=None):
+    def set_gui(self, table=None, panel=None):
         self.set_layout()
         if table:
             self.table = table
@@ -399,8 +399,8 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.setCentralWidget(self.parent)
         self.set_icon()
     
-    def bind(self,hotkey,action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
+    def bind(self, hotkey, action):
+        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
 
 
 
@@ -408,11 +408,11 @@ class MinPanel(PyQt5.QtWidgets.QWidget):
 
     sig_hover = PyQt5.QtCore.pyqtSignal(PyQt5.QtCore.QEvent)
     
-    def __init__(self,parent):
+    def __init__(self, parent):
         super().__init__(parent)
         self.setMouseTracking(True)
     
-    def mouseMoveEvent(self,event):
+    def mouseMoveEvent(self, event):
         self.sig_hover.emit(event)
         return super().mouseMoveEvent(event)
 
@@ -420,8 +420,8 @@ class MinPanel(PyQt5.QtWidgets.QWidget):
 
 class Panel(PyQt5.QtWidgets.QWidget):
 
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.set_values()
         self.set_gui()
     
@@ -429,103 +429,103 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.delta = 0
         self.offset = 45
         self.pos = 0
-        self.icn_al0 = sh.objs.get_pdir().add ('..','resources','buttons'
+        self.icn_al0 = sh.objs.get_pdir().add ('..', 'resources', 'buttons'
                                               ,'alphabet_off.png'
                                               )
-        self.icn_al1 = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_al1 = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'alphabet_on.png'
                                         )
-        self.icn_bl0 = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_bl0 = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'block_off.png'
                                         )
-        self.icn_bl1 = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_bl1 = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'block_on.png'
                                         )
-        self.icn_clr = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_clr = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'clear_search_field.png'
                                         )
-        self.icn_def = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_def = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'define.png'
                                         )
-        self.icn_bk0 = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_bk0 = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'go_back_off.png'
                                         )
-        self.icn_bk1 = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_bk1 = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'go_back.png'
                                         )
-        self.icn_fw0 = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_fw0 = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'go_next_off.png'
                                         )
-        self.icn_fw1 = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_fw1 = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'go_next.png'
                                         )
-        self.icn_ret = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_ret = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'go_search.png'
                                         )
-        self.icn_brw = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_brw = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'open_in_browser.png'
                                         )
-        self.icn_ins = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_ins = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'paste.png'
                                         )
-        self.icn_prn = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_prn = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'print.png'
                                         )
-        self.icn_pr0 = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_pr0 = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'priority_off.png'
                                         )
-        self.icn_pr1 = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_pr1 = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'priority_on.png'
                                         )
-        self.icn_qit = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_qit = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'quit_now.png'
                                         )
-        self.icn_rld = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_rld = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'reload.png'
                                         )
-        self.icn_rp0 = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_rp0 = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'repeat_sign_off.png'
                                         )
-        self.icn_rp1 = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_rp1 = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'repeat_sign.png'
                                         )
-        self.icn_r20 = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_r20 = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'repeat_sign2_off.png'
                                         )
-        self.icn_r21 = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_r21 = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'repeat_sign2.png'
                                         )
-        self.icn_sav = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_sav = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'save_article.png'
                                         )
-        self.icn_src = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_src = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'search_article.png'
                                         )
-        self.icn_set = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_set = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'settings.png'
                                         )
-        self.icn_abt = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_abt = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'show_about.png'
                                         )
-        self.icn_sym = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_sym = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'spec_symbol.png'
                                         )
-        self.icn_hst = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_hst = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'toggle_history.png'
                                         )
-        self.icn_hor = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_hor = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'toggle_view_hor.png'
                                         )
-        self.icn_ver = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_ver = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'toggle_view_ver.png'
                                         )
-        self.icn_cp0 = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_cp0 = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'watch_clipboard_off.png'
                                         )
-        self.icn_cp1 = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_cp1 = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'watch_clipboard_on.png'
                                         )
-        self.icn_swp = sh.objs.pdir.add ('..','resources','buttons'
+        self.icn_swp = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'swap_langs.png'
                                         )
     
@@ -541,14 +541,14 @@ class Panel(PyQt5.QtWidgets.QWidget):
     def slide_left(self):
         if self.panel.x() - self.offset >= self.delta:
             self.pos -= self.offset
-            self.panel.move(self.pos,0)
+            self.panel.move(self.pos, 0)
     
     def slide_right(self):
         if self.panel.x() + self.offset <= 0:
             self.pos += self.offset
-            self.panel.move(self.pos,0)
+            self.panel.move(self.pos, 0)
     
-    def trigger_hover(self,event):
+    def trigger_hover(self, event):
         ''' We should not use event.x since this returns x relative to the
             widget that caused the event, and this widget will be any we have
             mouse over.
@@ -569,7 +569,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.setMaximumHeight(44)
         self.panel = MinPanel(self)
         self.layout_ = PyQt5.QtWidgets.QHBoxLayout()
-        self.layout_.setContentsMargins(4,4,4,4)
+        self.layout_.setContentsMargins(4, 4, 4, 4)
         self.ent_src = Entry()
         self.ent_src.set_min_width(96)
         # A button for newbies, substitutes Enter in search_field
@@ -611,7 +611,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
                                  ,active = self.icn_swp
                                  )
         self.opt_lg2 = sh.OptionMenu()
-        self.opt_col = sh.OptionMenu(range(1,11),5)
+        self.opt_col = sh.OptionMenu(range(1, 11), 5)
         # A settings button
         self.btn_set = sh.Button (hint = _('Tune up view settings')
                                  ,inactive = self.icn_set
@@ -743,22 +743,22 @@ class Search(PyQt5.QtWidgets.QWidget):
 
     sig_close = PyQt5.QtCore.pyqtSignal()
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.set_gui()
     
     def set_icon(self):
         # Does not accent None
         self.setWindowIcon(sh.gi.objs.get_icon())
     
-    def closeEvent(self,event):
+    def closeEvent(self, event):
         self.sig_close.emit()
         return super().closeEvent(event)
     
     def clear(self):
         self.ent_src.clear()
     
-    def set_title(self,title=_('Search:')):
+    def set_title(self, title=_('Search:')):
         self.setWindowTitle(title)
     
     def add_widgets(self):
@@ -773,7 +773,7 @@ class Search(PyQt5.QtWidgets.QWidget):
         self.layout_.addWidget(self.cbx_cas.widget)
         self.panel = PyQt5.QtWidgets.QWidget()
         self.btn_lay = PyQt5.QtWidgets.QHBoxLayout()
-        self.btn_lay.setContentsMargins(4,4,4,4)
+        self.btn_lay.setContentsMargins(4, 4, 4, 4)
         self.btn_lay.addWidget(self.btn_cls.widget)
         self.btn_lay.addWidget(self.btn_clr.widget)
         self.btn_lay.addWidget(self.btn_srp.widget)
@@ -787,8 +787,8 @@ class Search(PyQt5.QtWidgets.QWidget):
         self.set_title()
         self.set_icon()
     
-    def bind(self,hotkey,action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
+    def bind(self, hotkey, action):
+        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def get(self):
         return self.ent_src.get()
@@ -805,9 +805,9 @@ if __name__ == '__main__':
     app = App()
     app.set_gui()
     
-    data = [['hel<b>L</b>o','I Am Here','Hello there!']
-           ,['distinct','creation','suffering']
-           ,['tree','as;f,d','sdafsdfasdfasdfsdfsdfsd']
+    data = [['hel<b>L</b>o', 'I Am Here', 'Hello there!']
+           ,['distinct', 'creation', 'suffering']
+           ,['tree', 'as;f,d', 'sdafsdfasdfasdfsdfsdfsd']
            ]
     
     mymodel = TableModel(data)
