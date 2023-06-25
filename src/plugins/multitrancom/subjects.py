@@ -63,7 +63,7 @@ class Groups:
             self.dic = json.loads(self.code)
         except Exception as e:
             self.Success = False
-            sh.com.rep_third_party(f,e)
+            sh.com.rep_third_party(f, e)
     
     def load(self):
         f = '[MClientQt] plugins.multitrancom.subjects.Groups.load'
