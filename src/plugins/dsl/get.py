@@ -13,7 +13,7 @@ import skl_shared_qt.shared as sh
     calling anything from this module.
 '''
 PATH = ''
-ICON = sh.objs.get_pdir().add('..','resources','mclient.png')
+ICON = sh.objs.get_pdir().add('..', 'resources', 'mclient.png')
 LANG1 = 'English'
 LANG2 = 'Russian'
 DEBUG = False
@@ -30,7 +30,7 @@ class Article:
 
 class Get:
     
-    def __init__(self,pattern,Debug=False,maxrows=0):
+    def __init__(self, pattern, Debug=False, maxrows=0):
         self.set_values()
         self.Debug = Debug
         self.maxrows = maxrows
@@ -46,8 +46,8 @@ class Get:
             searches.append(self.articles[i].search)
             dics.append(self.articles[i].dic)
             codes.append(self.articles[i].code)
-        iterable = [nos,searches,dics,codes]
-        headers = (_('#'),_('SEARCH'),_('SUBJECT'),_('CODE'))
+        iterable = [nos, searches, dics, codes]
+        headers = (_('#'), _('SEARCH'), _('SUBJECT'), _('CODE'))
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
                            ,maxrow = 70
@@ -64,7 +64,7 @@ class Get:
             sh.com.cancel(f)
             return
         mes = self._debug_articles()
-        sh.com.run_fast_debug(f,mes)
+        sh.com.run_fast_debug(f, mes)
     
     def run(self):
         self.check()
@@ -95,7 +95,7 @@ class Get:
         mes = mes.format (len(dicnames), len(objs.all_dics.dics)
                          ,'; '.join(dicnames)
                          )
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         for idic in dics:
             iarticle = idic.search(self.pattern)
             if iarticle:
@@ -112,7 +112,7 @@ class Get:
 
 class DSL:
     
-    def __init__(self,file):
+    def __init__(self, file):
         self.set_values()
         self.file = file
         self.check()
@@ -149,16 +149,16 @@ class DSL:
             return
         if len(self.lst) <= 1:
             mes = _('The file "{}" is too short ({} lines)!')
-            mes = mes.format(self.file,len(self.lst))
-            sh.objs.get_mes(f,mes,True).show_warning()
+            mes = mes.format(self.file, len(self.lst))
+            sh.objs.get_mes(f, mes, True).show_warning()
             return
-        match = re.match('#INDEX_LANGUAGE	"(.*)"',self.lst[1])
+        match = re.match('#INDEX_LANGUAGE	"(.*)"', self.lst[1])
         if match:
             lang1 = match.group(1).strip()
             if lang1:
                 self.lang1 = lang1
         mes = '"{}"'.format(self.lang1)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def set_lang2(self):
         f = '[MClient] plugins.dsl.get.DSL.set_lang2'
@@ -167,8 +167,8 @@ class DSL:
             return
         if len(self.lst) <= 2:
             mes = _('The file "{}" is too short ({} lines)!')
-            mes = mes.format(self.file,len(self.lst))
-            sh.objs.get_mes(f,mes,True).show_warning()
+            mes = mes.format(self.file, len(self.lst))
+            sh.objs.get_mes(f, mes, True).show_warning()
             return
         match = re.match('#CONTENTS_LANGUAGE	"(.*)"', self.lst[2])
         if match:
@@ -176,7 +176,7 @@ class DSL:
             if lang2:
                 self.lang2 = lang2
         mes = '"{}"'.format(self.lang2)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def set_dic_name(self):
         # Do this before deleting comments ('self.strip')
@@ -184,29 +184,29 @@ class DSL:
         if not self.Success:
             sh.com.cancel(f)
             return
-        ''' Since 'self.load' fails 'self.Success' on an empty
-            input, 'self.lst' will always have a first item.
+        ''' Since 'self.load' fails 'self.Success' on an empty input,
+            'self.lst' will always have a first item.
         '''
-        match = re.match('#NAME	"(.*)"',self.lst[0])
+        match = re.match('#NAME	"(.*)"', self.lst[0])
         if match:
             dicname = match.group(1).strip()
             if dicname:
                 self.dicname = dicname
         mes = '"{}"'.format(self.dicname)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
-    def get_entry(self,pos):
+    def get_entry(self, pos):
         f = '[MClient] plugins.dsl.get.DSL.get_entry'
         if not self.Success:
             sh.com.cancel(f)
             return
-        pos = sh.Input(f,pos).get_integer()
+        pos = sh.Input(f, pos).get_integer()
         # We expect a translation which occupies the following line
         if not (0 <= pos < len(self.lst) - 1):
-            sub = '0 <= {} < {}'.format(pos+1,len(self.lst))
+            sub = '0 <= {} < {}'.format(pos + 1, len(self.lst))
             mes = _('The condition "{}" is not observed!')
             mes = mes.format(sub)
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
             return
         article = []
         i = pos + 1
@@ -220,10 +220,10 @@ class DSL:
         iarticle.search = self.lst[pos]
         iarticle.code = '\n'.join(article)
         mes = f'"{iarticle.code}"'
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         return iarticle
     
-    def search(self,pattern):
+    def search(self, pattern):
         f = '[MClient] plugins.dsl.get.DSL.search'
         if not self.Success:
             sh.com.cancel(f)
@@ -244,11 +244,11 @@ class DSL:
             return self.get_entry(self.poses[pos])
         else:
             mes = _('No search results for "{}" in "{}"')
-            mes = mes.format(pattern,self.dicname)
-            sh.objs.get_mes(f,mes,True).show_info()
+            mes = mes.format(pattern, self.dicname)
+            sh.objs.get_mes(f, mes, True).show_info()
     
-    def _delete_curly_brackets(self,line):
-        line = re.sub('\{.*\}','',line)
+    def _delete_curly_brackets(self, line):
+        line = re.sub('\{.*\}', '', line)
         line = line.strip()
         line = line.lower()
         return line
@@ -267,8 +267,8 @@ class DSL:
                         self.poses.append(i)
             mes = _('Dictionary "{}" ({}) has {} records')
             linesnum = sh.com.set_figure_commas(len(self.index_))
-            mes = mes.format(self.bname,self.dicname,linesnum)
-            sh.objs.get_mes(f,mes,True).show_info()
+            mes = mes.format(self.bname, self.dicname, linesnum)
+            sh.objs.get_mes(f, mes, True).show_info()
         return self.index_
     
     def check(self):
@@ -286,16 +286,16 @@ class DSL:
             return
         self.bname = sh.Path(self.file).get_basename()
         mes = _('Load "{}"').format(self.file)
-        sh.objs.get_mes(f,mes,True).show_info()
+        sh.objs.get_mes(f, mes, True).show_info()
         text = ''
         try:
-            with open(self.file,'r',encoding='UTF-16') as fi:
+            with open(self.file, 'r', encoding='UTF-16') as fi:
                 text = fi.read()
         except Exception as e:
             self.Success = False
             mes = _('Operation has failed!\n\nDetails: {}')
             mes = mes.format(e)
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
         ''' Possibly, a memory consumption will be lower if we do not store
             'self.text'.
         '''
@@ -321,7 +321,7 @@ class DSL:
 
 class Suggest:
     
-    def __init__(self,search):
+    def __init__(self, search):
         self.set_values()
         if search:
             self.reset(search)
@@ -330,7 +330,7 @@ class Suggest:
         self.Success = True
         self.pattern = ''
     
-    def reset(self,search):
+    def reset(self, search):
         f = '[MClient] plugins.dsl.get.Suggest.reset'
         self.pattern = search
         if not self.pattern:
@@ -355,7 +355,7 @@ class Suggest:
                  ]
         timer.end()
         mes = '; '.join(result)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         return result
     
     def run(self):
@@ -382,7 +382,7 @@ class AllDics:
             self.langs2 = tuple(sorted(self.langs2))
             mes = '; '.join(self.langs2)
             mes = '"{}"'.format(mes)
-            sh.objs.get_mes(f,mes,True).show_debug()
+            sh.objs.get_mes(f, mes, True).show_debug()
         return self.langs2
     
     def get_langs1(self):
@@ -397,14 +397,14 @@ class AllDics:
                         self.langs1.append(self.langs[lang]['localized'])
                 except KeyError:
                     mes = _('Wrong input data: "{}"!').format(lang)
-                    sh.objs.get_mes(f,mes).show_warning()
+                    sh.objs.get_mes(f, mes).show_warning()
             self.langs1 = tuple(sorted(set(self.langs1)))
             mes = '; '.join(self.langs1)
             mes = '"{}"'.format(mes)
-            sh.objs.get_mes(f,mes,True).show_debug()
+            sh.objs.get_mes(f, mes, True).show_debug()
         return self.langs1
     
-    def get_code(self,lang):
+    def get_code(self, lang):
         # Both language code and localization name are accepted at input
         f = '[MClient] plugins.dsl.get.AllDics.get_code'
         if not self.Success:
@@ -414,10 +414,10 @@ class AllDics:
             return self.langs[lang]['code']
         else:
             mes = _('Wrong input data: "{}"!').format(lang)
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
         return lang
     
-    def get_pairs(self,lang):
+    def get_pairs(self, lang):
         # Both language code and localization name are accepted at input
         f = '[MClient] plugins.dsl.get.AllDics.get_pairs'
         pairs = []
@@ -429,7 +429,7 @@ class AllDics:
             return pairs
         if not lang in self.langs:
             mes = _('Wrong input data: "{}"!').format(lang)
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
             return pairs
         langs = self.langs[lang]['pairs']
         for code in langs:
@@ -437,13 +437,13 @@ class AllDics:
                 pairs.append(self.langs[code]['localized'])
             else:
                 mes = _('Wrong input data: "{}"!').format(code)
-                sh.objs.get_mes(f,mes).show_warning()
+                sh.objs.get_mes(f, mes).show_warning()
         pairs = tuple(sorted(set(pairs)))
         mes = '; '.join(pairs)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         return pairs
     
-    def _create_lang(self,lang):
+    def _create_lang(self, lang):
         localized = _(lang)
         if not lang in self.langs:
             self.langs[lang] = {}
@@ -479,7 +479,7 @@ class AllDics:
                 self.index_ += idic.get_index()
             self.index_ = sorted(set(self.index_))
             mes = _('Index has {} entries').format(len(self.index_))
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
         return self.index_
     
     def set_values(self):
@@ -503,14 +503,15 @@ class AllDics:
         if not self.Success:
             sh.com.cancel(f)
             return self.dsls
-        if not self.dsls:
-            for dirpath, dirnames, filenames in os.walk(self.path):
-                for filename in filenames:
-                    lower = filename.lower()
-                    if lower.endswith('.dsl'):
-                        file = os.path.join(dirpath,filename)
-                        self.dsls.append(file)
-            sh.objs.get_mes(f,self.dsls,True).show_debug()
+        if self.dsls:
+            return self.dsls
+        for dirpath, dirnames, filenames in os.walk(self.path):
+            for filename in filenames:
+                lower = filename.lower()
+                if lower.endswith('.dsl'):
+                    file = os.path.join(dirpath, filename)
+                    self.dsls.append(file)
+        sh.objs.get_mes(f, self.dsls, True).show_debug()
         return self.dsls
     
     def locate(self):
@@ -526,7 +527,7 @@ class AllDics:
                 sh.com.rep_lazy(f)
         mes = _('{} offline dictionaries are available')
         mes = mes.format(len(self.dics))
-        sh.objs.get_mes(f,mes,True).show_info()
+        sh.objs.get_mes(f, mes, True).show_info()
         return self.dics
     
     def load(self):
@@ -542,17 +543,17 @@ class AllDics:
         timer.start()
         for i in range(len(self.dics)):
             text = _('Load DSL dictionaries ({}/{})')
-            text = text.format(i+1,len(self.dics))
+            text = text.format(i + 1, len(self.dics))
             objs.progress.set_text(text)
-            objs.progress.update(i,len(self.dics))
+            objs.progress.update(i, len(self.dics))
             self.dics[i].run()
         timer.end()
         objs.progress.close()
         total_no = len(self.dics)
         self.dics = [dic for dic in self.dics if dic.Success]
         mes = _('Dictionaries loaded: {}/{}')
-        mes = mes.format(len(self.dics),total_no)
-        sh.objs.get_mes(f,mes,True).show_info()
+        mes = mes.format(len(self.dics), total_no)
+        sh.objs.get_mes(f, mes, True).show_info()
 
 
 
