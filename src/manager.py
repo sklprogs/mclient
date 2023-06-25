@@ -14,10 +14,7 @@ import plugins.dsl.run as lgrun
 
 class Plugins:
     
-    def __init__ (self,sdpath,mbpath
-                 ,timeout=5.0,Debug=False
-                 ,maxrows=1000
-                 ):
+    def __init__(self, sdpath, mbpath, timeout=5.0, Debug=False, maxrows=1000):
         self.set_values()
         self.Debug = Debug
         self.lgpath = sdpath
@@ -94,14 +91,14 @@ class Plugins:
             return ''
         return self.plugin.get_search()
     
-    def set_htm(self,htm):
+    def set_htm(self, htm):
         f = '[MClient] manager.Plugins.set_htm'
         if not self.plugin or not htm:
             sh.com.rep_empty(f)
             return
         self.plugin.set_htm(htm)
     
-    def fix_url(self,url):
+    def fix_url(self, url):
         f = '[MClient] manager.Plugins.fix_url'
         if not self.plugin:
             sh.com.rep_empty(f)
@@ -115,14 +112,14 @@ class Plugins:
             return
         return self.plugin.is_oneway()
     
-    def get_title(self,short):
+    def get_title(self, short):
         f = '[MClient] manager.Plugins.get_title'
         if not self.plugin:
             sh.com.rep_empty(f)
             return short
         return self.plugin.get_title(short)
     
-    def quit(self,event=None):
+    def quit(self):
         self.mbplugin.quit()
         self.mcplugin.quit()
         self.sdplugin.quit()
@@ -157,7 +154,7 @@ class Plugins:
             code = self.plugin.fix_raw_htm()
         else:
             sh.com.rep_empty(f)
-        code = sh.Input(f,code).get_not_none()
+        code = sh.Input(f, code).get_not_none()
         if not '</html>' in code.lower():
             search = self.get_search()
             # '.format' does not work properly for 'multitrandem'
@@ -169,7 +166,7 @@ class Plugins:
             code = mes
         return code
     
-    def get_url(self,search):
+    def get_url(self, search):
         f = '[MClient] manager.Plugins.get_url'
         if not self.plugin:
             sh.com.rep_empty(f)
@@ -187,13 +184,13 @@ class Plugins:
                ,self.lgplugin
                )
     
-    def set_lang1(self,lang1):
+    def set_lang1(self, lang1):
         self.plugin.set_lang1(lang1)
     
-    def set_lang2(self,lang2):
+    def set_lang2(self, lang2):
         self.plugin.set_lang2(lang2)
     
-    def set_timeout(self,timeout=5.0):
+    def set_timeout(self, timeout=5.0):
         f = '[MClient] manager.Plugins.set_timeout'
         if not self.plugin:
             sh.com.rep_empty(f)
@@ -207,7 +204,7 @@ class Plugins:
             return
         return self.plugin.is_accessible()
 
-    def suggest(self,search):
+    def suggest(self, search):
         f = '[MClient] manager.Plugins.suggest'
         if not self.plugin:
             sh.com.rep_empty(f)
@@ -215,10 +212,10 @@ class Plugins:
         return self.plugin.suggest(search)
     
     def get_sources(self):
-        return (_('Multitran'),_('Stardict'),'Lingvo (DSL)',_('Local MT'))
+        return (_('Multitran'), _('Stardict'), 'Lingvo (DSL)', _('Local MT'))
     
     def get_offline_sources(self):
-        return (_('Stardict'),'Lingvo (DSL)',_('Local MT'))
+        return (_('Stardict'), 'Lingvo (DSL)', _('Local MT'))
     
     def get_online_sources(self):
         ''' This is used by lg.Welcome to check the availability of online
@@ -226,14 +223,14 @@ class Plugins:
         '''
         return ['multitran.com']
     
-    def get_langs1(self,lang2=''):
+    def get_langs1(self, lang2=''):
         f = '[MClient] manager.Plugins.get_langs1'
         if not self.plugin:
             sh.com.rep_empty(f)
             return
         return self.plugin.get_langs1(lang2)
     
-    def get_langs2(self,lang1=''):
+    def get_langs2(self, lang1=''):
         f = '[MClient] manager.Plugins.get_langs2'
         if not self.plugin:
             sh.com.rep_empty(f)
@@ -260,7 +257,7 @@ class Plugins:
                                      ,maxrows = self.maxrows
                                      )
     
-    def set(self,source):
+    def set(self, source):
         f = '[MClient] manager.Plugins.set'
         if not source:
             sh.com.rep_empty(f)
@@ -268,7 +265,7 @@ class Plugins:
         self.source = source
         if source == _('Stardict'):
             self.plugin = self.sdplugin
-        elif source in (_('Multitran'),'multitran.com'):
+        elif source in (_('Multitran'), 'multitran.com'):
             self.plugin = self.mcplugin
         elif source == 'Lingvo (DSL)':
             self.plugin = self.lgplugin
@@ -276,8 +273,8 @@ class Plugins:
             self.plugin = self.mbplugin
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(self.source,self.get_sources())
-            sh.objs.get_mes(f,mes).show_error()
+            mes = mes.format(self.source, self.get_sources())
+            sh.objs.get_mes(f, mes).show_error()
     
     def get_text(self):
         f = '[MClient] manager.Plugins.get_text'
@@ -293,7 +290,7 @@ class Plugins:
             return
         return self.plugin.htm
     
-    def request(self,search='',url=''):
+    def request(self, search='', url=''):
         f = '[MClient] manager.Plugins.request'
         if not self.plugin:
             sh.com.rep_empty(f)
