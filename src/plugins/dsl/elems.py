@@ -36,17 +36,16 @@ class Block:
         self.last = -1
         self.no = -1
         self.same = -1
-        ''' 'select' is an attribute of a *cell* which is valid
-            if the cell has a non-blocked block of types 'term',
-            'phrase' or 'transc'
+        ''' 'select' is an attribute of a *cell* which is valid if the cell has
+            a non-blocked block of types 'term', 'phrase' or 'transc'.
         '''
         self.select = -1
         self.speech = ''
         self.sprior = -1
         self.term = ''
         self.text = ''
-        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase',
-            'speech', 'term', 'transc', 'wform'
+        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
+            'term', 'transc', 'wform'.
         '''
         self.type_ = 'comment'
         self.transc = ''
@@ -79,7 +78,7 @@ class Elems:
           vary depending on the view. Incorrect sorting by TERM may
           result in putting a 'term' item before fixed columns.
     '''
-    def __init__(self,blocks,Debug=False):
+    def __init__(self, blocks, Debug=False):
         f = '[MClient] plugins.dsl.elems.Elems.__init__'
         self.blocks = blocks
         self.Debug = Debug
@@ -90,9 +89,7 @@ class Elems:
             sh.com.rep_empty(f)
     
     def delete_trash(self):
-        self.blocks = [block for block in self.blocks \
-                       if block.text != ','
-                      ]
+        self.blocks = [block for block in self.blocks if block.text != ',']
     
     def divide_block(self):
         sep1 = ' || '
@@ -102,14 +99,14 @@ class Elems:
             if sep1 in self.blocks[i].text \
             or sep2 in self.blocks[i].text:
                 text = self.blocks[i].text
-                text = text.replace(sep2,sep1)
+                text = text.replace(sep2, sep1)
                 split = text.split(sep1)
                 block = copy.copy(self.blocks[i])
                 del self.blocks[i]
                 for item in split[::-1]:
                     block_copy = copy.copy(block)
                     block_copy.text = item
-                    self.blocks.insert(i,block_copy)
+                    self.blocks.insert(i, block_copy)
                 i = i - 1 + len(split)
             i += 1
     
@@ -117,7 +114,7 @@ class Elems:
         i = 1
         while i < len(self.blocks):
             if self.blocks[i].same == -1:
-                if self.blocks[i-1].type_ in ('dic','wform','transc'
+                if self.blocks[i-1].type_ in ('dic', 'wform', 'transc'
                                              ,'speech'
                                              ):
                     self.blocks[i].same = 0
@@ -129,29 +126,28 @@ class Elems:
     
     def run(self):
         f = '[MClient] plugins.dsl.elems.Elems.run'
-        if self.Success:
-            self.divide_block()
-            self.set_phrase_dic()
-            self.delete_trash()
-            self.add_space()
-            self.fill()
-            self.fill_term()
-            self.remove_fixed()
-            self.insert_fixed()
-            self.set_fixed_term()
-            self.set_selectables()
-            self.set_same()
-            self.debug()
-            return self.blocks
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        self.divide_block()
+        self.set_phrase_dic()
+        self.delete_trash()
+        self.add_space()
+        self.fill()
+        self.fill_term()
+        self.remove_fixed()
+        self.insert_fixed()
+        self.set_fixed_term()
+        self.set_selectables()
+        self.set_same()
+        self.debug()
+        return self.blocks
     
-    def debug(self,maxrow=20,maxrows=1000):
+    def debug(self, maxrow=20, maxrows=1000):
         f = '[MClient] plugins.dsl.elems.Elems.debug'
         if self.Debug and self.blocks:
-            headers = ('NO','DIC','DICF','WFORM'
-                      ,'SPEECH','TRANSC','TYPE'
-                      ,'TEXT','SAME','SELECT'
+            headers = ('NO', 'DIC', 'DICF', 'WFORM', 'SPEECH', 'TRANSC', 'TYPE'
+                      ,'TEXT', 'SAME', 'SELECT'
                       )
             rows = []
             for i in range(len(self.blocks)):
@@ -174,7 +170,7 @@ class Elems:
                                ,Transpose = True
                                ).run()
             mes = _('Non-DB blocks:') + '\n\n' + mes
-            sh.com.run_fast_debug(f,mes)
+            sh.com.run_fast_debug(f, mes)
         else:
             sh.com.rep_lazy(f)
     
@@ -187,14 +183,14 @@ class Elems:
                 if self.blocks[i].text \
                   and not self.blocks[i].text[0].isspace() \
                   and not self.blocks[i].text[0] in sh.lg.punc_array \
-                  and not self.blocks[i].text[0] in [')',']','}'] \
-                  and not self.blocks[i-1].text[-1] in ['(','[','{']:
+                  and not self.blocks[i].text[0] in [')', ']', '}'] \
+                  and not self.blocks[i-1].text[-1] in ['(', '[', '{']:
                       count += 1
                       self.blocks[i].text = ' ' + self.blocks[i].text
             i += 1
         if count:
             mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
+            sh.objs.get_mes(f, mes, True).show_debug()
 
     def set_phrase_dic(self):
         count = 0
@@ -210,16 +206,16 @@ class Elems:
                 block.select = 0
                 mes = _('{} phrases').format(count)
                 block.text = block.dic = block.dicf = mes
-                self.blocks.insert(i,block)
+                self.blocks.insert(i, block)
                 return True
                 
     def fill(self):
-        dic = dicf = wform = speech = transc = term = ''
+        dic = wform = speech = transc = term = ''
         
         # Find first non-empty values and set them as default
         for block in self.blocks:
             if block.type_ == 'dic':
-                dic = dicf = block.text
+                dic = block.text
                 break
         for block in self.blocks:
             if block.type_ == 'wform':
@@ -240,7 +236,7 @@ class Elems:
         
         for block in self.blocks:
             if block.type_ == 'dic':
-                dic = dicf = block.text
+                dic = block.text
             elif block.type_ == 'wform':
                 wform = block.text
             elif block.type_ == 'speech':
@@ -250,7 +246,7 @@ class Elems:
                 ''' #TODO: Is there a difference if we use both
                     term/phrase here or the term only?
                 '''
-            elif block.type_ in ('term','phrase'):
+            elif block.type_ in ('term', 'phrase'):
                 term = block.text
             block.dic = block.dicf = dic.strip()
             block.wform = wform
@@ -267,13 +263,13 @@ class Elems:
         '''
         i = len(self.blocks) - 1
         while i >= 0:
-            if self.blocks[i].type_ in ('term','phrase'):
+            if self.blocks[i].type_ in ('term', 'phrase'):
                 term = self.blocks[i].text
                 break
             i -= 1
         i = len(self.blocks) - 1
         while i >= 0:
-            if self.blocks[i].type_ in ('term','phrase'):
+            if self.blocks[i].type_ in ('term', 'phrase'):
                 term = self.blocks[i].text
             if not self.blocks[i].same > 0:
                 self.blocks[i].term = term
@@ -281,7 +277,7 @@ class Elems:
             
     def set_fixed_term(self):
         for block in self.blocks:
-            if block.type_ in ('dic','wform','speech','transc'):
+            if block.type_ in ('dic', 'wform', 'speech', 'transc'):
                 block.term = ''
                 
     def insert_fixed(self):
@@ -303,7 +299,7 @@ class Elems:
                 block.transc = self.blocks[i].transc
                 block.term = self.blocks[i].term
                 block.same = 0
-                self.blocks.insert(i,block)
+                self.blocks.insert(i, block)
                 
                 block = Block()
                 block.type_ = 'transc'
@@ -315,7 +311,7 @@ class Elems:
                 block.transc = self.blocks[i].transc
                 block.term = self.blocks[i].term
                 block.same = 0
-                self.blocks.insert(i,block)
+                self.blocks.insert(i, block)
 
                 block = Block()
                 block.type_ = 'wform'
@@ -327,7 +323,7 @@ class Elems:
                 block.transc = self.blocks[i].transc
                 block.term = self.blocks[i].term
                 block.same = 0
-                self.blocks.insert(i,block)
+                self.blocks.insert(i, block)
                 
                 block = Block()
                 block.type_ = 'dic'
@@ -339,7 +335,7 @@ class Elems:
                 block.transc = self.blocks[i].transc
                 block.term = self.blocks[i].term
                 block.same = 0
-                self.blocks.insert(i,block)
+                self.blocks.insert(i, block)
                 
                 dic = self.blocks[i].dic
                 dicf = self.blocks[i].dicf
@@ -350,13 +346,13 @@ class Elems:
             
     def remove_fixed(self):
         self.blocks = [block for block in self.blocks if block.type_ \
-                       not in ('dic','wform','transc','speech')
+                       not in ('dic', 'wform', 'transc', 'speech')
                       ]
                        
     def set_selectables(self):
         # block.no is set only after creating DB
         for block in self.blocks:
-            if block.type_ in ('phrase','term','transc') \
+            if block.type_ in ('phrase', 'term', 'transc') \
             and block.text and block.select < 1:
                 block.select = 1
             else:
