@@ -40,8 +40,8 @@ class Extension:
                 self.ext = '&SHL=14'
             elif 'zh' in result:
                 self.ext = '&SHL=17'
-        mes = '{} -> {}'.format(result,self.ext)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = '{} -> {}'.format(result, self.ext)
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def run(self):
         self.set_ext()
@@ -51,7 +51,7 @@ class Extension:
 
 class Suggest:
     
-    def __init__(self,search):
+    def __init__(self, search):
         self.set_values()
         if search:
             self.reset(search)
@@ -62,7 +62,7 @@ class Suggest:
         self.url = ''
         self.pair = URL + '/ms.exe?s=%s'
     
-    def reset(self,search):
+    def reset(self, search):
         f = '[MClient] plugins.multitrancom.get.Suggest.reset'
         self.pattern = search
         if not self.pattern:
@@ -100,7 +100,7 @@ class Suggest:
             return
         self.items = html.unescape(self.items)
         self.items = [item for item in self.items.splitlines() if item]
-        sh.objs.get_mes(f,self.items,True).show_debug()
+        sh.objs.get_mes(f, self.items, True).show_debug()
         return self.items
     
     def run(self):
@@ -111,7 +111,7 @@ class Suggest:
 
 class Get:
     
-    def __init__(self,search='',url=''):
+    def __init__(self, search='', url=''):
         f = '[MClient] plugins.multitrancom.get.Get.__init__'
         self.set_values()
         self.pattern = search
@@ -147,7 +147,7 @@ class Get:
             self.text = ''
             mes = _('Unable to change the web-page encoding!\n\nDetails: {}')
             mes = mes.format(e)
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
     
     def get(self):
         f = '[MClient] plugins.multitrancom.get.Get.get'
@@ -157,7 +157,7 @@ class Get:
         while not self.text:
             try:
                 mes = _('Get online: "{}"').format(self.pattern)
-                sh.objs.get_mes(f,mes,True).show_info()
+                sh.objs.get_mes(f, mes, True).show_info()
                 ''' - If the page is loaded using
                       "page=urllib.request.urlopen(my_url)", we get
                       HTTPResponse as a result, which is useful only to remove
@@ -165,40 +165,37 @@ class Get:
                       manually, then we need a string as output.
                     - If 'self.url' is empty, then an error is thrown.
                 '''
-                self.text = urllib.request.urlopen (self.url,None,TIMEOUT
-                                                   ).read()
+                self.text = urllib.request.urlopen(self.url, None, TIMEOUT).read()
                 mes = _('[OK]: "{}"').format(self.pattern)
-                sh.objs.get_mes(f,mes,True).show_info()
+                sh.objs.get_mes(f, mes, True).show_info()
             # Too many possible exceptions
             except Exception as e:
                 mes = _('[FAILED]: "{}"').format(self.pattern)
-                sh.objs.get_mes(f,mes,True).show_error()
+                sh.objs.get_mes(f, mes, True).show_error()
                 # For some reason, 'break' does not work here
                 mes = _('Unable to get the webpage. Do you want to try again?\n\nDetails: {}')
                 mes = mes.format(e)
-                if not sh.objs.get_mes(f,mes).show_question():
+                if not sh.objs.get_mes(f, mes).show_question():
                     return
 
 
 
 class Commands:
     
-    def fix_raw_htm(self,code):
+    def fix_raw_htm(self, code):
         #TODO: fix remaining links to localhost
-        code = code.replace ('charset={}"'.format(CODING)
-                            ,'charset=utf-8"'
-                            )
-        code = code.replace('<a href="/m.exe?','<a href="' + PAIRROOT)
+        code = code.replace('charset={}"'.format(CODING), 'charset=utf-8"')
+        code = code.replace('<a href="/m.exe?', '<a href="' + PAIRROOT)
         return code
     
-    def get_url(self,code1,code2,search):
+    def get_url(self, code1, code2, search):
         f = '[MClient] plugins.multitrancom.get.Commands.get_url'
         if not search or not code1 or not code2:
             sh.com.rep_empty(f)
             return
         #NOTE: The encoding here should always be 'utf-8'!
         base = 'https://www.multitran.com/m.exe?s=%s&l1={}&l2={}'
-        base = base.format(code1,code2)
+        base = base.format(code1, code2)
         url = sh.Online (base = base
                         ,pattern = search
                         ,coding = 'utf-8'
@@ -207,7 +204,7 @@ class Commands:
             url += EXT
         return url
     
-    def fix_url(self,url):
+    def fix_url(self, url):
         f = '[MClient] plugins.multitrancom.get.Commands.fix_url'
         if not url:
             sh.com.rep_empty(f)
