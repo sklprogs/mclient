@@ -33,7 +33,7 @@ class Save:
         if len(self.data) % 2 != 0:
             self.Success = False
             mes = f'{len(self.data)} % 2 != 0'
-            sh.com.rep_condition(f,mes)
+            sh.com.rep_condition(f, mes)
     
     def set_subjects(self):
         f = '[MClientQt] plugins.multitrancom.utils.subjects.Save.set_subjects'
@@ -70,7 +70,7 @@ class Save:
         except Exception as e:
             self.Success = False
             mes = _('Third-party module has failed!\n\nDetails: {}').format(e)
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
     
     def run(self):
         self.check()
@@ -116,7 +116,7 @@ class Loop:
             self.Success = False
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(self.lang, ', '.join(self.langs))
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
             return
         self.filew = self.file_ptrn.format(self.lang)
     
@@ -140,8 +140,8 @@ if __name__ == '__main__':
     #FIX: Cannot currently use skl_shared_qt in pure console mode
     if Loop().run():
         mes = _('Operation has completed successfully.')
-        sh.objs.get_mes(f,mes).show_info()
+        sh.objs.get_mes(f, mes).show_info()
     else:
         mes = _('Operation has failed!')
-        sh.objs.get_mes(f,mes).show_error()
+        sh.objs.get_mes(f, mes).show_error()
     sh.com.end()
