@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+#import skl_shared_qt.shared as sh
 
 from . import gui as gi
 from . import logic as lg
@@ -15,8 +15,8 @@ class Symbols:
         self.set_gui()
         self.fill()
     
-    def select(self,rowno,colno):
-        index_ = self.model.index(rowno,colno)
+    def select(self, rowno, colno):
+        index_ = self.model.index(rowno, colno)
         self.gui.table.set_cur_index(index_)
     
     def set_gui(self):
@@ -26,7 +26,7 @@ class Symbols:
     
     def get(self):
         rowno, colno = self.gui.table.get_cur_cell()
-        return self.logic.get(rowno,colno)
+        return self.logic.get(rowno, colno)
     
     def set_logic(self):
         self.logic = lg.Symbols()
@@ -37,7 +37,7 @@ class Symbols:
         self.gui.resize_to_contents()
     
     def set_bindings(self):
-        self.gui.bind('Esc',self.close)
+        self.gui.bind('Esc', self.close)
         self.gui.table.sig_select.connect(self.select)
     
     def show(self):
@@ -45,7 +45,7 @@ class Symbols:
         self.gui.set_size()
         self.gui.centralize()
     
-    def set_title(self,title=_('Paste symbols')):
+    def set_title(self, title=_('Paste symbols')):
         self.gui.set_title(title)
     
     def close(self):
