@@ -10,7 +10,7 @@ import PyQt5.QtWidgets
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-icn_btm = sh.objs.get_pdir().add('..','resources', 'buttons', 'bottom.png')
+icn_btm = sh.objs.get_pdir().add('..', 'resources', 'buttons', 'bottom.png')
 icn_dwn = sh.objs.pdir.add('..', 'resources', 'buttons', 'down.png')
 icn_lft = sh.objs.pdir.add('..', 'resources', 'buttons', 'go_back.png')
 icn_rht = sh.objs.pdir.add('..', 'resources', 'buttons', 'go_next.png')

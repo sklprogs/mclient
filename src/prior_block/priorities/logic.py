@@ -33,7 +33,7 @@ class Priorities:
             cur_major.append(subject.cur_major)
             prev_major.append(subject.prev_major)
         headers = ('text', 'Major', 'cur_major', 'prev_major')
-        iterable = (text,major,cur_major,prev_major)
+        iterable = (text, major, cur_major, prev_major)
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
                            ,maxrow = 50
@@ -89,7 +89,7 @@ class Priorities:
             # +1 since we have inserted a new item
             del self.subjects[pos + 1]
         
-    def move_up(self,pos):
+    def move_up(self, pos):
         if self.subjects[pos].Major:
             self.move_group_up(pos)
         else:
