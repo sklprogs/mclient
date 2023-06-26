@@ -64,7 +64,7 @@ class Priorities:
         f = '[MClientQt] prior_block.priorities.controller.Priorities.prioritize'
         print(f)
     
-    def unprioritize(self, event=None):
+    def unprioritize(self):
         f = '[MClient] prior_block.priorities.controller.Priorities.unprioritize'
         print(f)
     
