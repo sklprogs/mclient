@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.localize import _
+#from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 
@@ -16,7 +16,7 @@ class Suggest:
                     ,action = self.close
                     )
         
-    def show(self,lst=['a','b','c'],action=None):
+    def show(self, lst=['a', 'b', 'c'], action=None):
         if not self.parent:
             self.parent = sh.Top(Lock=False)
             self.parent.widget.wm_overrideredirect(1)

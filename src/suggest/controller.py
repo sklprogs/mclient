@@ -8,11 +8,11 @@ from . import gui as gi
 
 class Suggest:
     
-    def __init__(self,entry):
+    def __init__(self, entry):
         self.entry = entry
         self.gui = None
     
-    def close(self,event=None):
+    def close(self, event=None):
         self.get_gui().close()
     
     def get_gui(self):
@@ -23,15 +23,15 @@ class Suggest:
     def set_gui(self):
         self.gui = gi.Suggest()
     
-    def select(self,event=None):
+    def select(self, event=None):
         f = '[MClient] suggest.controller.Suggest.select'
         mes = _('This procedure should be overridden')
-        sh.objs.get_mes(f,mes,True).show_error()
+        sh.objs.get_mes(f, mes, True).show_error()
         
-    def _select(self,event=None):
-        ''' #NOTE: this works differently in Windows and Linux.
-            In Windows selecting an item will hide suggestions,
-            in Linux they will be kept open.
+    def _select(self, event=None):
+        ''' #NOTE: this works differently in Windows and Linux. In Windows
+            selecting an item will hide suggestions, in Linux they will be kept
+            open.
         '''
         f = '[MClient] suggest.controller.Suggest._select'
         if self.gui.parent:
@@ -42,7 +42,7 @@ class Suggest:
         else:
             sh.com.rep_empty(f)
         
-    def move_down(self,event=None):
+    def move_down(self, event=None):
         f = '[MClient] suggest.controller.Suggest.move_down'
         if self.get_gui().parent:
             # Necessary to use arrows on ListBox
@@ -53,7 +53,7 @@ class Suggest:
         else:
             sh.com.rep_empty(f)
         
-    def move_up(self,event=None):
+    def move_up(self, event=None):
         f = '[MClient] suggest.controller.Suggest.move_up'
         if self.get_gui().parent:
             # Necessary to use arrows on ListBox
@@ -64,7 +64,7 @@ class Suggest:
         else:
             sh.com.rep_empty(f)
         
-    def move_top(self,event=None):
+    def move_top(self, event=None):
         f = '[MClient] suggest.controller.Suggest.move_top'
         if self.get_gui().parent:
             # Necessary to use arrows on ListBox
@@ -74,7 +74,7 @@ class Suggest:
         else:
             sh.com.rep_empty(f)
                           
-    def move_bottom(self,event=None):
+    def move_bottom(self, event=None):
         f = '[MClient] suggest.controller.Suggest.move_bottom'
         if self.get_gui().parent:
             # Necessary to use arrows on ListBox
@@ -84,10 +84,10 @@ class Suggest:
         else:
             sh.com.rep_empty(f)
     
-    def suggest(self,event=None):
+    def suggest(self, event=None):
         f = '[MClient] suggest.controller.Suggest.suggest'
         mes = _('This procedure should be overridden')
-        sh.objs.get_mes(f,mes,True).show_error()
+        sh.objs.get_mes(f, mes, True).show_error()
     
     def set_bindings(self):
         if self.get_gui().parent:
