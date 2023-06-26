@@ -42,7 +42,7 @@ class Expand:
                 cell.speech = speeches[cell.speech]
             except KeyError:
                 mes = _('Wrong input data: "{}"!').format(cell.speech)
-                sh.objs.get_mes(f,mes,True).show_warning()
+                sh.objs.get_mes(f, mes, True).show_warning()
     
     def expand_subjects(self):
         ''' This takes ~0.0084s for 'set' on AMD E-300 (no IDE, no warnings,
@@ -76,7 +76,7 @@ class Omit:
         self.cells = [cell for cell in self.cells \
                       if not sj.objs.get_subjects().is_blocked(cell.subj)
                      ]
-        sh.com.rep_matches(f,old_len-len(self.cells))
+        sh.com.rep_matches(f, old_len-len(self.cells))
     
     def omit_users(self):
         f = '[MClientQt] cells.Omit.omit_users'
@@ -100,7 +100,7 @@ class Omit:
                 fragms = [block.text for block in cell.blocks]
                 cell.text = sh.List(fragms).space_items().strip()
             count += delta
-        sh.com.rep_matches(f,count)
+        sh.com.rep_matches(f, count)
     
     def run(self):
         self.omit_subjects()
@@ -279,7 +279,7 @@ class View:
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(type_, 'subj, wform, transc, speech, or empty')
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
         return cell
     
     def restore_fixed(self):
@@ -298,7 +298,7 @@ class View:
                     self.cells.insert(i, cell)
                     i += 1
             i += 1
-        sh.com.rep_matches(f,count)
+        sh.com.rep_matches(f, count)
     
     def restore_first(self):
         # Add fixed cells for the very first row
@@ -442,7 +442,7 @@ class View:
                 mes = mes.format(type_, self.fixed_urls)
             elif not text in self.fixed_urls[type_]:
                 mes = mes.format(text, self.fixed_urls[type_])
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
         return ''
     
     def restore_urls(self):
@@ -566,7 +566,7 @@ class Wrap:
         if self.collimit <= self.fixed_len:
             self.Success = False
             mes = f'{self.collimit} > {self.fixed_len}'
-            sh.com.rep_condition(f,mes)
+            sh.com.rep_condition(f, mes)
     
     def get_empty_cells(self, delta):
         row = []

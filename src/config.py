@@ -13,7 +13,7 @@ sample_prior = _('General')
 
 class DefaultKeys(sh.DefaultKeys):
 
-    def __init__(self,*args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.load()
     
@@ -156,7 +156,7 @@ class DefaultKeys(sh.DefaultKeys):
 
 class CreateConfig(sh.CreateConfig):
     
-    def __init__(self,*args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
     
     def fill_bool(self):
@@ -430,13 +430,11 @@ class CreateConfig(sh.CreateConfig):
         self.add_key(section, section_abbr, key, comment)
         
         key = 'bind_reload_article'
-        comment = _('Reload the current article (combination #{})')
-        comment = comment.format(1)
+        comment = _('Reload the current article (combination #{})').format(1)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'bind_reload_article_alt'
-        comment = _('Reload the current article (combination #{})')
-        comment = comment.format(2)
+        comment = _('Reload the current article (combination #{})').format(2)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'bind_re_search_article'
@@ -462,13 +460,11 @@ class CreateConfig(sh.CreateConfig):
         self.add_key(section, section_abbr, key, comment)
         
         key = 'bind_settings'
-        comment = _('Show settings (combination #{})')
-        comment = comment.format(1)
+        comment = _('Show settings (combination #{})').format(1)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'bind_settings_alt'
-        comment = _('Show settings (combination #{})')
-        comment = comment.format(2)
+        comment = _('Show settings (combination #{})').format(2)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'bind_show_about'
@@ -492,13 +488,11 @@ class CreateConfig(sh.CreateConfig):
         self.add_key(section, section_abbr, key, comment)
         
         key = 'bind_toggle_history'
-        comment = _('Toggle History (combination #{})')
-        comment = comment.format(1)
+        comment = _('Toggle History (combination #{})').format(1)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'bind_toggle_history_alt'
-        comment = _('Toggle History (combination #{})')
-        comment = comment.format(2)
+        comment = _('Toggle History (combination #{})').format(2)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'bind_toggle_popup'
@@ -520,23 +514,19 @@ class CreateConfig(sh.CreateConfig):
         self.add_key(section, section_abbr, key, comment)
         
         key = 'col1_type'
-        comment = _('[Autosave] Type of column #{} in settings')
-        comment = comment.format(1)
+        comment = _('[Autosave] Type of column #{} in settings').format(1)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'col2_type'
-        comment = _('[Autosave] Type of column #{} in settings')
-        comment = comment.format(2)
+        comment = _('[Autosave] Type of column #{} in settings').format(2)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'col3_type'
-        comment = _('[Autosave] Type of column #{} in settings')
-        comment = comment.format(3)
+        comment = _('[Autosave] Type of column #{} in settings').format(3)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'col4_type'
-        comment = _('[Autosave] Type of column #{} in settings')
-        comment = comment.format(4)
+        comment = _('[Autosave] Type of column #{} in settings').format(4)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'color_comments'
@@ -549,18 +539,15 @@ class CreateConfig(sh.CreateConfig):
         self.add_key(section, section_abbr, key, comment)
         
         key = 'color_col2'
-        comment = _('A font color for column #{}')
-        comment = comment.format(2)
+        comment = _('A font color for column #{}').format(2)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'color_col3'
-        comment = _('A font color for column #{}')
-        comment = comment.format(3)
+        comment = _('A font color for column #{}').format(3)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'color_col4'
-        comment = _('A font color for column #{}')
-        comment = comment.format(4)
+        comment = _('A font color for column #{}').format(4)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'color_terms'
@@ -580,23 +567,19 @@ class CreateConfig(sh.CreateConfig):
         self.add_key(section, section_abbr, key, comment)
         
         key = 'font_col1_family'
-        comment = _('A font of column #{}')
-        comment = comment.format(1)
+        comment = _('A font of column #{}').format(1)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'font_col2_family'
-        comment = _('A font of column #{}')
-        comment = comment.format(2)
+        comment = _('A font of column #{}').format(2)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'font_col3_family'
-        comment = _('A font of column #{}')
-        comment = comment.format(3)
+        comment = _('A font of column #{}').format(3)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'font_col4_family'
-        comment = _('A font of column #{}')
-        comment = comment.format(4)
+        comment = _('A font of column #{}').format(4)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'font_history'
@@ -757,7 +740,7 @@ class Subjects:
             self.body = json.loads(code)
         except Exception as e:
             self.Success = False
-            sh.com.rep_third_party(f,e)
+            sh.com.rep_third_party(f, e)
     
     def save(self):
         f = '[MClient] config.Subjects.save'
@@ -765,7 +748,7 @@ class Subjects:
             sh.com.cancel(f)
             return
         mes = _('Write file "{}"').format(self.file)
-        sh.objs.get_mes(f,mes,True).show_info()
+        sh.objs.get_mes(f, mes, True).show_info()
         try:
             with open(self.file, 'w', encoding='utf-8') as iopen:
                 json.dump(self.body, iopen, ensure_ascii=False, indent=4)
@@ -829,7 +812,7 @@ class PlainList:
         if not self.Success:
             sh.com.cancel(f)
             return
-        self.body = sh.ReadTextFile(self.file,True).get().splitlines()
+        self.body = sh.ReadTextFile(self.file, True).get().splitlines()
         self.body = [line.strip() for line in self.body]
     
     def save(self):
@@ -837,7 +820,7 @@ class PlainList:
         if not self.Success:
             sh.com.cancel(f)
             return
-        iwrite = sh.WriteTextFile(self.file,True,True)
+        iwrite = sh.WriteTextFile(self.file, True, True)
         iwrite.write('\n'.join(self.body))
         self.Success = iwrite.Success
     

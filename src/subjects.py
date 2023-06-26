@@ -28,7 +28,7 @@ class Subjects:
                         self.prior.append(subject)
                         break
         mes = '; '.join(self.prior)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def add_fixed_urls(self):
         f = '[MClientQt] subjects.Subjects.add_fixed_urls'

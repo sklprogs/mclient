@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.localize import _
+#from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 import plugins.multitrancom.utils.subjects.compile as us
 #import plugins.multitrancom.utils.subjects.check as us

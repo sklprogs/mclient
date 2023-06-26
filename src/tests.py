@@ -181,7 +181,7 @@ class ArticleSubjects:
         pairs = mclient.objs.get_blocksdb().get_dic_pairs()
         mes = _('Pairs: {}').format(pairs)
         sh.objs.get_mes(f, mes, True).show_debug()
-        sj.objs.get_article().reset(pairs,DEBUG)
+        sj.objs.get_article().reset(pairs, DEBUG)
         sj.objs.article.run()
     
     def set_blocks(self):
@@ -408,9 +408,7 @@ class Plugin:
         if not blocks:
             blocks = []
         for i in range(len(blocks)):
-            mes = '{}: {}: "{}"'.format (i,blocks[i].type_
-                                        ,blocks[i].text
-                                        )
+            mes = f'{i}: {blocks[i].type_}: "{blocks[i].text}"'
             print(mes)
     
     def run_stardict(self):
@@ -602,7 +600,7 @@ class Commands:
         ipopup = pp.Popup()
         file = sh.objs.get_pdir().add('..', 'resources', 'third parties.txt')
         text = sh.ReadTextFile(file).get()
-        text = sh.Text(text,True).delete_line_breaks() * 10
+        text = sh.Text(text, True).delete_line_breaks() * 10
         ipopup.fill(text)
         return ipopup
     
@@ -674,13 +672,13 @@ class Commands:
         count = 0
         for i in range(100):
             count += 1
-            ihis.add_row(str(count),'Main',_('English'),_('Russian'),'start')
+            ihis.add_row(str(count), 'Main', _('English'), _('Russian'), 'start')
             count += 1
-            ihis.add_row(str(count),'Main',_('Russian'),_('English'),'hello')
+            ihis.add_row(str(count), 'Main', _('Russian'), _('English'), 'hello')
             count += 1
-            ihis.add_row(str(count),'Main',_('French'),_('Esperanto'),'bye')
+            ihis.add_row(str(count), 'Main', _('French'), _('Esperanto'), 'bye')
             count += 1
-            ihis.add_row(str(count),'Main',_('English'),_('Russian'),'end')
+            ihis.add_row(str(count), 'Main', _('English'), _('Russian'), 'end')
         return ihis
     
     def run_symbols(self):
@@ -696,8 +694,7 @@ class Commands:
         import logic as lg
         lg.com.start()
         #sh.lg.globs['int']['colnum'] = 0
-        width = lg.com.get_column_width()
-        mes = '"{}%"'.format(width)
+        mes = f'"{lg.com.get_column_width()}%"'
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def check_width(self):
@@ -749,8 +746,8 @@ class Commands:
                 shorts.append(sj.SUBJECTS[key]['en']['short'])
                 titles.append(sj.SUBJECTS[key]['en']['title'])
         nos = [i + 1 for i in range(len(groups))]
-        headers = (_('#'),_('MAJOR (EN)'),_('SHORT'),_('TITLE'))
-        iterable = [nos,groups,shorts,titles]
+        headers = (_('#'), _('MAJOR (EN)'), _('SHORT'), _('TITLE'))
+        iterable = [nos, groups, shorts, titles]
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
                            ,maxrow = 30
@@ -816,10 +813,10 @@ class Commands:
             if pairs1 != pairs2:
                 for xlang in pairs1:
                     if xlang not in pairs2:
-                        lst.append('{}-{}'.format(xlang,lang))
+                        lst.append(f'{xlang}-{lang}')
                 for xlang in pairs2:
                     if xlang not in pairs1:
-                        lst.append('{}-{}'.format(lang,xlang))
+                        lst.append(f'{lang}-{xlang}')
         lst = list(set(lst))
         lst.sort()
         mes = _('The following pairs are not supported:\n{}')
@@ -874,7 +871,7 @@ class Commands:
         block[8] = 'hello'         # TEXT
         data2.append(block)
         # Compare
-        data = el.Elems(data1,data2).run()
+        data = el.Elems(data1, data2).run()
         data = [str(item) for item in data]
         data = '\n'.join(data)
         sh.com.run_fast_txt(data)
@@ -885,20 +882,20 @@ class Commands:
         source = _('Multitran')
         pair = 'DEU <=> RUS'
         search = 'ernährung'
-        mes = 'Source: "{}"; pair: "{}"; search: "{}"'.format (source
-                                                              ,pair
-                                                              ,search
-                                                              )
+        mes = _('Source: "{}"; pair: "{}"; search: "{}"').format (source
+                                                                 ,pair
+                                                                 ,search
+                                                                 )
         lg.objs.get_plugins().set(source)
         lg.objs.plugins.set_pair(pair)
         sh.objs.get_mes(f, mes, True).show_info()
         data = lg.objs.plugins.request (search = search
                                        ,url = ''
                                        )
-        if data:
-            sh.com.run_fast_txt(data)
-        else:
+        if not data:
             sh.com.rep_empty(f)
+            return
+        sh.com.run_fast_txt(data)
     
     def get_url(self):
         import logic as lg
@@ -907,7 +904,7 @@ class Commands:
         pair = 'RUS <=> XAL'
         search = 'До свидания!'
         mes = 'Source: "{}"; pair: "{}"; search: "{}"'
-        mes = mes.format(source,pair,search)
+        mes = mes.format(source, pair, search)
         lg.objs.get_plugins().set(source)
         lg.objs.plugins.set_pair(pair)
         sh.objs.get_mes(f, mes, True).show_info()
@@ -920,20 +917,18 @@ class Commands:
         pair = 'DEU <=> RUS'
         search = 'Scheiße'
         mes = 'Source: "{}"; pair: "{}"; search: "{}"'
-        mes = mes.format(source,pair,search)
+        mes = mes.format(source, pair, search)
         lg.objs.get_plugins().set(source)
         lg.objs.plugins.set_pair(pair)
         sh.objs.get_mes(f, mes, True).show_info()
         lg.com.suggest(search)
     
-    def _set_timeout(self,module,source,timeout):
+    def _set_timeout(self, module, source, timeout):
         import logic as lg
         f = '[MClient] tests.Commands._set_timeout'
         lg.objs.get_plugins().set(source)
         lg.objs.plugins.set_timeout(timeout)
-        mes = 'Source: {}; Timeout: {}'.format (source
-                                               ,module.TIMEOUT
-                                               )
+        mes = _('Source: {}; timeout: {}').format(source, module.TIMEOUT)
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def set_timeout(self):
@@ -958,12 +953,12 @@ class Commands:
         source = _('Offline')
         lg.objs.get_plugins().set(source)
         result = lg.objs.plugins.is_accessible()
-        mes = 'Source: {}; Accessibility: {}'.format(source,result)
+        mes = _('Source: {}; accessibility: {}').format(source, result)
         sh.objs.get_mes(f, mes, True).show_debug()
         source = 'multitran.com'
         lg.objs.plugins.set(source)
         result = lg.objs.plugins.is_accessible()
-        mes = 'Source: {}; Accessibility: {}'.format(source,result)
+        mes = _('Source: {}; accessibility: {}').format(source, result)
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def welcome(self):
@@ -986,7 +981,7 @@ class Commands:
         lg.objs.get_plugins().set(source)
         lg.objs.plugins.set_pair(pair)
         
-        mes = '{}: {}'.format(source,plugins.multitrancom.get.PAIR)
+        mes = f'{source}: {plugins.multitrancom.get.PAIR}'
         sh.objs.get_mes(f, mes, True).show_debug()
         pair = 'XAL <=> RUS'
         source = _('Multitran')
