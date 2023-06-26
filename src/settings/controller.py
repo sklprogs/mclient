@@ -87,10 +87,10 @@ class Save:
         sh.lg.globs['bool']['PhraseCount'] = self.gui.cbx_no8.get()
         sh.lg.globs['bool']['AdjustByWidth'] = self.gui.cbx_no9.get()
     
-    def _report_wrong_range(self,f,start,end):
+    def _report_wrong_range(self, f, start, end):
         mes = _('A value of this field should be within the range of {}-{}!')
-        mes = mes.format(start,end)
-        sh.objs.get_mes(f,mes).show_warning()
+        mes = mes.format(start, end)
+        sh.objs.get_mes(f, mes).show_warning()
     
     def save_col_num(self):
         f = '[MClientQt] settings.controller.Save.save_col_num'
@@ -100,9 +100,9 @@ class Save:
             return
         '''
         col_num = self.gui.ent_num.get()
-        col_num = sh.Input(f,col_num).get_integer()
+        col_num = sh.Input(f, col_num).get_integer()
         if not 0 < col_num <= 10:
-            self._report_wrong_range(f,1,10)
+            self._report_wrong_range(f, 1, 10)
             col_num = 5
             self.gui.ent_num.reset()
             self.gui.ent_num.insert(col_num)
@@ -111,9 +111,9 @@ class Save:
     def save_fixed_col_width(self):
         f = '[MClientQt] settings.controller.Save.save_fixed_col_width'
         width = self.gui.ent_fix.get()
-        width = sh.Input(f,width).get_integer()
+        width = sh.Input(f, width).get_integer()
         if not 50 <= width <= 512:
-            self._report_wrong_range(f,50,512)
+            self._report_wrong_range(f, 50, 512)
             width = 63
             self.gui.ent_fix.reset()
             self.gui.ent_fix.insert(width)
@@ -122,9 +122,9 @@ class Save:
     def save_term_col_width(self):
         f = '[MClientQt] settings.controller.Save.save_term_col_width'
         width = self.gui.ent_trm.get()
-        width = sh.Input(f,width).get_integer()
+        width = sh.Input(f, width).get_integer()
         if not 50 <= width <= 512:
-            self._report_wrong_range(f,50,512)
+            self._report_wrong_range(f, 50, 512)
             width = 157
             self.gui.ent_trm.reset()
             self.gui.ent_trm.insert(width)
@@ -152,8 +152,8 @@ class Settings:
         self.set_bindings()
     
     def set_bindings(self):
-        self.gui.bind('Ctrl+Q',self.close)
-        self.gui.bind('Esc',self.close)
+        self.gui.bind('Ctrl+Q', self.close)
+        self.gui.bind('Esc', self.close)
     
     def show(self):
         self.Shown = True
@@ -165,7 +165,7 @@ class Settings:
         self.Shown = False
         self.gui.close()
     
-    def set_title(self,title=_('Settings')):
+    def set_title(self, title=_('Settings')):
         self.gui.set_title(title)
     
     def toggle(self):

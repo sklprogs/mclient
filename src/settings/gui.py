@@ -13,8 +13,8 @@ class Settings(PyQt5.QtWidgets.QWidget):
     
     sig_close = PyQt5.QtCore.pyqtSignal()
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.set_values()
         self.set_gui()
     
@@ -33,9 +33,8 @@ class Settings(PyQt5.QtWidgets.QWidget):
                        ,_('Clearness')
                        ,_('Custom')
                        )
-        self.spitems = (_('Noun'),_('Verb'),_('Adjective')
-                       ,_('Abbreviation'),_('Adverb')
-                       ,_('Preposition'),_('Pronoun')
+        self.spitems = (_('Noun'), _('Verb'), _('Adjective'), _('Abbreviation')
+                       ,_('Adverb'), _('Preposition'), _('Pronoun')
                        )
 
     def update_sp1(self):
@@ -50,7 +49,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
     
     def update_sp2(self):
         f = '[MClientQt] settings.gui.Settings.update_sp2'
@@ -64,7 +63,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
                        
     def update_sp3(self):
         f = '[MClientQt] settings.gui.Settings.update_sp3'
@@ -78,7 +77,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
                        
     def update_sp4(self):
         f = '[MClientQt] settings.gui.Settings.update_sp4'
@@ -92,7 +91,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
                        
     def update_sp5(self):
         f = '[MClientQt] settings.gui.Settings.update_sp5'
@@ -106,7 +105,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
                        
     def update_sp6(self):
         f = '[MClientQt] settings.gui.Settings.update_sp6'
@@ -120,7 +119,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
                        
     def update_sp7(self):
         f = '[MClientQt] settings.gui.Settings.update_sp7'
@@ -134,7 +133,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
     
     def update_col1(self):
         f = '[MClientQt] settings.gui.Settings.update_col1'
@@ -149,7 +148,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
                 self.allowed.remove(self.allowed[0])
             else:
                 mes = _('Empty input is not allowed!')
-                sh.objs.get_mes(f,mes).show_error()
+                sh.objs.get_mes(f, mes).show_error()
 
     def update_col2(self):
         f = '[MClientQt] settings.gui.Settings.update_col2'
@@ -164,7 +163,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
                 self.allowed.remove(self.allowed[0])
             else:
                 mes = _('Empty input is not allowed!')
-                sh.objs.get_mes(f,mes).show_error()
+                sh.objs.get_mes(f, mes).show_error()
 
     def update_col3(self):
         f = '[MClientQt] settings.gui.Settings.update_col3'
@@ -179,7 +178,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
                 self.allowed.remove(self.allowed[0])
             else:
                 mes = _('Empty input is not allowed!')
-                sh.objs.get_mes(f,mes).show_error()
+                sh.objs.get_mes(f, mes).show_error()
 
     def update_col4(self):
         f = '[MClientQt] settings.gui.Settings.update_col4'
@@ -194,7 +193,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
                 self.allowed.remove(self.allowed[0])
             else:
                 mes = _('Empty input is not allowed!')
-                sh.objs.get_mes(f,mes).show_error()
+                sh.objs.get_mes(f, mes).show_error()
 
     def update_style(self):
         cond11 = self.opt_cl1.get() == _('Subjects')
@@ -220,7 +219,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
         else:
             self.opt_stl.set(_('Custom'))
 
-    def update_by_st(self,event=None):
+    def update_by_st(self, event=None):
         f = '[MClientQt] settings.gui.Settings.update_by_st'
         if self.opt_stl.get() == PRODUCT:
             self.opt_cl1.set(_('Subjects'))
@@ -246,8 +245,8 @@ class Settings(PyQt5.QtWidgets.QWidget):
             pass
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(self.opt_stl.get(),self.stitems)
-            sh.objs.get_mes(f,mes).show_error()
+            mes = mes.format(self.opt_stl.get(), self.stitems)
+            sh.objs.get_mes(f, mes).show_error()
 
     def update_by_col1(self):
         self.allowed = list(self.items)
@@ -273,7 +272,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.update_col4()
         self.update_style()
 
-    def update_by_col4(self,event=None):
+    def update_by_col4(self, event=None):
         self.allowed = list(self.items)
         self.update_col4()
         self.update_col1()
@@ -374,7 +373,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.cbx_no8.enable()
         self.cbx_no9.enable()
     
-    def closeEvent(self,event):
+    def closeEvent(self, event):
         self.sig_close.emit()
         return super().closeEvent(event)
     
@@ -482,8 +481,8 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.bg_col = PyQt5.QtWidgets.QWidget()
         # Cannot reuse the same widget
         self.bg_psp = PyQt5.QtWidgets.QWidget()
-        self.lay_col.addWidget(self.bg_col,0,0,1,5)
-        self.lay_psp.addWidget(self.bg_psp,0,0,1,7)
+        self.lay_col.addWidget(self.bg_col, 0, 0, 1, 5)
+        self.lay_psp.addWidget(self.bg_psp, 0, 0, 1, 7)
     
     def set_suggest(self):
         self.lbl_num = sh.Label(_('Preferred number of columns:'))
@@ -495,32 +494,32 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.btn_sug = sh.Button(_('Suggest'))
     
     def _add_columns(self):
-        self.lay_col.addWidget(self.lbl_stl.widget,0,0,PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_col.addWidget(self.lbl_cl1.widget,0,1,PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_col.addWidget(self.lbl_cl2.widget,0,2,PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_col.addWidget(self.lbl_cl3.widget,0,3,PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_col.addWidget(self.lbl_cl4.widget,0,4,PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_col.addWidget(self.opt_stl.widget,1,0)
-        self.lay_col.addWidget(self.opt_cl1.widget,1,1)
-        self.lay_col.addWidget(self.opt_cl2.widget,1,2)
-        self.lay_col.addWidget(self.opt_cl3.widget,1,3)
-        self.lay_col.addWidget(self.opt_cl4.widget,1,4)
+        self.lay_col.addWidget(self.lbl_stl.widget, 0, 0, PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl1.widget, 0, 1, PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl2.widget, 0, 2, PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl3.widget, 0, 3, PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl4.widget, 0, 4, PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_col.addWidget(self.opt_stl.widget, 1, 0)
+        self.lay_col.addWidget(self.opt_cl1.widget, 1, 1)
+        self.lay_col.addWidget(self.opt_cl2.widget, 1, 2)
+        self.lay_col.addWidget(self.opt_cl3.widget, 1, 3)
+        self.lay_col.addWidget(self.opt_cl4.widget, 1, 4)
     
     def _add_speech(self):
-        self.lay_psp.addWidget(self.lbl_sp1.widget,0,0,PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp2.widget,0,1,PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp3.widget,0,2,PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp4.widget,0,3,PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp5.widget,0,4,PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp6.widget,0,5,PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp7.widget,0,6,PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_psp.addWidget(self.opt_sp1.widget,1,0)
-        self.lay_psp.addWidget(self.opt_sp2.widget,1,1)
-        self.lay_psp.addWidget(self.opt_sp3.widget,1,2)
-        self.lay_psp.addWidget(self.opt_sp4.widget,1,3)
-        self.lay_psp.addWidget(self.opt_sp5.widget,1,4)
-        self.lay_psp.addWidget(self.opt_sp6.widget,1,5)
-        self.lay_psp.addWidget(self.opt_sp7.widget,1,6)
+        self.lay_psp.addWidget(self.lbl_sp1.widget, 0, 0, PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp2.widget, 0, 1, PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp3.widget, 0, 2, PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp4.widget, 0, 3, PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp5.widget, 0, 4, PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp6.widget, 0, 5, PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp7.widget, 0, 6, PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_psp.addWidget(self.opt_sp1.widget, 1, 0)
+        self.lay_psp.addWidget(self.opt_sp2.widget, 1, 1)
+        self.lay_psp.addWidget(self.opt_sp3.widget, 1, 2)
+        self.lay_psp.addWidget(self.opt_sp4.widget, 1, 3)
+        self.lay_psp.addWidget(self.opt_sp5.widget, 1, 4)
+        self.lay_psp.addWidget(self.opt_sp6.widget, 1, 5)
+        self.lay_psp.addWidget(self.opt_sp7.widget, 1, 6)
     
     def _add_checkboxes(self):
         self.lay_cbx.addWidget(self.cbx_no1.widget)
@@ -547,7 +546,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
         ''' This value is picked up manually and depends on the window width.
             However, we can set a value surpassing the window width.
         '''
-        self.lay_btn.insertSpacing(1,650)
+        self.lay_btn.insertSpacing(1, 650)
         self.lay_btn.addWidget(self.btn_apl.widget)
     
     def add_widgets(self):
@@ -624,11 +623,11 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.setFixedWidth(800)
         self.set_icon()
     
-    def set_title(self,title):
+    def set_title(self, title):
         self.setWindowTitle(title)
     
-    def bind(self,hotkey,action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
+    def bind(self, hotkey, action):
+        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
 
 
 if __name__ == '__main__':
