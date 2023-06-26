@@ -24,7 +24,7 @@ class ThirdParties:
     def fill(self):
         self.gui.fill(self.logic.fill())
     
-    def set_title(self,title=_('Third parties')):
+    def set_title(self, title=_('Third parties')):
         self.gui.set_title(title)
     
     def set_gui(self):
@@ -40,4 +40,4 @@ class ThirdParties:
         self.gui.close()
     
     def set_bindings(self):
-        self.gui.bind('Esc',self.close)
+        self.gui.bind('Esc', self.close)

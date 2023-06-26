@@ -4,14 +4,14 @@
 import PyQt5
 import PyQt5.QtWidgets
 
-from skl_shared_qt.localize import _
+#from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 
 class ThirdParties(PyQt5.QtWidgets.QWidget):
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.set_gui()
     
     def set_icon(self):
@@ -21,17 +21,17 @@ class ThirdParties(PyQt5.QtWidgets.QWidget):
     def centralize(self):
         self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
     
-    def fill(self,text):
+    def fill(self, text):
         self.textbox.clear()
-        self.cursor.insertText(text,self.char_fmt)
+        self.cursor.insertText(text, self.char_fmt)
         self.textbox.moveCursor(self.cursor.Start)
     
-    def set_title(self,title):
+    def set_title(self, title):
         self.setWindowTitle(title)
     
     def set_layout(self):
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
-        self.layout_.setContentsMargins(0,0,0,0)
+        self.layout_.setContentsMargins(0, 0, 0, 0)
     
     def add_widgets(self):
         self.layout_.addWidget(self.textbox)
@@ -45,10 +45,10 @@ class ThirdParties(PyQt5.QtWidgets.QWidget):
         self.char_fmt = self.cursor.charFormat()
         self.textbox.setDocument(self.doc)
         self.textbox.setReadOnly(True)
-        self.font = PyQt5.QtGui.QFont('Serif',12)
+        self.font = PyQt5.QtGui.QFont('Serif', 12)
         self.char_fmt.setFont(self.font)
         self.add_widgets()
-        self.resize(600,400)
+        self.resize(600, 400)
     
-    def bind(self,hotkey,action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey),self).activated.connect(action)
+    def bind(self, hotkey, action):
+        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)

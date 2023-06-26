@@ -18,5 +18,5 @@ class ThirdParties:
         ionline.browse()
     
     def fill(self):
-        file = sh.objs.get_pdir().add('..','resources','third parties.txt')
+        file = sh.objs.get_pdir().add('..', 'resources', 'third parties.txt')
         return sh.ReadTextFile(file).get()
