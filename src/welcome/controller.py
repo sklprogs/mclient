@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import PyQt5.QtWidgets
-
-from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+#from skl_shared_qt.localize import _
+#import skl_shared_qt.shared as sh
 
 from . import logic as lg
 from . import gui as gi
@@ -12,14 +10,14 @@ from . import gui as gi
 
 class TableModel(gi.TableModel):
     
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 
 
 class Welcome:
     
-    def __init__(self,desc='Product Current Version'):
+    def __init__(self, desc='Product Current Version'):
         self.logic = lg.Welcome()
         self.logic.desc = desc
         self.set_gui()
@@ -28,7 +26,7 @@ class Welcome:
         self.gui = gi.App()
         self.set_bindings()
     
-    def set_font(self,text):
+    def set_font(self, text):
         return self.logic.set_font(text)
     
     def set_head(self):
@@ -37,7 +35,7 @@ class Welcome:
     def set_tail(self):
         self.logic.set_tail()
     
-    def set_model(self,model):
+    def set_model(self, model):
         self.gui.set_model(model)
     
     def close(self):
@@ -47,16 +45,16 @@ class Welcome:
         self.gui.show()
     
     def set_bindings(self):
-        self.gui.bind('Ctrl+Q',self.close)
-        self.gui.bind('Esc',self.close)
+        self.gui.bind('Ctrl+Q', self.close)
+        self.gui.bind('Esc', self.close)
     
     def set_spans(self):
         for i in range(10):
-            self.gui.set_span(i,0,1,lg.COLNUM)
+            self.gui.set_span(i, 0, 1, lg.COLNUM)
     
     def set_col_widths(self):
         for i in range(lg.COLNUM):
-            self.gui.set_col_width(i,166)
+            self.gui.set_col_width(i, 166)
     
     def resize_rows(self):
         ''' This strange workaround allows to avoid too much space caused by
@@ -70,9 +68,9 @@ class Welcome:
             borders fully visible.
             https://stackoverflow.com/questions/52166539/qtablewidget-respect-span-when-sizing-to-contents
         '''
-        self.gui.hide_rows((0,1,2,3,4,5,6,7,8,9))
+        self.gui.hide_rows((0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
         self.gui.resize_rows()
-        self.gui.show_rows((0,1,2,3,4,5,6,7,8,9))
+        self.gui.show_rows((0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
     
     def reset(self):
         self.fill()
