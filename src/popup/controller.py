@@ -14,8 +14,8 @@ class Popup:
         self.gui = gi.Popup()
         self.set_gui()
     
-    def adjust_position(self,x,y):
-        self.gui.move(x,y)
+    def adjust_position(self, x, y):
+        self.gui.move(x, y)
     
     def toggle(self):
         if self.Shown:
@@ -23,10 +23,10 @@ class Popup:
         else:
             self.show()
     
-    def fill(self,text):
+    def fill(self, text):
         self.gui.fill(text)
     
-    def set_title(self,title=_('Full cell text')):
+    def set_title(self, title=_('Full cell text')):
         self.gui.set_title(title)
     
     def set_gui(self):
@@ -42,5 +42,5 @@ class Popup:
         self.gui.close()
     
     def set_bindings(self):
-        self.gui.bind('Esc',self.close)
-        self.gui.bind(sh.lg.globs['str']['bind_toggle_popup'],self.toggle)
+        self.gui.bind('Esc', self.close)
+        self.gui.bind(sh.lg.globs['str']['bind_toggle_popup'], self.toggle)
