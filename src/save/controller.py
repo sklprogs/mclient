@@ -53,8 +53,8 @@ class Save:
             rowno = -1
         rowno += 1
         self._go_row(rowno)
-        mes = _('Change row number: {} → {}').format(old,rowno)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = _('Change row number: {} → {}').format(old, rowno)
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def go_up(self):
         # Qt already goes down/up, but without looping
@@ -67,10 +67,10 @@ class Save:
             rowno = len(self.model.items)
         rowno -= 1
         self._go_row(rowno)
-        mes = _('Change row number: {} → {}').format(old,rowno)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = _('Change row number: {} → {}').format(old, rowno)
+        sh.objs.get_mes(f, mes, True).show_debug()
     
-    def change_font_size(self,delta=1):
+    def change_font_size(self, delta=1):
         f = '[MClientQt] save.controller.Save.change_font_size'
         size = self.gui.get_font_size()
         if not size:
@@ -78,7 +78,7 @@ class Save:
             return
         if size + delta <= 0:
             mes = f'{size} + {delta} > 0'
-            sh.com.rep_condition(f,mes)
+            sh.com.rep_condition(f, mes)
             return
         self.gui.set_font_size(size+delta)
     
@@ -91,25 +91,25 @@ class Save:
         if self.model.items:
             self._go_row(0)
     
-    def _go_row(self,rowno):
+    def _go_row(self, rowno):
         self.gui.clear_selection()
-        index_ = self.model.index(rowno,0)
+        index_ = self.model.index(rowno, 0)
         self.gui.set_index(index_)
         self.gui.select_row(index_)
     
-    def set_title(self,title=_('Save article')):
+    def set_title(self, title=_('Save article')):
         self.gui.set_title(title)
     
     def set_bindings(self):
-        self.gui.bind('Esc',self.close)
-        self.gui.bind('Down',self.go_down)
-        self.gui.bind('Up',self.go_up)
-        self.gui.bind('Home',self.go_start)
-        self.gui.bind('End',self.go_end)
-        self.gui.bind('Ctrl+Home',self.go_start)
-        self.gui.bind('Ctrl+End',self.go_end)
-        self.gui.bind(sh.lg.globs['str']['bind_save_article'],self.toggle)
-        self.gui.bind(sh.lg.globs['str']['bind_save_article_alt'],self.toggle)
+        self.gui.bind('Esc', self.close)
+        self.gui.bind('Down', self.go_down)
+        self.gui.bind('Up', self.go_up)
+        self.gui.bind('Home', self.go_start)
+        self.gui.bind('End', self.go_end)
+        self.gui.bind('Ctrl+Home', self.go_start)
+        self.gui.bind('Ctrl+End', self.go_end)
+        self.gui.bind(sh.lg.globs['str']['bind_save_article'], self.toggle)
+        self.gui.bind(sh.lg.globs['str']['bind_save_article_alt'], self.toggle)
         self.gui.sig_close.connect(self.close)
     
     def centralize(self):
