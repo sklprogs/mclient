@@ -9,9 +9,9 @@ DEBUG = True
 ''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
     otherwise, 'Tags' will fail to set 'subj' and some other types.
 '''
-SEARCH = 'tuple'
-URL = ''
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/tuple (2023-05-06).html'
+SEARCH = 'coregone'
+URL = 'https://www.multitran.com/m.exe?s=coregone&l1=2&l2=1&SHL=2'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/coregone (2023-06-27).html'
 
 
 class Wrap:
@@ -1003,12 +1003,12 @@ if __name__ == '__main__':
         e.g. com.run_welcome, will cause an infinite loop.
     '''
     #idebug = sh.Debug(f, Tags().run_multitrancom())
-    #idebug = sh.Debug(f, Elems().run_multitrancom())
+    idebug = sh.Debug(f, Elems().run_multitrancom())
     #idebug = sh.Debug(f, Prioritize().run_multitrancom())
     #idebug = sh.Debug(f, View().run_multitrancom())
     #idebug = sh.Debug(f, Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
-    #idebug.show()
+    idebug.show()
     
     #mes = com.run_speech()
     #sh.objs.get_mes(f, mes).show_debug()
@@ -1020,8 +1020,8 @@ if __name__ == '__main__':
     '''
 
     # Priorities (from the controller)
-    iprior = com.run_prior_contr()
-    iprior.show()
+    #iprior = com.run_prior_contr()
+    #iprior.show()
 
     '''
     # Popup

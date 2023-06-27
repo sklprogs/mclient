@@ -326,6 +326,11 @@ class Suggestions:
                         ,' Mögliche Varianten: ', ' Variantes de sustitución: '
                         ,' Варіанти заміни: ', ' Opcje zamiany: ', ' 建议: '
                         )
+        self.head = None
+        self.tail = None
+        # This class can be either failed or interrupted where necessary
+        self.Success = True
+        self.pattern = ['Forvo', '|', '+']
         self.blocks = blocks
     
     def _has(self, text):
@@ -334,43 +339,131 @@ class Suggestions:
                 return True
     
     def has(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Suggestions.has'
+        if not self.Success:
+            sh.com.rep_lazy(f)
+            return
         for block in self.blocks:
             if block.type_ != 'comment':
                 continue
             for pattern in self.patterns:
                 if pattern == block.text:
-                    return True
+                    return
+        self.Success = False
+        sh.com.rep_lazy(f)
     
-    def _add_subject(self):
-        block = ic.Block()
-        block.type_ = 'subj'
-        block.text = block.subjf = _('Suggestions:')
-        block.subj = _('sug.')
-        self.blocks.insert(0, block)
+    def set_types(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Suggestions.set_types'
+        if not self.Success:
+            sh.com.rep_lazy(f)
+            return
+        count = 0
+        for block in self.blocks:
+            if block.type_ != 'comment':
+                mes = _('Unexpected block type: "{}"!').format(block.type_)
+                sh.objs.get_mes(f, mes, True).show_warning()
+                continue
+            if block.text.strip() == ';':
+                continue
+            if not block.url:
+                count += 1
+                # ' Suggest: ' pattern should be stripped
+                block.text = block.text.strip()
+                block.type_ = 'subj'
+                block.subj = block.subjf = block.text
+                block.cellno = count - 1
+            elif block.url.startswith('l1='):
+                count += 1
+                block.type_ = 'term'
+                block.cellno = count - 1
+        sh.com.rep_matches(f, count)
     
-    def set(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Suggestions.set'
-        if not self.has():
+    def set_head(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Suggestions.set_head'
+        if not self.Success:
+            sh.com.rep_lazy(f)
+            return
+        texts = [block.text for block in self.blocks]
+        found = sh.List(texts, self.pattern).find()
+        if found is None:
+            self.Success = False
+            ''' This should be a warning since we have already determined that
+                the article suggests words.
+            '''
+            sh.com.rep_out(f)
+            return
+        if found[1] >= len(self.blocks) - 1:
+            # There is no place for tail
+            self.Success = False
+            sh.com.rep_input(f)
+            return
+        self.head = found[1] + 1
+        block = self.blocks[self.head]
+        mes = _('Block #{}. Text: "{}". URL: {}')
+        mes = mes.format(self.head, block.text, block.url)
+        sh.objs.get_mes(f, mes, True).show_debug()
+    
+    def set_tail(self):
+        # This one must be "ask in forum"
+        f = '[MClientQt] plugins.multitrancom.elems.Suggestions.set_tail'
+        if not self.Success:
+            sh.com.rep_lazy(f)
+            return
+        i = len(self.blocks) - 1
+        while i >= 0:
+            if self.blocks[i].url.startswith('a=46&'):
+                mes = _('Block #{}. Text: "{}". URL: {}')
+                mes = mes.format(i, self.blocks[i].text, self.blocks[i].url)
+                sh.objs.get_mes(f, mes, True).show_debug()
+                self.tail = i
+                return
+            i -= 1
+        self.Success = False
+        ''' This should be a warning since we have already determined that the
+            article suggests words.
+        '''
+        sh.com.rep_out(f)
+
+    def cut(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Suggestions.cut'
+        if not self.Success:
+            sh.com.rep_lazy(f)
+            return
+        old_len = len(self.blocks)
+        self.blocks = self.blocks[self.head:self.tail]
+        sh.com.rep_deleted(f, old_len - len(self.blocks))
+    
+    def debug(self):
+        # Orphaned
+        f = '[MClientQt] plugins.multitrancom.elems.Suggestions.debug'
+        if not self.Success:
+            sh.com.rep_lazy(f)
+            return
+        for i in range(len(self.blocks)):
+            block = self.blocks[i]
+            mes = _('Block #{}. Type: "{}". Text: "{}". URL: "{}"')
+            mes = mes.format(i, block.type_, block.text, block.url)
+            sh.objs.get_mes(f, mes, True).show_debug()
+    
+    def delete_semi(self):
+        # Seems that Elems.delete_semi is not enough
+        f = '[MClientQt] plugins.multitrancom.elems.Suggestions.delete_semi'
+        if not self.Success:
             sh.com.rep_lazy(f)
             return
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks \
-                       if block.url.startswith('l1')
+                       if not block.text in ('; ', ';')
                       ]
-        if not self.blocks:
-            sh.com.rep_empty(f)
-            return
-        for block in self.blocks:
-            ''' Should have only blocks of 'comment' type by now, but we want
-                to be on a safe side.
-            '''
-            if block.type_ == 'comment':
-                block.type_ = 'term'
         sh.com.rep_deleted(f, old_len - len(self.blocks))
-        self._add_subject()
     
     def run(self):
-        self.set()
+        self.has()
+        self.set_head()
+        self.set_tail()
+        self.cut()
+        self.delete_semi()
+        self.set_types()
         return self.blocks
 
 
@@ -757,12 +850,13 @@ class Elems:
         self.blocks = Thesaurus(self.blocks).run()
         iseparate = SeparateWords(self.blocks)
         self.blocks = iseparate.run()
-        self.blocks = Suggestions(self.blocks).run()
+        isuggest = Suggestions(self.blocks)
+        self.blocks = isuggest.run()
         # Remove trash only after setting separate words
         itrash = Trash(self.blocks)
         self.blocks = itrash.run()
         self.Parallel = itrash.Parallel
-        self.Separate = iseparate.Separate
+        self.Separate = iseparate.Separate or isuggest.Success
         self.set_not_found()
         # Remove empty blocks only after removing trash
         self.delete_empty()
