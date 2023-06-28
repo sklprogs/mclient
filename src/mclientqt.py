@@ -1148,7 +1148,7 @@ class App:
         if not sh.lg.globs['bool']['CaptureHotkey'] or not status:
             sh.com.rep_lazy(f)
             return
-        sh.Geometry(self.about.logic.product).activate()
+        self.gui.activate()
         if status != 1:
             return
         new_clipboard = sh.Clipboard().paste()
