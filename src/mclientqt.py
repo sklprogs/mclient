@@ -1149,14 +1149,15 @@ class App:
             sh.com.rep_lazy(f)
             return
         sh.Geometry(self.about.logic.product).activate()
-        if status == 1:
-            new_clipboard = sh.Clipboard().paste()
-            new_clipboard = new_clipboard.strip()
-            if new_clipboard:
-                lg.objs.get_request().search = new_clipboard
-                self.go_search()
-            else:
-                sh.com.rep_empty(f)
+        if status != 1:
+            return
+        new_clipboard = sh.Clipboard().paste()
+        new_clipboard = new_clipboard.strip()
+        if not new_clipboard:
+            sh.com.rep_empty(f)
+            return
+        lg.objs.get_request().search = new_clipboard
+        self.go_search()
     
     def run_thread(self):
         self.thread.run_thread()
@@ -1177,10 +1178,10 @@ class App:
         if (old_list == new_list) \
         and (old_key == sh.lg.globs['bool']['BlockSubjects']):
             sh.com.rep_lazy(f)
-        else:
-            lg.objs.default.block = new_list
-            lg.objs.get_articles().delete_bookmarks()
-            self.load_article()
+            return
+        lg.objs.default.block = new_list
+        lg.objs.get_articles().delete_bookmarks()
+        self.load_article()
     
     def watch_clipboard(self):
         # Watch clipboard
