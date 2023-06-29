@@ -10,9 +10,9 @@ oslow="linux"
 # We need to use Debian 10 or newer since Debian 9 has Python 3.5
 # by default which is buggy (some blocks are skipped in EN-RU, "hello"
 # article)
-glibc="2.31"
-pythonve="$HOME/tmp/pythonve"
-xlibdir="$pythonve/lib/python3.9/site-packages/Xlib"
+glibc="2.36"
+pythonve="$HOME/tmp/python11"
+xlibdir="$pythonve/lib/python3.11/site-packages/Xlib"
 binariesdir="$HOME/binaries"
 appimagedir="$binariesdir/appimage"
 srcdir="$HOME/bin/$product/src"
