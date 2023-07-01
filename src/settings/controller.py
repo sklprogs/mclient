@@ -37,7 +37,10 @@ class Load:
         self.gui.cbx_no6.set(sh.lg.globs['bool']['Autocompletion'])
         self.gui.cbx_no7.set(sh.lg.globs['bool']['Autoswap'])
         self.gui.cbx_no8.set(sh.lg.globs['bool']['PhraseCount'])
-        self.gui.cbx_no9.set(sh.lg.globs['bool']['AdjustByWidth'])
+        if sh.lg.globs['int']['row_height'] == 0:
+            self.gui.cbx_no9.enable()
+        else:
+            self.gui.cbx_no9.disable()
     
     def load_col_widths(self):
         self.gui.ent_num.reset()
@@ -85,7 +88,9 @@ class Save:
         sh.lg.globs['bool']['Autocompletion'] = self.gui.cbx_no6.get()
         sh.lg.globs['bool']['Autoswap'] = self.gui.cbx_no7.get()
         sh.lg.globs['bool']['PhraseCount'] = self.gui.cbx_no8.get()
-        sh.lg.globs['bool']['AdjustByWidth'] = self.gui.cbx_no9.get()
+        #TODO: Rework
+        if self.gui.cbx_no9.get():
+            sh.lg.globs['int']['row_height'] = 0
     
     def _report_wrong_range(self, f, start, end):
         mes = _('A value of this field should be within the range of {}-{}!')
@@ -94,11 +99,6 @@ class Save:
     
     def save_col_num(self):
         f = '[MClientQt] settings.controller.Save.save_col_num'
-        ''' #TODO: Do we need this?
-        if not sh.lg.globs['bool']['AdjustByWidth']:
-            sh.com.rep_lazy(f)
-            return
-        '''
         col_num = self.gui.ent_num.get()
         col_num = sh.Input(f, col_num).get_integer()
         if not 0 < col_num <= 10:

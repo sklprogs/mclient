@@ -21,17 +21,11 @@ class Settings(PyQt5.QtWidgets.QWidget):
     def set_values(self):
         self.allowed = []
         self.spallow = []
-        self.items = (_('Subjects')
-                     ,_('Word forms')
-                     ,_('Transcription')
-                     ,_('Parts of speech')
-                     ,_('Do not set')
+        self.items = (_('Subjects'), _('Word forms'), _('Transcription')
+                     ,_('Parts of speech'), _('Do not set')
                      )
-        self.stitems = (PRODUCT
-                       ,_('Multitran')
-                       ,_('Cut to the chase')
-                       ,_('Clearness')
-                       ,_('Custom')
+        self.stitems = (PRODUCT, _('Multitran'), _('Cut to the chase')
+                       ,_('Clearness'), _('Custom')
                        )
         self.spitems = (_('Noun'), _('Verb'), _('Adjective'), _('Abbreviation')
                        ,_('Adverb'), _('Preposition'), _('Pronoun')
@@ -137,63 +131,67 @@ class Settings(PyQt5.QtWidgets.QWidget):
     
     def update_col1(self):
         f = '[MClientQt] settings.gui.Settings.update_col1'
-        if self.opt_cl1.get() != _('Do not set'):
-            if self.opt_cl1.get() in self.allowed:
-                self.allowed.remove(self.opt_cl1.get())
-            elif _('Subjects') in self.allowed:
-                self.opt_cl1.set(_('Subjects'))
-                self.allowed.remove(_('Subjects'))
-            elif self.allowed:
-                self.opt_cl1.set(self.allowed[0])
-                self.allowed.remove(self.allowed[0])
-            else:
-                mes = _('Empty input is not allowed!')
-                sh.objs.get_mes(f, mes).show_error()
+        if self.opt_cl1.get() == _('Do not set'):
+            return
+        if self.opt_cl1.get() in self.allowed:
+            self.allowed.remove(self.opt_cl1.get())
+        elif _('Subjects') in self.allowed:
+            self.opt_cl1.set(_('Subjects'))
+            self.allowed.remove(_('Subjects'))
+        elif self.allowed:
+            self.opt_cl1.set(self.allowed[0])
+            self.allowed.remove(self.allowed[0])
+        else:
+            mes = _('Empty input is not allowed!')
+            sh.objs.get_mes(f, mes).show_error()
 
     def update_col2(self):
         f = '[MClientQt] settings.gui.Settings.update_col2'
-        if self.opt_cl2.get() != _('Do not set'):
-            if self.opt_cl2.get() in self.allowed:
-                self.allowed.remove(self.opt_cl2.get())
-            elif _('Word forms') in self.allowed:
-                self.opt_cl2.set(_('Word forms'))
-                self.allowed.remove(_('Word forms'))
-            elif self.allowed:
-                self.opt_cl2.set(self.allowed[0])
-                self.allowed.remove(self.allowed[0])
-            else:
-                mes = _('Empty input is not allowed!')
-                sh.objs.get_mes(f, mes).show_error()
+        if self.opt_cl2.get() == _('Do not set'):
+            return
+        if self.opt_cl2.get() in self.allowed:
+            self.allowed.remove(self.opt_cl2.get())
+        elif _('Word forms') in self.allowed:
+            self.opt_cl2.set(_('Word forms'))
+            self.allowed.remove(_('Word forms'))
+        elif self.allowed:
+            self.opt_cl2.set(self.allowed[0])
+            self.allowed.remove(self.allowed[0])
+        else:
+            mes = _('Empty input is not allowed!')
+            sh.objs.get_mes(f, mes).show_error()
 
     def update_col3(self):
         f = '[MClientQt] settings.gui.Settings.update_col3'
-        if self.opt_cl3.get() != _('Do not set'):
-            if self.opt_cl3.get() in self.allowed:
-                self.allowed.remove(self.opt_cl3.get())
-            elif _('Parts of speech') in self.allowed:
-                self.opt_cl3.set(_('Parts of speech'))
-                self.allowed.remove(_('Parts of speech'))
-            elif self.allowed:
-                self.opt_cl3.set(self.allowed[0])
-                self.allowed.remove(self.allowed[0])
-            else:
-                mes = _('Empty input is not allowed!')
-                sh.objs.get_mes(f, mes).show_error()
+        if self.opt_cl3.get() == _('Do not set'):
+            return
+        if self.opt_cl3.get() in self.allowed:
+            self.allowed.remove(self.opt_cl3.get())
+        elif _('Parts of speech') in self.allowed:
+            self.opt_cl3.set(_('Parts of speech'))
+            self.allowed.remove(_('Parts of speech'))
+        elif self.allowed:
+            self.opt_cl3.set(self.allowed[0])
+            self.allowed.remove(self.allowed[0])
+        else:
+            mes = _('Empty input is not allowed!')
+            sh.objs.get_mes(f, mes).show_error()
 
     def update_col4(self):
         f = '[MClientQt] settings.gui.Settings.update_col4'
-        if self.opt_cl4.get() != _('Do not set'):
-            if self.opt_cl4.get() in self.allowed:
-                self.allowed.remove(self.opt_cl4.get())
-            elif _('Transcription') in self.allowed:
-                self.opt_cl4.set(_('Transcription'))
-                self.allowed.remove(_('Transcription'))
-            elif self.allowed:
-                self.opt_cl4.set(self.allowed[0])
-                self.allowed.remove(self.allowed[0])
-            else:
-                mes = _('Empty input is not allowed!')
-                sh.objs.get_mes(f, mes).show_error()
+        if self.opt_cl4.get() == _('Do not set'):
+            return
+        if self.opt_cl4.get() in self.allowed:
+            self.allowed.remove(self.opt_cl4.get())
+        elif _('Transcription') in self.allowed:
+            self.opt_cl4.set(_('Transcription'))
+            self.allowed.remove(_('Transcription'))
+        elif self.allowed:
+            self.opt_cl4.set(self.allowed[0])
+            self.allowed.remove(self.allowed[0])
+        else:
+            mes = _('Empty input is not allowed!')
+            sh.objs.get_mes(f, mes).show_error()
 
     def update_style(self):
         cond11 = self.opt_cl1.get() == _('Subjects')
