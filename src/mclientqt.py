@@ -704,7 +704,6 @@ class Table:
         self.Success = True
         self.model = None
         self.coords = {}
-        self.row_height = 42
         self.old_rowno = -1
         self.old_colno = -1
     
@@ -948,7 +947,7 @@ class Table:
         self.model = gi.TableModel(self.logic.code)
         self.fill()
         self.set_col_width()
-        self.set_row_height(self.row_height)
+        self.set_row_height(sh.lg.globs['int']['row_height'])
         self.show_borders(False)
         self.set_long()
         ''' Coordinates are recreated each time the app window is resized. Here
@@ -975,7 +974,7 @@ class Table:
                 ilimits.set_text(self.logic.plain[rowno][colno])
                 space = ilimits.get_space()
                 index_ = self.model.index(rowno, colno)
-                hint_space = self.row_height * self.gui.get_col_width(colno)
+                hint_space = sh.lg.globs['int']['row_height'] * self.gui.get_col_width(colno)
                 if space > hint_space:
                     self.gui.delegate.long.append(index_)
         timer.end()
@@ -1356,11 +1355,6 @@ class App:
         self.settings.gui.ent_trm.set_text(term_width)
     
     def set_col_num(self):
-        ''' #TODO: Do we need this?
-        if not sh.lg.globs['bool']['AdjustByWidth']:
-            sh.com.rep_lazy(f)
-            return
-        '''
         self.gui.panel.opt_col.set(lg.objs.get_column_width().term_num)
     
     def apply_settings(self):

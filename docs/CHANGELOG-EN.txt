@@ -3,9 +3,9 @@
 
 7.0
 * Migrate to Qt
-* Add keys bind_col4_down, bind_col4_up and bind_toggle_popup
+* Add keys bind_col4_down, bind_col4_up and bind_toggle_popup, row_height
 * Delete keys AutoCloseSpecSymbol, bind_clear_search_field,
-  bind_paste_search_field, bind_toggle_sel
+  bind_paste_search_field, bind_toggle_sel, AdjustByWidth
 * Rename bind_go_forward key to bind_go_next
 
 6.14.4

@@ -25,8 +25,7 @@ class DefaultKeys(sh.DefaultKeys):
         
     def _load_bool(self):
         sh.lg.globs['bool'].update ({
-            'AdjustByWidth'      :True
-           ,'AlphabetizeTerms'   :True
+            'AlphabetizeTerms'   :True
            ,'Autocompletion'     :True
            ,'Autoswap'           :False
            ,'BlockSubjects'      :True
@@ -60,6 +59,7 @@ class DefaultKeys(sh.DefaultKeys):
            ,'font_terms_size'   :12
            ,'term_col_width'    :157
            ,'hotkey_delay'      :600
+           ,'row_height'        :42
                                   })
     
     def _load_str(self):
@@ -164,10 +164,6 @@ class CreateConfig(sh.CreateConfig):
         comment = _('The following values are allowed in this section: 0 (False) or 1 (True)')
         self.add_section(section, comment)
         section_abbr = self.sections[-1].abbr
-        
-        key = 'AdjustByWidth'
-        comment = _('[Autosave] Adjust columns by width')
-        self.add_key(section, section_abbr, key, comment)
         
         key = 'AlphabetizeTerms'
         comment = _('[Autosave] Sort terms by alphabet')
@@ -281,6 +277,10 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'hotkey_delay'
         comment = _('[Experts only] Delay in reacting to Ctrl-C-C and Ctrl-Ins-Ins hotkeys (in milliseconds)')
+        self.add_key(section, section_abbr, key, comment)
+        
+        key = 'row_height'
+        comment = _('[Autosave] Row height. Set to 0 to enable automatical distribution')
         self.add_key(section, section_abbr, key, comment)
         
         key = 'term_col_width'

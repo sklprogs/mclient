@@ -445,7 +445,7 @@ class ColumnWidth:
     
     def set_col_width(self):
         f = '[MClientQt] logic.ColumnWidth.set_col_width'
-        if not sh.lg.globs['bool']['AdjustByWidth']:
+        if not sh.lg.globs['int']['row_height']:
             sh.com.rep_lazy(f)
             return
         for column in self.columns:

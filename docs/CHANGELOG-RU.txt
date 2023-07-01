@@ -3,9 +3,9 @@
 
 7.0
 * Переход на Qt
-* Добавлены ключи bind_col4_down, bind_col4_up, bind_toggle_popup
+* Добавлены ключи bind_col4_down, bind_col4_up, bind_toggle_popup, row_height
 * Удалены ключи AutoCloseSpecSymbol, bind_clear_search_field,
-  bind_paste_search_field, bind_toggle_sel
+  bind_paste_search_field, bind_toggle_sel, AdjustByWidth
 * Ключ bind_go_forward переименован в bind_go_next
 
 6.14.4
