@@ -40,7 +40,7 @@ class Extension:
                 self.ext = '&SHL=14'
             elif 'zh' in result:
                 self.ext = '&SHL=17'
-        mes = '{} -> {}'.format(result, self.ext)
+        mes = f'{result} -> {self.ext}'
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def run(self):
@@ -91,7 +91,7 @@ class Suggest:
         if not self.Success:
             sh.com.cancel(f)
             return
-        # #NOTE: the encoding here (unlike 'self.url') is plugin-dependent
+        #NOTE: the encoding here (unlike 'self.url') is plugin-dependent
         self.items = sh.Get (url = self.url
                             ,coding = CODING
                             ).run()

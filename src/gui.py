@@ -53,6 +53,7 @@ class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
     sig_ctrl_e = PyQt5.QtCore.pyqtSignal()
     sig_ctrl_home = PyQt5.QtCore.pyqtSignal()
     sig_ctrl_end = PyQt5.QtCore.pyqtSignal()
+    sig_ctrl_space = PyQt5.QtCore.pyqtSignal()
     sig_left_arrow = PyQt5.QtCore.pyqtSignal()
     sig_right_arrow = PyQt5.QtCore.pyqtSignal()
     sig_home = PyQt5.QtCore.pyqtSignal()
@@ -71,11 +72,14 @@ class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
             if key == PyQt5.QtCore.Qt.Key_Home:
                 self.sig_ctrl_home.emit()
                 return
-            elif key == PyQt5.QtCore.Qt.Key_End:
+            if key == PyQt5.QtCore.Qt.Key_End:
                 self.sig_ctrl_end.emit()
                 return
-            elif key == PyQt5.QtCore.Qt.Key_E:
+            if key == PyQt5.QtCore.Qt.Key_E:
                 self.sig_ctrl_e.emit()
+                return
+            if key == PyQt5.QtCore.Qt.Key_J:
+                self.sig_ctrl_space.emit()
                 return
         elif key == PyQt5.QtCore.Qt.Key_Left:
             self.sig_left_arrow.emit()

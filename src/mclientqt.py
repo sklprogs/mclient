@@ -1044,6 +1044,28 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def show_suggestions(self):
+        ''' Retrieving suggestions online is very slow, so this should be
+            implemented with a hotkey rather as we type.
+        '''
+        f = '[MClientQt] mclient.App.show_suggestions'
+        if not sh.lg.globs['bool']['Autocompletion']:
+            return
+        fragment = self.panel.ent_src.get()
+        fragment = fragment.strip()
+        if not fragment:
+            sh.com.rep_empty(f)
+            return
+        items = lg.com.suggest (search = fragment
+                               ,limit = 35
+                               )
+        if not items:
+            mes = _('No suggestions are available!')
+            sh.objs.get_mes(f, mes, True).show_info()
+            return
+        self.suggest.fill(items)
+        self.suggest.show()
+    
     def get_cell(self):
         f = '[MClientQt] mclient.App.get_cell'
         table = lg.objs.get_articles().get_table()
@@ -1970,6 +1992,7 @@ class App:
         self.panel.ent_src.widget.sig_end.connect(self.table.go_line_end)
         self.panel.ent_src.widget.sig_ctrl_home.connect(self.table.go_start)
         self.panel.ent_src.widget.sig_ctrl_end.connect(self.table.go_end)
+        self.panel.ent_src.widget.sig_ctrl_space.connect(self.show_suggestions)
         self.panel.ent_src.widget.sig_left_arrow.connect(self.table.go_left)
         self.panel.ent_src.widget.sig_right_arrow.connect(self.table.go_right)
         self.panel.opt_lg1.widget.activated.connect(self.go_search)

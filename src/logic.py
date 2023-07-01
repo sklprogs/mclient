@@ -732,13 +732,10 @@ class Commands:
     def suggest(self, search, limit=0):
         f = '[MClientQt] logic.Commands.suggest'
         items = objs.get_plugins().suggest(search)
-        if items:
-            if limit:
-                items = items[0:limit]
-        else:
-            items = []
+        if not items:
             sh.com.rep_empty(f)
-        return items
+            return []
+        return items[0:limit]
         
     def use_unverified(self):
         f = '[MClientQt] logic.Commands.use_unverified'
