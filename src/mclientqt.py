@@ -643,6 +643,7 @@ class Table:
             sh.com.rep_empty(f)
             return
         self.popup.fill(text)
+        self.popup.adjust_position(self.gui.delegate.x2, self.gui.delegate.y2)
         self.popup.show()
     
     def go_next_section(self, no):
@@ -772,7 +773,6 @@ class Table:
             self.scroll_top()
         if Mouse:
             if new_index in self.gui.delegate.long:
-                self.popup.adjust_position(self.gui.x_, self.gui.y_)
                 self.show_popup()
             else:
                 self.popup.close()
@@ -1761,6 +1761,7 @@ class App:
         pass
     
     def minimize(self):
+        self.table.popup.close()
         self.gui.minimize()
     
     def update_ui(self):
@@ -1771,6 +1772,9 @@ class App:
         self.gui.show()
     
     def quit(self):
+        ''' This procedure is called by signal. Do not put 'self.close' here,
+            it is run separately.
+        '''
         lg.objs.get_default().save()
         lg.com.save_config()
         self.thread.end()
@@ -1781,10 +1785,12 @@ class App:
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def close(self):
+        self.table.popup.close()
         self.gui.close()
     
     def set_bindings(self):
         # Mouse buttons cannot be bound
+        self.gui.sig_close.connect(self.close)
         self.gui.sig_close.connect(self.quit)
         self.gui.sig_pgdn.connect(self.table.go_page_down)
         self.gui.sig_pgup.connect(self.table.go_page_up)
@@ -2092,11 +2098,11 @@ if __name__ == '__main__':
     timer = sh.Timer(f + ': Showing GUI')
     timer.start()
     app = App()
+    app.run_thread()
     lg.com.set_url()
     app.load_article (search = lg.objs.get_request().search
                      ,url = lg.objs.request.url
                      )
     timer.end()
     app.show()
-    app.run_thread()
     sh.com.end()
