@@ -1992,9 +1992,10 @@ class App:
         self.panel.ent_src.widget.sig_end.connect(self.table.go_line_end)
         self.panel.ent_src.widget.sig_ctrl_home.connect(self.table.go_start)
         self.panel.ent_src.widget.sig_ctrl_end.connect(self.table.go_end)
-        self.panel.ent_src.widget.sig_ctrl_space.connect(self.show_suggestions)
         self.panel.ent_src.widget.sig_left_arrow.connect(self.table.go_left)
         self.panel.ent_src.widget.sig_right_arrow.connect(self.table.go_right)
+        self.panel.ent_src.widget.sig_space.connect(self.show_suggestions)
+        
         self.panel.opt_lg1.widget.activated.connect(self.go_search)
         self.panel.opt_lg2.widget.activated.connect(self.go_search)
         self.panel.opt_src.widget.activated.connect(self.set_source)
