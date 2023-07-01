@@ -3,95 +3,64 @@
 
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
+
 from . import gui as gi
 
 
 class Suggest:
     
-    def __init__(self, entry):
-        self.entry = entry
-        self.gui = None
-    
-    def close(self, event=None):
-        self.get_gui().close()
-    
-    def get_gui(self):
-        if self.gui is None:
-            self.set_gui()
-        return self.gui
+    def __init__(self):
+        self.set_gui()
     
     def set_gui(self):
         self.gui = gi.Suggest()
-    
-    def select(self, event=None):
-        f = '[MClient] suggest.controller.Suggest.select'
-        mes = _('This procedure should be overridden')
-        sh.objs.get_mes(f, mes, True).show_error()
-        
-    def _select(self, event=None):
-        ''' #NOTE: this works differently in Windows and Linux. In Windows
-            selecting an item will hide suggestions, in Linux they will be kept
-            open.
-        '''
-        f = '[MClient] suggest.controller.Suggest._select'
-        if self.gui.parent:
-            self.entry.clear_text()
-            self.entry.insert(self.gui.lbox.get())
-            self.entry.select_all()
-            self.entry.focus()
-        else:
-            sh.com.rep_empty(f)
-        
-    def move_down(self, event=None):
-        f = '[MClient] suggest.controller.Suggest.move_down'
-        if self.get_gui().parent:
-            # Necessary to use arrows on ListBox
-            self.gui.lbox.focus()
-            self.gui.lbox.index_add()
-            self.gui.lbox.select()
-            self._select()
-        else:
-            sh.com.rep_empty(f)
-        
-    def move_up(self, event=None):
-        f = '[MClient] suggest.controller.Suggest.move_up'
-        if self.get_gui().parent:
-            # Necessary to use arrows on ListBox
-            self.gui.lbox.focus()
-            self.gui.lbox.index_subtract()
-            self.gui.lbox.select()
-            self._select()
-        else:
-            sh.com.rep_empty(f)
-        
-    def move_top(self, event=None):
-        f = '[MClient] suggest.controller.Suggest.move_top'
-        if self.get_gui().parent:
-            # Necessary to use arrows on ListBox
-            self.gui.lbox.focus()
-            self.gui.lbox.move_top()
-            self._select()
-        else:
-            sh.com.rep_empty(f)
-                          
-    def move_bottom(self, event=None):
-        f = '[MClient] suggest.controller.Suggest.move_bottom'
-        if self.get_gui().parent:
-            # Necessary to use arrows on ListBox
-            self.gui.lbox.focus()
-            self.gui.lbox.move_bottom()
-            self._select()
-        else:
-            sh.com.rep_empty(f)
-    
-    def suggest(self, event=None):
-        f = '[MClient] suggest.controller.Suggest.suggest'
-        mes = _('This procedure should be overridden')
-        sh.objs.get_mes(f, mes, True).show_error()
+        self.set_bindings()
     
     def set_bindings(self):
-        if self.get_gui().parent:
-            sh.com.bind (obj = self.gui.parent
-                        ,bindings = '<ButtonRelease-1>'
-                        ,action = self.select
-                        )
+        self.gui.bind('Esc', self.close)
+    
+    def show(self):
+        self.gui.show()
+    
+    def fill(self, lst):
+        f = '[MClientQt] suggest.controller.Suggest.fill'
+        if not lst:
+            sh.com.rep_empty(f)
+            return
+        self.gui.fill(lst)
+    
+    def go_end(self):
+        f = '[MClient] suggest.controller.Suggest.go_end'
+        if not self.gui.model.items:
+            sh.com.rep_lazy(f)
+            return
+        rowno = len(self.gui.model.items) - 1
+        self.go_row(rowno)
+    
+    def go_row(self, rowno):
+        self.gui.clear_selection()
+        index_ = self.gui.model.index(rowno, 0)
+        self.gui.set_index(index_)
+        self.gui.select_row(index_)
+    
+    def close(self):
+        self.gui.close()
+    
+    def set_width(self, width):
+        self.gui.set_width(width)
+
+
+if __name__ == '__main__':
+    f = '[MClientQt] suggest.controller.Suggest.__main__'
+    sh.com.start()
+    lst = []
+    for i in range(20):
+        lst.append(f'item {i+1}')
+    app = Suggest()
+    app.fill(lst)
+    app.go_end()
+    app.show()
+    app.set_width(96)
+    mes = _('Goodbye!')
+    sh.objs.get_mes(f, mes, True).show_debug()
+    sh.com.end()

@@ -481,6 +481,17 @@ class Plugin:
 
 class Commands:
     
+    def run_suggest(self):
+        import suggest.controller as sg
+        lst = []
+        for i in range(20):
+            lst.append(f'item {i+1}')
+        isuggest = sg.Suggest()
+        isuggest.fill(lst)
+        isuggest.go_end()
+        isuggest.set_width(96)
+        return isuggest
+    
     def run_default_config(self):
         f = '[MClientQt] tests.Commands.run_default_config'
         import logic as lg
@@ -1003,15 +1014,18 @@ if __name__ == '__main__':
         e.g. com.run_welcome, will cause an infinite loop.
     '''
     #idebug = sh.Debug(f, Tags().run_multitrancom())
-    idebug = sh.Debug(f, Elems().run_multitrancom())
+    #idebug = sh.Debug(f, Elems().run_multitrancom())
     #idebug = sh.Debug(f, Prioritize().run_multitrancom())
     #idebug = sh.Debug(f, View().run_multitrancom())
     #idebug = sh.Debug(f, Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
-    idebug.show()
+    #idebug.show()
     
     #mes = com.run_speech()
     #sh.objs.get_mes(f, mes).show_debug()
+    
+    isuggest = com.run_suggest()
+    isuggest.show()
 
     '''
     # Priorities
@@ -1057,4 +1071,6 @@ if __name__ == '__main__':
     iwelcome = com.run_welcome()
     iwelcome.show()
     '''
+    mes = _('Goodbye!')
+    sh.objs.get_mes(f, mes, True).show_debug()
     sh.com.end()

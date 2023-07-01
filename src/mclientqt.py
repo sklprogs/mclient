@@ -12,7 +12,7 @@ import cells as cl
 import prior_block.priorities.controller as pr
 import prior_block.blacklist.controller as bl
 import settings.controller as st
-#import suggest.controller as sg
+import suggest.controller as sg
 import about.controller as ab
 import third_parties.controller as tp
 import symbols.controller as sm
@@ -2009,6 +2009,7 @@ class App:
         self.settings = st.objs.get_settings()
         self.history = hs.History()
         self.save = Save()
+        self.suggest = sg.Suggest()
         #cur
         self.block = bl.Blacklist()
         self.prior = Priorities()
