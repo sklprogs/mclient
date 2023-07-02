@@ -1049,10 +1049,7 @@ class App:
             implemented with a hotkey rather as we type.
         '''
         f = '[MClientQt] mclient.App.show_suggestions'
-        if not sh.lg.globs['bool']['Autocompletion']:
-            return
-        fragment = self.panel.ent_src.get()
-        fragment = fragment.strip()
+        fragment = self.panel.ent_src.get().strip()
         if not fragment:
             sh.com.rep_empty(f)
             return

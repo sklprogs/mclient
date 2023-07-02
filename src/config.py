@@ -26,7 +26,6 @@ class DefaultKeys(sh.DefaultKeys):
     def _load_bool(self):
         sh.lg.globs['bool'].update ({
             'AlphabetizeTerms'   :True
-           ,'Autocompletion'     :True
            ,'Autoswap'           :False
            ,'BlockSubjects'      :True
            ,'CaptureHotkey'      :True
@@ -168,10 +167,6 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'AlphabetizeTerms'
         comment = _('[Autosave] Sort terms by alphabet')
-        self.add_key(section, section_abbr, key, comment)
-        
-        key = 'Autocompletion'
-        comment = _('[Autosave] Show suggestions on input')
         self.add_key(section, section_abbr, key, comment)
         
         key = 'Autoswap'
