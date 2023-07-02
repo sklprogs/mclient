@@ -63,6 +63,7 @@ class DefaultKeys(sh.DefaultKeys):
                                   })
     
     def _load_str(self):
+        # A combination cannot be bound to different actions
         sh.lg.globs['str'].update ({
             'bind_clear_history'          :'Ctrl+Shift+Del'
            ,'bind_col1_down'              :'Ctrl+Down'
@@ -105,7 +106,7 @@ class DefaultKeys(sh.DefaultKeys):
            ,'bind_settings_alt'           :'F12'
            ,'bind_show_about'             :'F1'
            ,'bind_spec_symbol'            :'Ctrl+E'
-           ,'bind_swap_langs'             :'Ctrl+Space'
+           ,'bind_swap_langs'             :'Ctrl+Shift+Space'
            ,'bind_toggle_alphabet'        :'Alt+A'
            ,'bind_toggle_block'           :'Alt+B'
            ,'bind_toggle_history'         :'F4'

@@ -78,7 +78,7 @@ class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
             if key == PyQt5.QtCore.Qt.Key_E:
                 self.sig_ctrl_e.emit()
                 return
-            if key == PyQt5.QtCore.Qt.Key_J:
+            if key == PyQt5.QtCore.Qt.Key_Space:
                 self.sig_ctrl_space.emit()
                 return
         elif key == PyQt5.QtCore.Qt.Key_Left:
