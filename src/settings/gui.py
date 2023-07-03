@@ -366,10 +366,9 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.cbx_no3.disable()
         self.cbx_no4.disable()
         self.cbx_no5.enable()
-        self.cbx_no6.enable()
-        self.cbx_no7.disable()
+        self.cbx_no6.disable()
+        self.cbx_no7.enable()
         self.cbx_no8.enable()
-        self.cbx_no9.enable()
     
     def closeEvent(self, event):
         self.sig_close.emit()
@@ -470,10 +469,9 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.cbx_no3 = sh.CheckBox(_('Shorten parts of speech'))
         self.cbx_no4 = sh.CheckBox(_('Show user names'))
         self.cbx_no5 = sh.CheckBox(_('Iconify the program window after copying'))
-        self.cbx_no6 = sh.CheckBox(_('Show suggestions on input'))
-        self.cbx_no7 = sh.CheckBox(_('Autoswap Russian and the other language if appropriate'))
-        self.cbx_no8 = sh.CheckBox(_('Show a phrase count'))
-        self.cbx_no9 = sh.CheckBox(_('Adjust columns by width'))
+        self.cbx_no6 = sh.CheckBox(_('Autoswap Russian and the other language if appropriate'))
+        self.cbx_no7 = sh.CheckBox(_('Show a phrase count'))
+        self.cbx_no8 = sh.CheckBox(_('Adjust columns by width'))
     
     def set_bg(self):
         self.bg_col = PyQt5.QtWidgets.QWidget()
@@ -528,7 +526,6 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.lay_cbx.addWidget(self.cbx_no6.widget)
         self.lay_cbx.addWidget(self.cbx_no7.widget)
         self.lay_cbx.addWidget(self.cbx_no8.widget)
-        self.lay_cbx.addWidget(self.cbx_no9.widget)
     
     def _add_suggest(self):
         self.lay_sgl.addWidget(self.lbl_num.widget)
@@ -576,7 +573,6 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.cbx_no6.change_font_size(2)
         self.cbx_no7.change_font_size(2)
         self.cbx_no8.change_font_size(2)
-        self.cbx_no9.change_font_size(2)
         
         self.opt_stl.change_font_size(1)
         self.opt_cl1.change_font_size(1)

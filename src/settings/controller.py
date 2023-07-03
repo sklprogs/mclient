@@ -34,13 +34,12 @@ class Load:
         self.gui.cbx_no3.set(sh.lg.globs['bool']['ShortSpeech'])
         self.gui.cbx_no4.set(sh.lg.globs['bool']['ShowUserNames'])
         self.gui.cbx_no5.set(sh.lg.globs['bool']['Iconify'])
-        self.gui.cbx_no6.set(sh.lg.globs['bool']['Autocompletion'])
-        self.gui.cbx_no7.set(sh.lg.globs['bool']['Autoswap'])
-        self.gui.cbx_no8.set(sh.lg.globs['bool']['PhraseCount'])
+        self.gui.cbx_no6.set(sh.lg.globs['bool']['Autoswap'])
+        self.gui.cbx_no7.set(sh.lg.globs['bool']['PhraseCount'])
         if sh.lg.globs['int']['row_height'] == 0:
-            self.gui.cbx_no9.enable()
+            self.gui.cbx_no8.enable()
         else:
-            self.gui.cbx_no9.disable()
+            self.gui.cbx_no8.disable()
     
     def load_col_widths(self):
         self.gui.ent_num.reset()
@@ -85,11 +84,10 @@ class Save:
         sh.lg.globs['bool']['ShortSpeech'] = self.gui.cbx_no3.get()
         sh.lg.globs['bool']['ShowUserNames'] = self.gui.cbx_no4.get()
         sh.lg.globs['bool']['Iconify'] = self.gui.cbx_no5.get()
-        sh.lg.globs['bool']['Autocompletion'] = self.gui.cbx_no6.get()
-        sh.lg.globs['bool']['Autoswap'] = self.gui.cbx_no7.get()
-        sh.lg.globs['bool']['PhraseCount'] = self.gui.cbx_no8.get()
+        sh.lg.globs['bool']['Autoswap'] = self.gui.cbx_no6.get()
+        sh.lg.globs['bool']['PhraseCount'] = self.gui.cbx_no7.get()
         #TODO: Rework
-        if self.gui.cbx_no9.get():
+        if self.gui.cbx_no8.get():
             sh.lg.globs['int']['row_height'] = 0
     
     def _report_wrong_range(self, f, start, end):
