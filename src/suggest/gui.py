@@ -34,6 +34,12 @@ class Suggest(PyQt5.QtWidgets.QWidget):
         super().__init__(*args, **kwargs)
         self.set_gui()
     
+    def set_geometry(self, x, y, width, height):
+        self.setGeometry(x, y, width, height)
+    
+    def get_height(self):
+        return self.height()
+    
     def set_gui(self):
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
         self.view = PyQt5.QtWidgets.QListView()

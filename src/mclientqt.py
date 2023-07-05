@@ -1044,6 +1044,15 @@ class App:
         self.set_gui()
         self.update_ui()
     
+    def get_x(self):
+        return self.gui.get_x()
+    
+    def get_y(self):
+        return self.gui.get_y()
+    
+    def get_height(self):
+        return self.gui.get_height()
+    
     def show_suggestions(self):
         ''' Retrieving suggestions online is very slow, so this should be
             implemented with a hotkey rather as we type.
@@ -1062,6 +1071,10 @@ class App:
             return
         self.suggest.fill(items)
         self.suggest.show()
+        x = self.get_x() + self.panel.ent_src.get_x()
+        y = self.get_height() + self.get_y() - self.suggest.get_height() \
+                              - self.panel.ent_src.get_root_y()
+        self.suggest.set_geometry(x, y, self.panel.ent_src.get_width(), self.suggest.get_height())
     
     def get_cell(self):
         f = '[MClientQt] mclient.App.get_cell'

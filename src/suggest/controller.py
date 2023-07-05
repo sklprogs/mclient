@@ -12,6 +12,12 @@ class Suggest:
     def __init__(self):
         self.set_gui()
     
+    def set_geometry(self, x, y, width, height):
+        self.gui.set_geometry(x, y, width, height)
+    
+    def get_height(self):
+        return self.gui.get_height()
+    
     def set_gui(self):
         self.gui = gi.Suggest()
         self.set_bindings()
