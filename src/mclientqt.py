@@ -1074,7 +1074,7 @@ class App:
         x = self.get_x() + self.panel.ent_src.get_x()
         y = self.get_height() + self.get_y() - self.suggest.get_height() \
                               - self.panel.ent_src.get_root_y()
-        self.suggest.set_geometry(x, y, self.panel.ent_src.get_width(), self.suggest.get_height())
+        self.suggest.set_geometry(x, y, 170, self.suggest.get_height())
     
     def get_cell(self):
         f = '[MClientQt] mclient.App.get_cell'
