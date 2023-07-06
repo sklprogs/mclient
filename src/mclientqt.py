@@ -1665,6 +1665,7 @@ class App:
         ''' #NOTE: each time the contents of the current page is changed
             (e.g., due to prioritizing), bookmarks must be deleted.
         '''
+        self.suggest.close()
         timer = sh.Timer(f)
         timer.start()
 
@@ -1793,6 +1794,7 @@ class App:
     
     def minimize(self):
         self.table.popup.close()
+        self.suggest.close()
         self.gui.minimize()
     
     def update_ui(self):
@@ -1817,6 +1819,7 @@ class App:
     
     def close(self):
         self.table.popup.close()
+        self.suggest.close()
         self.gui.close()
     
     def set_bindings(self):
