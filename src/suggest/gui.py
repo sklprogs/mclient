@@ -35,10 +35,13 @@ class View(PyQt5.QtWidgets.QListView):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
     
-    def mousePressEvent(self, event):
+    def mouseReleaseEvent(self, event):
+        ''' Using 'mouseReleaseEvent' instead of 'mousePressEvent' allows us to
+            automatically select the required row before performing an action.
+        '''
         if event.button() == PyQt5.QtCore.Qt.LeftButton:
             self.sig_click.emit()
-        super().mousePressEvent(event)
+        super().mouseReleaseEvent(event)
 
 
 
