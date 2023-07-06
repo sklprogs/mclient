@@ -36,6 +36,7 @@ class Suggest:
     def set_bindings(self):
         self.gui.bind('Esc', self.close)
         self.gui.bind('Return', self.load)
+        self.gui.bind('Enter', self.load) # NumPad
     
     def show(self):
         self.gui.show()
