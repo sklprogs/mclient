@@ -1767,12 +1767,17 @@ class App:
             self.update_lang1()
             self.update_lang2()
             self.auto_swap()
-            mes = '"{}"'.format(lg.objs.request.search)
+            mes = f'"{lg.objs.request.search}"'
             sh.objs.get_mes(f, mes, True).show_debug()
             lg.com.set_url()
             self.load_article (search = lg.objs.request.search
                               ,url = lg.objs.request.url
                               )
+    
+    def load_suggestion(self, text):
+        self.suggest.close()
+        lg.objs.get_request().search = text
+        self.go_search()
     
     def clear_search_field(self):
         #TODO: implement
@@ -2026,6 +2031,8 @@ class App:
         self.history.gui.sig_go.connect(self.go_history)
         
         self.prior.gui.sig_close.connect(self.prior.close)
+        
+        self.suggest.gui.sig_load.connect(self.load_suggestion)
         
         self.thread.bind_catch(self.catch)
     

@@ -12,6 +12,17 @@ class Suggest:
     def __init__(self):
         self.set_gui()
     
+    def load(self):
+        self.gui.load(self.get())
+    
+    def get(self):
+        f = '[MClientQt] suggest.controller.Suggest.get'
+        try:
+            return self.gui.get()
+        except IndexError:
+            sh.com.rep_input(f)
+        return ''
+    
     def set_geometry(self, x, y, width, height):
         self.gui.set_geometry(x, y, width, height)
     
@@ -24,6 +35,7 @@ class Suggest:
     
     def set_bindings(self):
         self.gui.bind('Esc', self.close)
+        self.gui.bind('Return', self.load)
     
     def show(self):
         self.gui.show()

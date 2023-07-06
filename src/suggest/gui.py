@@ -30,9 +30,20 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
 
 class Suggest(PyQt5.QtWidgets.QWidget):
     
+    sig_load = PyQt5.QtCore.pyqtSignal(str)
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.set_gui()
+    
+    def load(self, text):
+        self.sig_load.emit(text)
+    
+    def get(self):
+        return self.model.items[self.get_row()]
+    
+    def get_index(self):
+        return self.view.selectionModel().currentIndex()
     
     def set_geometry(self, x, y, width, height):
         self.setGeometry(x, y, width, height)
@@ -46,7 +57,7 @@ class Suggest(PyQt5.QtWidgets.QWidget):
         self.layout_.setContentsMargins(0, 0, 0, 0)
         self.layout_.addWidget(self.view)
         self.setLayout(self.layout_)
-        self.setWindowFlags(self.windowFlags()|PyQt5.QtCore.Qt.FramelessWindowHint)
+        self.setWindowFlags(self.windowFlags() | PyQt5.QtCore.Qt.FramelessWindowHint)
     
     def fill(self, lst):
         self.model = TableModel(lst)
@@ -59,7 +70,7 @@ class Suggest(PyQt5.QtWidgets.QWidget):
         self.view.setCurrentIndex(index_)
     
     def get_row(self):
-        return self.view.selectionModel().currentIndex().row()
+        return self.get_index().row()
     
     def clear_selection(self):
         self.view.selectionModel().clearSelection()
