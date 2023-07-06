@@ -28,6 +28,20 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
 
 
 
+class View(PyQt5.QtWidgets.QListView):
+    
+    sig_click = PyQt5.QtCore.pyqtSignal()
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    
+    def mousePressEvent(self, event):
+        if event.button() == PyQt5.QtCore.Qt.LeftButton:
+            self.sig_click.emit()
+        super().mousePressEvent(event)
+
+
+
 class Suggest(PyQt5.QtWidgets.QWidget):
     
     sig_load = PyQt5.QtCore.pyqtSignal(str)
@@ -36,8 +50,8 @@ class Suggest(PyQt5.QtWidgets.QWidget):
         super().__init__(*args, **kwargs)
         self.set_gui()
     
-    def load(self, text):
-        self.sig_load.emit(text)
+    def load(self):
+        self.sig_load.emit(self.get())
     
     def get(self):
         return self.model.items[self.get_row()]
@@ -53,7 +67,8 @@ class Suggest(PyQt5.QtWidgets.QWidget):
     
     def set_gui(self):
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
-        self.view = PyQt5.QtWidgets.QListView()
+        self.view = View()
+        self.view.sig_click.connect(self.load)
         self.layout_.setContentsMargins(0, 0, 0, 0)
         self.layout_.addWidget(self.view)
         self.setLayout(self.layout_)

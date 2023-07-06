@@ -223,7 +223,6 @@ class Table(PyQt5.QtWidgets.QTableView):
         # Do not override internal 'x' and 'y'
         self.x_ = 0
         self.y_ = 0
-        self.setMouseTracking(True)
         self.set_gui()
     
     def _use_mouse(self, event):
@@ -335,6 +334,7 @@ class Table(PyQt5.QtWidgets.QTableView):
         # Do not allow Qt to colorize cell background
         self.setFocusPolicy(PyQt5.QtCore.Qt.NoFocus)
         self.setSelectionMode(PyQt5.QtWidgets.QAbstractItemView.NoSelection)
+        self.setMouseTracking(True)
     
     def show_borders(self, Show=False):
         self.setShowGrid(Show)

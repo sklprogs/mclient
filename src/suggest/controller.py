@@ -13,7 +13,7 @@ class Suggest:
         self.set_gui()
     
     def load(self):
-        self.gui.load(self.get())
+        self.gui.load()
     
     def get(self):
         f = '[MClientQt] suggest.controller.Suggest.get'
