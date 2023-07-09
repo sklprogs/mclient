@@ -601,6 +601,27 @@ class Wrap:
         cells.append(row)
         self.cells = cells
     
+    def wrap_y(self):
+        f = '[MClientQt] cells.Wrap.wrap_y'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not self.cells or not self.cells[0]:
+            sh.com.rep_empty(f)
+            return
+        cells = []
+        for j in range(len(self.cells[0])):
+            row = []
+            for i in range(len(self.cells)):
+                row.append(self.cells[i][j])
+            cells.append(row)
+        self.cells = cells
+    
+    def wrap(self):
+        self.wrap_x()
+        if sh.lg.globs['bool']['VerticalView']:
+            self.wrap_y()
+    
     def _debug_cells(self):
         f = '[MClientQt] cells.Wrap._debug_cells'
         mes = [f'{f}:']
@@ -719,7 +740,7 @@ class Wrap:
     
     def run(self):
         self.check()
-        self.wrap_x()
+        self.wrap()
         self.renumber()
         self.format()
         self.set_plain()
