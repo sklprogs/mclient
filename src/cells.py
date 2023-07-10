@@ -712,8 +712,12 @@ class Wrap:
         for row in self.cells:
             for cell in row:
                 cell_code = []
+                if sh.lg.globs['bool']['VerticalView']:
+                    no = cell.rowno
+                else:
+                    no = cell.colno
                 for block in cell.blocks:
-                    cell_code.append(fm.Block(block, cell.colno).run())
+                    cell_code.append(fm.Block(block, no).run())
                 cell.code = sh.List(cell_code).space_items()
     
     def set_plain(self):
