@@ -637,7 +637,12 @@ class Wrap:
             j -= 1
     
     def _force_cell(self, i, j):
-        #FIX: this is inefficient for long articles. Create a copy of elems.
+        ''' #NOTE: Since columns do not have a length limit in the vertical
+            mode, long articles will have huge tables resulting in poor
+            performance. For example, EN-RU 'set' article has 460×9 = 4,140
+            cells in the horizontal mode and 359×275 = 98,725 cells in the
+            vertical mode (×24 times greater).
+        '''
         f = '[MClientQt] cells.Wrap._force_cell'
         try:
             return self.cells[i][j]
