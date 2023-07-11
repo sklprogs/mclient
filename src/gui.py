@@ -531,12 +531,6 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.icn_hst = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'toggle_history.png'
                                         )
-        self.icn_hor = sh.objs.pdir.add ('..', 'resources', 'buttons'
-                                        ,'toggle_view_hor.png'
-                                        )
-        self.icn_ver = sh.objs.pdir.add ('..', 'resources', 'buttons'
-                                        ,'toggle_view_ver.png'
-                                        )
         self.icn_cp0 = sh.objs.pdir.add ('..', 'resources', 'buttons'
                                         ,'watch_clipboard_off.png'
                                         )
@@ -650,11 +644,6 @@ class Panel(PyQt5.QtWidgets.QWidget):
                                  ,inactive = self.icn_al0
                                  ,active = self.icn_al1
                                  )
-        # A button to change the article view
-        self.btn_viw = sh.Button (hint = _('Toggle the article view mode')
-                                 ,inactive = self.icn_ver
-                                 ,active = self.icn_hor
-                                 )
         # A button to move to the previous article
         self.btn_prv = sh.Button (hint = _('Go to the preceding article')
                                  ,inactive = self.icn_bk0
@@ -731,7 +720,6 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.layout_.addWidget(self.btn_blk.widget)
         self.layout_.addWidget(self.btn_pri.widget)
         self.layout_.addWidget(self.btn_alp.widget)
-        self.layout_.addWidget(self.btn_viw.widget)
         self.layout_.addWidget(self.btn_prv.widget)
         self.layout_.addWidget(self.btn_nxt.widget)
         self.layout_.addWidget(self.btn_hst.widget)

@@ -134,17 +134,6 @@ class UpdateUI:
         self._update_alphabet_image()
         self._update_alphabet_hint()
     
-    def update_vertical_view(self):
-        mes = [_('Vertical mode')]
-        if sh.lg.globs['bool']['VerticalView']:
-            self.gui.btn_viw.inactivate()
-            mes.append(_('Status: ON'))
-        else:
-            self.gui.btn_viw.activate()
-            mes.append(_('Status: OFF'))
-        self.gui.btn_viw.hint = '\n'.join(mes)
-        self.gui.btn_viw.set_hint()
-    
     def update_global_hotkey(self):
         mes = [_('Capture Ctrl-c-c and Ctrl-Ins-Ins')]
         if sh.lg.globs['bool']['CaptureHotkey']:
@@ -241,7 +230,6 @@ class UpdateUI:
         else:
             sh.com.rep_lazy(f)
         self.update_global_hotkey()
-        self.update_vertical_view()
         self.update_alphabetization()
     
     def run(self):
@@ -1244,14 +1232,6 @@ class App:
         lg.objs.articles.clear_article()
         self.load_article(search, url)
     
-    def toggle_view(self):
-        if sh.lg.globs['bool']['VerticalView']:
-            sh.lg.globs['bool']['VerticalView'] = False
-        else:
-            sh.lg.globs['bool']['VerticalView'] = True
-        lg.objs.get_articles().delete_bookmarks()
-        self.load_article()
-    
     def toggle_alphabet(self):
         if sh.lg.globs['bool']['AlphabetizeTerms']:
             sh.lg.globs['bool']['AlphabetizeTerms'] = False
@@ -1928,12 +1908,6 @@ class App:
         self.gui.bind (sh.lg.globs['str']['bind_toggle_alphabet']
                       ,self.toggle_alphabet
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_toggle_view']
-                      ,self.toggle_view
-                      )
-        self.gui.bind (sh.lg.globs['str']['bind_toggle_view_alt']
-                      ,self.toggle_view
-                      )
         self.gui.bind (sh.lg.globs['str']['bind_reload_article']
                       ,self.reload
                       )
@@ -2004,7 +1978,6 @@ class App:
         self.panel.btn_sym.set_action(self.symbols.show)
         self.panel.btn_swp.set_action(self.swap_langs)
         self.panel.btn_trn.set_action(self.go_keyboard)
-        self.panel.btn_viw.set_action(self.toggle_view)
         
         self.panel.ent_src.widget.sig_home.connect(self.table.go_line_start)
         self.panel.ent_src.widget.sig_end.connect(self.table.go_line_end)

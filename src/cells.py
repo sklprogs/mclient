@@ -576,8 +576,8 @@ class Wrap:
             row.append(cell)
         return row
     
-    def wrap_x(self):
-        f = '[MClientQt] cells.Wrap.wrap_x'
+    def wrap(self):
+        f = '[MClientQt] cells.Wrap.wrap'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -601,31 +601,6 @@ class Wrap:
         cells.append(row)
         self.cells = cells
     
-    def _wrap_y(self):
-        cells = []
-        row = []
-        rowno = 0
-        for cell in self.cells:
-            if cell.rowno != rowno:
-                row += self.get_empty_cells(self.collimit - len(row))
-                cells.append(row)
-                row = []
-            row.append(cell)
-            rowno = cell.rowno
-        row += self.get_empty_cells(self.collimit - len(row))
-        cells.append(row)
-        self.cells = cells
-    
-    def get_max_row_len(self):
-        f = '[MClientQt] cells.Wrap.get_max_row_len'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        lens = [len(row) for row in self.cells]
-        max_ = max(lens)
-        sh.objs.get_mes(f, max_, True).show_debug()
-        return max_
-    
     def _get_prev_cell(self, i, j):
         if i >= len(self.cells):
             return
@@ -635,59 +610,6 @@ class Wrap:
             except IndexError:
                 pass
             j -= 1
-    
-    def _force_cell(self, i, j):
-        ''' #NOTE: Since columns do not have a length limit in the vertical
-            mode, long articles will have huge tables resulting in poor
-            performance. For example, EN-RU 'set' article has 460×9 = 4,140
-            cells in the horizontal mode and 359×275 = 98,725 cells in the
-            vertical mode (×24 times greater).
-        '''
-        f = '[MClientQt] cells.Wrap._force_cell'
-        try:
-            return self.cells[i][j]
-        except IndexError:
-            cell = self._get_prev_cell(i, j)
-            if cell is None:
-                mes = _('Create new cell ({}, {})').format(i, j)
-                sh.objs.get_mes(f, mes, True).show_debug()
-                cell = ic.Cell()
-            else:
-                cell = copy.deepcopy(cell)
-            cell.rowno = i
-            cell.colno = i
-            cell.text = ''
-            cell.code = ''
-            cell.blocks = []
-            cell.fixed_block = None
-            return cell
-    
-    def wrap_y(self):
-        f = '[MClientQt] cells.Wrap.wrap_y'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self._wrap_y()
-        if not self.cells:
-            sh.com.rep_empty(f)
-            return
-        max_ = self.get_max_row_len()
-        if not max_:
-            sh.com.rep_empty(f)
-            return
-        cells = []
-        for j in range(max_):
-            row = []
-            for i in range(len(self.cells)):
-                row.append(self._force_cell(i, j))
-            cells.append(row)
-        self.cells = cells
-    
-    def wrap(self):
-        if sh.lg.globs['bool']['VerticalView']:
-            self.wrap_y()
-        else:
-            self.wrap_x()
     
     def _debug_cells(self):
         f = '[MClientQt] cells.Wrap._debug_cells'
@@ -779,12 +701,8 @@ class Wrap:
         for row in self.cells:
             for cell in row:
                 cell_code = []
-                if sh.lg.globs['bool']['VerticalView']:
-                    no = cell.rowno
-                else:
-                    no = cell.colno
                 for block in cell.blocks:
-                    cell_code.append(fm.Block(block, no).run())
+                    cell_code.append(fm.Block(block, cell.colno).run())
                 cell.code = sh.List(cell_code).space_items()
     
     def set_plain(self):

@@ -38,7 +38,6 @@ class DefaultKeys(sh.DefaultKeys):
            ,'ShortSpeech'        :True
            ,'ShowUserNames'      :True
            ,'SortByColumns'      :True
-           ,'VerticalView'       :False
                                    })
     
     def _load_float(self):
@@ -112,8 +111,6 @@ class DefaultKeys(sh.DefaultKeys):
            ,'bind_toggle_history_alt'     :'Ctrl+H'
            ,'bind_toggle_popup'           :'Alt+X'
            ,'bind_toggle_priority'        :'Alt+P'
-           ,'bind_toggle_view'            :'F6'
-           ,'bind_toggle_view_alt'        :'Alt+V'
            ,'col1_type'                   :_('Subjects')
            ,'col2_type'                   :_('Word forms')
            ,'col3_type'                   :_('Parts of speech')
@@ -215,10 +212,6 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'SortByColumns'
         comment = _('[Autosave] Sort by each column')
-        self.add_key(section, section_abbr, key, comment)
-        
-        key = 'VerticalView'
-        comment = _('[Autosave] Vertical view')
         self.add_key(section, section_abbr, key, comment)
     
     def fill_float(self):
@@ -497,16 +490,6 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'bind_toggle_priority'
         comment = _('Toggle prioritizing')
-        self.add_key(section, section_abbr, key, comment)
-        
-        key = 'bind_toggle_view'
-        comment = _('Toggle the current article view (combination #{})')
-        comment = comment.format(1)
-        self.add_key(section, section_abbr, key, comment)
-        
-        key = 'bind_toggle_view_alt'
-        comment = _('Toggle the current article view (combination #{})')
-        comment = comment.format(2)
         self.add_key(section, section_abbr, key, comment)
         
         key = 'col1_type'

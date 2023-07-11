@@ -8,7 +8,7 @@ import subjects as sj
 
 class Block:
     
-    def __init__(self, block, no):
+    def __init__(self, block, colno):
         self.colors_bl = (objs.get_colors().b1, objs.colors.b2, objs.colors.b3
                          ,objs.colors.b4
                          )
@@ -17,7 +17,7 @@ class Block:
                          )
         self.code = ''
         self.block = block
-        self.no = no
+        self.colno = colno
     
     def _is_phrase_prior(self):
         if self.block.type_ == 'phrase':
@@ -51,16 +51,16 @@ class Block:
         if self.block.type_ == 'correction':
             return objs.get_colors().correction
         if self._is_subj_blocked():
-            return self.colors_bl[self.no]
+            return self.colors_bl[self.colno]
         if self._is_subj_prior():
-            return self.colors_pr[self.no]
-        if self.no == 0:
+            return self.colors_pr[self.colno]
+        if self.colno == 0:
             return sh.lg.globs['str']['color_col1']
-        if self.no == 1:
+        if self.colno == 1:
             return sh.lg.globs['str']['color_col2']
-        if self.no == 2:
+        if self.colno == 2:
             return sh.lg.globs['str']['color_col3']
-        if self.no == 3:
+        if self.colno == 3:
             return sh.lg.globs['str']['color_col4']
         # Qt accepts empty color names
         return ''
@@ -72,7 +72,7 @@ class Block:
             self.code = '<i>' + self.code + '</i>'
     
     def set_bold(self):
-        if self.no == 0:
+        if self.colno == 0:
             self.code = '<b>' + self.code + '</b>'
     
     def get_family(self):
@@ -82,13 +82,13 @@ class Block:
                                ,'user'
                                ):
             return sh.lg.globs['str']['font_comments_family']
-        if self.no == 0:
+        if self.colno == 0:
             return sh.lg.globs['str']['font_col1_family']
-        if self.no == 1:
+        if self.colno == 1:
             return sh.lg.globs['str']['font_col2_family']
-        if self.no == 2:
+        if self.colno == 2:
             return sh.lg.globs['str']['font_col3_family']
-        if self.no == 3:
+        if self.colno == 3:
             return sh.lg.globs['str']['font_col4_family']
         return 'Sans'
     
@@ -99,13 +99,13 @@ class Block:
                                ,'user'
                                ):
             return sh.lg.globs['int']['font_comments_size']
-        if self.no == 0:
+        if self.colno == 0:
             return sh.lg.globs['int']['font_col1_size']
-        if self.no == 1:
+        if self.colno == 1:
             return sh.lg.globs['int']['font_col2_size']
-        if self.no == 2:
+        if self.colno == 2:
             return sh.lg.globs['int']['font_col3_size']
-        if self.no == 3:
+        if self.colno == 3:
             return sh.lg.globs['int']['font_col4_size']
         return 11
 

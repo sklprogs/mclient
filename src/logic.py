@@ -471,9 +471,6 @@ class ColumnWidth:
     
     def set_fixed_num(self):
         f = '[MClientQt] logic.ColumnWidth.set_fixed_num'
-        if sh.lg.globs['bool']['VerticalView']:
-            sh.com.rep_lazy(f)
-            return
         self.fixed_num = 4
         mes = _('Number of fixed columns: {}').format(self.fixed_num)
         sh.objs.get_mes(f, mes, True).show_debug()
