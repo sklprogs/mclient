@@ -616,20 +616,65 @@ class Wrap:
         cells.append(row)
         self.cells = cells
     
+    def get_max_row_len(self):
+        f = '[MClientQt] cells.Wrap.get_max_row_len'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        lens = [len(row) for row in self.cells]
+        max_ = max(lens)
+        sh.objs.get_mes(f, max_, True).show_debug()
+        return max_
+    
+    def _get_prev_cell(self, i, j):
+        if i >= len(self.cells):
+            return
+        while j >= 0:
+            try:
+                return self.cells[i][j]
+            except IndexError:
+                pass
+            j -= 1
+    
+    def _force_cell(self, i, j):
+        #FIX: this is inefficient for long articles. Create a copy of elems.
+        f = '[MClientQt] cells.Wrap._force_cell'
+        try:
+            return self.cells[i][j]
+        except IndexError:
+            cell = self._get_prev_cell(i, j)
+            if cell is None:
+                mes = _('Create new cell ({}, {})').format(i, j)
+                sh.objs.get_mes(f, mes, True).show_debug()
+                cell = ic.Cell()
+            else:
+                cell = copy.deepcopy(cell)
+            cell.rowno = i
+            cell.colno = i
+            cell.text = ''
+            cell.code = ''
+            cell.blocks = []
+            cell.fixed_block = None
+            return cell
+    
     def wrap_y(self):
         f = '[MClientQt] cells.Wrap.wrap_y'
         if not self.Success:
             sh.com.cancel(f)
             return
         self._wrap_y()
-        if not self.cells or not self.cells[0]:
+        if not self.cells:
+            sh.com.rep_empty(f)
+            return
+        max_ = self.get_max_row_len()
+        if not max_:
             sh.com.rep_empty(f)
             return
         cells = []
-        for j in range(len(self.cells[0])):
+        for j in range(max_):
             row = []
             for i in range(len(self.cells)):
-                row.append(self.cells[i][j])
+                row.append(self._force_cell(i, j))
             cells.append(row)
         self.cells = cells
     
