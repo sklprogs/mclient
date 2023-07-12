@@ -1,0 +1,96 @@
+{"hotkeys": {"clear_history": ["Ctrl+Shift+Del"]
+            ,"col1_down": ["Ctrl+Down"]
+            ,"col1_up": ["Ctrl+Up"]
+            ,"col2_down": ["Alt+Down"]
+            ,"col2_up": ["Alt+Up"]
+            ,"col3_down": ["Shift+Down"]
+            ,"col3_up": ["Shift+Up"]
+            ,"col4_down": ["Ctrl+Shift+Down"]
+            ,"col4_up": ["Ctrl+Shift+Up"]
+            ,"copy_article_url": ["Ctrl+F7"]
+            ,"copy_nominative": ["Ctrl+W"]
+            ,"copy_sel": ["Ctrl+Return", "Ctrl+Enter"]
+            ,"copy_url": ["Shift+F7"]
+            ,"define": ["Ctrl+D"]
+            ,"go_back": ["Alt+Left"]
+            ,"go_next": ["Alt+Right"]
+            ,"go_phrases": ["Alt+F"]
+            ,"next_lang1": ["F8", "Ctrl+K"]
+            ,"next_lang2": ["F9", "Ctrl+L"]
+            ,"prev_lang1": ["Shift+F8", "Ctrl+K"]
+            ,"prev_lang2": ["Shift+F9", "Ctrl+L"]
+            ,"open_in_browser": ["F7", "Ctrl+B"]
+            ,"print": ["Ctrl+P"]
+            ,"quit": ["F10"]
+            ,"re_search_article": ["Ctrl+F3"]
+            ,"reload_article": ["F5", "Ctrl+R"]
+            ,"save_article": ["F2", "Ctrl+S"]
+            ,"search_article_backward": ["Shift+F3"]
+            ,"search_article_forward": ["F3"]
+            ,"settings": ["Alt+S", "F12"]
+            ,"show_about": ["F1"]
+            ,"spec_symbol": ["Ctrl+E"]
+            ,"swap_langs": ["Ctrl+Shift+Space"]
+            ,"toggle_alphabet": ["Alt+A"]
+            ,"toggle_block": ["Alt+B"]
+            ,"toggle_history": ["F4", "Ctrl+H"]
+            ,"toggle_popup": ["Alt+X"]
+            ,"toggle_priority": ["Alt+P"]
+            }
+,"rows": {"height": 42}
+,"columns": {"num": 4
+            ,"fixed": {"width": 63}
+            ,"terms": {"width": 157}
+            ,"1": {"type": "Subjects"
+                  ,"color": "coral"
+                  ,"font": {"family": "Arial", "size": 12}
+                  }
+            ,"2": {"type": "Word forms"
+                  ,"color": "cadet blue"
+                  ,"font": {"family": "Arial", "size": 12}
+                  }
+            ,"3": {"type": "Parts of speech"
+                  ,"color": "slate gray"
+                  ,"font": {"family": "Mono", "size": 11}
+                  }
+            ,"4": {"type": "Transcription"
+                  ,"color": "slate gray"
+                  ,"font": {"family": "Mono", "size": 11}
+                  }
+            }
+,"comments": {"color": "gray"
+             ,"font": {"family": "Mono", "size": 11}
+             }
+,"terms": {"color": "black"
+          ,"font": {"family": "Serif", "size": 12}
+          }
+,"lang1": "Russian"
+,"lang2": "English"
+,"repeat_sign": "!"
+,"repeat_sign2": "!!"
+,"source": "Multitran"
+,"spec_syms": "àáâäāæßćĉçèéêēёëəғĝģĥìíîïīĵķļñņòóôõöōœøšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒЁËƏҒĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒØŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ"
+,"speech1": "Noun"
+,"speech2": "Verb"
+,"speech3": "Adjective"
+,"speech4": "Abbreviation"
+,"speech5": "Adverb"
+,"speech6": "Preposition"
+,"speech7": "Pronoun"
+,"style": "MClient"
+,"web_search_url": "http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s"
+,"AlphabetizeTerms": true
+,"Autoswap": false
+,"BlockSubjects": true
+,"CaptureHotkey": true
+,"Iconify": true
+,"PhraseCount": true
+,"Ping": true
+,"PrioritizeSubjects": true
+,"ShortSubjects": false
+,"ShortSpeech": true
+,"ShowUserNames": true
+,"SortByColumns": true
+,"timeout": "5.0"
+,"hotkey_delay": 600
+}

@@ -33,7 +33,6 @@ class DefaultKeys(sh.DefaultKeys):
            ,'PhraseCount'        :True
            ,'Ping'               :True
            ,'PrioritizeSubjects' :True
-           ,'SelectTermsOnly'    :True
            ,'ShortSubjects'      :False
            ,'ShortSpeech'        :True
            ,'ShowUserNames'      :True
@@ -121,17 +120,12 @@ class DefaultKeys(sh.DefaultKeys):
            ,'color_col4'                  :'slate gray'
            ,'color_comments'              :'gray'
            ,'color_terms'                 :'black'
-           ,'color_terms_sel_bg'          :'cyan'
-           ,'color_terms_sel_fg'          :'black'
            ,'font_col1_family'            :'Arial'
            ,'font_col2_family'            :'Arial'
            ,'font_col3_family'            :'Mono'
            ,'font_col4_family'            :'Mono'
            ,'font_comments_family'        :'Mono'
-           ,'font_history'                :'Sans 12'
-           ,'font_style'                  :'Sans 14'
            ,'font_terms_family'           :'Serif'
-           ,'font_terms_sel'              :'Sans 14 bold italic'
            ,'lang1'                       :_('Russian')
            ,'lang2'                       :_('English')
            ,'repeat_sign'                 :'!'
