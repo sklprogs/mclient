@@ -42,28 +42,20 @@
             ,"fixed": {"width": 63}
             ,"terms": {"width": 157}
             ,"1": {"type": "Subjects"
-                  ,"color": "coral"
-                  ,"font": {"family": "Arial", "size": 12}
+                  ,"font": {"family": "Arial", "size": 12, "color": "coral"}
                   }
             ,"2": {"type": "Word forms"
-                  ,"color": "cadet blue"
-                  ,"font": {"family": "Arial", "size": 12}
+                  ,"font": {"family": "Arial", "size": 12, "color": "cadet blue"}
                   }
             ,"3": {"type": "Parts of speech"
-                  ,"color": "slate gray"
-                  ,"font": {"family": "Mono", "size": 11}
+                  ,"font": {"family": "Mono", "size": 11, "color": "slate gray"}
                   }
             ,"4": {"type": "Transcription"
-                  ,"color": "slate gray"
-                  ,"font": {"family": "Mono", "size": 11}
+                  ,"font": {"family": "Mono", "size": 11, "color": "slate gray"}
                   }
             }
-,"comments": {"color": "gray"
-             ,"font": {"family": "Mono", "size": 11}
-             }
-,"terms": {"color": "black"
-          ,"font": {"family": "Serif", "size": 12}
-          }
+,"comments": {"font": {"family": "Mono", "size": 11, "color": "gray"}}
+,"terms": {"font": {"family": "Serif", "size": 12, "color": "black"}}
 ,"lang1": "Russian"
 ,"lang2": "English"
 ,"repeat_sign": "!"
@@ -93,4 +85,5 @@
 ,"SortByColumns": true
 ,"timeout": "5.0"
 ,"hotkey_delay": 600
+,"require_version": "7.0.0"
 }
