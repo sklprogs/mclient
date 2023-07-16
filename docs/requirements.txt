@@ -1,5 +1,6 @@
+# If you are a developer, you must also install 'wheel', 'six' and 'pyinstaller'
 PyQt5
-configparser
+jsonschema
 lxml
 termcolor
 w3lib
