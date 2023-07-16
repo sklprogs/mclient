@@ -18,11 +18,12 @@ class Config:
         self.pdefault = ''
         self.plocal = ''
         self.pschema = ''
-        self.local = ''
-        self.schema = ''
+        self.default = {}
+        self.local = {}
+        self.schema = {}
     
-    def validate(self):
-        f = '[MClient] config.Config.validate'
+    def check_local(self):
+        f = '[MClient] config.Config.check_local'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -30,8 +31,21 @@ class Config:
             jsonschema.validate(self.local, self.schema)
         except jsonschema.exceptions.ValidationError as e:
             self.Success = False
-            mes = _('Configuration file "{}" has values of a wrong type!\nFix or delete this file.\n\nDetails:\n{}')
+            mes = _('Configuration file "{}" has values of a wrong type!\nFix, restore or delete this file.\n\nDetails:\n{}')
             mes = mes.format(self.plocal, e)
+            sh.objs.get_mes(f, mes).show_error()
+    
+    def check_default(self):
+        f = '[MClient] config.Config.check_default'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        try:
+            jsonschema.validate(self.default, self.schema)
+        except jsonschema.exceptions.ValidationError as e:
+            self.Success = False
+            mes = _('Configuration file "{}" has values of a wrong type!\nFix or restore this file.\n\nDetails:\n{}')
+            mes = mes.format(self.pdefault, e)
             sh.objs.get_mes(f, mes).show_error()
     
     def load_schema(self):
@@ -62,6 +76,22 @@ class Config:
             return
         try:
             self.local = json.loads(code)
+        except Exception as e:
+            self.Success = False
+            sh.com.rep_third_party(f, e)
+    
+    def load_default(self):
+        f = '[MClient] config.Config.load_default'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        code = sh.ReadTextFile(self.pdefault).get()
+        if not code:
+            self.Success = False
+            sh.com.rep_out(f)
+            return
+        try:
+            self.default = json.loads(code)
         except Exception as e:
             self.Success = False
             sh.com.rep_third_party(f, e)
@@ -106,11 +136,13 @@ class Config:
     def run(self):
         self.set_default()
         self.set_schema()
+        self.load_schema()
+        self.load_default()
+        self.check_default()
         self.set_local()
         self.create()
         self.load_local()
-        self.load_schema()
-        self.validate()
+        self.check_local()
 
 
 if __name__ == '__main__':
