@@ -188,10 +188,6 @@ class CreateConfig(sh.CreateConfig):
         comment = _('[Autosave] Prioritize subjects from the prioritization file')
         self.add_key(section, section_abbr, key, comment)
         
-        key = 'SelectTermsOnly'
-        comment = _('[Autosave] Select blocks of all types (False) or terms only (True)')
-        self.add_key(section, section_abbr, key, comment)
-        
         key = 'ShortSubjects'
         comment = _('[Autosave] Shorten subject titles')
         self.add_key(section, section_abbr, key, comment)
@@ -527,14 +523,6 @@ class CreateConfig(sh.CreateConfig):
         comment = _('A font color for terms')
         self.add_key(section, section_abbr, key, comment)
         
-        key = 'color_terms_sel_bg'
-        comment = _('A font background color for the current (selected) term')
-        self.add_key(section, section_abbr, key, comment)
-        
-        key = 'color_terms_sel_fg'
-        comment = _('A font foreground color for the current (selected) term')
-        self.add_key(section, section_abbr, key, comment)
-        
         key = 'font_comments_family'
         comment = _('A font of comments and user names')
         self.add_key(section, section_abbr, key, comment)
@@ -555,20 +543,8 @@ class CreateConfig(sh.CreateConfig):
         comment = _('A font of column #{}').format(4)
         self.add_key(section, section_abbr, key, comment)
         
-        key = 'font_history'
-        comment = _('A font color for History')
-        self.add_key(section, section_abbr, key, comment)
-        
-        key = 'font_style'
-        comment = _('A program GUI font')
-        self.add_key(section, section_abbr, key, comment)
-        
         key = 'font_terms_family'
         comment = _('A font of terms')
-        self.add_key(section, section_abbr, key, comment)
-        
-        key = 'font_terms_sel'
-        comment = _('A font of the current (selected) term')
         self.add_key(section, section_abbr, key, comment)
         
         key = 'lang1'

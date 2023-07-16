@@ -54,6 +54,7 @@
                   ,"font": {"family": "Mono", "size": 11, "color": "slate gray"}
                   }
             }
+,"subjects": {"blocked": [], "prioritized": ["General"]}
 ,"comments": {"font": {"family": "Mono", "size": 11, "color": "gray"}}
 ,"terms": {"font": {"family": "Serif", "size": 12, "color": "black"}}
 ,"lang1": "Russian"
