@@ -21,6 +21,7 @@ class Config:
         self.default = {}
         self.local = {}
         self.schema = {}
+        self.new = {}
     
     def check_local(self):
         f = '[MClient] config.Config.check_local'
@@ -133,16 +134,42 @@ class Config:
         self.pschema = os.path.abspath(self.pschema)
         self.Success = sh.File(self.pschema).Success
     
+    def update(self):
+        f = '[MClient] config.Config.update'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        ''' Python 3.9 or newer is required. Combine dictionaries #1 and #2
+            to #3 such that #3 has the values of #1, absent in #2, and existing
+            values of #1 are updated with the values of #2. #1 and #2 are
+            unchanged.
+        '''
+        self.new = self.default | self.local
+    
+    def save(self):
+        f = '[MClient] config.Config.save'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        try:
+            code = json.dumps(self.new, ensure_ascii=False, indent=4)
+        except Exception as e:
+            self.Success = False
+            sh.com.rep_third_party(f, e)
+            return
+        self.Success = sh.WriteTextFile(self.plocal, True).write(code)
+    
     def run(self):
-        self.set_default()
         self.set_schema()
         self.load_schema()
+        self.set_default()
         self.load_default()
         self.check_default()
         self.set_local()
         self.create()
         self.load_local()
         self.check_local()
+        self.update()
 
 
 if __name__ == '__main__':
@@ -152,6 +179,8 @@ if __name__ == '__main__':
     timer.start()
     iconfig = Config()
     iconfig.run()
+    #iconfig.new["PrioritizeSubjects"] = False
+    iconfig.save()
     timer.end()
 #    sub1 = f'Default config path: {iconfig.pdefault}'
 #    sub2 = f'Schema path: {iconfig.pschema}'
