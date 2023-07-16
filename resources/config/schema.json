@@ -2,7 +2,6 @@
 ,"properties":
     {"hotkeys":
         {"type": "object"
-        ,"required": ["toggle_priority"]
         ,"properties":
             {"clear_history": {"type": "array"}
             ,"col1_down": {"type": "array"}
@@ -44,8 +43,134 @@
             ,"toggle_priority": {"type": "array"}
             }
         }
+    ,"rows": {"type": "object", "properties": {"height": {"type": "integer"}}}
+    ,"columns":
+        {"type": "object"
+        ,"properties":
+            {"num": {"type": "integer"}
+            ,"fixed":
+                {"type": "object"
+                ,"properties": {"width": {"type": "integer"}}
+                }
+            ,"terms":
+                {"type": "object"
+                ,"properties": {"width": {"type": "integer"}}
+                }
+            ,"1":
+                {"type": "object"
+                ,"properties":
+                    {"font":
+                        {"type": "object"
+                        ,"properties":
+                            {"family": {"type": "string"}
+                            ,"size": {"type": "integer"}
+                            ,"color": {"type": "string"}
+                            }
+                        }
+                    }
+                }
+            ,"2":
+                {"type": "object"
+                ,"properties":
+                    {"font":
+                        {"type": "object"
+                        ,"properties":
+                            {"family": {"type": "string"}
+                            ,"size": {"type": "integer"}
+                            ,"color": {"type": "string"}
+                            }
+                        }
+                    }
+                }
+            ,"3":
+                {"type": "object"
+                ,"properties":
+                    {"font":
+                        {"type": "object"
+                        ,"properties":
+                            {"family": {"type": "string"}
+                            ,"size": {"type": "integer"}
+                            ,"color": {"type": "string"}
+                            }
+                        }
+                    }
+                }
+            ,"4":
+                {"type": "object"
+                ,"properties":
+                    {"font":
+                        {"type": "object"
+                        ,"properties":
+                            {"family": {"type": "string"}
+                            ,"size": {"type": "integer"}
+                            ,"color": {"type": "string"}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ,"subjects":
+        {"type": "object"
+        ,"properties":
+            {"blocked": {"type": "array"}
+            ,"prioritized": {"type": "array"}
+            }
+        }
+    ,"comments":
+        {"type": "object"
+        ,"properties":
+            {"font":
+                {"type": "object"
+                ,"properties":
+                    {"family": {"type": "string"}
+                    ,"size": {"type": "integer"}
+                    ,"color": {"type": "string"}
+                    }
+                }
+            }
+        }
+    ,"terms":
+        {"type": "object"
+        ,"properties":
+            {"font":
+                {"type": "object"
+                ,"properties":
+                    {"family": {"type": "string"}
+                    ,"size": {"type": "integer"}
+                    ,"color": {"type": "string"}
+                    }
+                }
+            }
+        }
     ,"lang1": {"type": "string"}
     ,"lang2": {"type": "string"}
+    ,"repeat_sign": {"type": "string"}
+    ,"repeat_sign2": {"type": "string"}
+    ,"source": {"type": "string"}
+    ,"spec_syms": {"type": "string"}
+    ,"speech1": {"type": "string"}
+    ,"speech2": {"type": "string"}
+    ,"speech3": {"type": "string"}
+    ,"speech4": {"type": "string"}
+    ,"speech5": {"type": "string"}
+    ,"speech6": {"type": "string"}
+    ,"speech7": {"type": "string"}
+    ,"style": {"type": "string"}
+    ,"web_search_url": {"type": "string"}
+    ,"AlphabetizeTerms": {"type": "boolean"}
     ,"Autoswap": {"type": "boolean"}
+    ,"BlockSubjects": {"type": "boolean"}
+    ,"CaptureHotkey": {"type": "boolean"}
+    ,"Iconify": {"type": "boolean"}
+    ,"PhraseCount": {"type": "boolean"}
+    ,"Ping": {"type": "boolean"}
+    ,"PrioritizeSubjects": {"type": "boolean"}
+    ,"ShortSubjects": {"type": "boolean"}
+    ,"ShortSpeech": {"type": "boolean"}
+    ,"ShowUserNames": {"type": "boolean"}
+    ,"SortByColumns": {"type": "boolean"}
+    ,"timeout": {"type": "string"}
+    ,"hotkey_delay": {"type": "integer"}
     }
 }

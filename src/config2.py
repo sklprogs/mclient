@@ -116,8 +116,11 @@ class Config:
 if __name__ == '__main__':
     f = '[MClient] config.__main__'
     sh.com.start()
+    timer = sh.Timer(f)
+    timer.start()
     iconfig = Config()
     iconfig.run()
+    timer.end()
 #    sub1 = f'Default config path: {iconfig.pdefault}'
 #    sub2 = f'Schema path: {iconfig.pschema}'
 #    sub3 = f'Local config path: {iconfig.plocal}'
