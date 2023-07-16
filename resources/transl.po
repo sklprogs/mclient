@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-17 00:58+0300\n"
-"PO-Revision-Date: 2023-07-17 01:06+0300\n"
+"POT-Creation-Date: 2023-07-17 01:26+0300\n"
+"PO-Revision-Date: 2023-07-17 01:27+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -2153,7 +2153,7 @@ msgstr "Невозможно продолжить ввиду некоррект�
 
 #: mclient/src/mclient.py:2681 mclient/src/plugins/multitrandem/utils.py:947
 #: mclient/src/plugins/multitrandem/utils.py:1422 mclient/src/utils.py:135
-#: mclientqt/src/config2.py:135 mclientqt/src/mclientqt.py:1797
+#: mclientqt/src/config2.py:167 mclientqt/src/mclientqt.py:1797
 #: mclientqt/src/plugins/multitrandem/utils.py:946
 #: mclientqt/src/plugins/multitrandem/utils.py:1409
 #: mclientqt/src/suggest/controller.py:83 mclientqt/src/tests.py:1074
@@ -27535,16 +27535,30 @@ msgstr "Переключить всплывающее окно"
 msgid "Write file \"{}\""
 msgstr "Запись файла \"{}\""
 
-#: mclientqt/src/config2.py:33
+#: mclientqt/src/config2.py:34
 msgid ""
 "Configuration file \"{}\" has values of a wrong type!\n"
-"Fix or delete this file.\n"
+"Fix, restore or delete this file.\n"
 "\n"
 "Details:\n"
 "{}"
 msgstr ""
 "Значения конфигурационного файла \"{}\" имеют неверный тип!\n"
-"Исправьте или удалите этот файл.\n"
+"Исправьте, восстановите или удалите этот файл.\n"
+"\n"
+"Подробности:\n"
+"{}"
+
+#: mclientqt/src/config2.py:47
+msgid ""
+"Configuration file \"{}\" has values of a wrong type!\n"
+"Fix or restore this file.\n"
+"\n"
+"Details:\n"
+"{}"
+msgstr ""
+"Значения конфигурационного файла \"{}\" имеют неверный тип!\n"
+"Исправьте или восстановите этот файл.\n"
 "\n"
 "Подробности:\n"
 "{}"
@@ -27700,7 +27714,6 @@ msgid "sep. words"
 msgstr "отд. слова"
 
 #: mclientqt/src/plugins/multitrancom/elems.py:363
-#| msgid "Unexpected end of text!"
 msgid "Unexpected block type: \"{}\"!"
 msgstr "Неожиданный тип блока: \"{}\"!"
 
@@ -27803,7 +27816,6 @@ msgid "FULL"
 msgstr "ПОЛНАЯ"
 
 #: mclientqt/src/tests.py:896
-#| msgid "#: {}; Pattern: \"{}\"; Match: {}"
 msgid "Source: \"{}\"; pair: \"{}\"; search: \"{}\""
 msgstr "Источник: \"{}\"; пара: \"{}\"; запрос: \"{}\""
 
