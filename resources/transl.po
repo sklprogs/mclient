@@ -2,18 +2,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-08 22:17+0300\n"
-"PO-Revision-Date: 2023-06-08 22:20+0300\n"
+"POT-Creation-Date: 2023-07-17 00:58+0300\n"
+"PO-Revision-Date: 2023-07-17 01:06+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "Generated-By: pygettext.py 1.5\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: ../..\n"
 "X-Poedit-SearchPath-0: mclient/src\n"
@@ -97,24 +97,24 @@ msgstr "Приоритет части речи \"{}\" не определен!"
 #: mclient/src/plugins/multitrandem/utils.py:751
 #: mclient/src/plugins/multitrandem/utils.py:1163
 #: mclient/src/plugins/stardict/get.py:306
-#: mclientqt/src/plugins/dsl/cleanup.py:109 mclientqt/src/plugins/dsl/get.py:223
-#: mclientqt/src/plugins/multitrandem/get.py:125
-#: mclientqt/src/plugins/multitrandem/get.py:474
-#: mclientqt/src/plugins/multitrandem/get.py:479
-#: mclientqt/src/plugins/multitrandem/get.py:575
-#: mclientqt/src/plugins/multitrandem/get.py:599
-#: mclientqt/src/plugins/multitrandem/get.py:853
+#: mclientqt/src/plugins/dsl/cleanup.py:107 mclientqt/src/plugins/dsl/get.py:207
+#: mclientqt/src/plugins/multitrandem/get.py:100
+#: mclientqt/src/plugins/multitrandem/get.py:453
+#: mclientqt/src/plugins/multitrandem/get.py:461
+#: mclientqt/src/plugins/multitrandem/get.py:547
+#: mclientqt/src/plugins/multitrandem/get.py:586
+#: mclientqt/src/plugins/multitrandem/get.py:827
 #: mclientqt/src/plugins/multitrandem/utils.py:47
-#: mclientqt/src/plugins/multitrandem/utils.py:453
-#: mclientqt/src/plugins/multitrandem/utils.py:751
-#: mclientqt/src/plugins/multitrandem/utils.py:1163
-#: mclientqt/src/plugins/stardict/get.py:306 skl_shared/src/logic.py:346
+#: mclientqt/src/plugins/multitrandem/utils.py:446
+#: mclientqt/src/plugins/multitrandem/utils.py:728
+#: mclientqt/src/plugins/multitrandem/utils.py:1141
+#: mclientqt/src/plugins/stardict/get.py:303 skl_shared/src/logic.py:346
 #: skl_shared/src/logic.py:1161 skl_shared/src/logic.py:1180
 #: skl_shared/src/logic.py:2670 skl_shared/src/logic.py:2690
-#: skl_shared/src/shared.py:4113 skl_shared_qt/src/logic.py:343
-#: skl_shared_qt/src/logic.py:2126 skl_shared_qt/src/logic.py:2145
-#: skl_shared_qt/src/logic.py:2330 skl_shared_qt/src/logic.py:2348
-#: skl_shared_qt/src/logic.py:3739
+#: skl_shared/src/shared.py:4113 skl_shared_qt/src/logic.py:311
+#: skl_shared_qt/src/logic.py:2081 skl_shared_qt/src/logic.py:2100
+#: skl_shared_qt/src/logic.py:2281 skl_shared_qt/src/logic.py:2299
+#: skl_shared_qt/src/logic.py:3644
 msgid "The condition \"{}\" is not observed!"
 msgstr "Условие \"{}\" не выполнено!"
 
@@ -151,23 +151,23 @@ msgstr "Реальное число столбцов: {}"
 #: mclient/src/subjects/priorities/controller.py:56 mclientqt/src/cells.py:44
 #: mclientqt/src/history/controller.py:59 mclientqt/src/history/gui.py:25
 #: mclientqt/src/logic.py:26 mclientqt/src/logic.py:326
-#: mclientqt/src/logic.py:595 mclientqt/src/mclientqt.py:1057
-#: mclientqt/src/plugins/dsl/get.py:400 mclientqt/src/plugins/dsl/get.py:417
-#: mclientqt/src/plugins/dsl/get.py:434 mclientqt/src/plugins/dsl/get.py:442
-#: mclientqt/src/plugins/dsl/tags.py:142
+#: mclientqt/src/logic.py:592 mclientqt/src/mclientqt.py:1077
+#: mclientqt/src/plugins/dsl/get.py:399 mclientqt/src/plugins/dsl/get.py:416
+#: mclientqt/src/plugins/dsl/get.py:431 mclientqt/src/plugins/dsl/get.py:439
+#: mclientqt/src/plugins/dsl/tags.py:139
 #: mclientqt/src/plugins/multitrancom/elems.py:189
 #: mclientqt/src/plugins/multitrancom/pairs.py:2791
 #: mclientqt/src/plugins/multitrancom/pairs.py:2805
 #: mclientqt/src/plugins/multitrancom/run.py:111
 #: mclientqt/src/plugins/multitrancom/run.py:122
-#: mclientqt/src/plugins/multitrandem/elems.py:135
-#: mclientqt/src/plugins/multitrandem/get.py:75
-#: mclientqt/src/plugins/multitrandem/get.py:107
-#: mclientqt/src/plugins/multitrandem/get.py:168
-#: mclientqt/src/plugins/multitrandem/get.py:215
-#: mclientqt/src/plugins/multitrandem/get.py:1496
-#: mclientqt/src/plugins/multitrandem/get.py:1828
-#: mclientqt/src/plugins/multitrandem/tags.py:168
+#: mclientqt/src/plugins/multitrandem/elems.py:119
+#: mclientqt/src/plugins/multitrandem/get.py:77
+#: mclientqt/src/plugins/multitrandem/get.py:115
+#: mclientqt/src/plugins/multitrandem/get.py:162
+#: mclientqt/src/plugins/multitrandem/get.py:210
+#: mclientqt/src/plugins/multitrandem/get.py:1458
+#: mclientqt/src/plugins/multitrandem/get.py:1755
+#: mclientqt/src/plugins/multitrandem/tags.py:163
 #: mclientqt/src/plugins/multitrandem/tests.py:190
 #: mclientqt/src/prior_block/blacklist/controller.py:57
 #: skl_shared/src/logic.py:594 skl_shared/src/logic.py:622
@@ -175,10 +175,10 @@ msgstr "Реальное число столбцов: {}"
 #: skl_shared/src/logic.py:4519 skl_shared/src/logic.py:4679
 #: skl_shared/src/logic.py:4713 skl_shared/src/logic.py:4798
 #: skl_shared/src/shared.py:2371 skl_shared/src/shared.py:5059
-#: skl_shared_qt/src/logic.py:512 skl_shared_qt/src/logic.py:1367
-#: skl_shared_qt/src/logic.py:1888 skl_shared_qt/src/logic.py:2450
-#: skl_shared_qt/src/logic.py:3420 skl_shared_qt/src/logic.py:3561
-#: skl_shared_qt/src/logic.py:3575 skl_shared_qt/src/logic.py:3654
+#: skl_shared_qt/src/logic.py:480 skl_shared_qt/src/logic.py:1322
+#: skl_shared_qt/src/logic.py:1843 skl_shared_qt/src/logic.py:2397
+#: skl_shared_qt/src/logic.py:3332 skl_shared_qt/src/logic.py:3466
+#: skl_shared_qt/src/logic.py:3480 skl_shared_qt/src/logic.py:3559
 msgid "Wrong input data: \"{}\"!"
 msgstr "Недопустимые входные данные: \"{}\"!"
 
@@ -200,14 +200,14 @@ msgstr "Общая лексика"
 #: mclient/src/settings/gui.py:98 mclient/src/settings/gui.py:107
 #: mclient/src/settings/gui.py:124 mclient/src/settings/gui.py:132
 #: mclient/src/settings/gui.py:137 mclient/src/settings/gui.py:316
-#: mclient/src/settings/gui.py:708 mclientqt/src/config.py:117
-#: mclientqt/src/logic.py:584 mclientqt/src/logic.py:704
-#: mclientqt/src/logic.py:713 mclientqt/src/settings/gui.py:24
-#: mclientqt/src/settings/gui.py:144 mclientqt/src/settings/gui.py:145
-#: mclientqt/src/settings/gui.py:146 mclientqt/src/settings/gui.py:200
-#: mclientqt/src/settings/gui.py:209 mclientqt/src/settings/gui.py:226
-#: mclientqt/src/settings/gui.py:234 mclientqt/src/settings/gui.py:239
-#: mclientqt/src/settings/gui.py:356 mclientqt/src/settings/gui.py:406
+#: mclient/src/settings/gui.py:708 mclientqt/src/config.py:113
+#: mclientqt/src/logic.py:581 mclientqt/src/logic.py:701
+#: mclientqt/src/logic.py:710 mclientqt/src/settings/gui.py:24
+#: mclientqt/src/settings/gui.py:138 mclientqt/src/settings/gui.py:139
+#: mclientqt/src/settings/gui.py:140 mclientqt/src/settings/gui.py:197
+#: mclientqt/src/settings/gui.py:206 mclientqt/src/settings/gui.py:223
+#: mclientqt/src/settings/gui.py:231 mclientqt/src/settings/gui.py:236
+#: mclientqt/src/settings/gui.py:353 mclientqt/src/settings/gui.py:402
 msgid "Subjects"
 msgstr "Тематики"
 
@@ -218,14 +218,14 @@ msgstr "Тематики"
 #: mclient/src/settings/gui.py:125 mclient/src/settings/gui.py:129
 #: mclient/src/settings/gui.py:135 mclient/src/settings/gui.py:140
 #: mclient/src/settings/gui.py:317 mclient/src/settings/gui.py:714
-#: mclientqt/src/config.py:118 mclientqt/src/logic.py:586
-#: mclientqt/src/logic.py:706 mclientqt/src/logic.py:713
-#: mclientqt/src/settings/gui.py:25 mclientqt/src/settings/gui.py:159
-#: mclientqt/src/settings/gui.py:160 mclientqt/src/settings/gui.py:161
-#: mclientqt/src/settings/gui.py:201 mclientqt/src/settings/gui.py:203
-#: mclientqt/src/settings/gui.py:227 mclientqt/src/settings/gui.py:231
-#: mclientqt/src/settings/gui.py:237 mclientqt/src/settings/gui.py:242
-#: mclientqt/src/settings/gui.py:357 mclientqt/src/settings/gui.py:410
+#: mclientqt/src/config.py:114 mclientqt/src/logic.py:583
+#: mclientqt/src/logic.py:703 mclientqt/src/logic.py:710
+#: mclientqt/src/settings/gui.py:24 mclientqt/src/settings/gui.py:154
+#: mclientqt/src/settings/gui.py:155 mclientqt/src/settings/gui.py:156
+#: mclientqt/src/settings/gui.py:198 mclientqt/src/settings/gui.py:200
+#: mclientqt/src/settings/gui.py:224 mclientqt/src/settings/gui.py:228
+#: mclientqt/src/settings/gui.py:234 mclientqt/src/settings/gui.py:239
+#: mclientqt/src/settings/gui.py:354 mclientqt/src/settings/gui.py:406
 msgid "Word forms"
 msgstr "Словоформы"
 
@@ -236,15 +236,15 @@ msgstr "Словоформы"
 #: mclient/src/settings/gui.py:106 mclient/src/settings/gui.py:127
 #: mclient/src/settings/gui.py:131 mclient/src/settings/gui.py:134
 #: mclient/src/settings/gui.py:139 mclient/src/settings/gui.py:318
-#: mclient/src/settings/gui.py:726 mclientqt/src/config.py:119
-#: mclientqt/src/logic.py:588 mclientqt/src/logic.py:708
-#: mclientqt/src/logic.py:714 mclientqt/src/settings/gui.py:27
-#: mclientqt/src/settings/gui.py:174 mclientqt/src/settings/gui.py:175
-#: mclientqt/src/settings/gui.py:176 mclientqt/src/settings/gui.py:202
-#: mclientqt/src/settings/gui.py:206 mclientqt/src/settings/gui.py:208
-#: mclientqt/src/settings/gui.py:229 mclientqt/src/settings/gui.py:233
-#: mclientqt/src/settings/gui.py:236 mclientqt/src/settings/gui.py:241
-#: mclientqt/src/settings/gui.py:358 mclientqt/src/settings/gui.py:418
+#: mclient/src/settings/gui.py:726 mclientqt/src/config.py:115
+#: mclientqt/src/logic.py:585 mclientqt/src/logic.py:705
+#: mclientqt/src/logic.py:711 mclientqt/src/settings/gui.py:25
+#: mclientqt/src/settings/gui.py:170 mclientqt/src/settings/gui.py:171
+#: mclientqt/src/settings/gui.py:172 mclientqt/src/settings/gui.py:199
+#: mclientqt/src/settings/gui.py:203 mclientqt/src/settings/gui.py:205
+#: mclientqt/src/settings/gui.py:226 mclientqt/src/settings/gui.py:230
+#: mclientqt/src/settings/gui.py:233 mclientqt/src/settings/gui.py:238
+#: mclientqt/src/settings/gui.py:355 mclientqt/src/settings/gui.py:414
 msgid "Parts of speech"
 msgstr "Части речи"
 
@@ -254,14 +254,14 @@ msgstr "Части речи"
 #: mclient/src/settings/gui.py:102 mclient/src/settings/gui.py:103
 #: mclient/src/settings/gui.py:126 mclient/src/settings/gui.py:130
 #: mclient/src/settings/gui.py:136 mclient/src/settings/gui.py:319
-#: mclient/src/settings/gui.py:720 mclientqt/src/config.py:120
-#: mclientqt/src/logic.py:590 mclientqt/src/logic.py:710
-#: mclientqt/src/logic.py:713 mclientqt/src/settings/gui.py:26
-#: mclientqt/src/settings/gui.py:189 mclientqt/src/settings/gui.py:190
-#: mclientqt/src/settings/gui.py:191 mclientqt/src/settings/gui.py:204
-#: mclientqt/src/settings/gui.py:205 mclientqt/src/settings/gui.py:228
-#: mclientqt/src/settings/gui.py:232 mclientqt/src/settings/gui.py:238
-#: mclientqt/src/settings/gui.py:359 mclientqt/src/settings/gui.py:414
+#: mclient/src/settings/gui.py:720 mclientqt/src/config.py:116
+#: mclientqt/src/logic.py:587 mclientqt/src/logic.py:707
+#: mclientqt/src/logic.py:710 mclientqt/src/settings/gui.py:24
+#: mclientqt/src/settings/gui.py:186 mclientqt/src/settings/gui.py:187
+#: mclientqt/src/settings/gui.py:188 mclientqt/src/settings/gui.py:201
+#: mclientqt/src/settings/gui.py:202 mclientqt/src/settings/gui.py:225
+#: mclientqt/src/settings/gui.py:229 mclientqt/src/settings/gui.py:235
+#: mclientqt/src/settings/gui.py:356 mclientqt/src/settings/gui.py:410
 msgid "Transcription"
 msgstr "Транскрипция"
 
@@ -396,10 +396,10 @@ msgstr "Транскрипция"
 #: mclient/src/plugins/multitrancom/utils/utils.py:350
 #: mclient/src/plugins/multitrandem/run.py:85
 #: mclient/src/plugins/multitrandem/run.py:138
-#: mclient/src/plugins/multitrandem/run.py:142 mclientqt/src/config.py:138
+#: mclient/src/plugins/multitrandem/run.py:142 mclientqt/src/config.py:129
 #: mclientqt/src/history/gui.py:132 mclientqt/src/history/gui.py:133
-#: mclientqt/src/history/gui.py:134 mclientqt/src/mclientqt.py:1430
-#: mclientqt/src/mclientqt.py:1434 mclientqt/src/plugins/multitrancom/pairs.py:7
+#: mclientqt/src/history/gui.py:134 mclientqt/src/mclientqt.py:1438
+#: mclientqt/src/mclientqt.py:1442 mclientqt/src/plugins/multitrancom/pairs.py:7
 #: mclientqt/src/plugins/multitrancom/pairs.py:20
 #: mclientqt/src/plugins/multitrancom/pairs.py:59
 #: mclientqt/src/plugins/multitrancom/pairs.py:110
@@ -525,13 +525,13 @@ msgstr "Транскрипция"
 #: mclientqt/src/plugins/multitrancom/pairs.py:2660
 #: mclientqt/src/plugins/multitrancom/pairs.py:2676
 #: mclientqt/src/plugins/multitrancom/pairs.py:2710
-#: mclientqt/src/plugins/multitrandem/run.py:85
-#: mclientqt/src/plugins/multitrandem/run.py:138
-#: mclientqt/src/plugins/multitrandem/run.py:142 mclientqt/src/tests.py:666
-#: mclientqt/src/tests.py:667 mclientqt/src/tests.py:668
-#: mclientqt/src/tests.py:669 mclientqt/src/tests.py:670
-#: mclientqt/src/tests.py:677 mclientqt/src/tests.py:679
-#: mclientqt/src/tests.py:683
+#: mclientqt/src/plugins/multitrandem/run.py:83
+#: mclientqt/src/plugins/multitrandem/run.py:135
+#: mclientqt/src/plugins/multitrandem/run.py:139 mclientqt/src/tests.py:675
+#: mclientqt/src/tests.py:676 mclientqt/src/tests.py:677
+#: mclientqt/src/tests.py:678 mclientqt/src/tests.py:679
+#: mclientqt/src/tests.py:686 mclientqt/src/tests.py:688
+#: mclientqt/src/tests.py:692
 msgid "Russian"
 msgstr "Русский"
 
@@ -655,7 +655,7 @@ msgstr "Русский"
 #: mclient/src/plugins/multitrancom/utils/utils.py:350
 #: mclient/src/plugins/multitrandem/run.py:85
 #: mclient/src/plugins/multitrandem/run.py:138
-#: mclient/src/plugins/multitrandem/run.py:142 mclientqt/src/config.py:139
+#: mclient/src/plugins/multitrandem/run.py:142 mclientqt/src/config.py:130
 #: mclientqt/src/history/gui.py:132 mclientqt/src/history/gui.py:133
 #: mclientqt/src/history/gui.py:134 mclientqt/src/plugins/multitrancom/pairs.py:8
 #: mclientqt/src/plugins/multitrancom/pairs.py:54
@@ -773,13 +773,13 @@ msgstr "Русский"
 #: mclientqt/src/plugins/multitrancom/pairs.py:2656
 #: mclientqt/src/plugins/multitrancom/pairs.py:2676
 #: mclientqt/src/plugins/multitrancom/pairs.py:2694
-#: mclientqt/src/plugins/multitrandem/run.py:85
-#: mclientqt/src/plugins/multitrandem/run.py:138
-#: mclientqt/src/plugins/multitrandem/run.py:142 mclientqt/src/tests.py:666
-#: mclientqt/src/tests.py:667 mclientqt/src/tests.py:668
-#: mclientqt/src/tests.py:669 mclientqt/src/tests.py:670
-#: mclientqt/src/tests.py:677 mclientqt/src/tests.py:679
-#: mclientqt/src/tests.py:683
+#: mclientqt/src/plugins/multitrandem/run.py:83
+#: mclientqt/src/plugins/multitrandem/run.py:135
+#: mclientqt/src/plugins/multitrandem/run.py:139 mclientqt/src/tests.py:675
+#: mclientqt/src/tests.py:676 mclientqt/src/tests.py:677
+#: mclientqt/src/tests.py:678 mclientqt/src/tests.py:679
+#: mclientqt/src/tests.py:686 mclientqt/src/tests.py:688
+#: mclientqt/src/tests.py:692
 msgid "English"
 msgstr "Английский"
 
@@ -788,11 +788,11 @@ msgstr "Английский"
 #: mclient/src/settings/gui.py:25 mclient/src/settings/gui.py:113
 #: mclient/src/settings/gui.py:128 mclient/src/tests.py:587
 #: mclient/src/tests.py:647 mclient/src/tests.py:689 mclient/src/tests.py:780
-#: mclientqt/src/config.py:142 mclientqt/src/manager.py:218
-#: mclientqt/src/manager.py:271 mclientqt/src/mclientqt.py:1439
-#: mclientqt/src/settings/gui.py:31 mclientqt/src/settings/gui.py:215
-#: mclientqt/src/settings/gui.py:230 mclientqt/src/tests.py:885
-#: mclientqt/src/tests.py:947 mclientqt/src/tests.py:992
+#: mclientqt/src/config.py:133 mclientqt/src/manager.py:215
+#: mclientqt/src/manager.py:268 mclientqt/src/mclientqt.py:1447
+#: mclientqt/src/settings/gui.py:27 mclientqt/src/settings/gui.py:212
+#: mclientqt/src/settings/gui.py:227 mclientqt/src/tests.py:893
+#: mclientqt/src/tests.py:953 mclientqt/src/tests.py:998
 msgid "Multitran"
 msgstr "Мультитран"
 
@@ -800,11 +800,11 @@ msgstr "Мультитран"
 #: mclient/src/plugins/multitrandem/get.py:1987 mclient/src/settings/gui.py:30
 #: mclient/src/settings/gui.py:320 mclient/src/settings/gui.py:842
 #: mclient/src/settings/gui.py:843 mclient/src/settings/gui.py:844
-#: mclient/src/tests.py:472 mclientqt/src/config.py:144
-#: mclientqt/src/plugins/multitrandem/get.py:1987
-#: mclientqt/src/settings/gui.py:36 mclientqt/src/settings/gui.py:45
-#: mclientqt/src/settings/gui.py:46 mclientqt/src/settings/gui.py:47
-#: mclientqt/src/settings/gui.py:360 mclientqt/src/settings/gui.py:422
+#: mclient/src/tests.py:472 mclientqt/src/config.py:135
+#: mclientqt/src/plugins/multitrandem/get.py:1943
+#: mclientqt/src/settings/gui.py:30 mclientqt/src/settings/gui.py:38
+#: mclientqt/src/settings/gui.py:39 mclientqt/src/settings/gui.py:40
+#: mclientqt/src/settings/gui.py:357 mclientqt/src/settings/gui.py:418
 msgid "Noun"
 msgstr "Существительное"
 
@@ -812,11 +812,11 @@ msgstr "Существительное"
 #: mclient/src/plugins/multitrandem/get.py:1991 mclient/src/settings/gui.py:30
 #: mclient/src/settings/gui.py:321 mclient/src/settings/gui.py:856
 #: mclient/src/settings/gui.py:857 mclient/src/settings/gui.py:858
-#: mclient/src/tests.py:472 mclientqt/src/config.py:145
-#: mclientqt/src/plugins/multitrandem/get.py:1991
-#: mclientqt/src/settings/gui.py:36 mclientqt/src/settings/gui.py:59
-#: mclientqt/src/settings/gui.py:60 mclientqt/src/settings/gui.py:61
-#: mclientqt/src/settings/gui.py:361 mclientqt/src/settings/gui.py:426
+#: mclient/src/tests.py:472 mclientqt/src/config.py:136
+#: mclientqt/src/plugins/multitrandem/get.py:1947
+#: mclientqt/src/settings/gui.py:30 mclientqt/src/settings/gui.py:52
+#: mclientqt/src/settings/gui.py:53 mclientqt/src/settings/gui.py:54
+#: mclientqt/src/settings/gui.py:358 mclientqt/src/settings/gui.py:422
 msgid "Verb"
 msgstr "Глагол"
 
@@ -824,11 +824,11 @@ msgstr "Глагол"
 #: mclient/src/plugins/multitrandem/get.py:1983 mclient/src/settings/gui.py:30
 #: mclient/src/settings/gui.py:322 mclient/src/settings/gui.py:870
 #: mclient/src/settings/gui.py:871 mclient/src/settings/gui.py:872
-#: mclient/src/tests.py:472 mclientqt/src/config.py:146
-#: mclientqt/src/plugins/multitrandem/get.py:1983
-#: mclientqt/src/settings/gui.py:36 mclientqt/src/settings/gui.py:73
-#: mclientqt/src/settings/gui.py:74 mclientqt/src/settings/gui.py:75
-#: mclientqt/src/settings/gui.py:362 mclientqt/src/settings/gui.py:430
+#: mclient/src/tests.py:472 mclientqt/src/config.py:137
+#: mclientqt/src/plugins/multitrandem/get.py:1939
+#: mclientqt/src/settings/gui.py:30 mclientqt/src/settings/gui.py:66
+#: mclientqt/src/settings/gui.py:67 mclientqt/src/settings/gui.py:68
+#: mclientqt/src/settings/gui.py:359 mclientqt/src/settings/gui.py:426
 msgid "Adjective"
 msgstr "Прилагательное"
 
@@ -836,10 +836,10 @@ msgstr "Прилагательное"
 #: mclient/src/plugins/multitrandem/get.py:1927 mclient/src/settings/gui.py:31
 #: mclient/src/settings/gui.py:323 mclient/src/settings/gui.py:884
 #: mclient/src/settings/gui.py:885 mclient/src/settings/gui.py:886
-#: mclientqt/src/config.py:147 mclientqt/src/plugins/multitrandem/get.py:1927
-#: mclientqt/src/settings/gui.py:37 mclientqt/src/settings/gui.py:87
-#: mclientqt/src/settings/gui.py:88 mclientqt/src/settings/gui.py:89
-#: mclientqt/src/settings/gui.py:363 mclientqt/src/settings/gui.py:434
+#: mclientqt/src/config.py:138 mclientqt/src/plugins/multitrandem/get.py:1883
+#: mclientqt/src/settings/gui.py:30 mclientqt/src/settings/gui.py:80
+#: mclientqt/src/settings/gui.py:81 mclientqt/src/settings/gui.py:82
+#: mclientqt/src/settings/gui.py:360 mclientqt/src/settings/gui.py:430
 msgid "Abbreviation"
 msgstr "Сокращение"
 
@@ -847,10 +847,10 @@ msgstr "Сокращение"
 #: mclient/src/plugins/multitrandem/get.py:1931 mclient/src/settings/gui.py:31
 #: mclient/src/settings/gui.py:324 mclient/src/settings/gui.py:898
 #: mclient/src/settings/gui.py:899 mclient/src/settings/gui.py:900
-#: mclientqt/src/config.py:148 mclientqt/src/plugins/multitrandem/get.py:1931
-#: mclientqt/src/settings/gui.py:37 mclientqt/src/settings/gui.py:101
-#: mclientqt/src/settings/gui.py:102 mclientqt/src/settings/gui.py:103
-#: mclientqt/src/settings/gui.py:364 mclientqt/src/settings/gui.py:438
+#: mclientqt/src/config.py:139 mclientqt/src/plugins/multitrandem/get.py:1887
+#: mclientqt/src/settings/gui.py:31 mclientqt/src/settings/gui.py:94
+#: mclientqt/src/settings/gui.py:95 mclientqt/src/settings/gui.py:96
+#: mclientqt/src/settings/gui.py:361 mclientqt/src/settings/gui.py:434
 msgid "Adverb"
 msgstr "Наречие"
 
@@ -858,10 +858,10 @@ msgstr "Наречие"
 #: mclient/src/plugins/multitrandem/get.py:1960 mclient/src/settings/gui.py:31
 #: mclient/src/settings/gui.py:325 mclient/src/settings/gui.py:912
 #: mclient/src/settings/gui.py:913 mclient/src/settings/gui.py:914
-#: mclientqt/src/config.py:149 mclientqt/src/plugins/multitrandem/get.py:1960
-#: mclientqt/src/settings/gui.py:38 mclientqt/src/settings/gui.py:115
-#: mclientqt/src/settings/gui.py:116 mclientqt/src/settings/gui.py:117
-#: mclientqt/src/settings/gui.py:365 mclientqt/src/settings/gui.py:442
+#: mclientqt/src/config.py:140 mclientqt/src/plugins/multitrandem/get.py:1916
+#: mclientqt/src/settings/gui.py:31 mclientqt/src/settings/gui.py:108
+#: mclientqt/src/settings/gui.py:109 mclientqt/src/settings/gui.py:110
+#: mclientqt/src/settings/gui.py:362 mclientqt/src/settings/gui.py:438
 msgid "Preposition"
 msgstr "Предлог"
 
@@ -869,28 +869,28 @@ msgstr "Предлог"
 #: mclient/src/plugins/multitrandem/get.py:1979 mclient/src/settings/gui.py:32
 #: mclient/src/settings/gui.py:326 mclient/src/settings/gui.py:926
 #: mclient/src/settings/gui.py:927 mclient/src/settings/gui.py:928
-#: mclientqt/src/config.py:150 mclientqt/src/plugins/multitrandem/get.py:1979
-#: mclientqt/src/settings/gui.py:38 mclientqt/src/settings/gui.py:129
-#: mclientqt/src/settings/gui.py:130 mclientqt/src/settings/gui.py:131
-#: mclientqt/src/settings/gui.py:366 mclientqt/src/settings/gui.py:446
+#: mclientqt/src/config.py:141 mclientqt/src/plugins/multitrandem/get.py:1935
+#: mclientqt/src/settings/gui.py:31 mclientqt/src/settings/gui.py:122
+#: mclientqt/src/settings/gui.py:123 mclientqt/src/settings/gui.py:124
+#: mclientqt/src/settings/gui.py:363 mclientqt/src/settings/gui.py:442
 msgid "Pronoun"
 msgstr "Местоимение"
 
-#: mclient/src/config.py:161 mclientqt/src/config.py:163
+#: mclient/src/config.py:161 mclientqt/src/config.py:154
 #: skl_shared/src/logic.py:122 skl_shared/src/logic.py:203
-#: skl_shared_qt/src/logic.py:116 skl_shared_qt/src/logic.py:197
+#: skl_shared_qt/src/logic.py:92 skl_shared_qt/src/logic.py:173
 msgid "Booleans"
 msgstr "Булевы переменные"
 
-#: mclient/src/config.py:162 mclientqt/src/config.py:164
+#: mclient/src/config.py:162 mclientqt/src/config.py:155
 msgid "The following values are allowed in this section: 0 (False) or 1 (True)"
 msgstr "Допустимые значения в данном разделе: 0 (False) или 1 (True)"
 
-#: mclient/src/config.py:167 mclientqt/src/config.py:169
+#: mclient/src/config.py:167
 msgid "[Autosave] Adjust columns by width"
 msgstr "[Автосохранение] Выровнять столбцы по ширине"
 
-#: mclient/src/config.py:171 mclientqt/src/config.py:173
+#: mclient/src/config.py:171 mclientqt/src/config.py:160
 msgid "[Autosave] Sort terms by alphabet"
 msgstr "[Автосохранение] Сортировать термины по алфавиту"
 
@@ -898,25 +898,25 @@ msgstr "[Автосохранение] Сортировать термины п�
 msgid "Hide the window with special characters after the 1st symbol is inserted"
 msgstr "Скрывать окно специальных символов после вставки 1-го символа"
 
-#: mclient/src/config.py:179 mclientqt/src/config.py:177
+#: mclient/src/config.py:179
 msgid "[Autosave] Show suggestions on input"
 msgstr "[Автосохранение] Показывать подсказку для вводимых слов"
 
-#: mclient/src/config.py:183 mclientqt/src/config.py:181
+#: mclient/src/config.py:183 mclientqt/src/config.py:164
 msgid "[Autosave] Autoswap Russian and the other language if appropriate"
 msgstr ""
 "[Автосохранение] Поменять местами русский и другой язык, если это целесообразно"
 
-#: mclient/src/config.py:187 mclientqt/src/config.py:185
+#: mclient/src/config.py:187 mclientqt/src/config.py:168
 msgid "[Autosave] Block subjects from the blacklist"
 msgstr "[Автосохранение] Блокировать тематики из черного списка"
 
-#: mclient/src/config.py:191 mclientqt/src/config.py:189
+#: mclient/src/config.py:191 mclientqt/src/config.py:172
 msgid "[Autosave] Capture Ctrl-c-c and Ctrl-Ins-Ins system-wide"
 msgstr ""
 "[Автосохранение] Перехватывать Ctrl-c-c и Ctrl-Ins-Ins во всех приложениях"
 
-#: mclient/src/config.py:195 mclientqt/src/config.py:193
+#: mclient/src/config.py:195 mclientqt/src/config.py:176
 msgid ""
 "[Autosave] Minimize the application window after specific actions, e.g., "
 "copying"
@@ -924,84 +924,84 @@ msgstr ""
 "[Автосохранение] Свернуть окно программы после некоторых действий, например, "
 "копирования"
 
-#: mclient/src/config.py:199 mclientqt/src/config.py:197
+#: mclient/src/config.py:199 mclientqt/src/config.py:180
 msgid "Ping online sources at startup"
 msgstr "Проверять онлайн-источники при запуске"
 
-#: mclient/src/config.py:203 mclientqt/src/config.py:201
+#: mclient/src/config.py:203 mclientqt/src/config.py:184
 msgid "[Autosave] Show a phrase count"
 msgstr "[Автосохранение] Показывать счетчик фраз"
 
-#: mclient/src/config.py:207 mclientqt/src/config.py:205
+#: mclient/src/config.py:207 mclientqt/src/config.py:188
 msgid "[Autosave] Prioritize subjects from the prioritization file"
 msgstr ""
 "[Автосохранение] Сортировать тематики по приоритету согласно файлу приоритетов"
 
-#: mclient/src/config.py:211 mclientqt/src/config.py:209
+#: mclient/src/config.py:211
 msgid "[Autosave] Select blocks of all types (False) or terms only (True)"
 msgstr ""
 "[Автосохранение] Выделять блоки всех типов (False) или только термины (True)"
 
-#: mclient/src/config.py:215 mclientqt/src/config.py:213
+#: mclient/src/config.py:215 mclientqt/src/config.py:192
 msgid "[Autosave] Shorten subject titles"
 msgstr "[Автосохранение] Сокращать названия тематик"
 
-#: mclient/src/config.py:219 mclientqt/src/config.py:217
+#: mclient/src/config.py:219 mclientqt/src/config.py:196
 msgid "[Autosave] Shorten parts of speech"
 msgstr "[Автосохранение] Сокращать части речи"
 
-#: mclient/src/config.py:223 mclientqt/src/config.py:221
+#: mclient/src/config.py:223 mclientqt/src/config.py:200
 msgid "[Autosave] Show user names"
 msgstr "[Автосохранение] Показывать имена пользователей"
 
-#: mclient/src/config.py:227 mclientqt/src/config.py:225
+#: mclient/src/config.py:227 mclientqt/src/config.py:204
 msgid "[Autosave] Sort by each column"
 msgstr "[Автосохранение] Сортировать по каждому столбцу"
 
-#: mclient/src/config.py:231 mclientqt/src/config.py:229
+#: mclient/src/config.py:231
 msgid "[Autosave] Vertical view"
 msgstr "[Автосохранение] Вертикальный вид"
 
-#: mclient/src/config.py:235 mclientqt/src/config.py:233
+#: mclient/src/config.py:235 mclientqt/src/config.py:208
 #: skl_shared/src/logic.py:122 skl_shared/src/logic.py:209
-#: skl_shared_qt/src/logic.py:116 skl_shared_qt/src/logic.py:203
+#: skl_shared_qt/src/logic.py:92 skl_shared_qt/src/logic.py:179
 msgid "Floatings"
 msgstr "Числа с учетом порядков"
 
-#: mclient/src/config.py:240 mclientqt/src/config.py:238
+#: mclient/src/config.py:240 mclientqt/src/config.py:213
 msgid "A connection timeout (fractions of a second)"
 msgstr "Время ожидания сайта (доли секунды)"
 
-#: mclient/src/config.py:244 mclientqt/src/config.py:242
+#: mclient/src/config.py:244 mclientqt/src/config.py:217
 #: skl_shared/src/logic.py:122 skl_shared/src/logic.py:206
-#: skl_shared_qt/src/logic.py:116 skl_shared_qt/src/logic.py:200
+#: skl_shared_qt/src/logic.py:92 skl_shared_qt/src/logic.py:176
 msgid "Integers"
 msgstr "Целые числа"
 
-#: mclient/src/config.py:249 mclientqt/src/config.py:247
+#: mclient/src/config.py:249 mclientqt/src/config.py:222
 msgid "[Autosave] Number of non-fixed columns"
 msgstr "[Автосохранение] Число нефиксированных столбцов"
 
-#: mclient/src/config.py:253 mclientqt/src/config.py:251
+#: mclient/src/config.py:253 mclientqt/src/config.py:226
 msgid "[Autosave] Fixed column width"
 msgstr "[Автосохранение] Ширина фиксированных столбцов"
 
-#: mclient/src/config.py:257 mclientqt/src/config.py:255
+#: mclient/src/config.py:257 mclientqt/src/config.py:230
 msgid "A font size of comments"
 msgstr "Кегль комментариев"
 
 #: mclient/src/config.py:261 mclient/src/config.py:266 mclient/src/config.py:271
-#: mclient/src/config.py:276 mclientqt/src/config.py:259
-#: mclientqt/src/config.py:264 mclientqt/src/config.py:269
-#: mclientqt/src/config.py:274
+#: mclient/src/config.py:276 mclientqt/src/config.py:234
+#: mclientqt/src/config.py:239 mclientqt/src/config.py:244
+#: mclientqt/src/config.py:249
 msgid "A font size of column #{}"
 msgstr "Кегль столбца №{}"
 
-#: mclient/src/config.py:281 mclientqt/src/config.py:279
+#: mclient/src/config.py:281 mclientqt/src/config.py:254
 msgid "A font size of terms"
 msgstr "Кегль терминов"
 
-#: mclient/src/config.py:285 mclientqt/src/config.py:283
+#: mclient/src/config.py:285 mclientqt/src/config.py:258
 msgid ""
 "[Experts only] Delay in reacting to Ctrl-C-C and Ctrl-Ins-Ins hotkeys (in "
 "milliseconds)"
@@ -1009,18 +1009,18 @@ msgstr ""
 "[Только для экспертов] Задержка при нажатии Ctrl-C-C и Ctrl-Ins-Ins (в "
 "миллисекундах)"
 
-#: mclient/src/config.py:289 mclientqt/src/config.py:287
+#: mclient/src/config.py:289 mclientqt/src/config.py:266
 msgid "[Autosave] Term column width"
 msgstr "[Автосохранение] Ширина столбцов с терминами"
 
-#: mclient/src/config.py:293 mclientqt/src/config.py:291
+#: mclient/src/config.py:293 mclientqt/src/config.py:270
 #: skl_shared/src/logic.py:123 skl_shared/src/logic.py:187
-#: skl_shared/src/logic.py:212 skl_shared_qt/src/logic.py:117
-#: skl_shared_qt/src/logic.py:181 skl_shared_qt/src/logic.py:206
+#: skl_shared/src/logic.py:212 skl_shared_qt/src/logic.py:93
+#: skl_shared_qt/src/logic.py:157 skl_shared_qt/src/logic.py:182
 msgid "Strings"
 msgstr "Строки"
 
-#: mclient/src/config.py:294 mclientqt/src/config.py:292
+#: mclient/src/config.py:294 mclientqt/src/config.py:271
 msgid ""
 "Attention: some hotkeys, e.g., <Button-1> and <Double-Button-1> may conflict "
 "with each other. Reassign them with caution."
@@ -1028,7 +1028,7 @@ msgstr ""
 "Внимание: некоторые комбинации, например, <Button-1> и <Double-Button-1> могут "
 "конфликтовать. Переназначайте их с осторожностью."
 
-#: mclient/src/config.py:299 mclient/src/logic.py:488 mclientqt/src/config.py:297
+#: mclient/src/config.py:299 mclient/src/logic.py:488 mclientqt/src/config.py:276
 #: mclientqt/src/welcome/logic.py:243
 msgid "Clear History"
 msgstr "Очистить историю"
@@ -1038,58 +1038,58 @@ msgid "Clear the search field"
 msgstr "Очистить строку поиска"
 
 #: mclient/src/config.py:307 mclient/src/config.py:316 mclient/src/config.py:325
-#: mclientqt/src/config.py:301 mclientqt/src/config.py:310
-#: mclientqt/src/config.py:319 mclientqt/src/config.py:328
+#: mclientqt/src/config.py:280 mclientqt/src/config.py:289
+#: mclientqt/src/config.py:298 mclientqt/src/config.py:307
 #: mclientqt/src/welcome/logic.py:123 mclientqt/src/welcome/logic.py:131
 #: mclientqt/src/welcome/logic.py:139
 msgid "Go to the next section of column #{}"
 msgstr "Перейти в следующий раздел столбца №{}"
 
 #: mclient/src/config.py:311 mclient/src/config.py:320 mclient/src/config.py:329
-#: mclientqt/src/config.py:305 mclientqt/src/config.py:314
-#: mclientqt/src/config.py:323 mclientqt/src/config.py:332
+#: mclientqt/src/config.py:284 mclientqt/src/config.py:293
+#: mclientqt/src/config.py:302 mclientqt/src/config.py:311
 #: mclientqt/src/welcome/logic.py:119 mclientqt/src/welcome/logic.py:127
 #: mclientqt/src/welcome/logic.py:135
 msgid "Go to the previous section of column #{}"
 msgstr "Перейти в предыдущий раздел столбца №{}"
 
-#: mclient/src/config.py:334 mclientqt/src/config.py:337
+#: mclient/src/config.py:334 mclientqt/src/config.py:316
 msgid "Copy URL of the current article"
 msgstr "Копировать URL текущей статьи"
 
-#: mclient/src/config.py:338 mclientqt/src/config.py:341
+#: mclient/src/config.py:338 mclientqt/src/config.py:320
 msgid "Copy an original word/phrase in a nominative case"
 msgstr "Копировать слово/фразу для перевода в именительном падеже"
 
 #: mclient/src/config.py:342 mclient/src/config.py:347
-#: mclientqt/src/config.py:345 mclientqt/src/config.py:350
+#: mclientqt/src/config.py:324 mclientqt/src/config.py:329
 msgid "Copy a current selection from the article (combination #{})"
 msgstr "Копировать текущее выделение из статьи (комбинация №{})"
 
-#: mclient/src/config.py:352 mclientqt/src/config.py:355
+#: mclient/src/config.py:352 mclientqt/src/config.py:334
 msgid "Copy URL of the current term"
 msgstr "Копировать URL текущего термина"
 
-#: mclient/src/config.py:356 mclientqt/src/config.py:359
+#: mclient/src/config.py:356 mclientqt/src/config.py:338
 msgid "Open a web-page defining the current term"
 msgstr "Открыть веб-страницу с определением текущего термина"
 
-#: mclient/src/config.py:360 mclientqt/src/config.py:363
+#: mclient/src/config.py:360 mclientqt/src/config.py:342
 msgid "Go to the previous article"
 msgstr "Предыдущая статья"
 
-#: mclient/src/config.py:364 mclientqt/src/config.py:367
+#: mclient/src/config.py:364 mclientqt/src/config.py:346
 msgid "Go to the next article"
 msgstr "Последующая статья"
 
-#: mclient/src/config.py:368 mclientqt/src/config.py:371
+#: mclient/src/config.py:368 mclientqt/src/config.py:350
 msgid "Go to the phrases section"
 msgstr "Перейти в раздел фраз"
 
 #: mclient/src/config.py:372 mclient/src/config.py:377 mclient/src/config.py:382
-#: mclient/src/config.py:387 mclientqt/src/config.py:375
-#: mclientqt/src/config.py:380 mclientqt/src/config.py:385
-#: mclientqt/src/config.py:390
+#: mclient/src/config.py:387 mclientqt/src/config.py:354
+#: mclientqt/src/config.py:359 mclientqt/src/config.py:364
+#: mclientqt/src/config.py:369
 msgid "Set next language {} (combination {})"
 msgstr "Установить следующий по списку язык №{} (комбинация №{})"
 
@@ -1101,93 +1101,93 @@ msgstr ""
 "V)"
 
 #: mclient/src/config.py:396 mclient/src/config.py:401 mclient/src/config.py:406
-#: mclient/src/config.py:411 mclientqt/src/config.py:395
-#: mclientqt/src/config.py:400 mclientqt/src/config.py:405
-#: mclientqt/src/config.py:410
+#: mclient/src/config.py:411 mclientqt/src/config.py:374
+#: mclientqt/src/config.py:379 mclientqt/src/config.py:384
+#: mclientqt/src/config.py:389
 msgid "Set previous language #{} (combination #{})"
 msgstr "Установить предыдущий по списку язык №{} (комбинация №{})"
 
-#: mclient/src/config.py:416 mclient/src/logic.py:444 mclientqt/src/config.py:415
+#: mclient/src/config.py:416 mclient/src/logic.py:444 mclientqt/src/config.py:394
 #: mclientqt/src/welcome/logic.py:171
 msgid "Create a printer-friendly page"
 msgstr "Печать (предварительный просмотр)"
 
 #: mclient/src/config.py:420 mclient/src/gui.py:497 mclient/src/logic.py:408
-#: mclientqt/src/config.py:419 mclientqt/src/gui.py:696
+#: mclientqt/src/config.py:398 mclientqt/src/gui.py:703
 #: mclientqt/src/welcome/logic.py:107
 msgid "Quit the program"
 msgstr "Выйти из программы"
 
 #: mclient/src/config.py:424 mclient/src/config.py:429
-#: mclientqt/src/config.py:423 mclientqt/src/config.py:428
+#: mclientqt/src/config.py:402 mclientqt/src/config.py:407
 msgid "Open the current article in a browser (combination #{})"
 msgstr "Открыть текущую статью в браузере (комбинация №{})"
 
 #: mclient/src/config.py:434 mclient/src/config.py:439
-#: mclientqt/src/config.py:433 mclientqt/src/config.py:438
+#: mclientqt/src/config.py:412 mclientqt/src/config.py:416
 msgid "Reload the current article (combination #{})"
 msgstr "Перезагрузить текущую статью (комбинация №{})"
 
-#: mclient/src/config.py:444 mclientqt/src/config.py:443
+#: mclient/src/config.py:444 mclientqt/src/config.py:420
 msgid "Start a new term search in the current article"
 msgstr "Начать новый поиск по терминам текущей статьи"
 
 #: mclient/src/config.py:448 mclient/src/config.py:453
-#: mclientqt/src/config.py:447 mclientqt/src/config.py:452
+#: mclientqt/src/config.py:424 mclientqt/src/config.py:429
 msgid "Save or copy the current article (combination #{})"
 msgstr ""
 "Сохранить текущую статью или скопировать ее в буфер обмена (комбинация №{})"
 
-#: mclient/src/config.py:458 mclient/src/logic.py:462 mclientqt/src/config.py:457
+#: mclient/src/config.py:458 mclient/src/logic.py:462 mclientqt/src/config.py:434
 #: mclientqt/src/welcome/logic.py:201
 msgid "Search the article backward"
 msgstr "Искать назад"
 
-#: mclient/src/config.py:462 mclient/src/logic.py:460 mclientqt/src/config.py:461
+#: mclient/src/config.py:462 mclient/src/logic.py:460 mclientqt/src/config.py:438
 #: mclientqt/src/welcome/logic.py:197
 msgid "Search the article forward"
 msgstr "Искать вперед"
 
 #: mclient/src/config.py:466 mclient/src/config.py:471
-#: mclientqt/src/config.py:465 mclientqt/src/config.py:470
+#: mclientqt/src/config.py:442 mclientqt/src/config.py:446
 msgid "Show settings (combination #{})"
 msgstr "Показать настройки (комбинация №{})"
 
 #: mclient/src/config.py:476 mclient/src/logic.py:468
-#: mclientqt/src/about/controller.py:24 mclientqt/src/config.py:475
+#: mclientqt/src/about/controller.py:24 mclientqt/src/config.py:450
 #: mclientqt/src/welcome/logic.py:211
 msgid "About the program"
 msgstr "Информация о программе"
 
 #: mclient/src/config.py:480 mclient/src/gui.py:337 mclient/src/logic.py:470
-#: mclientqt/src/config.py:479 mclientqt/src/gui.py:601
+#: mclientqt/src/config.py:454 mclientqt/src/gui.py:613
 #: mclientqt/src/welcome/logic.py:215 skl_shared/src/shared.py:2175
 msgid "Paste a special symbol"
 msgstr "Вставить специальный символ"
 
 #: mclient/src/config.py:484 mclient/src/gui.py:357 mclient/src/logic.py:498
-#: mclientqt/src/config.py:483 mclientqt/src/gui.py:609
+#: mclientqt/src/config.py:458 mclientqt/src/gui.py:621
 #: mclientqt/src/welcome/logic.py:259
 msgid "Swap source and target languages"
 msgstr "Поменять местами языки оригинала и перевода"
 
 #: mclient/src/config.py:488 mclient/src/gui.py:406 mclient/src/logic.py:472
-#: mclientqt/src/config.py:487 mclientqt/src/gui.py:631
+#: mclientqt/src/config.py:462 mclientqt/src/gui.py:643
 #: mclientqt/src/welcome/logic.py:219
 msgid "Toggle alphabetizing"
 msgstr "Включить/отключить сортировку по алфавиту"
 
-#: mclient/src/config.py:492 mclient/src/logic.py:474 mclientqt/src/config.py:491
+#: mclient/src/config.py:492 mclient/src/logic.py:474 mclientqt/src/config.py:466
 #: mclientqt/src/welcome/logic.py:223
 msgid "Toggle blacklisting"
 msgstr "Включить/отключить черный список"
 
 #: mclient/src/config.py:496 mclient/src/config.py:501
-#: mclientqt/src/config.py:495 mclientqt/src/config.py:500
+#: mclientqt/src/config.py:470 mclientqt/src/config.py:474
 msgid "Toggle History (combination #{})"
 msgstr "Показать/закрыть историю (комбинация №{})"
 
-#: mclient/src/config.py:506 mclient/src/logic.py:480 mclientqt/src/config.py:509
+#: mclient/src/config.py:506 mclient/src/logic.py:480 mclientqt/src/config.py:482
 #: mclientqt/src/welcome/logic.py:233
 msgid "Toggle prioritizing"
 msgstr "Включить/отключить список приоритетов"
@@ -1197,123 +1197,122 @@ msgid "Toggle selecting terms only"
 msgstr "Включить/отключить режим выбора только терминов"
 
 #: mclient/src/config.py:514 mclient/src/config.py:519
-#: mclientqt/src/config.py:513 mclientqt/src/config.py:518
 msgid "Toggle the current article view (combination #{})"
 msgstr "Переключить вид отображения статьи (комбинация №{})"
 
 #: mclient/src/config.py:524 mclient/src/config.py:529 mclient/src/config.py:534
-#: mclient/src/config.py:539 mclientqt/src/config.py:523
-#: mclientqt/src/config.py:528 mclientqt/src/config.py:533
-#: mclientqt/src/config.py:538
+#: mclient/src/config.py:539 mclientqt/src/config.py:486
+#: mclientqt/src/config.py:490 mclientqt/src/config.py:494
+#: mclientqt/src/config.py:498
 msgid "[Autosave] Type of column #{} in settings"
 msgstr "[Автосохранение] Тип столбца №{} в настройках"
 
-#: mclient/src/config.py:544 mclientqt/src/config.py:543
+#: mclient/src/config.py:544 mclientqt/src/config.py:502
 msgid "A font color for comments and user names"
 msgstr "Цвет шрифта комментариев и имен пользователей"
 
 #: mclient/src/config.py:548 mclient/src/config.py:553 mclient/src/config.py:558
-#: mclient/src/config.py:563 mclientqt/src/config.py:547
-#: mclientqt/src/config.py:552 mclientqt/src/config.py:557
-#: mclientqt/src/config.py:562
+#: mclient/src/config.py:563 mclientqt/src/config.py:506
+#: mclientqt/src/config.py:511 mclientqt/src/config.py:515
+#: mclientqt/src/config.py:519
 msgid "A font color for column #{}"
 msgstr "Цвет шрифта столбца №{}"
 
-#: mclient/src/config.py:568 mclientqt/src/config.py:567
+#: mclient/src/config.py:568 mclientqt/src/config.py:523
 msgid "A font color for terms"
 msgstr "Цвет шрифта терминов"
 
-#: mclient/src/config.py:572 mclientqt/src/config.py:571
+#: mclient/src/config.py:572
 msgid "A font background color for the current (selected) term"
 msgstr "Цвет фона текущего (выделенного) термина"
 
-#: mclient/src/config.py:576 mclientqt/src/config.py:575
+#: mclient/src/config.py:576
 msgid "A font foreground color for the current (selected) term"
 msgstr "Цвет шрифта текущего (выделенного) термина"
 
-#: mclient/src/config.py:580 mclientqt/src/config.py:579
+#: mclient/src/config.py:580 mclientqt/src/config.py:527
 msgid "A font of comments and user names"
 msgstr "Шрифт комментариев и имен пользователей"
 
 #: mclient/src/config.py:584 mclient/src/config.py:589 mclient/src/config.py:594
-#: mclient/src/config.py:599 mclientqt/src/config.py:583
-#: mclientqt/src/config.py:588 mclientqt/src/config.py:593
-#: mclientqt/src/config.py:598
+#: mclient/src/config.py:599 mclientqt/src/config.py:531
+#: mclientqt/src/config.py:535 mclientqt/src/config.py:539
+#: mclientqt/src/config.py:543
 msgid "A font of column #{}"
 msgstr "Шрифт столбца №{}"
 
-#: mclient/src/config.py:604 mclientqt/src/config.py:603
+#: mclient/src/config.py:604
 msgid "A font color for History"
 msgstr "Шрифт текста в области истории запросов"
 
-#: mclient/src/config.py:608 mclientqt/src/config.py:607
+#: mclient/src/config.py:608
 msgid "A program GUI font"
 msgstr "Шрифт интерфейса программы"
 
-#: mclient/src/config.py:612 mclientqt/src/config.py:611
+#: mclient/src/config.py:612 mclientqt/src/config.py:547
 msgid "A font of terms"
 msgstr "Шрифт терминов"
 
-#: mclient/src/config.py:616 mclientqt/src/config.py:615
+#: mclient/src/config.py:616
 msgid "A font of the current (selected) term"
 msgstr "Шрифт текущего (выделенного) термина"
 
-#: mclient/src/config.py:620 mclientqt/src/config.py:619
+#: mclient/src/config.py:620 mclientqt/src/config.py:551
 msgid "[Autosave] Source language"
 msgstr "[Автосохранение] Исходный язык"
 
-#: mclient/src/config.py:624 mclientqt/src/config.py:623
+#: mclient/src/config.py:624 mclientqt/src/config.py:555
 msgid "[Autosave] Target language"
 msgstr "[Автосохранение] Конечный язык"
 
-#: mclient/src/config.py:628 mclientqt/src/config.py:627
+#: mclient/src/config.py:628 mclientqt/src/config.py:559
 msgid "Insert the last search request into the search field"
 msgstr "Вставить последний элемент истории в строку поиска"
 
-#: mclient/src/config.py:632 mclientqt/src/config.py:631
+#: mclient/src/config.py:632 mclientqt/src/config.py:563
 msgid "Insert the next-to-last search request into the search field"
 msgstr "Вставить предпоследний элемент истории в строку поиска"
 
-#: mclient/src/config.py:636 mclientqt/src/config.py:635
+#: mclient/src/config.py:636 mclientqt/src/config.py:567
 msgid "[Autosave] The main dictionary source to use"
 msgstr "[Автосохранение] Основной словарный ресурс"
 
-#: mclient/src/config.py:640 mclientqt/src/config.py:639
+#: mclient/src/config.py:640 mclientqt/src/config.py:571
 msgid "Characters that can be inserted into the search field"
 msgstr "Символы, которые можно вставить в строку поиска"
 
 #: mclient/src/config.py:644 mclient/src/config.py:649 mclient/src/config.py:654
 #: mclient/src/config.py:659 mclient/src/config.py:664 mclient/src/config.py:669
-#: mclient/src/config.py:674 mclientqt/src/config.py:643
-#: mclientqt/src/config.py:648 mclientqt/src/config.py:653
-#: mclientqt/src/config.py:658 mclientqt/src/config.py:663
-#: mclientqt/src/config.py:668 mclientqt/src/config.py:673
+#: mclient/src/config.py:674 mclientqt/src/config.py:575
+#: mclientqt/src/config.py:580 mclientqt/src/config.py:585
+#: mclientqt/src/config.py:590 mclientqt/src/config.py:595
+#: mclientqt/src/config.py:600 mclientqt/src/config.py:605
 msgid "[Autosave] A part of speech of column #{} in settings"
 msgstr "[Автосохранение] Часть речи столбца №{} в настройках"
 
-#: mclient/src/config.py:679 mclientqt/src/config.py:678
+#: mclient/src/config.py:679 mclientqt/src/config.py:610
 msgid "[Autosave] A sorting style"
 msgstr "[Автосохранение] Стиль сортировки"
 
-#: mclient/src/config.py:683 mclientqt/src/config.py:682
+#: mclient/src/config.py:683 mclientqt/src/config.py:614
 msgid "URL for online search"
 msgstr "Адрес для поиска в Интернете"
 
 #: mclient/src/db.py:367 mclient/src/db.py:429 mclient/src/logic.py:750
 #: mclient/src/manager.py:262 mclient/src/plugins/multitrandem/run.py:71
 #: mclient/src/settings/gui.py:146 mclientqt/src/cells.py:280
-#: mclientqt/src/logic.py:717 mclientqt/src/manager.py:278
-#: mclientqt/src/mclientqt.py:61 mclientqt/src/mclientqt.py:322
+#: mclientqt/src/logic.py:714 mclientqt/src/manager.py:275
+#: mclientqt/src/mclientqt.py:61 mclientqt/src/mclientqt.py:311
 #: mclientqt/src/plugins/multitrancom/utils/subjects.py:117
-#: mclientqt/src/plugins/multitrandem/run.py:71 mclientqt/src/settings/gui.py:248
+#: mclientqt/src/plugins/multitrandem/run.py:69 mclientqt/src/settings/gui.py:245
 #: skl_shared/src/logic.py:134 skl_shared/src/logic.py:148
 #: skl_shared/src/logic.py:964 skl_shared/src/logic.py:2527
 #: skl_shared/src/shared.py:1013 skl_shared/src/shared.py:2321
 #: skl_shared/src/shared.py:2334 skl_shared/src/shared.py:2864
 #: skl_shared/src/shared.py:3251 skl_shared/src/shared.py:3331
-#: skl_shared/src/tests.py:106 skl_shared_qt/src/logic.py:130
-#: skl_shared_qt/src/logic.py:144 skl_shared_qt/src/logic.py:701
-#: skl_shared_qt/src/shared.py:394
+#: skl_shared/src/tests.py:106 skl_shared_qt/src/logic.py:106
+#: skl_shared_qt/src/logic.py:120 skl_shared_qt/src/logic.py:669
+#: skl_shared_qt/src/shared.py:356
 msgid ""
 "An unknown mode \"{}\"!\n"
 "\n"
@@ -1355,7 +1354,7 @@ msgstr "Удаление записей статьи №{} из {}"
 #: mclient/src/plugins/multitrandem/utils.py:1044
 #: mclient/src/plugins/multitrandem/utils.py:1217
 #: mclient/src/plugins/multitrandem/utils.py:1339
-#: mclient/src/subjects/subjects.py:22 mclientqt/src/gui.py:134
+#: mclient/src/subjects/subjects.py:22 mclientqt/src/gui.py:139
 #: mclientqt/src/logic.py:82 mclientqt/src/logic.py:91 mclientqt/src/logic.py:99
 #: mclientqt/src/logic.py:107 mclientqt/src/logic.py:141
 #: mclientqt/src/logic.py:154 mclientqt/src/logic.py:167
@@ -1365,30 +1364,30 @@ msgstr "Удаление записей статьи №{} из {}"
 #: mclientqt/src/logic.py:231 mclientqt/src/logic.py:240
 #: mclientqt/src/logic.py:249 mclientqt/src/logic.py:258
 #: mclientqt/src/logic.py:273 mclientqt/src/logic.py:281
-#: mclientqt/src/mclientqt.py:864 mclientqt/src/mclientqt.py:880
+#: mclientqt/src/mclientqt.py:852 mclientqt/src/mclientqt.py:868
 #: mclientqt/src/plugins/multitrancom/pairs.py:2862
-#: mclientqt/src/plugins/multitrandem/get.py:682
-#: mclientqt/src/plugins/multitrandem/get.py:698
-#: mclientqt/src/plugins/multitrandem/get.py:1105
+#: mclientqt/src/plugins/multitrandem/get.py:671
+#: mclientqt/src/plugins/multitrandem/get.py:687
+#: mclientqt/src/plugins/multitrandem/get.py:1089
 #: mclientqt/src/plugins/multitrandem/tags.py:152
-#: mclientqt/src/plugins/multitrandem/tests.py:135
-#: mclientqt/src/plugins/multitrandem/utils.py:802
-#: mclientqt/src/plugins/multitrandem/utils.py:858
+#: mclientqt/src/plugins/multitrandem/tests.py:136
+#: mclientqt/src/plugins/multitrandem/utils.py:801
+#: mclientqt/src/plugins/multitrandem/utils.py:857
 #: mclientqt/src/plugins/multitrandem/utils.py:1044
-#: mclientqt/src/plugins/multitrandem/utils.py:1217
-#: mclientqt/src/plugins/multitrandem/utils.py:1339
+#: mclientqt/src/plugins/multitrandem/utils.py:1211
+#: mclientqt/src/plugins/multitrandem/utils.py:1326
 #: mclientqt/src/prior_block/priorities/logic.py:83
-#: mclientqt/src/symbols/logic.py:22 skl_shared/src/logic.py:1103
+#: mclientqt/src/symbols/logic.py:23 skl_shared/src/logic.py:1103
 #: skl_shared/src/logic.py:1291 skl_shared/src/logic.py:1388
 #: skl_shared/src/logic.py:2135 skl_shared/src/logic.py:2601
 #: skl_shared/src/logic.py:3476 skl_shared/src/logic.py:3808
 #: skl_shared/src/logic.py:4369 skl_shared/src/shared.py:2097
 #: skl_shared/src/shared.py:2792 skl_shared/src/shared.py:3244
 #: skl_shared/src/shared.py:4161 skl_shared/src/tests.py:84
-#: skl_shared_qt/src/logic.py:838 skl_shared_qt/src/logic.py:932
-#: skl_shared_qt/src/logic.py:1658 skl_shared_qt/src/logic.py:2055
-#: skl_shared_qt/src/logic.py:2268 skl_shared_qt/src/logic.py:3118
-#: skl_shared_qt/src/logic.py:3700 skl_shared_qt/src/shared.py:323
+#: skl_shared_qt/src/logic.py:804 skl_shared_qt/src/logic.py:898
+#: skl_shared_qt/src/logic.py:1613 skl_shared_qt/src/logic.py:2010
+#: skl_shared_qt/src/logic.py:2219 skl_shared_qt/src/logic.py:3035
+#: skl_shared_qt/src/logic.py:3605 skl_shared_qt/src/shared.py:285
 msgid "Wrong input data!"
 msgstr "Недопустимые входные данные!"
 
@@ -1419,9 +1418,9 @@ msgstr "Однострочные виджеты"
 #: mclient/src/debug_gui.py:78 mclient/src/plugins/multitrandem/utils.py:405
 #: mclient/src/plugins/multitrandem/utils.py:411
 #: mclient/src/plugins/multitrandem/utils.py:507
-#: mclientqt/src/plugins/multitrandem/utils.py:405
-#: mclientqt/src/plugins/multitrandem/utils.py:411
-#: mclientqt/src/plugins/multitrandem/utils.py:507
+#: mclientqt/src/plugins/multitrandem/utils.py:415
+#: mclientqt/src/plugins/multitrandem/utils.py:421
+#: mclientqt/src/plugins/multitrandem/utils.py:513
 msgid "UNKNOWN"
 msgstr "НЕИЗВЕСТНО"
 
@@ -1430,27 +1429,27 @@ msgid "Enter a string to search:"
 msgstr "Строка для поиска:"
 
 #: mclient/src/gui.py:53 mclient/src/mclient.py:522
-#: mclientqt/src/mclientqt.py:311 mclientqt/src/save/gui.py:16
+#: mclientqt/src/mclientqt.py:300 mclientqt/src/save/gui.py:16
 msgid "Save the current view as a web-page (*.htm)"
 msgstr "Сохранить текущее представление как веб-страницу (*.htm)"
 
 #: mclient/src/gui.py:54 mclient/src/mclient.py:524
-#: mclientqt/src/mclientqt.py:313 mclientqt/src/save/gui.py:17
+#: mclientqt/src/mclientqt.py:302 mclientqt/src/save/gui.py:17
 msgid "Save the original article as a web-page (*.htm)"
 msgstr "Сохранить оригинальную статью как веб-страницу (*.htm)"
 
 #: mclient/src/gui.py:55 mclient/src/mclient.py:526
-#: mclientqt/src/mclientqt.py:315 mclientqt/src/save/gui.py:18
+#: mclientqt/src/mclientqt.py:304 mclientqt/src/save/gui.py:18
 msgid "Save the article as plain text in UTF-8 (*.txt)"
 msgstr "Сохранить статью как обычный текст в кодировке UTF-8 (*.txt)"
 
 #: mclient/src/gui.py:56 mclient/src/mclient.py:528
-#: mclientqt/src/mclientqt.py:317 mclientqt/src/save/gui.py:19
+#: mclientqt/src/mclientqt.py:306 mclientqt/src/save/gui.py:19
 msgid "Copy the code of the article to clipboard"
 msgstr "Скопировать код статьи в буфер обмена"
 
 #: mclient/src/gui.py:57 mclient/src/mclient.py:530
-#: mclientqt/src/mclientqt.py:319 mclientqt/src/save/gui.py:20
+#: mclientqt/src/mclientqt.py:308 mclientqt/src/save/gui.py:20
 msgid "Copy the text of the article to clipboard"
 msgstr "Скопировать текст статьи в буфер обмена"
 
@@ -1463,17 +1462,17 @@ msgstr "Выберите действие:"
 msgid "History"
 msgstr "История"
 
-#: mclient/src/gui.py:299 mclient/src/gui.py:300 mclientqt/src/gui.py:576
+#: mclient/src/gui.py:299 mclient/src/gui.py:300 mclientqt/src/gui.py:588
 msgid "Translate"
 msgstr "Перевести"
 
 #: mclient/src/gui.py:307 mclient/src/subjects/blacklist/gui.py:208
-#: mclient/src/subjects/priorities/gui.py:256 mclientqt/src/gui.py:769
+#: mclient/src/subjects/priorities/gui.py:256 mclientqt/src/gui.py:775
 #: mclientqt/src/prior_block/blacklist/gui.py:195 skl_shared/src/shared.py:1302
 msgid "Clear"
 msgstr "Очистить"
 
-#: mclient/src/gui.py:308 mclientqt/src/gui.py:581
+#: mclient/src/gui.py:308 mclientqt/src/gui.py:593
 msgid "Clear search field"
 msgstr "Очистить строку поиска"
 
@@ -1481,15 +1480,15 @@ msgstr "Очистить строку поиска"
 msgid "Paste"
 msgstr "Вставить"
 
-#: mclient/src/gui.py:316 mclientqt/src/gui.py:586
+#: mclient/src/gui.py:316 mclientqt/src/gui.py:598
 msgid "Paste text from clipboard"
 msgstr "Вставить текст из буфера обмена"
 
-#: mclient/src/gui.py:323 mclientqt/src/gui.py:591
+#: mclient/src/gui.py:323 mclientqt/src/gui.py:603
 msgid "Paste current request"
 msgstr "Вставить текущий запрос"
 
-#: mclient/src/gui.py:330 mclientqt/src/gui.py:596
+#: mclient/src/gui.py:330 mclientqt/src/gui.py:608
 msgid "Paste previous request"
 msgstr "Вставить предыдущий запрос"
 
@@ -1501,11 +1500,11 @@ msgstr "Символы"
 msgid "Swap"
 msgstr "Поменять местами"
 
-#: mclient/src/gui.py:384 mclientqt/src/settings/controller.py:168
+#: mclient/src/gui.py:384 mclientqt/src/settings/controller.py:166
 msgid "Settings"
 msgstr "Настройки"
 
-#: mclient/src/gui.py:385 mclientqt/src/gui.py:616
+#: mclient/src/gui.py:385 mclientqt/src/gui.py:628
 msgid "Tune up view settings"
 msgstr "Изменить настройки вида"
 
@@ -1513,7 +1512,7 @@ msgstr "Изменить настройки вида"
 msgid "Blacklist"
 msgstr "Черный список"
 
-#: mclient/src/gui.py:392 mclientqt/src/gui.py:621
+#: mclient/src/gui.py:392 mclientqt/src/gui.py:633
 msgid "Configure blacklisting"
 msgstr "Настроить черный список"
 
@@ -1521,7 +1520,7 @@ msgstr "Настроить черный список"
 msgid "Prioritize"
 msgstr "Приоритеты"
 
-#: mclient/src/gui.py:399 mclientqt/src/gui.py:626
+#: mclient/src/gui.py:399 mclientqt/src/gui.py:638
 msgid "Configure prioritization"
 msgstr "Настроить приоритизацию"
 
@@ -1533,16 +1532,16 @@ msgstr "По алфавиту"
 msgid "Toggle view"
 msgstr "Смена вида"
 
-#: mclient/src/gui.py:413 mclientqt/src/gui.py:636
+#: mclient/src/gui.py:413
 msgid "Toggle the article view mode"
 msgstr "Переключить вид отображения статьи"
 
-#: mclient/src/gui.py:420 mclient/src/logic.py:432 mclientqt/src/gui.py:641
+#: mclient/src/gui.py:420 mclient/src/logic.py:432 mclientqt/src/gui.py:648
 #: mclientqt/src/welcome/logic.py:151
 msgid "Go to the preceding article"
 msgstr "Предыдущая статья"
 
-#: mclient/src/gui.py:427 mclient/src/logic.py:434 mclientqt/src/gui.py:646
+#: mclient/src/gui.py:427 mclient/src/logic.py:434 mclientqt/src/gui.py:653
 #: mclientqt/src/welcome/logic.py:155
 msgid "Go to the following article"
 msgstr "Следующая статья"
@@ -1553,7 +1552,7 @@ msgstr "Следующая статья"
 msgid "Reload"
 msgstr "Обновить"
 
-#: mclient/src/gui.py:440 mclientqt/src/gui.py:656
+#: mclient/src/gui.py:440 mclientqt/src/gui.py:663
 msgid "Reload the article"
 msgstr "Перезагрузить статью"
 
@@ -1561,7 +1560,7 @@ msgstr "Перезагрузить статью"
 msgid "Search"
 msgstr "Искать"
 
-#: mclient/src/gui.py:447 mclientqt/src/gui.py:661
+#: mclient/src/gui.py:447 mclientqt/src/gui.py:668
 msgid "Find in the current article"
 msgstr "Найти в текущей статье"
 
@@ -1569,7 +1568,7 @@ msgstr "Найти в текущей статье"
 msgid "Save"
 msgstr "Сохранить"
 
-#: mclient/src/gui.py:454 mclientqt/src/gui.py:666
+#: mclient/src/gui.py:454 mclientqt/src/gui.py:673
 msgid "Save the current article"
 msgstr "Сохранить текущую статью"
 
@@ -1577,7 +1576,7 @@ msgstr "Сохранить текущую статью"
 msgid "Browse"
 msgstr "В браузере"
 
-#: mclient/src/gui.py:461 mclientqt/src/gui.py:671
+#: mclient/src/gui.py:461 mclientqt/src/gui.py:678
 msgid "Open the current article in a browser"
 msgstr "Открыть текущую статью в браузере"
 
@@ -1585,7 +1584,7 @@ msgstr "Открыть текущую статью в браузере"
 msgid "Print"
 msgstr "Печать"
 
-#: mclient/src/gui.py:468 mclientqt/src/gui.py:676
+#: mclient/src/gui.py:468 mclientqt/src/gui.py:683
 msgid "Create a print-ready preview"
 msgstr "Печать (предварительный просмотр)"
 
@@ -1593,7 +1592,7 @@ msgstr "Печать (предварительный просмотр)"
 msgid "Define"
 msgstr "Что это?"
 
-#: mclient/src/gui.py:475 mclientqt/src/gui.py:681
+#: mclient/src/gui.py:475 mclientqt/src/gui.py:688
 msgid "Define the current term"
 msgstr "Дать определение термину"
 
@@ -1601,12 +1600,12 @@ msgstr "Дать определение термину"
 msgid "Clipboard"
 msgstr "Буфер обмена"
 
-#: mclient/src/gui.py:482 mclient/src/mclient.py:252 mclientqt/src/gui.py:686
-#: mclientqt/src/mclientqt.py:148
+#: mclient/src/gui.py:482 mclient/src/mclient.py:252 mclientqt/src/gui.py:693
+#: mclientqt/src/mclientqt.py:138
 msgid "Capture Ctrl-c-c and Ctrl-Ins-Ins"
 msgstr "Перехватывать Ctrl-c-c и Ctrl-Ins-Ins"
 
-#: mclient/src/gui.py:490 mclientqt/src/gui.py:691
+#: mclient/src/gui.py:490 mclientqt/src/gui.py:698
 msgid "View About"
 msgstr "Информация о программе"
 
@@ -1618,18 +1617,18 @@ msgstr "Выйти"
 msgid "An actual number of fixed columns: {}"
 msgstr "Реальное число фиксированных столбцов: {}"
 
-#: mclient/src/logic.py:84 mclientqt/src/logic.py:484
+#: mclient/src/logic.py:84 mclientqt/src/logic.py:481
 msgid "Number of term columns: {}"
 msgstr "Число столбцов с терминами: {}"
 
 #: mclient/src/logic.py:157 mclient/src/logic.py:172 mclient/src/logic.py:185
 #: mclient/src/plugins/multitrancom/tags.py:427
-#: mclientqt/src/plugins/multitrancom/tags.py:361
+#: mclientqt/src/plugins/multitrancom/tags.py:365
 msgid "NAME"
 msgstr "НАЗВАНИЕ"
 
 #: mclient/src/logic.py:157 mclient/src/subjects/subjects.py:83
-#: mclientqt/src/tests.py:550
+#: mclientqt/src/tests.py:559
 msgid "PRIORITY"
 msgstr "ПРИОРИТЕТ"
 
@@ -1639,82 +1638,82 @@ msgstr "АББРЕВИАТУРА"
 
 #: mclient/src/logic.py:214 mclient/src/logic.py:279
 #: mclient/src/plugins/multitrandem/get.py:1923
-#: mclientqt/src/plugins/multitrandem/get.py:1923
+#: mclientqt/src/plugins/multitrandem/get.py:1879
 msgid "Phrase"
 msgstr "Фраза"
 
 #: mclient/src/logic.py:250 mclient/src/plugins/multitrandem/get.py:1928
-#: mclientqt/src/plugins/multitrandem/get.py:1928
+#: mclientqt/src/plugins/multitrandem/get.py:1884
 msgid "abbr."
 msgstr "сокр."
 
 #: mclient/src/logic.py:251 mclient/src/plugins/multitrandem/get.py:1984
-#: mclientqt/src/plugins/multitrandem/get.py:1984
+#: mclientqt/src/plugins/multitrandem/get.py:1940
 msgid "adj"
 msgstr "прил."
 
 #: mclient/src/logic.py:252 mclient/src/plugins/multitrandem/get.py:1932
-#: mclientqt/src/plugins/multitrandem/get.py:1932
+#: mclientqt/src/plugins/multitrandem/get.py:1888
 msgid "adv."
 msgstr "нареч."
 
 #: mclient/src/logic.py:253 mclient/src/plugins/multitrandem/get.py:1947
-#: mclientqt/src/plugins/multitrandem/get.py:1947
+#: mclientqt/src/plugins/multitrandem/get.py:1903
 msgid "art."
 msgstr "арт."
 
 #: mclient/src/logic.py:254 mclient/src/plugins/multitrandem/get.py:1942
-#: mclientqt/src/plugins/multitrandem/get.py:1942
+#: mclientqt/src/plugins/multitrandem/get.py:1898
 msgid "conj."
 msgstr "союз"
 
 #: mclient/src/logic.py:255 mclient/src/plugins/multitrandem/get.py:1966
-#: mclientqt/src/plugins/multitrandem/get.py:1966
+#: mclientqt/src/plugins/multitrandem/get.py:1922
 msgid "form"
 msgstr "форма"
 
 #: mclient/src/logic.py:256 mclient/src/plugins/multitrandem/get.py:1937
-#: mclientqt/src/plugins/multitrandem/get.py:1937
+#: mclientqt/src/plugins/multitrandem/get.py:1893
 msgid "interj."
 msgstr "межд."
 
 #: mclient/src/logic.py:257 mclient/src/plugins/multitrandem/get.py:1988
-#: mclientqt/src/plugins/multitrandem/get.py:1988
+#: mclientqt/src/plugins/multitrandem/get.py:1944
 msgid "n"
 msgstr "сущ."
 
 #: mclient/src/logic.py:258 mclient/src/plugins/multitrandem/get.py:1952
-#: mclientqt/src/plugins/multitrandem/get.py:1952
+#: mclientqt/src/plugins/multitrandem/get.py:1908
 msgid "num."
 msgstr "числ."
 
 #: mclient/src/logic.py:259 mclient/src/plugins/multitrandem/get.py:1957
-#: mclientqt/src/plugins/multitrandem/get.py:1957
+#: mclientqt/src/plugins/multitrandem/get.py:1913
 msgid "ord.num."
 msgstr "поряд.числ."
 
 #: mclient/src/logic.py:260 mclient/src/plugins/multitrandem/get.py:1971
-#: mclientqt/src/plugins/multitrandem/get.py:1971
+#: mclientqt/src/plugins/multitrandem/get.py:1927
 msgid "part."
 msgstr "част."
 
 #: mclient/src/logic.py:261 mclient/src/plugins/multitrandem/get.py:1924
-#: mclientqt/src/plugins/multitrandem/get.py:1924
+#: mclientqt/src/plugins/multitrandem/get.py:1880
 msgid "phrase"
 msgstr "фраза"
 
 #: mclient/src/logic.py:262 mclient/src/plugins/multitrandem/get.py:1976
-#: mclientqt/src/plugins/multitrandem/get.py:1976
+#: mclientqt/src/plugins/multitrandem/get.py:1932
 msgid "predic."
 msgstr "предик."
 
 #: mclient/src/logic.py:263 mclient/src/plugins/multitrandem/get.py:1961
-#: mclientqt/src/plugins/multitrandem/get.py:1961
+#: mclientqt/src/plugins/multitrandem/get.py:1917
 msgid "prepos."
 msgstr "предл."
 
 #: mclient/src/logic.py:264 mclient/src/plugins/multitrandem/get.py:1980
-#: mclientqt/src/plugins/multitrandem/get.py:1980
+#: mclientqt/src/plugins/multitrandem/get.py:1936
 msgid "pron"
 msgstr "мест."
 
@@ -1723,47 +1722,47 @@ msgid "suf"
 msgstr "суф."
 
 #: mclient/src/logic.py:266 mclient/src/plugins/multitrandem/get.py:1992
-#: mclientqt/src/plugins/multitrandem/get.py:1992
+#: mclientqt/src/plugins/multitrandem/get.py:1948
 msgid "v"
 msgstr "глаг."
 
 #: mclient/src/logic.py:271 mclient/src/plugins/multitrandem/get.py:1946
-#: mclientqt/src/plugins/multitrandem/get.py:1946
+#: mclientqt/src/plugins/multitrandem/get.py:1902
 msgid "Article"
 msgstr "Статья"
 
 #: mclient/src/logic.py:272 mclient/src/plugins/multitrandem/get.py:1941
-#: mclientqt/src/plugins/multitrandem/get.py:1941
+#: mclientqt/src/plugins/multitrandem/get.py:1897
 msgid "Conjunction"
 msgstr "Союз"
 
 #: mclient/src/logic.py:273 mclient/src/plugins/multitrandem/get.py:1965
-#: mclientqt/src/plugins/multitrandem/get.py:1965
+#: mclientqt/src/plugins/multitrandem/get.py:1921
 msgid "Form"
 msgstr "Форма"
 
 #: mclient/src/logic.py:274 mclient/src/plugins/multitrandem/get.py:1936
-#: mclientqt/src/plugins/multitrandem/get.py:1936
+#: mclientqt/src/plugins/multitrandem/get.py:1892
 msgid "Interjection"
 msgstr "Междометие"
 
 #: mclient/src/logic.py:276 mclient/src/plugins/multitrandem/get.py:1951
-#: mclientqt/src/plugins/multitrandem/get.py:1951
+#: mclientqt/src/plugins/multitrandem/get.py:1907
 msgid "Numeral"
 msgstr "Числительное"
 
 #: mclient/src/logic.py:277 mclient/src/plugins/multitrandem/get.py:1956
-#: mclientqt/src/plugins/multitrandem/get.py:1956
+#: mclientqt/src/plugins/multitrandem/get.py:1912
 msgid "Ordinal Numeral"
 msgstr "Порядковое числительное"
 
 #: mclient/src/logic.py:278 mclient/src/plugins/multitrandem/get.py:1970
-#: mclientqt/src/plugins/multitrandem/get.py:1970
+#: mclientqt/src/plugins/multitrandem/get.py:1926
 msgid "Particle"
 msgstr "Частица"
 
 #: mclient/src/logic.py:280 mclient/src/plugins/multitrandem/get.py:1975
-#: mclientqt/src/plugins/multitrandem/get.py:1975
+#: mclientqt/src/plugins/multitrandem/get.py:1931
 msgid "Predicative"
 msgstr "Предикатив"
 
@@ -1775,19 +1774,19 @@ msgstr "Суффикс"
 msgid "not running"
 msgstr "не работает"
 
-#: mclient/src/logic.py:338 mclientqt/src/mclientqt.py:518
+#: mclient/src/logic.py:338 mclientqt/src/mclientqt.py:507
 msgid "running"
 msgstr "работает"
 
 #: mclient/src/logic.py:346 mclient/src/manager.py:204 mclient/src/manager.py:253
-#: mclientqt/src/manager.py:218 mclientqt/src/manager.py:221
-#: mclientqt/src/manager.py:269
+#: mclientqt/src/manager.py:215 mclientqt/src/manager.py:218
+#: mclientqt/src/manager.py:266
 msgid "Stardict"
 msgstr "Stardict"
 
 #: mclient/src/logic.py:351 mclient/src/manager.py:206 mclient/src/manager.py:259
-#: mclientqt/src/manager.py:218 mclientqt/src/manager.py:221
-#: mclientqt/src/manager.py:275
+#: mclientqt/src/manager.py:215 mclientqt/src/manager.py:218
+#: mclientqt/src/manager.py:272
 msgid "Local MT"
 msgstr "Локальный МТ"
 
@@ -1921,80 +1920,80 @@ msgstr ""
 #: mclient/src/settings/gui.py:69 mclient/src/settings/gui.py:84
 #: mclient/src/settings/gui.py:105 mclient/src/settings/gui.py:108
 #: mclient/src/settings/gui.py:141 mclient/src/settings/gui.py:142
-#: mclientqt/src/logic.py:592 mclientqt/src/logic.py:696
-#: mclientqt/src/settings/gui.py:28 mclientqt/src/settings/gui.py:141
-#: mclientqt/src/settings/gui.py:156 mclientqt/src/settings/gui.py:171
-#: mclientqt/src/settings/gui.py:186 mclientqt/src/settings/gui.py:207
-#: mclientqt/src/settings/gui.py:210 mclientqt/src/settings/gui.py:243
-#: mclientqt/src/settings/gui.py:244
+#: mclientqt/src/logic.py:589 mclientqt/src/logic.py:693
+#: mclientqt/src/settings/gui.py:25 mclientqt/src/settings/gui.py:134
+#: mclientqt/src/settings/gui.py:150 mclientqt/src/settings/gui.py:166
+#: mclientqt/src/settings/gui.py:182 mclientqt/src/settings/gui.py:204
+#: mclientqt/src/settings/gui.py:207 mclientqt/src/settings/gui.py:240
+#: mclientqt/src/settings/gui.py:241
 msgid "Do not set"
 msgstr "Не задано"
 
-#: mclient/src/logic.py:828 mclientqt/src/logic.py:752
-#: skl_shared/src/logic.py:4265 skl_shared_qt/src/logic.py:3293
+#: mclient/src/logic.py:828 mclientqt/src/logic.py:746
+#: skl_shared/src/logic.py:4265 skl_shared_qt/src/logic.py:3209
 msgid "Unable to use unverified certificates!"
 msgstr "Не удается использовать неподтвержденные сертификаты!"
 
-#: mclient/src/mclient.py:206 mclientqt/src/mclientqt.py:102
+#: mclient/src/mclient.py:206 mclientqt/src/mclientqt.py:103
 msgid "Restore source language: {}"
 msgstr "Восстановление языка оригинала: {}"
 
-#: mclient/src/mclient.py:210 mclientqt/src/mclientqt.py:106
+#: mclient/src/mclient.py:210 mclientqt/src/mclientqt.py:107
 msgid "Restore target language: {}"
 msgstr "Восстановление языка перевода: {}"
 
-#: mclient/src/mclient.py:226 mclientqt/src/mclientqt.py:122
+#: mclient/src/mclient.py:226 mclientqt/src/mclientqt.py:123
 msgid "Sort terms by alphabet"
 msgstr "Сортировка терминов по алфавиту"
 
 #: mclient/src/mclient.py:228 mclient/src/mclient.py:244
 #: mclient/src/mclient.py:255 mclient/src/mclient.py:271
-#: mclient/src/mclient.py:295 mclientqt/src/mclientqt.py:124
-#: mclientqt/src/mclientqt.py:140 mclientqt/src/mclientqt.py:151
-#: mclientqt/src/mclientqt.py:167 mclientqt/src/mclientqt.py:188
+#: mclient/src/mclient.py:295 mclientqt/src/mclientqt.py:125
+#: mclientqt/src/mclientqt.py:141 mclientqt/src/mclientqt.py:157
+#: mclientqt/src/mclientqt.py:178
 msgid "Status: ON"
 msgstr "Состояние: ВКЛ"
 
 #: mclient/src/mclient.py:230 mclient/src/mclient.py:247
 #: mclient/src/mclient.py:258 mclient/src/mclient.py:273
-#: mclient/src/mclient.py:297 mclientqt/src/mclientqt.py:126
-#: mclientqt/src/mclientqt.py:143 mclientqt/src/mclientqt.py:154
-#: mclientqt/src/mclientqt.py:169 mclientqt/src/mclientqt.py:190
+#: mclient/src/mclient.py:297 mclientqt/src/mclientqt.py:127
+#: mclientqt/src/mclientqt.py:144 mclientqt/src/mclientqt.py:159
+#: mclientqt/src/mclientqt.py:180
 msgid "Status: OFF"
 msgstr "Состояние: ВЫКЛ"
 
 #: mclient/src/mclient.py:232 mclient/src/mclient.py:275
-#: mclientqt/src/mclientqt.py:128
+#: mclientqt/src/mclientqt.py:129
 msgid "This page is not supported"
 msgstr "Эта страница не поддерживается"
 
-#: mclient/src/mclient.py:241 mclientqt/src/mclientqt.py:137
+#: mclient/src/mclient.py:241
 msgid "Vertical mode"
 msgstr "Вертикальный режим"
 
 #: mclient/src/mclient.py:263 mclient/src/subjects/priorities/gui.py:307
-#: mclientqt/src/mclientqt.py:159
+#: mclientqt/src/mclientqt.py:149
 msgid "Subject prioritization"
 msgstr "Приоритизация тематик"
 
-#: mclient/src/mclient.py:277 mclientqt/src/mclientqt.py:171
+#: mclient/src/mclient.py:277 mclientqt/src/mclientqt.py:161
 msgid "{} subjects were prioritized"
 msgstr "{} тематик упорядочено по приоритету"
 
-#: mclient/src/mclient.py:280 mclientqt/src/mclientqt.py:174
+#: mclient/src/mclient.py:280 mclientqt/src/mclientqt.py:164
 msgid "Nothing to prioritize"
 msgstr "Приоритизация не требуется"
 
 #: mclient/src/mclient.py:287 mclient/src/subjects/blacklist/gui.py:259
-#: mclientqt/src/mclientqt.py:180 mclientqt/src/prior_block/blacklist/gui.py:246
+#: mclientqt/src/mclientqt.py:170 mclientqt/src/prior_block/blacklist/gui.py:246
 msgid "Subject blocking"
 msgstr "Блокировка тематик"
 
-#: mclient/src/mclient.py:302 mclientqt/src/mclientqt.py:195
+#: mclient/src/mclient.py:302 mclientqt/src/mclientqt.py:185
 msgid "Skipped {} terms in {} subjects"
 msgstr "Опущено {} терминов в {} тематиках"
 
-#: mclient/src/mclient.py:305 mclientqt/src/mclientqt.py:198
+#: mclient/src/mclient.py:305 mclientqt/src/mclientqt.py:188
 msgid "Nothing was blocked"
 msgstr "Ничего не заблокировано"
 
@@ -2014,11 +2013,11 @@ msgstr "Обычный текст (UTF-8)"
 
 #: mclient/src/mclient.py:533 mclient/src/plugins/multitrandem/utils.py:171
 #: mclient/src/plugins/multitrandem/utils.py:745
-#: mclientqt/src/plugins/multitrandem/utils.py:171
-#: mclientqt/src/plugins/multitrandem/utils.py:745
+#: mclientqt/src/plugins/multitrandem/utils.py:164
+#: mclientqt/src/plugins/multitrandem/utils.py:737
 #: skl_shared/src/image/controller.py:49 skl_shared/src/logic.py:2283
 #: skl_shared/src/logic.py:2330 skl_shared/src/logic.py:2550
-#: skl_shared_qt/src/logic.py:1806 skl_shared_qt/src/logic.py:1853
+#: skl_shared_qt/src/logic.py:1761 skl_shared_qt/src/logic.py:1808
 msgid "Operation has been canceled by the user."
 msgstr "Операция отменена пользователем."
 
@@ -2031,29 +2030,29 @@ msgstr "Операция отменена пользователем."
 #: mclient/src/plugins/multitrandem/utils.py:612
 #: mclient/src/plugins/multitrandem/utils.py:622
 #: mclient/src/plugins/multitrandem/utils.py:635
-#: mclient/src/plugins/multitrandem/utils.py:672 mclientqt/src/mclientqt.py:2061
-#: mclientqt/src/mclientqt.py:2072
-#: mclientqt/src/plugins/multitrandem/utils.py:266
-#: mclientqt/src/plugins/multitrandem/utils.py:592
-#: mclientqt/src/plugins/multitrandem/utils.py:597
-#: mclientqt/src/plugins/multitrandem/utils.py:612
-#: mclientqt/src/plugins/multitrandem/utils.py:622
+#: mclient/src/plugins/multitrandem/utils.py:672 mclientqt/src/mclientqt.py:2084
+#: mclientqt/src/mclientqt.py:2095
+#: mclientqt/src/plugins/multitrandem/utils.py:273
+#: mclientqt/src/plugins/multitrandem/utils.py:596
+#: mclientqt/src/plugins/multitrandem/utils.py:601
+#: mclientqt/src/plugins/multitrandem/utils.py:616
+#: mclientqt/src/plugins/multitrandem/utils.py:626
 #: mclientqt/src/plugins/multitrandem/utils.py:635
-#: mclientqt/src/plugins/multitrandem/utils.py:672 skl_shared/src/shared.py:4985
+#: mclientqt/src/plugins/multitrandem/utils.py:670 skl_shared/src/shared.py:4985
 #: skl_shared/src/shared.py:5012
 msgid "No matches!"
 msgstr "Совпадений нет!"
 
-#: mclient/src/mclient.py:658 mclientqt/src/mclientqt.py:2058
+#: mclient/src/mclient.py:658 mclientqt/src/mclientqt.py:2081
 msgid "The end has been reached. Searching from the start."
 msgstr "Достигнут конец. Поиск производится с начала."
 
-#: mclient/src/mclient.py:688 mclientqt/src/mclientqt.py:2069
+#: mclient/src/mclient.py:688 mclientqt/src/mclientqt.py:2092
 msgid "The start has been reached. Searching from the end."
 msgstr "Достигнуто начало. Поиск производится с конца."
 
 #: mclient/src/mclient.py:833 mclient/src/mclient.py:2094
-#: mclientqt/src/mclientqt.py:1258 mclientqt/src/mclientqt.py:1414
+#: mclientqt/src/mclientqt.py:1271 mclientqt/src/mclientqt.py:1422
 msgid "Set source to \"{}\""
 msgstr "Выбран источник \"{}\""
 
@@ -2062,15 +2061,15 @@ msgid "Please import \"{}\" instead of \"{}\""
 msgstr "Пожалуйста, импортируйте \"{}\" вместо \"{}\""
 
 #: mclient/src/mclient.py:917 mclient/src/plugins/multitrandem/elems.py:172
-#: mclientqt/src/plugins/multitrandem/elems.py:172
+#: mclientqt/src/plugins/multitrandem/elems.py:170
 msgid "Debug table:"
 msgstr "Таблица для отладки:"
 
-#: mclient/src/mclient.py:1024 mclientqt/src/mclientqt.py:1551
+#: mclient/src/mclient.py:1024 mclientqt/src/mclientqt.py:1559
 msgid "Cannot swap languages, this is a one-way dictionary!"
 msgstr "Нельзя поменять языки местами, это односторонний словарь!"
 
-#: mclient/src/mclient.py:1047 mclientqt/src/mclientqt.py:1565
+#: mclient/src/mclient.py:1047 mclientqt/src/mclientqt.py:1573
 msgid "Pair {}-{} is not supported!"
 msgstr "Пара {}-{} не поддерживается!"
 
@@ -2094,12 +2093,12 @@ msgstr "Строка слишком широка для отображения"
 msgid "Nothing has been loaded yet."
 msgstr "Ничего еще не загружено."
 
-#: mclient/src/mclient.py:1871 mclientqt/src/mclientqt.py:1659
+#: mclient/src/mclient.py:1871 mclientqt/src/mclientqt.py:1672
 msgid "Load article No. {} from memory"
 msgstr "Загрузка статьи №{} из памяти"
 
-#: mclient/src/mclient.py:2063 mclientqt/src/mclientqt.py:1137
-#: mclientqt/src/mclientqt.py:1607
+#: mclient/src/mclient.py:2063 mclientqt/src/mclientqt.py:1157
+#: mclientqt/src/mclientqt.py:1619
 msgid "Open link: {}"
 msgstr "Открывается ссылка: {}"
 
@@ -2111,16 +2110,16 @@ msgstr "Этот блок не содержит текста!"
 msgid "This block does not contain a URL!"
 msgstr "Этот блок не содержит URL!"
 
-#: mclient/src/mclient.py:2314 mclientqt/src/mclientqt.py:1203
+#: mclient/src/mclient.py:2314 mclientqt/src/mclientqt.py:1224
 msgid "what is \"{}\"?"
 msgstr "что такое \"{}\"?"
 
-#: mclient/src/mclient.py:2368 mclientqt/src/logic.py:669
+#: mclient/src/mclient.py:2368 mclientqt/src/logic.py:666
 msgid "The request is long ({} symbols). Do you really want to send it?"
 msgstr "Запрос длинный ({} символов). Отправить?"
 
 #: mclient/src/mclient.py:2386 mclient/src/mclient.py:2398
-#: mclientqt/src/mclientqt.py:1505 mclientqt/src/mclientqt.py:1514
+#: mclientqt/src/mclientqt.py:1513 mclientqt/src/mclientqt.py:1522
 msgid "Set language: {}"
 msgstr "Установка языка: \"{}\""
 
@@ -2154,9 +2153,10 @@ msgstr "Невозможно продолжить ввиду некоррект�
 
 #: mclient/src/mclient.py:2681 mclient/src/plugins/multitrandem/utils.py:947
 #: mclient/src/plugins/multitrandem/utils.py:1422 mclient/src/utils.py:135
-#: mclientqt/src/mclientqt.py:1774
-#: mclientqt/src/plugins/multitrandem/utils.py:947
-#: mclientqt/src/plugins/multitrandem/utils.py:1422
+#: mclientqt/src/config2.py:135 mclientqt/src/mclientqt.py:1797
+#: mclientqt/src/plugins/multitrandem/utils.py:946
+#: mclientqt/src/plugins/multitrandem/utils.py:1409
+#: mclientqt/src/suggest/controller.py:83 mclientqt/src/tests.py:1074
 msgid "Goodbye!"
 msgstr "До свидания!"
 
@@ -2179,20 +2179,20 @@ msgstr "Аргумент \"{}\" не входит в диапазон \"{}\"!"
 #: mclient/src/subjects/subjects.py:82 mclient/src/tests.py:458
 #: mclientqt/src/cells.py:133 mclientqt/src/history/gui.py:16
 #: mclientqt/src/history/gui.py:129 mclientqt/src/plugins/dsl/get.py:50
-#: mclientqt/src/plugins/dsl/tags.py:125 mclientqt/src/plugins/dsl/tags.py:294
+#: mclientqt/src/plugins/dsl/tags.py:122 mclientqt/src/plugins/dsl/tags.py:289
 #: mclientqt/src/plugins/multitrancom/tags.py:291
-#: mclientqt/src/plugins/multitrancom/tags.py:361 mclientqt/src/tests.py:752
+#: mclientqt/src/plugins/multitrancom/tags.py:365 mclientqt/src/tests.py:760
 msgid "#"
 msgstr "№"
 
 #: mclient/src/mkhtml.py:264 mclient/src/plugins/multitrancom/tags.py:352
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
-#: mclientqt/src/cells.py:347 mclientqt/src/cells.py:607
-#: mclientqt/src/plugins/multitrancom/elems.py:452
+#: mclientqt/src/cells.py:347 mclientqt/src/cells.py:617
+#: mclientqt/src/plugins/multitrancom/elems.py:545
 msgid "ROW #"
 msgstr "СТРОКА №"
 
-#: mclient/src/mkhtml.py:264 mclientqt/src/cells.py:607
+#: mclient/src/mkhtml.py:264 mclientqt/src/cells.py:617
 msgid "COLUMN #"
 msgstr "СТОЛБЕЦ №"
 
@@ -2208,11 +2208,11 @@ msgstr "ШИРИНА СТОЛБЦА (%)"
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:203
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
 #: mclientqt/src/cells.py:133 mclientqt/src/cells.py:347
-#: mclientqt/src/cells.py:607 mclientqt/src/plugins/dsl/tags.py:125
-#: mclientqt/src/plugins/dsl/tags.py:294
-#: mclientqt/src/plugins/multitrancom/elems.py:453
+#: mclientqt/src/cells.py:617 mclientqt/src/plugins/dsl/tags.py:122
+#: mclientqt/src/plugins/dsl/tags.py:289
+#: mclientqt/src/plugins/multitrancom/elems.py:546
 #: mclientqt/src/plugins/multitrancom/tags.py:291
-#: mclientqt/src/plugins/multitrancom/tags.py:361
+#: mclientqt/src/plugins/multitrancom/tags.py:365
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
@@ -2237,40 +2237,40 @@ msgid "ITALIC"
 msgstr "НАКЛОННЫЙ"
 
 #: mclient/src/mkhtml.py:516 mclientqt/src/logic.py:397
-#: mclientqt/src/mclientqt.py:1697
+#: mclientqt/src/mclientqt.py:1710
 msgid "Nothing has been found (skipped subjects: {})."
 msgstr "Ничего не найдено (игнорировано тематик: {})."
 
 #: mclient/src/mkhtml.py:522 mclientqt/src/logic.py:403
-#: mclientqt/src/mclientqt.py:1701
+#: mclientqt/src/mclientqt.py:1714
 msgid "Nothing has been found."
 msgstr "Ничего не найдено."
 
-#: mclient/src/plugins/dsl/cleanup.py:51 mclientqt/src/plugins/dsl/cleanup.py:51
+#: mclient/src/plugins/dsl/cleanup.py:51 mclientqt/src/plugins/dsl/cleanup.py:55
 msgid "Number of invalid tag-like structures: {}"
 msgstr "Число некорректных тегоподобных структур: {}"
 
-#: mclient/src/plugins/dsl/cleanup.py:56 mclientqt/src/plugins/dsl/cleanup.py:56
+#: mclient/src/plugins/dsl/cleanup.py:56 mclientqt/src/plugins/dsl/cleanup.py:42
 msgid "Tag-like structures are invalid!"
 msgstr "Некорректные тегоподобные структуры!"
 
 #: mclient/src/plugins/dsl/cleanup.py:115 mclient/src/plugins/dsl/elems.py:196
 #: mclient/src/plugins/multitrancom/elems.py:826
-#: mclientqt/src/plugins/dsl/cleanup.py:115
-#: mclientqt/src/plugins/dsl/elems.py:196 skl_shared/src/logic.py:4835
-#: skl_shared_qt/src/logic.py:3727
+#: mclientqt/src/plugins/dsl/cleanup.py:113
+#: mclientqt/src/plugins/dsl/elems.py:192 skl_shared/src/logic.py:4835
+#: skl_shared_qt/src/logic.py:3632
 msgid "{} matches"
 msgstr "{} совпадений"
 
 #: mclient/src/plugins/dsl/elems.py:176 mclient/src/plugins/stardict/elems.py:142
 #: mclient/src/plugins/stardict/tags.py:266
-#: mclientqt/src/plugins/dsl/elems.py:176
-#: mclientqt/src/plugins/stardict/elems.py:142
-#: mclientqt/src/plugins/stardict/tags.py:266
+#: mclientqt/src/plugins/dsl/elems.py:172
+#: mclientqt/src/plugins/stardict/elems.py:136
+#: mclientqt/src/plugins/stardict/tags.py:260
 msgid "Non-DB blocks:"
 msgstr "Блоки не из БД:"
 
-#: mclient/src/plugins/dsl/elems.py:211 mclientqt/src/plugins/dsl/elems.py:211
+#: mclient/src/plugins/dsl/elems.py:211 mclientqt/src/plugins/dsl/elems.py:207
 msgid "{} phrases"
 msgstr "{} фраз"
 
@@ -2279,11 +2279,11 @@ msgid "SEARCH"
 msgstr "ЗАПРОС"
 
 #: mclient/src/plugins/dsl/get.py:49 mclientqt/src/cells.py:133
-#: mclientqt/src/plugins/dsl/get.py:50 mclientqt/src/tests.py:550
+#: mclientqt/src/plugins/dsl/get.py:50 mclientqt/src/tests.py:559
 msgid "SUBJECT"
 msgstr "ТЕМАТИКА"
 
-#: mclient/src/plugins/dsl/get.py:49 mclientqt/src/cells.py:607
+#: mclient/src/plugins/dsl/get.py:49 mclientqt/src/cells.py:617
 #: mclientqt/src/plugins/dsl/get.py:50
 msgid "CODE"
 msgstr "КОД"
@@ -2292,24 +2292,24 @@ msgstr "КОД"
 msgid "Articles:"
 msgstr "Статьи:"
 
-#: mclient/src/plugins/dsl/get.py:91 mclientqt/src/plugins/dsl/get.py:92
+#: mclient/src/plugins/dsl/get.py:91 mclientqt/src/plugins/dsl/get.py:94
 msgid "Dictionaries to search in ({}/{}): {}"
 msgstr "Словари для поиска ({}/{}): {}"
 
 #: mclient/src/plugins/dsl/get.py:155 mclient/src/plugins/dsl/get.py:175
-#: mclientqt/src/plugins/dsl/get.py:156 mclientqt/src/plugins/dsl/get.py:176
+#: mclientqt/src/plugins/dsl/get.py:151 mclientqt/src/plugins/dsl/get.py:169
 msgid "The file \"{}\" is too short ({} lines)!"
 msgstr "Файл \"{}\" слишком короткий ({} строк)!"
 
-#: mclient/src/plugins/dsl/get.py:244 mclientqt/src/plugins/dsl/get.py:245
+#: mclient/src/plugins/dsl/get.py:244 mclientqt/src/plugins/dsl/get.py:246
 msgid "No search results for \"{}\" in \"{}\""
 msgstr "Нет совпадений для \"{}\" в \"{}\""
 
-#: mclient/src/plugins/dsl/get.py:268 mclientqt/src/plugins/dsl/get.py:269
+#: mclient/src/plugins/dsl/get.py:268 mclientqt/src/plugins/dsl/get.py:268
 msgid "Dictionary \"{}\" ({}) has {} records"
 msgstr "В словаре \"{}\" ({}) {} записей"
 
-#: mclient/src/plugins/dsl/get.py:288 mclientqt/src/plugins/dsl/get.py:289
+#: mclient/src/plugins/dsl/get.py:288 mclientqt/src/plugins/dsl/get.py:288
 msgid "Load \"{}\""
 msgstr "Загрузка \"{}\""
 
@@ -2320,14 +2320,14 @@ msgstr "Загрузка \"{}\""
 #: mclient/src/plugins/multitrandem/utils.py:1073
 #: mclient/src/plugins/multitrandem/utils.py:1156
 #: mclient/src/plugins/multitrandem/utils.py:1199
-#: mclientqt/src/plugins/dsl/get.py:297
+#: mclientqt/src/plugins/dsl/get.py:296
 #: mclientqt/src/plugins/multitrandem/utils.py:696
-#: mclientqt/src/plugins/multitrandem/utils.py:739
-#: mclientqt/src/plugins/multitrandem/utils.py:784
-#: mclientqt/src/plugins/multitrandem/utils.py:1073
-#: mclientqt/src/plugins/multitrandem/utils.py:1156
-#: mclientqt/src/plugins/multitrandem/utils.py:1199 skl_shared/src/logic.py:4549
-#: skl_shared/src/shared.py:828 skl_shared_qt/src/logic.py:3456
+#: mclientqt/src/plugins/multitrandem/utils.py:750
+#: mclientqt/src/plugins/multitrandem/utils.py:783
+#: mclientqt/src/plugins/multitrandem/utils.py:1071
+#: mclientqt/src/plugins/multitrandem/utils.py:1159
+#: mclientqt/src/plugins/multitrandem/utils.py:1193 skl_shared/src/logic.py:4549
+#: skl_shared/src/shared.py:828 skl_shared_qt/src/logic.py:3365
 msgid ""
 "Operation has failed!\n"
 "\n"
@@ -2344,20 +2344,20 @@ msgstr ""
 #: mclient/src/plugins/multitrandem/run.py:142
 #: mclient/src/plugins/stardict/run.py:69 mclient/src/plugins/stardict/run.py:73
 #: mclient/src/plugins/stardict/run.py:101
-#: mclient/src/plugins/stardict/run.py:105 mclientqt/src/plugins/dsl/get.py:315
-#: mclientqt/src/plugins/dsl/get.py:316 mclientqt/src/plugins/dsl/run.py:75
-#: mclientqt/src/plugins/dsl/run.py:89 mclientqt/src/plugins/dsl/run.py:108
-#: mclientqt/src/plugins/dsl/run.py:118
-#: mclientqt/src/plugins/multitrandem/run.py:138
-#: mclientqt/src/plugins/multitrandem/run.py:142
-#: mclientqt/src/plugins/stardict/run.py:69
-#: mclientqt/src/plugins/stardict/run.py:73
-#: mclientqt/src/plugins/stardict/run.py:101
-#: mclientqt/src/plugins/stardict/run.py:105
+#: mclient/src/plugins/stardict/run.py:105 mclientqt/src/plugins/dsl/get.py:312
+#: mclientqt/src/plugins/dsl/get.py:313 mclientqt/src/plugins/dsl/run.py:72
+#: mclientqt/src/plugins/dsl/run.py:86 mclientqt/src/plugins/dsl/run.py:105
+#: mclientqt/src/plugins/dsl/run.py:115
+#: mclientqt/src/plugins/multitrandem/run.py:135
+#: mclientqt/src/plugins/multitrandem/run.py:139
+#: mclientqt/src/plugins/stardict/run.py:66
+#: mclientqt/src/plugins/stardict/run.py:70
+#: mclientqt/src/plugins/stardict/run.py:98
+#: mclientqt/src/plugins/stardict/run.py:102
 msgid "Any"
 msgstr "Любой"
 
-#: mclient/src/plugins/dsl/get.py:320 mclientqt/src/plugins/dsl/get.py:321
+#: mclient/src/plugins/dsl/get.py:320 mclientqt/src/plugins/dsl/get.py:318
 msgid "Untitled dictionary"
 msgstr "Безымянный словарь"
 
@@ -2366,62 +2366,62 @@ msgid "Index has {} entries"
 msgstr "{} вхождений в индексе"
 
 #: mclient/src/plugins/dsl/get.py:526 mclient/src/plugins/stardict/get.py:510
-#: mclientqt/src/plugins/dsl/get.py:527 mclientqt/src/plugins/stardict/get.py:510
+#: mclientqt/src/plugins/dsl/get.py:528 mclientqt/src/plugins/stardict/get.py:503
 msgid "{} offline dictionaries are available"
 msgstr "Доступно {} локальных словарей"
 
-#: mclient/src/plugins/dsl/get.py:541 mclientqt/src/plugins/dsl/get.py:542
+#: mclient/src/plugins/dsl/get.py:541 mclientqt/src/plugins/dsl/get.py:545
 msgid "Load DSL dictionaries ({}/{})"
 msgstr "Загрузка словарей DSL ({}/{})"
 
 #: mclient/src/plugins/dsl/get.py:550 mclient/src/plugins/stardict/get.py:533
-#: mclientqt/src/plugins/dsl/get.py:551 mclientqt/src/plugins/stardict/get.py:533
+#: mclientqt/src/plugins/dsl/get.py:554 mclientqt/src/plugins/stardict/get.py:527
 msgid "Dictionaries loaded: {}/{}"
 msgstr "Загружено словарей: {}/{}"
 
 #: mclient/src/plugins/dsl/tags.py:125 mclientqt/src/cells.py:347
-#: mclientqt/src/plugins/dsl/tags.py:125
-#: mclientqt/src/plugins/multitrancom/elems.py:453
+#: mclientqt/src/plugins/dsl/tags.py:122
+#: mclientqt/src/plugins/multitrancom/elems.py:546
 msgid "TYPES"
 msgstr "ТИПЫ"
 
 #: mclient/src/plugins/dsl/tags.py:131
 #: mclient/src/plugins/multitrancom/tags.py:361
-#: mclientqt/src/plugins/dsl/tags.py:131
-#: mclientqt/src/plugins/multitrancom/tags.py:299
+#: mclientqt/src/plugins/dsl/tags.py:128
+#: mclientqt/src/plugins/multitrancom/tags.py:301
 msgid "Blocks:"
 msgstr "Блоки:"
 
-#: mclient/src/plugins/dsl/tags.py:183 mclientqt/src/plugins/dsl/tags.py:183
+#: mclient/src/plugins/dsl/tags.py:183 mclientqt/src/plugins/dsl/tags.py:182
 msgid "Ignore blocks: {}"
 msgstr "Игнорируемые блоки: {}"
 
-#: mclient/src/plugins/dsl/tags.py:235 mclientqt/src/plugins/dsl/tags.py:235
+#: mclient/src/plugins/dsl/tags.py:235 mclientqt/src/plugins/dsl/tags.py:231
 msgid "Tag \"{}\" has not been opened yet!"
 msgstr "Тег \"{}\" еще не был открыт!"
 
 #: mclient/src/plugins/dsl/tags.py:280
 #: mclient/src/plugins/multitrancom/tags.py:398
-#: mclientqt/src/plugins/dsl/tags.py:280
-#: mclientqt/src/plugins/multitrancom/tags.py:335
+#: mclientqt/src/plugins/dsl/tags.py:275
+#: mclientqt/src/plugins/multitrancom/tags.py:337
 msgid "Code:"
 msgstr "Код:"
 
 #: mclient/src/plugins/dsl/tags.py:287
 #: mclient/src/plugins/multitrancom/tags.py:405
-#: mclientqt/src/plugins/dsl/tags.py:287
-#: mclientqt/src/plugins/multitrancom/tags.py:342
+#: mclientqt/src/plugins/dsl/tags.py:282
+#: mclientqt/src/plugins/multitrancom/tags.py:344
 msgid "Fragments:"
 msgstr "Фрагменты:"
 
-#: mclient/src/plugins/dsl/tags.py:294 mclientqt/src/plugins/dsl/tags.py:294
+#: mclient/src/plugins/dsl/tags.py:294 mclientqt/src/plugins/dsl/tags.py:289
 msgid "TAGS"
 msgstr "ТЕГИ"
 
 #: mclient/src/plugins/dsl/tags.py:300
 #: mclient/src/plugins/multitrancom/tags.py:437
-#: mclientqt/src/plugins/dsl/tags.py:300
-#: mclientqt/src/plugins/multitrancom/tags.py:371
+#: mclientqt/src/plugins/dsl/tags.py:295
+#: mclientqt/src/plugins/multitrancom/tags.py:375
 msgid "Tags:"
 msgstr "Теги:"
 
@@ -2472,18 +2472,18 @@ msgstr "Поиск онлайн: \"{}\""
 
 #: mclient/src/plugins/multitrancom/get.py:176
 #: mclient/src/plugins/multitrancom/utils/utils.py:141
-#: mclientqt/src/plugins/multitrancom/get.py:170 skl_shared/src/logic.py:4283
-#: skl_shared_qt/src/logic.py:3311
+#: mclientqt/src/plugins/multitrancom/get.py:169 skl_shared/src/logic.py:4283
+#: skl_shared_qt/src/logic.py:3224
 msgid "[OK]: \"{}\""
 msgstr "[Успешно]: \"{}\""
 
 #: mclient/src/plugins/multitrancom/get.py:180
-#: mclientqt/src/plugins/multitrancom/get.py:174
+#: mclientqt/src/plugins/multitrancom/get.py:173
 msgid "[FAILED]: \"{}\""
 msgstr "[ОШИБКА]: \"{}\""
 
 #: mclient/src/plugins/multitrancom/get.py:183
-#: mclientqt/src/plugins/multitrancom/get.py:177
+#: mclientqt/src/plugins/multitrancom/get.py:176
 msgid ""
 "Unable to get the webpage. Do you want to try again?\n"
 "\n"
@@ -4644,7 +4644,7 @@ msgstr "Финский"
 #: mclientqt/src/plugins/multitrancom/pairs.py:2652
 #: mclientqt/src/plugins/multitrancom/pairs.py:2656
 #: mclientqt/src/plugins/multitrancom/pairs.py:2676
-#: mclientqt/src/plugins/multitrancom/pairs.py:2695 mclientqt/src/tests.py:681
+#: mclientqt/src/plugins/multitrancom/pairs.py:2695 mclientqt/src/tests.py:690
 msgid "French"
 msgstr "Французский"
 
@@ -12844,7 +12844,7 @@ msgstr "Чешский"
 #: mclientqt/src/plugins/multitrancom/pairs.py:2534
 #: mclientqt/src/plugins/multitrancom/pairs.py:2550
 #: mclientqt/src/plugins/multitrancom/pairs.py:2554
-#: mclientqt/src/plugins/multitrancom/pairs.py:2652 mclientqt/src/tests.py:681
+#: mclientqt/src/plugins/multitrancom/pairs.py:2652 mclientqt/src/tests.py:690
 msgid "Esperanto"
 msgstr "Эсперанто"
 
@@ -26433,23 +26433,23 @@ msgstr "Образец \"{}\" тегом не является!"
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:203
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
 #: mclientqt/src/plugins/multitrancom/tags.py:291
-#: mclientqt/src/plugins/multitrancom/tags.py:361
+#: mclientqt/src/plugins/multitrancom/tags.py:365
 msgid "TYPE"
 msgstr "ТИП"
 
 #: mclient/src/plugins/multitrancom/tags.py:352 mclientqt/src/cells.py:347
-#: mclientqt/src/cells.py:607 mclientqt/src/plugins/multitrancom/elems.py:452
-#: mclientqt/src/plugins/multitrancom/tags.py:291
+#: mclientqt/src/cells.py:617 mclientqt/src/plugins/multitrancom/elems.py:545
+#: mclientqt/src/plugins/multitrancom/tags.py:292
 msgid "CELL #"
 msgstr "ЯЧЕЙКА №"
 
 #: mclient/src/plugins/multitrancom/tags.py:427
-#: mclientqt/src/plugins/multitrancom/tags.py:361
+#: mclientqt/src/plugins/multitrancom/tags.py:365
 msgid "CLOSING"
 msgstr "ЗАКРЫВАЮЩИЙ"
 
 #: mclient/src/plugins/multitrancom/tags.py:428
-#: mclientqt/src/plugins/multitrancom/tags.py:362
+#: mclientqt/src/plugins/multitrancom/tags.py:366
 msgid "OPEN"
 msgstr "ОТКРЫТЫЕ"
 
@@ -26458,7 +26458,7 @@ msgid "ROW"
 msgstr "СТРОКА"
 
 #: mclient/src/plugins/multitrancom/tags.py:428
-#: mclientqt/src/plugins/multitrancom/tags.py:362
+#: mclientqt/src/plugins/multitrancom/tags.py:366
 msgid "CELL"
 msgstr "ЯЧЕЙКА"
 
@@ -26486,7 +26486,7 @@ msgstr "Ключ \"{}\" уже существует!"
 #: mclient/src/plugins/multitrancom/utils/subjects/compile.py:455
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
 #: mclient/src/subjects/subjects.py:82 skl_shared/src/shared.py:4089
-#: skl_shared_qt/src/shared.py:844
+#: skl_shared_qt/src/shared.py:803
 msgid "KEY"
 msgstr "КЛЮЧ"
 
@@ -26500,7 +26500,7 @@ msgid "MAJOR"
 msgstr "ОСНОВНАЯ"
 
 #: mclient/src/plugins/multitrancom/utils/subjects/compile.py:417
-#: mclient/src/tests.py:458 mclientqt/src/tests.py:752
+#: mclient/src/tests.py:458 mclientqt/src/tests.py:760
 msgid "MAJOR (EN)"
 msgstr "ОСНОВНАЯ (EN)"
 
@@ -26576,27 +26576,26 @@ msgid "Press any key to continue."
 msgstr "Нажмите любую клавишу для продолжения."
 
 #: mclient/src/plugins/multitrandem/get.py:66
-#: mclientqt/src/plugins/multitrandem/get.py:66 skl_shared/src/shared.py:3892
+#: mclientqt/src/plugins/multitrandem/get.py:68 skl_shared/src/shared.py:3892
 msgid "Yes"
 msgstr "Да"
 
 #: mclient/src/plugins/multitrandem/get.py:68
-#: mclientqt/src/plugins/multitrandem/get.py:68 skl_shared/src/shared.py:3893
+#: mclientqt/src/plugins/multitrandem/get.py:70 skl_shared/src/shared.py:3893
 msgid "No"
 msgstr "Нет"
 
 #: mclient/src/plugins/multitrandem/get.py:70
-#: mclientqt/src/plugins/multitrandem/get.py:70
+#: mclientqt/src/plugins/multitrandem/get.py:72
 msgid "#: {}; Pattern: \"{}\"; Match: {}"
 msgstr "№: {}; Образец: \"{}\"; Совпадение: {}"
 
 #: mclient/src/plugins/multitrandem/get.py:86
 #: mclient/src/plugins/multitrandem/get.py:229
 #: mclient/src/plugins/multitrandem/get.py:427
-#: mclientqt/src/plugins/multitrandem/get.py:86
-#: mclientqt/src/plugins/multitrandem/get.py:229
-#: mclientqt/src/plugins/multitrandem/get.py:427 skl_shared/src/logic.py:4823
-#: skl_shared_qt/src/logic.py:3715
+#: mclientqt/src/plugins/multitrandem/get.py:88
+#: mclientqt/src/plugins/multitrandem/get.py:234 skl_shared/src/logic.py:4823
+#: skl_shared_qt/src/logic.py:3620
 msgid "Empty output is not allowed!"
 msgstr "Пустые выходные данные не допускаются!"
 
@@ -26610,16 +26609,16 @@ msgstr "Пустые выходные данные не допускаются!"
 #: mclient/src/plugins/multitrandem/get.py:1033
 #: mclient/src/plugins/multitrandem/get.py:1076
 #: mclient/src/plugins/multitrandem/get.py:1092
-#: mclientqt/src/plugins/multitrandem/get.py:233
-#: mclientqt/src/plugins/multitrandem/get.py:913
-#: mclientqt/src/plugins/multitrandem/get.py:931
-#: mclientqt/src/plugins/multitrandem/get.py:951
-#: mclientqt/src/plugins/multitrandem/get.py:968
-#: mclientqt/src/plugins/multitrandem/get.py:999
-#: mclientqt/src/plugins/multitrandem/get.py:1016
-#: mclientqt/src/plugins/multitrandem/get.py:1033
-#: mclientqt/src/plugins/multitrandem/get.py:1076
-#: mclientqt/src/plugins/multitrandem/get.py:1092
+#: mclientqt/src/plugins/multitrandem/get.py:228
+#: mclientqt/src/plugins/multitrandem/get.py:890
+#: mclientqt/src/plugins/multitrandem/get.py:911
+#: mclientqt/src/plugins/multitrandem/get.py:928
+#: mclientqt/src/plugins/multitrandem/get.py:946
+#: mclientqt/src/plugins/multitrandem/get.py:976
+#: mclientqt/src/plugins/multitrandem/get.py:994
+#: mclientqt/src/plugins/multitrandem/get.py:1012
+#: mclientqt/src/plugins/multitrandem/get.py:1057
+#: mclientqt/src/plugins/multitrandem/get.py:1074
 msgid "File \"{}\" does not exist!"
 msgstr "Файл \"{}\" не существует!"
 
@@ -26627,48 +26626,48 @@ msgstr "Файл \"{}\" не существует!"
 #: mclient/src/plugins/multitrandem/get.py:373
 #: mclient/src/plugins/multitrandem/get.py:1823
 #: mclient/src/plugins/multitrandem/get.py:1890
-#: mclientqt/src/plugins/multitrandem/get.py:316
-#: mclientqt/src/plugins/multitrandem/get.py:373
-#: mclientqt/src/plugins/multitrandem/get.py:1823
-#: mclientqt/src/plugins/multitrandem/get.py:1890
+#: mclientqt/src/plugins/multitrandem/get.py:294
+#: mclientqt/src/plugins/multitrandem/get.py:347
+#: mclientqt/src/plugins/multitrandem/get.py:1790
+#: mclientqt/src/plugins/multitrandem/get.py:1844
 msgid "No debug info"
 msgstr "Нет информации для отладки"
 
 #: mclient/src/plugins/multitrandem/get.py:421
-#: mclientqt/src/plugins/multitrandem/get.py:421
+#: mclientqt/src/plugins/multitrandem/get.py:416
 msgid "File \"{}\" has the size of {}"
 msgstr "Файл \"{}\" имеет размер в {}"
 
 #: mclient/src/plugins/multitrandem/get.py:442
 #: mclient/src/plugins/multitrandem/get.py:461
-#: mclientqt/src/plugins/multitrandem/get.py:442
-#: mclientqt/src/plugins/multitrandem/get.py:461
+#: mclientqt/src/plugins/multitrandem/get.py:437
+#: mclientqt/src/plugins/multitrandem/get.py:467
 msgid "Page size: {}"
 msgstr "Размер страницы: {}"
 
 #: mclient/src/plugins/multitrandem/get.py:447
 #: mclient/src/plugins/multitrandem/get.py:468
 #: mclient/src/plugins/multitrandem/tests.py:92
-#: mclientqt/src/plugins/multitrandem/get.py:447
-#: mclientqt/src/plugins/multitrandem/get.py:468
-#: mclientqt/src/plugins/multitrandem/tests.py:92
+#: mclientqt/src/plugins/multitrandem/get.py:442
+#: mclientqt/src/plugins/multitrandem/get.py:474
+#: mclientqt/src/plugins/multitrandem/tests.py:93
 msgid "Page limits: [{}:{}]"
 msgstr "Пределы страницы: [{}:{}]"
 
 #: mclient/src/plugins/multitrandem/get.py:497
 #: mclient/src/plugins/multitrandem/get.py:648
-#: mclient/src/plugins/multitrandem/get.py:1572 mclientqt/src/config.py:776
+#: mclient/src/plugins/multitrandem/get.py:1572 mclientqt/src/config.py:708
 #: mclientqt/src/plugins/multitrancom/utils/subjects.py:72
-#: mclientqt/src/plugins/multitrandem/get.py:497
-#: mclientqt/src/plugins/multitrandem/get.py:648
-#: mclientqt/src/plugins/multitrandem/get.py:1572
+#: mclientqt/src/plugins/multitrandem/get.py:495
+#: mclientqt/src/plugins/multitrandem/get.py:640
+#: mclientqt/src/plugins/multitrandem/get.py:1539
 #: skl_shared/src/image/controller.py:35 skl_shared/src/logic.py:3123
 #: skl_shared/src/logic.py:3250 skl_shared/src/logic.py:3418
 #: skl_shared/src/shared.py:3625 skl_shared/src/shared.py:4058
-#: skl_shared/src/web.py:26 skl_shared_qt/src/logic.py:2727
-#: skl_shared_qt/src/logic.py:2854 skl_shared_qt/src/logic.py:3733
-#: skl_shared_qt/src/shared.py:87 skl_shared_qt/src/shared.py:207
-#: skl_shared_qt/src/shared.py:812 skl_shared_qt/src/web.py:28
+#: skl_shared/src/web.py:26 skl_shared_qt/src/logic.py:2673
+#: skl_shared_qt/src/logic.py:2795 skl_shared_qt/src/logic.py:3638
+#: skl_shared_qt/src/shared.py:161 skl_shared_qt/src/shared.py:771
+#: skl_shared_qt/src/web.py:28
 msgid ""
 "Third-party module has failed!\n"
 "\n"
@@ -26680,8 +26679,8 @@ msgstr ""
 
 #: mclient/src/plugins/multitrandem/get.py:517
 #: mclient/src/plugins/multitrandem/get.py:887
-#: mclientqt/src/plugins/multitrandem/get.py:517
-#: mclientqt/src/plugins/multitrandem/get.py:887
+#: mclientqt/src/plugins/multitrandem/get.py:514
+#: mclientqt/src/plugins/multitrandem/get.py:860
 msgid "The check has failed!"
 msgstr "Проверка завершилась неуспешно!"
 
@@ -26693,39 +26692,39 @@ msgid "Part #{} length: {}"
 msgstr "Длина части №{}: {}"
 
 #: mclient/src/plugins/multitrandem/get.py:638
-#: mclientqt/src/plugins/multitrandem/get.py:638
+#: mclientqt/src/plugins/multitrandem/get.py:632
 msgid "Open \"{}\""
 msgstr "Открытие \"{}\""
 
 #: mclient/src/plugins/multitrandem/get.py:657
-#: mclientqt/src/plugins/multitrandem/get.py:657
+#: mclientqt/src/plugins/multitrandem/get.py:648
 msgid "Close \"{}\""
 msgstr "Закрытие \"{}\""
 
 #: mclient/src/plugins/multitrandem/get.py:694
-#: mclientqt/src/plugins/multitrandem/get.py:694
+#: mclientqt/src/plugins/multitrandem/get.py:683
 msgid "#{}: {}"
 msgstr "№{}: {}"
 
 #: mclient/src/plugins/multitrandem/get.py:717
-#: mclientqt/src/plugins/multitrandem/get.py:717
+#: mclientqt/src/plugins/multitrandem/get.py:706
 msgid "Start"
 msgstr "Начало"
 
 #: mclient/src/plugins/multitrandem/get.py:719
 #: mclient/src/plugins/multitrandem/get.py:724
-#: mclientqt/src/plugins/multitrandem/get.py:719
-#: mclientqt/src/plugins/multitrandem/get.py:724
+#: mclientqt/src/plugins/multitrandem/get.py:708
+#: mclientqt/src/plugins/multitrandem/get.py:712
 msgid "{} (#{})"
 msgstr "{} (№{})"
 
 #: mclient/src/plugins/multitrandem/get.py:729
-#: mclientqt/src/plugins/multitrandem/get.py:729
+#: mclientqt/src/plugins/multitrandem/get.py:716
 msgid "End"
 msgstr "Конец"
 
 #: mclient/src/plugins/multitrandem/get.py:793
-#: mclientqt/src/plugins/multitrandem/get.py:793
+#: mclientqt/src/plugins/multitrandem/get.py:777
 msgid ""
 "Processing the pattern has not been completed, but the end of the file has "
 "already been reached!"
@@ -26733,93 +26732,93 @@ msgstr "Обработка образца не была завершена, од
 
 #: mclient/src/plugins/multitrandem/get.py:1331
 #: mclient/src/plugins/multitrandem/get.py:1383
-#: mclientqt/src/plugins/multitrandem/get.py:1331
-#: mclientqt/src/plugins/multitrandem/get.py:1383
+#: mclientqt/src/plugins/multitrandem/get.py:1307
+#: mclientqt/src/plugins/multitrandem/get.py:1356
 msgid "Overflow: {} -> {}"
 msgstr "Переполнение: {} -> {}"
 
 #: mclient/src/plugins/multitrandem/get.py:1345
 #: mclient/src/plugins/multitrandem/get.py:1397
-#: mclientqt/src/plugins/multitrandem/get.py:1345
-#: mclientqt/src/plugins/multitrandem/get.py:1397
+#: mclientqt/src/plugins/multitrandem/get.py:1320
+#: mclientqt/src/plugins/multitrandem/get.py:1369
 msgid "Invalid value \"{}\" at position {}!"
 msgstr "Неверное значение \"{}\" в позиции {}!"
 
 #: mclient/src/plugins/multitrandem/get.py:1522
-#: mclientqt/src/plugins/multitrandem/get.py:1522
+#: mclientqt/src/plugins/multitrandem/get.py:1492
 msgid "{}/{} bytes have been processed"
 msgstr "{}/{} байтов обработано"
 
 #: mclient/src/plugins/multitrandem/get.py:1528
-#: mclientqt/src/plugins/multitrandem/get.py:1528
+#: mclientqt/src/plugins/multitrandem/get.py:1497
 msgid "Unprocessed fragment: \"{}\""
 msgstr "Необработанный фрагмент: \"{}\""
 
 #: mclient/src/plugins/multitrandem/get.py:2036
-#: mclientqt/src/plugins/multitrandem/get.py:2036
+#: mclientqt/src/plugins/multitrandem/get.py:1990
 msgid "Try for \"{}|{}\""
 msgstr "Тест \"{}|{}\""
 
 #: mclient/src/plugins/multitrandem/get.py:2043
-#: mclientqt/src/plugins/multitrandem/get.py:2043
+#: mclientqt/src/plugins/multitrandem/get.py:2001
 msgid "Found stem: \"{}\""
 msgstr "Найдена основа: \"{}\""
 
 #: mclient/src/plugins/multitrandem/get.py:2078
-#: mclientqt/src/plugins/multitrandem/get.py:2078
+#: mclientqt/src/plugins/multitrandem/get.py:2039
 msgid "Found articles: {}"
 msgstr "Найдены статьи: {}"
 
 #: mclient/src/plugins/multitrandem/get.py:2080
-#: mclientqt/src/plugins/multitrandem/get.py:2080
+#: mclientqt/src/plugins/multitrandem/get.py:2041
 msgid "No articles have been found!"
 msgstr "Статьи не найдены!"
 
 #: mclient/src/plugins/multitrandem/tags.py:47
-#: mclientqt/src/plugins/multitrandem/tags.py:47 skl_shared/src/shared.py:4158
+#: mclientqt/src/plugins/multitrandem/tags.py:40 skl_shared/src/shared.py:4158
 msgid "Wrong input data: \"{}\""
 msgstr "Недопустимые входные данные: \"{}\"!"
 
 #: mclient/src/plugins/multitrandem/tags.py:69
-#: mclientqt/src/plugins/multitrandem/tags.py:69
+#: mclientqt/src/plugins/multitrandem/tags.py:70
 msgid "Unknown type \"{}\"!"
 msgstr "Неизвестный тип \"{}\"!"
 
 #: mclient/src/plugins/multitrandem/tests.py:34
 #: mclient/src/plugins/multitrandem/tests.py:58
 #: mclient/src/plugins/multitrandem/utils.py:442
-#: mclientqt/src/plugins/multitrandem/tests.py:34
-#: mclientqt/src/plugins/multitrandem/tests.py:58
-#: mclientqt/src/plugins/multitrandem/utils.py:442
+#: mclientqt/src/plugins/multitrandem/tests.py:36
+#: mclientqt/src/plugins/multitrandem/tests.py:59
+#: mclientqt/src/plugins/multitrandem/utils.py:461
 msgid "File: \"{}\""
 msgstr "Файл: \"{}\""
 
 #: mclient/src/plugins/multitrandem/tests.py:86
-#: mclientqt/src/plugins/multitrandem/tests.py:86
+#: mclientqt/src/plugins/multitrandem/tests.py:87
 msgid "Page #: {}"
 msgstr "Номер страницы: {}"
 
 #: mclient/src/plugins/multitrandem/tests.py:105
 #: mclient/src/plugins/multitrandem/tests.py:509
 #: mclient/src/plugins/multitrandem/tests.py:533
-#: mclientqt/src/plugins/multitrandem/tests.py:105
-#: mclientqt/src/plugins/multitrandem/tests.py:509
-#: mclientqt/src/plugins/multitrandem/tests.py:533
+#: mclientqt/src/plugins/multitrandem/tests.py:106
+#: mclientqt/src/plugins/multitrandem/tests.py:506
+#: mclientqt/src/plugins/multitrandem/tests.py:526
 msgid "File: {}"
 msgstr "Файл: {}"
 
 #: mclient/src/plugins/multitrandem/tests.py:109
-#: mclientqt/src/plugins/multitrandem/tests.py:109
+#: mclientqt/src/plugins/multitrandem/tests.py:110
 msgid "File size: {}"
 msgstr "Размер файла: {}"
 
 #: mclient/src/plugins/multitrandem/tests.py:113
-#: mclientqt/src/plugins/multitrandem/tests.py:113
+#: mclientqt/src/plugins/multitrandem/tests.py:114
 msgid "Block size: {}"
 msgstr "Размер блока: {}"
 
 #: mclient/src/plugins/multitrandem/tests.py:116
-#: mclientqt/src/plugins/multitrandem/tests.py:116
+#: mclientqt/src/plugins/multitrandem/tests.py:117
 msgid "Pages:"
 msgstr "Страницы:"
 
@@ -26827,11 +26826,11 @@ msgstr "Страницы:"
 #: mclient/src/plugins/multitrandem/tests.py:146
 #: mclient/src/plugins/multitrandem/tests.py:147
 #: mclient/src/plugins/multitrandem/tests.py:148
-#: mclientqt/src/plugins/multitrandem/tests.py:134
-#: mclientqt/src/plugins/multitrandem/tests.py:146
+#: mclientqt/src/plugins/multitrandem/tests.py:135
 #: mclientqt/src/plugins/multitrandem/tests.py:147
-#: mclientqt/src/plugins/multitrandem/tests.py:148 skl_shared/src/shared.py:4077
-#: skl_shared_qt/src/shared.py:832
+#: mclientqt/src/plugins/multitrandem/tests.py:148
+#: mclientqt/src/plugins/multitrandem/tests.py:149 skl_shared/src/shared.py:4077
+#: skl_shared_qt/src/shared.py:791
 msgid "N/A"
 msgstr "Н/Д"
 
@@ -26856,60 +26855,60 @@ msgid "Z pages: {}"
 msgstr "Страницы Z: {}"
 
 #: mclient/src/plugins/multitrandem/tests.py:457
-#: mclientqt/src/plugins/multitrandem/tests.py:457
+#: mclientqt/src/plugins/multitrandem/tests.py:452
 msgid "Total: {}"
 msgstr "Всего: {}"
 
 #: mclient/src/plugins/multitrandem/tests.py:459
-#: mclientqt/src/plugins/multitrandem/tests.py:459
+#: mclientqt/src/plugins/multitrandem/tests.py:454
 msgid "Successful: {}"
 msgstr "Успешно: {}"
 
 #: mclient/src/plugins/multitrandem/tests.py:461
-#: mclientqt/src/plugins/multitrandem/tests.py:461
+#: mclientqt/src/plugins/multitrandem/tests.py:456
 msgid "Failed: {}"
 msgstr "Неуспешно: {}"
 
 #: mclient/src/plugins/multitrandem/utils.py:119
-#: mclientqt/src/plugins/multitrandem/utils.py:119
+#: mclientqt/src/plugins/multitrandem/utils.py:117
 msgid "Warning: this step will be skipped!"
 msgstr "Предупреждение: данный шаг будет пропущен!"
 
 #: mclient/src/plugins/multitrandem/utils.py:123
-#: mclientqt/src/plugins/multitrandem/utils.py:123
+#: mclientqt/src/plugins/multitrandem/utils.py:121
 msgid "Pattern: \"{}\""
 msgstr "Образец: \"{}\""
 
 #: mclient/src/plugins/multitrandem/utils.py:126
-#: mclientqt/src/plugins/multitrandem/utils.py:126
+#: mclientqt/src/plugins/multitrandem/utils.py:124
 msgid "Make changes to the dictionary and press any key"
 msgstr "Внесите изменения в словарь и нажмите любую клавишу"
 
 #: mclient/src/plugins/multitrandem/utils.py:138
-#: mclientqt/src/plugins/multitrandem/utils.py:138
+#: mclientqt/src/plugins/multitrandem/utils.py:136
 msgid "Original positions:"
 msgstr "Первоначальные позиции:"
 
 #: mclient/src/plugins/multitrandem/utils.py:141
-#: mclientqt/src/plugins/multitrandem/utils.py:141
+#: mclientqt/src/plugins/multitrandem/utils.py:139
 msgid "Final positions:"
 msgstr "Конечные позиции:"
 
 #: mclient/src/plugins/multitrandem/utils.py:164
-#: mclientqt/src/plugins/multitrandem/utils.py:164
+#: mclientqt/src/plugins/multitrandem/utils.py:162
 msgid "Restore the damaged file?"
 msgstr "Восстановить поврежденный файл?"
 
 #: mclient/src/plugins/multitrandem/utils.py:299
 #: mclient/src/plugins/multitrandem/utils.py:301
-#: mclientqt/src/plugins/multitrandem/utils.py:299
-#: mclientqt/src/plugins/multitrandem/utils.py:301
+#: mclientqt/src/plugins/multitrandem/utils.py:308
+#: mclientqt/src/plugins/multitrandem/utils.py:310
 msgid "List {}:"
 msgstr "Список {}:"
 
 #: mclient/src/plugins/multitrandem/utils.py:525
-#: mclientqt/src/plugins/multitrandem/utils.py:525 skl_shared/src/logic.py:4818
-#: skl_shared_qt/src/logic.py:3710
+#: mclientqt/src/plugins/multitrandem/utils.py:531 skl_shared/src/logic.py:4818
+#: skl_shared_qt/src/logic.py:3615
 msgid "Not implemented yet!"
 msgstr "Еще не реализовано!"
 
@@ -26939,29 +26938,29 @@ msgstr "Данное действие извлечет данные из дво�
 #: mclient/src/plugins/multitrandem/utils.py:1139
 #: mclientqt/src/plugins/multitrandem/utils.py:722
 #: mclientqt/src/plugins/multitrandem/utils.py:723
-#: mclientqt/src/plugins/multitrandem/utils.py:1138
-#: mclientqt/src/plugins/multitrandem/utils.py:1139
+#: mclientqt/src/plugins/multitrandem/utils.py:1135
+#: mclientqt/src/plugins/multitrandem/utils.py:1136
 msgid "Position {}: "
 msgstr "Позиция {}: "
 
 #: mclient/src/plugins/multitrandem/utils.py:727
-#: mclientqt/src/plugins/multitrandem/utils.py:727
+#: mclientqt/src/plugins/multitrandem/utils.py:731
 msgid "An output file: "
 msgstr "Выходной файл:"
 
 #: mclient/src/plugins/multitrandem/utils.py:734
 #: mclient/src/plugins/multitrandem/utils.py:1147
 #: mclient/src/plugins/multitrandem/utils.py:1151
-#: mclientqt/src/plugins/multitrandem/utils.py:734
-#: mclientqt/src/plugins/multitrandem/utils.py:1147
-#: mclientqt/src/plugins/multitrandem/utils.py:1151
+#: mclientqt/src/plugins/multitrandem/utils.py:745
+#: mclientqt/src/plugins/multitrandem/utils.py:1150
+#: mclientqt/src/plugins/multitrandem/utils.py:1154
 msgid "Write \"{}\""
 msgstr "Запись \"{}\""
 
 #: mclient/src/plugins/multitrandem/utils.py:793
 #: mclient/src/plugins/multitrandem/utils.py:1208
-#: mclientqt/src/plugins/multitrandem/utils.py:793
-#: mclientqt/src/plugins/multitrandem/utils.py:1208
+#: mclientqt/src/plugins/multitrandem/utils.py:792
+#: mclientqt/src/plugins/multitrandem/utils.py:1202
 msgid "Enter a position to go or press Return to keep the current one ({}): "
 msgstr ""
 "Введите позицию для перехода или нажмите Return для сохранения текущего "
@@ -26969,8 +26968,8 @@ msgstr ""
 
 #: mclient/src/plugins/multitrandem/utils.py:849
 #: mclient/src/plugins/multitrandem/utils.py:1328
-#: mclientqt/src/plugins/multitrandem/utils.py:849
-#: mclientqt/src/plugins/multitrandem/utils.py:1328
+#: mclientqt/src/plugins/multitrandem/utils.py:848
+#: mclientqt/src/plugins/multitrandem/utils.py:1315
 msgid "Enter a buffer size or press Return to keep the current one ({}): "
 msgstr ""
 "Введите размер буфера или нажмите Return для сохранения текущего значения "
@@ -26978,89 +26977,89 @@ msgstr ""
 
 #: mclient/src/plugins/multitrandem/utils.py:868
 #: mclient/src/plugins/multitrandem/utils.py:1349
-#: mclientqt/src/plugins/multitrandem/utils.py:868
-#: mclientqt/src/plugins/multitrandem/utils.py:1349
+#: mclientqt/src/plugins/multitrandem/utils.py:867
+#: mclientqt/src/plugins/multitrandem/utils.py:1336
 msgid "Available commands: {}"
 msgstr "Доступные команды: {}"
 
 #: mclient/src/plugins/multitrandem/utils.py:879
 #: mclient/src/plugins/multitrandem/utils.py:1360
-#: mclientqt/src/plugins/multitrandem/utils.py:879
-#: mclientqt/src/plugins/multitrandem/utils.py:1360
+#: mclientqt/src/plugins/multitrandem/utils.py:878
+#: mclientqt/src/plugins/multitrandem/utils.py:1347
 msgid "Enter a command: "
 msgstr "Введите команду: "
 
 #: mclient/src/plugins/multitrandem/utils.py:937
 #: mclient/src/plugins/multitrandem/utils.py:1412
-#: mclientqt/src/plugins/multitrandem/utils.py:937
-#: mclientqt/src/plugins/multitrandem/utils.py:1412
+#: mclientqt/src/plugins/multitrandem/utils.py:936
+#: mclientqt/src/plugins/multitrandem/utils.py:1399
 msgid "An unknown command! Enter \"help\" to get help."
 msgstr "Незивестная команда! Введите \"help\" для получения справки."
 
 #: mclient/src/plugins/multitrandem/utils.py:965
 #: mclient/src/plugins/multitrandem/utils.py:1464
-#: mclientqt/src/plugins/multitrandem/utils.py:965
-#: mclientqt/src/plugins/multitrandem/utils.py:1464
+#: mclientqt/src/plugins/multitrandem/utils.py:964
+#: mclientqt/src/plugins/multitrandem/utils.py:1451
 msgid "Current position: {}"
 msgstr "Текущая позиция: {}"
 
 #: mclient/src/plugins/multitrandem/utils.py:1059
-#: mclientqt/src/plugins/multitrandem/utils.py:1059
+#: mclientqt/src/plugins/multitrandem/utils.py:1057
 msgid "Replace bytes \"{}\" with \"{}\" (file: {}, position: {})"
 msgstr "Замена байтов \"{}\" на \"{}\" (файл: {}, позиция: {})"
 
 #: mclient/src/plugins/multitrandem/utils.py:1083
-#: mclientqt/src/plugins/multitrandem/utils.py:1083
+#: mclientqt/src/plugins/multitrandem/utils.py:1078
 msgid "Input a string: "
 msgstr "Введите строку: "
 
 #: mclient/src/plugins/multitrandem/utils.py:1092
-#: mclientqt/src/plugins/multitrandem/utils.py:1092
+#: mclientqt/src/plugins/multitrandem/utils.py:1087
 msgid "Input an integer: "
 msgstr "Введите целое число: "
 
 #: mclient/src/plugins/multitrandem/utils.py:1110
 #: mclient/src/plugins/multitrandem/utils.py:1111
-#: mclientqt/src/plugins/multitrandem/utils.py:1110
-#: mclientqt/src/plugins/multitrandem/utils.py:1111
+#: mclientqt/src/plugins/multitrandem/utils.py:1107
+#: mclientqt/src/plugins/multitrandem/utils.py:1108
 msgid "File {}: "
 msgstr "Файл {}: "
 
 #: mclient/src/plugins/multitrandem/utils.py:1136
-#: mclientqt/src/plugins/multitrandem/utils.py:1136
+#: mclientqt/src/plugins/multitrandem/utils.py:1133
 msgid "This will extract binary data from both files from set positions"
 msgstr ""
 "Данное действие извлечет двоичные данные из обоих файлов с заданных позиций"
 
 #: mclient/src/plugins/multitrandem/utils.py:1438
-#: mclientqt/src/plugins/multitrandem/utils.py:1438
+#: mclientqt/src/plugins/multitrandem/utils.py:1425
 msgid "Chunk 1:"
 msgstr "Фрагмент 1:"
 
 #: mclient/src/plugins/multitrandem/utils.py:1447
-#: mclientqt/src/plugins/multitrandem/utils.py:1447
+#: mclientqt/src/plugins/multitrandem/utils.py:1434
 msgid "Chunk 2:"
 msgstr "Фрагмент 2:"
 
 #: mclient/src/plugins/stardict/cleanup.py:408
-#: mclientqt/src/plugins/stardict/cleanup.py:408
+#: mclientqt/src/plugins/stardict/cleanup.py:407
 msgid "Type 3"
 msgstr "Тип 3"
 
 #: mclient/src/plugins/stardict/cleanup.py:412
-#: mclientqt/src/plugins/stardict/cleanup.py:412
+#: mclientqt/src/plugins/stardict/cleanup.py:411
 msgid "Type 2"
 msgstr "Тип 2"
 
 #: mclient/src/plugins/stardict/cleanup.py:416
-#: mclientqt/src/plugins/stardict/cleanup.py:416
+#: mclientqt/src/plugins/stardict/cleanup.py:415
 msgid "Type 1"
 msgstr "Тип 1"
 
 #: mclient/src/plugins/stardict/get.py:115
 #: mclient/src/plugins/stardict/get.py:251
-#: mclientqt/src/plugins/stardict/get.py:115
-#: mclientqt/src/plugins/stardict/get.py:251
+#: mclientqt/src/plugins/stardict/get.py:116
+#: mclientqt/src/plugins/stardict/get.py:248
 msgid ""
 "Failed to load \"{}\"!\n"
 "\n"
@@ -27071,53 +27070,52 @@ msgstr ""
 "Подробности: {}"
 
 #: mclient/src/plugins/stardict/get.py:128
-#: mclientqt/src/plugins/stardict/get.py:128
+#: mclientqt/src/plugins/stardict/get.py:127
 msgid "GZIP signature is expected, but found \"{}\"!"
 msgstr "Требуется сигнатура GZIP, но найдено \"{}\"!"
 
 #: mclient/src/plugins/stardict/get.py:132
-#: mclientqt/src/plugins/stardict/get.py:132
+#: mclientqt/src/plugins/stardict/get.py:131
 msgid "Only DEFLATE archives are supported!"
 msgstr "Поддерживаются только архивы DEFLATE!"
 
 #: mclient/src/plugins/stardict/get.py:135
-#: mclientqt/src/plugins/stardict/get.py:135
+#: mclientqt/src/plugins/stardict/get.py:134
 msgid "An extra dictzip field is expected!"
 msgstr "Требуется дополнительное поле dictzip!"
 
 #: mclient/src/plugins/stardict/get.py:139
-#: mclientqt/src/plugins/stardict/get.py:139
+#: mclientqt/src/plugins/stardict/get.py:138
 msgid "An RA signature is expected!"
 msgstr "Требуется сигнатура RA!"
 
 #: mclient/src/plugins/stardict/get.py:241
-#: mclientqt/src/plugins/stardict/get.py:241
+#: mclientqt/src/plugins/stardict/get.py:239
 msgid "File \"{}\" is incorrect!"
 msgstr "Файл \"{}\" некорректен!"
 
 #: mclient/src/plugins/stardict/get.py:450
-#: mclientqt/src/plugins/stardict/get.py:450
+#: mclientqt/src/plugins/stardict/get.py:448
 msgid "\"{}\" has matches for \"{}\""
 msgstr "В \"{}\" найдены совпадения для \"{}\""
 
 #: mclient/src/plugins/stardict/get.py:454
-#: mclientqt/src/plugins/stardict/get.py:454
+#: mclientqt/src/plugins/stardict/get.py:441
 msgid "No matches for \"{}\"!"
 msgstr "Нет совпадений для \"{}\"!"
 
 #: mclient/src/plugins/stardict/get.py:525
-#: mclientqt/src/plugins/stardict/get.py:525
+#: mclientqt/src/plugins/stardict/get.py:519
 msgid "Load Stardict dictionaries ({}/{})"
 msgstr "Загрузка словарей Stardict ({}/{})"
 
 #: mclient/src/settings/controller.py:97 mclient/src/settings/controller.py:212
-#: mclientqt/src/mclientqt.py:1330 mclientqt/src/settings/controller.py:91
+#: mclientqt/src/mclientqt.py:1343 mclientqt/src/settings/controller.py:94
 msgid "A value of this field should be within the range of {}-{}!"
 msgstr "Значение этого поля должно быть в диапазоне {}-{}!"
 
 #: mclient/src/settings/controller.py:186 mclient/src/suggest/controller.py:28
-#: mclient/src/suggest/controller.py:89 mclientqt/src/suggest/controller.py:28
-#: mclientqt/src/suggest/controller.py:89
+#: mclient/src/suggest/controller.py:89
 msgid "This procedure should be overridden"
 msgstr "Данная процедура должна быть переопределена"
 
@@ -27131,29 +27129,29 @@ msgstr "Данная процедура должна быть переопред
 msgid "An external function is not set!"
 msgstr "Внешняя функция не задана!"
 
-#: mclient/src/settings/controller.py:229 mclientqt/src/mclientqt.py:1347
+#: mclient/src/settings/controller.py:229 mclientqt/src/mclientqt.py:1360
 msgid "Table width: {}"
 msgstr "Ширина таблицы: {}"
 
-#: mclient/src/settings/controller.py:231 mclientqt/src/mclientqt.py:1349
+#: mclient/src/settings/controller.py:231 mclientqt/src/mclientqt.py:1362
 msgid "Term column width: {}"
 msgstr "Ширина столбца с терминами: {}"
 
 #: mclient/src/settings/gui.py:26 mclient/src/settings/gui.py:115
-#: mclient/src/settings/gui.py:133 mclientqt/src/settings/gui.py:32
-#: mclientqt/src/settings/gui.py:217 mclientqt/src/settings/gui.py:235
+#: mclient/src/settings/gui.py:133 mclientqt/src/settings/gui.py:27
+#: mclientqt/src/settings/gui.py:214 mclientqt/src/settings/gui.py:232
 msgid "Cut to the chase"
 msgstr "Прямо к делу"
 
 #: mclient/src/settings/gui.py:27 mclient/src/settings/gui.py:117
-#: mclient/src/settings/gui.py:138 mclientqt/src/settings/gui.py:33
-#: mclientqt/src/settings/gui.py:219 mclientqt/src/settings/gui.py:240
+#: mclient/src/settings/gui.py:138 mclientqt/src/settings/gui.py:28
+#: mclientqt/src/settings/gui.py:216 mclientqt/src/settings/gui.py:237
 msgid "Clearness"
 msgstr "Ясность"
 
 #: mclient/src/settings/gui.py:28 mclient/src/settings/gui.py:119
-#: mclient/src/settings/gui.py:143 mclientqt/src/settings/gui.py:34
-#: mclientqt/src/settings/gui.py:221 mclientqt/src/settings/gui.py:245
+#: mclient/src/settings/gui.py:143 mclientqt/src/settings/gui.py:28
+#: mclientqt/src/settings/gui.py:218 mclientqt/src/settings/gui.py:242
 msgid "Custom"
 msgstr "Особый"
 
@@ -27162,15 +27160,15 @@ msgstr "Особый"
 #: mclient/src/settings/gui.py:849 mclient/src/settings/gui.py:863
 #: mclient/src/settings/gui.py:877 mclient/src/settings/gui.py:891
 #: mclient/src/settings/gui.py:905 mclient/src/settings/gui.py:919
-#: mclient/src/settings/gui.py:933 mclientqt/src/settings/gui.py:52
-#: mclientqt/src/settings/gui.py:66 mclientqt/src/settings/gui.py:80
-#: mclientqt/src/settings/gui.py:94 mclientqt/src/settings/gui.py:108
-#: mclientqt/src/settings/gui.py:122 mclientqt/src/settings/gui.py:136
-#: mclientqt/src/settings/gui.py:151 mclientqt/src/settings/gui.py:166
-#: mclientqt/src/settings/gui.py:181 mclientqt/src/settings/gui.py:196
+#: mclient/src/settings/gui.py:933 mclientqt/src/settings/gui.py:45
+#: mclientqt/src/settings/gui.py:59 mclientqt/src/settings/gui.py:73
+#: mclientqt/src/settings/gui.py:87 mclientqt/src/settings/gui.py:101
+#: mclientqt/src/settings/gui.py:115 mclientqt/src/settings/gui.py:129
+#: mclientqt/src/settings/gui.py:145 mclientqt/src/settings/gui.py:161
+#: mclientqt/src/settings/gui.py:177 mclientqt/src/settings/gui.py:193
 #: skl_shared/src/logic.py:1283 skl_shared/src/logic.py:2195
-#: skl_shared/src/logic.py:4813 skl_shared_qt/src/logic.py:830
-#: skl_shared_qt/src/logic.py:1718 skl_shared_qt/src/logic.py:3705
+#: skl_shared/src/logic.py:4813 skl_shared_qt/src/logic.py:796
+#: skl_shared_qt/src/logic.py:1673 skl_shared_qt/src/logic.py:3610
 msgid "Empty input is not allowed!"
 msgstr "Пустые входные данные не допускаются!"
 
@@ -27183,8 +27181,8 @@ msgid "Reset settings"
 msgstr "Сброс настроек"
 
 #: mclient/src/settings/gui.py:346
-#: mclientqt/src/prior_block/priorities/gui.py:406
-#: mclientqt/src/settings/gui.py:601 skl_shared/src/shared.py:711
+#: mclientqt/src/prior_block/priorities/gui.py:401
+#: mclientqt/src/settings/gui.py:594 skl_shared/src/shared.py:711
 msgid "Reset"
 msgstr "Сброс"
 
@@ -27193,12 +27191,12 @@ msgid "Apply settings"
 msgstr "Применить настройки"
 
 #: mclient/src/settings/gui.py:352
-#: mclientqt/src/prior_block/priorities/gui.py:409
-#: mclientqt/src/settings/gui.py:605
+#: mclientqt/src/prior_block/priorities/gui.py:404
+#: mclientqt/src/settings/gui.py:598
 msgid "Apply"
 msgstr "Применить"
 
-#: mclient/src/settings/gui.py:496 mclientqt/src/settings/gui.py:385
+#: mclient/src/settings/gui.py:496 mclientqt/src/settings/gui.py:381
 msgid "Style:"
 msgstr "Стиль:"
 
@@ -27207,7 +27205,7 @@ msgstr "Стиль:"
 msgid "Column"
 msgstr "Столбец"
 
-#: mclient/src/settings/gui.py:541 mclientqt/src/settings/gui.py:471
+#: mclient/src/settings/gui.py:541 mclientqt/src/settings/gui.py:467
 msgid ""
 "Sort by each column (if it is set, except for transcription) and order parts "
 "of speech"
@@ -27231,15 +27229,15 @@ msgstr "Приоритизировать тематики"
 msgid "Vertical view"
 msgstr "Вертикальный вид"
 
-#: mclient/src/settings/gui.py:561 mclientqt/src/settings/gui.py:472
+#: mclient/src/settings/gui.py:561 mclientqt/src/settings/gui.py:468
 msgid "Shorten subject titles"
 msgstr "Сокращать названия тематик"
 
-#: mclient/src/settings/gui.py:565 mclientqt/src/settings/gui.py:473
+#: mclient/src/settings/gui.py:565 mclientqt/src/settings/gui.py:469
 msgid "Shorten parts of speech"
 msgstr "Сокращать части речи"
 
-#: mclient/src/settings/gui.py:569 mclientqt/src/settings/gui.py:474
+#: mclient/src/settings/gui.py:569 mclientqt/src/settings/gui.py:470
 msgid "Show user names"
 msgstr "Показывать имена пользователей"
 
@@ -27247,39 +27245,39 @@ msgstr "Показывать имена пользователей"
 msgid "Select terms only"
 msgstr "Выделять только термины"
 
-#: mclient/src/settings/gui.py:577 mclientqt/src/settings/gui.py:475
+#: mclient/src/settings/gui.py:577 mclientqt/src/settings/gui.py:471
 msgid "Iconify the program window after copying"
 msgstr "Свернуть окно программы после копирования"
 
-#: mclient/src/settings/gui.py:581 mclientqt/src/settings/gui.py:476
+#: mclient/src/settings/gui.py:581
 msgid "Show suggestions on input"
 msgstr "Показывать подсказку для вводимых слов"
 
-#: mclient/src/settings/gui.py:585 mclientqt/src/settings/gui.py:477
+#: mclient/src/settings/gui.py:585 mclientqt/src/settings/gui.py:472
 msgid "Autoswap Russian and the other language if appropriate"
 msgstr "Поменять местами русский и другой язык, если это целесообразно"
 
-#: mclient/src/settings/gui.py:589 mclientqt/src/settings/gui.py:478
+#: mclient/src/settings/gui.py:589 mclientqt/src/settings/gui.py:473
 msgid "Show a phrase count"
 msgstr "Показывать счетчик фраз"
 
-#: mclient/src/settings/gui.py:593 mclientqt/src/settings/gui.py:479
+#: mclient/src/settings/gui.py:593 mclientqt/src/settings/gui.py:474
 msgid "Adjust columns by width"
 msgstr "Выровнять столбцы по ширине"
 
-#: mclient/src/settings/gui.py:597 mclientqt/src/settings/gui.py:489
+#: mclient/src/settings/gui.py:597 mclientqt/src/settings/gui.py:484
 msgid "Preferred number of columns:"
 msgstr "Предпочтительное число столбцов:"
 
-#: mclient/src/settings/gui.py:606 mclientqt/src/settings/gui.py:491
+#: mclient/src/settings/gui.py:606 mclientqt/src/settings/gui.py:486
 msgid "Fixed column width:"
 msgstr "Ширина фиксированных:"
 
-#: mclient/src/settings/gui.py:615 mclientqt/src/settings/gui.py:493
+#: mclient/src/settings/gui.py:615 mclientqt/src/settings/gui.py:488
 msgid "Term column width:"
 msgstr "Ширина с терминами:"
 
-#: mclient/src/settings/gui.py:629 mclientqt/src/settings/gui.py:495
+#: mclient/src/settings/gui.py:629 mclientqt/src/settings/gui.py:490
 msgid "Suggest"
 msgstr "Предложить"
 
@@ -27299,10 +27297,10 @@ msgstr "Часть речи"
 #: skl_shared/src/logic.py:1301 skl_shared/src/logic.py:2222
 #: skl_shared/src/logic.py:2368 skl_shared/src/logic.py:2893
 #: skl_shared/src/logic.py:2919 skl_shared/src/logic.py:3003
-#: skl_shared/src/logic.py:3645 skl_shared_qt/src/logic.py:848
-#: skl_shared_qt/src/logic.py:1746 skl_shared_qt/src/logic.py:1895
-#: skl_shared_qt/src/logic.py:2502 skl_shared_qt/src/logic.py:2525
-#: skl_shared_qt/src/logic.py:2607 skl_shared_qt/src/logic.py:3031
+#: skl_shared/src/logic.py:3645 skl_shared_qt/src/logic.py:814
+#: skl_shared_qt/src/logic.py:1701 skl_shared_qt/src/logic.py:1850
+#: skl_shared_qt/src/logic.py:2449 skl_shared_qt/src/logic.py:2472
+#: skl_shared_qt/src/logic.py:2557 skl_shared_qt/src/logic.py:2954
 msgid ""
 "Operation has failed!\n"
 "Details: {}"
@@ -27348,7 +27346,7 @@ msgid "Reload settings"
 msgstr "Перезагрузить настройки"
 
 #: mclient/src/subjects/blacklist/gui.py:223
-#: mclient/src/subjects/priorities/gui.py:271 mclientqt/src/gui.py:768
+#: mclient/src/subjects/priorities/gui.py:271 mclientqt/src/gui.py:774
 #: mclientqt/src/prior_block/blacklist/gui.py:210 skl_shared/src/shared.py:628
 #: skl_shared/src/shared.py:702 skl_shared/src/shared.py:1295
 #: skl_shared/src/shared.py:1585 skl_shared/src/shared.py:2658
@@ -27377,7 +27375,7 @@ msgstr "Показать все тематики"
 #: mclient/src/subjects/blacklist/gui.py:237
 #: mclient/src/subjects/priorities/gui.py:285 mclientqt/src/mclientqt.py:48
 #: mclientqt/src/prior_block/blacklist/gui.py:224
-#: mclientqt/src/prior_block/priorities/gui.py:446
+#: mclientqt/src/prior_block/priorities/gui.py:441
 msgid "Main"
 msgstr "Основные"
 
@@ -27390,7 +27388,7 @@ msgstr "Показать основные тематики"
 #: mclient/src/subjects/blacklist/gui.py:244
 #: mclient/src/subjects/priorities/gui.py:292 mclientqt/src/mclientqt.py:56
 #: mclientqt/src/prior_block/blacklist/gui.py:231
-#: mclientqt/src/prior_block/priorities/gui.py:446
+#: mclientqt/src/prior_block/priorities/gui.py:441
 msgid "From the article"
 msgstr "Из статьи"
 
@@ -27401,12 +27399,12 @@ msgid "Show subjects from the current article"
 msgstr "Показать тематики из текущей статьи"
 
 #: mclient/src/subjects/priorities/gui.py:181
-#: mclientqt/src/prior_block/priorities/gui.py:382
+#: mclientqt/src/prior_block/priorities/gui.py:377
 msgid "Prioritize selection on the right"
 msgstr "Задать приоритет выделенному справа"
 
 #: mclient/src/subjects/priorities/gui.py:190
-#: mclientqt/src/prior_block/priorities/gui.py:386
+#: mclientqt/src/prior_block/priorities/gui.py:381
 msgid "Unprioritize selection on the left"
 msgstr "Снять приоритет с выделенного слева"
 
@@ -27419,32 +27417,32 @@ msgid "Unprioritize related subjects"
 msgstr "Убрать приоритет родственных тематик"
 
 #: mclient/src/subjects/priorities/gui.py:217
-#: mclientqt/src/prior_block/priorities/gui.py:390
+#: mclientqt/src/prior_block/priorities/gui.py:385
 msgid "Increase priority"
 msgstr "Увеличить приоритет"
 
 #: mclient/src/subjects/priorities/gui.py:226
-#: mclientqt/src/prior_block/priorities/gui.py:394
+#: mclientqt/src/prior_block/priorities/gui.py:389
 msgid "Decrease priority"
 msgstr "Уменьшить приоритет"
 
 #: mclient/src/subjects/priorities/gui.py:235
-#: mclientqt/src/prior_block/priorities/gui.py:398
+#: mclientqt/src/prior_block/priorities/gui.py:393
 msgid "Move to the top"
 msgstr "Переместить в начало"
 
 #: mclient/src/subjects/priorities/gui.py:244
-#: mclientqt/src/prior_block/priorities/gui.py:402
+#: mclientqt/src/prior_block/priorities/gui.py:397
 msgid "Move to the bottom"
 msgstr "Переместить в конец"
 
 #: mclient/src/subjects/subjects.py:82 mclient/src/tests.py:458
-#: mclientqt/src/tests.py:579 mclientqt/src/tests.py:752
+#: mclientqt/src/tests.py:588 mclientqt/src/tests.py:760
 msgid "SHORT"
 msgstr "КОРОТКО"
 
 #: mclient/src/subjects/subjects.py:82 mclient/src/tests.py:458
-#: mclientqt/src/tests.py:752
+#: mclientqt/src/tests.py:760
 msgid "TITLE"
 msgstr "ЗАГОЛОВОК"
 
@@ -27456,20 +27454,20 @@ msgstr "ЗАБЛОКИРОВАНО"
 msgid "Pairs: {}"
 msgstr "Пары: {}"
 
-#: mclient/src/tests.py:305 mclientqt/src/tests.py:434
+#: mclient/src/tests.py:305 mclientqt/src/tests.py:432
 msgid "Number of blocks: {}"
 msgstr "Число блоков: {}"
 
-#: mclient/src/tests.py:307 mclientqt/src/tests.py:436
+#: mclient/src/tests.py:307 mclientqt/src/tests.py:434
 msgid "Web-page:"
 msgstr "Веб-страница:"
 
-#: mclient/src/tests.py:309 mclientqt/src/tests.py:438
+#: mclient/src/tests.py:309 mclientqt/src/tests.py:436
 #: skl_shared/src/tests.py:1314
 msgid "Text:"
 msgstr "Текст:"
 
-#: mclient/src/tests.py:527 mclientqt/src/tests.py:825
+#: mclient/src/tests.py:527 mclientqt/src/tests.py:833
 msgid ""
 "The following pairs are not supported:\n"
 "{}"
@@ -27477,8 +27475,8 @@ msgstr ""
 "Следующие пары не поддерживаются:\n"
 "{}"
 
-#: mclient/src/tests.py:643 mclient/src/tests.py:657 mclientqt/src/tests.py:943
-#: mclientqt/src/tests.py:958
+#: mclient/src/tests.py:643 mclient/src/tests.py:657 mclientqt/src/tests.py:949
+#: mclientqt/src/tests.py:964
 msgid "Offline"
 msgstr "Оффлайн"
 
@@ -27520,45 +27518,63 @@ msgid "SPEECH"
 msgstr "ЧАСТЬ РЕЧИ"
 
 #: mclientqt/src/cells.py:440
-#| msgid "File \"{}\" has not been found!"
 msgid "\"{}\" has not been found in \"{}\"!"
 msgstr "\"{}\" не найдено в \"{}\"!"
 
-#: mclientqt/src/config.py:505
+#: mclientqt/src/config.py:262
+msgid "[Autosave] Row height. Set to 0 to enable automatical distribution"
+msgstr ""
+"[Автосохранение] Высота строки. Задайте 0, чтобы включить автораспределение"
+
+#: mclientqt/src/config.py:478
 msgid "Toggle popup"
 msgstr "Переключить всплывающее окно"
 
-#: mclientqt/src/config.py:767 skl_shared/src/logic.py:953
-#: skl_shared/src/logic.py:2512 skl_shared_qt/src/logic.py:705
+#: mclientqt/src/config.py:699 skl_shared/src/logic.py:953
+#: skl_shared/src/logic.py:2512 skl_shared_qt/src/logic.py:673
 msgid "Write file \"{}\""
 msgstr "Запись файла \"{}\""
 
-#: mclientqt/src/gui.py:112 mclientqt/src/history/gui.py:43
+#: mclientqt/src/config2.py:33
+msgid ""
+"Configuration file \"{}\" has values of a wrong type!\n"
+"Fix or delete this file.\n"
+"\n"
+"Details:\n"
+"{}"
+msgstr ""
+"Значения конфигурационного файла \"{}\" имеют неверный тип!\n"
+"Исправьте или удалите этот файл.\n"
+"\n"
+"Подробности:\n"
+"{}"
+
+#: mclientqt/src/gui.py:116 mclientqt/src/history/gui.py:43
 #: mclientqt/src/save/gui.py:38 mclientqt/src/symbols/gui.py:31
 msgid "List out of bounds at row #{}, column #{}!"
 msgstr "Выход за границы массива, ряд №{}, столбец №{}!"
 
-#: mclientqt/src/gui.py:169
+#: mclientqt/src/gui.py:174
 msgid "Index must be set externally!"
 msgstr "Индекс должен быть задан извне!"
 
-#: mclientqt/src/gui.py:651
+#: mclientqt/src/gui.py:658
 msgid "Toggle history"
 msgstr "Показать/закрыть историю"
 
-#: mclientqt/src/gui.py:761 skl_shared/src/shared.py:4520
+#: mclientqt/src/gui.py:767 skl_shared/src/shared.py:4520
 msgid "Search:"
 msgstr "Поиск:"
 
-#: mclientqt/src/gui.py:767
+#: mclientqt/src/gui.py:773
 msgid "Case-sensitive"
 msgstr "С учетом регистра"
 
-#: mclientqt/src/gui.py:770
+#: mclientqt/src/gui.py:776
 msgid "Back"
 msgstr "Назад"
 
-#: mclientqt/src/gui.py:771
+#: mclientqt/src/gui.py:777
 msgid "Forward"
 msgstr "Вперед"
 
@@ -27591,31 +27607,31 @@ msgstr "Заголовок"
 msgid "test"
 msgstr "тест"
 
-#: mclientqt/src/logic.py:478
+#: mclientqt/src/logic.py:475
 msgid "Number of fixed columns: {}"
 msgstr "Число фиксированных столбцов: {}"
 
-#: mclientqt/src/logic.py:821
+#: mclientqt/src/logic.py:815
 msgid "Columns with no text: {}"
 msgstr "Столбцы без текста: {}"
 
-#: mclientqt/src/logic.py:824
+#: mclientqt/src/logic.py:818
 msgid "All columns have texts"
 msgstr "Текст есть во всех столбцах"
 
-#: mclientqt/src/logic.py:973
+#: mclientqt/src/logic.py:967
 msgid "Table size: {}×{}"
 msgstr "Размеры таблицы: {}×{}"
 
-#: mclientqt/src/logic.py:1041
+#: mclientqt/src/logic.py:1035
 msgid "Row #{}. Column #{}: \"{}\""
 msgstr "Строка №{}, столбец №{}: \"{}\""
 
-#: mclientqt/src/logic.py:1055
+#: mclientqt/src/logic.py:1049
 msgid "Row #{}. Column #{}. Text: \"{}\""
 msgstr "Строка №{}, столбец №{}. Текст: \"{}\""
 
-#: mclientqt/src/mclientqt.py:45 mclientqt/src/prior_block/priorities/gui.py:446
+#: mclientqt/src/mclientqt.py:45 mclientqt/src/prior_block/priorities/gui.py:441
 msgid "All subjects"
 msgstr "Все тематики"
 
@@ -27623,39 +27639,43 @@ msgstr "Все тематики"
 msgid "Mode: \"{}\""
 msgstr "Режим: \"{}\""
 
-#: mclientqt/src/mclientqt.py:332 mclientqt/src/mclientqt.py:351
+#: mclientqt/src/mclientqt.py:321 mclientqt/src/mclientqt.py:340
 msgid "Web-pages (*.htm, *.html)"
 msgstr "Веб-страницы (*.htm, *.html)"
 
-#: mclientqt/src/mclientqt.py:366
+#: mclientqt/src/mclientqt.py:355
 msgid "Plain text (*.txt)"
 msgstr "Обычный текст (*.txt)"
 
-#: mclientqt/src/mclientqt.py:484
+#: mclientqt/src/mclientqt.py:473
 msgid "Offline dictionaries loaded: "
 msgstr "Загружено локальных словарей: "
 
-#: mclientqt/src/mclientqt.py:835
+#: mclientqt/src/mclientqt.py:823
 msgid "No cell is selected!"
 msgstr "Нет выбранных ячеек!"
 
-#: mclientqt/src/mclientqt.py:981
+#: mclientqt/src/mclientqt.py:969
 msgid "Number of cells: {}"
 msgstr "Число ячеек: {}"
 
-#: mclientqt/src/mclientqt.py:983
+#: mclientqt/src/mclientqt.py:971
 msgid "Number of long cells: {}"
 msgstr "Число длинных ячеек: {}"
 
-#: mclientqt/src/mclientqt.py:998
+#: mclientqt/src/mclientqt.py:986
 msgid "Window height: {}"
 msgstr "Высота окна: {}"
 
-#: mclientqt/src/mclientqt.py:1145
+#: mclientqt/src/mclientqt.py:1057
+msgid "No suggestions are available!"
+msgstr "Нет доступных вариантов!"
+
+#: mclientqt/src/mclientqt.py:1165
 msgid "Status: {}"
 msgstr "Состояние: {}"
 
-#: mclientqt/src/mclientqt.py:1394 mclientqt/src/mclientqt.py:1407
+#: mclientqt/src/mclientqt.py:1402 mclientqt/src/mclientqt.py:1415
 msgid "Set the number of columns to {} ({} in total)"
 msgstr "Задать число столбцов: {} (всего {})"
 
@@ -27679,15 +27699,21 @@ msgstr "Тезаурус"
 msgid "sep. words"
 msgstr "отд. слова"
 
-#: mclientqt/src/plugins/multitrancom/elems.py:347
-msgid "Suggestions:"
-msgstr "Варианты замены:"
+#: mclientqt/src/plugins/multitrancom/elems.py:363
+#| msgid "Unexpected end of text!"
+msgid "Unexpected block type: \"{}\"!"
+msgstr "Неожиданный тип блока: \"{}\"!"
 
-#: mclientqt/src/plugins/multitrancom/elems.py:348
-msgid "sug."
-msgstr "вар."
+#: mclientqt/src/plugins/multitrancom/elems.py:402
+#: mclientqt/src/plugins/multitrancom/elems.py:415
+msgid "Block #{}. Text: \"{}\". URL: {}"
+msgstr "Блок №{}. Текст: \"{}\". URL: {}"
 
-#: mclientqt/src/plugins/multitrancom/elems.py:715
+#: mclientqt/src/plugins/multitrancom/elems.py:444
+msgid "Block #{}. Type: \"{}\". Text: \"{}\". URL: \"{}\""
+msgstr "Блок №{}. Тип: \"{}\". Текст: \"{}\". URL: \"{}\""
+
+#: mclientqt/src/plugins/multitrancom/elems.py:808
 msgid "Phrases ({})"
 msgstr "Фразы ({})"
 
@@ -27703,36 +27729,32 @@ msgstr "Операция завершилась с ошибкой!"
 msgid "Full cell text"
 msgstr "Весь текст ячейки"
 
-#: mclientqt/src/prior_block/priorities/controller.py:30
-msgid "In use"
-msgstr "Используются"
+#: mclientqt/src/prior_block/priorities/gui.py:71
+msgid "Unexpected type: {}"
+msgstr "Неожиданный тип: {}"
 
-#: mclientqt/src/prior_block/priorities/controller.py:33
-msgid "Available"
-msgstr "Доступны"
-
-#: mclientqt/src/prior_block/priorities/gui.py:340
+#: mclientqt/src/prior_block/priorities/gui.py:335
 msgid "Prioritization"
 msgstr "Приоритизация"
 
-#: mclientqt/src/prior_block/priorities/gui.py:353
+#: mclientqt/src/prior_block/priorities/gui.py:348
 msgid "Prioritized subjects"
 msgstr "Приоритетные тематики"
 
-#: mclientqt/src/prior_block/priorities/gui.py:354
+#: mclientqt/src/prior_block/priorities/gui.py:349
 msgid "Available subjects"
 msgstr "Все тематики"
 
-#: mclientqt/src/prior_block/priorities/gui.py:407
+#: mclientqt/src/prior_block/priorities/gui.py:402
 msgid "Reload subjects"
 msgstr "Перезагрузить тематики"
 
-#: mclientqt/src/prior_block/priorities/gui.py:410 skl_shared/src/shared.py:1309
+#: mclientqt/src/prior_block/priorities/gui.py:405 skl_shared/src/shared.py:1309
 #: skl_shared/src/shared.py:2666
 msgid "Save and close"
 msgstr "Запомнить и выйти"
 
-#: mclientqt/src/prior_block/priorities/gui.py:445
+#: mclientqt/src/prior_block/priorities/gui.py:440
 msgid "Enable"
 msgstr "Задействовать"
 
@@ -27740,19 +27762,19 @@ msgstr "Задействовать"
 msgid "Save article"
 msgstr "Сохранение статьи"
 
-#: mclientqt/src/settings/gui.py:386
+#: mclientqt/src/settings/gui.py:382
 msgid "Column {}:"
 msgstr "Столбец {}:"
 
-#: mclientqt/src/settings/gui.py:391
+#: mclientqt/src/settings/gui.py:387
 msgid "Part of speech {}:"
 msgstr "Часть речи {}:"
 
-#: mclientqt/src/settings/gui.py:602
+#: mclientqt/src/settings/gui.py:595
 msgid "Restore recommended settings"
 msgstr "Восстановить рекомендуемые настройки"
 
-#: mclientqt/src/settings/gui.py:606
+#: mclientqt/src/settings/gui.py:599
 msgid "Apply current settings and reload the article"
 msgstr "Применить текущие настройки и перезагрузить статью"
 
@@ -27760,25 +27782,38 @@ msgstr "Применить текущие настройки и перезагр
 msgid "Paste symbols"
 msgstr "Вставка символов"
 
-#: mclientqt/src/tests.py:529
+#: mclientqt/src/tests.py:538
 msgid "Prioritized subjects loaded from {}:"
 msgstr "Приоритетные тематики, загруженные из {}:"
 
-#: mclientqt/src/tests.py:536
+#: mclientqt/src/tests.py:545
 msgid "Subject: \"{}\""
 msgstr "Тематика: \"{}\""
 
-#: mclientqt/src/tests.py:540
+#: mclientqt/src/tests.py:549
 msgid "Highest priority (ascending order): {}"
 msgstr "Самый высокий приоритет (упорядоченность по возрастанию): {}"
 
-#: mclientqt/src/tests.py:543
+#: mclientqt/src/tests.py:552
 msgid "Details:"
 msgstr "Подробности:"
 
-#: mclientqt/src/tests.py:579
+#: mclientqt/src/tests.py:588
 msgid "FULL"
 msgstr "ПОЛНАЯ"
+
+#: mclientqt/src/tests.py:896
+#| msgid "#: {}; Pattern: \"{}\"; Match: {}"
+msgid "Source: \"{}\"; pair: \"{}\"; search: \"{}\""
+msgstr "Источник: \"{}\"; пара: \"{}\"; запрос: \"{}\""
+
+#: mclientqt/src/tests.py:942
+msgid "Source: {}; timeout: {}"
+msgstr "Источник: {}; таймаут: {}"
+
+#: mclientqt/src/tests.py:967 mclientqt/src/tests.py:972
+msgid "Source: {}; accessibility: {}"
+msgstr "Источник: {}; доступность: {}"
 
 #: mclientqt/src/welcome/logic.py:86 skl_shared/src/logic.py:692
 #: skl_shared/src/logic.py:695
@@ -27797,7 +27832,7 @@ msgstr "Показать весь текст ячейки"
 #: skl_shared/src/gui.py:1230 skl_shared/src/logic.py:443
 #: skl_shared/src/logic.py:490 skl_shared/src/logic.py:1028
 #: skl_shared/src/logic.py:4587 skl_shared/src/shared.py:3800
-#: skl_shared_qt/src/logic.py:792 skl_shared_qt/src/logic.py:3468
+#: skl_shared_qt/src/logic.py:758 skl_shared_qt/src/logic.py:3375
 msgid "WARNING"
 msgstr "ПРЕДУПРЕЖДЕНИЕ"
 
@@ -27808,7 +27843,7 @@ msgstr "ОШИБКА"
 
 #: skl_shared/src/gui.py:1244 skl_shared/src/logic.py:445
 #: skl_shared/src/logic.py:508 skl_shared/src/shared.py:3825
-#: skl_shared/src/shared.py:4030 skl_shared_qt/src/gui.py:373
+#: skl_shared/src/shared.py:4030
 msgid "QUESTION"
 msgstr "ВОПРОС"
 
@@ -27816,12 +27851,11 @@ msgstr "ВОПРОС"
 #: skl_shared/src/logic.py:468 skl_shared/src/logic.py:496
 #: skl_shared/src/logic.py:1006 skl_shared/src/logic.py:1048
 #: skl_shared/src/logic.py:4595 skl_shared/src/shared.py:3809
-#: skl_shared/src/shared.py:3817 skl_shared_qt/src/gui.py:380
-#: skl_shared_qt/src/logic.py:3476
+#: skl_shared/src/shared.py:3817 skl_shared_qt/src/logic.py:3381
 msgid "INFO"
 msgstr "ИНФОРМАЦИЯ"
 
-#: skl_shared/src/logic.py:215 skl_shared_qt/src/logic.py:209
+#: skl_shared/src/logic.py:215 skl_shared_qt/src/logic.py:185
 msgid ""
 "# ATTENTION: This file is automatically generated. You can modify key values "
 "manually, but anything else will be overwritten."
@@ -27829,15 +27863,15 @@ msgstr ""
 "# ВНИМАНИЕ: Данный файл был создан автоматически. Можно вручную менять "
 "значения ключей, однако, все остальное будет перезаписано."
 
-#: skl_shared/src/logic.py:275 skl_shared_qt/src/logic.py:270
+#: skl_shared/src/logic.py:275 skl_shared_qt/src/logic.py:238
 msgid "Set the max number of rows to {}"
 msgstr "Задать максимальное число столбцов: {}"
 
-#: skl_shared/src/logic.py:288 skl_shared_qt/src/logic.py:283
+#: skl_shared/src/logic.py:288 skl_shared_qt/src/logic.py:251
 msgid "Set the max column width to {} symbols"
 msgstr "Ограничить максимальную ширину столбца {} символами"
 
-#: skl_shared/src/logic.py:410 skl_shared_qt/src/logic.py:405
+#: skl_shared/src/logic.py:410 skl_shared_qt/src/logic.py:373
 msgid "Only iterable objects are supported!"
 msgstr "Поддерживаются только итерируемые объекты!"
 
@@ -27858,23 +27892,23 @@ msgstr "Средняя кнопка мыши"
 msgid "Space"
 msgstr "Пробел"
 
-#: skl_shared/src/logic.py:819 skl_shared_qt/src/logic.py:569
+#: skl_shared/src/logic.py:819 skl_shared_qt/src/logic.py:537
 msgid "Reading standard output is not supported in a blocking mode!"
 msgstr "Чтение стандартного вывода не поддерживается в блокирующем режиме!"
 
-#: skl_shared/src/logic.py:848 skl_shared_qt/src/logic.py:599
+#: skl_shared/src/logic.py:848 skl_shared_qt/src/logic.py:567
 msgid "Custom arguments: \"{}\""
 msgstr "Дополнительные параметры: \"{}\""
 
 #: skl_shared/src/logic.py:860 skl_shared/src/logic.py:3674
-#: skl_shared/src/logic.py:3702 skl_shared_qt/src/logic.py:611
-#: skl_shared_qt/src/logic.py:3060 skl_shared_qt/src/logic.py:3088
+#: skl_shared/src/logic.py:3702 skl_shared_qt/src/logic.py:579
+#: skl_shared_qt/src/logic.py:2981 skl_shared_qt/src/logic.py:3008
 msgid "Failed to run \"{}\"!"
 msgstr "Не удалось запустить \"{}\"!"
 
 #: skl_shared/src/logic.py:871 skl_shared/src/logic.py:880
-#: skl_shared/src/logic.py:889 skl_shared_qt/src/logic.py:620
-#: skl_shared_qt/src/logic.py:629 skl_shared_qt/src/logic.py:638
+#: skl_shared/src/logic.py:889 skl_shared_qt/src/logic.py:588
+#: skl_shared_qt/src/logic.py:597 skl_shared_qt/src/logic.py:606
 msgid ""
 "Unable to open the file in an external program. You should probably check the "
 "file associations."
@@ -27884,79 +27918,79 @@ msgstr ""
 
 #: skl_shared/src/logic.py:947 skl_shared/src/logic.py:979
 #: skl_shared/src/logic.py:994 skl_shared/src/regexp.py:45
-#: skl_shared/src/regexp.py:107 skl_shared_qt/src/logic.py:695
-#: skl_shared_qt/src/logic.py:727 skl_shared_qt/src/logic.py:739
+#: skl_shared/src/regexp.py:107 skl_shared_qt/src/logic.py:663
+#: skl_shared_qt/src/logic.py:695 skl_shared_qt/src/logic.py:707
 msgid "Not enough input data!"
 msgstr "Недостаточно входных данных!"
 
-#: skl_shared/src/logic.py:960 skl_shared_qt/src/logic.py:712
+#: skl_shared/src/logic.py:960 skl_shared_qt/src/logic.py:680
 msgid "Unable to write file \"{}\"!"
 msgstr "Не удается записать файл \"{}\"!"
 
 #: skl_shared/src/logic.py:1079 skl_shared/src/logic.py:2577
-#: skl_shared_qt/src/logic.py:2043 skl_shared_qt/src/logic.py:2256
+#: skl_shared_qt/src/logic.py:1998 skl_shared_qt/src/logic.py:2207
 msgid "Entries deleted: {} ({}-{})"
 msgstr "Удалено вхождений: {} ({}-{})"
 
 #: skl_shared/src/logic.py:1088 skl_shared/src/logic.py:1228
 #: skl_shared/src/logic.py:2586 skl_shared/src/logic.py:2743
-#: skl_shared_qt/src/logic.py:2037 skl_shared_qt/src/logic.py:2187
-#: skl_shared_qt/src/logic.py:2250 skl_shared_qt/src/logic.py:2385
+#: skl_shared_qt/src/logic.py:1992 skl_shared_qt/src/logic.py:2142
+#: skl_shared_qt/src/logic.py:2201 skl_shared_qt/src/logic.py:2336
 msgid "File \"{}\" is not sortable!"
 msgstr "Файл \"{}\" не подлежит сортировке!"
 
-#: skl_shared/src/logic.py:1126 skl_shared_qt/src/logic.py:2299
+#: skl_shared/src/logic.py:1126 skl_shared_qt/src/logic.py:2250
 msgid "Dictionary \"{}\": Incorrect line #{}: \"{}\"!"
 msgstr "Словарь \"{}\": Неправильная строка №{}: \"{}\"!"
 
 #: skl_shared/src/logic.py:1287 skl_shared/src/logic.py:2199
 #: skl_shared/src/shared.py:2975 skl_shared/src/shared.py:3705
-#: skl_shared_qt/src/logic.py:834 skl_shared_qt/src/logic.py:1722
+#: skl_shared_qt/src/logic.py:800 skl_shared_qt/src/logic.py:1677
 msgid "File \"{}\" has not been found!"
 msgstr "Файл \"{}\" не найден!"
 
 #: skl_shared/src/logic.py:1342 skl_shared/src/logic.py:2786
-#: skl_shared_qt/src/logic.py:891
+#: skl_shared_qt/src/logic.py:857
 msgid "Load file \"{}\""
 msgstr "Загрузка файла \"{}\""
 
-#: skl_shared/src/logic.py:1359 skl_shared_qt/src/logic.py:908
+#: skl_shared/src/logic.py:1359 skl_shared_qt/src/logic.py:874
 msgid "Unable to read file \"{}\"!"
 msgstr "Не удается прочитать файл \"{}\"!"
 
-#: skl_shared/src/logic.py:1378 skl_shared_qt/src/logic.py:924
+#: skl_shared/src/logic.py:1378 skl_shared_qt/src/logic.py:890
 msgid "Float is required at input, but found \"{}\"! Return 0.0"
 msgstr ""
 "На входе должно быть число с плавающей запятой, но получено \"{}\"! Возвращаю "
 "0.0"
 
-#: skl_shared/src/logic.py:1410 skl_shared_qt/src/logic.py:954
+#: skl_shared/src/logic.py:1410 skl_shared_qt/src/logic.py:920
 msgid "Convert \"{}\" to an integer"
 msgstr "Конвертация \"{}\" в целое число"
 
-#: skl_shared/src/logic.py:1413 skl_shared_qt/src/logic.py:957
+#: skl_shared/src/logic.py:1413 skl_shared_qt/src/logic.py:923
 msgid "Integer is required at input, but found \"{}\"! Return 0"
 msgstr "На входе должно быть целое число, но получено \"{}\"! Возвращаю 0"
 
-#: skl_shared/src/logic.py:1584 skl_shared_qt/src/logic.py:1088
+#: skl_shared/src/logic.py:1584 skl_shared_qt/src/logic.py:1049
 msgid "Different number of opening and closing brackets: \"{}\": {}; \"{}\": {}!"
 msgstr "Разное число открывающих и закрывающих скобок: \"{}\": {}; \"{}\": {}!"
 
-#: skl_shared/src/logic.py:1734 skl_shared_qt/src/logic.py:1269
+#: skl_shared/src/logic.py:1734 skl_shared_qt/src/logic.py:1224
 msgid "Commas and/or semicolons or line breaks can be used, but not altogether!"
 msgstr ""
 "Можно использовать запятые и/или точки с запятой или переносы строк, но не все "
 "сразу!"
 
-#: skl_shared/src/logic.py:1758 skl_shared_qt/src/logic.py:1293
+#: skl_shared/src/logic.py:1758 skl_shared_qt/src/logic.py:1248
 msgid "Failed to convert \"{}\" to an integer!"
 msgstr "Не удалось конвертировать \"{}\" в целое число!"
 
-#: skl_shared/src/logic.py:1769 skl_shared_qt/src/logic.py:1304
+#: skl_shared/src/logic.py:1769 skl_shared_qt/src/logic.py:1259
 msgid "Failed to convert \"{}\" to a floating-point number!"
 msgstr "Не удалось конвертировать \"{}\" в число с плавающей точкой!"
 
-#: skl_shared/src/logic.py:2016 skl_shared_qt/src/logic.py:1539
+#: skl_shared/src/logic.py:2016 skl_shared_qt/src/logic.py:1494
 msgid ""
 "Set time parameters are incorrect or not supported.\n"
 "\n"
@@ -27966,74 +28000,74 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: skl_shared/src/logic.py:2111 skl_shared_qt/src/logic.py:1634
+#: skl_shared/src/logic.py:2111 skl_shared_qt/src/logic.py:1589
 msgid "Jan"
 msgstr "янв"
 
-#: skl_shared/src/logic.py:2113 skl_shared_qt/src/logic.py:1636
+#: skl_shared/src/logic.py:2113 skl_shared_qt/src/logic.py:1591
 msgid "Feb"
 msgstr "фев"
 
-#: skl_shared/src/logic.py:2115 skl_shared_qt/src/logic.py:1638
+#: skl_shared/src/logic.py:2115 skl_shared_qt/src/logic.py:1593
 msgid "Mar"
 msgstr "мар"
 
-#: skl_shared/src/logic.py:2117 skl_shared_qt/src/logic.py:1640
+#: skl_shared/src/logic.py:2117 skl_shared_qt/src/logic.py:1595
 msgid "Apr"
 msgstr "апр"
 
-#: skl_shared/src/logic.py:2119 skl_shared_qt/src/logic.py:1642
+#: skl_shared/src/logic.py:2119 skl_shared_qt/src/logic.py:1597
 msgid "May"
 msgstr "май"
 
-#: skl_shared/src/logic.py:2121 skl_shared_qt/src/logic.py:1644
+#: skl_shared/src/logic.py:2121 skl_shared_qt/src/logic.py:1599
 msgid "Jun"
 msgstr "июн"
 
-#: skl_shared/src/logic.py:2123 skl_shared_qt/src/logic.py:1646
+#: skl_shared/src/logic.py:2123 skl_shared_qt/src/logic.py:1601
 msgid "Jul"
 msgstr "июл"
 
-#: skl_shared/src/logic.py:2125 skl_shared_qt/src/logic.py:1648
+#: skl_shared/src/logic.py:2125 skl_shared_qt/src/logic.py:1603
 msgid "Aug"
 msgstr "авг"
 
-#: skl_shared/src/logic.py:2127 skl_shared_qt/src/logic.py:1650
+#: skl_shared/src/logic.py:2127 skl_shared_qt/src/logic.py:1605
 msgid "Sep"
 msgstr "сен"
 
-#: skl_shared/src/logic.py:2129 skl_shared_qt/src/logic.py:1652
+#: skl_shared/src/logic.py:2129 skl_shared_qt/src/logic.py:1607
 msgid "Oct"
 msgstr "окт"
 
-#: skl_shared/src/logic.py:2131 skl_shared_qt/src/logic.py:1654
+#: skl_shared/src/logic.py:2131 skl_shared_qt/src/logic.py:1609
 msgid "Nov"
 msgstr "ноя"
 
-#: skl_shared/src/logic.py:2133 skl_shared_qt/src/logic.py:1656
+#: skl_shared/src/logic.py:2133 skl_shared_qt/src/logic.py:1611
 msgid "Dec"
 msgstr "дек"
 
-#: skl_shared/src/logic.py:2203 skl_shared_qt/src/logic.py:1726
+#: skl_shared/src/logic.py:2203 skl_shared_qt/src/logic.py:1681
 msgid "The object \"{}\" is not a file!"
 msgstr "Объект \"{}\" не является файлом!"
 
 #: skl_shared/src/logic.py:2231 skl_shared/src/logic.py:3076
-#: skl_shared_qt/src/logic.py:1753 skl_shared_qt/src/logic.py:2680
+#: skl_shared_qt/src/logic.py:1708 skl_shared_qt/src/logic.py:2627
 msgid "Copy \"{}\" to \"{}\""
 msgstr "Копирование \"{}\" в \"{}\""
 
-#: skl_shared/src/logic.py:2237 skl_shared_qt/src/logic.py:1759
+#: skl_shared/src/logic.py:2237 skl_shared_qt/src/logic.py:1714
 msgid "Failed to copy file \"{}\" to \"{}\"!"
 msgstr "Не удалось скопировать файл \"{}\" в \"{}\"!"
 
 #: skl_shared/src/logic.py:2245 skl_shared/src/logic.py:2850
-#: skl_shared_qt/src/logic.py:1767 skl_shared_qt/src/logic.py:2456
+#: skl_shared_qt/src/logic.py:1722 skl_shared_qt/src/logic.py:2403
 msgid "Move \"{}\" to \"{}\""
 msgstr "Перемещение \"{}\" в \"{}\""
 
 #: skl_shared/src/logic.py:2251 skl_shared/src/logic.py:2856
-#: skl_shared_qt/src/logic.py:1773 skl_shared_qt/src/logic.py:2462
+#: skl_shared_qt/src/logic.py:1728 skl_shared_qt/src/logic.py:2409
 msgid ""
 "Failed to move \"{}\" to \"{}\"!\n"
 "\n"
@@ -28044,53 +28078,53 @@ msgstr ""
 "Подробности: {}"
 
 #: skl_shared/src/logic.py:2264 skl_shared/src/logic.py:2311
-#: skl_shared_qt/src/logic.py:1788 skl_shared_qt/src/logic.py:1834
+#: skl_shared_qt/src/logic.py:1743 skl_shared_qt/src/logic.py:1789
 msgid "Failed to get the date of the file \"{}\"!"
 msgstr "Не удалось определить дату файла \"{}\"!"
 
-#: skl_shared/src/logic.py:2275 skl_shared_qt/src/logic.py:1799
+#: skl_shared/src/logic.py:2275 skl_shared_qt/src/logic.py:1754
 msgid "Unable to copy the file \"{}\" to iself!"
 msgstr "Нельзя скопировать файл \"{}\" сам в себя!"
 
 #: skl_shared/src/logic.py:2292 skl_shared/src/logic.py:2971
-#: skl_shared_qt/src/logic.py:1815 skl_shared_qt/src/logic.py:2575
+#: skl_shared_qt/src/logic.py:1770 skl_shared_qt/src/logic.py:2524
 msgid "Delete \"{}\""
 msgstr "Удаление \"{}\""
 
-#: skl_shared/src/logic.py:2298 skl_shared_qt/src/logic.py:1821
+#: skl_shared/src/logic.py:2298 skl_shared_qt/src/logic.py:1776
 msgid "Failed to delete file \"{}\"!"
 msgstr "Не удается удалить файл \"{}\"!"
 
 #: skl_shared/src/logic.py:2322 skl_shared/src/logic.py:2870
-#: skl_shared_qt/src/logic.py:1845 skl_shared_qt/src/logic.py:2478
+#: skl_shared_qt/src/logic.py:1800 skl_shared_qt/src/logic.py:2425
 msgid ""
 "Moving is not necessary, because the source and destination are identical ({})."
 msgstr ""
 "Перемещение не требуется, поскольку на входе и выходе указан один и тот же "
 "объект ({})."
 
-#: skl_shared/src/logic.py:2340 skl_shared_qt/src/logic.py:1864
+#: skl_shared/src/logic.py:2340 skl_shared_qt/src/logic.py:1819
 msgid "Change the time of the file \"{}\" to {}"
 msgstr "Изменение времени файла \"{}\" на {}"
 
-#: skl_shared/src/logic.py:2346 skl_shared_qt/src/logic.py:1870
+#: skl_shared/src/logic.py:2346 skl_shared_qt/src/logic.py:1825
 msgid "Failed to change the time of the file \"{}\" to \"{}\"!"
 msgstr "Не удалось изменить время файла \"{}\" на \"{}\"!"
 
 #: skl_shared/src/logic.py:2399 skl_shared/src/logic.py:3066
-#: skl_shared_qt/src/logic.py:1923 skl_shared_qt/src/logic.py:2670
+#: skl_shared_qt/src/logic.py:1878 skl_shared_qt/src/logic.py:2620
 msgid "Directory \"{}\" already exists."
 msgstr "Каталог \"{}\" уже существует."
 
-#: skl_shared/src/logic.py:2404 skl_shared_qt/src/logic.py:1927
+#: skl_shared/src/logic.py:2404 skl_shared_qt/src/logic.py:1882
 msgid "The path \"{}\" is invalid!"
 msgstr "Путь \"{}\" неверен!"
 
-#: skl_shared/src/logic.py:2408 skl_shared_qt/src/logic.py:1930
+#: skl_shared/src/logic.py:2408 skl_shared_qt/src/logic.py:1885
 msgid "Create directory \"{}\""
 msgstr "Создание каталога \"{}\""
 
-#: skl_shared/src/logic.py:2415 skl_shared_qt/src/logic.py:1937
+#: skl_shared/src/logic.py:2415 skl_shared_qt/src/logic.py:1892
 msgid "Failed to create directory \"{}\"!"
 msgstr "Не удается создать каталог \"{}\"!"
 
@@ -28104,7 +28138,7 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: skl_shared/src/logic.py:2636 skl_shared_qt/src/logic.py:2096
+#: skl_shared/src/logic.py:2636 skl_shared_qt/src/logic.py:2051
 msgid "The following lines cannot be parsed:"
 msgstr "Не удалось обработать следующие строки:"
 
@@ -28118,55 +28152,55 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: skl_shared/src/logic.py:2866 skl_shared_qt/src/logic.py:2474
+#: skl_shared/src/logic.py:2866 skl_shared_qt/src/logic.py:2421
 msgid "Path \"{}\" already exists!"
 msgstr "Путь \"{}\" уже существует!"
 
-#: skl_shared/src/logic.py:2977 skl_shared_qt/src/logic.py:2581
+#: skl_shared/src/logic.py:2977 skl_shared_qt/src/logic.py:2530
 msgid "Failed to delete directory \"{}\"! Delete it manually."
 msgstr "Не удается удалить каталог \"{}\"! Удалите его вручную."
 
-#: skl_shared/src/logic.py:3062 skl_shared_qt/src/logic.py:2666
+#: skl_shared/src/logic.py:3062 skl_shared_qt/src/logic.py:2617
 msgid "Unable to copy \"{}\" to iself!"
 msgstr "Нельзя скопировать \"{}\" сам в себя!"
 
-#: skl_shared/src/logic.py:3082 skl_shared_qt/src/logic.py:2686
+#: skl_shared/src/logic.py:3082 skl_shared_qt/src/logic.py:2633
 msgid "Failed to copy \"{}\" to \"{}\"!"
 msgstr "Не удалось скопировать \"{}\" в \"{}\"!"
 
-#: skl_shared/src/logic.py:3194 skl_shared_qt/src/logic.py:2798
+#: skl_shared/src/logic.py:3194 skl_shared_qt/src/logic.py:2739
 msgid "Keys loaded in total: {}"
 msgstr "Всего загружено ключей: {}"
 
-#: skl_shared/src/logic.py:3197 skl_shared_qt/src/logic.py:2801
+#: skl_shared/src/logic.py:3197 skl_shared_qt/src/logic.py:2742
 msgid "Missing sections: {}"
 msgstr "Отсутствующие разделы: {}"
 
-#: skl_shared/src/logic.py:3201 skl_shared_qt/src/logic.py:2805
+#: skl_shared/src/logic.py:3201 skl_shared_qt/src/logic.py:2746
 msgid "Missing keys: {}"
 msgstr "Отсутствующие ключи: {}"
 
-#: skl_shared/src/logic.py:3205 skl_shared_qt/src/logic.py:2809
+#: skl_shared/src/logic.py:3205 skl_shared_qt/src/logic.py:2750
 msgid "Modified keys: {}"
 msgstr "Измененные ключи: {}"
 
-#: skl_shared/src/logic.py:3212 skl_shared_qt/src/logic.py:2816
+#: skl_shared/src/logic.py:3212 skl_shared_qt/src/logic.py:2757
 msgid "Keys loaded in total:"
 msgstr "Всего загружено ключей:"
 
-#: skl_shared/src/logic.py:3215 skl_shared_qt/src/logic.py:2819
+#: skl_shared/src/logic.py:3215 skl_shared_qt/src/logic.py:2760
 msgid "Missing sections:"
 msgstr "Отсутствующие разделы:"
 
-#: skl_shared/src/logic.py:3218 skl_shared_qt/src/logic.py:2822
+#: skl_shared/src/logic.py:3218 skl_shared_qt/src/logic.py:2763
 msgid "Missing keys:"
 msgstr "Отсутствующие ключи:"
 
-#: skl_shared/src/logic.py:3221 skl_shared_qt/src/logic.py:2825
+#: skl_shared/src/logic.py:3221 skl_shared_qt/src/logic.py:2766
 msgid "Modified keys:"
 msgstr "Измененные ключи:"
 
-#: skl_shared/src/logic.py:3287 skl_shared_qt/src/logic.py:2891
+#: skl_shared/src/logic.py:3287 skl_shared_qt/src/logic.py:2824
 msgid ""
 "Failed to open URL \"{}\" in a default browser!\n"
 "\n"
@@ -28204,11 +28238,11 @@ msgstr "Создание ярлыка \"{}\""
 msgid "Failed to create shortcut \"{}\". Create it manually and press OK."
 msgstr "Не удается создать ярлык \"{}\". Создайте его вручную и нажмите OK."
 
-#: skl_shared/src/logic.py:3610 skl_shared_qt/src/logic.py:2996
+#: skl_shared/src/logic.py:3610 skl_shared_qt/src/logic.py:2918
 msgid "Failed to load an e-mail client."
 msgstr "Не удалось загрузить почтовый клиент."
 
-#: skl_shared/src/logic.py:3648 skl_shared_qt/src/logic.py:3034
+#: skl_shared/src/logic.py:3648 skl_shared_qt/src/logic.py:2937
 msgid "This operation cannot be executed on your operating system."
 msgstr "Эта операция не может быть выполнена на вашей операционной системе."
 
@@ -28218,15 +28252,13 @@ msgstr "Эта операция не может быть выполнена на
 #: skl_shared/src/logic.py:4592 skl_shared/src/logic.py:4806
 #: skl_shared/src/logic.py:4811 skl_shared/src/logic.py:4816
 #: skl_shared/src/logic.py:4821 skl_shared/src/logic.py:4826
-#: skl_shared/src/logic.py:4833 skl_shared_qt/src/logic.py:3200
-#: skl_shared_qt/src/logic.py:3201 skl_shared_qt/src/logic.py:3459
-#: skl_shared_qt/src/logic.py:3464 skl_shared_qt/src/logic.py:3465
-#: skl_shared_qt/src/logic.py:3472 skl_shared_qt/src/logic.py:3473
-#: skl_shared_qt/src/logic.py:3693 skl_shared_qt/src/logic.py:3698
-#: skl_shared_qt/src/logic.py:3703 skl_shared_qt/src/logic.py:3708
-#: skl_shared_qt/src/logic.py:3713 skl_shared_qt/src/logic.py:3718
-#: skl_shared_qt/src/logic.py:3725 skl_shared_qt/src/logic.py:3732
-#: skl_shared_qt/src/logic.py:3738
+#: skl_shared/src/logic.py:4833 skl_shared_qt/src/logic.py:3119
+#: skl_shared_qt/src/logic.py:3368 skl_shared_qt/src/logic.py:3373
+#: skl_shared_qt/src/logic.py:3379 skl_shared_qt/src/logic.py:3598
+#: skl_shared_qt/src/logic.py:3603 skl_shared_qt/src/logic.py:3608
+#: skl_shared_qt/src/logic.py:3613 skl_shared_qt/src/logic.py:3618
+#: skl_shared_qt/src/logic.py:3623 skl_shared_qt/src/logic.py:3630
+#: skl_shared_qt/src/logic.py:3637 skl_shared_qt/src/logic.py:3643
 msgid "Logic error!"
 msgstr "Логическая ошибка!"
 
@@ -28234,19 +28266,19 @@ msgstr "Логическая ошибка!"
 msgid "The pool is empty!"
 msgstr "Пул пуст!"
 
-#: skl_shared/src/logic.py:4168 skl_shared_qt/src/logic.py:3256
+#: skl_shared/src/logic.py:4168 skl_shared_qt/src/logic.py:3174
 msgid "The operation has taken {} s."
 msgstr "Операция завершена за {} с."
 
-#: skl_shared/src/logic.py:4287 skl_shared_qt/src/logic.py:3315
+#: skl_shared/src/logic.py:4287 skl_shared_qt/src/logic.py:3228
 msgid "[FAILED]: \"{}\". Details: {}"
 msgstr "[ОШИБКА]: \"{}\". Подробности: {}"
 
-#: skl_shared/src/logic.py:4303 skl_shared_qt/src/logic.py:3331
+#: skl_shared/src/logic.py:4303 skl_shared_qt/src/logic.py:3245
 msgid "Unable to decode \"{}\"!"
 msgstr "Не удается изменить кодировку \"{}\"!"
 
-#: skl_shared/src/logic.py:4322 skl_shared_qt/src/logic.py:3350
+#: skl_shared/src/logic.py:4322 skl_shared_qt/src/logic.py:3255
 msgid "Wrong input data: {}!"
 msgstr "Недопустимые входные данные: \"{}\"!"
 
@@ -28254,7 +28286,7 @@ msgstr "Недопустимые входные данные: \"{}\"!"
 msgid "Unexpected end of text!"
 msgstr "Неожиданный конец текста!"
 
-#: skl_shared/src/logic.py:4537 skl_shared_qt/src/logic.py:3444
+#: skl_shared/src/logic.py:4537 skl_shared_qt/src/logic.py:3356
 msgid ","
 msgstr "."
 
@@ -28262,69 +28294,69 @@ msgstr "."
 msgid "Save As:"
 msgstr "Сохранить как:"
 
-#: skl_shared/src/logic.py:4580 skl_shared_qt/src/logic.py:3461
+#: skl_shared/src/logic.py:4580 skl_shared_qt/src/logic.py:3370
 msgid "Nothing to do!"
 msgstr "Действие не требуется."
 
 #: skl_shared/src/logic.py:4601 skl_shared/src/logic.py:4623
-#: skl_shared_qt/src/logic.py:3482 skl_shared_qt/src/logic.py:3505
+#: skl_shared_qt/src/logic.py:3387 skl_shared_qt/src/logic.py:3410
 msgid "B"
 msgstr "Б"
 
-#: skl_shared/src/logic.py:4614 skl_shared_qt/src/logic.py:3496
+#: skl_shared/src/logic.py:4614 skl_shared_qt/src/logic.py:3401
 msgid "TiB"
 msgstr "ТиБ"
 
-#: skl_shared/src/logic.py:4616 skl_shared_qt/src/logic.py:3498
+#: skl_shared/src/logic.py:4616 skl_shared_qt/src/logic.py:3403
 msgid "GiB"
 msgstr "ГиБ"
 
-#: skl_shared/src/logic.py:4618 skl_shared_qt/src/logic.py:3500
+#: skl_shared/src/logic.py:4618 skl_shared_qt/src/logic.py:3405
 msgid "MiB"
 msgstr "МиБ"
 
-#: skl_shared/src/logic.py:4621 skl_shared_qt/src/logic.py:3503
+#: skl_shared/src/logic.py:4621 skl_shared_qt/src/logic.py:3408
 msgid "KiB"
 msgstr "КиБ"
 
-#: skl_shared/src/logic.py:4731 skl_shared_qt/src/logic.py:3609
+#: skl_shared/src/logic.py:4731 skl_shared_qt/src/logic.py:3514
 msgid "ATTENTION: Do yo really want to rewrite file \"{}\"?"
 msgstr "ВНИМАНИЕ: Перезаписать файл \"{}\"?"
 
 #: skl_shared/src/logic.py:4761 skl_shared/src/logic.py:4794
-#: skl_shared_qt/src/logic.py:3648 skl_shared_qt/src/logic.py:3688
+#: skl_shared_qt/src/logic.py:3553 skl_shared_qt/src/logic.py:3593
 msgid "sec"
 msgstr "сек"
 
-#: skl_shared/src/logic.py:4782 skl_shared_qt/src/logic.py:3676
+#: skl_shared/src/logic.py:4782 skl_shared_qt/src/logic.py:3581
 msgid "yrs"
 msgstr "лет"
 
-#: skl_shared/src/logic.py:4784 skl_shared_qt/src/logic.py:3678
+#: skl_shared/src/logic.py:4784 skl_shared_qt/src/logic.py:3583
 msgid "mths"
 msgstr "мес"
 
-#: skl_shared/src/logic.py:4786 skl_shared_qt/src/logic.py:3680
+#: skl_shared/src/logic.py:4786 skl_shared_qt/src/logic.py:3585
 msgid "wks"
 msgstr "нед"
 
-#: skl_shared/src/logic.py:4788 skl_shared_qt/src/logic.py:3682
+#: skl_shared/src/logic.py:4788 skl_shared_qt/src/logic.py:3587
 msgid "days"
 msgstr "дн"
 
-#: skl_shared/src/logic.py:4790 skl_shared_qt/src/logic.py:3684
+#: skl_shared/src/logic.py:4790 skl_shared_qt/src/logic.py:3589
 msgid "hrs"
 msgstr "ч"
 
-#: skl_shared/src/logic.py:4792 skl_shared_qt/src/logic.py:3686
+#: skl_shared/src/logic.py:4792 skl_shared_qt/src/logic.py:3591
 msgid "min"
 msgstr "мин"
 
-#: skl_shared/src/logic.py:4808 skl_shared_qt/src/logic.py:3695
+#: skl_shared/src/logic.py:4808 skl_shared_qt/src/logic.py:3600
 msgid "Operation has been canceled."
 msgstr "Операция отменена."
 
-#: skl_shared/src/logic.py:4828 skl_shared_qt/src/logic.py:3720
+#: skl_shared/src/logic.py:4828 skl_shared_qt/src/logic.py:3625
 msgid "{} blocks have been deleted"
 msgstr "{} блоков удалено"
 
@@ -28487,11 +28519,11 @@ msgstr ""
 msgid "Test:"
 msgstr "Тест:"
 
-#: skl_shared/src/shared.py:4089 skl_shared_qt/src/shared.py:844
+#: skl_shared/src/shared.py:4089 skl_shared_qt/src/shared.py:803
 msgid "SECTION"
 msgstr "СЕКЦИЯ"
 
-#: skl_shared/src/shared.py:4089 skl_shared_qt/src/shared.py:844
+#: skl_shared/src/shared.py:4089 skl_shared_qt/src/shared.py:803
 msgid "VALUE"
 msgstr "ЗНАЧЕНИЕ"
 
@@ -28711,41 +28743,53 @@ msgstr ""
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
 
-#: skl_shared_qt/src/gui.py:312
+#: skl_shared_qt/src/gui.py:321
 msgid "Error"
 msgstr "Ошибка"
 
-#: skl_shared_qt/src/gui.py:317
+#: skl_shared_qt/src/gui.py:326
 msgid "Warning"
 msgstr "Предупреждение"
 
-#: skl_shared_qt/src/gui.py:322
+#: skl_shared_qt/src/gui.py:331
 msgid "Info"
 msgstr "Информация"
 
-#: skl_shared_qt/src/gui.py:327
+#: skl_shared_qt/src/gui.py:336
 msgid "Debug"
 msgstr "Отладка"
 
-#: skl_shared_qt/src/gui.py:332
+#: skl_shared_qt/src/gui.py:341
 msgid "Question"
 msgstr "Вопрос"
 
-#: skl_shared_qt/src/shared.py:125
+#: skl_shared_qt/src/shared.py:79
 msgid "Color: {}, darker: {}, lighter: {}"
 msgstr "Цвет: {}, темнее: {}, ярче: {}"
 
-#: skl_shared_qt/src/shared.py:151
+#: skl_shared_qt/src/shared.py:105
 msgid "All files (*.*)"
 msgstr "Все файлы (*.*)"
 
-#: skl_shared_qt/src/shared.py:155
+#: skl_shared_qt/src/shared.py:109
 msgid "Save File As:"
 msgstr "Сохранить файл как:"
 
-#: skl_shared_qt/src/shared.py:740
+#: skl_shared_qt/src/shared.py:699
 msgid "Code block: {}"
 msgstr "Блок кода: {}"
+
+#~ msgid "Suggestions:"
+#~ msgstr "Варианты замены:"
+
+#~ msgid "sug."
+#~ msgstr "вар."
+
+#~ msgid "In use"
+#~ msgstr "Используются"
+
+#~ msgid "Available"
+#~ msgstr "Доступны"
 
 #~ msgid "Engl. thes."
 #~ msgstr "Англ. тез."
