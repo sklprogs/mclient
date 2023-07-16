@@ -11,7 +11,7 @@ oslow="linux"
 # by default which is buggy (some blocks are skipped in EN-RU, "hello"
 # article)
 glibc="2.36"
-pythonve="$HOME/tmp/python11"
+pythonve="$HOME/software/python_builds/i386/mclient"
 xlibdir="$pythonve/lib/python3.11/site-packages/Xlib"
 binariesdir="$HOME/binaries"
 appimagedir="$binariesdir/appimage"
