@@ -200,26 +200,31 @@ class Config:
         self.update()
 
 
+
+class Objects:
+    
+    def __init__(self):
+        self.config = None
+    
+    def get_config(self):
+        if self.config is None:
+            self.config = Config()
+            self.config.run()
+        return self.config
+
+
+objs = Objects()
+
+
 if __name__ == '__main__':
     f = '[MClient] config.__main__'
     sh.com.start()
     timer = sh.Timer(f)
     timer.start()
-    iconfig = Config()
-    iconfig.run()
-    #iconfig.new["PrioritizeSubjects"] = False
-    iconfig.save()
+    #objs.get_config().new["PrioritizeSubjects"] = False
+    objs.get_config().save()
     timer.end()
-#    sub1 = f'Default config path: {iconfig.pdefault}'
-#    sub2 = f'Schema path: {iconfig.pschema}'
-#    sub3 = f'Local config path: {iconfig.plocal}'
-#    sub4 = f'Schema:\n{iconfig.schema}'
-#    sub5 = f'Config:\n{iconfig.local}'
-#    mes = [sub1, sub2, sub3, sub4, sub5]
-#    mes = '\n\n'.join(mes)
-#    idebug = sh.Debug(f, mes)
-#    idebug.show()
-    mes = f'Success: {iconfig.Success}'
+    mes = f'Success: {objs.config.Success}'
     sh.objs.get_mes(f, mes).show_info()
     mes = _('Goodbye!')
     sh.objs.get_mes(f, mes, True).show_debug()
