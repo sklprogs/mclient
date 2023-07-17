@@ -112,7 +112,12 @@ class Config:
         if os.path.exists(self.plocal) and os.path.isfile(self.plocal):
             sh.com.rep_lazy(f)
             return
-        self.Success = sh.File(self.pdefault, self.plocal).copy()
+        ''' Since 'local' dictionary is empty for now, this just clones
+            'default' to 'new' similar to 'copy.deepcopy'.
+        '''
+        self.update()
+        self.localize()
+        self.save()
     
     def set_default(self):
         f = '[MClient] config.Config.set_default'
@@ -158,6 +163,29 @@ class Config:
             sh.com.rep_third_party(f, e)
             return
         self.Success = sh.WriteTextFile(self.plocal, True).write(code)
+    
+    def localize(self):
+        f = '[MClient] config.Config.localize'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.new['columns']['1']['type'] = _(self.new['columns']['1']['type'])
+        self.new['columns']['2']['type'] = _(self.new['columns']['2']['type'])
+        self.new['columns']['3']['type'] = _(self.new['columns']['3']['type'])
+        self.new['columns']['4']['type'] = _(self.new['columns']['4']['type'])
+        self.new['subjects']['blocked'] = [_(subj) for subj in self.new['subjects']['blocked']]
+        self.new['subjects']['prioritized'] = [_(subj) for subj in self.new['subjects']['prioritized']]
+        self.new['lang1'] = _(self.new['lang1'])
+        self.new['lang2'] = _(self.new['lang2'])
+        self.new['source'] = _(self.new['source'])
+        self.new['speech1'] = _(self.new['speech1'])
+        self.new['speech2'] = _(self.new['speech2'])
+        self.new['speech3'] = _(self.new['speech3'])
+        self.new['speech4'] = _(self.new['speech4'])
+        self.new['speech5'] = _(self.new['speech5'])
+        self.new['speech6'] = _(self.new['speech6'])
+        self.new['speech7'] = _(self.new['speech7'])
+        self.new['style'] = _(self.new['style'])
     
     def run(self):
         self.set_schema()
