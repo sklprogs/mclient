@@ -173,4 +173,8 @@
     ,"timeout": {"type": "string"}
     ,"hotkey_delay": {"type": "integer"}
     }
+    ,"config":
+        {"type": "object"
+        ,"properties": {"min_version": {"type": "integer"}}
+        }
 }

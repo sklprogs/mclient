@@ -92,4 +92,5 @@
 ,"SortByColumns": true
 ,"timeout": "5.0"
 ,"hotkey_delay": 600
+,"config": {"min_version": 1}
 }
