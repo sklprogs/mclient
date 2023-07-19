@@ -45,8 +45,8 @@ class Welcome:
         self.gui.show()
     
     def set_bindings(self):
-        self.gui.bind('Ctrl+Q', self.close)
-        self.gui.bind('Esc', self.close)
+        self.gui.bind(('Ctrl+Q',), self.close)
+        self.gui.bind(('Esc',), self.close)
     
     def set_spans(self):
         for i in range(10):

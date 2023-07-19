@@ -37,7 +37,7 @@ class Symbols:
         self.gui.resize_to_contents()
     
     def set_bindings(self):
-        self.gui.bind('Esc', self.close)
+        self.gui.bind(('Esc',), self.close)
         self.gui.table.sig_select.connect(self.select)
     
     def show(self):

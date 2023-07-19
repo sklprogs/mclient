@@ -151,8 +151,8 @@ class Settings:
         self.set_bindings()
     
     def set_bindings(self):
-        self.gui.bind('Ctrl+Q', self.close)
-        self.gui.bind('Esc', self.close)
+        self.gui.bind(('Ctrl+Q',), self.close)
+        self.gui.bind(('Esc',), self.close)
     
     def show(self):
         self.Shown = True

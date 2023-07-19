@@ -26,8 +26,6 @@ class Wrap:
         import plugins.multitrancom.elems as el
         import cells as cl
         
-        lg.com.start()
-        
         text = sh.ReadTextFile(HTM_FILE).get()
         timer = sh.Timer(f)
         timer.start()
@@ -62,8 +60,6 @@ class Prioritize:
         import plugins.multitrancom.elems as el
         import cells as cl
         
-        lg.com.start()
-        
         text = sh.ReadTextFile(HTM_FILE).get()
         timer = sh.Timer(f)
         timer.start()
@@ -95,8 +91,6 @@ class View:
         import plugins.multitrancom.tags as tg
         import plugins.multitrancom.elems as el
         import cells as cl
-        
-        lg.com.start()
         
         text = sh.ReadTextFile(HTM_FILE).get()
         timer = sh.Timer(f)
@@ -191,7 +185,6 @@ class ArticleSubjects:
         import mclientqt as mclient
         # Lists will be automatically read from files on import
         import logic as lg
-        lg.com.start()
         #search = 'hello'
         #url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
         search = 'messenger'
@@ -312,9 +305,7 @@ class Get:
     
     def run_stardict(self):
         f = '[MClient] tests.Get.run_stardict'
-        import logic as lg
         import plugins.stardict.get as sd
-        lg.com.start()
         #search = 'компьютер'
         search = 'computer'
         timer = sh.Timer(f)
@@ -526,7 +517,6 @@ class Commands:
         #NOTE: the article must comprise example subjects to be expanded
         search = 'code'
         url = 'https://www.multitran.com/m.exe?s=code&l1=2&l2=1&SHL=2'
-        lg.com.start()
         cells = lg.objs.get_plugins().request (search = search
                                               ,url = url
                                               )
@@ -567,7 +557,6 @@ class Commands:
     def run_article_subjects(self):
         f = '[MClientQt] tests.Commands.run_article_subjects'
         import logic as lg
-        lg.com.start()
         search = 'set'
         # SHL should correspond to locale
         url = 'https://www.multitran.com/m.exe?s=set&l1=2&l2=1'
@@ -595,13 +584,10 @@ class Commands:
     
     def run_prior(self):
         import mclientqt as mc
-        mc.lg.com.start()
         return mc.Priorities()
     
     def run_prior_contr(self):
-        import logic as lg
         import prior_block.priorities.controller as pr
-        lg.com.start()
         iprior = pr.Priorities()
         dic1 = {'Общая лексика': {}, 'Компьютеры': {'Компьютеры': {}, 'Майкрософт': {}, 'Программирование': {}, 'Информатика': {}}}
         iprior.fill(dic1, dic1)
@@ -619,8 +605,6 @@ class Commands:
     
     def run_font_limits(self):
         f = '[MClient] tests.Commands.run_font_limits'
-        import logic as lg
-        lg.com.start()
         import mclientqt as mc
         text = 'Раз, два, три, четыре, пять - вышел зайчик погулять'
         ilimits = mc.FontLimits (family = cf.objs.get_config().new['terms']['font']['family']
@@ -639,15 +623,11 @@ class Commands:
         return sv.Save()
     
     def run_settings(self):
-        import logic as lg
         import settings.controller as st
-        lg.com.start()
         return st.Settings()
     
     def run_history(self):
-        import logic as lg
         import mclientqt as mc
-        lg.com.start()
         ihis = mc.History()
         ihis.add()
         ihis.add()
@@ -656,8 +636,6 @@ class Commands:
         return ihis
     
     def run_welcome_contr(self):
-        import logic as lg
-        lg.com.start()
         import welcome.controller as wl
         iwelcome = wl.Welcome()
         iwelcome.reset()
@@ -665,8 +643,6 @@ class Commands:
     
     def run_welcome(self):
         import mclientqt as mc
-        import logic as lg
-        lg.com.start()
         iwelcome = mc.Welcome(mc.About().get_product())
         iwelcome.reset()
         return iwelcome
@@ -695,9 +671,7 @@ class Commands:
         return ihis
     
     def run_symbols(self):
-        import logic as lg
         import symbols.controller as sm
-        lg.com.start()
         sym = sm.Symbols()
         sym.show()
         sh.com.end()
@@ -705,7 +679,6 @@ class Commands:
     def get_column_width(self):
         f = '[MClient] tests.Commands.get_column_width'
         import logic as lg
-        lg.com.start()
         #cf.objs.get_config().new['columns']['num'] = 0
         mes = f'"{lg.com.get_column_width()}%"'
         sh.objs.get_mes(f, mes, True).show_debug()
@@ -792,7 +765,6 @@ class Commands:
     def edit_blacklist(self):
         import mclientqt as mc
         import logic as lg
-        lg.com.start()
         mc.objs.get_blacklist().reset (lst1 = lg.objs.get_order().blacklst
                                       ,lst2 = lg.objs.get_plugins().get_subjects()
                                       ,art_subjects = []

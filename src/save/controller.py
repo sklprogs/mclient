@@ -102,13 +102,13 @@ class Save:
         self.gui.set_title(title)
     
     def set_bindings(self):
-        self.gui.bind('Esc', self.close)
-        self.gui.bind('Down', self.go_down)
-        self.gui.bind('Up', self.go_up)
-        self.gui.bind('Home', self.go_start)
-        self.gui.bind('End', self.go_end)
-        self.gui.bind('Ctrl+Home', self.go_start)
-        self.gui.bind('Ctrl+End', self.go_end)
+        self.gui.bind(('Esc',), self.close)
+        self.gui.bind(('Down',), self.go_down)
+        self.gui.bind(('Up',), self.go_up)
+        self.gui.bind(('Home',), self.go_start)
+        self.gui.bind(('End',), self.go_end)
+        self.gui.bind(('Ctrl+Home',), self.go_start)
+        self.gui.bind(('Ctrl+End',), self.go_end)
         self.gui.bind(cf.objs.get_config().new['hotkeys']['save_article'], self.toggle)
         self.gui.sig_close.connect(self.close)
     

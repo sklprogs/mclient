@@ -288,8 +288,8 @@ class Save(sv.Save):
     
     def add_bindings(self):
         self.gui.save.clicked.connect(self.select)
-        self.gui.bind('Return', self.select)
-        self.gui.bind('Enter', self.select)
+        self.gui.bind(('Return',), self.select)
+        self.gui.bind(('Enter',), self.select)
     
     def select(self):
         f = '[MClientQt] mclient.Save.select'
@@ -1016,7 +1016,7 @@ class Table:
     
     def set_bindings(self):
         self.gui.sig_select.connect(self.select)
-        self.search.gui.ent_src.bind('Return', self.close_search_next)
+        self.search.gui.ent_src.bind(('Return',), self.close_search_next)
         self.search.gui.btn_srp.set_action(self.search_prev)
         self.search.gui.btn_srn.set_action(self.search_next)
         self.popup.gui.sig_close.connect(self.popup.close)
@@ -1810,35 +1810,35 @@ class App:
         self.gui.sig_pgdn.connect(self.table.go_page_down)
         self.gui.sig_pgup.connect(self.table.go_page_up)
         
-        self.gui.bind('Ctrl+Q', self.close)
-        self.gui.bind('Esc', self.minimize)
-        self.gui.bind('Down', self.table.go_down)
-        self.gui.bind('Up', self.table.go_up)
-        self.gui.bind('Ctrl+Home', self.table.go_start)
-        self.gui.bind('Ctrl+End', self.table.go_end)
-        self.gui.bind('Home', self.table.go_line_start)
-        self.gui.bind('End', self.table.go_line_end)
-        self.gui.bind('Left', self.table.go_left)
-        self.gui.bind('Right', self.table.go_right)
-        self.gui.bind('F1', self.about.toggle)
-        self.gui.bind('F3', self.table.search_next)
-        self.gui.bind('Shift+F3', self.table.search_prev)
-        self.gui.bind('Ctrl+F', self.table.search.show)
-        self.gui.bind('Return', self.go_keyboard)
-        self.gui.bind('Enter', self.go_keyboard)
-        self.gui.bind('Ctrl+Return', self.copy_cell)
-        self.gui.bind('Ctrl+Enter', self.copy_cell)
+        self.gui.bind(('Ctrl+Q',), self.close)
+        self.gui.bind(('Esc',), self.minimize)
+        self.gui.bind(('Down',), self.table.go_down)
+        self.gui.bind(('Up',), self.table.go_up)
+        self.gui.bind(('Ctrl+Home',), self.table.go_start)
+        self.gui.bind(('Ctrl+End',), self.table.go_end)
+        self.gui.bind(('Home',), self.table.go_line_start)
+        self.gui.bind(('End',), self.table.go_line_end)
+        self.gui.bind(('Left',), self.table.go_left)
+        self.gui.bind(('Right',), self.table.go_right)
+        self.gui.bind(('F1',), self.about.toggle)
+        self.gui.bind(('F3',), self.table.search_next)
+        self.gui.bind(('Shift+F3',), self.table.search_prev)
+        self.gui.bind(('Ctrl+F',), self.table.search.show)
+        self.gui.bind(('Return',), self.go_keyboard)
+        self.gui.bind(('Enter',), self.go_keyboard)
+        self.gui.bind(('Ctrl+Return',), self.copy_cell)
+        self.gui.bind(('Ctrl+Enter',), self.copy_cell)
         
-        self.gui.bind('Alt+0', lambda:self.change_col_no(10))
-        self.gui.bind('Alt+1', lambda:self.change_col_no(1))
-        self.gui.bind('Alt+2', lambda:self.change_col_no(2))
-        self.gui.bind('Alt+3', lambda:self.change_col_no(3))
-        self.gui.bind('Alt+4', lambda:self.change_col_no(4))
-        self.gui.bind('Alt+5', lambda:self.change_col_no(5))
-        self.gui.bind('Alt+6', lambda:self.change_col_no(6))
-        self.gui.bind('Alt+7', lambda:self.change_col_no(7))
-        self.gui.bind('Alt+8', lambda:self.change_col_no(8))
-        self.gui.bind('Alt+9', lambda:self.change_col_no(9))
+        self.gui.bind(('Alt+0',), lambda:self.change_col_no(10))
+        self.gui.bind(('Alt+1',), lambda:self.change_col_no(1))
+        self.gui.bind(('Alt+2',), lambda:self.change_col_no(2))
+        self.gui.bind(('Alt+3',), lambda:self.change_col_no(3))
+        self.gui.bind(('Alt+4',), lambda:self.change_col_no(4))
+        self.gui.bind(('Alt+5',), lambda:self.change_col_no(5))
+        self.gui.bind(('Alt+6',), lambda:self.change_col_no(6))
+        self.gui.bind(('Alt+7',), lambda:self.change_col_no(7))
+        self.gui.bind(('Alt+8',), lambda:self.change_col_no(8))
+        self.gui.bind(('Alt+9',), lambda:self.change_col_no(9))
         
         self.gui.bind (cf.objs.config.new['hotkeys']['clear_history']
                       ,self.clear_history
@@ -1926,7 +1926,7 @@ class App:
                       )
                       
         #TODO: iterate through all keys
-        if cf.objs.config.new['hotkeys']['spec_symbol'] == 'Ctrl+E':
+        if cf.objs.config.new['hotkeys']['spec_symbol'] == ['Ctrl+E']:
             self.gui.panel.ent_src.widget.sig_ctrl_e.connect(self.symbols.show)
         else:
             self.gui.panel.ent_src.bind (cf.objs.config.new['hotkeys']['spec_symbol']
@@ -2048,7 +2048,7 @@ class Search:
         self.gui.show()
     
     def set_bindings(self):
-        self.gui.bind('Esc', self.close)
+        self.gui.bind(('Esc',), self.close)
         self.gui.btn_cls.action = self.close
         self.gui.btn_clr.action = self.clear
         self.gui.btn_cls.set_action()

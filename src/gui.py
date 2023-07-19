@@ -417,8 +417,9 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.setCentralWidget(self.parent)
         self.set_icon()
     
-    def bind(self, hotkey, action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+    def bind(self, hotkeys, action):
+        for hotkey in hotkeys:
+            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
 
 
 
@@ -793,8 +794,9 @@ class Search(PyQt5.QtWidgets.QWidget):
         self.set_title()
         self.set_icon()
     
-    def bind(self, hotkey, action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+    def bind(self, hotkeys, action):
+        for hotkey in hotkeys:
+            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def get(self):
         return self.ent_src.get()

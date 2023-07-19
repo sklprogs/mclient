@@ -89,7 +89,7 @@ class Priorities:
         print(f)
     
     def set_bindings(self):
-        self.gui.bind('Esc', self.close)
+        self.gui.bind(('Esc',), self.close)
         self.gui.btn_btm.set_action(self.move_bottom)
         self.gui.btn_dwn.set_action(self.decrease)
         self.gui.btn_lft.set_action(self.prioritize)

@@ -83,8 +83,9 @@ class Save(PyQt5.QtWidgets.QWidget):
     def centralize(self):
         self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
     
-    def bind(self, hotkey, action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+    def bind(self, hotkeys, action):
+        for hotkey in hotkeys:
+            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def get_font_size(self):
         size = self.font().pointSize()

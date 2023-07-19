@@ -118,8 +118,9 @@ class App(PyQt5.QtWidgets.QMainWindow):
     def show(self):
         self.showMaximized()
     
-    def bind(self, hotkey, action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+    def bind(self, hotkeys, action):
+        for hotkey in hotkeys:
+            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def centralize(self):
         self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())

@@ -40,4 +40,4 @@ class ThirdParties:
         self.gui.close()
     
     def set_bindings(self):
-        self.gui.bind('Esc', self.close)
+        self.gui.bind(('Esc',), self.close)

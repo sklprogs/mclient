@@ -81,8 +81,9 @@ class Suggest(PyQt5.QtWidgets.QWidget):
         self.model = TableModel(lst)
         self.view.setModel(self.model)
     
-    def bind(self, hotkey, action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+    def bind(self, hotkeys, action):
+        for hotkey in hotkeys:
+            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def set_index(self, index_):
         self.view.setCurrentIndex(index_)

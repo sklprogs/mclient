@@ -63,5 +63,6 @@ class Popup(PyQt5.QtWidgets.QWidget):
         self.setWindowFlags(flags|PyQt5.QtCore.Qt.FramelessWindowHint)
         self.resize(270, 150)
     
-    def bind(self, hotkey, action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+    def bind(self, hotkeys, action):
+        for hotkey in hotkeys:
+            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)

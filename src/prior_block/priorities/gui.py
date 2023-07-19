@@ -361,8 +361,9 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         index_ = self.get_index()
         return(index_.row(), index_.column())
     
-    def bind(self, hotkey, action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+    def bind(self, hotkeys, action):
+        for hotkey in hotkeys:
+            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def add_buttons(self):
         #NOTE: If run directly, this module will not find icons owing to paths

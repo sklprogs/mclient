@@ -117,17 +117,12 @@ class History:
         self.gui.set_title(title)
     
     def set_bindings(self):
-        self.gui.bind('Esc', self.close)
-        self.gui.bind('Down', self.go_down)
-        self.gui.bind('Up', self.go_up)
-        self.gui.bind('Alt+Left', self.go_up)
-        self.gui.bind('Alt+Right', self.go_down)
-        self.gui.bind('Home', self.go_start)
-        self.gui.bind('End', self.go_end)
-        self.gui.bind('Alt+Home', self.go_start)
-        self.gui.bind('Alt+End', self.go_end)
-        self.gui.bind('Ctrl+Home', self.go_start)
-        self.gui.bind('Ctrl+End', self.go_end)
+        self.gui.bind(('Esc',), self.close)
+        self.gui.bind(('Down',), self.go_down)
+        self.gui.bind(('Up', 'Alt+Left'), self.go_up)
+        self.gui.bind(('Alt+Right',), self.go_down)
+        self.gui.bind(('Home', 'Alt+Home', 'Ctrl+Home'), self.go_start)
+        self.gui.bind(('End', 'Alt+End', 'Ctrl+End'), self.go_end)
     
     def show(self):
         self.Shown = True

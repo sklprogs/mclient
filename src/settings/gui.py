@@ -620,8 +620,9 @@ class Settings(PyQt5.QtWidgets.QWidget):
     def set_title(self, title):
         self.setWindowTitle(title)
     
-    def bind(self, hotkey, action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+    def bind(self, hotkeys, action):
+        for hotkey in hotkeys:
+            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
 
 
 if __name__ == '__main__':
