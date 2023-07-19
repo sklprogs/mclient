@@ -4,6 +4,8 @@
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
+import config as cf
+
 
 class Symbols:
     
@@ -12,7 +14,7 @@ class Symbols:
     
     def set_values(self):
         self.colnum = 10
-        self.line = sh.lg.globs['str']['spec_syms']
+        self.line = cf.objs.get_config().new['spec_syms']
         self.table = []
     
     def get(self, rowno, colno):

@@ -7,8 +7,8 @@ from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 import skl_shared_qt.web as wb
 
-import manager
 import config as cf
+import manager
 
 
 class Speech:
@@ -30,17 +30,17 @@ class Speech:
     def get_settings(self):
         #f = '[MClientQt] logic.Speech.get_settings'
         # Source tuple cannot be concatenated with target list
-        speeches = [sh.lg.globs['str']['speech1']
-                   ,sh.lg.globs['str']['speech2']
-                   ,sh.lg.globs['str']['speech3']
-                   ,sh.lg.globs['str']['speech4']
-                   ,sh.lg.globs['str']['speech5']
-                   ,sh.lg.globs['str']['speech6']
-                   ,sh.lg.globs['str']['speech7']
+        speeches = [cf.objs.get_config().new['speech1']
+                   ,cf.objs.config.new['speech2']
+                   ,cf.objs.config.new['speech3']
+                   ,cf.objs.config.new['speech4']
+                   ,cf.objs.config.new['speech5']
+                   ,cf.objs.config.new['speech6']
+                   ,cf.objs.config.new['speech7']
                    ]
         if not self.dic:
             return speeches
-        if not sh.lg.globs['bool']['ShortSpeech']:
+        if not cf.objs.config.new['ShortSpeech']:
             return speeches
         for i in range(len(speeches)):
             speeches[i] = self._get_short(speeches[i])
@@ -117,7 +117,7 @@ class Articles:
             sh.com.rep_lazy(f)
             return
         id_ = self.get_max_id() + 1
-        self.articles['ids'][id_] = {'source'     : sh.lg.globs['str']['source']
+        self.articles['ids'][id_] = {'source'     : cf.objs.get_config().new['source']
                                     ,'lang1'      : objs.get_plugins().get_lang1()
                                     ,'lang2'      : objs.plugins.get_lang2()
                                     ,'Parallel'   : objs.plugins.is_parallel()
@@ -445,20 +445,20 @@ class ColumnWidth:
     
     def set_col_width(self):
         f = '[MClientQt] logic.ColumnWidth.set_col_width'
-        if not sh.lg.globs['int']['row_height']:
+        if not cf.objs.get_config().new['rows']['height']:
             sh.com.rep_lazy(f)
             return
         for column in self.columns:
             if column.Fixed:
-                column.width = sh.lg.globs['int']['fixed_col_width']
+                column.width = cf.objs.config.new['columns']['fixed']['width']
             else:
-                column.width = sh.lg.globs['int']['term_col_width']
+                column.width = cf.objs.config.new['columns']['terms']['width']
 #            if objs.get_blocksdb().is_col_empty(column.no):
 #                column.width = self.min_width
 #            elif column.Fixed:
-#                column.width = sh.lg.globs['int']['fixed_col_width']
+#                column.width = cf.objs.config.new['columns']['fixed']['width']
 #            else:
-#                column.width = sh.lg.globs['int']['term_col_width']
+#                column.width = cf.objs.config.new['columns']['terms']['width']
     
     def reset(self):
         self.set_values()
@@ -506,7 +506,7 @@ class CurRequest:
     
     def set_values(self):
         self.cols = ('subj', 'wform', 'transc', 'speech')
-        self.collimit = sh.lg.globs['int']['colnum'] + len(self.cols)
+        self.collimit = cf.objs.get_config().new['columns']['num'] + len(self.cols)
         ''' Toggling blacklisting should not depend on a number of blocked
             subjects (otherwise, it is not clear how blacklisting should be
             toggled).
@@ -526,9 +526,8 @@ class CurRequest:
 class Objects:
     
     def __init__(self):
-        self.online = self.request = self.default = self.plugins \
-                    = self.speech_prior = self.config = self.column_width \
-                    = self.articles = None
+        self.online = self.request = self.plugins = self.speech_prior \
+                    = self.column_width = self.articles = None
 
     def get_articles(self):
         if self.articles is None:
@@ -541,28 +540,15 @@ class Objects:
             self.column_width.run()
         return self.column_width
     
-    def get_config(self):
-        if self.config is None:
-            self.config = sh.Config(objs.get_default().fconf)
-            self.config.run()
-        return self.config
-    
     def get_plugins(self, Debug=False, maxrows=1000):
         if self.plugins is None:
             self.plugins = manager.Plugins (sdpath = self.get_default().get_dics()
                                            ,mbpath = self.default.get_dics()
-                                           ,timeout = sh.lg.globs['float']['timeout']
+                                           ,timeout = cf.objs.get_config().new['timeout']
                                            ,Debug = Debug
                                            ,maxrows = maxrows
                                            )
         return self.plugins
-    
-    def get_default(self, product='mclient'):
-        if not self.default:
-            cf.PRODUCT_LOW = product.lower()
-            self.default = cf.DefaultConfig()
-            self.default.run()
-        return self.default
     
     def get_request(self):
         if self.request is None:
@@ -595,10 +581,10 @@ class Commands:
     
     def get_col_types(self):
         f = '[MClientQt] logic.Commands.get_col_types'
-        types = [sh.lg.globs['str']['col1_type']
-                ,sh.lg.globs['str']['col2_type']
-                ,sh.lg.globs['str']['col3_type']
-                ,sh.lg.globs['str']['col4_type']
+        types = [cf.objs.get_config().new['columns']['1']['type']
+                ,cf.objs.config.new['columns']['2']['type']
+                ,cf.objs.config.new['columns']['3']['type']
+                ,cf.objs.config.new['columns']['4']['type']
                 ]
         for i in range(len(types)):
             types[i] = self._get_col_type(types[i])
@@ -643,14 +629,6 @@ class Commands:
                 colors.append(block.color)
         return colors
     
-    def start(self):
-        ''' Either run sh.com.start as early as possible, or this, since
-            warnings about the invalid config file need GUI.
-        '''
-        cf.DefaultKeys()
-        objs.get_default()
-        self.load_config()
-    
     def set_url(self):
         f = '[MClientQt] logic.Commands.set_url'
         #NOTE: update source and target languages first
@@ -674,10 +652,10 @@ class Commands:
             translation' structure, so we need to switch off sorting terms and
             ensure that the number of columns is divisible by 2.
         '''
-        if not self.is_parallel() or sh.lg.globs['int']['colnum'] % 2 == 0:
-            return sh.lg.globs['int']['colnum']
-        if sh.lg.globs['int']['colnum'] > 2:
-            return sh.lg.globs['int']['colnum'] - 1
+        if not self.is_parallel() or cf.objs.get_config().new['columns']['num'] % 2 == 0:
+            return cf.objs.get_config().new['columns']['num']
+        if cf.objs.get_config().new['columns']['num'] > 2:
+            return cf.objs.config.new['columns']['num'] - 1
         return 2
     
     def export_style(self):
@@ -685,10 +663,10 @@ class Commands:
         ''' Do not use 'gettext' to name internal types - this will make
             the program ~0.6s slower.
         '''
-        lst = [choice for choice in (sh.lg.globs['str']['col1_type']
-                                    ,sh.lg.globs['str']['col2_type']
-                                    ,sh.lg.globs['str']['col3_type']
-                                    ,sh.lg.globs['str']['col4_type']
+        lst = [choice for choice in (cf.objs.get_config().new['columns']['1']['type']
+                                    ,cf.objs.config.new['columns']['2']['type']
+                                    ,cf.objs.config.new['columns']['3']['type']
+                                    ,cf.objs.config.new['columns']['4']['type']
                                     ) \
                if choice != _('Do not set')
               ]
@@ -719,12 +697,6 @@ class Commands:
             return
         objs.get_request().cols = tuple(lst)
         #TODO: Should we change objs.request.collimit here?
-    
-    def load_config(self):
-        objs.get_config()
-    
-    def save_config(self):
-        cf.CreateConfig(objs.get_default().fconf).run()
     
     def suggest(self, search, limit=0):
         f = '[MClientQt] logic.Commands.suggest'

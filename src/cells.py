@@ -7,6 +7,7 @@ from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 import instance as ic
+import config as cf
 import format as fm
 import logic as lg
 import subjects as sj
@@ -30,7 +31,7 @@ class Expand:
     def expand_speeches(self):
         # This takes ~0.0015s for 'set' on AMD E-300 (no IDE, no warnings)
         f = '[MClientQt] cells.Expand.expand_speeches'
-        if sh.lg.globs['bool']['ShortSpeech']:
+        if cf.objs.get_config().new['ShortSpeech']:
             sh.com.rep_lazy(f)
             return
         speeches = lg.objs.get_plugins().get_speeches()
@@ -49,7 +50,7 @@ class Expand:
             179 lines in 'subjects.json').
         '''
         f = '[MClientQt] cells.Expand.expand_subjects'
-        if sh.lg.globs['bool']['ShortSubjects']:
+        if cf.objs.get_config().new['ShortSubjects']:
             sh.com.rep_lazy(f)
             return
         for cell in self.cells:
@@ -69,7 +70,7 @@ class Omit:
     
     def omit_subjects(self):
         f = '[MClientQt] cells.Omit.omit_subjects'
-        if not sh.lg.globs['bool']['BlockSubjects']:
+        if not cf.objs.get_config().new['BlockSubjects']:
             sh.com.rep_lazy(f)
             return
         old_len = len(self.cells)
@@ -80,7 +81,7 @@ class Omit:
     
     def omit_users(self):
         f = '[MClientQt] cells.Omit.omit_users'
-        if sh.lg.globs['bool']['ShowUserNames']:
+        if cf.objs.get_config().new['ShowUserNames']:
             sh.com.rep_lazy(f)
             return
         count = 0
@@ -239,7 +240,7 @@ class View:
         if not self.Success:
             sh.com.cancel(f)
             return
-        if sh.lg.globs['bool']['AlphabetizeTerms'] \
+        if cf.objs.get_config().new['AlphabetizeTerms'] \
         and not lg.com.is_parallel() and not lg.com.is_separate():
             self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.text, x.no))
         else:

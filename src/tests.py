@@ -4,6 +4,8 @@
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
+import config as cf
+
 DEBUG = True
 
 ''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
@@ -621,8 +623,8 @@ class Commands:
         lg.com.start()
         import mclientqt as mc
         text = 'Раз, два, три, четыре, пять - вышел зайчик погулять'
-        ilimits = mc.FontLimits (family = sh.lg.globs['str']['font_terms_family']
-                                ,size = sh.lg.globs['int']['font_terms_size']
+        ilimits = mc.FontLimits (family = cf.objs.get_config().new['terms']['font']['family']
+                                ,size = cf.objs.config.new['terms']['font']['size']
                                 ,Bold = False
                                 ,Italic = False
                                 )
@@ -704,7 +706,7 @@ class Commands:
         f = '[MClient] tests.Commands.get_column_width'
         import logic as lg
         lg.com.start()
-        #sh.lg.globs['int']['colnum'] = 0
+        #cf.objs.get_config().new['columns']['num'] = 0
         mes = f'"{lg.com.get_column_width()}%"'
         sh.objs.get_mes(f, mes, True).show_debug()
     
@@ -777,14 +779,9 @@ class Commands:
         mes = f'"{short}" -> "{full}"'
         return mes
     
-    def generate_config(self):
-        import config as cf
-        cf.CreateConfig().run()
-    
     def edit_priorities(self):
         import mclientqt as mc
         import logic as lg
-        lg.com.start()
         mc.objs.get_priorities().reset (lst1 = lg.objs.get_order().priorlst
                                        ,lst2 = lg.objs.get_plugins().get_subjects()
                                        ,art_subjects = []

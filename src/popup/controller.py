@@ -2,8 +2,9 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+#import skl_shared_qt.shared as sh
 
+import config as cf
 from . import gui as gi
 
 
@@ -43,4 +44,4 @@ class Popup:
     
     def set_bindings(self):
         self.gui.bind('Esc', self.close)
-        self.gui.bind(sh.lg.globs['str']['bind_toggle_popup'], self.toggle)
+        self.gui.bind(cf.objs.get_config().new['hotkeys']['toggle_popup'], self.toggle)

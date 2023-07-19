@@ -4,6 +4,8 @@
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
+import config as cf
+
 
 COLNUM = 6
 
@@ -80,6 +82,7 @@ class Welcome:
         return self.table
     
     def set_hotkeys(self):
+        cf.objs.get_config()
         ihotkeys = Hotkeys()
         
         hint = _('Translate the current input or selection')
@@ -87,9 +90,7 @@ class Welcome:
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Copy the current selection')
-        hotkeys = (_('Right mouse button'), sh.lg.globs['str']['bind_copy_sel']
-                  ,sh.lg.globs['str']['bind_copy_sel_alt']
-                  )
+        hotkeys = (_('Right mouse button'), cf.objs.config.new['hotkeys']['copy_sel'])
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Show the program window (system-wide)')
@@ -105,51 +106,51 @@ class Welcome:
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Quit the program')
-        hotkeys = ('Ctrl+Q', sh.lg.globs['str']['bind_quit'])
+        hotkeys = ('Ctrl+Q', cf.objs.config.new['hotkeys']['quit'])
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Copy the URL of the selected term')
-        hotkeys = (sh.lg.globs['str']['bind_copy_url'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['copy_url'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Copy the URL of the current article')
-        hotkeys = (sh.lg.globs['str']['bind_copy_article_url'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['copy_article_url'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Go to the previous section of column #{}').format(1)
-        hotkeys = (sh.lg.globs['str']['bind_col1_up'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['col1_up'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Go to the next section of column #{}').format(1)
-        hotkeys = (sh.lg.globs['str']['bind_col1_down'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['col1_down'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Go to the previous section of column #{}').format(2)
-        hotkeys = (sh.lg.globs['str']['bind_col2_up'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['col2_up'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Go to the next section of column #{}').format(2)
-        hotkeys = (sh.lg.globs['str']['bind_col2_down'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['col2_down'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Go to the previous section of column #{}').format(3)
-        hotkeys = (sh.lg.globs['str']['bind_col3_up'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['col3_up'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Go to the next section of column #{}').format(3)
-        hotkeys = (sh.lg.globs['str']['bind_col3_down'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['col3_down'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Open a webpage with a definition of the current term')
-        hotkeys = (sh.lg.globs['str']['bind_define'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['define'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Look up phrases')
-        hotkeys = (sh.lg.globs['str']['bind_go_phrases'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['go_phrases'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Go to the preceding article')
-        hotkeys = (sh.lg.globs['str']['bind_go_back'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['go_back'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Go to the following article')
@@ -157,81 +158,81 @@ class Welcome:
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Next source language')
-        hotkeys = (sh.lg.globs['str']['bind_next_lang1']
+        hotkeys = (cf.objs.config.new['hotkeys']['next_lang1']
                   ,sh.lg.globs['str']['bind_next_lang1_alt']
                   )
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Previous source language')
-        hotkeys = (sh.lg.globs['str']['bind_prev_lang1']
+        hotkeys = (cf.objs.config.new['hotkeys']['prev_lang1']
                   ,sh.lg.globs['str']['bind_prev_lang1_alt']
                   )
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Create a printer-friendly page')
-        hotkeys = (sh.lg.globs['str']['bind_print'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['print'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Open the current article in a default browser')
-        hotkeys = (sh.lg.globs['str']['bind_open_in_browser']
+        hotkeys = (cf.objs.config.new['hotkeys']['open_in_browser']
                   ,sh.lg.globs['str']['bind_open_in_browser_alt']
                   )
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Reload the current article')
-        hotkeys = (sh.lg.globs['str']['bind_reload_article']
+        hotkeys = (cf.objs.config.new['hotkeys']['reload_article']
                   ,sh.lg.globs['str']['bind_reload_article_alt']
                   )
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Save or copy the current article')
-        hotkeys = (sh.lg.globs['str']['bind_save_article']
+        hotkeys = (cf.objs.config.new['hotkeys']['save_article']
                   ,sh.lg.globs['str']['bind_save_article_alt']
                   )
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Start a new search in the current article')
-        hotkeys = (sh.lg.globs['str']['bind_re_search_article'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['re_search_article'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Search the article forward')
-        hotkeys = (sh.lg.globs['str']['bind_search_article_forward'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['search_article_forward'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Search the article backward')
-        hotkeys = (sh.lg.globs['str']['bind_search_article_backward'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['search_article_backward'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Show settings')
-        hotkeys = (sh.lg.globs['str']['bind_settings']
+        hotkeys = (cf.objs.config.new['hotkeys']['settings']
                   ,sh.lg.globs['str']['bind_settings_alt']
                   )
         ihotkeys.add(hint, hotkeys)
         
         hint = _('About the program')
-        hotkeys = (sh.lg.globs['str']['bind_show_about'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['show_about'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Paste a special symbol')
-        hotkeys = (sh.lg.globs['str']['bind_spec_symbol'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['spec_symbol'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Toggle alphabetizing')
-        hotkeys = (sh.lg.globs['str']['bind_toggle_alphabet'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['toggle_alphabet'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Toggle blacklisting')
-        hotkeys = (sh.lg.globs['str']['bind_toggle_block'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['toggle_block'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Toggle History')
-        hotkeys = (sh.lg.globs['str']['bind_toggle_history']
+        hotkeys = (cf.objs.config.new['hotkeys']['toggle_history']
                   ,sh.lg.globs['str']['bind_toggle_history_alt']
                   )
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Toggle prioritizing')
-        hotkeys = (sh.lg.globs['str']['bind_toggle_priority'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['toggle_priority'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Toggle the current article view')
@@ -241,31 +242,31 @@ class Welcome:
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Clear History')
-        hotkeys = (sh.lg.globs['str']['bind_clear_history'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['clear_history'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Next target language')
-        hotkeys = (sh.lg.globs['str']['bind_next_lang2']
+        hotkeys = (cf.objs.config.new['hotkeys']['next_lang2']
                   ,sh.lg.globs['str']['bind_next_lang2_alt']
                   )
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Previous target language')
-        hotkeys = (sh.lg.globs['str']['bind_prev_lang2']
+        hotkeys = (cf.objs.config.new['hotkeys']['prev_lang2']
                   ,sh.lg.globs['str']['bind_prev_lang2_alt']
                   )
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Swap source and target languages')
-        hotkeys = (sh.lg.globs['str']['bind_swap_langs'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['swap_langs'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Copy the nominative case')
-        hotkeys = (sh.lg.globs['str']['bind_copy_nominative'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['copy_nominative'],)
         ihotkeys.add(hint, hotkeys)
         
         hint = _('Show full cell text')
-        hotkeys = (sh.lg.globs['str']['bind_toggle_popup'],)
+        hotkeys = (cf.objs.config.new['hotkeys']['toggle_popup'],)
         ihotkeys.add(hint, hotkeys)
         
         self.table += ihotkeys.get()

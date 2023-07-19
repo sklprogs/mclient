@@ -5,6 +5,7 @@ from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 import skl_shared_qt.web as wb
 
+import config as cf
 import logic as lg
 import gui as gi
 
@@ -101,19 +102,19 @@ class UpdateUI:
         '''
         f = '[MClient] mclient.UpdateUI.restore'
         mes = _('Restore source language: {}')
-        mes = mes.format(sh.lg.globs['str']['lang1'])
+        mes = mes.format(cf.objs.config.new['lang1'])
         sh.objs.get_mes(f, mes, True).show_info()
-        lg.objs.get_plugins().set_lang1(sh.lg.globs['str']['lang1'])
+        lg.objs.get_plugins().set_lang1(cf.objs.config.new['lang1'])
         mes = _('Restore target language: {}')
-        mes = mes.format(sh.lg.globs['str']['lang2'])
+        mes = mes.format(cf.objs.config.new['lang2'])
         sh.objs.get_mes(f, mes, True).show_info()
-        lg.objs.plugins.set_lang2(sh.lg.globs['str']['lang2'])
+        lg.objs.plugins.set_lang2(cf.objs.config.new['lang2'])
         self.gui.reset_opt()
-        self.gui.opt_src.set(sh.lg.globs['str']['source'])
-        self.gui.opt_col.set(sh.lg.globs['int']['colnum'])
+        self.gui.opt_src.set(cf.objs.config.new['source'])
+        self.gui.opt_col.set(cf.objs.config.new['columns']['num'])
     
     def _update_alphabet_image(self):
-        if sh.lg.globs['bool']['AlphabetizeTerms'] and not self.Parallel \
+        if cf.objs.config.new['AlphabetizeTerms'] and not self.Parallel \
         and not self.Separate:
             self.gui.btn_alp.activate()
         else:
@@ -121,7 +122,7 @@ class UpdateUI:
     
     def _update_alphabet_hint(self):
         mes = [_('Sort terms by alphabet')]
-        if sh.lg.globs['bool']['AlphabetizeTerms']:
+        if cf.objs.config.new['AlphabetizeTerms']:
             mes.append(_('Status: ON'))
         else:
             mes.append(_('Status: OFF'))
@@ -136,7 +137,7 @@ class UpdateUI:
     
     def update_global_hotkey(self):
         mes = [_('Capture Ctrl-c-c and Ctrl-Ins-Ins')]
-        if sh.lg.globs['bool']['CaptureHotkey']:
+        if cf.objs.config.new['CaptureHotkey']:
             self.gui.btn_cap.activate()
             mes.append(_('Status: ON'))
         else:
@@ -148,12 +149,12 @@ class UpdateUI:
     def update_prioritization(self):
         mes = [_('Subject prioritization')]
         prioritized = com.get_prioritized()
-        if sh.lg.globs['bool']['PrioritizeSubjects'] and prioritized \
+        if cf.objs.config.new['PrioritizeSubjects'] and prioritized \
         and not self.Parallel:
             self.gui.btn_pri.activate()
         else:
             self.gui.btn_pri.inactivate()
-        if sh.lg.globs['bool']['PrioritizeSubjects']:
+        if cf.objs.config.new['PrioritizeSubjects']:
             mes.append(_('Status: ON'))
         else:
             mes.append(_('Status: OFF'))
@@ -170,18 +171,18 @@ class UpdateUI:
         mes = [_('Subject blocking')]
         skipped_terms = len(com.get_skipped_terms())
         skipped_dics = len(com.get_skipped_dics())
-        if sh.lg.globs['bool']['BlockSubjects'] and skipped_terms:
+        if cf.objs.config.new['BlockSubjects'] and skipped_terms:
             self.gui.btn_blk.activate()
         else:
             self.gui.btn_blk.inactivate()
-        if sh.lg.globs['bool']['BlockSubjects']:
+        if cf.objs.config.new['BlockSubjects']:
             mes.append(_('Status: ON'))
         else:
             mes.append(_('Status: OFF'))
         ''' If this does not work as expected, then TERM might not be
             filled properply.
         '''
-        if sh.lg.globs['bool']['BlockSubjects'] and skipped_terms:
+        if cf.objs.config.new['BlockSubjects'] and skipped_terms:
             sub = _('Skipped {} terms in {} subjects')
             sub = sub.format(skipped_terms, skipped_dics)
         else:
@@ -490,7 +491,7 @@ class Welcome(wl.Welcome):
     
     def set_online_sources(self):
         f = '[MClientQt] mclient.Welcome.set_online_sources'
-        if not sh.lg.globs['bool']['Ping']:
+        if not cf.objs.config.new['Ping']:
             sh.com.rep_lazy(f)
             return
         old = lg.objs.get_plugins().source
@@ -897,11 +898,11 @@ class Table:
                 #TODO: Constant widths should depend on types
                 width = 123
             elif no == 1:
-                width = sh.lg.globs['int']['fixed_col_width']
+                width = cf.objs.config.new['columns']['fixed']['width']
             elif no in (2, 3):
                 width = 80
             else:
-                width = sh.lg.globs['int']['term_col_width']
+                width = cf.objs.config.new['columns']['terms']['width']
             self.gui.set_col_width(no, width)
     
     def go_bookmark(self):
@@ -935,7 +936,7 @@ class Table:
         self.model = gi.TableModel(self.logic.code)
         self.fill()
         self.set_col_width()
-        self.set_row_height(sh.lg.globs['int']['row_height'])
+        self.set_row_height(cf.objs.config.new['rows']['height'])
         self.show_borders(False)
         self.set_long()
         ''' Coordinates are recreated each time the app window is resized. Here
@@ -949,8 +950,8 @@ class Table:
         if not self.Success:
             sh.com.cancel(f)
             return
-        ilimits = FontLimits (family = sh.lg.globs['str']['font_terms_family']
-                             ,size = sh.lg.globs['int']['font_terms_size']
+        ilimits = FontLimits (family = cf.objs.config.new['terms']['font']['family']
+                             ,size = cf.objs.config.new['terms']['font']['size']
                              ,Bold = False
                              ,Italic = False
                              )
@@ -962,7 +963,7 @@ class Table:
                 ilimits.set_text(self.logic.plain[rowno][colno])
                 space = ilimits.get_space()
                 index_ = self.model.index(rowno, colno)
-                hint_space = sh.lg.globs['int']['row_height'] * self.gui.get_col_width(colno)
+                hint_space = cf.objs.config.new['rows']['height'] * self.gui.get_col_width(colno)
                 if space > hint_space:
                     self.gui.delegate.long.append(index_)
         timer.end()
@@ -1101,7 +1102,7 @@ class App:
             sh.com.rep_empty(f)
             return
         sh.Clipboard().copy(wform)
-        if sh.lg.globs['bool']['Iconify']:
+        if cf.objs.config.new['Iconify']:
             self.minimize()
     
     def copy_article_url(self):
@@ -1116,7 +1117,7 @@ class App:
             return
         url = lg.objs.get_plugins().fix_url(url)
         sh.Clipboard().copy(url)
-        if sh.lg.globs['bool']['Iconify']:
+        if cf.objs.config.new['Iconify']:
             self.minimize()
     
     def get_cell_url(self):
@@ -1139,7 +1140,7 @@ class App:
             return
         url = lg.objs.get_plugins().fix_url(url)
         sh.Clipboard().copy(url)
-        if sh.lg.globs['bool']['Iconify']:
+        if cf.objs.config.new['Iconify']:
             self.minimize()
     
     def go_phrases(self):
@@ -1164,7 +1165,7 @@ class App:
         f = '[MClientQt] mclient.App.catch'
         mes = _('Status: {}').format(status)
         sh.objs.get_mes(f, mes, True).show_debug()
-        if not sh.lg.globs['bool']['CaptureHotkey'] or not status:
+        if not cf.objs.config.new['CaptureHotkey'] or not status:
             sh.com.rep_lazy(f)
             return
         self.gui.activate()
@@ -1184,18 +1185,18 @@ class App:
     def edit_blacklist(self):
         f = '[MClient] mclient.App.edit_blacklist'
         old_list = lg.objs.get_default().block
-        old_key = sh.lg.globs['bool']['BlockSubjects']
+        old_key = cf.objs.config.new['BlockSubjects']
         self.block.reset (lst1 = old_list
                          ,lst2 = lg.objs.get_plugins().get_subjects()
                          ,art_subjects = com.get_article_subjects()
                          ,majors = lg.objs.plugins.get_majors()
                          )
-        self.block.set_checkbox(sh.lg.globs['bool']['BlockSubjects'])
+        self.block.set_checkbox(cf.objs.config.new['BlockSubjects'])
         self.block.show()
-        sh.lg.globs['bool']['BlockSubjects'] = self.block.get_checkbox()
+        cf.objs.config.new['BlockSubjects'] = self.block.get_checkbox()
         new_list = self.block.get1()
         if (old_list == new_list) \
-        and (old_key == sh.lg.globs['bool']['BlockSubjects']):
+        and (old_key == cf.objs.config.new['BlockSubjects']):
             sh.com.rep_lazy(f)
             return
         lg.objs.default.block = new_list
@@ -1204,10 +1205,10 @@ class App:
     
     def watch_clipboard(self):
         # Watch clipboard
-        if sh.lg.globs['bool']['CaptureHotkey']:
-            sh.lg.globs['bool']['CaptureHotkey'] = False
+        if cf.objs.config.new['CaptureHotkey']:
+            cf.objs.config.new['CaptureHotkey'] = False
         else:
-            sh.lg.globs['bool']['CaptureHotkey'] = True
+            cf.objs.config.new['CaptureHotkey'] = True
         UpdateUI(self.panel).update_global_hotkey()
     
     def define(self, Selected=True):
@@ -1222,7 +1223,7 @@ class App:
             sh.com.rep_empty(f)
             return
         pattern = _('what is "{}"?').format(pattern)
-        sh.Online (base = sh.lg.globs['str']['web_search_url']
+        sh.Online (base = cf.objs.config.new['web_search_url']
                   ,pattern = pattern
                   ).browse()
     
@@ -1233,10 +1234,10 @@ class App:
         self.load_article(search, url)
     
     def toggle_alphabet(self):
-        if sh.lg.globs['bool']['AlphabetizeTerms']:
-            sh.lg.globs['bool']['AlphabetizeTerms'] = False
+        if cf.objs.config.new['AlphabetizeTerms']:
+            cf.objs.config.new['AlphabetizeTerms'] = False
         else:
-            sh.lg.globs['bool']['AlphabetizeTerms'] = True
+            cf.objs.config.new['AlphabetizeTerms'] = True
         lg.objs.get_articles().delete_bookmarks()
         self.load_article()
     
@@ -1267,14 +1268,14 @@ class App:
         if not source or not lang1 or not lang2:
             sh.com.rep_empty(f)
             return
-        sh.lg.globs['str']['source'] = source
+        cf.objs.config.new['source'] = source
         mes = _('Set source to "{}"')
-        mes = mes.format(sh.lg.globs['str']['source'])
+        mes = mes.format(cf.objs.config.new['source'])
         sh.objs.get_mes(f, mes, True).show_info()
-        lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
+        lg.objs.get_plugins().set(cf.objs.config.new['source'])
         lg.objs.plugins.set_lang1(lang1)
         lg.objs.plugins.set_lang2(lang2)
-        self.reset_opt(sh.lg.globs['str']['source'])
+        self.reset_opt(cf.objs.config.new['source'])
         self.load_article()
     
     def clear_history(self):
@@ -1294,11 +1295,11 @@ class App:
         if not source or not lang1 or not lang2:
             sh.com.rep_empty(f)
             return
-        sh.lg.globs['str']['source'] = source
-        lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
+        cf.objs.config.new['source'] = source
+        lg.objs.get_plugins().set(cf.objs.config.new['source'])
         lg.objs.plugins.set_lang1(lang1)
         lg.objs.plugins.set_lang2(lang2)
-        self.reset_opt(sh.lg.globs['str']['source'])
+        self.reset_opt(cf.objs.config.new['source'])
         self.load_article()
     
     def go_next(self):
@@ -1313,11 +1314,11 @@ class App:
         if not source or not lang1 or not lang2:
             sh.com.rep_empty(f)
             return
-        sh.lg.globs['str']['source'] = source
-        lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
+        cf.objs.config.new['source'] = source
+        lg.objs.get_plugins().set(cf.objs.config.new['source'])
         lg.objs.plugins.set_lang1(lang1)
         lg.objs.plugins.set_lang2(lang2)
-        self.reset_opt(sh.lg.globs['str']['source'])
+        self.reset_opt(cf.objs.config.new['source'])
         self.load_article()
     
     def get_width(self):
@@ -1395,7 +1396,7 @@ class App:
         '''
         f = '[MClientQt] mclient.App.reset_columns'
         if not lg.com.is_parallel():
-            sh.lg.globs['int']['colnum'] = sh.Input (title = f
+            cf.objs.config.new['columns']['num'] = sh.Input (title = f
                                                     ,value = self.gui.panel.opt_col.get()
                                                     ).get_integer()
         collimit = lg.objs.get_column_width().fixed_num + lg.objs.column_width.term_num
@@ -1409,7 +1410,7 @@ class App:
         '''
         f = '[MClientQt] mclient.App.update_columns'
         if not lg.com.is_parallel():
-            sh.lg.globs['int']['colnum'] = lg.objs.get_column_width().term_num
+            cf.objs.config.new['columns']['num'] = lg.objs.get_column_width().term_num
         self.gui.panel.opt_col.set(lg.objs.get_column_width().term_num)
         collimit = lg.objs.get_column_width().fixed_num + lg.objs.column_width.term_num
         mes = _('Set the number of columns to {} ({} in total)')
@@ -1418,11 +1419,11 @@ class App:
     
     def set_source(self):
         f = '[MClientQt] mclient.App.set_source'
-        sh.lg.globs['str']['source'] = self.gui.panel.opt_src.get()
-        mes = _('Set source to "{}"').format(sh.lg.globs['str']['source'])
+        cf.objs.config.new['source'] = self.gui.panel.opt_src.get()
+        mes = _('Set source to "{}"').format(cf.objs.config.new['source'])
         sh.objs.get_mes(f, mes, True).show_info()
-        lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
-        self.reset_opt(sh.lg.globs['str']['source'])
+        lg.objs.get_plugins().set(cf.objs.config.new['source'])
+        self.reset_opt(cf.objs.config.new['source'])
         self.go_search()
     
     def auto_swap(self):
@@ -1430,7 +1431,7 @@ class App:
         lang1 = self.gui.panel.opt_lg1.get()
         lang2 = self.gui.panel.opt_lg2.get()
         if lg.objs.get_plugins().is_oneway() \
-        or not sh.lg.globs['bool']['Autoswap'] \
+        or not cf.objs.config.new['Autoswap'] \
         or not lg.objs.get_request().search:
             sh.com.rep_lazy(f)
             return
@@ -1512,7 +1513,7 @@ class App:
         if lg.objs.get_plugins().get_lang1() != lang:
             mes = _('Set language: {}').format(lang)
             sh.objs.get_mes(f, mes, True).show_info()
-            sh.lg.globs['str']['lang1'] = lang
+            cf.objs.config.new['lang1'] = lang
             lg.objs.get_plugins().set_lang1(lang)
     
     def set_lang2(self):
@@ -1521,7 +1522,7 @@ class App:
         if lg.objs.get_plugins().get_lang2() != lang:
             mes = _('Set language: {}').format(lang)
             sh.objs.get_mes(f, mes, True).show_info()
-            sh.lg.globs['str']['lang2'] = lang
+            cf.objs.config.new['lang2'] = lang
             lg.objs.get_plugins().set_lang2(lang)
     
     def update_lang1(self):
@@ -1629,7 +1630,7 @@ class App:
             may decide to check the lighter condition first.
         '''
         if self.table.copy_cell():
-            if sh.lg.globs['bool']['Iconify']:
+            if cf.objs.config.new['Iconify']:
                 self.minimize()
     
     def copy_symbol(self):
@@ -1650,7 +1651,7 @@ class App:
         timer.start()
 
         if search or url:
-            artid = lg.objs.get_articles().find (source = sh.lg.globs['str']['source']
+            artid = lg.objs.get_articles().find (source = cf.objs.config.new['source']
                                                 ,search = search
                                                 ,url = url
                                                 )
@@ -1731,9 +1732,9 @@ class App:
         search = self.panel.ent_src.get().strip()
         if search == '':
             self.go_url()
-        elif search == sh.lg.globs['str']['repeat_sign']:
+        elif search == cf.objs.config.new['repeat_sign']:
             self.insert_repeat_sign()
-        elif search == sh.lg.globs['str']['repeat_sign2']:
+        elif search == cf.objs.config.new['repeat_sign2']:
             self.insert_repeat_sign2()
         else:
             lg.objs.get_request().search = search
@@ -1839,111 +1840,111 @@ class App:
         self.gui.bind('Alt+8', lambda:self.change_col_no(8))
         self.gui.bind('Alt+9', lambda:self.change_col_no(9))
         
-        self.gui.bind (sh.lg.globs['str']['bind_clear_history']
+        self.gui.bind (cf.objs.config.new['hotkeys']['clear_history']
                       ,self.clear_history
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_col1_down']
+        self.gui.bind (cf.objs.config.new['hotkeys']['col1_down']
                       ,lambda:self.table.go_next_section(0)
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_col2_down']
+        self.gui.bind (cf.objs.config.new['hotkeys']['col2_down']
                       ,lambda:self.table.go_next_section(1)
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_col3_down']
+        self.gui.bind (cf.objs.config.new['hotkeys']['col3_down']
                       ,lambda:self.table.go_next_section(2)
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_col4_down']
+        self.gui.bind (cf.objs.config.new['hotkeys']['col4_down']
                       ,lambda:self.table.go_next_section(3)
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_col1_up']
+        self.gui.bind (cf.objs.config.new['hotkeys']['col1_up']
                       ,lambda:self.table.go_prev_section(0)
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_col2_up']
+        self.gui.bind (cf.objs.config.new['hotkeys']['col2_up']
                       ,lambda:self.table.go_prev_section(1)
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_col3_up']
+        self.gui.bind (cf.objs.config.new['hotkeys']['col3_up']
                       ,lambda:self.table.go_prev_section(2)
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_col4_up']
+        self.gui.bind (cf.objs.config.new['hotkeys']['col4_up']
                       ,lambda:self.table.go_prev_section(3)
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_go_next']
+        self.gui.bind (cf.objs.config.new['hotkeys']['go_next']
                       ,self.go_next
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_go_back']
+        self.gui.bind (cf.objs.config.new['hotkeys']['go_back']
                       ,self.go_back
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_toggle_history']
+        self.gui.bind (cf.objs.config.new['hotkeys']['toggle_history']
                       ,self.history.toggle
                       )
         self.gui.bind (sh.lg.globs['str']['bind_toggle_history_alt']
                       ,self.history.toggle
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_save_article']
+        self.gui.bind (cf.objs.config.new['hotkeys']['save_article']
                       ,self.save.toggle
                       )
         self.gui.bind (sh.lg.globs['str']['bind_save_article_alt']
                       ,self.save.toggle
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_settings']
+        self.gui.bind (cf.objs.config.new['hotkeys']['settings']
                       ,self.settings.toggle
                       )
         self.gui.bind (sh.lg.globs['str']['bind_settings_alt']
                       ,self.settings.toggle
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_spec_symbol']
+        self.gui.bind (cf.objs.config.new['hotkeys']['spec_symbol']
                       ,self.symbols.show
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_swap_langs']
+        self.gui.bind (cf.objs.config.new['hotkeys']['swap_langs']
                       ,self.swap_langs
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_toggle_block']
+        self.gui.bind (cf.objs.config.new['hotkeys']['toggle_block']
                       ,self.block.toggle
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_toggle_priority']
+        self.gui.bind (cf.objs.config.new['hotkeys']['toggle_priority']
                       ,self.prior.toggle
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_toggle_popup']
+        self.gui.bind (cf.objs.config.new['hotkeys']['toggle_popup']
                       ,self.table.show_popup
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_toggle_alphabet']
+        self.gui.bind (cf.objs.config.new['hotkeys']['toggle_alphabet']
                       ,self.toggle_alphabet
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_reload_article']
+        self.gui.bind (cf.objs.config.new['hotkeys']['reload_article']
                       ,self.reload
                       )
         self.gui.bind (sh.lg.globs['str']['bind_reload_article_alt']
                       ,self.reload
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_open_in_browser']
+        self.gui.bind (cf.objs.config.new['hotkeys']['open_in_browser']
                       ,self.logic.open_in_browser
                       )
         self.gui.bind (sh.lg.globs['str']['bind_open_in_browser_alt']
                       ,self.logic.open_in_browser
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_print']
+        self.gui.bind (cf.objs.config.new['hotkeys']['print']
                       ,self.logic.print
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_define']
+        self.gui.bind (cf.objs.config.new['hotkeys']['define']
                       ,self.define
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_go_phrases']
+        self.gui.bind (cf.objs.config.new['hotkeys']['go_phrases']
                       ,self.go_phrases
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_copy_article_url']
+        self.gui.bind (cf.objs.config.new['hotkeys']['copy_article_url']
                       ,self.copy_article_url
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_copy_url']
+        self.gui.bind (cf.objs.config.new['hotkeys']['copy_url']
                       ,self.copy_cell_url
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_copy_nominative']
+        self.gui.bind (cf.objs.config.new['hotkeys']['copy_nominative']
                       ,self.copy_wform
                       )
                       
         #TODO: iterate through all keys
-        if sh.lg.globs['str']['bind_spec_symbol'] == 'Ctrl+E':
+        if cf.objs.config.new['hotkeys']['spec_symbol'] == 'Ctrl+E':
             self.gui.panel.ent_src.widget.sig_ctrl_e.connect(self.symbols.show)
         else:
-            self.gui.panel.ent_src.bind (sh.lg.globs['str']['bind_spec_symbol']
+            self.gui.panel.ent_src.bind (cf.objs.config.new['hotkeys']['spec_symbol']
                                         ,self.symbols.show
                                         )
         
@@ -2103,7 +2104,7 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClientQt] mclient.__main__'
     sh.com.start()
-    lg.com.start()
+    cf.objs.get_config()
     lg.objs.get_plugins(Debug=False, maxrows=1000)
     lg.objs.get_request().search = 'tuple'
     timer = sh.Timer(f + ': Showing GUI')

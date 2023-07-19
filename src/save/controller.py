@@ -4,6 +4,7 @@
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
+import config as cf
 from . import gui as gi
 
 
@@ -108,8 +109,7 @@ class Save:
         self.gui.bind('End', self.go_end)
         self.gui.bind('Ctrl+Home', self.go_start)
         self.gui.bind('Ctrl+End', self.go_end)
-        self.gui.bind(sh.lg.globs['str']['bind_save_article'], self.toggle)
-        self.gui.bind(sh.lg.globs['str']['bind_save_article_alt'], self.toggle)
+        self.gui.bind(cf.objs.get_config().new['hotkeys']['save_article'], self.toggle)
         self.gui.sig_close.connect(self.close)
     
     def centralize(self):
