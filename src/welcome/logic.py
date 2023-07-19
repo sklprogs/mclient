@@ -173,77 +173,77 @@ class Welcome:
                      ,cf.objs.config.new['hotkeys']['reload_article']
                      )
         
-        hint = _('Save or copy the current article')
-        hotkeys = cf.objs.config.new['hotkeys']['save_article']
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Save or copy the current article')
+                     ,cf.objs.config.new['hotkeys']['save_article']
+                     )
         
-        hint = _('Start a new search in the current article')
-        hotkeys = (cf.objs.config.new['hotkeys']['re_search_article'],)
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Start a new search in the current article')
+                     ,cf.objs.config.new['hotkeys']['re_search_article']
+                     )
         
-        hint = _('Search the article forward')
-        hotkeys = (cf.objs.config.new['hotkeys']['search_article_forward'],)
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Search the article forward')
+                     ,cf.objs.config.new['hotkeys']['search_article_forward']
+                     )
         
-        hint = _('Search the article backward')
-        hotkeys = (cf.objs.config.new['hotkeys']['search_article_backward'],)
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Search the article backward')
+                     ,cf.objs.config.new['hotkeys']['search_article_backward']
+                     )
         
-        hint = _('Show settings')
-        hotkeys = cf.objs.config.new['hotkeys']['settings']
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Show settings')
+                     ,cf.objs.config.new['hotkeys']['settings']
+                     )
         
-        hint = _('About the program')
-        hotkeys = (cf.objs.config.new['hotkeys']['show_about'],)
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('About the program')
+                     ,cf.objs.config.new['hotkeys']['show_about']
+                     )
         
-        hint = _('Paste a special symbol')
-        hotkeys = (cf.objs.config.new['hotkeys']['spec_symbol'],)
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Paste a special symbol')
+                     ,cf.objs.config.new['hotkeys']['spec_symbol']
+                     )
         
-        hint = _('Toggle alphabetizing')
-        hotkeys = (cf.objs.config.new['hotkeys']['toggle_alphabet'],)
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Toggle alphabetizing')
+                     ,cf.objs.config.new['hotkeys']['toggle_alphabet']
+                     )
         
-        hint = _('Toggle blacklisting')
-        hotkeys = (cf.objs.config.new['hotkeys']['toggle_block'],)
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Toggle blacklisting')
+                     ,cf.objs.config.new['hotkeys']['toggle_block']
+                     )
         
-        hint = _('Toggle History')
-        hotkeys = cf.objs.config.new['hotkeys']['toggle_history']
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Toggle History')
+                     ,cf.objs.config.new['hotkeys']['toggle_history']
+                     )
         
-        hint = _('Toggle prioritizing')
-        hotkeys = (cf.objs.config.new['hotkeys']['toggle_priority'],)
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Toggle prioritizing')
+                     ,cf.objs.config.new['hotkeys']['toggle_priority']
+                     )
         
-        hint = _('Toggle the current article view')
-        hotkeys = sh.lg.globs['str']['bind_toggle_view']
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Toggle the current article view')
+                     ,sh.lg.globs['str']['bind_toggle_view']
+                     )
         
-        hint = _('Clear History')
-        hotkeys = (cf.objs.config.new['hotkeys']['clear_history'],)
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Clear History')
+                     ,cf.objs.config.new['hotkeys']['clear_history']
+                     )
         
-        hint = _('Next target language')
-        hotkeys = cf.objs.config.new['hotkeys']['next_lang2']
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Next target language')
+                     ,cf.objs.config.new['hotkeys']['next_lang2']
+                     )
         
-        hint = _('Previous target language')
-        hotkeys = cf.objs.config.new['hotkeys']['prev_lang2']
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Previous target language')
+                     ,cf.objs.config.new['hotkeys']['prev_lang2']
+                     )
         
-        hint = _('Swap source and target languages')
-        hotkeys = (cf.objs.config.new['hotkeys']['swap_langs'],)
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Swap source and target languages')
+                     ,cf.objs.config.new['hotkeys']['swap_langs']
+                     )
         
-        hint = _('Copy the nominative case')
-        hotkeys = (cf.objs.config.new['hotkeys']['copy_nominative'],)
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Copy the nominative case')
+                     ,cf.objs.config.new['hotkeys']['copy_nominative']
+                     )
         
-        hint = _('Show full cell text')
-        hotkeys = (cf.objs.config.new['hotkeys']['toggle_popup'],)
-        ihotkeys.add(hint, hotkeys)
+        ihotkeys.add (_('Show full cell text')
+                     ,cf.objs.config.new['hotkeys']['toggle_popup']
+                     )
         
         self.table += ihotkeys.get()
     
