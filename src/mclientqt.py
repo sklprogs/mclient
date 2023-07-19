@@ -1876,19 +1876,10 @@ class App:
         self.gui.bind (cf.objs.config.new['hotkeys']['toggle_history']
                       ,self.history.toggle
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_toggle_history_alt']
-                      ,self.history.toggle
-                      )
         self.gui.bind (cf.objs.config.new['hotkeys']['save_article']
                       ,self.save.toggle
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_save_article_alt']
-                      ,self.save.toggle
-                      )
         self.gui.bind (cf.objs.config.new['hotkeys']['settings']
-                      ,self.settings.toggle
-                      )
-        self.gui.bind (sh.lg.globs['str']['bind_settings_alt']
                       ,self.settings.toggle
                       )
         self.gui.bind (cf.objs.config.new['hotkeys']['spec_symbol']
@@ -1912,13 +1903,7 @@ class App:
         self.gui.bind (cf.objs.config.new['hotkeys']['reload_article']
                       ,self.reload
                       )
-        self.gui.bind (sh.lg.globs['str']['bind_reload_article_alt']
-                      ,self.reload
-                      )
         self.gui.bind (cf.objs.config.new['hotkeys']['open_in_browser']
-                      ,self.logic.open_in_browser
-                      )
-        self.gui.bind (sh.lg.globs['str']['bind_open_in_browser_alt']
                       ,self.logic.open_in_browser
                       )
         self.gui.bind (cf.objs.config.new['hotkeys']['print']
