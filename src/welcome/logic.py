@@ -150,7 +150,7 @@ class Welcome:
                      )
         
         ihotkeys.add (_('Go to the following article')
-                     ,sh.lg.globs['str']['bind_go_forward']
+                     ,cf.objs.config.new['hotkeys']['go_next']
                      )
         
         ihotkeys.add (_('Next source language')
@@ -215,10 +215,6 @@ class Welcome:
         
         ihotkeys.add (_('Toggle prioritizing')
                      ,cf.objs.config.new['hotkeys']['toggle_priority']
-                     )
-        
-        ihotkeys.add (_('Toggle the current article view')
-                     ,sh.lg.globs['str']['bind_toggle_view']
                      )
         
         ihotkeys.add (_('Clear History')
