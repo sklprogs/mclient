@@ -540,10 +540,13 @@ class Objects:
             self.column_width.run()
         return self.column_width
     
+    def get_dics(self):
+        return sh.Home(cf.PRODUCT_LOW).add_config('dics')
+    
     def get_plugins(self, Debug=False, maxrows=1000):
         if self.plugins is None:
-            self.plugins = manager.Plugins (sdpath = self.get_default().get_dics()
-                                           ,mbpath = self.default.get_dics()
+            self.plugins = manager.Plugins (sdpath = self.get_dics()
+                                           ,mbpath = self.get_dics()
                                            ,timeout = cf.objs.get_config().new['timeout']
                                            ,Debug = Debug
                                            ,maxrows = maxrows

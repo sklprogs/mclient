@@ -67,18 +67,7 @@ class Priorities(pr.Priorities):
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def reset(self):
-        #self.lst1 = lg.objs.get_default().prior
-        self.dic1 = {'Компьютеры':
-                        ['Компьютеры', 'Майкрософт', 'Программирование', 'Оракл']
-                    ,'Разговорная лексика':
-                        ['Разговорная лексика', 'Арго', 'Грубо', 'Мат'
-                        ,'Возвышенно', 'Поэтически'
-                        ]
-                    ,'Языки':
-                        ['Языки', 'Английский', 'Французский', 'Немецкий'
-                        ,'Русский', 'Датский', 'Японский', 'Китайский'
-                        ]
-                    }
+        self.dic1 = cf.objs.get_config().new['subjects']['prioritized']
         self.set_mode()
         #TODO: Elaborate
         self.fill(self.dic1, self.dic2)
@@ -1184,7 +1173,7 @@ class App:
     
     def edit_blacklist(self):
         f = '[MClient] mclient.App.edit_blacklist'
-        old_list = lg.objs.get_default().block
+        old_list = cf.objs.get_config().new['subjects']['blocked']
         old_key = cf.objs.config.new['BlockSubjects']
         self.block.reset (lst1 = old_list
                          ,lst2 = lg.objs.get_plugins().get_subjects()
@@ -1668,7 +1657,8 @@ class App:
                                  ,cells = cells
                                  ,fixed_urls = sj.objs.get_subjects().add_fixed_urls()
                                  )
-            lg.objs.get_default().add_subjects(lg.objs.plugins.get_article_subjects())
+            #TODO: rework
+            #lg.objs.get_default().add_subjects(lg.objs.plugins.get_article_subjects())
         else:
             mes = _('Load article No. {} from memory').format(artid)
             sh.objs.get_mes(f, mes, True).show_info()
@@ -1789,8 +1779,7 @@ class App:
         ''' This procedure is called by signal. Do not put 'self.close' here,
             it is run separately.
         '''
-        lg.objs.get_default().save()
-        lg.com.save_config()
+        cf.objs.get_config().save()
         self.thread.end()
         ''' For this code to be executed last, it's not enough to put it in 
             '__main__' right before 'sh.com.end'.

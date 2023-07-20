@@ -485,31 +485,6 @@ class Commands:
         isuggest.set_width(96)
         return isuggest
     
-    def run_default_config(self):
-        f = '[MClientQt] tests.Commands.run_default_config'
-        import logic as lg
-        lg.objs.get_default()
-        mes = [f'{f}:']
-        sub = f'{lg.objs.default.fprior}:'
-        mes.append(sub)
-        sub = '\n'.join(lg.objs.default.prior)
-        mes.append(sub)
-        mes.append('')
-        sub = f'{lg.objs.default.fblock}:'
-        mes.append(sub)
-        sub = '\n'.join(lg.objs.default.block)
-        mes.append(sub)
-        mes.append('')
-        sub = f'{lg.objs.default.fsubj}:'
-        mes.append(sub)
-        pairs = []
-        keys = sorted(lg.objs.default.subj.keys(), key=str.casefold)
-        for key in keys:
-            sub = f'"{key}" <=> "{lg.objs.default.subj[key]}"'
-            pairs.append(sub)
-        mes.append('\n'.join(pairs))
-        return '\n'.join(mes)
-    
     def get_priority(self):
         f = '[MClientQt] tests.Commands.get_priority'
         import logic as lg
@@ -527,10 +502,8 @@ class Commands:
         mes = []
         sub = f'{f}:'
         mes.append(sub)
-        sub = _('Prioritized subjects loaded from {}:')
-        sub = sub.format(lg.objs.get_default().fprior)
-        mes.append(sub)
-        sub = '; '.join(lg.objs.get_default().prior)
+        mes.append(_('Prioritized subjects:'))
+        sub = '; '.join(cf.objs.get_config().new['subjects']['prioritized'])
         mes.append(sub)
         mes.append('')
         subject = 'тест., ИТ., Gruzovik, прогр.'
@@ -948,7 +921,7 @@ class Commands:
         code = lg.Welcome().run()
         if code:
             sh.WriteTextFile(file_w).write(code)
-            sh.Launch(file_w).default()
+            sh.Launch(file_w).launch_default()
         else:
             sh.com.rep_empty(f)
     

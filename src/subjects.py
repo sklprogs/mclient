@@ -4,6 +4,7 @@
 #from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
+import config as cf
 import logic as lg
 
 
@@ -14,17 +15,17 @@ class Subjects:
     
     def set_prior(self):
         f = '[MClientQt] subjects.Subjects.set_prior'
-        if not lg.objs.get_default().prior \
+        if not cf.objs.get_config().new['subjects']['prioritized'] \
         or not lg.objs.get_articles().get_subjects():
             sh.com.rep_lazy(f)
             return
         for subject in lg.objs.get_articles().get_subjects():
-            if subject in lg.objs.get_default().prior:
+            if subject in cf.objs.config.new['subjects']['prioritized']:
                 self.prior.append(subject)
             elif ', ' in subject:
                 parts = subject.split(', ')
                 for part in parts:
-                    if part in lg.objs.get_default().prior:
+                    if part in cf.objs.config.new['subjects']['prioritized']:
                         self.prior.append(subject)
                         break
         mes = '; '.join(self.prior)
