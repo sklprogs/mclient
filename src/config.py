@@ -119,6 +119,22 @@ class Config:
         self.localize()
         self.save()
     
+    def convert_types(self):
+        f = '[MClient] config.Config.convert_types'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        # JSON does not support floats
+        self.new['timeout'] = float(self.new['timeout'])
+    
+    def revert_types(self):
+        f = '[MClient] config.Config.revert_types'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        # JSON does not support floats
+        self.new['timeout'] = str(self.new['timeout'])
+    
     def set_default(self):
         f = '[MClient] config.Config.set_default'
         if not self.Success:
@@ -150,6 +166,10 @@ class Config:
             unchanged.
         '''
         self.new = self.default | self.local
+    
+    def quit(self):
+        self.revert_types()
+        self.save()
     
     def save(self):
         f = '[MClient] config.Config.save'
@@ -198,6 +218,7 @@ class Config:
         self.load_local()
         self.check_local()
         self.update()
+        self.convert_types()
 
 
 
