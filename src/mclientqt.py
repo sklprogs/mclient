@@ -1778,6 +1778,7 @@ class App:
         ''' This procedure is called by signal. Do not put 'self.close' here,
             it is run separately.
         '''
+        cf.objs.get_subjects().save()
         cf.objs.get_config().quit()
         self.thread.end()
         ''' For this code to be executed last, it's not enough to put it in 
