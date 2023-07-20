@@ -327,21 +327,15 @@ class Default:
         self.set_values()
     
     def set_values(self):
+        self.Success = True
         self.dics = ''
-        self.subj = {}
     
     def check(self):
         self.ihome = sh.Home(PRODUCT_LOW)
-        self.isubj = Subjects()
-        self.isubj.run()
-        self.subj = self.isubj.body
-        self.Success = self.ihome.create_conf() and self.isubj.Success
-    
-    def add_subjects(self, dic):
-        self.isubj.add(dic)
+        self.Success = self.ihome.create_conf()
     
     def set_dics(self):
-        f = '[MClient] config.DefaultConfig.set_dics'
+        f = '[MClient] config.Default.set_dics'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -356,9 +350,6 @@ class Default:
             self.Success = sh.Path(self.dics).create()
         return self.dics
     
-    def save(self):
-        self.isubj.save()
-    
     def run(self):
         self.check()
         self.set_dics()
@@ -368,7 +359,13 @@ class Default:
 class Objects:
     
     def __init__(self):
-        self.config = self.default = None
+        self.config = self.default = self.subjects = None
+    
+    def get_subjects(self):
+        if self.subjects is None:
+            self.subjects = Subjects()
+            self.subjects.run()
+        return self.subjects
     
     def get_default(self):
         if self.default is None:

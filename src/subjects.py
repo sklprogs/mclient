@@ -46,18 +46,17 @@ class Subjects:
         return dic
     
     def expand(self, subject):
-        dic = cf.objs.get_default().subj
-        if not subject or not dic:
+        if not cf.objs.get_subjects().body or not subject:
             return subject
-        if subject in dic:
-            return dic[subject]
+        if subject in cf.objs.subjects.body:
+            return cf.objs.subjects.body[subject]
         if not ', ' in subject:
             return subject
         new_parts = []
         parts = subject.split(', ')
         for part in parts:
-            if part in dic:
-                new_parts.append(dic[part])
+            if part in cf.objs.subjects.body:
+                new_parts.append(cf.objs.subjects.body[part])
             else:
                 new_parts.append(part)
         return ', '.join(new_parts)
