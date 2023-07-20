@@ -222,10 +222,159 @@ class Config:
 
 
 
+class Subjects:
+    
+    def __init__(self):
+        self.set_values()
+        self.ihome = sh.Home(PRODUCT_LOW)
+        self.Success = self.ihome.create_conf()
+    
+    def set_values(self):
+        self.Success = True
+        self.file = ''
+        self.body = {}
+    
+    def add(self, body):
+        f = '[MClient] config.Subjects.add'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not body:
+            sh.com.rep_lazy(f)
+            return
+        count = 0
+        for key in body:
+            # JSON accepts empty keys and values
+            if not key:
+                sh.com.rep_empty(f)
+                continue
+            value = body[key]
+            if not value:
+                sh.com.rep_empty(f)
+                continue
+            ''' 'key' must be different from 'value' since we need new expanded
+                subjects. If the same value is returned after expanding, this
+                means that a short-full subject pair has not been found.
+            '''
+            if not key in self.body and key != value:
+                count += 1
+                self.body[key] = value
+        sh.com.rep_matches(f, count)
+    
+    def set_file(self):
+        f = '[MClient] config.Subjects.set_file'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.file = self.ihome.add_config('subjects.json')
+        if not self.file:
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
+    
+    def create(self):
+        f = '[MClient] config.Subjects.create'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if os.path.exists(self.file):
+            self.Success = sh.File(self.file).Success
+        else:
+            iwrite = sh.WriteTextFile(self.file)
+            # JSON throws an error upon an empty file
+            iwrite.write('{}')
+            self.Success = iwrite.Success
+    
+    def load(self):
+        f = '[MClient] config.Subjects.load'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        code = sh.ReadTextFile(self.file, True).get()
+        try:
+            self.body = json.loads(code)
+        except Exception as e:
+            self.Success = False
+            sh.com.rep_third_party(f, e)
+    
+    def save(self):
+        f = '[MClient] config.Subjects.save'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        mes = _('Write file "{}"').format(self.file)
+        sh.objs.get_mes(f, mes, True).show_info()
+        try:
+            with open(self.file, 'w', encoding='utf-8') as iopen:
+                json.dump(self.body, iopen, ensure_ascii=False, indent=4)
+        except Exception as e:
+            ''' Failing a class which produced a writing error should not fail
+                all writing operations some of which may actually be successful.
+            '''
+            mes = _('Third-party module has failed!\n\nDetails: {}').format(e)
+            sh.objs.get_mes(f, mes).show_error()
+    
+    def run(self):
+        self.set_file()
+        self.create()
+        self.load()
+
+        
+
+class Default:
+    
+    def __init__(self):
+        self.set_values()
+    
+    def set_values(self):
+        self.dics = ''
+        self.subj = {}
+    
+    def check(self):
+        self.ihome = sh.Home(PRODUCT_LOW)
+        self.isubj = Subjects()
+        self.isubj.run()
+        self.subj = self.isubj.body
+        self.Success = self.ihome.create_conf() and self.isubj.Success
+    
+    def add_subjects(self, dic):
+        self.isubj.add(dic)
+    
+    def set_dics(self):
+        f = '[MClient] config.DefaultConfig.set_dics'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.dics = self.ihome.add_config('dics')
+        if not self.dics:
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
+        if os.path.exists(self.dics):
+            self.Success = sh.Directory(self.dics).Success
+        else:
+            self.Success = sh.Path(self.dics).create()
+        return self.dics
+    
+    def save(self):
+        self.isubj.save()
+    
+    def run(self):
+        self.check()
+        self.set_dics()
+
+
+
 class Objects:
     
     def __init__(self):
-        self.config = None
+        self.config = self.default = None
+    
+    def get_default(self):
+        if self.default is None:
+            self.default = Default()
+            self.default.run()
+        return self.default
     
     def get_config(self):
         if self.config is None:

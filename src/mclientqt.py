@@ -1657,8 +1657,7 @@ class App:
                                  ,cells = cells
                                  ,fixed_urls = sj.objs.get_subjects().add_fixed_urls()
                                  )
-            #TODO: rework
-            #lg.objs.get_default().add_subjects(lg.objs.plugins.get_article_subjects())
+            cf.objs.get_default().add_subjects(lg.objs.plugins.get_article_subjects())
         else:
             mes = _('Load article No. {} from memory').format(artid)
             sh.objs.get_mes(f, mes, True).show_info()

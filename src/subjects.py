@@ -46,7 +46,7 @@ class Subjects:
         return dic
     
     def expand(self, subject):
-        dic = lg.objs.get_default().subj
+        dic = cf.objs.get_default().subj
         if not subject or not dic:
             return subject
         if subject in dic:
@@ -67,29 +67,29 @@ class Subjects:
         if not subject:
             return
         subject = self.expand(subject)
-        if subject in lg.objs.get_default().prior:
+        if subject in cf.objs.get_config().new['subjects']['prioritized']:
             return True
         elif ', ' in subject:
             parts = subject.split(', ')
             for part in parts:
-                if part in lg.objs.default.prior:
+                if part in cf.objs.config.new['subjects']['prioritized']:
                     return True
     
     def is_blocked(self, subject):
         if not subject:
             return
         subject = self.expand(subject)
-        if subject in lg.objs.get_default().block:
+        if subject in cf.objs.get_config().new['subjects']['blocked']:
             return True
         elif ', ' in subject:
             parts = subject.split(', ')
             for part in parts:
-                if part in lg.objs.default.block:
+                if part in cf.objs.config.new['subjects']['blocked']:
                     return True
     
     def _get_priority(self, subject):
         try:
-            return lg.objs.get_default().prior.index(subject)
+            return cf.objs.get_config().new['subjects']['prioritized'].index(subject)
         except ValueError:
             return
     
