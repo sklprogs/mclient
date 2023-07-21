@@ -1,42 +1,156 @@
-{"hotkeys":
-    {"clear_history": ["Ctrl+Shift+Del"]
-    ,"col1_down": ["Ctrl+Down"]
-    ,"col1_up": ["Ctrl+Up"]
-    ,"col2_down": ["Alt+Down"]
-    ,"col2_up": ["Alt+Up"]
-    ,"col3_down": ["Shift+Down"]
-    ,"col3_up": ["Shift+Up"]
-    ,"col4_down": ["Ctrl+Shift+Down"]
-    ,"col4_up": ["Ctrl+Shift+Up"]
-    ,"copy_article_url": ["Ctrl+F7"]
-    ,"copy_nominative": ["Ctrl+W"]
-    ,"copy_sel": ["Ctrl+Return", "Ctrl+Enter"]
-    ,"copy_url": ["Shift+F7"]
-    ,"define": ["Ctrl+D"]
-    ,"go_back": ["Alt+Left"]
-    ,"go_next": ["Alt+Right"]
-    ,"go_phrases": ["Alt+F"]
-    ,"next_lang1": ["F8", "Ctrl+K"]
-    ,"next_lang2": ["F9", "Ctrl+L"]
-    ,"prev_lang1": ["Shift+F8", "Ctrl+K"]
-    ,"prev_lang2": ["Shift+F9", "Ctrl+L"]
-    ,"open_in_browser": ["F7", "Ctrl+B"]
-    ,"print": ["Ctrl+P"]
-    ,"quit": ["F10"]
-    ,"re_search_article": ["Ctrl+F3"]
-    ,"reload_article": ["F5", "Ctrl+R"]
-    ,"save_article": ["F2", "Ctrl+S"]
-    ,"search_article_backward": ["Shift+F3"]
-    ,"search_article_forward": ["F3"]
-    ,"settings": ["Alt+S", "F12"]
-    ,"show_about": ["F1"]
-    ,"spec_symbol": ["Ctrl+E"]
-    ,"swap_langs": ["Ctrl+Shift+Space"]
-    ,"toggle_alphabet": ["Alt+A"]
-    ,"toggle_block": ["Alt+B"]
-    ,"toggle_history": ["F4", "Ctrl+H"]
-    ,"toggle_popup": ["Alt+X"]
-    ,"toggle_priority": ["Alt+P"]
+{"actions":
+    {"clear_history":
+        {"hotkeys": ["Ctrl+Shift+Del"]
+        ,"hint": "Clear history"
+        }
+    ,"col1_down":
+        {"hotkeys": ["Ctrl+Down"]
+        ,"hint": "Go to the next section of column #1"
+        }
+    ,"col1_up":
+        {"hotkeys": ["Ctrl+Up"]
+        ,"hint": "Go to the previous section of column #1"
+        }
+    ,"col2_down":
+        {"hotkeys": ["Alt+Down"]
+        ,"hint": "Go to the next section of column #2"
+        }
+    ,"col2_up":
+        {"hotkeys": ["Alt+Up"]
+        ,"hint": "Go to the previous section of column #2"
+        }
+    ,"col3_down":
+        {"hotkeys": ["Shift+Down"]
+        ,"hint": "Go to the next section of column #3"
+        }
+    ,"col3_up":
+        {"hotkeys": ["Shift+Up"]
+        ,"hint": "Go to the previous section of column #3"
+        }
+    ,"col4_down":
+        {"hotkeys": ["Ctrl+Shift+Down"]
+        ,"hint": "Go to the next section of column #4"
+        }
+    ,"col4_up":
+        {"hotkeys": ["Ctrl+Shift+Up"]
+        ,"hint": "Go to the previous section of column #4"
+        }
+    ,"copy_article_url":
+        {"hotkeys": ["Ctrl+F7"]
+        ,"hint": "Copy the URL of the current article"
+        }
+    ,"copy_nominative":
+        {"hotkeys": ["Ctrl+W"]
+        ,"hint": "Copy the nominative case"
+        }
+    ,"copy_sel":
+        {"hotkeys": ["Ctrl+Return", "Ctrl+Enter"]
+        ,"hint": "Copy the current selection"
+        }
+    ,"copy_url":
+        {"hotkeys": ["Shift+F7"]
+        ,"hint": "Copy the URL of the selected cell"
+        }
+    ,"define":
+        {"hotkeys": ["Ctrl+D"]
+        ,"hint": "Open a webpage with a definition of the current term"
+        }
+    ,"go_back":
+        {"hotkeys": ["Alt+Left"]
+        ,"hint": "Go to the preceding article"
+        }
+    ,"go_next":
+        {"hotkeys": ["Alt+Right"]
+        ,"hint": "Go to the following article"
+        }
+    ,"go_phrases":
+        {"hotkeys": ["Alt+F"]
+        ,"hint": "Look up phrases"
+        }
+    ,"next_lang1":
+        {"hotkeys": ["F8", "Ctrl+K"]
+        ,"hint": "Next source language"
+        }
+    ,"next_lang2":
+        {"hotkeys": ["F9", "Ctrl+L"]
+        ,"hint": "Next target language"
+        }
+    ,"prev_lang1":
+        {"hotkeys": ["Shift+F8", "Ctrl+K"]
+        ,"hint": "Previous source language"
+        }
+    ,"prev_lang2":
+        {"hotkeys": ["Shift+F9", "Ctrl+L"]
+        ,"hint": "Previous target language"
+        }
+    ,"open_in_browser":
+        {"hotkeys": ["F7", "Ctrl+B"]
+        ,"hint": "Open the current article in a default browser"
+        }
+    ,"print":
+        {"hotkeys": ["Ctrl+P"]
+        ,"hint": "Create a printer-friendly page"
+        }
+    ,"quit":
+        {"hotkeys": ["F10"]
+        ,"hint": "Quit the program"
+        }
+    ,"re_search_article":
+        {"hotkeys": ["Ctrl+F3"]
+        ,"hint": "Start a new search in the current article"
+        }
+    ,"reload_article":
+        {"hotkeys": ["F5", "Ctrl+R"]
+        ,"hint": "Reload the current article"
+        }
+    ,"save_article":
+        {"hotkeys": ["F2", "Ctrl+S"]
+        ,"hint": "Save or copy the current article"
+        }
+    ,"search_article_backward":
+        {"hotkeys": ["Shift+F3"]
+        ,"hint": "Search the article backward"
+        }
+    ,"search_article_forward":
+        {"hotkeys": ["F3"]
+        ,"hint": "Search the article forward"
+        }
+    ,"swap_langs":
+        {"hotkeys": ["Ctrl+Shift+Space"]
+        ,"hint": "Swap source and target languages"
+        }
+    ,"toggle_about":
+        {"hotkeys": ["F1"]
+        ,"hint": "About the program"
+        }
+    ,"toggle_alphabet":
+        {"hotkeys": ["Alt+A"]
+        ,"hint": "Toggle alphabetizing"
+        }
+    ,"toggle_block":
+        {"hotkeys": ["Alt+B"]
+        ,"hint": "Toggle blacklisting"
+        }
+    ,"toggle_history":
+        {"hotkeys": ["F4", "Ctrl+H"]
+        ,"hint": "Toggle history"
+        }
+    ,"toggle_popup":
+        {"hotkeys": ["Alt+X"]
+        ,"hint": "Toggle full cell text"
+        }
+    ,"toggle_priority":
+        {"hotkeys": ["Alt+P"]
+        ,"hint": 'Toggle prioritizing'
+        }
+    ,"toggle_settings":
+        {"hotkeys": ["Alt+S", "F12"]
+        ,"hint": "Show settings"
+        }
+    ,"toggle_spec_symbol":
+        {"hotkeys": ["Ctrl+E"]
+        ,"hint": "Paste a special symbol"
+        }
     }
 ,"rows": {"height": 42}
 ,"columns":
