@@ -109,7 +109,7 @@ class Save:
         self.gui.bind(('End',), self.go_end)
         self.gui.bind(('Ctrl+Home',), self.go_start)
         self.gui.bind(('Ctrl+End',), self.go_end)
-        self.gui.bind(cf.objs.get_config().new['hotkeys']['save_article'], self.toggle)
+        self.gui.bind(cf.objs.get_config().new['actions']['save_article']['hotkeys'], self.toggle)
         self.gui.sig_close.connect(self.close)
     
     def centralize(self):

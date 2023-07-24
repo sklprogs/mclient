@@ -1829,96 +1829,96 @@ class App:
         self.gui.bind(('Alt+8',), lambda:self.change_col_no(8))
         self.gui.bind(('Alt+9',), lambda:self.change_col_no(9))
         
-        self.gui.bind (cf.objs.config.new['hotkeys']['clear_history']
+        self.gui.bind (cf.objs.config.new['actions']['clear_history']['hotkeys']
                       ,self.clear_history
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['col1_down']
+        self.gui.bind (cf.objs.config.new['actions']['col1_down']['hotkeys']
                       ,lambda:self.table.go_next_section(0)
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['col2_down']
+        self.gui.bind (cf.objs.config.new['actions']['col2_down']['hotkeys']
                       ,lambda:self.table.go_next_section(1)
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['col3_down']
+        self.gui.bind (cf.objs.config.new['actions']['col3_down']['hotkeys']
                       ,lambda:self.table.go_next_section(2)
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['col4_down']
+        self.gui.bind (cf.objs.config.new['actions']['col4_down']['hotkeys']
                       ,lambda:self.table.go_next_section(3)
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['col1_up']
+        self.gui.bind (cf.objs.config.new['actions']['col1_up']['hotkeys']
                       ,lambda:self.table.go_prev_section(0)
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['col2_up']
+        self.gui.bind (cf.objs.config.new['actions']['col2_up']['hotkeys']
                       ,lambda:self.table.go_prev_section(1)
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['col3_up']
+        self.gui.bind (cf.objs.config.new['actions']['col3_up']['hotkeys']
                       ,lambda:self.table.go_prev_section(2)
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['col4_up']
+        self.gui.bind (cf.objs.config.new['actions']['col4_up']['hotkeys']
                       ,lambda:self.table.go_prev_section(3)
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['go_next']
+        self.gui.bind (cf.objs.config.new['actions']['go_next']['hotkeys']
                       ,self.go_next
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['go_back']
+        self.gui.bind (cf.objs.config.new['actions']['go_back']['hotkeys']
                       ,self.go_back
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['toggle_history']
+        self.gui.bind (cf.objs.config.new['actions']['toggle_history']['hotkeys']
                       ,self.history.toggle
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['save_article']
+        self.gui.bind (cf.objs.config.new['actions']['save_article']['hotkeys']
                       ,self.save.toggle
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['settings']
+        self.gui.bind (cf.objs.config.new['actions']['toggle_settings']['hotkeys']
                       ,self.settings.toggle
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['spec_symbol']
+        self.gui.bind (cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys']
                       ,self.symbols.show
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['swap_langs']
+        self.gui.bind (cf.objs.config.new['actions']['swap_langs']['hotkeys']
                       ,self.swap_langs
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['toggle_block']
+        self.gui.bind (cf.objs.config.new['actions']['toggle_block']['hotkeys']
                       ,self.block.toggle
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['toggle_priority']
+        self.gui.bind (cf.objs.config.new['actions']['toggle_priority']['hotkeys']
                       ,self.prior.toggle
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['toggle_popup']
+        self.gui.bind (cf.objs.config.new['actions']['toggle_popup']['hotkeys']
                       ,self.table.show_popup
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['toggle_alphabet']
+        self.gui.bind (cf.objs.config.new['actions']['toggle_alphabet']['hotkeys']
                       ,self.toggle_alphabet
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['reload_article']
+        self.gui.bind (cf.objs.config.new['actions']['reload_article']['hotkeys']
                       ,self.reload
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['open_in_browser']
+        self.gui.bind (cf.objs.config.new['actions']['open_in_browser']['hotkeys']
                       ,self.logic.open_in_browser
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['print']
+        self.gui.bind (cf.objs.config.new['actions']['print']['hotkeys']
                       ,self.logic.print
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['define']
+        self.gui.bind (cf.objs.config.new['actions']['define']['hotkeys']
                       ,self.define
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['go_phrases']
+        self.gui.bind (cf.objs.config.new['actions']['go_phrases']['hotkeys']
                       ,self.go_phrases
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['copy_article_url']
+        self.gui.bind (cf.objs.config.new['actions']['copy_article_url']['hotkeys']
                       ,self.copy_article_url
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['copy_url']
+        self.gui.bind (cf.objs.config.new['actions']['copy_url']['hotkeys']
                       ,self.copy_cell_url
                       )
-        self.gui.bind (cf.objs.config.new['hotkeys']['copy_nominative']
+        self.gui.bind (cf.objs.config.new['actions']['copy_nominative']['hotkeys']
                       ,self.copy_wform
                       )
                       
         #TODO: iterate through all keys
-        if cf.objs.config.new['hotkeys']['spec_symbol'] == ('Ctrl+E',):
+        if cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys'] == ('Ctrl+E',):
             self.gui.panel.ent_src.widget.sig_ctrl_e.connect(self.symbols.show)
         else:
-            self.gui.panel.ent_src.bind (cf.objs.config.new['hotkeys']['spec_symbol']
+            self.gui.panel.ent_src.bind (cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys']
                                         ,self.symbols.show
                                         )
         

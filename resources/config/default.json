@@ -141,7 +141,7 @@
         }
     ,"toggle_priority":
         {"hotkeys": ["Alt+P"]
-        ,"hint": 'Toggle prioritizing'
+        ,"hint": "Toggle prioritizing"
         }
     ,"toggle_settings":
         {"hotkeys": ["Alt+S", "F12"]

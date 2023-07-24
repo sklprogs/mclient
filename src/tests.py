@@ -966,8 +966,8 @@ if __name__ == '__main__':
     #mes = com.run_speech()
     #sh.objs.get_mes(f, mes).show_debug()
     
-    isuggest = com.run_suggest()
-    isuggest.show()
+    #isuggest = com.run_suggest()
+    #isuggest.show()
 
     '''
     # Priorities
@@ -1003,11 +1003,11 @@ if __name__ == '__main__':
     ihis = com.run_history_contr()
     ihis.show()
     '''
-    '''
+
     # Welcome (welcome.controller)
     iwelcome = com.run_welcome_contr()
     iwelcome.show()
-    '''
+
     '''
     # Welcome
     iwelcome = com.run_welcome()

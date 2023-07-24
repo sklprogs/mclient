@@ -189,8 +189,8 @@ class Welcome:
                      ,cf.objs.config.new['actions']['search_article_backward']['hotkeys']
                      )
         
-        ihotkeys.add (cf.objs.config.new['actions']['settings']['hint']
-                     ,cf.objs.config.new['actions']['settings']['hotkeys']
+        ihotkeys.add (cf.objs.config.new['actions']['toggle_settings']['hint']
+                     ,cf.objs.config.new['actions']['toggle_settings']['hotkeys']
                      )
         
         ihotkeys.add (cf.objs.config.new['actions']['toggle_about']['hint']
@@ -209,36 +209,36 @@ class Welcome:
                      ,cf.objs.config.new['actions']['toggle_block']['hotkeys']
                      )
         
-        ihotkeys.add (_('Toggle History')
-                     ,cf.objs.config.new['hotkeys']['toggle_history']
+        ihotkeys.add (cf.objs.config.new['actions']['toggle_history']['hint']
+                     ,cf.objs.config.new['actions']['toggle_history']['hotkeys']
                      )
         
-        ihotkeys.add (_('Toggle prioritizing')
-                     ,cf.objs.config.new['hotkeys']['toggle_priority']
+        ihotkeys.add (cf.objs.config.new['actions']['toggle_priority']['hint']
+                     ,cf.objs.config.new['actions']['toggle_priority']['hotkeys']
                      )
         
-        ihotkeys.add (_('Clear History')
-                     ,cf.objs.config.new['hotkeys']['clear_history']
+        ihotkeys.add (cf.objs.config.new['actions']['clear_history']['hint']
+                     ,cf.objs.config.new['actions']['clear_history']['hotkeys']
                      )
         
-        ihotkeys.add (_('Next target language')
-                     ,cf.objs.config.new['hotkeys']['next_lang2']
+        ihotkeys.add (cf.objs.config.new['actions']['next_lang2']['hint']
+                     ,cf.objs.config.new['actions']['next_lang2']['hotkeys']
                      )
         
-        ihotkeys.add (_('Previous target language')
-                     ,cf.objs.config.new['hotkeys']['prev_lang2']
+        ihotkeys.add (cf.objs.config.new['actions']['prev_lang2']['hint']
+                     ,cf.objs.config.new['actions']['prev_lang2']['hotkeys']
                      )
         
-        ihotkeys.add (_('Swap source and target languages')
-                     ,cf.objs.config.new['hotkeys']['swap_langs']
+        ihotkeys.add (cf.objs.config.new['actions']['swap_langs']['hint']
+                     ,cf.objs.config.new['actions']['swap_langs']['hotkeys']
                      )
         
-        ihotkeys.add (_('Copy the nominative case')
-                     ,cf.objs.config.new['hotkeys']['copy_nominative']
+        ihotkeys.add (cf.objs.config.new['actions']['copy_nominative']['hint']
+                     ,cf.objs.config.new['actions']['copy_nominative']['hotkeys']
                      )
         
-        ihotkeys.add (_('Show full cell text')
-                     ,cf.objs.config.new['hotkeys']['toggle_popup']
+        ihotkeys.add (cf.objs.config.new['actions']['toggle_popup']['hint']
+                     ,cf.objs.config.new['actions']['toggle_popup']['hotkeys']
                      )
         
         self.table += ihotkeys.get()
