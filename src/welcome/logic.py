@@ -89,8 +89,8 @@ class Welcome:
                      ,(_('Left mouse button'), 'Return')
                      )
         
-        ihotkeys.add (_('Copy the current selection')
-                     ,[_('Right mouse button')] + cf.objs.config.new['hotkeys']['copy_sel']
+        ihotkeys.add (cf.objs.config.new['actions']['copy_sel']['hint']
+                     ,[_('Right mouse button')] + cf.objs.config.new['actions']['copy_sel']['hotkeys']
                      )
         
         ihotkeys.add(_('Show the program window (system-wide)'), ('Alt+~',))
@@ -101,112 +101,112 @@ class Welcome:
         
         ihotkeys.add(_('Minimize the program window'), ('Esc',))
         
-        ihotkeys.add (_('Quit the program')
-                     ,['Ctrl+Q'] + cf.objs.config.new['hotkeys']['quit']
+        ihotkeys.add (cf.objs.config.new['actions']['quit']['hint']
+                     ,['Ctrl+Q'] + cf.objs.config.new['actions']['quit']['hotkeys']
                      )
         
-        ihotkeys.add (_('Copy the URL of the selected term')
-                     ,cf.objs.config.new['hotkeys']['copy_url']
+        ihotkeys.add (cf.objs.config.new['actions']['copy_url']['hint']
+                     ,cf.objs.config.new['actions']['copy_url']['hotkeys']
                      )
         
-        ihotkeys.add (_('Copy the URL of the current article')
-                     ,cf.objs.config.new['hotkeys']['copy_article_url']
+        ihotkeys.add (cf.objs.config.new['actions']['copy_article_url']['hint']
+                     ,cf.objs.config.new['actions']['copy_article_url']['hotkeys']
                      )
         
-        ihotkeys.add (_('Go to the previous section of column #{}').format(1)
-                     ,cf.objs.config.new['hotkeys']['col1_up']
+        ihotkeys.add (cf.objs.config.new['actions']['col1_up']['hint']
+                     ,cf.objs.config.new['actions']['col1_up']['hotkeys']
                      )
         
-        ihotkeys.add (_('Go to the next section of column #{}').format(1)
-                     ,cf.objs.config.new['hotkeys']['col1_down']
+        ihotkeys.add (cf.objs.config.new['actions']['col1_down']['hint']
+                     ,cf.objs.config.new['actions']['col1_down']['hotkeys']
                      )
         
-        ihotkeys.add (_('Go to the previous section of column #{}').format(2)
-                     ,cf.objs.config.new['hotkeys']['col2_up']
+        ihotkeys.add (cf.objs.config.new['actions']['col2_up']['hint']
+                     ,cf.objs.config.new['actions']['col2_up']['hotkeys']
                      )
         
-        ihotkeys.add (_('Go to the next section of column #{}').format(2)
-                     ,cf.objs.config.new['hotkeys']['col2_down']
+        ihotkeys.add (cf.objs.config.new['actions']['col2_down']['hint']
+                     ,cf.objs.config.new['actions']['col2_down']['hotkeys']
                      )
         
-        ihotkeys.add (_('Go to the previous section of column #{}').format(3)
-                     ,cf.objs.config.new['hotkeys']['col3_up']
+        ihotkeys.add (cf.objs.config.new['actions']['col3_up']['hint']
+                     ,cf.objs.config.new['actions']['col3_up']['hotkeys']
                      )
         
-        ihotkeys.add (_('Go to the next section of column #{}').format(3)
-                     ,cf.objs.config.new['hotkeys']['col3_down']
+        ihotkeys.add (cf.objs.config.new['actions']['col3_down']['hint']
+                     ,cf.objs.config.new['actions']['col3_down']['hotkeys']
                      )
         
-        ihotkeys.add (_('Open a webpage with a definition of the current term')
-                     ,cf.objs.config.new['hotkeys']['define']
+        ihotkeys.add (cf.objs.config.new['actions']['define']['hint']
+                     ,cf.objs.config.new['actions']['define']['hotkeys']
                      )
         
-        ihotkeys.add (_('Look up phrases')
-                     ,cf.objs.config.new['hotkeys']['go_phrases']
+        ihotkeys.add (cf.objs.config.new['actions']['go_phrases']['hint']
+                     ,cf.objs.config.new['actions']['go_phrases']['hotkeys']
                      )
         
-        ihotkeys.add (_('Go to the preceding article')
-                     ,cf.objs.config.new['hotkeys']['go_back']
+        ihotkeys.add (cf.objs.config.new['actions']['go_back']['hint']
+                     ,cf.objs.config.new['actions']['go_back']['hotkeys']
                      )
         
-        ihotkeys.add (_('Go to the following article')
-                     ,cf.objs.config.new['hotkeys']['go_next']
+        ihotkeys.add (cf.objs.config.new['actions']['go_next']['hint']
+                     ,cf.objs.config.new['actions']['go_next']['hotkeys']
                      )
         
-        ihotkeys.add (_('Next source language')
-                     ,cf.objs.config.new['hotkeys']['next_lang1']
+        ihotkeys.add (cf.objs.config.new['actions']['next_lang1']['hint']
+                     ,cf.objs.config.new['actions']['next_lang1']['hotkeys']
                      )
         
-        ihotkeys.add (_('Previous source language')
-                     ,cf.objs.config.new['hotkeys']['prev_lang1']
+        ihotkeys.add (cf.objs.config.new['actions']['prev_lang1']['hint']
+                     ,cf.objs.config.new['actions']['prev_lang1']['hotkeys']
                      )
         
-        ihotkeys.add (_('Create a printer-friendly page')
-                     ,cf.objs.config.new['hotkeys']['print']
+        ihotkeys.add (cf.objs.config.new['actions']['print']['hint']
+                     ,cf.objs.config.new['actions']['print']['hotkeys']
                      )
         
-        ihotkeys.add (_('Open the current article in a default browser')
-                     ,cf.objs.config.new['hotkeys']['open_in_browser']
+        ihotkeys.add (cf.objs.config.new['actions']['open_in_browser']['hint']
+                     ,cf.objs.config.new['actions']['open_in_browser']['hotkeys']
                      )
         
-        ihotkeys.add (_('Reload the current article')
-                     ,cf.objs.config.new['hotkeys']['reload_article']
+        ihotkeys.add (cf.objs.config.new['actions']['reload_article']['hint']
+                     ,cf.objs.config.new['actions']['reload_article']['hotkeys']
                      )
         
-        ihotkeys.add (_('Save or copy the current article')
-                     ,cf.objs.config.new['hotkeys']['save_article']
+        ihotkeys.add (cf.objs.config.new['actions']['save_article']['hint']
+                     ,cf.objs.config.new['actions']['save_article']['hotkeys']
                      )
         
-        ihotkeys.add (_('Start a new search in the current article')
-                     ,cf.objs.config.new['hotkeys']['re_search_article']
+        ihotkeys.add (cf.objs.config.new['actions']['re_search_article']['hint']
+                     ,cf.objs.config.new['actions']['re_search_article']['hotkeys']
                      )
         
-        ihotkeys.add (_('Search the article forward')
-                     ,cf.objs.config.new['hotkeys']['search_article_forward']
+        ihotkeys.add (cf.objs.config.new['actions']['search_article_forward']['hint']
+                     ,cf.objs.config.new['actions']['search_article_forward']['hotkeys']
                      )
         
-        ihotkeys.add (_('Search the article backward')
-                     ,cf.objs.config.new['hotkeys']['search_article_backward']
+        ihotkeys.add (cf.objs.config.new['actions']['search_article_backward']['hint']
+                     ,cf.objs.config.new['actions']['search_article_backward']['hotkeys']
                      )
         
-        ihotkeys.add (_('Show settings')
-                     ,cf.objs.config.new['hotkeys']['settings']
+        ihotkeys.add (cf.objs.config.new['actions']['settings']['hint']
+                     ,cf.objs.config.new['actions']['settings']['hotkeys']
                      )
         
-        ihotkeys.add (_('About the program')
-                     ,cf.objs.config.new['hotkeys']['show_about']
+        ihotkeys.add (cf.objs.config.new['actions']['toggle_about']['hint']
+                     ,cf.objs.config.new['actions']['toggle_about']['hotkeys']
                      )
         
-        ihotkeys.add (_('Paste a special symbol')
-                     ,cf.objs.config.new['hotkeys']['spec_symbol']
+        ihotkeys.add (cf.objs.config.new['actions']['toggle_spec_symbols']['hint']
+                     ,cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys']
                      )
         
-        ihotkeys.add (_('Toggle alphabetizing')
-                     ,cf.objs.config.new['hotkeys']['toggle_alphabet']
+        ihotkeys.add (cf.objs.config.new['actions']['toggle_alphabet']['hint']
+                     ,cf.objs.config.new['actions']['toggle_alphabet']['hotkeys']
                      )
         
-        ihotkeys.add (_('Toggle blacklisting')
-                     ,cf.objs.config.new['hotkeys']['toggle_block']
+        ihotkeys.add (cf.objs.config.new['actions']['toggle_block']['hint']
+                     ,cf.objs.config.new['actions']['toggle_block']['hotkeys']
                      )
         
         ihotkeys.add (_('Toggle History')
