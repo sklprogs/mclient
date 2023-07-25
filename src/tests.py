@@ -616,6 +616,7 @@ class Commands:
     
     def run_welcome(self):
         import mclientqt as mc
+        cf.objs.get_config()
         iwelcome = mc.Welcome(mc.About().get_product())
         iwelcome.reset()
         return iwelcome
@@ -1004,15 +1005,14 @@ if __name__ == '__main__':
     ihis.show()
     '''
 
-    # Welcome (welcome.controller)
-    iwelcome = com.run_welcome_contr()
-    iwelcome.show()
+#    # Welcome (welcome.controller)
+#    iwelcome = com.run_welcome_contr()
+#    iwelcome.show()
 
-    '''
     # Welcome
     iwelcome = com.run_welcome()
     iwelcome.show()
-    '''
+
     mes = _('Goodbye!')
     sh.objs.get_mes(f, mes, True).show_debug()
     sh.com.end()
