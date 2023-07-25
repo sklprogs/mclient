@@ -465,12 +465,10 @@ class Welcome(wl.Welcome):
         self.logic.table.append([code])
     
     def gen_online_source(self, title, status, color):
-        code = f'<b>{title} <font color="{color}">{status}</font></b>'
-        return code
+        return f'<b>{title} <font color="{color}">{status}</font></b>'
     
     def gen_offline_source(self, title, status, color):
-        code = f'{title}: <font color="{color}">{status}</font>'
-        return code
+        return f'{title}: <font color="{color}">{status}</font>'
     
     def fill(self):
         model = wl.TableModel(self.run())
