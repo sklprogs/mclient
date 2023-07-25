@@ -81,167 +81,71 @@ class Welcome:
         self.add_cols()
         return self.table
     
+    def _add_hotkeys(self, key):
+        self.ihotkeys.add (cf.objs.config.new['actions'][key]['hint']
+                          ,cf.objs.config.new['actions'][key]['hotkeys']
+                          )
+    
     def set_hotkeys(self):
         cf.objs.get_config()
-        ihotkeys = Hotkeys()
+        self.ihotkeys = Hotkeys()
         
-        ihotkeys.add (_('Translate the current input or selection')
-                     ,(_('Left mouse button'), 'Return')
-                     )
+        self.ihotkeys.add (_('Translate the current input or selection')
+                          ,(_('Left mouse button'), 'Return')
+                          )
         
-        ihotkeys.add (cf.objs.config.new['actions']['copy_sel']['hint']
-                     ,[_('Right mouse button')] + cf.objs.config.new['actions']['copy_sel']['hotkeys']
-                     )
+        self.ihotkeys.add (cf.objs.config.new['actions']['copy_sel']['hint']
+                          ,[_('Right mouse button')] + cf.objs.config.new['actions']['copy_sel']['hotkeys']
+                          )
         
-        ihotkeys.add(_('Show the program window (system-wide)'), ('Alt+~',))
+        self.ihotkeys.add(_('Show the program window (system-wide)'), ('Alt+~',))
         
-        ihotkeys.add (_('Translate selection from an external program')
-                     ,('Ctrl+Ins+Ins', 'Ctrl+C+C')
-                     )
+        self.ihotkeys.add (_('Translate selection from an external program')
+                          ,('Ctrl+Ins+Ins', 'Ctrl+C+C')
+                          )
         
-        ihotkeys.add(_('Minimize the program window'), ('Esc',))
+        self.ihotkeys.add(_('Minimize the program window'), ('Esc',))
         
-        ihotkeys.add (cf.objs.config.new['actions']['quit']['hint']
-                     ,['Ctrl+Q'] + cf.objs.config.new['actions']['quit']['hotkeys']
-                     )
+        self.ihotkeys.add (cf.objs.config.new['actions']['quit']['hint']
+                          ,['Ctrl+Q'] + cf.objs.config.new['actions']['quit']['hotkeys']
+                          )
         
-        ihotkeys.add (cf.objs.config.new['actions']['copy_url']['hint']
-                     ,cf.objs.config.new['actions']['copy_url']['hotkeys']
-                     )
+        self._add_hotkeys('copy_url')
+        self._add_hotkeys('copy_article_url')
+        self._add_hotkeys('col1_up')
+        self._add_hotkeys('col1_down')
+        self._add_hotkeys('col2_up')
+        self._add_hotkeys('col2_down')
+        self._add_hotkeys('col3_up')
+        self._add_hotkeys('col3_down')
+        self._add_hotkeys('define')
+        self._add_hotkeys('go_phrases')
+        self._add_hotkeys('go_back')
+        self._add_hotkeys('go_next')
+        self._add_hotkeys('next_lang1')
+        self._add_hotkeys('prev_lang1')
+        self._add_hotkeys('print')
+        self._add_hotkeys('open_in_browser')
+        self._add_hotkeys('reload_article')
+        self._add_hotkeys('save_article')
+        self._add_hotkeys('re_search_article')
+        self._add_hotkeys('search_article_forward')
+        self._add_hotkeys('search_article_backward')
+        self._add_hotkeys('toggle_settings')
+        self._add_hotkeys('toggle_about')
+        self._add_hotkeys('toggle_spec_symbols')
+        self._add_hotkeys('toggle_alphabet')
+        self._add_hotkeys('toggle_block')
+        self._add_hotkeys('toggle_history')
+        self._add_hotkeys('toggle_priority')
+        self._add_hotkeys('clear_history')
+        self._add_hotkeys('next_lang2')
+        self._add_hotkeys('prev_lang2')
+        self._add_hotkeys('swap_langs')
+        self._add_hotkeys('copy_nominative')
+        self._add_hotkeys('toggle_popup')
         
-        ihotkeys.add (cf.objs.config.new['actions']['copy_article_url']['hint']
-                     ,cf.objs.config.new['actions']['copy_article_url']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['col1_up']['hint']
-                     ,cf.objs.config.new['actions']['col1_up']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['col1_down']['hint']
-                     ,cf.objs.config.new['actions']['col1_down']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['col2_up']['hint']
-                     ,cf.objs.config.new['actions']['col2_up']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['col2_down']['hint']
-                     ,cf.objs.config.new['actions']['col2_down']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['col3_up']['hint']
-                     ,cf.objs.config.new['actions']['col3_up']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['col3_down']['hint']
-                     ,cf.objs.config.new['actions']['col3_down']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['define']['hint']
-                     ,cf.objs.config.new['actions']['define']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['go_phrases']['hint']
-                     ,cf.objs.config.new['actions']['go_phrases']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['go_back']['hint']
-                     ,cf.objs.config.new['actions']['go_back']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['go_next']['hint']
-                     ,cf.objs.config.new['actions']['go_next']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['next_lang1']['hint']
-                     ,cf.objs.config.new['actions']['next_lang1']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['prev_lang1']['hint']
-                     ,cf.objs.config.new['actions']['prev_lang1']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['print']['hint']
-                     ,cf.objs.config.new['actions']['print']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['open_in_browser']['hint']
-                     ,cf.objs.config.new['actions']['open_in_browser']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['reload_article']['hint']
-                     ,cf.objs.config.new['actions']['reload_article']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['save_article']['hint']
-                     ,cf.objs.config.new['actions']['save_article']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['re_search_article']['hint']
-                     ,cf.objs.config.new['actions']['re_search_article']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['search_article_forward']['hint']
-                     ,cf.objs.config.new['actions']['search_article_forward']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['search_article_backward']['hint']
-                     ,cf.objs.config.new['actions']['search_article_backward']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['toggle_settings']['hint']
-                     ,cf.objs.config.new['actions']['toggle_settings']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['toggle_about']['hint']
-                     ,cf.objs.config.new['actions']['toggle_about']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['toggle_spec_symbols']['hint']
-                     ,cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['toggle_alphabet']['hint']
-                     ,cf.objs.config.new['actions']['toggle_alphabet']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['toggle_block']['hint']
-                     ,cf.objs.config.new['actions']['toggle_block']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['toggle_history']['hint']
-                     ,cf.objs.config.new['actions']['toggle_history']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['toggle_priority']['hint']
-                     ,cf.objs.config.new['actions']['toggle_priority']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['clear_history']['hint']
-                     ,cf.objs.config.new['actions']['clear_history']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['next_lang2']['hint']
-                     ,cf.objs.config.new['actions']['next_lang2']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['prev_lang2']['hint']
-                     ,cf.objs.config.new['actions']['prev_lang2']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['swap_langs']['hint']
-                     ,cf.objs.config.new['actions']['swap_langs']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['copy_nominative']['hint']
-                     ,cf.objs.config.new['actions']['copy_nominative']['hotkeys']
-                     )
-        
-        ihotkeys.add (cf.objs.config.new['actions']['toggle_popup']['hint']
-                     ,cf.objs.config.new['actions']['toggle_popup']['hotkeys']
-                     )
-        
-        self.table += ihotkeys.get()
+        self.table += self.ihotkeys.get()
     
     def set_font(self, text):
         return f'<p style="font-family: Sans; font-size: 14pt">{text}</p>'
