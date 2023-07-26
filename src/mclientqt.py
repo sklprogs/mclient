@@ -1016,7 +1016,35 @@ class App:
         self.logic = lg.App()
         self.gui = gi.App()
         self.set_gui()
+        self.set_hints()
         self.update_ui()
+    
+    def _set_hint(self, widget, action):
+        section = cf.objs.config.new['actions'][action]
+        widget.hint = section['hint'] + '\n' + ', '.join(section['hotkeys'])
+        widget.set_hint()
+    
+    def set_hints(self):
+        pairs = ((self.panel.btn_sym, 'toggle_spec_symbols')
+                ,(self.panel.btn_swp, 'swap_langs')
+                ,(self.panel.btn_set, 'toggle_settings')
+                ,(self.panel.btn_blk, 'toggle_block')
+                ,(self.panel.btn_pri, 'toggle_priority')
+                ,(self.panel.btn_alp, 'toggle_alphabet')
+                ,(self.panel.btn_prv, 'go_back')
+                ,(self.panel.btn_nxt, 'go_next')
+                ,(self.panel.btn_hst, 'toggle_history')
+                ,(self.panel.btn_rld, 'reload_article')
+                ,(self.panel.btn_ser, 're_search_article')
+                ,(self.panel.btn_sav, 'save_article')
+                ,(self.panel.btn_brw, 'open_in_browser')
+                ,(self.panel.btn_prn, 'print')
+                ,(self.panel.btn_def, 'define')
+                ,(self.panel.btn_abt, 'toggle_about')
+                ,(self.panel.btn_qit, 'quit')
+                )
+        for pair in pairs:
+            self._set_hint(pair[0], pair[1])
     
     def get_x(self):
         return self.gui.get_x()

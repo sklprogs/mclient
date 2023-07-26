@@ -611,83 +611,68 @@ class Panel(PyQt5.QtWidgets.QWidget):
                                  ,active = self.icn_r21
                                  )
         # A button to insert special symbols
-        self.btn_sym = sh.Button (hint = _('Paste a special symbol')
-                                 ,inactive = self.icn_sym
+        self.btn_sym = sh.Button (inactive = self.icn_sym
                                  ,active = self.icn_sym
                                  )
         # Drop-down list with dictionary sources
         self.opt_src = sh.OptionMenu()
         # Drop-down lists with languages
         self.opt_lg1 = sh.OptionMenu()
-        self.btn_swp = sh.Button (hint = _('Swap source and target languages')
-                                 ,inactive = self.icn_swp
+        self.btn_swp = sh.Button (inactive = self.icn_swp
                                  ,active = self.icn_swp
                                  )
         self.opt_lg2 = sh.OptionMenu()
         self.opt_col = sh.OptionMenu(range(1, 11), 5)
         # A settings button
-        self.btn_set = sh.Button (hint = _('Tune up view settings')
-                                 ,inactive = self.icn_set
+        self.btn_set = sh.Button (inactive = self.icn_set
                                  ,active = self.icn_set
                                  )
         # A button to toggle subject blocking
-        self.btn_blk = sh.Button (hint = _('Configure blacklisting')
-                                 ,inactive = self.icn_bl0
+        self.btn_blk = sh.Button (inactive = self.icn_bl0
                                  ,active = self.icn_bl1
                                  )
         # A button to toggle subject prioritization
-        self.btn_pri = sh.Button (hint = _('Configure prioritization')
-                                 ,inactive = self.icn_pr0
+        self.btn_pri = sh.Button (inactive = self.icn_pr0
                                  ,active = self.icn_pr1
                                  )
         # A button to toggle subject alphabetization
-        self.btn_alp = sh.Button (hint = _('Toggle alphabetizing')
-                                 ,inactive = self.icn_al0
+        self.btn_alp = sh.Button (inactive = self.icn_al0
                                  ,active = self.icn_al1
                                  )
         # A button to move to the previous article
-        self.btn_prv = sh.Button (hint = _('Go to the preceding article')
-                                 ,inactive = self.icn_bk0
+        self.btn_prv = sh.Button (inactive = self.icn_bk0
                                  ,active = self.icn_bk1
                                  )
         # A button to move to the next article
-        self.btn_nxt = sh.Button (hint = _('Go to the following article')
-                                 ,inactive = self.icn_fw0
+        self.btn_nxt = sh.Button (inactive = self.icn_fw0
                                  ,active = self.icn_fw1
                                  )
         # A button to toggle and clear history
-        self.btn_hst = sh.Button (hint = _('Toggle history')
-                                 ,inactive = self.icn_hst
+        self.btn_hst = sh.Button (inactive = self.icn_hst
                                  ,active = self.icn_hst
                                  )
         # A button to reload the article
-        self.btn_rld = sh.Button (hint = _('Reload the article')
-                                 ,inactive = self.icn_rld
+        self.btn_rld = sh.Button (inactive = self.icn_rld
                                  ,active = self.icn_rld
                                  )
         # A button to search within the article
-        self.btn_ser = sh.Button (hint = _('Find in the current article')
-                                 ,inactive = self.icn_src
+        self.btn_ser = sh.Button (inactive = self.icn_src
                                  ,active = self.icn_src
                                  )
         # A button to save the article
-        self.btn_sav = sh.Button (hint = _('Save the current article')
-                                 ,inactive = self.icn_sav
+        self.btn_sav = sh.Button (inactive = self.icn_sav
                                  ,active = self.icn_sav
                                  )
         # A button to open the current article in a browser
-        self.btn_brw = sh.Button (hint = _('Open the current article in a browser')
-                                 ,inactive = self.icn_brw
+        self.btn_brw = sh.Button (inactive = self.icn_brw
                                  ,active = self.icn_brw
                                  )
         # A button to print the article
-        self.btn_prn = sh.Button (hint = _('Create a print-ready preview')
-                                 ,inactive = self.icn_prn
+        self.btn_prn = sh.Button (inactive = self.icn_prn
                                  ,active = self.icn_prn
                                  )
         # A button to define a term
-        self.btn_def = sh.Button (hint = _('Define the current term')
-                                 ,inactive = self.icn_def
+        self.btn_def = sh.Button (inactive = self.icn_def
                                  ,active = self.icn_def
                                  )
         # A button to toggle capturing Ctrl-c-c and Ctrl-Ins-Ins
@@ -696,13 +681,11 @@ class Panel(PyQt5.QtWidgets.QWidget):
                                  ,active = self.icn_cp1
                                  )
         # A button to show info about the program
-        self.btn_abt = sh.Button (hint = _('View About')
-                                 ,inactive = self.icn_abt
+        self.btn_abt = sh.Button (inactive = self.icn_abt
                                  ,active = self.icn_abt
                                  )
         # A button to quit the program
-        self.btn_qit = sh.Button (hint = _('Quit the program')
-                                 ,inactive = self.icn_qit
+        self.btn_qit = sh.Button (inactive = self.icn_qit
                                  ,active = self.icn_qit
                                  )
         self.layout_.addWidget(self.ent_src.widget)
