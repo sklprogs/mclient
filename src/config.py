@@ -206,6 +206,8 @@ class Config:
         self.new['speech6'] = _(self.new['speech6'])
         self.new['speech7'] = _(self.new['speech7'])
         self.new['style'] = _(self.new['style'])
+        for action in self.new['actions']:
+            self.new['actions'][action]['hint'] = _(self.new['actions'][action]['hint'])
     
     def run(self):
         self.set_schema()
