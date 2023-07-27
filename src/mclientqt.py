@@ -1181,7 +1181,7 @@ class App:
         if not cf.objs.config.new['CaptureHotkey'] or not status:
             sh.com.rep_lazy(f)
             return
-        self.gui.activate()
+        sh.Geometry(self.about.logic.product).activate()
         if status != 1:
             return
         new_clipboard = sh.Clipboard().paste()
