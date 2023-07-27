@@ -1174,6 +1174,13 @@ class App:
                           ,url = lg.objs.request.url
                           )
     
+    def activate(self):
+        if sh.objs.get_os().is_win():
+            objs.get_geometry().keyword = self.about.logic.product
+            objs.geometry.activate()
+        else:
+            self.gui.activate()
+    
     def catch(self, status=0):
         f = '[MClientQt] mclient.App.catch'
         mes = _('Status: {}').format(status)
@@ -1181,7 +1188,7 @@ class App:
         if not cf.objs.config.new['CaptureHotkey'] or not status:
             sh.com.rep_lazy(f)
             return
-        sh.Geometry(self.about.logic.product).activate()
+        self.activate()
         if status != 1:
             return
         new_clipboard = sh.Clipboard().paste()
@@ -2096,6 +2103,20 @@ class Search:
         return(rowno, colno)
 
 
+
+class Objects:
+    
+    def __init__(self):
+        self.geometry = None
+    
+    def get_geometry(self):
+        if not self.geometry:
+            import windows.geometry.controller as wg
+            self.geometry = wg.Geometry()
+        return self.geometry
+
+
+objs = Objects()
 com = Commands()
 
 

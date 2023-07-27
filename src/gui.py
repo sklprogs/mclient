@@ -350,6 +350,13 @@ class App(PyQt5.QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
     
+    def activate(self):
+        ''' Remove minimized status and restore window with keeping maximized
+            or normal state. Works on Linux and Windows 10, but not 11.
+        '''
+        self.setWindowState(self.windowState() & ~PyQt5.QtCore.Qt.WindowMinimized | PyQt5.QtCore.Qt.WindowActive)
+        self.activateWindow()
+    
     def keyPressEvent(self, event):
         if event.key() == PyQt5.QtCore.Qt.Key_PageUp:
             self.sig_pgup.emit()
