@@ -3,6 +3,7 @@
 export WINEPREFIX="$HOME/software/wine/build_mclient"
 python="$WINEPREFIX/drive_c/Python"
 pyinstaller="$python/Scripts/pyinstaller.exe"
+schemas="$python/Lib/site-packages/jsonschema_specifications/schemas"
 product="mclientqt"
 shared="skl_shared_qt"
 binariesdir="$HOME/binaries"
@@ -39,6 +40,10 @@ if [ ! -d "$shareddir" ]; then
     echo "Folder $shareddir does not exist!"; exit
 fi
 
+if [ ! -d "$schemas" ]; then
+    echo "Folder $schemas does not exist!"; exit
+fi
+
 rsync -aL --delete-before --exclude='.git' "$productdir/" "$producttmp"
 rsync -aL --delete-before --exclude='.git' "$shareddir/" "$sharedtmp"
 
@@ -49,6 +54,8 @@ cd "$producttmp"/src
 wine "$pyinstaller" -w -i ../resources/$product.ico "$product.py"
 
 mv "$producttmp/src/dist/$product" "$buildtmp/app"
+mkdir "$buildtmp/app/jsonschema_specifications"
+rsync -ar "$schemas/" "$buildtmp/app/jsonschema_specifications/schemas"
 cp -r "$resdir" "$buildtmp"/
 cp "$cmd" "$buildtmp"
 

@@ -13,6 +13,7 @@ oslow="linux"
 glibc="2.36"
 pythonve="$HOME/software/python_builds/i386/mclient"
 xlibdir="$pythonve/lib/python3.11/site-packages/Xlib"
+schemas="$pythonve/lib/python3.11/site-packages/jsonschema_specifications/schemas"
 binariesdir="$HOME/binaries"
 appimagedir="$binariesdir/appimage"
 srcdir="$HOME/bin/$product/src"
@@ -42,6 +43,10 @@ fi
 
 if [ ! -d "$xlibdir" ]; then
     echo "Folder $xlibdir does not exist!"; exit
+fi
+
+if [ ! -d "$schemas" ]; then
+    echo "Folder $schemas does not exist!"; exit
 fi
 
 if [ ! -d "$resdir" ]; then
@@ -81,6 +86,8 @@ cp "$appimagedir/AppRun-$arch" "$tmpdir/app/AppRun"
 cp "$appimagedir/appimagetool-$arch.AppImage" "$tmpdir"
 cp "$HOME/bin/$product/build/$os/$product.desktop" "$tmpdir/app"
 cp "$HOME/bin/$product/build/$os/$product.png" "$tmpdir/app"
+mkdir "$tmpdir/app/usr/bin/jsonschema_specifications"
+rsync -ar "$schemas/" "$tmpdir/app/usr/bin/jsonschema_specifications/schemas"
 cd "$tmpdir"
 # This argument allows to avoid a permission error
 ./appimagetool-$arch.AppImage --appimage-extract-and-run app
