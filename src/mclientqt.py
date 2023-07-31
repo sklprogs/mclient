@@ -35,6 +35,9 @@ class Priorities(pr.Priorities):
         self.add_bindings()
         self.reset()
     
+    def save(self):
+        cf.objs.config.new['subjects']['prioritized'] = self.dump()
+    
     def add_bindings(self):
         self.gui.btn_res.set_action(self.reset)
         self.gui.btn_apl.set_action(self.apply)
@@ -67,7 +70,7 @@ class Priorities(pr.Priorities):
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def reset(self):
-        self.dic1 = cf.objs.get_config().new['subjects']['prioritized']
+        self.dic1 = cf.objs.config.new['subjects']['prioritized']
         self.set_mode()
         #TODO: Elaborate
         self.fill(self.dic1, self.dic2)
@@ -1204,7 +1207,7 @@ class App:
     
     def edit_blacklist(self):
         f = '[MClient] mclient.App.edit_blacklist'
-        old_list = cf.objs.get_config().new['subjects']['blocked']
+        old_list = cf.objs.config.new['subjects']['blocked']
         old_key = cf.objs.config.new['BlockSubjects']
         self.block.reset (lst1 = old_list
                          ,lst2 = lg.objs.get_plugins().get_subjects()
@@ -1810,7 +1813,7 @@ class App:
             it is run separately.
         '''
         cf.objs.get_subjects().save()
-        cf.objs.get_config().quit()
+        cf.objs.config.quit()
         self.thread.end()
         ''' For this code to be executed last, it's not enough to put it in 
             '__main__' right before 'sh.com.end'.
@@ -2013,6 +2016,7 @@ class App:
         self.history.gui.sig_go.connect(self.go_history)
         
         self.prior.gui.sig_close.connect(self.prior.close)
+        self.prior.gui.sig_close.connect(self.prior.save)
         
         self.suggest.gui.sig_load.connect(self.load_suggestion)
         

@@ -422,7 +422,7 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.tree2.setDragDropMode(PyQt5.QtWidgets.QAbstractItemView.InternalMove)
         self.tree1.setStyleSheet(self.tree_style)
         self.tree2.setStyleSheet(self.tree_style)
-        self.setStyleSheet('QTreeWidget::item{ height: 30px;  }')
+        self.setStyleSheet('QTreeWidget::item{height: 30px;}')
     
     def set_layouts(self):
         self.lay_prm = PyQt5.QtWidgets.QVBoxLayout()

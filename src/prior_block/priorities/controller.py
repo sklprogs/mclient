@@ -13,6 +13,9 @@ class Priorities:
         self.Shown = False
         self.set_gui()
     
+    def dump(self):
+        return self.gui.tree1.dump()
+    
     def centralize(self):
         self.gui.centralize()
     
