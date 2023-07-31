@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-26 04:05+0300\n"
-"PO-Revision-Date: 2023-07-26 04:06+0300\n"
+"POT-Creation-Date: 2023-07-31 22:06+0300\n"
+"PO-Revision-Date: 2023-07-31 22:07+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -19,159 +19,159 @@ msgstr ""
 "X-Poedit-SearchPath-0: skl_shared_qt/src\n"
 "X-Poedit-SearchPath-1: mclientqt/src\n"
 
-#: mclientqt/src/_translations.py:6
+#: mclientqt/src/_translations.py:12
 msgid "Clear history"
 msgstr "Очистить историю"
 
-#: mclientqt/src/_translations.py:7
+#: mclientqt/src/_translations.py:13
 msgid "Go to the next section of column #1"
 msgstr "Перейти в следующий раздел столбца №1"
 
-#: mclientqt/src/_translations.py:8
+#: mclientqt/src/_translations.py:14
 msgid "Go to the previous section of column #1"
 msgstr "Перейти в предыдущий раздел столбца №1"
 
-#: mclientqt/src/_translations.py:9
+#: mclientqt/src/_translations.py:15
 msgid "Go to the next section of column #2"
 msgstr "Перейти в следующий раздел столбца №2"
 
-#: mclientqt/src/_translations.py:10
+#: mclientqt/src/_translations.py:16
 msgid "Go to the previous section of column #2"
 msgstr "Перейти в предыдущий раздел столбца №2"
 
-#: mclientqt/src/_translations.py:11
+#: mclientqt/src/_translations.py:17
 msgid "Go to the next section of column #3"
 msgstr "Перейти в следующий раздел столбца №3"
 
-#: mclientqt/src/_translations.py:12
+#: mclientqt/src/_translations.py:18
 msgid "Go to the previous section of column #3"
 msgstr "Перейти в предыдущий раздел столбца №3"
 
-#: mclientqt/src/_translations.py:13
+#: mclientqt/src/_translations.py:19
 msgid "Go to the next section of column #4"
 msgstr "Перейти в следующий раздел столбца №4"
 
-#: mclientqt/src/_translations.py:14
+#: mclientqt/src/_translations.py:20
 msgid "Go to the previous section of column #4"
 msgstr "Перейти в предыдущий раздел столбца №4"
 
-#: mclientqt/src/_translations.py:15
+#: mclientqt/src/_translations.py:21
 msgid "Copy the URL of the current article"
 msgstr "Копировать URL текущей статьи"
 
-#: mclientqt/src/_translations.py:16
+#: mclientqt/src/_translations.py:22
 msgid "Copy the nominative case"
 msgstr "Копировать в именительном падеже"
 
-#: mclientqt/src/_translations.py:17
+#: mclientqt/src/_translations.py:23
 msgid "Copy the current selection"
 msgstr "Копировать текущее выделение"
 
-#: mclientqt/src/_translations.py:18
+#: mclientqt/src/_translations.py:24
 msgid "Copy the URL of the selected cell"
 msgstr "Копировать URL выбранной ячейки"
 
-#: mclientqt/src/_translations.py:19
+#: mclientqt/src/_translations.py:25
 msgid "Open a webpage with a definition of the current term"
 msgstr "Открыть веб-страницу с определением текущего термина"
 
-#: mclientqt/src/_translations.py:20 mclientqt/src/gui.py:649
+#: mclientqt/src/_translations.py:26
 msgid "Go to the preceding article"
 msgstr "Предыдущая статья"
 
-#: mclientqt/src/_translations.py:21 mclientqt/src/gui.py:654
+#: mclientqt/src/_translations.py:27
 msgid "Go to the following article"
 msgstr "Следующая статья"
 
-#: mclientqt/src/_translations.py:22
+#: mclientqt/src/_translations.py:28
 msgid "Look up phrases"
 msgstr "Открыть раздел с фразами"
 
-#: mclientqt/src/_translations.py:23
+#: mclientqt/src/_translations.py:29
 msgid "Next source language"
 msgstr "Следующий язык оригинала"
 
-#: mclientqt/src/_translations.py:24
+#: mclientqt/src/_translations.py:30
 msgid "Next target language"
 msgstr "Следующий язык перевода"
 
-#: mclientqt/src/_translations.py:25
+#: mclientqt/src/_translations.py:31
 msgid "Open the current article in a default browser"
 msgstr "Открыть текущую статью в браузере по умолчанию"
 
-#: mclientqt/src/_translations.py:26
+#: mclientqt/src/_translations.py:32
 msgid "Previous source language"
 msgstr "Предыдущий язык оригинала"
 
-#: mclientqt/src/_translations.py:27
+#: mclientqt/src/_translations.py:33
 msgid "Previous target language"
 msgstr "Предыдущий язык перевода"
 
-#: mclientqt/src/_translations.py:28
+#: mclientqt/src/_translations.py:34
 msgid "Create a printer-friendly page"
 msgstr "Печать (предварительный просмотр)"
 
-#: mclientqt/src/_translations.py:29 mclientqt/src/gui.py:704
+#: mclientqt/src/_translations.py:35
 msgid "Quit the program"
 msgstr "Выйти из программы"
 
-#: mclientqt/src/_translations.py:30
+#: mclientqt/src/_translations.py:36
 msgid "Start a new search in the current article"
 msgstr "Начать новый поиск в текущей статье"
 
-#: mclientqt/src/_translations.py:31
+#: mclientqt/src/_translations.py:37
 msgid "Reload the current article"
 msgstr "Перезагрузить текущую статью"
 
-#: mclientqt/src/_translations.py:32
+#: mclientqt/src/_translations.py:38
 msgid "Save or copy the current article"
 msgstr "Сохранить или копировать текущую статью"
 
-#: mclientqt/src/_translations.py:33
+#: mclientqt/src/_translations.py:39
 msgid "Search the article backward"
 msgstr "Искать назад"
 
-#: mclientqt/src/_translations.py:34
+#: mclientqt/src/_translations.py:40
 msgid "Search the article forward"
 msgstr "Искать вперед"
 
-#: mclientqt/src/_translations.py:35 mclientqt/src/gui.py:622
+#: mclientqt/src/_translations.py:41
 msgid "Swap source and target languages"
 msgstr "Поменять местами языки оригинала и перевода"
 
-#: mclientqt/src/_translations.py:36 mclientqt/src/about/controller.py:24
+#: mclientqt/src/_translations.py:42 mclientqt/src/about/controller.py:24
 msgid "About the program"
 msgstr "Информация о программе"
 
-#: mclientqt/src/_translations.py:37 mclientqt/src/gui.py:644
+#: mclientqt/src/_translations.py:43
 msgid "Toggle alphabetizing"
 msgstr "Включить/отключить сортировку по алфавиту"
 
-#: mclientqt/src/_translations.py:38
+#: mclientqt/src/_translations.py:44
 msgid "Toggle blacklisting"
 msgstr "Включить/отключить черный список"
 
-#: mclientqt/src/_translations.py:39 mclientqt/src/gui.py:659
+#: mclientqt/src/_translations.py:45
 msgid "Toggle history"
 msgstr "Показать/закрыть историю"
 
-#: mclientqt/src/_translations.py:40
+#: mclientqt/src/_translations.py:46
 msgid "Toggle full cell text"
 msgstr "Показать весь текст ячейки"
 
-#: mclientqt/src/_translations.py:41
+#: mclientqt/src/_translations.py:47
 msgid "Toggle prioritizing"
 msgstr "Включить/отключить список приоритетов"
 
-#: mclientqt/src/_translations.py:42
+#: mclientqt/src/_translations.py:48
 msgid "Show settings"
 msgstr "Настройки"
 
-#: mclientqt/src/_translations.py:43 mclientqt/src/gui.py:614
+#: mclientqt/src/_translations.py:49
 msgid "Paste a special symbol"
 msgstr "Вставить специальный символ"
 
-#: mclientqt/src/_translations.py:44
+#: mclientqt/src/_translations.py:50
 msgid "Main hotkeys"
 msgstr "Основные сочетания клавиш"
 
@@ -227,7 +227,7 @@ msgstr "Любые вопросы, пожелания и пр. излагай�
 #: mclientqt/src/cells.py:45 mclientqt/src/history/controller.py:59
 #: mclientqt/src/history/gui.py:25 mclientqt/src/logic.py:26
 #: mclientqt/src/logic.py:326 mclientqt/src/logic.py:581
-#: mclientqt/src/mclientqt.py:1063 mclientqt/src/plugins/dsl/get.py:399
+#: mclientqt/src/mclientqt.py:1091 mclientqt/src/plugins/dsl/get.py:399
 #: mclientqt/src/plugins/dsl/get.py:416 mclientqt/src/plugins/dsl/get.py:431
 #: mclientqt/src/plugins/dsl/get.py:439 mclientqt/src/plugins/dsl/tags.py:139
 #: mclientqt/src/plugins/multitrancom/elems.py:189
@@ -321,7 +321,7 @@ msgstr "СТОЛБЕЦ №"
 msgid "CODE"
 msgstr "КОД"
 
-#: mclientqt/src/config.py:35
+#: mclientqt/src/config.py:36
 msgid ""
 "Configuration file \"{}\" has values of a wrong type!\n"
 "Fix, restore or delete this file.\n"
@@ -335,7 +335,7 @@ msgstr ""
 "Подробности:\n"
 "{}"
 
-#: mclientqt/src/config.py:48
+#: mclientqt/src/config.py:49
 msgid ""
 "Configuration file \"{}\" has values of a wrong type!\n"
 "Fix or restore this file.\n"
@@ -349,17 +349,28 @@ msgstr ""
 "Подробности:\n"
 "{}"
 
-#: mclientqt/src/config.py:307 skl_shared_qt/src/logic.py:521
+#: mclientqt/src/config.py:246
+msgid ""
+"Configuration file \"{}\" is oudated and will be overwritten!\n"
+"\n"
+"Back it up now if you need it."
+msgstr ""
+"Конфигурационный файл \"{}\" устарел и будет перезаписан!\n"
+"\n"
+"Если он вам нужен, создайте его резервную копию сейчас."
+
+#: mclientqt/src/config.py:348 skl_shared_qt/src/logic.py:521
 msgid "Write file \"{}\""
 msgstr "Запись файла \"{}\""
 
-#: mclientqt/src/config.py:316
+#: mclientqt/src/config.py:357
 #: mclientqt/src/plugins/multitrancom/utils/subjects.py:72
 #: mclientqt/src/plugins/multitrandem/get.py:495
 #: mclientqt/src/plugins/multitrandem/get.py:640
-#: mclientqt/src/plugins/multitrandem/get.py:1539 skl_shared_qt/src/logic.py:2915
-#: skl_shared_qt/src/shared.py:161 skl_shared_qt/src/shared.py:736
-#: skl_shared_qt/src/web.py:28
+#: mclientqt/src/plugins/multitrandem/get.py:1539
+#: mclientqt/src/windows/geometry/controller.py:46
+#: skl_shared_qt/src/logic.py:2915 skl_shared_qt/src/shared.py:161
+#: skl_shared_qt/src/shared.py:750 skl_shared_qt/src/web.py:28
 msgid ""
 "Third-party module has failed!\n"
 "\n"
@@ -369,7 +380,7 @@ msgstr ""
 "\n"
 "Детали: {}"
 
-#: mclientqt/src/config.py:398 mclientqt/src/mclientqt.py:1783
+#: mclientqt/src/config.py:439 mclientqt/src/mclientqt.py:1818
 #: mclientqt/src/plugins/multitrandem/utils.py:946
 #: mclientqt/src/plugins/multitrandem/utils.py:1409
 #: mclientqt/src/suggest/controller.py:83 mclientqt/src/tests.py:1006
@@ -415,91 +426,51 @@ msgstr "Недопустимые входные данные!"
 msgid "Index must be set externally!"
 msgstr "Индекс должен быть задан извне!"
 
-#: mclientqt/src/gui.py:589
+#: mclientqt/src/gui.py:580
 msgid "Translate"
 msgstr "Перевести"
 
-#: mclientqt/src/gui.py:594
+#: mclientqt/src/gui.py:585
 msgid "Clear search field"
 msgstr "Очистить строку поиска"
 
-#: mclientqt/src/gui.py:599
+#: mclientqt/src/gui.py:590
 msgid "Paste text from clipboard"
 msgstr "Вставить текст из буфера обмена"
 
-#: mclientqt/src/gui.py:604
+#: mclientqt/src/gui.py:595
 msgid "Paste current request"
 msgstr "Вставить текущий запрос"
 
-#: mclientqt/src/gui.py:609
+#: mclientqt/src/gui.py:600
 msgid "Paste previous request"
 msgstr "Вставить предыдущий запрос"
 
-#: mclientqt/src/gui.py:629
-msgid "Tune up view settings"
-msgstr "Изменить настройки вида"
-
-#: mclientqt/src/gui.py:634
-msgid "Configure blacklisting"
-msgstr "Настроить черный список"
-
-#: mclientqt/src/gui.py:639
-msgid "Configure prioritization"
-msgstr "Настроить приоритизацию"
-
-#: mclientqt/src/gui.py:664
-msgid "Reload the article"
-msgstr "Перезагрузить статью"
-
-#: mclientqt/src/gui.py:669
-msgid "Find in the current article"
-msgstr "Найти в текущей статье"
-
-#: mclientqt/src/gui.py:674
-msgid "Save the current article"
-msgstr "Сохранить текущую статью"
-
-#: mclientqt/src/gui.py:679
-msgid "Open the current article in a browser"
-msgstr "Открыть текущую статью в браузере"
-
-#: mclientqt/src/gui.py:684
-msgid "Create a print-ready preview"
-msgstr "Печать (предварительный просмотр)"
-
-#: mclientqt/src/gui.py:689
-msgid "Define the current term"
-msgstr "Дать определение термину"
-
-#: mclientqt/src/gui.py:694 mclientqt/src/mclientqt.py:128
+#: mclientqt/src/gui.py:670 mclientqt/src/mclientqt.py:128
 msgid "Capture Ctrl-c-c and Ctrl-Ins-Ins"
 msgstr "Перехватывать Ctrl-c-c и Ctrl-Ins-Ins"
 
-#: mclientqt/src/gui.py:699
-msgid "View About"
-msgstr "Информация о программе"
-
-#: mclientqt/src/gui.py:768
+#: mclientqt/src/gui.py:742
 msgid "Search:"
 msgstr "Поиск:"
 
-#: mclientqt/src/gui.py:774
+#: mclientqt/src/gui.py:748
 msgid "Case-sensitive"
 msgstr "С учетом регистра"
 
-#: mclientqt/src/gui.py:775 mclientqt/src/prior_block/blacklist/gui.py:210
+#: mclientqt/src/gui.py:749 mclientqt/src/prior_block/blacklist/gui.py:210
 msgid "Close"
 msgstr "Закрыть"
 
-#: mclientqt/src/gui.py:776 mclientqt/src/prior_block/blacklist/gui.py:195
+#: mclientqt/src/gui.py:750 mclientqt/src/prior_block/blacklist/gui.py:195
 msgid "Clear"
 msgstr "Очистить"
 
-#: mclientqt/src/gui.py:777
+#: mclientqt/src/gui.py:751
 msgid "Back"
 msgstr "Назад"
 
-#: mclientqt/src/gui.py:778
+#: mclientqt/src/gui.py:752
 msgid "Forward"
 msgstr "Вперед"
 
@@ -533,8 +504,8 @@ msgid "Header"
 msgstr "Заголовок"
 
 #: mclientqt/src/history/gui.py:133 mclientqt/src/history/gui.py:134
-#: mclientqt/src/history/gui.py:135 mclientqt/src/mclientqt.py:1424
-#: mclientqt/src/mclientqt.py:1428 mclientqt/src/plugins/multitrancom/pairs.py:7
+#: mclientqt/src/history/gui.py:135 mclientqt/src/mclientqt.py:1459
+#: mclientqt/src/mclientqt.py:1463 mclientqt/src/plugins/multitrancom/pairs.py:7
 #: mclientqt/src/plugins/multitrancom/pairs.py:20
 #: mclientqt/src/plugins/multitrancom/pairs.py:59
 #: mclientqt/src/plugins/multitrancom/pairs.py:110
@@ -1024,11 +995,11 @@ msgstr "тест"
 msgid "Print"
 msgstr "Печать"
 
-#: mclientqt/src/logic.py:397 mclientqt/src/mclientqt.py:1696
+#: mclientqt/src/logic.py:397 mclientqt/src/mclientqt.py:1731
 msgid "Nothing has been found (skipped subjects: {})."
 msgstr "Ничего не найдено (игнорировано тематик: {})."
 
-#: mclientqt/src/logic.py:403 mclientqt/src/mclientqt.py:1700
+#: mclientqt/src/logic.py:403 mclientqt/src/mclientqt.py:1735
 msgid "Nothing has been found."
 msgstr "Ничего не найдено."
 
@@ -1124,7 +1095,7 @@ msgid "Row #{}. Column #{}. Text: \"{}\""
 msgstr "Строка №{}, столбец №{}. Текст: \"{}\""
 
 #: mclientqt/src/manager.py:216 mclientqt/src/manager.py:269
-#: mclientqt/src/mclientqt.py:1433 mclientqt/src/settings/gui.py:27
+#: mclientqt/src/mclientqt.py:1468 mclientqt/src/settings/gui.py:27
 #: mclientqt/src/settings/gui.py:212 mclientqt/src/settings/gui.py:227
 #: mclientqt/src/tests.py:830 mclientqt/src/tests.py:890
 #: mclientqt/src/tests.py:935
@@ -1261,63 +1232,63 @@ msgstr "Число длинных ячеек: {}"
 msgid "Window height: {}"
 msgstr "Высота окна: {}"
 
-#: mclientqt/src/mclientqt.py:1043
+#: mclientqt/src/mclientqt.py:1071
 msgid "No suggestions are available!"
 msgstr "Нет доступных вариантов!"
 
-#: mclientqt/src/mclientqt.py:1143 mclientqt/src/mclientqt.py:1605
+#: mclientqt/src/mclientqt.py:1171 mclientqt/src/mclientqt.py:1640
 msgid "Open link: {}"
 msgstr "Открывается ссылка: {}"
 
-#: mclientqt/src/mclientqt.py:1151
+#: mclientqt/src/mclientqt.py:1186
 msgid "Status: {}"
 msgstr "Состояние: {}"
 
-#: mclientqt/src/mclientqt.py:1210
+#: mclientqt/src/mclientqt.py:1245
 msgid "what is \"{}\"?"
 msgstr "что такое \"{}\"?"
 
-#: mclientqt/src/mclientqt.py:1257 mclientqt/src/mclientqt.py:1408
+#: mclientqt/src/mclientqt.py:1292 mclientqt/src/mclientqt.py:1443
 msgid "Set source to \"{}\""
 msgstr "Выбран источник \"{}\""
 
-#: mclientqt/src/mclientqt.py:1329 mclientqt/src/settings/controller.py:95
+#: mclientqt/src/mclientqt.py:1364 mclientqt/src/settings/controller.py:95
 msgid "A value of this field should be within the range of {}-{}!"
 msgstr "Значение этого поля должно быть в диапазоне {}-{}!"
 
-#: mclientqt/src/mclientqt.py:1346
+#: mclientqt/src/mclientqt.py:1381
 msgid "Table width: {}"
 msgstr "Ширина таблицы: {}"
 
-#: mclientqt/src/mclientqt.py:1348
+#: mclientqt/src/mclientqt.py:1383
 msgid "Term column width: {}"
 msgstr "Ширина столбца с терминами: {}"
 
-#: mclientqt/src/mclientqt.py:1388 mclientqt/src/mclientqt.py:1401
+#: mclientqt/src/mclientqt.py:1423 mclientqt/src/mclientqt.py:1436
 msgid "Set the number of columns to {} ({} in total)"
 msgstr "Задать число столбцов: {} (всего {})"
 
-#: mclientqt/src/mclientqt.py:1499 mclientqt/src/mclientqt.py:1508
+#: mclientqt/src/mclientqt.py:1534 mclientqt/src/mclientqt.py:1543
 msgid "Set language: {}"
 msgstr "Установка языка: \"{}\""
 
-#: mclientqt/src/mclientqt.py:1545
+#: mclientqt/src/mclientqt.py:1580
 msgid "Cannot swap languages, this is a one-way dictionary!"
 msgstr "Нельзя поменять языки местами, это односторонний словарь!"
 
-#: mclientqt/src/mclientqt.py:1559
+#: mclientqt/src/mclientqt.py:1594
 msgid "Pair {}-{} is not supported!"
 msgstr "Пара {}-{} не поддерживается!"
 
-#: mclientqt/src/mclientqt.py:1658
+#: mclientqt/src/mclientqt.py:1693
 msgid "Load article No. {} from memory"
 msgstr "Загрузка статьи №{} из памяти"
 
-#: mclientqt/src/mclientqt.py:2052
+#: mclientqt/src/mclientqt.py:2087
 msgid "The end has been reached. Searching from the start."
 msgstr "Достигнут конец. Поиск производится с начала."
 
-#: mclientqt/src/mclientqt.py:2055 mclientqt/src/mclientqt.py:2066
+#: mclientqt/src/mclientqt.py:2090 mclientqt/src/mclientqt.py:2101
 #: mclientqt/src/plugins/multitrandem/utils.py:273
 #: mclientqt/src/plugins/multitrandem/utils.py:596
 #: mclientqt/src/plugins/multitrandem/utils.py:601
@@ -1328,7 +1299,7 @@ msgstr "Достигнут конец. Поиск производится с н
 msgid "No matches!"
 msgstr "Совпадений нет!"
 
-#: mclientqt/src/mclientqt.py:2063
+#: mclientqt/src/mclientqt.py:2098
 msgid "The start has been reached. Searching from the end."
 msgstr "Достигнуто начало. Поиск производится с конца."
 
@@ -15053,9 +15024,39 @@ msgstr "Все файлы (*.*)"
 msgid "Save File As:"
 msgstr "Сохранить файл как:"
 
-#: skl_shared_qt/src/shared.py:664
+#: skl_shared_qt/src/shared.py:665
 msgid "Code block: {}"
 msgstr "Блок кода: {}"
+
+#~ msgid "Tune up view settings"
+#~ msgstr "Изменить настройки вида"
+
+#~ msgid "Configure blacklisting"
+#~ msgstr "Настроить черный список"
+
+#~ msgid "Configure prioritization"
+#~ msgstr "Настроить приоритизацию"
+
+#~ msgid "Reload the article"
+#~ msgstr "Перезагрузить статью"
+
+#~ msgid "Find in the current article"
+#~ msgstr "Найти в текущей статье"
+
+#~ msgid "Save the current article"
+#~ msgstr "Сохранить текущую статью"
+
+#~ msgid "Open the current article in a browser"
+#~ msgstr "Открыть текущую статью в браузере"
+
+#~ msgid "Create a print-ready preview"
+#~ msgstr "Печать (предварительный просмотр)"
+
+#~ msgid "Define the current term"
+#~ msgstr "Дать определение термину"
+
+#~ msgid "View About"
+#~ msgstr "Информация о программе"
 
 #~ msgid "About"
 #~ msgstr "О программе"

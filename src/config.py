@@ -243,7 +243,7 @@ class Config:
             return
         version = self._get_version()
         if version is None or version < self.default['config']['min_version']:
-            mes = _('Configuration file "{}" is oudated and will be overwritten! Save it if you need it.')
+            mes = _('Configuration file "{}" is oudated and will be overwritten!\n\nBack it up now if you need it.')
             mes = mes.format(self.plocal)
             sh.objs.get_mes(f, mes).show_info()
             self.local = copy.deepcopy(self.default)
