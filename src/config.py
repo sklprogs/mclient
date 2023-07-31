@@ -193,8 +193,6 @@ class Config:
         self.new['columns']['2']['type'] = _(self.new['columns']['2']['type'])
         self.new['columns']['3']['type'] = _(self.new['columns']['3']['type'])
         self.new['columns']['4']['type'] = _(self.new['columns']['4']['type'])
-        self.new['subjects']['blocked'] = [_(subj) for subj in self.new['subjects']['blocked']]
-        self.new['subjects']['prioritized'] = [_(subj) for subj in self.new['subjects']['prioritized']]
         self.new['lang1'] = _(self.new['lang1'])
         self.new['lang2'] = _(self.new['lang2'])
         self.new['source'] = _(self.new['source'])
