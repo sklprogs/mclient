@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import os
+import copy
 import json
 import jsonschema
 
@@ -112,11 +113,8 @@ class Config:
         if os.path.exists(self.plocal) and os.path.isfile(self.plocal):
             sh.com.rep_lazy(f)
             return
-        ''' Since 'local' dictionary is empty for now, this just clones
-            'default' to 'new' similar to 'copy.deepcopy'.
-        '''
-        self.update()
-        self.localize()
+        self.new = copy.deepcopy(self.default)
+        self.localize_new()
         self.save()
     
     def convert_types(self):
@@ -163,7 +161,8 @@ class Config:
         ''' Python 3.9 or newer is required. Combine dictionaries #1 and #2
             to #3 such that #3 has the values of #1, absent in #2, and existing
             values of #1 are updated with the values of #2. #1 and #2 are
-            unchanged.
+            unchanged. If 'local' is empty this works like
+            'self.new = copy.deepcopy(self.default)'.
         '''
         self.new = self.default | self.local
     
@@ -184,8 +183,32 @@ class Config:
             return
         self.Success = sh.WriteTextFile(self.plocal, True).write(code)
     
-    def localize(self):
-        f = '[MClient] config.Config.localize'
+    def localize_local(self):
+        # This is needed when a default config is forced
+        f = '[MClient] config.Config.localize_local'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.local['columns']['1']['type'] = _(self.local['columns']['1']['type'])
+        self.local['columns']['2']['type'] = _(self.local['columns']['2']['type'])
+        self.local['columns']['3']['type'] = _(self.local['columns']['3']['type'])
+        self.local['columns']['4']['type'] = _(self.local['columns']['4']['type'])
+        self.local['lang1'] = _(self.local['lang1'])
+        self.local['lang2'] = _(self.local['lang2'])
+        self.local['source'] = _(self.local['source'])
+        self.local['speech1'] = _(self.local['speech1'])
+        self.local['speech2'] = _(self.local['speech2'])
+        self.local['speech3'] = _(self.local['speech3'])
+        self.local['speech4'] = _(self.local['speech4'])
+        self.local['speech5'] = _(self.local['speech5'])
+        self.local['speech6'] = _(self.local['speech6'])
+        self.local['speech7'] = _(self.local['speech7'])
+        self.local['style'] = _(self.local['style'])
+        for action in self.local['actions']:
+            self.local['actions'][action]['hint'] = _(self.local['actions'][action]['hint'])
+    
+    def localize_new(self):
+        f = '[MClient] config.Config.localize_new'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -207,6 +230,25 @@ class Config:
         for action in self.new['actions']:
             self.new['actions'][action]['hint'] = _(self.new['actions'][action]['hint'])
     
+    def _get_version(self):
+        try:
+            return self.local['config']['min_version']
+        except KeyError:
+            return
+    
+    def check_version(self):
+        f = '[MClient] config.Config.check_version'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        version = self._get_version()
+        if version is None or version < self.default['config']['min_version']:
+            mes = _('Configuration file "{}" is oudated and will be overwritten! Save it if you need it.')
+            mes = mes.format(self.plocal)
+            sh.objs.get_mes(f, mes).show_info()
+            self.local = copy.deepcopy(self.default)
+            self.localize_local()
+    
     def run(self):
         self.set_schema()
         self.load_schema()
@@ -217,6 +259,7 @@ class Config:
         self.create()
         self.load_local()
         self.check_local()
+        self.check_version()
         self.update()
         self.convert_types()
 
