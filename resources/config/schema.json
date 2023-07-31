@@ -341,8 +341,8 @@
     ,"subjects":
         {"type": "object"
         ,"properties":
-            {"blocked": {"type": "array"}
-            ,"prioritized": {"type": "array"}
+            {"blocked": {"type": "object"}
+            ,"prioritized": {"type": "object"}
             }
         }
     ,"comments":

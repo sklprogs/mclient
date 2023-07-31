@@ -174,7 +174,7 @@
         ,"font": {"family": "Mono", "size": 11, "color": "slate gray"}
         }
     }
-,"subjects": {"blocked": [], "prioritized": ["General"]}
+,"subjects": {"blocked": {}, "prioritized": {"General": {}}}
 ,"comments": {"font": {"family": "Mono", "size": 11, "color": "gray"}}
 ,"terms": {"font": {"family": "Serif", "size": 12, "color": "black"}}
 ,"lang1": "Russian"
@@ -206,5 +206,5 @@
 ,"SortByColumns": true
 ,"timeout": "5.0"
 ,"hotkey_delay": 600
-,"config": {"min_version": 1}
+,"config": {"min_version": 2}
 }

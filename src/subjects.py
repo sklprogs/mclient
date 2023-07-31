@@ -12,20 +12,35 @@ class Subjects:
     
     def __init__(self):
         self.prior = []
+        self.plain_prior = []
+        self.plain_block = []
+    
+    def _set_prior_section(self, section):
+        for key, value in section.items():
+            self.plain_prior.append(key)
+            self._set_prior_section(value)
+    
+    def _set_block_section(self, section):
+        for key, value in section.items():
+            self.plain_block.append(key)
+            self._set_block_section(value)
+    
+    def set_plain(self):
+        self._set_prior_section(cf.objs.get_config().new['subjects']['prioritized'])
+        self._set_block_section(cf.objs.get_config().new['subjects']['blocked'])
     
     def set_prior(self):
         f = '[MClientQt] subjects.Subjects.set_prior'
-        if not cf.objs.get_config().new['subjects']['prioritized'] \
-        or not lg.objs.get_articles().get_subjects():
+        if not self.plain_prior or not lg.objs.get_articles().get_subjects():
             sh.com.rep_lazy(f)
             return
         for subject in lg.objs.get_articles().get_subjects():
-            if subject in cf.objs.config.new['subjects']['prioritized']:
+            if subject in self.plain_prior:
                 self.prior.append(subject)
             elif ', ' in subject:
                 parts = subject.split(', ')
                 for part in parts:
-                    if part in cf.objs.config.new['subjects']['prioritized']:
+                    if part in self.plain_prior:
                         self.prior.append(subject)
                         break
         mes = '; '.join(self.prior)
@@ -66,29 +81,29 @@ class Subjects:
         if not subject:
             return
         subject = self.expand(subject)
-        if subject in cf.objs.get_config().new['subjects']['prioritized']:
+        if subject in self.plain_prior:
             return True
-        elif ', ' in subject:
+        if ', ' in subject:
             parts = subject.split(', ')
             for part in parts:
-                if part in cf.objs.config.new['subjects']['prioritized']:
+                if part in self.plain_prior:
                     return True
     
     def is_blocked(self, subject):
         if not subject:
             return
         subject = self.expand(subject)
-        if subject in cf.objs.get_config().new['subjects']['blocked']:
+        if subject in self.plain_block:
             return True
-        elif ', ' in subject:
+        if ', ' in subject:
             parts = subject.split(', ')
             for part in parts:
-                if part in cf.objs.config.new['subjects']['blocked']:
+                if part in self.plain_block:
                     return True
     
     def _get_priority(self, subject):
         try:
-            return cf.objs.get_config().new['subjects']['prioritized'].index(subject)
+            return self.plain_prior.index(subject)
         except ValueError:
             return
     
@@ -119,6 +134,7 @@ class Objects:
     def get_subjects(self):
         if self.subjects is None:
             self.subjects = Subjects()
+            self.subjects.set_plain()
         return self.subjects
 
 

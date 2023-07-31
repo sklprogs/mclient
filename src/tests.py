@@ -964,15 +964,13 @@ if __name__ == '__main__':
     #isuggest = com.run_suggest()
     #isuggest.show()
 
-    '''
     # Priorities
-    iprior = com.run_prior()
-    iprior.show()
-    '''
+#    iprior = com.run_prior()
+#    iprior.show()
 
     # Priorities (from the controller)
-    #iprior = com.run_prior_contr()
-    #iprior.show()
+    iprior = com.run_prior_contr()
+    iprior.show()
 
     '''
     # Popup
@@ -1000,8 +998,8 @@ if __name__ == '__main__':
     '''
 
     # Welcome
-    iwelcome = com.run_welcome()
-    iwelcome.show()
+#    iwelcome = com.run_welcome()
+#    iwelcome.show()
 
     mes = _('Goodbye!')
     sh.objs.get_mes(f, mes, True).show_debug()

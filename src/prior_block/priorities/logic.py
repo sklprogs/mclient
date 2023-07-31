@@ -75,7 +75,7 @@ class Priorities:
         if pos - 1 == self.subjects[pos].cur_major:
             print('Need to create new group')
             self.subjects.insert(pos - 1, self.subjects[pos])
-            self.subjects.insert(pos - 1, self.subjects[self.subjects[pos].cur_major+1])
+            self.subjects.insert(pos - 1, self.subjects[self.subjects[pos].cur_major + 1])
             # 21 since we have inserted 2 new items
             del self.subjects[pos + 2]
         elif pos == 0:
@@ -99,22 +99,3 @@ class Priorities:
         self.dic1 = dic1
         self.dic2 = dic2
         self.set_subjects()
-
-
-if __name__ == '__main__':
-    dic1 = {'Компьютеры':
-               ['Компьютеры', 'Майкрософт', 'Программирование', 'Оракл']
-           ,'Разговорная лексика':
-               ['Разговорная лексика', 'Арго', 'Грубо', 'Мат', 'Возвышенно'
-               ,'Поэтически'
-               ]
-           ,'Языки':
-               ['Языки', 'Английский', 'Французский', 'Немецкий', 'Русский'
-               ,'Датский', 'Японский', 'Китайский'
-               ]
-           }
-    iprior = Priorities()
-    iprior.reset(dic1, {})
-    print(iprior.dic1)
-    iprior.move_up(6)
-    iprior.debug()
