@@ -22,19 +22,19 @@ zh = []
 
 class Unique:
     
-    def __init__(self, file, majors):
+    def __init__(self, filew, majors):
         self.Success = True
         self.not_found = []
         self.subjects = {}
         self.majors = majors
-        self.file = file
+        self.filew = filew
     
     def load(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.absent_subjects.Unique.load'
         if not self.Success:
             sh.com.cancel(f)
             return
-        text = sh.ReadTextFile(self.file).get()
+        text = sh.ReadTextFile(self.filew).get()
         if not text:
             self.Success = False
             sh.com.rep_empty(f)
@@ -87,18 +87,37 @@ class Unique:
         for subject in self.not_found:
             self.subjects[subject] = {}
     
+    def _get_string(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.absent_subjects.Unique._get_string'
+        try:
+            return json.dumps(self.subjects, ensure_ascii=False, indent=4)
+        except Exception as e:
+            self.Success = False
+            sh.com.rep_third_party(f, e)
+    
     def debug(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.absent_subjects.Unique.debug'
         if not self.Success:
             sh.com.cancel(f)
             return
-        try:
-            dic = json.dumps(self.subjects, ensure_ascii=False, indent=4)
-        except Exception as e:
+        string = self._get_string()
+        if not string:
             self.Success = False
-            sh.com.rep_third_party(f, e)
+            sh.com.rep_empty(f)
             return
-        return f'{f}:\n{dic}'
+        return f'{f}:\n{string}'
+    
+    def save(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.absent_subjects.Unique.save'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        string = self._get_string()
+        if not string:
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
+        self.Success = sh.WriteTextFile(self.filew, True).write(string)
     
     def sort(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.absent_subjects.Unique.sort'
@@ -119,6 +138,7 @@ class Unique:
         self.search()
         self.add()
         self.sort()
+        self.save()
 
 
 
@@ -182,7 +202,12 @@ if __name__ == '__main__':
     file = '/home/pete/bin/mclientqt/resources/plugins/multitrancom/subjects/en.json'
     iunique = Unique(file, en)
     iunique.run()
-    #idebug = sh.Debug(f, iunique.report())
-    idebug = sh.Debug(f, iunique.debug())
+    if iunique.Success:
+        sub = _('Operation has completed successfully.')
+    else:
+        sub = _('Operation has failed!')
+    mes = [iunique.report(), iunique.debug(), sub]
+    mes = [item for item in mes if item]
+    idebug = sh.Debug(f, '\n\n'.join(mes))
     idebug.show()
     sh.com.end()
