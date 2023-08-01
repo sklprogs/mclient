@@ -71,7 +71,7 @@ class Unique:
             mes = _('All subjects have been found!')
             sh.objs.get_mes(f, mes).show_info()
             return
-        mes = []
+        mes = [f'{f}:']
         sub = _('Subjects that have not been found: {}')
         sub = sub.format(len(self.not_found))
         mes.append(sub)
@@ -79,9 +79,46 @@ class Unique:
         mes += self.not_found
         return '\n'.join(mes)
     
+    def add(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.absent_subjects.Unique.add'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        for subject in self.not_found:
+            self.subjects[subject] = {}
+    
+    def debug(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.absent_subjects.Unique.debug'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        try:
+            dic = json.dumps(self.subjects, ensure_ascii=False, indent=4)
+        except Exception as e:
+            self.Success = False
+            sh.com.rep_third_party(f, e)
+            return
+        return f'{f}:\n{dic}'
+    
+    def sort(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.absent_subjects.Unique.sort'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        subjects = {}
+        keys = sorted(self.subjects.keys())
+        for key in keys:
+            values = sorted(self.subjects[key])
+            subjects[key] = {}
+            for value in values:
+                subjects[key][value] = {}
+        self.subjects = subjects
+    
     def run(self):
         self.load()
         self.search()
+        self.add()
+        self.sort()
 
 
 
@@ -145,6 +182,7 @@ if __name__ == '__main__':
     file = '/home/pete/bin/mclientqt/resources/plugins/multitrancom/subjects/en.json'
     iunique = Unique(file, en)
     iunique.run()
-    idebug = sh.Debug(f, iunique.report())
+    #idebug = sh.Debug(f, iunique.report())
+    idebug = sh.Debug(f, iunique.debug())
     idebug.show()
     sh.com.end()
