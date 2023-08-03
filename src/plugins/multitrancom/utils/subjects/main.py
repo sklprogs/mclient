@@ -10,20 +10,21 @@ import skl_shared_qt.shared as sh
     and create a JSON file from these sequences.
 '''
 majors = ["Аварийное восстановление", "Авиационная медицина", "Авиация", "Австралийское выражение", "Австралия", "Австрийское выражение", "Австрия", "Автоматика"]
-pairs = ["Компьютеры", "Информационные технологии", "Компьютеры", "SAP", "Компьютеры", "Компьютерные сети", "Компьютеры", "Программирование", "Компьютеры", "Операционные системы", "Компьютеры", "Обработка данных", "Компьютеры", "Нейронные сети", "Компьютеры", "Интернет", "Компьютеры", "Расширение файла", "Компьютеры", "SAP технические термины", "Компьютеры", "SAP финансы"]
+pairs = ["Компьютеры", "Информационные технологии", "Компьютеры", "SAP", "Компьютеры", "Компьютерные сети", "Компьютеры", "Программирование", "Компьютеры", "Операционные системы", "Компьютеры", "Обработка данных", "Компьютеры", "Нейронные сети", "Компьютеры", "Интернет", "Компьютеры", "Расширение файла", "Компьютеры", "SAP технические термины", "Компьютеры", "SAP финансы", "Авиация", "Воздухоплавание"]
 
 
 
 class Dic:
     
-    def __init__(self, pairs):
+    def __init__(self, majors, pairs):
         self.Success = True
         self.subjects = {}
+        self.majors = majors
         self.pairs = pairs
     
     def check(self):
         f = '[MClientQt] plugins.multitrancom.utils.subjects.main.Dic.check'
-        if not self.pairs:
+        if not self.majors or not self.pairs:
             self.Success = False
             sh.com.rep_empty(f)
             return
@@ -46,9 +47,26 @@ class Dic:
             self.subjects[major][minor] = {}
             i += 2
     
+    def _search(self, subject):
+        for key, value in self.subjects.items():
+            if key == subject:
+                return True
+            if subject in value:
+                return True
+    
+    def add(self):
+        f = '[MClientQt] plugins.multitrancom.utils.subjects.main.Dic.add'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        for major in self.majors:
+            if not self._search(major):
+                self.subjects[major] = {}
+    
     def run(self):
         self.check()
         self.set_subjects()
+        self.add()
         return self.subjects
 
 
@@ -68,7 +86,7 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClientQt] plugins.multitrancom.utils.subjects.main.__main__'
     sh.com.start()
-    mes = com.get_string(Dic(pairs).run())
+    mes = com.get_string(Dic(majors, pairs).run())
     idebug = sh.Debug(f, mes)
     idebug.show()
     sh.com.end()
