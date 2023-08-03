@@ -24,6 +24,8 @@
         "Wine growing": {},
         "Zootechnics": {}
     },
+    "Analytical chemistry": {},
+    "Anglicanism": {},
     "Art and culture": {
         "Art": {},
         "Art and culture": {},
@@ -216,6 +218,7 @@
         "Phaleristics": {},
         "Philately / stamp collecting": {}
     },
+    "Common law (Anglo-Saxon legal system)": {},
     "Communications": {
         "Amateur radio service": {},
         "Antennas and waveguides": {},
@@ -294,6 +297,7 @@
         "Windows": {},
         "Wiring": {}
     },
+    "Contextual meaning": {},
     "Cooking": {
         "Beverages": {},
         "Confectionery": {},
@@ -499,6 +503,10 @@
         "Ventilation": {},
         "Water supply": {}
     },
+    "Explanatory translation": {},
+    "Fermentation industry": {},
+    "Figurative": {},
+    "Figure of speech": {},
     "Finances": {
         "Accounting": {},
         "American stock exchange": {},
@@ -520,6 +528,8 @@
         "Securities": {},
         "Stock Exchange": {}
     },
+    "Finishing": {},
+    "Firefighting and fire-control systems": {},
     "Folklore": {
         "Epic of Jangar": {},
         "Fairy tales": {},
@@ -558,6 +568,7 @@
         "Immigration and citizenship": {},
         "International relations": {}
     },
+    "Furniture": {},
     "Games (other than sports)": {
         "Billiards": {},
         "Bowling": {},
@@ -575,6 +586,7 @@
         "Mahjong": {},
         "Tabletop games": {}
     },
+    "General": {},
     "Geography": {
         "Administrative geography": {},
         "Aerial photography and topography": {},
@@ -668,6 +680,9 @@
         "Hobbies and pastimes": {},
         "Model sports": {}
     },
+    "Human rights activism": {},
+    "Hunting": {},
+    "Idiomatic": {},
     "Industry": {
         "Computer numerical control": {},
         "Industrial hygiene": {},
@@ -682,6 +697,7 @@
         "Tobacco industry": {},
         "Wire drawing": {}
     },
+    "Informal": {},
     "Jargon and slang": {
         "Black slang / African-American Vernacular": {},
         "Chat and Internet slang": {},
@@ -703,6 +719,7 @@
         "Teenager slang": {},
         "Verlan": {}
     },
+    "Kayaking": {},
     "Languages": {
         "Albanian language": {},
         "Ancient French": {},
@@ -863,6 +880,7 @@
         "Tagmemics": {},
         "Typology": {}
     },
+    "Literally": {},
     "Literature": {
         "Fairy tales": {},
         "Fantasy and science fiction": {},
@@ -1052,6 +1070,7 @@
         "Quarrying": {},
         "Subsurface mining": {}
     },
+    "Monks' lexicon": {},
     "Multimedia": {
         "Audio electronics": {},
         "Digital sound processing": {},
@@ -1082,6 +1101,7 @@
         "Waste management": {},
         "Water resources": {}
     },
+    "Natural sciences": {},
     "Nautical": {
         "Fishery (fishing industry)": {},
         "Foil ships": {},
@@ -1097,6 +1117,7 @@
         "Submarines": {},
         "Yachting": {}
     },
+    "Non-governmental organizations": {},
     "Occupational health & safety": {
         "Occupational health & safety": {},
         "Permit to work system": {},
@@ -1193,6 +1214,7 @@
         "Politics": {},
         "Public relations": {}
     },
+    "Prefix": {},
     "Production": {
         "Ceramics": {},
         "Converter industry": {},
@@ -1209,6 +1231,7 @@
         "Tinware": {},
         "Trade unions": {}
     },
+    "Proper and figurative": {},
     "Proper name": {
         "Company name": {},
         "Drug name": {},
@@ -1245,6 +1268,7 @@
         "Quality control and standards": {},
         "Reliability": {}
     },
+    "Real estate": {},
     "Records management": {
         "Archiving": {},
         "Bibliography": {},
@@ -1315,6 +1339,9 @@
         "Shinto": {},
         "Taoism": {}
     },
+    "Research and development": {},
+    "Royal lexicon": {},
+    "Sample preparation": {},
     "Security systems": {
         "Biometry": {},
         "Computer security": {},
@@ -1458,6 +1485,7 @@
         "Verbatim": {},
         "Word formation": {}
     },
+    "Superlative": {},
     "Technology": {
         "Accumulators": {},
         "Additive manufacturing & 3D printing": {},
@@ -1498,6 +1526,8 @@
         "Welding": {},
         "Winding": {}
     },
+    "Theology": {},
+    "Toys": {},
     "Transport": {
         "Automobiles": {},
         "Cycling (other than sport)": {},
@@ -1522,6 +1552,8 @@
         "Hotel industry": {},
         "Travel": {}
     },
+    "Uncommon / rare": {},
+    "Unit measures": {},
     "United Nations": {
         "ICAO": {},
         "International Monetary Fund": {},

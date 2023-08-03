@@ -1,4 +1,5 @@
 {
+    "Acabado": {},
     "Agricultura": {
         "Agricultura": {},
         "Agrochemistry": {},
@@ -24,6 +25,7 @@
         "Wine growing": {},
         "Zootechnics": {}
     },
+    "Anglicanismo": {},
     "Art and culture": {
         "Art and culture": {},
         "Arte": {},
@@ -168,6 +170,7 @@
         "Trade classification": {},
         "Trademark": {}
     },
+    "Caza": {},
     "Chemical industry": {
         "Agrochemistry": {},
         "Astringents": {},
@@ -289,6 +292,7 @@
         "Windows": {},
         "Wiring": {}
     },
+    "Contextual meaning": {},
     "Countries and regions": {
         "Afghanistan": {},
         "Africa": {},
@@ -544,6 +548,10 @@
         "Ventilation": {},
         "Water supply": {}
     },
+    "Explanatory translation": {},
+    "Fermentation industry": {},
+    "Figuradamente": {},
+    "Figure of speech": {},
     "Filosofía": {
         "Filosofía": {},
         "Lógica": {}
@@ -569,6 +577,7 @@
         "Securities": {},
         "Seguros": {}
     },
+    "Firefighting and fire-control systems": {},
     "Folklore": {
         "Epic of Jangar": {},
         "Fairy tales": {},
@@ -611,6 +620,7 @@
         "Film processing": {},
         "Fotografía": {}
     },
+    "Furniture": {},
     "Física": {
         "Acoustics": {},
         "Aerodynamics": {},
@@ -655,6 +665,7 @@
         "Mahjong": {},
         "Tabletop games": {}
     },
+    "General": {},
     "Geografía": {
         "Administrative geography": {},
         "Aerial photography and topography": {},
@@ -748,6 +759,8 @@
         "Hobbies and pastimes": {},
         "Model sports": {}
     },
+    "Human rights activism": {},
+    "Idiomatic": {},
     "Industry": {
         "Computer numerical control": {},
         "Industrial hygiene": {},
@@ -762,6 +775,7 @@
         "Tobacco industry": {},
         "Wire drawing": {}
     },
+    "Informal": {},
     "Jargon and slang": {
         "Argot": {},
         "Black slang / African-American Vernacular": {},
@@ -806,6 +820,8 @@
         "Public law": {},
         "Solución alternativa de controversias": {}
     },
+    "Jurídico: sistema anglosajón": {},
+    "Kayaking": {},
     "Languages": {
         "Albanian language": {},
         "Alemán": {},
@@ -943,6 +959,7 @@
         "Tagmemics": {},
         "Typology": {}
     },
+    "Literally": {},
     "Literatura": {
         "Fairy tales": {},
         "Fantasy and science fiction": {},
@@ -1106,6 +1123,7 @@
         "Mitología helénica y romana": {},
         "Norse mythology": {}
     },
+    "Monks' lexicon": {},
     "Multimedia": {
         "Audio electronics": {},
         "Digital sound processing": {},
@@ -1130,6 +1148,8 @@
         "Waste management": {},
         "Water resources": {}
     },
+    "Natural sciences": {},
+    "Non-governmental organizations": {},
     "Náutico": {
         "Fishery (fishing industry)": {},
         "Foil ships": {},
@@ -1206,6 +1226,7 @@
         "Política": {},
         "Public relations": {}
     },
+    "Prefix": {},
     "Production": {
         "Ceramics": {},
         "Converter industry": {},
@@ -1222,6 +1243,7 @@
         "Tinware": {},
         "Trade unions": {}
     },
+    "Proper and figurative": {},
     "Proper name": {
         "Company name": {},
         "Drug name": {},
@@ -1280,6 +1302,9 @@
         "Química": {},
         "Spectroscopy": {}
     },
+    "Química analítica": {},
+    "Raramente": {},
+    "Real estate": {},
     "Records management": {
         "Archiving": {},
         "Bibliography": {},
@@ -1350,6 +1375,9 @@
         "Shinto": {},
         "Taoism": {}
     },
+    "Research and development": {},
+    "Royal lexicon": {},
+    "Sample preparation": {},
     "Security systems": {
         "Biometry": {},
         "Computer security": {},
@@ -1437,6 +1465,7 @@
         "Verbatim": {},
         "Word formation": {}
     },
+    "Superlative": {},
     "Tecnología": {
         "Accumulators": {},
         "Additive manufacturing & 3D printing": {},
@@ -1477,6 +1506,8 @@
         "Welding": {},
         "Winding": {}
     },
+    "Theology": {},
+    "Toys": {},
     "Transport": {
         "Automóviles": {},
         "Cycling (other than sport)": {},
@@ -1522,6 +1553,7 @@
         "Término militar": {},
         "Weapons of mass destruction": {}
     },
+    "Unit measures": {},
     "United Nations": {
         "ICAO": {},
         "International Monetary Fund": {},
