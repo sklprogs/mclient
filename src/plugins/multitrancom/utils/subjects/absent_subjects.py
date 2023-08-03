@@ -63,23 +63,6 @@ class Unique:
             if not self._search(major):
                 self.not_found.append(major)
     
-    def report(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.absent_subjects.Unique.report'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        if not self.not_found:
-            mes = _('All subjects have been found!')
-            sh.objs.get_mes(f, mes).show_info()
-            return
-        mes = [f'{f}:']
-        sub = _('Subjects that have not been found: {}')
-        sub = sub.format(len(self.not_found))
-        mes.append(sub)
-        mes.append('')
-        mes += self.not_found
-        return '\n'.join(mes)
-    
     def add(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.absent_subjects.Unique.add'
         if not self.Success:
@@ -98,6 +81,34 @@ class Unique:
     
     def debug(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.absent_subjects.Unique.debug'
+        if self.Success:
+            sub = _('Operation has completed successfully for "{}".')
+        else:
+            sub = _('Operation has failed on "{}"!')
+        sub = sub.format(self.filew)
+        mes = [self.debug_found(), self.debug_json(), f'{f}:\n{sub}']
+        mes = [item for item in mes if item]
+        return '\n\n'.join(mes)
+    
+    def debug_found(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.absent_subjects.Unique.debug_found'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not self.not_found:
+            mes = _('All subjects have been found in "{}"!').format(self.filew)
+            sh.objs.get_mes(f, mes).show_info()
+            return f'{f}:\n{mes}'
+        mes = [f'{f}:']
+        sub = _('Subjects that have not been found in "{}": {}')
+        sub = sub.format(self.filew, len(self.not_found))
+        mes.append(sub)
+        mes.append('')
+        mes += self.not_found
+        return '\n'.join(mes)
+    
+    def debug_json(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.absent_subjects.Unique.debug_json'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -203,12 +214,6 @@ if __name__ == '__main__':
     file = '/home/pete/bin/mclientqt/resources/plugins/multitrancom/subjects/en.json'
     iunique = Unique(file, en)
     iunique.run()
-    if iunique.Success:
-        sub = _('Operation has completed successfully.')
-    else:
-        sub = _('Operation has failed!')
-    mes = [iunique.report(), iunique.debug(), sub]
-    mes = [item for item in mes if item]
-    idebug = sh.Debug(f, '\n\n'.join(mes))
+    idebug = sh.Debug(f, iunique.debug())
     idebug.show()
     sh.com.end()
