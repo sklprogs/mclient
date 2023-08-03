@@ -37,24 +37,14 @@ class Dic:
         if not self.Success:
             sh.com.cancel(f)
             return
-        major = ''
-        group = []
         i = 1
         while i < len(self.pairs):
-            new_major = self.pairs[i-1]
-            if major == new_major:
-                group.append(self.pairs[i])
-            else:
-                if group:
-                    group.append(major)
-                    self.subjects[major] = sorted(set(group))
-                major = new_major
-                group = [self.pairs[i]]
+            major = self.pairs[i-1]
+            minor = self.pairs[i]
+            if not major in self.subjects:
+                self.subjects[major] = {}
+            self.subjects[major][minor] = {}
             i += 2
-        if group:
-            group.append(major)
-            self.subjects[major] = sorted(set(group))
-        self.subjects = dict(sorted(self.subjects.items()))
     
     def run(self):
         self.check()
