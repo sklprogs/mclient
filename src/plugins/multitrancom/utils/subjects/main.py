@@ -3,15 +3,8 @@
 
 import json
 
-#from skl_shared_qt.localize import _
+from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
-
-''' Process 'var subjects' and 'var MajorToMinor' sections from multitran.com
-    and create a JSON file from these sequences.
-'''
-majors = ["Аварийное восстановление", "Авиационная медицина", "Авиация", "Австралийское выражение", "Австралия", "Австрийское выражение", "Австрия", "Автоматика"]
-pairs = ["Компьютеры", "Информационные технологии", "Компьютеры", "SAP", "Компьютеры", "Компьютерные сети", "Компьютеры", "Программирование", "Компьютеры", "Операционные системы", "Компьютеры", "Обработка данных", "Компьютеры", "Нейронные сети", "Компьютеры", "Интернет", "Компьютеры", "Расширение файла", "Компьютеры", "SAP технические термины", "Компьютеры", "SAP финансы", "Авиация", "Воздухоплавание"]
-
 
 
 class Dic:
@@ -86,6 +79,83 @@ class Dic:
 
 
 
+class Loop:
+    
+    def __init__(self):
+        self.Success = True
+        self.langs = ['ru']
+        self.majors = []
+        self.pairs = []
+        self.subjects = {}
+    
+    def input(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.main.Loop.input'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        mes = _('Copy "var subjects" section to clipboard for language "{}"')
+        mes = mes.format(self.lang)
+        sh.objs.get_mes(f, mes).show_info()
+#        ques = sh.objs.get_mes(f, mes).show_question()
+#        if not ques:
+#            self.Success = False
+#            mes = _('Operation has been canceled by the user.')
+#            sh.objs.get_mes(f, mes, True).show_info()
+#            return
+        self.majors = sh.Clipboard().paste()
+        if not self.majors:
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
+        mes = _('Copy "var MajorToMinor" section to clipboard for language "{}"')
+        mes = mes.format(self.lang)
+        sh.objs.get_mes(f, mes).show_info()
+        self.pairs = sh.Clipboard().paste()
+        if not self.pairs:
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
+    
+    def _convert(self, string):
+        f = '[MClient] plugins.multitrancom.utils.subjects.main.Loop._convert'
+        try:
+            return json.loads(string)
+        except Exception as e:
+            sh.com.rep_third_party(f, e)
+    
+    def set_lists(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.main.Loop.set_lists'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.majors = self._convert(self.majors)
+        if not self.majors:
+            self.Success = False
+            sh.com.rep_out(f)
+            return
+        self.pairs = self._convert(self.pairs)
+        if not self.pairs:
+            self.Success = False
+            sh.com.rep_out(f)
+            return
+    
+    def add(self, dic):
+        self.subjects[self.lang] = dic
+    
+    def _run_lang(self):
+        self.input()
+        self.set_lists()
+        self.add(Dic(self.majors, self.pairs).run())
+        return self.Success
+    
+    def run(self):
+        for self.lang in self.langs:
+            if not self._run_lang():
+                return
+        return self.subjects
+
+
+
 class Commands:
     
     def get_string(self, dic):
@@ -101,7 +171,7 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClientQt] plugins.multitrancom.utils.subjects.main.__main__'
     sh.com.start()
-    mes = com.get_string(Dic(majors, pairs).run())
+    mes = com.get_string(Loop().run())
     idebug = sh.Debug(f, mes)
     idebug.show()
     sh.com.end()
