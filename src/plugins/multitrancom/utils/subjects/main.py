@@ -63,10 +63,25 @@ class Dic:
             if not self._search(major):
                 self.subjects[major] = {}
     
+    def sort(self):
+        f = '[MClientQt] plugins.multitrancom.utils.subjects.main.Dic.sort'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        subjects = {}
+        keys = sorted(self.subjects.keys())
+        for key in keys:
+            values = sorted(self.subjects[key].keys())
+            subjects[key] = {}
+            for value in values:
+                subjects[key][value] = {}
+        self.subjects = subjects
+    
     def run(self):
         self.check()
         self.set_subjects()
         self.add()
+        self.sort()
         return self.subjects
 
 
