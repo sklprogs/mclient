@@ -83,10 +83,21 @@ class Loop:
     
     def __init__(self):
         self.Success = True
-        self.langs = ['ru']
+        self.langs = ('en', 'ru', 'de', 'es', 'uk', 'pl', 'zh')
         self.majors = []
         self.pairs = []
         self.subjects = {}
+        ''' Copy "var subjects" and "var MajorToMinor" sections from
+            view-source:https://www.multitran.com/m.exe?a=104&l1=1&l2=2&s=hello&SHL=%d,
+            where %d is
+            en: 1
+            ru: 2
+            de: 3
+            es: 5
+            uk: 33
+            pl: 14
+            zh: 17.
+        '''
         self.filew = sh.objs.get_pdir().add ('..', '..', '..', '..', '..'
                                             ,'resources', 'plugins'
                                             ,'multitrancom', 'subjects'
