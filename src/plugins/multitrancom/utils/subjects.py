@@ -16,7 +16,7 @@ class Dic:
         self.pairs = pairs
     
     def check(self):
-        f = '[MClientQt] plugins.multitrancom.utils.subjects.main.Dic.check'
+        f = '[MClientQt] plugins.multitrancom.utils.subjects.Dic.check'
         if not self.majors or not self.pairs:
             self.Success = False
             sh.com.rep_empty(f)
@@ -27,7 +27,7 @@ class Dic:
             sh.com.rep_condition(f, mes)
     
     def set_subjects(self):
-        f = '[MClientQt] plugins.multitrancom.utils.subjects.main.Dic.set_subjects'
+        f = '[MClientQt] plugins.multitrancom.utils.subjects.Dic.set_subjects'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -48,7 +48,7 @@ class Dic:
                 return True
     
     def add(self):
-        f = '[MClientQt] plugins.multitrancom.utils.subjects.main.Dic.add'
+        f = '[MClientQt] plugins.multitrancom.utils.subjects.Dic.add'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -57,7 +57,7 @@ class Dic:
                 self.subjects[major] = {}
     
     def sort(self):
-        f = '[MClientQt] plugins.multitrancom.utils.subjects.main.Dic.sort'
+        f = '[MClientQt] plugins.multitrancom.utils.subjects.Dic.sort'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -98,14 +98,14 @@ class Loop:
             pl: 14
             zh: 17.
         '''
-        self.filew = sh.objs.get_pdir().add ('..', '..', '..', '..', '..'
+        self.filew = sh.objs.get_pdir().add ('..', '..', '..', '..'
                                             ,'resources', 'plugins'
                                             ,'multitrancom', 'subjects'
                                             ,'subjects.json'
                                             )
     
     def input(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.main.Loop.input'
+        f = '[MClient] plugins.multitrancom.utils.subjects.Loop.input'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -133,14 +133,14 @@ class Loop:
             return
     
     def _convert(self, string):
-        f = '[MClient] plugins.multitrancom.utils.subjects.main.Loop._convert'
+        f = '[MClient] plugins.multitrancom.utils.subjects.Loop._convert'
         try:
             return json.loads(string)
         except Exception as e:
             sh.com.rep_third_party(f, e)
     
     def set_lists(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.main.Loop.set_lists'
+        f = '[MClient] plugins.multitrancom.utils.subjects.Loop.set_lists'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -156,7 +156,7 @@ class Loop:
             return
     
     def add(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.main.Loop.add'
+        f = '[MClient] plugins.multitrancom.utils.subjects.Loop.add'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -165,7 +165,7 @@ class Loop:
         self.Success = idic.Success
     
     def save(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.main.Loop.save'
+        f = '[MClient] plugins.multitrancom.utils.subjects.Loop.save'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -189,7 +189,7 @@ class Loop:
 class Commands:
     
     def get_string(self, dic):
-        f = '[MClient] plugins.multitrancom.utils.subjects.main.Commands.get_string'
+        f = '[MClient] plugins.multitrancom.utils.subjects.Commands.get_string'
         try:
             return json.dumps(dic, ensure_ascii=False, indent=4)
         except Exception as e:
@@ -199,7 +199,7 @@ com = Commands()
 
 
 if __name__ == '__main__':
-    f = '[MClientQt] plugins.multitrancom.utils.subjects.main.__main__'
+    f = '[MClientQt] plugins.multitrancom.utils.subjects.__main__'
     sh.com.start()
     mes = com.get_string(Loop().run())
     idebug = sh.Debug(f, mes)
