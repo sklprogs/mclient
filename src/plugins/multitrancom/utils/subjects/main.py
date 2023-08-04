@@ -87,6 +87,11 @@ class Loop:
         self.majors = []
         self.pairs = []
         self.subjects = {}
+        self.filew = sh.objs.get_pdir().add ('..', '..', '..', '..', '..'
+                                            ,'resources', 'plugins'
+                                            ,'multitrancom', 'subjects'
+                                            ,'subjects.json'
+                                            )
     
     def input(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.main.Loop.input'
@@ -139,19 +144,33 @@ class Loop:
             sh.com.rep_out(f)
             return
     
-    def add(self, dic):
-        self.subjects[self.lang] = dic
+    def add(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.main.Loop.add'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        idic = Dic(self.majors, self.pairs)
+        self.subjects[self.lang] = idic.run()
+        self.Success = idic.Success
+    
+    def save(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.main.Loop.save'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.Success = sh.WriteTextFile(self.filew, True).write(com.get_string(self.subjects))
     
     def _run_lang(self):
         self.input()
         self.set_lists()
-        self.add(Dic(self.majors, self.pairs).run())
+        self.add()
         return self.Success
     
     def run(self):
         for self.lang in self.langs:
             if not self._run_lang():
                 return
+        self.save()
         return self.subjects
 
 
