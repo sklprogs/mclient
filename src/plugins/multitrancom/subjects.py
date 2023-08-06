@@ -9,9 +9,7 @@ import skl_shared_qt.shared as sh
     - This structure describes subjects at multitran.com.
     - Use plugins.multitrancom.utils.subjects to extract and process these
       subjects.
-    - multitran.com separates subjects into major and normal ones. A group of
-      minors should also comprise its major since the entire group will be
-      blocked/prioritized otherwise.
+    - multitran.com separates subjects into majors and minors.
     - In order to get major subjects, log in to multitran.com, select any
       article, click "Add". View the source of the web-page and find
       "MajorToMinor" section. Change the interface language at multitran.com
@@ -30,73 +28,92 @@ import skl_shared_qt.shared as sh
 
 
 
-class Groups:
+        
+
+
+class Subjects:
     
     def __init__(self):
         self.set_values()
     
     def set_values(self):
         self.Success = True
-        self.dic = {}
-        self.code = ''
-        self.file_ptrn = sh.objs.get_pdir().add ('..', '..', '..'
-                                                ,'resources', 'plugins'
-                                                ,'multitrancom', 'subjects'
-                                                ,'{}.json'
+        self.psubjects = sh.objs.get_pdir().add ('..', '..', '..', 'resources'
+                                                ,'plugins', 'multitrancom'
+                                                ,'subjects', 'subjects.json'
                                                 )
+        self.pschema = sh.objs.pdir().add ('..', '..', '..', 'resources'
+                                          ,'plugins', 'multitrancom'
+                                          ,'subjects', 'schema.json'
+                                          )
+        
+        self.subjects = {}
+        self.code = ''
     
-    def get_lists(self):
-        f = '[MClientQt] plugins.multitrancom.subjects.Groups.get_lists'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        majors = []
-        minors = []
-        for major in self.dic:
-            majors.append(major)
-            minors.append(self.dic[major])
-        return(majors, minors)
-    
-    def set_dic(self):
-        f = '[MClientQt] plugins.multitrancom.subjects.Groups.set_dic'
+    def set_subjects(self):
+        f = '[MClient] plugins.multitrancom.subjects.Subjects.set_subjects'
         try:
-            self.dic = json.loads(self.code)
+            self.subjects = json.loads(self.csubjects)
+        except Exception as e:
+            self.Success = False
+            sh.com.rep_third_party(f, e)
+    
+    def set_schema(self):
+        f = '[MClient] plugins.multitrancom.subjects.Subjects.set_schema'
+        try:
+            self.schema = json.loads(self.cschema)
         except Exception as e:
             self.Success = False
             sh.com.rep_third_party(f, e)
     
     def load(self):
-        f = '[MClientQt] plugins.multitrancom.subjects.Groups.load'
+        f = '[MClient] plugins.multitrancom.subjects.Subjects.load'
         if not self.Success:
             sh.com.cancel(f)
             return
-        file = self.file_ptrn.format(sh.com.lang)
         ''' Show the full path in case of not finding the file to make
             debugging easier.
         '''
-        file = sh.Path(file).get_absolute()
-        self.code = sh.ReadTextFile(file).get()
-        if not self.code:
+        self.subjects = sh.Path(self.psubjects).get_absolute()
+        self.csubjects = sh.ReadTextFile(self.psubjects).get()
+        if not self.csubjects:
+            self.Success = False
+            sh.com.rep_out(f)
+            return
+    
+    def load_schema(self):
+        f = '[MClient] plugins.multitrancom.subjects.Subjects.load_schema'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        ''' Show the full path in case of not finding the file to make
+            debugging easier.
+        '''
+        self.pschema = sh.Path(self.pschema).get_absolute()
+        self.cschema = sh.ReadTextFile(self.pschema).get()
+        if not self.cschema:
             self.Success = False
             sh.com.rep_out(f)
             return
     
     def run(self):
-        self.load()
-        self.set_dic()
+        self.load_subjects()
+        self.load_schema()
+        self.set()
+        return self.subjects
 
 
 
 class Objects:
     
     def __init__(self):
-        self.groups = None
+        self.subjects = None
     
-    def get_groups(self):
-        if self.groups is None:
-            self.groups = Groups()
-            self.groups.run()
-        return self.groups
+    def get_subjects(self):
+        if self.subjects is None:
+            self.subjects = Subjects()
+            self.subjects.run()
+        return self.subjects
 
 
 objs = Objects()

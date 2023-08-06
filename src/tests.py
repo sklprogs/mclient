@@ -474,6 +474,9 @@ class Plugin:
 
 class Commands:
     
+    def run_config(self):
+        cf.objs.get_config().run()
+    
     def run_suggest(self):
         import suggest.controller as sg
         lst = []
@@ -950,6 +953,12 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
+    timer = sh.Timer(f)
+    timer.start()
+    com.run_config()
+    mes = _('The operation has taken {} s.').format(timer.end())
+    idebug = sh.Debug(f, mes)
+    idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())
     #idebug = sh.Debug(f, Elems().run_multitrancom())
     #idebug = sh.Debug(f, Prioritize().run_multitrancom())
@@ -969,8 +978,8 @@ if __name__ == '__main__':
 #    iprior.show()
 
     # Priorities (from the controller)
-    iprior = com.run_prior_contr()
-    iprior.show()
+#    iprior = com.run_prior_contr()
+#    iprior.show()
 
     '''
     # Popup

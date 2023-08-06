@@ -3,11 +3,10 @@
 
 import os
 import copy
-import json
-import jsonschema
 
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
+import skl_shared_qt.config as qc
 
 PRODUCT_LOW = 'mclient'
 
@@ -16,94 +15,38 @@ class Config:
     
     def __init__(self):
         self.Success = True
-        self.pdefault = ''
-        self.plocal = ''
-        self.pschema = ''
+        self.new = {}
         self.default = {}
         self.local = {}
-        self.schema = {}
-        self.new = {}
-    
-    def check_local(self):
-        f = '[MClient] config.Config.check_local'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        try:
-            jsonschema.validate(self.local, self.schema)
-        except jsonschema.exceptions.ValidationError as e:
-            self.Success = False
-            mes = _('Configuration file "{}" has values of a wrong type!\nFix, restore or delete this file.\n\nDetails:\n{}')
-            mes = mes.format(self.plocal, e)
-            sh.objs.get_mes(f, mes).show_error()
-    
-    def check_default(self):
-        f = '[MClient] config.Config.check_default'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        try:
-            jsonschema.validate(self.default, self.schema)
-        except jsonschema.exceptions.ValidationError as e:
-            self.Success = False
-            mes = _('Configuration file "{}" has values of a wrong type!\nFix or restore this file.\n\nDetails:\n{}')
-            mes = mes.format(self.pdefault, e)
-            sh.objs.get_mes(f, mes).show_error()
-    
-    def load_schema(self):
-        f = '[MClient] config.Config.load_schema'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        code = sh.ReadTextFile(self.pschema).get()
-        if not code:
-            self.Success = False
-            sh.com.rep_out(f)
-            return
-        try:
-            self.schema = json.loads(code)
-        except Exception as e:
-            self.Success = False
-            sh.com.rep_third_party(f, e)
+        self.plocal = objs.get_default().get_local_config()
+        self.pschema = objs.default.get_schema()
     
     def load_local(self):
         f = '[MClient] config.Config.load_local'
         if not self.Success:
             sh.com.cancel(f)
             return
-        code = sh.ReadTextFile(self.plocal).get()
-        if not code:
+        mes = _('Configuration file "{}" has values of a wrong type!\nFix, restore or delete this file.')
+        mes = mes.format(self.plocal)
+        self.ilocal = qc.Config(self.plocal, self.pschema, mes)
+        self.local = self.ilocal.load()
+        if not self.local:
             self.Success = False
             sh.com.rep_out(f)
-            return
-        try:
-            self.local = json.loads(code)
-        except Exception as e:
-            self.Success = False
-            sh.com.rep_third_party(f, e)
     
     def load_default(self):
         f = '[MClient] config.Config.load_default'
         if not self.Success:
             sh.com.cancel(f)
             return
-        code = sh.ReadTextFile(self.pdefault).get()
-        if not code:
+        pdefault = objs.get_default().get_default_config()
+        mes = _('Configuration file "{}" has values of a wrong type!\nFix or restore this file.')
+        mes = mes.format(pdefault)
+        self.idefault = qc.Config(pdefault, self.pschema, mes)
+        self.default = self.idefault.load()
+        if not self.default:
             self.Success = False
             sh.com.rep_out(f)
-            return
-        try:
-            self.default = json.loads(code)
-        except Exception as e:
-            self.Success = False
-            sh.com.rep_third_party(f, e)
-    
-    def set_local(self):
-        f = '[MClient] config.Config.set_local'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.plocal = sh.Home(PRODUCT_LOW).add_config(PRODUCT_LOW + '.json')
     
     def create(self):
         f = '[MClient] config.Config.create'
@@ -113,9 +56,8 @@ class Config:
         if os.path.exists(self.plocal) and os.path.isfile(self.plocal):
             sh.com.rep_lazy(f)
             return
-        self.new = copy.deepcopy(self.default)
-        self.localize_new()
-        self.save()
+        self.Success = sh.WriteTextFile(self.plocal).write('{}')
+        return self.Success
     
     def convert_types(self):
         f = '[MClient] config.Config.convert_types'
@@ -132,26 +74,6 @@ class Config:
             return
         # JSON does not support floats
         self.new['timeout'] = str(self.new['timeout'])
-    
-    def set_default(self):
-        f = '[MClient] config.Config.set_default'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.pdefault = sh.objs.get_pdir().add('..', 'resources', 'config', 'default.json')
-        # Full path is more intuitive in case the file does not exist
-        self.pdefault = os.path.abspath(self.pdefault)
-        self.Success = sh.File(self.pdefault).Success
-    
-    def set_schema(self):
-        f = '[MClient] config.Config.set_schema'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.pschema = sh.objs.get_pdir().add('..', 'resources', 'config', 'schema.json')
-        # Full path is more intuitive in case the file does not exist
-        self.pschema = os.path.abspath(self.pschema)
-        self.Success = sh.File(self.pschema).Success
     
     def update(self):
         f = '[MClient] config.Config.update'
@@ -175,13 +97,8 @@ class Config:
         if not self.Success:
             sh.com.cancel(f)
             return
-        try:
-            code = json.dumps(self.new, ensure_ascii=False, indent=4)
-        except Exception as e:
-            self.Success = False
-            sh.com.rep_third_party(f, e)
-            return
-        self.Success = sh.WriteTextFile(self.plocal, True).write(code)
+        self.ilocal.save(self.new)
+        self.Success = self.ilocal.Success
     
     def localize_local(self):
         # This is needed when a default config is forced
@@ -250,15 +167,9 @@ class Config:
             self.localize_local()
     
     def run(self):
-        self.set_schema()
-        self.load_schema()
-        self.set_default()
         self.load_default()
-        self.check_default()
-        self.set_local()
         self.create()
         self.load_local()
-        self.check_local()
         self.check_version()
         self.update()
         self.convert_types()
@@ -333,30 +244,19 @@ class Subjects:
         if not self.Success:
             sh.com.cancel(f)
             return
-        code = sh.ReadTextFile(self.file, True).get()
-        try:
-            self.body = json.loads(code)
-        except Exception as e:
-            self.Success = False
-            sh.com.rep_third_party(f, e)
+        self.isubj = sh.Json(self.file)
+        self.body = self.isubj.run()
+        # '{}' is allowed, so we do not check the body
+        self.Success = self.isubj.Success
     
     def save(self):
         f = '[MClient] config.Subjects.save'
         if not self.Success:
             sh.com.cancel(f)
             return
-        mes = _('Write file "{}"').format(self.file)
-        sh.objs.get_mes(f, mes, True).show_info()
-        try:
-            with open(self.file, 'w', encoding='utf-8') as iopen:
-                json.dump(self.body, iopen, ensure_ascii=False, indent=4)
-        except Exception as e:
-            ''' Failing a class which produced a writing error should not fail
-                all writing operations some of which may actually be successful.
-            '''
-            mes = _('Third-party module has failed!\n\nDetails: {}').format(e)
-            sh.objs.get_mes(f, mes).show_error()
-    
+        self.isubj.save(self.body)
+        self.Success = self.isibj.Success
+        
     def run(self):
         self.set_file()
         self.create()
@@ -393,6 +293,15 @@ class Default:
             self.Success = sh.Path(self.dics).create()
         return self.dics
     
+    def get_default_config(self):
+        return sh.objs.get_pdir().add('..', 'resources', 'config', 'default.json')
+    
+    def get_schema(self):
+        return sh.objs.get_pdir().add('..', 'resources', 'config', 'schema.json')
+    
+    def get_local_config(self):
+        return self.ihome.add_config(PRODUCT_LOW + '.json')
+    
     def run(self):
         self.check()
         self.set_dics()
@@ -419,7 +328,6 @@ class Objects:
     def get_config(self):
         if self.config is None:
             self.config = Config()
-            self.config.run()
         return self.config
 
 

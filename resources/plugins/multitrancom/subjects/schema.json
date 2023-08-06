@@ -1,0 +1,11 @@
+{"type": "object"
+,"properties":
+    {"en": {"type": "object"}
+    ,"ru": {"type": "object"}
+    ,"de": {"type": "object"}
+    ,"es": {"type": "object"}
+    ,"uk": {"type": "object"}
+    ,"pl": {"type": "object"}
+    ,"zh": {"type": "object"}
+    }
+}

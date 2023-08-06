@@ -36,6 +36,9 @@ class Plugin:
         self.htm = ''
         self.search = ''
     
+    def get_subjects(self):
+        return sj.objs.get_subjects().subjects
+    
     def get_majors(self):
         f = '[MClient] plugins.multitrancom.run.Plugin.get_majors'
         if not self.majors:

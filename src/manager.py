@@ -313,3 +313,14 @@ class Plugins:
             sh.com.rep_empty(f)
             return
         return self.plugin.is_separate()
+    
+    def get_subjects(self):
+        # Get all available subjects (if any)
+        f = '[MClient] manager.Plugins.get_subjects'
+        if not self.plugin:
+            sh.com.rep_empty(f)
+            return {}
+        dic = self.plugin.get_subjects()
+        if not dic:
+            return {}
+        return dic
