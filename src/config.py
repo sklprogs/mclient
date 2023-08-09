@@ -2,62 +2,201 @@
 # -*- coding: UTF-8 -*-
 
 import os
-import copy
+import json
+import jsonschema
 
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
-import skl_shared_qt.config as qc
 
 PRODUCT_LOW = 'mclient'
+MIN_VERSION = 2
+
+
+class Schema:
+    
+    def __init__(self, file):
+        self.Success = True
+        self.code = ''
+        self.dic = {}
+        self.file = file
+    
+    def check_empty(self):
+        f = '[MClient] config.Schema.check_empty'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not self.file:
+            self.Success = False
+            sh.com.rep_empty(f)
+    
+    def load(self):
+        f = '[MClient] config.Schema.load'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.code = sh.ReadTextFile(self.file).get()
+        if not self.code:
+            self.Success = False
+            sh.com.rep_empty(f)
+    
+    def set_dic(self):
+        f = '[MClient] config.Validate.set_dic'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        try:
+            self.dic = json.loads(self.code)
+        except Exception as e:
+            self.Success = False
+            mes = _('Schema "{}" is invalid!\n\nDetails: {}')
+            mes = mes.format(self.file, e)
+            sh.objs.get_mes(f, mes).show_error()
+    
+    def run(self):
+        self.check_empty()
+        self.load()
+        self.set_dic()
+        return self.dic
+
+
+
+class Validate:
+    
+    def __init__(self, file, schema, Verbose=True):
+        self.Success = True
+        self.Verbose = Verbose
+        self.code = ''
+        self.dic = {}
+        self.file = file
+        self.schema = schema
+    
+    def check_empty(self):
+        f = '[MClient] config.Validate.check_empty'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not self.file or not self.schema:
+            self.Success = False
+            sh.com.rep_empty(f)
+    
+    def load(self):
+        f = '[MClient] config.Validate.load'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.code = sh.ReadTextFile(self.file).get()
+        if not self.code:
+            self.Success = False
+            sh.com.rep_empty(f)
+    
+    def set_dic(self):
+        f = '[MClient] config.Validate.set_dic'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        try:
+            self.dic = json.loads(self.code)
+        except Exception as e:
+            self.Success = False
+            if self.Verbose:
+                mes = _('Configuration file "{}" is invalid!\n\nDetails: {}')
+                mes = mes.format(self.file, e)
+                sh.objs.get_mes(f, mes).show_error()
+    
+    def validate(self):
+        f = '[MClient] config.Validate.validate'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        #NOTE: Setting empty schema passes validation
+        try:
+            jsonschema.validate(self.dic, self.schema)
+        except jsonschema.exceptions.ValidationError as e:
+            self.Success = False
+            if self.Verbose:
+                mes = _('Configuration file "{}" is invalid!\n\nDetails: {}')
+                mes = mes.format(self.file, e)
+                sh.objs.get_mes(f, mes).show_error()
+    
+    def _get_version(self):
+        try:
+            return self.dic['config']['min_version']
+        except KeyError:
+            return
+    
+    def check_version(self):
+        f = '[MClient] config.Validate.check_version'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        version = self._get_version()
+        if version is None or version < MIN_VERSION:
+            mes = _('Configuration file "{}" is oudated and will be overwritten!\n\nBack it up now if you need it.')
+            mes = mes.format(self.file)
+            sh.objs.get_mes(f, mes).show_error()
+    
+    def run(self):
+        self.check_empty()
+        self.load()
+        self.set_dic()
+        self.validate()
+        self.check_version()
+        return self.dic
+
 
 
 class Config:
     
-    def __init__(self):
+    def __init__(self, plocal, pdefault, pschema):
         self.Success = True
-        self.new = {}
-        self.default = {}
+        self.Created = False
+        self.schema = {}
         self.local = {}
-        self.plocal = objs.get_default().get_local_config()
-        self.pschema = objs.default.get_schema()
+        self.plocal = plocal
+        self.pdefault = pdefault
+        self.pschema = pschema
     
-    def load_local(self):
-        f = '[MClient] config.Config.load_local'
+    def set_schema(self):
+        f = '[MClient] config.Config.set_schema'
         if not self.Success:
             sh.com.cancel(f)
             return
-        mes = _('Configuration file "{}" has values of a wrong type!\nFix, restore or delete this file.')
-        mes = mes.format(self.plocal)
-        self.ilocal = qc.Config(self.plocal, self.pschema, mes)
-        self.local = self.ilocal.load()
-        if not self.local:
-            self.Success = False
-            sh.com.rep_out(f)
+        ischema = Schema(self.pschema)
+        self.schema = ischema.run()
+        self.Success = ischema.Success
     
-    def load_default(self):
-        f = '[MClient] config.Config.load_default'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        pdefault = objs.get_default().get_default_config()
-        mes = _('Configuration file "{}" has values of a wrong type!\nFix or restore this file.')
-        mes = mes.format(pdefault)
-        self.idefault = qc.Config(pdefault, self.pschema, mes)
-        self.default = self.idefault.load()
-        if not self.default:
-            self.Success = False
-            sh.com.rep_out(f)
-    
-    def create(self):
-        f = '[MClient] config.Config.create'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        if os.path.exists(self.plocal) and os.path.isfile(self.plocal):
-            sh.com.rep_lazy(f)
-            return
-        self.Success = sh.WriteTextFile(self.plocal).write('{}')
+    def _create(self):
+        self.Created = True
+        self.Success = sh.File(self.pdefault, self.plocal).copy()
         return self.Success
+    
+    def set_local(self):
+        f = '[MClient] config.Config.set_local'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        ivalid = Validate(self.plocal, self.schema, False)
+        self.local = ivalid.run()
+        if ivalid.Success:
+            return
+        if not self._create():
+            return
+        ivalid = Validate(self.plocal, self.schema, True)
+        self.local = ivalid.run()
+        self.Success = ivalid.Success
+    
+    def save(self):
+        f = '[MClient] config.Config.save'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        try:
+            code = json.dumps(self.local, ensure_ascii=False, indent=4)
+        except Exception as e:
+            self.Success = False
+            sh.com.rep_third_party(f, e)
+            return
+        self.Success = sh.WriteTextFile(self.plocal, True).write(code)
     
     def convert_types(self):
         f = '[MClient] config.Config.convert_types'
@@ -65,7 +204,7 @@ class Config:
             sh.com.cancel(f)
             return
         # JSON does not support floats
-        self.new['timeout'] = float(self.new['timeout'])
+        self.local['timeout'] = float(self.local['timeout'])
     
     def revert_types(self):
         f = '[MClient] config.Config.revert_types'
@@ -73,38 +212,20 @@ class Config:
             sh.com.cancel(f)
             return
         # JSON does not support floats
-        self.new['timeout'] = str(self.new['timeout'])
-    
-    def update(self):
-        f = '[MClient] config.Config.update'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        ''' Python 3.9 or newer is required. Combine dictionaries #1 and #2
-            to #3 such that #3 has the values of #1, absent in #2, and existing
-            values of #1 are updated with the values of #2. #1 and #2 are
-            unchanged. If 'local' is empty this works like
-            'self.new = copy.deepcopy(self.default)'.
-        '''
-        self.new = self.default | self.local
+        self.local['timeout'] = str(self.local['timeout'])
     
     def quit(self):
         self.revert_types()
         self.save()
     
-    def save(self):
-        f = '[MClient] config.Config.save'
+    def localize(self):
+        # This is needed when a default config is forced
+        f = '[MClient] config.Config.localize'
         if not self.Success:
             sh.com.cancel(f)
             return
-        self.ilocal.save(self.new)
-        self.Success = self.ilocal.Success
-    
-    def localize_local(self):
-        # This is needed when a default config is forced
-        f = '[MClient] config.Config.localize_local'
-        if not self.Success:
-            sh.com.cancel(f)
+        if not self.Created:
+            sh.com.rep_lazy(f)
             return
         self.local['columns']['1']['type'] = _(self.local['columns']['1']['type'])
         self.local['columns']['2']['type'] = _(self.local['columns']['2']['type'])
@@ -124,55 +245,11 @@ class Config:
         for action in self.local['actions']:
             self.local['actions'][action]['hint'] = _(self.local['actions'][action]['hint'])
     
-    def localize_new(self):
-        f = '[MClient] config.Config.localize_new'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.new['columns']['1']['type'] = _(self.new['columns']['1']['type'])
-        self.new['columns']['2']['type'] = _(self.new['columns']['2']['type'])
-        self.new['columns']['3']['type'] = _(self.new['columns']['3']['type'])
-        self.new['columns']['4']['type'] = _(self.new['columns']['4']['type'])
-        self.new['lang1'] = _(self.new['lang1'])
-        self.new['lang2'] = _(self.new['lang2'])
-        self.new['source'] = _(self.new['source'])
-        self.new['speech1'] = _(self.new['speech1'])
-        self.new['speech2'] = _(self.new['speech2'])
-        self.new['speech3'] = _(self.new['speech3'])
-        self.new['speech4'] = _(self.new['speech4'])
-        self.new['speech5'] = _(self.new['speech5'])
-        self.new['speech6'] = _(self.new['speech6'])
-        self.new['speech7'] = _(self.new['speech7'])
-        self.new['style'] = _(self.new['style'])
-        for action in self.new['actions']:
-            self.new['actions'][action]['hint'] = _(self.new['actions'][action]['hint'])
-    
-    def _get_version(self):
-        try:
-            return self.local['config']['min_version']
-        except KeyError:
-            return
-    
-    def check_version(self):
-        f = '[MClient] config.Config.check_version'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        version = self._get_version()
-        if version is None or version < self.default['config']['min_version']:
-            mes = _('Configuration file "{}" is oudated and will be overwritten!\n\nBack it up now if you need it.')
-            mes = mes.format(self.plocal)
-            sh.objs.get_mes(f, mes).show_info()
-            self.local = copy.deepcopy(self.default)
-            self.localize_local()
-    
     def run(self):
-        self.load_default()
-        self.create()
-        self.load_local()
-        self.check_version()
-        self.update()
-        self.convert_types()
+        self.set_schema()
+        self.set_local()
+        self.localize()
+        return self.local
 
 
 
@@ -327,7 +404,14 @@ class Objects:
     
     def get_config(self):
         if self.config is None:
-            self.config = Config()
+            local = self.get_default().get_local_config()
+            default = self.default.get_default_config()
+            schema = self.default.get_schema()
+            local = sh.Path(local).get_absolute()
+            default = sh.Path(default).get_absolute()
+            schema = sh.Path(schema).get_absolute()
+            self.config = Config(local, default, schema)
+            self.config.run()
         return self.config
 
 
@@ -339,11 +423,10 @@ if __name__ == '__main__':
     sh.com.start()
     timer = sh.Timer(f)
     timer.start()
-    #objs.get_config().new["PrioritizeSubjects"] = False
-    objs.get_config().save()
-    timer.end()
-    mes = f'Success: {objs.config.Success}'
-    sh.objs.get_mes(f, mes).show_info()
-    mes = _('Goodbye!')
-    sh.objs.get_mes(f, mes, True).show_debug()
+    objs.get_config()
+    mes = _('The operation has taken {} s.').format(timer.end())
+    code = json.dumps(objs.config.local, ensure_ascii=False, indent=4)
+    mes += '\n\n' + code
+    idebug = sh.Debug(f, mes)
+    idebug.show()
     sh.com.end()
