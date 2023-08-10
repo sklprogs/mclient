@@ -341,7 +341,7 @@ class Subjects:
 
         
 
-class Default:
+class Paths:
     
     def __init__(self):
         self.set_values()
@@ -355,7 +355,7 @@ class Default:
         self.Success = self.ihome.create_conf()
     
     def set_dics(self):
-        f = '[MClient] config.Default.set_dics'
+        f = '[MClient] config.Paths.set_dics'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -388,7 +388,7 @@ class Default:
 class Objects:
     
     def __init__(self):
-        self.config = self.default = self.subjects = None
+        self.config = self.paths = self.subjects = None
     
     def get_subjects(self):
         if self.subjects is None:
@@ -396,17 +396,17 @@ class Objects:
             self.subjects.run()
         return self.subjects
     
-    def get_default(self):
-        if self.default is None:
-            self.default = Default()
-            self.default.run()
-        return self.default
+    def get_paths(self):
+        if self.paths is None:
+            self.paths = Paths()
+            self.paths.run()
+        return self.paths
     
     def get_config(self):
         if self.config is None:
-            local = self.get_default().get_local_config()
-            default = self.default.get_default_config()
-            schema = self.default.get_schema()
+            local = self.get_paths().get_local_config()
+            default = self.paths.get_default_config()
+            schema = self.paths.get_schema()
             local = sh.Path(local).get_absolute()
             default = sh.Path(default).get_absolute()
             schema = sh.Path(schema).get_absolute()
