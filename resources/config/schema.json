@@ -295,6 +295,7 @@
                             ,"color": {"type": "string"}
                             }
                         }
+                    ,"type": {"type": "string"}
                     }
                 }
             ,"2":
@@ -308,6 +309,7 @@
                             ,"color": {"type": "string"}
                             }
                         }
+                    ,"type": {"type": "string"}
                     }
                 }
             ,"3":
@@ -321,6 +323,7 @@
                             ,"color": {"type": "string"}
                             }
                         }
+                    ,"type": {"type": "string"}
                     }
                 }
             ,"4":
@@ -334,6 +337,7 @@
                             ,"color": {"type": "string"}
                             }
                         }
+                    ,"type": {"type": "string"}
                     }
                 }
             }
