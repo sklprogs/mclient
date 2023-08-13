@@ -3,6 +3,7 @@
 
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
+import skl_shared_qt.config as qc
 
 import config as cf
 
@@ -14,6 +15,93 @@ DEBUG = True
 SEARCH = 'coregone'
 URL = 'https://www.multitran.com/m.exe?s=coregone&l1=2&l2=1&SHL=2'
 HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/coregone (2023-06-27).html'
+
+
+class Config:
+    
+    def __init__(self):
+        self.schema = sh.objs.get_pdir().add('..', 'resources', 'config', 'schema.json')
+        self.default = sh.objs.pdir.add('..', 'resources', 'config', 'default.json')
+        self.local = sh.Home(cf.PRODUCT_LOW).add_config(cf.PRODUCT_LOW + '.json')
+    
+    def run_schema(self):
+        ischema = qc.Schema(self.schema)
+        ischema.run()
+        mes = []
+        sub = _('Configuration file: {}').format(ischema.file)
+        mes.append(sub)
+        if ischema.Success:
+            sub = _('Result: Success')
+        else:
+            sub = _('Result: Failed')
+        mes.append(sub)
+        sub = _('Dictionary:\n{}').format(ischema.dump())
+        mes.append(sub)
+        return '\n'.join(mes)
+    
+    def run_default(self):
+        ischema = qc.Schema(self.schema)
+        ischema.run()
+        idefault = qc.Default(self.default, ischema.get())
+        idefault.run()
+        mes = []
+        sub = _('Configuration file: {}').format(self.default)
+        mes.append(sub)
+        sub = _('Version: {}').format(idefault.get_version())
+        mes.append(sub)
+        if idefault.Success:
+            sub = _('Result: Success')
+        else:
+            sub = _('Result: Failed')
+        mes.append(sub)
+        sub = _('Dictionary:\n{}').format(idefault.dump())
+        mes.append(sub)
+        return '\n'.join(mes)
+    
+    def run_local(self):
+        f = '[SharedQt] config.Tests.run_local'
+        min_version = 2
+        ilocal = qc.Local(self.local, min_version)
+        ilocal.run()
+        timer = sh.Timer(f)
+        timer.start()
+        mes = []
+        sub = _('Configuration file: {}').format(self.local)
+        mes.append(sub)
+        sub = _('Version: {}').format(ilocal.get_version())
+        mes.append(sub)
+        if ilocal.Success:
+            sub = _('Result: Success')
+        else:
+            sub = _('Result: Failed')
+        mes.append(sub)
+        sub = _('Dictionary:\n{}').format(ilocal.dump())
+        mes.append(sub)
+        timer.end()
+        return '\n'.join(mes)
+    
+    def run_config(self):
+        f = '[SharedQt] config.Tests.run_config'
+        timer = sh.Timer(f)
+        timer.start()
+        iconfig = qc.Config(self.default, self.schema, self.local)
+        iconfig.run()
+        mes = []
+        sub = _('Configuration file: {}').format(self.local)
+        mes.append(sub)
+        sub = _('Version: {}').format(iconfig.ilocal.get_version())
+        mes.append(sub)
+        if iconfig.Success:
+            sub = _('Result: Success')
+        else:
+            sub = _('Result: Failed')
+        mes.append(sub)
+        #iconfig.quit()
+        sub = _('Dictionary:\n{}').format(iconfig.dump())
+        mes.append(sub)
+        timer.end()
+        return '\n'.join(mes)
+
 
 
 class Wrap:
@@ -953,10 +1041,7 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
-    timer = sh.Timer(f)
-    timer.start()
-    com.run_config()
-    mes = _('The operation has taken {} s.').format(timer.end())
+    mes = Config().run_config()
     idebug = sh.Debug(f, mes)
     idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())
