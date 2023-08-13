@@ -2127,17 +2127,20 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClientQt] mclient.__main__'
     sh.com.start()
-    cf.objs.get_config()
-    lg.objs.get_plugins(Debug=False, maxrows=1000)
-    lg.objs.get_request().search = 'tuple'
-    timer = sh.Timer(f + ': Showing GUI')
-    timer.start()
-    app = App()
-    app.run_thread()
-    lg.com.set_url()
-    app.load_article (search = lg.objs.get_request().search
-                     ,url = lg.objs.request.url
-                     )
-    timer.end()
-    app.show()
+    if cf.objs.get_config().Success:
+        lg.objs.get_plugins(Debug=False, maxrows=1000)
+        lg.objs.get_request().search = 'tuple'
+        timer = sh.Timer(f + ': Showing GUI')
+        timer.start()
+        app = App()
+        app.run_thread()
+        lg.com.set_url()
+        app.load_article (search = lg.objs.get_request().search
+                         ,url = lg.objs.request.url
+                         )
+        timer.end()
+        app.show()
+    else:
+        mes = _('Invalid configuration!')
+        sh.objs.get_mes(f, mes).show_error()
     sh.com.end()
