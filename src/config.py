@@ -1,11 +1,57 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import os
+
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 import skl_shared_qt.config as qc
 
 PRODUCT_LOW = 'mclient'
+
+
+class Paths:
+    
+    def __init__(self):
+        self.set_values()
+    
+    def set_values(self):
+        self.Success = True
+        self.dics = ''
+    
+    def check(self):
+        self.ihome = sh.Home(PRODUCT_LOW)
+        self.Success = self.ihome.create_conf()
+    
+    def set_dics(self):
+        f = '[MClient] config.Paths.set_dics'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.dics = self.ihome.add_config('dics')
+        if not self.dics:
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
+        if os.path.exists(self.dics):
+            self.Success = sh.Directory(self.dics).Success
+        else:
+            self.Success = sh.Path(self.dics).create()
+        return self.dics
+    
+    def get_default(self):
+        return sh.objs.get_pdir().add('..', 'resources', 'config', 'default.json')
+    
+    def get_schema(self):
+        return sh.objs.get_pdir().add('..', 'resources', 'config', 'schema.json')
+    
+    def get_local(self):
+        return self.ihome.add_config(PRODUCT_LOW + '.json')
+    
+    def run(self):
+        self.check()
+        self.set_dics()
+
 
 
 class Config(qc.Config):
@@ -81,3 +127,121 @@ class Config(qc.Config):
     def run(self):
         self.load()
         self.update()
+
+
+
+class Subjects:
+    
+    def __init__(self):
+        self.set_values()
+        self.ihome = sh.Home(PRODUCT_LOW)
+        self.Success = self.ihome.create_conf()
+    
+    def set_values(self):
+        self.Success = True
+        self.file = ''
+        self.body = {}
+    
+    def add(self, body):
+        f = '[MClient] config.Subjects.add'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not body:
+            sh.com.rep_lazy(f)
+            return
+        count = 0
+        for key in body:
+            # JSON accepts empty keys and values
+            if not key:
+                sh.com.rep_empty(f)
+                continue
+            value = body[key]
+            if not value:
+                sh.com.rep_empty(f)
+                continue
+            ''' 'key' must be different from 'value' since we need new expanded
+                subjects. If the same value is returned after expanding, this
+                means that a short-full subject pair has not been found.
+            '''
+            if not key in self.body and key != value:
+                count += 1
+                self.body[key] = value
+        sh.com.rep_matches(f, count)
+    
+    def set_file(self):
+        f = '[MClient] config.Subjects.set_file'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.file = self.ihome.add_config('subjects.json')
+        if not self.file:
+            self.Success = False
+            sh.com.rep_empty(f)
+            return
+    
+    def create(self):
+        f = '[MClient] config.Subjects.create'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if os.path.exists(self.file):
+            self.Success = sh.File(self.file).Success
+        else:
+            iwrite = sh.WriteTextFile(self.file)
+            # JSON throws an error upon an empty file
+            iwrite.write('{}')
+            self.Success = iwrite.Success
+    
+    def load(self):
+        f = '[MClient] config.Subjects.load'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.isubj = sh.Json(self.file)
+        self.body = self.isubj.run()
+        # '{}' is allowed, so we do not check the body
+        self.Success = self.isubj.Success
+    
+    def save(self):
+        f = '[MClient] config.Subjects.save'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        self.isubj.save(self.body)
+        self.Success = self.isibj.Success
+        
+    def run(self):
+        self.set_file()
+        self.create()
+        self.load()
+
+
+
+class Objects:
+    
+    def __init__(self):
+        self.paths = self.config = self.subjects = None
+    
+    def get_subjects(self):
+        if self.subjects is None:
+            self.subjects = Subjects()
+        return self.subjects
+    
+    def get_paths(self):
+        if self.paths is None:
+            self.paths = Paths()
+            self.paths.run()
+        return self.paths
+    
+    def get_config(self):
+        if self.config is None:
+            default = self.get_paths().get_default()
+            schema = self.paths.get_schema()
+            local = self.paths.get_local()
+            self.config = Config(default, schema, local)
+            self.config.run()
+        return self.config
+
+
+objs = Objects()
