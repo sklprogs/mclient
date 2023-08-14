@@ -2142,5 +2142,8 @@ if __name__ == '__main__':
         app.show()
     else:
         mes = _('Invalid configuration!')
-        sh.objs.get_mes(f, mes).show_error()
+        #FIX: quit app normally after common dialog
+        #sh.objs.get_mes(f, mes).show_error()
+        idebug = sh.Debug(f, mes)
+        idebug.show()
     sh.com.end()
