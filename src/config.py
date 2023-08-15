@@ -63,8 +63,60 @@ class Config(qc.Config):
         self.schema = schema
         self.local = local
     
+    def get_history_subject(self, short):
+        # Call externally only after validating the config
+        f = '[MClient] config.Config.get_history_subject'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not short:
+            sh.com.rep_empty(f)
+            return
+        try:
+            return self.new['subjects']['history'][short]
+        except KeyError:
+            return
+    
+    def add_history_subjects(self, body):
+        # Call externally only after validating the config
+        f = '[MClient] config.Config.add_history_subjects'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not body:
+            sh.com.rep_lazy(f)
+            return
+        self.count = 0
+        for key in body:
+            # JSON accepts empty keys and values
+            if not key:
+                sh.com.rep_empty(f)
+                continue
+            value = body[key]
+            if not value:
+                sh.com.rep_empty(f)
+                continue
+            self._add_history_subject(key, value)
+        sh.com.rep_matches(f, self.count)
+    
+    def _add_history_subject(self, short, full):
+        # Call externally only after validating the config
+        f = '[MClient] config.Config.add_history_subject'
+        ''' 'short' must be different from 'full' since we need new expanded
+            subjects. If the same value is returned after expanding, this means
+            that a short-full subject pair has not been found.
+        '''
+        if not short or not full:
+            sh.com.rep_empty(f)
+            return
+        if short == full or short in self.new['subjects']['history']:
+            sh.com.rep_lazy(f)
+            return
+        self.count += 1
+        self.new['subjects']['history'][short] = full
+    
     def update(self):
-        f = '[SharedQt] config.Config.update'
+        f = '[MClient] config.Config.update'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -130,103 +182,10 @@ class Config(qc.Config):
 
 
 
-class Subjects:
-    
-    def __init__(self):
-        self.set_values()
-        self.ihome = sh.Home(PRODUCT_LOW)
-        self.Success = self.ihome.create_conf()
-    
-    def set_values(self):
-        self.Success = True
-        self.file = ''
-        self.body = {}
-    
-    def add(self, body):
-        f = '[MClient] config.Subjects.add'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        if not body:
-            sh.com.rep_lazy(f)
-            return
-        count = 0
-        for key in body:
-            # JSON accepts empty keys and values
-            if not key:
-                sh.com.rep_empty(f)
-                continue
-            value = body[key]
-            if not value:
-                sh.com.rep_empty(f)
-                continue
-            ''' 'key' must be different from 'value' since we need new expanded
-                subjects. If the same value is returned after expanding, this
-                means that a short-full subject pair has not been found.
-            '''
-            if not key in self.body and key != value:
-                count += 1
-                self.body[key] = value
-        sh.com.rep_matches(f, count)
-    
-    def set_file(self):
-        f = '[MClient] config.Subjects.set_file'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.file = self.ihome.add_config('subjects.json')
-        if not self.file:
-            self.Success = False
-            sh.com.rep_empty(f)
-            return
-    
-    def create(self):
-        f = '[MClient] config.Subjects.create'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        if os.path.exists(self.file):
-            self.Success = sh.File(self.file).Success
-        else:
-            iwrite = sh.WriteTextFile(self.file)
-            # JSON throws an error upon an empty file
-            iwrite.write('{}')
-            self.Success = iwrite.Success
-    
-    def load(self):
-        f = '[MClient] config.Subjects.load'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.isubj = sh.Json(self.file)
-        self.body = self.isubj.run()
-        # '{}' is allowed, so we do not check the body
-        self.Success = self.isubj.Success
-    
-    def save(self):
-        f = '[MClient] config.Subjects.save'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        self.isubj.save(self.body)
-        self.Success = self.isibj.Success
-        
-    def run(self):
-        self.set_file()
-        self.create()
-        self.load()
-
-
-
 class Objects:
     
     def __init__(self):
-        self.paths = self.config = self.subjects = None
-    
-    def get_subjects(self):
-        if self.subjects is None:
-            self.subjects = Subjects()
-        return self.subjects
+        self.paths = self.config = None
     
     def get_paths(self):
         if self.paths is None:

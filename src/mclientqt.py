@@ -1691,7 +1691,7 @@ class App:
                                  ,cells = cells
                                  ,fixed_urls = sj.objs.get_subjects().add_fixed_urls()
                                  )
-            cf.objs.get_subjects().add(lg.objs.plugins.get_article_subjects())
+            cf.objs.config.add_history_subjects(lg.objs.plugins.get_article_subjects())
         else:
             mes = _('Load article No. {} from memory').format(artid)
             sh.objs.get_mes(f, mes, True).show_info()
@@ -1812,7 +1812,6 @@ class App:
         ''' This procedure is called by signal. Do not put 'self.close' here,
             it is run separately.
         '''
-        cf.objs.get_subjects().save()
         cf.objs.config.quit()
         self.thread.end()
         ''' For this code to be executed last, it's not enough to put it in 
