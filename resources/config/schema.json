@@ -347,6 +347,8 @@
         ,"properties":
             {"blocked": {"type": "object"}
             ,"prioritized": {"type": "object"}
+            ,"history": {"type": "object"}
+            ,"source_all": {"type": "object"}
             }
         }
     ,"comments":
