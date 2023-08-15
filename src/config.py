@@ -63,17 +63,17 @@ class Config(qc.Config):
         self.schema = schema
         self.local = local
     
-    def get_history_subject(self, short):
+    def get_history_subject(self, subject):
         # Call externally only after validating the config
         f = '[MClient] config.Config.get_history_subject'
         if not self.Success:
             sh.com.cancel(f)
             return
-        if not short:
+        if not subject:
             sh.com.rep_empty(f)
             return
         try:
-            return self.new['subjects']['history'][short]
+            return self.new['subjects']['history'][subject]
         except KeyError:
             return
     
@@ -86,7 +86,7 @@ class Config(qc.Config):
         if not body:
             sh.com.rep_lazy(f)
             return
-        self.count = 0
+        self.count_his = 0
         for key in body:
             # JSON accepts empty keys and values
             if not key:
@@ -97,7 +97,7 @@ class Config(qc.Config):
                 sh.com.rep_empty(f)
                 continue
             self._add_history_subject(key, value)
-        sh.com.rep_matches(f, self.count)
+        sh.com.rep_matches(f, self.count_his)
     
     def _add_history_subject(self, short, full):
         # Call externally only after validating the config
@@ -112,23 +112,43 @@ class Config(qc.Config):
         if short == full or short in self.new['subjects']['history']:
             sh.com.rep_lazy(f)
             return
-        self.count += 1
+        self.count_his += 2
         self.new['subjects']['history'][short] = full
+        self.new['subjects']['history'][full] = short
+    
+    def _iterate(self, section1, section2):
+        for key, value in section1.items():
+            if not key in section2.keys():
+                continue
+            if isinstance(value, dict):
+                self._iterate(value, section2[key])
+            elif value != section2[key]:
+                self.count_mod += 1
+                section1[key] = section2[key]
+    
+    def _merge(self):
+        f = '[MClient] config.Config._merge'
+        ''' 'default | local' is not enough since that will delete sections not
+            present in 'local'.
+        '''
+        self.count_mod = 0
+        self._iterate(self.new, self.ilocal.get())
+        sh.com.rep_matches(f, self.count_mod)
     
     def update(self):
         f = '[MClient] config.Config.update'
         if not self.Success:
             sh.com.cancel(f)
             return
+        self._copy()
+        self.localize()
         if self.ilocal.Success:
             mes = _('Update default configuration')
-            self.new = self.idefault.get() | self.ilocal.get()
+            self._merge()
         else:
             mes = _('Use default configuration')
-            self._copy()
-            self.localize()
-        self.convert_types()
         sh.objs.get_mes(f, mes, True).show_info()
+        self.convert_types()
     
     def quit(self):
         self.revert_types()

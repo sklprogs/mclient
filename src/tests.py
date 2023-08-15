@@ -84,7 +84,7 @@ class Config:
         f = '[SharedQt] config.Tests.run_config'
         timer = sh.Timer(f)
         timer.start()
-        iconfig = qc.Config(self.default, self.schema, self.local)
+        iconfig = cf.Config(self.default, self.schema, self.local)
         iconfig.run()
         mes = []
         sub = _('Configuration file: {}').format(self.local)
@@ -1042,6 +1042,7 @@ if __name__ == '__main__':
         e.g. com.run_welcome, will cause an infinite loop.
     '''
     mes = Config().run_config()
+    #mes = Config().run_default()
     idebug = sh.Debug(f, mes)
     idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())
