@@ -172,8 +172,19 @@ class Config(qc.Config):
         # JSON does not support floats
         self.new['timeout'] = str(self.new['timeout'])
     
+    def _localize_subjects(self, section):
+        for key in list(self.new['subjects'][section].keys()):
+            if key == _(key):
+                continue
+            self.new['subjects'][section][_(key)] = self.new['subjects'][section][key]
+            del self.new['subjects'][section][key]
+    
     def localize(self):
-        # This is needed when a default config is forced
+        ''' Do this each time the default config is loaded since the local
+            config can theoretically have absent sections that are present in
+            the default config but are not localized (e.g. source names) which
+            will cause warnings.
+        '''
         f = '[MClient] config.Config.localize'
         if not self.Success:
             sh.com.cancel(f)
@@ -193,6 +204,10 @@ class Config(qc.Config):
         self.new['speech6'] = _(self.new['speech6'])
         self.new['speech7'] = _(self.new['speech7'])
         self.new['style'] = _(self.new['style'])
+        
+        self._localize_subjects('blocked')
+        self._localize_subjects('prioritized')
+        
         for action in self.new['actions']:
             self.new['actions'][action]['hint'] = _(self.new['actions'][action]['hint'])
     
