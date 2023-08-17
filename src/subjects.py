@@ -14,6 +14,7 @@ class Subjects:
         self.prior = []
         self.plain_prior = []
         self.plain_block = []
+        self.ihistory = cf.HistorySubjects()
     
     def _set_prior_section(self, section):
         for key, value in section.items():
@@ -63,7 +64,7 @@ class Subjects:
     def expand(self, subject):
         if not subject:
             return ''
-        full = cf.objs.get_config().get_history_subject(subject)
+        full = self.ihistory.get_pair(subject)
         if full:
             return full
         if not ', ' in subject:
@@ -71,7 +72,7 @@ class Subjects:
         new_parts = []
         parts = subject.split(', ')
         for part in parts:
-            full = cf.objs.config.get_history_subject(part)
+            full = self.ihistory.get_pair(part)
             if full:
                 new_parts.append(full)
             else:
