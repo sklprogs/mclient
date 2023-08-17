@@ -482,7 +482,10 @@ class Elems:
         for cell in self.cells:
             if not cell.fixed_block:
                 continue
-            if cell.fixed_block.type_ in ('subj', 'phsubj', 'wform') and cell.url:
+            if cell.fixed_block.type_ == 'subj':
+                self.fixed_urls[cell.fixed_block.type_][cell.fixed_block.subj] = cell.url
+                self.fixed_urls[cell.fixed_block.type_][cell.fixed_block.subjf] = cell.url
+            elif cell.fixed_block.type_ in ('phsubj', 'wform') and cell.url:
                 self.fixed_urls[cell.fixed_block.type_][cell.text] = cell.url
     
     def _is_block_fixed(self, block):
@@ -836,6 +839,7 @@ class Elems:
             if block.type_ in ('subj', 'phsubj') and block.subj and block.subjf:
                 count += 1
                 self.art_subj[block.subj] = block.subjf
+                self.art_subj[block.subjf] = block.subj
         sh.com.rep_matches(f, count)
     
     def set_not_found(self):
