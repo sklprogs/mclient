@@ -192,22 +192,15 @@ class HistorySubjects:
             return
         self.count = 0
         for key in body:
-            # JSON accepts empty keys and values
-            if not key:
-                sh.com.rep_empty(f)
-                continue
-            value = body[key]
-            if not value:
-                sh.com.rep_empty(f)
-                continue
-            self._add_item(key, value)
+            self._add_item(key, body[key])
         sh.com.rep_matches(f, self.count)
     
     def _add_item(self, short, full):
         f = '[MClient] config.HistorySubjects._add_item'
-        ''' 'short' must be different from 'full' since we need new expanded
-            subjects. If the same value is returned after expanding, this means
-            that a short-full subject pair has not been found.
+        ''' - 'short' must be different from 'full' since we need new expanded
+              subjects. If the same value is returned after expanding, this
+              means that a short-full subject pair has not been found.
+            - JSON accepts empty keys and values.
         '''
         if not short or not full:
             sh.com.rep_empty(f)
