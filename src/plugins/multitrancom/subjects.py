@@ -67,7 +67,11 @@ class Subjects:
         if not self.Success:
             sh.com.cancel(f)
             return {}
-        return self.iconfig.json
+        try:
+            return self.iconfig.json[sh.com.lang]
+        except KeyError:
+            sh.com.rep_input(f)
+        return {}
     
     def dump(self):
         f = '[MClient] plugins.multitrancom.subjects.Subjects.dump'

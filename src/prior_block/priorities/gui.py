@@ -439,7 +439,7 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.prm_btn = PyQt5.QtWidgets.QWidget()
         self.prm_rht = PyQt5.QtWidgets.QWidget()
         self.cbx_pri = sh.CheckBox(_('Enable'))
-        sources = (_('All subjects'), _('Main'), _('From the article'))
+        sources = (_('All subjects'), _('From the article'))
         self.opt_src = sh.OptionMenu(sources)
         self.tree1 = Tree()
         self.tree2 = Tree()
