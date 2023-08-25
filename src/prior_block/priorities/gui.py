@@ -81,6 +81,7 @@ class TreeWidget(PyQt5.QtWidgets.QTreeWidget):
     
     def fill(self, dic):
         self.setColumnCount(1)
+        self.clear()
         self._set_item(None, dic)
 
 
