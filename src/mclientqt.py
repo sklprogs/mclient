@@ -49,7 +49,7 @@ class Priorities(pr.Priorities):
         if mode == _('All subjects'):
             self.dic2 = lg.objs.get_plugins().get_subjects()
         elif mode == _('From the article'):
-            self.dic2 = lg.objs.get_plugins().get_article_subjects()
+            self.dic2 = com.get_article_subjects()
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(mode, '; '.join(self.gui.opt_src.items))
@@ -365,6 +365,15 @@ class Save(sv.Save):
 
 
 class Commands:
+    
+    def get_article_subjects(self):
+        cells = lg.objs.get_articles().get_cells()
+        subjects = set([cell.subj for cell in cells])
+        subjects = [sj.objs.get_subjects().expand(subject) for subject in subjects]
+        dic = {}
+        for subject in sorted(subjects, key=lambda s: s.casefold()):
+            dic[subject] = {}
+        return dic
     
     def get_skipped_terms(self):
         f = '[MClientQt] mclient.Commands.get_skipped_terms'
