@@ -63,25 +63,6 @@ class Config(qc.Config):
         self.schema = schema
         self.local = local
     
-    def _iterate(self, section1, section2):
-        for key, value in section1.items():
-            if not key in section2.keys():
-                continue
-            if isinstance(value, dict):
-                self._iterate(value, section2[key])
-            elif value != section2[key]:
-                self.count_mod += 1
-                section1[key] = section2[key]
-    
-    def _merge(self):
-        f = '[MClient] config.Config._merge'
-        ''' 'default | local' is not enough since that will delete sections not
-            present in 'local'.
-        '''
-        self.count_mod = 0
-        self._iterate(self.new, self.ilocal.get())
-        sh.com.rep_matches(f, self.count_mod)
-    
     def update(self):
         f = '[MClient] config.Config.update'
         if not self.Success:
@@ -91,7 +72,7 @@ class Config(qc.Config):
         self.localize()
         if self.ilocal.Success:
             mes = _('Update default configuration')
-            self._merge()
+            self.new = qc.Update(self.idefault.get(), self.ilocal.get()).run()
         else:
             mes = _('Use default configuration')
         sh.objs.get_mes(f, mes, True).show_info()
