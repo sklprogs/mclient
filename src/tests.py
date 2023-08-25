@@ -562,6 +562,10 @@ class Plugin:
 
 class Commands:
     
+    def get_all_subjects(self):
+        import plugins.multitrancom.subjects as sj
+        return sj.objs.get_subjects().dump()
+    
     def run_config(self):
         cf.objs.get_config().run()
     
@@ -1041,8 +1045,7 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
-    mes = Config().run_config()
-    #mes = Config().run_default()
+    mes = com.get_all_subjects()
     idebug = sh.Debug(f, mes)
     idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())
@@ -1060,12 +1063,12 @@ if __name__ == '__main__':
     #isuggest.show()
 
     # Priorities
-#    iprior = com.run_prior()
-#    iprior.show()
+    #iprior = com.run_prior()
+    #iprior.show()
 
     # Priorities (from the controller)
-#    iprior = com.run_prior_contr()
-#    iprior.show()
+    #iprior = com.run_prior_contr()
+    #iprior.show()
 
     '''
     # Popup
@@ -1093,8 +1096,8 @@ if __name__ == '__main__':
     '''
 
     # Welcome
-#    iwelcome = com.run_welcome()
-#    iwelcome.show()
+    #iwelcome = com.run_welcome()
+    #iwelcome.show()
 
     mes = _('Goodbye!')
     sh.objs.get_mes(f, mes, True).show_debug()

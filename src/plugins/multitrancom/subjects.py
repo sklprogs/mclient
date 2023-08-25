@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import json
-
 import skl_shared_qt.shared as sh
+import skl_shared_qt.config as qc
 
 ''' About this module:
     - This structure describes subjects at multitran.com.
@@ -26,81 +25,64 @@ import skl_shared_qt.shared as sh
       expanded as 'Informal'.
 '''
 
-
-
-        
-
-
 class Subjects:
     
     def __init__(self):
-        self.set_values()
-    
-    def set_values(self):
         self.Success = True
-        self.psubjects = sh.objs.get_pdir().add ('..', '..', '..', 'resources'
-                                                ,'plugins', 'multitrancom'
-                                                ,'subjects', 'subjects.json'
+        self.psubjects = sh.objs.get_pdir().add ('..', 'resources', 'plugins'
+                                                ,'multitrancom', 'subjects'
+                                                ,'subjects.json'
                                                 )
-        self.pschema = sh.objs.pdir().add ('..', '..', '..', 'resources'
-                                          ,'plugins', 'multitrancom'
-                                          ,'subjects', 'schema.json'
-                                          )
-        
-        self.subjects = {}
-        self.code = ''
+        self.pschema = sh.objs.pdir.add ('..', 'resources', 'plugins'
+                                        ,'multitrancom', 'subjects'
+                                        ,'schema.json'
+                                        )
     
-    def set_subjects(self):
-        f = '[MClient] plugins.multitrancom.subjects.Subjects.set_subjects'
-        try:
-            self.subjects = json.loads(self.csubjects)
-        except Exception as e:
+    def set_files(self):
+        f = '[MClient] plugins.multitrancom.subjects.Subjects.set_files'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        if not self.psubjects or not self.pschema:
             self.Success = False
-            sh.com.rep_third_party(f, e)
-    
-    def set_schema(self):
-        f = '[MClient] plugins.multitrancom.subjects.Subjects.set_schema'
-        try:
-            self.schema = json.loads(self.cschema)
-        except Exception as e:
-            self.Success = False
-            sh.com.rep_third_party(f, e)
+            sh.com.rep_empty(f)
+            return
+        self.psubjects = sh.Path(self.psubjects).get_absolute()
+        self.pschema = sh.Path(self.pschema).get_absolute()
+        self.Success = sh.File(self.psubjects).Success and sh.File(self.pschema).Success
     
     def load(self):
         f = '[MClient] plugins.multitrancom.subjects.Subjects.load'
         if not self.Success:
             sh.com.cancel(f)
             return
-        ''' Show the full path in case of not finding the file to make
-            debugging easier.
-        '''
-        self.subjects = sh.Path(self.psubjects).get_absolute()
-        self.csubjects = sh.ReadTextFile(self.psubjects).get()
-        if not self.csubjects:
-            self.Success = False
-            sh.com.rep_out(f)
-            return
+        self.ischema = qc.Schema(self.pschema)
+        self.ischema.run()
+        self.iconfig = qc.Json(self.psubjects)
+        self.iconfig.load()
+        self.Success = self.ischema.Success and self.iconfig.validate(self.ischema.get())
     
-    def load_schema(self):
-        f = '[MClient] plugins.multitrancom.subjects.Subjects.load_schema'
+    def get(self):
+        f = '[MClient] plugins.multitrancom.subjects.Subjects.get'
         if not self.Success:
             sh.com.cancel(f)
-            return
-        ''' Show the full path in case of not finding the file to make
-            debugging easier.
-        '''
-        self.pschema = sh.Path(self.pschema).get_absolute()
-        self.cschema = sh.ReadTextFile(self.pschema).get()
-        if not self.cschema:
-            self.Success = False
-            sh.com.rep_out(f)
-            return
+            return {}
+        return self.iconfig.json
+    
+    def dump(self):
+        f = '[MClient] plugins.multitrancom.subjects.Subjects.dump'
+        if not self.Success:
+            sh.com.cancel(f)
+            return ''
+        code = self.iconfig.dump()
+        if not code:
+            sh.com.rep_empty(f)
+            return ''
+        return code
     
     def run(self):
-        self.load_subjects()
-        self.load_schema()
-        self.set()
-        return self.subjects
+        self.set_files()
+        self.load()
 
 
 

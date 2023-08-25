@@ -37,7 +37,7 @@ class Plugin:
         self.search = ''
     
     def get_subjects(self):
-        return sj.objs.get_subjects().subjects
+        return sj.objs.get_subjects().get()
     
     def get_majors(self):
         f = '[MClient] plugins.multitrancom.run.Plugin.get_majors'
