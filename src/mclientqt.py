@@ -368,7 +368,18 @@ class Commands:
     
     def get_article_subjects(self):
         cells = lg.objs.get_articles().get_cells()
-        subjects = set([cell.subj for cell in cells])
+        subjects = []
+        for cell in cells:
+            if not cell.subj.strip():
+                continue
+            types = [block.type_ for block in cell.blocks]
+            ''' We have non-fixed cells here, so there is no need to filter out
+                'phsubj'.
+            '''
+            if 'phrase' in types or 'phcount' in types:
+                continue
+            if not cell.subj in subjects:
+                subjects.append(cell.subj)
         subjects = [sj.objs.get_subjects().expand(subject) for subject in subjects]
         dic = {}
         for subject in sorted(subjects, key=lambda s: s.casefold()):
