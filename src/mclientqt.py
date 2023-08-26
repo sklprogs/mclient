@@ -1725,7 +1725,7 @@ class App:
         skipped = []
         #skipped = com.get_skipped_terms()
         # This is fast
-        #lg.objs.request.htm = lg.HTM(cells, skipped).run()
+        lg.objs.request.htm = lg.HTM(cells, skipped).run()
         #lg.objs.request.text = lg.com.get_text(cells)
         #colors = lg.com.get_colors(blocks)
         #lg.com.fix_colors(colors)

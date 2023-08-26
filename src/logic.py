@@ -350,46 +350,17 @@ class HTM:
             old_rowno = -1
             for icell in self.cells:
                 if old_rowno != icell.rowno:
-                    if icell.rowno > 0:
-                        code.append('</td></tr>')
+                    if code[-1] != '<table>':
+                        code.append('</tr>')
                     code.append('<tr>')
-                ''' #NOTE: Without checking a row number here finding text may
-                    fail in the vertical mode when 2 cells have a different row
-                    number but the same column number.
-                '''
-                if old_rowno != icell.rowno or old_colno != icell.colno:
-                    if icell.colno > 0 and old_rowno == icell.rowno:
+                if old_colno != icell.colno:
+                    if code[-1] != '<tr>':
                         code.append('</td>')
-                    ''' #TODO: Port this old code
-                    if old_rowno == icell.rowno:
-                        delta = icell.colno - old_colno - 1
+                    if icell.fixed_block:
+                        # sub = '<td align="center" valign="top" width="{}">'
+                        code.append('<td align="center" valign="top">')
                     else:
-                        delta = icell.colno
-                    for i in range(delta):
-                        col_width = objs.get_fonts()._get_col_width(i)
-                        sub = '<td width="{}"/>'
-                        sub = sub.format(col_width)
-                        code.append(sub)
-                    sub = '<td{} valign="top"{}>'
-                    if icell.block.Fixed:
-                        sub1 = ' align="center"'
-                    else:
-                        sub1 = ''
-                    if ifont.col_width:
-                        sub2 = ' width="{}"'
-                        sub2 = sub2.format(ifont.col_width)
-                    else:
-                        sub2 = ''
-                    sub = sub.format(sub1, sub2)
-                    '''
-                    sub = '<td valign="top">'
-                    code.append(sub)
-                    old_colno = icell.colno
-                ''' Cannot be modified immediately after a new row was
-                    discovered since 'rowno' is used after that.
-                '''
-                if old_rowno != icell.rowno:
-                    old_rowno = icell.rowno
+                        code.append('<td valign="top">')
                 code.append(icell.code)
             code.append('</td></tr></table>')
         elif self.skipped:
