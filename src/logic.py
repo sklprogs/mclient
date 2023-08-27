@@ -351,8 +351,9 @@ class HTM:
             for icell in self.cells:
                 if old_rowno != icell.rowno:
                     if code[-1] != '<table>':
-                        code.append('</tr>')
+                        code.append('</td></tr>')
                     code.append('<tr>')
+                    old_rowno = icell.rowno
                 if old_colno != icell.colno:
                     if code[-1] != '<tr>':
                         code.append('</td>')
@@ -361,6 +362,7 @@ class HTM:
                         code.append('<td align="center" valign="top">')
                     else:
                         code.append('<td valign="top">')
+                    old_colno = icell.colno
                 code.append(icell.code)
             code.append('</td></tr></table>')
         elif self.skipped:
