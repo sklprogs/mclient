@@ -1029,7 +1029,8 @@ class App:
     
     def _set_hint(self, widget, action):
         section = cf.objs.config.new['actions'][action]
-        widget.hint = section['hint'] + '\n' + ', '.join(section['hotkeys'])
+        hotkeys = ', '.join(section['hotkeys'])
+        widget.hint = f"{section['hint']}<i><center>{hotkeys}</center></i>"
         widget.set_hint()
     
     def set_hints(self):
