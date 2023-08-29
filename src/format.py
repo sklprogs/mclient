@@ -72,9 +72,15 @@ class Block:
                                ):
             self.code = '<i>' + self.code + '</i>'
     
-    def set_bold(self):
+    def set_fixed(self):
         if self.colno == 0:
-            self.code = '<b>' + self.code + '</b>'
+            self.code = f'''<b><div align="{cf.objs.get_config().new['columns']['1']['font']['align']}">{self.code}</div></b>'''
+        elif self.colno == 1:
+            self.code = f'''<b><div align="{cf.objs.get_config().new['columns']['2']['font']['align']}">{self.code}</div></b>'''
+        elif self.colno == 2:
+            self.code = f'''<div align="{cf.objs.get_config().new['columns']['3']['font']['align']}">{self.code}</div>'''
+        elif self.colno == 3:
+            self.code = f'''<div align="{cf.objs.get_config().new['columns']['4']['font']['align']}">{self.code}</div>'''
     
     def get_family(self):
         if self.block.type_ in ('phrase', 'term'):
@@ -122,7 +128,7 @@ class Block:
         if not self.block.text:
             return ''
         self.set_style()
-        self.set_bold()
+        self.set_fixed()
         self.set_italic()
         return self.code
 

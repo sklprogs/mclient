@@ -159,19 +159,19 @@
     ,"terms": {"width": 157}
     ,"1":
         {"type": "Subjects"
-        ,"font": {"family": "Arial", "size": 12, "color": "coral"}
+        ,"font": {"family": "Arial", "size": 12, "color": "coral", "align": "center"}
         }
     ,"2":
         {"type": "Word forms"
-        ,"font": {"family": "Arial", "size": 12, "color": "cadet blue"}
+        ,"font": {"family": "Arial", "size": 12, "color": "cadet blue", "align": "center"}
         }
     ,"3":
         {"type": "Parts of speech"
-        ,"font": {"family": "Mono", "size": 11, "color": "slate gray"}
+        ,"font": {"family": "Mono", "size": 11, "color": "slate gray", "align": "center"}
         }
     ,"4":
         {"type": "Transcription"
-        ,"font": {"family": "Mono", "size": 11, "color": "slate gray"}
+        ,"font": {"family": "Mono", "size": 11, "color": "slate gray", "align": "center"}
         }
     }
 ,"subjects":

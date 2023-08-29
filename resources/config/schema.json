@@ -293,6 +293,7 @@
                             {"family": {"type": "string"}
                             ,"size": {"type": "integer"}
                             ,"color": {"type": "string"}
+                            ,"align": {"type": "string"}
                             }
                         }
                     ,"type": {"type": "string"}
@@ -307,6 +308,7 @@
                             {"family": {"type": "string"}
                             ,"size": {"type": "integer"}
                             ,"color": {"type": "string"}
+                            ,"align": {"type": "string"}
                             }
                         }
                     ,"type": {"type": "string"}
@@ -321,6 +323,7 @@
                             {"family": {"type": "string"}
                             ,"size": {"type": "integer"}
                             ,"color": {"type": "string"}
+                            ,"align": {"type": "string"}
                             }
                         }
                     ,"type": {"type": "string"}
@@ -335,6 +338,7 @@
                             {"family": {"type": "string"}
                             ,"size": {"type": "integer"}
                             ,"color": {"type": "string"}
+                            ,"align": {"type": "string"}
                             }
                         }
                     ,"type": {"type": "string"}
