@@ -1696,6 +1696,7 @@ class App:
                                  ,url = url
                                  ,cells = cells
                                  ,fixed_urls = sj.objs.get_subjects().add_fixed_urls()
+                                 ,raw_code = lg.objs.plugins.get_htm()
                                  )
             cf.HistorySubjects().add(lg.objs.plugins.get_article_subjects())
         else:
