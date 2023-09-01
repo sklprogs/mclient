@@ -326,8 +326,7 @@ class Save(sv.Save):
             sh.com.rep_empty(f)
             return
         self._add_web_ext()
-        lg.objs.get_plugins().set_htm(code)
-        code = lg.objs.plugins.fix_raw_htm()
+        code = lg.objs.get_plugins().fix_raw_htm(code)
         sh.WriteTextFile (file = self.file
                          ,Rewrite = True
                          ).write(code)

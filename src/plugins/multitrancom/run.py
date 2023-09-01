@@ -62,9 +62,6 @@ class Plugin:
     def get_search(self):
         return self.search
     
-    def set_htm(self, code):
-        self.htm = code
-    
     def fix_url(self, url):
         return gt.com.fix_url(url)
     
@@ -88,8 +85,8 @@ class Plugin:
         # Whether or not the plugin is actually a wrapper over other plugins
         return False
     
-    def fix_raw_htm(self):
-        return gt.com.fix_raw_htm(self.htm)
+    def fix_raw_htm(self, code):
+        return gt.com.fix_raw_htm(code)
     
     def get_url(self, search):
         f = '[MClient] plugins.multitrancom.run.Plugin.get_url'

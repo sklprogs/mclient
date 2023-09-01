@@ -92,13 +92,6 @@ class Plugins:
             return ''
         return self.plugin.get_search()
     
-    def set_htm(self, htm):
-        f = '[MClient] manager.Plugins.set_htm'
-        if not self.plugin or not htm:
-            sh.com.rep_empty(f)
-            return
-        self.plugin.set_htm(htm)
-    
     def fix_url(self, url):
         f = '[MClient] manager.Plugins.fix_url'
         if not self.plugin:
@@ -148,13 +141,12 @@ class Plugins:
             return
         return self.plugin.is_combined()
     
-    def fix_raw_htm(self):
+    def fix_raw_htm(self, code):
         f = '[MClient] manager.Plugins.fix_raw_htm'
-        code = ''
-        if self.plugin:
-            code = self.plugin.fix_raw_htm()
-        else:
+        if not self.plugin:
             sh.com.rep_empty(f)
+            return code
+        code = self.plugin.fix_raw_htm(code)
         code = sh.Input(f, code).get_not_none()
         if not '</html>' in code.lower():
             search = self.get_search()
