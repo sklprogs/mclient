@@ -380,7 +380,7 @@ class Commands:
             for cell in row:
                 if not cell.fixed_block:
                     continue
-                if cell.fixed_block.type_ != 'subj':
+                if cell.fixed_block.type != 'subj':
                     continue
                 subjects.append(cell.text)
         subjects = [subject.strip() for subject in subjects if subject.strip()]

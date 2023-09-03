@@ -4,7 +4,7 @@
 class Tag:
     
     def __init__(self):
-        self.type_ = ''
+        self.type = ''
         self.text = ''
         self.name = ''
         self.url = ''
@@ -52,4 +52,4 @@ class Block:
         ''' 'comment', 'correction', 'invalid', 'phcount', 'phrase', 'phsubj',
             'speech', 'subj', 'term', 'transc', 'wform'.
         '''
-        self.type_ = 'comment'
+        self.type = 'comment'

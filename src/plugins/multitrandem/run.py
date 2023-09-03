@@ -87,9 +87,9 @@ class Plugin:
             iwrite = io.StringIO()
             for block in self.blocks:
                 if block.text \
-                and block.type_ in ('dic', 'wform', 'term', 'comment'
-                                   ,'correction', 'user'
-                                   ):
+                and block.type in ('dic', 'wform', 'term', 'comment'
+                                  ,'correction', 'user'
+                                  ):
                     iwrite.write(block.text)
             self.text = iwrite.getvalue()
             iwrite.close()
@@ -168,7 +168,7 @@ class Plugin:
                 if iget.speech and not ' ' in search:
                     block = tg.Block()
                     block.select = 0
-                    block.type_ = 'wform'
+                    block.type = 'wform'
                     block.text = iget.spabbr
                     block.wform = iget.spabbr
                     block.wformf = iget.speech

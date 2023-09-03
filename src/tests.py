@@ -301,7 +301,7 @@ class Block:
         self.speech = ''  # (04) SPEECH
         self.transc = ''  # (05) TRANSC
         self.term = ''    # (06) TERM
-        self.type_ = ''   # (07) TYPE
+        self.type = ''    # (07) TYPE
         self.text = ''    # (08) TEXT
         self.url = ''     # (09) URL
         self.block = 0    # (10) BLOCK
@@ -334,7 +334,7 @@ class Block:
                ,self.speech
                ,self.transc
                ,self.term
-               ,self.type_
+               ,self.type
                ,self.text
                ,self.url
                ,self.block
@@ -489,7 +489,7 @@ class Plugin:
         if not blocks:
             blocks = []
         for i in range(len(blocks)):
-            mes = f'{i}: {blocks[i].type_}: "{blocks[i].text}"'
+            mes = f'{i}: {blocks[i].type}: "{blocks[i].text}"'
             print(mes)
     
     def run_stardict(self):

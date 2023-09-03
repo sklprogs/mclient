@@ -55,17 +55,17 @@ class Tags:
             self.blocks.append(Block())
             self.blocks[-1].text = self.content[i]
             if self.types[i] == self.seplg1:
-                self.blocks[i].type_ = 'term'
+                self.blocks[i].type = 'term'
                 self.blocks[i].lang = self.lang1
             elif self.types[i] == self.seplg2:
-                self.blocks[i].type_ = 'term'
+                self.blocks[i].type = 'term'
                 self.blocks[i].lang = self.lang2
             elif self.types[i] == self.sepcom:
-                self.blocks[i].type_ = 'comment'
+                self.blocks[i].type = 'comment'
             elif self.types[i] == self.sepdic:
-                self.blocks[i].type_ = 'dic'
+                self.blocks[i].type = 'dic'
             else:
-                self.blocks[i].type_ = 'invalid'
+                self.blocks[i].type = 'invalid'
                 #TODO: convert to a string
                 mes = _('Unknown type "{}"!').format(self.types[i])
                 sh.objs.get_mes(f, mes, True).show_warning()
@@ -76,7 +76,7 @@ class Tags:
         rows = []
         for i in range(len(self.blocks)):
             rows.append ([i + 1
-                         ,self.blocks[i].type_
+                         ,self.blocks[i].type
                          ,self.blocks[i].text
                          ]
                         )
@@ -221,7 +221,7 @@ class Block:
         ''' 'comment', 'dic', 'invalid', 'phrase', 'speech', 'term', 'transc',
             'wform'.
         '''
-        self.type_ = ''
+        self.type = ''
         self.url = ''
         self.urla = ''
         self.wform = ''
@@ -234,5 +234,5 @@ if __name__ == '__main__':
     itags.run()
     #itags.debug()
     for i in range(len(itags.blocks)):
-        mes = f'{i}: {itags.blocks[i].type_}: "{itags.blocks[i].text}"'
+        mes = f'{i}: {itags.blocks[i].type}: "{itags.blocks[i].text}"'
         print(mes)

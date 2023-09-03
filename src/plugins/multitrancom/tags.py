@@ -157,30 +157,30 @@ class AnalyzeTag:
     
     def _set_type(self):
         if self._is_term():
-            self.tag.type_ = 'term'
+            self.tag.type = 'term'
         elif self._is_comment():
-            self.tag.type_ = 'comment'
+            self.tag.type = 'comment'
         elif self._is_subj():
-            self.tag.type_ = 'subj'
+            self.tag.type = 'subj'
         elif self._is_wform():
-            self.tag.type_ = 'wform'
+            self.tag.type = 'wform'
         elif self._is_correction():
-            self.tag.type_ = 'correction'
+            self.tag.type = 'correction'
         elif self._is_phrase():
-            self.tag.type_ = 'phrase'
+            self.tag.type = 'phrase'
         elif self._is_user():
             # 'user' type should have a priority over 'url'
-            self.tag.type_ = 'user'
+            self.tag.type = 'user'
         elif self._is_url():
-            self.tag.type_ = 'url'
+            self.tag.type = 'url'
         elif self._is_speech():
-            self.tag.type_ = 'speech'
+            self.tag.type = 'speech'
         elif self._is_phrase_subj():
-            self.tag.type_ = 'phsubj'
+            self.tag.type = 'phsubj'
         elif self._is_script():
-            self.tag.type_ = 'script'
+            self.tag.type = 'script'
         elif self._is_phcount():
-            self.tag.type_ = 'phcount'
+            self.tag.type = 'phcount'
     
     def _set_close(self):
         if self.fragm.startswith('</'):
@@ -199,7 +199,7 @@ class AnalyzeTag:
             self._set_url()
             self._set_subjf()
         else:
-            self.tag.type_ = 'text'
+            self.tag.type = 'text'
             self.tag.text = self.fragm
     
     def run(self):
@@ -208,7 +208,7 @@ class AnalyzeTag:
         return self.tag
     
     def _set_url(self):
-        if self.tag.type_ != 'url':
+        if self.tag.type != 'url':
             return
         self.tag.url = self.tag.text
         pattern = 'href="/m.exe?'
@@ -262,9 +262,9 @@ class Tags:
         for tag in self.tags:
             if tag.Close:
                 self._close(tag.name)
-            elif tag.type_ == 'text':
+            elif tag.type == 'text':
                 tag.inherent = list(self.open)
-            elif tag.type_:
+            elif tag.type:
                 self.open.append(tag)
     
     def set_nos(self):
@@ -281,7 +281,7 @@ class Tags:
     
     def _debug_blocks(self):
         nos = [i + 1 for i in range(len(self.blocks))]
-        types = [block.type_ for block in self.blocks]
+        types = [block.type for block in self.blocks]
         texts = ['"{}"'.format(block.text) for block in self.blocks]
         urls = ['"{}"'.format(block.url) for block in self.blocks]
         subjs = ['"{}"'.format(block.subj) for block in self.blocks]
@@ -305,23 +305,23 @@ class Tags:
         if not self.Success:
             sh.com.cancel(f)
             return
-        tags = [tag for tag in self.tags if tag.type_ == 'text' \
+        tags = [tag for tag in self.tags if tag.type == 'text' \
                 and not self._is_script(tag)
                ]
         for tag in tags:
             block = ic.Block()
             for subtag in tag.inherent:
-                if subtag.type_ == 'url':
+                if subtag.type == 'url':
                     block.url = subtag.url
                     block.subjf = subtag.subjf
                 else:
-                    block.type_ = subtag.type_
+                    block.type = subtag.type
             block.text = tag.text
             block.cellno = tag.cellno
             # This is because MT generates invalid links
             block.url = html.unescape(block.url)
             block.text = html.unescape(block.text)
-            if block.type_ in ('subj', 'phsubj'):
+            if block.type in ('subj', 'phsubj'):
                 block.subj = block.text
             self.blocks.append(block)
     
@@ -347,7 +347,7 @@ class Tags:
         nos = [i + 1 for i in range(len(self.tags))]
         closes = ['{}'.format(tag.Close) for tag in self.tags]
         names = ['"{}"'.format(tag.name) for tag in self.tags]
-        types = ['"{}"'.format(tag.type_) for tag in self.tags]
+        types = ['"{}"'.format(tag.type) for tag in self.tags]
         texts = ['"{}"'.format(tag.text) for tag in self.tags]
         urls = ['"{}"'.format(tag.url) for tag in self.tags]
         subjfs = ['"{}"'.format(tag.subjf) for tag in self.tags]

@@ -89,7 +89,7 @@ class Omit:
             old_len = len(cell.blocks)
             i = 1
             while i < len(cell.blocks):
-                if cell.blocks[i].type_ == 'user':
+                if cell.blocks[i].type == 'user':
                     del cell.blocks[i]
                     i -= 1
                 if cell.blocks[i-1].text.endswith(' ') \
@@ -250,7 +250,7 @@ class View:
         f = '[MClientQt] cells.View._create_fixed'
         cell = ic.Cell()
         block = ic.Block()
-        block.type_ = type_
+        block.type = type_
         cell.fixed_block = block
         cell.blocks = [block]
         cell.rowno = rowno
@@ -318,7 +318,7 @@ class View:
     def _has_phrase(self):
         for cell in self.cells[::-1]:
             for block in cell.blocks:
-                if block.type_ == 'phrase':
+                if block.type == 'phrase':
                     return True
     
     def restore_phsubj(self):
@@ -332,8 +332,8 @@ class View:
         i = len(self.cells) - 1
         while i >= 0:
             if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type_ == 'subj':
-                self.cells[i].fixed_block.type_ = 'phsubj'
+            and self.cells[i].fixed_block.type == 'subj':
+                self.cells[i].fixed_block.type = 'phsubj'
                 self.phi = i
                 mes = f'"{self.cells[i].fixed_block.text}"'
                 sh.objs.get_mes(f, mes, True).show_debug()
@@ -368,7 +368,7 @@ class View:
             col4.append(cell.col4)
             cell_types = []
             for block in cell.blocks:
-                cell_types.append(block.type_)
+                cell_types.append(block.type)
             types.append(', '.join(cell_types))
         iterable = [rowno, no, text, types, url, col1, col2, col3, col4]
         return sh.FastTable (headers = headers
@@ -412,22 +412,22 @@ class View:
         for cell in self.cells:
             if not cell.fixed_block:
                continue
-            if cell.fixed_block.type_ == 'subj':
+            if cell.fixed_block.type == 'subj':
                 if cell.text == subj:
                     cell.text = cell.fixed_block.text = ''
                 else:
                     subj = cell.subj
-            elif cell.fixed_block.type_ == 'wform':
+            elif cell.fixed_block.type == 'wform':
                 if cell.text == wform:
                     cell.text = cell.fixed_block.text = ''
                 else:
                     wform = cell.wform
-            elif cell.fixed_block.type_ == 'transc':
+            elif cell.fixed_block.type == 'transc':
                 if cell.text == transc:
                     cell.text = cell.fixed_block.text = ''
                 else:
                     transc = cell.transc
-            elif cell.fixed_block.type_ == 'speech':
+            elif cell.fixed_block.type == 'speech':
                 if cell.text == speech:
                     cell.text = cell.fixed_block.text = ''
                 else:
@@ -458,8 +458,8 @@ class View:
         for cell in self.cells:
             if not cell.fixed_block or not cell.text:
                 continue
-            if cell.fixed_block.type_ in ('subj', 'wform', 'phsubj'):
-                cell.url = cell.fixed_block.url = self.get_fixed_url (cell.fixed_block.type_
+            if cell.fixed_block.type in ('subj', 'wform', 'phsubj'):
+                cell.url = cell.fixed_block.url = self.get_fixed_url (cell.fixed_block.type
                                                                      ,cell.text
                                                                      )
     
@@ -475,7 +475,7 @@ class View:
         while i < len(self.cells):
             cell = self.cells[i]
             if cell.fixed_block \
-            and cell.fixed_block.type_ in ('wform', 'transc', 'speech'):
+            and cell.fixed_block.type in ('wform', 'transc', 'speech'):
                 cell.text = ''
             cell.wform = cell.speech = cell.transc = ''
             i += 1
@@ -743,7 +743,7 @@ class Commands:
     
     def is_phrase_type(self, cell):
         for block in cell.blocks:
-            if block.type_ in ('phsubj', 'phrase', 'phcount'):
+            if block.type in ('phsubj', 'phrase', 'phcount'):
                 return True
 
 

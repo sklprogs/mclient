@@ -20,7 +20,7 @@ class Trash:
         # Get trash head for general articles
         pos = None
         for i in range(len(self.blocks)):
-            if self.blocks[i].type_ == 'wform' and self.blocks[i].text == ' ':
+            if self.blocks[i].type == 'wform' and self.blocks[i].text == ' ':
                 pos = i
                 break
         ''' If 'wform' block firstly occurs at 0 (which is unlikely), there is
@@ -28,7 +28,7 @@ class Trash:
         '''
         if pos in (None, 0):
             return
-        if set([block.type_ for block in self.blocks[:pos]]) == {'comment'}:
+        if set([block.type for block in self.blocks[:pos]]) == {'comment'}:
             return pos
     
     def _get_head_subj(self):
@@ -39,9 +39,9 @@ class Trash:
         pos = None
         i = 2
         while i < len(self.blocks):
-            if self.blocks[i-2].type_ == 'subj' and not self.blocks[i-2].url \
-            and self.blocks[i-1].type_ == 'term' and not self.blocks[i-1].url \
-            and self.blocks[i].type_ == 'term' and not self.blocks[i].url:
+            if self.blocks[i-2].type == 'subj' and not self.blocks[i-2].url \
+            and self.blocks[i-1].type == 'term' and not self.blocks[i-1].url \
+            and self.blocks[i].type == 'term' and not self.blocks[i].url:
                 pos = i
                 break
             i += 1
@@ -50,7 +50,7 @@ class Trash:
         '''
         if pos in (None, 2):
             return
-        if set([block.type_ for block in self.blocks[:pos-2]]) == {'comment'}:
+        if set([block.type for block in self.blocks[:pos-2]]) == {'comment'}:
             return pos
     
     def _get_head_term(self):
@@ -60,8 +60,8 @@ class Trash:
         pos = None
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i-1].type_ == 'term' and not self.blocks[i-1].url \
-            and self.blocks[i].type_ == 'term' and not self.blocks[i].url:
+            if self.blocks[i-1].type == 'term' and not self.blocks[i-1].url \
+            and self.blocks[i].type == 'term' and not self.blocks[i].url:
                 pos = i
                 break
             i += 1
@@ -70,7 +70,7 @@ class Trash:
         '''
         if pos in (None, 1):
             return
-        if set([block.type_ for block in self.blocks[:pos-1]]) == {'comment'}:
+        if set([block.type for block in self.blocks[:pos-1]]) == {'comment'}:
             return pos
     
     def set_head(self):
@@ -91,7 +91,7 @@ class Trash:
     def set_tail(self):
         i = len(self.blocks) - 1
         while i >= 0:
-            if self.blocks[i].type_ != 'comment':
+            if self.blocks[i].type != 'comment':
                 return
             if self.blocks[i].text == '<!--':
                 self.tail = i
@@ -144,10 +144,10 @@ class Thesaurus:
         '''
         i = 0
         while i < len(self.blocks) - 2:
-            if self.blocks[i].type_ == 'wform' and self.blocks[i].text == ' ' \
-            and self.blocks[i+1].type_ == 'wform' \
+            if self.blocks[i].type == 'wform' and self.blocks[i].text == ' ' \
+            and self.blocks[i+1].type == 'wform' \
             and self.blocks[i+1].text.strip() \
-            and self.blocks[i+2].type_ == 'wform' \
+            and self.blocks[i+2].type == 'wform' \
             and self.blocks[i+2].text == ' ':
                 self.no = i + 1
                 self.blocks[self.no].text = self.blocks[self.no].subj = _('Thes.')
@@ -163,7 +163,7 @@ class Thesaurus:
         count = 0
         i = self.no + 1
         while i < len(self.blocks):
-            if self.blocks[i].type_ == 'subj':
+            if self.blocks[i].type == 'subj':
                 count += 1
                 self.blocks[i].text = sh.List ([self.blocks[self.no].text, ','
                                               ,self.blocks[i].text]
@@ -231,7 +231,7 @@ class SeparateWords:
         '''
         if len(self.blocks) > 1:
             no = len(self.blocks) - 2
-            if self.blocks[no].type_ == 'comment' \
+            if self.blocks[no].type == 'comment' \
             and self.blocks[no].text.startswith(' ') \
             and not self.blocks[no].url:
                 blocks.append(self.blocks[no])
@@ -245,7 +245,7 @@ class SeparateWords:
                 differ from a previous cell.
             '''
             if self.blocks[i].url:
-                self.blocks[i].type_ = 'term'
+                self.blocks[i].type = 'term'
             else:
                 for pattern in self.patterns:
                     self.blocks[i].text = self.blocks[i].text.replace(pattern, '')
@@ -262,7 +262,7 @@ class SeparateWords:
     
     def _add_subject(self):
         block = ic.Block()
-        block.type_ = 'subj'
+        block.type = 'subj'
         block.text = block.subjf = _('Separate words')
         block.subj = _('sep. words')
         self.blocks.insert(0, block)
@@ -270,9 +270,9 @@ class SeparateWords:
     def _set_terms(self):
         for i in range(len(self.blocks)):
             self.blocks[i].cellno = i
-            if self.blocks[i].type_ == 'comment' \
+            if self.blocks[i].type == 'comment' \
             and self.blocks[i].url.startswith('l1'):
-                self.blocks[i].type_ = 'term'
+                self.blocks[i].type = 'term'
     
     def set(self):
         f = '[MClientQt] plugins.multitrancom.elems.SeparateWords.set'
@@ -344,7 +344,7 @@ class Suggestions:
             sh.com.rep_lazy(f)
             return
         for block in self.blocks:
-            if block.type_ != 'comment':
+            if block.type != 'comment':
                 continue
             for pattern in self.patterns:
                 if pattern == block.text:
@@ -359,8 +359,8 @@ class Suggestions:
             return
         count = 0
         for block in self.blocks:
-            if block.type_ != 'comment':
-                mes = _('Unexpected block type: "{}"!').format(block.type_)
+            if block.type != 'comment':
+                mes = _('Unexpected block type: "{}"!').format(block.type)
                 sh.objs.get_mes(f, mes, True).show_warning()
                 continue
             if block.text.strip() == ';':
@@ -369,12 +369,12 @@ class Suggestions:
                 count += 1
                 # ' Suggest: ' pattern should be stripped
                 block.text = block.text.strip()
-                block.type_ = 'subj'
+                block.type = 'subj'
                 block.subj = block.subjf = block.text
                 block.cellno = count - 1
             elif block.url.startswith('l1='):
                 count += 1
-                block.type_ = 'term'
+                block.type = 'term'
                 block.cellno = count - 1
         sh.com.rep_matches(f, count)
     
@@ -442,7 +442,7 @@ class Suggestions:
         for i in range(len(self.blocks)):
             block = self.blocks[i]
             mes = _('Block #{}. Type: "{}". Text: "{}". URL: "{}"')
-            mes = mes.format(i, block.type_, block.text, block.url)
+            mes = mes.format(i, block.type, block.text, block.url)
             sh.objs.get_mes(f, mes, True).show_debug()
     
     def delete_semi(self):
@@ -482,14 +482,14 @@ class Elems:
         for cell in self.cells:
             if not cell.fixed_block:
                 continue
-            if cell.fixed_block.type_ == 'subj':
-                self.fixed_urls[cell.fixed_block.type_][cell.fixed_block.subj] = cell.url
-                self.fixed_urls[cell.fixed_block.type_][cell.fixed_block.subjf] = cell.url
-            elif cell.fixed_block.type_ in ('phsubj', 'wform') and cell.url:
-                self.fixed_urls[cell.fixed_block.type_][cell.text] = cell.url
+            if cell.fixed_block.type == 'subj':
+                self.fixed_urls[cell.fixed_block.type][cell.fixed_block.subj] = cell.url
+                self.fixed_urls[cell.fixed_block.type][cell.fixed_block.subjf] = cell.url
+            elif cell.fixed_block.type in ('phsubj', 'wform') and cell.url:
+                self.fixed_urls[cell.fixed_block.type][cell.text] = cell.url
     
     def _is_block_fixed(self, block):
-        return block.type_ in ('subj', 'wform', 'speech', 'transc', 'phsubj')
+        return block.type in ('subj', 'wform', 'speech', 'transc', 'phsubj')
     
     def _get_fixed_block(self, cell):
         for block in cell.blocks:
@@ -509,8 +509,8 @@ class Elems:
         count = 0
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i-1].type_ in ('phrase', 'comment') \
-            and self.blocks[i].type_ == 'phcount':
+            if self.blocks[i-1].type in ('phrase', 'comment') \
+            and self.blocks[i].type == 'phcount':
                 count += 1
                 self.blocks[i].cellno = self.blocks[i-1].cellno
             i += 1
@@ -565,7 +565,7 @@ class Elems:
             rownos.append(cell.rowno)
             nos.append(cell.no)
             texts.append(f'"{cell.text}"')
-            cell_types = [block.type_ for block in cell.blocks]
+            cell_types = [block.type for block in cell.blocks]
             types.append(', '.join(cell_types))
             urls.append(cell.url)
         return sh.FastTable (headers = headers
@@ -623,7 +623,7 @@ class Elems:
         while i < len(self.blocks):
             # There can be multiple 'wform' blocks
             if self.blocks[i-1].Fixed and self.blocks[i].Fixed \
-            and self.blocks[i-1].type_ != self.blocks[i].type_:
+            and self.blocks[i-1].type != self.blocks[i].type:
                 count += 1
                 # We just need a different 'cellno' (will be reassigned anyway)
                 self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
@@ -639,7 +639,7 @@ class Elems:
         i = 1
         while i < len(self.blocks):
             # It is not enough to set 'Fixed'
-            if self.blocks[i].type_ == 'speech':
+            if self.blocks[i].type == 'speech':
                 count += 1
                 # We just need a different 'cellno' (will be reassigned anyway)
                 self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
@@ -650,10 +650,10 @@ class Elems:
         f = '[MClientQt] plugins.multitrancom.elems.Elems.set_transc'
         count = 0
         for block in self.blocks:
-            if block.type_ == 'comment' and block.text.startswith('[') \
+            if block.type == 'comment' and block.text.startswith('[') \
             and block.text.endswith(']'):
                 count += 1
-                block.type_ = 'transc'
+                block.type = 'transc'
         sh.com.rep_matches(f, count)
     
     def delete_empty(self):
@@ -668,10 +668,10 @@ class Elems:
         count = 0
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i].type_ == 'user' \
+            if self.blocks[i].type == 'user' \
             and self.blocks[i-1].cellno != self.blocks[i].cellno:
                 count += 1
-                self.blocks[i].type_ = 'subj'
+                self.blocks[i].type = 'subj'
             i += 1
         sh.com.rep_matches(f, count)
     
@@ -682,11 +682,11 @@ class Elems:
             return
         i = len(self.blocks) - 1
         while i >= 0:
-            if self.blocks[i-3].type_ == 'comment' \
-            and self.blocks[i-2].type_ == 'comment' \
-            and self.blocks[i-1].type_ == 'comment' \
-            and self.blocks[i].type_ == 'phrase':
-                self.blocks[i-3].type_ = 'phsubj'
+            if self.blocks[i-3].type == 'comment' \
+            and self.blocks[i-2].type == 'comment' \
+            and self.blocks[i-1].type == 'comment' \
+            and self.blocks[i].type == 'phrase':
+                self.blocks[i-3].type = 'phsubj'
             i -= 1
     
     def _get_url(self, cell):
@@ -704,10 +704,10 @@ class Elems:
         # Example: "beg the question"
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i-1].type_ == 'term' \
+            if self.blocks[i-1].type == 'term' \
             and self.blocks[i-1].text == '⇒ ' \
-            and self.blocks[i].type_ == 'term':
-                self.blocks[i-1].type_ = 'subj'
+            and self.blocks[i].type == 'term':
+                self.blocks[i-1].type = 'subj'
                 # We just need a different 'cellno' (will be reassigned anyway)
                 self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
                 if not self.blocks[i-1].url:
@@ -716,28 +716,28 @@ class Elems:
     
     def _get_last_subj(self):
         for cell in self.cells[::-1]:
-            if cell.fixed_block and cell.fixed_block.type_ in ('subj', 'phsubj'):
+            if cell.fixed_block and cell.fixed_block.type in ('subj', 'phsubj'):
                 return cell.text
     
     def _get_last_wform(self):
         for cell in self.cells[::-1]:
-            if cell.fixed_block and cell.fixed_block.type_ == 'wform':
+            if cell.fixed_block and cell.fixed_block.type == 'wform':
                 return cell.text
     
     def _get_last_speech(self):
         for cell in self.cells[::-1]:
-            if cell.fixed_block and cell.fixed_block.type_ == 'speech':
+            if cell.fixed_block and cell.fixed_block.type == 'speech':
                 return cell.text
     
     def _get_last_transc(self):
         for cell in self.cells[::-1]:
-            if cell.fixed_block and cell.fixed_block.type_ == 'transc':
+            if cell.fixed_block and cell.fixed_block.type == 'transc':
                 return cell.text
     
     def _get_prev_subj(self, i):
         while i >= 0:
             if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type_ in ('subj', 'phsubj'):
+            and self.cells[i].fixed_block.type in ('subj', 'phsubj'):
                 return self.cells[i].text
             i -= 1
         return ''
@@ -745,7 +745,7 @@ class Elems:
     def _get_prev_wform(self, i):
         while i >= 0:
             if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type_ == 'wform':
+            and self.cells[i].fixed_block.type == 'wform':
                 return self.cells[i].text
             i -= 1
         return ''
@@ -753,7 +753,7 @@ class Elems:
     def _get_prev_speech(self, i):
         while i >= 0:
             if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type_ == 'speech':
+            and self.cells[i].fixed_block.type == 'speech':
                 return self.cells[i].text
             i -= 1
         return ''
@@ -761,7 +761,7 @@ class Elems:
     def _get_prev_transc(self, i):
         while i >= 0:
             if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type_ == 'transc':
+            and self.cells[i].fixed_block.type == 'transc':
                 return self.cells[i].text
             i -= 1
         return ''
@@ -805,7 +805,7 @@ class Elems:
     
     def rename_phsubj(self):
         for cell in self.cells:
-            if cell.fixed_block and cell.fixed_block.type_ == 'phsubj':
+            if cell.fixed_block and cell.fixed_block.type == 'phsubj':
                 match = re.search(r'(\d+)', cell.text)
                 if match:
                     title = _('Phrases ({})').format(match.group(1))
@@ -836,7 +836,7 @@ class Elems:
         f = '[MClientQt] plugins.multitrancom.elems.Elems.set_art_subj'
         count = 0
         for block in self.blocks:
-            if block.type_ in ('subj', 'phsubj') and block.subj and block.subjf:
+            if block.type in ('subj', 'phsubj') and block.subj and block.subjf:
                 count += 1
                 self.art_subj[block.subj] = block.subjf
                 self.art_subj[block.subjf] = block.subj
@@ -844,7 +844,7 @@ class Elems:
     
     def set_not_found(self):
         for block in self.blocks:
-            if block.type_ == 'comment' and block.text \
+            if block.type == 'comment' and block.text \
             and block.url.startswith('a=46&'):
                 self.blocks = []
                 return

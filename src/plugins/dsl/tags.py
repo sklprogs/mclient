@@ -68,7 +68,7 @@ class Block:
         ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
             'term', 'transc', 'wform'.
         '''
-        self.type_ = 'comment'
+        self.type = 'comment'
         self.url = ''
         self.urla = ''
         self.wform = ''
@@ -103,7 +103,7 @@ class Tags:
             return
         block = Block()
         block.text = block.dicf = block.dic = self.dicname
-        block.type_ = 'dic'
+        block.type = 'dic'
         self.blocks.insert(0, block)
     
     def set_values(self):
@@ -117,7 +117,7 @@ class Tags:
     def _debug_blocks(self):
         nos = [i + 1 for i in range(len(self.blocks))]
         texts = [block.text for block in self.blocks]
-        types = [block.type_ for block in self.blocks]
+        types = [block.type for block in self.blocks]
         iterable = [nos, types, texts]
         headers = (_('#'), _('TYPES'), _('TEXT'))
         mes = sh.FastTable (iterable = iterable
@@ -158,7 +158,7 @@ class Tags:
                 sh.com.rep_empty(f)
                 continue
             block = Block()
-            block.type_ = type_
+            block.type = type_
             block.text = item.text
             self.blocks.append(block)
     

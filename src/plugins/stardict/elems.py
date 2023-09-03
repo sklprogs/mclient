@@ -42,7 +42,7 @@ class Block:
         ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
             'term', 'transc', 'wform'.
         '''
-        self.type_ = 'comment'
+        self.type = 'comment'
         self.url = ''
         self.wform = ''
 
@@ -121,7 +121,7 @@ class Elems:
                          ,self.blocks[i].wform
                          ,self.blocks[i].speech
                          ,self.blocks[i].transc
-                         ,self.blocks[i].type_
+                         ,self.blocks[i].type
                          ,self.blocks[i].text
                          ,self.blocks[i].same
                          ,self.blocks[i].select
@@ -139,9 +139,9 @@ class Elems:
     def unite_comments(self):
         i = 0
         while i < len(self.blocks):
-            if self.blocks[i].type_ == 'comment' \
+            if self.blocks[i].type == 'comment' \
             and self.blocks[i].same > 0:
-                if i > 0 and self.blocks[i-1].type_ == 'comment':
+                if i > 0 and self.blocks[i-1].type == 'comment':
                     self.blocks[i-1].text \
                             = sh.List (lst1 = [self.blocks[i-1].text
                                       ,self.blocks[i].text
@@ -159,7 +159,7 @@ class Elems:
     def run_comments(self):
         i = 0
         while i < len(self.blocks):
-            if self.blocks[i].type_ in ('comment', 'correction'):
+            if self.blocks[i].type in ('comment', 'correction'):
                 text_str = self.blocks[i].text.strip()
                 ''' Delete comments that are just ';' or ',' (we don't need
                     them, we have a table view). We delete instead of
@@ -171,7 +171,7 @@ class Elems:
                     i -= 1
                 elif not self.blocks[i].same > 0:
                     # For the following cases: "23 фраз в 9 тематиках"
-                    if i > 0 and self.blocks[i-1].type_ == 'phrase':
+                    if i > 0 and self.blocks[i-1].type == 'phrase':
                         self.blocks[i].same = 1
                     # Move the comment to the preceding cell
                     if text_str.startswith(',') or text_str.startswith(';') \
@@ -179,7 +179,7 @@ class Elems:
                     or text_str.startswith('|'):
                         self.blocks[i].same = 1
                         # Mark the next block as a start of a new cell
-                        if i < len(self.blocks) - 1 and self.blocks[i+1].type_\
+                        if i < len(self.blocks) - 1 and self.blocks[i+1].type \
                         not in ('comment', 'correction'):
                             self.blocks[i+1].same = 0
             i += 1
@@ -225,18 +225,18 @@ class Elems:
                 (not same)'
         '''
         for i in range(len(self.blocks)):
-            cond1 = i > 0 and self.blocks[i].type_ == 'correction'
+            cond1 = i > 0 and self.blocks[i].type == 'correction'
             cond2 = self.blocks[i].same <= 0
-            cond3 = i > 0 and self.blocks[i-1].type_ == 'comment' \
+            cond3 = i > 0 and self.blocks[i-1].type == 'comment' \
             and self.blocks[i-1].same <= 0
-            cond4 = i > 1 and self.blocks[i-2].type_ == 'term' \
+            cond4 = i > 1 and self.blocks[i-2].type == 'term' \
             and self.blocks[i-2].same <= 0
             cond5 = i > 1 and self.blocks[i-2].same <= 0
-            cond6 = self.blocks[i].type_ == 'term'
-            cond7a = i > 1 and self.blocks[i-2].type_ == 'dic'
-            cond7b = i > 1 and self.blocks[i-2].type_ == 'wform'
-            cond7c = i > 1 and self.blocks[i-2].type_ == 'speech'
-            cond7d = i > 1 and self.blocks[i-2].type_ == 'transc'
+            cond6 = self.blocks[i].type == 'term'
+            cond7a = i > 1 and self.blocks[i-2].type == 'dic'
+            cond7b = i > 1 and self.blocks[i-2].type == 'wform'
+            cond7c = i > 1 and self.blocks[i-2].type == 'speech'
+            cond7d = i > 1 and self.blocks[i-2].type == 'transc'
             cond7 = cond7a or cond7b or cond7c or cond7d
             # not equivalent to 'not cond5' because of 'i'
             cond8 = i > 1 and self.blocks[i-2].same == 1
@@ -258,7 +258,7 @@ class Elems:
         # Rule 5
         if self.blocks:
             # After exiting the loop, the last block
-            cond1 = self.blocks[i].type_ in ('comment', 'correction')
+            cond1 = self.blocks[i].type in ('comment', 'correction')
             cond2 = self.blocks[i].same <= 0
             if cond1 and cond2:
                 self.blocks[i].same = 1
@@ -279,8 +279,8 @@ class Elems:
 
     def set_phrases(self):
         for block in self.blocks:
-            if block.type_ == 'phrase':
-                block.type_ = 'dic'
+            if block.type == 'phrase':
+                block.type = 'dic'
                 block.select = 1
                 block.dic = block.text.strip()
                 break
@@ -290,39 +290,39 @@ class Elems:
         
         # Find first non-empty values and set them as default
         for block in self.blocks:
-            if block.type_ == 'dic':
+            if block.type == 'dic':
                 dic = block.text
                 break
         for block in self.blocks:
-            if block.type_ == 'wform':
+            if block.type == 'wform':
                 wform = block.text
                 break
         for block in self.blocks:
-            if block.type_ == 'speech':
+            if block.type == 'speech':
                 speech = block.text
                 break
         for block in self.blocks:
-            if block.type_ == 'transc':
+            if block.type == 'transc':
                 transc = block.text
                 break
         for block in self.blocks:
-            if block.type_ == 'term' or block.type_ == 'phrase':
+            if block.type == 'term' or block.type == 'phrase':
                 term = block.text
                 break
         
         for block in self.blocks:
-            if block.type_ == 'dic':
+            if block.type == 'dic':
                 dic = block.text
-            elif block.type_ == 'wform':
+            elif block.type == 'wform':
                 wform = block.text
-            elif block.type_ == 'speech':
+            elif block.type == 'speech':
                 speech = block.text
-            elif block.type_ == 'transc':
+            elif block.type == 'transc':
                 transc = block.text
                 ''' #TODO: Is there a difference if we use both
                     term/phrase here or the term only?
                 '''
-            elif block.type_ in ('term', 'phrase'):
+            elif block.type in ('term', 'phrase'):
                 term = block.text
             block.dic = dic.strip()
             block.wform = wform
@@ -339,13 +339,13 @@ class Elems:
         '''
         i = len(self.blocks) - 1
         while i >= 0:
-            if self.blocks[i].type_ in ('term', 'phrase'):
+            if self.blocks[i].type in ('term', 'phrase'):
                 term = self.blocks[i].text
                 break
             i -= 1
         i = len(self.blocks) - 1
         while i >= 0:
-            if self.blocks[i].type_ in ('term', 'phrase'):
+            if self.blocks[i].type in ('term', 'phrase'):
                 term = self.blocks[i].text
             if not self.blocks[i].same > 0:
                 self.blocks[i].term = term
@@ -353,7 +353,7 @@ class Elems:
             
     def set_fixed_term(self):
         for block in self.blocks:
-            if block.type_ in ('dic', 'wform', 'speech', 'transc'):
+            if block.type in ('dic', 'wform', 'speech', 'transc'):
                 block.term = ''
                 
     def insert_fixed(self):
@@ -365,7 +365,7 @@ class Elems:
             or speech != self.blocks[i].speech:
                 
                 block = Block()
-                block.type_ = 'speech'
+                block.type = 'speech'
                 block.text = self.blocks[i].speech
                 block.dic = self.blocks[i].dic
                 block.wform = self.blocks[i].wform
@@ -376,7 +376,7 @@ class Elems:
                 self.blocks.insert(i, block)
                 
                 block = Block()
-                block.type_ = 'transc'
+                block.type = 'transc'
                 block.text = self.blocks[i].transc
                 block.dic = self.blocks[i].dic
                 block.wform = self.blocks[i].wform
@@ -387,7 +387,7 @@ class Elems:
                 self.blocks.insert(i, block)
 
                 block = Block()
-                block.type_ = 'wform'
+                block.type = 'wform'
                 block.text = self.blocks[i].wform
                 block.dic = self.blocks[i].dic
                 block.wform = self.blocks[i].wform
@@ -398,7 +398,7 @@ class Elems:
                 self.blocks.insert(i, block)
                 
                 block = Block()
-                block.type_ = 'dic'
+                block.type = 'dic'
                 block.text = self.blocks[i].dic
                 block.dic = self.blocks[i].dic
                 block.wform = self.blocks[i].wform
@@ -415,14 +415,14 @@ class Elems:
             i += 1
             
     def remove_fixed(self):
-        self.blocks = [block for block in self.blocks if block.type_ \
+        self.blocks = [block for block in self.blocks if block.type \
                        not in ('dic', 'wform', 'transc', 'speech')
                       ]
                        
     def set_selectables(self):
         # block.no is set only after creating DB
         for block in self.blocks:
-            if block.type_ in ('phrase', 'term', 'transc') \
+            if block.type in ('phrase', 'term', 'transc') \
             and block.text and block.select < 1:
                 block.select = 1
             else:

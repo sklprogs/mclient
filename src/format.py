@@ -21,21 +21,21 @@ class Block:
         self.colno = colno
     
     def _is_phrase_prior(self):
-        if self.block.type_ == 'phrase':
+        if self.block.type == 'phrase':
             return sj.objs.get_subjects().is_prioritized(self.block.text)
     
     def _is_phrase_blocked(self):
-        if self.block.type_ == 'phrase':
+        if self.block.type == 'phrase':
             return sj.objs.get_subjects().is_blocked(self.block.text)
     
     def _is_subj_prior(self):
         # 'phsubj' cannot be prioritized or blocked
-        if self.block.type_ == 'subj':
+        if self.block.type == 'subj':
             return sj.objs.get_subjects().is_prioritized(self.block.text)
     
     def _is_subj_blocked(self):
         # 'phsubj' cannot be prioritized or blocked
-        if self.block.type_ == 'subj':
+        if self.block.type == 'subj':
             return sj.objs.get_subjects().is_blocked(self.block.text)
     
     def get_color(self):
@@ -43,13 +43,13 @@ class Block:
             return objs.get_colors().php
         if self._is_phrase_blocked():
             return objs.get_colors().phb
-        if self.block.type_ in ('phrase', 'term'):
+        if self.block.type in ('phrase', 'term'):
             return cf.objs.get_config().new['terms']['font']['color']
-        if self.block.type_ in ('comment', 'phcount', 'transc'):
+        if self.block.type in ('comment', 'phcount', 'transc'):
             return cf.objs.get_config().new['comments']['font']['color']
-        if self.block.type_ == 'user':
+        if self.block.type == 'user':
             return objs.get_colors().user
-        if self.block.type_ == 'correction':
+        if self.block.type == 'correction':
             return objs.get_colors().correction
         if self._is_subj_blocked():
             return self.colors_bl[self.colno]
@@ -67,9 +67,9 @@ class Block:
         return ''
     
     def set_italic(self):
-        if self.block.type_ in ('comment', 'user', 'correction', 'phcount'
-                               ,'speech', 'transc'
-                               ):
+        if self.block.type in ('comment', 'user', 'correction', 'phcount'
+                              ,'speech', 'transc'
+                              ):
             self.code = '<i>' + self.code + '</i>'
     
     def set_fixed(self):
@@ -83,9 +83,9 @@ class Block:
             self.code = f'''<div align="{cf.objs.get_config().new['columns']['4']['font']['align']}">{self.code}</div>'''
     
     def get_family(self):
-        if self.block.type_ in ('phrase', 'term'):
+        if self.block.type in ('phrase', 'term'):
             return cf.objs.get_config().new['terms']['font']['family']
-        if self.block.type_ in ('comment', 'correction', 'phcount', 'transc'
+        if self.block.type in ('comment', 'correction', 'phcount', 'transc'
                                ,'user'
                                ):
             return cf.objs.get_config().new['comments']['font']['family']
@@ -100,11 +100,11 @@ class Block:
         return 'Sans'
     
     def get_size(self):
-        if self.block.type_ in ('phrase', 'term'):
+        if self.block.type in ('phrase', 'term'):
             return cf.objs.get_config().new['terms']['font']['size']
-        if self.block.type_ in ('comment', 'correction', 'phcount', 'transc'
-                               ,'user'
-                               ):
+        if self.block.type in ('comment', 'correction', 'phcount', 'transc'
+                              ,'user'
+                              ):
             return cf.objs.get_config().new['comments']['font']['size']
         if self.colno == 0:
             return cf.objs.get_config().new['columns']['1']['font']['size']

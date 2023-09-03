@@ -735,7 +735,7 @@ class Table:
             return
         for row in table[::-1]:
             for cell in row:
-                if cell.fixed_block and cell.fixed_block.type_ == 'phsubj':
+                if cell.fixed_block and cell.fixed_block.type == 'phsubj':
                     return(cell.text, cell.fixed_block.url)
     
     def get_first_term(self):
@@ -747,7 +747,7 @@ class Table:
         for row in table:
             for cell in row:
                 for block in cell.blocks:
-                    if block.type_ == 'term' and block.text.strip():
+                    if block.type == 'term' and block.text.strip():
                         return(cell.rowno, cell.colno)
     
     def _is_col_empty(self, colno):

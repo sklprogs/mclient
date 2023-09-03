@@ -78,7 +78,7 @@ class Block:
         ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
             'term', 'transc', 'wform'.
         '''
-        self.type_ = 'comment'
+        self.type = 'comment'
         self.url = ''
         self.urla = ''
         self.wform = ''
@@ -96,7 +96,7 @@ class AnalyzeTag:
 
     def set_dic(self):
         if pdic in self.block:
-            self.cur.type_ = 'dic'
+            self.cur.type = 'dic'
     
     def run(self):
         self.split()
@@ -104,24 +104,24 @@ class AnalyzeTag:
         for self.block in self.blocks:
             if self.block.startswith('<'):
                 if self.is_useful():
-                    self.cur.type_ = ''
+                    self.cur.type = ''
                     self.set_phrases()
                     # Phrases and word forms have conflicting tags
-                    # We check 'type_' to speed up
-                    if not self.cur.type_:
+                    # We check 'type' to speed up
+                    if not self.cur.type:
                         self.set_wform()
-                    if not self.cur.type_:
+                    if not self.cur.type:
                         self.set_dic()
-                    if not self.cur.type_:
+                    if not self.cur.type:
                         self.set_term()
-                    if not self.cur.type_:
+                    if not self.cur.type:
                         self.set_speech()
-                    if not self.cur.type_:
+                    if not self.cur.type:
                         self.set_comment()
-                    if not self.cur.type_:
+                    if not self.cur.type:
                         self.set_transc()
                 else:
-                    self.cur.type_ = 'invalid'
+                    self.cur.type = 'invalid'
             else:
                 self.run_plain()
 
@@ -135,7 +135,7 @@ class AnalyzeTag:
         ''' #NOTE: The analysis must be reset after '</', otherwise, plain text
             following it will be marked as 'invalid' rather than 'comment'.
         '''
-        if self.cur.type_ != 'invalid':
+        if self.cur.type != 'invalid':
             self.elems.append(copy.copy(self.cur))
 
     def split(self):
@@ -159,33 +159,33 @@ class AnalyzeTag:
 
     def set_comment(self):
         if self.block.startswith(pcom):
-            self.cur.type_ = 'comment'
+            self.cur.type = 'comment'
 
     def set_wform(self):
         if pwf in self.block:
-            self.cur.type_ = 'wform'
+            self.cur.type = 'wform'
 
     def set_phrases(self):
         if pph in self.block:
-            self.cur.type_ = 'phrase'
+            self.cur.type = 'phrase'
 
     def set_term(self):
         if ptm in self.block:
-            self.cur.type_ = 'term'
+            self.cur.type = 'term'
 
-    # Transcription
     def set_transc(self):
+        # Transcription
         if ptr1 in self.block:
             type_ = 'transc'
             text = self.block.replace(ptr1, '', 1).replace(ptr2, '', 1)
             # Will be empty for non-Stardict sources
             if text:
-                self.cur.type_, self.cur.text = type_, text
+                self.cur.type, self.cur.text = type_, text
                 self.elems.append(copy.copy(self.cur))
 
     def set_speech(self):
         if psp in self.block:
-            self.cur.type_ = 'speech'
+            self.cur.type = 'speech'
 
 
 
@@ -245,7 +245,7 @@ class Tags:
         rows = []
         for i in range(len(self.blocks)):
             rows.append ([i + 1
-                         ,self.blocks[i].type_
+                         ,self.blocks[i].type
                          ,self.blocks[i].text
                          ,self.blocks[i].url
                          ,self.blocks[i].same
