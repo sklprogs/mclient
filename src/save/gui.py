@@ -108,7 +108,7 @@ class Save(PyQt5.QtWidgets.QWidget):
         self.setLayout(self.layout_)
         self.ask = sh.FileDialog(self)
         self.set_icon()
-        self.resize(550, 100)
+        self.resize(550, 115)
 
 
 if __name__ == '__main__':
