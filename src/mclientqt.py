@@ -302,13 +302,21 @@ class Save(sv.Save):
         f = '[MClientQt] mclient.Save.save_view_as_htm'
         self.gui.ask.filter = _('Web-pages (*.htm, *.html)')
         self.file = self.gui.ask.save()
-        # lg.objs.get_request().htm is allowed to be empty
         if not self.file:
+            sh.com.rep_empty(f)
+            return
+        # Can be an empty list
+        cells = lg.objs.get_articles().get_cells()
+        #TODO: elaborate
+        skipped = []
+        #skipped = com.get_skipped_terms()
+        code = lg.HTM(cells, skipped).run()
+        if not code:
             sh.com.rep_empty(f)
             return
         self._add_web_ext()
         # Takes ~0.47s for 'set' on Intel Atom, do not call in 'load_article'
-        code = wb.WebPage(lg.objs.request.htm).make_pretty()
+        code = wb.WebPage(code).make_pretty()
         sh.WriteTextFile(self.file).write(code)
 
     def save_raw_as_htm(self):
@@ -1715,6 +1723,7 @@ class App:
         self.update_columns()
         
         cells = cl.View(cells).run()
+        lg.objs.articles.set_view(cells)
         iwrap = cl.Wrap(cells)
         iwrap.run()
         
@@ -1722,11 +1731,6 @@ class App:
         
         lg.objs.articles.set_table(iwrap.cells)
         
-        #TODO: elaborate
-        skipped = []
-        #skipped = com.get_skipped_terms()
-        # This is fast
-        lg.objs.request.htm = lg.HTM(cells, skipped).run()
         #lg.objs.request.text = lg.com.get_text(cells)
         #colors = lg.com.get_colors(blocks)
         #lg.com.fix_colors(colors)

@@ -62,6 +62,23 @@ class Articles:
     def reset(self):
         self.set_values()
     
+    def get_view(self):
+        f = '[MClientQt] logic.Articles.get_view'
+        try:
+            return self.articles['ids'][self.id]['view']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f, mes).show_warning()
+        return []
+    
+    def set_view(self, cells):
+        f = '[MClientQt] logic.Articles.set_view'
+        try:
+            self.articles['ids'][self.id]['view'] = cells
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f, mes).show_warning()
+    
     def get_fixed_urls(self):
         f = '[MClientQt] logic.Articles.get_fixed_urls'
         try:
@@ -330,54 +347,68 @@ class HTM:
         self.landscape = code % _('Print')
     
     def run(self):
+        f = 'logic.HTM.run'
+        timer = sh.Timer(f)
+        timer.start()
         # Takes ~0.015s for 'set' on Intel Atom
         self.set_landscape()
-        self.generate()
-        return self.htm
+        self.create()
+        timer.end()
+        return ''.join(self.code)
     
     def set_values(self):
-        self.htm = ''
+        self.code = ['<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">']
         self.landscape = ''
         self.skipped = 0
     
-    def generate(self):
-        code = ['<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">']
-        code.append(self.landscape)
-        code.append('<div id="printableArea">')
+    def add_landscape(self):
+        self.code.append(self.landscape)
+        self.code.append('<div id="printableArea">')
+    
+    def _create_not_found(self):
+        self.code.append('<h1>')
+        self.code.append(_('Nothing has been found.'))
+        self.code.append('</h1>')
+    
+    def _create_skipped(self):
+        self.code.append('<h1>')
+        mes = _('Nothing has been found (skipped subjects: {}).')
+        mes = mes.format(self.skipped)
+        self.code.append(mes)
+        self.code.append('</h1>')
+    
+    def _create_article(self):
+        self.code.append('<table>')
+        old_colno = -1
+        old_rowno = -1
+        for icell in self.cells:
+            if old_rowno != icell.rowno:
+                if self.code[-1] != '<table>':
+                    self.code.append('</td></tr>')
+                self.code.append('<tr>')
+                old_rowno = icell.rowno
+            if old_colno != icell.colno:
+                if self.code[-1] != '<tr>':
+                    self.code.append('</td>')
+                if icell.fixed_block:
+                    # sub = '<td align="center" valign="top" width="{}">'
+                    self.code.append('<td align="center" valign="top">')
+                else:
+                    self.code.append('<td valign="top">')
+                old_colno = icell.colno
+            self.code.append(icell.code)
+        self.code.append('</td></tr></table>')
+    
+    def create(self):
+        self.add_landscape()
         if self.cells:
-            code.append('<table>')
-            old_colno = -1
-            old_rowno = -1
-            for icell in self.cells:
-                if old_rowno != icell.rowno:
-                    if code[-1] != '<table>':
-                        code.append('</td></tr>')
-                    code.append('<tr>')
-                    old_rowno = icell.rowno
-                if old_colno != icell.colno:
-                    if code[-1] != '<tr>':
-                        code.append('</td>')
-                    if icell.fixed_block:
-                        # sub = '<td align="center" valign="top" width="{}">'
-                        code.append('<td align="center" valign="top">')
-                    else:
-                        code.append('<td valign="top">')
-                    old_colno = icell.colno
-                code.append(icell.code)
-            code.append('</td></tr></table>')
+            self._create_article()
         elif self.skipped:
-            code.append('<h1>')
-            mes = _('Nothing has been found (skipped subjects: {}).')
-            mes = mes.format(self.skipped)
-            code.append(mes)
-            code.append('</h1>')
+            self._create_skipped()
         else:
-            code.append('<h1>')
-            code.append(_('Nothing has been found.'))
-            code.append('</h1>')
-        code.append('</div>')
-        code.append('</meta></body></html>')
-        self.htm = ''.join(code)
+            self._create_not_found()
+        self.code.append('</div>')
+        self.code.append('</meta></body></html>')
 
 
 
