@@ -306,7 +306,7 @@ class Save(sv.Save):
             sh.com.rep_empty(f)
             return
         # Can be an empty list
-        cells = lg.objs.get_articles().get_cells()
+        cells = lg.objs.get_articles().get_table()
         #TODO: elaborate
         skipped = []
         #skipped = com.get_skipped_terms()
@@ -374,22 +374,19 @@ class Save(sv.Save):
 class Commands:
     
     def get_article_subjects(self):
-        cells = lg.objs.get_articles().get_cells()
+        cells = lg.objs.get_articles().get_table()
         subjects = []
-        for cell in cells:
-            if not cell.subj.strip():
-                continue
-            types = [block.type_ for block in cell.blocks]
-            ''' We have non-fixed cells here, so there is no need to filter out
-                'phsubj'.
-            '''
-            if 'phrase' in types or 'phcount' in types:
-                continue
-            if not cell.subj in subjects:
-                subjects.append(cell.subj)
-        subjects = [sj.objs.get_subjects().expand(subject) for subject in subjects]
+        for row in cells:
+            for cell in row:
+                if not cell.fixed_block:
+                    continue
+                if cell.fixed_block.type_ != 'subj':
+                    continue
+                subjects.append(cell.text)
+        subjects = [subject.strip() for subject in subjects if subject.strip()]
+        subjects = sorted(set(subjects), key=lambda s: s.casefold())
         dic = {}
-        for subject in sorted(subjects, key=lambda s: s.casefold()):
+        for subject in subjects:
             dic[subject] = {}
         return dic
     
@@ -1723,7 +1720,6 @@ class App:
         self.update_columns()
         
         cells = cl.View(cells).run()
-        lg.objs.articles.set_view(cells)
         iwrap = cl.Wrap(cells)
         iwrap.run()
         
@@ -1735,6 +1731,8 @@ class App:
         #colors = lg.com.get_colors(blocks)
         #lg.com.fix_colors(colors)
         
+        #TODO: elaborate
+        skipped = []
         ''' Empty article is not added either to memory or history, so we just
             do not clear the search field to be able to correct the typo.
         '''
