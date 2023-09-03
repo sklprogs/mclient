@@ -276,16 +276,24 @@ class Save(sv.Save):
             sh.com.rep_empty(f)
             return ''
         for row in cells:
-            text_row = []
             for cell in row:
                 if not cell.text.strip():
                     continue
+                if cell.fixed_block \
+                and cell.fixed_block.type in ('subj', 'phsubj') and text_row:
+                    text_row = ''.join(text_row)
+                    # Removing '; ' before subject-related cells
+                    text.append(text_row[:-2])
+                    text_row = []
                 text_row.append(cell.text)
                 if cell.fixed_block and cell.fixed_block.type in ('subj', 'phsubj'):
                     text_row.append(': ')
                 else:
                     text_row.append('; ')
-            text.append(''.join(text_row))
+        if text_row:
+            # Removing '; ' before subject-related cells
+            text_row = ''.join(text_row)
+            text.append(text_row[:-2])
         return '\n'.join(text)
     
     def add_bindings(self):
