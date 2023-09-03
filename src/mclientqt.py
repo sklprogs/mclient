@@ -279,14 +279,14 @@ class Save(sv.Save):
             for cell in row:
                 if not cell.text.strip():
                     continue
-                if cell.fixed_block \
-                and cell.fixed_block.type in ('subj', 'phsubj') and text_row:
-                    text_row = ''.join(text_row)
-                    # Removing '; ' before subject-related cells
-                    text.append(text_row[:-2])
-                    text_row = []
+                if cell.colno == 0 and cell.fixed_block:
+                    if text_row:
+                        text_row = ''.join(text_row)
+                        # Removing '; ' before subject-related cells
+                        text.append(text_row[:-2])
+                        text_row = []
                 text_row.append(cell.text)
-                if cell.fixed_block and cell.fixed_block.type in ('subj', 'phsubj'):
+                if cell.colno == 0 and cell.fixed_block:
                     text_row.append(': ')
                 else:
                     text_row.append('; ')
@@ -294,7 +294,7 @@ class Save(sv.Save):
             # Removing '; ' before subject-related cells
             text_row = ''.join(text_row)
             text.append(text_row[:-2])
-        return '\n'.join(text)
+        return '\n\n'.join(text)
     
     def add_bindings(self):
         self.gui.save.clicked.connect(self.select)
