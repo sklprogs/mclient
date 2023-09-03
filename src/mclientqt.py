@@ -267,6 +267,23 @@ class Save(sv.Save):
         super().__init__(*args, **kwargs)
         self.add_bindings()
     
+    def _get_text(self):
+        f = '[MClientQt] mclient.Save._get_text'
+        text = []
+        text_row = []
+        cells = lg.objs.get_articles().get_table()
+        if not cells:
+            sh.com.rep_empty(f)
+            return ''
+        for row in cells:
+            text_row = []
+            for cell in row:
+                if not cell.text.strip():
+                    continue
+                text_row.append(cell.text)
+            text.append('; '.join(text_row))
+        return '\n'.join(text)
+    
     def add_bindings(self):
         self.gui.save.clicked.connect(self.select)
         self.gui.bind(('Return',), self.select)
@@ -335,39 +352,25 @@ class Save(sv.Save):
             return
         self._add_web_ext()
         code = lg.objs.get_plugins().fix_raw_htm(code)
-        sh.WriteTextFile (file = self.file
-                         ,Rewrite = True
-                         ).write(code)
+        sh.WriteTextFile(self.file).write(code)
 
     def save_view_as_txt(self):
         f = '[MClientQt] mclient.Save.save_view_as_txt'
         self.gui.ask.filter = _('Plain text (*.txt)')
         self.file = self.gui.ask.save()
-        if not self.file or not lg.objs.get_request().text:
+        text = self._get_text()
+        if not self.file or not text:
             sh.com.rep_empty(f)
             return
         if not sh.Path(self.file).get_ext_low() == '.txt':
             self.file += '.txt'
-        text = sh.Text(lg.objs.request.text, True).text
-        sh.WriteTextFile (file = self.file
-                         ,Rewrite = True
-                         ).write(text)
+        sh.WriteTextFile(self.file).write(text)
 
     def copy_raw(self):
-        f = '[MClientQt] mclient.Save.copy_raw'
-        code = lg.objs.get_articles().get_raw_code()
-        if not code:
-            sh.com.rep_empty(f)
-            return
-        sh.Clipboard().copy(code)
+        sh.Clipboard().copy(lg.objs.get_articles().get_raw_code())
 
     def copy_view(self):
-        f = '[MClientQt] mclient.Save.copy_view'
-        text = sh.Text(lg.objs.get_request().text, True).text
-        if text:
-            sh.Clipboard().copy(text)
-        else:
-            sh.com.rep_empty(f)
+        sh.Clipboard().copy(self._get_text())
 
 
 
