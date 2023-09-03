@@ -281,7 +281,11 @@ class Save(sv.Save):
                 if not cell.text.strip():
                     continue
                 text_row.append(cell.text)
-            text.append('; '.join(text_row))
+                if cell.fixed_block and cell.fixed_block.type in ('subj', 'phsubj'):
+                    text_row.append(': ')
+                else:
+                    text_row.append('; ')
+            text.append(''.join(text_row))
         return '\n'.join(text)
     
     def add_bindings(self):
