@@ -9,29 +9,7 @@ import instance as ic
 
 
 class Elems:
-    ''' Process blocks before dumping to DB.
-        About filling 'term':
-        - We fill 'term' from the start in order to ensure the correct
-          'term' value for blocks having 'same == 1'
-        - We fill 'term' from the end in order to ensure that 'term'
-          of blocks of non-selectable types will have the value of
-          the 'term' AFTER those blocks
-        - We fill 'term' from the end in order to ensure that 'term'
-          is also filled for blocks having 'same == 0'
-        - When filling 'term' from the start to the end, in order
-          to set a default 'term' value, we also search for blocks of
-          the 'phrase' type (just to be safe in such cases when
-          'phrase' blocks anticipate 'term' blocks). However, we fill
-          'term' for 'phrase' blocks from the end to the start because
-          we want the 'phrase' subject to have the 'term' value of
-          the first 'phrase' block AFTER it
-        - Finally, we clear TERM values for fixed columns. Sqlite
-          sorts '' before a non-empty string, so we ensure thereby that
-          sorting by TERM will be correct. Otherwise, we would have to
-          correctly calculate TERM values for fixed columns that will
-          vary depending on the view. Incorrect sorting by TERM may
-          result in putting a 'term' item before fixed columns.
-    '''
+
     def __init__(self, blocks, Debug=False):
         f = '[MClient] plugins.dsl.elems.Elems.__init__'
         self.blocks = blocks
@@ -80,32 +58,36 @@ class Elems:
     
     def debug(self, maxrow=20, maxrows=1000):
         f = '[MClient] plugins.dsl.elems.Elems.debug'
-        if self.Debug and self.blocks:
-            headers = ('NO', 'SUBJ', 'SUBJF', 'WFORM', 'SPEECH', 'TRANSC'
-                      ,'TYPE', 'TEXT'
-                      )
-            rows = []
-            for i in range(len(self.blocks)):
-                rows.append ([i + 1
-                             ,self.blocks[i].subj
-                             ,self.blocks[i].subjf
-                             ,self.blocks[i].wform
-                             ,self.blocks[i].speech
-                             ,self.blocks[i].transc
-                             ,self.blocks[i].type
-                             ,self.blocks[i].text
-                             ]
-                            )
-            mes = sh.FastTable (headers = headers
-                               ,iterable = rows
-                               ,maxrow = maxrow
-                               ,maxrows = maxrows
-                               ,Transpose = True
-                               ).run()
-            mes = _('Non-DB blocks:') + '\n\n' + mes
-            sh.com.run_fast_debug(f, mes)
-        else:
+        if not self.Debug or not self.blocks:
             sh.com.rep_lazy(f)
+            return
+        headers = ('NO', 'SUBJ', 'SUBJF', 'WFORM', 'SPEECH', 'TRANSC', 'TYPE'
+                  ,'TEXT'
+                  )
+        rows = []
+        for i in range(len(self.blocks)):
+            rows.append ([i + 1
+                         ,self.blocks[i].subj
+                         ,self.blocks[i].subjf
+                         ,self.blocks[i].wform
+                         ,self.blocks[i].speech
+                         ,self.blocks[i].transc
+                         ,self.blocks[i].type
+                         ,self.blocks[i].text
+                         ]
+                        )
+        mes = [f'{f}:']
+        sub = sh.FastTable (headers = headers
+                           ,iterable = rows
+                           ,maxrow = maxrow
+                           ,maxrows = maxrows
+                           ,Transpose = True
+                           ).run()
+        mes.append(sub)
+        sub = _('Blocks:')
+        mes.append(sub)
+        mes.append('')
+        return '\n'.join(mes)
     
     def add_space(self):
         f = '[MClient] plugins.dsl.elems.Elems.add_space'

@@ -37,23 +37,18 @@ class Get:
         self.pattern = pattern
     
     def _debug_articles(self):
-        nos = []
-        searches = []
-        dics = []
-        codes = []
+        f = '[MClient] plugins.dsl.get.Get._debug_articles'
+        mes = [f'{f}:']
         for i in range(len(self.articles)):
-            nos.append(i+1)
-            searches.append(self.articles[i].search)
-            dics.append(self.articles[i].dic)
-            codes.append(self.articles[i].code)
-        iterable = [nos, searches, dics, codes]
-        headers = (_('#'), _('SEARCH'), _('SUBJECT'), _('CODE'))
-        mes = sh.FastTable (iterable = iterable
-                           ,headers = headers
-                           ,maxrow = 70
-                           ,maxrows = self.maxrows
-                           ).run()
-        return _('Articles:') + '\n' + mes
+            sub = _('#{}:').format(i + 1)
+            mes.append(sub)
+            sub = _('Search: "{}"').format(self.articles[i].search)
+            mes.append(sub)
+            sub = _('Code:')
+            mes.append(sub)
+            mes.append(self.articles[i].code)
+            mes.append('')
+        return '\n'.join(mes)
     
     def debug(self):
         f = '[MClient] plugins.dsl.get.Get.debug'
@@ -63,21 +58,18 @@ class Get:
         if not self.Success:
             sh.com.cancel(f)
             return
-        mes = self._debug_articles()
-        sh.com.run_fast_debug(f, mes)
+        return self._debug_articles()
     
     def run(self):
         self.check()
         self.search()
-        self.debug()
         return self.articles
     
     def check(self):
         f = '[MClient] plugins.dsl.get.Get.check'
         if not self.pattern:
             self.pattern = ''
-        self.pattern = self.pattern.strip()
-        self.pattern = self.pattern.lower()
+        self.pattern = self.pattern.strip().lower()
         if not self.pattern:
             self.Success = False
             sh.com.rep_empty(f)

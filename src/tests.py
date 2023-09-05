@@ -365,11 +365,13 @@ class Block:
 class Get:
     
     def run_dsl(self):
-        import plugins.dsl.get as gt
-        gt.PATH = sh.Home('mclient').add_config('dics')
-        gt.Get (pattern = 'computer'
-               ,Debug = DEBUG
-               ).run()
+        import plugins.dsl.get
+        plugins.dsl.get.PATH = sh.Home('mclient').add_config('dics')
+        iget = plugins.dsl.get.Get (pattern = 'account'
+                                   ,Debug = DEBUG
+                                   )
+        iget.run()
+        return iget.debug()
     
     def run_multitrancom(self):
         f = '[MClient] tests.Get.run_multitrancom'
@@ -393,14 +395,14 @@ class Get:
     
     def run_stardict(self):
         f = '[MClient] tests.Get.run_stardict'
-        import plugins.stardict.get as sd
+        import plugins.stardict.get
         #search = 'компьютер'
         search = 'computer'
         timer = sh.Timer(f)
         timer.start()
-        result = sd.Get(search).run()
+        result = plugins.stardict.get.Get(search).run()
         timer.end()
-        sh.com.run_fast_txt(result)
+        return result
 
 
 
@@ -479,8 +481,8 @@ class Plugin:
         #отравление хинной коркой и её алкалоидами = quininism
         url = ''
         
-        ''' #NOTE: This is a standard 'dics' folder, do not include
-            subfolders here.
+        ''' #NOTE: This is a standard 'dics' folder, do not include subfolders
+            here.
         '''
         plugins.multitrandem.get.PATH = '/home/pete/.config/mclient/dics'
         iplug = mb.Plugin (Debug = DEBUG
@@ -1058,7 +1060,8 @@ if __name__ == '__main__':
     '''
     #mes = com.get_all_subjects()
     #mes = Plugin().run_dsl()
-    mes = Tags().run_dsl()
+    #mes = Tags().run_dsl()
+    mes = Get().run_dsl()
     idebug = sh.Debug(f, mes)
     idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())
