@@ -71,20 +71,6 @@ class Plugins:
             return []
         return self.plugin.get_minors()
     
-    def expand_speech(self, short):
-        f = '[MClient] manager.Plugins.expand_speech'
-        if not self.plugin:
-            sh.com.rep_empty(f)
-            return short
-        return self.plugin.expand_speech(short)
-    
-    def expand_subject(self, short):
-        f = '[MClient] manager.Plugins.expand_subject'
-        if not self.plugin:
-            sh.com.rep_empty(f)
-            return short
-        return self.plugin.expand_subject(short)
-    
     def get_search(self):
         f = '[MClient] manager.Plugins.get_search'
         if not self.plugin:
@@ -105,13 +91,6 @@ class Plugins:
             sh.com.rep_empty(f)
             return
         return self.plugin.is_oneway()
-    
-    def get_title(self, short):
-        f = '[MClient] manager.Plugins.get_title'
-        if not self.plugin:
-            sh.com.rep_empty(f)
-            return short
-        return self.plugin.get_title(short)
     
     def quit(self):
         self.mbplugin.quit()
@@ -274,14 +253,14 @@ class Plugins:
         if not self.plugin:
             sh.com.rep_empty(f)
             return
-        return self.plugin.text
+        return self.plugin.get_text()
     
     def get_htm(self):
         f = '[MClient] manager.Plugins.get_htm'
         if not self.plugin:
             sh.com.rep_empty(f)
             return
-        return self.plugin.htm
+        return self.plugin.get_htm()
     
     def request(self, search='', url=''):
         f = '[MClient] manager.Plugins.request'

@@ -9,7 +9,7 @@ import plugins.multitrancom.cleanup as cu
 import plugins.multitrancom.tags as tg
 import plugins.multitrancom.elems as el
 import plugins.multitrancom.pairs as pr
-import plugins.multitrancom.subjects as sj
+import plugins.multitrancom.subjects as ms
 import plugins.multitrancom.speech as sp
 
 
@@ -36,13 +36,19 @@ class Plugin:
         self.htm = ''
         self.search = ''
     
+    def get_htm(self):
+        return self.htm
+    
+    def get_text(self):
+        return self.text
+    
     def get_subjects(self):
-        return sj.objs.get_subjects().get()
+        return ms.objs.get_subjects().get()
     
     def get_majors(self):
         f = '[MClient] plugins.multitrancom.run.Plugin.get_majors'
         if not self.majors:
-            result = sj.objs.get_groups().get_lists()
+            result = ms.objs.get_groups().get_lists()
             if not result:
                 sh.com.rep_empty(f)
                 return []
@@ -52,7 +58,7 @@ class Plugin:
     def get_minors(self):
         f = '[MClient] plugins.multitrancom.run.Plugin.get_minors'
         if not self.minors:
-            result = sj.objs.get_groups().get_lists()
+            result = ms.objs.get_groups().get_lists()
             if not result:
                 sh.com.rep_empty(f)
                 return []
@@ -77,9 +83,6 @@ class Plugin:
     
     def get_lang2(self):
         return pr.LANG2
-    
-    def get_server(self):
-        return gt.URL
     
     def is_combined(self):
         # Whether or not the plugin is actually a wrapper over other plugins
