@@ -6,7 +6,7 @@ import re
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-import plugins.dsl.cleanup as cu
+import instance as ic
 
 
 ''' Tag patterns:
@@ -41,40 +41,6 @@ import plugins.dsl.cleanup as cu
 '''
 
 
-class Block:
-
-    def __init__(self):
-        self.block = -1
-        # Applies to non-blocked cells only
-        self.cellno = -1
-        self.dic = ''
-        self.dicf = ''
-        self.dprior = 0
-        self.first = -1
-        self.i = -1
-        self.j = -1
-        self.last = -1
-        self.no = -1
-        self.same = -1
-        ''' 'select' is an attribute of a *cell* which is valid if the cell has
-            a non-blocked block of types 'term', 'phrase' or 'transc'.
-        '''
-        self.select = -1
-        self.speech = ''
-        self.sprior = -1
-        self.transc = ''
-        self.term = ''
-        self.text = ''
-        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
-            'term', 'transc', 'wform'.
-        '''
-        self.type = 'comment'
-        self.url = ''
-        self.urla = ''
-        self.wform = ''
-
-
-
 class Tag:
     
     def __init__(self):
@@ -101,13 +67,13 @@ class Tags:
         if not self.blocks:
             sh.com.rep_lazy(f)
             return
-        block = Block()
-        block.text = block.dicf = block.dic = self.dicname
-        block.type = 'dic'
+        block = ic.Block()
+        block.text = block.subjf = block.subj = self.dicname
+        block.type = 'subj'
         self.blocks.insert(0, block)
     
     def set_values(self):
-        self.all_types = ['term', 'dic', 'wform', 'transc', 'comment', 'phrase']
+        self.all_types = ['term', 'subj', 'wform', 'transc', 'comment', 'phrase']
         self.blocks = []
         self.fragms = []
         self.open = []
@@ -157,7 +123,7 @@ class Tags:
             if not type_:
                 sh.com.rep_empty(f)
                 continue
-            block = Block()
+            block = ic.Block()
             block.type = type_
             block.text = item.text
             self.blocks.append(block)
@@ -302,11 +268,11 @@ class Tags:
         if not self.Debug:
             sh.com.rep_lazy(f)
             return
-        mes = [self._debug_code(), self._debug_fragms()
-              ,self._debug_tagged(), self._debug_blocks()
+        mes = [self._debug_code(), self._debug_fragms(), self._debug_tagged()
+              ,self._debug_blocks()
               ]
         mes = '\n\n'.join(mes)
-        sh.com.run_fast_debug(f, mes)
+        return mes
     
     def check(self):
         f = '[MClient] plugins.dsl.tags.Tags.check'
@@ -346,16 +312,4 @@ class Tags:
         self.rename_types()
         self.set_blocks()
         self.set_dic_block()
-        self.debug()
         return self.blocks
-
-
-if __name__ == '__main__':
-    f = '__main__'
-    sh.com.start()
-    file = '/home/pete/bin/mclient/tests/dsl/account balance.txt'
-    code = sh.ReadTextFile(file).get()
-    code = cu.CleanUp(code).run()
-    code = cu.TagLike(code).run()
-    Tags(code, True).run()
-    sh.com.end()

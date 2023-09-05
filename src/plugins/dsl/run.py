@@ -8,7 +8,7 @@ import plugins.dsl.get as gt
 import plugins.dsl.tags as tg
 import plugins.dsl.elems as el
 import plugins.dsl.cleanup as cu
-import plugins.dsl.subjects as sj
+import plugins.dsl.subjects as ds
 
 
 class Plugin:
@@ -24,19 +24,55 @@ class Plugin:
         self.maxrows = maxrows
     
     def set_values(self):
-        self.blocks = []
-        self.text = ''
+        ''' #NOTE: 'fixed_urls', 'art_subj', 'Parallel' and 'Separate' are
+            temporary variables that should be externally referred to only
+            after getting a NEW article.
+        '''
+        self.Parallel = False
+        self.Separate = False
+        self.cells = []
+        self.majors = []
+        self.minors = []
+        self.fixed_urls = {}
+        self.art_subj = {}
         self.htm = ''
         self.search = ''
     
-    def get_subjects(self):
-        return sj.objs.get_subjects().get_list()
+    def is_parallel(self):
+        return self.Parallel
     
-    def get_group_with_header(self, subject=''):
-        return sj.objs.get_subjects().get_group_with_header(subject)
+    def is_separate(self):
+        return self.Separate
+    
+    def get_subjects(self):
+        #TODO: rework
+        #return ds.objs.get_subjects().get_list()
+        return {}
+    
+    def get_speeches(self):
+        #TODO: implement
+        return {}
+    
+    def get_minors(self):
+        if not self.minors:
+            #TODO: implement
+            self.minors = []
+        return self.minors
+    
+    def get_htm(self):
+        return self.htm
+    
+    def get_text(self):
+        return self.text
+    
+    def get_fixed_urls(self):
+        return self.fixed_urls
+    
+    def get_article_subjects(self):
+        return self.art_subj
     
     def get_majors(self):
-        return sj.objs.get_subjects().get_majors()
+        return ds.objs.get_subjects().get_majors()
     
     def get_search(self):
         return self.search
@@ -88,16 +124,12 @@ class Plugin:
         sh.objs.get_mes(f, mes, True).show_debug()
         return lang
     
-    # This is needed only for compliance with a general method
-    def get_server(self):
-        return ''
-    
-    # This is needed only for compliance with a general method
     def fix_raw_htm(self):
+        # This is needed only for compliance with a general method
         return self.htm
     
-    # This is needed only for compliance with a general method
     def get_url(self, search=''):
+        # This is needed only for compliance with a general method
         return ''
     
     def set_lang1(self, lang1=''):

@@ -407,20 +407,24 @@ class Get:
 class Tags:
     
     def run_dsl(self):
-        import plugins.dsl.get as gt
-        import plugins.dsl.cleanup as cu
-        import plugins.dsl.tags as tg
-        gt.PATH = sh.Home('mclient').add_config('dics')
-        articles = gt.Get('account balance').run()
+        import plugins.dsl.get
+        import plugins.dsl.cleanup
+        import plugins.dsl.tags
+        plugins.dsl.get.PATH = sh.Home('mclient').add_config('dics')
+        articles = plugins.dsl.get.Get('account balance').run()
         blocks = []
+        debug = []
         for iarticle in articles:
-            code = cu.CleanUp(iarticle.code).run()
-            code = cu.TagLike(code).run()
-            blocks += tg.Tags (code = code
-                              ,Debug = DEBUG
-                              ,maxrows = 0
-                              ,dicname = iarticle.dic
-                              ).run()
+            code = plugins.dsl.cleanup.CleanUp(iarticle.code).run()
+            code = plugins.dsl.cleanup.TagLike(code).run()
+            itags = plugins.dsl.tags.Tags (code = code
+                                          ,Debug = DEBUG
+                                          ,maxrows = 0
+                                          ,dicname = iarticle.dic
+                                          )
+            blocks += itags.run()
+            debug.append(itags.debug())
+        return '\n'.join(debug)
     
     def analyze_tag(self):
         import plugins.multitrancom.tags as tg
@@ -507,15 +511,22 @@ class Plugin:
         #search = 'компьютер'
         #search = 'computer'
         #search = 'bunker'
-        search = 'accounting'
+        #search = 'accounting'
+        search = 'gear'
         iplug = dr.Plugin(Debug=DEBUG)
         iplug.request(search=search)
-        mes = _('Number of blocks: {}').format(len(iplug.blocks))
-        sh.objs.get_mes(f, mes, True).show_debug()
-        mes = _('Web-page:') + '\n' + iplug.htm
-        sh.com.run_fast_debug(f, mes)
-        mes = _('Text:') + '\n' + iplug.text
-        sh.com.run_fast_debug(f, mes)
+        mes = [f'{f}:']
+        sub = _('Number of blocks: {}').format(len(iplug.blocks))
+        mes.append(sub)
+        sub = _('Web-page:')
+        mes.append(sub)
+        sub = iplug.get_htm()
+        mes.append(sub)
+        sub = _('Text:')
+        mes.append(sub)
+        sub = iplug.get_text()
+        mes.append(sub)
+        return '\n'.join(mes)
     
     def run_multitrancom(self):
         import plugins.multitrancom.run as mc
@@ -1045,7 +1056,9 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
-    mes = com.get_all_subjects()
+    #mes = com.get_all_subjects()
+    #mes = Plugin().run_dsl()
+    mes = Tags().run_dsl()
     idebug = sh.Debug(f, mes)
     idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())

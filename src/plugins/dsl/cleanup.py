@@ -91,9 +91,8 @@ class TagLike:
         i = len(self.start) - 1
         while i >= 0:
             if self.start[i] < self.end[i] < len(self.code):
-                ''' That should be fine except when tag-like
-                    structures are embedded in each other
-                    (that should never happen though).
+                ''' That should be fine except when tag-like structures are
+                    embedded in each other (that should never happen though).
                 '''
                 count += 1
                 pos1 = self.end[i] - 1
@@ -130,5 +129,4 @@ class CleanUp:
             sh.com.rep_empty(f)
             return ''
         self.delete_trash()
-        self.text = sh.Text(self.text).delete_unsupported()
         return self.text
