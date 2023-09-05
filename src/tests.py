@@ -1059,9 +1059,9 @@ if __name__ == '__main__':
         e.g. com.run_welcome, will cause an infinite loop.
     '''
     #mes = com.get_all_subjects()
-    #mes = Plugin().run_dsl()
+    mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
-    mes = Get().run_dsl()
+    #mes = Get().run_dsl()
     idebug = sh.Debug(f, mes)
     idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())

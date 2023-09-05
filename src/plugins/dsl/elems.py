@@ -94,8 +94,7 @@ class Elems:
         count = 0
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i].colno != self.blocks[i-1].colno \
-            or self.blocks[i].rowno != self.blocks[i-1].rowno:
+            if self.blocks[i].cellno == self.blocks[i-1].cellno:
                 if self.blocks[i].text \
                 and not self.blocks[i].text[0].isspace() \
                 and not self.blocks[i].text[0] in sh.lg.punc_array \
