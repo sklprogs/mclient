@@ -205,6 +205,32 @@ class View:
 
 class Elems:
     
+    def run_dsl(self):
+        import plugins.dsl.cleanup as cu
+        import plugins.dsl.get as gt
+        import plugins.dsl.tags as tg
+        import plugins.dsl.elems as el
+        gt.PATH = sh.Home('mclient').add_config('dics')
+        blocks = []
+        htm = []
+        search = 'account'
+        articles = gt.Get(search).run()
+        for iarticle in articles:
+            htm.append(iarticle.code)
+            code = cu.CleanUp(iarticle.code).run()
+            code = cu.TagLike(code).run()
+            blocks += tg.Tags (code = code
+                              ,Debug = DEBUG
+                              ,maxrows = 0
+                              ,dicname = iarticle.dic
+                              ).run()
+        htm = '\n'.join(htm)
+        ielems = el.Elems (blocks = blocks
+                          ,Debug = DEBUG
+                          )
+        blocks = ielems.run()
+        return ielems.debug()
+    
     def run_multitrancom(self):
         f = '[MClient] tests.Elems.run_multitrancom'
         import plugins.multitrancom.cleanup as cu
@@ -1059,9 +1085,9 @@ if __name__ == '__main__':
         e.g. com.run_welcome, will cause an infinite loop.
     '''
     #mes = com.get_all_subjects()
-    mes = Plugin().run_dsl()
+    #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
-    #mes = Get().run_dsl()
+    mes = Elems().run_dsl()
     idebug = sh.Debug(f, mes)
     idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())

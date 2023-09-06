@@ -56,7 +56,7 @@ class Elems:
         self.insert_fixed()
         return self.blocks
     
-    def debug(self, maxrow=20, maxrows=1000):
+    def debug(self, maxrow=70, maxrows=1000):
         f = '[MClient] plugins.dsl.elems.Elems.debug'
         if not self.Debug or not self.blocks:
             sh.com.rep_lazy(f)
@@ -77,14 +77,14 @@ class Elems:
                          ]
                         )
         mes = [f'{f}:']
+        sub = _('Blocks:')
+        mes.append(sub)
         sub = sh.FastTable (headers = headers
                            ,iterable = rows
                            ,maxrow = maxrow
                            ,maxrows = maxrows
                            ,Transpose = True
                            ).run()
-        mes.append(sub)
-        sub = _('Blocks:')
         mes.append(sub)
         mes.append('')
         return '\n'.join(mes)
