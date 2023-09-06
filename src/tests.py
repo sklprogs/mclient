@@ -12,8 +12,10 @@ DEBUG = True
 ''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
     otherwise, 'Tags' will fail to set 'subj' and some other types.
 '''
-SEARCH = 'coregone'
-URL = 'https://www.multitran.com/m.exe?s=coregone&l1=2&l2=1&SHL=2'
+#SEARCH = 'coregone'
+#URL = 'https://www.multitran.com/m.exe?s=coregone&l1=2&l2=1&SHL=2'
+SEARCH = 'account'
+URL = ''
 HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/coregone (2023-06-27).html'
 
 
@@ -200,6 +202,48 @@ class View:
         iview.run()
         timer.end()
         return iview.debug()
+    
+    def run_dsl(self):
+        f = '[MClient] tests.View.run_dsl'
+        import logic as lg
+        import plugins.dsl.get as gt
+        import plugins.dsl.cleanup as cu
+        import plugins.dsl.tags as tg
+        import plugins.dsl.elems as el
+        import cells as cl
+        
+        blocks = []
+        
+        timer = sh.Timer(f)
+        timer.start()
+        gt.PATH = sh.Home('mclient').add_config('dics')
+        articles = gt.Get(SEARCH).run()
+        for iarticle in articles:
+            code = cu.CleanUp(iarticle.code).run()
+            code = cu.TagLike(code).run()
+            blocks += tg.Tags (code = code
+                              ,Debug = DEBUG
+                              ,maxrows = 0
+                              ,dicname = iarticle.dic
+                              ).run()
+        ielems = el.Elems (blocks = blocks
+                          ,Debug = DEBUG
+                          )
+        ielems.run()
+        return ielems.debug()
+#        cells = el.Elems(blocks).run()
+#        
+#        lg.objs.get_articles().add (search = SEARCH
+#                                   ,url = URL
+#                                   ,cells = cells
+#                                   )
+#        
+#        cells = cl.Omit(cells).run()
+#        cells = cl.Prioritize(cells).run()
+#        iview = cl.View(cells)
+#        iview.run()
+#        timer.end()
+#        return iview.debug()
 
 
 
@@ -1087,7 +1131,8 @@ if __name__ == '__main__':
     #mes = com.get_all_subjects()
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
-    mes = Elems().run_dsl()
+    #mes = Elems().run_dsl()
+    mes = View().run_dsl()
     idebug = sh.Debug(f, mes)
     idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())

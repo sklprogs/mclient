@@ -59,8 +59,8 @@ class Tags:
         self.dicname = dicname
         self.maxrows = maxrows
     
-    def set_dic_block(self):
-        f = '[MClient] plugins.dsl.tags.Tags.set_dic_block'
+    def set_subj_block(self):
+        f = '[MClient] plugins.dsl.tags.Tags.set_subj_block'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -311,5 +311,5 @@ class Tags:
         self.delete_empty()
         self.rename_types()
         self.set_blocks()
-        self.set_dic_block()
+        self.set_subj_block()
         return self.blocks
