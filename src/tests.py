@@ -226,24 +226,19 @@ class View:
                               ,maxrows = 0
                               ,dicname = iarticle.dic
                               ).run()
-        ielems = el.Elems (blocks = blocks
-                          ,Debug = DEBUG
-                          )
-        ielems.run()
-        return ielems.debug()
-#        cells = el.Elems(blocks).run()
-#        
-#        lg.objs.get_articles().add (search = SEARCH
-#                                   ,url = URL
-#                                   ,cells = cells
-#                                   )
-#        
-#        cells = cl.Omit(cells).run()
-#        cells = cl.Prioritize(cells).run()
-#        iview = cl.View(cells)
-#        iview.run()
-#        timer.end()
-#        return iview.debug()
+        cells = el.Elems(blocks).run()
+        
+        lg.objs.get_articles().add (search = SEARCH
+                                   ,url = URL
+                                   ,cells = cells
+                                   )
+        
+        cells = cl.Omit(cells).run()
+        cells = cl.Prioritize(cells).run()
+        iview = cl.View(cells)
+        iview.run()
+        timer.end()
+        return iview.debug()
 
 
 
