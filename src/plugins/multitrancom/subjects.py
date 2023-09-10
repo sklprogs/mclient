@@ -25,7 +25,7 @@ import skl_shared_qt.config as qc
       expanded as 'Informal'.
 '''
 
-class Subjects:
+class ByLangs:
     
     def __init__(self):
         self.Success = True
@@ -39,7 +39,7 @@ class Subjects:
                                         )
     
     def set_files(self):
-        f = '[MClient] plugins.multitrancom.subjects.Subjects.set_files'
+        f = '[MClient] plugins.multitrancom.subjects.ByLangs.set_files'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -52,7 +52,7 @@ class Subjects:
         self.Success = sh.File(self.psubjects).Success and sh.File(self.pschema).Success
     
     def load(self):
-        f = '[MClient] plugins.multitrancom.subjects.Subjects.load'
+        f = '[MClient] plugins.multitrancom.subjects.ByLangs.load'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -63,7 +63,7 @@ class Subjects:
         self.Success = self.ischema.Success and self.iconfig.validate(self.ischema.get())
     
     def get(self):
-        f = '[MClient] plugins.multitrancom.subjects.Subjects.get'
+        f = '[MClient] plugins.multitrancom.subjects.ByLangs.get'
         if not self.Success:
             sh.com.cancel(f)
             return {}
@@ -74,7 +74,7 @@ class Subjects:
         return {}
     
     def dump(self):
-        f = '[MClient] plugins.multitrancom.subjects.Subjects.dump'
+        f = '[MClient] plugins.multitrancom.subjects.ByLangs.dump'
         if not self.Success:
             sh.com.cancel(f)
             return ''
@@ -97,7 +97,7 @@ class Objects:
     
     def get_subjects(self):
         if self.subjects is None:
-            self.subjects = Subjects()
+            self.subjects = ByLangs()
             self.subjects.run()
         return self.subjects
 
