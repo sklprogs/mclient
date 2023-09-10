@@ -320,13 +320,62 @@ class Subjects:
         self.report = []
     
     def run(self):
-        self.run_history()
+        #self.run_history()
         self.expand('комп.')
-        self.run_prioritized('Общая лексика')
+        self.expand('Компьютеры')
+        self.show_prior_default()
+        self.show_prior_local()
+        self.show_prioritized()
+        self.is_prioritized('общ.')
+        self.is_prioritized('Общая лексика')
+        self.is_prioritized('майкр.')
+        self.is_prioritized('Майкрософт')
         return '\n'.join(self.report)
     
-    def run_prioritized(self, subject):
-        f = '[MClient] tests.Subjects.run_prioritized'
+    def show_prior_default(self):
+        f = '[MClient] tests.Subjects.show_prior_default'
+        sub = f'{f}:'
+        self.report.append(sub)
+        sub = 'Prioritized subjects from default config:'
+        self.report.append(sub)
+        try:
+            prior = cf.objs.get_config().idefault.get()['subjects']['prioritized']
+        except KeyError:
+            prior = []
+            sh.com.rep_out(f)
+        self.report.append('; '.join(prior))
+        self.report.append('')
+    
+    def show_prior_local(self):
+        f = '[MClient] tests.Subjects.show_prior_local'
+        sub = f'{f}:'
+        self.report.append(sub)
+        sub = 'Prioritized subjects from local config:'
+        self.report.append(sub)
+        try:
+            prior = cf.objs.get_config().ilocal.get()['subjects']['prioritized']
+        except KeyError:
+            prior = []
+            sh.com.rep_out(f)
+        self.report.append('; '.join(prior))
+        self.report.append('')
+    
+    def show_prioritized(self):
+        f = '[MClient] tests.Subjects.show_prioritized'
+        sub = f'{f}:'
+        self.report.append(sub)
+        try:
+            prior = cf.objs.get_config().new['subjects']['prioritized']
+        except KeyError:
+            prior = []
+            sh.com.rep_out(f)
+        sub = 'Prioritized subjects from final config:'
+        self.report.append(sub)
+        self.report.append('; '.join(prior))
+        self.report.append('')
+    
+    def is_prioritized(self, subject):
+        f = '[MClient] tests.Subjects.is_prioritized'
         import subjects as sj
         sub = f'{f}:'
         self.report.append(sub)
