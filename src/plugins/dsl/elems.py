@@ -255,13 +255,13 @@ class Elems:
         self.set_cellno()
         self.set_fixed_blocks()
         self.set_cells()
-        self.unite_brackets()
         self.set_text()
         self.set_fixed_cells()
         self.rename_phsubj()
         self.set_row_nos()
         #self.save_urls()
         #self.set_art_subj()
+        self.unite_brackets()
         self.fill_fixed()
         self.delete_fixed()
         self.renumber()
@@ -330,6 +330,7 @@ class Elems:
                            ,maxrow = maxrow
                            ,maxrows = maxrows
                            ,Transpose = True
+                           ,encloser = '"'
                            ).run()
         mes.append(sub)
         mes.append('')
