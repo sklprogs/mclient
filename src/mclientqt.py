@@ -2156,12 +2156,10 @@ if __name__ == '__main__':
         timer.start()
         app = App()
         app.run_thread()
-        '''
         lg.com.set_url()
         app.load_article (search = lg.objs.get_request().search
                          ,url = lg.objs.request.url
                          )
-        '''
         timer.end()
         app.show()
     else:

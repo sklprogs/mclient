@@ -187,7 +187,7 @@ class HistorySubjects:
             sh.com.rep_empty(f)
             return
         if short == full or short in objs.config.new['subjects']['history']:
-            sh.com.rep_lazy(f)
+            # Messages will be too frequent there
             return
         self.count += 2
         objs.config.new['subjects']['history'][short] = full

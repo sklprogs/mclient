@@ -8,6 +8,7 @@ import config as cf
 import logic as lg
 
 
+
 class Subjects:
     
     def __init__(self):
@@ -29,23 +30,6 @@ class Subjects:
     def set_plain(self):
         self._set_prior_section(cf.objs.get_config().new['subjects']['prioritized'])
         self._set_block_section(cf.objs.get_config().new['subjects']['blocked'])
-    
-    def set_prior(self):
-        f = '[MClientQt] subjects.Subjects.set_prior'
-        if not self.plain_prior or not lg.objs.get_articles().get_subjects():
-            sh.com.rep_lazy(f)
-            return
-        for subject in lg.objs.get_articles().get_subjects():
-            if subject in self.plain_prior:
-                self.prior.append(subject)
-            elif ', ' in subject:
-                parts = subject.split(', ')
-                for part in parts:
-                    if part in self.plain_prior:
-                        self.prior.append(subject)
-                        break
-        mes = '; '.join(self.prior)
-        sh.objs.get_mes(f, mes, True).show_debug()
     
     def add_fixed_urls(self):
         f = '[MClientQt] subjects.Subjects.add_fixed_urls'
@@ -83,8 +67,8 @@ class Subjects:
         # Determine if we need to colorize 'subj' or 'phrase' types
         if not subject:
             return
-        subject = self.expand(subject)
-        if subject in self.plain_prior:
+        expanded = self.expand(subject)
+        if subject in self.plain_prior or expanded in self.plain_prior:
             return True
         if ', ' in subject:
             parts = subject.split(', ')
@@ -113,10 +97,13 @@ class Subjects:
     def get_priority(self, subject):
         if not subject:
             return
-        subject = self.expand(subject)
+        expanded = self.expand(subject)
         priority = self._get_priority(subject)
+        priority_exp = self._get_priority(expanded)
         if priority is not None:
             return priority
+        if priority_exp is not None:
+            return priority_exp
         if ', ' in subject:
             priorities = []
             parts = subject.split(', ')

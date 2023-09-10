@@ -46,9 +46,7 @@ class Expand:
                 sh.objs.get_mes(f, mes, True).show_warning()
     
     def expand_subjects(self):
-        ''' This takes ~0.0084s for 'set' on AMD E-300 (no IDE, no warnings,
-            179 lines in 'subjects.json').
-        '''
+        # This takes ~0.0086s for 'set' on AMD E-300
         f = '[MClientQt] cells.Expand.expand_subjects'
         if cf.objs.get_config().new['ShortSubjects']:
             sh.com.rep_lazy(f)

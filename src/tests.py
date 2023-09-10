@@ -328,8 +328,10 @@ class Subjects:
         self.show_prioritized()
         self.is_prioritized('общ.')
         self.is_prioritized('Общая лексика')
-        self.is_prioritized('майкр.')
+        self.is_prioritized('комп., Майкр.')
         self.is_prioritized('Майкрософт')
+        self.is_prioritized('ИТ.')
+        self.is_prioritized('Информационные технологии')
         return '\n'.join(self.report)
     
     def show_prior_default(self):
