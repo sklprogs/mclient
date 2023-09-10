@@ -314,6 +314,52 @@ class Offline:
 
 
 
+class Subjects:
+    
+    def __init__(self):
+        self.report = []
+    
+    def run(self):
+        self.run_history()
+        self.expand('комп.')
+        self.run_prioritized('Общая лексика')
+        return '\n'.join(self.report)
+    
+    def run_prioritized(self, subject):
+        f = '[MClient] tests.Subjects.run_prioritized'
+        import subjects as sj
+        sub = f'{f}:'
+        self.report.append(sub)
+        Prioritized = sj.objs.get_subjects().is_prioritized(subject)
+        if Prioritized:
+            result = 'is prioritized'
+        else:
+            result = 'is NOT prioritized'
+        sub = f'"{subject}" {result}'
+        self.report.append(sub)
+        self.report.append('')
+    
+    def expand(self, short):
+        f = '[MClient] tests.Subjects.expand'
+        import subjects as sj
+        sub = f'{f}:'
+        self.report.append(sub)
+        sub = f'"{short}" expanded from history: "{sj.objs.get_subjects().expand(short)}"'
+        self.report.append(sub)
+        self.report.append('')
+    
+    def run_history(self):
+        f = '[MClient] tests.Subjects.run_history'
+        sub = f'{f}:'
+        self.report.append(sub)
+        sub = _('History subjects:')
+        self.report.append(sub)
+        sub = str(cf.objs.get_config().new['subjects']['history'])
+        self.report.append(sub)
+        self.report.append('')
+
+
+
 class ArticleSubjects:
     
     def __init__(self):
@@ -1127,7 +1173,8 @@ if __name__ == '__main__':
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
     #mes = Elems().run_dsl()
-    mes = View().run_dsl()
+    mes = Subjects().run()
+    #mes = View().run_dsl()
     idebug = sh.Debug(f, mes)
     idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())
