@@ -15,7 +15,7 @@ mclient:
 
 multitrancom:
 - RU-EN, q: Fix "16q сокр.", etc.
-- RU-EN, системном меню: Remove trash
+- RU-EN, zero fill, installation file, tuple, системном меню, fussy: Remove trash
 - RU-EN, cheat: надинамить (обмануть...: show hint inside screen
 - RU-EN, hell -> Табуированная лексика: Remove terms denoting languages and
   a space before '!'
