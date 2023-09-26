@@ -826,7 +826,9 @@ class Commands:
         return mes
     
     def run_prior(self):
+        import config as cf
         import mclientqt as mc
+        cf.objs.get_config()
         return mc.Priorities()
     
     def run_prior_contr(self):
@@ -1224,10 +1226,10 @@ if __name__ == '__main__':
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
     #mes = Elems().run_dsl()
-    mes = Subjects().run()
+    #mes = Subjects().run()
     #mes = View().run_dsl()
-    idebug = sh.Debug(f, mes)
-    idebug.show()
+    #idebug = sh.Debug(f, mes)
+    #idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())
     #idebug = sh.Debug(f, Elems().run_multitrancom())
     #idebug = sh.Debug(f, Prioritize().run_multitrancom())
@@ -1243,8 +1245,8 @@ if __name__ == '__main__':
     #isuggest.show()
 
     # Priorities
-    #iprior = com.run_prior()
-    #iprior.show()
+    iprior = com.run_prior()
+    iprior.show()
 
     # Priorities (from the controller)
     #iprior = com.run_prior_contr()
