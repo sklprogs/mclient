@@ -416,8 +416,6 @@ class Priorities(PyQt5.QtWidgets.QWidget):
         self.lay_rht.setContentsMargins(0, 0, 0, 0)
         self.tree1.setSelectionMode(PyQt5.QtWidgets.QAbstractItemView.ExtendedSelection)
         self.tree2.setSelectionMode(PyQt5.QtWidgets.QAbstractItemView.ExtendedSelection)
-        self.tree1.setDragDropMode(PyQt5.QtWidgets.QAbstractItemView.InternalMove)
-        self.tree2.setDragDropMode(PyQt5.QtWidgets.QAbstractItemView.InternalMove)
         self.tree1.setStyleSheet(self.tree_style)
         self.tree2.setStyleSheet(self.tree_style)
         self.setStyleSheet('QTreeWidget::item{height: 30px;}')
