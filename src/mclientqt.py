@@ -10,8 +10,7 @@ import logic as lg
 import gui as gi
 
 import cells as cl
-import prior_block.priorities.controller as pr
-import prior_block.blacklist.controller as bl
+import prior_block.controller as pr
 import settings.controller as st
 import suggest.controller as sg
 import about.controller as ab
@@ -28,7 +27,7 @@ import subjects as sj
 DEBUG = False
 
 
-class Priorities(pr.Priorities):
+class Priorities(pr.Panes):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -40,7 +39,7 @@ class Priorities(pr.Priorities):
     
     def add_bindings(self):
         self.gui.btn_res.set_action(self.reset)
-        self.gui.btn_apl.set_action(self.apply)
+        #self.gui.btn_apl.set_action(self.apply)
         self.gui.opt_src.set_action(self.reset)
     
     def set_mode(self):
@@ -2037,8 +2036,9 @@ class App:
         self.history.gui.sig_close.connect(self.history.close)
         self.history.gui.sig_go.connect(self.go_history)
         
-        self.prior.gui.sig_close.connect(self.prior.close)
-        self.prior.gui.sig_close.connect(self.prior.save)
+        #TODO: implement
+        #self.prior.gui.sig_close.connect(self.prior.close)
+        #self.prior.gui.sig_close.connect(self.prior.save)
         
         self.suggest.gui.sig_load.connect(self.load_suggestion)
         
@@ -2059,7 +2059,7 @@ class App:
         self.save = Save()
         self.suggest = sg.Suggest()
         #cur
-        self.block = bl.Blacklist()
+        self.block = pr.Panes()
         self.prior = Priorities()
         self.gui.set_gui(self.table.gui, self.panel)
         self.set_title(product)
