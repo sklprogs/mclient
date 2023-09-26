@@ -1,7 +1,6 @@
 # The MIT License
 
 # Copyright (c) 2006, 2007, 2010 Alexander Belchenko
-# Copyright (c) 2014 Jimmy Kuu
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal

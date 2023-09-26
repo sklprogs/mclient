@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-# This module uses third-party code, license: resources/third parties.txt
-# See https://github.com/jimmykuu/PyQt-PySide-Cookbook/blob/master/tree/drop_indicator.md
-
 import PyQt5
 import PyQt5.QtWidgets
 
