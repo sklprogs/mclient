@@ -14,9 +14,9 @@ DEBUG = True
 '''
 #SEARCH = 'coregone'
 #URL = 'https://www.multitran.com/m.exe?s=coregone&l1=2&l2=1&SHL=2'
-SEARCH = 'account'
+SEARCH = 'имя параметра'
 URL = ''
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/coregone (2023-06-27).html'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/имя параметра (2023-09-27).htm'
 
 
 class Config:
@@ -1233,10 +1233,10 @@ if __name__ == '__main__':
     #idebug = sh.Debug(f, Tags().run_multitrancom())
     #idebug = sh.Debug(f, Elems().run_multitrancom())
     #idebug = sh.Debug(f, Prioritize().run_multitrancom())
-    #idebug = sh.Debug(f, View().run_multitrancom())
+    idebug = sh.Debug(f, View().run_multitrancom())
     #idebug = sh.Debug(f, Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
-    #idebug.show()
+    idebug.show()
     
     #mes = com.run_speech()
     #sh.objs.get_mes(f, mes).show_debug()
@@ -1245,8 +1245,8 @@ if __name__ == '__main__':
     #isuggest.show()
 
     # Priorities
-    iprior = com.run_prior()
-    iprior.show()
+    # iprior = com.run_prior()
+    # iprior.show()
 
     # Priorities (from the controller)
     #iprior = com.run_prior_contr()

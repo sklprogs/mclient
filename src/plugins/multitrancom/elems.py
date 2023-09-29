@@ -16,6 +16,17 @@ class Trash:
         self.head = self.tail = None
         self.blocks = blocks
     
+    def _get_head_comments(self):
+        pos = None
+        for i in range(len(self.blocks)):
+            if self.blocks[i].type != 'comment':
+                pos = i
+                break
+        if pos is None or pos < 4:
+            return
+        if set([block.type for block in self.blocks[:pos]]) == {'comment'}:
+            return pos
+    
     def _get_head_wform(self):
         # Get trash head for general articles
         pos = None
@@ -86,6 +97,10 @@ class Trash:
         pos = self._get_head_term()
         if pos is not None:
             self.Parallel = True
+            self.head = pos
+            return
+        pos = self._get_head_comments()
+        if pos is not None:
             self.head = pos
     
     def set_tail(self):
