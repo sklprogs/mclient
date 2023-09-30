@@ -25,7 +25,7 @@ class Trash:
         if pos is None or pos < 4:
             return
         if set([block.type for block in self.blocks[:pos]]) == {'comment'}:
-            return pos
+            return pos - 1
     
     def _get_head_wform(self):
         # Get trash head for general articles
@@ -134,9 +134,19 @@ class Trash:
             self.blocks = self.blocks[:self.tail]
         if self.head is not None:
             self.blocks = self.blocks[self.head+1:]
-        sh.com.rep_matches(f, old_len-len(self.blocks))
+        sh.com.rep_matches(f, old_len - len(self.blocks))
+    
+    def remove_stresses(self):
+        # Remove useless "stresses" block
+        f = '[MClientQt] plugins.multitrancom.elems.Trash.remove_stresses'
+        old_len = len(self.blocks)
+        self.blocks = [block for block in self.blocks \
+                       if not block.url.startswith('a=467&s=')
+                      ]
+        sh.com.rep_matches(f, old_len - len(self.blocks))
     
     def run(self):
+        self.remove_stresses()
         self.set_head()
         self.set_tail()
         self.report()
