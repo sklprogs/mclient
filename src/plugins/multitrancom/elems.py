@@ -713,6 +713,15 @@ class Elems:
                 i += 1
         sh.com.rep_matches(f,count)
     
+    def remove_stresses(self):
+        # Remove useless "stresses" block
+        f = '[MClient] plugins.multitrancom.elems.Elems.remove_stresses'
+        old_len = len(self.blocks)
+        self.blocks = [block for block in self.blocks \
+                       if not block.url.startswith('a=467&s=')
+                      ]
+        sh.com.rep_matches(f, old_len - len(self.blocks))
+    
     def run(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.run'
         if self.check():
@@ -722,6 +731,7 @@ class Elems:
             # Do this before deleting ';'
             self.set_semino()
             # Do some cleanup
+            self.remove_stresses()
             self.delete_head()
             self.delete_tail()
             self.delete_empty()
