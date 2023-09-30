@@ -141,7 +141,8 @@ class AnalyzeTag:
     def _is_wform(self):
         # Wform/transcription
         return 'td colspan="' in self.tag.text \
-        or '" class="gray"' in self.tag.text
+        or '" class="gray"' in self.tag.text \
+        or ' class="origl"' in self.tag.text
     
     def _is_speech(self):
         return self.tag.text == 'em'
