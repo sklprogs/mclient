@@ -183,13 +183,13 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
             painter.drawRect(option.rect)
         
         if self.long and index in self.long:
-            color = PyQt5.QtGui.QColor('gray')
+            color = PyQt5.QtGui.QColor('#CCCCCC')
             pen = PyQt5.QtGui.QPen(color, 2)
-            pen.setStyle(PyQt5.QtCore.Qt.DashDotDotLine)
+            pen.setStyle(PyQt5.QtCore.Qt.DotLine)
             painter.setPen(pen)
             # Avoid intersecting cell borders and artifacts as the result
             x1, y1, x2, y2 = option.rect.getCoords()
-            painter.drawLine(x1+5, y2-1, x1+50, y2-1)
+            painter.drawLine(x1+5, y2-1, x1+70, y2-1)
         
         painter.save()
     
