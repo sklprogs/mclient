@@ -11,7 +11,6 @@ mclient:
 - Zero scrollbar position before loading article
 
 multitrancom:
-- RU-EN, curio: wrong fixed column parsing
 - RU-EN, meh: no blocked entries, "English Thesaurus" covers "multi engine
   helicopter", but it shouldn't
 - RU-EN, piss-poor: article is partly lost
