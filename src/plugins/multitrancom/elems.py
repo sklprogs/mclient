@@ -640,12 +640,9 @@ class Elems:
     
     def delete_semi(self):
         f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_semi'
-        count = 0
-        for cell in self.cells:
-            old_len = len(cell.blocks)
-            cell.blocks = [block for block in cell.blocks if block.text != '; ']
-            count += old_len - len(cell.blocks)
-        sh.com.rep_matches(f, count)
+        old_len = len(self.blocks)
+        self.blocks = [block for block in self.blocks if block.text != '; ']
+        sh.com.rep_matches(f, old_len - len(self.blocks))
     
     def unite_brackets(self):
         ''' Combine a cell with a preceding or following bracket such that the
@@ -904,6 +901,21 @@ class Elems:
                 self.blocks = []
                 return
     
+    def renumber_by_type(self):
+        f = '[MClientQt] plugins.multitrancom.elems.Elems.renumber_by_type'
+        count = 0
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].cellno != self.blocks[i].cellno:
+                if self.blocks[i].type in ('user', 'correction', 'phcount') \
+                or self.blocks[i].text in (')', ']', '}'):
+                    for block in self.blocks:
+                        if block.cellno == self.blocks[i].cellno:
+                            count += 1
+                            block.cellno = self.blocks[i-1].cellno
+            i += 1
+        sh.com.rep_matches(f, count)
+    
     def run(self):
         # Find thesaurus before deleting empty blocks
         self.blocks = Thesaurus(self.blocks).run()
@@ -928,9 +940,10 @@ class Elems:
         self.separate_fixed()
         self.run_phcount()
         self.strip_blocks()
+        self.delete_semi()
+        self.renumber_by_type()
         self.set_cells()
         self.set_urls()
-        self.delete_semi()
         self.unite_brackets()
         self.set_text()
         self.set_fixed_cells()

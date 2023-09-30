@@ -15,9 +15,7 @@ multitrancom:
   helicopter", but it shouldn't
 - RU-EN, piss-poor: article is partly lost
 - https://www.multitran.com/m.exe?s=coregone&l1=2&l2=1&SHL=2: trash words
-- RU-EN, clutch, quirks: corrections are not in place
 - RU-EN, tuple -> мат.: Fix following fixed URLs
-- RU-EN, fencing: probably a space before "]" in transcription
 - RU-EN, tuple -> Фразы: source and target phrases do not match
 - EN-RU, tuple -> энка -> tuple -> энка: phsubj is duplicated
 - EN-RU, set -> ряд: Cannot go to start
@@ -26,33 +24,13 @@ multitrancom:
 - If a number of columns is changed to an even value in the special-page
   mode (e.g., 2 -> 4 columns), the common-page mode after that will have
   +1 in the number of columns 
-- RU-EN, phytophotodermatitis -> Медицина: wrong colors
-- RU-EN, в режиме -> Биржевой термин: incorrect colorization of
-  "automatic trading"
-- RU-EN, в режиме -> SAP финансы: selecting wforms without 
-  the specialized mode
 - RU-EN, hello: IT phdics are prioritized but not colored
 - RU-EN, set: 'Обработка данных' is prioritized but not colored (phdic)
-- (MClient mode) RU-EN, reproducibility: ')' in the beginning
-- (Clarity mode) RU-EN, frame rate: too wide fixed columns
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"
-- Do not fill history when search is empty (e.g., when changing
-  the source to 'Offline')
-- Do not move at the beginning of the article after cancelling
-  the search
-- Mclient mode: transcription must be set after parts of speechs, but
-  actually it is set before
-- vertical view, RU-EN: "поцелуй": fix Moves.up for the 1st element
-- for vertical view: concerning coloring, rely on row numbers instead of
-  column numbers
-- (DB) Fix Moves on 'рабочая документация' (SelectTermsOnly=0), selects
-  ')' twice, but does not select corrections
-- NODE1 < NODE2 in some rare cases
-- Changing node still sometimes fails
-- shift_y does not work properly when changing sizes on-the-fly
-- Vertical view (maybe, with Styles): 1st column can be a single entry
-  of 'dic' type
+- Do not fill history when search is empty (e.g., when changing the source to
+  'Offline')
+- Do not move at the beginning of the article after cancelling the search
 
 stardict:
 - RU-EN, "Akrotiri Government" from CIA World Factbook 2014: https://tuxor1337.frama.io/firedict/dictionaries.html: some text was not found
