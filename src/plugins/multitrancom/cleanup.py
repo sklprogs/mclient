@@ -22,6 +22,9 @@ class CleanUp:
         self.text = self.text.replace('</u>','')
         self.text = self.text.replace('<b>','')
         self.text = self.text.replace('</b>','')
+        # Fix parts of speech
+        self.text = self.text.replace('<em><span style="color:gray">', '<em>')
+        self.text = self.text.replace('</span></em>', '</em>')
     
     def fix_href(self):
         ''' Fix a malformed URL, e.g., 'href="/m.exe?a=110&l1=1&l2=2&s=process (<редк.>)&sc=671"'
