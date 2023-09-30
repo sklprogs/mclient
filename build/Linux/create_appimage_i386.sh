@@ -10,18 +10,26 @@ oslow="linux"
 # We need to use Debian 10 or newer since Debian 9 has Python 3.5
 # by default which is buggy (some blocks are skipped in EN-RU, "hello"
 # article)
-glibc="2.31"
+glibc="2.36"
+pythonve="$HOME/software/python/mclient_tk_3.11.2_x86"
 binariesdir="$HOME/binaries"
 appimagedir="$binariesdir/appimage"
 srcdir="$HOME/bin/$product/src"
 resdir="$HOME/bin/$product/resources"
-tkhtmldir="/home/pete/tmp/pythonve/lib/python3.9/site-packages/tkinterhtml/tkhtml/Linux"
+tkhtmldir="$pythonve/lib/python3.11/site-packages/tkinterhtml/tkhtml/Linux"
 tmpdir="/tmp/$product"   # Will be deleted!
 builddir="$tmpdir/build" # Will be deleted!
 
+# Actions that may be required before building:
+# sudo ln -s /usr/share/tcltk/tcl8.6/tcl8 /usr/share/tcltk/tcl8
+# sudo ln -s /usr/share/tcltk/tk8.6 /usr/share/tcltk/tk8
+# sudo ln -s $pythonve/lib/python3.11/site-packages/tkinterhtml/tkhtml/Linux/32-bit/Tkhtml /usr/share/tcltk/Tkhtml
+# ln -s $HOME/bin/skl_shared/src $pythonve/lib/python3.11/site-packages/skl_shared
+# ln -s $HOME/bin/skl_shared/resources $pythonve/lib/python3.11/site-packages/resources
+
 export "ARCH=$arch"
 
-source "$HOME/tmp/pythonve/bin/activate"
+source "$pythonve/bin/activate"
 
 if [ "`which pyinstaller`" = "" ]; then
     echo "pyinstaller is not installed!"; exit
@@ -67,7 +75,7 @@ fi
 rm -rf "$tmpdir"
 mkdir -p "$builddir" "$tmpdir/app/usr/bin/tkinterhtml/tkhtml" "$tmpdir/app/resources"
 cp -r "$srcdir"/* "$builddir"
-cp -r "$resdir" "$tmpdir/app/usr"
+cp -r "$resdir" "$tmpdir/app/usr/bin"
 cp -r "$resdir/locale" "$tmpdir/app/resources/"
 cd "$builddir"
 pyinstaller "$product.py"
@@ -89,3 +97,4 @@ fi
 # The tool is i686, but creates i386
 mv -fv "$tmpdir/$product-i386.AppImage" "$HOME/binaries/$product/$productlow-$oslow-i386-glibc$glibc.AppImage"
 rm -rf "$tmpdir"
+deactivate
