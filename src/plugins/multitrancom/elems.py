@@ -560,6 +560,35 @@ class Elems:
             self.cells[i].no = i
     
     def debug(self):
+        report = [self._debug_blocks(), self._debug_cells()]
+        report = [item for item in report if item]
+        return '\n\n'.join(report)
+    
+    def _debug_blocks(self, maxrow=30, maxrows=0):
+        f = '[MClientQt] plugins.multitrancom.elems.Elems._debug_blocks'
+        headers = (_('CELL #'), _('TYPES'), _('TEXT'), 'SUBJ', 'SUBJF', 'URL')
+        nos = []
+        types = []
+        texts = []
+        subj = []
+        subjf = []
+        urls = []
+        for block in self.blocks:
+            nos.append(block.cellno)
+            types.append(block.type)
+            texts.append(f'"{block.text}"')
+            subj.append(block.subj)
+            subjf.append(block.subjf)
+            urls.append(block.url)
+        mes = sh.FastTable (headers = headers
+                           ,iterable = (nos, types, texts, subj, subjf, urls)
+                           ,maxrow = maxrow
+                           ,maxrows = maxrows
+                           ).run()
+        return f'{f}:\n' + mes
+    
+    def _debug_cells(self, maxrow=30, maxrows=0):
+        f = '[MClientQt] plugins.multitrancom.elems.Elems._debug_cells'
         headers = ('SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #'), _('CELL #')
                   ,_('TYPES'), _('TEXT'), 'URL'
                   )
@@ -583,13 +612,14 @@ class Elems:
             cell_types = [block.type for block in cell.blocks]
             types.append(', '.join(cell_types))
             urls.append(cell.url)
-        return sh.FastTable (headers = headers
-                            ,iterable = (subj, wform, speech, transc, rownos
-                                        ,nos, types, texts, urls
-                                        )
-                            ,maxrow = 30
-                            ,maxrows = 0
-                            ).run()
+        mes = sh.FastTable (headers = headers
+                           ,iterable = (subj, wform, speech, transc, rownos
+                                       ,nos, types, texts, urls
+                                       )
+                           ,maxrow = maxrow
+                           ,maxrows = maxrows
+                           ).run()
+        return f'{f}:\n' + mes
     
     def set_text(self):
         for cell in self.cells:

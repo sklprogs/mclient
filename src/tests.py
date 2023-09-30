@@ -14,9 +14,11 @@ DEBUG = True
 '''
 #SEARCH = 'coregone'
 #URL = 'https://www.multitran.com/m.exe?s=coregone&l1=2&l2=1&SHL=2'
-SEARCH = 'имя параметра'
+#SEARCH = 'имя параметра'
+SEARCH = 'curio'
 URL = ''
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/имя параметра (2023-09-27).htm'
+#HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/имя параметра (2023-09-27).html'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/curio (2023-09-29).html'
 
 
 class Config:
@@ -1231,9 +1233,9 @@ if __name__ == '__main__':
     #idebug = sh.Debug(f, mes)
     #idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())
-    #idebug = sh.Debug(f, Elems().run_multitrancom())
+    idebug = sh.Debug(f, Elems().run_multitrancom())
     #idebug = sh.Debug(f, Prioritize().run_multitrancom())
-    idebug = sh.Debug(f, View().run_multitrancom())
+    #idebug = sh.Debug(f, View().run_multitrancom())
     #idebug = sh.Debug(f, Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
     idebug.show()
