@@ -27,7 +27,7 @@ builddir="$tmpdir/build" # Will be deleted!
 
 export "ARCH=$arch"
 
-source "$HOME/tmp/pythonve/bin/activate"
+source "$pythonve/bin/activate"
 
 if [ "`which pyinstaller`" = "" ]; then
     echo "pyinstaller is not installed!"; exit
