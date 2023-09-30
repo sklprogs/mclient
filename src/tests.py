@@ -15,10 +15,9 @@ DEBUG = True
 #SEARCH = 'coregone'
 #URL = 'https://www.multitran.com/m.exe?s=coregone&l1=2&l2=1&SHL=2'
 #SEARCH = 'имя параметра'
-SEARCH = 'curio'
+SEARCH = 'clutch'
 URL = ''
-#HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/имя параметра (2023-09-27).html'
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/curio (2023-09-29).html'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/clutch (2023-09-30).html'
 
 
 class Config:
