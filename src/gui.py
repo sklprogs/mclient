@@ -8,6 +8,8 @@ from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 sh.gi.ICON = sh.objs.get_pdir().add('..', 'resources', 'mclient.png')
+WIDE_ROW_COLOR = '#CCCCCC'
+WIDE_ROW_LEN = 70
 
 
 class FontLimits:
@@ -183,13 +185,13 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
             painter.drawRect(option.rect)
         
         if self.long and index in self.long:
-            color = PyQt5.QtGui.QColor('#CCCCCC')
+            color = PyQt5.QtGui.QColor(WIDE_ROW_COLOR)
             pen = PyQt5.QtGui.QPen(color, 2)
             pen.setStyle(PyQt5.QtCore.Qt.DotLine)
             painter.setPen(pen)
             # Avoid intersecting cell borders and artifacts as the result
             x1, y1, x2, y2 = option.rect.getCoords()
-            painter.drawLine(x1+5, y2-1, x1+70, y2-1)
+            painter.drawLine(x1+5, y2-1, x1+WIDE_ROW_LEN, y2-1)
         
         painter.save()
     

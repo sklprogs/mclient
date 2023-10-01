@@ -1041,6 +1041,8 @@ class App:
         self.thread = kg.Thread()
         self.logic = lg.App()
         self.gui = gi.App()
+        self.gui.WIDE_ROW_COLOR = cf.objs.config.new["rows"]["border"]["color"]
+        self.gui.WIDE_ROW_LEN = cf.objs.config.new["rows"]["border"]["length"]
         self.set_gui()
         self.set_hints()
         self.update_ui()

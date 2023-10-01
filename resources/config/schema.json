@@ -271,7 +271,18 @@
                 }
             }
         }
-    ,"rows": {"type": "object", "properties": {"height": {"type": "integer"}}}
+    ,"rows": {"type": "object"
+             ,"properties":
+                 {"height": {"type": "integer"}
+                 ,"border":
+                     {"type": "object"
+                     ,"properties":
+                         {"color": {"type": "string"}
+                         ,"length": {"type": "integer"}
+                         }
+                     }
+                 }
+             }
     ,"columns":
         {"type": "object"
         ,"properties":

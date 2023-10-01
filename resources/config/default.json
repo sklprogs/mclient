@@ -152,7 +152,9 @@
         ,"hint": "Paste a special symbol"
         }
     }
-,"rows": {"height": 42}
+,"rows": {"height": 42
+         ,"border": {"color": "#CCCCCC", "length": 70}
+         }
 ,"columns":
     {"num": 4
     ,"fixed": {"width": 63}
