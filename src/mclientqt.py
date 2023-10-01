@@ -1086,7 +1086,7 @@ class App:
     
     def show_suggestions(self):
         ''' Retrieving suggestions online is very slow, so this should be
-            implemented with a hotkey rather as we type.
+            implemented with a hotkey rather than as we type.
         '''
         f = '[MClientQt] mclient.App.show_suggestions'
         fragment = self.panel.ent_src.get().strip()

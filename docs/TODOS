@@ -14,7 +14,8 @@ mclient:
 - Do not add entries that were not found to history
 
 multitrancom:
-- RU-EN, Linux distribution, phytophotodermatitis: Add subj for other languages
+- RU-EN, Linux distribution, phytophotodermatitis, coregone: Add subj for other
+  languages
 - RU-EN, q: Fix "16q сокр.", etc.
 - RU-EN, zero fill, installation file, tuple, системном меню, fussy: Remove trash
 - RU-EN, cheat: надинамить (обмануть...: show hint inside screen
