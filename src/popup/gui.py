@@ -7,6 +7,9 @@ import PyQt5.QtWidgets
 #from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
+WIDTH = 270
+HEIGHT = 150
+
 
 class Popup(PyQt5.QtWidgets.QWidget):
     
@@ -61,7 +64,7 @@ class Popup(PyQt5.QtWidgets.QWidget):
         self.set_icon()
         flags = self.windowFlags()
         self.setWindowFlags(flags|PyQt5.QtCore.Qt.FramelessWindowHint)
-        self.resize(270, 150)
+        self.resize(WIDTH, HEIGHT)
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:

@@ -642,8 +642,19 @@ class Table:
         if not text:
             sh.com.rep_empty(f)
             return
+        rowno, colno = self.get_cell()
+        x1 = self.gui.get_cell_x(colno)
+        y1 = self.gui.get_cell_y(rowno)
+        width = self.gui.get_col_width(colno)
+        height = self.gui.get_row_height(rowno)
+        x2 = x1 + width
+        delta = pp.gi.HEIGHT / 2 - 1.5 * height
+        if delta > 0:
+            y2 = y1 + int(delta / 2)
+        else:
+            y2 = y1 + int(height / 2)
         self.popup.fill(text)
-        self.popup.adjust_position(self.gui.delegate.x2, self.gui.delegate.y2)
+        self.popup.adjust_position(x2, y2)
         self.popup.show()
     
     def go_next_section(self, no):
