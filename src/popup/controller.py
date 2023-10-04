@@ -10,12 +10,13 @@ from . import gui as gi
 
 class Attach:
     
-    def __init__(self, x1, width, y1, height, Center=False):
+    def __init__(self, x1, width, y1, height, max_width, Center=False):
         self.px1 = self.px2 = self.py1 = self.py2 = 0
         self.x1 = x1
         self.y1 = y1
         self.width = width
         self.height = height
+        self.max_width = max_width
         self.Center = Center
     
     def align_y(self):
@@ -39,8 +40,23 @@ class Attach:
         self.px1 = self.x2
         self.px2 = self.px1 + gi.WIDTH
     
+    def adjust_y(self):
+        if self.py1 < 0:
+            self.py1 = 0
+            self.py2 = gi.HEIGHT
+    
+    def adjust_x(self):
+        if self.px2 > self.max_width:
+            self.px1 = self.x1 - gi.WIDTH
+            self.px2 = self.x1
+            if self.px1 < 0:
+                self.px1 = 0
+                self.px2 = gi.WIDTH
+    
     def run(self):
         self.set_coords()
+        self.adjust_x()
+        self.adjust_y()
         return(self.px1, self.px2, self.py1, self.py2)
 
 
@@ -52,8 +68,8 @@ class Popup:
         self.gui = gi.Popup()
         self.set_gui()
     
-    def adjust_position(self, x1, width, y1, height, Center=False):
-        px1, px2, py1, py2 = Attach(x1, width, y1, height, Center).run()
+    def adjust_position(self, x1, width, y1, height, max_width, Center=False):
+        px1, px2, py1, py2 = Attach(x1, width, y1, height, max_width, Center).run()
         self.gui.move(px1, py1)
     
     def toggle(self):

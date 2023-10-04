@@ -649,8 +649,9 @@ class Table:
         height = self.gui.get_row_height(rowno)
         x2 = x1 + width
         y2 = y1 + height
+        max_width = self.parent.get_width()
         self.popup.fill(text)
-        self.popup.adjust_position(x1, width, y1, height)
+        self.popup.adjust_position(x1, width, y1, height, max_width, False)
         self.popup.show()
     
     def go_next_section(self, no):
@@ -2058,6 +2059,7 @@ class App:
     
     def set_gui(self):
         self.table = Table()
+        self.table.parent = self
         self.panel = gi.Panel()
         self.about = About()
         self.symbols = sm.Symbols()
