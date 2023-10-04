@@ -648,13 +648,9 @@ class Table:
         width = self.gui.get_col_width(colno)
         height = self.gui.get_row_height(rowno)
         x2 = x1 + width
-        delta = pp.gi.HEIGHT / 2 - 1.5 * height
-        if delta > 0:
-            y2 = y1 + int(delta / 2)
-        else:
-            y2 = y1 + int(height / 2)
+        y2 = y1 + height
         self.popup.fill(text)
-        self.popup.adjust_position(x2, y2)
+        self.popup.adjust_position(x1, width, y1, height)
         self.popup.show()
     
     def go_next_section(self, no):
