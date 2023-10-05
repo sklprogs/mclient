@@ -35,11 +35,11 @@ class Priorities(pr.Panes):
         self.reset()
     
     def save(self):
-        cf.objs.config.new['subjects']['prioritized'] = self.dump()
+        cf.objs.config.new['subjects']['prioritized'] = self.dump1()
     
     def add_bindings(self):
         self.gui.btn_res.set_action(self.reset)
-        #self.gui.btn_apl.set_action(self.apply)
+        self.gui.btn_apl.set_action(self.apply)
         self.gui.opt_src.set_action(self.reset)
     
     def set_mode(self):
@@ -64,8 +64,8 @@ class Priorities(pr.Panes):
         self.fill(self.dic1, self.dic2)
     
     def apply(self):
-        f = '[MClientQt] mclient.Priorities.apply'
-        print(f)
+        self.close()
+        self.save()
 
 
 

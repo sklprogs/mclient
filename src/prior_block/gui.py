@@ -104,23 +104,23 @@ class Panes(PyQt5.QtWidgets.QWidget):
         self.set_gui()
     
     def reset_drop(self):
-        self.trw_lft.reset_drop()
-        self.trw_rht.reset_drop()
+        self.tree1.reset_drop()
+        self.tree2.reset_drop()
     
     def bind(self, hotkey, action):
         PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def expand_all(self):
-        self.trw_lft.expand_all()
-        self.trw_rht.expand_all()
+        self.tree1.expand_all()
+        self.tree2.expand_all()
     
     def fill(self, dic1, dic2):
-        self.trw_lft.fill(dic1)
-        self.trw_rht.fill(dic2)
+        self.tree1.fill(dic1)
+        self.tree2.fill(dic2)
     
     def set_widgets(self):
-        self.trw_lft = TreeWidget()
-        self.trw_rht = TreeWidget()
+        self.tree1 = TreeWidget()
+        self.tree2 = TreeWidget()
         self.btn_res = sh.Button (text = _('Reset')
                                  ,hint = _('Reject changes and reload subjects')
                                  )
@@ -132,14 +132,14 @@ class Panes(PyQt5.QtWidgets.QWidget):
                                  )
     
     def configure(self):
-        self.trw_lft.set_header(_('Prioritized subjects'))
-        self.trw_rht.set_header(_('Available subjects'))
-        self.trw_lft.setAcceptDrops(True)
-        self.trw_rht.setAcceptDrops(True)
-        self.trw_lft.setDragEnabled(True)
-        self.trw_rht.setDragEnabled(True)
-        self.trw_lft.setAlternatingRowColors(True)
-        self.trw_rht.setAlternatingRowColors(True)
+        self.tree1.set_header(_('Prioritized subjects'))
+        self.tree2.set_header(_('Available subjects'))
+        self.tree1.setAcceptDrops(True)
+        self.tree2.setAcceptDrops(True)
+        self.tree1.setDragEnabled(True)
+        self.tree2.setDragEnabled(True)
+        self.tree1.setAlternatingRowColors(True)
+        self.tree2.setAlternatingRowColors(True)
         self.grid.setContentsMargins(4, 0, 4, 3)
         self.setMinimumSize(700, 500)
     
@@ -154,8 +154,8 @@ class Panes(PyQt5.QtWidgets.QWidget):
     
     def set_layout(self):
         self.grid = PyQt5.QtWidgets.QGridLayout()
-        self.grid.addWidget(self.trw_lft, 0, 0, 1, 4)
-        self.grid.addWidget(self.trw_rht, 0, 4, 1, 4)
+        self.grid.addWidget(self.tree1, 0, 0, 1, 4)
+        self.grid.addWidget(self.tree2, 0, 4, 1, 4)
         self.grid.addWidget(self.btn_res.widget, 1, 0, 1, 2, PyQt5.QtCore.Qt.AlignLeft)
         self.grid.addWidget(self.cbx_pri.widget, 1, 2, 1, 4, PyQt5.QtCore.Qt.AlignCenter)
         self.grid.addWidget(self.opt_src.widget, 1, 6, 1, 1, PyQt5.QtCore.Qt.AlignRight)
