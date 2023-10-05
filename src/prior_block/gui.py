@@ -42,7 +42,7 @@ class TreeWidget(PyQt5.QtWidgets.QTreeWidget):
         self.startDrag(PyQt5.QtCore.Qt.MoveAction)
     
     def dragEnterEvent(self, event):
-        f = '[Trees] gui.TreeWidget.dragEnterEvent'
+        f = '[MClientQt] prior_block.gui.TreeWidget.dragEnterEvent'
         index_ = self.indexAt(event.pos())
         item = self.itemFromIndex(index_)
         if not item:
@@ -78,7 +78,7 @@ class TreeWidget(PyQt5.QtWidgets.QTreeWidget):
         return self._dump(self.invisibleRootItem())
     
     def _set_item(self, parent, section):
-        f = '[MClient] prior_block.priorities.gui.TreeWidget._set_item'
+        f = '[MClient] prior_block.gui.TreeWidget._set_item'
         if not isinstance(section, dict):
             mes = _('Unexpected type: {}').format(type(section))
             sh.objs.get_mes(f, mes, True).show_warning()

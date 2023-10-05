@@ -27,7 +27,7 @@ class Panes:
         self.gui.expand_all()
     
     def set_target_right(self):
-        f = '[Trees] controller.Panes.set_target_right'
+        f = '[MClientQt] prior_block.controller.Panes.set_target_right'
         items = self.gui.trw_rht.find(self.gui.trw_lft.source)
         if not items:
             sh.com.rep_empty(f)
@@ -35,7 +35,7 @@ class Panes:
         self.gui.trw_rht.target = items[0]
     
     def set_target_left(self):
-        f = '[Trees] controller.Panes.set_target_left'
+        f = '[MClientQt] prior_block.controller.Panes.set_target_left'
         items = self.gui.trw_lft.find(self.gui.trw_rht.source)
         if not items:
             sh.com.rep_empty(f)
@@ -43,7 +43,7 @@ class Panes:
         self.gui.trw_lft.target = items[0]
     
     def set_target_left_single(self):
-        f = '[Trees] controller.Panes.set_target_left_single'
+        f = '[MClientQt] prior_block.controller.Panes.set_target_left_single'
         items = self.gui.trw_lft.find(self.gui.trw_lft.source)
         if not items:
             sh.com.rep_empty(f)
@@ -51,7 +51,7 @@ class Panes:
         self.gui.trw_lft.target = items[0]
     
     def set_target_right_single(self):
-        f = '[Trees] controller.Panes.set_target_right_single'
+        f = '[MClientQt] prior_block.controller.Panes.set_target_right_single'
         items = self.gui.trw_rht.find(self.gui.trw_rht.source)
         if not items:
             sh.com.rep_empty(f)
@@ -59,7 +59,7 @@ class Panes:
         self.gui.trw_rht.target = items[0]
 
     def move2right(self):
-        f = '[Trees] controller.Panes.move2right'
+        f = '[MClientQt] prior_block.controller.Panes.move2right'
         mes = _('Move items from left to right')
         sh.objs.get_mes(f, mes, True).show_debug()
         self.set_target_right()
@@ -70,7 +70,7 @@ class Panes:
         self.gui.trw_rht.clear_selection()
     
     def move2left(self):
-        f = '[Trees] controller.Panes.move2left'
+        f = '[MClientQt] prior_block.controller.Panes.move2left'
         mes = _('Move items from right to left')
         sh.objs.get_mes(f, mes, True).show_debug()
         self.set_target_left()
@@ -81,7 +81,7 @@ class Panes:
         self.gui.trw_lft.clear_selection()
     
     def drop_left(self):
-        f = '[Trees] controller.Panes.drop_left'
+        f = '[MClientQt] prior_block.controller.Panes.drop_left'
         if self.gui.trw_rht.source and self.gui.trw_lft.find(self.gui.trw_rht.source):
             mes = _('Two-pane mode')
             sh.objs.get_mes(f, mes, True).show_debug()
@@ -95,7 +95,7 @@ class Panes:
         self.gui.reset_drop()
     
     def drop_right(self):
-        f = '[Trees] controller.Panes.drop_right'
+        f = '[MClientQt] prior_block.controller.Panes.drop_right'
         if self.gui.trw_lft.source and self.gui.trw_rht.find(self.gui.trw_lft.source):
             mes = _('Two-pane mode')
             sh.objs.get_mes(f, mes, True).show_debug()
@@ -120,7 +120,7 @@ class Panes:
         self.gui.show()
     
     def fill(self, dic1, dic2):
-        f = '[Trees] controller.Panes.fill'
+        f = '[MClientQt] prior_block.controller.Panes.fill'
         if not dic1 or not dic2:
             sh.com.rep_empty(f)
             return
