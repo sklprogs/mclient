@@ -426,4 +426,8 @@
         {"type": "object"
         ,"properties": {"min_version": {"type": "integer"}}
         }
+    ,"popup":
+        {"type": "object"
+        ,"properties": {"center": {"type": "boolean"}}
+        }
 }

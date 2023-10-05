@@ -655,7 +655,7 @@ class Table:
         y2 = y1 + height
         max_width = self.parent.get_width()
         self.popup.fill(text)
-        self.popup.adjust_position(x1, width, y1, height, max_width, False)
+        self.popup.adjust_position(x1, width, y1, height, max_width, cf.objs.config.new['popup']['center'])
         self.popup.show()
     
     def go_next_section(self, no):
