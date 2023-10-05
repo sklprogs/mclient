@@ -122,11 +122,14 @@ class Panes(PyQt5.QtWidgets.QWidget):
         self.trw_lft = TreeWidget()
         self.trw_rht = TreeWidget()
         self.btn_res = sh.Button (text = _('Reset')
-                                 ,hint = _('Forget changes and reload subjects')
+                                 ,hint = _('Reject changes and reload subjects')
                                  )
         self.cbx_pri = sh.CheckBox(_('Enable'))
         sources = (_('All subjects'), _('From the article'))
         self.opt_src = sh.OptionMenu(sources)
+        self.btn_apl = sh.Button (text = _('Apply')
+                                 ,hint = _('Apply changes and close the window')
+                                 )
     
     def configure(self):
         self.trw_lft.set_header(_('Prioritized subjects'))
@@ -151,11 +154,12 @@ class Panes(PyQt5.QtWidgets.QWidget):
     
     def set_layout(self):
         self.grid = PyQt5.QtWidgets.QGridLayout()
-        self.grid.addWidget(self.trw_lft, 0, 0, 1, 3)
-        self.grid.addWidget(self.trw_rht, 0, 3, 1, 3)
+        self.grid.addWidget(self.trw_lft, 0, 0, 1, 4)
+        self.grid.addWidget(self.trw_rht, 0, 4, 1, 4)
         self.grid.addWidget(self.btn_res.widget, 1, 0, 1, 2, PyQt5.QtCore.Qt.AlignLeft)
-        self.grid.addWidget(self.cbx_pri.widget, 1, 2, 1, 2, PyQt5.QtCore.Qt.AlignCenter)
-        self.grid.addWidget(self.opt_src.widget, 1, 4, 1, 2, PyQt5.QtCore.Qt.AlignRight)
+        self.grid.addWidget(self.cbx_pri.widget, 1, 2, 1, 4, PyQt5.QtCore.Qt.AlignCenter)
+        self.grid.addWidget(self.opt_src.widget, 1, 6, 1, 1, PyQt5.QtCore.Qt.AlignRight)
+        self.grid.addWidget(self.btn_apl.widget, 1, 7, 1, 1, PyQt5.QtCore.Qt.AlignRight)
         self.setLayout(self.grid)
     
     def centralize(self):
