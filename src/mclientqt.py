@@ -388,7 +388,11 @@ class Save(sv.Save):
 class Commands:
     
     def get_article_subjects(self):
+        f = '[MClientQt] mclient.Commands.get_article_subjects'
         cells = lg.objs.get_articles().get_table()
+        if not cells:
+            sh.com.rep_empty(f)
+            return {}
         subjects = []
         for row in cells:
             for cell in row:
