@@ -5,6 +5,8 @@ import copy
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
+import instance as ic
+
 
 ''' Tag patterns:
     •  Dictionary titles:
@@ -51,46 +53,12 @@ useful_tags = [pdic, pcom, ptr1, pwf, ptm, pph, psp]
 
 
 
-class Block:
-
-    def __init__(self):
-        self.block = -1
-        # Applies to non-blocked cells only
-        self.cellno = -1
-        self.dic = ''
-        self.dicf = ''
-        self.dprior = 0
-        self.first = -1
-        self.i = -1
-        self.j = -1
-        self.last = -1
-        self.no = -1
-        self.same = -1
-        ''' 'select' is an attribute of a *cell* which is valid if the cell has
-            a non-blocked block of types 'term', 'phrase' or 'transc'.
-        '''
-        self.select = -1
-        self.speech = ''
-        self.sprior = -1
-        self.term = ''
-        self.text = ''
-        self.transc = ''
-        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
-            'term', 'transc', 'wform'.
-        '''
-        self.type = 'comment'
-        self.url = ''
-        self.urla = ''
-        self.wform = ''
-
-
-
 class AnalyzeTag:
 
     def __init__(self, tag):
         self.block = ''
         self.blocks = []
-        self.cur = Block()
+        self.cur = ic.Block()
         self.elems = []
         self.tag = tag
 
@@ -102,28 +70,28 @@ class AnalyzeTag:
         self.split()
         self.blocks = [block for block in self.blocks if block.strip()]
         for self.block in self.blocks:
-            if self.block.startswith('<'):
-                if self.is_useful():
-                    self.cur.type = ''
-                    self.set_phrases()
-                    # Phrases and word forms have conflicting tags
-                    # We check 'type' to speed up
-                    if not self.cur.type:
-                        self.set_wform()
-                    if not self.cur.type:
-                        self.set_dic()
-                    if not self.cur.type:
-                        self.set_term()
-                    if not self.cur.type:
-                        self.set_speech()
-                    if not self.cur.type:
-                        self.set_comment()
-                    if not self.cur.type:
-                        self.set_transc()
-                else:
-                    self.cur.type = 'invalid'
-            else:
+            if not self.block.startswith('<'):
                 self.run_plain()
+                continue
+            if not self.is_useful():
+                self.cur.type = 'invalid'
+                continue
+            self.cur.type = ''
+            self.set_phrases()
+            # Phrases and word forms have conflicting tags
+            # We check 'type' to speed up
+            if not self.cur.type:
+                self.set_wform()
+            if not self.cur.type:
+                self.set_dic()
+            if not self.cur.type:
+                self.set_term()
+            if not self.cur.type:
+                self.set_speech()
+            if not self.cur.type:
+                self.set_comment()
+            if not self.cur.type:
+                self.set_transc()
 
     def is_useful(self):
         for tag in useful_tags:
