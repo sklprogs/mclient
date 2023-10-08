@@ -210,14 +210,14 @@ class Tags:
 
     def debug_blocks (self):
         f = '[MClient] plugins.stardict.tags.Tags.debug_blocks'
-        headers = ('NO', 'TYPE', 'TEXT', 'URL', 'SAMECELL')
+        headers = ('NO', 'CELLNO', 'TYPE', 'TEXT', 'URL')
         rows = []
         for i in range(len(self.blocks)):
             rows.append ([i + 1
+                         ,self.blocks[i].cellno
                          ,self.blocks[i].type
                          ,self.blocks[i].text
                          ,self.blocks[i].url
-                         ,self.blocks[i].same
                          ]
                         )
         mes = sh.FastTable (headers = headers
@@ -235,15 +235,19 @@ class Tags:
 
     def get_blocks(self):
         if not self.blocks:
+            cellno = -1
             for tag in self.tags:
                 analyze = AnalyzeTag(tag)
                 analyze.run()
                 lst = analyze.elems
-                for i in range(len(lst)):
-                    if i > 0:
-                        lst[i].same = 1
-                    else:
-                        lst[i].same = 0
+                if not lst:
+                    continue
+                cellno += 1
+                lst[0].cellno = cellno
+                i = 1
+                while i < len(lst):
+                    lst[i].cellno = cellno
+                    i += 1
                 self.blocks += lst
         return self.blocks
 
