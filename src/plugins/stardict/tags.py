@@ -64,7 +64,7 @@ class AnalyzeTag:
 
     def set_dic(self):
         if pdic in self.block:
-            self.cur.type = 'dic'
+            self.cur.type = 'subj'
     
     def run(self):
         self.split()

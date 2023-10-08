@@ -245,6 +245,18 @@ class View:
 
 class Elems:
     
+    def run_stardict(self):
+        import plugins.stardict.cleanup as cu
+        import plugins.stardict.tags as tg
+        import plugins.stardict.elems as el
+        file = '/home/pete/docs/mclient_tests/stardict/EnRu full cut.txt'
+        text = sh.ReadTextFile(file).get()
+        text = cu.CleanUp(text).run()
+        blocks = tg.Tags(text).run()
+        ielems = el.Elems(blocks)
+        ielems.run()
+        return ielems.debug()
+    
     def run_dsl(self):
         import plugins.dsl.cleanup as cu
         import plugins.dsl.get as gt
@@ -1229,8 +1241,9 @@ if __name__ == '__main__':
     #mes = com.get_all_subjects()
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
-    mes = Tags().run_stardict()
+    #mes = Tags().run_stardict()
     #mes = Elems().run_dsl()
+    mes = Elems().run_stardict()
     #mes = Subjects().run()
     #mes = View().run_dsl()
     idebug = sh.Debug(f, mes)
