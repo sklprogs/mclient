@@ -107,6 +107,7 @@ class Plugin:
         self.langint = ('English', 'Russian')
         self.langloc = (_('English'), _('Russian'))
         self.htm = ''
+        self.text = ''
         self.search = ''
         self.cells = []
         self.majors = []
@@ -125,11 +126,6 @@ class Plugin:
                     mes.append(block.text)
             self.text = ''.join(mes)
         return self.text
-    
-    def get_htm(self):
-        #TODO: elaborate
-        self.htm = self.get_text()
-        return self.htm
     
     def get_lang1(self):
         return self._adapt_lang(gt.LANG1)
@@ -183,11 +179,7 @@ class Plugin:
         if not chunks:
             chunks = []
         for chunk in chunks:
-            blocks = tg.Tags (chunk = chunk
-                             ,Debug = self.Debug
-                             ,maxrow = self.maxrow
-                             ,maxrows = self.maxrows
-                             ).run()
+            blocks = tg.Tags(chunk).run()
             if blocks:
                 # Set speech for words only, not for phrases
                 if iget.speech and not ' ' in search:
@@ -199,14 +191,11 @@ class Plugin:
                     block.wformf = iget.speech
                     blocks.insert(0, block)
                 self.blocks += blocks
-        self.blocks = el.Elems (blocks = self.blocks
-                               ,abbr = None
-                               ,langs = gt.objs.get_all_dics().get_langs()
-                               ,search = search
-                               ,Debug = self.Debug
-                               ,maxrow = self.maxrow
-                               ,maxrows = self.maxrows
-                               ).run()
+        self.cells = el.Elems (blocks = self.blocks
+                              ,abbr = None
+                              ,langs = gt.objs.get_all_dics().get_langs()
+                              ,search = search
+                              ).run()
         self.get_text()
         self.get_htm()
-        return self.blocks
+        return self.cells

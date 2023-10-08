@@ -595,7 +595,7 @@ class Elems:
                            ,maxrow = maxrow
                            ,maxrows = maxrows
                            ).run()
-        return f'{f}:\n' + mes
+        return f'{f}:\n{mes}'
     
     def _debug_cells(self, maxrow=30, maxrows=0):
         f = '[MClientQt] plugins.multitrancom.elems.Elems._debug_cells'
@@ -629,7 +629,7 @@ class Elems:
                            ,maxrow = maxrow
                            ,maxrows = maxrows
                            ).run()
-        return f'{f}:\n' + mes
+        return f'{f}:\n{mes}'
     
     def set_text(self):
         for cell in self.cells:

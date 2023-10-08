@@ -4,54 +4,20 @@
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-
-class Block:
-    # A copy of Tags.Block
-    def __init__(self):
-        self.block = -1
-        # Applies to non-blocked cells only
-        self.cellno = -1
-        self.dic = ''
-        self.dicf = ''
-        self.dprior = 0
-        self.first = -1
-        self.i = -1
-        self.j = -1
-        self.lang = 0
-        self.last = -1
-        self.no = -1
-        self.same = -1
-        ''' '_select' is an attribute of a *cell* which is valid if the cell
-            has a non-blocked block of types 'term', 'phrase' or 'transc'.
-        '''
-        self.select = -1
-        self.speech = ''
-        self.sprior = -1
-        self.term = ''
-        self.text = ''
-        self.transc = ''
-        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase', 'speech',
-            'term', 'transc', 'user', 'wform'.
-        '''
-        self.type = 'invalid'
-        self.url = ''
-        self.wform = ''
-
+import instance as ic
 
 
 class Elems:
-    # Process blocks before dumping to DB
-    def __init__(self, blocks, abbr, langs=[], Debug=False, maxrow=20
-                ,maxrows=20, search=''
-                ):
+
+    def __init__(self, blocks, abbr, langs=[], search=''):
         f = '[MClient] plugins.multitrandem.elems.Elems.__init__'
+        self.cells = []
+        self.art_subj = {}
+        self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
+        self.Parallel = False
+        self.Separate = False
         self.abbr = abbr
-        self.Debug = Debug
-        self.defins = []
-        self.dicurls = {}
         self.langs = langs
-        self.maxrow = maxrow
-        self.maxrows = maxrows
         self.pattern = search.strip()
         if blocks:
             self.Success = True
@@ -65,7 +31,7 @@ class Elems:
         if len(self.blocks) > 1:
             pos = -1
             for i in range(len(self.blocks)):
-                if self.blocks[i].type == 'dic':
+                if self.blocks[i].type == 'subj':
                     pos = i
                     break
             if pos >= 0:
@@ -113,7 +79,7 @@ class Elems:
             sh.com.cancel(f)
             return
         for block in self.blocks:
-            if block.type != 'dic' or not block.text:
+            if block.type != 'subj' or not block.text:
                 continue
             if not self._check_dic_codes(block.text):
                 mes = _('Wrong input data: "{}"!')
@@ -133,12 +99,180 @@ class Elems:
             abbr = '; '.join(abbr)
             full = '; '.join(full)
             block.text = abbr
-            block.dic = abbr
-            block.dicf = full
+            block.subj = abbr
+            block.subjf = full
     
     def strip(self):
         for block in self.blocks:
             block.text = block.text.strip()
+    
+    def set_cells(self):
+        f = '[MClientQt] plugins.multitrandem.elems.Elems.set_cells'
+        if not self.blocks:
+            sh.com.rep_empty(f)
+            return
+        if len(self.blocks) < 2:
+            mes = f'{len(self.blocks)} >= 2'
+            sh.com.rep_condition(f, mes)
+            return
+        cell = ic.Cell()
+        cell.blocks.append(self.blocks[0])
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].cellno == self.blocks[i].cellno:
+                cell.blocks.append(self.blocks[i])
+            else:
+                if cell.blocks:
+                    self.cells.append(cell)
+                cell = ic.Cell()
+                cell.blocks.append(self.blocks[i])
+            i += 1
+        if cell.blocks:
+            self.cells.append(cell)
+    
+    def unite_brackets(self):
+        ''' Combine a cell with a preceding or following bracket such that the
+            user would not see '()' when the cell is ignored/blocked.
+        '''
+        f = '[MClientQt] plugins.multitrandem.elems.Elems.unite_brackets'
+        count = 0
+        for cell in self.cells:
+            i = 2
+            while i < len(cell.blocks):
+                if cell.blocks[i-2].text.strip() == '(' \
+                and cell.blocks[i].text.strip() == ')':
+                    count += 1
+                    ''' Add brackets to text of a cell (usually of the 'user'
+                        type), not vice versa, to preserve its type.
+                    '''
+                    cell.blocks[i-1].text = cell.blocks[i-2].text \
+                                          + cell.blocks[i-1].text \
+                                          + cell.blocks[i].text
+                    del cell.blocks[i]
+                    del cell.blocks[i-2]
+                    i -= 2
+                i += 1
+        sh.com.rep_matches(f, count)
+    
+    def set_text(self):
+        for cell in self.cells:
+            fragms = [block.text for block in cell.blocks]
+            cell.text = sh.List(fragms).space_items().strip()
+            # 'phsubj' text may have multiple spaces for some reason
+            cell.text = sh.Text(cell.text).delete_duplicate_spaces()
+    
+    def set_row_nos(self):
+        # Run this before deleting fixed types
+        f = '[MClientQt] plugins.multitrandem.elems.Elems.set_row_nos'
+        count = 0
+        if self.cells:
+            count += 1
+            self.cells[0].rowno = 0
+        rowno = 0
+        i = 1
+        while i < len(self.cells):
+            if not self.cells[i-1].fixed_block and self.cells[i].fixed_block:
+                count += 1
+                rowno += 1
+            self.cells[i].rowno = rowno
+            i += 1
+        sh.com.rep_matches(f, count)
+    
+    def set_art_subj(self):
+        f = '[MClientQt] plugins.multitrandem.elems.Elems.set_art_subj'
+        count = 0
+        for block in self.blocks:
+            if block.type in ('subj', 'phsubj') and block.subj and block.subjf:
+                count += 1
+                self.art_subj[block.subj] = block.subjf
+                self.art_subj[block.subjf] = block.subj
+        sh.com.rep_matches(f, count)
+    
+    def _get_last_subj(self):
+        for cell in self.cells[::-1]:
+            if cell.fixed_block and cell.fixed_block.type in ('subj', 'phsubj'):
+                return cell.text
+    
+    def _get_last_wform(self):
+        for cell in self.cells[::-1]:
+            if cell.fixed_block and cell.fixed_block.type == 'wform':
+                return cell.text
+    
+    def _get_last_speech(self):
+        for cell in self.cells[::-1]:
+            if cell.fixed_block and cell.fixed_block.type == 'speech':
+                return cell.text
+    
+    def _get_last_transc(self):
+        for cell in self.cells[::-1]:
+            if cell.fixed_block and cell.fixed_block.type == 'transc':
+                return cell.text
+    
+    def _get_prev_subj(self, i):
+        while i >= 0:
+            if self.cells[i].fixed_block \
+            and self.cells[i].fixed_block.type in ('subj', 'phsubj'):
+                return self.cells[i].text
+            i -= 1
+        return ''
+    
+    def _get_prev_wform(self, i):
+        while i >= 0:
+            if self.cells[i].fixed_block \
+            and self.cells[i].fixed_block.type == 'wform':
+                return self.cells[i].text
+            i -= 1
+        return ''
+    
+    def _get_prev_speech(self, i):
+        while i >= 0:
+            if self.cells[i].fixed_block \
+            and self.cells[i].fixed_block.type == 'speech':
+                return self.cells[i].text
+            i -= 1
+        return ''
+    
+    def _get_prev_transc(self, i):
+        while i >= 0:
+            if self.cells[i].fixed_block \
+            and self.cells[i].fixed_block.type == 'transc':
+                return self.cells[i].text
+            i -= 1
+        return ''
+    
+    def fill_fixed(self):
+        subj = self._get_last_subj()
+        wform = self._get_last_wform()
+        transc = self._get_last_transc()
+        speech = self._get_last_speech()
+        i = len(self.cells) - 1
+        while i >= 0:
+            if not self.cells[i].fixed_block:
+                subj = self._get_prev_subj(i)
+                wform = self._get_prev_wform(i)
+                speech = self._get_prev_speech(i)
+                transc = self._get_prev_transc(i)
+            self.cells[i].subj = subj
+            self.cells[i].wform = wform
+            self.cells[i].speech = speech
+            self.cells[i].transc = transc
+            i -= 1
+    
+    def delete_fixed(self):
+        f = '[MClientQt] plugins.multitrandem.elems.Elems.delete_fixed'
+        count = 0
+        i = 0
+        while i < len(self.cells):
+            if self.cells[i].fixed_block:
+                count += 1
+                del self.cells[i]
+                i -= 1
+            i += 1
+        sh.com.rep_matches(f, count)
+    
+    def renumber(self):
+        for i in range(len(self.cells)):
+            self.cells[i].no = i
     
     def run(self):
         f = '[MClient] plugins.multitrandem.elems.Elems.run'
@@ -158,56 +292,94 @@ class Elems:
         # Extra spaces in the beginning may cause sorting problems
         self.add_space()
         #TODO: expand parts of speech (n -> noun, etc.)
-        self.set_selectables()
-        self.debug()
-        return self.blocks
+        self.set_cells()
+        self.unite_brackets()
+        self.set_text()
+        #self.set_fixed_cells()
+        #self.rename_phsubj()
+        self.set_row_nos()
+        #self.save_urls()
+        self.set_art_subj()
+        self.fill_fixed()
+        self.delete_fixed()
+        self.renumber()
+        return self.cells
     
-    def debug(self):
-        f = 'plugins.multitrandem.elems.Elems.debug'
-        if not self.Debug:
-            sh.com.rep_lazy(f)
-            return
-        mes = _('Debug table:')
-        sh.objs.get_mes(f, mes, True).show_debug()
-        headers = ('NO', 'TYPE', 'TEXT', 'SAME', 'CELLNO', 'ROWNO', 'COLNO'
-                  ,'POS1', 'POS2'
-                  )
+    def _debug_blocks(self, maxrow=20, maxrows=0):
+        f = 'plugins.multitrandem.elems.Elems._debug_blocks'
+        headers = ('NO', 'TYPE', 'CELLNO', 'SUBJ', 'TEXT')
         rows = []
         for i in range(len(self.blocks)):
             rows.append ([i + 1
                          ,self.blocks[i].type
-                         ,self.blocks[i].text
-                         ,self.blocks[i].same
                          ,self.blocks[i].cellno
-                         ,self.blocks[i].i
-                         ,self.blocks[i].j
-                         ,self.blocks[i].first
-                         ,self.blocks[i].last
+                         ,self.blocks[i].subj
+                         ,self.blocks[i].text
                          ]
                         )
         mes = sh.FastTable (headers = headers
                            ,iterable = rows
-                           ,maxrow = self.maxrow
-                           ,maxrows = self.maxrows
+                           ,maxrow = maxrow
+                           ,maxrows = maxrows
                            ,Transpose = True
                            ).run()
-        sh.com.run_fast_debug(f, mes)
+        return f'{f}:\n{mes}'
+    
+    def _debug_cells(self, maxrow=30, maxrows=0):
+        f = '[MClientQt] plugins.multitrandem.elems.Elems._debug_cells'
+        headers = ('SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #'), _('CELL #')
+                  ,_('TYPES'), _('TEXT')
+                  )
+        subj = []
+        wform = []
+        speech = []
+        transc = []
+        rownos = []
+        nos = []
+        types = []
+        texts = []
+        for cell in self.cells:
+            subj.append(cell.subj)
+            wform.append(cell.wform)
+            speech.append(cell.speech)
+            transc.append(cell.transc)
+            rownos.append(cell.rowno)
+            nos.append(cell.no)
+            texts.append(f'"{cell.text}"')
+            cell_types = [block.type for block in cell.blocks]
+            types.append(', '.join(cell_types))
+        mes = sh.FastTable (headers = headers
+                           ,iterable = (subj, wform, speech, transc, rownos
+                                       ,nos, types, texts
+                                       )
+                           ,maxrow = maxrow
+                           ,maxrows = maxrows
+                           ).run()
+        return f'{f}:\n{mes}'
+    
+    def debug(self):
+        report = [self._debug_blocks(), self._debug_cells()]
+        report = [item for item in report if item]
+        return '\n\n'.join(report)
         
     def set_transc(self):
         pass
         #block.type = 'transc'
     
     def add_brackets(self):
-        for block in self.blocks:
-            if block.type in ('comment', 'user', 'correction'):
-                block.same = 1
-                if not block.text.startswith('(') \
-                and not block.text.endswith(')'):
-                    block.text = '(' + block.text + ')'
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i].type in ('comment', 'user', 'correction'):
+                self.blocks[i].cellno = self.blocks[i-1].cellno
+                if not self.blocks[i].text.startswith('(') \
+                and not self.blocks[i].text.endswith(')'):
+                    self.blocks[i].text = '(' + self.blocks[i].text + ')'
+            i += 1
     
     def add_space(self):
-        for i in range(len(self.blocks)):
-            if self.blocks[i].same <= 0:
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].cellno != self.blocks[i].cellno:
                 continue
             cond = False
             if i > 0 and self.blocks[i-1].text:
@@ -217,15 +389,16 @@ class Elems:
             and not self.blocks[i].text[0] in sh.lg.punc_array \
             and not self.blocks[i].text[0] in [')', ']', '}'] and not cond:
                 self.blocks[i].text = ' ' + self.blocks[i].text
+            i += 1
                 
     def fill(self):
         dic = dicf = wform = speech = transc = term = ''
         
         # Find first non-empty values and set them as default
         for block in self.blocks:
-            if block.type == 'dic':
-                dic = block.dic
-                dicf = block.dicf
+            if block.type == 'subj':
+                dic = block.subj
+                dicf = block.subjf
                 break
         for block in self.blocks:
             if block.type == 'wform':
@@ -245,9 +418,9 @@ class Elems:
                 break
         
         for block in self.blocks:
-            if block.type == 'dic':
-                dic = block.dic
-                dicf = block.dicf
+            if block.type == 'subj':
+                dic = block.subj
+                dicf = block.subjf
             elif block.type == 'wform':
                 wform = block.text
             elif block.type == 'speech':
@@ -259,70 +432,60 @@ class Elems:
                 '''
             elif block.type in ('term', 'phrase'):
                 term = block.text
-            block.dic = dic
-            block.dicf = dicf
+            block.subj = dic
+            block.subjf = dicf
             block.wform = wform
             block.speech = speech
             block.transc = transc
-            if block.same > 0:
-                block.term = term
                 
     def insert_fixed(self):
         dic = wform = speech = ''
         i = 0
         while i < len(self.blocks):
-            if dic != self.blocks[i].dic or wform != self.blocks[i].wform \
+            if dic != self.blocks[i].subj or wform != self.blocks[i].wform \
             or speech != self.blocks[i].speech:
                 
-                block = Block()
+                block = ic.Block()
                 block.type = 'speech'
                 block.text = self.blocks[i].speech
-                block.dic = self.blocks[i].dic
-                block.dicf = self.blocks[i].dicf
+                block.subj = self.blocks[i].subj
+                block.subjf = self.blocks[i].subjf
                 block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term = self.blocks[i].term
-                block.same = 0
                 self.blocks.insert(i, block)
                 
-                block = Block()
+                block = ic.Block()
                 block.type = 'transc'
                 block.text = self.blocks[i].transc
-                block.dic = self.blocks[i].dic
-                block.dicf = self.blocks[i].dicf
+                block.subj = self.blocks[i].subj
+                block.subjf = self.blocks[i].subjf
                 block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term = self.blocks[i].term
-                block.same = 0
                 self.blocks.insert(i, block)
 
-                block = Block()
+                block = ic.Block()
                 block.type = 'wform'
                 block.text = self.blocks[i].wform
-                block.dic = self.blocks[i].dic
-                block.dicf = self.blocks[i].dicf
+                block.subj = self.blocks[i].subj
+                block.subjf = self.blocks[i].subjf
                 block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term = self.blocks[i].term
-                block.same = 0
                 self.blocks.insert(i, block)
                 
-                block = Block()
-                block.type = 'dic'
-                block.text = self.blocks[i].dic
-                block.dic = self.blocks[i].dic
-                block.dicf = self.blocks[i].dicf
+                block = ic.Block()
+                block.type = 'subj'
+                block.text = self.blocks[i].subj
+                block.subj = self.blocks[i].subj
+                block.subjf = self.blocks[i].subjf
                 block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term = self.blocks[i].term
-                block.same = 0
                 self.blocks.insert(i, block)
                 
-                dic = self.blocks[i].dic
+                dic = self.blocks[i].subj
                 wform = self.blocks[i].wform
                 speech = self.blocks[i].speech
                 i += 4
@@ -330,17 +493,8 @@ class Elems:
             
     def remove_fixed(self):
         self.blocks = [block for block in self.blocks if block.type \
-                       not in ('dic', 'wform', 'transc', 'speech')
+                       not in ('subj', 'wform', 'transc', 'speech')
                       ]
-                       
-    def set_selectables(self):
-        # block.no is set only after creating DB
-        for block in self.blocks:
-            if block.type in ('phrase', 'term', 'transc') \
-            and block.text and block.select < 1:
-                block.select = 1
-            else:
-                block.select = 0
 
 
 if __name__ == '__main__':

@@ -12,7 +12,7 @@ DEBUG = True
 ''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
     otherwise, 'Tags' will fail to set 'subj' and some other types.
 '''
-SEARCH = 'компьютер'
+SEARCH = 'warranty'
 URL = ''
 HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/clutch (2023-09-30).html'
 
@@ -262,6 +262,28 @@ class View:
 
 
 class Elems:
+    
+    def run_multitrandem(self):
+        import plugins.multitrandem.get as gt
+        import plugins.multitrandem.tags as tg
+        import plugins.multitrandem.elems as el
+        gt.PATH = sh.Home('mclient').add_config('dics')
+        iget = gt.Get(SEARCH)
+        chunks = iget.run()
+        if not chunks:
+            chunks = []
+        blocks = []
+        for chunk in chunks:
+            add = tg.Tags(chunk).run()
+            if add:
+                blocks += add
+        ielems = el.Elems (blocks = blocks
+                          ,abbr = None
+                          ,langs = gt.objs.get_all_dics().get_langs()
+                          ,search = SEARCH
+                          )
+        ielems.run()
+        return ielems.debug()
     
     def run_stardict(self):
         import plugins.stardict.cleanup as cu
@@ -1266,9 +1288,10 @@ if __name__ == '__main__':
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
     #mes = Tags().run_stardict()
-    mes = Tags().run_multitrandem()
+    #mes = Tags().run_multitrandem()
     #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
+    mes = Elems().run_multitrandem()
     #mes = Subjects().run()
     #mes = View().run_dsl()
     #mes = View().run_stardict()
