@@ -11,7 +11,7 @@ oslow="linux"
 # by default which is buggy (some blocks are skipped in EN-RU, "hello"
 # article)
 glibc="2.36"
-pythonve="$HOME/software/python_builds/x86_64/mclient"
+pythonve="$HOME/software/python/mclient_qt5_3.11.2_x64"
 xlibdir="$pythonve/lib/python3.11/site-packages/Xlib"
 schemas="$pythonve/lib/python3.11/site-packages/jsonschema_specifications/schemas"
 binariesdir="$HOME/binaries"
@@ -73,7 +73,7 @@ fi
 rm -rf "$tmpdir"
 mkdir -p "$builddir" "$tmpdir/app/usr/bin" "$tmpdir/app/resources"
 cp -r "$srcdir"/* "$builddir"
-cp -r "$resdir" "$tmpdir/app/usr/"
+cp -r "$resdir" "$tmpdir/app/usr/bin/"
 # For some reason, the built program cannot find locales
 cp -r "$resdir/locale" "$tmpdir/app/resources/"
 # For some reason, pyinstaller cannot find these modules
