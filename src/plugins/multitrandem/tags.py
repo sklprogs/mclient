@@ -2,19 +2,19 @@
 # -*- coding: UTF-8 -*-
 
 import struct
+
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
+import instance as ic
+
+
 CODING = 'windows-1251'
-
 pdic = b'\x0f'
-
 # Comments
 pcom = b'\x06'
-
 # Corrective comments
 pcor = b''
-
 # Terms
 ptm1 = b'\x01'
 ptm2 = b'\x02'
@@ -52,7 +52,7 @@ class Tags:
             sh.com.cancel(f)
             return
         for i in range(len(self.content)):
-            self.blocks.append(Block())
+            self.blocks.append(ic.Block())
             self.blocks[-1].text = self.content[i]
             if self.types[i] == self.seplg1:
                 self.blocks[i].type = 'term'
@@ -86,19 +86,20 @@ class Tags:
                            ,maxrows = self.maxrows
                            ,Transpose = True
                            ).run()
-        sh.com.run_fast_debug(f, mes)
+        return f'{f}:\n{mes}'
     
     def debug(self):
-        if self.Debug:
-            self.debug_tags()
-            self.debug_blocks()
+        report = [self.debug_tags(), self.debug_blocks()]
+        report = [item for item in report if item]
+        return '\n\n'.join(report)
     
     def debug_tags(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.debug_tags'
-        message = ''
+        mes = []
         for i in range(len(self.tags)):
-            message += f'{i}:{self.tags[i]}\n'
-        sh.com.run_fast_debug(f, message)
+            mes.append(f'{i}:{self.tags[i]}')
+        mes = '\n'.join(mes)
+        return f'{f}:\n{mes}'
     
     def decode(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.decode'
@@ -190,49 +191,3 @@ class Tags:
         self.get_types()
         self.set_types()
         return self.blocks
-
-
-
-class Block:
-
-    def __init__(self):
-        self.block = -1
-        # Applies to non-blocked cells only
-        self.cellno = -1
-        self.dic = ''
-        self.dicf = ''
-        self.dprior = 0
-        self.i = -1
-        self.j = -1
-        self.first = -1
-        self.lang = 0
-        self.last = -1
-        self.no = -1
-        self.same = 0
-        ''' 'select' is an attribute of a *cell* which is valid if the cell has
-            a non-blocked block of types 'term', 'phrase' or 'transc'.
-        '''
-        self.select = -1
-        self.speech = ''
-        self.sprior = -1
-        self.term = ''
-        self.text = ''
-        self.transc = ''
-        ''' 'comment', 'dic', 'invalid', 'phrase', 'speech', 'term', 'transc',
-            'wform'.
-        '''
-        self.type = ''
-        self.url = ''
-        self.urla = ''
-        self.wform = ''
-
-
-if __name__ == '__main__':
-    itags = Tags (chunk = b'\x01abasin\x02\xe0\xe1\xe0\xe7\xe8\xed\x0f37'
-                 ,Debug = True
-                 )
-    itags.run()
-    #itags.debug()
-    for i in range(len(itags.blocks)):
-        mes = f'{i}: {itags.blocks[i].type}: "{itags.blocks[i].text}"'
-        print(mes)

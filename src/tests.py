@@ -601,6 +601,12 @@ class Get:
 
 class Tags:
     
+    def run_multitrandem(self):
+        import plugins.multitrandem.tags as tg
+        itags = tg.Tags(b'\x01abasin\x02\xe0\xe1\xe0\xe7\xe8\xed\x0f37')
+        itags.run()
+        return itags.debug()
+    
     def run_dsl(self):
         import plugins.dsl.get
         import plugins.dsl.cleanup
@@ -1260,11 +1266,12 @@ if __name__ == '__main__':
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
     #mes = Tags().run_stardict()
+    mes = Tags().run_multitrandem()
     #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
     #mes = Subjects().run()
     #mes = View().run_dsl()
-    mes = View().run_stardict()
+    #mes = View().run_stardict()
     idebug = sh.Debug(f, mes)
     idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())

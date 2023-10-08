@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import io
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
+
+import instance as ic
+
 import plugins.multitrandem.get as gt
 import plugins.multitrandem.tags as tg
 import plugins.multitrandem.elems as el
@@ -13,7 +15,7 @@ import plugins.multitrandem.subjects as sj
 
 class Plugin:
     
-    def __init__(self, Debug=False, maxrow=20, maxrows=1000):
+    def __init__(self, Debug=False, maxrows=1000):
         ''' - Extra unused input variables are preserved so it would be easy to
               use an abstract class for all dictionary sources.
             - #NOTE: Do not forget to set plugins.multitrandem.get.PATH
@@ -23,27 +25,48 @@ class Plugin:
         #TODO: elaborate
         self.abbr = gt.objs.get_files().get_subject()
         self.Debug = Debug
-        self.maxrow = maxrow
         self.maxrows = maxrows
+    
+    def is_parallel(self):
+        return self.Parallel
+    
+    def is_separate(self):
+        return self.Separate
+    
+    def get_speeches(self):
+        #TODO: implement or rework
+        return {}
+    
+    def get_fixed_urls(self):
+        return self.fixed_urls
+    
+    def get_htm(self):
+        return self.htm
+    
+    def get_text(self):
+        return self.text
+    
+    def get_article_subjects(self):
+        return self.art_subj
     
     def get_subjects(self):
         return sj.objs.get_subjects().get_list()
     
-    def get_group_with_header(self, subject=''):
-        return sj.objs.get_subjects().get_group_with_header(subject)
-    
     def get_majors(self):
         return sj.objs.get_subjects().get_majors()
+    
+    def get_minors(self):
+        return self.minors
     
     def get_search(self):
         return self.search
     
-    # This is needed only for compliance with a general method
     def set_htm(self, code):
+        # This is needed only for compliance with a general method
         self.htm = code
     
-    # This is needed only for compliance with a general method
-    def fix_url(self, url):
+    def fix_url(self, url=''):
+        # This is needed only for compliance with a general method
         return url
     
     def is_oneway(self):
@@ -75,24 +98,32 @@ class Plugin:
         return 'English'
     
     def set_values(self):
-        self.blocks = []
-        self.htm = ''
-        self.text = ''
-        self.search = ''
+        ''' #NOTE: 'fixed_urls', 'art_subj', 'Parallel' and 'Separate' are
+            temporary variables that should be externally referred to only
+            after getting a NEW article.
+        '''
+        self.Parallel = False
+        self.Separate = False
         self.langint = ('English', 'Russian')
         self.langloc = (_('English'), _('Russian'))
+        self.htm = ''
+        self.search = ''
+        self.cells = []
+        self.majors = []
+        self.minors = []
+        self.fixed_urls = {}
+        self.art_subj = {}
     
     def get_text(self):
+        mes = []
         if not self.text:
-            iwrite = io.StringIO()
             for block in self.blocks:
-                if block.text \
-                and block.type in ('dic', 'wform', 'term', 'comment'
-                                  ,'correction', 'user'
-                                  ):
-                    iwrite.write(block.text)
-            self.text = iwrite.getvalue()
-            iwrite.close()
+                if block.text and block.type in ('dic', 'wform', 'term'
+                                                ,'comment', 'correction'
+                                                ,'user'
+                                                ):
+                    mes.append(block.text)
+            self.text = ''.join(mes)
         return self.text
     
     def get_htm(self):
@@ -106,16 +137,12 @@ class Plugin:
     def get_lang2(self):
         return self._adapt_lang(gt.LANG2)
     
-    # This is needed only for compliance with a general method
-    def get_server(self):
-        return ''
-    
-    # This is needed only for compliance with a general method
-    def fix_raw_htm(self):
+    def fix_raw_htm(self, code=''):
+        # This is needed only for compliance with a general method
         return self.htm
     
-    # This is needed only for compliance with a general method
     def get_url(self, search=''):
+        # This is needed only for compliance with a general method
         return ''
     
     def set_lang1(self, lang1=''):
@@ -126,8 +153,8 @@ class Plugin:
         gt.LANG2 = self._adapt_lang(lang2)
         gt.objs.get_files().reset()
     
-    # This is needed only for compliance with a general method
     def set_timeout(self, timeout=0):
+        # This is needed only for compliance with a general method
         pass
     
     def get_langs1(self, lang2=''):
@@ -139,9 +166,7 @@ class Plugin:
         return(_('Any'), _('English'), _('Russian'))
     
     def is_combined(self):
-        ''' Whether or not the plugin is actually a wrapper over other
-            plugins.
-        '''
+        # Whether or not the plugin is actually a wrapper over other plugins
         return False
     
     def is_accessible(self):
@@ -166,7 +191,7 @@ class Plugin:
             if blocks:
                 # Set speech for words only, not for phrases
                 if iget.speech and not ' ' in search:
-                    block = tg.Block()
+                    block = ic.Block()
                     block.select = 0
                     block.type = 'wform'
                     block.text = iget.spabbr
