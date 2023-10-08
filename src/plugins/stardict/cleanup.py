@@ -57,14 +57,12 @@ class Common:
     
     def run(self):
         f = '[MClient] plugins.stardict.cleanup.Common.run'
-        if self.text:
-            self.decode_entities()
-            self.delete_trash()
-            self.text = sh.Text(self.text).delete_unsupported()
-            return self.text
-        else:
+        if not self.text:
             sh.com.rep_empty(f)
             return ''
+        self.decode_entities()
+        self.delete_trash()
+        return self.text
 
 
 
@@ -77,8 +75,8 @@ class Type1:
         self.tags = []
         self.text = text
         
-    #TODO: do this before anything else
     def decode(self):
+        #TODO: do this before anything else
         f = '[MClient] plugins.stardict.cleanup.Type1.decode'
         try:
             self.text = html.unescape(self.text)
@@ -99,7 +97,8 @@ class Type1:
         
     def delete_roman_numbering(self):
         self.text = re.sub('> I*', '>', self.text)
-        self.text = self.text.replace('II', '').replace('III', '').replace(' IV ', '').replace(' V ', '')
+        self.text = self.text.replace('II', '').replace('III', '')
+        self.text = self.text.replace(' IV ', '').replace(' V ', '')
         
     def restore_header(self):
         self.text = self.text.replace('*', header).replace('~', header)
@@ -117,9 +116,8 @@ class Type1:
         return '\n'.join(self.get_tags())
         
     def strip(self):
-        ''' Stripping blocks can be necessary after splitting ';'
-            Allow empty blocks because wrong types can be assigned
-            otherwise.
+        ''' - Stripping blocks can be necessary after splitting ';'.
+            - Allow empty blocks because wrong types can be assigned otherwise.
         '''
         self.blocks = [block.strip() for block in self.blocks]
 
@@ -218,9 +216,7 @@ class Type1:
 
 
 class Type2:
-    ''' Formatting example:
-        <dic>dicEnRu</dic>1> порез; надрез; _Ex: I cut my arm _общ. Я порезал руку2> короткий путь3> _мат. раздел; _Ex: please refer to this cut обратитесь к этому разделу _Ex: to cut into pieces рассечь на части
-    '''
+
     def __init__(self, text):
         self.blocks = []
         self.tags = []

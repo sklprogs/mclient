@@ -601,14 +601,17 @@ class Tags:
         itag.debug()
     
     def run_stardict(self):
-        import plugins.stardict.cleanup as sdcleanup
-        import plugins.stardict.tags as sdtags
-        file = '/home/pete/bin/mclient/tests/stardict/EnRu full cut.txt'
+        import plugins.stardict.cleanup as cu
+        import plugins.stardict.tags as tg
+        file = '/home/pete/docs/mclient_tests/stardict/EnRu full cut.txt'
         text = sh.ReadTextFile(file).get()
-        text = sdcleanup.CleanUp(text).run()
-        sdtags.Tags (text = text
-                    ,Debug = DEBUG
-                    ).run()
+        text = cu.CleanUp(text).run()
+        itags = tg.Tags (text = text
+                        ,Debug = DEBUG
+                        ,maxrows = 0
+                        )
+        itags.run()
+        return itags.debug()
     
     def run_multitrancom(self):
         import plugins.multitrancom.cleanup as cu
@@ -1226,11 +1229,12 @@ if __name__ == '__main__':
     #mes = com.get_all_subjects()
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
+    mes = Tags().run_stardict()
     #mes = Elems().run_dsl()
     #mes = Subjects().run()
     #mes = View().run_dsl()
-    #idebug = sh.Debug(f, mes)
-    #idebug.show()
+    idebug = sh.Debug(f, mes)
+    idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())
     #idebug = sh.Debug(f, Elems().run_multitrancom())
     #idebug = sh.Debug(f, Prioritize().run_multitrancom())
@@ -1246,8 +1250,8 @@ if __name__ == '__main__':
     #isuggest.show()
 
     # Priorities
-    iprior = com.run_prior()
-    iprior.show()
+    #iprior = com.run_prior()
+    #iprior.show()
 
     # Priorities (from the controller)
     #iprior = com.run_prior_contr()

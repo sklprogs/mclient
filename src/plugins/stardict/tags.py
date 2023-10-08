@@ -234,10 +234,11 @@ class Tags:
 
     def debug_tags(self):
         f = '[MClient] plugins.stardict.tags.Tags.debug_tags'
-        message = ''
+        mes = []
         for i in range(len(self.tags)):
-            message += f'{i}:{self.tags[i]}\n'
-        sh.com.run_fast_debug(f, message)
+            mes.append(f'{i}:{self.tags[i]}')
+        mes.insert(0, f'{f}:')
+        return '\n'.join(mes)
 
     def debug_blocks (self):
         f = '[MClient] plugins.stardict.tags.Tags.debug_blocks'
@@ -257,13 +258,12 @@ class Tags:
                            ,maxrows = self.maxrows
                            ,Transpose = True
                            ).run()
-        mes = _('Non-DB blocks:') + '\n\n' + mes
-        sh.com.run_fast_debug(f, mes)
+        return f + ':\n' + mes
 
     def debug(self):
-        if self.Debug:
-            self.debug_tags()
-            self.debug_blocks()
+        report = [self.debug_tags(), self.debug_blocks()]
+        report = [item for item in report if item]
+        return '\n\n'.join(report)
 
     def get_blocks(self):
         if not self.blocks:

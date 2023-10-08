@@ -13,22 +13,53 @@ import plugins.stardict.subjects as sj
 
 class Plugin:
     
-    def __init__(self, Debug=False, maxrow=20, maxrows=1000):
+    def __init__(self, Debug=False, maxrows=1000):
         ''' - Extra unused input variables are preserved so it would be easy to
               use an abstract class for all dictionary sources.
             - #NOTE: Do not forget to set plugins.stardict.get.PATH earlier.
         '''
         self.set_values()
         self.Debug = Debug
-        self.maxrow = maxrow
         self.maxrows = maxrows
     
     def set_values(self):
-        self.abbr = {}
-        self.blocks = []
-        self.text = ''
+        ''' #NOTE: 'fixed_urls', 'art_subj', 'Parallel' and 'Separate' are
+            temporary variables that should be externally referred to only
+            after getting a NEW article.
+        '''
+        self.Parallel = False
+        self.Separate = False
+        self.cells = []
+        self.majors = []
+        self.minors = []
+        self.fixed_urls = {}
+        self.art_subj = {}
         self.htm = ''
         self.search = ''
+    
+    def is_parallel(self):
+        return self.Parallel
+    
+    def is_separate(self):
+        return self.Separate
+    
+    def get_speeches(self):
+        return {}
+    
+    def get_minors(self):
+        return self.minors
+    
+    def get_fixed_urls(self):
+        return self.fixed_urls
+    
+    def get_htm(self):
+        return self.htm
+    
+    def get_text(self):
+        return self.text
+    
+    def get_article_subjects(self):
+        return self.art_subj
     
     def get_subjects(self):
         return sj.objs.get_subjects().get_list()
@@ -73,7 +104,7 @@ class Plugin:
         # This is needed only for compliance with a general method
         return ''
     
-    def fix_raw_htm(self):
+    def fix_raw_htm(self, code=''):
         # This is needed only for compliance with a general method
         return self.htm
     
@@ -115,13 +146,11 @@ class Plugin:
         self.search = search
         self.htm = self.text = gt.Get(search).run()
         self.text = cu.CleanUp(self.text).run()
-        itags = tg.Tags (text = self.text
-                        ,Debug = self.Debug
-                        ,maxrow = self.maxrow
-                        ,maxrows = self.maxrows
-                        )
-        self.blocks = itags.run()
-        self.blocks = el.Elems (blocks = self.blocks
-                               ,abbr = itags.abbr
-                               ).run()
-        return self.blocks
+        blocks = tg.Tags(text)
+        ielems = el.Elems(blocks)
+        self.cells = ielems.run()
+        self.fixed_urls = ielems.fixed_urls
+        self.art_subj = ielems.art_subj
+        self.Parallel = ielems.Parallel
+        self.Separate = ielems.Separate
+        return self.cells
