@@ -146,7 +146,7 @@ class Plugin:
         self.search = search
         self.htm = self.text = gt.Get(search).run()
         self.text = cu.CleanUp(self.text).run()
-        blocks = tg.Tags(text)
+        blocks = tg.Tags(self.text).run()
         ielems = el.Elems(blocks)
         self.cells = ielems.run()
         self.fixed_urls = ielems.fixed_urls

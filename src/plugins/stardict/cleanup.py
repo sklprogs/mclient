@@ -397,20 +397,20 @@ class CleanUp:
     def run(self):
         #TODO: combine shared operations for all Stardict classes
         f = '[MClient] plugins.stardict.cleanup.CleanUp.run'
-        if self.text and header:
-            self.text = Common(self.text).run()
-            if '<dtrn>' in self.text:
-                mes = _('Type 3')
-                sh.objs.get_mes(f, mes, True).show_debug()
-                self.text = Type3(self.text).run()
-            elif '_Ex:' in self.text or re.search('\d\>', self.text):
-                mes = _('Type 2')
-                sh.objs.get_mes(f, mes, True).show_debug()
-                self.text = Type2(self.text).run()
-            else:
-                mes = _('Type 1')
-                sh.objs.get_mes(f, mes, True).show_debug()
-                self.text = Type1(self.text).run()
-        else:
+        if not self.text or not header:
             sh.com.rep_empty(f)
+            return ''
+        self.text = Common(self.text).run()
+        if '<dtrn>' in self.text:
+            mes = _('Type 3')
+            sh.objs.get_mes(f, mes, True).show_debug()
+            self.text = Type3(self.text).run()
+        elif '_Ex:' in self.text or re.search('\d\>', self.text):
+            mes = _('Type 2')
+            sh.objs.get_mes(f, mes, True).show_debug()
+            self.text = Type2(self.text).run()
+        else:
+            mes = _('Type 1')
+            sh.objs.get_mes(f, mes, True).show_debug()
+            self.text = Type1(self.text).run()
         return self.text

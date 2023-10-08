@@ -254,5 +254,4 @@ class Tags:
     def run(self):
         self.get_tags()
         self.get_blocks()
-        self.debug()
         return self.blocks

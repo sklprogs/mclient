@@ -12,10 +12,7 @@ DEBUG = True
 ''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
     otherwise, 'Tags' will fail to set 'subj' and some other types.
 '''
-#SEARCH = 'coregone'
-#URL = 'https://www.multitran.com/m.exe?s=coregone&l1=2&l2=1&SHL=2'
-#SEARCH = 'имя параметра'
-SEARCH = 'clutch'
+SEARCH = 'компьютер'
 URL = ''
 HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/clutch (2023-09-30).html'
 
@@ -174,6 +171,27 @@ class Prioritize:
 
 
 class View:
+    
+    def run_stardict(self):
+        import logic as lg
+        import plugins.stardict.cleanup as cu
+        import plugins.stardict.tags as tg
+        import plugins.stardict.elems as el
+        import cells as cl
+        file = '/home/pete/docs/mclient_tests/stardict/EnRu full cut.txt'
+        text = sh.ReadTextFile(file).get()
+        text = cu.CleanUp(text).run()
+        blocks = tg.Tags(text).run()
+        cells = el.Elems(blocks).run()
+        lg.objs.get_articles().add (search = SEARCH
+                                   ,url = URL
+                                   ,cells = cells
+                                   )
+        cells = cl.Omit(cells).run()
+        cells = cl.Prioritize(cells).run()
+        iview = cl.View(cells)
+        iview.run()
+        return iview.debug()
     
     def run_multitrancom(self):
         f = '[MClient] tests.View.run_multitrancom'
@@ -1243,9 +1261,10 @@ if __name__ == '__main__':
     #mes = Tags().run_dsl()
     #mes = Tags().run_stardict()
     #mes = Elems().run_dsl()
-    mes = Elems().run_stardict()
+    #mes = Elems().run_stardict()
     #mes = Subjects().run()
     #mes = View().run_dsl()
+    mes = View().run_stardict()
     idebug = sh.Debug(f, mes)
     idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())
