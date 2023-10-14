@@ -130,8 +130,28 @@ class Articles:
                                     ,'fixed_urls' : fixed_urls
                                     ,'rowno'      : -1
                                     ,'colno'      : -1
+                                    ,'blocked'    : {'subjects': [], 'non-subjects': []}
                                     }
         self.set_id(id_)
+    
+    def get_blocked(self):
+        f = '[MClientQt] logic.Articles.get_blocked'
+        try:
+            return (self.articles['ids'][self.id]['blocked']['subjects']
+                   ,self.articles['ids'][self.id]['blocked']['non-subjects']
+                   )
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f, mes).show_warning()
+    
+    def set_blocked(self, subj, non_subj):
+        f = '[MClientQt] logic.Articles.set_blocked'
+        try:
+            self.articles['ids'][self.id]['blocked']['subjects'] = subj
+            self.articles['ids'][self.id]['blocked']['non-subjects'] = non_subj
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f, mes).show_warning()
     
     def clear_article(self):
         f = '[MClientQt] logic.Articles.clear_article'

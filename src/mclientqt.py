@@ -148,10 +148,18 @@ class UpdateUI:
         self.gui.btn_pri.set_hint()
     
     def update_block(self):
+        f = '[MClient] mclient.UpdateUI.update_block'
+        ''' #NOTE: We cannot use 'lg.objs.get_articles().get_cells()' since
+            it does not have blocked items. If nothing is found, ([], []) is
+            returned, which does not cause a warning.
+        '''
+        blocked = lg.objs.get_articles().get_blocked()
+        if not blocked:
+            sh.com.rep_empty(f)
+            return
+        blocked_subj, blocked_cells = len(blocked[0]), len(blocked[1])
         mes = [_('Subject blocking')]
-        skipped_terms = len(com.get_skipped_terms())
-        skipped_dics = len(com.get_skipped_dics())
-        if cf.objs.config.new['BlockSubjects'] and skipped_terms:
+        if cf.objs.config.new['BlockSubjects'] and blocked_subj:
             self.gui.btn_blk.activate()
         else:
             self.gui.btn_blk.inactivate()
@@ -159,12 +167,9 @@ class UpdateUI:
             mes.append(_('Status: ON'))
         else:
             mes.append(_('Status: OFF'))
-        ''' If this does not work as expected, then TERM might not be
-            filled properply.
-        '''
-        if cf.objs.config.new['BlockSubjects'] and skipped_terms:
-            sub = _('Skipped {} terms in {} subjects')
-            sub = sub.format(skipped_terms, skipped_dics)
+        if cf.objs.config.new['BlockSubjects'] and blocked_cells:
+            sub = _('Blocked {} cells of {} subjects')
+            sub = sub.format(blocked_cells, blocked_subj)
         else:
             sub = _('Nothing was blocked')
         mes.append(sub)
@@ -408,57 +413,19 @@ class Commands:
             dic[subject] = {}
         return dic
     
-    def get_skipped_terms(self):
-        f = '[MClientQt] mclient.Commands.get_skipped_terms'
-        #TODO: implement
-        print(f)
-        return []
-        '''
-        skipped = lg.objs.get_blocksdb().get_skipped_terms()
-        if not skipped:
-            return []
-        # TERM can be empty for some reason
-        skipped = [item for item in skipped if item]
-        # We already use 'distinct' in DB, no need to use 'set'
-        skipped.sort()
-        mes = '; '.join(skipped)
-        sh.objs.get_mes(f, mes, True).show_debug()
-        return skipped
-        '''
-    
-    def get_skipped_dics(self):
-        f = '[MClient] mclient.Commands.get_skipped_dics'
-        #TODO: implement
-        print(f)
-        return []
-        '''
-        skipped = lg.objs.get_blocksdb().get_skipped_dics()
-        if not skipped:
-            return []
-        skipped = ', '.join(skipped)
-        skipped = skipped.split(', ')
-        skipped = sorted(set(skipped))
-        mes = '; '.join(skipped)
-        sh.objs.get_mes(f, mes, True).show_debug()
-        return skipped
-        '''
-    
     def get_prioritized(self):
+        # Takes ~0.006s for 'set' on AMD E-300
         f = '[MClient] mclient.Commands.get_prioritized'
-        #TODO: implement
-        print(f)
-        return []
-        '''
-        prioritized = lg.objs.get_blocksdb().get_prioritized()
-        if not prioritized:
+        subjects = self.get_article_subjects()
+        if not subjects:
+            sh.com.rep_lazy(f)
             return []
-        prioritized = ', '.join(prioritized)
-        prioritized = prioritized.split(', ')
-        prioritized = set(prioritized)
-        mes = '; '.join(prioritized)
+        subjects = [subject for subject in subjects.keys() \
+                    if sj.objs.get_subjects().is_prioritized(subject)
+                   ]
+        mes = '; '.join(subjects)
         sh.objs.get_mes(f, mes, True).show_debug()
-        return prioritized
-        '''
+        return subjects
 
 
 
@@ -1739,7 +1706,9 @@ class App:
             
         cells = cl.Expand(cells).run()
         
-        cells = cl.Omit(cells).run()
+        iomit = cl.Omit(cells)
+        cells = iomit.run()
+        lg.objs.articles.set_blocked(iomit.subj, iomit.non_subj)
         cells = cl.Prioritize(cells).run()
         
         lg.objs.get_column_width().reset()
@@ -2166,7 +2135,8 @@ if __name__ == '__main__':
     sh.com.start()
     if cf.objs.get_config().Success:
         lg.objs.get_plugins(Debug=False, maxrows=1000)
-        lg.objs.get_request().search = 'tuple'
+        #lg.objs.get_request().search = 'tuple'
+        lg.objs.get_request().search = 'sack'
         timer = sh.Timer(f + ': Showing GUI')
         timer.start()
         app = App()
