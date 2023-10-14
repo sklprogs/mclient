@@ -168,8 +168,8 @@ class UpdateUI:
         else:
             mes.append(_('Status: OFF'))
         if cf.objs.config.new['BlockSubjects'] and blocked_cells:
-            sub = _('Blocked {} cells of {} subjects')
-            sub = sub.format(blocked_cells, blocked_subj)
+            sub = _('Blocked {} subjects ({} cells)')
+            sub = sub.format(blocked_subj, blocked_cells)
         else:
             sub = _('Nothing was blocked')
         mes.append(sub)

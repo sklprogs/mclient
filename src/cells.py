@@ -68,27 +68,39 @@ class Omit:
         self.subj = []
         self.non_subj = []
     
+    def set_subjects(self):
+        f = '[MClientQt] cells.Omit.set_subjects'
+        if not cf.objs.get_config().new['BlockSubjects']:
+            sh.com.rep_lazy(f)
+            return
+        subjects = [cell.subj for cell in self.cells]
+        subjects = sorted(set(subjects))
+        for subject in subjects:
+            if sj.objs.get_subjects().is_blocked(subject):
+                self.subj.append(subject)
+        mes = '; '.join(self.subj)
+        sh.objs.get_mes(f, mes, True).show_debug()
+    
+    def set_non_subjects(self):
+        f = '[MClientQt] cells.Omit.set_non_subjects'
+        if not cf.objs.get_config().new['BlockSubjects']:
+            sh.com.rep_lazy(f)
+            return
+        for cell in self.cells:
+            # Fixed cells are already removed
+            if cell.subj in self.subj:
+                self.non_subj.append(cell.text)
+        mes = '; '.join(self.non_subj)
+        sh.objs.get_mes(f, mes, True).show_debug()
+    
     def omit_subjects(self):
         f = '[MClientQt] cells.Omit.omit_subjects'
         if not cf.objs.get_config().new['BlockSubjects']:
             sh.com.rep_lazy(f)
             return
-        cells = []
-        for cell in self.cells:
-            if not sj.objs.get_subjects().is_blocked(cell.subj):
-                cells.append(cell)
-                continue
-            if cell.fixed_block and cell.fixed_block.type == 'subj':
-                self.subj.append(cell.text)
-            else:
-                self.non_subj.append(cell.text)
-        sh.com.rep_matches(f, len(self.cells)-len(cells))
-        self.cells = cells
-        self.subj = sorted(set(self.subj))
-        mes = _('Omitted subjects: {}').format('; '.join(self.subj))
-        sh.objs.get_mes(f, mes, True).show_debug()
-        mes = _('Omitted non-subjects: {}').format('; '.join(self.non_subj))
-        sh.objs.get_mes(f, mes, True).show_debug()
+        old_len = len(self.cells)
+        self.cells = [cell for cell in self.cells if not cell.subj in self.subj]
+        sh.com.rep_matches(f, old_len-len(self.cells))
     
     def omit_users(self):
         f = '[MClientQt] cells.Omit.omit_users'
@@ -115,6 +127,8 @@ class Omit:
         sh.com.rep_matches(f, count)
     
     def run(self):
+        self.set_subjects()
+        self.set_non_subjects()
         self.omit_subjects()
         self.omit_users()
         return self.cells
