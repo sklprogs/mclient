@@ -101,7 +101,6 @@ class Create:
         self.set_values()
     
     def set_values(self):
-        self.SortByShort = False
         self.prior_all = []
         self.block_all = []
         self.subjects = []
@@ -129,10 +128,9 @@ class Create:
     def set_blocked_all(self):
         self._set_block_section(cf.objs.get_config().new['subjects']['blocked'])
     
-    def reset(self, pairs, SortByShort=False):
+    def reset(self, pairs):
         self.set_values()
         self.pairs = pairs
-        self.SortByShort = SortByShort
         self.run()
     
     def debug(self):
@@ -156,7 +154,7 @@ class Create:
         mes.append(sub)
         sub = _('Sort by short subjects:')
         mes.append(sub)
-        mes.append(str(self.SortByShort))
+        mes.append(str(cf.objs.get_config().new['ShortSubjects']))
         return '\n'.join(mes)
     
     def _debug_subjects(self):
@@ -196,7 +194,7 @@ class Create:
             isubj.prior_index = PriorIndex(self.prior_all, parts).run()
     
     def alphabetize(self):
-        if self.SortByShort:
+        if cf.objs.get_config().new['ShortSubjects']:
             self.subjects.sort(key=lambda x: x.subj.casefold())
         else:
             self.subjects.sort(key=lambda x: x.subjf.casefold())
@@ -229,6 +227,13 @@ class Subjects(Create):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+    
+    def get_max_subjpr(self):
+        subjpr = [isubj.subjpr for isubj in self.subjects]
+        # Cannot use 'max' on empty lists
+        if not subjpr:
+            return -1
+        return max(subjpr)
     
     def is_phrase_blocked(self, phrase):
         return phrase in self.block_all

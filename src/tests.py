@@ -381,7 +381,7 @@ class Subjects:
                 ,'тлф.': 'Телефония', 'устн.': 'Устная речь'
                 ,'СМИ.': 'Средства массовой информации'
                 }
-        sj.objs.get_subjects().reset(pairs, SortByShort=False)
+        sj.objs.get_subjects().reset(pairs)
         self.report.append(sj.objs.subjects.debug())
     
     def is_phrase_blocked(self, subject):
