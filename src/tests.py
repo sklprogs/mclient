@@ -148,6 +148,7 @@ class Prioritize:
         import plugins.multitrancom.tags as tg
         import plugins.multitrancom.elems as el
         import cells as cl
+        import subjects as sj
         
         text = sh.ReadTextFile(HTM_FILE).get()
         timer = sh.Timer(f)
@@ -156,11 +157,24 @@ class Prioritize:
         blocks = tg.Tags (text = text
                          ,maxrows = 0
                          ).run()
-        cells = el.Elems(blocks).run()
+        ielems = el.Elems(blocks)
+        cells = ielems.run()
+        
+        ''' #FIX: For some reason, lg.objs.get_plugins().get_article_subjects()
+            is empty.
+        '''
+        pairs = ielems.art_subj
+        if not pairs:
+            sh.com.rep_empty(f)
+            return
+        sj.objs.get_subjects().reset(pairs)
         
         lg.objs.get_articles().add (search = SEARCH
                                    ,url = URL
                                    ,cells = cells
+                                   ,subjf = sj.objs.subjects.article
+                                   ,blocked = sj.objs.subjects.block
+                                   ,prioritized = sj.objs.subjects.prior
                                    )
 
         cells = cl.Omit(cells).run()
@@ -1151,7 +1165,9 @@ if __name__ == '__main__':
     #mes = View().run_dsl()
     #mes = View().run_stardict()
     #mes = Subjects().run()
-    mes = View().run_multitrancom()
+    #mes = View().run_multitrancom()
+    #mes = Elems().run_multitrancom()
+    mes = Prioritize().run_multitrancom()
     idebug = sh.Debug(f, mes)
     idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())
