@@ -6,6 +6,7 @@ import skl_shared_qt.shared as sh
 import skl_shared_qt.config as qc
 
 import config as cf
+import subjects as sj
 
 DEBUG = True
 
@@ -372,208 +373,56 @@ class Subjects:
     def __init__(self):
         self.report = []
     
-    def run(self):
-        #self.run_history()
-        self.expand('комп.')
-        self.expand('Компьютеры')
-        self.show_prior_default()
-        self.show_prior_local()
-        self.show_prioritized()
-        self.is_prioritized('общ.')
-        self.is_prioritized('Общая лексика')
-        self.is_prioritized('комп., Майкр.')
-        self.is_prioritized('Майкрософт')
-        self.is_prioritized('ИТ.')
-        self.is_prioritized('Информационные технологии')
-        return '\n'.join(self.report)
+    def create(self):
+        pairs = {'общ.': 'Общая лексика', 'комп.': 'Компьютеры'
+                ,'Майкр.': 'Майкрософт', 'вульг.': 'Вульгаризм'
+                ,'разг., сл.': 'Разговорная лексика, Сленг'
+                ,'сокр., воен., авиац.': 'Сокращение, Военный термин, Авиация'
+                ,'тлф.': 'Телефония', 'устн.': 'Устная речь'
+                ,'СМИ.': 'Средства массовой информации'
+                }
+        sj.objs.get_subjects().reset(pairs, SortByShort=False)
+        self.report.append(sj.objs.subjects.debug())
     
-    def show_prior_default(self):
-        f = '[MClient] tests.Subjects.show_prior_default'
-        sub = f'{f}:'
+    def is_phrase_blocked(self, subject):
+        f = '[MClient] tests.Subjects.is_phrase_blocked'
+        if sj.objs.subjects.is_phrase_blocked(subject):
+            sub = _('Phrase "{}" is blocked').format(subject)
+        else:
+            sub = _('Phrase "{}" is NOT blocked').format(subject)
         self.report.append(sub)
-        sub = 'Prioritized subjects from default config:'
-        self.report.append(sub)
-        try:
-            prior = cf.objs.get_config().idefault.get()['subjects']['prioritized']
-        except KeyError:
-            prior = []
-            sh.com.rep_out(f)
-        self.report.append('; '.join(prior))
-        self.report.append('')
     
-    def show_prior_local(self):
-        f = '[MClient] tests.Subjects.show_prior_local'
-        sub = f'{f}:'
+    def is_phrase_prior(self, subject):
+        f = '[MClient] tests.Subjects.is_phrase_prior'
+        if sj.objs.subjects.is_phrase_prior(subject):
+            sub = _('Phrase "{}" is prioritized').format(subject)
+        else:
+            sub = _('Phrase "{}" is NOT prioritized').format(subject)
         self.report.append(sub)
-        sub = 'Prioritized subjects from local config:'
-        self.report.append(sub)
-        try:
-            prior = cf.objs.get_config().ilocal.get()['subjects']['prioritized']
-        except KeyError:
-            prior = []
-            sh.com.rep_out(f)
-        self.report.append('; '.join(prior))
-        self.report.append('')
     
-    def show_prioritized(self):
-        f = '[MClient] tests.Subjects.show_prioritized'
-        sub = f'{f}:'
+    def is_blocked(self, subject):
+        f = '[MClient] tests.Subjects.is_blocked'
+        if sj.objs.subjects.is_blocked(subject):
+            sub = _('Subject "{}" is blocked').format(subject)
+        else:
+            sub = _('Subject "{}" is NOT blocked').format(subject)
         self.report.append(sub)
-        try:
-            prior = cf.objs.get_config().new['subjects']['prioritized']
-        except KeyError:
-            prior = []
-            sh.com.rep_out(f)
-        sub = 'Prioritized subjects from final config:'
-        self.report.append(sub)
-        self.report.append('; '.join(prior))
-        self.report.append('')
     
     def is_prioritized(self, subject):
         f = '[MClient] tests.Subjects.is_prioritized'
-        import subjects as sj
-        sub = f'{f}:'
-        self.report.append(sub)
-        Prioritized = sj.objs.get_subjects().is_prioritized(subject)
-        if Prioritized:
-            result = 'is prioritized'
+        if sj.objs.subjects.is_prioritized(subject):
+            sub = _('Subject "{}" is prioritized').format(subject)
         else:
-            result = 'is NOT prioritized'
-        sub = f'"{subject}" {result}'
+            sub = _('Subject "{}" is NOT prioritized').format(subject)
         self.report.append(sub)
-        self.report.append('')
-    
-    def expand(self, short):
-        f = '[MClient] tests.Subjects.expand'
-        import subjects as sj
-        sub = f'{f}:'
-        self.report.append(sub)
-        sub = f'"{short}" expanded from history: "{sj.objs.get_subjects().expand(short)}"'
-        self.report.append(sub)
-        self.report.append('')
-    
-    def run_history(self):
-        f = '[MClient] tests.Subjects.run_history'
-        sub = f'{f}:'
-        self.report.append(sub)
-        sub = _('History subjects:')
-        self.report.append(sub)
-        sub = str(cf.objs.get_config().new['subjects']['history'])
-        self.report.append(sub)
-        self.report.append('')
-
-
-
-class ArticleSubjects:
-    
-    def __init__(self):
-        self.blocks = []
     
     def run(self):
-        self.set_blocks()
-        self.set_article()
-    
-    def set_article(self):
-        f = '[MClient] tests.Subjects.set_article'
-        import subjects.subjects as sj
-        import mclientqt as mclient
-        pairs = mclient.objs.get_blocksdb().get_dic_pairs()
-        mes = _('Pairs: {}').format(pairs)
-        sh.objs.get_mes(f, mes, True).show_debug()
-        sj.objs.get_article().reset(pairs, DEBUG)
-        sj.objs.article.run()
-    
-    def set_blocks(self):
-        f = '[MClient] tests.Subjects.set_blocks'
-        import mclientqt as mclient
-        # Lists will be automatically read from files on import
-        import logic as lg
-        #search = 'hello'
-        #url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
-        search = 'messenger'
-        url = 'https://www.multitran.com/m.exe?s=messenger&l1=1&l2=2'
-        blocks = lg.objs.get_plugins().request (search = search
-                                               ,url = url
-                                               )
-        mclient.objs.get_blocksdb().artid = 1
-        data = lg.com.dump_elems (blocks = blocks
-                                 ,artid = mclient.objs.blocksdb.artid
-                                 )
-        if not data:
-            sh.com.rep_empty(f)
-            return
-        mclient.objs.blocksdb.fill_blocks(data)
-
-
-
-class Block:
-    
-    def __init__(self):
-        self.id_ = None   # (00) Autoincrement
-        self.artid = 0    # (01) ARTICLEID
-        self.dic = ''     # (02) DIC (short title)
-        self.wform = ''   # (03) WFORM
-        self.speech = ''  # (04) SPEECH
-        self.transc = ''  # (05) TRANSC
-        self.term = ''    # (06) TERM
-        self.type = ''    # (07) TYPE
-        self.text = ''    # (08) TEXT
-        self.url = ''     # (09) URL
-        self.block = 0    # (10) BLOCK
-        self.dprior = 0   # (11) DICPR
-        self.select = 0   # (12) SELECTABLE
-        self.same = 0     # (13) SAMECELL
-        self.cellno = 0   # (14) CELLNO
-        self.rowno = -1   # (15) ROWNO
-        self.colno = -1   # (16) COLNO
-        self.pos1 = -1    # (17) POS1
-        self.pos2 = -1    # (18) POS2
-        self.node1 = ''   # (19) NODE1
-        self.node2 = ''   # (20) NODE2
-        self.offpos1 = -1 # (21) OFFPOS1
-        self.offpos2 = -1 # (22) OFFPOS2
-        self.bbox1 = -1   # (23) BBOX1
-        self.bbox2 = -1   # (24) BBOX2
-        self.bboy1 = -1   # (25) BBOY1
-        self.bboy2 = -1   # (26) BBOY2
-        self.textlow = '' # (27) TEXTLOW
-        self.ignore = 0   # (28) IGNORE
-        self.sprior = 0   # (29) SPEECHPR
-        self.dicf = ''    # (30) DIC (full title)
-    
-    def dump(self):
-        return (self.id_
-               ,self.artid
-               ,self.dic
-               ,self.wform
-               ,self.speech
-               ,self.transc
-               ,self.term
-               ,self.type
-               ,self.text
-               ,self.url
-               ,self.block
-               ,self.dprior
-               ,self.select
-               ,self.same
-               ,self.cellno
-               ,self.rowno
-               ,self.colno
-               ,self.pos1
-               ,self.pos2
-               ,self.node1
-               ,self.node2
-               ,self.offpos1
-               ,self.offpos2
-               ,self.bbox1
-               ,self.bbox2
-               ,self.bboy1
-               ,self.bboy2
-               ,self.textlow
-               ,self.ignore
-               ,self.speech
-               ,self.dicf
-               )
+        self.create()
+        self.is_phrase_blocked('Сленг')
+        self.is_phrase_prior('Майкрософт')
+        self.is_blocked('сл.')
+        self.is_prioritized('общ.')
+        return '\n\n'.join(self.report)
 
 
 
@@ -1291,10 +1140,11 @@ if __name__ == '__main__':
     #mes = Tags().run_multitrandem()
     #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
-    mes = Elems().run_multitrandem()
+    #mes = Elems().run_multitrandem()
     #mes = Subjects().run()
     #mes = View().run_dsl()
     #mes = View().run_stardict()
+    mes = Subjects().run()
     idebug = sh.Debug(f, mes)
     idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())
