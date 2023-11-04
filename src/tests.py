@@ -390,7 +390,7 @@ class Subjects:
             sub = _('Phrase "{}" is blocked').format(subject)
         else:
             sub = _('Phrase "{}" is NOT blocked').format(subject)
-        self.report.append(sub)
+        self.report.append(f'{f}:\n{sub}')
     
     def is_phrase_prior(self, subject):
         f = '[MClient] tests.Subjects.is_phrase_prior'
@@ -398,7 +398,7 @@ class Subjects:
             sub = _('Phrase "{}" is prioritized').format(subject)
         else:
             sub = _('Phrase "{}" is NOT prioritized').format(subject)
-        self.report.append(sub)
+        self.report.append(f'{f}:\n{sub}')
     
     def is_blocked(self, subject):
         f = '[MClient] tests.Subjects.is_blocked'
@@ -406,7 +406,7 @@ class Subjects:
             sub = _('Subject "{}" is blocked').format(subject)
         else:
             sub = _('Subject "{}" is NOT blocked').format(subject)
-        self.report.append(sub)
+        self.report.append(f'{f}:\n{sub}')
     
     def is_prioritized(self, subject):
         f = '[MClient] tests.Subjects.is_prioritized'
@@ -414,13 +414,13 @@ class Subjects:
             sub = _('Subject "{}" is prioritized').format(subject)
         else:
             sub = _('Subject "{}" is NOT prioritized').format(subject)
-        self.report.append(sub)
+        self.report.append(f'{f}:\n{sub}')
     
     def run(self):
         self.create()
         self.is_phrase_blocked('Сленг')
         self.is_phrase_prior('Майкрософт')
-        self.is_blocked('сл.')
+        self.is_blocked('разг., сл.')
         self.is_prioritized('общ.')
         return '\n\n'.join(self.report)
 

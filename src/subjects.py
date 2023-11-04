@@ -214,7 +214,7 @@ class Create:
 
 
 class Subjects(Create):
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
     
@@ -226,19 +226,35 @@ class Subjects(Create):
         return max(subjpr)
     
     def is_phrase_blocked(self, phrase):
+        ''' This can find out if a subject is blocked globally, not just in the
+            current article, but the subject must be in a full form. Works best
+            for items of the 'phrase' type.
+        '''
         return phrase in self.block_all
     
     def is_phrase_prior(self, phrase):
+        ''' This can find out if a subject is prioritized globally, not just in
+            the current article, but the subject must be in a full form. Works
+            best for items of the 'phrase' type.
+        '''
         return phrase in self.prior_all
     
     def is_blocked(self, subject):
+        ''' For a subject (either simple or compound) to be found, all article
+            subjects must be collected beforehand. 'vulg.' will be shown as not
+            blocked if the article has only 'inf., vulg.'.
+        '''
         for isubj in self.subjects:
-            if isubj.subj == subject or isubj.subjf == subject:
+            if subject in (isubj.subj, isubj.subjf):
                 return isubj.Block
     
     def is_prioritized(self, subject):
+        ''' For a subject (either simple or compound) to be found, all article
+            subjects must be collected beforehand. 'IT' will be shown as not
+            prioritized if the article has only 'IT, tech.'.
+        '''
         for isubj in self.subjects:
-            if isubj.subj == subject or isubj.subjf == subject:
+            if subject in (isubj.subj, isubj.subjf):
                 return isubj.prior_index > -1
 
 

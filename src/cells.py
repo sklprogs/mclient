@@ -66,7 +66,6 @@ class Omit:
     def __init__(self, cells):
         self.cells = cells
         self.subj = []
-        self.non_subj = []
     
     def set_subjects(self):
         f = '[MClientQt] cells.Omit.set_subjects'
@@ -79,18 +78,6 @@ class Omit:
             if sj.objs.get_subjects().is_blocked(subject):
                 self.subj.append(subject)
         mes = '; '.join(self.subj)
-        sh.objs.get_mes(f, mes, True).show_debug()
-    
-    def set_non_subjects(self):
-        f = '[MClientQt] cells.Omit.set_non_subjects'
-        if not cf.objs.get_config().new['BlockSubjects']:
-            sh.com.rep_lazy(f)
-            return
-        for cell in self.cells:
-            # Fixed cells are already removed
-            if cell.subj in self.subj:
-                self.non_subj.append(cell.text)
-        mes = '; '.join(self.non_subj)
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def omit_subjects(self):
@@ -128,7 +115,6 @@ class Omit:
     
     def run(self):
         self.set_subjects()
-        self.set_non_subjects()
         self.omit_subjects()
         self.omit_users()
         return self.cells
@@ -166,56 +152,12 @@ class Prioritize:
                            ).run()
         return f + ':\n' + mes
     
-    def set_subjects(self):
-        ''' All cells must have 'subjpr' set since they will not be further
-            sorted by 'subj', so do not cancel this procedure even if there are
-            no prioritized subjects, otherwise there may be sorting bugs, e.g.
-            multitran.com, EN-RU, 'full of it'.
-        '''
+    def set_phrase_subjpr(self):
+        subjpr = sj.objs.get_subjects().get_max_subjpr() + 1
         for cell in self.cells:
-            priority = sj.objs.get_subjects().get_priority(cell.subj)
-            if priority is not None:
-                cell.subjpr = priority
-        pr_cells = [cell for cell in self.cells if cell.subjpr > -1]
-        unp_cells = [cell for cell in self.cells if cell.subjpr == -1 \
-                     and not com.is_phrase_type(cell)
-                    ]
-        ph_cells = [cell for cell in self.cells if cell.subjpr == -1 \
-                    and com.is_phrase_type(cell)
-                   ]
-        
-        pr_cells.sort(key=lambda x: (x.subjpr, x.no))
-        unp_cells.sort(key=lambda x: (x.subj.lower(), x.no))
-        
-        ''' Keep old 'subjpr' if 'subj' is the same since we may need to
-            alphabetize terms later.
-        '''
-        subj = ''
-        subjpr = -1
-        for cell in pr_cells:
-            if cell.subj == subj:
+            if cell.subjpr == -1 and com.is_phrase_type(cell):
                 cell.subjpr = subjpr
-            else:
-                subj = cell.subj
-                subjpr += 1
-                cell.subjpr = subjpr
-        for cell in unp_cells:
-            if cell.subj == subj:
-                cell.subjpr = subjpr
-            else:
-                subj = cell.subj
-                subjpr += 1
-                cell.subjpr = subjpr
-        for cell in ph_cells:
-            if cell.subj == subj:
-                cell.subjpr = subjpr
-            else:
-                subj = cell.subj
-                subjpr += 1
-                cell.subjpr = subjpr
-        # [] + ['example'] == ['example']
-        self.cells = pr_cells + unp_cells + ph_cells
-
+    
     def set_speech(self):
         ph_cells = [cell for cell in self.cells if com.is_phrase_type(cell)]
         all_speech = sorted(set([cell.speech for cell in self.cells \
@@ -237,7 +179,7 @@ class Prioritize:
             cell.speechpr = i
     
     def run(self):
-        self.set_subjects()
+        self.set_phrase_subjpr()
         self.set_speech()
         return self.cells
 
