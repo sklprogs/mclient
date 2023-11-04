@@ -53,3 +53,14 @@ class Block:
             'speech', 'subj', 'term', 'transc', 'wform'.
         '''
         self.type = 'comment'
+
+
+
+class Subject:
+    
+    def __init__(self):
+        self.subj = ''
+        self.subjf = ''
+        self.prior_index = -1
+        self.subjpr = -1
+        self.Block = False

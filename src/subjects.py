@@ -6,6 +6,7 @@ import re
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
+import instance as ic
 import config as cf
 
 
@@ -81,17 +82,6 @@ class PriorIndex:
         self.set_indexes()
         self.set_min()
         return self.min
-
-
-
-class Subject:
-    
-    def __init__(self):
-        self.subj = ''
-        self.subjf = ''
-        self.prior_index = -1
-        self.subjpr = -1
-        self.Block = False
 
 
 
@@ -180,7 +170,7 @@ class Create:
     
     def set_subjects(self):
         for subj, subjf in self.pairs.items():
-            isubj = Subject()
+            isubj = ic.Subject()
             isubj.subj = subj
             isubj.subjf = subjf
             self.subjects.append(isubj)
