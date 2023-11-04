@@ -62,6 +62,32 @@ class Articles:
     def reset(self):
         self.set_values()
     
+    def get_blocked(self):
+        f = '[MClientQt] logic.Articles.get_blocked'
+        try:
+            return self.articles['ids'][self.id]['blocked']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f, mes).show_warning()
+        return []
+    
+    def get_prioritized(self):
+        f = '[MClientQt] logic.Articles.get_prioritized'
+        try:
+            return self.articles['ids'][self.id]['prioritized']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f, mes).show_warning()
+        return []
+    
+    def get_subjf(self):
+        f = '[MClientQt] logic.Articles.get_subjf'
+        try:
+            return self.articles['ids'][self.id]['subjf']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f, mes).show_warning()
+    
     def get_fixed_urls(self):
         f = '[MClientQt] logic.Articles.get_fixed_urls'
         try:
@@ -110,7 +136,9 @@ class Articles:
     def get_len(self):
         return self.get_max_id() + 1
     
-    def add(self, search='', url='', cells=[], table=[], raw_code='', fixed_urls=[]):
+    def add (self, search='', url='', cells=[], table=[], raw_code=''
+            ,fixed_urls=[], subjf=[], blocked=[], prioritized=[]
+            ):
         f = '[MClientQt] logic.Articles.add'
         # Do not add articles that were not found to history
         if not cells:
@@ -128,30 +156,13 @@ class Articles:
                                     ,'table'      : table
                                     ,'raw_code'   : raw_code
                                     ,'fixed_urls' : fixed_urls
+                                    ,'subjf'      : subjf
+                                    ,'blocked'    : blocked
+                                    ,'prioritized': prioritized
                                     ,'rowno'      : -1
                                     ,'colno'      : -1
-                                    ,'blocked'    : {'subjects': [], 'non-subjects': []}
                                     }
         self.set_id(id_)
-    
-    def get_blocked(self):
-        f = '[MClientQt] logic.Articles.get_blocked'
-        try:
-            return (self.articles['ids'][self.id]['blocked']['subjects']
-                   ,self.articles['ids'][self.id]['blocked']['non-subjects']
-                   )
-        except KeyError:
-            mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
-    
-    def set_blocked(self, subj, non_subj):
-        f = '[MClientQt] logic.Articles.set_blocked'
-        try:
-            self.articles['ids'][self.id]['blocked']['subjects'] = subj
-            self.articles['ids'][self.id]['blocked']['non-subjects'] = non_subj
-        except KeyError:
-            mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
     
     def clear_article(self):
         f = '[MClientQt] logic.Articles.clear_article'

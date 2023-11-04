@@ -128,7 +128,7 @@ class UpdateUI:
     
     def update_prioritization(self):
         mes = [_('Subject prioritization')]
-        prioritized = com.get_prioritized()
+        prioritized = lg.objs.get_articles().get_prioritized()
         if cf.objs.config.new['PrioritizeSubjects'] and prioritized \
         and not self.Parallel:
             self.gui.btn_pri.activate()
@@ -157,7 +157,7 @@ class UpdateUI:
         if not blocked:
             sh.com.rep_empty(f)
             return
-        blocked_subj, blocked_cells = len(blocked[0]), len(blocked[1])
+        blocked_subj = len(blocked)
         mes = [_('Subject blocking')]
         if cf.objs.config.new['BlockSubjects'] and blocked_subj:
             self.gui.btn_blk.activate()
@@ -168,8 +168,7 @@ class UpdateUI:
         else:
             mes.append(_('Status: OFF'))
         if cf.objs.config.new['BlockSubjects'] and blocked_cells:
-            sub = _('Blocked {} subjects ({} cells)')
-            sub = sub.format(blocked_subj, blocked_cells)
+            sub = _('Blocked {} subjects').format(blocked_subj)
         else:
             sub = _('Nothing was blocked')
         mes.append(sub)
@@ -394,38 +393,15 @@ class Commands:
     
     def get_article_subjects(self):
         f = '[MClientQt] mclient.Commands.get_article_subjects'
-        cells = lg.objs.get_articles().get_table()
-        if not cells:
+        subjfs = lg.objs.get_articles().get_subjf()
+        if not subjfs:
             sh.com.rep_empty(f)
             return {}
-        subjects = []
-        for row in cells:
-            for cell in row:
-                if not cell.fixed_block:
-                    continue
-                if cell.fixed_block.type != 'subj':
-                    continue
-                subjects.append(cell.text)
-        subjects = [subject.strip() for subject in subjects if subject.strip()]
-        subjects = sorted(set(subjects), key=lambda s: s.casefold())
+        subjfs = sorted(set(subjfs), key=lambda s: s.casefold())
         dic = {}
-        for subject in subjects:
-            dic[subject] = {}
+        for subjf in subjfs:
+            dic[subjf] = {}
         return dic
-    
-    def get_prioritized(self):
-        # Takes ~0.006s for 'set' on AMD E-300
-        f = '[MClient] mclient.Commands.get_prioritized'
-        subjects = self.get_article_subjects()
-        if not subjects:
-            sh.com.rep_lazy(f)
-            return []
-        subjects = [subject for subject in subjects.keys() \
-                    if sj.objs.get_subjects().is_prioritized(subject)
-                   ]
-        mes = '; '.join(subjects)
-        sh.objs.get_mes(f, mes, True).show_debug()
-        return subjects
 
 
 
@@ -1696,6 +1672,9 @@ class App:
                                  ,cells = cells
                                  ,fixed_urls = sj.objs.get_subjects().add_fixed_urls()
                                  ,raw_code = lg.objs.plugins.get_htm()
+                                 ,subjf = sj.objs.subjects.article
+                                 ,blocked = sj.objs.subjects.block
+                                 ,prioritized = sj.objs.subjects.prior
                                  )
             cf.HistorySubjects().add(lg.objs.plugins.get_article_subjects())
         else:
@@ -1705,10 +1684,7 @@ class App:
             cells = lg.objs.articles.get_cells()
             
         cells = cl.Expand(cells).run()
-        
-        iomit = cl.Omit(cells)
-        cells = iomit.run()
-        lg.objs.articles.set_blocked(iomit.subj, iomit.non_subj)
+        cells = cl.Omit(cells).run()
         cells = cl.Prioritize(cells).run()
         
         lg.objs.get_column_width().reset()

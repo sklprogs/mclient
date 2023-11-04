@@ -218,6 +218,10 @@ class Subjects(Create):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
     
+    def add_fixed_urls(self):
+        #TODO: Rework
+        pass
+    
     def expand(self, subj):
         # Works only for subjects within the current article
         for isubj in self.subjects:

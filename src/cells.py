@@ -340,7 +340,7 @@ class View:
         iterable = [rowno, no, text, types, url, col1, col2, col3, col4]
         return sh.FastTable (headers = headers
                             ,iterable = iterable
-                            ,maxrow = 60
+                            ,maxrow = 45
                             ).run()
     
     def _renumber_cell_nos(self):
