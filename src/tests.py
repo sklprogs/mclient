@@ -384,6 +384,11 @@ class Subjects:
         sj.objs.get_subjects().reset(pairs)
         self.report.append(sj.objs.subjects.debug())
     
+    def expand(self, subj):
+        f = '[MClient] tests.Subjects.expand'
+        sub = sj.objs.subjects.expand(subj)
+        self.report.append(f'{f}:\n{sub}')
+    
     def is_phrase_blocked(self, subject):
         f = '[MClient] tests.Subjects.is_phrase_blocked'
         if sj.objs.subjects.is_phrase_blocked(subject):
@@ -422,6 +427,7 @@ class Subjects:
         self.is_phrase_prior('Майкрософт')
         self.is_blocked('разг., сл.')
         self.is_prioritized('общ.')
+        self.expand('разг., сл.')
         return '\n\n'.join(self.report)
 
 

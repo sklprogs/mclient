@@ -218,6 +218,13 @@ class Subjects(Create):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
     
+    def expand(self, subj):
+        # Works only for subjects within the current article
+        for isubj in self.subjects:
+            if subj == isubj.subj:
+                return isubj.subjf
+        return subj
+    
     def get_max_subjpr(self):
         subjpr = [isubj.subjpr for isubj in self.subjects]
         # Cannot use 'max' on empty lists
