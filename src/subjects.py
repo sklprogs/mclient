@@ -113,10 +113,16 @@ class Create:
             self._set_block_section(value)
     
     def set_prior_all(self):
+        f = '[MClient] subjects.Create.set_prior_all'
         self._set_prior_section(cf.objs.get_config().new['subjects']['prioritized'])
+        mes = '; '.join(self.prior_all)
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def set_blocked_all(self):
+        f = '[MClient] subjects.Create.set_blocked_all'
         self._set_block_section(cf.objs.get_config().new['subjects']['blocked'])
+        mes = '; '.join(self.block_all)
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def reset(self, pairs):
         self.set_values()

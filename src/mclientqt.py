@@ -1667,10 +1667,11 @@ class App:
             cells = lg.objs.get_plugins().request (search = search
                                                   ,url = url
                                                   )
+            sj.objs.get_subjects().reset(lg.objs.plugins.get_article_subjects())
             lg.objs.articles.add (search = search
                                  ,url = url
                                  ,cells = cells
-                                 ,fixed_urls = sj.objs.get_subjects().add_fixed_urls()
+                                 ,fixed_urls = sj.objs.subjects.add_fixed_urls()
                                  ,raw_code = lg.objs.plugins.get_htm()
                                  ,subjf = sj.objs.subjects.article
                                  ,blocked = sj.objs.subjects.block
