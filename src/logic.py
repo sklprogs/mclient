@@ -145,24 +145,41 @@ class Articles:
             sh.com.rep_lazy(f)
             return
         id_ = self.get_max_id() + 1
-        self.articles['ids'][id_] = {'source'     : cf.objs.get_config().new['source']
-                                    ,'lang1'      : objs.get_plugins().get_lang1()
-                                    ,'lang2'      : objs.plugins.get_lang2()
-                                    ,'Parallel'   : objs.plugins.is_parallel()
-                                    ,'Separate'   : objs.plugins.is_separate()
-                                    ,'search'     : search
-                                    ,'url'        : url
-                                    ,'cells'      : cells
-                                    ,'table'      : table
-                                    ,'raw_code'   : raw_code
-                                    ,'fixed_urls' : fixed_urls
-                                    ,'subjf'      : subjf
-                                    ,'blocked'    : blocked
-                                    ,'prioritized': prioritized
-                                    ,'rowno'      : -1
-                                    ,'colno'      : -1
+        self.articles['ids'][id_] = {'source'        : cf.objs.get_config().new['source']
+                                    ,'lang1'         : objs.get_plugins().get_lang1()
+                                    ,'lang2'         : objs.plugins.get_lang2()
+                                    ,'Parallel'      : objs.plugins.is_parallel()
+                                    ,'Separate'      : objs.plugins.is_separate()
+                                    ,'search'        : search
+                                    ,'url'           : url
+                                    ,'cells'         : cells
+                                    ,'table'         : table
+                                    ,'raw_code'      : raw_code
+                                    ,'fixed_urls'    : fixed_urls
+                                    ,'subjf'         : subjf
+                                    ,'blocked'       : blocked
+                                    ,'prioritized'   : prioritized
+                                    ,'rowno'         : -1
+                                    ,'colno'         : -1
+                                    ,'blocked_cells' : []
                                     }
         self.set_id(id_)
+    
+    def get_blocked_cells(self):
+        f = '[MClientQt] logic.Articles.get_blocked_cells'
+        try:
+            return self.articles['ids'][self.id]['blocked_cells']
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f, mes).show_warning()
+    
+    def set_blocked_cells(self, texts):
+        f = '[MClientQt] logic.Articles.set_blocked_cells'
+        try:
+            self.articles['ids'][self.id]['blocked_cells'] = texts
+        except KeyError:
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f, mes).show_warning()
     
     def clear_article(self):
         f = '[MClientQt] logic.Articles.clear_article'

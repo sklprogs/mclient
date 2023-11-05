@@ -150,22 +150,27 @@ class UpdateUI:
     def update_block(self):
         f = '[MClient] mclient.UpdateUI.update_block'
         ''' #NOTE: We cannot use 'lg.objs.get_articles().get_cells()' since
-            it does not have blocked items. If nothing is found, ([], []) is
-            returned, which does not cause a warning.
+            it does not have blocked items.
         '''
-        blocked = lg.objs.get_articles().get_blocked()
-        if not blocked:
-            sh.com.rep_empty(f)
-            return
-        blocked_subj = len(blocked)
+        blocked_subj = lg.objs.get_articles().get_blocked()
+        blocked_cells = lg.objs.get_articles().get_blocked_cells()
+        if blocked_subj:
+            blocked_subj = len(blocked_subj)
+        else:
+            blocked_subj = 0
+        if blocked_cells:
+            blocked_cells = len(blocked_cells)
+        else:
+            blocked_cells = 0
         mes = [_('Subject blocking')]
         if cf.objs.config.new['BlockSubjects'] and blocked_subj:
             self.gui.btn_blk.activate()
         else:
             self.gui.btn_blk.inactivate()
-        if cf.objs.config.new['BlockSubjects']:
+        if cf.objs.config.new['BlockSubjects'] and blocked_cells:
             mes.append(_('Status: ON'))
-            sub = _('Blocked {} subjects').format(blocked_subj)
+            sub = _('Blocked {} subjects ({} cells)')
+            sub = sub.format(blocked_subj, blocked_cells)
         else:
             mes.append(_('Status: OFF'))
             sub = _('Nothing was blocked')
@@ -1683,7 +1688,8 @@ class App:
             cells = lg.objs.articles.get_cells()
             
         cells = cl.Expand(cells).run()
-        cells = cl.Omit(cells).run()
+        iomit = cl.Omit(cells)
+        cells = iomit.run()
         cells = cl.Prioritize(cells).run()
         
         lg.objs.get_column_width().reset()
@@ -1697,6 +1703,7 @@ class App:
         
         self.table.reset(iwrap.plain, iwrap.code)
         
+        lg.objs.articles.set_blocked_cells(iomit.omit_cells)
         lg.objs.articles.set_table(iwrap.cells)
         
         #lg.objs.request.text = lg.com.get_text(cells)

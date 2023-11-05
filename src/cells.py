@@ -66,6 +66,7 @@ class Omit:
     def __init__(self, cells):
         self.cells = cells
         self.subj = []
+        self.omit_cells = []
     
     def set_subjects(self):
         f = '[MClientQt] cells.Omit.set_subjects'
@@ -85,9 +86,17 @@ class Omit:
         if not cf.objs.get_config().new['BlockSubjects']:
             sh.com.rep_lazy(f)
             return
-        old_len = len(self.cells)
-        self.cells = [cell for cell in self.cells if not cell.subj in self.subj]
-        sh.com.rep_matches(f, old_len-len(self.cells))
+        cells = []
+        for cell in self.cells:
+            if cell.subj in self.subj:
+                # Fixed types are not recreated yet
+                self.omit_cells.append(cell.text)
+            else:
+                cells.append(cell)
+        sh.com.rep_matches(f, len(self.cells) - len(cells))
+        self.cells = cells
+        mes = _('Omitted cells: {}').format('; '.join(self.omit_cells))
+        sh.objs.get_mes(f, mes, True).show_debug()
     
     def omit_users(self):
         f = '[MClientQt] cells.Omit.omit_users'
