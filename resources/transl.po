@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-05 04:02+0300\n"
-"PO-Revision-Date: 2023-11-05 04:09+0300\n"
+"POT-Creation-Date: 2023-11-05 04:34+0300\n"
+"PO-Revision-Date: 2023-11-05 04:34+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -232,7 +232,7 @@ msgstr "Любые вопросы, пожелания и пр. излагай�
 #: mclientqt/src/cells.py:45 mclientqt/src/history/controller.py:59
 #: mclientqt/src/history/gui.py:25 mclientqt/src/logic.py:26
 #: mclientqt/src/logic.py:376 mclientqt/src/logic.py:606
-#: mclientqt/src/mclientqt.py:1078 mclientqt/src/plugins/dsl/get.py:391
+#: mclientqt/src/mclientqt.py:1125 mclientqt/src/plugins/dsl/get.py:391
 #: mclientqt/src/plugins/dsl/get.py:408 mclientqt/src/plugins/dsl/get.py:423
 #: mclientqt/src/plugins/dsl/get.py:431 mclientqt/src/plugins/dsl/tags.py:105
 #: mclientqt/src/plugins/multitrancom/elems.py:214
@@ -291,9 +291,9 @@ msgstr "ЧАСТЬ РЕЧИ"
 
 #: mclientqt/src/cells.py:301 mclientqt/src/logic.py:720
 #: mclientqt/src/manager.py:247 mclientqt/src/mclientqt.py:53
-#: mclientqt/src/mclientqt.py:328 mclientqt/src/plugins/multitrandem/run.py:92
-#: mclientqt/src/settings/gui.py:245 skl_shared_qt/src/logic.py:517
-#: skl_shared_qt/src/shared.py:356
+#: mclientqt/src/mclientqt.py:100 mclientqt/src/mclientqt.py:375
+#: mclientqt/src/plugins/multitrandem/run.py:92 mclientqt/src/settings/gui.py:245
+#: skl_shared_qt/src/logic.py:517 skl_shared_qt/src/shared.py:356
 msgid ""
 "An unknown mode \"{}\"!\n"
 "\n"
@@ -369,7 +369,7 @@ msgstr "Выход за границы массива, ряд №{}, столб�
 #: mclientqt/src/logic.py:279 mclientqt/src/logic.py:288
 #: mclientqt/src/logic.py:297 mclientqt/src/logic.py:306
 #: mclientqt/src/logic.py:321 mclientqt/src/logic.py:329
-#: mclientqt/src/mclientqt.py:822 mclientqt/src/mclientqt.py:838
+#: mclientqt/src/mclientqt.py:869 mclientqt/src/mclientqt.py:885
 #: mclientqt/src/plugins/multitrancom/pairs.py:2862
 #: mclientqt/src/plugins/multitrandem/get.py:671
 #: mclientqt/src/plugins/multitrandem/get.py:687
@@ -412,7 +412,7 @@ msgstr "Вставить текущий запрос"
 msgid "Paste previous request"
 msgstr "Вставить предыдущий запрос"
 
-#: mclientqt/src/gui.py:671 mclientqt/src/mclientqt.py:119
+#: mclientqt/src/gui.py:671 mclientqt/src/mclientqt.py:166
 msgid "Capture Ctrl-c-c and Ctrl-Ins-Ins"
 msgstr "Перехватывать Ctrl-c-c и Ctrl-Ins-Ins"
 
@@ -470,8 +470,8 @@ msgid "Header"
 msgstr "Заголовок"
 
 #: mclientqt/src/history/gui.py:133 mclientqt/src/history/gui.py:134
-#: mclientqt/src/history/gui.py:135 mclientqt/src/mclientqt.py:1446
-#: mclientqt/src/mclientqt.py:1450 mclientqt/src/plugins/multitrancom/pairs.py:7
+#: mclientqt/src/history/gui.py:135 mclientqt/src/mclientqt.py:1493
+#: mclientqt/src/mclientqt.py:1497 mclientqt/src/plugins/multitrancom/pairs.py:7
 #: mclientqt/src/plugins/multitrancom/pairs.py:20
 #: mclientqt/src/plugins/multitrancom/pairs.py:59
 #: mclientqt/src/plugins/multitrancom/pairs.py:110
@@ -961,11 +961,11 @@ msgstr "тест"
 msgid "Print"
 msgstr "Печать"
 
-#: mclientqt/src/logic.py:398 mclientqt/src/mclientqt.py:1725
+#: mclientqt/src/logic.py:398 mclientqt/src/mclientqt.py:1772
 msgid "Nothing has been found."
 msgstr "Ничего не найдено."
 
-#: mclientqt/src/logic.py:403 mclientqt/src/mclientqt.py:1721
+#: mclientqt/src/logic.py:403 mclientqt/src/mclientqt.py:1768
 msgid "Nothing has been found (skipped subjects: {})."
 msgstr "Ничего не найдено (игнорировано тематик: {})."
 
@@ -1061,7 +1061,7 @@ msgid "Row #{}. Column #{}. Text: \"{}\""
 msgstr "Строка №{}, столбец №{}. Текст: \"{}\""
 
 #: mclientqt/src/manager.py:187 mclientqt/src/manager.py:240
-#: mclientqt/src/mclientqt.py:1455 mclientqt/src/settings/gui.py:27
+#: mclientqt/src/mclientqt.py:1502 mclientqt/src/settings/gui.py:27
 #: mclientqt/src/settings/gui.py:212 mclientqt/src/settings/gui.py:227
 #: mclientqt/src/tests.py:1033 mclientqt/src/tests.py:1093
 #: mclientqt/src/tests.py:1138
@@ -1078,185 +1078,194 @@ msgstr "Stardict"
 msgid "Local MT"
 msgstr "Локальный МТ"
 
-#: mclientqt/src/mclientqt.py:48 mclientqt/src/prior_block/gui.py:128
+#: mclientqt/src/mclientqt.py:48 mclientqt/src/mclientqt.py:95
+#: mclientqt/src/prior_block/gui.py:128
 msgid "All subjects"
 msgstr "Все тематики"
 
-#: mclientqt/src/mclientqt.py:50 mclientqt/src/prior_block/gui.py:128
+#: mclientqt/src/mclientqt.py:50 mclientqt/src/mclientqt.py:97
+#: mclientqt/src/prior_block/gui.py:128
 msgid "From the article"
 msgstr "Из статьи"
 
-#: mclientqt/src/mclientqt.py:57
+#: mclientqt/src/mclientqt.py:57 mclientqt/src/mclientqt.py:104
 msgid "Mode: \"{}\""
 msgstr "Режим: \"{}\""
 
-#: mclientqt/src/mclientqt.py:84
+#: mclientqt/src/mclientqt.py:81
+msgid "Blocking"
+msgstr "Блокирование"
+
+#: mclientqt/src/mclientqt.py:82
+msgid "Blocked subjects"
+msgstr "Блокируемые тематики"
+
+#: mclientqt/src/mclientqt.py:131
 msgid "Restore source language: {}"
 msgstr "Восстановление языка оригинала: {}"
 
-#: mclientqt/src/mclientqt.py:88
+#: mclientqt/src/mclientqt.py:135
 msgid "Restore target language: {}"
 msgstr "Восстановление языка перевода: {}"
 
-#: mclientqt/src/mclientqt.py:104
+#: mclientqt/src/mclientqt.py:151
 msgid "Sort terms by alphabet"
 msgstr "Сортировка терминов по алфавиту"
 
-#: mclientqt/src/mclientqt.py:106 mclientqt/src/mclientqt.py:122
-#: mclientqt/src/mclientqt.py:138 mclientqt/src/mclientqt.py:171
+#: mclientqt/src/mclientqt.py:153 mclientqt/src/mclientqt.py:169
+#: mclientqt/src/mclientqt.py:185 mclientqt/src/mclientqt.py:218
 msgid "Status: ON"
 msgstr "Состояние: ВКЛ"
 
-#: mclientqt/src/mclientqt.py:108 mclientqt/src/mclientqt.py:125
-#: mclientqt/src/mclientqt.py:140 mclientqt/src/mclientqt.py:175
+#: mclientqt/src/mclientqt.py:155 mclientqt/src/mclientqt.py:172
+#: mclientqt/src/mclientqt.py:187 mclientqt/src/mclientqt.py:222
 msgid "Status: OFF"
 msgstr "Состояние: ВЫКЛ"
 
-#: mclientqt/src/mclientqt.py:110
+#: mclientqt/src/mclientqt.py:157
 msgid "This page is not supported"
 msgstr "Эта страница не поддерживается"
 
-#: mclientqt/src/mclientqt.py:130
+#: mclientqt/src/mclientqt.py:177
 msgid "Subject prioritization"
 msgstr "Приоритизация тематик"
 
-#: mclientqt/src/mclientqt.py:142
+#: mclientqt/src/mclientqt.py:189
 msgid "{} subjects were prioritized"
 msgstr "{} тематик упорядочено по приоритету"
 
-#: mclientqt/src/mclientqt.py:145
+#: mclientqt/src/mclientqt.py:192
 msgid "Nothing to prioritize"
 msgstr "Приоритизация не требуется"
 
-#: mclientqt/src/mclientqt.py:165
+#: mclientqt/src/mclientqt.py:212
 msgid "Subject blocking"
 msgstr "Блокировка тематик"
 
-#: mclientqt/src/mclientqt.py:172
-#| msgid "Block subjects from blacklist"
+#: mclientqt/src/mclientqt.py:219
 msgid "Blocked {} subjects ({} cells)"
 msgstr "Заблокировано {} тематик ({} ячеек)"
 
-#: mclientqt/src/mclientqt.py:176
+#: mclientqt/src/mclientqt.py:223
 msgid "Nothing was blocked"
 msgstr "Ничего не заблокировано"
 
-#: mclientqt/src/mclientqt.py:317 mclientqt/src/save/gui.py:16
+#: mclientqt/src/mclientqt.py:364 mclientqt/src/save/gui.py:16
 msgid "Save the current view as a web-page (*.htm)"
 msgstr "Сохранить текущее представление как веб-страницу (*.htm)"
 
-#: mclientqt/src/mclientqt.py:319 mclientqt/src/save/gui.py:17
+#: mclientqt/src/mclientqt.py:366 mclientqt/src/save/gui.py:17
 msgid "Save the original article as a web-page (*.htm)"
 msgstr "Сохранить оригинальную статью как веб-страницу (*.htm)"
 
-#: mclientqt/src/mclientqt.py:321 mclientqt/src/save/gui.py:18
+#: mclientqt/src/mclientqt.py:368 mclientqt/src/save/gui.py:18
 msgid "Save the article as plain text in UTF-8 (*.txt)"
 msgstr "Сохранить статью как обычный текст в кодировке UTF-8 (*.txt)"
 
-#: mclientqt/src/mclientqt.py:323 mclientqt/src/save/gui.py:19
+#: mclientqt/src/mclientqt.py:370 mclientqt/src/save/gui.py:19
 msgid "Copy the code of the article to clipboard"
 msgstr "Скопировать код статьи в буфер обмена"
 
-#: mclientqt/src/mclientqt.py:325 mclientqt/src/save/gui.py:20
+#: mclientqt/src/mclientqt.py:372 mclientqt/src/save/gui.py:20
 msgid "Copy the text of the article to clipboard"
 msgstr "Скопировать текст статьи в буфер обмена"
 
-#: mclientqt/src/mclientqt.py:338 mclientqt/src/mclientqt.py:365
+#: mclientqt/src/mclientqt.py:385 mclientqt/src/mclientqt.py:412
 msgid "Web-pages (*.htm, *.html)"
 msgstr "Веб-страницы (*.htm, *.html)"
 
-#: mclientqt/src/mclientqt.py:377
+#: mclientqt/src/mclientqt.py:424
 msgid "Plain text (*.txt)"
 msgstr "Обычный текст (*.txt)"
 
-#: mclientqt/src/mclientqt.py:439
+#: mclientqt/src/mclientqt.py:486
 msgid "Offline dictionaries loaded: "
 msgstr "Загружено локальных словарей: "
 
-#: mclientqt/src/mclientqt.py:469
+#: mclientqt/src/mclientqt.py:516
 msgid "running"
 msgstr "работает"
 
-#: mclientqt/src/mclientqt.py:793
+#: mclientqt/src/mclientqt.py:840
 msgid "No cell is selected!"
 msgstr "Нет выбранных ячеек!"
 
-#: mclientqt/src/mclientqt.py:939
+#: mclientqt/src/mclientqt.py:986
 msgid "Number of cells: {}"
 msgstr "Число ячеек: {}"
 
-#: mclientqt/src/mclientqt.py:941
+#: mclientqt/src/mclientqt.py:988
 msgid "Number of long cells: {}"
 msgstr "Число длинных ячеек: {}"
 
-#: mclientqt/src/mclientqt.py:956
+#: mclientqt/src/mclientqt.py:1003
 msgid "Window height: {}"
 msgstr "Высота окна: {}"
 
-#: mclientqt/src/mclientqt.py:1058
+#: mclientqt/src/mclientqt.py:1105
 msgid "No suggestions are available!"
 msgstr "Нет доступных вариантов!"
 
-#: mclientqt/src/mclientqt.py:1158 mclientqt/src/mclientqt.py:1627
+#: mclientqt/src/mclientqt.py:1205 mclientqt/src/mclientqt.py:1674
 msgid "Open link: {}"
 msgstr "Открывается ссылка: {}"
 
-#: mclientqt/src/mclientqt.py:1173
+#: mclientqt/src/mclientqt.py:1220
 msgid "Status: {}"
 msgstr "Состояние: {}"
 
-#: mclientqt/src/mclientqt.py:1232
+#: mclientqt/src/mclientqt.py:1279
 msgid "what is \"{}\"?"
 msgstr "что такое \"{}\"?"
 
-#: mclientqt/src/mclientqt.py:1279 mclientqt/src/mclientqt.py:1430
+#: mclientqt/src/mclientqt.py:1326 mclientqt/src/mclientqt.py:1477
 msgid "Set source to \"{}\""
 msgstr "Выбран источник \"{}\""
 
-#: mclientqt/src/mclientqt.py:1351 mclientqt/src/settings/controller.py:95
+#: mclientqt/src/mclientqt.py:1398 mclientqt/src/settings/controller.py:95
 msgid "A value of this field should be within the range of {}-{}!"
 msgstr "Значение этого поля должно быть в диапазоне {}-{}!"
 
-#: mclientqt/src/mclientqt.py:1368
+#: mclientqt/src/mclientqt.py:1415
 msgid "Table width: {}"
 msgstr "Ширина таблицы: {}"
 
-#: mclientqt/src/mclientqt.py:1370
+#: mclientqt/src/mclientqt.py:1417
 msgid "Term column width: {}"
 msgstr "Ширина столбца с терминами: {}"
 
-#: mclientqt/src/mclientqt.py:1410 mclientqt/src/mclientqt.py:1423
+#: mclientqt/src/mclientqt.py:1457 mclientqt/src/mclientqt.py:1470
 msgid "Set the number of columns to {} ({} in total)"
 msgstr "Задать число столбцов: {} (всего {})"
 
-#: mclientqt/src/mclientqt.py:1521 mclientqt/src/mclientqt.py:1530
+#: mclientqt/src/mclientqt.py:1568 mclientqt/src/mclientqt.py:1577
 msgid "Set language: {}"
 msgstr "Установка языка: \"{}\""
 
-#: mclientqt/src/mclientqt.py:1567
+#: mclientqt/src/mclientqt.py:1614
 msgid "Cannot swap languages, this is a one-way dictionary!"
 msgstr "Нельзя поменять языки местами, это односторонний словарь!"
 
-#: mclientqt/src/mclientqt.py:1581
+#: mclientqt/src/mclientqt.py:1628
 msgid "Pair {}-{} is not supported!"
 msgstr "Пара {}-{} не поддерживается!"
 
-#: mclientqt/src/mclientqt.py:1685
+#: mclientqt/src/mclientqt.py:1732
 msgid "Load article No. {} from memory"
 msgstr "Загрузка статьи №{} из памяти"
 
-#: mclientqt/src/mclientqt.py:1807
+#: mclientqt/src/mclientqt.py:1854
 #: mclientqt/src/plugins/multitrandem/utils.py:946
 #: mclientqt/src/plugins/multitrandem/utils.py:1409
 #: mclientqt/src/suggest/controller.py:83 mclientqt/src/tests.py:1224
 msgid "Goodbye!"
 msgstr "До свидания!"
 
-#: mclientqt/src/mclientqt.py:2079
+#: mclientqt/src/mclientqt.py:2125
 msgid "The end has been reached. Searching from the start."
 msgstr "Достигнут конец. Поиск производится с начала."
 
-#: mclientqt/src/mclientqt.py:2082 mclientqt/src/mclientqt.py:2093
+#: mclientqt/src/mclientqt.py:2128 mclientqt/src/mclientqt.py:2139
 #: mclientqt/src/plugins/multitrandem/utils.py:273
 #: mclientqt/src/plugins/multitrandem/utils.py:596
 #: mclientqt/src/plugins/multitrandem/utils.py:601
@@ -1267,11 +1276,11 @@ msgstr "Достигнут конец. Поиск производится с н
 msgid "No matches!"
 msgstr "Совпадений нет!"
 
-#: mclientqt/src/mclientqt.py:2090
+#: mclientqt/src/mclientqt.py:2136
 msgid "The start has been reached. Searching from the end."
 msgstr "Достигнуто начало. Поиск производится с конца."
 
-#: mclientqt/src/mclientqt.py:2133
+#: mclientqt/src/mclientqt.py:2179
 msgid "Invalid configuration!"
 msgstr "Некорректная конфигурация!"
 
@@ -14416,17 +14425,14 @@ msgid "Apply current settings and reload the article"
 msgstr "Применить текущие настройки и перезагрузить статью"
 
 #: mclientqt/src/subjects.py:22 mclientqt/src/subjects.py:60
-#| msgid "New keys: {}"
 msgid "Indexes: {}"
 msgstr "Индексы: {}"
 
 #: mclientqt/src/subjects.py:24
-#| msgid "Pairs: {}"
 msgid "Parts: {}"
 msgstr "Части: {}"
 
 #: mclientqt/src/subjects.py:62
-#| msgid "Unable to find: {}"
 msgid "Minimal index: {}"
 msgstr "Наименьший индекс: {}"
 
@@ -14495,7 +14501,6 @@ msgid "Phrase \"{}\" is NOT prioritized"
 msgstr "Фраза \"{}\" НЕ имеет приоритета"
 
 #: mclientqt/src/tests.py:425
-#| msgid "Subject blocking"
 msgid "Subject \"{}\" is blocked"
 msgstr "Тематика \"{}\" блокируется"
 
@@ -15099,9 +15104,6 @@ msgstr "Блок кода: {}"
 
 #~ msgid "Unblock selection on the left"
 #~ msgstr "Разблокировать выделенное слева"
-
-#~ msgid "Block related subjects"
-#~ msgstr "Блокировать родственные тематики"
 
 #~ msgid "Unblock related subjects"
 #~ msgstr "Разблокировать родственные тематики"
