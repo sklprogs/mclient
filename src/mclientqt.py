@@ -165,11 +165,9 @@ class UpdateUI:
             self.gui.btn_blk.inactivate()
         if cf.objs.config.new['BlockSubjects']:
             mes.append(_('Status: ON'))
-        else:
-            mes.append(_('Status: OFF'))
-        if cf.objs.config.new['BlockSubjects'] and blocked_cells:
             sub = _('Blocked {} subjects').format(blocked_subj)
         else:
+            mes.append(_('Status: OFF'))
             sub = _('Nothing was blocked')
         mes.append(sub)
         self.gui.btn_blk.hint = '\n'.join(mes)
