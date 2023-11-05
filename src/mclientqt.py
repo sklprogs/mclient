@@ -69,6 +69,53 @@ class Priorities(pr.Panes):
 
 
 
+class Block(pr.Panes):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.set_titles()
+        self.add_bindings()
+        self.reset()
+    
+    def set_titles(self):
+        self.gui.set_title(_('Blocking'))
+        self.gui.tree1.set_header(_('Blocked subjects'))
+    
+    def save(self):
+        cf.objs.config.new['subjects']['blocked'] = self.dump1()
+    
+    def add_bindings(self):
+        self.gui.btn_res.set_action(self.reset)
+        self.gui.btn_apl.set_action(self.apply)
+        self.gui.opt_src.set_action(self.reset)
+    
+    def set_mode(self):
+        f = '[MClientQt] mclient.Block.set_mode'
+        mode = self.gui.opt_src.get()
+        if mode == _('All subjects'):
+            self.dic2 = lg.objs.get_plugins().get_subjects()
+        elif mode == _('From the article'):
+            self.dic2 = com.get_article_subjects()
+        else:
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(mode, '; '.join(self.gui.opt_src.items))
+            sh.objs.get_mes(f, mes).show_error()
+            return
+        mes = _('Mode: "{}"').format(mode)
+        sh.objs.get_mes(f, mes, True).show_debug()
+    
+    def reset(self):
+        self.dic1 = cf.objs.config.new['subjects']['blocked']
+        self.set_mode()
+        #TODO: Elaborate
+        self.fill(self.dic1, self.dic2)
+    
+    def apply(self):
+        self.close()
+        self.save()
+
+
+
 class UpdateUI:
     
     def __init__(self, gui):
@@ -2024,8 +2071,7 @@ class App:
         self.history = hs.History()
         self.save = Save()
         self.suggest = sg.Suggest()
-        #cur
-        self.block = pr.Panes()
+        self.block = Block()
         self.prior = Priorities()
         self.gui.set_gui(self.table.gui, self.panel)
         self.set_title(product)
