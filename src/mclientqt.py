@@ -118,10 +118,9 @@ class Block(pr.Panes):
 
 class UpdateUI:
     
-    def __init__(self, gui):
+    def __init__(self):
         self.Parallel = lg.com.is_parallel()
         self.Separate = lg.com.is_separate()
-        self.gui = gui
     
     def restore(self):
         ''' Set widget values to those autosave values that were not previously
@@ -136,16 +135,16 @@ class UpdateUI:
         mes = mes.format(cf.objs.config.new['lang2'])
         sh.objs.get_mes(f, mes, True).show_info()
         lg.objs.plugins.set_lang2(cf.objs.config.new['lang2'])
-        self.gui.reset_opt()
-        self.gui.opt_src.set(cf.objs.config.new['source'])
-        self.gui.opt_col.set(cf.objs.config.new['columns']['num'])
+        objs.get_panel().reset_opt()
+        objs.panel.opt_src.set(cf.objs.config.new['source'])
+        objs.panel.opt_col.set(cf.objs.config.new['columns']['num'])
     
     def _update_alphabet_image(self):
         if cf.objs.config.new['AlphabetizeTerms'] and not self.Parallel \
         and not self.Separate:
-            self.gui.btn_alp.activate()
+            objs.get_panel().btn_alp.activate()
         else:
-            self.gui.btn_alp.inactivate()
+            objs.get_panel().btn_alp.inactivate()
     
     def _update_alphabet_hint(self):
         mes = [_('Sort terms by alphabet')]
@@ -155,8 +154,8 @@ class UpdateUI:
             mes.append(_('Status: OFF'))
         if self.Parallel or self.Separate:
             mes.append(_('This page is not supported'))
-        self.gui.btn_alp.hint = '\n'.join(mes)
-        self.gui.btn_alp.set_hint()
+        objs.get_panel().btn_alp.hint = '\n'.join(mes)
+        objs.panel.btn_alp.set_hint()
     
     def update_alphabetization(self):
         self._update_alphabet_image()
@@ -165,34 +164,36 @@ class UpdateUI:
     def update_global_hotkey(self):
         mes = [_('Capture Ctrl-c-c and Ctrl-Ins-Ins')]
         if cf.objs.config.new['CaptureHotkey']:
-            self.gui.btn_cap.activate()
+            objs.get_panel().btn_cap.activate()
             mes.append(_('Status: ON'))
         else:
-            self.gui.btn_cap.inactivate()
+            objs.get_panel().btn_cap.inactivate()
             mes.append(_('Status: OFF'))
-        self.gui.btn_cap.hint = '\n'.join(mes)
-        self.gui.btn_cap.set_hint()
+        objs.panel.btn_cap.hint = '\n'.join(mes)
+        objs.panel.btn_cap.set_hint()
     
     def update_prioritization(self):
         mes = [_('Subject prioritization')]
         prioritized = lg.objs.get_articles().get_prioritized()
         if cf.objs.config.new['PrioritizeSubjects'] and prioritized \
         and not self.Parallel:
-            self.gui.btn_pri.activate()
+            objs.get_panel().btn_pri.activate()
         else:
-            self.gui.btn_pri.inactivate()
+            objs.get_panel().btn_pri.inactivate()
         if cf.objs.config.new['PrioritizeSubjects']:
             mes.append(_('Status: ON'))
+            objs.get_prior().gui.cbx_pri.enable()
         else:
             mes.append(_('Status: OFF'))
+            objs.get_prior().gui.cbx_pri.disable()
         if prioritized:
             sub = _('{} subjects were prioritized')
             sub = sub.format(len(prioritized))
         else:
             sub = _('Nothing to prioritize')
         mes.append(sub)
-        self.gui.btn_pri.hint = '\n'.join(mes)
-        self.gui.btn_pri.set_hint()
+        objs.panel.btn_pri.hint = '\n'.join(mes)
+        objs.panel.btn_pri.set_hint()
     
     def update_block(self):
         f = '[MClient] mclient.UpdateUI.update_block'
@@ -211,9 +212,9 @@ class UpdateUI:
             blocked_cells = 0
         mes = [_('Subject blocking')]
         if cf.objs.config.new['BlockSubjects'] and blocked_subj:
-            self.gui.btn_blk.activate()
+            objs.get_panel().btn_blk.activate()
         else:
-            self.gui.btn_blk.inactivate()
+            objs.get_panel().btn_blk.inactivate()
         if cf.objs.config.new['BlockSubjects'] and blocked_cells:
             mes.append(_('Status: ON'))
             sub = _('Blocked {} subjects ({} cells)')
@@ -222,35 +223,39 @@ class UpdateUI:
             mes.append(_('Status: OFF'))
             sub = _('Nothing was blocked')
         mes.append(sub)
-        self.gui.btn_blk.hint = '\n'.join(mes)
-        self.gui.btn_blk.set_hint()
+        objs.panel.btn_blk.hint = '\n'.join(mes)
+        objs.panel.btn_blk.set_hint()
+        if cf.objs.config.new['BlockSubjects']:
+            objs.get_block().gui.cbx_pri.enable()
+        else:
+            objs.get_block().gui.cbx_pri.disable()
     
     def update_go_next(self):
         if lg.objs.get_articles().is_last():
-            self.gui.btn_nxt.inactivate()
+            objs.get_panel().btn_nxt.inactivate()
         else:
-            self.gui.btn_nxt.activate()
+            objs.get_panel().btn_nxt.activate()
     
     def update_go_prev(self):
         # Update the button to move to the previous article
         if lg.objs.get_articles().get_len():
-            self.gui.btn_prv.activate()
+            objs.get_panel().btn_prv.activate()
         else:
-            self.gui.btn_prv.inactivate()
+            objs.get_panel().btn_prv.inactivate()
     
     def update_last_search(self):
         # Update the button to insert a current search string
         if lg.objs.get_articles().get_len():
-            self.gui.btn_rp1.activate()
+            objs.get_panel().btn_rp1.activate()
         else:
-            self.gui.btn_rp1.inactivate()
+            objs.get_panel().btn_rp1.inactivate()
     
     def update_prev_search(self):
         # Update the button to insert a previous search string
         if lg.objs.get_articles().get_len() > 1:
-            self.gui.btn_rp2.activate()
+            objs.get_panel().btn_rp2.activate()
         else:
-            self.gui.btn_rp2.inactivate()
+            objs.get_panel().btn_rp2.inactivate()
     
     def update_buttons(self):
         f = '[MClient] mclient.UpdateUI.update_buttons'
@@ -1059,23 +1064,23 @@ class App:
         widget.set_hint()
     
     def set_hints(self):
-        pairs = ((self.panel.btn_sym, 'toggle_spec_symbols')
-                ,(self.panel.btn_swp, 'swap_langs')
-                ,(self.panel.btn_set, 'toggle_settings')
-                ,(self.panel.btn_blk, 'toggle_block')
-                ,(self.panel.btn_pri, 'toggle_priority')
-                ,(self.panel.btn_alp, 'toggle_alphabet')
-                ,(self.panel.btn_prv, 'go_back')
-                ,(self.panel.btn_nxt, 'go_next')
-                ,(self.panel.btn_hst, 'toggle_history')
-                ,(self.panel.btn_rld, 'reload_article')
-                ,(self.panel.btn_ser, 're_search_article')
-                ,(self.panel.btn_sav, 'save_article')
-                ,(self.panel.btn_brw, 'open_in_browser')
-                ,(self.panel.btn_prn, 'print')
-                ,(self.panel.btn_def, 'define')
-                ,(self.panel.btn_abt, 'toggle_about')
-                ,(self.panel.btn_qit, 'quit')
+        pairs = ((objs.get_panel().btn_sym, 'toggle_spec_symbols')
+                ,(objs.panel.btn_swp, 'swap_langs')
+                ,(objs.panel.btn_set, 'toggle_settings')
+                ,(objs.panel.btn_blk, 'toggle_block')
+                ,(objs.panel.btn_pri, 'toggle_priority')
+                ,(objs.panel.btn_alp, 'toggle_alphabet')
+                ,(objs.panel.btn_prv, 'go_back')
+                ,(objs.panel.btn_nxt, 'go_next')
+                ,(objs.panel.btn_hst, 'toggle_history')
+                ,(objs.panel.btn_rld, 'reload_article')
+                ,(objs.panel.btn_ser, 're_search_article')
+                ,(objs.panel.btn_sav, 'save_article')
+                ,(objs.panel.btn_brw, 'open_in_browser')
+                ,(objs.panel.btn_prn, 'print')
+                ,(objs.panel.btn_def, 'define')
+                ,(objs.panel.btn_abt, 'toggle_about')
+                ,(objs.panel.btn_qit, 'quit')
                 )
         for pair in pairs:
             self._set_hint(pair[0], pair[1])
@@ -1094,7 +1099,7 @@ class App:
             implemented with a hotkey rather than as we type.
         '''
         f = '[MClientQt] mclient.App.show_suggestions'
-        fragment = self.panel.ent_src.get().strip()
+        fragment = objs.get_panel().ent_src.get().strip()
         if not fragment:
             sh.com.rep_empty(f)
             return
@@ -1107,9 +1112,9 @@ class App:
             return
         self.suggest.fill(items)
         self.suggest.show()
-        x = self.get_x() + self.panel.ent_src.get_x()
+        x = self.get_x() + objs.panel.ent_src.get_x()
         y = self.get_height() + self.get_y() - self.suggest.get_height() \
-                              - self.panel.ent_src.get_root_y()
+                              - objs.panel.ent_src.get_root_y()
         self.suggest.set_geometry(x, y, 170, self.suggest.get_height())
     
     def get_cell(self):
@@ -1240,15 +1245,15 @@ class App:
         f = '[MClient] mclient.App.edit_blacklist'
         old_list = cf.objs.config.new['subjects']['blocked']
         old_key = cf.objs.config.new['BlockSubjects']
-        self.block.reset (lst1 = old_list
-                         ,lst2 = lg.objs.get_plugins().get_subjects()
-                         ,art_subjects = com.get_article_subjects()
-                         ,majors = lg.objs.plugins.get_majors()
-                         )
-        self.block.set_checkbox(cf.objs.config.new['BlockSubjects'])
-        self.block.show()
+        objs.get_block().reset (lst1 = old_list
+                               ,lst2 = lg.objs.get_plugins().get_subjects()
+                               ,art_subjects = com.get_article_subjects()
+                               ,majors = lg.objs.plugins.get_majors()
+                               )
+        objs.block.set_checkbox(cf.objs.config.new['BlockSubjects'])
+        objs.block.show()
         cf.objs.config.new['BlockSubjects'] = self.block.get_checkbox()
-        new_list = self.block.get1()
+        new_list = objs.block.get1()
         if (old_list == new_list) \
         and (old_key == cf.objs.config.new['BlockSubjects']):
             sh.com.rep_lazy(f)
@@ -1263,7 +1268,7 @@ class App:
             cf.objs.config.new['CaptureHotkey'] = False
         else:
             cf.objs.config.new['CaptureHotkey'] = True
-        UpdateUI(self.panel).update_global_hotkey()
+        UpdateUI().update_global_hotkey()
     
     def define(self, Selected=True):
         # Open a web-page with a definition of the current term
@@ -1422,7 +1427,7 @@ class App:
         self.settings.gui.ent_trm.set_text(term_width)
     
     def set_col_num(self):
-        self.gui.panel.opt_col.set(lg.objs.get_column_width().term_num)
+        objs.get_panel().opt_col.set(lg.objs.get_column_width().term_num)
     
     def apply_settings(self):
         self.settings.close()
@@ -1435,14 +1440,14 @@ class App:
         self.set_columns()
     
     def change_col_no(self, no):
-        self.gui.panel.opt_col.set(no)
+        objs.get_panel().opt_col.set(no)
         self.set_columns()
 
     def set_columns(self):
         self.reset_columns()
         lg.objs.get_articles().delete_bookmarks()
         self.load_article()
-        self.gui.panel.ent_src.focus()
+        objs.get_panel().ent_src.focus()
 
     def reset_columns(self):
         ''' Count only term columns since fixed columns can now have zero width
@@ -1451,7 +1456,7 @@ class App:
         f = '[MClientQt] mclient.App.reset_columns'
         if not lg.com.is_parallel():
             cf.objs.config.new['columns']['num'] = sh.Input (title = f
-                                                    ,value = self.gui.panel.opt_col.get()
+                                                    ,value = objs.get_panel().opt_col.get()
                                                     ).get_integer()
         collimit = lg.objs.get_column_width().fixed_num + lg.objs.column_width.term_num
         mes = _('Set the number of columns to {} ({} in total)')
@@ -1465,7 +1470,7 @@ class App:
         f = '[MClientQt] mclient.App.update_columns'
         if not lg.com.is_parallel():
             cf.objs.config.new['columns']['num'] = lg.objs.get_column_width().term_num
-        self.gui.panel.opt_col.set(lg.objs.get_column_width().term_num)
+        objs.get_panel().opt_col.set(lg.objs.get_column_width().term_num)
         collimit = lg.objs.get_column_width().fixed_num + lg.objs.column_width.term_num
         mes = _('Set the number of columns to {} ({} in total)')
         mes = mes.format(lg.objs.column_width.term_num, collimit)
@@ -1473,7 +1478,7 @@ class App:
     
     def set_source(self):
         f = '[MClientQt] mclient.App.set_source'
-        cf.objs.config.new['source'] = self.gui.panel.opt_src.get()
+        cf.objs.config.new['source'] = objs.get_panel().opt_src.get()
         mes = _('Set source to "{}"').format(cf.objs.config.new['source'])
         sh.objs.get_mes(f, mes, True).show_info()
         lg.objs.get_plugins().set(cf.objs.config.new['source'])
@@ -1482,8 +1487,8 @@ class App:
     
     def auto_swap(self):
         f = '[MClientQt] mclient.App.auto_swap'
-        lang1 = self.gui.panel.opt_lg1.get()
-        lang2 = self.gui.panel.opt_lg2.get()
+        lang1 = objs.get_panel().opt_lg1.get()
+        lang2 = objs.panel.opt_lg2.get()
         if lg.objs.get_plugins().is_oneway() \
         or not cf.objs.config.new['Autoswap'] \
         or not lg.objs.get_request().search:
@@ -1510,27 +1515,27 @@ class App:
         if not (langs1 and langs2 and lang1 and lang2 and sources):
             sh.com.rep_empty(f)
             return
-        self.gui.panel.opt_lg1.reset (items = langs1
-                                     ,default = lang1
-                                     )
-        self.gui.panel.opt_lg2.reset (items = langs2
-                                     ,default = lang2
-                                     )
+        objs.get_panel().opt_lg1.reset (items = langs1
+                                       ,default = lang1
+                                       )
+        objs.panel.opt_lg2.reset (items = langs2
+                                 ,default = lang2
+                                 )
         #NOTE: change this upon the change of the default source
-        self.gui.panel.opt_src.reset (items = sources
-                                     ,default = default
-                                     )
+        objs.panel.opt_src.reset (items = sources
+                                 ,default = default
+                                 )
     
     def set_next_lang1(self):
         ''' We want to navigate through the full list of supported languages
             rather than through the list of 'lang2' pairs so we reset the
             widget first.
         '''
-        old = self.gui.panel.opt_lg1.get()
-        self.gui.panel.opt_lg1.reset (items = lg.objs.get_plugins().get_langs1()
-                                     ,default = old
-                                     )
-        self.gui.panel.opt_lg1.set_next()
+        old = objs.get_panel().opt_lg1.get()
+        objs.panel.opt_lg1.reset (items = lg.objs.get_plugins().get_langs1()
+                                 ,default = old
+                                 )
+        objs.panel.opt_lg1.set_next()
         self.update_lang1()
         self.update_lang2()
     
@@ -1538,7 +1543,7 @@ class App:
         # We want to navigate through the limited list here
         self.update_lang1()
         self.update_lang2()
-        self.gui.panel.opt_lg2.set_next()
+        objs.get_panel().opt_lg2.set_next()
         self.update_lang2()
     
     def set_prev_lang1(self):
@@ -1546,11 +1551,11 @@ class App:
             rather than through the list of 'lang2' pairs so we reset the
             widget first.
         '''
-        old = self.gui.panel.opt_lg1.get()
-        self.gui.panel.opt_lg1.reset (items = lg.objs.get_plugins().get_langs1()
-                                     ,default = old
-                                     )
-        self.gui.panel.opt_lg1.set_prev()
+        old = objs.get_panel().opt_lg1.get()
+        objs.panel.opt_lg1.reset (items = lg.objs.get_plugins().get_langs1()
+                                 ,default = old
+                                 )
+        objs.panel.opt_lg1.set_prev()
         self.update_lang1()
         self.update_lang2()
     
@@ -1558,12 +1563,12 @@ class App:
         # We want to navigate through the limited list here
         self.update_lang1()
         self.update_lang2()
-        self.gui.panel.opt_lg2.set_prev()
+        objs.get_panel().opt_lg2.set_prev()
         self.update_lang2()
     
     def set_lang1(self):
         f = '[MClientQt] mclient.App.set_lang1'
-        lang = self.gui.panel.opt_lg1.get()
+        lang = objs.get_panel().opt_lg1.get()
         if lg.objs.get_plugins().get_lang1() != lang:
             mes = _('Set language: {}').format(lang)
             sh.objs.get_mes(f, mes, True).show_info()
@@ -1572,7 +1577,7 @@ class App:
     
     def set_lang2(self):
         f = '[MClientQt] mclient.App.set_lang2'
-        lang = self.gui.panel.opt_lg2.get()
+        lang = objs.get_panel().opt_lg2.get()
         if lg.objs.get_plugins().get_lang2() != lang:
             mes = _('Set language: {}').format(lang)
             sh.objs.get_mes(f, mes, True).show_info()
@@ -1588,7 +1593,7 @@ class App:
         if not langs1:
             sh.com.rep_empty(f)
             return
-        self.gui.panel.opt_lg1.set(lang1)
+        objs.get_panel().opt_lg1.set(lang1)
         self.set_lang1()
     
     def update_lang2(self):
@@ -1603,9 +1608,9 @@ class App:
             return
         if not lang2 in langs2:
             lang2 = langs2[0]
-        self.gui.panel.opt_lg2.reset (items = langs2
-                                     ,default = lang2
-                                     )
+        objs.get_panel().opt_lg2.reset (items = langs2
+                                       ,default = lang2
+                                       )
         self.set_lang2()
     
     def swap_langs(self):
@@ -1616,8 +1621,8 @@ class App:
             return
         self.update_lang1()
         self.update_lang2()
-        lang1 = self.gui.panel.opt_lg1.get()
-        lang2 = self.gui.panel.opt_lg2.get()
+        lang1 = objs.get_panel().opt_lg1.get()
+        lang2 = objs.panel.opt_lg2.get()
         lang1, lang2 = lang2, lang1
         langs1 = lg.objs.get_plugins().get_langs1()
         langs2 = lg.objs.plugins.get_langs2(lang1)
@@ -1628,12 +1633,12 @@ class App:
             mes = _('Pair {}-{} is not supported!').format(lang1, lang2)
             sh.objs.get_mes(f, mes).show_warning()
             return
-        self.gui.panel.opt_lg1.reset (items = langs1
-                                     ,default = lang1
-                                     )
-        self.gui.panel.opt_lg2.reset (items = langs2
-                                     ,default = lang2
-                                     )
+        objs.panel.opt_lg1.reset (items = langs1
+                                 ,default = lang1
+                                 )
+        objs.panel.opt_lg2.reset (items = langs2
+                                 ,default = lang2
+                                 )
         self.update_lang1()
         self.update_lang2()
     
@@ -1693,7 +1698,7 @@ class App:
     
     def paste_symbol(self):
         symbol = self.symbols.get()
-        self.gui.panel.ent_src.insert(symbol)
+        objs.get_panel().ent_src.insert(symbol)
     
     def load_article(self, search='', url=''):
         f = '[MClientQt] mclient.App.load_article'
@@ -1763,7 +1768,7 @@ class App:
             do not clear the search field to be able to correct the typo.
         '''
         if iwrap.plain or skipped:
-            self.gui.panel.ent_src.reset()
+            objs.get_panel().ent_src.reset()
         elif skipped:
             mes = _('Nothing has been found (skipped subjects: {}).')
             mes = mes.format(skipped)
@@ -1775,9 +1780,9 @@ class App:
         self.add_history()
         
         #objs.get_suggest().close()
-        UpdateUI(self.panel).run()
+        UpdateUI().run()
         timer.end()
-        self.panel.ent_src.focus()
+        objs.get_panel().ent_src.focus()
         #self.run_final_debug()
         #self.debug_settings()
         ''' Do not put this in 'Table.reset' - that is too early, the article
@@ -1786,7 +1791,7 @@ class App:
         self.table.go_bookmark()
     
     def go_keyboard(self):
-        search = self.panel.ent_src.get().strip()
+        search = objs.get_panel().ent_src.get().strip()
         if search == '':
             self.go_url()
         elif search == cf.objs.config.new['repeat_sign']:
@@ -1821,10 +1826,10 @@ class App:
     def clear_search_field(self):
         #TODO: implement
         #objs.get_suggest().get_gui().close()
-        self.panel.ent_src.clear()
+        objs.get_panel().ent_src.clear()
     
     def paste(self):
-        self.panel.ent_src.set_text(sh.Clipboard().paste())
+        objs.get_panel().ent_src.set_text(sh.Clipboard().paste())
     
     def reset(self):
         #TODO: show Welcome
@@ -1836,7 +1841,7 @@ class App:
         self.gui.minimize()
     
     def update_ui(self):
-        self.gui.panel.ent_src.focus()
+        objs.get_panel().ent_src.focus()
         self.reset_opt()
     
     def show(self):
@@ -1945,10 +1950,10 @@ class App:
                       ,self.swap_langs
                       )
         self.gui.bind (cf.objs.config.new['actions']['toggle_block']['hotkeys']
-                      ,self.block.toggle
+                      ,objs.get_block().toggle
                       )
         self.gui.bind (cf.objs.config.new['actions']['toggle_priority']['hotkeys']
-                      ,self.prior.toggle
+                      ,objs.get_prior().toggle
                       )
         self.gui.bind (cf.objs.config.new['actions']['toggle_popup']['hotkeys']
                       ,self.table.show_popup
@@ -1983,11 +1988,11 @@ class App:
                       
         #TODO: iterate through all keys
         if cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys'] == ('Ctrl+E',):
-            self.gui.panel.ent_src.widget.sig_ctrl_e.connect(self.symbols.show)
+            objs.get_panel().ent_src.widget.sig_ctrl_e.connect(self.symbols.show)
         else:
-            self.gui.panel.ent_src.bind (cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys']
-                                        ,self.symbols.show
-                                        )
+            objs.get_panel().ent_src.bind (cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys']
+                                          ,self.symbols.show
+                                          )
         
         self.table.gui.clicked.connect(self.go_url)
         self.table.gui.sig_mmb.connect(self.minimize)
@@ -1997,41 +2002,41 @@ class App:
         '''
         self.gui.parent.resizeEvent = self.table.set_coords
         
-        self.panel.btn_abt.set_action(self.about.toggle)
-        self.panel.btn_alp.set_action(self.toggle_alphabet)
-        self.panel.btn_blk.set_action(self.block.toggle)
-        self.panel.btn_brw.set_action(self.logic.open_in_browser)
-        self.panel.btn_cap.set_action(self.watch_clipboard)
-        self.panel.btn_clr.set_action(self.clear_search_field)
-        self.panel.btn_def.set_action(lambda x:self.define(False))
-        self.panel.btn_hst.set_action(self.history.toggle)
-        self.panel.btn_ins.set_action(self.paste)
-        self.panel.btn_nxt.set_action(self.go_next)
-        self.panel.btn_pri.set_action(self.prior.toggle)
-        self.panel.btn_prn.set_action(self.logic.print)
-        self.panel.btn_prv.set_action(self.go_back)
-        self.panel.btn_qit.set_action(self.close)
-        self.panel.btn_rld.set_action(self.reload)
-        self.panel.btn_rp1.set_action(self.insert_repeat_sign)
-        self.panel.btn_rp2.set_action(self.insert_repeat_sign2)
-        self.panel.btn_sav.set_action(self.save.toggle)
-        self.panel.btn_ser.set_action(self.table.search.toggle)
-        self.panel.btn_set.set_action(self.settings.toggle)
-        self.panel.btn_sym.set_action(self.symbols.show)
-        self.panel.btn_swp.set_action(self.swap_langs)
-        self.panel.btn_trn.set_action(self.go_keyboard)
+        objs.panel.btn_abt.set_action(self.about.toggle)
+        objs.panel.btn_alp.set_action(self.toggle_alphabet)
+        objs.panel.btn_blk.set_action(objs.block.toggle)
+        objs.panel.btn_brw.set_action(self.logic.open_in_browser)
+        objs.panel.btn_cap.set_action(self.watch_clipboard)
+        objs.panel.btn_clr.set_action(self.clear_search_field)
+        objs.panel.btn_def.set_action(lambda x:self.define(False))
+        objs.panel.btn_hst.set_action(self.history.toggle)
+        objs.panel.btn_ins.set_action(self.paste)
+        objs.panel.btn_nxt.set_action(self.go_next)
+        objs.panel.btn_pri.set_action(objs.prior.toggle)
+        objs.panel.btn_prn.set_action(self.logic.print)
+        objs.panel.btn_prv.set_action(self.go_back)
+        objs.panel.btn_qit.set_action(self.close)
+        objs.panel.btn_rld.set_action(self.reload)
+        objs.panel.btn_rp1.set_action(self.insert_repeat_sign)
+        objs.panel.btn_rp2.set_action(self.insert_repeat_sign2)
+        objs.panel.btn_sav.set_action(self.save.toggle)
+        objs.panel.btn_ser.set_action(self.table.search.toggle)
+        objs.panel.btn_set.set_action(self.settings.toggle)
+        objs.panel.btn_sym.set_action(self.symbols.show)
+        objs.panel.btn_swp.set_action(self.swap_langs)
+        objs.panel.btn_trn.set_action(self.go_keyboard)
         
-        self.panel.ent_src.widget.sig_home.connect(self.table.go_line_start)
-        self.panel.ent_src.widget.sig_end.connect(self.table.go_line_end)
-        self.panel.ent_src.widget.sig_ctrl_home.connect(self.table.go_start)
-        self.panel.ent_src.widget.sig_ctrl_end.connect(self.table.go_end)
-        self.panel.ent_src.widget.sig_ctrl_space.connect(self.show_suggestions)
-        self.panel.ent_src.widget.sig_left_arrow.connect(self.table.go_left)
-        self.panel.ent_src.widget.sig_right_arrow.connect(self.table.go_right)
-        self.panel.opt_lg1.widget.activated.connect(self.go_search)
-        self.panel.opt_lg2.widget.activated.connect(self.go_search)
-        self.panel.opt_src.widget.activated.connect(self.set_source)
-        self.panel.opt_col.set_action(self.set_columns)
+        objs.panel.ent_src.widget.sig_home.connect(self.table.go_line_start)
+        objs.panel.ent_src.widget.sig_end.connect(self.table.go_line_end)
+        objs.panel.ent_src.widget.sig_ctrl_home.connect(self.table.go_start)
+        objs.panel.ent_src.widget.sig_ctrl_end.connect(self.table.go_end)
+        objs.panel.ent_src.widget.sig_ctrl_space.connect(self.show_suggestions)
+        objs.panel.ent_src.widget.sig_left_arrow.connect(self.table.go_left)
+        objs.panel.ent_src.widget.sig_right_arrow.connect(self.table.go_right)
+        objs.panel.opt_lg1.widget.activated.connect(self.go_search)
+        objs.panel.opt_lg2.widget.activated.connect(self.go_search)
+        objs.panel.opt_src.widget.activated.connect(self.set_source)
+        objs.panel.opt_col.set_action(self.set_columns)
         
         self.table.gui.sig_rmb.connect(self.copy_cell)
         
@@ -2049,8 +2054,8 @@ class App:
         self.history.gui.sig_go.connect(self.go_history)
         
         #TODO: implement
-        #self.prior.gui.sig_close.connect(self.prior.close)
-        #self.prior.gui.sig_close.connect(self.prior.save)
+        #objs.prior.gui.sig_close.connect(objs.prior.prior.close)
+        #objs.prior.gui.sig_close.connect(objs.prior.save)
         
         self.suggest.gui.sig_load.connect(self.load_suggestion)
         
@@ -2062,7 +2067,6 @@ class App:
     def set_gui(self):
         self.table = Table()
         self.table.parent = self
-        self.panel = gi.Panel()
         self.about = About()
         self.symbols = sm.Symbols()
         product = self.about.get_product()
@@ -2071,9 +2075,7 @@ class App:
         self.history = hs.History()
         self.save = Save()
         self.suggest = sg.Suggest()
-        self.block = Block()
-        self.prior = Priorities()
-        self.gui.set_gui(self.table.gui, self.panel)
+        self.gui.set_gui(self.table.gui, objs.get_panel())
         self.set_title(product)
         self.set_bindings()
 
@@ -2145,13 +2147,28 @@ class Search:
 class Objects:
     
     def __init__(self):
-        self.geometry = None
+        self.geometry = self.panel = self.block = self.prior = None
     
     def get_geometry(self):
         if not self.geometry:
             import windows.geometry.controller as wg
             self.geometry = wg.Geometry()
         return self.geometry
+    
+    def get_panel(self):
+        if self.panel is None:
+            self.panel = gi.Panel()
+        return self.panel
+    
+    def get_block(self):
+        if self.block is None:
+            self.block = Block()
+        return self.block
+    
+    def get_prior(self):
+        if self.prior is None:
+            self.prior = Priorities()
+        return self.prior
 
 
 objs = Objects()
