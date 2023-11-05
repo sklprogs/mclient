@@ -36,6 +36,7 @@ class Priorities(pr.Panes):
     
     def save(self):
         cf.objs.config.new['subjects']['prioritized'] = self.dump1()
+        cf.objs.config.new['PrioritizeSubjects'] = objs.get_prior().gui.cbx_pri.get()
     
     def add_bindings(self):
         self.gui.btn_res.set_action(self.reset)
@@ -83,6 +84,7 @@ class Block(pr.Panes):
     
     def save(self):
         cf.objs.config.new['subjects']['blocked'] = self.dump1()
+        cf.objs.config.new['BlockSubjects'] = objs.get_block().gui.cbx_pri.get()
     
     def add_bindings(self):
         self.gui.btn_res.set_action(self.reset)
@@ -651,7 +653,7 @@ class Table:
         height = self.gui.get_row_height(rowno)
         x2 = x1 + width
         y2 = y1 + height
-        max_width = self.parent.get_width()
+        max_width = objs.get_app().get_width()
         self.popup.fill(text)
         self.popup.adjust_position(x1, width, y1, height, max_width, cf.objs.config.new['popup']['center'])
         self.popup.show()
@@ -2066,7 +2068,6 @@ class App:
     
     def set_gui(self):
         self.table = Table()
-        self.table.parent = self
         self.about = About()
         self.symbols = sm.Symbols()
         product = self.about.get_product()
@@ -2147,7 +2148,12 @@ class Search:
 class Objects:
     
     def __init__(self):
-        self.geometry = self.panel = self.block = self.prior = None
+        self.geometry = self.panel = self.block = self.prior = self.app = None
+    
+    def get_app(self):
+        if self.app is None:
+            self.app = App()
+        return self.app
     
     def get_geometry(self):
         if not self.geometry:
@@ -2184,14 +2190,13 @@ if __name__ == '__main__':
         lg.objs.get_request().search = 'sack'
         timer = sh.Timer(f + ': Showing GUI')
         timer.start()
-        app = App()
-        app.run_thread()
+        objs.get_app().run_thread()
         lg.com.set_url()
-        app.load_article (search = lg.objs.get_request().search
-                         ,url = lg.objs.request.url
-                         )
+        objs.app.load_article (search = lg.objs.get_request().search
+                              ,url = lg.objs.request.url
+                              )
         timer.end()
-        app.show()
+        objs.app.show()
     else:
         mes = _('Invalid configuration!')
         #FIX: quit app normally after common dialog
