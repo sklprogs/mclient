@@ -152,12 +152,6 @@ class Prioritize:
                            ).run()
         return f + ':\n' + mes
     
-    def set_phrase_subjpr(self):
-        subjpr = sj.objs.get_subjects().get_max_subjpr() + 1
-        for cell in self.cells:
-            if cell.subjpr == -1 and com.is_phrase_type(cell):
-                cell.subjpr = subjpr
-    
     def set_speech(self):
         ph_cells = [cell for cell in self.cells if com.is_phrase_type(cell)]
         all_speech = sorted(set([cell.speech for cell in self.cells \
@@ -178,8 +172,58 @@ class Prioritize:
         for cell in ph_cells:
             cell.speechpr = i
     
+    def set_subjects(self):
+        ''' All cells must have 'subjpr' set since they will not be further
+            sorted by 'subj', so do not cancel this procedure even if there are
+            no prioritized subjects, otherwise there may be sorting bugs, e.g.
+            multitran.com, EN-RU, 'full of it'.
+        '''
+        for cell in self.cells:
+            priority = sj.objs.get_subjects().get_priority(cell.subj)
+            if priority is not None:
+                cell.subjpr = priority
+        pr_cells = [cell for cell in self.cells if cell.subjpr > -1]
+        unp_cells = [cell for cell in self.cells if cell.subjpr == -1 \
+                     and not com.is_phrase_type(cell)
+                    ]
+        ph_cells = [cell for cell in self.cells if cell.subjpr == -1 \
+                    and com.is_phrase_type(cell)
+                   ]
+        
+        pr_cells.sort(key=lambda x: (x.subjpr, x.no))
+        unp_cells.sort(key=lambda x: (x.subj.lower(), x.no))
+        
+        ''' Keep old 'subjpr' if 'subj' is the same since we may need to
+            alphabetize terms later.
+        '''
+        subj = ''
+        subjpr = -1
+        for cell in pr_cells:
+            if cell.subj == subj:
+                cell.subjpr = subjpr
+            else:
+                subj = cell.subj
+                subjpr += 1
+                cell.subjpr = subjpr
+        for cell in unp_cells:
+            if cell.subj == subj:
+                cell.subjpr = subjpr
+            else:
+                subj = cell.subj
+                subjpr += 1
+                cell.subjpr = subjpr
+        for cell in ph_cells:
+            if cell.subj == subj:
+                cell.subjpr = subjpr
+            else:
+                subj = cell.subj
+                subjpr += 1
+                cell.subjpr = subjpr
+        # [] + ['example'] == ['example']
+        self.cells = pr_cells + unp_cells + ph_cells
+    
     def run(self):
-        self.set_phrase_subjpr()
+        self.set_subjects()
         self.set_speech()
         return self.cells
 

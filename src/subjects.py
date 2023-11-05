@@ -125,7 +125,10 @@ class Create:
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def reset(self, pairs):
+        f = '[MClient] subjects.Create.reset'
         self.set_values()
+        if not pairs:
+            sh.com.rep_empty(f)
         self.pairs = pairs
         self.run()
     
@@ -175,6 +178,10 @@ class Create:
         return f'{f}:\n{mes}'
     
     def set_subjects(self):
+        f = '[MClient] subjects.Create.set_subjects'
+        if not self.pairs:
+            sh.com.rep_empty(f)
+            return
         for subj, subjf in self.pairs.items():
             isubj = ic.Subject()
             isubj.subj = subj
@@ -195,16 +202,6 @@ class Create:
         else:
             self.subjects.sort(key=lambda x: x.subjf.casefold())
     
-    def set_subjpr(self):
-        prior_indexes = [isubj.prior_index for isubj in self.subjects]
-        max_ = max(prior_indexes)
-        for isubj in self.subjects:
-            if isubj.prior_index > -1:
-                isubj.subjpr = isubj.prior_index
-            else:
-                max_ += 1
-                isubj.subjpr = max_
-    
     def prioritize(self):
         self.subjects.sort(key=lambda x: x.subjpr)
     
@@ -214,7 +211,6 @@ class Create:
         self.set_prior_all()
         self.set_subjects()
         self.alphabetize()
-        self.set_subjpr()
         self.prioritize()
 
 
@@ -223,6 +219,11 @@ class Subjects(Create):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+    
+    def get_priority(self, subject):
+        for isubj in self.subjects:
+            if subject in (isubj.subj, isubj.subjf):
+                return isubj.prior_index
     
     def add_fixed_urls(self):
         #TODO: Rework

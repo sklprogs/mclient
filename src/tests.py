@@ -13,9 +13,9 @@ DEBUG = True
 ''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
     otherwise, 'Tags' will fail to set 'subj' and some other types.
 '''
-SEARCH = 'warranty'
+SEARCH = 'sack'
 URL = ''
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/clutch (2023-09-30).html'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/sack (2023-11-05).html'
 
 
 class Config:
