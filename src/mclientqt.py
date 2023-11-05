@@ -37,6 +37,7 @@ class Priorities(pr.Panes):
     def save(self):
         cf.objs.config.new['subjects']['prioritized'] = self.dump1()
         cf.objs.config.new['PrioritizeSubjects'] = objs.get_prior().gui.cbx_pri.get()
+        objs.get_app().load_article()
     
     def add_bindings(self):
         self.gui.btn_res.set_action(self.reset)
@@ -85,6 +86,7 @@ class Block(pr.Panes):
     def save(self):
         cf.objs.config.new['subjects']['blocked'] = self.dump1()
         cf.objs.config.new['BlockSubjects'] = objs.get_block().gui.cbx_pri.get()
+        objs.get_app().load_article()
     
     def add_bindings(self):
         self.gui.btn_res.set_action(self.reset)
