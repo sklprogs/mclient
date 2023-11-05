@@ -891,7 +891,6 @@ class Elems:
             if block.type in ('subj', 'phsubj') and block.subj and block.subjf:
                 count += 1
                 self.art_subj[block.subj] = block.subjf
-                self.art_subj[block.subjf] = block.subj
         sh.com.rep_matches(f, count)
     
     def set_not_found(self):
