@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export WINEPREFIX="$HOME/software/wine/build_mclient"
+export WINEPREFIX="$HOME/software/wine/mclient_qt5_3.11.1_win7_x86"
 python="$WINEPREFIX/drive_c/Python"
 pyinstaller="$python/Scripts/pyinstaller.exe"
 schemas="$python/Lib/site-packages/jsonschema_specifications/schemas"
