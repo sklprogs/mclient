@@ -150,7 +150,12 @@ class Panes(PyQt5.QtWidgets.QWidget):
         self.set_widgets()
         self.set_layout()
         self.configure()
+        self.set_icon()
         self.centralize()
+    
+    def set_icon(self):
+        # Does not accent None
+        self.setWindowIcon(sh.gi.objs.get_icon())
     
     def set_layout(self):
         self.grid = PyQt5.QtWidgets.QGridLayout()
