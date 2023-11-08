@@ -189,9 +189,8 @@ class HistorySubjects:
         if short == full or short in objs.config.new['subjects']['history']:
             # Messages will be too frequent there
             return
-        self.count += 2
+        self.count += 1
         objs.config.new['subjects']['history'][short] = full
-        objs.config.new['subjects']['history'][full] = short
 
 
 
