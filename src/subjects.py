@@ -234,6 +234,10 @@ class Subjects(Create):
         for isubj in self.subjects:
             if subj == isubj.subj:
                 return isubj.subjf
+        try:
+            return cf.objs.config.new['subjects']['history'][subj]
+        except KeyError:
+            pass
         return subj
     
     def get_max_subjpr(self):
