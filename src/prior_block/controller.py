@@ -124,9 +124,14 @@ class Panes:
     
     def fill(self, dic1, dic2):
         f = '[MClientQt] prior_block.controller.Panes.fill'
-        if not dic1 or not dic2:
-            sh.com.rep_empty(f)
-            return
+        ''' This workaround allows to drag and drop items onto an empty
+            widget. Empty input must be allowed (there are no blocked
+            subjects by default).
+        '''
+        if not dic1:
+            dic1 = {'': {}}
+        if not dic2:
+            dic2 = {'': {}}
         self.gui.fill(dic1, dic2)
     
     def set_title(self, title=''):
