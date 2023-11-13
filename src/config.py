@@ -142,6 +142,7 @@ class Config(qc.Config):
     def run(self):
         self.load()
         self.update()
+        self.set_local_dump()
 
 
 
