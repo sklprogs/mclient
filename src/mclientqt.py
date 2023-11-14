@@ -1348,10 +1348,13 @@ class App:
     
     def go_back(self):
         f = '[MClientQt] mclient.App.go_back'
-        if lg.objs.get_articles().get_len() == 0:
+        if lg.objs.get_articles().get_len() in (0, 1):
             sh.com.rep_lazy(f)
             return
-        lg.objs.articles.set_id(lg.objs.articles.id - 1)
+        if lg.objs.articles.id == 0:
+            lg.objs.articles.set_id(lg.objs.articles.get_max_id())
+        else:
+            lg.objs.articles.set_id(lg.objs.articles.id - 1)
         source = lg.objs.articles.get_source()
         lang1 = lg.objs.articles.get_lang1()
         lang2 = lg.objs.articles.get_lang2()
@@ -1367,10 +1370,13 @@ class App:
     
     def go_next(self):
         f = '[MClientQt] mclient.App.go_next'
-        if lg.objs.get_articles().is_last():
+        if lg.objs.get_articles().get_len() in (0, 1):
             sh.com.rep_lazy(f)
             return
-        lg.objs.articles.set_id(lg.objs.articles.id + 1)
+        if lg.objs.articles.is_last():
+            lg.objs.articles.set_id(0)
+        else:
+            lg.objs.articles.set_id(lg.objs.articles.id + 1)
         source = lg.objs.articles.get_source()
         lang1 = lg.objs.articles.get_lang1()
         lang2 = lg.objs.articles.get_lang2()
