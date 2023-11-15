@@ -230,7 +230,7 @@ class Articles:
         try:
             self.articles['ids'][id_]
         except KeyError:
-            mes = _('Wrong input data!')
+            mes = _('Wrong input data: "{}"!').format(id_)
             sh.objs.get_mes(f, mes).show_warning()
             return
         self.id = id_
