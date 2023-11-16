@@ -1006,6 +1006,7 @@ class Table:
         if not self.Success:
             sh.com.cancel(f)
             return
+        self.gui.scroll2top()
         #TODO: Get rid of this
         self.coords2 = {}
         height = self.gui.get_height()

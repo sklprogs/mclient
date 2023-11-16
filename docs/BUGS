@@ -25,8 +25,6 @@ multitrancom:
 - If a number of columns is changed to an even value in the special-page
   mode (e.g., 2 -> 4 columns), the common-page mode after that will have
   +1 in the number of columns 
-- RU-EN, hello: IT phdics are prioritized but not colored
-- RU-EN, set: 'Обработка данных' is prioritized but not colored (phdic)
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"
 - Do not fill history when search is empty (e.g., when changing the source to
