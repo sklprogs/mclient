@@ -1748,6 +1748,7 @@ class App:
             mes = _('Load article No. {} from memory').format(artid)
             sh.objs.get_mes(f, mes, True).show_info()
             lg.objs.articles.set_id(artid)
+            sj.objs.get_subjects().reset(lg.objs.get_plugins().get_article_subjects())
             cells = lg.objs.articles.get_cells()
             
         cells = cl.Expand(cells).run()
