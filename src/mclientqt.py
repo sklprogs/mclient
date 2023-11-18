@@ -34,6 +34,10 @@ class Priorities(pr.Panes):
         self.add_bindings()
         self.reset()
     
+    def toggle_use(self):
+        objs.get_prior().gui.cbx_pri.toggle()
+        self.save()
+    
     def save(self):
         cf.objs.config.new['subjects']['prioritized'] = self.dump1()
         cf.objs.config.new['PrioritizeSubjects'] = objs.get_prior().gui.cbx_pri.get()
@@ -82,6 +86,10 @@ class Block(pr.Panes):
     def set_titles(self):
         self.gui.set_title(_('Blocking'))
         self.gui.tree1.set_header(_('Blocked subjects'))
+    
+    def toggle_use(self):
+        objs.get_block().gui.cbx_pri.toggle()
+        self.save()
     
     def save(self):
         cf.objs.config.new['subjects']['blocked'] = self.dump1()
@@ -1962,10 +1970,10 @@ class App:
                       ,self.swap_langs
                       )
         self.gui.bind (cf.objs.config.new['actions']['toggle_block']['hotkeys']
-                      ,objs.get_block().toggle
+                      ,objs.get_block().toggle_use
                       )
         self.gui.bind (cf.objs.config.new['actions']['toggle_priority']['hotkeys']
-                      ,objs.get_prior().toggle
+                      ,objs.get_prior().toggle_use
                       )
         self.gui.bind (cf.objs.config.new['actions']['toggle_popup']['hotkeys']
                       ,self.table.show_popup
