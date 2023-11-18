@@ -16,10 +16,8 @@ class Panes:
     
     def toggle(self):
         if self.Active:
-            self.Active = False
             self.close()
         else:
-            self.Active = True
             self.show()
     
     def set_gui(self):
@@ -117,9 +115,11 @@ class Panes:
         self.gui.tree2.sig_drop.connect(self.drop_right)
     
     def close(self):
+        self.Active = False
         self.gui.close()
     
     def show(self):
+        self.Active = True
         self.gui.show()
     
     def fill(self, dic1, dic2):
