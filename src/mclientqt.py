@@ -2079,10 +2079,12 @@ class App:
         self.history.gui.sig_close.connect(self.history.close)
         self.history.gui.sig_go.connect(self.go_history)
         
-        #TODO: implement
-        #objs.prior.gui.sig_close.connect(objs.prior.prior.close)
-        #objs.prior.gui.sig_close.connect(objs.prior.save)
-        
+        objs.get_block().gui.bind (cf.objs.config.new['actions']['show_block']['hotkeys']
+                                  ,objs.block.close
+                                  )
+        objs.get_prior().gui.bind (cf.objs.config.new['actions']['show_prior']['hotkeys']
+                                  ,objs.prior.close
+                                  )
         self.suggest.gui.sig_load.connect(self.load_suggestion)
         
         self.thread.bind_catch(self.catch)

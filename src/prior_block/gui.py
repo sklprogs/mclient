@@ -107,8 +107,9 @@ class Panes(PyQt5.QtWidgets.QWidget):
         self.tree1.reset_drop()
         self.tree2.reset_drop()
     
-    def bind(self, hotkey, action):
-        PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+    def bind(self, hotkeys, action):
+        for hotkey in hotkeys:
+            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def expand_all(self):
         self.tree1.expand_all()
