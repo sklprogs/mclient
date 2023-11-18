@@ -206,6 +206,20 @@
                     ,"hint": {"type": "string"}
                     }
                 }
+            ,"show_block":
+                {"type": "object"
+                ,"properties":
+                    {"hotkeys": {"type": "array"}
+                    ,"hint": {"type": "string"}
+                    }
+                }
+            ,"show_prior":
+                {"type": "object"
+                ,"properties":
+                    {"hotkeys": {"type": "array"}
+                    ,"hint": {"type": "string"}
+                    }
+                }
             ,"swap_langs":
                 {"type": "object"
                 ,"properties":

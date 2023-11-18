@@ -115,6 +115,14 @@
         {"hotkeys": ["F3"]
         ,"hint": "Search the article forward"
         }
+    ,"show_block":
+        {"hotkeys": ["Ctrl+Shift+B"]
+        ,"hint": "Show block list"
+        }
+    ,"show_prior":
+        {"hotkeys": ["Ctrl+Shift+P"]
+        ,"hint": "Show priority list"
+        }
     ,"swap_langs":
         {"hotkeys": ["Ctrl+Shift+Space"]
         ,"hint": "Swap source and target languages"

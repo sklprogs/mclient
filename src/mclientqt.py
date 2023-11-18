@@ -1975,6 +1975,12 @@ class App:
         self.gui.bind (cf.objs.config.new['actions']['toggle_priority']['hotkeys']
                       ,objs.get_prior().toggle_use
                       )
+        self.gui.bind (cf.objs.config.new['actions']['show_block']['hotkeys']
+                      ,objs.get_block().toggle
+                      )
+        self.gui.bind (cf.objs.config.new['actions']['show_prior']['hotkeys']
+                      ,objs.get_prior().toggle
+                      )
         self.gui.bind (cf.objs.config.new['actions']['toggle_popup']['hotkeys']
                       ,self.table.show_popup
                       )
