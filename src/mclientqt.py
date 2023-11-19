@@ -2027,7 +2027,7 @@ class App:
                                )
                       
         #TODO: iterate through all keys
-        if cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys'] == ('Ctrl+E',):
+        if cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys'] == ['Ctrl+E']:
             objs.get_panel().ent_src.widget.sig_ctrl_e.connect(self.symbols.show)
         else:
             objs.get_panel().ent_src.bind (cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys']
