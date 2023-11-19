@@ -2021,6 +2021,10 @@ class App:
         objs.get_prior().gui.bind (cf.objs.config.new['actions']['show_prior']['hotkeys']
                                   ,objs.prior.close
                                   )
+        
+        self.settings.gui.bind (cf.objs.config.new['actions']['toggle_settings']['hotkeys']
+                               ,self.settings.close
+                               )
                       
         #TODO: iterate through all keys
         if cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys'] == ('Ctrl+E',):
