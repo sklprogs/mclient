@@ -37,34 +37,39 @@ class About(PyQt5.QtWidgets.QWidget):
     def set_text(self, text):
         self.lbl_abt.set_text(text)
     
-    def set_gui(self):
-        self.lbl_abt = sh.Label()
-        self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
-        self.panel = PyQt5.QtWidgets.QWidget(self)
+    def configure(self):
         policy = PyQt5.QtWidgets.QSizePolicy (PyQt5.QtWidgets.QSizePolicy.Fixed
                                              ,PyQt5.QtWidgets.QSizePolicy.Fixed
                                              )
-        # Show the license
+        self.btn_thd.widget.setSizePolicy(policy)
+        self.btn_lic.widget.setSizePolicy(policy)
+        self.btn_eml.widget.setSizePolicy(policy)
+    
+    def add_buttons(self):
         self.btn_thd = sh.Button (text = _('Third parties')
                                  ,hint = _('Third-party licenses')
                                  )
         self.btn_lic = sh.Button (text = _('License')
                                  ,hint = _('View the license')
                                  )
-        # Send mail to the author
         self.btn_eml = sh.Button (text = _('Contact the author')
                                  ,hint = _('Draft an email to the author')
                                  )
-        self.btn_thd.widget.setSizePolicy(policy)
-        self.btn_lic.widget.setSizePolicy(policy)
-        self.btn_eml.widget.setSizePolicy(policy)
-        self.btn_lay = PyQt5.QtWidgets.QHBoxLayout()
-        self.btn_lay.setContentsMargins(4, 4, 4, 4)
-        self.btn_lay.addWidget(self.btn_thd.widget)
-        self.btn_lay.addWidget(self.btn_lic.widget)
-        self.btn_lay.addWidget(self.btn_eml.widget)
-        self.panel.setLayout(self.btn_lay)
-        self.layout_.addWidget(self.lbl_abt.widget)
-        self.layout_.addWidget(self.panel)
+    
+    def add_layout(self):
+        self.layout_.addWidget(self.lbl_abt.widget, 0, 0, 1, 3)
+        self.layout_.addWidget(self.btn_thd.widget, 1, 0, 1, 1, PyQt5.QtCore.Qt.AlignLeft)
+        self.layout_.addWidget(self.btn_lic.widget, 1, 1, 1, 1, PyQt5.QtCore.Qt.AlignCenter)
+        self.layout_.addWidget(self.btn_eml.widget, 1, 2, 1, 1, PyQt5.QtCore.Qt.AlignRight)
         self.setLayout(self.layout_)
+    
+    def add_widgets(self):
+        self.lbl_abt = sh.Label()
+        self.layout_ = PyQt5.QtWidgets.QGridLayout(self)
+    
+    def set_gui(self):
+        self.add_widgets()
+        self.add_buttons()
+        self.configure()
+        self.add_layout()
         self.set_icon()
