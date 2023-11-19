@@ -2033,6 +2033,9 @@ class App:
             objs.get_panel().ent_src.bind (cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys']
                                           ,self.symbols.show
                                           )
+        self.symbols.gui.bind (cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys']
+                              ,self.symbols.close
+                              )
         
         self.table.gui.clicked.connect(self.go_url)
         self.table.gui.sig_mmb.connect(self.minimize)
