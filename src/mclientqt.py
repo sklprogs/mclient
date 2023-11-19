@@ -2091,6 +2091,9 @@ class App:
         
         self.suggest.gui.sig_load.connect(self.load_suggestion)
         
+        objs.block.gui.sig_close.connect(objs.block.close)
+        objs.prior.gui.sig_close.connect(objs.prior.close)
+        
         self.thread.bind_catch(self.catch)
     
     def set_title(self, title):

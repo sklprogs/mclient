@@ -99,9 +99,15 @@ class TreeWidget(PyQt5.QtWidgets.QTreeWidget):
 
 class Panes(PyQt5.QtWidgets.QWidget):
     
+    sig_close = PyQt5.QtCore.pyqtSignal()
+    
     def __init__(self):
         super().__init__()
         self.set_gui()
+    
+    def closeEvent(self, event):
+        self.sig_close.emit()
+        return super().closeEvent(event)
     
     def reset_drop(self):
         self.tree1.reset_drop()
