@@ -2011,6 +2011,16 @@ class App:
         self.gui.bind (cf.objs.config.new['actions']['copy_nominative']['hotkeys']
                       ,self.copy_wform
                       )
+        
+        self.history.gui.bind (cf.objs.config.new['actions']['toggle_history']['hotkeys']
+                              ,self.history.close
+                              )
+        objs.get_block().gui.bind (cf.objs.config.new['actions']['show_block']['hotkeys']
+                                  ,objs.block.close
+                                  )
+        objs.get_prior().gui.bind (cf.objs.config.new['actions']['show_prior']['hotkeys']
+                                  ,objs.prior.close
+                                  )
                       
         #TODO: iterate through all keys
         if cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys'] == ('Ctrl+E',):
@@ -2079,12 +2089,6 @@ class App:
         self.history.gui.sig_close.connect(self.history.close)
         self.history.gui.sig_go.connect(self.go_history)
         
-        objs.get_block().gui.bind (cf.objs.config.new['actions']['show_block']['hotkeys']
-                                  ,objs.block.close
-                                  )
-        objs.get_prior().gui.bind (cf.objs.config.new['actions']['show_prior']['hotkeys']
-                                  ,objs.prior.close
-                                  )
         self.suggest.gui.sig_load.connect(self.load_suggestion)
         
         self.thread.bind_catch(self.catch)
