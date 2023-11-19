@@ -110,7 +110,7 @@ class Panes:
         self.gui.reset_drop()
     
     def set_bindings(self):
-        self.gui.bind('Escape', self.close)
+        self.gui.bind(('Esc',), self.close)
         self.gui.tree1.sig_drop.connect(self.drop_left)
         self.gui.tree2.sig_drop.connect(self.drop_right)
     
