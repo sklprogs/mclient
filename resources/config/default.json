@@ -115,6 +115,10 @@
         {"hotkeys": ["F3"]
         ,"hint": "Search the article forward"
         }
+    ,"select_block":
+        {"hotkeys": ["F2"]
+        ,"hint": "Toggle block-by-block mode"
+        }
     ,"show_block":
         {"hotkeys": ["Ctrl+Shift+B"]
         ,"hint": "Show block list"

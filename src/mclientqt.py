@@ -1057,6 +1057,21 @@ class Table:
 
 
 
+class BlockMode:
+    
+    def __init__(self):
+        self.Active = False
+    
+    def toggle(self):
+        if self.Active:
+            self.Active = False
+            print('Disable block mode')
+        else:
+            self.Active = True
+            print('Enable block mode')
+
+
+
 class App:
     
     def __init__(self):
@@ -2011,6 +2026,9 @@ class App:
         self.gui.bind (cf.objs.config.new['actions']['copy_nominative']['hotkeys']
                       ,self.copy_wform
                       )
+        self.gui.bind (cf.objs.config.new['actions']['select_block']['hotkeys']
+                      ,self.block_mode.toggle
+                      )
         
         self.history.gui.bind (cf.objs.config.new['actions']['toggle_history']['hotkeys']
                               ,self.history.close
@@ -2116,6 +2134,7 @@ class App:
         self.history = hs.History()
         self.save = Save()
         self.suggest = sg.Suggest()
+        self.block_mode = BlockMode()
         self.gui.set_gui(self.table.gui, objs.get_panel())
         self.set_title(product)
         self.set_bindings()

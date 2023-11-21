@@ -206,6 +206,13 @@
                     ,"hint": {"type": "string"}
                     }
                 }
+            ,"select_block":
+                {"type": "object"
+                ,"properties":
+                    {"hotkeys": {"type": "array"}
+                    ,"hint": {"type": "string"}
+                    }
+                }
             ,"show_block":
                 {"type": "object"
                 ,"properties":
