@@ -225,4 +225,5 @@
 ,"hotkey_delay": 600
 ,"config": {"min_version": 2}
 ,"popup": {"center": true}
+,"selection": {"cell": "#FF0000", "block": "00FFFF"}
 }

@@ -1106,8 +1106,11 @@ class BlockMode:
             return
         print('Text:', block.text)
         print('Code:', self.cell.code)
-        code = fm.Block(block, self.cell.colno).run()
-        print('New code:', code)
+        code = []
+        for i in range(len(self.cell.blocks)):
+            code.append(fm.Block(block, self.cell.colno, i==self.blockno).run())
+        self.cell.code = sh.List(code).space_items()
+        print('New code:', self.cell.code)
     
     def enable(self):
         f = '[MClient] mclientqt.BlockMode.enable'

@@ -9,7 +9,7 @@ import subjects as sj
 
 class Block:
     
-    def __init__(self, block, colno):
+    def __init__(self, block, colno, Select=False):
         self.colors_bl = (objs.get_colors().b1, objs.colors.b2, objs.colors.b3
                          ,objs.colors.b4
                          )
@@ -19,6 +19,7 @@ class Block:
         self.code = ''
         self.block = block
         self.colno = colno
+        self.Select = Select
     
     def _is_phrase_prior(self):
         if self.block.type == 'phrase':
@@ -39,6 +40,8 @@ class Block:
             return sj.objs.get_subjects().is_blocked(self.block.text)
     
     def get_color(self):
+        if self.Select:
+            return cf.objs.get_config().new['selection']['block']
         if self._is_phrase_prior():
             return objs.get_colors().php
         if self._is_phrase_blocked():

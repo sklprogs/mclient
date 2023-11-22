@@ -451,4 +451,11 @@
         {"type": "object"
         ,"properties": {"center": {"type": "boolean"}}
         }
+    ,"selection":
+        {"type": "object"
+        ,"properties":
+            {"cell": {"type": "string"}
+            ,"block": {"type": "string"}
+            }
+        }
 }
