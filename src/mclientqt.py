@@ -9,6 +9,7 @@ import config as cf
 import logic as lg
 import gui as gi
 
+import format as fm
 import cells as cl
 import prior_block.controller as pr
 import settings.controller as st
@@ -1061,14 +1062,60 @@ class BlockMode:
     
     def __init__(self):
         self.Active = False
+        self.cell = []
+        self.blockno = 0
     
     def toggle(self):
         if self.Active:
             self.Active = False
-            print('Disable block mode')
+            self.disable()
         else:
             self.Active = True
-            print('Enable block mode')
+            self.enable()
+    
+    def set_cell(self):
+        f = '[MClient] mclientqt.BlockMode.set_cell'
+        tuple_ = objs.get_app().table.get_cell()
+        if not tuple_:
+            sh.com.rep_empty(f)
+            return
+        rowno, colno = tuple_[0], tuple_[1]
+        mes = _('Row #{}. Column #{}').format(rowno, colno)
+        sh.objs.get_mes(f, mes, True).show_debug()
+        cells = lg.objs.get_articles().get_table()
+        if not cells:
+            sh.com.rep_empty(f)
+            return
+        try:
+            self.cell = cells[rowno][colno]
+        except (KeyError, IndexError):
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f, mes).show_warning()
+            return
+    
+    def select(self):
+        f = '[MClient] mclientqt.BlockMode.select'
+        if not self.cell:
+            sh.com.rep_empty(f)
+            return
+        try:
+            block = self.cell.blocks[self.blockno]
+        except IndexError:
+            mes = _('Wrong input data: "{}"!').format(self.blockno)
+            sh.objs.get_mes(f, mes, True).show_warning()
+            return
+        print('Text:', block.text)
+        print('Code:', self.cell.code)
+        code = fm.Block(block, self.cell.colno).run()
+        print('New code:', code)
+    
+    def enable(self):
+        f = '[MClient] mclientqt.BlockMode.enable'
+        self.set_cell()
+        self.select()
+    
+    def disable(self):
+        print('Disable block mode')
 
 
 
