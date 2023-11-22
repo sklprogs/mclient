@@ -118,7 +118,7 @@ class Articles:
             sh.objs.get_mes(f, mes).show_warning()
     
     def get_table(self):
-        f = '[MClientQt] logic.Articles.set_table'
+        f = '[MClientQt] logic.Articles.get_table'
         try:
             return self.articles['ids'][self.id]['table']
         except KeyError:
