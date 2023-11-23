@@ -104,7 +104,7 @@
         ,"hint": "Reload the current article"
         }
     ,"save_article":
-        {"hotkeys": ["F2", "Ctrl+S"]
+        {"hotkeys": ["Ctrl+S"]
         ,"hint": "Save or copy the current article"
         }
     ,"search_article_backward":
@@ -225,5 +225,5 @@
 ,"hotkey_delay": 600
 ,"config": {"min_version": 2}
 ,"popup": {"center": true}
-,"selection": {"cell": "#FF0000", "block": "00FFFF"}
+,"selection": {"cell": "#FF0000", "block": "#00FFFF"}
 }
