@@ -1064,6 +1064,30 @@ class BlockMode:
         self.cell = None
         self.blockno = -1
     
+    def select_next(self):
+        f = '[MClient] mclientqt.BlockMode.select_next'
+        self.enable()
+        if not self.cell or not self.cell.blocks:
+            sh.com.rep_empty(f)
+            return
+        self.blockno += 1
+        if self.blockno == len(self.cell.blocks):
+            self.blockno = 0
+        self.set_cell()
+        self.select()
+    
+    def select_prev(self):
+        f = '[MClient] mclientqt.BlockMode.select_prev'
+        self.enable()
+        if not self.cell or not self.cell.blocks:
+            sh.com.rep_empty(f)
+            return
+        self.blockno -= 1
+        if self.blockno < 0:
+            self.blockno = len(self.cell.blocks) - 1
+        self.set_cell()
+        self.select()
+    
     def toggle(self):
         if self.blockno == -1:
             self.enable()
@@ -1080,6 +1104,9 @@ class BlockMode:
     
     def enable(self):
         f = '[MClient] mclientqt.BlockMode.enable'
+        if self.blockno > -1:
+            sh.com.rep_lazy(f)
+            return
         self.blockno = 0
         mes = _('Enable block mode')
         sh.objs.get_mes(f, mes, True).show_info()
