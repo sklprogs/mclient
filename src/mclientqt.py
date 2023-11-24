@@ -1061,17 +1061,30 @@ class Table:
 class BlockMode:
     
     def __init__(self):
-        self.Active = False
-        self.cell = []
-        self.blockno = 0
+        self.cell = None
+        self.blockno = -1
     
     def toggle(self):
-        if self.Active:
-            self.Active = False
-            self.disable()
-        else:
-            self.Active = True
+        if self.blockno == -1:
             self.enable()
+        else:
+            self.disable()
+    
+    def disable(self):
+        f = '[MClient] mclientqt.BlockMode.disable'
+        self.blockno = -1
+        mes = _('Disable block mode')
+        sh.objs.get_mes(f, mes, True).show_info()
+        self.set_cell()
+        self.select()
+    
+    def enable(self):
+        f = '[MClient] mclientqt.BlockMode.enable'
+        self.blockno = 0
+        mes = _('Enable block mode')
+        sh.objs.get_mes(f, mes, True).show_info()
+        self.set_cell()
+        self.select()
     
     def set_cell(self):
         f = '[MClient] mclientqt.BlockMode.set_cell'
@@ -1104,24 +1117,13 @@ class BlockMode:
             mes = _('Wrong input data: "{}"!').format(self.blockno)
             sh.objs.get_mes(f, mes, True).show_warning()
             return
-        print('Text:', block.text)
-        print('Code:', self.cell.code)
         code = []
         for i in range(len(self.cell.blocks)):
-            code.append(fm.Block(block, self.cell.colno, i==self.blockno).run())
+            code.append(fm.Block(self.cell.blocks[i], self.cell.colno, i==self.blockno).run())
         self.cell.code = sh.List(code).space_items()
-        print('New code:', self.cell.code)
         objs.get_app().table.logic.code[self.cell.rowno][self.cell.colno] = self.cell.code
         objs.app.table.reset(objs.app.table.logic.plain, objs.app.table.logic.code)
         objs.app.table.select(self.cell.rowno, self.cell.colno)
-    
-    def enable(self):
-        f = '[MClient] mclientqt.BlockMode.enable'
-        self.set_cell()
-        self.select()
-    
-    def disable(self):
-        print('Disable block mode')
 
 
 
