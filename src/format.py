@@ -40,8 +40,6 @@ class Block:
             return sj.objs.get_subjects().is_blocked(self.block.text)
     
     def get_color(self):
-        if self.Select:
-            return cf.objs.get_config().new['selection']['block']
         if self._is_phrase_prior():
             return objs.get_colors().php
         if self._is_phrase_blocked():
@@ -124,8 +122,15 @@ class Block:
         size = self.get_size()
         color = self.get_color()
         # Color name must be put in single quotes
-        sub = '''<span style="font-family:{}; font-size:{}pt; color:'{}';">{}</span>'''
-        self.code = sub.format(family, size, color, self.block.text)
+        if self.Select:
+            sub = '''<span style="font-family:{}; font-size:{}pt; color:'{}'; background-color:'{}';">{}</span>'''
+            self.code = sub.format (family, size, color
+                                   ,cf.objs.get_config().new['selection']['block']
+                                   ,self.block.text
+                                   )
+        else:
+            sub = '''<span style="font-family:{}; font-size:{}pt; color:'{}';">{}</span>'''
+            self.code = sub.format(family, size, color, self.block.text)
     
     def run(self):
         if not self.block.text:
