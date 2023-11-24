@@ -1111,6 +1111,9 @@ class BlockMode:
             code.append(fm.Block(block, self.cell.colno, i==self.blockno).run())
         self.cell.code = sh.List(code).space_items()
         print('New code:', self.cell.code)
+        objs.get_app().table.logic.code[self.cell.rowno][self.cell.colno] = self.cell.code
+        objs.app.table.reset(objs.app.table.logic.plain, objs.app.table.logic.code)
+        objs.app.table.select(self.cell.rowno, self.cell.colno)
     
     def enable(self):
         f = '[MClient] mclientqt.BlockMode.enable'
