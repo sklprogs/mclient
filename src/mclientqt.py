@@ -1167,6 +1167,30 @@ class App:
         self.set_hints()
         self.update_ui()
     
+    def solve_go_left(self):
+        if self.block_mode.blockno > -1:
+            self.block_mode.select_prev()
+        else:
+            self.table.go_left()
+    
+    def solve_go_right(self):
+        if self.block_mode.blockno > -1:
+            self.block_mode.select_next()
+        else:
+            self.table.go_right()
+    
+    def solve_go_down(self):
+        if self.block_mode.blockno > -1:
+            self.block_mode.select_next()
+        else:
+            self.table.go_down()
+    
+    def solve_go_up(self):
+        if self.block_mode.blockno > -1:
+            self.block_mode.select_prev()
+        else:
+            self.table.go_up()
+    
     def _set_hint(self, widget, action):
         section = cf.objs.config.new['actions'][action]
         hotkeys = ', '.join(section['hotkeys'])
@@ -1990,14 +2014,12 @@ class App:
         
         self.gui.bind(('Ctrl+Q',), self.close)
         self.gui.bind(('Esc',), self.minimize)
-        self.gui.bind(('Down',), self.table.go_down)
-        self.gui.bind(('Up',), self.table.go_up)
+        self.gui.bind(('Down',), self.solve_go_down)
+        self.gui.bind(('Up',), self.solve_go_up)
         self.gui.bind(('Ctrl+Home',), self.table.go_start)
         self.gui.bind(('Ctrl+End',), self.table.go_end)
         self.gui.bind(('Home',), self.table.go_line_start)
         self.gui.bind(('End',), self.table.go_line_end)
-        self.gui.bind(('Left',), self.table.go_left)
-        self.gui.bind(('Right',), self.table.go_right)
         self.gui.bind(('F1',), self.about.toggle)
         self.gui.bind(('F3',), self.table.search_next)
         self.gui.bind(('Shift+F3',), self.table.search_prev)
@@ -2174,8 +2196,9 @@ class App:
         objs.panel.ent_src.widget.sig_ctrl_home.connect(self.table.go_start)
         objs.panel.ent_src.widget.sig_ctrl_end.connect(self.table.go_end)
         objs.panel.ent_src.widget.sig_ctrl_space.connect(self.show_suggestions)
-        objs.panel.ent_src.widget.sig_left_arrow.connect(self.table.go_left)
-        objs.panel.ent_src.widget.sig_right_arrow.connect(self.table.go_right)
+        # Binding 'Left' and 'Right' to self.gui does not work for some reason
+        objs.panel.ent_src.widget.sig_left_arrow.connect(self.solve_go_left)
+        objs.panel.ent_src.widget.sig_right_arrow.connect(self.solve_go_right)
         objs.panel.opt_lg1.widget.activated.connect(self.go_search)
         objs.panel.opt_lg2.widget.activated.connect(self.go_search)
         objs.panel.opt_src.widget.activated.connect(self.set_source)
