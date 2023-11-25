@@ -1064,6 +1064,18 @@ class BlockMode:
         self.cell = None
         self.blockno = -1
     
+    def copy_block(self):
+        f = '[MClient] mclientqt.BlockMode.copy_block'
+        if not self.cell or not self.cell.blocks:
+            sh.com.rep_empty(f)
+            return
+        try:
+            sh.Clipboard().copy(self.cell.blocks[self.blockno].text.strip())
+            return True
+        except IndexError:
+            mes = _('Wrong input data: "{}"!').format(self.blockno)
+            sh.objs.get_mes(f, mes).show_warning()
+    
     def select_next(self):
         f = '[MClient] mclientqt.BlockMode.select_next'
         self.enable()
@@ -1166,6 +1178,17 @@ class App:
         self.set_gui()
         self.set_hints()
         self.update_ui()
+    
+    def copy_block(self):
+        if self.block_mode.copy_block():
+            if cf.objs.config.new['Iconify']:
+                self.minimize()
+    
+    def solve_copy(self):
+        if self.block_mode.blockno > -1:
+            self.copy_block()
+        else:
+            self.copy_cell()
     
     def solve_go_left(self):
         if self.block_mode.blockno > -1:
@@ -2026,8 +2049,8 @@ class App:
         self.gui.bind(('Ctrl+F',), self.table.search.show)
         self.gui.bind(('Return',), self.go_keyboard)
         self.gui.bind(('Enter',), self.go_keyboard)
-        self.gui.bind(('Ctrl+Return',), self.copy_cell)
-        self.gui.bind(('Ctrl+Enter',), self.copy_cell)
+        self.gui.bind(('Ctrl+Return',), self.solve_copy)
+        self.gui.bind(('Ctrl+Enter',), self.solve_copy)
         
         self.gui.bind(('Alt+0',), lambda:self.change_col_no(10))
         self.gui.bind(('Alt+1',), lambda:self.change_col_no(1))
@@ -2204,7 +2227,7 @@ class App:
         objs.panel.opt_src.widget.activated.connect(self.set_source)
         objs.panel.opt_col.set_action(self.set_columns)
         
-        self.table.gui.sig_rmb.connect(self.copy_cell)
+        self.table.gui.sig_rmb.connect(self.solve_copy)
         
         self.symbols.gui.table.clicked.connect(self.paste_symbol)
         self.symbols.gui.table.sig_space.connect(self.paste_symbol)
