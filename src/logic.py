@@ -68,7 +68,7 @@ class Articles:
             return self.articles['ids'][self.id]['blocked']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
         return []
     
     def get_prioritized(self):
@@ -77,7 +77,7 @@ class Articles:
             return self.articles['ids'][self.id]['prioritized']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
         return []
     
     def get_subjf(self):
@@ -86,7 +86,7 @@ class Articles:
             return self.articles['ids'][self.id]['subjf']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
     
     def get_fixed_urls(self):
         f = '[MClientQt] logic.Articles.get_fixed_urls'
@@ -106,7 +106,7 @@ class Articles:
             return len(self.articles['ids']) - 1
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
         return -1
     
     def set_table(self, table):
@@ -115,7 +115,7 @@ class Articles:
             self.articles['ids'][self.id]['table'] = table
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
     
     def get_table(self):
         f = '[MClientQt] logic.Articles.get_table'
@@ -123,7 +123,7 @@ class Articles:
             return self.articles['ids'][self.id]['table']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
     
     def get_cell(self, rowno, colno):
         f = '[MClientQt] logic.Articles.get_cell'
@@ -131,7 +131,7 @@ class Articles:
             return self.articles['ids'][self.id]['table'][rowno][colno]
         except (KeyError, IndexError):
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
     
     def get_len(self):
         return self.get_max_id() + 1
@@ -171,7 +171,7 @@ class Articles:
             return self.articles['ids'][self.id]['blocked_cells']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
     
     def set_blocked_cells(self, texts):
         f = '[MClientQt] logic.Articles.set_blocked_cells'
@@ -179,7 +179,7 @@ class Articles:
             self.articles['ids'][self.id]['blocked_cells'] = texts
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
     
     def clear_article(self):
         f = '[MClientQt] logic.Articles.clear_article'
@@ -187,7 +187,7 @@ class Articles:
             del self.articles['ids'][self.id]
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
             return
         if self.id > 0:
             self.set_id(self.id-1)
@@ -200,7 +200,7 @@ class Articles:
             self.articles['ids']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
             return
         for id_ in self.articles['ids']:
             self.articles['ids'][id_]['rowno'] = -1
@@ -213,7 +213,7 @@ class Articles:
             self.articles['ids'][self.id]['colno'] = colno
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
     
     def get_bookmark(self):
         f = '[MClientQt] logic.Articles.get_bookmark'
@@ -223,7 +223,7 @@ class Articles:
                    )
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
     
     def set_id(self, id_):
         f = '[MClientQt] logic.Articles.set_id'
@@ -231,7 +231,7 @@ class Articles:
             self.articles['ids'][id_]
         except KeyError:
             mes = _('Wrong input data: "{}"!').format(id_)
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
             return
         self.id = id_
     
@@ -241,7 +241,7 @@ class Articles:
             return self.articles['ids'][self.id]['search']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
         return ''
     
     def get_source(self):
@@ -250,7 +250,7 @@ class Articles:
             return self.articles['ids'][self.id]['source']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
         return ''
     
     def get_url(self):
@@ -259,7 +259,7 @@ class Articles:
             return self.articles['ids'][self.id]['url']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
         return ''
     
     def get_lang1(self):
@@ -268,7 +268,7 @@ class Articles:
             return self.articles['ids'][self.id]['lang1']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
         return ''
     
     def get_lang2(self):
@@ -277,7 +277,7 @@ class Articles:
             return self.articles['ids'][self.id]['lang2']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
         return ''
     
     def get_raw_code(self):
@@ -286,7 +286,7 @@ class Articles:
             return self.articles['ids'][self.id]['raw_code']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
         return ''
     
     def get_cells(self):
@@ -295,7 +295,7 @@ class Articles:
             return self.articles['ids'][self.id]['cells']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
         return []
     
     def find(self, source, search, url):
@@ -304,7 +304,7 @@ class Articles:
             self.articles['ids']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
             return
         for id_ in self.articles['ids']:
             if self.articles['ids'][id_]['source'] == source \
@@ -319,7 +319,7 @@ class Articles:
             return self.articles['ids'][self.id]['Parallel']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
     
     def is_separate(self):
         f = '[MClientQt] logic.Articles.is_separate'
@@ -327,7 +327,7 @@ class Articles:
             return self.articles['ids'][self.id]['Separate']
         except KeyError:
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            sh.objs.get_mes(f, mes, True).show_warning()
 
 
 
