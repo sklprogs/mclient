@@ -19,21 +19,8 @@ class History:
         self.set_title()
         self.set_bindings()
     
-    def go_start(self):
-        f = '[MClient] history.controller.History.go_start'
-        if not self.model.items:
-            sh.com.rep_lazy(f)
-            return
-        self._go_row(0)
-        self._go_article(0)
-    
-    def go_end(self):
-        f = '[MClient] history.controller.History.go_end'
-        if not self.model.items:
-            sh.com.rep_lazy(f)
-            return
-        rowno = len(self.model.items) - 1
-        self._go_row(rowno)
+    def change_row(self):
+        rowno = self.gui.get_row()
         self._go_article(rowno)
     
     def fill_model(self, table=[[]]):
@@ -42,8 +29,7 @@ class History:
         '''
         self.model = gi.TableModel(table)
         self.gui.set_model(self.model)
-        if self.model.items and self.model.items[0]:
-            self._go_row(0)
+        self.gui.history.selectionModel().selectionChanged.connect(self.change_row)
     
     def _go_row(self, rowno):
         self.gui.clear_selection()
@@ -72,9 +58,6 @@ class History:
             rowno = -1
         rowno += 1
         self._go_row(rowno)
-        mes = _('Change row number: {} → {}').format(old, rowno)
-        sh.objs.get_mes(f, mes, True).show_debug()
-        self._go_article(rowno)
     
     def go_up(self):
         # Qt already goes down/up, but without looping
@@ -87,9 +70,6 @@ class History:
             rowno = len(self.model.items)
         rowno -= 1
         self._go_row(rowno)
-        mes = _('Change row number: {} → {}').format(old, rowno)
-        sh.objs.get_mes(f, mes, True).show_debug()
-        self._go_article(rowno)
     
     def _find_id(self, id_):
         for i in range(len(self.model.items)):
@@ -118,11 +98,8 @@ class History:
     
     def set_bindings(self):
         self.gui.bind(('Esc',), self.close)
-        self.gui.bind(('Down',), self.go_down)
+        self.gui.bind(('Down', 'Alt+Right'), self.go_down)
         self.gui.bind(('Up', 'Alt+Left'), self.go_up)
-        self.gui.bind(('Alt+Right',), self.go_down)
-        self.gui.bind(('Home', 'Alt+Home', 'Ctrl+Home'), self.go_start)
-        self.gui.bind(('End', 'Alt+End', 'Ctrl+End'), self.go_end)
     
     def show(self):
         self.Shown = True

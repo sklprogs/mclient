@@ -1896,6 +1896,7 @@ class App:
                                  ,prioritized = sj.objs.subjects.prior
                                  )
             cf.HistorySubjects().add(lg.objs.plugins.get_article_subjects())
+            self.add_history()
         else:
             mes = _('Load article No. {} from memory').format(artid)
             sh.objs.get_mes(f, mes, True).show_info()
@@ -1940,8 +1941,6 @@ class App:
         else:
             mes = _('Nothing has been found.')
             sh.objs.get_mes(f, mes).show_info()
-        
-        self.add_history()
         
         #objs.get_suggest().close()
         UpdateUI().run()
