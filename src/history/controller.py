@@ -98,8 +98,8 @@ class History:
     
     def set_bindings(self):
         self.gui.bind(('Esc',), self.close)
-        self.gui.bind(('Down', 'Alt+Right'), self.go_down)
-        self.gui.bind(('Up', 'Alt+Left'), self.go_up)
+        self.gui.bind(('Down', 'Right', 'Alt+Right'), self.go_down)
+        self.gui.bind(('Up', 'Left', 'Alt+Left'), self.go_up)
     
     def show(self):
         self.Shown = True
