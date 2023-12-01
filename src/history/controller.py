@@ -21,7 +21,13 @@ class History:
     
     def change_row(self):
         rowno = self.gui.get_row()
-        self._go_article(rowno)
+        try:
+            id_ = self.model.items[rowno][0]
+        except IndexError:
+            mes = _('Wrong input data: "{}"!').format(rowno)
+            sh.objs.get_mes(f, mes).show_warning()
+            return
+        self.gui.sig_go.emit(int(id_) - 1)
     
     def fill_model(self, table=[[]]):
         ''' Do not assign 'gi.TableModel' externally, this will not change
@@ -37,16 +43,6 @@ class History:
         index_ = self.model.index(rowno, 0)
         self.gui.set_index(index_)
         self.gui.select_row(index_)
-    
-    def _go_article(self, rowno):
-        f = '[MClient] history.controller.History._go_article'
-        try:
-            id_ = self.model.items[rowno][0]
-        except IndexError:
-            mes = _('Wrong input data: "{}"!').format(rowno)
-            sh.objs.get_mes(f, mes).show_warning()
-            return
-        self.gui.sig_go.emit(int(id_) - 1)
     
     def go_down(self):
         # Qt already goes down/up, but without looping
