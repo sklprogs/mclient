@@ -29,6 +29,7 @@ class History:
         '''
         self.model = gi.TableModel(table)
         self.gui.set_model(self.model)
+        # Must be done only after setting a model
         self.gui.history.selectionModel().selectionChanged.connect(self.change_row)
     
     def _go_row(self, rowno):
@@ -89,9 +90,9 @@ class History:
             row = [str(id_ + 1), source, lang1, lang2, search]
             self.model.items.append(row)
             self.model.update()
-            self._go_row(len(self.model.items)-1)
-        else:
-            self._go_row(rowno)
+            #self._go_row(len(self.model.items)-1)
+        #else:
+            #self._go_row(rowno)
     
     def set_title(self, title=_('History')):
         self.gui.set_title(title)
