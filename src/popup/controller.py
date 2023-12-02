@@ -98,4 +98,6 @@ class Popup:
     
     def set_bindings(self):
         self.gui.bind(('Esc',), self.close)
-        self.gui.bind(cf.objs.get_config().new['actions']['toggle_popup']['hotkeys'], self.toggle)
+        self.gui.bind (cf.objs.get_config().new['actions']['toggle_popup']['hotkeys']
+                      ,self.toggle
+                      )

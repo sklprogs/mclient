@@ -660,13 +660,18 @@ class Table:
         rowno, colno = self.get_cell()
         x1 = self.gui.get_cell_x(colno)
         y1 = self.gui.get_cell_y(rowno)
+        widget_y = objs.get_app().gui.get_y()
+        if y1 < widget_y:
+            y1 += widget_y
         width = self.gui.get_col_width(colno)
         height = self.gui.get_row_height(rowno)
         x2 = x1 + width
         y2 = y1 + height
         max_width = objs.get_app().get_width()
         self.popup.fill(text)
-        self.popup.adjust_position(x1, width, y1, height, max_width, cf.objs.config.new['popup']['center'])
+        self.popup.adjust_position (x1, width, y1, height, max_width
+                                   ,cf.objs.config.new['popup']['center']
+                                   )
         self.popup.show()
     
     def go_next_section(self, no):
