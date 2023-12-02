@@ -72,6 +72,7 @@ multitrandem:
 - implement speech parts
 
 stardict:
+- (gcide) abase, abased: Separate cells only where forced
 - stardict.cleanup: move block-creating code to stardict.parse
 - accelerate suggestions (especially for 2+ passes)
 - alphabetize suggestions from several dictionaries
