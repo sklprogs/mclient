@@ -2014,7 +2014,7 @@ class App:
     
     def update_ui(self):
         objs.get_panel().ent_src.focus()
-        self.reset_opt()
+        self.reset_opt(cf.objs.config.new['source'])
     
     def show(self):
         self.gui.show()
