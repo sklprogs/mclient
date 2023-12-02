@@ -658,15 +658,13 @@ class Table:
             sh.com.rep_empty(f)
             return
         rowno, colno = self.get_cell()
-        x1 = self.gui.get_cell_x(colno)
-        y1 = self.gui.get_cell_y(rowno)
-        x1 += objs.get_app().gui.get_x()
-        y1 += objs.app.gui.get_y()
+        max_width = objs.get_app().get_width()
         width = self.gui.get_col_width(colno)
         height = self.gui.get_row_height(rowno)
+        x1 = self.gui.get_cell_x(colno) + objs.app.gui.get_x()
+        y1 = self.gui.get_cell_y(rowno) + objs.app.gui.get_y()
         x2 = x1 + width
         y2 = y1 + height
-        max_width = objs.get_app().get_width()
         self.popup.fill(text)
         self.popup.adjust_position (x1, width, y1, height, max_width
                                    ,cf.objs.config.new['popup']['center']
