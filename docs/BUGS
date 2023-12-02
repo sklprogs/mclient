@@ -11,7 +11,6 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
-- RU-EN, in focus: wrong popup alignment
 - RU-EN, bit: ( and )) are separate cells
 - RU-EN, meh: no blocked entries, "English Thesaurus" covers "multi engine
   helicopter", but it shouldn't
@@ -20,7 +19,6 @@ multitrancom:
 - RU-EN, tuple -> мат.: Fix following fixed URLs
 - RU-EN, tuple -> Фразы: source and target phrases do not match
 - EN-RU, tuple -> энка -> tuple -> энка: phsubj is duplicated
-- EN-RU, set -> ряд: Cannot go to start
 - EN-RU, hoove: loosing selection when moving mouse pointer at the end of the
   article
 - If a number of columns is changed to an even value in the special-page
@@ -28,9 +26,7 @@ multitrancom:
   +1 in the number of columns 
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"
-- Do not fill history when search is empty (e.g., when changing the source to
-  'Offline')
-- Do not move at the beginning of the article after cancelling the search
+- RU-EN, bunnyhug: calculate font height more precisely
 
 stardict:
 - RU-EN, "Akrotiri Government" from CIA World Factbook 2014: https://tuxor1337.frama.io/firedict/dictionaries.html: some text was not found
