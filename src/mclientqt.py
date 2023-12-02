@@ -660,9 +660,8 @@ class Table:
         rowno, colno = self.get_cell()
         x1 = self.gui.get_cell_x(colno)
         y1 = self.gui.get_cell_y(rowno)
-        widget_y = objs.get_app().gui.get_y()
-        if y1 < widget_y:
-            y1 += widget_y
+        x1 += objs.get_app().gui.get_x()
+        y1 += objs.app.gui.get_y()
         width = self.gui.get_col_width(colno)
         height = self.gui.get_row_height(rowno)
         x2 = x1 + width
