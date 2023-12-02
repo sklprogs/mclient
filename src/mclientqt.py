@@ -663,9 +663,13 @@ class Table:
         height = self.gui.get_row_height(rowno)
         win_y = objs.app.gui.get_y()
         x1 = self.gui.get_cell_x(colno) + objs.app.gui.get_x()
-        y1 = self.gui.get_cell_y(rowno) + win_y - height / 2
-        if y1 < win_y:
-            y1 = win_y
+        if cf.objs.config.new['popup']['center']:
+            y1 = self.gui.get_cell_y(rowno) + win_y - height / 2
+            if y1 < win_y:
+                y1 = win_y
+        else:
+            # The value is picked up by the trial-and-error method
+            y1 = self.gui.get_cell_y(rowno) + win_y - height + 10
         x2 = x1 + width
         y2 = y1 + height
         self.popup.fill(text)
