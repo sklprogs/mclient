@@ -20,6 +20,13 @@ class History:
         self.set_bindings()
     
     def change_row(self):
+        f = '[MClient] history.controller.History.change_row'
+        ''' We should either calculate a row number by the mouse click event or
+            load the new article twice when the history window is opened.
+        '''
+        if not self.Shown:
+            sh.com.rep_lazy(f)
+            return
         rowno = self.gui.get_row()
         try:
             id_ = self.model.items[rowno][0]
@@ -86,9 +93,9 @@ class History:
             row = [str(id_ + 1), source, lang1, lang2, search]
             self.model.items.append(row)
             self.model.update()
-            #self._go_row(len(self.model.items)-1)
-        #else:
-            #self._go_row(rowno)
+            self._go_row(len(self.model.items)-1)
+        else:
+            self._go_row(rowno)
     
     def set_title(self, title=_('History')):
         self.gui.set_title(title)
