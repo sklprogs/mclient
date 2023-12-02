@@ -661,10 +661,11 @@ class Table:
         max_width = objs.get_app().get_width()
         width = self.gui.get_col_width(colno)
         height = self.gui.get_row_height(rowno)
+        win_y = objs.app.gui.get_y()
         x1 = self.gui.get_cell_x(colno) + objs.app.gui.get_x()
-        y1 = self.gui.get_cell_y(rowno) + objs.app.gui.get_y() - height / 2
-        if y1 < 0:
-            y1 = 0
+        y1 = self.gui.get_cell_y(rowno) + win_y - height / 2
+        if y1 < win_y:
+            y1 = win_y
         x2 = x1 + width
         y2 = y1 + height
         self.popup.fill(text)
