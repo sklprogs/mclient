@@ -662,7 +662,9 @@ class Table:
         width = self.gui.get_col_width(colno)
         height = self.gui.get_row_height(rowno)
         x1 = self.gui.get_cell_x(colno) + objs.app.gui.get_x()
-        y1 = self.gui.get_cell_y(rowno) + objs.app.gui.get_y()
+        y1 = self.gui.get_cell_y(rowno) + objs.app.gui.get_y() - height / 2
+        if y1 < 0:
+            y1 = 0
         x2 = x1 + width
         y2 = y1 + height
         self.popup.fill(text)
