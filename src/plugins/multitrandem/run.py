@@ -43,9 +43,6 @@ class Plugin:
     def get_htm(self):
         return self.htm
     
-    def get_text(self):
-        return self.text
-    
     def get_article_subjects(self):
         return self.art_subj
     
@@ -71,10 +68,6 @@ class Plugin:
     
     def is_oneway(self):
         return False
-    
-    def get_title(self, short):
-        #TODO: implement
-        return short
     
     def quit(self):
         gt.objs.get_files().close()
@@ -104,16 +97,14 @@ class Plugin:
         '''
         self.Parallel = False
         self.Separate = False
-        self.langint = ('English', 'Russian')
         self.langloc = (_('English'), _('Russian'))
-        self.htm = ''
-        self.text = ''
-        self.search = ''
         self.cells = []
         self.majors = []
         self.minors = []
         self.fixed_urls = {}
         self.art_subj = {}
+        self.htm = ''
+        self.search = ''
     
     def get_text(self):
         mes = []
@@ -141,11 +132,11 @@ class Plugin:
         # This is needed only for compliance with a general method
         return ''
     
-    def set_lang1(self, lang1=''):
+    def set_lang1(self, lang1):
         gt.LANG1 = self._adapt_lang(lang1)
         gt.objs.get_files().reset()
     
-    def set_lang2(self, lang2=''):
+    def set_lang2(self, lang2):
         gt.LANG2 = self._adapt_lang(lang2)
         gt.objs.get_files().reset()
     
