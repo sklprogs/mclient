@@ -160,10 +160,6 @@ class Tags:
             self.Success = False
             sh.com.rep_empty(f)
             return
-        if not self.lang1 in self.entry or not self.lang2 in self.entry:
-            mes = _('Wrong input data: "{}"!').format(self.entry)
-            sh.objs.get_mes(f, mes).show_warning()
-            return
         return True
     
     def set_values(self):

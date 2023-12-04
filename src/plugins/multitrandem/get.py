@@ -1389,7 +1389,7 @@ class Articles(UPage):
             sh.com.cancel(f)
             return
         if not chunk:
-            sh.com.rep_empty(f)
+            #sh.com.rep_empty(f)
             return
         return Xor (data = chunk
                    ,offset = -251

@@ -457,6 +457,12 @@ class Get:
         iget.run()
         return iget.debug()
     
+    def run_multitrandem(self):
+        import logic as lg
+        import plugins.multitrandem.get as gt
+        lg.objs.get_plugins(Debug=False, maxrows=1000)
+        return str(gt.Get(SEARCH).run())
+    
     def run_multitrancom(self):
         f = '[MClient] tests.Get.run_multitrancom'
         import plugins.multitrancom.get as gt
@@ -479,9 +485,14 @@ class Get:
     
     def run_stardict(self):
         f = '[MClient] tests.Get.run_stardict'
+        import logic as lg
         import plugins.stardict.get
+        lg.objs.get_plugins(Debug=False, maxrows=1000)
         #search = 'компьютер'
-        search = 'computer'
+        search = 'aberrance'
+        #search = 'abstract'
+        #search = 'АБЕРРАЦИЯ'
+        #search = 'акцепт'
         timer = sh.Timer(f)
         timer.start()
         result = plugins.stardict.get.Get(search).run()
@@ -1166,8 +1177,9 @@ if __name__ == '__main__':
     #mes = View().run_stardict()
     #mes = Subjects().run()
     #mes = View().run_multitrancom()
-    #mes = Elems().run_multitrancom()
-    mes = Prioritize().run_multitrancom()
+    #mes = Elems().run_multitrandem()
+    #mes = Prioritize().run_multitrancom()
+    mes = Get().run_multitrandem()
     idebug = sh.Debug(f, mes)
     idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())
