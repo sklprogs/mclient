@@ -1179,9 +1179,9 @@ if __name__ == '__main__':
     #mes = View().run_multitrancom()
     #mes = Elems().run_multitrandem()
     #mes = Prioritize().run_multitrancom()
-    mes = Get().run_multitrandem()
-    idebug = sh.Debug(f, mes)
-    idebug.show()
+    #mes = Get().run_multitrandem()
+    #idebug = sh.Debug(f, mes)
+    #idebug.show()
     #idebug = sh.Debug(f, Tags().run_multitrancom())
     #idebug = sh.Debug(f, Elems().run_multitrancom())
     #idebug = sh.Debug(f, Prioritize().run_multitrancom())
@@ -1230,8 +1230,8 @@ if __name__ == '__main__':
     '''
 
     # Welcome
-    #iwelcome = com.run_welcome()
-    #iwelcome.show()
+    iwelcome = com.run_welcome()
+    iwelcome.show()
 
     mes = _('Goodbye!')
     sh.objs.get_mes(f, mes, True).show_debug()

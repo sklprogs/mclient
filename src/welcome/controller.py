@@ -23,7 +23,7 @@ class Welcome:
         self.set_gui()
     
     def set_gui(self):
-        self.gui = gi.App()
+        self.gui = gi.Welcome()
         self.set_bindings()
     
     def set_font(self, text):

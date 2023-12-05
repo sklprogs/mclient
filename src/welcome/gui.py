@@ -85,7 +85,7 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
 
 
 
-class App(PyQt5.QtWidgets.QMainWindow):
+class Welcome(PyQt5.QtWidgets.QWidget):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -97,23 +97,23 @@ class App(PyQt5.QtWidgets.QMainWindow):
     
     def show_rows(self, rownos):
         for rowno in rownos:
-            self.welcome.show_row(rowno)
+            self.table.show_row(rowno)
     
     def hide_rows(self, rownos):
         for rowno in rownos:
-            self.welcome.hide_row(rowno)
+            self.table.hide_row(rowno)
     
     def resize_rows(self):
-        self.welcome.resize_rows()
+        self.table.resize_rows()
     
     def set_col_width(self, no, width):
-        self.welcome.set_col_width(no, width)
+        self.table.set_col_width(no, width)
     
     def set_span(self, rowno, colno, rowspan, colspan):
-        self.welcome.set_span(rowno, colno, rowspan, colspan)
+        self.table.set_span(rowno, colno, rowspan, colspan)
     
     def set_model(self, model):
-        self.welcome.set_model(model)
+        self.table.set_model(model)
     
     def show(self):
         self.showMaximized()
@@ -126,17 +126,15 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
     
     def set_gui(self):
-        self.parent_ = PyQt5.QtWidgets.QWidget()
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
         self.layout_.setContentsMargins(0, 0, 0, 0)
-        self.welcome = Welcome()
-        self.layout_.addWidget(self.welcome)
-        self.parent_.setLayout(self.layout_)
-        self.setCentralWidget(self.parent_)
+        self.table = Table()
+        self.layout_.addWidget(self.table)
+        self.setLayout(self.layout_)
 
 
 
-class Welcome(PyQt5.QtWidgets.QTableView):
+class Table(PyQt5.QtWidgets.QTableView):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
