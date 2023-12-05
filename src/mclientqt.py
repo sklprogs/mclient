@@ -658,11 +658,11 @@ class Table:
             sh.com.rep_empty(f)
             return
         rowno, colno = self.get_cell()
-        max_width = objs.get_app().get_width()
+        max_width = objs.get_app().gui.article.get_width()
         width = self.gui.get_col_width(colno)
         height = self.gui.get_row_height(rowno)
-        win_y = objs.app.gui.get_y()
-        x1 = self.gui.get_cell_x(colno) + objs.app.gui.get_x()
+        win_y = objs.app.gui.article.get_y()
+        x1 = self.gui.get_cell_x(colno) + objs.app.gui.article.get_x()
         if cf.objs.config.new['popup']['center']:
             y1 = self.gui.get_cell_y(rowno) + win_y - height / 2
             if y1 < win_y:
@@ -2040,8 +2040,8 @@ class App:
         # Mouse buttons cannot be bound
         self.gui.sig_close.connect(self.close)
         self.gui.sig_close.connect(self.quit)
-        self.gui.sig_pgdn.connect(self.table.go_page_down)
-        self.gui.sig_pgup.connect(self.table.go_page_up)
+        self.gui.article.sig_pgdn.connect(self.table.go_page_down)
+        self.gui.article.sig_pgup.connect(self.table.go_page_up)
         
         self.gui.bind(('Ctrl+Q',), self.close)
         self.gui.bind(('Esc',), self.minimize)
@@ -2196,7 +2196,7 @@ class App:
             to save resources and avoid getting dummy geometry which will be
             returned before the window is shown.
         '''
-        self.gui.parent.resizeEvent = self.table.set_coords
+        self.gui.article.resizeEvent = self.table.set_coords
         
         objs.panel.btn_abt.set_action(self.about.toggle)
         objs.panel.btn_alp.set_action(self.toggle_alphabet)

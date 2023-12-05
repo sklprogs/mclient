@@ -345,27 +345,25 @@ class Table(PyQt5.QtWidgets.QTableView):
 
 
 
-class App(PyQt5.QtWidgets.QMainWindow):
-    
-    sig_close = PyQt5.QtCore.pyqtSignal()
+class Article(PyQt5.QtWidgets.QWidget):
+
     sig_pgdn = PyQt5.QtCore.pyqtSignal()
     sig_pgup = PyQt5.QtCore.pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
     
+    def get_width(self):
+        return self.width()
+    
+    def get_height(self):
+        return self.height()
+    
     def get_x(self):
         return self.pos().x()
     
     def get_y(self):
         return self.pos().y()
-    
-    def activate(self):
-        ''' Remove minimized status and restore window with keeping maximized
-            or normal state. Works on Linux and Windows 10, but not 11.
-        '''
-        self.setWindowState(self.windowState() & ~PyQt5.QtCore.Qt.WindowMinimized | PyQt5.QtCore.Qt.WindowActive)
-        self.activateWindow()
     
     def keyPressEvent(self, event):
         if event.key() == PyQt5.QtCore.Qt.Key_PageUp:
@@ -374,38 +372,14 @@ class App(PyQt5.QtWidgets.QMainWindow):
             self.sig_pgdn.emit()
         return super().keyPressEvent(event)
     
-    def closeEvent(self, event):
-        self.sig_close.emit()
-        return super().closeEvent(event)
-    
-    def get_width(self):
-        return self.width()
-    
-    def get_height(self):
-        return self.height()
-    
-    def minimize(self):
-        self.showMinimized()
-    
-    def show(self):
-        self.showMaximized()
-    
-    def set_title(self, title):
-        self.setWindowTitle(title)
-    
     def set_layout(self):
-        self.parent = PyQt5.QtWidgets.QWidget()
         self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
         self.layout_.setContentsMargins(0, 0, 0, 0)
     
     def add_widgets(self):
         self.layout_.addWidget(self.table)
         self.layout_.addWidget(self.panel, 1)
-        self.parent.setLayout(self.layout_)
-    
-    def set_icon(self):
-        # Does not accent None
-        self.setWindowIcon(sh.gi.objs.get_icon())
+        self.setLayout(self.layout_)
     
     def set_gui(self, table=None, panel=None):
         self.set_layout()
@@ -418,12 +392,49 @@ class App(PyQt5.QtWidgets.QMainWindow):
         else:
             self.panel = Panel()
         self.add_widgets()
-        self.setCentralWidget(self.parent)
-        self.set_icon()
+
+
+
+class App(PyQt5.QtWidgets.QMainWindow):
+
+    sig_close = PyQt5.QtCore.pyqtSignal()
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    
+    def activate(self):
+        ''' Remove minimized status and restore window with keeping maximized
+            or normal state. Works on Linux and Windows 10, but not 11.
+        '''
+        self.setWindowState(self.windowState() & ~PyQt5.QtCore.Qt.WindowMinimized | PyQt5.QtCore.Qt.WindowActive)
+        self.activateWindow()
+    
+    def closeEvent(self, event):
+        self.sig_close.emit()
+        return super().closeEvent(event)
+    
+    def minimize(self):
+        self.showMinimized()
+    
+    def show(self):
+        self.showMaximized()
+    
+    def set_title(self, title):
+        self.setWindowTitle(title)
+    
+    def set_icon(self):
+        # Does not accent None
+        self.setWindowIcon(sh.gi.objs.get_icon())
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:
             PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+    
+    def set_gui(self, table=None, panel=None):
+        self.article = Article()
+        self.article.set_gui(table, panel)
+        self.setCentralWidget(self.article)
+        self.set_icon()
 
 
 
