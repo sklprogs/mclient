@@ -353,6 +353,18 @@ class Article(PyQt5.QtWidgets.QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
     
+    def get_width(self):
+        return self.width()
+    
+    def get_height(self):
+        return self.height()
+    
+    def get_x(self):
+        return self.pos().x()
+    
+    def get_y(self):
+        return self.pos().y()
+    
     def keyPressEvent(self, event):
         if event.key() == PyQt5.QtCore.Qt.Key_PageUp:
             self.sig_pgup.emit()
@@ -389,18 +401,6 @@ class App(PyQt5.QtWidgets.QMainWindow):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-    
-    def get_width(self):
-        return self.width()
-    
-    def get_height(self):
-        return self.height()
-    
-    def get_x(self):
-        return self.pos().x()
-    
-    def get_y(self):
-        return self.pos().y()
     
     def activate(self):
         ''' Remove minimized status and restore window with keeping maximized
