@@ -2271,7 +2271,6 @@ class App:
         self.save = Save()
         self.suggest = sg.Suggest()
         self.block_mode = BlockMode()
-        self.gui.set_gui(self.table.gui, objs.get_panel())
         self.set_title(product)
         self.set_bindings()
 

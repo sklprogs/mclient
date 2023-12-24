@@ -353,6 +353,7 @@ class App(PyQt5.QtWidgets.QMainWindow):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.set_gui()
     
     def get_x(self):
         return self.pos().x()
@@ -409,14 +410,8 @@ class App(PyQt5.QtWidgets.QMainWindow):
     
     def set_gui(self, table=None, panel=None):
         self.set_layout()
-        if table:
-            self.table = table
-        else:
-            self.table = Table()
-        if panel:
-            self.panel = panel
-        else:
-            self.panel = Panel()
+        self.table = Table()
+        self.panel = Panel()
         self.add_widgets()
         self.setCentralWidget(self.parent)
         self.set_icon()
