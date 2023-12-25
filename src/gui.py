@@ -724,7 +724,6 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.set_widgets()
         self.set_hint_bg()
         self.set_bindings()
-        self.show()
 
 
 
