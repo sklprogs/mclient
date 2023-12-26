@@ -2020,6 +2020,7 @@ class App:
         self.gui.show()
     
     def quit(self):
+        f = '[MClientQt] mclient.App.quit'
         ''' This procedure is called by signal. Do not put 'self.close' here,
             it is run separately.
         '''
