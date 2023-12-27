@@ -135,23 +135,6 @@ class UpdateUI:
         self.Parallel = lg.com.is_parallel()
         self.Separate = lg.com.is_separate()
     
-    def restore(self):
-        ''' Set widget values to those autosave values that were not previously
-            restored by other procedures.
-        '''
-        f = '[MClient] mclient.UpdateUI.restore'
-        mes = _('Restore source language: {}')
-        mes = mes.format(cf.objs.config.new['lang1'])
-        sh.objs.get_mes(f, mes, True).show_info()
-        lg.objs.get_plugins().set_lang1(cf.objs.config.new['lang1'])
-        mes = _('Restore target language: {}')
-        mes = mes.format(cf.objs.config.new['lang2'])
-        sh.objs.get_mes(f, mes, True).show_info()
-        lg.objs.plugins.set_lang2(cf.objs.config.new['lang2'])
-        objs.get_panel().reset_opt()
-        objs.panel.opt_src.set(cf.objs.config.new['source'])
-        objs.panel.opt_col.set(cf.objs.config.new['columns']['num'])
-    
     def _update_alphabet_image(self):
         if cf.objs.config.new['AlphabetizeTerms'] and not self.Parallel \
         and not self.Separate:
