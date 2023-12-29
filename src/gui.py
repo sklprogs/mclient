@@ -400,18 +400,16 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.layout_.setContentsMargins(0, 0, 0, 0)
     
     def add_widgets(self):
-        self.layout_.addWidget(self.table)
-        self.layout_.addWidget(self.panel, 1)
+        self.layout_.addWidget(objs.get_table())
+        self.layout_.addWidget(objs.get_panel(), 1)
         self.parent.setLayout(self.layout_)
     
     def set_icon(self):
         # Does not accent None
         self.setWindowIcon(sh.gi.objs.get_icon())
     
-    def set_gui(self, table=None, panel=None):
+    def set_gui(self):
         self.set_layout()
-        self.table = Table()
-        self.panel = Panel()
         self.add_widgets()
         self.setCentralWidget(self.parent)
         self.set_icon()
@@ -781,6 +779,26 @@ class Search(PyQt5.QtWidgets.QWidget):
     
     def get(self):
         return self.ent_src.get()
+
+
+
+class Objects:
+    
+    def __init__(self):
+        self.panel = self.table = None
+    
+    def get_panel(self):
+        if self.panel is None:
+            self.panel = Panel()
+        return self.panel
+    
+    def get_table(self):
+        if self.table is None:
+            self.table = Table()
+        return self.table
+
+
+objs = Objects()
 
 
 if __name__ == '__main__':
