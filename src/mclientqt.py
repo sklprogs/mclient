@@ -1610,8 +1610,8 @@ class App:
         f = '[MClientQt] mclient.App.reset_columns'
         if not lg.com.is_parallel():
             cf.objs.config.new['columns']['num'] = sh.Input (title = f
-                                                    ,value = gi.objs.get_panel().opt_col.get()
-                                                    ).get_integer()
+                                                            ,value = gi.objs.get_panel().opt_col.get()
+                                                            ).get_integer()
         collimit = lg.objs.get_column_width().fixed_num + lg.objs.column_width.term_num
         mes = _('Set the number of columns to {} ({} in total)')
         mes = mes.format(lg.objs.column_width.term_num, collimit)
@@ -1670,15 +1670,15 @@ class App:
             sh.com.rep_empty(f)
             return
         gi.objs.get_panel().opt_lg1.reset (items = langs1
-                                       ,default = lang1
-                                       )
+                                          ,default = lang1
+                                          )
         gi.objs.panel.opt_lg2.reset (items = langs2
-                                 ,default = lang2
-                                 )
+                                    ,default = lang2
+                                    )
         #NOTE: change this upon the change of the default source
         gi.objs.panel.opt_src.reset (items = sources
-                                 ,default = default
-                                 )
+                                    ,default = default
+                                    )
     
     def set_next_lang1(self):
         ''' We want to navigate through the full list of supported languages
@@ -1687,8 +1687,8 @@ class App:
         '''
         old = gi.objs.get_panel().opt_lg1.get()
         gi.objs.panel.opt_lg1.reset (items = lg.objs.get_plugins().get_langs1()
-                                 ,default = old
-                                 )
+                                    ,default = old
+                                    )
         gi.objs.panel.opt_lg1.set_next()
         self.update_lang1()
         self.update_lang2()
@@ -1707,8 +1707,8 @@ class App:
         '''
         old = gi.objs.get_panel().opt_lg1.get()
         gi.objs.panel.opt_lg1.reset (items = lg.objs.get_plugins().get_langs1()
-                                 ,default = old
-                                 )
+                                    ,default = old
+                                    )
         gi.objs.panel.opt_lg1.set_prev()
         self.update_lang1()
         self.update_lang2()
@@ -1763,8 +1763,8 @@ class App:
         if not lang2 in langs2:
             lang2 = langs2[0]
         gi.objs.get_panel().opt_lg2.reset (items = langs2
-                                       ,default = lang2
-                                       )
+                                          ,default = lang2
+                                          )
         self.set_lang2()
     
     def swap_langs(self):
@@ -1788,11 +1788,11 @@ class App:
             sh.objs.get_mes(f, mes).show_warning()
             return
         gi.objs.panel.opt_lg1.reset (items = langs1
-                                 ,default = lang1
-                                 )
+                                    ,default = lang1
+                                    )
         gi.objs.panel.opt_lg2.reset (items = langs2
-                                 ,default = lang2
-                                 )
+                                    ,default = lang2
+                                    )
         self.update_lang1()
         self.update_lang2()
     
