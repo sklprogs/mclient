@@ -445,6 +445,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
         self.delta = 0
         self.offset = 45
         self.pos = 0
+        self.max_opt_width = 110
         self.icn_al0 = sh.objs.get_pdir().add ('..', 'resources', 'buttons'
                                               ,'alphabet_off.png'
                                               )
@@ -718,9 +719,16 @@ class Panel(PyQt5.QtWidgets.QWidget):
     def set_bindings(self):
         self.panel.sig_hover.connect(self.trigger_hover)
     
+    def set_max_opt_width(self):
+        self.opt_src.widget.setMaximumWidth(self.max_opt_width)
+        self.opt_lg1.widget.setMaximumWidth(self.max_opt_width)
+        self.opt_lg2.widget.setMaximumWidth(self.max_opt_width)
+        self.opt_col.widget.setMaximumWidth(self.max_opt_width)
+    
     def set_gui(self):
         self.set_widgets()
         self.set_hint_bg()
+        self.set_max_opt_width()
         self.set_bindings()
 
 
