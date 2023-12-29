@@ -160,10 +160,10 @@ class UpdateUI:
     def update_global_hotkey(self):
         mes = [_('Capture Ctrl-c-c and Ctrl-Ins-Ins')]
         if cf.objs.config.new['CaptureHotkey']:
-            objs.get_panel().btn_cap.activate()
+            gi.objs.get_panel().btn_cap.activate()
             mes.append(_('Status: ON'))
         else:
-            objs.get_panel().btn_cap.inactivate()
+            gi.objs.get_panel().btn_cap.inactivate()
             mes.append(_('Status: OFF'))
         gi.objs.panel.btn_cap.hint = '\n'.join(mes)
         gi.objs.panel.btn_cap.set_hint()
@@ -573,7 +573,6 @@ class Table:
     def __init__(self):
         self.set_values()
         self.logic = lg.Table([], [])
-        self.gui = gi.Table()
         self.search = Search()
         self.popup = pp.Popup()
         self.set_gui()
@@ -642,17 +641,17 @@ class Table:
             return
         rowno, colno = self.get_cell()
         max_width = objs.get_app().get_width()
-        width = self.gui.get_col_width(colno)
-        height = self.gui.get_row_height(rowno)
+        width = gi.objs.get_table().get_col_width(colno)
+        height = gi.objs.table.get_row_height(rowno)
         win_y = objs.app.gui.get_y()
-        x1 = self.gui.get_cell_x(colno) + objs.app.gui.get_x()
+        x1 = gi.objs.table.get_cell_x(colno) + objs.app.gui.get_x()
         if cf.objs.config.new['popup']['center']:
-            y1 = self.gui.get_cell_y(rowno) + win_y - height / 2
+            y1 = gi.objs.table.get_cell_y(rowno) + win_y - height / 2
             if y1 < win_y:
                 y1 = win_y
         else:
             # The value is picked up by the trial-and-error method
-            y1 = self.gui.get_cell_y(rowno) + win_y - height + 10
+            y1 = gi.objs.table.get_cell_y(rowno) + win_y - height + 10
         x2 = x1 + width
         y2 = y1 + height
         self.popup.fill(text)
@@ -776,17 +775,17 @@ class Table:
             return
         self.old_rowno = rowno
         self.old_colno = colno
-        self.model.update(self.gui.get_index())
+        self.model.update(gi.objs.get_table().get_index())
         new_index = self.model.index(rowno, colno)
         if Mouse:
-            self.gui.set_index(new_index)
+            gi.objs.table.set_index(new_index)
         else:
-            self.gui.set_cur_index(new_index)
+            gi.objs.table.set_cur_index(new_index)
         self.model.update(new_index)
         if not Mouse:
             self.scroll_top()
         if Mouse:
-            if new_index in self.gui.delegate.long:
+            if new_index in gi.objs.table.delegate.long:
                 self.show_popup()
             else:
                 self.popup.close()
@@ -845,13 +844,13 @@ class Table:
         if not self.coords or not self.model:
             sh.com.rep_empty(f)
             return
-        rowno, colno = self.gui.get_cell()
+        rowno, colno = gi.objs.get_table().get_cell()
         if rowno == -1 or colno == -1:
             mes = _('No cell is selected!')
             sh.objs.get_mes(f, mes, True).show_warning()
             return
         index_ = self.model.index(self.coords[rowno], colno)
-        self.gui.scroll2index(index_)
+        gi.objs.table.scroll2index(index_)
     
     def get_cell(self):
         f = '[MClientQt] mclient.Table.get_cell'
@@ -859,7 +858,7 @@ class Table:
             sh.com.cancel(f)
             return
         try:
-            return self.gui.get_cell()
+            return gi.objs.get_table().get_cell()
         except Exception as e:
             sh.com.rep_third_party(f, e)
             return(0, 0)
@@ -912,7 +911,7 @@ class Table:
     
     def set_row_height(self, height=42):
         for no in range(self.logic.rownum):
-            self.gui.set_row_height(no, height)
+            gi.objs.get_table().set_row_height(no, height)
     
     def set_col_width(self):
         # For some reason, this works only after filling cells
@@ -929,7 +928,7 @@ class Table:
                 width = 80
             else:
                 width = cf.objs.config.new['columns']['terms']['width']
-            self.gui.set_col_width(no, width)
+            gi.objs.get_table().set_col_width(no, width)
     
     def go_bookmark(self):
         f = '[MClientQt] mclient.Table.go_bookmark'
@@ -983,41 +982,41 @@ class Table:
                              )
         timer = sh.Timer(f)
         timer.start()
-        self.gui.delegate.long = []
+        gi.objs.get_table().delegate.long = []
         for rowno in range(self.logic.rownum):
             for colno in range(self.logic.colnum):
                 ilimits.set_text(self.logic.plain[rowno][colno])
                 space = ilimits.get_space()
                 index_ = self.model.index(rowno, colno)
-                hint_space = cf.objs.config.new['rows']['height'] * self.gui.get_col_width(colno)
+                hint_space = cf.objs.config.new['rows']['height'] * gi.objs.table.get_col_width(colno)
                 if space > hint_space:
-                    self.gui.delegate.long.append(index_)
+                    gi.objs.table.delegate.long.append(index_)
         timer.end()
         mes = _('Number of cells: {}').format(self.logic.rownum*self.logic.colnum)
         sh.objs.get_mes(f, mes, True).show_debug()
-        mes = _('Number of long cells: {}').format(len(self.gui.delegate.long))
+        mes = _('Number of long cells: {}').format(len(gi.objs.table.delegate.long))
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def set_coords(self, event=None):
         ''' Calculating Y is very fast (~0.05s for 'set' on Intel Atom). We
             need 'event' since this procedure overrides
-            self.gui.parent.resizeEvent.
+            gi.objs.get_table().parent.resizeEvent.
         '''
         f = '[MClientQt] mclient.Table.set_coords'
         if not self.Success:
             sh.com.cancel(f)
             return
-        self.gui.scroll2top()
+        gi.objs.get_table().scroll2top()
         #TODO: Get rid of this
         self.coords2 = {}
-        height = self.gui.get_height()
+        height = gi.objs.table.get_height()
         mes = _('Window height: {}').format(height)
         sh.objs.get_mes(f, mes, True).show_debug()
         for rowno in range(self.logic.rownum):
-            y = self.gui.get_cell_y(rowno) + self.gui.get_row_height(rowno)
+            y = gi.objs.table.get_cell_y(rowno) + gi.objs.table.get_row_height(rowno)
             pageno = int(y / height)
             page_y = pageno * height
-            page_rowno = self.gui.get_row_by_y(page_y)
+            page_rowno = gi.objs.table.get_row_by_y(page_y)
             self.coords[rowno] = page_rowno
             self.coords2[rowno] = pageno
     
@@ -1028,21 +1027,21 @@ class Table:
             return
         timer = sh.Timer(f)
         timer.start()
-        self.gui.set_model(self.model)
+        gi.objs.get_table().set_model(self.model)
         timer.end()
     
     def set_max_row_height(self, height=150):
-        self.gui.set_max_row_height(height)
+        gi.objs.get_table().set_max_row_height(height)
     
     def show_borders(self, Show=False):
-        self.gui.show_borders(Show)
+        gi.objs.get_table().show_borders(Show)
     
     def set_gui(self):
         #self.set_max_row_height()
         self.set_bindings()
     
     def set_bindings(self):
-        self.gui.sig_select.connect(self.select)
+        gi.objs.get_table().sig_select.connect(self.select)
         self.search.gui.ent_src.bind(('Return',), self.close_search_next)
         self.search.gui.btn_srp.set_action(self.search_prev)
         self.search.gui.btn_srn.set_action(self.search_next)
@@ -2174,8 +2173,8 @@ class App:
                               ,self.symbols.close
                               )
         
-        self.table.gui.clicked.connect(self.go_url)
-        self.table.gui.sig_mmb.connect(self.minimize)
+        gi.objs.get_table().clicked.connect(self.go_url)
+        gi.objs.table.sig_mmb.connect(self.minimize)
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be
             returned before the window is shown.
@@ -2219,7 +2218,7 @@ class App:
         gi.objs.panel.opt_src.widget.activated.connect(self.set_source)
         gi.objs.panel.opt_col.set_action(self.set_columns)
         
-        self.table.gui.sig_rmb.connect(self.solve_copy)
+        gi.objs.table.sig_rmb.connect(self.solve_copy)
         
         self.symbols.gui.table.clicked.connect(self.paste_symbol)
         self.symbols.gui.table.sig_space.connect(self.paste_symbol)
