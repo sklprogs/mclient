@@ -345,6 +345,20 @@ class Table(PyQt5.QtWidgets.QTableView):
 
 
 
+class TableProxy(PyQt5.QtWidgets.QWidget):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.set_gui()
+    
+    def set_gui(self):
+        self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
+        self.layout_.setContentsMargins(0, 0, 0, 0)
+        self.layout_.addWidget(objs.get_table())
+        self.setLayout(self.layout_)
+
+
+
 class App(PyQt5.QtWidgets.QMainWindow):
     
     sig_close = PyQt5.QtCore.pyqtSignal()
@@ -400,7 +414,7 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.layout_.setContentsMargins(0, 0, 0, 0)
     
     def add_widgets(self):
-        self.layout_.addWidget(objs.get_table())
+        self.layout_.addWidget(TableProxy())
         self.layout_.addWidget(objs.get_panel(), 1)
         self.parent.setLayout(self.layout_)
     
