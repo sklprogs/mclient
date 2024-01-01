@@ -171,3 +171,18 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     def show_borders(self, Show=False):
         self.setShowGrid(Show)
+
+
+
+class Objects:
+    
+    def __init__(self):
+        self.welcome = None
+    
+    def get_welcome(self):
+        if self.welcome is None:
+            self.welcome = Welcome()
+        return self.welcome
+
+
+objs = Objects()

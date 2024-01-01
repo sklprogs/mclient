@@ -23,7 +23,6 @@ class Welcome:
         self.set_gui()
     
     def set_gui(self):
-        self.gui = gi.Welcome()
         self.set_bindings()
     
     def set_font(self, text):
@@ -36,25 +35,25 @@ class Welcome:
         self.logic.set_tail()
     
     def set_model(self, model):
-        self.gui.set_model(model)
+        gi.objs.get_welcome().set_model(model)
     
     def close(self):
-        self.gui.close()
+        gi.objs.get_welcome().close()
     
     def show(self):
-        self.gui.show()
+        gi.objs.get_welcome().show()
     
     def set_bindings(self):
-        self.gui.bind(('Ctrl+Q',), self.close)
-        self.gui.bind(('Esc',), self.close)
+        gi.objs.get_welcome().bind(('Ctrl+Q',), self.close)
+        gi.objs.welcome.bind(('Esc',), self.close)
     
     def set_spans(self):
         for i in range(10):
-            self.gui.set_span(i, 0, 1, lg.COLNUM)
+            gi.objs.get_welcome().set_span(i, 0, 1, lg.COLNUM)
     
     def set_col_widths(self):
         for i in range(lg.COLNUM):
-            self.gui.set_col_width(i, 166)
+            gi.objs.get_welcome().set_col_width(i, 166)
     
     def resize_rows(self):
         ''' This strange workaround allows to avoid too much space caused by
@@ -68,9 +67,9 @@ class Welcome:
             borders fully visible.
             https://stackoverflow.com/questions/52166539/qtablewidget-respect-span-when-sizing-to-contents
         '''
-        self.gui.hide_rows((0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
-        self.gui.resize_rows()
-        self.gui.show_rows((0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
+        gi.objs.get_welcome().hide_rows((0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
+        gi.objs.welcome.resize_rows()
+        gi.objs.welcome.show_rows((0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
     
     def reset(self):
         self.fill()
@@ -80,4 +79,4 @@ class Welcome:
     
     def fill(self):
         model = gi.TableModel(self.logic.run())
-        self.gui.set_model(model)
+        gi.objs.get_welcome().set_model(model)

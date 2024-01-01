@@ -2368,6 +2368,7 @@ if __name__ == '__main__':
                               # ,url = lg.objs.request.url
                               # )
         # timer.end()
+        objs.app.welcome.reset()
         objs.app.show()
     else:
         mes = _('Invalid configuration!')

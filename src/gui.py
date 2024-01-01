@@ -7,6 +7,8 @@ import PyQt5.QtWidgets
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
+import welcome.gui
+
 sh.gi.ICON = sh.objs.get_pdir().add('..', 'resources', 'mclient.png')
 WIDE_ROW_COLOR = '#CCCCCC'
 WIDE_ROW_LEN = 70
@@ -414,7 +416,8 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.layout_.setContentsMargins(0, 0, 0, 0)
     
     def add_widgets(self):
-        self.layout_.addWidget(TableProxy())
+        #self.layout_.addWidget(TableProxy())
+        self.layout_.addWidget(welcome.gui.objs.get_welcome())
         self.layout_.addWidget(objs.get_panel(), 1)
         self.parent.setLayout(self.layout_)
     
