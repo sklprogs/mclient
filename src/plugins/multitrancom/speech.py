@@ -20,7 +20,7 @@ class Speech:
                                                 )
     
     def set_dic(self):
-        f = '[MClientQt] plugins.multitrancom.speech.Speech.set_dic'
+        f = '[MClient] plugins.multitrancom.speech.Speech.set_dic'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -34,7 +34,7 @@ class Speech:
         return self.dic
     
     def load(self):
-        f = '[MClientQt] plugins.multitrancom.speech.Speech.load'
+        f = '[MClient] plugins.multitrancom.speech.Speech.load'
         if not self.Success:
             sh.com.cancel(f)
             return

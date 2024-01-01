@@ -19,7 +19,7 @@ class Speech:
         self.dic = objs.get_plugins().get_speeches()
     
     def _get_short(self, full):
-        f = '[MClientQt] logic.Speech._get_short'
+        f = '[MClient] logic.Speech._get_short'
         for short in self.dic:
             if self.dic[short] == full:
                 return short
@@ -28,7 +28,7 @@ class Speech:
         return full
     
     def get_settings(self):
-        #f = '[MClientQt] logic.Speech.get_settings'
+        #f = '[MClient] logic.Speech.get_settings'
         # Source tuple cannot be concatenated with target list
         speeches = [cf.objs.get_config().new['speech1']
                    ,cf.objs.config.new['speech2']
@@ -63,7 +63,7 @@ class Articles:
         self.set_values()
     
     def get_blocked(self):
-        f = '[MClientQt] logic.Articles.get_blocked'
+        f = '[MClient] logic.Articles.get_blocked'
         try:
             return self.articles['ids'][self.id]['blocked']
         except KeyError:
@@ -72,7 +72,7 @@ class Articles:
         return []
     
     def get_prioritized(self):
-        f = '[MClientQt] logic.Articles.get_prioritized'
+        f = '[MClient] logic.Articles.get_prioritized'
         try:
             return self.articles['ids'][self.id]['prioritized']
         except KeyError:
@@ -81,7 +81,7 @@ class Articles:
         return []
     
     def get_subjf(self):
-        f = '[MClientQt] logic.Articles.get_subjf'
+        f = '[MClient] logic.Articles.get_subjf'
         try:
             return self.articles['ids'][self.id]['subjf']
         except KeyError:
@@ -89,7 +89,7 @@ class Articles:
             sh.objs.get_mes(f, mes, True).show_warning()
     
     def get_fixed_urls(self):
-        f = '[MClientQt] logic.Articles.get_fixed_urls'
+        f = '[MClient] logic.Articles.get_fixed_urls'
         try:
             return self.articles['ids'][self.id]['fixed_urls']
         except KeyError:
@@ -100,7 +100,7 @@ class Articles:
         return self.id == self.get_max_id()
     
     def get_max_id(self):
-        f = '[MClientQt] logic.Articles.get_max_id'
+        f = '[MClient] logic.Articles.get_max_id'
         try:
             # Do not use 'max' on an empty sequence
             return len(self.articles['ids']) - 1
@@ -110,7 +110,7 @@ class Articles:
         return -1
     
     def set_table(self, table):
-        f = '[MClientQt] logic.Articles.set_table'
+        f = '[MClient] logic.Articles.set_table'
         try:
             self.articles['ids'][self.id]['table'] = table
         except KeyError:
@@ -118,7 +118,7 @@ class Articles:
             sh.objs.get_mes(f, mes, True).show_warning()
     
     def get_table(self):
-        f = '[MClientQt] logic.Articles.get_table'
+        f = '[MClient] logic.Articles.get_table'
         try:
             return self.articles['ids'][self.id]['table']
         except KeyError:
@@ -126,7 +126,7 @@ class Articles:
             sh.objs.get_mes(f, mes, True).show_warning()
     
     def get_cell(self, rowno, colno):
-        f = '[MClientQt] logic.Articles.get_cell'
+        f = '[MClient] logic.Articles.get_cell'
         try:
             return self.articles['ids'][self.id]['table'][rowno][colno]
         except (KeyError, IndexError):
@@ -139,7 +139,7 @@ class Articles:
     def add (self, search='', url='', cells=[], table=[], raw_code=''
             ,fixed_urls=[], subjf=[], blocked=[], prioritized=[]
             ):
-        f = '[MClientQt] logic.Articles.add'
+        f = '[MClient] logic.Articles.add'
         # Do not add articles that were not found to history
         if not cells:
             sh.com.rep_lazy(f)
@@ -166,7 +166,7 @@ class Articles:
         self.set_id(id_)
     
     def get_blocked_cells(self):
-        f = '[MClientQt] logic.Articles.get_blocked_cells'
+        f = '[MClient] logic.Articles.get_blocked_cells'
         try:
             return self.articles['ids'][self.id]['blocked_cells']
         except KeyError:
@@ -174,7 +174,7 @@ class Articles:
             sh.objs.get_mes(f, mes, True).show_warning()
     
     def set_blocked_cells(self, texts):
-        f = '[MClientQt] logic.Articles.set_blocked_cells'
+        f = '[MClient] logic.Articles.set_blocked_cells'
         try:
             self.articles['ids'][self.id]['blocked_cells'] = texts
         except KeyError:
@@ -182,7 +182,7 @@ class Articles:
             sh.objs.get_mes(f, mes, True).show_warning()
     
     def clear_article(self):
-        f = '[MClientQt] logic.Articles.clear_article'
+        f = '[MClient] logic.Articles.clear_article'
         try:
             del self.articles['ids'][self.id]
         except KeyError:
@@ -195,7 +195,7 @@ class Articles:
             self.id = -1
     
     def delete_bookmarks(self):
-        f = '[MClientQt] logic.Articles.delete_bookmarks'
+        f = '[MClient] logic.Articles.delete_bookmarks'
         try:
             self.articles['ids']
         except KeyError:
@@ -207,7 +207,7 @@ class Articles:
             self.articles['ids'][id_]['colno'] = -1
     
     def set_bookmark(self, rowno, colno):
-        f = '[MClientQt] logic.Articles.set_bookmark'
+        f = '[MClient] logic.Articles.set_bookmark'
         try:
             self.articles['ids'][self.id]['rowno'] = rowno
             self.articles['ids'][self.id]['colno'] = colno
@@ -216,7 +216,7 @@ class Articles:
             sh.objs.get_mes(f, mes, True).show_warning()
     
     def get_bookmark(self):
-        f = '[MClientQt] logic.Articles.get_bookmark'
+        f = '[MClient] logic.Articles.get_bookmark'
         try:
             return (self.articles['ids'][self.id]['rowno']
                    ,self.articles['ids'][self.id]['colno']
@@ -226,7 +226,7 @@ class Articles:
             sh.objs.get_mes(f, mes, True).show_warning()
     
     def set_id(self, id_):
-        f = '[MClientQt] logic.Articles.set_id'
+        f = '[MClient] logic.Articles.set_id'
         try:
             self.articles['ids'][id_]
         except KeyError:
@@ -236,7 +236,7 @@ class Articles:
         self.id = id_
     
     def get_search(self):
-        f = '[MClientQt] logic.Articles.get_search'
+        f = '[MClient] logic.Articles.get_search'
         try:
             return self.articles['ids'][self.id]['search']
         except KeyError:
@@ -245,7 +245,7 @@ class Articles:
         return ''
     
     def get_source(self):
-        f = '[MClientQt] logic.Articles.get_source'
+        f = '[MClient] logic.Articles.get_source'
         try:
             return self.articles['ids'][self.id]['source']
         except KeyError:
@@ -254,7 +254,7 @@ class Articles:
         return ''
     
     def get_url(self):
-        f = '[MClientQt] logic.Articles.get_url'
+        f = '[MClient] logic.Articles.get_url'
         try:
             return self.articles['ids'][self.id]['url']
         except KeyError:
@@ -263,7 +263,7 @@ class Articles:
         return ''
     
     def get_lang1(self):
-        f = '[MClientQt] logic.Articles.get_lang1'
+        f = '[MClient] logic.Articles.get_lang1'
         try:
             return self.articles['ids'][self.id]['lang1']
         except KeyError:
@@ -272,7 +272,7 @@ class Articles:
         return ''
     
     def get_lang2(self):
-        f = '[MClientQt] logic.Articles.get_lang2'
+        f = '[MClient] logic.Articles.get_lang2'
         try:
             return self.articles['ids'][self.id]['lang2']
         except KeyError:
@@ -281,7 +281,7 @@ class Articles:
         return ''
     
     def get_raw_code(self):
-        f = '[MClientQt] logic.Articles.get_raw_code'
+        f = '[MClient] logic.Articles.get_raw_code'
         try:
             return self.articles['ids'][self.id]['raw_code']
         except KeyError:
@@ -290,7 +290,7 @@ class Articles:
         return ''
     
     def get_cells(self):
-        f = '[MClientQt] logic.Articles.get_cells'
+        f = '[MClient] logic.Articles.get_cells'
         try:
             return self.articles['ids'][self.id]['cells']
         except KeyError:
@@ -299,7 +299,7 @@ class Articles:
         return []
     
     def find(self, source, search, url):
-        f = '[MClientQt] logic.Articles.find'
+        f = '[MClient] logic.Articles.find'
         try:
             self.articles['ids']
         except KeyError:
@@ -314,7 +314,7 @@ class Articles:
         return -1
     
     def is_parallel(self):
-        f = '[MClientQt] logic.Articles.is_parallel'
+        f = '[MClient] logic.Articles.is_parallel'
         try:
             return self.articles['ids'][self.id]['Parallel']
         except KeyError:
@@ -322,7 +322,7 @@ class Articles:
             sh.objs.get_mes(f, mes, True).show_warning()
     
     def is_separate(self):
-        f = '[MClientQt] logic.Articles.is_separate'
+        f = '[MClient] logic.Articles.is_separate'
         try:
             return self.articles['ids'][self.id]['Separate']
         except KeyError:
@@ -366,7 +366,7 @@ class HTM:
         self.skipped = skipped
         
     def set_landscape(self):
-        f = '[MClientQt] logic.HTM.set_landscape'
+        f = '[MClient] logic.HTM.set_landscape'
         file = sh.objs.get_pdir().add('..', 'resources', 'landscape.html')
         code = sh.ReadTextFile(file).get()
         if not code:
@@ -469,7 +469,7 @@ class ColumnWidth:
         self.columns = []
     
     def set_col_width(self):
-        f = '[MClientQt] logic.ColumnWidth.set_col_width'
+        f = '[MClient] logic.ColumnWidth.set_col_width'
         if not cf.objs.get_config().new['rows']['height']:
             sh.com.rep_lazy(f)
             return
@@ -495,13 +495,13 @@ class ColumnWidth:
         self.set_col_width()
     
     def set_fixed_num(self):
-        f = '[MClientQt] logic.ColumnWidth.set_fixed_num'
+        f = '[MClient] logic.ColumnWidth.set_fixed_num'
         self.fixed_num = 4
         mes = _('Number of fixed columns: {}').format(self.fixed_num)
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def set_term_num(self):
-        f = '[MClientQt] logic.ColumnWidth.set_term_num'
+        f = '[MClient] logic.ColumnWidth.set_term_num'
         self.term_num = com.get_colnum()
         mes = _('Number of term columns: {}')
         mes = mes.format(self.term_num)
@@ -591,7 +591,7 @@ class Commands:
         self.use_unverified()
     
     def _get_col_type(self, type_):
-        f = '[MClientQt] logic.Commands._get_col_type'
+        f = '[MClient] logic.Commands._get_col_type'
         if type_ == _('Subjects'):
             return 'subj'
         elif type_ == _('Word forms'):
@@ -608,7 +608,7 @@ class Commands:
         return ''
     
     def get_col_types(self):
-        f = '[MClientQt] logic.Commands.get_col_types'
+        f = '[MClient] logic.Commands.get_col_types'
         types = [cf.objs.get_config().new['columns']['1']['type']
                 ,cf.objs.config.new['columns']['2']['type']
                 ,cf.objs.config.new['columns']['3']['type']
@@ -627,7 +627,7 @@ class Commands:
         return objs.get_articles().get_len() > 0 and objs.articles.is_separate()
     
     def get_text(self, cells):
-        f = '[MClientQt] logic.Commands.get_text'
+        f = '[MClient] logic.Commands.get_text'
         if not cells:
             sh.com.rep_empty(f)
             return ''
@@ -639,7 +639,7 @@ class Commands:
             understand color names in quotes, so we must delete these quotes
             before saving to a web-page.
         '''
-        f = '[MClientQt] logic.Commands.fix_colors'
+        f = '[MClient] logic.Commands.fix_colors'
         if not colors:
             sh.com.rep_empty(f)
             return
@@ -647,7 +647,7 @@ class Commands:
             objs.get_request().htm = objs.request.htm.replace(f"'{color}'", color)
     
     def get_colors(self, blocks):
-        f = '[MClientQt] logic.Commands.get_colors'
+        f = '[MClient] logic.Commands.get_colors'
         if not blocks:
             sh.com.rep_empty(f)
             return
@@ -658,7 +658,7 @@ class Commands:
         return colors
     
     def set_url(self):
-        f = '[MClientQt] logic.Commands.set_url'
+        f = '[MClient] logic.Commands.set_url'
         #NOTE: update source and target languages first
         objs.get_request().url = objs.get_plugins().get_url(objs.request.search)
         mes = objs.request.url
@@ -666,7 +666,7 @@ class Commands:
     
     def control_length(self):
         # Confirm too long requests
-        f = '[MClientQt] logic.Commands.control_length'
+        f = '[MClient] logic.Commands.control_length'
         Confirmed = True
         if len(objs.get_request().search) >= 150:
             mes = _('The request is long ({} symbols). Do you really want to send it?')
@@ -687,7 +687,7 @@ class Commands:
         return 2
     
     def export_style(self):
-        f = '[MClientQt] logic.Commands.export_style'
+        f = '[MClient] logic.Commands.export_style'
         ''' Do not use 'gettext' to name internal types - this will make
             the program ~0.6s slower.
         '''
@@ -727,7 +727,7 @@ class Commands:
         #TODO: Should we change objs.request.collimit here?
     
     def suggest(self, search, limit=0):
-        f = '[MClientQt] logic.Commands.suggest'
+        f = '[MClient] logic.Commands.suggest'
         items = objs.get_plugins().suggest(search)
         if not items:
             sh.com.rep_empty(f)
@@ -735,7 +735,7 @@ class Commands:
         return items[0:limit]
         
     def use_unverified(self):
-        f = '[MClientQt] logic.Commands.use_unverified'
+        f = '[MClient] logic.Commands.use_unverified'
         ''' On *some* systems we can get urllib.error.URLError: <urlopen error
             [SSL: CERTIFICATE_VERIFY_FAILED]>. To get rid of this error, we use
             this small workaround.
@@ -776,7 +776,7 @@ class Table:
         self.fixed_num = 4
     
     def get_phsubj(self):
-        f = '[MClientQt] logic.Table.get_phsubj'
+        f = '[MClient] logic.Table.get_phsubj'
         table = objs.get_articles().get_table()
         if not table:
             sh.com.rep_empty(f)
@@ -787,7 +787,7 @@ class Table:
                     return(cell.text, cell.fixed_block.url)
     
     def get_first_term(self):
-        f = '[MClientQt] logic.Table.get_first_term'
+        f = '[MClient] logic.Table.get_first_term'
         table = objs.get_articles().get_table()
         if not table:
             sh.com.rep_empty(f)
@@ -806,7 +806,7 @@ class Table:
         return True
     
     def set_empty_cols(self):
-        f = '[MClientQt] logic.Table.set_empty_cols'
+        f = '[MClient] logic.Table.set_empty_cols'
         #TODO: Should we run this for fixed columns only?
         for colno in range(self.colnum):
             if self._is_col_empty(colno):
@@ -819,7 +819,7 @@ class Table:
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def get_next_row_by_col(self, rowno, colno, ref_colno):
-        f = '[MClientQt] logic.Table.get_next_row_by_col'
+        f = '[MClient] logic.Table.get_next_row_by_col'
         if not self.plain:
             sh.com.rep_empty(f)
             return(rowno, colno)
@@ -834,7 +834,7 @@ class Table:
         return(rowno, colno)
     
     def get_prev_row_by_col(self, rowno, colno, ref_colno):
-        f = '[MClientQt] logic.Table.get_prev_row_by_col'
+        f = '[MClient] logic.Table.get_prev_row_by_col'
         if not self.plain:
             sh.com.rep_empty(f)
             return(rowno, colno)
@@ -855,7 +855,7 @@ class Table:
                 return(rowno, colno)
     
     def get_next_col(self, rowno, colno):
-        f = '[MClientQt] logic.Table.get_next_col'
+        f = '[MClient] logic.Table.get_next_col'
         if not self.plain:
             sh.com.rep_empty(f)
             return(rowno, colno)
@@ -881,7 +881,7 @@ class Table:
                 return(rowno, colno)
     
     def get_prev_col(self, rowno, colno):
-        f = '[MClientQt] logic.Table.get_prev_col'
+        f = '[MClient] logic.Table.get_prev_col'
         if not self.plain:
             sh.com.rep_empty(f)
             return(rowno, colno)
@@ -907,7 +907,7 @@ class Table:
                 return(rowno, colno)
     
     def get_prev_row(self, rowno, colno):
-        f = '[MClientQt] logic.Table.get_prev_row'
+        f = '[MClient] logic.Table.get_prev_row'
         if not self.plain:
             sh.com.rep_empty(f)
             return(rowno, colno)
@@ -931,7 +931,7 @@ class Table:
                 return(rowno, colno)
     
     def get_next_row(self, rowno, colno):
-        f = '[MClientQt] logic.Table.get_next_row'
+        f = '[MClient] logic.Table.get_next_row'
         if not self.plain:
             sh.com.rep_empty(f)
             return(rowno, colno)
@@ -958,7 +958,7 @@ class Table:
         return self.get_prev_col(rowno, self.colnum)
     
     def set_size(self):
-        f = '[MClientQt] logic.Table.set_size'
+        f = '[MClient] logic.Table.set_size'
         if not self.plain:
             sh.com.rep_empty(f)
             return
@@ -978,13 +978,13 @@ class Search(Table):
         super().__init__(*args, **kwargs)
     
     def check(self):
-        f = '[MClientQt] logic.Search.check'
+        f = '[MClient] logic.Search.check'
         if not self.plain or not self.pattern.strip():
             self.Success = False
             sh.com.rep_empty(f)
     
     def lower(self):
-        f = '[MClientQt] logic.Search.lower'
+        f = '[MClient] logic.Search.lower'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -1024,7 +1024,7 @@ class Search(Table):
                     return True
     
     def search_next(self):
-        f = '[MClientQt] logic.Search.search_next'
+        f = '[MClient] logic.Search.search_next'
         if not self.Success:
             sh.com.cancel(f)
             return(self.rowno, self.colno)
@@ -1038,7 +1038,7 @@ class Search(Table):
         return(rowno, colno)
     
     def search_prev(self):
-        f = '[MClientQt] logic.Search.search_prev'
+        f = '[MClient] logic.Search.search_prev'
         if not self.Success:
             sh.com.cancel(f)
             return(self.rowno, self.colno)

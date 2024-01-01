@@ -16,7 +16,7 @@ class Suggest:
         self.gui.load()
     
     def get(self):
-        f = '[MClientQt] suggest.controller.Suggest.get'
+        f = '[MClient] suggest.controller.Suggest.get'
         try:
             return self.gui.get()
         except IndexError:
@@ -42,7 +42,7 @@ class Suggest:
         self.gui.show()
     
     def fill(self, lst):
-        f = '[MClientQt] suggest.controller.Suggest.fill'
+        f = '[MClient] suggest.controller.Suggest.fill'
         if not lst:
             sh.com.rep_empty(f)
             return
@@ -70,7 +70,7 @@ class Suggest:
 
 
 if __name__ == '__main__':
-    f = '[MClientQt] suggest.controller.Suggest.__main__'
+    f = '[MClient] suggest.controller.Suggest.__main__'
     sh.com.start()
     lst = []
     for i in range(20):

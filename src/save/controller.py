@@ -22,21 +22,21 @@ class Save:
         self.change_font_size(2)
     
     def get(self):
-        f = '[MClientQt] save.controller.Save.get'
+        f = '[MClient] save.controller.Save.get'
         if not self.model.items:
             sh.com.rep_lazy(f)
             return
         return self.model.items[self.gui.get_row()]
     
     def go_start(self):
-        f = '[MClientQt] save.controller.Save.go_start'
+        f = '[MClient] save.controller.Save.go_start'
         if not self.model.items:
             sh.com.rep_lazy(f)
             return
         self._go_row(0)
     
     def go_end(self):
-        f = '[MClientQt] save.controller.Save.go_end'
+        f = '[MClient] save.controller.Save.go_end'
         if not self.model.items:
             sh.com.rep_lazy(f)
             return
@@ -45,7 +45,7 @@ class Save:
     
     def go_down(self):
         # Qt already goes down/up, but without looping
-        f = '[MClientQt] save.controller.Save.go_down'
+        f = '[MClient] save.controller.Save.go_down'
         if not self.model.items:
             sh.com.rep_empty(f)
             return
@@ -59,7 +59,7 @@ class Save:
     
     def go_up(self):
         # Qt already goes down/up, but without looping
-        f = '[MClientQt] save.controller.Save.go_up'
+        f = '[MClient] save.controller.Save.go_up'
         if not self.model.items:
             sh.com.rep_empty(f)
             return
@@ -72,7 +72,7 @@ class Save:
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def change_font_size(self, delta=1):
-        f = '[MClientQt] save.controller.Save.change_font_size'
+        f = '[MClient] save.controller.Save.change_font_size'
         size = self.gui.get_font_size()
         if not size:
             sh.com.rep_empty(f)

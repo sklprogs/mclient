@@ -31,7 +31,7 @@ class Elems:
         pass
     
     def set_cells(self):
-        f = '[MClientQt] plugins.stardict.elems.Elems.set_cells'
+        f = '[MClient] plugins.stardict.elems.Elems.set_cells'
         if not self.blocks:
             sh.com.rep_empty(f)
             return
@@ -68,7 +68,7 @@ class Elems:
         ''' Combine a cell with a preceding or following bracket such that the
             user would not see '()' when the cell is ignored/blocked.
         '''
-        f = '[MClientQt] plugins.stardict.elems.Elems.unite_brackets'
+        f = '[MClient] plugins.stardict.elems.Elems.unite_brackets'
         count = 0
         for cell in self.cells:
             i = 2
@@ -97,7 +97,7 @@ class Elems:
     
     def set_row_nos(self):
         # Run this before deleting fixed types
-        f = '[MClientQt] plugins.stardict.elems.Elems.set_row_nos'
+        f = '[MClient] plugins.stardict.elems.Elems.set_row_nos'
         count = 0
         if self.cells:
             count += 1
@@ -123,7 +123,7 @@ class Elems:
                 self.fixed_urls[cell.fixed_block.type][cell.text] = cell.url
     
     def set_art_subj(self):
-        f = '[MClientQt] plugins.stardict.elems.Elems.set_art_subj'
+        f = '[MClient] plugins.stardict.elems.Elems.set_art_subj'
         count = 0
         for block in self.blocks:
             if block.type in ('subj', 'phsubj') and block.subj and block.subjf:
@@ -203,7 +203,7 @@ class Elems:
             i -= 1
     
     def delete_fixed(self):
-        f = '[MClientQt] plugins.stardict.elems.Elems.delete_fixed'
+        f = '[MClient] plugins.stardict.elems.Elems.delete_fixed'
         count = 0
         i = 0
         while i < len(self.cells):
@@ -254,7 +254,7 @@ class Elems:
         return '\n\n'.join(report)
     
     def _debug_blocks(self, maxrow=30, maxrows=0):
-        f = '[MClientQt] plugins.stradict.elems.Elems._debug_blocks'
+        f = '[MClient] plugins.stradict.elems.Elems._debug_blocks'
         headers = (_('CELL #'), _('TYPES'), _('TEXT'), 'SUBJ', 'SUBJF', 'URL')
         nos = []
         types = []
@@ -277,7 +277,7 @@ class Elems:
         return f'{f}:\n{mes}'
     
     def _debug_cells(self, maxrow=30, maxrows=0):
-        f = '[MClientQt] plugins.stradict.elems.Elems._debug_cells'
+        f = '[MClient] plugins.stradict.elems.Elems._debug_cells'
         headers = ('SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #'), _('CELL #')
                   ,_('TYPES'), _('TEXT'), 'URL'
                   )

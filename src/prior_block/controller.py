@@ -28,7 +28,7 @@ class Panes:
         self.gui.expand_all()
     
     def set_target_right(self):
-        f = '[MClientQt] prior_block.controller.Panes.set_target_right'
+        f = '[MClient] prior_block.controller.Panes.set_target_right'
         items = self.gui.tree2.find(self.gui.tree1.source)
         if not items:
             sh.com.rep_empty(f)
@@ -36,7 +36,7 @@ class Panes:
         self.gui.tree2.target = items[0]
     
     def set_target_left(self):
-        f = '[MClientQt] prior_block.controller.Panes.set_target_left'
+        f = '[MClient] prior_block.controller.Panes.set_target_left'
         items = self.gui.tree1.find(self.gui.tree2.source)
         if not items:
             sh.com.rep_empty(f)
@@ -44,7 +44,7 @@ class Panes:
         self.gui.tree1.target = items[0]
     
     def set_target_left_single(self):
-        f = '[MClientQt] prior_block.controller.Panes.set_target_left_single'
+        f = '[MClient] prior_block.controller.Panes.set_target_left_single'
         items = self.gui.tree1.find(self.gui.tree1.source)
         if not items:
             sh.com.rep_empty(f)
@@ -52,7 +52,7 @@ class Panes:
         self.gui.tree1.target = items[0]
     
     def set_target_right_single(self):
-        f = '[MClientQt] prior_block.controller.Panes.set_target_right_single'
+        f = '[MClient] prior_block.controller.Panes.set_target_right_single'
         items = self.gui.tree2.find(self.gui.tree2.source)
         if not items:
             sh.com.rep_empty(f)
@@ -60,7 +60,7 @@ class Panes:
         self.gui.tree2.target = items[0]
 
     def move2right(self):
-        f = '[MClientQt] prior_block.controller.Panes.move2right'
+        f = '[MClient] prior_block.controller.Panes.move2right'
         mes = _('Move items from left to right')
         sh.objs.get_mes(f, mes, True).show_debug()
         self.set_target_right()
@@ -71,7 +71,7 @@ class Panes:
         self.gui.tree2.clear_selection()
     
     def move2left(self):
-        f = '[MClientQt] prior_block.controller.Panes.move2left'
+        f = '[MClient] prior_block.controller.Panes.move2left'
         mes = _('Move items from right to left')
         sh.objs.get_mes(f, mes, True).show_debug()
         self.set_target_left()
@@ -82,7 +82,7 @@ class Panes:
         self.gui.tree1.clear_selection()
     
     def drop_left(self):
-        f = '[MClientQt] prior_block.controller.Panes.drop_left'
+        f = '[MClient] prior_block.controller.Panes.drop_left'
         if self.gui.tree2.source and self.gui.tree1.find(self.gui.tree2.source):
             mes = _('Two-pane mode')
             sh.objs.get_mes(f, mes, True).show_debug()
@@ -96,7 +96,7 @@ class Panes:
         self.gui.reset_drop()
     
     def drop_right(self):
-        f = '[MClientQt] prior_block.controller.Panes.drop_right'
+        f = '[MClient] prior_block.controller.Panes.drop_right'
         if self.gui.tree1.source and self.gui.tree2.find(self.gui.tree1.source):
             mes = _('Two-pane mode')
             sh.objs.get_mes(f, mes, True).show_debug()
@@ -123,7 +123,7 @@ class Panes:
         self.gui.show()
     
     def fill(self, dic1, dic2):
-        f = '[MClientQt] prior_block.controller.Panes.fill'
+        f = '[MClient] prior_block.controller.Panes.fill'
         ''' This workaround allows to drag and drop items onto an empty
             widget. Empty input must be allowed (there are no blocked
             subjects by default).

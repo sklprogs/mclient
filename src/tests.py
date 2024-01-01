@@ -698,7 +698,7 @@ class Commands:
         return isuggest
     
     def get_priority(self):
-        f = '[MClientQt] tests.Commands.get_priority'
+        f = '[MClient] tests.Commands.get_priority'
         import logic as lg
         import subjects as sj
         #NOTE: the article must comprise example subjects to be expanded
@@ -740,7 +740,7 @@ class Commands:
         return '\n'.join(mes)
     
     def run_article_subjects(self):
-        f = '[MClientQt] tests.Commands.run_article_subjects'
+        f = '[MClient] tests.Commands.run_article_subjects'
         import logic as lg
         search = 'set'
         # SHL should correspond to locale
@@ -769,7 +769,7 @@ class Commands:
     
     def run_prior(self):
         import config as cf
-        import mclientqt as mc
+        import mclient as mc
         cf.objs.get_config()
         return mc.Priorities()
     
@@ -792,7 +792,7 @@ class Commands:
     
     def run_font_limits(self):
         f = '[MClient] tests.Commands.run_font_limits'
-        import mclientqt as mc
+        import mclient as mc
         text = 'Раз, два, три, четыре, пять - вышел зайчик погулять'
         ilimits = mc.FontLimits (family = cf.objs.get_config().new['terms']['font']['family']
                                 ,size = cf.objs.config.new['terms']['font']['size']
@@ -814,7 +814,7 @@ class Commands:
         return st.Settings()
     
     def run_history(self):
-        import mclientqt as mc
+        import mclient as mc
         ihis = mc.History()
         ihis.add()
         ihis.add()
@@ -823,7 +823,7 @@ class Commands:
         return ihis
     
     def run_welcome(self):
-        import mclientqt as mc
+        import mclient as mc
         cf.objs.get_config()
         iwelcome = mc.Welcome(mc.About().get_product())
         iwelcome.reset()
@@ -866,7 +866,7 @@ class Commands:
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def check_width(self):
-        import mclientqt as mc
+        import mclient as mc
         file = '/home/pete/tmp/frame rate.htm'
         #file = '/tmp/f.htm'
         code = sh.ReadTextFile(file).get()
@@ -935,7 +935,7 @@ class Commands:
         return mes
     
     def edit_priorities(self):
-        import mclientqt as mc
+        import mclient as mc
         import logic as lg
         mc.objs.get_priorities().reset (lst1 = lg.objs.get_order().priorlst
                                        ,lst2 = lg.objs.get_plugins().get_subjects()
@@ -945,7 +945,7 @@ class Commands:
         mc.objs.priorities.show()
     
     def edit_blacklist(self):
-        import mclientqt as mc
+        import mclient as mc
         import logic as lg
         mc.objs.get_blacklist().reset (lst1 = lg.objs.get_order().blacklst
                                       ,lst2 = lg.objs.get_plugins().get_subjects()

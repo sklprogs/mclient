@@ -21,7 +21,7 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
         return len(self.arraydata[0])
 
     def data(self, index, role):
-        f = '[MClientQt] symbols.gui.TableModel.data'
+        f = '[MClient] symbols.gui.TableModel.data'
         if not index.isValid():
             return PyQt5.QtCore.QVariant()
         if role == PyQt5.QtCore.Qt.DisplayRole:

@@ -110,7 +110,7 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
         return len(self.arraydata[0])
 
     def data(self, index, role):
-        f = '[MClientQt] gui.TableModel.data'
+        f = '[MClient] gui.TableModel.data'
         if not index.isValid():
             return PyQt5.QtCore.QVariant()
         if role == PyQt5.QtCore.Qt.DisplayRole:
@@ -147,7 +147,7 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         cursor.setBlockFormat(format_)
     
     def paint(self, painter, option, index):
-        f = '[MClientQt] gui.TableDelegate.paint'
+        f = '[MClient] gui.TableDelegate.paint'
         # index:   PyQt5.QtCore.QModelIndex
         # painter: PyQt5.QtGui.QPainter
         # option:  PyQt5.QtWidgets.QStyleOptionViewItem

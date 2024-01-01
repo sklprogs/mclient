@@ -18,7 +18,7 @@ class Symbols:
         self.table = []
     
     def get(self, rowno, colno):
-        f = '[MClientQt] symbols.logic.Symbols.get'
+        f = '[MClient] symbols.logic.Symbols.get'
         try:
             return self.table[rowno][colno]
         except IndexError:
@@ -31,7 +31,7 @@ class Symbols:
         return self.table
     
     def set_table(self):
-        f = '[MClientQt] symbols.logic.Symbols.set_table'
+        f = '[MClient] symbols.logic.Symbols.set_table'
         if self.table:
             sh.com.rep_lazy(f)
             return

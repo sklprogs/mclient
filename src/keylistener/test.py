@@ -66,7 +66,7 @@ class Gui(PyQt5.QtWidgets.QWidget):
 
 
 if __name__ == '__main__':
-    f = '[MClientQt] keylistener.test.__main__'
+    f = '[MClient] keylistener.test.__main__'
     sh.com.start()
     app = App()
     app.show()

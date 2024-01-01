@@ -32,7 +32,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
                        )
 
     def update_sp1(self):
-        f = '[MClientQt] settings.gui.Settings.update_sp1'
+        f = '[MClient] settings.gui.Settings.update_sp1'
         if self.opt_sp1.get() in self.spallow:
             self.spallow.remove(self.opt_sp1.get())
         elif _('Noun') in self.spallow:
@@ -46,7 +46,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             sh.objs.get_mes(f, mes).show_error()
     
     def update_sp2(self):
-        f = '[MClientQt] settings.gui.Settings.update_sp2'
+        f = '[MClient] settings.gui.Settings.update_sp2'
         if self.opt_sp2.get() in self.spallow:
             self.spallow.remove(self.opt_sp2.get())
         elif _('Verb') in self.spallow:
@@ -60,7 +60,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             sh.objs.get_mes(f, mes).show_error()
                        
     def update_sp3(self):
-        f = '[MClientQt] settings.gui.Settings.update_sp3'
+        f = '[MClient] settings.gui.Settings.update_sp3'
         if self.opt_sp3.get() in self.spallow:
             self.spallow.remove(self.opt_sp3.get())
         elif _('Adjective') in self.spallow:
@@ -74,7 +74,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             sh.objs.get_mes(f, mes).show_error()
                        
     def update_sp4(self):
-        f = '[MClientQt] settings.gui.Settings.update_sp4'
+        f = '[MClient] settings.gui.Settings.update_sp4'
         if self.opt_sp4.get() in self.spallow:
             self.spallow.remove(self.opt_sp4.get())
         elif _('Abbreviation') in self.spallow:
@@ -88,7 +88,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             sh.objs.get_mes(f, mes).show_error()
                        
     def update_sp5(self):
-        f = '[MClientQt] settings.gui.Settings.update_sp5'
+        f = '[MClient] settings.gui.Settings.update_sp5'
         if self.opt_sp5.get() in self.spallow:
             self.spallow.remove(self.opt_sp5.get())
         elif _('Adverb') in self.spallow:
@@ -102,7 +102,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             sh.objs.get_mes(f, mes).show_error()
                        
     def update_sp6(self):
-        f = '[MClientQt] settings.gui.Settings.update_sp6'
+        f = '[MClient] settings.gui.Settings.update_sp6'
         if self.opt_sp6.get() in self.spallow:
             self.spallow.remove(self.opt_sp6.get())
         elif _('Preposition') in self.spallow:
@@ -116,7 +116,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             sh.objs.get_mes(f, mes).show_error()
                        
     def update_sp7(self):
-        f = '[MClientQt] settings.gui.Settings.update_sp7'
+        f = '[MClient] settings.gui.Settings.update_sp7'
         if self.opt_sp7.get() in self.spallow:
             self.spallow.remove(self.opt_sp7.get())
         elif _('Pronoun') in self.spallow:
@@ -130,7 +130,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             sh.objs.get_mes(f, mes).show_error()
     
     def update_col1(self):
-        f = '[MClientQt] settings.gui.Settings.update_col1'
+        f = '[MClient] settings.gui.Settings.update_col1'
         if self.opt_cl1.get() == _('Do not set'):
             return
         if self.opt_cl1.get() in self.allowed:
@@ -146,7 +146,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             sh.objs.get_mes(f, mes).show_error()
 
     def update_col2(self):
-        f = '[MClientQt] settings.gui.Settings.update_col2'
+        f = '[MClient] settings.gui.Settings.update_col2'
         if self.opt_cl2.get() == _('Do not set'):
             return
         if self.opt_cl2.get() in self.allowed:
@@ -162,7 +162,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             sh.objs.get_mes(f, mes).show_error()
 
     def update_col3(self):
-        f = '[MClientQt] settings.gui.Settings.update_col3'
+        f = '[MClient] settings.gui.Settings.update_col3'
         if self.opt_cl3.get() == _('Do not set'):
             return
         if self.opt_cl3.get() in self.allowed:
@@ -178,7 +178,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             sh.objs.get_mes(f, mes).show_error()
 
     def update_col4(self):
-        f = '[MClientQt] settings.gui.Settings.update_col4'
+        f = '[MClient] settings.gui.Settings.update_col4'
         if self.opt_cl4.get() == _('Do not set'):
             return
         if self.opt_cl4.get() in self.allowed:
@@ -218,7 +218,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
             self.opt_stl.set(_('Custom'))
 
     def update_by_st(self, event=None):
-        f = '[MClientQt] settings.gui.Settings.update_by_st'
+        f = '[MClient] settings.gui.Settings.update_by_st'
         if self.opt_stl.get() == PRODUCT:
             self.opt_cl1.set(_('Subjects'))
             self.opt_cl2.set(_('Word forms'))

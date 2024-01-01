@@ -18,7 +18,7 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
                        ]
     
     def get_header(self, colno):
-        f = '[MClientQt] history.gui.TableModel.get_header'
+        f = '[MClient] history.gui.TableModel.get_header'
         try:
             return self.headers[colno]
         except IndexError:
@@ -33,7 +33,7 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
         return len(self.items[0])
 
     def data(self, index, role):
-        f = '[MClientQt] history.gui.TableModel.data'
+        f = '[MClient] history.gui.TableModel.data'
         if not index.isValid():
             return PyQt5.QtCore.QVariant()
         if role == PyQt5.QtCore.Qt.DisplayRole:

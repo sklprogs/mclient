@@ -114,7 +114,7 @@ class Elems:
         ''' Combine a cell with a preceding or following bracket such that the
             user would not see '()' when the cell is ignored/blocked.
         '''
-        f = '[MClientQt] plugins.dsl.elems.Elems.unite_brackets'
+        f = '[MClient] plugins.dsl.elems.Elems.unite_brackets'
         count = 0
         for cell in self.cells:
             i = 2
@@ -159,7 +159,7 @@ class Elems:
     
     def set_row_nos(self):
         # Run this before deleting fixed types
-        f = '[MClientQt] plugins.dsl.elems.Elems.set_row_nos'
+        f = '[MClient] plugins.dsl.elems.Elems.set_row_nos'
         count = 0
         if self.cells:
             count += 1
@@ -193,7 +193,7 @@ class Elems:
             i -= 1
     
     def delete_fixed(self):
-        f = '[MClientQt] plugins.dsl.elems.Elems.delete_fixed'
+        f = '[MClient] plugins.dsl.elems.Elems.delete_fixed'
         count = 0
         i = 0
         while i < len(self.cells):

@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=mclientqt
-Exec=mclientqt
-Icon=mclientqt
+Name=mclient
+Exec=mclient
+Icon=mclient
 Type=Application
 Categories=Education;

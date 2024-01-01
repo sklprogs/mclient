@@ -107,7 +107,7 @@ class Elems:
             block.text = block.text.strip()
     
     def set_cells(self):
-        f = '[MClientQt] plugins.multitrandem.elems.Elems.set_cells'
+        f = '[MClient] plugins.multitrandem.elems.Elems.set_cells'
         if not self.blocks:
             sh.com.rep_empty(f)
             return
@@ -134,7 +134,7 @@ class Elems:
         ''' Combine a cell with a preceding or following bracket such that the
             user would not see '()' when the cell is ignored/blocked.
         '''
-        f = '[MClientQt] plugins.multitrandem.elems.Elems.unite_brackets'
+        f = '[MClient] plugins.multitrandem.elems.Elems.unite_brackets'
         count = 0
         for cell in self.cells:
             i = 2
@@ -163,7 +163,7 @@ class Elems:
     
     def set_row_nos(self):
         # Run this before deleting fixed types
-        f = '[MClientQt] plugins.multitrandem.elems.Elems.set_row_nos'
+        f = '[MClient] plugins.multitrandem.elems.Elems.set_row_nos'
         count = 0
         if self.cells:
             count += 1
@@ -179,7 +179,7 @@ class Elems:
         sh.com.rep_matches(f, count)
     
     def set_art_subj(self):
-        f = '[MClientQt] plugins.multitrandem.elems.Elems.set_art_subj'
+        f = '[MClient] plugins.multitrandem.elems.Elems.set_art_subj'
         count = 0
         for block in self.blocks:
             if block.type in ('subj', 'phsubj') and block.subj and block.subjf:
@@ -259,7 +259,7 @@ class Elems:
             i -= 1
     
     def delete_fixed(self):
-        f = '[MClientQt] plugins.multitrandem.elems.Elems.delete_fixed'
+        f = '[MClient] plugins.multitrandem.elems.Elems.delete_fixed'
         count = 0
         i = 0
         while i < len(self.cells):
@@ -326,7 +326,7 @@ class Elems:
         return f'{f}:\n{mes}'
     
     def _debug_cells(self, maxrow=30, maxrows=0):
-        f = '[MClientQt] plugins.multitrandem.elems.Elems._debug_cells'
+        f = '[MClient] plugins.multitrandem.elems.Elems._debug_cells'
         headers = ('SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #'), _('CELL #')
                   ,_('TYPES'), _('TEXT')
                   )

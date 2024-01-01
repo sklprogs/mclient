@@ -50,7 +50,7 @@ class Priorities(pr.Panes):
         self.gui.opt_src.set_action(self.reset)
     
     def set_mode(self):
-        f = '[MClientQt] mclient.Priorities.set_mode'
+        f = '[MClient] mclient.Priorities.set_mode'
         mode = self.gui.opt_src.get()
         if mode == _('All subjects'):
             self.dic2 = lg.objs.get_plugins().get_subjects()
@@ -103,7 +103,7 @@ class Block(pr.Panes):
         self.gui.opt_src.set_action(self.reset)
     
     def set_mode(self):
-        f = '[MClientQt] mclient.Block.set_mode'
+        f = '[MClient] mclient.Block.set_mode'
         mode = self.gui.opt_src.get()
         if mode == _('All subjects'):
             self.dic2 = lg.objs.get_plugins().get_subjects()
@@ -322,7 +322,7 @@ class Save(sv.Save):
         self.add_bindings()
     
     def _get_text(self):
-        f = '[MClientQt] mclient.Save._get_text'
+        f = '[MClient] mclient.Save._get_text'
         text = []
         text_row = []
         cells = lg.objs.get_articles().get_table()
@@ -356,7 +356,7 @@ class Save(sv.Save):
         self.gui.bind(('Enter',), self.select)
     
     def select(self):
-        f = '[MClientQt] mclient.Save.select'
+        f = '[MClient] mclient.Save.select'
         opt = self.get()
         if not opt:
             sh.com.rep_empty(f)
@@ -382,7 +382,7 @@ class Save(sv.Save):
             self.file += '.htm'
     
     def save_view_as_htm(self):
-        f = '[MClientQt] mclient.Save.save_view_as_htm'
+        f = '[MClient] mclient.Save.save_view_as_htm'
         self.gui.ask.filter = _('Web-pages (*.htm, *.html)')
         self.file = self.gui.ask.save()
         if not self.file:
@@ -403,7 +403,7 @@ class Save(sv.Save):
         sh.WriteTextFile(self.file).write(code)
 
     def save_raw_as_htm(self):
-        f = '[MClientQt] mclient.Save.save_raw_as_htm'
+        f = '[MClient] mclient.Save.save_raw_as_htm'
         ''' Key 'html' may be needed to write a file in the UTF-8 encoding,
             therefore, in order to ensure that the web-page is read correctly,
             we change the encoding manually. We also replace abbreviated
@@ -421,7 +421,7 @@ class Save(sv.Save):
         sh.WriteTextFile(self.file).write(code)
 
     def save_view_as_txt(self):
-        f = '[MClientQt] mclient.Save.save_view_as_txt'
+        f = '[MClient] mclient.Save.save_view_as_txt'
         self.gui.ask.filter = _('Plain text (*.txt)')
         self.file = self.gui.ask.save()
         text = self._get_text()
@@ -443,7 +443,7 @@ class Save(sv.Save):
 class Commands:
     
     def get_article_subjects(self):
-        f = '[MClientQt] mclient.Commands.get_article_subjects'
+        f = '[MClient] mclient.Commands.get_article_subjects'
         subjfs = lg.objs.get_articles().get_subjf()
         if not subjfs:
             sh.com.rep_empty(f)
@@ -499,7 +499,7 @@ class Welcome(wl.Welcome):
         self.set_model(model)
     
     def set_online_sources(self):
-        f = '[MClientQt] mclient.Welcome.set_online_sources'
+        f = '[MClient] mclient.Welcome.set_online_sources'
         if not cf.objs.config.new['Ping']:
             sh.com.rep_lazy(f)
             return
@@ -520,7 +520,7 @@ class Welcome(wl.Welcome):
         lg.objs.plugins.set(old)
     
     def set_offline_sources(self):
-        f = '[MClientQt] mclient.Welcome.set_offline_sources'
+        f = '[MClient] mclient.Welcome.set_offline_sources'
         dics = lg.objs.plugins.get_offline_sources()
         if not dics:
             sh.com.rep_empty(f)
@@ -583,7 +583,7 @@ class Table:
                 return rowno
     
     def go_page_up(self):
-        f = '[MClientQt] mclient.Table.go_page_up'
+        f = '[MClient] mclient.Table.go_page_up'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -608,7 +608,7 @@ class Table:
         self.select(rowno, colno)
     
     def go_page_down(self):
-        f = '[MClientQt] mclient.Table.go_page_down'
+        f = '[MClient] mclient.Table.go_page_down'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -634,7 +634,7 @@ class Table:
         self.select(rowno, colno)
     
     def show_popup(self):
-        f = '[MClientQt] mclient.Table.show_popup'
+        f = '[MClient] mclient.Table.show_popup'
         text = self.get_cell_code()
         if not text:
             sh.com.rep_empty(f)
@@ -661,7 +661,7 @@ class Table:
         self.popup.show()
     
     def go_next_section(self, no):
-        f = '[MClientQt] mclient.Table.go_next_section'
+        f = '[MClient] mclient.Table.go_next_section'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -670,7 +670,7 @@ class Table:
         self.select(rowno, colno)
     
     def go_prev_section(self, no):
-        f = '[MClientQt] mclient.Table.go_prev_section'
+        f = '[MClient] mclient.Table.go_prev_section'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -679,7 +679,7 @@ class Table:
         self.select(rowno, colno)
     
     def close_search_next(self):
-        f = '[MClientQt] mclient.Table.close_search_next'
+        f = '[MClient] mclient.Table.close_search_next'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -689,7 +689,7 @@ class Table:
         self.select(rowno, colno)
     
     def reset_search(self):
-        f = '[MClientQt] mclient.Table.reset_search'
+        f = '[MClient] mclient.Table.reset_search'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -697,7 +697,7 @@ class Table:
         self.search.reset(self.logic.plain, rowno, colno)
     
     def search_next(self):
-        f = '[MClientQt] mclient.Table.search_next'
+        f = '[MClient] mclient.Table.search_next'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -706,7 +706,7 @@ class Table:
         self.select(rowno, colno)
     
     def search_prev(self):
-        f = '[MClientQt] mclient.Table.search_prev'
+        f = '[MClient] mclient.Table.search_prev'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -722,7 +722,7 @@ class Table:
         self.old_colno = -1
     
     def go_end(self):
-        f = '[MClientQt] mclient.Table.go_end'
+        f = '[MClient] mclient.Table.go_end'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -730,7 +730,7 @@ class Table:
         self.select(rowno, colno)
     
     def go_start(self):
-        f = '[MClientQt] mclient.Table.go_start'
+        f = '[MClient] mclient.Table.go_start'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -738,7 +738,7 @@ class Table:
         self.select(rowno, colno)
     
     def go_first_term(self):
-        f = '[MClientQt] mclient.Table.go_first_term'
+        f = '[MClient] mclient.Table.go_first_term'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -754,7 +754,7 @@ class Table:
         ''' #NOTE: This should run only after an event since Qt returns dummy
             geometry values right after startup.
         '''
-        f = '[MClientQt] mclient.Table.go_down'
+        f = '[MClient] mclient.Table.go_down'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -763,7 +763,7 @@ class Table:
         self.select(rowno, colno)
     
     def select(self, rowno, colno, Mouse=False):
-        f = '[MClientQt] mclient.Table.select'
+        f = '[MClient] mclient.Table.select'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -792,7 +792,7 @@ class Table:
         lg.objs.get_articles().set_bookmark(rowno, colno)
     
     def go_up(self):
-        f = '[MClientQt] mclient.Table.go_up'
+        f = '[MClient] mclient.Table.go_up'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -801,7 +801,7 @@ class Table:
         self.select(rowno, colno)
     
     def go_line_start(self):
-        f = '[MClientQt] mclient.Table.go_line_start'
+        f = '[MClient] mclient.Table.go_line_start'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -810,7 +810,7 @@ class Table:
         self.select(rowno, colno)
     
     def go_line_end(self):
-        f = '[MClientQt] mclient.Table.go_line_end'
+        f = '[MClient] mclient.Table.go_line_end'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -819,7 +819,7 @@ class Table:
         self.select(rowno, colno)
     
     def go_left(self):
-        f = '[MClientQt] mclient.Table.go_left'
+        f = '[MClient] mclient.Table.go_left'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -828,7 +828,7 @@ class Table:
         self.select(rowno, colno)
     
     def go_right(self):
-        f = '[MClientQt] mclient.Table.go_right'
+        f = '[MClient] mclient.Table.go_right'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -837,7 +837,7 @@ class Table:
         self.select(rowno, colno)
     
     def scroll_top(self):
-        f = '[MClientQt] mclient.Table.scroll_top'
+        f = '[MClient] mclient.Table.scroll_top'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -853,7 +853,7 @@ class Table:
         gi.objs.table.scroll2index(index_)
     
     def get_cell(self):
-        f = '[MClientQt] mclient.Table.get_cell'
+        f = '[MClient] mclient.Table.get_cell'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -864,7 +864,7 @@ class Table:
             return(0, 0)
     
     def get_cell_text(self):
-        f = '[MClientQt] mclient.Table.get_cell_text'
+        f = '[MClient] mclient.Table.get_cell_text'
         if not self.Success:
             sh.com.cancel(f)
             return ''
@@ -880,7 +880,7 @@ class Table:
         return ''
     
     def get_cell_code(self):
-        f = '[MClientQt] mclient.Table.get_cell_code'
+        f = '[MClient] mclient.Table.get_cell_code'
         if not self.Success:
             sh.com.cancel(f)
             return ''
@@ -896,7 +896,7 @@ class Table:
         return ''
     
     def copy_cell(self):
-        f = '[MClientQt] mclient.Table.copy_cell'
+        f = '[MClient] mclient.Table.copy_cell'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -931,7 +931,7 @@ class Table:
             gi.objs.get_table().set_col_width(no, width)
     
     def go_bookmark(self):
-        f = '[MClientQt] mclient.Table.go_bookmark'
+        f = '[MClient] mclient.Table.go_bookmark'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -946,7 +946,7 @@ class Table:
             self.go_first_term()
     
     def reset(self, plain, code):
-        f = '[MClientQt] mclient.Table.reset'
+        f = '[MClient] mclient.Table.reset'
         self.set_values()
         if not plain or not code:
             self.Success = False
@@ -971,7 +971,7 @@ class Table:
     
     def set_long(self):
         # Takes ~0.56s for 'set' on Intel Atom
-        f = '[MClientQt] mclient.Table.set_long'
+        f = '[MClient] mclient.Table.set_long'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -1002,7 +1002,7 @@ class Table:
             need 'event' since this procedure overrides
             gi.objs.get_table().parent.resizeEvent.
         '''
-        f = '[MClientQt] mclient.Table.set_coords'
+        f = '[MClient] mclient.Table.set_coords'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -1021,7 +1021,7 @@ class Table:
             self.coords2[rowno] = pageno
     
     def fill(self):
-        f = '[MClientQt] mclient.Table.fill'
+        f = '[MClient] mclient.Table.fill'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -1056,7 +1056,7 @@ class BlockMode:
         self.blockno = -1
     
     def copy_block(self):
-        f = '[MClient] mclientqt.BlockMode.copy_block'
+        f = '[MClient] mclient.BlockMode.copy_block'
         if not self.cell or not self.cell.blocks:
             sh.com.rep_empty(f)
             return
@@ -1068,7 +1068,7 @@ class BlockMode:
             sh.objs.get_mes(f, mes).show_warning()
     
     def select_next(self):
-        f = '[MClient] mclientqt.BlockMode.select_next'
+        f = '[MClient] mclient.BlockMode.select_next'
         self.enable()
         if not self.cell or not self.cell.blocks:
             sh.com.rep_empty(f)
@@ -1080,7 +1080,7 @@ class BlockMode:
         self.select()
     
     def select_prev(self):
-        f = '[MClient] mclientqt.BlockMode.select_prev'
+        f = '[MClient] mclient.BlockMode.select_prev'
         self.enable()
         if not self.cell or not self.cell.blocks:
             sh.com.rep_empty(f)
@@ -1098,7 +1098,7 @@ class BlockMode:
             self.disable()
     
     def disable(self):
-        f = '[MClient] mclientqt.BlockMode.disable'
+        f = '[MClient] mclient.BlockMode.disable'
         self.blockno = -1
         mes = _('Disable block mode')
         sh.objs.get_mes(f, mes, True).show_info()
@@ -1106,7 +1106,7 @@ class BlockMode:
         self.select()
     
     def enable(self):
-        f = '[MClient] mclientqt.BlockMode.enable'
+        f = '[MClient] mclient.BlockMode.enable'
         if self.blockno > -1:
             sh.com.rep_lazy(f)
             return
@@ -1117,7 +1117,7 @@ class BlockMode:
         self.select()
     
     def set_cell(self):
-        f = '[MClient] mclientqt.BlockMode.set_cell'
+        f = '[MClient] mclient.BlockMode.set_cell'
         tuple_ = objs.get_app().table.get_cell()
         if not tuple_:
             sh.com.rep_empty(f)
@@ -1137,7 +1137,7 @@ class BlockMode:
             return
     
     def select(self):
-        f = '[MClient] mclientqt.BlockMode.select'
+        f = '[MClient] mclient.BlockMode.select'
         if not self.cell:
             sh.com.rep_empty(f)
             return
@@ -1246,7 +1246,7 @@ class App:
         ''' Retrieving suggestions online is very slow, so this should be
             implemented with a hotkey rather than as we type.
         '''
-        f = '[MClientQt] mclient.App.show_suggestions'
+        f = '[MClient] mclient.App.show_suggestions'
         fragment = gi.objs.get_panel().ent_src.get().strip()
         if not fragment:
             sh.com.rep_empty(f)
@@ -1266,7 +1266,7 @@ class App:
         self.suggest.set_geometry(x, y, 170, self.suggest.get_height())
     
     def get_cell(self):
-        f = '[MClientQt] mclient.App.get_cell'
+        f = '[MClient] mclient.App.get_cell'
         table = lg.objs.get_articles().get_table()
         if not table:
             sh.com.rep_empty(f)
@@ -1280,7 +1280,7 @@ class App:
         return
     
     def get_wform(self):
-        f = '[MClientQt] mclient.App.get_wform'
+        f = '[MClient] mclient.App.get_wform'
         table = lg.objs.get_articles().get_table()
         if not table:
             sh.com.rep_empty(f)
@@ -1292,7 +1292,7 @@ class App:
         return cell.wform
     
     def copy_wform(self):
-        f = '[MClientQt] mclient.App.copy_wform'
+        f = '[MClient] mclient.App.copy_wform'
         if not lg.objs.get_articles().get_len():
             # Do not warn when there are no articles yet
             sh.com.rep_lazy(f)
@@ -1306,7 +1306,7 @@ class App:
             self.minimize()
     
     def copy_article_url(self):
-        f = '[MClientQt] mclient.App.copy_article_url'
+        f = '[MClient] mclient.App.copy_article_url'
         if not lg.objs.get_articles().get_len():
             # Do not warn when there are no articles yet
             sh.com.rep_lazy(f)
@@ -1321,7 +1321,7 @@ class App:
             self.minimize()
     
     def get_cell_url(self):
-        f = '[MClientQt] mclient.App.get_cell_url'
+        f = '[MClient] mclient.App.get_cell_url'
         cell = self.get_cell()
         if not cell:
             sh.com.rep_empty(f)
@@ -1329,7 +1329,7 @@ class App:
         return cell.url
     
     def copy_cell_url(self):
-        f = '[MClientQt] mclient.App.copy_cell_url'
+        f = '[MClient] mclient.App.copy_cell_url'
         if not lg.objs.get_articles().get_len():
             # Do not warn when there are no articles yet
             sh.com.rep_lazy(f)
@@ -1344,7 +1344,7 @@ class App:
             self.minimize()
     
     def go_phrases(self):
-        f = '[MClientQt] mclient.App.go_phrases'
+        f = '[MClient] mclient.App.go_phrases'
         tuple_ = self.table.logic.get_phsubj()
         if not tuple_:
             sh.com.rep_empty(f)
@@ -1369,7 +1369,7 @@ class App:
             self.gui.activate()
     
     def catch(self, status=0):
-        f = '[MClientQt] mclient.App.catch'
+        f = '[MClient] mclient.App.catch'
         mes = _('Status: {}').format(status)
         sh.objs.get_mes(f, mes, True).show_debug()
         if not cf.objs.config.new['CaptureHotkey'] or not status:
@@ -1450,7 +1450,7 @@ class App:
     
     def add_history(self):
         # Call this only after assigning an article ID for a new article
-        f = '[MClientQt] mclient.App.add_history'
+        f = '[MClient] mclient.App.add_history'
         if not lg.objs.get_request().search:
             sh.com.rep_lazy(f)
             return
@@ -1464,7 +1464,7 @@ class App:
         self.history.gui.set_col_width()
     
     def go_history(self, id_):
-        f = '[MClientQt] mclient.App.go_history'
+        f = '[MClient] mclient.App.go_history'
         if id_ is None:
             sh.com.rep_empty(f)
             return
@@ -1491,7 +1491,7 @@ class App:
         self.solve_screen()
     
     def go_back(self):
-        f = '[MClientQt] mclient.App.go_back'
+        f = '[MClient] mclient.App.go_back'
         if lg.objs.get_articles().get_len() in (0, 1):
             sh.com.rep_lazy(f)
             return
@@ -1513,7 +1513,7 @@ class App:
         self.load_article()
     
     def go_next(self):
-        f = '[MClientQt] mclient.App.go_next'
+        f = '[MClient] mclient.App.go_next'
         if lg.objs.get_articles().get_len() in (0, 1):
             sh.com.rep_lazy(f)
             return
@@ -1544,7 +1544,7 @@ class App:
             return 5
     
     def suggest_col_widths(self):
-        f = '[MClientQt] mclient.App.suggest_col_widths'
+        f = '[MClient] mclient.App.suggest_col_widths'
         table_width = self.get_width()
         if not table_width:
             sh.com.rep_empty(f)
@@ -1607,7 +1607,7 @@ class App:
         ''' Count only term columns since fixed columns can now have zero width
             (they are not visible to the user and are not considered by them).
         '''
-        f = '[MClientQt] mclient.App.reset_columns'
+        f = '[MClient] mclient.App.reset_columns'
         if not lg.com.is_parallel():
             cf.objs.config.new['columns']['num'] = sh.Input (title = f
                                                             ,value = gi.objs.get_panel().opt_col.get()
@@ -1621,7 +1621,7 @@ class App:
         ''' Update a column number in GUI; adjust the column number (both logic
             and GUI) in special cases.
         '''
-        f = '[MClientQt] mclient.App.update_columns'
+        f = '[MClient] mclient.App.update_columns'
         if not lg.com.is_parallel():
             cf.objs.config.new['columns']['num'] = lg.objs.get_column_width().term_num
         gi.objs.get_panel().opt_col.set(lg.objs.get_column_width().term_num)
@@ -1631,7 +1631,7 @@ class App:
         sh.objs.get_mes(f, mes, True).show_info()
     
     def set_source(self):
-        f = '[MClientQt] mclient.App.set_source'
+        f = '[MClient] mclient.App.set_source'
         cf.objs.config.new['source'] = gi.objs.get_panel().opt_src.get()
         mes = _('Set source to "{}"').format(cf.objs.config.new['source'])
         sh.objs.get_mes(f, mes, True).show_info()
@@ -1640,7 +1640,7 @@ class App:
         self.go_search()
     
     def auto_swap(self):
-        f = '[MClientQt] mclient.App.auto_swap'
+        f = '[MClient] mclient.App.auto_swap'
         lang1 = gi.objs.get_panel().opt_lg1.get()
         lang2 = gi.objs.panel.opt_lg2.get()
         if lg.objs.get_plugins().is_oneway() \
@@ -1659,7 +1659,7 @@ class App:
             self.swap_langs()
     
     def reset_opt(self, default=_('Multitran')):
-        f = '[MClientQt] mclient.App.reset_opt'
+        f = '[MClient] mclient.App.reset_opt'
         # Reset OptionMenus
         lang1 = lg.objs.get_plugins().get_lang1()
         lang2 = lg.objs.plugins.get_lang2()
@@ -1721,7 +1721,7 @@ class App:
         self.update_lang2()
     
     def set_lang1(self):
-        f = '[MClientQt] mclient.App.set_lang1'
+        f = '[MClient] mclient.App.set_lang1'
         lang = gi.objs.get_panel().opt_lg1.get()
         if lg.objs.get_plugins().get_lang1() != lang:
             mes = _('Set language: {}').format(lang)
@@ -1730,7 +1730,7 @@ class App:
             lg.objs.get_plugins().set_lang1(lang)
     
     def set_lang2(self):
-        f = '[MClientQt] mclient.App.set_lang2'
+        f = '[MClient] mclient.App.set_lang2'
         lang = gi.objs.get_panel().opt_lg2.get()
         if lg.objs.get_plugins().get_lang2() != lang:
             mes = _('Set language: {}').format(lang)
@@ -1739,7 +1739,7 @@ class App:
             lg.objs.get_plugins().set_lang2(lang)
     
     def update_lang1(self):
-        f = '[MClientQt] mclient.App.update_lang1'
+        f = '[MClient] mclient.App.update_lang1'
         self.set_lang1()
         self.set_lang2()
         lang1 = lg.objs.get_plugins().get_lang1()
@@ -1751,7 +1751,7 @@ class App:
         self.set_lang1()
     
     def update_lang2(self):
-        f = '[MClientQt] mclient.App.update_lang2'
+        f = '[MClient] mclient.App.update_lang2'
         self.set_lang1()
         self.set_lang2()
         lang1 = lg.objs.get_plugins().get_lang1()
@@ -1768,7 +1768,7 @@ class App:
         self.set_lang2()
     
     def swap_langs(self):
-        f = '[MClientQt] mclient.App.swap_langs'
+        f = '[MClient] mclient.App.swap_langs'
         if lg.objs.get_plugins().is_oneway():
             mes = _('Cannot swap languages, this is a one-way dictionary!')
             sh.objs.get_mes(f, mes).show_info()
@@ -1798,7 +1798,7 @@ class App:
     
     def insert_repeat_sign2(self):
         # Insert the previous search string
-        f = '[MClientQt] mclient.App.insert_repeat_sign2'
+        f = '[MClient] mclient.App.insert_repeat_sign2'
         if lg.objs.get_articles().get_len() < 2:
             sh.com.rep_empty(f)
             return
@@ -1813,7 +1813,7 @@ class App:
         self.paste()
     
     def go_url(self):
-        f = '[MClientQt] mclient.App.go_url'
+        f = '[MClient] mclient.App.go_url'
         if lg.objs.get_articles().get_len() == 0:
             # Do not warn when there are no articles yet
             sh.com.rep_lazy(f)
@@ -1861,7 +1861,7 @@ class App:
             gi.objs.get_article_proxy().go_welcome()
     
     def load_article(self, search='', url=''):
-        f = '[MClientQt] mclient.App.load_article'
+        f = '[MClient] mclient.App.load_article'
         ''' #NOTE: each time the contents of the current page is changed
             (e.g., due to prioritizing), bookmarks must be deleted.
         '''
@@ -1965,7 +1965,7 @@ class App:
             self.go_search()
     
     def go_search(self):
-        f = '[MClientQt] mclient.App.go_search'
+        f = '[MClient] mclient.App.go_search'
         if lg.objs.get_request().search is None:
             lg.objs.request.search = ''
         lg.objs.request.search = lg.objs.request.search.strip()
@@ -2006,7 +2006,7 @@ class App:
         self.gui.show()
     
     def quit(self):
-        f = '[MClientQt] mclient.App.quit'
+        f = '[MClient] mclient.App.quit'
         ''' This procedure is called by signal. Do not put 'self.close' here,
             it is run separately.
         '''
@@ -2303,7 +2303,7 @@ class Search:
         self.logic.reset(plain, self.pattern, rowno, colno, Case)
     
     def search_next(self):
-        f = '[MClientQt] mclient.Search.search_next'
+        f = '[MClient] mclient.Search.search_next'
         rowno, colno = self.logic.search_next()
         if rowno < self.logic.rowno:
             mes = _('The end has been reached. Searching from the start.')
@@ -2314,7 +2314,7 @@ class Search:
         return(rowno, colno)
     
     def search_prev(self):
-        f = '[MClientQt] mclient.Search.search_prev'
+        f = '[MClient] mclient.Search.search_prev'
         rowno, colno = self.logic.search_prev()
         if rowno > self.logic.rowno:
             mes = _('The start has been reached. Searching from the end.')
@@ -2358,7 +2358,7 @@ com = Commands()
 
 
 if __name__ == '__main__':
-    f = '[MClientQt] mclient.__main__'
+    f = '[MClient] mclient.__main__'
     sh.com.start()
     if cf.objs.get_config().Success:
         lg.objs.get_plugins(Debug=False, maxrows=1000)

@@ -42,7 +42,7 @@ class TreeWidget(PyQt5.QtWidgets.QTreeWidget):
         self.startDrag(PyQt5.QtCore.Qt.MoveAction)
     
     def dragEnterEvent(self, event):
-        f = '[MClientQt] prior_block.gui.TreeWidget.dragEnterEvent'
+        f = '[MClient] prior_block.gui.TreeWidget.dragEnterEvent'
         index_ = self.indexAt(event.pos())
         item = self.itemFromIndex(index_)
         if not item:

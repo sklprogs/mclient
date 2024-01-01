@@ -114,7 +114,7 @@ class Trash:
             i -= 1
     
     def report(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Trash.report'
+        f = '[MClient] plugins.multitrancom.elems.Trash.report'
         if self.head is not None:
             delete = [block.text for block in self.blocks[:self.head]]
             delete = sh.List(delete).space_items()
@@ -127,7 +127,7 @@ class Trash:
             sh.objs.get_mes(f, mes, True).show_debug()
     
     def delete(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Trash.delete'
+        f = '[MClient] plugins.multitrancom.elems.Trash.delete'
         old_len = len(self.blocks)
         # Tail must be deleted first
         if self.tail is not None:
@@ -138,7 +138,7 @@ class Trash:
     
     def remove_stresses(self):
         # Remove useless "stresses" block
-        f = '[MClientQt] plugins.multitrancom.elems.Trash.remove_stresses'
+        f = '[MClient] plugins.multitrancom.elems.Trash.remove_stresses'
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks \
                        if not block.url.startswith('a=467&s=')
@@ -181,7 +181,7 @@ class Thesaurus:
             i += 1
     
     def add(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Thesaurus.add'
+        f = '[MClient] plugins.multitrancom.elems.Thesaurus.add'
         if self.no is None:
             sh.com.rep_lazy(f)
             return
@@ -203,7 +203,7 @@ class Thesaurus:
         sh.com.rep_matches(f, count)
     
     def delete(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Thesaurus.delete'
+        f = '[MClient] plugins.multitrancom.elems.Thesaurus.delete'
         if self.no is None:
             sh.com.rep_lazy(f)
             return
@@ -300,7 +300,7 @@ class SeparateWords:
                 self.blocks[i].type = 'term'
     
     def set(self):
-        f = '[MClientQt] plugins.multitrancom.elems.SeparateWords.set'
+        f = '[MClient] plugins.multitrancom.elems.SeparateWords.set'
         old_len = len(self.blocks)
         tail = self.get_tail()
         if not tail:
@@ -364,7 +364,7 @@ class Suggestions:
                 return True
     
     def has(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Suggestions.has'
+        f = '[MClient] plugins.multitrancom.elems.Suggestions.has'
         if not self.Success:
             sh.com.rep_lazy(f)
             return
@@ -378,7 +378,7 @@ class Suggestions:
         sh.com.rep_lazy(f)
     
     def set_types(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Suggestions.set_types'
+        f = '[MClient] plugins.multitrancom.elems.Suggestions.set_types'
         if not self.Success:
             sh.com.rep_lazy(f)
             return
@@ -404,7 +404,7 @@ class Suggestions:
         sh.com.rep_matches(f, count)
     
     def set_head(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Suggestions.set_head'
+        f = '[MClient] plugins.multitrancom.elems.Suggestions.set_head'
         if not self.Success:
             sh.com.rep_lazy(f)
             return
@@ -430,7 +430,7 @@ class Suggestions:
     
     def set_tail(self):
         # This one must be "ask in forum"
-        f = '[MClientQt] plugins.multitrancom.elems.Suggestions.set_tail'
+        f = '[MClient] plugins.multitrancom.elems.Suggestions.set_tail'
         if not self.Success:
             sh.com.rep_lazy(f)
             return
@@ -450,7 +450,7 @@ class Suggestions:
         sh.com.rep_out(f)
 
     def cut(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Suggestions.cut'
+        f = '[MClient] plugins.multitrancom.elems.Suggestions.cut'
         if not self.Success:
             sh.com.rep_lazy(f)
             return
@@ -460,7 +460,7 @@ class Suggestions:
     
     def debug(self):
         # Orphaned
-        f = '[MClientQt] plugins.multitrancom.elems.Suggestions.debug'
+        f = '[MClient] plugins.multitrancom.elems.Suggestions.debug'
         if not self.Success:
             sh.com.rep_lazy(f)
             return
@@ -472,7 +472,7 @@ class Suggestions:
     
     def delete_semi(self):
         # Seems that Elems.delete_semi is not enough
-        f = '[MClientQt] plugins.multitrancom.elems.Suggestions.delete_semi'
+        f = '[MClient] plugins.multitrancom.elems.Suggestions.delete_semi'
         if not self.Success:
             sh.com.rep_lazy(f)
             return
@@ -530,7 +530,7 @@ class Elems:
             cell.fixed_block = self._get_fixed_block(cell)
     
     def run_phcount(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.run_phcount'
+        f = '[MClient] plugins.multitrancom.elems.Elems.run_phcount'
         count = 0
         i = 1
         while i < len(self.blocks):
@@ -542,7 +542,7 @@ class Elems:
         sh.com.rep_matches(f, count)
     
     def set_cells(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_cells'
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_cells'
         if not self.blocks:
             sh.com.rep_empty(f)
             return
@@ -575,7 +575,7 @@ class Elems:
         return '\n\n'.join(report)
     
     def _debug_blocks(self, maxrow=30, maxrows=0):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems._debug_blocks'
+        f = '[MClient] plugins.multitrancom.elems.Elems._debug_blocks'
         headers = (_('CELL #'), _('TYPES'), _('TEXT'), 'SUBJ', 'SUBJF', 'URL')
         nos = []
         types = []
@@ -598,7 +598,7 @@ class Elems:
         return f'{f}:\n{mes}'
     
     def _debug_cells(self, maxrow=30, maxrows=0):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems._debug_cells'
+        f = '[MClient] plugins.multitrancom.elems.Elems._debug_cells'
         headers = ('SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #'), _('CELL #')
                   ,_('TYPES'), _('TEXT'), 'URL'
                   )
@@ -639,7 +639,7 @@ class Elems:
             cell.text = sh.Text(cell.text).delete_duplicate_spaces()
     
     def delete_semi(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_semi'
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_semi'
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks if block.text != '; ']
         sh.com.rep_matches(f, old_len - len(self.blocks))
@@ -648,7 +648,7 @@ class Elems:
         ''' Combine a cell with a preceding or following bracket such that the
             user would not see '()' when the cell is ignored/blocked.
         '''
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.unite_brackets'
+        f = '[MClient] plugins.multitrancom.elems.Elems.unite_brackets'
         count = 0
         for cell in self.cells:
             i = 2
@@ -669,7 +669,7 @@ class Elems:
         sh.com.rep_matches(f, count)
     
     def separate_fixed(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.separate_fixed'
+        f = '[MClient] plugins.multitrancom.elems.Elems.separate_fixed'
         count = 0
         i = 1
         while i < len(self.blocks):
@@ -686,7 +686,7 @@ class Elems:
         ''' Speech can come in structures like 'wform + comment + speech', but
             it should always take a separate cell.
         '''
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.separate_speech'
+        f = '[MClient] plugins.multitrancom.elems.Elems.separate_speech'
         count = 0
         i = 1
         while i < len(self.blocks):
@@ -699,7 +699,7 @@ class Elems:
         sh.com.rep_matches(f, count)
     
     def set_transc(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_transc'
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_transc'
         count = 0
         for block in self.blocks:
             if block.type == 'comment' and block.text.startswith('[') \
@@ -709,14 +709,14 @@ class Elems:
         sh.com.rep_matches(f, count)
     
     def delete_empty(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_empty'
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_empty'
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks if block.text.strip()]
         sh.com.rep_matches(f, old_len - len(self.blocks))
     
     def convert_user_subj(self):
         # "Gruzovik" and other entries that function as 'subj'
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.convert_user_subj'
+        f = '[MClient] plugins.multitrancom.elems.Elems.convert_user_subj'
         count = 0
         i = 1
         while i < len(self.blocks):
@@ -728,7 +728,7 @@ class Elems:
         sh.com.rep_matches(f, count)
     
     def set_phsubj(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_phsubj'
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_phsubj'
         if len(self.blocks) < 4:
             sh.com.rep_lazy(f)
             return
@@ -837,7 +837,7 @@ class Elems:
             i -= 1
     
     def delete_fixed(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.delete_fixed'
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_fixed'
         count = 0
         i = 0
         while i < len(self.cells):
@@ -869,7 +869,7 @@ class Elems:
     
     def set_row_nos(self):
         # Run this before deleting fixed types
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_row_nos'
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_row_nos'
         count = 0
         if self.cells:
             count += 1
@@ -885,7 +885,7 @@ class Elems:
         sh.com.rep_matches(f, count)
     
     def set_art_subj(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.set_art_subj'
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_art_subj'
         count = 0
         for block in self.blocks:
             if block.type in ('subj', 'phsubj') and block.subj and block.subjf:
@@ -901,7 +901,7 @@ class Elems:
                 return
     
     def renumber_by_type(self):
-        f = '[MClientQt] plugins.multitrancom.elems.Elems.renumber_by_type'
+        f = '[MClient] plugins.multitrancom.elems.Elems.renumber_by_type'
         count = 0
         i = 1
         while i < len(self.blocks):

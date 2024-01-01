@@ -16,7 +16,7 @@ class Dic:
         self.pairs = pairs
     
     def check(self):
-        f = '[MClientQt] plugins.multitrancom.utils.subjects.Dic.check'
+        f = '[MClient] plugins.multitrancom.utils.subjects.Dic.check'
         if not self.majors or not self.pairs:
             self.Success = False
             sh.com.rep_empty(f)
@@ -27,7 +27,7 @@ class Dic:
             sh.com.rep_condition(f, mes)
     
     def set_subjects(self):
-        f = '[MClientQt] plugins.multitrancom.utils.subjects.Dic.set_subjects'
+        f = '[MClient] plugins.multitrancom.utils.subjects.Dic.set_subjects'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -48,7 +48,7 @@ class Dic:
                 return True
     
     def add(self):
-        f = '[MClientQt] plugins.multitrancom.utils.subjects.Dic.add'
+        f = '[MClient] plugins.multitrancom.utils.subjects.Dic.add'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -57,7 +57,7 @@ class Dic:
                 self.subjects[major] = {}
     
     def sort(self):
-        f = '[MClientQt] plugins.multitrancom.utils.subjects.Dic.sort'
+        f = '[MClient] plugins.multitrancom.utils.subjects.Dic.sort'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -199,7 +199,7 @@ com = Commands()
 
 
 if __name__ == '__main__':
-    f = '[MClientQt] plugins.multitrancom.utils.subjects.__main__'
+    f = '[MClient] plugins.multitrancom.utils.subjects.__main__'
     sh.com.start()
     mes = com.get_string(Loop().run())
     idebug = sh.Debug(f, mes)

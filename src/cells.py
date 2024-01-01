@@ -30,7 +30,7 @@ class Expand:
     
     def expand_speeches(self):
         # This takes ~0.0015s for 'set' on AMD E-300 (no IDE, no warnings)
-        f = '[MClientQt] cells.Expand.expand_speeches'
+        f = '[MClient] cells.Expand.expand_speeches'
         if cf.objs.get_config().new['ShortSpeech']:
             sh.com.rep_lazy(f)
             return
@@ -47,7 +47,7 @@ class Expand:
     
     def expand_subjects(self):
         # This takes ~0.0086s for 'set' on AMD E-300
-        f = '[MClientQt] cells.Expand.expand_subjects'
+        f = '[MClient] cells.Expand.expand_subjects'
         if cf.objs.get_config().new['ShortSubjects']:
             sh.com.rep_lazy(f)
             return
@@ -69,7 +69,7 @@ class Omit:
         self.omit_cells = []
     
     def set_subjects(self):
-        f = '[MClientQt] cells.Omit.set_subjects'
+        f = '[MClient] cells.Omit.set_subjects'
         if not cf.objs.get_config().new['BlockSubjects']:
             sh.com.rep_lazy(f)
             return
@@ -82,7 +82,7 @@ class Omit:
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def omit_subjects(self):
-        f = '[MClientQt] cells.Omit.omit_subjects'
+        f = '[MClient] cells.Omit.omit_subjects'
         if not cf.objs.get_config().new['BlockSubjects']:
             sh.com.rep_lazy(f)
             return
@@ -99,7 +99,7 @@ class Omit:
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def omit_users(self):
-        f = '[MClientQt] cells.Omit.omit_users'
+        f = '[MClient] cells.Omit.omit_users'
         if cf.objs.get_config().new['ShowUserNames']:
             sh.com.rep_lazy(f)
             return
@@ -137,7 +137,7 @@ class Prioritize:
         self.cells = cells
     
     def debug(self):
-        f = '[MClientQt] cells.Prioritize.debug'
+        f = '[MClient] cells.Prioritize.debug'
         subj = []
         subjpr = []
         text = []
@@ -266,14 +266,14 @@ class View:
         self.fixed_urls = lg.objs.plugins.get_fixed_urls()
 
     def check(self):
-        f = '[MClientQt] cells.View.check'
+        f = '[MClient] cells.View.check'
         if not self.cells:
             self.Success = False
             sh.com.rep_empty(f)
             return
     
     def sort(self):
-        f = '[MClientQt] cells.View.sort'
+        f = '[MClient] cells.View.sort'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -284,7 +284,7 @@ class View:
             self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.no))
     
     def _create_fixed(self, i, type_, rowno):
-        f = '[MClientQt] cells.View._create_fixed'
+        f = '[MClient] cells.View._create_fixed'
         cell = ic.Cell()
         block = ic.Block()
         block.type = type_
@@ -321,7 +321,7 @@ class View:
         return cell
     
     def restore_fixed(self):
-        f = '[MClientQt] cells.View.restore_fixed'
+        f = '[MClient] cells.View.restore_fixed'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -340,7 +340,7 @@ class View:
     
     def restore_first(self):
         # Add fixed cells for the very first row
-        f = '[MClientQt] cells.View.restore_first'
+        f = '[MClient] cells.View.restore_first'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -359,7 +359,7 @@ class View:
                     return True
     
     def restore_phsubj(self):
-        f = '[MClientQt] cells.View.restore_phsubj'
+        f = '[MClient] cells.View.restore_phsubj'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -378,7 +378,7 @@ class View:
             i -= 1
     
     def debug(self):
-        f = '[MClientQt] cells.View.debug'
+        f = '[MClient] cells.View.debug'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -433,7 +433,7 @@ class View:
             i += 1
     
     def renumber(self):
-        f = '[MClientQt] cells.View.renumber'
+        f = '[MClient] cells.View.renumber'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -441,7 +441,7 @@ class View:
         self._renumber_row_nos()
     
     def clear_duplicates(self):
-        f = '[MClientQt] cells.View.clear_duplicates'
+        f = '[MClient] cells.View.clear_duplicates'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -471,7 +471,7 @@ class View:
                     speech = cell.speech
     
     def get_fixed_url(self, type_, text):
-        f = '[MClientQt] cells.View.get_fixed_url'
+        f = '[MClient] cells.View.get_fixed_url'
         try:
             return self.fixed_urls[type_][text]
         except KeyError:
@@ -484,7 +484,7 @@ class View:
         return ''
     
     def restore_urls(self):
-        f = '[MClientQt] cells.View.restore_urls'
+        f = '[MClient] cells.View.restore_urls'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -501,7 +501,7 @@ class View:
                                                                      )
     
     def clear_phrase_fields(self):
-        f = '[MClientQt] cells.View.clear_phrase_fields'
+        f = '[MClient] cells.View.clear_phrase_fields'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -518,7 +518,7 @@ class View:
             i += 1
 
     def fill_cols(self):
-        f = '[MClientQt] cells.View.fill_cols'
+        f = '[MClient] cells.View.fill_cols'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -596,7 +596,7 @@ class Wrap:
         self.fixed_types = lg.com.get_col_types()
     
     def check(self):
-        f = '[MClientQt] cells.Wrap.check'
+        f = '[MClient] cells.Wrap.check'
         if not self.cells:
             self.Success = False
             sh.com.rep_empty(f)
@@ -615,7 +615,7 @@ class Wrap:
         return row
     
     def wrap(self):
-        f = '[MClientQt] cells.Wrap.wrap'
+        f = '[MClient] cells.Wrap.wrap'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -650,7 +650,7 @@ class Wrap:
             j -= 1
     
     def _debug_cells(self):
-        f = '[MClientQt] cells.Wrap._debug_cells'
+        f = '[MClient] cells.Wrap._debug_cells'
         mes = [f'{f}:']
         headers = (_('CELL #'), _('ROW #'), _('COLUMN #'), _('TEXT'), _('CODE')
                   ,'URL'
@@ -678,7 +678,7 @@ class Wrap:
         return '\n'.join(mes)
     
     def _debug_plain(self):
-        f = '[MClientQt] cells.Wrap._debug_plain'
+        f = '[MClient] cells.Wrap._debug_plain'
         mes = [f'{f}:']
         plain = []
         for row in self.cells:
@@ -691,7 +691,7 @@ class Wrap:
         return '\n'.join(mes)
     
     def _debug_code(self):
-        f = '[MClientQt] cells.Wrap._debug_code'
+        f = '[MClient] cells.Wrap._debug_code'
         mes = [f'{f}:']
         code = []
         for row in self.cells:
@@ -704,7 +704,7 @@ class Wrap:
         return '\n'.join(mes)
     
     def debug(self):
-        f = '[MClientQt] cells.Wrap.debug'
+        f = '[MClient] cells.Wrap.debug'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -714,7 +714,7 @@ class Wrap:
         return '\n\n'.join(mes)
     
     def renumber(self):
-        f = '[MClientQt] cells.Wrap.renumber'
+        f = '[MClient] cells.Wrap.renumber'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -732,7 +732,7 @@ class Wrap:
     
     def format(self):
         # Takes ~0.871s for 'set' on AMD E-300
-        f = '[MClientQt] cells.Wrap.format'
+        f = '[MClient] cells.Wrap.format'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -744,7 +744,7 @@ class Wrap:
                 cell.code = sh.List(cell_code).space_items()
     
     def set_plain(self):
-        f = '[MClientQt] cells.Wrap.set_plain'
+        f = '[MClient] cells.Wrap.set_plain'
         if not self.Success:
             sh.com.cancel(f)
             return
@@ -755,7 +755,7 @@ class Wrap:
             self.plain.append(new_row)
     
     def set_code(self):
-        f = '[MClientQt] cells.Wrap.set_code'
+        f = '[MClient] cells.Wrap.set_code'
         if not self.Success:
             sh.com.cancel(f)
             return

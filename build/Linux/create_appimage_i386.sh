@@ -2,8 +2,8 @@
 # Do 'pip3 uninstall enum34' in case of receiving
 # AttributeError: module 'enum' has no attribute 'IntFlag'
 
-product="mclientqt"
-productlow='mclientqt'
+product="mclient"
+productlow='mclient'
 arch="i686"
 os="Linux" # Linux or Wine
 oslow="linux"

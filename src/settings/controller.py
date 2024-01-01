@@ -97,7 +97,7 @@ class Save:
         sh.objs.get_mes(f, mes).show_warning()
     
     def save_col_num(self):
-        f = '[MClientQt] settings.controller.Save.save_col_num'
+        f = '[MClient] settings.controller.Save.save_col_num'
         col_num = self.gui.ent_num.get()
         col_num = sh.Input(f, col_num).get_integer()
         if not 0 < col_num <= 10:
@@ -108,7 +108,7 @@ class Save:
         cf.objs.get_config().new['columns']['num'] = col_num
     
     def save_fixed_col_width(self):
-        f = '[MClientQt] settings.controller.Save.save_fixed_col_width'
+        f = '[MClient] settings.controller.Save.save_fixed_col_width'
         width = self.gui.ent_fix.get()
         width = sh.Input(f, width).get_integer()
         if not 50 <= width <= 512:
@@ -119,7 +119,7 @@ class Save:
         cf.objs.get_config().new['columns']['fixed']['width'] = width
     
     def save_term_col_width(self):
-        f = '[MClientQt] settings.controller.Save.save_term_col_width'
+        f = '[MClient] settings.controller.Save.save_term_col_width'
         width = self.gui.ent_trm.get()
         width = sh.Input(f, width).get_integer()
         if not 50 <= width <= 512:

@@ -25,7 +25,7 @@ class Hotkeys:
         return f'<p align="center" style="font-family: Mono; font-size: 11pt; margin-left: 5px; margin-right: 44px">{text}</p>'
     
     def get(self):
-        f = '[MClientQt] welcome.logic.Hotkeys.get'
+        f = '[MClient] welcome.logic.Hotkeys.get'
         if not self.hotkeys:
             sh.com.rep_empty(f)
             return []

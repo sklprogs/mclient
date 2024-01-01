@@ -33,7 +33,7 @@ class CleanUp:
             not be quoted.
             Takes ~0.056s for 'set' (EN-RU) on AMD E-300.
         '''
-        f = '[MClientQt] plugins.multitrancom.cleanup.CleanUp.fix_href'
+        f = '[MClient] plugins.multitrancom.cleanup.CleanUp.fix_href'
         if not self.text:
             sh.com.rep_empty(f)
             return
@@ -86,7 +86,7 @@ class CleanUp:
                                       )
     
     def run(self):
-        f = '[MClientQt] plugins.multitrancom.cleanup.CleanUp.run'
+        f = '[MClient] plugins.multitrancom.cleanup.CleanUp.run'
         if not self.text:
             sh.com.rep_empty(f)
             return ''
