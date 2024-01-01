@@ -1854,12 +1854,19 @@ class App:
         symbol = self.symbols.get()
         gi.objs.get_panel().ent_src.insert(symbol)
     
+    def solve_screen(self):
+        if lg.objs.get_articles().get_len():
+            gi.objs.get_article_proxy().go_article()
+        else:
+            gi.objs.get_article_proxy().go_welcome()
+    
     def load_article(self, search='', url=''):
         f = '[MClientQt] mclient.App.load_article'
         ''' #NOTE: each time the contents of the current page is changed
             (e.g., due to prioritizing), bookmarks must be deleted.
         '''
         self.suggest.close()
+        gi.objs.get_article_proxy().go_article()
         timer = sh.Timer(f)
         timer.start()
 
@@ -2369,6 +2376,7 @@ if __name__ == '__main__':
                               # )
         # timer.end()
         objs.app.welcome.reset()
+        objs.app.solve_screen()
         objs.app.show()
     else:
         mes = _('Invalid configuration!')

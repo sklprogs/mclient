@@ -371,8 +371,23 @@ class ArticleProxy(PyQt5.QtWidgets.QWidget):
         self.layout_ = PyQt5.QtWidgets.QStackedLayout()
         self.layout_.setContentsMargins(0, 0, 0, 0)
         self.layout_.addWidget(welcome.gui.objs.get_welcome())
-        self.layout_.addWidget(TableProxy())
+        self.table = TableProxy()
+        self.layout_.addWidget(self.table)
         self.setLayout(self.layout_)
+    
+    def go_welcome(self):
+        width = self.table.width()
+        height = self.table.height()
+        self.table.hide()
+        welcome.gui.objs.get_welcome().show()
+        welcome.gui.objs.welcome.resize(width, height)
+    
+    def go_article(self):
+        width = welcome.gui.objs.get_welcome().width()
+        height = welcome.gui.objs.welcome.height()
+        welcome.gui.objs.welcome.hide()
+        self.table.show()
+        self.table.resize(width, height)
 
 
 
@@ -431,7 +446,7 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.layout_.setContentsMargins(0, 0, 0, 0)
     
     def add_widgets(self):
-        self.layout_.addWidget(ArticleProxy())
+        self.layout_.addWidget(objs.get_article_proxy())
         self.layout_.addWidget(objs.get_panel(), 1)
         self.parent.setLayout(self.layout_)
     
@@ -824,7 +839,12 @@ class Search(PyQt5.QtWidgets.QWidget):
 class Objects:
     
     def __init__(self):
-        self.panel = self.table = None
+        self.panel = self.table = self.article_proxy = None
+    
+    def get_article_proxy(self):
+        if self.article_proxy is None:
+            self.article_proxy = ArticleProxy()
+        return self.article_proxy
     
     def get_panel(self):
         if self.panel is None:
