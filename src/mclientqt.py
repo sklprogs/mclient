@@ -1488,7 +1488,7 @@ class App:
     def clear_history(self):
         lg.objs.get_articles().reset()
         lg.objs.get_request().reset()
-        self.reset()
+        self.solve_screen()
     
     def go_back(self):
         f = '[MClientQt] mclient.App.go_back'
@@ -1866,7 +1866,6 @@ class App:
             (e.g., due to prioritizing), bookmarks must be deleted.
         '''
         self.suggest.close()
-        gi.objs.get_article_proxy().go_article()
         timer = sh.Timer(f)
         timer.start()
 
@@ -1902,6 +1901,8 @@ class App:
             sj.objs.get_subjects().reset(lg.objs.get_plugins().get_article_subjects())
             cells = lg.objs.articles.get_cells()
             
+        self.solve_screen()
+        
         cells = cl.Expand(cells).run()
         iomit = cl.Omit(cells)
         cells = iomit.run()
@@ -1991,10 +1992,6 @@ class App:
     
     def paste(self):
         gi.objs.get_panel().ent_src.set_text(sh.Clipboard().paste())
-    
-    def reset(self):
-        #TODO: show Welcome
-        pass
     
     def minimize(self):
         self.table.popup.close()
