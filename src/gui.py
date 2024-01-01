@@ -359,114 +359,6 @@ class TableProxy(PyQt5.QtWidgets.QWidget):
 
 
 
-
-
-
-
-class Welcome(PyQt5.QtWidgets.QWidget):
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.set_gui()
-    
-    def fill(self):
-        model = [['hello', 'bye'], ['row 2, col 1'], ['row 3, col 1']]
-        imodel = WelcomeTableModel(model)
-        self.set_model(imodel)
-    
-    def show_rows(self, rownos):
-        for rowno in rownos:
-            self.table.show_row(rowno)
-    
-    def hide_rows(self, rownos):
-        for rowno in rownos:
-            self.table.hide_row(rowno)
-    
-    def resize_rows(self):
-        self.table.resize_rows()
-    
-    def set_col_width(self, no, width):
-        self.table.set_col_width(no, width)
-    
-    def set_span(self, rowno, colno, rowspan, colspan):
-        self.table.set_span(rowno, colno, rowspan, colspan)
-    
-    def set_model(self, model):
-        self.table.set_model(model)
-    
-    def set_gui(self):
-        self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
-        self.layout_.setContentsMargins(0, 0, 0, 0)
-        self.table = WelcomeTable()
-        self.layout_.addWidget(self.table)
-        self.setLayout(self.layout_)
-
-
-
-class WelcomeTable(PyQt5.QtWidgets.QTableView):
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.set_gui()
-    
-    def show_row(self, rowno):
-        self.setRowHidden(rowno, False)
-    
-    def hide_row(self, rowno):
-        self.setRowHidden(rowno, True)
-    
-    def set_span(self, rowno, colno, rowspan, colspan):
-        self.setSpan(rowno, colno, rowspan, colspan)
-    
-    def set_gui(self):
-        #self.setItemDelegate(TableDelegate())
-        hheader = self.horizontalHeader()
-        vheader = self.verticalHeader()
-        hheader.setVisible(False)
-        vheader.setVisible(False)
-        self.show_borders(False)
-        # Disable selecting cells
-        self.setFocusPolicy(PyQt5.QtCore.Qt.NoFocus)
-        self.setSelectionMode(PyQt5.QtWidgets.QAbstractItemView.NoSelection)
-    
-    def resize_rows(self):
-        self.resizeRowsToContents()
-    
-    def set_col_width(self, no, width):
-        self.setColumnWidth(no, width)
-    
-    def set_model(self, model):
-        self.setModel(model)
-    
-    def show_borders(self, Show=False):
-        self.setShowGrid(Show)
-
-
-
-class WelcomeTableModel(PyQt5.QtCore.QAbstractTableModel):
-    
-    def __init__(self, datain, parent=None, *args):
-        PyQt5.QtCore.QAbstractTableModel.__init__(self, parent, *args)
-        self.arraydata = datain
-
-    def rowCount(self, parent):
-        return len(self.arraydata)
-
-    def columnCount(self, parent):
-        return len(self.arraydata[0])
-
-    def data(self, index, role):
-        if not index.isValid():
-            return PyQt5.QtCore.QVariant()
-        if role == PyQt5.QtCore.Qt.DisplayRole:
-            try:
-                return PyQt5.QtCore.QVariant(self.arraydata[index.row()][index.column()])
-            except Exception:
-                # We will have this exception regularly for merged cells
-                return PyQt5.QtCore.QVariant()
-
-
-
 class App(PyQt5.QtWidgets.QMainWindow):
     
     sig_close = PyQt5.QtCore.pyqtSignal()
@@ -522,13 +414,7 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.layout_.setContentsMargins(0, 0, 0, 0)
     
     def add_widgets(self):
-        #import welcome.gui
-        #self.layout_.addWidget(welcome.gui.Welcome())
-        #self.layout_.addWidget(TableProxy())
-        iwelcome = Welcome()
-        #cur
-        iwelcome.fill()
-        self.layout_.addWidget(iwelcome)
+        self.layout_.addWidget(TableProxy())
         self.layout_.addWidget(objs.get_panel(), 1)
         self.parent.setLayout(self.layout_)
     
