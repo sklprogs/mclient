@@ -10,7 +10,7 @@ class About:
     def __init__(self):
         self.product = 'MClient'
         self.version = '7.0'
-        self.curyear = 2023
+        self.curyear = 2024
         self.code = []
     
     def get_product(self):
