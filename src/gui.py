@@ -365,6 +365,7 @@ class ArticleProxy(PyQt5.QtWidgets.QWidget):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.active = welcome.gui.objs.get_welcome()
         self.set_gui()
     
     def set_gui(self):
@@ -376,18 +377,28 @@ class ArticleProxy(PyQt5.QtWidgets.QWidget):
         self.setLayout(self.layout_)
     
     def go_welcome(self):
+        f = '[MClient] gui.ArticleProxy.go_welcome'
+        if self.active == welcome.gui.objs.get_welcome():
+            sh.com.rep_lazy(f)
+            return
         width = self.table.width()
         height = self.table.height()
         self.table.hide()
-        welcome.gui.objs.get_welcome().show()
-        welcome.gui.objs.welcome.resize(width, height)
+        self.active = welcome.gui.objs.welcome
+        self.active.show()
+        self.active.resize(width, height)
     
     def go_article(self):
+        f = '[MClient] gui.ArticleProxy.go_article'
+        if self.active == self.table:
+            sh.com.rep_lazy(f)
+            return
         width = welcome.gui.objs.get_welcome().width()
         height = welcome.gui.objs.welcome.height()
         welcome.gui.objs.welcome.hide()
-        self.table.show()
-        self.table.resize(width, height)
+        self.active = self.table
+        self.active.show()
+        self.active.resize(width, height)
 
 
 
