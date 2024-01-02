@@ -376,15 +376,18 @@ class ArticleProxy(PyQt5.QtWidgets.QWidget):
         self.layout_.addWidget(self.table)
         self.setLayout(self.layout_)
     
+    def is_welcome(self):
+        return self.active == welcome.gui.objs.get_welcome()
+    
     def go_welcome(self):
         f = '[MClient] gui.ArticleProxy.go_welcome'
-        if self.active == welcome.gui.objs.get_welcome():
+        if self.is_welcome():
             sh.com.rep_lazy(f)
             return
         width = self.table.width()
         height = self.table.height()
         self.table.hide()
-        self.active = welcome.gui.objs.welcome
+        self.active = welcome.gui.objs.get_welcome()
         self.active.show()
         self.active.resize(width, height)
     

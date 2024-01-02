@@ -1599,8 +1599,9 @@ class App:
 
     def set_columns(self):
         self.reset_columns()
-        lg.objs.get_articles().delete_bookmarks()
-        self.load_article()
+        if not gi.objs.get_article_proxy().is_welcome():
+            lg.objs.get_articles().delete_bookmarks()
+            self.load_article()
         gi.objs.get_panel().ent_src.focus()
 
     def reset_columns(self):
