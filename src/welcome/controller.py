@@ -20,10 +20,6 @@ class Welcome:
     def __init__(self, desc='Product Current Version'):
         self.logic = lg.Welcome()
         self.logic.desc = desc
-        self.set_gui()
-    
-    def set_gui(self):
-        self.set_bindings()
     
     def set_font(self, text):
         return self.logic.set_font(text)
@@ -36,16 +32,6 @@ class Welcome:
     
     def set_model(self, model):
         gi.objs.get_welcome().set_model(model)
-    
-    def close(self):
-        gi.objs.get_welcome().close()
-    
-    def show(self):
-        gi.objs.get_welcome().show()
-    
-    def set_bindings(self):
-        gi.objs.get_welcome().bind(('Ctrl+Q',), self.close)
-        gi.objs.welcome.bind(('Esc',), self.close)
     
     def set_spans(self):
         for i in range(10):
