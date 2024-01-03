@@ -53,9 +53,9 @@ class Welcome:
             borders fully visible.
             https://stackoverflow.com/questions/52166539/qtablewidget-respect-span-when-sizing-to-contents
         '''
-        gi.objs.get_welcome().hide_rows((0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
+        gi.objs.get_welcome().hide_rows((0, 1, 2, 3, 4, 5, 6, 7, 8))
         gi.objs.welcome.resize_rows()
-        gi.objs.welcome.show_rows((0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
+        gi.objs.welcome.show_rows((0, 1, 2, 3, 4, 5, 6, 7, 8))
     
     def reset(self):
         self.fill()
