@@ -10,10 +10,10 @@ oslow="linux"
 # We need to use Debian 10 or newer since Debian 9 has Python 3.5
 # by default which is buggy (some blocks are skipped in EN-RU, "hello"
 # article)
-glibc="2.36"
-pythonve="$HOME/software/python/mclient_qt5_3.11.2_x64"
-xlibdir="$pythonve/lib/python3.11/site-packages/Xlib"
-schemas="$pythonve/lib/python3.11/site-packages/jsonschema_specifications/schemas"
+glibc="2.31"
+pythonve="$HOME/software/python/mclient_qt5_3.9.2_x64"
+xlibdir="$pythonve/lib/python3.9/site-packages/Xlib"
+schemas="$pythonve/lib/python3.9/site-packages/jsonschema_specifications/schemas"
 binariesdir="$HOME/binaries"
 appimagedir="$binariesdir/appimage"
 srcdir="$HOME/bin/$product/src"
@@ -96,7 +96,6 @@ if [ "$choice" = "N" ] || [ "$choice" = "n" ]; then
     exit;
 fi
 
-# The tool is i686, but creates i386
 mv -fv "$tmpdir/$productlow-$arch.AppImage" "$HOME/binaries/$product/$productlow-$oslow-$arch-glibc$glibc.AppImage"
 rm -rf "$tmpdir"
 
