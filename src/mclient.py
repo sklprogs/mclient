@@ -2376,6 +2376,7 @@ if __name__ == '__main__':
         objs.app.welcome.reset()
         objs.app.solve_screen()
         objs.app.show()
+        objs.app.welcome.resize_rows()
     else:
         mes = _('Invalid configuration!')
         #FIX: quit app normally after common dialog
