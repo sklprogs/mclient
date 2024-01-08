@@ -11,7 +11,7 @@ oslow="linux"
 # by default which is buggy (some blocks are skipped in EN-RU, "hello"
 # article)
 glibc="2.31"
-pythonve="$HOME/software/python/mclient_qt5_3.9.2_x64"
+pythonve="$HOME/software/python/mclient_qt6_3.9.2_x64"
 xlibdir="$pythonve/lib/python3.9/site-packages/Xlib"
 schemas="$pythonve/lib/python3.9/site-packages/jsonschema_specifications/schemas"
 binariesdir="$HOME/binaries"
@@ -90,7 +90,7 @@ mkdir "$tmpdir/app/usr/bin/jsonschema_specifications"
 rsync -ar "$schemas/" "$tmpdir/app/usr/bin/jsonschema_specifications/schemas"
 cd "$tmpdir"
 # This argument allows to avoid a permission error
-./appimagetool-$arch.AppImage --appimage-extract-and-run app
+# ./appimagetool-$arch.AppImage --appimage-extract-and-run app
 read -p "Update the AppImage? (Y/n) " choice
 if [ "$choice" = "N" ] || [ "$choice" = "n" ]; then
     exit;

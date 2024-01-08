@@ -1,4 +1,9 @@
 #!/bin/bash
+# WARNING: This platform is no longer supported, the script
+# will not be updated. I have old hardware too, but 64-bit Debian
+# netinst (clean installation) runs OK on a netbook with 1 GB
+# RAM without DE installed (I recommend Xorg + openbox + tint2).
+# 
 # Do 'pip3 uninstall enum34' in case of receiving
 # AttributeError: module 'enum' has no attribute 'IntFlag'
 
