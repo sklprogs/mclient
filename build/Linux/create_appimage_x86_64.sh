@@ -90,7 +90,7 @@ mkdir "$tmpdir/app/usr/bin/jsonschema_specifications"
 rsync -ar "$schemas/" "$tmpdir/app/usr/bin/jsonschema_specifications/schemas"
 cd "$tmpdir"
 # This argument allows to avoid a permission error
-# ./appimagetool-$arch.AppImage --appimage-extract-and-run app
+./appimagetool-$arch.AppImage --appimage-extract-and-run app
 read -p "Update the AppImage? (Y/n) " choice
 if [ "$choice" = "N" ] || [ "$choice" = "n" ]; then
     exit;
