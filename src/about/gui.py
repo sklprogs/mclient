@@ -1,16 +1,16 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import PyQt5.QtWidgets
-import PyQt5.QtGui
+import PyQt6.QtWidgets
+import PyQt6.QtGui
 
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 
-class About(PyQt5.QtWidgets.QWidget):
+class About(PyQt6.QtWidgets.QWidget):
     
-    sig_close = PyQt5.QtCore.pyqtSignal()
+    sig_close = PyQt6.QtCore.pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -28,18 +28,18 @@ class About(PyQt5.QtWidgets.QWidget):
         self.setWindowTitle(title)
     
     def centralize(self):
-        self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
+        self.move(sh.objs.get_root().primaryScreen().geometry().center() - self.rect().center())
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:
-            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+            PyQt6.QtGui.QShortcut(PyQt6.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def set_text(self, text):
         self.lbl_abt.set_text(text)
     
     def configure(self):
-        policy = PyQt5.QtWidgets.QSizePolicy (PyQt5.QtWidgets.QSizePolicy.Fixed
-                                             ,PyQt5.QtWidgets.QSizePolicy.Fixed
+        policy = PyQt6.QtWidgets.QSizePolicy (PyQt6.QtWidgets.QSizePolicy.Policy.Fixed
+                                             ,PyQt6.QtWidgets.QSizePolicy.Policy.Fixed
                                              )
         self.btn_thd.widget.setSizePolicy(policy)
         self.btn_lic.widget.setSizePolicy(policy)
@@ -58,14 +58,14 @@ class About(PyQt5.QtWidgets.QWidget):
     
     def add_layout(self):
         self.layout_.addWidget(self.lbl_abt.widget, 0, 0, 1, 3)
-        self.layout_.addWidget(self.btn_thd.widget, 1, 0, 1, 1, PyQt5.QtCore.Qt.AlignLeft)
-        self.layout_.addWidget(self.btn_lic.widget, 1, 1, 1, 1, PyQt5.QtCore.Qt.AlignCenter)
-        self.layout_.addWidget(self.btn_eml.widget, 1, 2, 1, 1, PyQt5.QtCore.Qt.AlignRight)
+        self.layout_.addWidget(self.btn_thd.widget, 1, 0, 1, 1, PyQt6.QtCore.Qt.AlignmentFlag.AlignLeft)
+        self.layout_.addWidget(self.btn_lic.widget, 1, 1, 1, 1, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.layout_.addWidget(self.btn_eml.widget, 1, 2, 1, 1, PyQt6.QtCore.Qt.AlignmentFlag.AlignRight)
         self.setLayout(self.layout_)
     
     def add_widgets(self):
         self.lbl_abt = sh.Label()
-        self.layout_ = PyQt5.QtWidgets.QGridLayout(self)
+        self.layout_ = PyQt6.QtWidgets.QGridLayout(self)
     
     def set_gui(self):
         self.add_widgets()

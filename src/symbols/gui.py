@@ -1,17 +1,17 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import PyQt5
-import PyQt5.QtWidgets
+import PyQt6
+import PyQt6.QtWidgets
 
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 
-class TableModel(PyQt5.QtCore.QAbstractTableModel):
+class TableModel(PyQt6.QtCore.QAbstractTableModel):
     
     def __init__(self, datain, parent=None, *args):
-        PyQt5.QtCore.QAbstractTableModel.__init__(self, parent, *args)
+        PyQt6.QtCore.QAbstractTableModel.__init__(self, parent, *args)
         self.arraydata = datain
     
     def rowCount(self, parent):
@@ -23,23 +23,23 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
     def data(self, index, role):
         f = '[MClient] symbols.gui.TableModel.data'
         if not index.isValid():
-            return PyQt5.QtCore.QVariant()
-        if role == PyQt5.QtCore.Qt.DisplayRole:
+            return PyQt6.QtCore.QVariant()
+        if role == PyQt6.QtCore.Qt.ItemDataRole.DisplayRole:
             try:
-                return PyQt5.QtCore.QVariant(self.arraydata[index.row()][index.column()])
+                return PyQt6.QtCore.QVariant(self.arraydata[index.row()][index.column()])
             except Exception:
                 mes = _('List out of bounds at row #{}, column #{}!')
                 mes = mes.format(index.row(), index.column())
                 sh.objs.get_mes(f, mes, True).show_warning()
-                return PyQt5.QtCore.QVariant()
+                return PyQt6.QtCore.QVariant()
 
 
 
-class Table(PyQt5.QtWidgets.QTableView):
+class Table(PyQt6.QtWidgets.QTableView):
     
-    sig_rmb = PyQt5.QtCore.pyqtSignal()
-    sig_space = PyQt5.QtCore.pyqtSignal()
-    sig_select = PyQt5.QtCore.pyqtSignal(int, int)
+    sig_rmb = PyQt6.QtCore.pyqtSignal()
+    sig_space = PyQt6.QtCore.pyqtSignal()
+    sig_select = PyQt6.QtCore.pyqtSignal(int, int)
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -49,7 +49,7 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.setCurrentIndex(index_)
     
     def _use_mouse(self, event):
-        pos = event.pos()
+        pos = event.position().toPoint()
         rowno = self.rowAt(pos.y())
         colno = self.columnAt(pos.x())
         self.sig_select.emit(rowno, colno)
@@ -68,28 +68,28 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     def mousePressEvent(self, event):
         button = event.button()
-        if button == PyQt5.QtCore.Qt.RightButton:
+        if button == PyQt6.QtCore.Qt.MouseButton.RightButton:
             self.sig_rmb.emit()
         super().mousePressEvent(event)
     
     def keyPressEvent(self, event):
-        if event.key() == PyQt5.QtCore.Qt.Key_Space:
+        if event.key() == PyQt6.QtCore.Qt.Key.Key_Space:
             self.sig_space.emit()
         return super().keyPressEvent(event)
 
 
 
-class Symbols(PyQt5.QtWidgets.QWidget):
+class Symbols(PyQt6.QtWidgets.QWidget):
     
-    sig_return = PyQt5.QtCore.pyqtSignal()
-    sig_ctrl_return = PyQt5.QtCore.pyqtSignal()
+    sig_return = PyQt6.QtCore.pyqtSignal()
+    sig_ctrl_return = PyQt6.QtCore.pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.set_gui()
     
     def set_gui(self):
-        self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
+        self.layout_ = PyQt6.QtWidgets.QVBoxLayout()
         self.layout_.setContentsMargins(5, 5, 5, 5)
         self.table = Table()
         self.layout_.addWidget(self.table)
@@ -103,8 +103,8 @@ class Symbols(PyQt5.QtWidgets.QWidget):
     def keyPressEvent(self, event):
         key = event.key()
         modifiers = event.modifiers()
-        if key in (PyQt5.QtCore.Qt.Key_Return, PyQt5.QtCore.Qt.Key_Enter):
-            if modifiers & PyQt5.QtCore.Qt.ControlModifier:
+        if key in (PyQt6.QtCore.Qt.Key_Return, PyQt6.QtCore.Qt.Key.Key_Enter):
+            if modifiers & PyQt6.QtCore.Qt.KeyboardModifier.ControlModifier:
                 self.sig_ctrl_return.emit()
             else:
                 self.sig_return.emit()
@@ -123,8 +123,8 @@ class Symbols(PyQt5.QtWidgets.QWidget):
         self.setWindowTitle(title)
     
     def centralize(self):
-        self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
+        self.move(sh.objs.get_root().primaryScreen().geometry().center() - self.rect().center())
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:
-            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+            PyQt6.QtGui.QShortcut(PyQt6.QtGui.QKeySequence(hotkey), self).activated.connect(action)

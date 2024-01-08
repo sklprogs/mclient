@@ -2,8 +2,8 @@
 # -*- coding: UTF-8 -*-
 
 import time
-import PyQt5.QtCore
-import PyQt5.QtWidgets
+import PyQt6.QtCore
+import PyQt6.QtWidgets
 
 #from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
@@ -19,10 +19,10 @@ else:
     I move 'Catcher.run' out, GUI freezes.
 '''
 
-class Catcher(PyQt5.QtCore.QObject):
+class Catcher(PyQt6.QtCore.QObject):
     
-    sig_catch = PyQt5.QtCore.pyqtSignal(int)
-    sig_end = PyQt5.QtCore.pyqtSignal()
+    sig_catch = PyQt6.QtCore.pyqtSignal(int)
+    sig_end = PyQt6.QtCore.pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -53,7 +53,7 @@ class Catcher(PyQt5.QtCore.QObject):
 
 
 
-class Thread(PyQt5.QtCore.QThread):
+class Thread(PyQt6.QtCore.QThread):
     # Built-in functions that are called: start, quit, wait
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

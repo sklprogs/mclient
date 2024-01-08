@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import PyQt5.QtWidgets
+import PyQt6.QtWidgets
 
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
@@ -9,9 +9,9 @@ import skl_shared_qt.shared as sh
 PRODUCT = 'MClient'
 
 
-class Settings(PyQt5.QtWidgets.QWidget):
+class Settings(PyQt6.QtWidgets.QWidget):
     
-    sig_close = PyQt5.QtCore.pyqtSignal()
+    sig_close = PyQt6.QtCore.pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -375,7 +375,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
         return super().closeEvent(event)
     
     def centralize(self):
-        self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
+        self.move(sh.objs.get_root().primaryScreen().geometry().center() - self.rect().center())
     
     def set_labels(self):
         self.lbl_stl = sh.Label(_('Style:'))
@@ -444,18 +444,18 @@ class Settings(PyQt5.QtWidgets.QWidget):
                                      )
     
     def set_layouts(self):
-        self.lay_prm = PyQt5.QtWidgets.QVBoxLayout(self)
-        self.lay_col = PyQt5.QtWidgets.QGridLayout()
-        self.lay_psp = PyQt5.QtWidgets.QGridLayout()
-        self.lay_cbx = PyQt5.QtWidgets.QVBoxLayout()
-        self.lay_sug = PyQt5.QtWidgets.QHBoxLayout()
-        self.lay_sgl = PyQt5.QtWidgets.QHBoxLayout()
+        self.lay_prm = PyQt6.QtWidgets.QVBoxLayout(self)
+        self.lay_col = PyQt6.QtWidgets.QGridLayout()
+        self.lay_psp = PyQt6.QtWidgets.QGridLayout()
+        self.lay_cbx = PyQt6.QtWidgets.QVBoxLayout()
+        self.lay_sug = PyQt6.QtWidgets.QHBoxLayout()
+        self.lay_sgl = PyQt6.QtWidgets.QHBoxLayout()
         ''' Position widgets in "Suggest" row correctly for different languages
             irrespectively of label widths.
         '''
-        self.fml_sug = PyQt5.QtWidgets.QFormLayout()
+        self.fml_sug = PyQt6.QtWidgets.QFormLayout()
         self.fml_sug.addRow(self.lay_sgl)
-        self.lay_btn = PyQt5.QtWidgets.QHBoxLayout()
+        self.lay_btn = PyQt6.QtWidgets.QHBoxLayout()
         self.lay_sug.addLayout(self.fml_sug)
         self.lay_prm.addLayout(self.lay_col)
         self.lay_prm.addLayout(self.lay_psp)
@@ -474,9 +474,9 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.cbx_no8 = sh.CheckBox(_('Adjust columns by width'))
     
     def set_bg(self):
-        self.bg_col = PyQt5.QtWidgets.QWidget()
+        self.bg_col = PyQt6.QtWidgets.QWidget()
         # Cannot reuse the same widget
-        self.bg_psp = PyQt5.QtWidgets.QWidget()
+        self.bg_psp = PyQt6.QtWidgets.QWidget()
         self.lay_col.addWidget(self.bg_col, 0, 0, 1, 5)
         self.lay_psp.addWidget(self.bg_psp, 0, 0, 1, 7)
     
@@ -490,11 +490,11 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.btn_sug = sh.Button(_('Suggest'))
     
     def _add_columns(self):
-        self.lay_col.addWidget(self.lbl_stl.widget, 0, 0, PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_col.addWidget(self.lbl_cl1.widget, 0, 1, PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_col.addWidget(self.lbl_cl2.widget, 0, 2, PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_col.addWidget(self.lbl_cl3.widget, 0, 3, PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_col.addWidget(self.lbl_cl4.widget, 0, 4, PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_col.addWidget(self.lbl_stl.widget, 0, 0, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl1.widget, 0, 1, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl2.widget, 0, 2, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl3.widget, 0, 3, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl4.widget, 0, 4, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
         self.lay_col.addWidget(self.opt_stl.widget, 1, 0)
         self.lay_col.addWidget(self.opt_cl1.widget, 1, 1)
         self.lay_col.addWidget(self.opt_cl2.widget, 1, 2)
@@ -502,13 +502,13 @@ class Settings(PyQt5.QtWidgets.QWidget):
         self.lay_col.addWidget(self.opt_cl4.widget, 1, 4)
     
     def _add_speech(self):
-        self.lay_psp.addWidget(self.lbl_sp1.widget, 0, 0, PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp2.widget, 0, 1, PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp3.widget, 0, 2, PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp4.widget, 0, 3, PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp5.widget, 0, 4, PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp6.widget, 0, 5, PyQt5.QtCore.Qt.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp7.widget, 0, 6, PyQt5.QtCore.Qt.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp1.widget, 0, 0, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp2.widget, 0, 1, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp3.widget, 0, 2, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp4.widget, 0, 3, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp5.widget, 0, 4, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp6.widget, 0, 5, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp7.widget, 0, 6, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
         self.lay_psp.addWidget(self.opt_sp1.widget, 1, 0)
         self.lay_psp.addWidget(self.opt_sp2.widget, 1, 1)
         self.lay_psp.addWidget(self.opt_sp3.widget, 1, 2)
@@ -622,7 +622,7 @@ class Settings(PyQt5.QtWidgets.QWidget):
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:
-            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+            PyQt6.QtGui.QShortcut(PyQt6.QtGui.QKeySequence(hotkey), self).activated.connect(action)
 
 
 if __name__ == '__main__':

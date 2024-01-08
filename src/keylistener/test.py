@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import PyQt5.QtCore
-import PyQt5.QtWidgets
+import PyQt6.QtCore
+import PyQt6.QtWidgets
 
 #from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
@@ -37,9 +37,9 @@ class App:
 
 
 
-class Gui(PyQt5.QtWidgets.QWidget):
+class Gui(PyQt6.QtWidgets.QWidget):
     
-    sig_close = PyQt5.QtCore.pyqtSignal()
+    sig_close = PyQt6.QtCore.pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -55,12 +55,12 @@ class Gui(PyQt5.QtWidgets.QWidget):
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:
-            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+            PyQt6.QtGui.QShortcut(PyQt6.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def set_gui(self):
-        self.button = PyQt5.QtWidgets.QPushButton()
+        self.button = PyQt6.QtWidgets.QPushButton()
         self.button.setText('Click me!')
-        layout_ = PyQt5.QtWidgets.QHBoxLayout()
+        layout_ = PyQt6.QtWidgets.QHBoxLayout()
         layout_.addWidget(self.button)
         self.setLayout(layout_)
 

@@ -1,17 +1,17 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import PyQt5.QtWidgets
-import PyQt5.QtGui
+import PyQt6.QtWidgets
+import PyQt6.QtGui
 
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 
-class TableModel(PyQt5.QtCore.QAbstractTableModel):
+class TableModel(PyQt6.QtCore.QAbstractTableModel):
     
     def __init__(self, data=[], parent=None, *args):
-        PyQt5.QtCore.QAbstractTableModel.__init__(self, parent, *args)
+        PyQt6.QtCore.QAbstractTableModel.__init__(self, parent, *args)
         if not data:
             data = [_('Save the current view as a web-page (*.htm)')
                    ,_('Save the original article as a web-page (*.htm)')
@@ -30,24 +30,24 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
     def data(self, index, role):
         f = '[MClient] save.gui.TableModel.data'
         if not index.isValid():
-            return PyQt5.QtCore.QVariant()
-        if role == PyQt5.QtCore.Qt.DisplayRole:
+            return PyQt6.QtCore.QVariant()
+        if role == PyQt6.QtCore.Qt.ItemDataRole.DisplayRole:
             try:
-                return PyQt5.QtCore.QVariant(self.items[index.row()])
+                return PyQt6.QtCore.QVariant(self.items[index.row()])
             except Exception:
                 mes = _('List out of bounds at row #{}, column #{}!')
                 mes = mes.format(index.row(), index.column())
                 sh.objs.get_mes(f, mes, True).show_warning()
-                return PyQt5.QtCore.QVariant()
+                return PyQt6.QtCore.QVariant()
     
     def update(self):
         self.layoutChanged.emit()
 
 
 
-class Save(PyQt5.QtWidgets.QWidget):
+class Save(PyQt6.QtWidgets.QWidget):
     
-    sig_close = PyQt5.QtCore.pyqtSignal()
+    sig_close = PyQt6.QtCore.pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -66,7 +66,7 @@ class Save(PyQt5.QtWidgets.QWidget):
         self.save.selectionModel().clearSelection()
     
     def select_row(self, index_):
-        mode = PyQt5.QtCore.QItemSelectionModel.Select | PyQt5.QtCore.QItemSelectionModel.Rows
+        mode = PyQt6.QtCore.QItemSelectionModel.SelectionFlag.Select | PyQt6.QtCore.QItemSelectionModel.SelectionFlag.Rows
         self.save.selectionModel().select(index_, mode)
     
     def set_icon(self):
@@ -81,11 +81,11 @@ class Save(PyQt5.QtWidgets.QWidget):
         self.setWindowTitle(title)
     
     def centralize(self):
-        self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
+        self.move(sh.objs.get_root().primaryScreen().geometry().center() - self.rect().center())
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:
-            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+            PyQt6.QtGui.QShortcut(PyQt6.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def get_font_size(self):
         size = self.font().pointSize()
@@ -99,10 +99,10 @@ class Save(PyQt5.QtWidgets.QWidget):
         self.setFont(qfont)
     
     def set_gui(self):
-        self.save = PyQt5.QtWidgets.QTreeView()
+        self.save = PyQt6.QtWidgets.QTreeView()
         self.save.header().hide()
         self.save.setIndentation(5)
-        self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
+        self.layout_ = PyQt6.QtWidgets.QVBoxLayout()
         self.layout_.setContentsMargins(0, 0, 0, 0)
         self.layout_.addWidget(self.save)
         self.setLayout(self.layout_)
@@ -121,6 +121,6 @@ if __name__ == '__main__':
     isave.set_index(index_)
     isave.select_row(index_)
     # The font size is increased without changing the family in the controller
-    isave.setFont(PyQt5.QtGui.QFont('Sans', 11))
+    isave.setFont(PyQt6.QtGui.QFont('Sans', 11))
     isave.show()
     sh.com.end()

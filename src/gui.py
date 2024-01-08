@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import PyQt5
-import PyQt5.QtWidgets
+import PyQt6
+import PyQt6.QtWidgets
 
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
@@ -20,14 +20,14 @@ class FontLimits:
         pass
     
     def get_font(self, family, size, weight, italic):
-        return PyQt5.QtGui.QFont (family
+        return PyQt6.QtGui.QFont (family
                                  ,pointSize = size
                                  ,weight = weight
                                  ,italic = italic
                                  )
     
     def get_space(self, text, qfont):
-        qrect = PyQt5.QtGui.QFontMetrics(qfont).boundingRect(text)
+        qrect = PyQt6.QtGui.QFontMetrics(qfont).boundingRect(text)
         return qrect.width() * qrect.height()
 
 
@@ -52,16 +52,16 @@ class MinEntry(sh.gi.Entry):
 
 
 
-class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
+class MinEntryCore(PyQt6.QtWidgets.QLineEdit):
     
-    sig_ctrl_e = PyQt5.QtCore.pyqtSignal()
-    sig_ctrl_home = PyQt5.QtCore.pyqtSignal()
-    sig_ctrl_end = PyQt5.QtCore.pyqtSignal()
-    sig_ctrl_space = PyQt5.QtCore.pyqtSignal()
-    sig_left_arrow = PyQt5.QtCore.pyqtSignal()
-    sig_right_arrow = PyQt5.QtCore.pyqtSignal()
-    sig_home = PyQt5.QtCore.pyqtSignal()
-    sig_end = PyQt5.QtCore.pyqtSignal()
+    sig_ctrl_e = PyQt6.QtCore.pyqtSignal()
+    sig_ctrl_home = PyQt6.QtCore.pyqtSignal()
+    sig_ctrl_end = PyQt6.QtCore.pyqtSignal()
+    sig_ctrl_space = PyQt6.QtCore.pyqtSignal()
+    sig_left_arrow = PyQt6.QtCore.pyqtSignal()
+    sig_right_arrow = PyQt6.QtCore.pyqtSignal()
+    sig_home = PyQt6.QtCore.pyqtSignal()
+    sig_end = PyQt6.QtCore.pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -72,35 +72,35 @@ class MinEntryCore(PyQt5.QtWidgets.QLineEdit):
         ''' Internal Ctrl+ bindings are not needed, so they are ignored. Other
             bindings (such as Home, End, Left and Right) must be preserved.
         '''
-        if modifiers & PyQt5.QtCore.Qt.ControlModifier:
-            if key == PyQt5.QtCore.Qt.Key_Home:
+        if modifiers & PyQt6.QtCore.Qt.KeyboardModifier.ControlModifier:
+            if key == PyQt6.QtCore.Qt.Key.Key_Home:
                 self.sig_ctrl_home.emit()
                 return
-            if key == PyQt5.QtCore.Qt.Key_End:
+            if key == PyQt6.QtCore.Qt.Key.Key_End:
                 self.sig_ctrl_end.emit()
                 return
-            if key == PyQt5.QtCore.Qt.Key_E:
+            if key == PyQt6.QtCore.Qt.Key.Key_E:
                 self.sig_ctrl_e.emit()
                 return
-            if key == PyQt5.QtCore.Qt.Key_Space:
+            if key == PyQt6.QtCore.Qt.Key.Key_Space:
                 self.sig_ctrl_space.emit()
                 return
-        elif key == PyQt5.QtCore.Qt.Key_Left:
+        elif key == PyQt6.QtCore.Qt.Key.Key_Left:
             self.sig_left_arrow.emit()
-        elif key == PyQt5.QtCore.Qt.Key_Right:
+        elif key == PyQt6.QtCore.Qt.Key.Key_Right:
             self.sig_right_arrow.emit()
-        elif key == PyQt5.QtCore.Qt.Key_Home:
+        elif key == PyQt6.QtCore.Qt.Key.Key_Home:
             self.sig_home.emit()
-        elif key == PyQt5.QtCore.Qt.Key_End:
+        elif key == PyQt6.QtCore.Qt.Key.Key_End:
             self.sig_end.emit()
         return super().keyPressEvent(event)
 
 
 
-class TableModel(PyQt5.QtCore.QAbstractTableModel):
+class TableModel(PyQt6.QtCore.QAbstractTableModel):
     
     def __init__(self, datain, parent=None, *args):
-        PyQt5.QtCore.QAbstractTableModel.__init__(self, parent, *args)
+        PyQt6.QtCore.QAbstractTableModel.__init__(self, parent, *args)
         self.arraydata = datain
 
     def rowCount(self, parent):
@@ -112,22 +112,22 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
     def data(self, index, role):
         f = '[MClient] gui.TableModel.data'
         if not index.isValid():
-            return PyQt5.QtCore.QVariant()
-        if role == PyQt5.QtCore.Qt.DisplayRole:
+            return PyQt6.QtCore.QVariant()
+        if role == PyQt6.QtCore.Qt.ItemDataRole.DisplayRole:
             try:
-                return PyQt5.QtCore.QVariant(self.arraydata[index.row()][index.column()])
+                return PyQt6.QtCore.QVariant(self.arraydata[index.row()][index.column()])
             except Exception:
                 mes = _('List out of bounds at row #{}, column #{}!')
                 mes = mes.format(index.row(), index.column())
                 sh.objs.get_mes(f, mes, True).show_warning()
-                return PyQt5.QtCore.QVariant()
+                return PyQt6.QtCore.QVariant()
     
     def update(self, index_):
         self.dataChanged.emit(index_, index_)
 
 
 
-class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
+class TableDelegate(PyQt6.QtWidgets.QStyledItemDelegate):
     # akej74, https://stackoverflow.com/questions/35397943/how-to-make-a-fast-qtableview-with-html-formatted-and-clickable-cells
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -136,7 +136,7 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
     
     def set_line_spacing(self, doc):
         f = '[MClient] gui.TableDelegate.set_line_spacing'
-        cursor = PyQt5.QtGui.QTextCursor(doc)
+        cursor = PyQt6.QtGui.QTextCursor(doc)
         block = doc.firstBlock()
         if not block.isValid():
             mes = _('Wrong input data!')
@@ -148,18 +148,18 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
     
     def paint(self, painter, option, index):
         f = '[MClient] gui.TableDelegate.paint'
-        # index:   PyQt5.QtCore.QModelIndex
-        # painter: PyQt5.QtGui.QPainter
-        # option:  PyQt5.QtWidgets.QStyleOptionViewItem
-        options = PyQt5.QtWidgets.QStyleOptionViewItem(option)
+        # index:   PyQt6.QtCore.QModelIndex
+        # painter: PyQt6.QtGui.QPainter
+        # option:  PyQt6.QtWidgets.QStyleOptionViewItem
+        options = PyQt6.QtWidgets.QStyleOptionViewItem(option)
         self.initStyleOption(options, index)
         
         if options.widget:
             style = options.widget.style()
         else:
-            style = PyQt5.QtWidgets.QApplication.style()
+            style = PyQt6.QtWidgets.QApplication.style()
         
-        doc = PyQt5.QtGui.QTextDocument()
+        doc = PyQt6.QtGui.QTextDocument()
         doc.setHtml(options.text)
         options.text = ''
         
@@ -168,17 +168,17 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         # This enables text wrapping in the delegate
         doc.setTextWidth(options.rect.width())
         
-        style.drawControl(PyQt5.QtWidgets.QStyle.CE_ItemViewItem, options, painter)
-        ctx = PyQt5.QtGui.QAbstractTextDocumentLayout.PaintContext()
+        style.drawControl(PyQt6.QtWidgets.QStyle.ControlElement.CE_ItemViewItem, options, painter)
+        ctx = PyQt6.QtGui.QAbstractTextDocumentLayout.PaintContext()
         
-        textRect = style.subElementRect(PyQt5.QtWidgets.QStyle.SE_ItemViewItemText, options)
+        textRect = style.subElementRect(PyQt6.QtWidgets.QStyle.SubElement.SE_ItemViewItemText, options)
         
         if self.index is None:
             mes = _('Index must be set externally!')
             sh.objs.get_mes(f, mes, True).show_error()
         elif index == self.index:
-            color = PyQt5.QtGui.QColor('red')
-            pen = PyQt5.QtGui.QPen(color, 2)
+            color = PyQt6.QtGui.QColor('red')
+            pen = PyQt6.QtGui.QPen(color, 2)
             painter.setPen(pen)
             # Avoid intersecting cell borders and artifacts as the result
             x1, y1, x2, y2 = option.rect.getCoords()
@@ -186,9 +186,9 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
             painter.drawRect(option.rect)
         
         if self.long and index in self.long:
-            color = PyQt5.QtGui.QColor(WIDE_ROW_COLOR)
-            pen = PyQt5.QtGui.QPen(color, 2)
-            pen.setStyle(PyQt5.QtCore.Qt.DotLine)
+            color = PyQt6.QtGui.QColor(WIDE_ROW_COLOR)
+            pen = PyQt6.QtGui.QPen(color, 2)
+            pen.setStyle(PyQt6.QtCore.Qt.PenStyle.DotLine)
             painter.setPen(pen)
             # Avoid intersecting cell borders and artifacts as the result
             x1, y1, x2, y2 = option.rect.getCoords()
@@ -204,22 +204,22 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         painter.restore()
     
     def sizeHint(self, option, index):
-        options = PyQt5.QtWidgets.QStyleOptionViewItem(option)
+        options = PyQt6.QtWidgets.QStyleOptionViewItem(option)
         self.initStyleOption(options, index)
         
-        doc = PyQt5.QtGui.QTextDocument()
+        doc = PyQt6.QtGui.QTextDocument()
         doc.setHtml(options.text)
         doc.setTextWidth(options.rect.width())
         
-        return PyQt5.QtCore.QSize(doc.idealWidth(), doc.size().height())
+        return PyQt6.QtCore.QSize(doc.idealWidth(), doc.size().height())
 
 
 
-class Table(PyQt5.QtWidgets.QTableView):
+class Table(PyQt6.QtWidgets.QTableView):
     
-    sig_select = PyQt5.QtCore.pyqtSignal(int, int, bool)
-    sig_rmb = PyQt5.QtCore.pyqtSignal()
-    sig_mmb = PyQt5.QtCore.pyqtSignal()
+    sig_select = PyQt6.QtCore.pyqtSignal(int, int, bool)
+    sig_rmb = PyQt6.QtCore.pyqtSignal()
+    sig_mmb = PyQt6.QtCore.pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -229,7 +229,7 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.set_gui()
     
     def _use_mouse(self, event):
-        pos = event.pos()
+        pos = event.position().toPoint()
         self.x_ = pos.x()
         self.y_ = pos.y()
         rowno = self.rowAt(self.y_)
@@ -247,16 +247,16 @@ class Table(PyQt5.QtWidgets.QTableView):
         return self.rowHeight(rowno)
     
     def get_cell_hint(self, index_):
-        option = PyQt5.QtWidgets.QStyleOptionViewItem()
+        option = PyQt6.QtWidgets.QStyleOptionViewItem()
         return self.delegate.sizeHint(option, index_).height()
     
     def get_cell_space(self, index_):
-        option = PyQt5.QtWidgets.QStyleOptionViewItem()
+        option = PyQt6.QtWidgets.QStyleOptionViewItem()
         hint = self.delegate.sizeHint(option, index_)
         return hint.width() * hint.height()
     
     def scroll2index(self, index_):
-        self.scrollTo(index_, PyQt5.QtWidgets.QAbstractItemView.PositionAtTop)
+        self.scrollTo(index_, PyQt6.QtWidgets.QAbstractItemView.ScrollHint.PositionAtTop)
     
     def scroll2top(self):
         self.scrollToTop()
@@ -314,9 +314,9 @@ class Table(PyQt5.QtWidgets.QTableView):
     
     def mousePressEvent(self, event):
         button = event.button()
-        if button == PyQt5.QtCore.Qt.RightButton:
+        if button == PyQt6.QtCore.Qt.MouseButton.RightButton:
             self.sig_rmb.emit()
-        elif button == PyQt5.QtCore.Qt.MiddleButton:
+        elif button == PyQt6.QtCore.Qt.MouseButton.MiddleButton:
             self.sig_mmb.emit()
         super().mousePressEvent(event)
     
@@ -338,8 +338,8 @@ class Table(PyQt5.QtWidgets.QTableView):
         self.hheader.setVisible(False)
         self.vheader.setVisible(False)
         # Do not allow Qt to colorize cell background
-        self.setFocusPolicy(PyQt5.QtCore.Qt.NoFocus)
-        self.setSelectionMode(PyQt5.QtWidgets.QAbstractItemView.NoSelection)
+        self.setFocusPolicy(PyQt6.QtCore.Qt.FocusPolicy.NoFocus)
+        self.setSelectionMode(PyQt6.QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
         self.setMouseTracking(True)
     
     def show_borders(self, Show=False):
@@ -347,21 +347,21 @@ class Table(PyQt5.QtWidgets.QTableView):
 
 
 
-class TableProxy(PyQt5.QtWidgets.QWidget):
+class TableProxy(PyQt6.QtWidgets.QWidget):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.set_gui()
     
     def set_gui(self):
-        self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
+        self.layout_ = PyQt6.QtWidgets.QVBoxLayout()
         self.layout_.setContentsMargins(0, 0, 0, 0)
         self.layout_.addWidget(objs.get_table())
         self.setLayout(self.layout_)
 
 
 
-class ArticleProxy(PyQt5.QtWidgets.QWidget):
+class ArticleProxy(PyQt6.QtWidgets.QWidget):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -369,7 +369,7 @@ class ArticleProxy(PyQt5.QtWidgets.QWidget):
         self.set_gui()
     
     def set_gui(self):
-        self.layout_ = PyQt5.QtWidgets.QStackedLayout()
+        self.layout_ = PyQt6.QtWidgets.QStackedLayout()
         self.layout_.setContentsMargins(0, 0, 0, 0)
         self.layout_.addWidget(welcome.gui.objs.get_welcome())
         self.table = TableProxy()
@@ -405,11 +405,11 @@ class ArticleProxy(PyQt5.QtWidgets.QWidget):
 
 
 
-class App(PyQt5.QtWidgets.QMainWindow):
+class App(PyQt6.QtWidgets.QMainWindow):
     
-    sig_close = PyQt5.QtCore.pyqtSignal()
-    sig_pgdn = PyQt5.QtCore.pyqtSignal()
-    sig_pgup = PyQt5.QtCore.pyqtSignal()
+    sig_close = PyQt6.QtCore.pyqtSignal()
+    sig_pgdn = PyQt6.QtCore.pyqtSignal()
+    sig_pgup = PyQt6.QtCore.pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -425,13 +425,13 @@ class App(PyQt5.QtWidgets.QMainWindow):
         ''' Remove minimized status and restore window with keeping maximized
             or normal state. Works on Linux and Windows 10, but not 11.
         '''
-        self.setWindowState(self.windowState() & ~PyQt5.QtCore.Qt.WindowMinimized | PyQt5.QtCore.Qt.WindowActive)
+        self.setWindowState(self.windowState() & ~PyQt6.QtCore.Qt.WindowState.WindowMinimized | PyQt6.QtCore.Qt.WindowState.WindowActive)
         self.activateWindow()
     
     def keyPressEvent(self, event):
-        if event.key() == PyQt5.QtCore.Qt.Key_PageUp:
+        if event.key() == PyQt6.QtCore.Qt.Key.Key_PageUp:
             self.sig_pgup.emit()
-        elif event.key() == PyQt5.QtCore.Qt.Key_PageDown:
+        elif event.key() == PyQt6.QtCore.Qt.Key.Key_PageDown:
             self.sig_pgdn.emit()
         return super().keyPressEvent(event)
     
@@ -455,8 +455,8 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.setWindowTitle(title)
     
     def set_layout(self):
-        self.parent = PyQt5.QtWidgets.QWidget()
-        self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
+        self.parent = PyQt6.QtWidgets.QWidget()
+        self.layout_ = PyQt6.QtWidgets.QVBoxLayout()
         self.layout_.setContentsMargins(0, 0, 0, 0)
     
     def add_widgets(self):
@@ -476,13 +476,13 @@ class App(PyQt5.QtWidgets.QMainWindow):
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:
-            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+            PyQt6.QtGui.QShortcut(PyQt6.QtGui.QKeySequence(hotkey), self).activated.connect(action)
 
 
 
-class MinPanel(PyQt5.QtWidgets.QWidget):
+class MinPanel(PyQt6.QtWidgets.QWidget):
 
-    sig_hover = PyQt5.QtCore.pyqtSignal(PyQt5.QtCore.QEvent)
+    sig_hover = PyQt6.QtCore.pyqtSignal(PyQt6.QtCore.QEvent)
     
     def __init__(self, parent):
         super().__init__(parent)
@@ -494,7 +494,7 @@ class MinPanel(PyQt5.QtWidgets.QWidget):
 
 
 
-class Panel(PyQt5.QtWidgets.QWidget):
+class Panel(PyQt6.QtWidgets.QWidget):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -626,7 +626,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
         '''
         self.set_delta()
         geom = self.geometry()
-        x = PyQt5.QtGui.QCursor().pos().x() - geom.left()
+        x = PyQt6.QtGui.QCursor().pos().x() - geom.left()
         width = geom.width()
         if 0 <= x <= 30:
             self.slide_right()
@@ -639,7 +639,7 @@ class Panel(PyQt5.QtWidgets.QWidget):
     def set_widgets(self):
         self.setMaximumHeight(44)
         self.panel = MinPanel(self)
-        self.layout_ = PyQt5.QtWidgets.QHBoxLayout()
+        self.layout_ = PyQt6.QtWidgets.QHBoxLayout()
         self.layout_.setContentsMargins(4, 4, 4, 4)
         self.ent_src = Entry()
         self.ent_src.set_min_width(96)
@@ -793,9 +793,9 @@ class Panel(PyQt5.QtWidgets.QWidget):
 
 
 
-class Search(PyQt5.QtWidgets.QWidget):
+class Search(PyQt6.QtWidgets.QWidget):
 
-    sig_close = PyQt5.QtCore.pyqtSignal()
+    sig_close = PyQt6.QtCore.pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -816,7 +816,7 @@ class Search(PyQt5.QtWidgets.QWidget):
         self.setWindowTitle(title)
     
     def add_widgets(self):
-        self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
+        self.layout_ = PyQt6.QtWidgets.QVBoxLayout()
         self.ent_src = sh.Entry()
         self.cbx_cas = sh.CheckBox(_('Case-sensitive'))
         self.btn_cls = sh.Button(_('Close'))
@@ -825,8 +825,8 @@ class Search(PyQt5.QtWidgets.QWidget):
         self.btn_srn = sh.Button(_('Forward'))
         self.layout_.addWidget(self.ent_src.widget)
         self.layout_.addWidget(self.cbx_cas.widget)
-        self.panel = PyQt5.QtWidgets.QWidget()
-        self.btn_lay = PyQt5.QtWidgets.QHBoxLayout()
+        self.panel = PyQt6.QtWidgets.QWidget()
+        self.btn_lay = PyQt6.QtWidgets.QHBoxLayout()
         self.btn_lay.setContentsMargins(4, 4, 4, 4)
         self.btn_lay.addWidget(self.btn_cls.widget)
         self.btn_lay.addWidget(self.btn_clr.widget)
@@ -843,7 +843,7 @@ class Search(PyQt5.QtWidgets.QWidget):
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:
-            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+            PyQt6.QtGui.QShortcut(PyQt6.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def get(self):
         return self.ent_src.get()
@@ -881,7 +881,7 @@ if __name__ == '__main__':
     sh.com.end()
     '''
     import sys
-    exe = PyQt5.QtWidgets.QApplication(sys.argv)
+    exe = PyQt6.QtWidgets.QApplication(sys.argv)
     app = App()
     app.set_gui()
     

@@ -1,16 +1,16 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import PyQt5.QtWidgets
+import PyQt6.QtWidgets
 
 #from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 
-class TableModel(PyQt5.QtCore.QAbstractTableModel):
+class TableModel(PyQt6.QtCore.QAbstractTableModel):
     
     def __init__(self, datain, parent=None, *args):
-        PyQt5.QtCore.QAbstractTableModel.__init__(self, parent, *args)
+        PyQt6.QtCore.QAbstractTableModel.__init__(self, parent, *args)
         self.arraydata = datain
 
     def rowCount(self, parent):
@@ -21,17 +21,17 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
 
     def data(self, index, role):
         if not index.isValid():
-            return PyQt5.QtCore.QVariant()
-        if role == PyQt5.QtCore.Qt.DisplayRole:
+            return PyQt6.QtCore.QVariant()
+        if role == PyQt6.QtCore.Qt.ItemDataRole.DisplayRole:
             try:
-                return PyQt5.QtCore.QVariant(self.arraydata[index.row()][index.column()])
+                return PyQt6.QtCore.QVariant(self.arraydata[index.row()][index.column()])
             except Exception:
                 # We will have this exception regularly for merged cells
-                return PyQt5.QtCore.QVariant()
+                return PyQt6.QtCore.QVariant()
 
 
 
-class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
+class TableDelegate(PyQt6.QtWidgets.QStyledItemDelegate):
     ''' akej74, https://stackoverflow.com/questions/35397943/how-to-make-a-fast-qtableview-with-html-formatted-and-clickable-cells
         #NOTE: Do not set a default font here since Welcome has rows with
         different fonts and wrong sizeHint will be returned causing rows not to
@@ -41,28 +41,28 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         super().__init__(*args, **kwargs)
     
     def paint(self, painter, option, index):
-        # index:   PyQt5.QtCore.QModelIndex
-        # painter: PyQt5.QtGui.QPainter
-        # option:  PyQt5.QtWidgets.QStyleOptionViewItem
-        options = PyQt5.QtWidgets.QStyleOptionViewItem(option)
+        # index:   PyQt6.QtCore.QModelIndex
+        # painter: PyQt6.QtGui.QPainter
+        # option:  PyQt6.QtWidgets.QStyleOptionViewItem
+        options = PyQt6.QtWidgets.QStyleOptionViewItem(option)
         self.initStyleOption(options, index)
         
         if options.widget:
             style = options.widget.style()
         else:
-            style = PyQt5.QtWidgets.QApplication.style()
+            style = PyQt6.QtWidgets.QApplication.style()
         
-        doc = PyQt5.QtGui.QTextDocument()
+        doc = PyQt6.QtGui.QTextDocument()
         doc.setHtml(options.text)
         options.text = ''
         
         # This enables text wrapping in the delegate
         doc.setTextWidth(options.rect.width())
         
-        style.drawControl(PyQt5.QtWidgets.QStyle.CE_ItemViewItem, options, painter)
-        ctx = PyQt5.QtGui.QAbstractTextDocumentLayout.PaintContext()
+        style.drawControl(PyQt6.QtWidgets.QStyle.ControlElement.CE_ItemViewItem, options, painter)
+        ctx = PyQt6.QtGui.QAbstractTextDocumentLayout.PaintContext()
         
-        textRect = style.subElementRect(PyQt5.QtWidgets.QStyle.SE_ItemViewItemText, options)
+        textRect = style.subElementRect(PyQt6.QtWidgets.QStyle.SubElement.SE_ItemViewItemText, options)
         
         painter.save()
     
@@ -74,18 +74,18 @@ class TableDelegate(PyQt5.QtWidgets.QStyledItemDelegate):
         painter.restore()
     
     def sizeHint(self, option, index):
-        options = PyQt5.QtWidgets.QStyleOptionViewItem(option)
+        options = PyQt6.QtWidgets.QStyleOptionViewItem(option)
         self.initStyleOption(options, index)
         
-        doc = PyQt5.QtGui.QTextDocument()
+        doc = PyQt6.QtGui.QTextDocument()
         doc.setHtml(options.text)
         doc.setTextWidth(options.rect.width())
         
-        return PyQt5.QtCore.QSize(doc.idealWidth(), doc.size().height())
+        return PyQt6.QtCore.QSize(doc.idealWidth(), doc.size().height())
 
 
 
-class Welcome(PyQt5.QtWidgets.QWidget):
+class Welcome(PyQt6.QtWidgets.QWidget):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -120,13 +120,13 @@ class Welcome(PyQt5.QtWidgets.QWidget):
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:
-            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+            PyQt6.QtGui.QShortcut(PyQt6.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def centralize(self):
-        self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
+        self.move(sh.objs.get_root().primaryScreen().geometry().center() - self.rect().center())
     
     def set_gui(self):
-        self.layout_ = PyQt5.QtWidgets.QVBoxLayout()
+        self.layout_ = PyQt6.QtWidgets.QVBoxLayout()
         self.layout_.setContentsMargins(0, 0, 0, 0)
         self.table = Table()
         self.layout_.addWidget(self.table)
@@ -134,7 +134,7 @@ class Welcome(PyQt5.QtWidgets.QWidget):
 
 
 
-class Table(PyQt5.QtWidgets.QTableView):
+class Table(PyQt6.QtWidgets.QTableView):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -157,8 +157,8 @@ class Table(PyQt5.QtWidgets.QTableView):
         vheader.setVisible(False)
         self.show_borders(False)
         # Disable selecting cells
-        self.setFocusPolicy(PyQt5.QtCore.Qt.NoFocus)
-        self.setSelectionMode(PyQt5.QtWidgets.QAbstractItemView.NoSelection)
+        self.setFocusPolicy(PyQt6.QtCore.Qt.FocusPolicy.NoFocus)
+        self.setSelectionMode(PyQt6.QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
     
     def resize_rows(self):
         self.resizeRowsToContents()

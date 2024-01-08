@@ -1,17 +1,17 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import PyQt5.QtWidgets
-import PyQt5.QtGui
+import PyQt6.QtWidgets
+import PyQt6.QtGui
 
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
 
-class TableModel(PyQt5.QtCore.QAbstractTableModel):
+class TableModel(PyQt6.QtCore.QAbstractTableModel):
     
     def __init__(self, data, parent=None, *args):
-        PyQt5.QtCore.QAbstractTableModel.__init__(self, parent, *args)
+        PyQt6.QtCore.QAbstractTableModel.__init__(self, parent, *args)
         self.items = data
         self.headers = [_('#'), _('Source'), _('Source language')
                        ,_('Target language'), _('Request')
@@ -35,33 +35,33 @@ class TableModel(PyQt5.QtCore.QAbstractTableModel):
     def data(self, index, role):
         f = '[MClient] history.gui.TableModel.data'
         if not index.isValid():
-            return PyQt5.QtCore.QVariant()
-        if role == PyQt5.QtCore.Qt.DisplayRole:
+            return PyQt6.QtCore.QVariant()
+        if role == PyQt6.QtCore.Qt.ItemDataRole.DisplayRole:
             try:
-                return PyQt5.QtCore.QVariant(self.items[index.row()][index.column()])
+                return PyQt6.QtCore.QVariant(self.items[index.row()][index.column()])
             except Exception:
                 mes = _('List out of bounds at row #{}, column #{}!')
                 mes = mes.format(index.row(), index.column())
                 sh.objs.get_mes(f, mes, True).show_warning()
-                return PyQt5.QtCore.QVariant()
+                return PyQt6.QtCore.QVariant()
     
     def update(self):
         self.layoutChanged.emit()
     
-    def headerData(self, column, orientation, role=PyQt5.QtCore.Qt.DisplayRole):
-        if column == 0 and role == PyQt5.QtCore.Qt.TextAlignmentRole:
-            return PyQt5.QtCore.Qt.AlignCenter
-        if role != PyQt5.QtCore.Qt.DisplayRole:
-            return PyQt5.QtCore.QVariant()
-        if orientation == PyQt5.QtCore.Qt.Horizontal:
-            return PyQt5.QtCore.QVariant(self.get_header(column))
+    def headerData(self, column, orientation, role=PyQt6.QtCore.Qt.ItemDataRole.DisplayRole):
+        if column == 0 and role == PyQt6.QtCore.Qt.ItemDataRole.TextAlignmentRole:
+            return PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter
+        if role != PyQt6.QtCore.Qt.ItemDataRole.DisplayRole:
+            return PyQt6.QtCore.QVariant()
+        if orientation == PyQt6.QtCore.Qt.Orientation.Horizontal:
+            return PyQt6.QtCore.QVariant(self.get_header(column))
 
 
 
-class History(PyQt5.QtWidgets.QWidget):
+class History(PyQt6.QtWidgets.QWidget):
     
-    sig_close = PyQt5.QtCore.pyqtSignal()
-    sig_go = PyQt5.QtCore.pyqtSignal(int)
+    sig_close = PyQt6.QtCore.pyqtSignal()
+    sig_go = PyQt6.QtCore.pyqtSignal(int)
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -77,7 +77,7 @@ class History(PyQt5.QtWidgets.QWidget):
         self.history.selectionModel().clearSelection()
     
     def select_row(self, index_):
-        mode = PyQt5.QtCore.QItemSelectionModel.Select | PyQt5.QtCore.QItemSelectionModel.Rows
+        mode = PyQt6.QtCore.QItemSelectionModel.SelectionFlag.Select | PyQt6.QtCore.QItemSelectionModel.SelectionFlag.Rows
         self.history.selectionModel().select(index_, mode)
     
     def get_model(self):
@@ -97,11 +97,11 @@ class History(PyQt5.QtWidgets.QWidget):
         self.setWindowTitle(title)
     
     def centralize(self):
-        self.move(sh.objs.get_root().desktop().screen().rect().center() - self.rect().center())
+        self.move(sh.objs.get_root().primaryScreen().geometry().center() - self.rect().center())
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:
-            PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+            PyQt6.QtGui.QShortcut(PyQt6.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def set_icon(self):
         # Does not accent None
@@ -117,8 +117,8 @@ class History(PyQt5.QtWidgets.QWidget):
         self.history.header().resizeSection(0, 42)
     
     def set_gui(self):
-        self.layout_ = PyQt5.QtWidgets.QVBoxLayout(self)
-        self.history = PyQt5.QtWidgets.QTreeView()
+        self.layout_ = PyQt6.QtWidgets.QVBoxLayout(self)
+        self.history = PyQt6.QtWidgets.QTreeView()
         self.layout_.addWidget(self.history)
         self.setLayout(self.layout_)
         self.set_icon()
