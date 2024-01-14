@@ -564,7 +564,7 @@ class Settings(PyQt6.QtWidgets.QWidget):
         self.ent_fix.set_max_width(35)
         self.ent_trm.set_max_width(35)
         
-        # 9 -> 11
+        # 10 -> 11
         # self.cbx_no1.change_font_size(1)
         # self.cbx_no2.change_font_size(1)
         # self.cbx_no3.change_font_size(1)
