@@ -58,10 +58,6 @@ class Plugin:
     def get_search(self):
         return self.search
     
-    def set_htm(self, code):
-        # This is needed only for compliance with a general method
-        self.htm = code
-    
     def fix_url(self, url=''):
         # This is needed only for compliance with a general method
         return url
@@ -74,20 +70,20 @@ class Plugin:
     
     def _adapt_lang(self, lang):
         f = '[MClient] plugins.multitrandem.run.Plugin._adapt_lang'
-        if lang:
-            if lang in self.langloc:
-                ind = self.langloc.index(lang)
-                return self.langint[ind]
-            elif lang in self.langint:
-                ind = self.langint.index(lang)
-                return self.langloc[ind]
-            else:
-                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-                modes = self.langloc + self.langint
-                mes = mes.format(lang, ';'.join(modes))
-                sh.objs.get_mes(f, mes).show_error()
-        else:
+        if not lang:
             sh.com.rep_empty(f)
+            return 'English'
+        if lang in self.langloc:
+            ind = self.langloc.index(lang)
+            return self.langint[ind]
+        elif lang in self.langint:
+            ind = self.langint.index(lang)
+            return self.langloc[ind]
+        else:
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            modes = self.langloc + self.langint
+            mes = mes.format(lang, ';'.join(modes))
+            sh.objs.get_mes(f, mes).show_error()
         return 'English'
     
     def set_values(self):
