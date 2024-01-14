@@ -228,7 +228,9 @@ class Subject:
             mes = _('File "{}" does not exist!').format(self.file)
             sh.objs.get_mes(f, mes, True).show_warning()
             return
-        self.text = sh.ReadTextFile(self.file).get()
+        iread = sh.ReadTextFile(self.file)
+        iread._read(CODING)
+        self.text = iread.get()
         if not self.text:
             self.Success = False
             mes = _('Empty output is not allowed!')
