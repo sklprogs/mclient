@@ -1318,6 +1318,9 @@ class Xor:
             code, however, because a ValueError will be raised otherwise.
         '''
         for i in range(len(poses)):
+            if poses[i] > 255:
+                #NOTE: 257 was witnessed in mt_big_demo.rar
+                poses[i] -= 255
             if not 0 <= poses[i] <= 255:
                 mes = _('Invalid value "{}" at position {}!')
                 mes = mes.format(poses[i], i)

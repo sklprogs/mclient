@@ -36,10 +36,15 @@ class Tags:
         if not self.Success:
             sh.com.cancel(f)
             return
-        if len(self.tags) % 2 != 0:
-            mes = _('Wrong input data: "{}"').format(self.tags)
-            sh.objs.get_mes(f, mes, True).show_warning()
+        if not self.tags:
+            sh.com.rep_empty(f)
             return
+        if len(self.tags) % 2 != 0:
+            ''' #TODO: Number of tags was always even in small mt demos. We
+                still have to figure out what does this first attribute do in
+                'mt_big_demo.rar'.
+            '''
+            del self.tags[0]
         for i in range(len(self.tags)):
             if i % 2 == 0:
                 self.types.append(self.tags[i])
