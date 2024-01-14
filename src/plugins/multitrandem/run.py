@@ -97,6 +97,7 @@ class Plugin:
         '''
         self.Parallel = False
         self.Separate = False
+        self.langint = ('English', 'Russian')
         self.langloc = (_('English'), _('Russian'))
         self.cells = []
         self.majors = []
