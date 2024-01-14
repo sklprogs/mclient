@@ -101,6 +101,7 @@ class Plugin:
         self.fixed_urls = {}
         self.art_subj = {}
         self.htm = ''
+        self.text = ''
         self.search = ''
     
     def get_text(self):
