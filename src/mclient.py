@@ -771,6 +771,14 @@ class Table:
             return
         if rowno == self.old_rowno and colno == self.old_colno:
             return
+        if not self.logic.plain:
+            sh.com.rep_empty(f)
+            return
+        if rowno >= len(self.logic.plain) \
+        or colno >= len(self.logic.plain[rowno]):
+            mes = _('Wrong input data: "{}"!').format((rowno, colno,))
+            sh.objs.get_mes(f, mes, True).show_warning()
+            return
         if not self.logic.plain[rowno][colno].strip():
             return
         self.old_rowno = rowno
