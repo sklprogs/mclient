@@ -753,8 +753,8 @@ class Commands:
 
 
 class Table:
-    ''' #NOTE: it's not enough to use 'Success' since we do not call 'reset'
-        before loading an article.
+    ''' To keep the current article functioning if nothing was found, we do not
+        use 'Success' or call 'reset' before filling.
     '''
     def __init__(self, plain=[], code=[]):
         self.set_values()
