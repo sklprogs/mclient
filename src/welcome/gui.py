@@ -80,8 +80,8 @@ class TableDelegate(PyQt6.QtWidgets.QStyledItemDelegate):
         doc = PyQt6.QtGui.QTextDocument()
         doc.setHtml(options.text)
         doc.setTextWidth(options.rect.width())
-        
-        return PyQt6.QtCore.QSize(doc.idealWidth(), doc.size().height())
+        # We have 'float' at input which will crash Qt
+        return PyQt6.QtCore.QSize(int(doc.idealWidth()), int(doc.size().height()))
 
 
 
