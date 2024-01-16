@@ -57,7 +57,7 @@ class Attach:
         self.set_coords()
         self.adjust_x()
         self.adjust_y()
-        return(self.px1, self.px2, self.py1, self.py2)
+        return(int(self.px1), int(self.px2), int(self.py1), int(self.py2))
 
 
 
