@@ -955,17 +955,13 @@ class Table:
     
     def reset(self, plain, code):
         f = '[MClient] mclient.Table.reset'
-        self.set_values()
         if not plain or not code:
-            self.Success = False
             sh.com.rep_empty(f)
+            # Keep old article functioning if nothing was found
             return
+        # Reset values only if the article is not empty
+        self.set_values()
         self.logic.reset(plain, code)
-        #TODO: Do we need this?
-        if not self.logic.plain:
-            self.Success = False
-            sh.com.rep_empty(f)
-            return
         self.model = gi.TableModel(self.logic.code)
         self.fill()
         self.set_col_width()

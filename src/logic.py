@@ -111,6 +111,10 @@ class Articles:
     
     def set_table(self, table):
         f = '[MClient] logic.Articles.set_table'
+        if not table:
+            sh.com.rep_empty(f)
+            # Keep old article
+            return
         try:
             self.articles['ids'][self.id]['table'] = table
         except KeyError:

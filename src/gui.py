@@ -107,6 +107,8 @@ class TableModel(PyQt6.QtCore.QAbstractTableModel):
         return len(self.arraydata)
 
     def columnCount(self, parent):
+        if not self.arraydata:
+            return 0
         return len(self.arraydata[0])
 
     def data(self, index, role):

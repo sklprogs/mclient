@@ -2,7 +2,6 @@ cells:
 - Fix URLs for fixed cells
 
 mclient:
-- Do not stop selecting cells in the previous article if nothing was found
 - Properly update model after blocking new subjects (table index becomes out of
   bounds)
 - Aligning the popup with the cell at top works (Center=false) differently in
