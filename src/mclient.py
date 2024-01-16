@@ -584,9 +584,6 @@ class Table:
     
     def go_page_up(self):
         f = '[MClient] mclient.Table.go_page_up'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         if not self.coords2:
             self.set_coords()
         if not self.coords2:
@@ -609,9 +606,6 @@ class Table:
     
     def go_page_down(self):
         f = '[MClient] mclient.Table.go_page_down'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         if not self.coords2:
             self.set_coords()
         if not self.coords2:
@@ -621,7 +615,7 @@ class Table:
         cur_page = self.coords2[rowno]
         max_page = self.coords2[max(self.coords2.keys())]
         if cur_page > max_page:
-            mes = '{} >= {}'.format(max_page, cur_page)
+            mes = f'{max_page} >= {cur_page}'
             sh.com.rep_condition(f, mes)
             return
         if cur_page == max_page:
@@ -661,87 +655,51 @@ class Table:
         self.popup.show()
     
     def go_next_section(self, no):
-        f = '[MClient] mclient.Table.go_next_section'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_next_row_by_col(rowno, colno, no)
         self.select(rowno, colno)
     
     def go_prev_section(self, no):
-        f = '[MClient] mclient.Table.go_prev_section'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_prev_row_by_col(rowno, colno, no)
         self.select(rowno, colno)
     
     def close_search_next(self):
-        f = '[MClient] mclient.Table.close_search_next'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         self.search.close()
         self.reset_search()
         rowno, colno = self.search.search_next()
         self.select(rowno, colno)
     
     def reset_search(self):
-        f = '[MClient] mclient.Table.reset_search'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         rowno, colno = self.get_cell()
         self.search.reset(self.logic.plain, rowno, colno)
     
     def search_next(self):
-        f = '[MClient] mclient.Table.search_next'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         self.reset_search()
         rowno, colno = self.search.search_next()
         self.select(rowno, colno)
     
     def search_prev(self):
-        f = '[MClient] mclient.Table.search_prev'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         self.reset_search()
         rowno, colno = self.search.search_prev()
         self.select(rowno, colno)
     
     def set_values(self):
-        self.Success = True
         self.model = None
         self.coords = {}
         self.old_rowno = -1
         self.old_colno = -1
     
     def go_end(self):
-        f = '[MClient] mclient.Table.go_end'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         rowno, colno = self.logic.get_end()
         self.select(rowno, colno)
     
     def go_start(self):
-        f = '[MClient] mclient.Table.go_start'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         rowno, colno = self.logic.get_start()
         self.select(rowno, colno)
     
     def go_first_term(self):
         f = '[MClient] mclient.Table.go_first_term'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         cell = self.logic.get_first_term()
         if not cell:
             sh.com.rep_empty(f)
@@ -754,19 +712,12 @@ class Table:
         ''' #NOTE: This should run only after an event since Qt returns dummy
             geometry values right after startup.
         '''
-        f = '[MClient] mclient.Table.go_down'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_next_row(rowno, colno)
         self.select(rowno, colno)
     
     def select(self, rowno, colno, Mouse=False):
         f = '[MClient] mclient.Table.select'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         if Mouse and self.search.Shown:
             return
         if rowno == self.old_rowno and colno == self.old_colno:
@@ -800,55 +751,32 @@ class Table:
         lg.objs.get_articles().set_bookmark(rowno, colno)
     
     def go_up(self):
-        f = '[MClient] mclient.Table.go_up'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_prev_row(rowno, colno)
         self.select(rowno, colno)
     
     def go_line_start(self):
-        f = '[MClient] mclient.Table.go_line_start'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_line_start(rowno)
         self.select(rowno, colno)
     
     def go_line_end(self):
-        f = '[MClient] mclient.Table.go_line_end'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_line_end(rowno)
         self.select(rowno, colno)
     
     def go_left(self):
-        f = '[MClient] mclient.Table.go_left'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_prev_col(rowno, colno)
         self.select(rowno, colno)
     
     def go_right(self):
-        f = '[MClient] mclient.Table.go_right'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_next_col(rowno, colno)
         self.select(rowno, colno)
     
     def scroll_top(self):
         f = '[MClient] mclient.Table.scroll_top'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         if not self.coords or not self.model:
             sh.com.rep_empty(f)
             return
@@ -862,9 +790,6 @@ class Table:
     
     def get_cell(self):
         f = '[MClient] mclient.Table.get_cell'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         try:
             return gi.objs.get_table().get_cell()
         except Exception as e:
@@ -873,9 +798,6 @@ class Table:
     
     def get_cell_text(self):
         f = '[MClient] mclient.Table.get_cell_text'
-        if not self.Success:
-            sh.com.cancel(f)
-            return ''
         if not self.logic.plain:
             sh.com.rep_empty(f)
             return ''
@@ -889,9 +811,6 @@ class Table:
     
     def get_cell_code(self):
         f = '[MClient] mclient.Table.get_cell_code'
-        if not self.Success:
-            sh.com.cancel(f)
-            return ''
         if not self.logic.code:
             sh.com.rep_empty(f)
             return ''
@@ -905,9 +824,6 @@ class Table:
     
     def copy_cell(self):
         f = '[MClient] mclient.Table.copy_cell'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         if not lg.objs.get_articles().get_len():
             # Do not warn when there are no articles yet
             sh.com.rep_lazy(f)
@@ -939,10 +855,6 @@ class Table:
             gi.objs.get_table().set_col_width(no, width)
     
     def go_bookmark(self):
-        f = '[MClient] mclient.Table.go_bookmark'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         bookmark = lg.objs.get_articles().get_bookmark()
         if not bookmark:
             self.go_first_term()
@@ -976,9 +888,6 @@ class Table:
     def set_long(self):
         # Takes ~0.56s for 'set' on Intel Atom
         f = '[MClient] mclient.Table.set_long'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         ilimits = FontLimits (family = cf.objs.config.new['terms']['font']['family']
                              ,size = cf.objs.config.new['terms']['font']['size']
                              ,Bold = False
@@ -1007,9 +916,6 @@ class Table:
             gi.objs.get_table().parent.resizeEvent.
         '''
         f = '[MClient] mclient.Table.set_coords'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
         gi.objs.get_table().scroll2top()
         #TODO: Get rid of this
         self.coords2 = {}
@@ -1025,14 +931,7 @@ class Table:
             self.coords2[rowno] = pageno
     
     def fill(self):
-        f = '[MClient] mclient.Table.fill'
-        if not self.Success:
-            sh.com.cancel(f)
-            return
-        timer = sh.Timer(f)
-        timer.start()
         gi.objs.get_table().set_model(self.model)
-        timer.end()
     
     def set_max_row_height(self, height=150):
         gi.objs.get_table().set_max_row_height(height)
