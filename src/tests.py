@@ -10,11 +10,11 @@ import subjects as sj
 
 DEBUG = True
 
+SEARCH = 'burr'
+URL = ''
 ''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
     otherwise, 'Tags' will fail to set 'subj' and some other types.
 '''
-SEARCH = 'sack'
-URL = ''
 HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/sack (2023-11-05).html'
 
 
@@ -458,10 +458,17 @@ class Get:
         return iget.debug()
     
     def run_multitrandem(self):
+        f = '[MClient] tests.Get.run_multitrandem'
         import logic as lg
         import plugins.multitrandem.get as gt
         lg.objs.get_plugins(Debug=False, maxrows=1000)
-        return str(gt.Get(SEARCH).run())
+        result = gt.Get(SEARCH).run()
+        if not result:
+            sh.com.rep_empty(f)
+            return
+        for i in range(len(result)):
+            result[i] = result[i].decode(gt.CODING)
+        return str(result)
     
     def run_multitrancom(self):
         f = '[MClient] tests.Get.run_multitrancom'
@@ -504,8 +511,16 @@ class Get:
 class Tags:
     
     def run_multitrandem(self):
+        f = '[MClient] tests.Tags.run_multitrandem'
+        import logic as lg
+        import plugins.multitrandem.get as gt
         import plugins.multitrandem.tags as tg
-        itags = tg.Tags(b'\x01abasin\x02\xe0\xe1\xe0\xe7\xe8\xed\x0f37')
+        lg.objs.get_plugins(Debug=False, maxrows=1000)
+        result = gt.Get(SEARCH).run()
+        if not result:
+            sh.com.rep_empty(f)
+            return
+        itags = tg.Tags(result[0])
         itags.run()
         return itags.debug()
     
@@ -1182,13 +1197,15 @@ if __name__ == '__main__':
     #mes = Get().run_multitrandem()
     #idebug = sh.Debug(f, mes)
     #idebug.show()
+    #idebug = sh.Debug(f, Get().run_multitrandem())
+    idebug = sh.Debug(f, Tags().run_multitrandem())
     #idebug = sh.Debug(f, Tags().run_multitrancom())
     #idebug = sh.Debug(f, Elems().run_multitrancom())
     #idebug = sh.Debug(f, Prioritize().run_multitrancom())
     #idebug = sh.Debug(f, View().run_multitrancom())
     #idebug = sh.Debug(f, Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
-    #idebug.show()
+    idebug.show()
     
     #mes = com.run_speech()
     #sh.objs.get_mes(f, mes).show_debug()
@@ -1230,8 +1247,8 @@ if __name__ == '__main__':
     '''
 
     # Welcome
-    iwelcome = com.run_welcome()
-    iwelcome.show()
+    #iwelcome = com.run_welcome()
+    #iwelcome.show()
 
     mes = _('Goodbye!')
     sh.objs.get_mes(f, mes, True).show_debug()
