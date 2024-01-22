@@ -516,12 +516,19 @@ class Tags:
         import plugins.multitrandem.get as gt
         import plugins.multitrandem.tags as tg
         lg.objs.get_plugins(Debug=False, maxrows=1000)
-        result = gt.Get(SEARCH).run()
-        if not result:
+        chunks = gt.Get(SEARCH).run()
+        if not chunks:
             sh.com.rep_empty(f)
             return
-        itags = tg.Tags(result[0])
-        itags.run()
+        tags = []
+        blocks = []
+        for chunk in chunks:
+            itags = tg.Tags(chunk)
+            itags.run()
+            tags += itags.tags
+            blocks += itags.blocks
+        itags.tags = tags
+        itags.blocks = blocks
         return itags.debug()
     
     def run_dsl(self):
@@ -1199,6 +1206,7 @@ if __name__ == '__main__':
     #idebug.show()
     #idebug = sh.Debug(f, Get().run_multitrandem())
     idebug = sh.Debug(f, Tags().run_multitrandem())
+    #idebug = sh.Debug(f, Elems().run_multitrandem())
     #idebug = sh.Debug(f, Tags().run_multitrancom())
     #idebug = sh.Debug(f, Elems().run_multitrancom())
     #idebug = sh.Debug(f, Prioritize().run_multitrancom())
