@@ -27,32 +27,6 @@ class Elems:
             sh.com.rep_empty(f)
             self.blocks = []
     
-    def reorder(self):
-        if len(self.blocks) > 1:
-            pos = -1
-            for i in range(len(self.blocks)):
-                if self.blocks[i].type == 'subj':
-                    pos = i
-                    break
-            if pos >= 0:
-                self.blocks.append(self.blocks[pos])
-                del self.blocks[pos]
-            pos = -1
-            for i in range(len(self.blocks)):
-                if self.blocks[i].type == 'comment':
-                    pos = i
-                    break
-            if pos >= 0:
-                self.blocks.append(self.blocks[pos])
-                del self.blocks[pos]
-            if sh.Text(self.pattern).has_cyrillic():
-                for i in range(len(self.blocks)):
-                    if self.blocks[i-1].type == 'term' \
-                    and self.blocks[i].type == 'term' \
-                    and self.blocks[i-1].lang != 2 \
-                    and self.blocks[i].lang == 2:
-                        self.blocks[i-1], self.blocks[i] = self.blocks[i], self.blocks[i-1]
-    
     def _get_pair(self, text):
         f = '[MClient] plugins.multitrandem.elems.Elems._get_pair'
         code = sh.Input(f, text).get_integer()
@@ -82,8 +56,7 @@ class Elems:
             if block.type != 'subj' or not block.text:
                 continue
             if not self._check_dic_codes(block.text):
-                mes = _('Wrong input data: "{}"!')
-                mes = mes.format(block.text)
+                mes = _('Wrong input data: "{}"!').format(block.text)
                 sh.objs.get_mes(f, mes, True).show_warning()
                 continue
             abbr = []
@@ -282,7 +255,6 @@ class Elems:
         # Do some cleanup
         self.strip()
         # Prepare contents
-        self.reorder()
         self.set_dic_titles()
         self.add_brackets()
         # Prepare for cells

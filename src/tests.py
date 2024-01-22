@@ -10,7 +10,8 @@ import subjects as sj
 
 DEBUG = True
 
-SEARCH = 'burr'
+#SEARCH = 'burr'
+SEARCH = 'order'
 URL = ''
 ''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
     otherwise, 'Tags' will fail to set 'subj' and some other types.
