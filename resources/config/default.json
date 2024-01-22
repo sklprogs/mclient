@@ -209,7 +209,7 @@
 ,"speech7": "Pronoun"
 ,"style": "MClient"
 ,"web_search_url": "http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s"
-,"AlphabetizeTerms": true
+,"AlphabetizeTerms": false
 ,"Autoswap": false
 ,"BlockSubjects": true
 ,"CaptureHotkey": true
@@ -222,7 +222,7 @@
 ,"ShowUserNames": true
 ,"SortByColumns": true
 ,"timeout": "5.0"
-,"hotkey_delay": 600
+,"hotkey_delay": 0
 ,"config": {"min_version": 2}
 ,"popup": {"center": true}
 ,"selection": {"cell": "#FF0000", "block": "#00FFFF"}
