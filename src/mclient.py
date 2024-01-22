@@ -2266,16 +2266,7 @@ if __name__ == '__main__':
     sh.com.start()
     if cf.objs.get_config().Success:
         lg.objs.get_plugins(Debug=False, maxrows=1000)
-        #lg.objs.get_request().search = 'tuple'
-        # lg.objs.get_request().search = 'sack'
-        # timer = sh.Timer(f + ': Showing GUI')
-        # timer.start()
         objs.get_app().run_thread()
-        # lg.com.set_url()
-        # objs.app.load_article (search = lg.objs.get_request().search
-                              # ,url = lg.objs.request.url
-                              # )
-        # timer.end()
         objs.app.welcome.reset()
         objs.app.solve_screen()
         objs.app.show()
