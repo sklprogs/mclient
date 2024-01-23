@@ -10,8 +10,8 @@ import subjects as sj
 
 DEBUG = True
 
-#SEARCH = 'burr'
-SEARCH = 'order'
+SEARCH = 'burr'
+#SEARCH = 'order'
 #SEARCH = 'bus'
 #SEARCH = 'left'
 #SEARCH = 'word'

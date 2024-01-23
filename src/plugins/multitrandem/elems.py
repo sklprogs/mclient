@@ -247,6 +247,21 @@ class Elems:
         for i in range(len(self.cells)):
             self.cells[i].no = i
     
+    def _get_wforms(self):
+        return set([block.text for block in self.blocks if block.type == 'wform'])
+    
+    def remove_dupl_wforms(self):
+        f = '[MClient] plugins.multitrandem.elems.Elems.remove_dupl_wforms'
+        wforms = self._get_wforms()
+        if not wforms:
+            sh.com.rep_lazy(f)
+            return
+        blocks = [block for block in self.blocks \
+                  if not (block.type == 'term' and block.text in wforms)
+                 ]
+        sh.com.rep_deleted(f, len(self.blocks) - len(blocks))
+        self.blocks = blocks
+    
     def run(self):
         f = '[MClient] plugins.multitrandem.elems.Elems.run'
         if not self.Success:
@@ -257,6 +272,7 @@ class Elems:
         # Prepare contents
         self.set_dic_titles()
         self.add_brackets()
+        self.remove_dupl_wforms()
         # Prepare for cells
         self.fill()
         self.remove_fixed()
