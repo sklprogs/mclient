@@ -368,6 +368,7 @@ class Elems:
         i = 1
         while i < len(self.blocks):
             if self.blocks[i-1].cellno != self.blocks[i].cellno:
+                i += 1
                 continue
             cond = False
             if i > 0 and self.blocks[i-1].text:

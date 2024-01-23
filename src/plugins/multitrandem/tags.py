@@ -23,10 +23,11 @@ ptm2 = b'\x02'
 
 class Tags:
     #TODO: elaborate setting languages
-    def __init__(self, chunk, Debug=False, maxrow=20, maxrows=50, lang1=1, lang2=2):
+    def __init__(self, chunk, cellno, Debug=False, maxrow=20, maxrows=50, lang1=1, lang2=2):
         self.set_values()
         self.Debug = Debug
         self.entry = chunk
+        self.cellno = cellno
         self.lang1 = lang1
         self.lang2 = lang2
         self.maxrow = maxrow
@@ -184,6 +185,14 @@ class Tags:
         self.tags = []
         self.types = []
     
+    def set_cellnos(self):
+        f = '[MClient] plugins.multitrandem.tags.Tags.set_cellnos'
+        if not self.Success:
+            sh.com.cancel(f)
+            return
+        for block in self.blocks:
+            block.cellno = self.cellno
+    
     def run(self):
         self.set_langs()
         self.check()
@@ -192,4 +201,5 @@ class Tags:
         self.decode()
         self.get_types()
         self.set_types()
+        self.set_cellnos()
         return self.blocks

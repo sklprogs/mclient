@@ -293,8 +293,8 @@ class Elems:
         if not chunks:
             chunks = []
         blocks = []
-        for chunk in chunks:
-            add = tg.Tags(chunk).run()
+        for i in range(len(chunks)):
+            add = tg.Tags(chunks[i], i).run()
             if add:
                 blocks += add
         ielems = el.Elems (blocks = blocks
