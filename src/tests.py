@@ -12,6 +12,10 @@ DEBUG = True
 
 #SEARCH = 'burr'
 SEARCH = 'order'
+#SEARCH = 'bus'
+#SEARCH = 'left'
+#SEARCH = 'word'
+#SEARCH = 'block'
 URL = ''
 ''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
     otherwise, 'Tags' will fail to set 'subj' and some other types.

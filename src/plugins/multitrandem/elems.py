@@ -399,8 +399,8 @@ class Elems:
                 speech = block.text
             elif block.type == 'transc':
                 transc = block.text
-                ''' #TODO: Is there a difference if we use both
-                    term/phrase here or the term only?
+                ''' #TODO: Is there a difference if we use both term/phrase
+                    here or the term only?
                 '''
             elif block.type in ('term', 'phrase'):
                 term = block.text
@@ -411,10 +411,10 @@ class Elems:
             block.transc = transc
                 
     def insert_fixed(self):
-        dic = wform = speech = ''
+        subj = wform = speech = ''
         i = 0
         while i < len(self.blocks):
-            if dic != self.blocks[i].subj or wform != self.blocks[i].wform \
+            if subj != self.blocks[i].subj or wform != self.blocks[i].wform \
             or speech != self.blocks[i].speech:
                 
                 block = ic.Block()
@@ -457,7 +457,7 @@ class Elems:
                 block.transc = self.blocks[i].transc
                 self.blocks.insert(i, block)
                 
-                dic = self.blocks[i].subj
+                subj = self.blocks[i].subj
                 wform = self.blocks[i].wform
                 speech = self.blocks[i].speech
                 i += 4
