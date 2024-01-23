@@ -15,8 +15,9 @@ pdic = b'\x0f'
 pcom = b'\x06'
 # Corrective comments
 pcor = b''
-# Terms
+# Wforms
 ptm1 = b'\x01'
+# Terms
 ptm2 = b'\x02'
 
 
