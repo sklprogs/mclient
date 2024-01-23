@@ -243,9 +243,17 @@ class Elems:
             i += 1
         sh.com.rep_matches(f, count)
     
-    def renumber(self):
-        for i in range(len(self.cells)):
-            self.cells[i].no = i
+    def set_cellnos(self):
+        cellno = 0
+        cellnos = [0]
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].cellno != self.blocks[i].cellno:
+                cellno += 1
+            cellnos.append(cellno)
+            i += 1
+        for i in range(len(self.blocks)):
+            self.blocks[i].cellno = cellnos[i]
     
     def _get_wforms(self):
         return set([block.text for block in self.blocks if block.type == 'wform'])
@@ -277,20 +285,18 @@ class Elems:
         self.fill()
         self.remove_fixed()
         self.insert_fixed()
+        self.set_cellnos()
         # Extra spaces in the beginning may cause sorting problems
         self.add_space()
         #TODO: expand parts of speech (n -> noun, etc.)
         self.set_cells()
         self.unite_brackets()
         self.set_text()
-        #self.set_fixed_cells()
-        #self.rename_phsubj()
         self.set_row_nos()
-        #self.save_urls()
         self.set_art_subj()
         self.fill_fixed()
         self.delete_fixed()
-        self.renumber()
+        
         return self.cells
     
     def _debug_blocks(self, maxrow=20, maxrows=0):
@@ -430,9 +436,13 @@ class Elems:
     def insert_fixed(self):
         subj = wform = speech = ''
         i = 0
+        cellno = 0
         while i < len(self.blocks):
             if subj != self.blocks[i].subj or wform != self.blocks[i].wform \
             or speech != self.blocks[i].speech:
+                
+                if i > 0:
+                    cellno = self.blocks[i-1].cellno
                 
                 block = ic.Block()
                 block.type = 'speech'
@@ -442,6 +452,8 @@ class Elems:
                 block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
+                cellno += 0.01
+                block.cellno = cellno
                 self.blocks.insert(i, block)
                 
                 block = ic.Block()
@@ -452,6 +464,8 @@ class Elems:
                 block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
+                cellno += 0.01
+                block.cellno = cellno
                 self.blocks.insert(i, block)
 
                 block = ic.Block()
@@ -462,6 +476,8 @@ class Elems:
                 block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
+                cellno += 0.01
+                block.cellno = cellno
                 self.blocks.insert(i, block)
                 
                 block = ic.Block()
@@ -472,6 +488,8 @@ class Elems:
                 block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
+                cellno += 0.01
+                block.cellno = cellno
                 self.blocks.insert(i, block)
                 
                 subj = self.blocks[i].subj
