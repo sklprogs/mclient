@@ -60,7 +60,7 @@ class Tags:
             self.blocks.append(ic.Block())
             self.blocks[-1].text = self.content[i]
             if self.types[i] == self.seplg1:
-                self.blocks[i].type = 'term'
+                self.blocks[i].type = 'wform'
                 self.blocks[i].lang = self.lang1
             elif self.types[i] == self.seplg2:
                 self.blocks[i].type = 'term'
@@ -68,7 +68,7 @@ class Tags:
             elif self.types[i] == self.sepcom:
                 self.blocks[i].type = 'comment'
             elif self.types[i] == self.sepdic:
-                self.blocks[i].type = 'dic'
+                self.blocks[i].type = 'subj'
             else:
                 self.blocks[i].type = 'invalid'
                 #TODO: convert to a string
