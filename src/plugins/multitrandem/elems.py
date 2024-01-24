@@ -103,6 +103,14 @@ class Elems:
         if cell.blocks:
             self.cells.append(cell)
     
+    def renumber(self):
+        f = '[MClient] plugins.multitrandem.elems.Elems.renumber'
+        for cell in self.cells:
+            if not cell.blocks:
+                sh.com.rep_empty(f)
+                continue
+            cell.no = cell.blocks[0].cellno
+    
     def unite_brackets(self):
         ''' Combine a cell with a preceding or following bracket such that the
             user would not see '()' when the cell is ignored/blocked.
@@ -296,7 +304,7 @@ class Elems:
         self.set_art_subj()
         self.fill_fixed()
         self.delete_fixed()
-        
+        self.renumber()
         return self.cells
     
     def _debug_blocks(self, maxrow=20, maxrows=0):
