@@ -167,18 +167,9 @@ class Plugin:
         chunks = iget.run()
         if not chunks:
             chunks = []
-        for chunk in chunks:
-            blocks = tg.Tags(chunk).run()
+        for i in range(len(chunks)):
+            blocks = tg.Tags(chunks[i], i).run()
             if blocks:
-                # Set speech for words only, not for phrases
-                if iget.speech and not ' ' in search:
-                    block = ic.Block()
-                    block.select = 0
-                    block.type = 'wform'
-                    block.text = iget.spabbr
-                    block.wform = iget.spabbr
-                    block.wformf = iget.speech
-                    blocks.insert(0, block)
                 self.blocks += blocks
         self.cells = el.Elems (blocks = self.blocks
                               ,abbr = None
