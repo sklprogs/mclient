@@ -278,6 +278,22 @@ class Elems:
         sh.com.rep_deleted(f, len(self.blocks) - len(blocks))
         self.blocks = blocks
     
+    def _is_block_fixed(self, block):
+        return block.type in ('subj', 'wform', 'speech', 'transc', 'phsubj')
+    
+    def _get_fixed_block(self, cell):
+        for block in cell.blocks:
+            if block.Fixed:
+                return block
+    
+    def set_fixed_blocks(self):
+        for block in self.blocks:
+            block.Fixed = self._is_block_fixed(block)
+    
+    def set_fixed_cells(self):
+        for cell in self.cells:
+            cell.fixed_block = self._get_fixed_block(cell)
+    
     def run(self):
         f = '[MClient] plugins.multitrandem.elems.Elems.run'
         if not self.Success:
@@ -293,6 +309,7 @@ class Elems:
         self.fill()
         self.remove_fixed()
         self.insert_fixed()
+        self.set_fixed_blocks()
         self.set_cellnos()
         # Extra spaces in the beginning may cause sorting problems
         self.add_space()
@@ -300,6 +317,7 @@ class Elems:
         self.set_cells()
         self.unite_brackets()
         self.set_text()
+        self.set_fixed_cells()
         self.set_row_nos()
         self.set_art_subj()
         self.fill_fixed()
