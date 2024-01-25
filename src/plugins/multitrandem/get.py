@@ -96,9 +96,8 @@ class Ending:
         lines = self.text.splitlines()
         lines = [line for line in lines if line]
         if len(lines) <= 1:
-            sub = '{} > 1'.format(len(lines))
-            mes = _('The condition "{}" is not observed!')
-            mes = mes.format(sub)
+            sub = f'{len(lines)} > 1'
+            mes = _('The condition "{}" is not observed!').format(sub)
             sh.objs.get_mes(f, mes, True).show_warning()
             return
         if lines[0] == 'SIK PORTION':
@@ -112,8 +111,7 @@ class Ending:
             if not line:
                 continue
             if len(line) < 2:
-                mes = _('Wrong input data: "{}"!')
-                mes = mes.format(line)
+                mes = _('Wrong input data: "{}"!').format(line)
                 sh.objs.get_mes(f, mes, True).show_warning()
                 continue
             # Remove a gender separator
@@ -296,19 +294,11 @@ class Binary:
             mes = _('No debug info')
             sh.objs.get_mes(f, mes, True).show_debug()
             return chunks
-            mpattern = ['"{}"'.format(com.get_string(pattern)) \
-                        for i in range(len(mchunks))
-                       ]
-            mstart = ['{}'.format(sh.com.set_figure_commas(start)) \
-                      for i in range(len(mchunks))
-                     ]
-            mend = ['{}'.format(sh.com.set_figure_commas(end)) \
-                      for i in range(len(mchunks))
-                   ]
+            mpattern = [f'"{com.get_string(pattern)}"' for i in range(len(mchunks))]
+            mstart = [f'{sh.com.set_figure_commas(start)}' for i in range(len(mchunks))]
+            mend = [f'{sh.com.set_figure_commas(end)}' for i in range(len(mchunks))]
             nos = [i + 1 for i in range(len(chunks))]
-            mchunks = ['"{}"'.format(chunk) \
-                       for chunk in mchunks
-                      ]
+            mchunks = [f'"{chunk}"' for chunk in mchunks]
             headers = ('NO', 'PATTERN', 'START', 'END', 'POS1', 'POS2', 'CHUNK')
             iterable = (nos, mpattern, mstart, mend, mpos1, mpos2, mchunks)
             mes = sh.FastTable (headers = headers
@@ -351,19 +341,11 @@ class Binary:
             return chunks
         if not mchunks:
             return chunks
-        mpattern = ['"{}"'.format(com.get_string(pattern)) \
-                    for i in range(len(mchunks))
-                   ]
-        mstart = ['{}'.format(sh.com.set_figure_commas(start))\
-                  for i in range(len(mchunks))
-                 ]
-        mend = ['{}'.format(sh.com.set_figure_commas(end)) \
-                for i in range(len(mchunks))
-               ]
+        mpattern = [f'"{com.get_string(pattern)}"' for i in range(len(mchunks))]
+        mstart = [f'{sh.com.set_figure_commas(start)}' for i in range(len(mchunks))]
+        mend = [f'{sh.com.set_figure_commas(end)}' for i in range(len(mchunks))]
         nos = [i + 1 for i in range(len(chunks))]
-        mchunks = ['"{}"'.format(chunk) \
-                   for chunk in mchunks
-                  ]
+        mchunks = [f'"{chunk}"' for chunk in mchunks]
         headers = ('NO', 'PATTERN', 'START', 'END', 'POS1', 'POS2', 'CHUNK')
         iterable = (nos, mpattern, mstart, mend, mpos1, mpos2, mchunks)
         mes = sh.FastTable (headers = headers
@@ -415,9 +397,8 @@ class Binary:
         if not self.fsize:
             self.fsize = sh.File(self.file).get_size()
             if DEBUG:
-                mes = _('File "{}" has the size of {}')
                 size = sh.com.get_human_size(self.fsize)
-                mes = mes.format(self.file, size)
+                mes = _('File "{}" has the size of {}').format(self.file, size)
                 sh.objs.get_mes(f, mes, True).show_debug()
         if not self.fsize:
             self.Success = False
@@ -441,8 +422,7 @@ class Binary:
                 pos1 = 0
                 pos2 = self.bsize
                 sub = sh.com.set_figure_commas(pos2)
-                mes = _('Page limits: [{}:{}]')
-                mes = mes.format(pos1, sub)
+                mes = _('Page limits: [{}:{}]').format(pos1, sub)
                 sh.objs.get_mes(f, mes, True).show_debug()
             return(0, self.bsize)
         pos = page_no * self.bsize
@@ -451,17 +431,15 @@ class Binary:
             sh.com.rep_empty(f)
             return
         if len(read) != 2:
-            sub = '{} == 2'.format(len(read))
-            mes = _('The condition "{}" is not observed!')
-            mes = mes.format(sub)
+            sub = f'{len(read)} == 2'
+            mes = _('The condition "{}" is not observed!').format(sub)
             sh.objs.get_mes(f, mes, True).show_warning()
             return
         size = struct.unpack('<h', read)[0]
         size = com.overflowh(size)
         if size <= 0:
-            sub = '{} > 0'.format(size)
-            mes = _('The condition "{}" is not observed!')
-            mes = mes.format(sub)
+            sub = f'{size} > 0'
+            mes = _('The condition "{}" is not observed!').format(sub)
             sh.objs.get_mes(f, mes, True).show_warning()
             return
         if DEBUG:
@@ -473,8 +451,7 @@ class Binary:
         if DEBUG:
             sub1 = sh.com.set_figure_commas(pos1)
             sub2 = sh.com.set_figure_commas(pos2)
-            mes = _('Page limits: [{}:{}]')
-            mes = mes.format(sub1, sub2)
+            mes = _('Page limits: [{}:{}]').format(sub1, sub2)
             sh.objs.get_mes(f, mes, True).show_debug()
         return(pos1, pos2)
     
@@ -494,8 +471,7 @@ class Binary:
             self.bsize = struct.unpack('<h', read)[0]
         except Exception as e:
             self.Success = False
-            mes = _('Third-party module has failed!\n\nDetails: {}')
-            mes = mes.format(e)
+            mes = _('Third-party module has failed!\n\nDetails: {}').format(e)
             sh.objs.get_mes(f, mes, True).show_warning()
         if DEBUG:
             mes = sh.com.set_figure_commas(self.bsize)
@@ -545,9 +521,8 @@ class Binary:
             sh.com.rep_empty(f)
             return
         if index_ <= 2:
-            sub = '{} > 2'.format(index_)
-            mes = _('The condition "{}" is not observed!')
-            mes = mes.format(sub)
+            sub = f'{index_} > 2'
+            mes = _('The condition "{}" is not observed!').format(sub)
             sh.objs.get_mes(f, mes, True).show_warning()
             return
         pos1 = index_ - 2
@@ -585,14 +560,13 @@ class Binary:
             sub2 = sh.com.set_figure_commas(end)
             sub3 = sh.com.set_figure_commas(self.fsize)
             sub = f'0 <= {sub1} < {sub2} <= {sub3}'
-            mes = _('The condition "{}" is not observed!')
-            mes = mes.format(sub)
+            mes = _('The condition "{}" is not observed!').format(sub)
             sh.objs.get_mes(f, mes).show_warning()
             return
         self.imap.seek(start)
         chunk = self.imap.read(end-start)
         if DEBUG:
-            mes = '"{}"'.format(com.get_string(chunk))
+            mes = f'"{com.get_string(chunk)}"'
             sh.objs.get_mes(f, mes, True).show_debug()
         return chunk
     
@@ -609,19 +583,14 @@ class Binary:
         result = self.imap.find(pattern, start, end)
         if DEBUG:
             if end == -1:
-                mes = '{}, "{}" => {}'
-                mes = mes.format (self.bname
-                                 ,com.get_string(pattern)
-                                 ,sh.com.set_figure_commas(result)
-                                 )
+                s_result = sh.com.set_figure_commas(result)
+                mes = f'{self.bname}, "{com.get_string(pattern)}" => {s_result}'
             else:
-                mes = '{}, [{}:{}], "{}" => {}'
-                mes = mes.format (self.bname
-                                 ,sh.com.set_figure_commas(start)
-                                 ,sh.com.set_figure_commas(end)
-                                 ,com.get_string(pattern)
-                                 ,sh.com.set_figure_commas(result)
-                                 )
+                s_start = sh.com.set_figure_commas(start)
+                s_end = sh.com.set_figure_commas(end)
+                s_pattern = com.get_string(pattern)
+                s_result = sh.com.set_figure_commas(result)
+                mes = f'{self.bname}, [{s_start}:{s_end}], "{s_pattern}" => {s_result}'
             sh.objs.get_mes(f, mes, True).show_debug()
         if result >= 0:
             return result
@@ -696,7 +665,7 @@ class UPage(Binary):
             result = pattern.decode(CODING, 'replace')
         else:
             result = com.get_string(pattern, 0)
-        return '"{}"'.format(result)
+        return f'"{result}"'
     
     def _log(self, pattern, i):
         f = '[MClient] plugins.multitrandem.get.UPage._log'
@@ -1460,8 +1429,7 @@ class Glue(UPage):
             sh.com.rep_empty(f)
             return
         if (len(chunk) - 2) % 3 != 0 or len(chunk) == 2:
-            mes = _('Wrong input data: "{}"!')
-            mes = mes.format(com.get_string(chunk))
+            mes = _('Wrong input data: "{}"!').format(com.get_string(chunk))
             sh.objs.get_mes(f, mes).show_warning()
             return
         chunk = chunk[2:]
@@ -1771,18 +1739,10 @@ class Stems(UPage):
                 nos.append(com.unpack(chno))
             if chnos:
                 ids = [i + 1 for i in range(len(nos))]
-                tmp = [sh.com.set_figure_commas(no) \
-                       for no in nos
-                      ]
-                mends = [sh.com.set_figure_commas(end) \
-                         for end in ends
-                        ]
-                mchnos = ['"' + com.get_string(chno) + '"' \
-                          for chno in chnos
-                         ]
-                initial = ['"{}"'.format(com.get_string(chunk))\
-                           for i in range(len(mchnos))
-                          ]
+                tmp = [sh.com.set_figure_commas(no) for no in nos]
+                mends = [sh.com.set_figure_commas(end) for end in ends]
+                mchnos = [f'"{com.get_string(chno)}"' for chno in chnos]
+                initial = [f'"{com.get_string(chunk)}"' for i in range(len(mchnos))]
                 headers = ('NO', 'INITIAL', 'CHUNK', 'UNPACKED', 'END')
                 iterable = (ids, initial, mchnos, tmp, mends)
                 mes = sh.FastTable (headers = headers
