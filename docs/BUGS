@@ -11,7 +11,6 @@ mclient:
 - Fix Stardict (nothing is found)
 - Fix wrong 1st position of a speech part in the Cut-to-the chase mode
 - Changing number of columns causes navigation issues
-- Zero scrollbar position before loading article
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:

@@ -121,15 +121,18 @@ class Block:
         family = self.get_family()
         size = self.get_size()
         color = self.get_color()
-        # Color name must be put in single quotes
         if self.Select:
-            sub = '''<span style="font-family:{}; font-size:{}pt; color:'{}'; background-color:'{}';">{}</span>'''
+            ''' I had to put color values in single quotes in Qt5 to work in
+                the app (however, quotes had to be removed before saving HTML).
+                This is not required now.
+            '''
+            sub = '''<span style="font-family:{}; font-size:{}pt; color:{}; background-color:{};">{}</span>'''
             self.code = sub.format (family, size, color
                                    ,cf.objs.get_config().new['selection']['block']
                                    ,self.block.text
                                    )
         else:
-            sub = '''<span style="font-family:{}; font-size:{}pt; color:'{}';">{}</span>'''
+            sub = '''<span style="font-family:{}; font-size:{}pt; color:{};">{}</span>'''
             self.code = sub.format(family, size, color, self.block.text)
     
     def run(self):
