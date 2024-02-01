@@ -17,10 +17,7 @@ multitrancom:
 - RU-EN, bit: ( and )) are separate cells
 - RU-EN, meh: no blocked entries, "English Thesaurus" covers "multi engine
   helicopter", but it shouldn't
-- RU-EN, piss-poor: article is partly lost
-- https://www.multitran.com/m.exe?s=coregone&l1=2&l2=1&SHL=2: trash words
 - RU-EN, tuple -> мат.: Fix following fixed URLs
-- RU-EN, tuple -> Фразы: source and target phrases do not match
 - EN-RU, tuple -> энка -> tuple -> энка: phsubj is duplicated
 - EN-RU, hoove: loosing selection when moving mouse pointer at the end of the
   article
