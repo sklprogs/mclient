@@ -283,10 +283,10 @@ class Tags:
     def _debug_blocks(self):
         nos = [i + 1 for i in range(len(self.blocks))]
         types = [block.type for block in self.blocks]
-        texts = ['"{}"'.format(block.text) for block in self.blocks]
-        urls = ['"{}"'.format(block.url) for block in self.blocks]
-        subjs = ['"{}"'.format(block.subj) for block in self.blocks]
-        subjfs = ['"{}"'.format(block.subjf) for block in self.blocks]
+        texts = [f'"{block.text}"' for block in self.blocks]
+        urls = [f'"{block.url}"' for block in self.blocks]
+        subjs = [f'"{block.subj}"' for block in self.blocks]
+        subjfs = [f'"{block.subjf}"' for block in self.blocks]
         cellnos = [block.cellno for block in self.blocks]
         iterable = [nos, types, texts, urls, subjs, subjfs, cellnos]
         headers = (_('#'), _('TYPE'), _('TEXT'), 'URL', 'SUBJ', 'SUBJF'
@@ -340,19 +340,18 @@ class Tags:
     def _debug_fragms(self):
         mes = []
         for i in range(len(self.fragms)):
-            sub = '{}: "{}"'.format(i + 1, self.fragms[i])
-            mes.append(sub)
+            mes.append(f'{i+1}: "{self.fragms[i]}"')
         return _('Fragments:') + '\n' + '\n'.join(mes)
     
     def _debug_tags(self):
         nos = [i + 1 for i in range(len(self.tags))]
-        closes = ['{}'.format(tag.Close) for tag in self.tags]
-        names = ['"{}"'.format(tag.name) for tag in self.tags]
-        types = ['"{}"'.format(tag.type) for tag in self.tags]
-        texts = ['"{}"'.format(tag.text) for tag in self.tags]
-        urls = ['"{}"'.format(tag.url) for tag in self.tags]
-        subjfs = ['"{}"'.format(tag.subjf) for tag in self.tags]
-        cellnos = ['{}'.format(tag.cellno) for tag in self.tags]
+        closes = [f'{tag.Close}' for tag in self.tags]
+        names = [f'"{tag.name}"' for tag in self.tags]
+        types = [f'"{tag.type}"' for tag in self.tags]
+        texts = [f'"{tag.text}"' for tag in self.tags]
+        urls = [f'"{tag.url}"' for tag in self.tags]
+        subjfs = [f'"{tag.subjf}"' for tag in self.tags]
+        cellnos = [f'{tag.cellno}' for tag in self.tags]
         inherent = []
         for tag in self.tags:
             subtags = []
@@ -370,8 +369,9 @@ class Tags:
         # 23'' monitor: 30 symbols per a column
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
-                           ,maxrow = 13
+                           ,maxrow = 30
                            ,maxrows = self.maxrows
+                           ,FromEnd = True
                            ).run()
         return _('Tags:') + '\n' + mes
     
@@ -384,11 +384,11 @@ class Tags:
             sh.com.rep_lazy(f)
             return ''
         '''
-        mes = [self._debug_code(), self._debug_fragms()
-              ,self._debug_tags(), self._debug_blocks()
+        mes = [self._debug_code(), self._debug_fragms(), self._debug_tags()
+              ,self._debug_blocks()
               ]
         '''
-        mes = [self._debug_blocks()]
+        mes = [self._debug_tags(), self._debug_blocks()]
         return '\n\n'.join(mes)
     
     def check(self):
