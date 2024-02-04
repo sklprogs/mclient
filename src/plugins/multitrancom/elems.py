@@ -915,6 +915,36 @@ class Elems:
             i += 1
         sh.com.rep_matches(f, count)
     
+    def run_com_sp_com(self):
+        ''' '<em>' tag usually denoting a speech part can actually be
+            a comment: EN-RU: bit.
+        '''
+        f = '[MClient] plugins.multitrancom.elems.Elems.run_com_sp_com'
+        count = 0
+        i = 2
+        while i < len(self.blocks):
+            if self.blocks[i-2].type == 'comment' \
+            and self.blocks[i-1].type == 'speech' \
+            and self.blocks[i].type == 'comment':
+                self.blocks[i-1].type = 'comment'
+            i += 1
+        sh.com.rep_matches(f, count)
+    
+    def unite_comments(self):
+        # Fix dangling brackets: EN-RU: bit
+        f = '[MClient] plugins.multitrancom.elems.Elems.unite_comments'
+        count = 0
+        i = len(self.blocks) - 2
+        while i >= 0:
+            if self.blocks[i].type == self.blocks[i+1].type == 'comment':
+                count += 1
+                self.blocks[i].text = sh.List ([self.blocks[i].text
+                                              ,self.blocks[i+1].text]
+                                              ).space_items()
+                del self.blocks[i+1]
+            i -= 1
+        sh.com.rep_matches(f, count)
+    
     def run(self):
         # Find thesaurus before deleting empty blocks
         self.blocks = Thesaurus(self.blocks).run()
@@ -940,6 +970,8 @@ class Elems:
         self.run_phcount()
         self.strip_blocks()
         self.delete_semi()
+        self.run_com_sp_com()
+        self.unite_comments()
         self.renumber_by_type()
         self.set_cells()
         self.set_urls()
