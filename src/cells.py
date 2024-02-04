@@ -106,15 +106,7 @@ class Omit:
         count = 0
         for cell in self.cells:
             old_len = len(cell.blocks)
-            i = 1
-            while i < len(cell.blocks):
-                if cell.blocks[i].type == 'user':
-                    del cell.blocks[i]
-                    i -= 1
-                if cell.blocks[i-1].text.endswith(' ') \
-                and cell.blocks[i].text == ')':
-                    cell.blocks[i-1].text = cell.blocks[i-1].text.rstrip()
-                i += 1
+            cell.blocks = [block for block in cell.blocks if block.type != 'user']
             delta = old_len - len(cell.blocks)
             if delta:
                 fragms = [block.text for block in cell.blocks]
