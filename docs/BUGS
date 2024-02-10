@@ -2,6 +2,7 @@ cells:
 - Fix URLs for fixed cells
 
 mclient:
+- Alt-Left or Alt-Right: history item is not updated
 - Properly update model after blocking new subjects (table index becomes out of
   bounds)
 - Aligning the popup with the cell at top works (Center=false) differently in
@@ -14,6 +15,10 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
+- RU-EN, detinue: противоправное удержание...: Not shown as shortened
+  (Settings: 6-95-210 of col width)
+- RU-EN, retainer -> соглашение между...: No bottom line
+- RU-EN, jogging [MT mode]: phrases at a wrong position
 - RU-EN, bit: ( and )) are separate cells
 - RU-EN, meh: no blocked entries, "English Thesaurus" covers "multi engine
   helicopter", but it shouldn't
