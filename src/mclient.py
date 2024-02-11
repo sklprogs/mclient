@@ -1414,6 +1414,7 @@ class App:
         lg.objs.plugins.set_lang2(lang2)
         self.reset_opt(cf.objs.config.new['source'])
         self.load_article()
+        self.history.go_up()
     
     def go_next(self):
         f = '[MClient] mclient.App.go_next'
@@ -1436,6 +1437,7 @@ class App:
         lg.objs.plugins.set_lang2(lang2)
         self.reset_opt(cf.objs.config.new['source'])
         self.load_article()
+        self.history.go_down()
     
     def get_width(self):
         return self.gui.get_width()
