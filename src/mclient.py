@@ -1792,7 +1792,7 @@ class App:
             lg.objs.articles.add (search = search
                                  ,url = url
                                  ,cells = cells
-                                 ,fixed_urls = sj.objs.subjects.add_fixed_urls()
+                                 ,fixed_urls = lg.objs.plugins.get_fixed_urls()
                                  ,raw_code = lg.objs.plugins.get_htm()
                                  ,subjf = sj.objs.subjects.article
                                  ,blocked = sj.objs.subjects.block

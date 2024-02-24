@@ -10,7 +10,9 @@ import subjects as sj
 
 DEBUG = True
 
-SEARCH = 'bit'
+#SEARCH = 'hello'
+SEARCH = 'local component'
+#SEARCH = 'bit'
 #SEARCH = 'burr'
 #SEARCH = 'order'
 #SEARCH = 'bus'
@@ -21,7 +23,8 @@ URL = ''
 ''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
     otherwise, 'Tags' will fail to set 'subj' and some other types.
 '''
-HTM_FILE = '/home/pete/docs/mclient_tests/saved_in_browser/bit - 2024-02-04.html'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/local component (2024-02-23).html'
+#HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/hello (2023-10-22).html'
 
 
 class Config:
@@ -1210,7 +1213,7 @@ if __name__ == '__main__':
     #mes = Get().run_multitrandem()
     #idebug = sh.Debug(f, mes)
     #idebug.show()
-    idebug = sh.Debug(f, Elems().run_multitrancom())
+    idebug = sh.Debug(f, Tags().run_multitrancom())
     #idebug = sh.Debug(f, Tags().run_multitrandem())
     #idebug = sh.Debug(f, Elems().run_multitrandem())
     #idebug = sh.Debug(f, Tags().run_multitrancom())

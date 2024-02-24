@@ -225,10 +225,6 @@ class Subjects(Create):
             if subject in (isubj.subj, isubj.subjf):
                 return isubj.prior_index
     
-    def add_fixed_urls(self):
-        #TODO: Rework
-        pass
-    
     def expand(self, subj):
         # Works only for subjects within the current article
         for isubj in self.subjects:
