@@ -41,7 +41,10 @@ import instance as ic
          (same as word forms) ', ə and other marks
     •  Full subj titles:
          ' title="Религия, Латынь">рел., лат.</a></td>'
-    •  Phrase subjects (25 is the number of entries in the subject)
+    •  Phrase section subject:
+         <td class="grayline"><a name="phrases"></a>local component: <a href="/m.exe?a=3&amp;l1=1&amp;l2=2&amp;s=local+component">5 фраз</a> в 3 тематиках</td>
+         td class="grayline"
+    •  Phrase section terms (25 is the number of entries under the subject)
          <td class="phras"><a href="/m.exe?a=3&amp;sc=448&amp;s=computer&amp;l1=1&amp;l2=2">Chemical weapons</a></td><td class="phras_cnt">25</td>
          td class="phras"
     '''
@@ -105,10 +108,6 @@ class AnalyzeTag:
         if self.fragm.startswith('<') and self.fragm.endswith('>'):
             return True
     
-    def _is_phrase(self):
-        # Terms in the 'Phrases' section
-        return 'class="phras"' in self.tag.text
-    
     def _is_term(self):
         return 'class="trans"' in self.tag.text \
         or 'class="trans1"' in self.tag.text \
@@ -148,7 +147,11 @@ class AnalyzeTag:
         return self.tag.text == 'em'
     
     def _is_phrase_subj(self):
-        return 'name="phrases"' in self.tag.text
+        return 'td class="grayline"' in self.tag.text
+    
+    def _is_phrase(self):
+        # Terms in the 'Phrases' section
+        return 'class="phras"' in self.tag.text
     
     def _is_phcount(self):
         return 'class="phras_cnt"' in self.tag.text
