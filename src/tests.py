@@ -710,6 +710,22 @@ class Plugin:
 
 class Commands:
     
+    def get_fixed_urls(self):
+        f = '[MClient] tests.Commands.get_fixed_urls'
+        import json
+        import plugins.multitrancom.cleanup as cu
+        import plugins.multitrancom.tags as tg
+        import plugins.multitrancom.elems as el
+        text = sh.ReadTextFile(HTM_FILE).get()
+        text = cu.CleanUp(text).run()
+        blocks = tg.Tags (text = text
+                         ,maxrows = 0
+                         ).run()
+        ielems = el.Elems(blocks)
+        ielems.run()
+        mes = json.dumps(ielems.fixed_urls, ensure_ascii=False, indent=4)
+        return mes
+    
     def get_all_subjects(self):
         import plugins.multitrancom.subjects as sj
         return sj.objs.get_subjects().dump()
@@ -1213,7 +1229,7 @@ if __name__ == '__main__':
     #mes = Get().run_multitrandem()
     #idebug = sh.Debug(f, mes)
     #idebug.show()
-    idebug = sh.Debug(f, Tags().run_multitrancom())
+    idebug = sh.Debug(f, com.get_fixed_urls())
     #idebug = sh.Debug(f, Tags().run_multitrandem())
     #idebug = sh.Debug(f, Elems().run_multitrandem())
     #idebug = sh.Debug(f, Tags().run_multitrancom())
