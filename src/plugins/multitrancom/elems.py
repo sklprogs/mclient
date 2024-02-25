@@ -727,20 +727,6 @@ class Elems:
             i += 1
         sh.com.rep_matches(f, count)
     
-    def set_phsubj(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.set_phsubj'
-        if len(self.blocks) < 4:
-            sh.com.rep_lazy(f)
-            return
-        i = len(self.blocks) - 1
-        while i >= 0:
-            if self.blocks[i-3].type == 'comment' \
-            and self.blocks[i-2].type == 'comment' \
-            and self.blocks[i-1].type == 'comment' \
-            and self.blocks[i].type == 'phrase':
-                self.blocks[i-3].type = 'phsubj'
-            i -= 1
-    
     def _get_url(self, cell):
         #TODO: Do we need to support several URLs in one cell?
         for block in cell.blocks:
@@ -963,7 +949,6 @@ class Elems:
         self.set_transc()
         self.separate_speech()
         self.convert_user_subj()
-        self.set_phsubj()
         self.set_see_also()
         self.set_fixed_blocks()
         self.separate_fixed()
