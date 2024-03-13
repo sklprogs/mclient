@@ -140,7 +140,7 @@ MClient перехватывает нажатия `Ctrl`, `Ins` и `c` в дру
 
 | Клавиши по умолчанию | Кнопки мыши по умолчанию | Картинка | Действие | Ключ в конфигурационном файле |
 | --- | --- | --- | --- | --- |
-| `Ctrl+Q`, `Alt+F4`, `F10` | нажать крестик | ![image](../resources/buttons/quit_now.png){width="1cm" height="1cm"} | выйти из программы | `actions → quit` |
+| `Ctrl+Q`, `Alt+F4`, `F10` | нажать крестик | <img src="../resources/buttons/quit_now.png" width="36" height="36" /> | выйти из программы | `actions → quit` |
 | Esc | нажать СКМ | | свернуть окно | |
 
 ***
