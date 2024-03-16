@@ -80,11 +80,11 @@
         ,"hint": "Open the current article in a default browser"
         }
     ,"prev_lang1":
-        {"hotkeys": ["Shift+F8", "Ctrl+K"]
+        {"hotkeys": ["Shift+F8", "Shift+Ctrl+K"]
         ,"hint": "Previous source language"
         }
     ,"prev_lang2":
-        {"hotkeys": ["Shift+F9", "Ctrl+L"]
+        {"hotkeys": ["Shift+F9", "Shift+Ctrl+L"]
         ,"hint": "Previous target language"
         }
     ,"print":
