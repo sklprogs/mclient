@@ -138,43 +138,44 @@ MClient перехватывает нажатия `Ctrl`, `Ins` и `c` в дру
 Обозначения: ЛКМ &mdash; левая кнопка мыши, ПКМ &mdash; правая кнопка мыши,
 СКМ &mdash; средняя кнопка мыши.
 
-| Управление с помощью клавиатуры | Управление с мыши | Действие | Ключ в конфигурационном файле |
+
+| Действие | Управление с помощью мыши | Управление с помощью клавиатуры | Ключ в конфигурационном файле |
 | --- | --- | --- | --- |
-| `Ctrl+Q`, `Alt+F4`, `F10` | нажать <img src="../resources/buttons/quit_now.png" width="36" height="36" /> или крестик | выйти из программы | `actions → quit` |
-| Esc | нажать СКМ | свернуть окно | |
-| `F1` | <img src="../resources/buttons/show_about.png" width="36" height="36" /> | сведения о программе | `actions → toggle_about` |
-| `←` | навести указатель | ближайшая ячейка слева | |
-| `→` | навести указатель | ближайшая ячейка справа | |
-| `↑` | навести указатель | предыдущая ячейка текущего столбца | |
-| `↓` | навести указатель | следующая ячейка текущего столбца | |
-| `Home` | навести указатель | первая ячейка текущей строки | |
-| `End` | навести указатель | последняя ячейка текущей строки | |
-| `Ctrl+Home` | использовать СКМ или ползунок | первая ячейка первой строки | |
-| `Ctrl+End` | использовать СКМ или ползунок | последняя ячейка последней строки | |
-| `PageUp` | использовать СКМ или ползунок | предыдущая страница | |
-| `PageDown` | использовать СКМ или ползунок | следующая страница | |
-| `F2`, `Ctrl+S` | <img src="../resources/buttons/save_article.png" width="36" height="36" /> | сохранить или скопировать текущую статью | `actions → save_article` |
-| `F3` | \- | поиск далее | `actions → search_article_forward` |
-| `Shift+F3` | \- | обратный поиск | `actions → search_article_backward` |
-| `Ctrl+F3` | <img src="../resources/buttons/search_article.png" width="36" height="36" /> | новый поиск | `actions → re_search_article` |
-| `F5`, `Ctrl+R` | <img src="../resources/buttons/reload.png" width="36" height="36" /> | перезагрузить статью | `actions → reload_article` |
-| `F7`, `Ctrl+B` | <img src="../resources/buttons/open_in_browser.png" width="36" height="36" /> | открыть в браузере | `actions → open_in_browser` |
-| `F8`, `Ctrl+K` | ЛКМ на выпадающем меню | следующий язык оригинала | `actions → next_lang1` |
-| `F9`, `Ctrl+L` | ЛКМ на выпадающем меню | следующий язык перевода | `actions → next_lang2` |
-| `Shift+F8`, `Shift+Ctrl+K` | ЛКМ на выпадающем меню | предыдущий язык оригинала | `actions → prev_lang1` |
-| `Shift+F9`, `Shift+Ctrl+L` | ЛКМ на выпадающем меню | предыдущий язык перевода | `actions → prev_lang2` |
-| `Ctrl+D` | <img src="../resources/buttons/define.png" width="36" height="36" /> | открыть веб-страницу с определением текущего термина | `actions → define` |
-| `Shift+F7` | \- | скопировать URL текущего термина | `actions → copy_url` |
-| `Ctrl+F7` | \- | скопировать URL текущей статьи | `actions → copy_article_url` |
-| `Return`, `Enter` | нажать ЛКМ или <img src="../resources/buttons/go_search.png" width="36" height="36" /> | вернуть перевод выделенной ячейки | |
-| `Ctrl+Enter` | нажать ПКМ | скопировать текст выделенной ячейки | `actions → copy_sel` |
-| `Ctrl+C+C`, `Ctrl+Ins+Ins` | \- | перевести содержимое буфера обмена из стороннего приложения | |
-| `Ctrl+V` | нажать ПКМ в строке поиска и выбрать **Paste** или нажать <img src="../resources/buttons/paste.png" width="36" height="36" /> | вставить содержимое буфера обмена | |
-| `!` | <img src="../resources/buttons/repeat_sign.png" width="36" height="36" /> | вставить текущий запрос |
-| `!!` | <img src="../resources/buttons/repeat_sign2.png" width="36" height="36" /> | вставить предыдущий запрос | |
-| `Ctrl+E` | <img src="../resources/buttons/spec_symbol.png" width="36" height="36" /> | вставить специальный символ | `actions → toggle_spec_symbols` |
-| `F4, Ctrl+H` | <img src="../resources/buttons/toggle_history.png" width="36" height="36" /> | показать\/закрыть историю | `actions → toggle_history` |
-| `Ctrl+Shift+Del` | | очистить историю | `actions → clear_history` |
+| Выйти из программы | нажать <img src="../resources/buttons/quit_now.png" width="36" height="36" /> или крестик | `Ctrl+Q`, `Alt+F4`, `F10` | `actions → quit` |
+| Свернуть окно | нажать СКМ | Esc | |
+| Показать сведения о программе | <img src="../resources/buttons/show_about.png" width="36" height="36" /> | `F1` | `actions → toggle_about` |
+| Перейти на ближайшую ячейку слева | навести указатель | `←` | |
+| Перейти на ближайшую ячейку справа | навести указатель | `→` | |
+| Перейти на предыдущую ячейку текущего столбца | навести указатель | `↑` | |
+| Перейти на следующую ячейку текущего столбца | навести указатель | `↓` | |
+| Перейти на первую ячейку текущей строки | навести указатель | `Home` | |
+| Перейти на последнюю ячейку текущей строки | навести указатель | `End` | |
+| Перейти на первую ячейку первой строки | использовать СКМ или ползунок | `Ctrl+Home` | |
+| Перейти на последнюю ячейку последней строки | использовать СКМ или ползунок | `Ctrl+End` | |
+| Перейти на предыдущую страницу | использовать СКМ или ползунок | `PageUp` | |
+| Перейти на следующую страницу | использовать СКМ или ползунок | `PageDown` | |
+| Сохранить или скопировать текущую статью | <img src="../resources/buttons/save_article.png" width="36" height="36" /> | `F2`, `Ctrl+S` | `actions → save_article` |
+| Искать вперед | | `F3` `actions → search_article_forward` | |
+| Искать назад | | `Shift+F3` | `actions → search_article_backward` |
+| Начать новый поиск | <img src="../resources/buttons/search_article.png" width="36" height="36" /> | `Ctrl+F3` | `actions → re_search_article` |
+| Перезагрузить статью | <img src="../resources/buttons/reload.png" width="36" height="36" /> | `F5`, `Ctrl+R` | `actions → reload_article` |
+| Открыть в браузере | <img src="../resources/buttons/open_in_browser.png" width="36" height="36" /> | `F7`, `Ctrl+B` | `actions → open_in_browser` |
+| Выбрать следующий язык оригинала | ЛКМ на выпадающем списке языков | `F8`, `Ctrl+K` | `actions → next_lang1` |
+| Выбрать предыдущий язык оригинала | ЛКМ на выпадающем меню | `Shift+F8`, `Shift+Ctrl+K` | `actions → prev_lang1` |
+| Выбрать следующий язык перевода | ЛКМ на выпадающем меню | `F9`, `Ctrl+L` | `actions → next_lang2` |
+| Выбрать предыдущий язык перевода | ЛКМ на выпадающем меню | `Shift+F9`, `Shift+Ctrl+L` | `actions → prev_lang2` |
+| Открыть веб-страницу с определением текущего термина | <img src="../resources/buttons/define.png" width="36" height="36" /> | `Ctrl+D` | `actions → define` |
+| Скопировать URL текущего термина | | `Shift+F7` | `actions → copy_url` |
+| Скопировать URL текущей статьи | | `Ctrl+F7` | `actions → copy_article_url` |
+| Вернуть перевод выделенной ячейки | нажать ЛКМ или <img src="../resources/buttons/go_search.png" width="36" height="36" /> | `Return`, `Enter` | |
+| Скопировать текст выделенной ячейки | нажать ПКМ | `Ctrl+Enter` | `actions → copy_sel` |
+| Перевести содержимое буфера обмена из стороннего приложения | | `Ctrl+C+C`, `Ctrl+Ins+Ins` | |
+| Вставить содержимое буфера обмена | нажать ПКМ в строке поиска и выбрать **Paste** или нажать <img src="../resources/buttons/paste.png" width="36" height="36" /> | `Ctrl+V` | |
+| Вставить текущий запрос | <img src="../resources/buttons/repeat_sign.png" width="36" height="36" /> | `!` | |
+| Вставить предыдущий запрос | <img src="../resources/buttons/repeat_sign2.png" width="36" height="36" /> | `!!` | |
+| Вставить специальный символ | <img src="../resources/buttons/spec_symbol.png" width="36" height="36" /> | `Ctrl+E` | `actions → toggle_spec_symbols` |
+| Показать\/закрыть историю | <img src="../resources/buttons/toggle_history.png" width="36" height="36" /> | `F4, Ctrl+H` | `actions → toggle_history` |
+| Очистить историю | | `Ctrl+Shift+Del` | `actions → clear_history` |
 
 | Alt-←          | ![](           | перейти на     | bind_go_back   |
 |                | Pictures/10000 | предыдущую     |                |
