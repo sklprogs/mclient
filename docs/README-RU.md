@@ -91,13 +91,13 @@ Python 3 и все сопутствующие модули.
      software**.
 1. Запустите терминал (например, нажав `Win+R` и введя `cmd`).
 1. Введите следующее:
-```
-cd %USERPROFILE%
-mkdir sklprogs
-cd sklprogs
-git clone https://github.com/sklprogs/shared_qt.git
-git clone https://github.com/sklprogs/mclient.git
-```
+   ```
+   cd %USERPROFILE%
+   mkdir sklprogs
+   cd sklprogs
+   git clone https://github.com/sklprogs/shared_qt.git
+   git clone https://github.com/sklprogs/mclient.git
+   ```
 1. Установите [Python 3](https://www.python.org/) в `C:\Python`.
    - Выберите добавление Python в `PATH`.
 1. Обновите `pip`, введя в терминале `python -m pip install --upgrade pip`.
