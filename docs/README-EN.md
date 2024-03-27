@@ -18,6 +18,10 @@
 
 [Colors][#colors]
 
+[Fonts][#fonts]
+  - [Fonts on Windows](#fonts-on-windows)
+  - [Fonts on Linux](#fonts-on-linux)
+
 ## Description and Objectives
 
 Multitran Online Client (MClient) is a program which connects to the
@@ -273,22 +277,17 @@ color` (replace `1` with the number of the required column within the range of
 
 ## Fonts
 
-In Windows: Open the directory C:\\WINDOWS\\Fonts and get the short name
-of a desirable font. For example, Times New Roman is designated as
-TIMES, Segoe UI -- as SEGOEUI. Set this short title (case-insensitive)
-after the equal sign.
+### Fonts on Windows
 
-In Linux: Open a directory with fonts, for example, /usr/share/fonts,
-then find the necessary font (for example,
-truetype/ttf-dejavu/DejaVuSansMono.ttf) and extract the title (for
-example, DejaVuSansMono). Set this title (also case-insensitive) after
-the equal sign.
+Available fonts can be found in folders `C:\WINDOWS\Fonts` and
+`C:\Users\<USER>\AppData\Local\Microsoft\Windows\Fonts` (Windows 10 Build 1809
+and later).
 
-As a result, you must get, for example, the following:
+### Fonts on Linux
 
-font_comments_family=Mono
-
-font_comments_size=3
+Для нахождения шрифтов по умолчанию используется утилита `fontconfig`. Чтобы
+вывести список доступных семейств шрифтов, выполните команду `fc-list :
+family`.
 
 -   -   -   -   #### []{#anchor-8}Buttons
 
