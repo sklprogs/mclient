@@ -89,8 +89,8 @@ Python 3 и все сопутствующие модули.
 1. Установите [Git for Windows](https://git-scm.com/download/win).
    - Выберите опцию **Git from the command line and also from 3rd-party
      software**.
-1. Запустите терминал (например, нажав `Win+R` и введя `cmd`).
-1. Введите следующее:
+2. Запустите терминал (например, нажав `Win+R` и введя `cmd`).
+3. Введите следующее:
 ```
 cd %USERPROFILE%
 mkdir sklprogs
@@ -98,13 +98,13 @@ cd sklprogs
 git clone https://github.com/sklprogs/shared_qt.git
 git clone https://github.com/sklprogs/mclient.git
 ```
-1. Установите [Python 3](https://www.python.org/) в `C:\Python`.
+4. Установите [Python 3](https://www.python.org/) в `C:\Python`.
    - Выберите добавление Python в `PATH`.
-1. Обновите `pip`, введя в терминале `python -m pip install --upgrade pip`.
-1. Установите зависимости:
+5. Обновите `pip`, введя в терминале `python -m pip install --upgrade pip`.
+6. Установите зависимости:
    `pip install -r "%USERPROFILE%\sklprogs\mclient\docs\requirements.txt"`.
-1. Установите pyWinhook: `pip install pywinhook`.
-1. Настройте и запустите программу:
+7. Установите pyWinhook: `pip install pywinhook`.
+8. Настройте и запустите программу:
 ```
 move sklprogs\shared_qt\src C:\Python\Lib\site-packages\skl_shared_qt
 move sklprogs\shared_qt\resources C:\Python\Lib\site-packages\resources
@@ -128,7 +128,6 @@ pip install -r "./mclient/docs/requirements.txt"
 ```
 2. Настройте и запустите программу (пути могут отличаться в зависимости от
    версии Python):
-
 ```
 ln -s "$HOME/sklprogs/shared_qt/src" "$HOME/sklprogs/mclient_venv/lib/python3.11/site-packages/skl_shared_qt"
 ln -s "$HOME/sklprogs/shared_qt/resources" "$HOME/sklprogs/mclient_venv/lib/python3.11/site-packages/resources"

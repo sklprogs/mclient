@@ -85,8 +85,8 @@ run `ldd --version`. If the version is too old, update your system.
 1. Install [Git for Windows](https://git-scm.com/download/win).
    - Select the option **Git from the command line and also from 3rd-party
      software**.
-1. Start the terminal (for example, press `Win+R` and enter `cmd`).
-1. Enter the following:
+2. Start the terminal (for example, press `Win+R` and enter `cmd`).
+3. Enter the following:
 ```
 cd %USERPROFILE%
 mkdir sklprogs
@@ -94,14 +94,14 @@ cd sklprogs
 git clone https://github.com/sklprogs/shared_qt.git
 git clone https://github.com/sklprogs/mclient.git
 ```
-1. Install [Python 3](https://www.python.org/) to `C:\Python`.
+4. Install [Python 3](https://www.python.org/) to `C:\Python`.
    - Add Python to `PATH`.
-1. Update `pip` by entering the following in the terminal:
+5. Update `pip` by entering the following in the terminal:
    `python -m pip install --upgrade pip`
-1. Install dependencies:
+6. Install dependencies:
    `pip install -r "%USERPROFILE%\sklprogs\mclient\docs\requirements.txt"`.
-1. Install pyWinhook: `pip install pywinhook`.
-1. Configure and run the program:
+7. Install pyWinhook: `pip install pywinhook`.
+8. Configure and run the program:
 ```
 move sklprogs\shared_qt\src C:\Python\Lib\site-packages\skl_shared_qt
 move sklprogs\shared_qt\resources C:\Python\Lib\site-packages\resources
@@ -125,7 +125,6 @@ pip install -r "./mclient/docs/requirements.txt"
 ```
 2. Configure and run the program (paths may differ depending on your Python
    version):
-
 ```
 ln -s "$HOME/sklprogs/shared_qt/src" "$HOME/sklprogs/mclient_venv/lib/python3.11/site-packages/skl_shared_qt"
 ln -s "$HOME/sklprogs/shared_qt/resources" "$HOME/sklprogs/mclient_venv/lib/python3.11/site-packages/resources"
