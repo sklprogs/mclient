@@ -5,10 +5,12 @@
 [System requirements](#system-requirements)
 
 [Installing and running](#installing-and-running)
-  - [Running Windows build](#running-windows-build)
-  - [Running Linux build](#running-linux-build)
-  - [Running script on Windows](#running-script-on-windows)
-  - [Running script on Linux](#running-script-on-linux)
+  - [Running build](#running-build)
+    - [Running build on Windows](#running-build-on-windows)
+    - [Running build on Linux](#running-build-on-linux)
+  - [Running script](#running-script)
+    - [Running script on Windows](#running-script-on-windows)
+    - [Running script on Linux](#running-script-on-linux)
 
 [Use and functionality](#use-and-functionality)
 
@@ -21,6 +23,14 @@
 [Fonts][#fonts]
   - [Fonts on Windows](#fonts-on-windows)
   - [Fonts on Linux](#fonts-on-linux)
+
+[Buttons](#buttons)
+
+[Issues](#issues)
+
+[To-developers](#to-developers)
+
+***
 
 ## Description and Objectives
 
@@ -47,12 +57,12 @@ Free RAM: 115 Mb (Linux build)
 
 ## Installing and Running
 
-You can run either the build (in the `.exe` format for Windows and `.AppImage`
-for Linux (if available)) or the script (source code) itself. The build
-does not require installation, just copy it in some directory of your
-choice. To run the script, install Python 3 and all dependencies.
+You can run either the build (as `.exe` for Windows and `.AppImage` for Linux
+(if available)) or the script (source code) itself. The build does not require
+installation, just copy it in some directory of your choice. To run the script,
+install Python 3 and all dependencies.
 
-### Running Windows Build
+### Running Build on Windows
 
 Windows 10 or later is required. You may also need to Windows updates and
 [vcredist](https://www.microsoft.com/en-us/download/details.aspx?id=48145).
@@ -61,11 +71,12 @@ Windows 10 or later is required. You may also need to Windows updates and
 1. Unpack the archive to a writeable directory (you may need [7-zip](https://www.7-zip.org/)).
 1. Run `mclient.cmd`.
 
-### Running Linux Build
+### Running Build on Linux
 
+1. Download [mclient-linux-x86_64-glibc2.36.AppImage](https://github.com/sklprogs/mclient/releases/download/latest/mclient-linux-x86_64-glibc2.36.AppImage).
 1. Install FUSE (if not installed).
 1. Allow file execution (for example, by running `chmod +x mclient-linux-x86_64-glibc2.36.AppImage`).
-1. Run the `.AppImage` file.
+1. Run the file as a common application.
 
 ### Running Script on Windows
 
@@ -285,28 +296,23 @@ and later).
 
 ### Fonts on Linux
 
-Для нахождения шрифтов по умолчанию используется утилита `fontconfig`. Чтобы
-вывести список доступных семейств шрифтов, выполните команду `fc-list :
-family`.
+The `fontconfig` utility is used by default to find fonts. To get the list of
+families of available fonts, run `fc-list : family`.
 
--   -   -   -   #### []{#anchor-8}Buttons
+## Buttons
 
-Button images can be set individually. These images must be in a GIF
-format, be present in the *resources *directory and their height and
-width must be the same and equal to *default_button_size* (36 by
-default). The majority of default images have been taken from the Oxygen
-collection.
+You can use your own images for buttons. These images must be in a `.png`
+format and be located in the `resources/buttons` directory. The majority of
+them are taken from the Oxygen collection.
 
--   -   -   -   #### 
-
-        -   ### []{#anchor-9}Issues 
+## Issues
 
 If a dictionary entry is displayed incorrectly, send me an address (URL)
-of this entry or indicate dictionaries being used. You can send me an
-e-mail in the window "About".
+of this entry or indicate dictionaries being used. You can send me an email
+message in the **About** window.
 
--   -   -   ### []{#anchor-10}To developers 
+## To Developers 
 
-The program is distributed on the terms of GPL v.3. The program
-interface is translated (resources/locale) into Russian and English, but
-you can add your own translations.
+The program is distributed on the terms of GPL v.3. The program interface is
+translated into Russian and English (`resources/locale`), but you can add your
+own translations.
