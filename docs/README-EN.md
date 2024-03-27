@@ -57,10 +57,10 @@ Free RAM: 115 Mb (Linux build)
 
 ## Installing and Running
 
-You can run either the build (as `.exe` for Windows and `.AppImage` for Linux
-(if available)) or the script (source code) itself. The build does not require
-installation, just copy it in some directory of your choice. To run the script,
-install Python 3 and all dependencies.
+You can run either a build (as `.exe` for Windows and `.AppImage` for Linux or
+a script (source code) itself. The build does not require installation, just
+copy it in some directory of your choice. To run the script, install Python 3
+and all dependencies.
 
 ### Running Build on Windows
 
@@ -74,6 +74,8 @@ Windows 10 or later is required. You may also need to Windows updates and
 ### Running Build on Linux
 
 1. Download [mclient-linux-x86_64-glibc2.36.AppImage](https://github.com/sklprogs/mclient/releases/download/latest/mclient-linux-x86_64-glibc2.36.AppImage).
+1. The glibc version must be 2.36 or later. To determine the current version,
+run `ldd --version`. If the version is too old, update your system.
 1. Install FUSE (if not installed).
 1. Allow file execution (for example, by running `chmod +x mclient-linux-x86_64-glibc2.36.AppImage`).
 1. Run the file as a common application.
