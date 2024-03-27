@@ -134,7 +134,7 @@ deactivate
 
 Antiviruses may alert about a keylogger, since MClient captures `Ctrl`, `Ins`
 and `c` keypresses in other applications to monitor clipboard. Data on
-keypresses is not stored or sent anywhere. If `Ctrl+c+c` and `Ctrl+Ins+Ins`
+keypresses is not stored or sent anywhere. If `Ctrl+C+C` and `Ctrl+Ins+Ins`
 hotkeys do not work, add MClient to white lists in antiviruses and turn off
 clipboard managers (if any).
 
@@ -170,7 +170,7 @@ The program properly processes such symbols as *á*, *ß*, *è*, and so on.
 | Go to the last cell of the last row | Middle click or slider | `Ctrl+End` | |
 | Go to the previous page | Middle click or slider | `PageUp` | |
 | Go to the next page | Middle click or slider | `PageDown` | |
-| Save or copy the current article | <img src="../resources/buttons/save_article.png" width="36" height="36" /> | `F2`, `Ctrl+S` | `actions → save_article` |
+| Save or copy the current article | <img src="../resources/buttons/save_article.png" width="36" height="36" /> | `Ctrl+S` | `actions → save_article` |
 | Search forward | | `F3` | `actions → search_article_forward` |
 | Search backward | | `Shift+F3` | `actions → search_article_backward` |
 | Start new search | <img src="../resources/buttons/search_article.png" width="36" height="36" /> | `Ctrl+F3` | `actions → re_search_article` |
@@ -182,9 +182,9 @@ The program properly processes such symbols as *á*, *ß*, *è*, and so on.
 | Set the previous target language | Left click on the drop-down list of languages | `Shift+F9`, `Shift+Ctrl+L` | `actions → prev_lang2` |
 | Open a web page with a definition of the current article title | <img src="../resources/buttons/define.png" width="36" height="36" /> | | |
 | Open a web page with a definition of the selected block | | `Ctrl+D` | `actions → define` |
-| Copy the URL of the current term | | `Shift+F7` | `actions → copy_url` |
 | Copy the URL of the current article | | `Ctrl+F7` | `actions → copy_article_url` |
-| Translate the selected cell | Left click or <img src="../resources/buttons/go_search.png" width="36" height="36" /> | `Return`, `Enter` | |
+| Copy the URL of the current term | | `Shift+F7` | `actions → copy_url` |
+| Translate the selected cell | Left click or <img src="../resources/buttons/go_search.png" width="36" height="36" /> | `Enter` | |
 | Copy the text of the selected cell | Right click | `Ctrl+Enter` | `actions → copy_sel` |
 | Translate clipboard from an external application | | `Ctrl+C+C`, `Ctrl+Ins+Ins` | |
 | Paste clipboard | Right click on the search field and select **Paste** or click <img src="../resources/buttons/paste.png" width="36" height="36" /> | `Ctrl+V` | |
