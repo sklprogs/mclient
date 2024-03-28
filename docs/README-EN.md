@@ -159,6 +159,7 @@ The program properly processes such symbols as *á*, *ß*, *è*, and so on.
 | --- | --- | --- | --- |
 | Quit | Click <img src="../resources/buttons/quit_now.png" width="36" height="36" /> or a close button | `Ctrl+Q`, `Alt+F4`, `F10` | `actions → quit` |
 | Minimize | Middle click | `Esc` | |
+| Translate the selected cell | Left click or <img src="../resources/buttons/go_search.png" width="36" height="36" /> | `Enter` | |
 | Show program info | <img src="../resources/buttons/show_about.png" width="36" height="36" /> | `F1` | `actions → toggle_about` |
 | Go to the nearest cell to the left | Mouse over | `←` | |
 | Go to the nearest cell to the right | Mouse over | `→` | |
@@ -178,7 +179,6 @@ The program properly processes such symbols as *á*, *ß*, *è*, and so on.
 | Go to the next section of column #3 | Mouse wheel or slider | `Shift+Down` | `actions → col3_down` |
 | Go to the previous section of column #4 | Mouse wheel or slider | `Ctrl+Shift+Up` | `actions → col4_up` |
 | Go to the next section of column #4 | Mouse wheel or slider | `Ctrl+Shift+Down` | `actions → col4_down` |
-| Save or copy the current article | <img src="../resources/buttons/save_article.png" width="36" height="36" /> | `Ctrl+S` | `actions → save_article` |
 | Search forward | | `F3` | `actions → search_article_forward` |
 | Search backward | | `Shift+F3` | `actions → search_article_backward` |
 | Start new search | <img src="../resources/buttons/search_article.png" width="36" height="36" /> | `Ctrl+F3` | `actions → re_search_article` |
@@ -190,10 +190,12 @@ The program properly processes such symbols as *á*, *ß*, *è*, and so on.
 | Set the previous target language | Left click on the drop-down list of languages | `Shift+F9`, `Shift+Ctrl+L` | `actions → prev_lang2` |
 | Open a web page with a definition of the current article title | <img src="../resources/buttons/define.png" width="36" height="36" /> | | |
 | Open a web page with a definition of the selected block | | `Ctrl+D` | `actions → define` |
+| Save or copy the current article | <img src="../resources/buttons/save_article.png" width="36" height="36" /> | `Ctrl+S` | `actions → save_article` |
 | Copy the URL of the current article | | `Ctrl+F7` | `actions → copy_article_url` |
 | Copy the URL of the current term | | `Shift+F7` | `actions → copy_url` |
-| Translate the selected cell | Left click or <img src="../resources/buttons/go_search.png" width="36" height="36" /> | `Enter` | |
 | Copy the text of the selected cell | Right click | `Ctrl+Enter` | `actions → copy_sel` |
+| Copy a word form corresponding to the selected cell | Select the word form and right click on it | `Ctrl+W` | `actions → copy_nominative` |
+| Look up phrases | | `Alt+F` | `actions → go_phrases` |
 | Translate clipboard from an external application | | `Ctrl+C+C`, `Ctrl+Ins+Ins` | |
 | Paste clipboard | Right click on the search field and select **Paste** or click <img src="../resources/buttons/paste.png" width="36" height="36" /> | `Ctrl+V` | |
 | Paste the current request | <img src="../resources/buttons/repeat_sign.png" width="36" height="36" /> | `!` | |
@@ -205,6 +207,14 @@ The program properly processes such symbols as *á*, *ß*, *è*, and so on.
 | Go to the next article | <img src="../resources/buttons/go_next.png" width="36" height="36" /> | `Alt+Right` | `actions → go_next` |
 | Go to a history item | Left click | ↑, ↓ | |
 | Copy a history item title | Right click | | |
+| Create a printer-friendly page | <img src="../resources/buttons/print.png" width="36" height="36" /> | `Ctrl+P` | `actions → print` |
+| Toggle block-by-block mode | | `F2` | `actions → select_block` |
+| Show a list of blocked subjects  | | `Ctrl+Shift+B` | `actions → show_block` |
+| Show a list of prioritized subjects | | `Ctrl+Shift+P` | `actions → show_prior` |
+| Show settings | <img src="../resources/buttons/settings.png" width="36" height="36" /> | `Alt+S`, `F12` | `actions → toggle_settings` |
+| Swap source and target languages | <img src="../resources/buttons/swap_langs.png" width="36" height="36" /> | `Ctrl+Shift+Space` | `actions → swap_langs` |
+| Toggle cell alphabetization | <img src="../resources/buttons/alphabet_on.png" width="36" height="36" /> | `Alt+A` | `actions → toggle_alphabet` |
+| Toggle subject prioritization | <img src="../resources/buttons/priority_on.png" width="36" height="36" /> | `Alt+P` | `actions → toggle_priority` |
 
 You can change key bindings in the configuration file.
 

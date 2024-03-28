@@ -166,6 +166,7 @@ MClient перехватывает нажатия `Ctrl`, `Ins` и `c` в дру
 | --- | --- | --- | --- |
 | Выйти из программы | Нажать <img src="../resources/buttons/quit_now.png" width="36" height="36" /> или кнопку закрытия | `Ctrl+Q`, `Alt+F4`, `F10` | `actions → quit` |
 | Свернуть окно | Нажать СКМ | `Esc` | |
+| Вернуть перевод выделенной ячейки | Нажать ЛКМ или <img src="../resources/buttons/go_search.png" width="36" height="36" /> | `Enter` | |
 | Показать сведения о программе | <img src="../resources/buttons/show_about.png" width="36" height="36" /> | `F1` | `actions → toggle_about` |
 | Перейти на ближайшую ячейку слева | Навести указатель | `←` | |
 | Перейти на ближайшую ячейку справа | Навести указатель | `→` | |
@@ -185,7 +186,6 @@ MClient перехватывает нажатия `Ctrl`, `Ins` и `c` в дру
 | Перейти в следующий раздел столбца №3 | Использовать СКМ или ползунок | `Shift+Down` | `actions → col3_down` |
 | Перейти в предыдущий раздел столбца №4 | Использовать СКМ или ползунок | `Ctrl+Shift+Up` | `actions → col4_up` |
 | Перейти в следующий раздел столбца №4 | Использовать СКМ или ползунок | `Ctrl+Shift+Down` | `actions → col4_down` |
-| Сохранить или скопировать текущую статью | <img src="../resources/buttons/save_article.png" width="36" height="36" /> | `Ctrl+S` | `actions → save_article` |
 | Искать вперед | | `F3` | `actions → search_article_forward` |
 | Искать назад | | `Shift+F3` | `actions → search_article_backward` |
 | Начать новый поиск | <img src="../resources/buttons/search_article.png" width="36" height="36" /> | `Ctrl+F3` | `actions → re_search_article` |
@@ -197,10 +197,12 @@ MClient перехватывает нажатия `Ctrl`, `Ins` и `c` в дру
 | Выбрать предыдущий язык перевода | ЛКМ на выпадающем списке языков | `Shift+F9`, `Shift+Ctrl+L` | `actions → prev_lang2` |
 | Открыть веб-страницу с определением заголовка текущей статьи | <img src="../resources/buttons/define.png" width="36" height="36" /> | | |
 | Открыть веб-страницу с определением текста текущего блока | | `Ctrl+D` | `actions → define` |
+| Сохранить или скопировать текущую статью | <img src="../resources/buttons/save_article.png" width="36" height="36" /> | `Ctrl+S` | `actions → save_article` |
 | Скопировать URL текущей статьи | | `Ctrl+F7` | `actions → copy_article_url` |
 | Скопировать URL текущей ячейки | | `Shift+F7` | `actions → copy_url` |
-| Вернуть перевод выделенной ячейки | Нажать ЛКМ или <img src="../resources/buttons/go_search.png" width="36" height="36" /> | `Enter` | |
 | Скопировать текст выделенной ячейки | Нажать ПКМ | `Ctrl+Enter` | `actions → copy_sel` |
+| Скопировать словоформу, соответствующую выделенной ячейке | Выделить словоформу и нажать ПКМ | `Ctrl+W` | `actions → copy_nominative` |
+| Посмотреть перевод фраз | | `Alt+F` | `actions → go_phrases` |
 | Перевести содержимое буфера обмена из стороннего приложения | | `Ctrl+C+C`, `Ctrl+Ins+Ins` | |
 | Вставить содержимое буфера обмена | Нажать ПКМ в строке поиска и выбрать **Paste** или нажать <img src="../resources/buttons/paste.png" width="36" height="36" /> | `Ctrl+V` | |
 | Вставить текущий запрос | <img src="../resources/buttons/repeat_sign.png" width="36" height="36" /> | `!` | |
@@ -212,6 +214,14 @@ MClient перехватывает нажатия `Ctrl`, `Ins` и `c` в дру
 | Перейти на следущую статью | <img src="../resources/buttons/go_next.png" width="36" height="36" /> | `Alt+Right` | `actions → go_next` |
 | Перейти на элемент истории | ЛКМ | ↑, ↓ | |
 | Скопировать заголовок элемента истории | ПКМ | | |
+| Печать (предварительный просмотр) | <img src="../resources/buttons/print.png" width="36" height="36" /> | `Ctrl+P` | `actions → print` |
+| Включить\/отключить поблочный режим | | `F2` | `actions → select_block` |
+| Показать список блокируемых тематик | | `Ctrl+Shift+B` | `actions → show_block` |
+| Показать список приоритетных тематик | | `Ctrl+Shift+P` | `actions → show_prior` |
+| Показать настройки | <img src="../resources/buttons/settings.png" width="36" height="36" /> | `Alt+S`, `F12` | `actions → toggle_settings` |
+| Поменять местами языки оригинала и перевода | <img src="../resources/buttons/swap_langs.png" width="36" height="36" /> | `Ctrl+Shift+Space` | `actions → swap_langs` |
+| Включить\/отключить сортировку ячеек по алфавиту | <img src="../resources/buttons/alphabet_on.png" width="36" height="36" /> | `Alt+A` | `actions → toggle_alphabet` |
+| Включить\/отключить приоритизацию тематик | <img src="../resources/buttons/priority_on.png" width="36" height="36" /> | `Alt+P` | `actions → toggle_priority` |
 
 Сочетания клавиш можно сменить в конфигурационном файле.
 
