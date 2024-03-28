@@ -166,10 +166,18 @@ The program properly processes such symbols as *á*, *ß*, *è*, and so on.
 | Go to the next cell of the current column | Mouse over | `↓` | |
 | Go to the first cell of the current row | Mouse over | `Home` | |
 | Go to the last cell of the current row | Mouse over | `End` | |
-| Go to the first cell of the first row | Middle click or slider | `Ctrl+Home` | |
-| Go to the last cell of the last row | Middle click or slider | `Ctrl+End` | |
-| Go to the previous page | Middle click or slider | `PageUp` | |
-| Go to the next page | Middle click or slider | `PageDown` | |
+| Go to the first cell of the first row | Mouse wheel or slider | `Ctrl+Home` | |
+| Go to the last cell of the last row | Mouse wheel or slider | `Ctrl+End` | |
+| Go to the previous page | Mouse wheel or slider | `PageUp` | |
+| Go to the next page | Mouse wheel or slider | `PageDown` | |
+| Go to the previous section of column #1 | Mouse wheel or slider | `Ctrl+Up` | `actions → col1_up` |
+| Go to the next section of column #1 | Mouse wheel or slider | `Ctrl+Down` | `actions → col1_down` |
+| Go to the previous section of column #2 | Mouse wheel or slider | `Alt+Up` | `actions → col2_up` |
+| Go to the next section of column #2 | Mouse wheel or slider | `Alt+Down` | `actions → col2_down` |
+| Go to the previous section of column #3 | Mouse wheel or slider | `Shift+Up` | `actions → col3_up` |
+| Go to the next section of column #3 | Mouse wheel or slider | `Shift+Down` | `actions → col3_down` |
+| Go to the previous section of column #4 | Mouse wheel or slider | `Ctrl+Shift+Up` | `actions → col4_up` |
+| Go to the next section of column #4 | Mouse wheel or slider | `Ctrl+Shift+Down` | `actions → col4_down` |
 | Save or copy the current article | <img src="../resources/buttons/save_article.png" width="36" height="36" /> | `Ctrl+S` | `actions → save_article` |
 | Search forward | | `F3` | `actions → search_article_forward` |
 | Search backward | | `Shift+F3` | `actions → search_article_backward` |
