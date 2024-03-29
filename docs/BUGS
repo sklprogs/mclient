@@ -1,6 +1,3 @@
-cells:
-- Fix URLs for fixed cells
-
 mclient:
 - Alt-Left or Alt-Right: history item is not updated
 - Properly update model after blocking new subjects (table index becomes out of
@@ -15,8 +12,8 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
-- RU-EN: Do Ctrl-c-c for "local component" -> Phrases, repeat. The "Phrases"
-  section is treated like "фраза".
+- RU-EN: Do Ctrl-c-c for "local component" -> Phrases, repeat. Prioritized
+  subjects look like ordinary subjects, fixed urls are not found
 - RU-EN, detinue: противоправное удержание...: Not shown as shortened
   (Settings: 6-95-210 of col width)
 - RU-EN, retainer -> соглашение между...: No bottom line

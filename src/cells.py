@@ -255,7 +255,7 @@ class View:
         self.view = []
         self.cells = cells
         self.fixed_types = lg.com.get_col_types()
-        self.fixed_urls = lg.objs.plugins.get_fixed_urls()
+        self.fixed_urls = lg.objs.get_articles().get_fixed_urls()
 
     def check(self):
         f = '[MClient] cells.View.check'
