@@ -10,21 +10,9 @@ import subjects as sj
 
 DEBUG = True
 
-#SEARCH = 'hello'
-SEARCH = 'local component'
-#SEARCH = 'bit'
-#SEARCH = 'burr'
-#SEARCH = 'order'
-#SEARCH = 'bus'
-#SEARCH = 'left'
-#SEARCH = 'word'
-#SEARCH = 'block'
-URL = ''
-''' #NOTE: The file should be generated with 'plugins.multitrancom.get.Get',
-    otherwise, 'Tags' will fail to set 'subj' and some other types.
-'''
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/local component (2024-02-23).html'
-#HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved with Get.get)/hello (2023-10-22).html'
+SEARCH = 'inundated'
+URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=inundated&l2=2'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/inundated (2024-04-06).html'
 
 
 class Config:
@@ -1215,7 +1203,7 @@ if __name__ == '__main__':
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
     #mes = Tags().run_stardict()
-    #mes = Tags().run_multitrandem()
+    mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
     #mes = Elems().run_multitrandem()
@@ -1227,9 +1215,9 @@ if __name__ == '__main__':
     #mes = Elems().run_multitrandem()
     #mes = Prioritize().run_multitrancom()
     #mes = Get().run_multitrandem()
-    #idebug = sh.Debug(f, mes)
+    idebug = sh.Debug(f, mes)
     #idebug.show()
-    idebug = sh.Debug(f, com.get_fixed_urls())
+    #idebug = sh.Debug(f, com.get_fixed_urls())
     #idebug = sh.Debug(f, Tags().run_multitrandem())
     #idebug = sh.Debug(f, Elems().run_multitrandem())
     #idebug = sh.Debug(f, Tags().run_multitrancom())

@@ -8,7 +8,6 @@ import skl_shared_qt.shared as sh
 
 import instance as ic
 
-
 ''' Tag patterns:
     •  Short subject titles:
          <td class="subj" width="1"><a href="/m.exe?a=110&amp;l1=1&amp;l2=2&amp;s=computer&amp;sc=197">astronaut.</a>
@@ -33,12 +32,14 @@ import instance as ic
     •  Genders:
          <span STYLE="color:gray">n</span>
          span STYLE="color:gray"
-    •  Word forms + thesaurus:
+    •  Word forms:
+         <a name="verb"></a>
+         <a href="/m.exe?a=118&amp;s=inundate&amp;l1=1&amp;l2=2&amp;init=1">inundate</a>
+    •  Thesaurus:
          <td colspan="2" class="gray">&nbsp;(quantity) computer <em>n</em></td>
          td colspan="2" class="gray"
     •  Transcription:
-         <td colspan="2" class="gray">&nbsp;computer <span style="color:gray">kəm'pju:tə</span> <em>n</em> <span style="color:gray">|</span>
-         (same as word forms) ', ə and other marks
+         <span style="color:gray">['ɪnəndeɪt]</span>
     •  Full subj titles:
          ' title="Религия, Латынь">рел., лат.</a></td>'
     •  Phrase section subject:
@@ -138,10 +139,16 @@ class AnalyzeTag:
         return 'href="' in self.tag.text
     
     def _is_wform(self):
-        # Wform/transcription
-        return 'td colspan="' in self.tag.text \
-        or '" class="gray"' in self.tag.text \
-        or ' class="origl"' in self.tag.text
+        return 'a name="verb"' in self.tag.text \
+               or 'a name="noun"' in self.tag.text \
+               or 'a name="adjective"' in self.tag.text \
+               or 'a name="adverb"' in self.tag.text \
+               or 'a name="abbreviation"' in self.tag.text \
+               or 'a name="preposition"' in self.tag.text \
+               or 'a name="interjection"' in self.tag.text \
+               or 'a name="pronoun"' in self.tag.text \
+               or 'a name="word form"' in self.tag.text \
+               or 'a name=""' in self.tag.text
     
     def _is_speech(self):
         return self.tag.text == 'em'
