@@ -14,7 +14,7 @@ class CleanUp:
     
     def fix_wforms(self):
         f = '[MClient] plugins.multitrancom.cleanup.CleanUp.fix_wforms'
-        pattern = r'<a name="(.*?)"></a><a href="(.*?)">(.*?)</a>'
+        pattern = r'<a name="([a-zA-Z]*)"></a><a href="(.*?)">(.*?)</a>'
         matches = re.findall(pattern, self.text)
         if not matches:
             sh.com.rep_lazy(f)
@@ -24,7 +24,7 @@ class CleanUp:
             what = f'<a name="{match[0]}"></a><a href="{match[1]}">{match[2]}</a>'
             with_ = f'<a name="{match[0]}"><a href="{match[1]}">{match[2]}</a></a>'
             old = self.text
-            self.text = self.text.replace(what, with_, 1)
+            self.text = self.text.replace(what, with_)
             if old != self.text:
                 count += 1
         sh.com.rep_matches(f, count)
