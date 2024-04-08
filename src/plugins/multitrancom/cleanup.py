@@ -6,13 +6,28 @@ import re
 from skl_shared_qt.localize import _
 import skl_shared_qt.shared as sh
 
-sep_words_found = 'найдены отдельные слова'
-
 
 class CleanUp:
     
     def __init__(self, text):
         self.text = text
+    
+    def fix_wforms(self):
+        f = '[MClient] plugins.multitrancom.cleanup.CleanUp.fix_wforms'
+        pattern = r'<a name="(.*?)"></a>\n<a href="(.*?)">(.*?)</a>'
+        matches = re.findall(pattern, self.text)
+        if not matches:
+            sh.com.rep_lazy(f)
+            return
+        count = 0
+        for match in matches:
+            what = f'<a name="{match[0]}"></a>\n<a href="{match[1]}">{match[2]}</a>'
+            with_ = f'<a name="{match[0]}">\n<a href="{match[1]}">{match[2]}</a></a>'
+            old = self.text
+            self.text = self.text.replace(what, with_, 1)
+            if old != self.text:
+                count += 1
+        sh.com.rep_matches(f, count)
     
     def delete_trash_tags(self):
         # Do not divide a single block into parts
@@ -93,6 +108,7 @@ class CleanUp:
         self.delete_trash_tags()
         self.fix_href()
         self.fix_tags()
+        self.fix_wforms()
         self.run_common()
         ''' Replace a non-breaking space with a space; can be found before user
             names or thesaurus titles.
