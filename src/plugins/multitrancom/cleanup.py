@@ -14,15 +14,15 @@ class CleanUp:
     
     def fix_wforms(self):
         f = '[MClient] plugins.multitrancom.cleanup.CleanUp.fix_wforms'
-        pattern = r'<a name="(.*?)"></a>\n<a href="(.*?)">(.*?)</a>'
+        pattern = r'<a name="(.*?)"></a><a href="(.*?)">(.*?)</a>'
         matches = re.findall(pattern, self.text)
         if not matches:
             sh.com.rep_lazy(f)
             return
         count = 0
         for match in matches:
-            what = f'<a name="{match[0]}"></a>\n<a href="{match[1]}">{match[2]}</a>'
-            with_ = f'<a name="{match[0]}">\n<a href="{match[1]}">{match[2]}</a></a>'
+            what = f'<a name="{match[0]}"></a><a href="{match[1]}">{match[2]}</a>'
+            with_ = f'<a name="{match[0]}"><a href="{match[1]}">{match[2]}</a></a>'
             old = self.text
             self.text = self.text.replace(what, with_, 1)
             if old != self.text:
@@ -108,8 +108,9 @@ class CleanUp:
         self.delete_trash_tags()
         self.fix_href()
         self.fix_tags()
-        self.fix_wforms()
         self.run_common()
+        # Put this only after 'run_common'
+        self.fix_wforms()
         ''' Replace a non-breaking space with a space; can be found before user
             names or thesaurus titles.
         '''
