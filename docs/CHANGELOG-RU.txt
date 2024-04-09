@@ -1,13 +1,13 @@
 (в разработке)
 * 
 
+7.0.1
+* Адаптация изменений multitran.com
+
 7.0
 * Переход на Qt
-* Добавлены ключи bind_col4_down, bind_col4_up, bind_toggle_popup, row_height
-* Удалены ключи AutoCloseSpecSymbol, bind_clear_search_field,
-  bind_paste_search_field, bind_toggle_sel, bind_toggle_view,
-  bind_toggle_view_alt, AdjustByWidth, Autocompletion, VerticalView
-* Ключ bind_go_forward переименован в bind_go_next
+* Переход на конфигурационный файл в формате JSON
+* Множество мелких улучшений и исправлений
 
 6.14.4
 * Удален блок "Короткая ссылка"

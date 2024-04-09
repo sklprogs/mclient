@@ -1,13 +1,13 @@
 (in development)
 * 
 
+7.0.1
+* Adopt multitran.com updates
+
 7.0
 * Migrate to Qt
-* Add keys bind_col4_down, bind_col4_up and bind_toggle_popup, row_height
-* Delete keys AutoCloseSpecSymbol, bind_clear_search_field,
-  bind_paste_search_field, bind_toggle_sel, bind_toggle_view,
-  bind_toggle_view_alt, AdjustByWidth, Autocompletion, VerticalView
-* Rename bind_go_forward key to bind_go_next
+* Migrate to a config file formatted as JSON
+* Small fixes and improvements
 
 6.14.4
 * Remove "Get short URL" block
