@@ -11,7 +11,7 @@ oslow="linux"
 # by default which is buggy (some blocks are skipped in EN-RU, "hello"
 # article)
 glibc="2.36"
-pythonve="$HOME/software/python/3.11.2_full"
+pythonve="$HOME/software/python/3.11.2_mclient"
 xlibdir="$pythonve/lib/python3.11/site-packages/Xlib"
 schemas="$pythonve/lib/python3.11/site-packages/jsonschema_specifications/schemas"
 binariesdir="$HOME/binaries"
