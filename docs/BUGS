@@ -12,6 +12,7 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
+- RU-EN, well: expressing surprise well!: must be wform
 - RU-EN, inundated: ")" at new lines in many places (column settings: 6-100-250)
 - RU-EN: Do Ctrl-c-c for "local component" -> Phrases, repeat. Prioritized
   subjects look like ordinary subjects, fixed urls are not found

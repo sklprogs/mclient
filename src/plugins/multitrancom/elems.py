@@ -798,9 +798,11 @@ class Elems:
     
     def _get_prev_transc(self, i):
         while i >= 0:
-            if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type == 'transc':
-                return self.cells[i].text
+            if self.cells[i].fixed_block:
+                if self.cells[i].fixed_block.type == 'wform':
+                    return ''
+                if self.cells[i].fixed_block.type == 'transc':
+                    return self.cells[i].text
             i -= 1
         return ''
     

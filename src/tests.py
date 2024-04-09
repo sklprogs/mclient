@@ -12,7 +12,7 @@ DEBUG = True
 
 SEARCH = 'inundated'
 URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=inundated&l2=2'
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/inundated (2024-04-06).html'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/inundated (2024-04-08).html'
 
 
 class Config:
@@ -1206,7 +1206,7 @@ if __name__ == '__main__':
     #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
-    #mes = Elems().run_multitrancom()
+    mes = Elems().run_multitrancom()
     #mes = Subjects().run()
     #mes = View().run_dsl()
     #mes = View().run_stardict()
@@ -1215,8 +1215,8 @@ if __name__ == '__main__':
     #mes = Elems().run_multitrandem()
     #mes = Prioritize().run_multitrancom()
     #mes = Get().run_multitrandem()
-    #idebug = sh.Debug(f, mes)
-    #idebug.show()
+    idebug = sh.Debug(f, mes)
+    idebug.show()
     #idebug = sh.Debug(f, com.get_fixed_urls())
     #idebug = sh.Debug(f, Tags().run_multitrandem())
     #idebug = sh.Debug(f, Elems().run_multitrandem())
@@ -1224,7 +1224,7 @@ if __name__ == '__main__':
     #idebug = sh.Debug(f, Elems().run_multitrancom())
     #idebug = sh.Debug(f, Prioritize().run_multitrancom())
     #idebug = sh.Debug(f, View().run_multitrancom())
-    idebug = sh.Debug(f, Wrap().run_multitrancom())
+    #idebug = sh.Debug(f, Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
     idebug.show()
     
