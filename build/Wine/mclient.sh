@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export WINEPREFIX="$HOME/software/wine/mclient_qt6_3.11.7_win10_x64"
+export WINEPREFIX="$HOME/software/wine/3.11.9_mclient_win10_x64"
 export WINEARCH="win64"
 python="$WINEPREFIX/drive_c/Python"
 pyinstaller="$python/Scripts/pyinstaller.exe"
