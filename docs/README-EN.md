@@ -1,13 +1,36 @@
 # MClient 7.0
+
 [Description and objectives](#description-and-objectives)
+
 [System requirements](#system-requirements)
+
 [Installing and running](#installing-and-running)
-  - [Running Windows build](#running-windows-build)
-  - [Running Linux build](#running-linux-build)
-  - [Running script on Windows](#running-script-on-windows)
-  - [Running script on Linux](#running-script-on-linux)
+  - [Running build](#running-build)
+    - [Running build on Windows](#running-build-on-windows)
+    - [Running build on Linux](#running-build-on-linux)
+  - [Running script](#running-script)
+    - [Running script on Windows](#running-script-on-windows)
+    - [Running script on Linux](#running-script-on-linux)
+
 [Use and functionality](#use-and-functionality)
-[Hotkeys and mouse keys](#hotkeys-and-mouse-keys)
+
+[Keyboard and mouse bindings](#keyboard-and-mouse-bindings)
+
+[Configuration file](#configuration-file)
+
+[Colors][#colors]
+
+[Fonts][#fonts]
+  - [Fonts on Windows](#fonts-on-windows)
+  - [Fonts on Linux](#fonts-on-linux)
+
+[Buttons](#buttons)
+
+[Issues](#issues)
+
+[To-developers](#to-developers)
+
+***
 
 ## Description and Objectives
 
@@ -34,12 +57,12 @@ Free RAM: 115 Mb (Linux build)
 
 ## Installing and Running
 
-You can run either the build (in the `.exe` format for Windows and `.AppImage`
-for Linux (if available)) or the script (source code) itself. The build
-does not require installation, just copy it in some directory of your
-choice. To run the script, install Python 3 and all dependencies.
+You can run either a build (as `.exe` for Windows and `.AppImage` for Linux or
+a script (source code) itself. The build does not require installation, just
+copy it in some directory of your choice. To run the script, install Python 3
+and all dependencies.
 
-### Running Windows Build
+### Running Build on Windows
 
 Windows 10 or later is required. You may also need to Windows updates and
 [vcredist](https://www.microsoft.com/en-us/download/details.aspx?id=48145).
@@ -48,19 +71,22 @@ Windows 10 or later is required. You may also need to Windows updates and
 1. Unpack the archive to a writeable directory (you may need [7-zip](https://www.7-zip.org/)).
 1. Run `mclient.cmd`.
 
-### Running Linux Build
+### Running Build on Linux
 
+1. Download [mclient-linux-x86_64-glibc2.36.AppImage](https://github.com/sklprogs/mclient/releases/download/latest/mclient-linux-x86_64-glibc2.36.AppImage).
+1. The glibc version must be 2.36 or later. To determine the current version,
+run `ldd --version`. If the version is too old, update your system.
 1. Install FUSE (if not installed).
 1. Allow file execution (for example, by running `chmod +x mclient-linux-x86_64-glibc2.36.AppImage`).
-1. Run the `.AppImage` file.
+1. Run the file as a common application.
 
 ### Running Script on Windows
 
 1. Install [Git for Windows](https://git-scm.com/download/win).
    - Select the option **Git from the command line and also from 3rd-party
      software**.
-1. Start the terminal (for example, press `Win+R` and enter `cmd`).
-1. Enter the following:
+2. Start the terminal (for example, press `Win+R` and enter `cmd`).
+3. Enter the following:
 ```
 cd %USERPROFILE%
 mkdir sklprogs
@@ -68,14 +94,14 @@ cd sklprogs
 git clone https://github.com/sklprogs/shared_qt.git
 git clone https://github.com/sklprogs/mclient.git
 ```
-1. Install [Python 3](https://www.python.org/) to `C:\Python`.
+4. Install [Python 3](https://www.python.org/) to `C:\Python`.
    - Add Python to `PATH`.
-1. Update `pip` by entering the following in the terminal:
+5. Update `pip` by entering the following in the terminal:
    `python -m pip install --upgrade pip`
-1. Install dependencies:
+6. Install dependencies:
    `pip install -r "%USERPROFILE%\sklprogs\mclient\docs\requirements.txt"`.
-1. Install pyWinhook: `pip install pywinhook`.
-1. Configure and run the program:
+7. Install pyWinhook: `pip install pywinhook`.
+8. Configure and run the program:
 ```
 move sklprogs\shared_qt\src C:\Python\Lib\site-packages\skl_shared_qt
 move sklprogs\shared_qt\resources C:\Python\Lib\site-packages\resources
@@ -97,9 +123,8 @@ source "./mclient_venv/bin/activate"
 python3 -m pip install --upgrade pip
 pip install -r "./mclient/docs/requirements.txt"
 ```
-1. Configure and run the program (paths may differ depending on your Python
+2. Configure and run the program (paths may differ depending on your Python
    version):
-
 ```
 ln -s "$HOME/sklprogs/shared_qt/src" "$HOME/sklprogs/mclient_venv/lib/python3.11/site-packages/skl_shared_qt"
 ln -s "$HOME/sklprogs/shared_qt/resources" "$HOME/sklprogs/mclient_venv/lib/python3.11/site-packages/resources"
@@ -109,7 +134,7 @@ deactivate
 
 Antiviruses may alert about a keylogger, since MClient captures `Ctrl`, `Ins`
 and `c` keypresses in other applications to monitor clipboard. Data on
-keypresses is not stored or sent anywhere. If `Ctrl+c+c` and `Ctrl+Ins+Ins`
+keypresses is not stored or sent anywhere. If `Ctrl+C+C` and `Ctrl+Ins+Ins`
 hotkeys do not work, add MClient to white lists in antiviruses and turn off
 clipboard managers (if any).
 
@@ -128,416 +153,185 @@ automatically select the relevant declension and number. Thus, if you enter
 
 The program properly processes such symbols as *á*, *ß*, *è*, and so on.
 
-## Hotkeys and Mouse Keys
+## Keyboard and Mouse Bindings
 
-Abbreviations: LMB &mdash; left mouse button, RMB &mdash; right mouse button,
-MMB &mdash; middle mouse button
+| Action | Mouse bindings | Keyboard bindings | Config key |
+| --- | --- | --- | --- |
+| Quit | Click <img src="../resources/buttons/quit_now.png" width="36" height="36" /> or a close button | `Ctrl+Q`, `Alt+F4`, `F10` | `actions → quit` |
+| Minimize | Middle click | `Esc` | |
+| Translate the selected cell | Left click or <img src="../resources/buttons/go_search.png" width="36" height="36" /> | `Enter` | |
+| Show program info | <img src="../resources/buttons/show_about.png" width="36" height="36" /> | `F1` | `actions → toggle_about` |
+| Go to the nearest cell to the left | Mouse over | `←` | |
+| Go to the nearest cell to the right | Mouse over | `→` | |
+| Go to the previous cell of the current column | Mouse over | `↑` | |
+| Go to the next cell of the current column | Mouse over | `↓` | |
+| Go to the first cell of the current row | Mouse over | `Home` | |
+| Go to the last cell of the current row | Mouse over | `End` | |
+| Go to the first cell of the first row | Mouse wheel or slider | `Ctrl+Home` | |
+| Go to the last cell of the last row | Mouse wheel or slider | `Ctrl+End` | |
+| Go to the previous page | Mouse wheel or slider | `PageUp` | |
+| Go to the next page | Mouse wheel or slider | `PageDown` | |
+| Go to the previous section of column #1 | Mouse wheel or slider | `Ctrl+Up` | `actions → col1_up` |
+| Go to the next section of column #1 | Mouse wheel or slider | `Ctrl+Down` | `actions → col1_down` |
+| Go to the previous section of column #2 | Mouse wheel or slider | `Alt+Up` | `actions → col2_up` |
+| Go to the next section of column #2 | Mouse wheel or slider | `Alt+Down` | `actions → col2_down` |
+| Go to the previous section of column #3 | Mouse wheel or slider | `Shift+Up` | `actions → col3_up` |
+| Go to the next section of column #3 | Mouse wheel or slider | `Shift+Down` | `actions → col3_down` |
+| Go to the previous section of column #4 | Mouse wheel or slider | `Ctrl+Shift+Up` | `actions → col4_up` |
+| Go to the next section of column #4 | Mouse wheel or slider | `Ctrl+Shift+Down` | `actions → col4_down` |
+| Search forward | | `F3` | `actions → search_article_forward` |
+| Search backward | | `Shift+F3` | `actions → search_article_backward` |
+| Start new search | <img src="../resources/buttons/search_article.png" width="36" height="36" /> | `Ctrl+F3` | `actions → re_search_article` |
+| Reload the article | <img src="../resources/buttons/reload.png" width="36" height="36" /> | `F5`, `Ctrl+R` | `actions → reload_article` |
+| Open in a browser | <img src="../resources/buttons/open_in_browser.png" width="36" height="36" /> | `F7`, `Ctrl+B` | `actions → open_in_browser` |
+| Set the next source language | Left click on the drop-down list of languages | `F8`, `Ctrl+K` | `actions → next_lang1` |
+| Set the previous source language | Left click on the drop-down list of languages | `Shift+F8`, `Shift+Ctrl+K` | `actions → prev_lang1` |
+| Set the next target language | Left click on the drop-down list of languages | `F9`, `Ctrl+L` | `actions → next_lang2` |
+| Set the previous target language | Left click on the drop-down list of languages | `Shift+F9`, `Shift+Ctrl+L` | `actions → prev_lang2` |
+| Open a web page with a definition of the current article title | <img src="../resources/buttons/define.png" width="36" height="36" /> | | |
+| Open a web page with a definition of the selected block | | `Ctrl+D` | `actions → define` |
+| Save or copy the current article | <img src="../resources/buttons/save_article.png" width="36" height="36" /> | `Ctrl+S` | `actions → save_article` |
+| Copy the URL of the current article | | `Ctrl+F7` | `actions → copy_article_url` |
+| Copy the URL of the current term | | `Shift+F7` | `actions → copy_url` |
+| Copy the text of the selected cell | Right click | `Ctrl+Enter` | `actions → copy_sel` |
+| Copy a word form corresponding to the selected cell | Select the word form and right click on it | `Ctrl+W` | `actions → copy_nominative` |
+| Look up phrases | | `Alt+F` | `actions → go_phrases` |
+| Translate clipboard from an external application | | `Ctrl+C+C`, `Ctrl+Ins+Ins` | |
+| Paste clipboard | Right click on the search field and select **Paste** or click <img src="../resources/buttons/paste.png" width="36" height="36" /> | `Ctrl+V` | |
+| Paste the current request | <img src="../resources/buttons/repeat_sign.png" width="36" height="36" /> | `!` | |
+| Paste the previous request | <img src="../resources/buttons/repeat_sign2.png" width="36" height="36" /> | `!!` | |
+| Paste a special symbol | <img src="../resources/buttons/spec_symbol.png" width="36" height="36" /> | `Ctrl+E` | `actions → toggle_spec_symbols` |
+| Toggle history | <img src="../resources/buttons/toggle_history.png" width="36" height="36" /> | `F4, Ctrl+H` | `actions → toggle_history` |
+| Clear history | | `Ctrl+Shift+Del` | `actions → clear_history` |
+| Go to the previous article | <img src="../resources/buttons/go_back.png" width="36" height="36" /> | `Alt+Left` | `actions → go_back` |
+| Go to the next article | <img src="../resources/buttons/go_next.png" width="36" height="36" /> | `Alt+Right` | `actions → go_next` |
+| Go to a history item | Left click | ↑, ↓ | |
+| Copy a history item title | Right click | | |
+| Create a printer-friendly page | <img src="../resources/buttons/print.png" width="36" height="36" /> | `Ctrl+P` | `actions → print` |
+| Toggle block-by-block mode | | `F2` | `actions → select_block` |
+| Show a list of blocked subjects  | | `Ctrl+Shift+B` | `actions → show_block` |
+| Show a list of prioritized subjects | | `Ctrl+Shift+P` | `actions → show_prior` |
+| Show settings | <img src="../resources/buttons/settings.png" width="36" height="36" /> | `Alt+S`, `F12` | `actions → toggle_settings` |
+| Swap source and target languages | <img src="../resources/buttons/swap_langs.png" width="36" height="36" /> | `Ctrl+Shift+Space` | `actions → swap_langs` |
+| Toggle cell alphabetization | <img src="../resources/buttons/alphabet_on.png" width="36" height="36" /> | `Alt+A` | `actions → toggle_alphabet` |
+| Toggle subject prioritization | <img src="../resources/buttons/priority_on.png" width="36" height="36" /> | `Alt+P` | `actions → toggle_priority` |
 
-+----------------+----------------+----------------+----------------+
-| Hotkeys        | Mouse          | Action         | Config Key     |
-+----------------+----------------+----------------+----------------+
-|                |                |                |                |
-+----------------+----------------+----------------+----------------+
-| Ctrl-q,        | click X        | quit the       | bind_quit      |
-| Alt-F4, F10    |                | program        |                |
-+----------------+----------------+----------------+----------------+
-| Esc            | click MMB      | minimize the   |                |
-|                |                | window         |                |
-+----------------+----------------+----------------+----------------+
-| F1             | Button "About" | program info   | b              |
-|                |                |                | ind_show_about |
-+----------------+----------------+----------------+----------------+
-|                |                |                |                |
-+----------------+----------------+----------------+----------------+
-| ←              | point at a     | go to the      |                |
-|                | cell           | nearest cell   |                |
-|                |                | to the left    |                |
-+----------------+----------------+----------------+----------------+
-| →              | point at a     | the nearest    |                |
-|                | cell           | cell to the    |                |
-|                |                | right          |                |
-+----------------+----------------+----------------+----------------+
-| ↑              | point at a     | the previous   |                |
-|                | cell           | cell of the    |                |
-|                |                | current column |                |
-+----------------+----------------+----------------+----------------+
-| ↓              | point at a     | the following  |                |
-|                | cell           | cell of the    |                |
-|                |                | current column |                |
-+----------------+----------------+----------------+----------------+
-| Home           | point at a     | the first cell |                |
-|                | cell           | of the current |                |
-|                |                | line           |                |
-+----------------+----------------+----------------+----------------+
-| End            | point at a     | the last cell  |                |
-|                | cell           | of the current |                |
-|                |                | line           |                |
-+----------------+----------------+----------------+----------------+
-| Ctrl-Home      | use the mouse  | the first cell |                |
-|                | wheel to go to | of the article |                |
-|                | the 1^st^      |                |                |
-|                | page, point at |                |                |
-|                | a term, use    |                |                |
-|                | LMB            |                |                |
-+----------------+----------------+----------------+----------------+
-| Ctrl-End       | use the mouse  | the last cell  |                |
-|                | wheel to go to | of the article |                |
-|                | the last page, |                |                |
-|                | point at a     |                |                |
-|                | term, use LMB  |                |                |
-+----------------+----------------+----------------+----------------+
-| PageUp         | wheel up       | the preceding  |                |
-|                |                | page           |                |
-+----------------+----------------+----------------+----------------+
-| PageDown       | wheel down     | the following  |                |
-|                |                | page           |                |
-+----------------+----------------+----------------+----------------+
-|                |                |                |                |
-+----------------+----------------+----------------+----------------+
-| F2, Ctrl-s     | ![](           | save or copy   | bind           |
-|                | Pictures/10000 |                | _save_article, |
-|                | 00100000024000 |                | bind_sa        |
-|                | 00024B727DC6C2 |                | ve_article_alt |
-|                | 6280AA2.gif){w |                |                |
-|                | idth="0.953cm" |                |                |
-|                | height="0      |                |                |
-|                | .953cm"}Button |                |                |
-+----------------+----------------+----------------+----------------+
-| F3             | \-             | search down    | bind_search_a  |
-|                |                |                | rticle_forward |
-+----------------+----------------+----------------+----------------+
-| Shift-F3       | \-             | reverse search | bind_search_ar |
-|                |                |                | ticle_backward |
-+----------------+----------------+----------------+----------------+
-| Ctrl-F3        | ![](           | new search     | bind_re_       |
-|                | Pictures/10000 |                | search_article |
-|                | 00100000024000 |                |                |
-|                | 000247241776DD |                |                |
-|                | F923AC7.gif){w |                |                |
-|                | idth="0.953cm" |                |                |
-|                | height="0      |                |                |
-|                | .953cm"}Button |                |                |
-+----------------+----------------+----------------+----------------+
-| F5, Ctrl-r     | ![](           | reload         | bind_r         |
-|                | Pictures/10000 |                | eload_article, |
-|                | 00100000024000 |                | bind_relo      |
-|                | 000245D3002727 |                | ad_article_alt |
-|                | 43C464A.gif){w |                |                |
-|                | idth="0.953cm" |                |                |
-|                | height="0      |                |                |
-|                | .953cm"}Button |                |                |
-+----------------+----------------+----------------+----------------+
-| F6, Alt-v      | ![](           | toggle the     | bin            |
-|                | Pictures/10000 | article view   | d_toggle_view, |
-|                | 00100000024000 | mode           | bind_t         |
-|                | 00024304DC9694 |                | oggle_view_alt |
-|                | 3D19DB9.gif){w |                |                |
-|                | idth="0.953cm" |                |                |
-|                | height="0      |                |                |
-|                | .953cm"}Button |                |                |
-+----------------+----------------+----------------+----------------+
-| F7, Ctrl-b     | ![](           | open the       | bind_op        |
-|                | Pictures/10000 | current        | en_in_browser, |
-|                | 00100000024000 | article in a   | bind_open_     |
-|                | 000249CD8194D7 | browser        | in_browser_alt |
-|                | 9602CFF.gif){w |                |                |
-|                | idth="0.953cm" |                |                |
-|                | height="0      |                |                |
-|                | .953cm"}Button |                |                |
-+----------------+----------------+----------------+----------------+
-| F8, Ctrl-L     | LMB on a       | select the     | b              |
-|                | pull-down menu | next language  | ind_next_pair, |
-|                |                | pair           | bind           |
-|                |                |                | _next_pair_alt |
-+----------------+----------------+----------------+----------------+
-| Shift-F8,      | LMB on a       | select the     | b              |
-| Ctrl-Shift-L   | pull-down menu | previous       | ind_prev_pair, |
-|                |                | language pair  | bind           |
-|                |                |                | _prev_pair_alt |
-+----------------+----------------+----------------+----------------+
-| Ctrl-d         | ![](           | define the     | bind_define    |
-|                | Pictures/10000 | current term   |                |
-|                | 00100000024000 |                |                |
-|                | 00024D17E1A1AE |                |                |
-|                | 0443354.gif){w |                |                |
-|                | idth="0.953cm" |                |                |
-|                | height="0      |                |                |
-|                | .953cm"}Button |                |                |
-+----------------+----------------+----------------+----------------+
-| Shift-F7       | \-             | copy the URL   | bind_copy_url  |
-|                |                | of the current |                |
-|                |                | term to        |                |
-|                |                | clipboard      |                |
-+----------------+----------------+----------------+----------------+
-| Control-F7     | \-             | copy the URL   | bind_co        |
-|                |                | of the article | py_article_url |
-|                |                | to clipboard   |                |
-+----------------+----------------+----------------+----------------+
-|                |                |                |                |
-+----------------+----------------+----------------+----------------+
-| Enter (basic   | Use LMB        | Translate the  |                |
-| or expanded    |                | current        |                |
-| keyboard)      |                | selected cell  |                |
-+----------------+----------------+----------------+----------------+
-| Ctrl-Enter     | Use RMB        | Copy the       | bind_copy_sel, |
-|                |                | current        | bin            |
-|                |                | selected term. | d_copy_sel_alt |
-|                |                | The program    |                |
-|                |                | window will    |                |
-|                |                | minimize and   |                |
-|                |                | show a window  |                |
-|                |                | of a program   |                |
-|                |                | where the      |                |
-|                |                | copied term    |                |
-|                |                | can be         |                |
-|                |                | inserted.      |                |
-+----------------+----------------+----------------+----------------+
-|                | Button         | Translate a    |                |
-|                | ![](           | word or a      |                |
-|                | Pictures/10000 | phrase from    |                |
-|                | 00100000024000 | the clipboard  |                |
-|                | 000244AD9A50D6 | by capturing   |                |
-|                | 81C1B88.gif){w | Ctrl-c-c or    |                |
-|                | idth="0.953cm" | Ctrl-Ins-Ins   |                |
-|                | hei            | from a         |                |
-|                | ght="0.953cm"} | third-party    |                |
-|                |                | application.   |                |
-+----------------+----------------+----------------+----------------+
-|                |                |                |                |
-+----------------+----------------+----------------+----------------+
-| Enter          | point at the   | translate      |                |
-|                | "Search"       | manually input |                |
-|                | button, use    | terms          |                |
-|                | LMB            |                |                |
-+----------------+----------------+----------------+----------------+
-| Ctrl-V         | press the      | clear the      | bind_past      |
-|                | mouse wheel    | search field,  | e_search_field |
-|                |                | paste the      |                |
-|                |                | clipboard      |                |
-|                |                | contents       |                |
-+----------------+----------------+----------------+----------------+
-| Backspace      | use RMB        | clear the      | bind_clea      |
-|                |                | search field   | r_search_field |
-+----------------+----------------+----------------+----------------+
-| !              | ![](           | copy the last  | repeat_sign    |
-|                | Pictures/10000 | request to     |                |
-|                | 00100000024000 | clipboard and  |                |
-|                | 00024B6BA0A0D2 | paste it in    |                |
-|                | 92EB659.gif){w | the search     |                |
-|                | idth="0.953cm" | field          |                |
-|                | height="0      |                |                |
-|                | .953cm"}Button |                |                |
-+----------------+----------------+----------------+----------------+
-| !!             | ![](           | copy the       | repeat_sign2   |
-|                | Pictures/10000 | next-to-last   |                |
-|                | 00100000024000 | request to     |                |
-|                | 00024D531E9421 | clipboard and  |                |
-|                | B2AC529.gif){w | paste it in    |                |
-|                | idth="0.953cm" | the search     |                |
-|                | height="0      | field          |                |
-|                | .953cm"}Button |                |                |
-+----------------+----------------+----------------+----------------+
-| Ctrl-a         | \-             | select all     | \-             |
-|                |                | text           |                |
-+----------------+----------------+----------------+----------------+
-| Ctrl-e         | ![](           | Paste a        | bi             |
-|                | Pictures/10000 | special symbol | nd_spec_symbol |
-|                | 00100000024000 |                |                |
-|                | 000249C0C1CB2E |                |                |
-|                | 080CFCC.gif){w |                |                |
-|                | idth="0.953cm" |                |                |
-|                | height="0      |                |                |
-|                | .953cm"}Button |                |                |
-+----------------+----------------+----------------+----------------+
-|                |                |                |                |
-+----------------+----------------+----------------+----------------+
-| F4, Ctrl-h     | ![](           | show/hide the  | bind_t         |
-|                | Pictures/10000 | history        | oggle_history, |
-|                | 00100000024000 |                | bind_togg      |
-|                | 00024616C5F5A7 |                | le_history_alt |
-|                | DA4A42C.gif){w |                |                |
-|                | idth="0.953cm" |                |                |
-|                | height="0      |                |                |
-|                | .953cm"}Button |                |                |
-+----------------+----------------+----------------+----------------+
-| Ctrl-Shift-Del | Use RMB on the | clear the      | bind           |
-|                | button         | history        | _clear_history |
-|                | ![](           |                |                |
-|                | Pictures/10000 |                |                |
-|                | 00100000024000 |                |                |
-|                | 00024616C5F5A7 |                |                |
-|                | DA4A42C.gif){w |                |                |
-|                | idth="0.953cm" |                |                |
-|                | hei            |                |                |
-|                | ght="0.953cm"} |                |                |
-+----------------+----------------+----------------+----------------+
-| Alt-←          | ![](           | go to the      | bind_go_back   |
-|                | Pictures/10000 | preceding      |                |
-|                | 00100000024000 | article in the |                |
-|                | 00024019319928 | History        |                |
-|                | 052EAE6.gif){w |                |                |
-|                | idth="0.953cm" |                |                |
-|                | height="0      |                |                |
-|                | .953cm"}Button |                |                |
-+----------------+----------------+----------------+----------------+
-| Alt-→          | ![](           | go to the      | b              |
-|                | Pictures/10000 | following      | ind_go_forward |
-|                | 00100000024000 | article in the |                |
-|                | 00024DCB30ADDA | History        |                |
-|                | A2BF303.gif){w |                |                |
-|                | idth="0.953cm" |                |                |
-|                | height="0      |                |                |
-|                | .953cm"}Button |                |                |
-+----------------+----------------+----------------+----------------+
-| ↑, ↓           | LMB            | go to the      | \-             |
-|                |                | History entry  |                |
-+----------------+----------------+----------------+----------------+
-|                | RMB            | copy the       |                |
-|                |                | History entry  |                |
-+----------------+----------------+----------------+----------------+
+You can change key bindings in the configuration file.
 
-You can change key/mouse bindings in the configuration file. Key
-bindings are given
-[**here**](http://infohost.nmt.edu/tcc/help/pubs/tkinter/web/key-names.html).
-LMB is indicated as \<ButtonRelease-1\>, MMB -- \<ButtonRelease-2\>, RMB
--- \<ButtonRelease-3\>. Bindings should be embraced with "\>", "\<", for
-example: \<Control-F10\>; \<ButtonRelease-1\>. Capital letters in a
-hotkey mean pressed Shift, for example, \<Control-V\> means
-Ctrl-Shift-v. L is capital in the table above just to avoid confusion.
-
-The language pair can be selected on the drop-down list. Please note
+The language pair can be selected from the drop-down list. Please note
 that, if, for example, the English-Russian language pair is selected,
-you do not have to switch to the Russian-English pair (not counting the
-keyboard layout), because the Multitran can automatically determine the
-language of the term entered by you. Owing to the specifics of
-multitran.com, Russian-Kazakh and Kazakh-Russian pairs are implemented
-as separate.
+you do not have to switch to the Russian-English pair (not taking into
+consideration the keyboard layout), because Multitran can automatically
+determine a language of the term entered by you. Owing to the specifics of
+multitran.com, Russian-Kazakh and Kazakh-Russian pairs are separated.
 
 In order to switch between buttons using keyboard, press Tab and
-Shift-Tab. A button can be activated by the left mouse button click,
+Shift+Tab. A button can be activated with the left mouse button click,
 Enter (on the basic or expanded keyboard) or Space.
 
-In order to paste a symbol missing on your keyboard, press the button
-![](Pictures/1000000100000024000000249C0C1CB2E080CFCC.gif){width="0.953cm"
-height="0.953cm"}. You can delete or add symbols (see the *spec_syms*
-key in the configuration file).
+In order to paste a symbol absent on your keyboard, click
+<img src="../resources/buttons/spec_symbol.png" width="36" height="36" />. You
+can remove or add symbols on demand (see the section
+`actions → toggle_spec_symbols` of the configuration file).
 
-You can enable/disable the history of requests by pressing the button
-![](Pictures/100000010000002400000024616C5F5A7DA4A42C.gif){width="0.953cm"
-height="0.953cm"}. Requests are sorted from the newest to the oldest.
-You can repeat a request by clicking the required term once in the
-history field. You can scroll the history field using the mouse wheel.
+You can show\/hide the history of requests by clicking
+<img src="../resources/buttons/toggle_history.png" width="36" height="36" />.
+You can repeat a request by clicking once on a required term in the history
+field. You can scroll the history field using the mouse wheel.
 
-Press the button to translate terms from the clipboard. The language
-pair, as always, is determined by the value provided by the drop-down
-list. After Ctrl-c-c or Ctrl-Ins-Ins combination is captured in any
-application that supports copying by Ctrl-c/Ctrl-Ins, *mclient *will
-load the new article correspondingly to the value stored in the
-clipboard.
+Click <img src="../resources/buttons/watch_clipboard_off.png" width="36" height="36" />
+to translate terms from clipboard. The language pair, as always, is determined
+by the value set in the drop-down list. After a `Ctrl+C+C` or `Ctrl+Ins+Ins`
+combination is captured in any application that supports copying using `Ctrl+C`\/`Ctrl+Ins`,
+MClient will load a new article correspondingly to the clipboard content.
 
-If the "Capture Ctrl-c-c and Ctrl-Ins-Ins" mode is activated, then the
-color of the corresponding button becomes blue. You can disable
-Ctrl-c-c/Ctrl-Ins-Ins scanning by pressing the corresponding button
-again.
+To open the current article in a default browser, click
+<img src="../resources/buttons/open_in_browser.png" width="36" height="36" />.
 
-In order to open the current article in a default browser, press the
-button
-![](Pictures/1000000100000024000000249CD8194D79602CFF.gif){width="0.953cm"
-height="0.953cm"}.
+To get a definition of the article title, click
+<img src="../resources/buttons/define.png" width="36" height="36" />. To get
+a definition of the selected block, use the Ctrl+D combination (the section
+`actions → define` of the configuration file).
 
-In order to get a definition of the current term, press the button
-![](Pictures/100000010000002400000024D17E1A1AE0443354.gif){width="0.953cm"
-height="0.953cm"}. Please note that this button provides the definition
-only for the article title, whereas the Ctrl-d combination (the
-*bind_define* key) provides the definition for the current selected
-term.
-
-The program currently supports 2 interface languages -- Russian and
+The program interface currently supports 2 languages &mdash; Russian and
 English. The interface language is determined automatically on the basis
 of the system language.
 
-In order to look up the copyright information, press
-![](Pictures/100000010000002400000024C881EE946EB4A0C9.gif){width="0.953cm"
-height="0.953cm"}.
+To look up the copyright information, click
+<img src="../resources/buttons/show_about.png" width="36" height="36" />.
 
-To exit the program, close all its windows or press
-![](Pictures/100000010000002400000024D4394F4E9756A45D.gif){width="0.953cm"
-height="0.953cm"}.
+To exit the program, click the close button of the main window or
+<img src="../resources/buttons/quit_now.png" width="36" height="36" />. All
+remaining program windows (for example, a settings window) should be closed as
+well.
 
--   -   -   ### 
+## Configuration File
 
-        -   ### []{#anchor-5}Configuration file
+You can adjust your settings in the configuration file `mclient.json`,
+which is stored in the directory `C:\users\<USER>\Application Data\mclient`
+(Windows) or `$HOME/.config/mclient` (Linux). If the configuration file
+is absent, it will be created. If the new program version uses new keys, they
+should be automatically added to the existing configuration file without
+affecting existing keys. However, if the key `config → min_version` is absent
+or its value is lower than the one accepted by the program, the configuration
+file will be forcibly updated, and all keys will be set to default values.
 
-You can adjust yourt settings in the configuration file **mclient.cfg**,
-which must be located in C:\\users\\\<USER\>\\Application Data\\mclient
-(Windows) or \$HOME/.config/mclient (Linux). If the configuration file
-is missing then it will be created. Please note that key values can be
-changed manually, however, everything else will be rewritten.
+## Colors
 
-Adjustable parameters are set after the equal sign. They should not be
-used inside quotation marks. Spaces inside parameters are allowed.
+Colors are defined by corresponding keys of the [configuration file](#configuration-file).
+Change the `color` key value of a desired object by indicating a color name
+from [this list](https://www.w3.org/TR/SVG11/types.html#ColorKeywords)
+or a valid HEX code of any color (the first character is `#` followed by 6
+Latin letters). If the configuration file indicates a color name, the color key
+value can be overwritten with the corresponding HEX code. The HEX code of
+a color can be determined using various websites, for example,
+[here](https://www.colorhexa.com).
 
-In order to ignore certain lines of the configuration file (comments,
-examples, etc.), put \# at the beginning of a line. Such lines will not
-be loaded.
+Colors of prioritized and blocked subjects are set automatically depending on
+a text color of the column to which they belong. A prioritized subject has
+a more saturated color, and a color of a blocked subject is less saturated than
+the color of the corresponding column. To change a column text color and
+therefore a subject color, set a value of the key `columns → 1 → font →
+color` (replace `1` with the number of the required column within the range of
+1 to 4).
 
-The \[Boolean\] section allows only the following parameters: True or 1
-(an option is enabled), False or 0 (an option is disabled).
+| Object | Configuration file key | Default color | HEX code |
+| --- | --- | --- | --- |
+| Line at the bottom of too wide cells | `rows → border → color` | | `#CCCCCC` |
+| Text of column #1 | `columns → 1 → font → color` | *coral* | `#FF7F50` |
+| Text of column #2 | `columns → 2 → font → color` | *cadet blue* | `#5F9EA0` |
+| Text of column #3 | `columns → 3 → font → color` | *slate gray* | `#708090` |
+| Text of column #4 | `columns → 4 → font → color` | *slate gray* | `#708090` |
+| Text of comments | `comments → font → color` | *gray* | `#808080` |
+| Text of terms | `terms → font → color` | *black* | `#000000` |
 
-When editing **mclient.cfg** manually, you should ensure that the text
-editor does not set the BOM mark. The standard Windows editor
-notepad.exe is not suitable for editing the configuration file. We
-suggest using Akelpad or the like.
+## Fonts
 
--   -   -   -   #### []{#anchor-6}Colors
+### Fonts on Windows
 
-You can select a desirable color by consulting an image "[color
-chart.png](https://github.com/sklprogs/mclient/raw/master/docs/color%20chart.png)".
-Set the necessary color name after the equal sign in the configuration
-file. Spaces just before or after the equal sign are allowed. Colors of
-prioritized and blocked dictionaries depend on a color of the column
-where these dictionaries are indicated. The color of the prioritized
-dictionary is more saturated and the color of the blocked dictionary is
-less saturated than the color of the column where these dictionaries are
-indicated.
+Available fonts can be found in folders `C:\WINDOWS\Fonts` and
+`C:\Users\<USER>\AppData\Local\Microsoft\Windows\Fonts` (Windows 10 Build 1809
+and later).
 
--   -   -   -   #### []{#anchor-7}Fonts
+### Fonts on Linux
 
-In Windows: Open the directory C:\\WINDOWS\\Fonts and get the short name
-of a desirable font. For example, Times New Roman is designated as
-TIMES, Segoe UI -- as SEGOEUI. Set this short title (case-insensitive)
-after the equal sign.
+The `fontconfig` utility is used by default to find fonts. To get the list of
+families of available fonts, run `fc-list : family`.
 
-In Linux: Open a directory with fonts, for example, /usr/share/fonts,
-then find the necessary font (for example,
-truetype/ttf-dejavu/DejaVuSansMono.ttf) and extract the title (for
-example, DejaVuSansMono). Set this title (also case-insensitive) after
-the equal sign.
+## Buttons
 
-As a result, you must get, for example, the following:
+You can use your own images for buttons. These images must be in a `.png`
+format and be located in the `resources/buttons` directory. The majority of
+them are taken from the Oxygen collection.
 
-font_comments_family=Mono
-
-font_comments_size=3
-
--   -   -   -   #### []{#anchor-8}Buttons
-
-Button images can be set individually. These images must be in a GIF
-format, be present in the *resources *directory and their height and
-width must be the same and equal to *default_button_size* (36 by
-default). The majority of default images have been taken from the Oxygen
-collection.
-
--   -   -   -   #### 
-
-        -   ### []{#anchor-9}Issues 
+## Issues
 
 If a dictionary entry is displayed incorrectly, send me an address (URL)
-of this entry or indicate dictionaries being used. You can send me an
-e-mail in the window "About".
+of this entry or indicate dictionaries being used. You can send me an email
+message in the **About** window.
 
--   -   -   ### []{#anchor-10}To developers 
+## To Developers 
 
-The program is distributed on the terms of GPL v.3. The program
-interface is translated (resources/locale) into Russian and English, but
-you can add your own translations.
+The program is distributed on the terms of GPL v.3. The program interface is
+translated into Russian and English (`resources/locale`), but you can add your
+own translations.
