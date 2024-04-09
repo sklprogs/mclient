@@ -12,6 +12,8 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
+- RU-EN, hello: used when answering the telephone hello!, Английский тезаурус
+  (separate cells)
 - RU-EN, well: expressing surprise well!: must be wform
 - RU-EN, inundated: ")" at new lines in many places (column settings: 6-100-250)
 - RU-EN: Do Ctrl-c-c for "local component" -> Phrases, repeat. Prioritized
