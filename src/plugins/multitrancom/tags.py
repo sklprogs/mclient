@@ -36,8 +36,8 @@ import instance as ic
          <a name="verb"></a>
          <a href="/m.exe?a=118&amp;s=inundate&amp;l1=1&amp;l2=2&amp;init=1">inundate</a>
     •  Thesaurus:
-         <td colspan="2" class="gray">&nbsp;(quantity) computer <em>n</em></td>
-         td colspan="2" class="gray"
+         <td colspan="2">&nbsp;<b>Английский тезаурус</b></td>
+         <td colspan="2">&nbsp;<b>Русский тезаурус</b></td>
     •  Transcription:
          <span style="color:gray">['ɪnəndeɪt]</span>
     •  Full subj titles:
