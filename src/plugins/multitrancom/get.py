@@ -26,20 +26,25 @@ class Extension:
     def set_ext(self):
         f = '[MClient] plugins.multitrancom.get.Extension.set_ext'
         result = locale.getdefaultlocale()
+        # en: 1; ru: 2; de: 3; fr: 4; es: 5; he: 6; pl: 14; zh: 17; uk: 33
         if result and result[0]:
             result = result[0]
             if 'ru' in result:
                 self.ext = '&SHL=2'
             elif 'de' in result:
                 self.ext = '&SHL=3'
+            elif 'fr' in result:
+                self.ext = '&SHL=4'
             elif 'es' in result:
                 self.ext = '&SHL=5'
-            elif 'uk' in result:
-                self.ext = '&SHL=33'
+            elif 'he' in result:
+                self.ext = '&SHL=6'
             elif 'pl' in result:
                 self.ext = '&SHL=14'
             elif 'zh' in result:
                 self.ext = '&SHL=17'
+            elif 'uk' in result:
+                self.ext = '&SHL=33'
         mes = f'{result} -> {self.ext}'
         sh.objs.get_mes(f, mes, True).show_debug()
     
