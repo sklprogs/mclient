@@ -10,9 +10,9 @@ import subjects as sj
 
 DEBUG = True
 
-SEARCH = 'inundated'
-URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=inundated&l2=2'
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/inundated (2024-04-08).html'
+SEARCH = 'hello'
+URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=hello&l2=2'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/hello (2024-04-14).htm'
 
 
 class Config:

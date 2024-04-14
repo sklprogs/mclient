@@ -156,29 +156,34 @@ class Trash:
 
 
 class Thesaurus:
-    ''' - "English thesaurus" wform becoming subj. Run after 'delete_empty';
-        - Thesaurus is optional so we use 'rep_lazy' instead of 'cancel'.
+    ''' - "English thesaurus" wform becoming 'subj';
+        - Thesaurus is optional, so we use 'rep_lazy' instead of 'cancel'.
     '''
     def __init__(self, blocks):
         self.no = None
+        self.names = ('Английский тезаурус', 'Русский тезаурус')
+        # en: 1; ru: 2; de: 3; fr: 4; es: 5; he: 6; pl: 14; zh: 17; uk: 33
+        self.en = ('English thesaurus', 'Английский тезаурус'
+                  ,'Englisch Thesaurus', 'Anglais glossaire', 'Inglés tesauro'
+                  ,'אנגלית אוצר מילים', 'Angielski tezaurus', '英语 词库'
+                  ,'Англійський тезаурус'
+                  )
+        self.ru = ('Russian thesaurus', 'Русский тезаурус'
+                  ,'Russisch Thesaurus', 'Russe glossaire', 'Ruso tesauro'
+                  ,'רוסית אוצר מילים', 'Rosyjski tezaurus', '俄语 词库'
+                  , 'Російський тезаурус'
+                  )
+        self.names = self.en + self.ru
         self.blocks = blocks
     
     def set_no(self):
-        ''' We don't have to delete empty 'wform' blocks since they will be
-            deleted at the next step, 'Elems.delete_empty'.
-        '''
-        i = 0
-        while i < len(self.blocks) - 2:
-            if self.blocks[i].type == 'wform' and self.blocks[i].text == ' ' \
-            and self.blocks[i+1].type == 'wform' \
-            and self.blocks[i+1].text.strip() \
-            and self.blocks[i+2].type == 'wform' \
-            and self.blocks[i+2].text == ' ':
-                self.no = i + 1
-                self.blocks[self.no].text = self.blocks[self.no].subj = _('Thes.')
+        for i in range(len(self.blocks)):
+            if self.blocks[i].type == 'comment' \
+            and self.blocks[i].text in self.names:
+                self.no = i
+                self.blocks[self.no].text = self.blocks[self.no].subj = _('thes.')
                 self.blocks[self.no].subjf = _('Thesaurus')
                 return
-            i += 1
     
     def add(self):
         f = '[MClient] plugins.multitrancom.elems.Thesaurus.add'
