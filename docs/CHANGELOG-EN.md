@@ -1,7 +1,9 @@
 (in development)
 
 7.0.2
-* Adopt multitran.com updates (thesaurus, multi-word word forms)
+* Adopt [multitran.com](https://www.multitran.com) updates (thesauruses,
+  multi-word word forms, a comment prior to a word form)
+* Custom search field border
 
 7.0.1
 * Adopt multitran.com updates (word forms)
