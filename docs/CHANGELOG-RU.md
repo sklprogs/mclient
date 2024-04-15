@@ -354,8 +354,8 @@
 | `font_speech_family` | `font_col2_family` |
 | `font_speech_size` | `font_col2_size` |
 
-* Созданы новые ключи: `font_col3_family`, `font_col4_family`,
-  `font_col3_size`, `font_col4_size`
+* Созданы ключи `font_col3_family`, `font_col4_family`, `font_col3_size`,
+  `font_col4_size`
 
 ## 5.4.3
 * Исправлена ошибка, не позволяющая повторно заносить элемент с тем же именем
@@ -482,9 +482,9 @@
   большого фрагмента по `Ctrl-c-c`\/`Ctrl-Ins-Ins`)
 * Добавлен перехват буфера обмена по `Control-Insert-Insert`
 * При разрешении 1024×768 панель поиска теперь умещается на экране
-* Удалены ключи: `AutoHideHistory`, `online_dic_url`, `bind_get_history`,
+* Удалены ключи `AutoHideHistory`, `online_dic_url`, `bind_get_history`,
   `icon_change_ui_lang`
-* Добавлены ключи: `bind_next_pair`, `bind_next_pair_alt` (отвечают за выбор
+* Добавлены ключи `bind_next_pair`, `bind_next_pair_alt` (отвечают за выбор
   следующей языковой пары, по умолчанию &mdash; `F8` и `Control-l`
   соответственно), `bind_prev_pair`, `bind_prev_pair_alt` (отвечают за выбор
   предыдущей языковой пары, по умолчанию &mdash; `Shift-F8` и `Control-L`
@@ -508,7 +508,7 @@
 
 ## 4.5.2
 * Добавлена возможность вставки пустой ячейки
-* Добавлены ключи: `bind_delete_cell`, `bind_add_cell`
+* Добавлены ключи `bind_delete_cell`, `bind_add_cell`
 * Сочетания клавиш по умолчанию для вставки и удаления ячейки изменены
   на `Control-Insert` и `Control-Delete` соответственно, чтобы избежать
   конфликта с `Delete` в строке поиска
@@ -519,7 +519,7 @@
 * Исправлен перехват `Control-c-c` в версиях Windows старше XP
 
 ## 4.5
-* Удалены ключи: `bind_move_page_start`, `bind_move_page_end`
+* Удалены ключи `bind_move_page_start`, `bind_move_page_end`
 * Добавлена возможность сохранения статьи в текущем представлении
 * Прокрутка экрана при поиске и при использовании `PageUp`\/`PageDn`,
   `Control-Home`, `Control-End`
@@ -539,7 +539,7 @@
 * Исправлен механизм обновления заголовка окна
 
 ## 4.4
-* Удалены ключи: `bind_toggle_iconify`, `bind_watch_clipboard`,
+* Удалены ключи `bind_toggle_iconify`, `bind_watch_clipboard`,
   `bind_watch_clipboard_alt`, `window_size`, `ShowWallet`, `TextButtons`,
   `UseOptionalButtons`, `AlwaysMaximize`
 * Перевод буфера обмена по `Control-c-c` (вместо режима **Буфер обмена**)
@@ -551,9 +551,9 @@
 * Исправлен баг, из-за которого история не отображалась
 
 ## 4.3
-* Удалены ключи: `ReadOnlyProtection`, `InternalDebug`, `Spelling`,
+* Удалены ключи `ReadOnlyProtection`, `InternalDebug`, `Spelling`,
   `UnixSelection`, `icon_main`, `tab_length`, `bind_search_field`
-* Добавлены ключи: `color_speech`, `font_speech_family`, `font_speech_size`
+* Добавлены ключи `color_speech`, `font_speech_family`, `font_speech_size`
 * Удаление символов `<` и `>`, если рядом есть кириллица (более точное
   определение тегов)
 * Определение случаев, когда элемент, помеченный как термин, на самом деле
