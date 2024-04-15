@@ -12,6 +12,25 @@ class CleanUp:
     def __init__(self, text):
         self.text = text
     
+    def fix_wform_com(self):
+        # EN-RU, hello
+        f = '[MClient] plugins.multitrancom.cleanup.CleanUp.fix_wform_com'
+        # ((?![\d_])\w.*?): Search alphabet, including Cyrillic
+        pattern = r'<a name="([a-zA-Z]*)"></a><span style="color:gray">((?![\d_])\w.*?)</span><a href="(.*?)">(.*?)</a>'
+        matches = re.findall(pattern, self.text)
+        if not matches:
+            sh.com.rep_lazy(f)
+            return
+        count = 0
+        for match in matches:
+            what = f'<a name="{match[0]}"></a><span style="color:gray">{match[1]}</span><a href="{match[2]}">{match[3]}</a>'
+            with_ = f'<a name="{match[0]}"><a href="{match[2]}">({match[1]}){match[3]}</a></a>'
+            old = self.text
+            self.text = self.text.replace(what, with_)
+            if old != self.text:
+                count += 1
+        sh.com.rep_matches(f, count)
+    
     def fix_wforms(self):
         f = '[MClient] plugins.multitrancom.cleanup.CleanUp.fix_wforms'
         pattern = r'<a name="([a-zA-Z]*)"></a><a href="(.*?)">(.*?)</a>'
@@ -111,6 +130,7 @@ class CleanUp:
         self.run_common()
         # Put this only after 'run_common'
         self.fix_wforms()
+        self.fix_wform_com()
         ''' Replace a non-breaking space with a space; can be found before user
             names or thesaurus titles.
         '''
