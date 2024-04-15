@@ -1,8 +1,10 @@
 (in development)
-* 
+
+7.0.2
+* Adopt multitran.com updates (thesaurus, multi-word word forms)
 
 7.0.1
-* Adopt multitran.com updates
+* Adopt multitran.com updates (word forms)
 
 7.0
 * Migrate to Qt
