@@ -148,6 +148,7 @@ class AnalyzeTag:
                or 'a name="interjection"' in self.tag.text \
                or 'a name="pronoun"' in self.tag.text \
                or 'a name="word form"' in self.tag.text \
+               or 'a name="automatically"' in self.tag.text \
                or 'a name=""' in self.tag.text
     
     def _is_speech(self):
