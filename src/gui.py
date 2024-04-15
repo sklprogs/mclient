@@ -475,6 +475,11 @@ class App(PyQt6.QtWidgets.QMainWindow):
         self.add_widgets()
         self.setCentralWidget(self.parent)
         self.set_icon()
+        self.set_styles()
+    
+    def set_styles(self):
+        # Windows creates an irritating blue halo at the bottom of QLineEdit
+        self.setStyleSheet('QLineEdit {qproperty-frame: false; border: 1px solid gray;}')
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:
