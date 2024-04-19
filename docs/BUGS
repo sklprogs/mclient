@@ -12,21 +12,13 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
-- RU-EN, hello: used when answering the telephone hello!, Английский тезаурус
-  (separate cells)
-- RU-EN, well: expressing surprise well!: must be wform
 - RU-EN, inundated: ")" at new lines in many places (column settings: 6-100-250)
 - RU-EN: Do Ctrl-c-c for "local component" -> Phrases, repeat. Prioritized
   subjects look like ordinary subjects, fixed urls are not found
-- RU-EN, detinue: противоправное удержание...: Not shown as shortened
-  (Settings: 6-95-210 of col width)
-- RU-EN, retainer -> соглашение между...: No bottom line
 - RU-EN, jogging [MT mode]: phrases at a wrong position
-- RU-EN, bit: ( and )) are separate cells
 - RU-EN, meh: no blocked entries, "English Thesaurus" covers "multi engine
   helicopter", but it shouldn't
 - RU-EN, tuple -> мат.: Fix following fixed URLs
-- EN-RU, tuple -> энка -> tuple -> энка: phsubj is duplicated
 - EN-RU, hoove: loosing selection when moving mouse pointer at the end of the
   article
 - If a number of columns is changed to an even value in the special-page
