@@ -87,8 +87,8 @@ class Block:
         if self.block.type in ('phrase', 'term'):
             return cf.objs.get_config().new['terms']['font']['family']
         if self.block.type in ('comment', 'correction', 'phcount', 'transc'
-                               ,'user'
-                               ):
+                              ,'user'
+                              ):
             return cf.objs.get_config().new['comments']['font']['family']
         if self.colno == 0:
             return cf.objs.get_config().new['columns']['1']['font']['family']
