@@ -10,9 +10,9 @@ import subjects as sj
 
 DEBUG = True
 
-SEARCH = 'hello'
-URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=hello&l2=2'
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/hello (2024-04-14).htm'
+SEARCH = 'inundated'
+URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=inundated&l2=2'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/inundated (2024-04-08).html'
 
 
 class Config:
@@ -1206,12 +1206,13 @@ if __name__ == '__main__':
     #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
-    mes = Elems().run_multitrancom()
+    #mes = Elems().run_multitrancom()
     #mes = Subjects().run()
     #mes = View().run_dsl()
     #mes = View().run_stardict()
     #mes = Subjects().run()
     #mes = View().run_multitrancom()
+    mes = Wrap().run_multitrancom()
     #mes = Elems().run_multitrandem()
     #mes = Prioritize().run_multitrancom()
     #mes = Get().run_multitrandem()

@@ -1,4 +1,9 @@
 mclient:
+Traceback (most recent call last):
+  File "/home/pete/bin/mclient/src/symbols/gui.py", line 106, in keyPressEvent
+    if key in (PyQt6.QtCore.Qt.Key_Return, PyQt6.QtCore.Qt.Key.Key_Enter):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'Qt' has no attribute 'Key_Return'
 - Alt-Left or Alt-Right: history item is not updated
 - Properly update model after blocking new subjects (table index becomes out of
   bounds)
@@ -12,6 +17,7 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
+- RU-EN, teetotaller: "(American spelling)" is a separate cell
 - RU-EN, inundated: ")" at new lines in many places (column settings: 6-100-250)
 - RU-EN: Do Ctrl-c-c for "local component" -> Phrases, repeat. Prioritized
   subjects look like ordinary subjects, fixed urls are not found

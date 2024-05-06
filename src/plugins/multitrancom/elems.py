@@ -602,7 +602,7 @@ class Elems:
                            ).run()
         return f'{f}:\n{mes}'
     
-    def _debug_cells(self, maxrow=30, maxrows=0):
+    def _debug_cells(self, maxrow=70, maxrows=0):
         f = '[MClient] plugins.multitrancom.elems.Elems._debug_cells'
         headers = ('SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #'), _('CELL #')
                   ,_('TYPES'), _('TEXT'), 'URL'
