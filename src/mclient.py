@@ -1948,10 +1948,8 @@ class App:
         self.gui.bind(('F3',), self.table.search_next)
         self.gui.bind(('Shift+F3',), self.table.search_prev)
         self.gui.bind(('Ctrl+F',), self.table.search.show)
-        self.gui.bind(('Return',), self.go_keyboard)
-        self.gui.bind(('Enter',), self.go_keyboard)
-        self.gui.bind(('Ctrl+Return',), self.solve_copy)
-        self.gui.bind(('Ctrl+Enter',), self.solve_copy)
+        self.gui.bind(('Return', 'Enter',), self.go_keyboard)
+        self.gui.bind(('Ctrl+Return', 'Ctrl+Enter',), self.solve_copy)
         
         self.gui.bind(('Alt+0',), lambda:self.change_col_no(10))
         self.gui.bind(('Alt+1',), lambda:self.change_col_no(1))
