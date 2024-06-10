@@ -1,10 +1,25 @@
 {"type": "object"
+,"required": ["actions", "rows", "columns", "config", "popup", "selection"]
 ,"properties":
     {"actions":
         {"type": "object"
+        ,"required":
+            ["clear_history", "col1_down", "col1_up", "col2_down", "col2_up"
+            ,"col3_down", "col3_up", "col4_down", "col4_up", "copy_article_url"
+            ,"copy_nominative", "copy_sel", "copy_url", "define", "go_back"
+            ,"go_next", "go_phrases", "next_lang1", "next_lang2"
+            ,"open_in_browser", "prev_lang1", "prev_lang2", "print", "quit"
+            ,"re_search_article", "reload_article", "save_article"
+            ,"search_article_backward", "search_article_forward"
+            ,"select_block", "show_block", "show_prior", "swap_langs"
+            ,"toggle_about", "toggle_alphabet", "toggle_block"
+            ,"toggle_history", "toggle_popup", "toggle_priority"
+            ,"toggle_settings", "toggle_spec_symbols"
+            ]
         ,"properties":
             {"clear_history":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -12,6 +27,7 @@
                 }
             ,"col1_down":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -19,6 +35,7 @@
                 }
             ,"col1_up":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -26,6 +43,7 @@
                 }
             ,"col2_down":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -33,6 +51,7 @@
                 }
             ,"col2_up":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -40,6 +59,7 @@
                 }
             ,"col3_down":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -47,6 +67,7 @@
                 }
             ,"col3_up":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -54,6 +75,7 @@
                 }
             ,"col4_down":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -61,6 +83,7 @@
                 }
             ,"col4_up":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -68,6 +91,7 @@
                 }
             ,"copy_article_url":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -75,6 +99,7 @@
                 }
             ,"copy_nominative":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -82,6 +107,7 @@
                 }
             ,"copy_sel":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -89,6 +115,7 @@
                 }
             ,"copy_url":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -96,6 +123,7 @@
                 }
             ,"define":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -103,6 +131,7 @@
                 }
             ,"go_back":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -110,6 +139,7 @@
                 }
             ,"go_next":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -117,6 +147,7 @@
                 }
             ,"go_phrases":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -124,6 +155,7 @@
                 }
             ,"next_lang1":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -131,6 +163,7 @@
                 }
             ,"next_lang2":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -138,6 +171,7 @@
                 }
             ,"open_in_browser":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -145,6 +179,7 @@
                 }
             ,"prev_lang1":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -152,6 +187,7 @@
                 }
             ,"prev_lang2":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -159,6 +195,7 @@
                 }
             ,"print":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -166,6 +203,7 @@
                 }
             ,"quit":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -173,6 +211,7 @@
                 }
             ,"re_search_article":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -180,6 +219,7 @@
                 }
             ,"reload_article":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -187,6 +227,7 @@
                 }
             ,"save_article":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -194,6 +235,7 @@
                 }
             ,"search_article_backward":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -201,6 +243,7 @@
                 }
             ,"search_article_forward":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -208,6 +251,7 @@
                 }
             ,"select_block":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -215,6 +259,7 @@
                 }
             ,"show_block":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -222,6 +267,7 @@
                 }
             ,"show_prior":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -229,6 +275,7 @@
                 }
             ,"swap_langs":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -236,6 +283,7 @@
                 }
             ,"toggle_about":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -243,6 +291,7 @@
                 }
             ,"toggle_alphabet":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -250,6 +299,7 @@
                 }
             ,"toggle_block":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -257,6 +307,7 @@
                 }
             ,"toggle_history":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -264,6 +315,7 @@
                 }
             ,"toggle_popup":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -271,6 +323,7 @@
                 }
             ,"toggle_priority":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -278,6 +331,7 @@
                 }
             ,"toggle_settings":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -285,6 +339,7 @@
                 }
             ,"toggle_spec_symbols":
                 {"type": "object"
+                ,"required": ["hotkeys", "hint"]
                 ,"properties":
                     {"hotkeys": {"type": "array"}
                     ,"hint": {"type": "string"}
@@ -293,10 +348,12 @@
             }
         }
     ,"rows": {"type": "object"
+             ,"required": ["height", "border"]
              ,"properties":
                  {"height": {"type": "integer"}
                  ,"border":
                      {"type": "object"
+                     ,"required": ["color", "length"]
                      ,"properties":
                          {"color": {"type": "string"}
                          ,"length": {"type": "integer"}
@@ -306,21 +363,26 @@
              }
     ,"columns":
         {"type": "object"
+        ,"required": ["num", "fixed", "terms", "1", "2", "3", "4"]
         ,"properties":
             {"num": {"type": "integer"}
             ,"fixed":
                 {"type": "object"
+                ,"required": ["width"]
                 ,"properties": {"width": {"type": "integer"}}
                 }
             ,"terms":
                 {"type": "object"
+                ,"required": ["width"]
                 ,"properties": {"width": {"type": "integer"}}
                 }
             ,"1":
                 {"type": "object"
+                ,"required": ["font"]
                 ,"properties":
                     {"font":
                         {"type": "object"
+                        ,"required": ["family", "size", "color", "align"]
                         ,"properties":
                             {"family": {"type": "string"}
                             ,"size": {"type": "integer"}
@@ -333,9 +395,11 @@
                 }
             ,"2":
                 {"type": "object"
+                ,"required": ["font"]
                 ,"properties":
                     {"font":
                         {"type": "object"
+                        ,"required": ["family", "size", "color", "align"]
                         ,"properties":
                             {"family": {"type": "string"}
                             ,"size": {"type": "integer"}
@@ -348,9 +412,11 @@
                 }
             ,"3":
                 {"type": "object"
+                ,"required": ["font"]
                 ,"properties":
                     {"font":
                         {"type": "object"
+                        ,"required": ["family", "size", "color", "align"]
                         ,"properties":
                             {"family": {"type": "string"}
                             ,"size": {"type": "integer"}
@@ -363,9 +429,11 @@
                 }
             ,"4":
                 {"type": "object"
+                ,"required": ["font"]
                 ,"properties":
                     {"font":
                         {"type": "object"
+                        ,"required": ["family", "size", "color", "align"]
                         ,"properties":
                             {"family": {"type": "string"}
                             ,"size": {"type": "integer"}
@@ -380,6 +448,7 @@
         }
     ,"subjects":
         {"type": "object"
+        ,"required": ["blocked", "prioritized", "history", "source_all"]
         ,"properties":
             {"blocked": {"type": "object"}
             ,"prioritized": {"type": "object"}
@@ -389,9 +458,11 @@
         }
     ,"comments":
         {"type": "object"
+        ,"required": ["font"]
         ,"properties":
             {"font":
                 {"type": "object"
+                ,"required": ["family", "size", "color"]
                 ,"properties":
                     {"family": {"type": "string"}
                     ,"size": {"type": "integer"}
@@ -402,9 +473,11 @@
         }
     ,"terms":
         {"type": "object"
+        ,"required": ["font"]
         ,"properties":
             {"font":
                 {"type": "object"
+                ,"required": ["family", "size", "color"]
                 ,"properties":
                     {"family": {"type": "string"}
                     ,"size": {"type": "integer"}
@@ -445,14 +518,17 @@
     }
     ,"config":
         {"type": "object"
+        ,"required": ["min_version"]
         ,"properties": {"min_version": {"type": "integer"}}
         }
     ,"popup":
         {"type": "object"
+        ,"required": ["center"]
         ,"properties": {"center": {"type": "boolean"}}
         }
     ,"selection":
         {"type": "object"
+        ,"required": ["cell", "block"]
         ,"properties":
             {"cell": {"type": "string"}
             ,"block": {"type": "string"}
