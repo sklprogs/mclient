@@ -2155,14 +2155,13 @@ class App:
         self.table = Table()
         self.about = About()
         self.symbols = sm.Symbols()
-        product = self.about.get_product()
-        self.welcome = Welcome(product)
+        self.welcome = Welcome(self.about.get_product())
         self.settings = st.objs.get_settings()
         self.history = hs.History()
         self.save = Save()
         self.suggest = sg.Suggest()
         self.block_mode = BlockMode()
-        self.set_title(product)
+        self.set_title(self.about.logic.product)
         self.set_bindings()
 
 
