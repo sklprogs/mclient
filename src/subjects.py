@@ -8,7 +8,7 @@ from skl_shared_qt.message.controller import rep
 from skl_shared_qt.table import Table
 
 import instance as ic
-import config as cf
+from config import CONFIG
 
 
 class Split:
@@ -115,13 +115,13 @@ class Create:
     
     def set_prior_all(self):
         f = '[MClient] subjects.Create.set_prior_all'
-        self._set_prior_section(cf.objs.get_config().new['subjects']['prioritized'])
+        self._set_prior_section(CONFIG.new['subjects']['prioritized'])
         mes = '; '.join(self.prior_all)
         Message(f, mes).show_debug()
     
     def set_blocked_all(self):
         f = '[MClient] subjects.Create.set_blocked_all'
-        self._set_block_section(cf.objs.get_config().new['subjects']['blocked'])
+        self._set_block_section(CONFIG.new['subjects']['blocked'])
         mes = '; '.join(self.block_all)
         Message(f, mes).show_debug()
     
@@ -154,7 +154,7 @@ class Create:
         mes.append(sub)
         sub = _('Sort by short subjects:')
         mes.append(sub)
-        mes.append(str(cf.objs.get_config().new['ShortSubjects']))
+        mes.append(str(CONFIG.new['ShortSubjects']))
         return '\n'.join(mes)
     
     def _debug_subjects(self):
@@ -195,7 +195,7 @@ class Create:
             isubj.prior_index = PriorIndex(self.prior_all, parts).run()
     
     def alphabetize(self):
-        if cf.objs.get_config().new['ShortSubjects']:
+        if CONFIG.new['ShortSubjects']:
             self.subjects.sort(key=lambda x: x.subj.casefold())
         else:
             self.subjects.sort(key=lambda x: x.subjf.casefold())
@@ -229,7 +229,7 @@ class Subjects(Create):
             if subj == isubj.subj:
                 return isubj.subjf
         try:
-            return cf.objs.config.new['subjects']['history'][subj]
+            return CONFIG.new['subjects']['history'][subj]
         except KeyError:
             pass
         return subj

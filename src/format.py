@@ -3,7 +3,7 @@
 
 from skl_shared_qt.graphics.color.controller import Color
 
-import config as cf
+from config import CONFIG
 import subjects as sj
 
 
@@ -43,9 +43,9 @@ class Block:
         if self._is_phrase_blocked():
             return objs.get_colors().phb
         if self.block.type in ('phrase', 'term'):
-            return cf.objs.get_config().new['terms']['font']['color']
+            return CONFIG.new['terms']['font']['color']
         if self.block.type in ('comment', 'phcount', 'transc'):
-            return cf.objs.get_config().new['comments']['font']['color']
+            return CONFIG.new['comments']['font']['color']
         if self.block.type == 'user':
             return objs.get_colors().user
         if self.block.type == 'correction':
@@ -55,13 +55,13 @@ class Block:
         if self._is_subj_prior():
             return self.colors_pr[self.colno]
         if self.colno == 0:
-            return cf.objs.get_config().new['columns']['1']['font']['color']
+            return CONFIG.new['columns']['1']['font']['color']
         if self.colno == 1:
-            return cf.objs.get_config().new['columns']['2']['font']['color']
+            return CONFIG.new['columns']['2']['font']['color']
         if self.colno == 2:
-            return cf.objs.get_config().new['columns']['3']['font']['color']
+            return CONFIG.new['columns']['3']['font']['color']
         if self.colno == 3:
-            return cf.objs.get_config().new['columns']['4']['font']['color']
+            return CONFIG.new['columns']['4']['font']['color']
         # Qt accepts empty color names
         return ''
     
@@ -72,44 +72,44 @@ class Block:
     
     def set_fixed(self):
         if self.colno == 0:
-            self.code = f'''<b><div align="{cf.objs.get_config().new['columns']['1']['font']['align']}">{self.code}</div></b>'''
+            self.code = f'''<b><div align="{CONFIG.new['columns']['1']['font']['align']}">{self.code}</div></b>'''
         elif self.colno == 1:
-            self.code = f'''<b><div align="{cf.objs.get_config().new['columns']['2']['font']['align']}">{self.code}</div></b>'''
+            self.code = f'''<b><div align="{CONFIG.new['columns']['2']['font']['align']}">{self.code}</div></b>'''
         elif self.colno == 2:
-            self.code = f'''<div align="{cf.objs.get_config().new['columns']['3']['font']['align']}">{self.code}</div>'''
+            self.code = f'''<div align="{CONFIG.new['columns']['3']['font']['align']}">{self.code}</div>'''
         elif self.colno == 3:
-            self.code = f'''<div align="{cf.objs.get_config().new['columns']['4']['font']['align']}">{self.code}</div>'''
+            self.code = f'''<div align="{CONFIG.new['columns']['4']['font']['align']}">{self.code}</div>'''
     
     def get_family(self):
         if self.block.type in ('phrase', 'term'):
-            return cf.objs.get_config().new['terms']['font']['family']
+            return CONFIG.new['terms']['font']['family']
         if self.block.type in ('comment', 'correction', 'phcount', 'transc'
                               ,'user'):
-            return cf.objs.get_config().new['comments']['font']['family']
+            return CONFIG.new['comments']['font']['family']
         if self.colno == 0:
-            return cf.objs.get_config().new['columns']['1']['font']['family']
+            return CONFIG.new['columns']['1']['font']['family']
         if self.colno == 1:
-            return cf.objs.get_config().new['columns']['2']['font']['family']
+            return CONFIG.new['columns']['2']['font']['family']
         if self.colno == 2:
-            return cf.objs.get_config().new['columns']['3']['font']['family']
+            return CONFIG.new['columns']['3']['font']['family']
         if self.colno == 3:
-            return cf.objs.get_config().new['columns']['4']['font']['family']
+            return CONFIG.new['columns']['4']['font']['family']
         return 'Sans'
     
     def get_size(self):
         if self.block.type in ('phrase', 'term'):
-            return cf.objs.get_config().new['terms']['font']['size']
+            return CONFIG.new['terms']['font']['size']
         if self.block.type in ('comment', 'correction', 'phcount', 'transc'
                               ,'user'):
-            return cf.objs.get_config().new['comments']['font']['size']
+            return CONFIG.new['comments']['font']['size']
         if self.colno == 0:
-            return cf.objs.get_config().new['columns']['1']['font']['size']
+            return CONFIG.new['columns']['1']['font']['size']
         if self.colno == 1:
-            return cf.objs.get_config().new['columns']['2']['font']['size']
+            return CONFIG.new['columns']['2']['font']['size']
         if self.colno == 2:
-            return cf.objs.get_config().new['columns']['3']['font']['size']
+            return CONFIG.new['columns']['3']['font']['size']
         if self.colno == 3:
-            return cf.objs.get_config().new['columns']['4']['font']['size']
+            return CONFIG.new['columns']['4']['font']['size']
         return 11
 
     def set_style(self):
@@ -123,7 +123,7 @@ class Block:
             '''
             sub = '''<span style="font-family:{}; font-size:{}pt; color:{}; background-color:{};">{}</span>'''
             self.code = sub.format(family, size, color
-                                  ,cf.objs.get_config().new['selection']['block']
+                                  ,CONFIG.new['selection']['block']
                                   ,self.block.text)
         else:
             sub = '''<span style="font-family:{}; font-size:{}pt; color:{};">{}</span>'''
@@ -162,34 +162,34 @@ class Colors:
             without quotes).
         '''
         # color_terms
-        icolor = Color(cf.objs.get_config().new['terms']['font']['color'])
-        cf.objs.config.new['terms']['font']['color'] = icolor.get_hex()
+        icolor = Color(CONFIG.new['terms']['font']['color'])
+        CONFIG.new['terms']['font']['color'] = icolor.get_hex()
         
         # color_comments
-        icolor = Color(cf.objs.config.new['comments']['font']['color'])
-        cf.objs.config.new['comments']['font']['color'] = icolor.get_hex()
+        icolor = Color(CONFIG.new['comments']['font']['color'])
+        CONFIG.new['comments']['font']['color'] = icolor.get_hex()
         darker, self.user = icolor.modify(self.factor)
         
         # color_col1
-        icolor = Color(cf.objs.config.new['columns']['1']['font']['color'])
-        cf.objs.config.new['columns']['1']['font']['color'] = icolor.get_hex()
+        icolor = Color(CONFIG.new['columns']['1']['font']['color'])
+        CONFIG.new['columns']['1']['font']['color'] = icolor.get_hex()
         self.p1, self.b1 = icolor.modify(self.factor)
         self.php = self.p1
         self.phb = self.b1
         
         # color_col2
-        icolor = Color(cf.objs.config.new['columns']['2']['font']['color'])
-        cf.objs.config.new['columns']['2']['font']['color'] = icolor.get_hex()
+        icolor = Color(CONFIG.new['columns']['2']['font']['color'])
+        CONFIG.new['columns']['2']['font']['color'] = icolor.get_hex()
         self.p2, self.b2 = icolor.modify(self.factor)
         
         # color_col3
-        icolor = Color(cf.objs.config.new['columns']['3']['font']['color'])
-        cf.objs.config.new['columns']['3']['font']['color'] = icolor.get_hex()
+        icolor = Color(CONFIG.new['columns']['3']['font']['color'])
+        CONFIG.new['columns']['3']['font']['color'] = icolor.get_hex()
         self.p3, self.b3 = icolor.modify(self.factor)
         
         # color_col4
-        icolor = Color(cf.objs.config.new['columns']['4']['font']['color'])
-        cf.objs.config.new['columns']['4']['font']['color'] = icolor.get_hex()
+        icolor = Color(CONFIG.new['columns']['4']['font']['color'])
+        CONFIG.new['columns']['4']['font']['color'] = icolor.get_hex()
         self.p4, self.b4 = icolor.modify(self.factor)
 
 

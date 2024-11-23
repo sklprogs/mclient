@@ -4,7 +4,7 @@
 from skl_shared_qt.localize import _
 from skl_shared_qt.message.controller import rep
 
-import config as cf
+from config import CONFIG
 
 
 class Symbols:
@@ -14,7 +14,7 @@ class Symbols:
     
     def set_values(self):
         self.colnum = 10
-        self.line = cf.objs.get_config().new['spec_syms']
+        self.line = CONFIG.new['spec_syms']
         self.table = []
     
     def get(self, rowno, colno):

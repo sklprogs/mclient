@@ -12,7 +12,7 @@ from skl_shared_qt.text_file import Read, Write
 from skl_shared_qt.launch import Launch
 from skl_shared_qt.paths import PDIR, Home
 
-import config as cf
+from config import CONFIG, PRODUCT_LOW
 import manager
 
 
@@ -34,16 +34,13 @@ class Speech:
     def get_settings(self):
         #f = '[MClient] logic.Speech.get_settings'
         # Source tuple cannot be concatenated with target list
-        speeches = [cf.objs.get_config().new['speech1']
-                   ,cf.objs.config.new['speech2']
-                   ,cf.objs.config.new['speech3']
-                   ,cf.objs.config.new['speech4']
-                   ,cf.objs.config.new['speech5']
-                   ,cf.objs.config.new['speech6']
-                   ,cf.objs.config.new['speech7']]
+        speeches = [CONFIG.new['speech1'], CONFIG.new['speech2']
+                   ,CONFIG.new['speech3'], CONFIG.new['speech4']
+                   ,CONFIG.new['speech5'], CONFIG.new['speech6']
+                   ,CONFIG.new['speech7']]
         if not self.dic:
             return speeches
-        if not cf.objs.config.new['ShortSpeech']:
+        if not CONFIG.new['ShortSpeech']:
             return speeches
         for i in range(len(speeches)):
             speeches[i] = self._get_short(speeches[i])
@@ -187,20 +184,20 @@ class ColumnWidth:
     
     def set_col_width(self):
         f = '[MClient] logic.ColumnWidth.set_col_width'
-        if not cf.objs.get_config().new['rows']['height']:
+        if not CONFIG.new['rows']['height']:
             rep.lazy(f)
             return
         for column in self.columns:
             if column.Fixed:
-                column.width = cf.objs.config.new['columns']['fixed']['width']
+                column.width = CONFIG.new['columns']['fixed']['width']
             else:
-                column.width = cf.objs.config.new['columns']['terms']['width']
+                column.width = CONFIG.new['columns']['terms']['width']
 #            if objs.get_blocksdb().is_col_empty(column.no):
 #                column.width = self.min_width
 #            elif column.Fixed:
-#                column.width = cf.objs.config.new['columns']['fixed']['width']
+#                column.width = CONFIG.new['columns']['fixed']['width']
 #            else:
-#                column.width = cf.objs.config.new['columns']['terms']['width']
+#                column.width = CONFIG.new['columns']['terms']['width']
     
     def reset(self):
         self.set_values()
@@ -248,7 +245,7 @@ class CurRequest:
     
     def set_values(self):
         self.cols = ('subj', 'wform', 'transc', 'speech')
-        self.collimit = cf.objs.get_config().new['columns']['num'] + len(self.cols)
+        self.collimit = CONFIG.new['columns']['num'] + len(self.cols)
         ''' Toggling blacklisting should not depend on a number of blocked
             subjects (otherwise, it is not clear how blacklisting should be
             toggled).
@@ -283,13 +280,13 @@ class Objects:
         return self.column_width
     
     def get_dics(self):
-        return Home(cf.PRODUCT_LOW).add_config('dics')
+        return Home(PRODUCT_LOW).add_config('dics')
     
     def get_plugins(self, Debug=False, maxrows=1000):
         if self.plugins is None:
             self.plugins = manager.Plugins(sdpath = self.get_dics()
                                           ,mbpath = self.get_dics()
-                                          ,timeout = cf.objs.get_config().new['timeout']
+                                          ,timeout = CONFIG.new['timeout']
                                           ,Debug = Debug
                                           ,maxrows = maxrows)
         return self.plugins
@@ -325,10 +322,10 @@ class Commands:
     
     def get_col_types(self):
         f = '[MClient] logic.Commands.get_col_types'
-        types = [cf.objs.get_config().new['columns']['1']['type']
-                ,cf.objs.config.new['columns']['2']['type']
-                ,cf.objs.config.new['columns']['3']['type']
-                ,cf.objs.config.new['columns']['4']['type']
+        types = [CONFIG.new['columns']['1']['type']
+                ,CONFIG.new['columns']['2']['type']
+                ,CONFIG.new['columns']['3']['type']
+                ,CONFIG.new['columns']['4']['type']
                 ]
         for i in range(len(types)):
             types[i] = self._get_col_type(types[i])
@@ -396,10 +393,10 @@ class Commands:
             translation' structure, so we need to switch off sorting terms and
             ensure that the number of columns is divisible by 2.
         '''
-        if not self.is_parallel() or cf.objs.get_config().new['columns']['num'] % 2 == 0:
-            return cf.objs.get_config().new['columns']['num']
-        if cf.objs.get_config().new['columns']['num'] > 2:
-            return cf.objs.config.new['columns']['num'] - 1
+        if not self.is_parallel() or CONFIG.new['columns']['num'] % 2 == 0:
+            return CONFIG.new['columns']['num']
+        if CONFIG.new['columns']['num'] > 2:
+            return CONFIG.new['columns']['num'] - 1
         return 2
     
     def export_style(self):
@@ -407,10 +404,10 @@ class Commands:
         ''' Do not use 'gettext' to name internal types - this will make
             the program ~0.6s slower.
         '''
-        lst = [choice for choice in (cf.objs.get_config().new['columns']['1']['type']
-                                    ,cf.objs.config.new['columns']['2']['type']
-                                    ,cf.objs.config.new['columns']['3']['type']
-                                    ,cf.objs.config.new['columns']['4']['type']
+        lst = [choice for choice in (CONFIG.new['columns']['1']['type']
+                                    ,CONFIG.new['columns']['2']['type']
+                                    ,CONFIG.new['columns']['3']['type']
+                                    ,CONFIG.new['columns']['4']['type']
                                     ) \
                if choice != _('Do not set')]
         ''' #NOTE: The following assignment does not change the list:

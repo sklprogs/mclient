@@ -5,7 +5,7 @@ from skl_shared_qt.localize import _
 from skl_shared_qt.message.controller import Message, rep
 from skl_shared_qt.logic import Input
 
-import config as cf
+from config import CONFIG
 import plugins.stardict.get
 import plugins.dsl.get
 import plugins.stardict.run as sdrun
@@ -35,7 +35,7 @@ class Plugins:
         self.mbplugin = None
         self.mcplugin = None
         self.sdplugin = None
-        self.source = cf.objs.get_config().new['source']
+        self.source = CONFIG.new['source']
     
     def get_fixed_urls(self):
         f = '[MClient] manager.Plugins.get_fixed_urls'

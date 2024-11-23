@@ -3,7 +3,7 @@
 
 from skl_shared_qt.localize import _
 
-import config as cf
+from config import CONFIG
 from popup.gui import Popup as guiPopup, HEIGHT, WIDTH
 
 
@@ -97,5 +97,5 @@ class Popup:
     
     def set_bindings(self):
         self.gui.bind(('Esc',), self.close)
-        self.gui.bind(cf.objs.get_config().new['actions']['toggle_popup']['hotkeys']
+        self.gui.bind(CONFIG.new['actions']['toggle_popup']['hotkeys']
                      ,self.toggle)
