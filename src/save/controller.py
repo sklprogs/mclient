@@ -2,10 +2,10 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
 
 import config as cf
-from . import gui as gi
+from save.gui import Save as guiSave, TableModel
 
 
 class Save:
@@ -16,7 +16,7 @@ class Save:
         self.fill_model()
     
     def set_gui(self):
-        self.gui = gi.Save()
+        self.gui = guiSave()
         self.set_title()
         self.set_bindings()
         self.change_font_size(2)
@@ -24,21 +24,21 @@ class Save:
     def get(self):
         f = '[MClient] save.controller.Save.get'
         if not self.model.items:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         return self.model.items[self.gui.get_row()]
     
     def go_start(self):
         f = '[MClient] save.controller.Save.go_start'
         if not self.model.items:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         self._go_row(0)
     
     def go_end(self):
         f = '[MClient] save.controller.Save.go_end'
         if not self.model.items:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         rowno = len(self.model.items) - 1
         self._go_row(rowno)
@@ -47,7 +47,7 @@ class Save:
         # Qt already goes down/up, but without looping
         f = '[MClient] save.controller.Save.go_down'
         if not self.model.items:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         old = rowno = self.gui.get_row()
         if rowno == len(self.model.items) - 1:
@@ -55,13 +55,13 @@ class Save:
         rowno += 1
         self._go_row(rowno)
         mes = _('Change row number: {} → {}').format(old, rowno)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
     
     def go_up(self):
         # Qt already goes down/up, but without looping
         f = '[MClient] save.controller.Save.go_up'
         if not self.model.items:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         old = rowno = self.gui.get_row()
         if rowno == 0:
@@ -69,25 +69,24 @@ class Save:
         rowno -= 1
         self._go_row(rowno)
         mes = _('Change row number: {} → {}').format(old, rowno)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
     
     def change_font_size(self, delta=1):
         f = '[MClient] save.controller.Save.change_font_size'
         size = self.gui.get_font_size()
         if not size:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         if size + delta <= 0:
-            mes = f'{size} + {delta} > 0'
-            sh.com.rep_condition(f, mes)
+            rep.condition(f, f'{size} + {delta} > 0')
             return
         self.gui.set_font_size(size+delta)
     
     def fill_model(self):
-        ''' Do not assign 'gi.TableModel' externally, this will not change
+        ''' Do not assign 'TableModel' externally, this will not change
             the actual model.
         '''
-        self.model = gi.TableModel()
+        self.model = TableModel()
         self.gui.set_model(self.model)
         if self.model.items:
             self._go_row(0)

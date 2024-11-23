@@ -1,20 +1,20 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import PyQt6.QtCore
-import PyQt6.QtWidgets
+from PyQt6.QtWidgets import QWidget, QPushButton, QHBoxLayout
+from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtGui import QShortcut, QKeySequence
 
-#from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.graphics.root.controller import ROOT
 
-import gui as gi
+from keylistener.gui import Thread
 
 
 class App:
     
     def __init__(self):
         # 'thread' name is OK here, but will override a built-in method in GUI
-        self.thread = gi.Thread()
+        self.thread = Thread()
         self.gui = Gui()
         self.set_bindings()
     
@@ -37,9 +37,9 @@ class App:
 
 
 
-class Gui(PyQt6.QtWidgets.QWidget):
+class Gui(QWidget):
     
-    sig_close = PyQt6.QtCore.pyqtSignal()
+    sig_close = pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -55,20 +55,19 @@ class Gui(PyQt6.QtWidgets.QWidget):
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:
-            PyQt6.QtGui.QShortcut(PyQt6.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+            QShortcut(QKeySequence(hotkey), self).activated.connect(action)
     
     def set_gui(self):
-        self.button = PyQt6.QtWidgets.QPushButton()
+        self.button = QPushButton()
         self.button.setText('Click me!')
-        layout_ = PyQt6.QtWidgets.QHBoxLayout()
+        layout_ = QHBoxLayout()
         layout_.addWidget(self.button)
         self.setLayout(layout_)
 
 
 if __name__ == '__main__':
     f = '[MClient] keylistener.test.__main__'
-    sh.com.start()
     app = App()
     app.show()
     app.run_thread()
-    sh.com.end()
+    ROOT.end()

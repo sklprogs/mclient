@@ -4,8 +4,10 @@
 import os
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
-import skl_shared_qt.config as qc
+from skl_shared_qt.message.controller import Message, rep
+from skl_shared_qt.config import Config as shConfig, Update as shUpdate
+from skl_shared_qt.logic import Input
+from skl_shared_qt.paths import Home, Path, Directory, PDIR
 
 PRODUCT_LOW = 'mclient'
 
@@ -20,30 +22,30 @@ class Paths:
         self.dics = ''
     
     def check(self):
-        self.ihome = sh.Home(PRODUCT_LOW)
+        self.ihome = Home(PRODUCT_LOW)
         self.Success = self.ihome.create_conf()
     
     def set_dics(self):
         f = '[MClient] config.Paths.set_dics'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         self.dics = self.ihome.add_config('dics')
         if not self.dics:
             self.Success = False
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         if os.path.exists(self.dics):
-            self.Success = sh.Directory(self.dics).Success
+            self.Success = Directory(self.dics).Success
         else:
-            self.Success = sh.Path(self.dics).create()
+            self.Success = Path(self.dics).create()
         return self.dics
     
     def get_default(self):
-        return sh.objs.get_pdir().add('..', 'resources', 'config', 'default.json')
+        return PDIR.add('..', 'resources', 'config', 'default.json')
     
     def get_schema(self):
-        return sh.objs.get_pdir().add('..', 'resources', 'config', 'schema.json')
+        return PDIR.add('..', 'resources', 'config', 'schema.json')
     
     def get_local(self):
         return self.ihome.add_config(PRODUCT_LOW + '.json')
@@ -54,7 +56,7 @@ class Paths:
 
 
 
-class Config(qc.Config):
+class Config(shConfig):
     
     def __init__(self, default, schema, local):
         super().__init__(default, schema, local)
@@ -66,16 +68,16 @@ class Config(qc.Config):
     def update(self):
         f = '[MClient] config.Config.update'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         self._copy()
         self.localize()
         if self.ilocal.Success:
             mes = _('Update default configuration')
-            self.new = qc.Update(self.idefault.get(), self.ilocal.get()).run()
+            self.new = shUpdate(self.idefault.get(), self.ilocal.get()).run()
         else:
             mes = _('Use default configuration')
-        sh.objs.get_mes(f, mes, True).show_info()
+        Message(f, mes).show_info()
         self.convert_types()
     
     def quit(self):
@@ -85,17 +87,17 @@ class Config(qc.Config):
     def convert_types(self):
         f = '[MClient] config.Config.convert_types'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         ''' JSON does not support floats. Do not rely on the schema here since
             it checks for a string.
         '''
-        self.new['timeout'] = sh.Input(f, self.new['timeout']).get_float()
+        self.new['timeout'] = Input(f, self.new['timeout']).get_float()
     
     def revert_types(self):
         f = '[MClient] config.Config.revert_types'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         # JSON does not support floats
         self.new['timeout'] = str(self.new['timeout'])
@@ -115,7 +117,7 @@ class Config(qc.Config):
         '''
         f = '[MClient] config.Config.localize'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         self.new['columns']['1']['type'] = _(self.new['columns']['1']['type'])
         self.new['columns']['2']['type'] = _(self.new['columns']['2']['type'])
@@ -153,29 +155,29 @@ class HistorySubjects:
     
     def get_pair(self, subject):
         f = '[MClient] config.HistorySubjects.get_pair'
-        if not objs.get_config().Success:
-            sh.com.cancel(f)
+        if not CONFIG.Success:
+            rep.cancel(f)
             return
         if not subject:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         try:
-            return objs.config.new['subjects']['history'][subject]
+            return CONFIG.new['subjects']['history'][subject]
         except KeyError:
             return
     
     def add(self, body):
         f = '[MClient] config.HistorySubjects.add'
-        if not objs.get_config().Success:
-            sh.com.cancel(f)
+        if not CONFIG.Success:
+            rep.cancel(f)
             return
         if not body:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         self.count = 0
         for key in body:
             self._add_item(key, body[key])
-        sh.com.rep_matches(f, self.count)
+        rep.matches(f, self.count)
     
     def _add_item(self, short, full):
         f = '[MClient] config.HistorySubjects._add_item'
@@ -185,35 +187,16 @@ class HistorySubjects:
             - JSON accepts empty keys and values.
         '''
         if not short or not full:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
-        if short == full or short in objs.config.new['subjects']['history']:
+        if short == full or short in CONFIG.new['subjects']['history']:
             # Messages will be too frequent there
             return
         self.count += 1
-        objs.config.new['subjects']['history'][short] = full
+        CONFIG.new['subjects']['history'][short] = full
 
 
-
-class Objects:
-    
-    def __init__(self):
-        self.paths = self.config = None
-    
-    def get_paths(self):
-        if self.paths is None:
-            self.paths = Paths()
-            self.paths.run()
-        return self.paths
-    
-    def get_config(self):
-        if self.config is None:
-            default = self.get_paths().get_default()
-            schema = self.paths.get_schema()
-            local = self.paths.get_local()
-            self.config = Config(default, schema, local)
-            self.config.run()
-        return self.config
-
-
-objs = Objects()
+PATHS = Paths()
+PATHS.run()
+CONFIG = Config(PATHS.get_default(), PATHS.get_schema(), PATHS.get_local())
+CONFIG.run()

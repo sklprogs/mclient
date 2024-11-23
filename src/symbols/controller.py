@@ -2,10 +2,9 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-#import skl_shared_qt.shared as sh
 
-from . import gui as gi
-from . import logic as lg
+from symbols.gui import Symbols as guiSymbols, TableModel
+from symbols.logic import Symbols as lgSymbols
 
 
 class Symbols:
@@ -20,7 +19,7 @@ class Symbols:
         self.gui.table.set_cur_index(index_)
     
     def set_gui(self):
-        self.gui = gi.Symbols()
+        self.gui = guiSymbols()
         self.set_title()
         self.set_bindings()
     
@@ -29,10 +28,10 @@ class Symbols:
         return self.logic.get(rowno, colno)
     
     def set_logic(self):
-        self.logic = lg.Symbols()
+        self.logic = lgSymbols()
     
     def fill(self):
-        self.model = gi.TableModel(self.logic.run())
+        self.model = TableModel(self.logic.run())
         self.gui.set_model(self.model)
         self.gui.resize_to_contents()
     

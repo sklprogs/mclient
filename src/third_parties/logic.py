@@ -2,21 +2,21 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.online import Email, ONLINE
+from skl_shared_qt.logic import email, com
+from skl_shared_qt.paths import PDIR
+from skl_shared_qt.text_file import Read
 
 
 class ThirdParties:
     
     def send_feedback(self):
-        sh.Email (email = sh.lg.email
-                 ,subject = _('On MClient')
-                 ).create()
+        Email(email, _('On MClient')).create()
 
     def open_license_url(self):
-        ionline = sh.Online()
-        ionline.url = sh.com.license_url
-        ionline.browse()
+        ONLINE.url = com.license_url
+        ONLINE.browse()
     
     def fill(self):
-        file = sh.objs.get_pdir().add('..', 'resources', 'third parties.txt')
-        return sh.ReadTextFile(file).get()
+        file = PDIR.add('..', 'resources', 'third parties.txt')
+        return Read(file).get()

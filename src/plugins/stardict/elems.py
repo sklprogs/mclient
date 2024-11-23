@@ -2,7 +2,10 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import rep
+from skl_shared_qt.table import Table
+from skl_shared_qt.list import List
+from skl_shared_qt.logic import Text, punc_array
 
 import instance as ic
 
@@ -17,7 +20,7 @@ class Elems:
             self.Success = True
         else:
             self.Success = False
-            sh.com.rep_empty(f)
+            rep.empty(f)
 
     def set_values(self):
         self.cells = []
@@ -33,11 +36,11 @@ class Elems:
     def set_cells(self):
         f = '[MClient] plugins.stardict.elems.Elems.set_cells'
         if not self.blocks:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         if len(self.blocks) < 2:
             mes = f'{len(self.blocks)} >= 2'
-            sh.com.rep_condition(f, mes)
+            rep.condition(f, mes)
             return
         cell = ic.Cell()
         cell.blocks.append(self.blocks[0])
@@ -86,14 +89,14 @@ class Elems:
                     del cell.blocks[i-2]
                     i -= 2
                 i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def set_text(self):
         for cell in self.cells:
             fragms = [block.text for block in cell.blocks]
-            cell.text = sh.List(fragms).space_items().strip()
+            cell.text = List(fragms).space_items().strip()
             # 'phsubj' text may have multiple spaces for some reason
-            cell.text = sh.Text(cell.text).delete_duplicate_spaces()
+            cell.text = Text(cell.text).delete_duplicate_spaces()
     
     def set_row_nos(self):
         # Run this before deleting fixed types
@@ -110,7 +113,7 @@ class Elems:
                 rowno += 1
             self.cells[i].rowno = rowno
             i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def save_urls(self):
         for cell in self.cells:
@@ -130,7 +133,7 @@ class Elems:
                 count += 1
                 self.art_subj[block.subj] = block.subjf
                 self.art_subj[block.subjf] = block.subj
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def _get_last_subj(self):
         for cell in self.cells[::-1]:
@@ -212,7 +215,7 @@ class Elems:
                 del self.cells[i]
                 i -= 1
             i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def renumber(self):
         for i in range(len(self.cells)):
@@ -221,7 +224,7 @@ class Elems:
     def run(self):
         f = '[MClient] plugins.stardict.elems.Elems.run'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return []
         self.set_phrases()
         self.delete_straight_line()
@@ -269,18 +272,15 @@ class Elems:
             subj.append(block.subj)
             subjf.append(block.subjf)
             urls.append(block.url)
-        mes = sh.FastTable (headers = headers
-                           ,iterable = (nos, types, texts, subj, subjf, urls)
-                           ,maxrow = maxrow
-                           ,maxrows = maxrows
-                           ).run()
+        mes = Table(headers = headers
+                   ,iterable = (nos, types, texts, subj, subjf, urls)
+                   ,maxrow = maxrow, maxrows = maxrows).run()
         return f'{f}:\n{mes}'
     
     def _debug_cells(self, maxrow=30, maxrows=0):
         f = '[MClient] plugins.stradict.elems.Elems._debug_cells'
         headers = ('SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #'), _('CELL #')
-                  ,_('TYPES'), _('TEXT'), 'URL'
-                  )
+                  ,_('TYPES'), _('TEXT'), 'URL')
         subj = []
         wform = []
         speech = []
@@ -301,13 +301,10 @@ class Elems:
             cell_types = [block.type for block in cell.blocks]
             types.append(', '.join(cell_types))
             urls.append(cell.url)
-        mes = sh.FastTable (headers = headers
-                           ,iterable = (subj, wform, speech, transc, rownos
-                                       ,nos, types, texts, urls
-                                       )
-                           ,maxrow = maxrow
-                           ,maxrows = maxrows
-                           ).run()
+        mes = Table(headers = headers
+                   ,iterable = (subj, wform, speech, transc, rownos, nos, types
+                               ,texts, urls)
+                   ,maxrow = maxrow, maxrows = maxrows).run()
         return f'{f}:\n{mes}'
         
     def unite_comments(self):
@@ -316,19 +313,14 @@ class Elems:
             if self.blocks[i].type == 'comment' \
             and self.blocks[i-1].cellno == self.blocks[i].cellno:
                 if i > 0 and self.blocks[i-1].type == 'comment':
-                    self.blocks[i-1].text \
-                            = sh.List (lst1 = [self.blocks[i-1].text
-                                      ,self.blocks[i].text
-                                      ]
-                                      ).space_items()
+                    self.blocks[i-1].text = List(lst1 = [self.blocks[i-1].text
+                                                ,self.blocks[i].text]).space_items()
                     del self.blocks[i]
                     i -= 1
             i += 1
             
     def delete_straight_line(self):
-        self.blocks = [block for block in self.blocks \
-                       if block.text.strip() != '|'
-                      ]
+        self.blocks = [block for block in self.blocks if block.text.strip() != '|']
     
     def run_comments(self):
         i = 0
@@ -453,7 +445,7 @@ class Elems:
                         cond = True
                 if self.blocks[i].text \
                   and not self.blocks[i].text[0].isspace() \
-                  and not self.blocks[i].text[0] in sh.lg.punc_array \
+                  and not self.blocks[i].text[0] in punc_array \
                   and not self.blocks[i].text[0] in [')', ']', '}'] \
                   and not cond:
                     self.blocks[i].text = ' ' + self.blocks[i].text

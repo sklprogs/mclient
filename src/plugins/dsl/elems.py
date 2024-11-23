@@ -3,8 +3,12 @@
 
 import re
 import copy
+
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import rep
+from skl_shared_qt.list import List
+from skl_shared_qt.logic import Text, punc_array
+from skl_shared_qt.table import Table
 
 import instance as ic
 
@@ -24,16 +28,16 @@ class Elems:
             self.Success = True
         else:
             self.Success = False
-            sh.com.rep_empty(f)
+            rep.empty(f)
     
     def set_cells(self):
         f = '[MClient] plugins.dsl.elems.Elems.set_cells'
         if not self.blocks:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         if len(self.blocks) < 2:
             mes = f'{len(self.blocks)} >= 2'
-            sh.com.rep_condition(f, mes)
+            rep.condition(f, mes)
             return
         cell = ic.Cell()
         cell.blocks.append(self.blocks[0])
@@ -52,8 +56,7 @@ class Elems:
     
     def delete_trash(self):
         self.blocks = [block for block in self.blocks \
-                       if block.text.strip() and block.text != ','
-                      ]
+                      if block.text.strip() and block.text != ',']
     
     def divide_block(self):
         sep1 = ' || '
@@ -132,14 +135,14 @@ class Elems:
                     del cell.blocks[i-2]
                     i -= 2
                 i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def set_text(self):
         for cell in self.cells:
             fragms = [block.text for block in cell.blocks]
-            cell.text = sh.List(fragms).space_items().strip()
+            cell.text = List(fragms).space_items().strip()
             # 'phsubj' text may have multiple spaces for some reason
-            cell.text = sh.Text(cell.text).delete_duplicate_spaces()
+            cell.text = Text(cell.text).delete_duplicate_spaces()
     
     def set_fixed_cells(self):
         for cell in self.cells:
@@ -172,7 +175,7 @@ class Elems:
                 rowno += 1
             self.cells[i].rowno = rowno
             i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def fill_fixed(self):
         subj = self._get_last_subj()
@@ -202,7 +205,7 @@ class Elems:
                 del self.cells[i]
                 i -= 1
             i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def set_cellno(self):
         for i in range(len(self.blocks)):
@@ -243,7 +246,7 @@ class Elems:
     def run(self):
         f = '[MClient] plugins.dsl.elems.Elems.run'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return []
         self.divide_block()
         self.set_phsubj()
@@ -270,8 +273,7 @@ class Elems:
     def _debug_cells(self, maxrow=30, maxrows=0):
         f = '[MClient] plugins.dsl.elems.Elems._debug_cells'
         headers = ('SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #'), _('CELL #')
-                  ,_('TYPES'), _('TEXT'), 'URL'
-                  )
+                  ,_('TYPES'), _('TEXT'), 'URL')
         subj = []
         wform = []
         speech = []
@@ -295,43 +297,28 @@ class Elems:
         mes = [f'{f}:']
         sub = _('Cells:')
         mes.append(sub)
-        sub = sh.FastTable (headers = headers
-                           ,iterable = (subj, wform, speech, transc, rownos
-                                       ,nos, types, texts, urls
-                                       )
-                           ,maxrow = maxrow
-                           ,maxrows = maxrows
-                           ).run()
+        sub = Table(headers = headers
+                   ,iterable = (subj, wform, speech, transc, rownos, nos, types
+                               ,texts, urls)
+                   ,maxrow = maxrow, maxrows = maxrows).run()
         mes.append(sub)
         return '\n'.join(mes)
     
     def _debug_blocks(self, maxrow=70, maxrows=1000):
         f = '[MClient] plugins.dsl.elems.Elems.debug'
         headers = ('NO', 'SUBJ', 'SUBJF', 'WFORM', 'SPEECH', 'TRANSC', 'TYPE'
-                  ,'TEXT'
-                  )
+                  ,'TEXT')
         rows = []
         for i in range(len(self.blocks)):
-            rows.append ([i + 1
-                         ,self.blocks[i].subj
-                         ,self.blocks[i].subjf
-                         ,self.blocks[i].wform
-                         ,self.blocks[i].speech
-                         ,self.blocks[i].transc
-                         ,self.blocks[i].type
-                         ,self.blocks[i].text
-                         ]
-                        )
+            rows.append([i + 1, self.blocks[i].subj, self.blocks[i].subjf
+                       ,self.blocks[i].wform, self.blocks[i].speech
+                       ,self.blocks[i].transc, self.blocks[i].type
+                       ,self.blocks[i].text])
         mes = [f'{f}:']
         sub = _('Blocks:')
         mes.append(sub)
-        sub = sh.FastTable (headers = headers
-                           ,iterable = rows
-                           ,maxrow = maxrow
-                           ,maxrows = maxrows
-                           ,Transpose = True
-                           ,encloser = '"'
-                           ).run()
+        sub = Table(headers = headers, iterable = rows, maxrow = maxrow
+                   ,maxrows = maxrows, Transpose = True, encloser = '"').run()
         mes.append(sub)
         mes.append('')
         return '\n'.join(mes)
@@ -339,11 +326,10 @@ class Elems:
     def debug(self, maxrow=70, maxrows=1000):
         f = '[MClient] plugins.dsl.elems.Elems.debug'
         if not self.Debug or not self.blocks:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         report = [self._debug_blocks(maxrow, maxrows)
-                 ,self._debug_cells(maxrow, maxrows)
-                 ]
+                 ,self._debug_cells(maxrow, maxrows)]
         report = [item for item in report if item]
         return '\n\n'.join(report)
     
@@ -355,13 +341,13 @@ class Elems:
             if self.blocks[i].cellno == self.blocks[i-1].cellno:
                 if self.blocks[i].text and self.blocks[i-1].text \
                 and not self.blocks[i].text[0].isspace() \
-                and not self.blocks[i].text[0] in sh.lg.punc_array \
+                and not self.blocks[i].text[0] in punc_array \
                 and not self.blocks[i].text[0] in [')', ']', '}'] \
                 and not self.blocks[i-1].text[-1] in ['(', '[', '{']:
                     count += 1
                     self.blocks[i].text = ' ' + self.blocks[i].text
             i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
 
     def set_phsubj(self):
         count = 0
@@ -475,5 +461,4 @@ class Elems:
             
     def remove_fixed(self):
         self.blocks = [block for block in self.blocks if block.type \
-                       not in ('subj', 'wform', 'transc', 'speech')
-                      ]
+                      not in ('subj', 'wform', 'transc', 'speech')]

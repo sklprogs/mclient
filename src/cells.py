@@ -4,10 +4,12 @@
 import copy
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
+from skl_shared_qt.list import List
+from skl_shared_qt.table import Table
 
-import instance as ic
-import config as cf
+from instance import Block, Cell
+from config import CONFIG
 import format as fm
 import logic as lg
 import subjects as sj
@@ -31,25 +33,25 @@ class Expand:
     def expand_speeches(self):
         # This takes ~0.0015s for 'set' on AMD E-300 (no IDE, no warnings)
         f = '[MClient] cells.Expand.expand_speeches'
-        if cf.objs.get_config().new['ShortSpeech']:
-            sh.com.rep_lazy(f)
+        if CONFIG.new['ShortSpeech']:
+            ms.rep.lazy(f)
             return
         speeches = lg.objs.get_plugins().get_speeches()
         if not speeches:
-            sh.com.rep_lazy(f)
+            ms.rep.lazy(f)
             return
         for cell in self.cells:
             try:
                 cell.speech = speeches[cell.speech]
             except KeyError:
                 mes = _('Wrong input data: "{}"!').format(cell.speech)
-                sh.objs.get_mes(f, mes, True).show_warning()
+                ms.Message(f, mes, True).show_warning()
     
     def expand_subjects(self):
         # This takes ~0.0086s for 'set' on AMD E-300
         f = '[MClient] cells.Expand.expand_subjects'
-        if cf.objs.get_config().new['ShortSubjects']:
-            sh.com.rep_lazy(f)
+        if CONFIG.new['ShortSubjects']:
+            ms.rep.lazy(f)
             return
         for cell in self.cells:
             cell.subj = sj.objs.get_subjects().expand(cell.subj)
@@ -70,8 +72,8 @@ class Omit:
     
     def set_subjects(self):
         f = '[MClient] cells.Omit.set_subjects'
-        if not cf.objs.get_config().new['BlockSubjects']:
-            sh.com.rep_lazy(f)
+        if not CONFIG.new['BlockSubjects']:
+            ms.rep.lazy(f)
             return
         subjects = [cell.subj for cell in self.cells]
         subjects = sorted(set(subjects))
@@ -79,12 +81,12 @@ class Omit:
             if sj.objs.get_subjects().is_blocked(subject):
                 self.subj.append(subject)
         mes = '; '.join(self.subj)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        ms.Message(f, mes).show_debug()
     
     def omit_subjects(self):
         f = '[MClient] cells.Omit.omit_subjects'
-        if not cf.objs.get_config().new['BlockSubjects']:
-            sh.com.rep_lazy(f)
+        if not CONFIG.new['BlockSubjects']:
+            ms.rep.lazy(f)
             return
         cells = []
         for cell in self.cells:
@@ -93,15 +95,15 @@ class Omit:
                 self.omit_cells.append(cell.text)
             else:
                 cells.append(cell)
-        sh.com.rep_matches(f, len(self.cells) - len(cells))
+        ms.rep.matches(f, len(self.cells) - len(cells))
         self.cells = cells
         mes = _('Omitted cells: {}').format('; '.join(self.omit_cells))
-        sh.objs.get_mes(f, mes, True).show_debug()
+        ms.Message(f, mes).show_debug()
     
     def omit_users(self):
         f = '[MClient] cells.Omit.omit_users'
-        if cf.objs.get_config().new['ShowUserNames']:
-            sh.com.rep_lazy(f)
+        if CONFIG.new['ShowUserNames']:
+            ms.rep.lazy(f)
             return
         count = 0
         for cell in self.cells:
@@ -110,9 +112,9 @@ class Omit:
             delta = old_len - len(cell.blocks)
             if delta:
                 fragms = [block.text for block in cell.blocks]
-                cell.text = sh.List(fragms).space_items().strip()
+                cell.text = List(fragms).space_items().strip()
             count += delta
-        sh.com.rep_matches(f, count)
+        ms.rep.matches(f, count)
     
     def run(self):
         self.set_subjects()
@@ -144,23 +146,19 @@ class Prioritize:
             speech.append(cell.speech)
             speechpr.append(cell.speechpr)
         headers = (_('#'), _('TEXT'), _('SUBJECT'), 'SUBJPR', _('SPEECH')
-                  ,'SPEECHPR'
-                  )
+                  ,'SPEECHPR')
         iterable = [nos, text, subj, subjpr, speech, speechpr]
-        mes = sh.FastTable (headers = headers
-                           ,iterable = iterable
-                           ,maxrow = 60
-                           ).run()
+        mes = Table(headers = headers
+                   ,iterable = iterable
+                   ,maxrow = 60).run()
         return f + ':\n' + mes
     
     def set_speech(self):
         ph_cells = [cell for cell in self.cells if com.is_phrase_type(cell)]
         all_speech = sorted(set([cell.speech for cell in self.cells \
-                                 if not cell in ph_cells
-                                ]))
+                                 if not cell in ph_cells]))
         speech_unp = [speech for speech in all_speech \
-                      if not speech in self.speech
-                     ]
+                      if not speech in self.speech]
         all_speech = self.speech + speech_unp
         for i in range(len(all_speech)):
             for cell in self.cells:
@@ -195,11 +193,9 @@ class Prioritize:
                 cell.subjpr = priority
         pr_cells = [cell for cell in self.cells if cell.subjpr > -1]
         unp_cells = [cell for cell in self.cells if cell.subjpr == -1 \
-                     and not com.is_phrase_type(cell)
-                    ]
+                     and not com.is_phrase_type(cell)]
         ph_cells = [cell for cell in self.cells if cell.subjpr == -1 \
-                    and com.is_phrase_type(cell)
-                   ]
+                    and com.is_phrase_type(cell)]
         
         pr_cells.sort(key=lambda x: (x.subjpr, x.no))
         unp_cells.sort(key=lambda x: (x.subj.lower(), x.no))
@@ -261,15 +257,15 @@ class View:
         f = '[MClient] cells.View.check'
         if not self.cells:
             self.Success = False
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
     
     def sort(self):
         f = '[MClient] cells.View.sort'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
-        if cf.objs.get_config().new['AlphabetizeTerms'] \
+        if CONFIG.new['AlphabetizeTerms'] \
         and not lg.com.is_parallel() and not lg.com.is_separate():
             self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.text, x.no))
         else:
@@ -277,8 +273,8 @@ class View:
     
     def _create_fixed(self, i, type_, rowno):
         f = '[MClient] cells.View._create_fixed'
-        cell = ic.Cell()
-        block = ic.Block()
+        cell = Cell()
+        block = Block()
         block.type = type_
         cell.fixed_block = block
         cell.blocks = [block]
@@ -309,13 +305,13 @@ class View:
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(type_, 'subj, wform, transc, speech, or empty')
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
         return cell
     
     def restore_fixed(self):
         f = '[MClient] cells.View.restore_fixed'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         count = 0
         i = 1
@@ -328,13 +324,13 @@ class View:
                     self.cells.insert(i, cell)
                     i += 1
             i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def restore_first(self):
         # Add fixed cells for the very first row
         f = '[MClient] cells.View.restore_first'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         count = 0
         rowno = self.cells[0].rowno
@@ -342,7 +338,7 @@ class View:
             count += 1
             cell = self._create_fixed(0, type_, rowno)
             self.cells.insert(0, cell)
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def _has_phrase(self):
         for cell in self.cells[::-1]:
@@ -353,10 +349,10 @@ class View:
     def restore_phsubj(self):
         f = '[MClient] cells.View.restore_phsubj'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if not self._has_phrase():
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         i = len(self.cells) - 1
         while i >= 0:
@@ -365,14 +361,14 @@ class View:
                 self.cells[i].fixed_block.type = 'phsubj'
                 self.phi = i
                 mes = f'"{self.cells[i].fixed_block.text}"'
-                sh.objs.get_mes(f, mes, True).show_debug()
+                Message(f, mes).show_debug()
                 return
             i -= 1
     
     def debug(self):
         f = '[MClient] cells.View.debug'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         headers = (_('ROW #'), _('CELL #'), _('TEXT'), _('TYPES'), 'URL'
                   ,'COL1' ,'COL2', 'COL3', 'COL4'
@@ -400,10 +396,7 @@ class View:
                 cell_types.append(block.type)
             types.append(', '.join(cell_types))
         iterable = [rowno, no, text, types, url, col1, col2, col3, col4]
-        return sh.FastTable (headers = headers
-                            ,iterable = iterable
-                            ,maxrow = 45
-                            ).run()
+        return Table(headers = headers, iterable = iterable, maxrow = 45).run()
     
     def _renumber_cell_nos(self):
         for i in range(len(self.cells)):
@@ -427,7 +420,7 @@ class View:
     def renumber(self):
         f = '[MClient] cells.View.renumber'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         self._renumber_cell_nos()
         self._renumber_row_nos()
@@ -435,7 +428,7 @@ class View:
     def clear_duplicates(self):
         f = '[MClient] cells.View.clear_duplicates'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         subj = wform = transc = speech = ''
         for cell in self.cells:
@@ -472,17 +465,17 @@ class View:
                 mes = mes.format(type_, self.fixed_urls)
             elif not text in self.fixed_urls[type_]:
                 mes = mes.format(text, self.fixed_urls[type_])
-            sh.objs.get_mes(f, mes, True).show_warning()
+            Message(f, mes).show_warning()
         return ''
     
     def restore_urls(self):
         f = '[MClient] cells.View.restore_urls'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if not self.fixed_urls:
             # Fixed cell URLs are relevant for multitrancom plugin only
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         for cell in self.cells:
             if not cell.fixed_block or not cell.text:
@@ -495,10 +488,10 @@ class View:
     def clear_phrase_fields(self):
         f = '[MClient] cells.View.clear_phrase_fields'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if self.phi is None:
-            sh.com.rep_lazy()
+            rep.lazy()
             return
         i = self.phi
         while i < len(self.cells):
@@ -512,11 +505,11 @@ class View:
     def fill_cols(self):
         f = '[MClient] cells.View.fill_cols'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         types = lg.com.get_col_types()
         if not types:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         for cell in self.cells:
             for i in range(len(types)):
@@ -591,25 +584,24 @@ class Wrap:
         f = '[MClient] cells.Wrap.check'
         if not self.cells:
             self.Success = False
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         if self.collimit <= self.fixed_len:
             self.Success = False
-            mes = f'{self.collimit} > {self.fixed_len}'
-            sh.com.rep_condition(f, mes)
+            rep.condition(f, f'{self.collimit} > {self.fixed_len}')
     
     def get_empty_cells(self, delta):
         row = []
         for type_ in range(delta):
-            cell = ic.Cell()
-            cell.blocks = [ic.Block()]
+            cell = Cell()
+            cell.blocks = [Block()]
             row.append(cell)
         return row
     
     def wrap(self):
         f = '[MClient] cells.Wrap.wrap'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         cells = []
         row = []
@@ -662,11 +654,8 @@ class Wrap:
                 code.append(cell.code)
                 url.append(cell.url)
         iterable = [no, rowno,  colno, text, code, url]
-        return sh.FastTable (headers = headers
-                            ,iterable = iterable
-                            ,maxrow = 60
-                            ,maxrows = 700
-                            ).run()
+        return Table(headers = headers, iterable = iterable, maxrow = 60
+                    ,maxrows = 700).run()
         return '\n'.join(mes)
     
     def _debug_plain(self):
@@ -698,7 +687,7 @@ class Wrap:
     def debug(self):
         f = '[MClient] cells.Wrap.debug'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         mes = [self._debug_cells()]
         mes.append(self._debug_plain())
@@ -708,11 +697,11 @@ class Wrap:
     def renumber(self):
         f = '[MClient] cells.Wrap.renumber'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if not self.cells[0]:
             self.Success = False
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         no = 0
         for i in range(len(self.cells)):
@@ -726,19 +715,19 @@ class Wrap:
         # Takes ~0.871s for 'set' on AMD E-300
         f = '[MClient] cells.Wrap.format'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         for row in self.cells:
             for cell in row:
                 cell_code = []
                 for block in cell.blocks:
                     cell_code.append(fm.Block(block, cell.colno).run())
-                cell.code = sh.List(cell_code).space_items()
+                cell.code = List(cell_code).space_items()
     
     def set_plain(self):
         f = '[MClient] cells.Wrap.set_plain'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         for row in self.cells:
             new_row = []
@@ -749,7 +738,7 @@ class Wrap:
     def set_code(self):
         f = '[MClient] cells.Wrap.set_code'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         for row in self.cells:
             new_row = []

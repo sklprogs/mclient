@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import rep
 
 import config as cf
 
@@ -22,8 +22,7 @@ class Symbols:
         try:
             return self.table[rowno][colno]
         except IndexError:
-            mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            rep.wrong_input(f)
             return ''
     
     def run(self):
@@ -33,10 +32,10 @@ class Symbols:
     def set_table(self):
         f = '[MClient] symbols.logic.Symbols.set_table'
         if self.table:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         if not self.line or not self.colnum:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         row = [self.line[0]]
         i = 1

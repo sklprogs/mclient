@@ -1,17 +1,14 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-#from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
-import plugins.multitrancom.utils.subjects.compile as us
-#import plugins.multitrancom.utils.subjects.check as us
+from plugins.multitrancom.utils.subjects.compile import Compile, Check, Missing
+from skl_shared_qt.graphics.root.controller import ROOT
 
 
 if __name__ == '__main__':
     f = '[MClient] utils.__main__'
-    sh.com.start()
-    #us.Compile(1).run()
-    #us.Check().run()
-    us.Missing(1).run()
-    sh.com.end()
+    #Compile(1).run()
+    #Check().run()
+    Missing(1).run()
+    ROOT.end()
                 

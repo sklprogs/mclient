@@ -26,24 +26,18 @@ class KeyListener(threading.Thread):
         ''' Sometimes symbols are uppercased by an unknown reason, however, we
             lowercase them, therefore it is sufficient to have 'c' here.
         '''
-        self.addKeyListener ('Lcontrol+c+c'
-                            ,lambda:keylistener.set_status(status=1)
-                            )
-        self.addKeyListener ('Rcontrol+c+c'
-                            ,lambda:keylistener.set_status(status=1)
-                            )
-        self.addKeyListener ('Lcontrol+Insert+Insert'
-                            ,lambda:keylistener.set_status(status=1)
-                            )
-        self.addKeyListener ('Rcontrol+Insert+Insert'
-                            ,lambda:keylistener.set_status(status=1)
-                            )
-        self.addKeyListener ('Lmenu+Oem_3'
-                            ,lambda:keylistener.set_status(status=2)
-                            )
-        self.addKeyListener ('Rmenu+Oem_3'
-                            ,lambda:keylistener.set_status(status=2)
-                            )
+        self.addKeyListener('Lcontrol+c+c'
+                           ,lambda:keylistener.set_status(status=1))
+        self.addKeyListener('Rcontrol+c+c'
+                           ,lambda:keylistener.set_status(status=1))
+        self.addKeyListener('Lcontrol+Insert+Insert'
+                           ,lambda:keylistener.set_status(status=1))
+        self.addKeyListener('Rcontrol+Insert+Insert'
+                           ,lambda:keylistener.set_status(status=1))
+        self.addKeyListener('Lmenu+Oem_3'
+                           ,lambda:keylistener.set_status(status=2))
+        self.addKeyListener('Rmenu+Oem_3'
+                           ,lambda:keylistener.set_status(status=2))
         self.restart()
 
     def cancel(self):
@@ -74,8 +68,7 @@ class KeyListener(threading.Thread):
             elif character in ('c', 'C', 'Insert', 'Oem_3'):
                 if len(self.pressed) > 0:
                     if self.pressed[0] in ('Lcontrol', 'Rcontrol', 'Lmenu'
-                                          ,'Rmenu'
-                                          ):
+                                          ,'Rmenu'):
                         self.pressed.append(character)
             action = self.listeners.get(tuple(self.pressed), False)
             print_v('Current action: {}'.format(self.pressed))

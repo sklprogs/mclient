@@ -2,10 +2,9 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-#import skl_shared_qt.shared as sh
 
 import config as cf
-from . import gui as gi
+from popup.gui import Popup as guiPopup, HEIGHT, WIDTH
 
 
 class Attach:
@@ -21,7 +20,7 @@ class Attach:
     
     def align_y(self):
         # Align widgets such that their top borders coincide
-        self.py1 = self.y1 + int((gi.HEIGHT - self.height) / 2)
+        self.py1 = self.y1 + int((HEIGHT - self.height) / 2)
         if self.py1 < 0:
             self.py1 = self.y1
     
@@ -36,22 +35,22 @@ class Attach:
             self.center_y()
         else:
             self.align_y()
-        self.py2 = self.py1 + gi.HEIGHT
+        self.py2 = self.py1 + HEIGHT
         self.px1 = self.x2
-        self.px2 = self.px1 + gi.WIDTH
+        self.px2 = self.px1 + WIDTH
     
     def adjust_y(self):
         if self.py1 < 0:
             self.py1 = 0
-            self.py2 = gi.HEIGHT
+            self.py2 = HEIGHT
     
     def adjust_x(self):
         if self.px2 > self.max_width:
-            self.px1 = self.x1 - gi.WIDTH
+            self.px1 = self.x1 - WIDTH
             self.px2 = self.x1
             if self.px1 < 0:
                 self.px1 = 0
-                self.px2 = gi.WIDTH
+                self.px2 = WIDTH
     
     def run(self):
         self.set_coords()
@@ -65,7 +64,7 @@ class Popup:
     
     def __init__(self):
         self.Shown = False
-        self.gui = gi.Popup()
+        self.gui = guiPopup()
         self.set_gui()
     
     def adjust_position(self, x1, width, y1, height, max_width, Center=False):
@@ -98,6 +97,5 @@ class Popup:
     
     def set_bindings(self):
         self.gui.bind(('Esc',), self.close)
-        self.gui.bind (cf.objs.get_config().new['actions']['toggle_popup']['hotkeys']
-                      ,self.toggle
-                      )
+        self.gui.bind(cf.objs.get_config().new['actions']['toggle_popup']['hotkeys']
+                     ,self.toggle)

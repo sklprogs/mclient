@@ -5,7 +5,10 @@ import struct
 import os
 import zlib
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
+from skl_shared_qt.time import Timer
+from skl_shared_qt.paths import File
+from skl_shared_qt.logic import Input, Directory
 
 
 ''' A directory storing all stardict files.
@@ -13,7 +16,6 @@ import skl_shared_qt.shared as sh
     anything from this module.
 '''
 PATH = ''
-ICON = sh.objs.get_pdir().add('..', 'resources', 'mclient.png')
 
 
 class Suggest:
@@ -32,27 +34,25 @@ class Suggest:
         self.pattern = search
         if not self.pattern:
             self.Success = False
-            sh.com.rep_empty(f)
+            rep.empty(f)
     
     def get(self):
         f = '[MClient] plugins.stardict.get.Suggest.get'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         items = objs.get_all_dics().get_index()
         if not items:
             self.Success = False
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
-        timer = sh.Timer(f)
+        timer = Timer(f)
         timer.start()
         search = self.pattern.lower()
-        result = [item for item in items \
-                  if str(item).lower().startswith(search)
-                 ]
+        result = [item for item in items if str(item).lower().startswith(search)]
         timer.end()
         mes = '; '.join(result)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
         return result
     
     def run(self):
@@ -69,7 +69,7 @@ class Get:
     def run(self):
         f = '[MClient] plugins.stardict.get.Get.run'
         if not PATH or not self.pattern:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         return objs.get_all_dics().get(self.pattern)
 
@@ -96,13 +96,13 @@ class DictZip:
     def reset(self, path):
         self.set_values()
         self.path = path
-        self.Success = sh.File(self.path).Success
+        self.Success = File(self.path).Success
         self.load()
     
     def load(self):
         f = '[MClient] plugins.stardict.get.DictZip.load'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         try:
             self.obj = open(self.path, 'rb')
@@ -115,7 +115,7 @@ class DictZip:
             self.Success = False
             mes = _('Failed to load "{}"!\n\nDetails: {}')
             mes = mes.format(self.path, e)
-            sh.objs.get_mes(f, mes).show_warning()
+            Message(f, mes, True).show_warning()
 
     def _read_header(self):
         # This method is internal and should be wrapped with try-except
@@ -162,12 +162,12 @@ class DictZip:
         '''
         f = '[MClient] plugins.stardict.get.DictZip.read'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         # Prevent 'ZeroDivisionError'
         if not self.len_:
             # You've probably forgot to run 'self.load' first
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         chunk = self.offset // self.len_
         self.obj.seek(self.offsets[chunk])
@@ -188,7 +188,7 @@ class DictZip:
     def close(self):
         f = '[MClient] plugins.stardict.get.DictZip.close'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         self.obj.close()
 
@@ -203,14 +203,13 @@ class StarDict:
     def reset(self, ifopath):
         self.set_values()
         self.path = ifopath
-        ipath = sh.Path(self.path)
-        ''' We need a filename with an absolute path here.
-            'file'[:-4] basically does the same thing (providing that
-            extensions are only 3 symbols long). 'sh.Path' is more
-            precise for other cases.
+        ipath = Path(self.path)
+        ''' We need a filename with an absolute path here. 'file'[:-4]
+            does the same thing (providing that extensions are only 3 symbols
+            long). 'Path' is more precise for other cases.
         '''
         self.fname = os.path.join(ipath.get_dirname(), ipath.get_filename())
-        self.Success = sh.File(self.path).Success
+        self.Success = File(self.path).Success
         self.check()
         self.set_meta()
 
@@ -229,25 +228,25 @@ class StarDict:
     def set_meta(self):
         f = '[MClient] plugins.stardict.get.Stardict.set_meta'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if not self.ifo:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         if not 'bookname' in self.ifo or not 'wordcount' in self.ifo:
             self.Success = False
             mes = _('File "{}" is incorrect!')
             mes = mes.format(self.fname + '.ifo')
-            sh.objs.get_mes(f, mes).show_warning()
+            Message(f, mes, True).show_warning()
             return
         self.title = str(self.ifo['bookname'])
-        self.wcount = sh.Input(f, self.ifo['wordcount']).get_integer()
+        self.wcount = Input(f, self.ifo['wordcount']).get_integer()
     
     def fail(self, f, e):
         self.Success = False
         mes = _('Failed to load "{}"!\n\nDetails: {}')
         mes = mes.format(self.path, e)
-        sh.objs.get_mes(f, mes).show_warning()
+        Message(f, mes, True).show_warning()
     
     def check(self):
         ''' Load .ifo data and check that all needed dictionary files
@@ -255,7 +254,7 @@ class StarDict:
         '''
         f = '[MClient] plugins.stardict.get.Stardict.check'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         try:
             for line in open (file = self.fname + '.ifo'
@@ -279,7 +278,7 @@ class StarDict:
         '''
         f = '[MClient] plugins.stardict.get.Stardict.load'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         idx = self.fname + '.idx'
         iopen = open(idx, 'rb')
@@ -301,9 +300,9 @@ class StarDict:
             self.Success = False
             sub = f'{self.wcount} = {len(self.idx)}'
             mes = _('The condition "{}" is not observed!').format(sub)
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         # Compression of .dict is optional
         try:
@@ -315,7 +314,7 @@ class StarDict:
         # Release idx word list and opened .dict file
         f = '[MClient] plugins.stardict.get.Stardict.unload'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         self.idx = []
         self.dictf.close()
@@ -329,16 +328,14 @@ class StarDict:
         '''
         f = '[MClient] plugins.stardict.get.Stardict.__getitem__'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if type(key) is int:
             return self.idx[key][0]
         if type(key) is slice:
             return [w[0] for w in self.idx[key]]
         if type(key) is str:
-            return sh.Input (title = f
-                            ,value = self.search(key)
-                            ).get_integer()
+            return Input(title=f, value=self.search(key)).get_integer()
 
     def search(self, word, prefix=False):
         ''' Binary search for words in idx list. In case prefix=True,
@@ -347,7 +344,7 @@ class StarDict:
         '''
         f = '[MClient] plugins.stardict.get.Stardict.search'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if word == '':
             return -1
@@ -383,7 +380,7 @@ class StarDict:
     def get_dict_link(self, index):
         f = '[MClient] plugins.stardict.get.Stardict.get_dict_link'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         # Return (dict_index, len) tuple of a word on a given index
         return self.idx[index][1]
@@ -391,11 +388,11 @@ class StarDict:
     def get_dict_data(self, index):
         f = '[MClient] plugins.stardict.get.Stardict.get_dict_data'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         # Return a translation for a word on the given index
         if not self.dictf:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         self.dictf.seek(self.idx[index][1][0])
         result = self.dictf.read(self.idx[index][1][1])
@@ -416,7 +413,7 @@ class AllDics:
     def get_index(self):
         f = '[MClient] plugins.stardict.get.AllDics.get_index'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if not self.index_:
             for idic in self.dics:
@@ -427,10 +424,10 @@ class AllDics:
     def get(self, search):
         f = '[MClient] plugins.stardict.get.AllDics.get'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if not search:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         dics = [dic for dic in self.dics if not dic.Block]
         lst = []
@@ -439,7 +436,7 @@ class AllDics:
             # Returns True if ind >= 0
             if not str(ind).isdigit():
                 mes = _('No matches for "{}"!').format(dic.title)
-                sh.objs.get_mes(f, mes, True).show_info()
+                Message(f, mes).show_info()
                 return ''
             result = dic.get_dict_data(ind)
             if result:
@@ -447,7 +444,7 @@ class AllDics:
                 lst.append(f'<dic>{dic.title}</dic>{result}')
                 mes = _('"{}" has matches for "{}"')
                 mes = mes.format(dic.title, search)
-                sh.objs.get_mes(f, mes, True).show_debug()
+                Message(f, mes).show_debug()
         return '\n'.join(lst)
     
     def set_values(self):
@@ -461,7 +458,7 @@ class AllDics:
     def reset(self):
         self.set_values()
         self.path = PATH
-        self.Success = sh.Directory(self.path).Success
+        self.Success = Directory(self.path).Success
     
     def walk(self):
         ''' Explore all subdirectories of path searching for filenames that
@@ -469,7 +466,7 @@ class AllDics:
         '''
         f = '[MClient] plugins.stardict.get.AllDics.walk'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if self.ifos:
             return self.ifos
@@ -477,7 +474,7 @@ class AllDics:
             for file in files:
                 if not file.endswith('.ifo'):
                     continue
-                ''' #TODO: #FIX: sh.Path.basename works incorrectly for cases
+                ''' #TODO: #FIX: Path.basename works incorrectly for cases
                     like file.dict.dz.
                 '''
                 name = file[:-4]
@@ -491,7 +488,7 @@ class AllDics:
     def locate(self):
         f = '[MClient] plugins.stardict.get.AllDics.locate'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if not self.dics:
             if self.walk():
@@ -499,21 +496,21 @@ class AllDics:
                     self.dics.append(StarDict(ifo))
                 self.dics = sorted(self.dics, key=lambda d:d.title+str(d.wcount))
             else:
-                sh.com.rep_lazy(f)
+                rep.lazy(f)
         mes = _('{} offline dictionaries are available').format(len(self.dics))
-        sh.objs.get_mes(f, mes, True).show_info()
+        Message(f, mes).show_info()
         return self.dics
     
     def load(self):
         f = '[MClient] plugins.stardict.get.AllDics.load'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if not self.locate():
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         objs.get_progress().show()
-        timer = sh.Timer(f)
+        timer = Timer(f)
         timer.start()
         for i in range(len(self.dics)):
             text = _('Load Stardict dictionaries ({}/{})')
@@ -525,7 +522,7 @@ class AllDics:
         total_no = len(self.dics)
         self.dics = [dic for dic in self.dics if dic.Success]
         mes = _('Dictionaries loaded: {}/{}').format(len(self.dics), total_no)
-        sh.objs.get_mes(f, mes, True).show_info()
+        Message(f, mes).show_info()
         objs.progress.close()
 
 
@@ -537,7 +534,7 @@ class Objects:
     
     def get_progress(self):
         if self.progress is None:
-            self.progress = sh.ProgressBar(icon=ICON)
+            self.progress = ProgressBar()
             self.progress.add()
         return self.progress
         

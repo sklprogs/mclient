@@ -2,27 +2,25 @@
 # -*- coding: UTF-8 -*-
 
 import time
-import PyQt6.QtCore
-import PyQt6.QtWidgets
+from PyQt6.QtCore import QObject, pyqtSignal, QThread
 
-#from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.logic import OS
 
-if sh.objs.get_os().is_win():
-    from . import windows as osid
-elif sh.objs.os.is_lin():
-    from . import linux as osid
+if OS.is_win():
+    import keylistener.windows as osid
+elif OS.is_lin():
+    import keylistener.linux as osid
 else:
-    from . import unsupported as osid
+    import keylistener.unsupported as osid
 
 ''' I tried to move non-gui-specific code to 'controller'; however, each time
     I move 'Catcher.run' out, GUI freezes.
 '''
 
-class Catcher(PyQt6.QtCore.QObject):
+class Catcher(QObject):
     
-    sig_catch = PyQt6.QtCore.pyqtSignal(int)
-    sig_end = PyQt6.QtCore.pyqtSignal()
+    sig_catch = pyqtSignal(int)
+    sig_end = pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -53,7 +51,7 @@ class Catcher(PyQt6.QtCore.QObject):
 
 
 
-class Thread(PyQt6.QtCore.QThread):
+class Thread(QThread):
     # Built-in functions that are called: start, quit, wait
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

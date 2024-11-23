@@ -4,7 +4,8 @@
 import re
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
+from skl_shared_qt.table import Table
 
 import instance as ic
 
@@ -62,10 +63,10 @@ class Tags:
     def set_subj_block(self):
         f = '[MClient] plugins.dsl.tags.Tags.set_subj_block'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if not self.blocks:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         block = ic.Block()
         block.text = block.subjf = block.subj = self.dicname
@@ -86,11 +87,8 @@ class Tags:
         types = [block.type for block in self.blocks]
         iterable = [nos, types, texts]
         headers = (_('#'), _('TYPES'), _('TEXT'))
-        mes = sh.FastTable (iterable = iterable
-                           ,headers = headers
-                           ,maxrow = 50
-                           ,maxrows = self.maxrows
-                           ).run()
+        mes = Table(iterable = iterable, headers = headers, maxrow = 50
+                   ,maxrows = self.maxrows).run()
         return _('Blocks:') + '\n' + mes
     
     def _get_max_type(self, types):
@@ -102,26 +100,25 @@ class Tags:
                 index_ = self.all_types.index(types[i])
                 prior.append(self.all_prior[index_])
             except ValueError:
-                mes = _('Wrong input data: "{}"!').format(types[i])
-                sh.objs.get_mes(f, mes, True).show_warning()
+                rep.wrong_input(f, types[i])
                 del types[i]
                 i -= 1
             i += 1
-        if types:
-            index_ = prior.index(max(prior))
-            return types[index_]
-        else:
-            sh.com.rep_empty(f)
+        if not types:
+            rep.empty(f)
+            return
+        index_ = prior.index(max(prior))
+        return types[index_]
     
     def set_blocks(self):
         f = '[MClient] plugins.dsl.tags.Tags.set_blocks'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         for item in self.tagged:
             type_ = self._get_max_type(item.tags)
             if not type_:
-                sh.com.rep_empty(f)
+                rep.empty(f)
                 continue
             block = ic.Block()
             block.type = type_
@@ -131,7 +128,7 @@ class Tags:
     def delete_empty(self):
         f = '[MClient] plugins.dsl.tags.Tags.delete_empty'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         deleted = []
         i = 0
@@ -146,12 +143,12 @@ class Tags:
             deleted = ['"{}"'.format(item) for item in deleted]
             deleted = ', '.join(deleted)
             mes = _('Ignore blocks: {}').format(deleted)
-            sh.objs.get_mes(f, mes, True).show_debug()
+            Message(f, mes).show_debug()
     
     def keep_useful(self):
         f = '[MClient] plugins.dsl.tags.Tags.keep_useful'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         useful = ('com', 'ex', 'i', 'p', 'ref', 't', 'term', 'trn', 'wform')
         for item in self.tagged:
@@ -162,7 +159,7 @@ class Tags:
     def rename_types(self):
         f = '[MClient] plugins.dsl.tags.Tags.rename_types'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         for item in self.tagged:
             for i in range(len(item.tags)):
@@ -195,7 +192,7 @@ class Tags:
                     self.open.remove(item)
         else:
             mes = _('Tag "{}" has not been opened yet!').format(tag)
-            sh.objs.get_mes(f, mes, True).show_warning()
+            Message(f, mes).show_warning()
     
     def _get_tag_name(self, tag):
         tag = tag[:-1]
@@ -207,7 +204,7 @@ class Tags:
     def set(self):
         f = '[MClient] plugins.dsl.tags.Tags.set'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         # The 1st fragment should always be an article title
         i = 1
@@ -231,7 +228,7 @@ class Tags:
         '''
         f = '[MClient] plugins.dsl.tags.Tags.delete_trash'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         self.fragms = [fragm.strip() for fragm in self.fragms \
                        if fragm not in ('\n', '\n\t')
@@ -253,24 +250,20 @@ class Tags:
         tags = [', '.join(item.tags) for item in self.tagged]
         iterable = [nos, tags, texts]
         headers = (_('#'), _('TAGS'), _('TEXT'))
-        mes = sh.FastTable (iterable = iterable
-                           ,headers = headers
-                           ,maxrow = 50
-                           ,maxrows = self.maxrows
-                           ).run()
+        mes = Table(iterable = iterable, headers = headers, maxrow = 50
+                   ,maxrows = self.maxrows).run()
         return _('Tags:') + '\n' + mes
     
     def debug(self):
         f = '[MClient] plugins.dsl.tags.Tags.debug'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if not self.Debug:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         mes = [self._debug_code(), self._debug_fragms(), self._debug_tagged()
-              ,self._debug_blocks()
-              ]
+              ,self._debug_blocks()]
         mes = '\n\n'.join(mes)
         return mes
     
@@ -280,12 +273,12 @@ class Tags:
             # Avoid None on output
             self.code = ''
             self.Success = False
-            sh.com.rep_empty(f)
+            rep.empty(f)
     
     def split(self):
         f = '[MClient] plugins.dsl.tags.Tags.split'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         fragm = ''
         for sym in list(self.code):

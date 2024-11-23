@@ -2,17 +2,17 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-#import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
 
-from . import gui as gi
-from . import logic as lg
+from third_parties.gui import ThirdParties as guiThirdParties
+from third_parties.logic import ThirdParties as lgThirdParties
 
 
 class ThirdParties:
     
     def __init__(self):
-        self.gui = gi.ThirdParties()
-        self.logic = lg.ThirdParties()
+        self.gui = guiThirdParties()
+        self.logic = lgThirdParties()
         self.set_gui()
     
     def send_feedback(self):

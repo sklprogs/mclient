@@ -81,9 +81,7 @@ class KeyListener(threading.Thread):
             print_v('RECORD extension not found')
             sys.exit(1)
         r = self.record_dpy.record_get_version(0, 0)
-        mes = 'RECORD extension version {}.{}'.format (r.major_version
-                                                      ,r.minor_version
-                                                      )
+        mes = f'RECORD extension version {r.major_version}.{r.minor_version}'
         print_v(mes)
         # Create a recording context; we only want key events
         self.ctx = self.record_dpy.record_create_context (
@@ -166,22 +164,17 @@ Verbose = False
 # Do not quit when Control-c is pressed
 signal.signal(signal.SIGINT, catch_control_c)
 keylistener = KeyListener()
-keylistener.add_listener ('Control_L+c+c'
-                         ,lambda:keylistener.set_status(status=1)
-                         )
-keylistener.add_listener ('Control_R+c+c'
-                         ,lambda:keylistener.set_status(status=1)
-                         )
-keylistener.add_listener ('Control_L+Insert+Insert'
-                         ,lambda:keylistener.set_status(status=1)
-                         )
-keylistener.add_listener ('Control_R+Insert+Insert'
-                         ,lambda:keylistener.set_status(status=1)
-                         )
-keylistener.add_listener ('Alt_L+grave'
-                         ,lambda:keylistener.set_status(status=2)
-                         )
-keylistener.add_listener ('Alt_R+grave'
-                         ,lambda:keylistener.set_status(status=2)
-                         )
+keylistener.add_listener('Control_L+c+c'
+                        ,lambda:keylistener.set_status(status=1))
+keylistener.add_listener('Control_R+c+c'
+                        ,lambda:keylistener.set_status(status=1)
+                        )
+keylistener.add_listener('Control_L+Insert+Insert'
+                        ,lambda:keylistener.set_status(status=1))
+keylistener.add_listener('Control_R+Insert+Insert'
+                        ,lambda:keylistener.set_status(status=1))
+keylistener.add_listener('Alt_L+grave'
+                        ,lambda:keylistener.set_status(status=2))
+keylistener.add_listener('Alt_R+grave'
+                        ,lambda:keylistener.set_status(status=2))
 keylistener.start()

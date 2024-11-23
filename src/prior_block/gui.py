@@ -1,15 +1,21 @@
-import PyQt6
-import PyQt6.QtWidgets
-import PyQt6.QtCore
-import PyQt6.QtGui
+#!/usr/bin/python3
+# -*- coding: UTF-8 -*-
+
+from PyQt6.QtWidgets import QWidget, QTreeWidget, QGridLayout
+from PyQt6.QtCore import pyqtSignal, Qt
+from PyQt6.QtGui import QShortcut, QKeySequence
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
+from skl_shared_qt.graphics.button.controller import Button
+from skl_shared_qt.graphics.checkbox.controller import CheckBox
+from skl_shared_qt.graphics.option_menu.controller import OptionMenu
+from skl_shared_qt.graphics.root.controller import ROOT
 
 
-class TreeWidget(PyQt6.QtWidgets.QTreeWidget):
+class TreeWidget(QTreeWidget):
     
-    sig_drop = PyQt6.QtCore.pyqtSignal()
+    sig_drop = pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -23,7 +29,7 @@ class TreeWidget(PyQt6.QtWidgets.QTreeWidget):
         self.target = None
     
     def find(self, text):
-        return self.findItems(text, PyQt6.QtCore.Qt.MatchFlag.MatchContains | PyQt6.QtCore.Qt.MatchFlag.MatchRecursive, 0)
+        return self.findItems(text, Qt.MatchFlag.MatchContains | Qt.MatchFlag.MatchRecursive, 0)
     
     def clear_selection(self):
         self.selectionModel().clearSelection()
@@ -37,24 +43,24 @@ class TreeWidget(PyQt6.QtWidgets.QTreeWidget):
         return parent
     
     def mouseMoveEvent(self, event):
-        if event.buttons() != PyQt6.QtCore.Qt.MouseButton.LeftButton:
+        if event.buttons() != Qt.MouseButton.LeftButton:
             return
-        self.startDrag(PyQt6.QtCore.Qt.DropAction.MoveAction)
+        self.startDrag(Qt.DropAction.MoveAction)
     
     def dragEnterEvent(self, event):
         f = '[MClient] prior_block.gui.TreeWidget.dragEnterEvent'
         index_ = self.indexAt(event.position().toPoint())
         item = self.itemFromIndex(index_)
         if not item:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         self.source = item.text(0)
         self.children = self._dump(item)
-        super(PyQt6.QtWidgets.QTreeWidget, self).dragEnterEvent(event)
+        super(QTreeWidget, self).dragEnterEvent(event)
         event.accept()
     
     def dropEvent(self, event):
-        super(PyQt6.QtWidgets.QTreeWidget, self).dropEvent(event)
+        super(QTreeWidget, self).dropEvent(event)
         event.accept()
         self.sig_drop.emit()
     
@@ -81,10 +87,10 @@ class TreeWidget(PyQt6.QtWidgets.QTreeWidget):
         f = '[MClient] prior_block.gui.TreeWidget._set_item'
         if not isinstance(section, dict):
             mes = _('Unexpected type: {}').format(type(section))
-            sh.objs.get_mes(f, mes, True).show_warning()
+            Message(f, mes).show_warning()
             return
         for key, value in section.items():
-            item = PyQt6.QtWidgets.QTreeWidgetItem([key])
+            item = QTreeWidgetItem([key])
             if parent is None:
                 self.addTopLevelItem(item)
             else:
@@ -97,9 +103,9 @@ class TreeWidget(PyQt6.QtWidgets.QTreeWidget):
 
 
 
-class Panes(PyQt6.QtWidgets.QWidget):
+class Panes(QWidget):
     
-    sig_close = PyQt6.QtCore.pyqtSignal()
+    sig_close = pyqtSignal()
     
     def __init__(self):
         super().__init__()
@@ -115,7 +121,7 @@ class Panes(PyQt6.QtWidgets.QWidget):
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:
-            PyQt6.QtGui.QShortcut(PyQt6.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+            QShortcut(QKeySequence(hotkey), self).activated.connect(action)
     
     def expand_all(self):
         self.tree1.expand_all()
@@ -128,15 +134,13 @@ class Panes(PyQt6.QtWidgets.QWidget):
     def set_widgets(self):
         self.tree1 = TreeWidget()
         self.tree2 = TreeWidget()
-        self.btn_res = sh.Button (text = _('Reset')
-                                 ,hint = _('Reject changes and reload subjects')
-                                 )
-        self.cbx_pri = sh.CheckBox(_('Enable'))
+        self.btn_res = Button(text = _('Reset')
+                             ,hint = _('Reject changes and reload subjects'))
+        self.cbx_pri = CheckBox(_('Enable'))
         sources = (_('All subjects'), _('From the article'))
-        self.opt_src = sh.OptionMenu(sources)
-        self.btn_apl = sh.Button (text = _('Apply')
-                                 ,hint = _('Apply changes and close the window')
-                                 )
+        self.opt_src = OptionMenu(sources)
+        self.btn_apl = Button(text = _('Apply')
+                             ,hint = _('Apply changes and close the window'))
     
     def configure(self):
         self.tree1.set_header(_('Prioritized subjects'))
@@ -157,22 +161,17 @@ class Panes(PyQt6.QtWidgets.QWidget):
         self.set_widgets()
         self.set_layout()
         self.configure()
-        self.set_icon()
         self.centralize()
     
-    def set_icon(self):
-        # Does not accent None
-        self.setWindowIcon(sh.gi.objs.get_icon())
-    
     def set_layout(self):
-        self.grid = PyQt6.QtWidgets.QGridLayout()
+        self.grid = QGridLayout()
         self.grid.addWidget(self.tree1, 0, 0, 1, 4)
         self.grid.addWidget(self.tree2, 0, 4, 1, 4)
-        self.grid.addWidget(self.btn_res.widget, 1, 0, 1, 2, PyQt6.QtCore.Qt.AlignmentFlag.AlignLeft)
-        self.grid.addWidget(self.cbx_pri.widget, 1, 2, 1, 4, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.grid.addWidget(self.opt_src.widget, 1, 6, 1, 1, PyQt6.QtCore.Qt.AlignmentFlag.AlignRight)
-        self.grid.addWidget(self.btn_apl.widget, 1, 7, 1, 1, PyQt6.QtCore.Qt.AlignmentFlag.AlignRight)
+        self.grid.addWidget(self.btn_res.widget, 1, 0, 1, 2, Qt.AlignmentFlag.AlignLeft)
+        self.grid.addWidget(self.cbx_pri.widget, 1, 2, 1, 4, Qt.AlignmentFlag.AlignCenter)
+        self.grid.addWidget(self.opt_src.widget, 1, 6, 1, 1, Qt.AlignmentFlag.AlignRight)
+        self.grid.addWidget(self.btn_apl.widget, 1, 7, 1, 1, Qt.AlignmentFlag.AlignRight)
         self.setLayout(self.grid)
     
     def centralize(self):
-        self.move(sh.objs.get_root().primaryScreen().geometry().center() - self.rect().center())
+        self.move(ROOT.get_root().primaryScreen().geometry().center() - self.rect().center())

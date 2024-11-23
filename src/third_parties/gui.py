@@ -1,25 +1,20 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import PyQt6
-import PyQt6.QtWidgets
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTextEdit
+from PyQt6.QtGui import QTextDocument, QTextCursor, QFont, QShortcut, QKeySequence
 
-#from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.graphics.root.controller import ROOT
 
 
-class ThirdParties(PyQt6.QtWidgets.QWidget):
+class ThirdParties(QWidget):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.set_gui()
     
-    def set_icon(self):
-        # Does not accent None
-        self.setWindowIcon(sh.gi.objs.get_icon())
-    
     def centralize(self):
-        self.move(sh.objs.get_root().primaryScreen().geometry().center() - self.rect().center())
+        self.move(ROOT.get_root().primaryScreen().geometry().center() - self.rect().center())
     
     def fill(self, text):
         self.textbox.clear()
@@ -30,7 +25,7 @@ class ThirdParties(PyQt6.QtWidgets.QWidget):
         self.setWindowTitle(title)
     
     def set_layout(self):
-        self.layout_ = PyQt6.QtWidgets.QVBoxLayout()
+        self.layout_ = QVBoxLayout()
         self.layout_.setContentsMargins(0, 0, 0, 0)
     
     def add_widgets(self):
@@ -39,17 +34,17 @@ class ThirdParties(PyQt6.QtWidgets.QWidget):
     
     def set_gui(self):
         self.set_layout()
-        self.textbox = PyQt6.QtWidgets.QTextEdit()
-        self.doc = PyQt6.QtGui.QTextDocument()
-        self.cursor = PyQt6.QtGui.QTextCursor(self.doc)
+        self.textbox = QTextEdit()
+        self.doc = QTextDocument()
+        self.cursor = QTextCursor(self.doc)
         self.char_fmt = self.cursor.charFormat()
         self.textbox.setDocument(self.doc)
         self.textbox.setReadOnly(True)
-        self.font = PyQt6.QtGui.QFont('Serif', 12)
+        self.font = QFont('Serif', 12)
         self.char_fmt.setFont(self.font)
         self.add_widgets()
         self.resize(600, 400)
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:
-            PyQt6.QtGui.QShortcut(PyQt6.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+            QShortcut(QKeySequence(hotkey), self).activated.connect(action)

@@ -4,29 +4,19 @@
 import re
 import html
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
+from skl_shared_qt.logic import Text, ru_alphabet, lat_alphabet
 
 
 #TODO (?): use shared
 speech_abbr = ('гл.', 'нареч.', 'прил.', 'сокр.', 'сущ.')
 dic_abbr = ('вчт.', 'карт.', 'мор.', 'разг.', 'уст.', 'хир.', 'эл.')
 #TODO: read from file
-dic_titles = ('(австралийское)'
-             ,'(американизм)'
-             ,'(военное)'
-             ,'(горное)'
-             ,'(железнодорожное)'
-             ,'(карточное)'
-             ,'(кулинарное)'
-             ,'(новозеландское)'
-             ,'(профессионализм)'
-             ,'(разговорное)'
-             ,'(сленг)'
-             ,'(спортивное)'
-             ,'(текстильное)'
-             ,'(теннис)'
-             ,'(химическое)'
-             ,'(электротехника)'
+dic_titles = ('(австралийское)', '(американизм)', '(военное)', '(горное)'
+             ,'(железнодорожное)', '(карточное)', '(кулинарное)'
+             ,'(новозеландское)', '(профессионализм)', '(разговорное)'
+             ,'(сленг)', '(спортивное)', '(текстильное)', '(теннис)'
+             ,'(химическое)', '(электротехника)'
              )
 header = '~'
 
@@ -45,7 +35,7 @@ class Common:
         try:
             self.text = html.unescape(self.text)
         except Exception as e:
-            sh.com.rep_failed(f, e)
+            rep.failed(f, e)
     
     def delete_trash(self):
         self.text = self.text.replace('\r\n', '')
@@ -58,7 +48,7 @@ class Common:
     def run(self):
         f = '[MClient] plugins.stardict.cleanup.Common.run'
         if not self.text:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return ''
         self.decode_entities()
         self.delete_trash()
@@ -81,7 +71,7 @@ class Type1:
         try:
             self.text = html.unescape(self.text)
         except Exception as e:
-            sh.com.rep_failed(f, e)
+            rep.failed(f, e)
     
     def delete_trash(self):
         self.text = self.text.replace(' ∙ ', ';').replace(' - ', ';')
@@ -140,14 +130,14 @@ class Type1:
                 else:
                     self.blocks.append(block)
                     block = ''
-            elif CurLang == 'LAT' and sym in sh.lg.ru_alphabet:
+            elif CurLang == 'LAT' and sym in ru_alphabet:
                 CurLang = 'CYR'
                 if '≈' in block or '(' in block:
                     block += sym
                 else:
                     self.blocks.append(block)
                     block = sym
-            elif CurLang == 'CYR' and sym in sh.lg.lat_alphabet:
+            elif CurLang == 'CYR' and sym in lat_alphabet:
                 CurLang = 'LAT'
                 if '≈' in block or '(' in block:
                     block += sym
@@ -203,11 +193,11 @@ class Type1:
             if self.blocks[i] in dic_titles:
                 Condition = False
                 if i > 0:
-                    if sh.Text(text=self.blocks[i]).has_cyrillic() \
-                    and sh.Text(text=self.blocks[i-1]).has_latin():
+                    if Text(self.blocks[i]).has_cyrillic() \
+                    and Text(self.blocks[i-1]).has_latin():
                         Condition = True
-                    elif sh.Text(text=self.blocks[i]).has_latin() \
-                    and sh.Text(text=self.blocks[i-1]).has_cyrillic():
+                    elif Text(self.blocks[i]).has_latin() \
+                    and Text(self.blocks[i-1]).has_cyrillic():
                         Condition = True
                 if Condition:
                     self.blocks[i-1], self.blocks[i] = self.blocks[i], self.blocks[i-1]
@@ -237,7 +227,7 @@ class Type2:
                 else:
                     self.blocks.append(block)
                     block = ''
-            elif CurLang == 'LAT' and self.text[i] in sh.lg.ru_alphabet:
+            elif CurLang == 'LAT' and self.text[i] in ru_alphabet:
                 CurLang = 'CYR'
                 if i > 0 and self.text[i-1] == '_':
                     block += self.text[i]
@@ -247,7 +237,7 @@ class Type2:
                     else:
                         self.blocks.append(block)
                         block = self.text[i]
-            elif CurLang == 'CYR' and self.text[i] in sh.lg.lat_alphabet:
+            elif CurLang == 'CYR' and self.text[i] in lat_alphabet:
                 CurLang = 'LAT'
                 if i > 0 and self.text[i-1] == '_':
                     block += self.text[i]
@@ -289,7 +279,7 @@ class Type2:
         try:
             self.text = html.unescape(self.text)
         except Exception as e:
-            sh.com.rep_failed(f, e)
+            rep.failed(f, e)
     
     def delete_trash(self):
         self.text = self.text.replace(' - ', ';')
@@ -354,11 +344,11 @@ class Type2:
             if self.is_dic(self.blocks[i]):
                 Condition = False
                 if i > 0:
-                    if sh.Text(text=self.blocks[i]).has_cyrillic() \
-                    and sh.Text(text=self.blocks[i-1]).has_latin():
+                    if Text(self.blocks[i]).has_cyrillic() \
+                    and Text(self.blocks[i-1]).has_latin():
                         Condition = True
-                    elif sh.Text(text=self.blocks[i]).has_latin() \
-                    and sh.Text(text=self.blocks[i-1]).has_cyrillic():
+                    elif Text(self.blocks[i]).has_latin() \
+                    and Text(self.blocks[i-1]).has_cyrillic():
                         Condition = True
                 if Condition:
                     self.blocks[i-1], self.blocks[i] = self.blocks[i], self.blocks[i-1]
@@ -398,19 +388,19 @@ class CleanUp:
         #TODO: combine shared operations for all Stardict classes
         f = '[MClient] plugins.stardict.cleanup.CleanUp.run'
         if not self.text or not header:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return ''
         self.text = Common(self.text).run()
         if '<dtrn>' in self.text:
             mes = _('Type 3')
-            sh.objs.get_mes(f, mes, True).show_debug()
+            Message(f, mes).show_debug()
             self.text = Type3(self.text).run()
         elif '_Ex:' in self.text or re.search('\d\>', self.text):
             mes = _('Type 2')
-            sh.objs.get_mes(f, mes, True).show_debug()
+            Message(f, mes).show_debug()
             self.text = Type2(self.text).run()
         else:
             mes = _('Type 1')
-            sh.objs.get_mes(f, mes, True).show_debug()
+            Message(f, mes).show_debug()
             self.text = Type1(self.text).run()
         return self.text

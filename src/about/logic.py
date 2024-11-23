@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.list import List
 
 
 class About:
@@ -14,7 +14,7 @@ class About:
         self.code = []
     
     def get_product(self):
-        return sh.List(lst1=[self.product, self.version]).space_items()
+        return List([self.product, self.version]).space_items()
     
     def set_code(self):
         self.set_group()

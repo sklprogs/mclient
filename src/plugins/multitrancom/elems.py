@@ -4,7 +4,10 @@
 import re
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
+from skl_shared_qt.list import List
+from skl_shared_qt.table import Table
+from skl_shared_qt.logic import Text
 
 import instance as ic
 
@@ -117,14 +120,14 @@ class Trash:
         f = '[MClient] plugins.multitrancom.elems.Trash.report'
         if self.head is not None:
             delete = [block.text for block in self.blocks[:self.head]]
-            delete = sh.List(delete).space_items()
+            delete = List(delete).space_items()
             mes = _('Start fragment: "{}"').format(delete)
-            sh.objs.get_mes(f, mes, True).show_debug()
+            Message(f, mes).show_debug()
         if self.tail is not None:
             delete = [block.text for block in self.blocks[self.tail:]]
-            delete = sh.List(delete).space_items()
+            delete = List(delete).space_items()
             mes = _('End fragment: "{}"').format(delete)
-            sh.objs.get_mes(f, mes, True).show_debug()
+            Message(f, mes).show_debug()
     
     def delete(self):
         f = '[MClient] plugins.multitrancom.elems.Trash.delete'
@@ -134,7 +137,7 @@ class Trash:
             self.blocks = self.blocks[:self.tail]
         if self.head is not None:
             self.blocks = self.blocks[self.head+1:]
-        sh.com.rep_matches(f, old_len - len(self.blocks))
+        rep.matches(f, old_len - len(self.blocks))
     
     def remove_stresses(self):
         # Remove useless "stresses" block
@@ -143,7 +146,7 @@ class Trash:
         self.blocks = [block for block in self.blocks \
                        if not block.url.startswith('a=467&s=')
                       ]
-        sh.com.rep_matches(f, old_len - len(self.blocks))
+        rep.matches(f, old_len - len(self.blocks))
     
     def run(self):
         self.remove_stresses()
@@ -188,36 +191,32 @@ class Thesaurus:
     def add(self):
         f = '[MClient] plugins.multitrancom.elems.Thesaurus.add'
         if self.no is None:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         count = 0
         i = self.no + 1
         while i < len(self.blocks):
             if self.blocks[i].type == 'subj':
                 count += 1
-                self.blocks[i].text = sh.List ([self.blocks[self.no].text, ','
-                                              ,self.blocks[i].text]
-                                              ).space_items()
-                self.blocks[i].subj = sh.List ([self.blocks[self.no].subj, ','
-                                              ,self.blocks[i].subj]
-                                              ).space_items()
-                self.blocks[i].subjf = sh.List ([self.blocks[self.no].subjf
-                                               ,',', self.blocks[i].subjf]
-                                               ).space_items()
+                self.blocks[i].text = List([self.blocks[self.no].text, ','
+                                          ,self.blocks[i].text]).space_items()
+                self.blocks[i].subj = List([self.blocks[self.no].subj, ','
+                                          ,self.blocks[i].subj]).space_items()
+                self.blocks[i].subjf = List([self.blocks[self.no].subjf
+                                           ,',', self.blocks[i].subjf]).space_items()
             i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def delete(self):
         f = '[MClient] plugins.multitrancom.elems.Thesaurus.delete'
         if self.no is None:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         try:
             del self.blocks[self.no]
         except IndexError:
             # This should never happen. We did the search in the same class.
-            mes = _('Wrong input data: "{}"!').format(self.no)
-            sh.objs.get_mes(f, mes).show_warning()
+            rep.wrong_input(f, self.no)
     
     def run(self):
         self.set_no()
@@ -309,27 +308,27 @@ class SeparateWords:
         old_len = len(self.blocks)
         tail = self.get_tail()
         if not tail:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         head = self.get_head()
         if not head:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         self.blocks = self.blocks[head[1]:tail+1]
         if len(self.blocks) < 3:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         self._set()
         self._delete()
         self._set_terms()
-        sh.com.rep_deleted(f, old_len - len(self.blocks))
+        rep.deleted(f, old_len - len(self.blocks))
         self._add_subject()
         self.Separate = True
     
     def get_head(self):
         blocks = ('Forvo', '|', '+')
         texts = [block.text for block in self.blocks]
-        return sh.List(texts, blocks).find()
+        return List(texts, blocks).find()
     
     def get_tail(self):
         i = 0
@@ -371,7 +370,7 @@ class Suggestions:
     def has(self):
         f = '[MClient] plugins.multitrancom.elems.Suggestions.has'
         if not self.Success:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         for block in self.blocks:
             if block.type != 'comment':
@@ -380,18 +379,18 @@ class Suggestions:
                 if pattern == block.text:
                     return
         self.Success = False
-        sh.com.rep_lazy(f)
+        rep.lazy(f)
     
     def set_types(self):
         f = '[MClient] plugins.multitrancom.elems.Suggestions.set_types'
         if not self.Success:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         count = 0
         for block in self.blocks:
             if block.type != 'comment':
                 mes = _('Unexpected block type: "{}"!').format(block.type)
-                sh.objs.get_mes(f, mes, True).show_warning()
+                Message(f, mes).show_warning()
                 continue
             if block.text.strip() == ';':
                 continue
@@ -406,45 +405,45 @@ class Suggestions:
                 count += 1
                 block.type = 'term'
                 block.cellno = count - 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def set_head(self):
         f = '[MClient] plugins.multitrancom.elems.Suggestions.set_head'
         if not self.Success:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         texts = [block.text for block in self.blocks]
-        found = sh.List(texts, self.pattern).find()
+        found = List(texts, self.pattern).find()
         if found is None:
             self.Success = False
             ''' This should be a warning since we have already determined that
                 the article suggests words.
             '''
-            sh.com.rep_out(f)
+            rep.empty_output(f)
             return
         if found[1] >= len(self.blocks) - 1:
             # There is no place for tail
             self.Success = False
-            sh.com.rep_input(f)
+            rep.wrong_input(f)
             return
         self.head = found[1] + 1
         block = self.blocks[self.head]
         mes = _('Block #{}. Text: "{}". URL: {}')
         mes = mes.format(self.head, block.text, block.url)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
     
     def set_tail(self):
         # This one must be "ask in forum"
         f = '[MClient] plugins.multitrancom.elems.Suggestions.set_tail'
         if not self.Success:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         i = len(self.blocks) - 1
         while i >= 0:
             if self.blocks[i].url.startswith('a=46&'):
                 mes = _('Block #{}. Text: "{}". URL: {}')
                 mes = mes.format(i, self.blocks[i].text, self.blocks[i].url)
-                sh.objs.get_mes(f, mes, True).show_debug()
+                Message(f, mes).show_debug()
                 self.tail = i
                 return
             i -= 1
@@ -452,40 +451,39 @@ class Suggestions:
         ''' This should be a warning since we have already determined that the
             article suggests words.
         '''
-        sh.com.rep_out(f)
+        rep.empty_output(f)
 
     def cut(self):
         f = '[MClient] plugins.multitrancom.elems.Suggestions.cut'
         if not self.Success:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         old_len = len(self.blocks)
         self.blocks = self.blocks[self.head:self.tail]
-        sh.com.rep_deleted(f, old_len - len(self.blocks))
+        rep.deleted(f, old_len - len(self.blocks))
     
     def debug(self):
         # Orphaned
         f = '[MClient] plugins.multitrancom.elems.Suggestions.debug'
         if not self.Success:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         for i in range(len(self.blocks)):
             block = self.blocks[i]
             mes = _('Block #{}. Type: "{}". Text: "{}". URL: "{}"')
             mes = mes.format(i, block.type, block.text, block.url)
-            sh.objs.get_mes(f, mes, True).show_debug()
+            Message(f, mes).show_debug()
     
     def delete_semi(self):
         # Seems that Elems.delete_semi is not enough
         f = '[MClient] plugins.multitrancom.elems.Suggestions.delete_semi'
         if not self.Success:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks \
-                       if not block.text in ('; ', ';')
-                      ]
-        sh.com.rep_deleted(f, old_len - len(self.blocks))
+                      if not block.text in ('; ', ';')]
+        rep.deleted(f, old_len - len(self.blocks))
     
     def run(self):
         self.has()
@@ -544,16 +542,15 @@ class Elems:
                 count += 1
                 self.blocks[i].cellno = self.blocks[i-1].cellno
             i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def set_cells(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.set_cells'
         if not self.blocks:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         if len(self.blocks) < 2:
-            mes = f'{len(self.blocks)} >= 2'
-            sh.com.rep_condition(f, mes)
+            rep.condition(f, f'{len(self.blocks)} >= 2')
             return
         cell = ic.Cell()
         cell.blocks.append(self.blocks[0])
@@ -595,18 +592,15 @@ class Elems:
             subj.append(block.subj)
             subjf.append(block.subjf)
             urls.append(block.url)
-        mes = sh.FastTable (headers = headers
-                           ,iterable = (nos, types, texts, subj, subjf, urls)
-                           ,maxrow = maxrow
-                           ,maxrows = maxrows
-                           ).run()
+        mes = Table(headers = headers
+                   ,iterable = (nos, types, texts, subj, subjf, urls)
+                   ,maxrow = maxrow, maxrows = maxrows).run()
         return f'{f}:\n{mes}'
     
     def _debug_cells(self, maxrow=70, maxrows=0):
         f = '[MClient] plugins.multitrancom.elems.Elems._debug_cells'
         headers = ('SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #'), _('CELL #')
-                  ,_('TYPES'), _('TEXT'), 'URL'
-                  )
+                  ,_('TYPES'), _('TEXT'), 'URL')
         subj = []
         wform = []
         speech = []
@@ -627,27 +621,24 @@ class Elems:
             cell_types = [block.type for block in cell.blocks]
             types.append(', '.join(cell_types))
             urls.append(cell.url)
-        mes = sh.FastTable (headers = headers
-                           ,iterable = (subj, wform, speech, transc, rownos
-                                       ,nos, types, texts, urls
-                                       )
-                           ,maxrow = maxrow
-                           ,maxrows = maxrows
-                           ).run()
+        mes = Table(headers = headers
+                   ,iterable = (subj, wform, speech, transc, rownos, nos, types
+                               ,texts, urls)
+                   ,maxrow = maxrow, maxrows = maxrows).run()
         return f'{f}:\n{mes}'
     
     def set_text(self):
         for cell in self.cells:
             fragms = [block.text for block in cell.blocks]
-            cell.text = sh.List(fragms).space_items().strip()
+            cell.text = List(fragms).space_items().strip()
             # 'phsubj' text may have multiple spaces for some reason
-            cell.text = sh.Text(cell.text).delete_duplicate_spaces()
+            cell.text = Text(cell.text).delete_duplicate_spaces()
     
     def delete_semi(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_semi'
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks if block.text != '; ']
-        sh.com.rep_matches(f, old_len - len(self.blocks))
+        rep.matches(f, old_len - len(self.blocks))
     
     def unite_brackets(self):
         ''' Combine a cell with a preceding or following bracket such that the
@@ -671,7 +662,7 @@ class Elems:
                     del cell.blocks[i-2]
                     i -= 2
                 i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def separate_fixed(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.separate_fixed'
@@ -685,7 +676,7 @@ class Elems:
                 # We just need a different 'cellno' (will be reassigned anyway)
                 self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
             i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def separate_speech(self):
         ''' Speech can come in structures like 'wform + comment + speech', but
@@ -701,7 +692,7 @@ class Elems:
                 # We just need a different 'cellno' (will be reassigned anyway)
                 self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
             i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def set_transc(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.set_transc'
@@ -711,13 +702,13 @@ class Elems:
             and block.text.endswith(']'):
                 count += 1
                 block.type = 'transc'
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def delete_empty(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_empty'
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks if block.text.strip()]
-        sh.com.rep_matches(f, old_len - len(self.blocks))
+        rep.matches(f, old_len - len(self.blocks))
     
     def convert_user_subj(self):
         # "Gruzovik" and other entries that function as 'subj'
@@ -730,7 +721,7 @@ class Elems:
                 count += 1
                 self.blocks[i].type = 'subj'
             i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def _get_url(self, cell):
         #TODO: Do we need to support several URLs in one cell?
@@ -839,7 +830,7 @@ class Elems:
                 del self.cells[i]
                 i -= 1
             i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def strip_blocks(self):
         # Needed for 'phsubj' and such 'wform' as 'English Thesaurus'
@@ -875,7 +866,7 @@ class Elems:
                 rowno += 1
             self.cells[i].rowno = rowno
             i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def set_art_subj(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.set_art_subj'
@@ -884,7 +875,7 @@ class Elems:
             if block.type in ('subj', 'phsubj') and block.subj and block.subjf:
                 count += 1
                 self.art_subj[block.subj] = block.subjf
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def set_not_found(self):
         for block in self.blocks:
@@ -906,7 +897,7 @@ class Elems:
                             count += 1
                             block.cellno = self.blocks[i-1].cellno
             i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def run_com_sp_com(self):
         ''' '<em>' tag usually denoting a speech part can actually be
@@ -921,7 +912,7 @@ class Elems:
             and self.blocks[i].type == 'comment':
                 self.blocks[i-1].type = 'comment'
             i += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def unite_comments(self):
         # Fix dangling brackets: EN-RU: bit
@@ -931,12 +922,11 @@ class Elems:
         while i >= 0:
             if self.blocks[i].type == self.blocks[i+1].type == 'comment':
                 count += 1
-                self.blocks[i].text = sh.List ([self.blocks[i].text
-                                              ,self.blocks[i+1].text]
-                                              ).space_items()
+                self.blocks[i].text = List([self.blocks[i].text
+                                          ,self.blocks[i+1].text]).space_items()
                 del self.blocks[i+1]
             i -= 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def run(self):
         # Find thesaurus before deleting empty blocks

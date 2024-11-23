@@ -1,14 +1,18 @@
-from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+#!/usr/bin/python3
+# -*- coding: UTF-8 -*-
 
-from . import gui as gi
+from skl_shared_qt.localize import _
+from skl_shared_qt.message.controller import Message, rep
+from skl_shared_qt.graphics.controller import ROOT
+
+from prior_block.gui import Panes as guiPanes
 
 
 class Panes:
     
     def __init__(self):
         self.Active = False
-        self.gui = gi.Panes()
+        self.gui = guiPanes()
         self.set_gui()
     
     def dump1(self):
@@ -31,7 +35,7 @@ class Panes:
         f = '[MClient] prior_block.controller.Panes.set_target_right'
         items = self.gui.tree2.find(self.gui.tree1.source)
         if not items:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         self.gui.tree2.target = items[0]
     
@@ -39,7 +43,7 @@ class Panes:
         f = '[MClient] prior_block.controller.Panes.set_target_left'
         items = self.gui.tree1.find(self.gui.tree2.source)
         if not items:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         self.gui.tree1.target = items[0]
     
@@ -47,7 +51,7 @@ class Panes:
         f = '[MClient] prior_block.controller.Panes.set_target_left_single'
         items = self.gui.tree1.find(self.gui.tree1.source)
         if not items:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         self.gui.tree1.target = items[0]
     
@@ -55,14 +59,14 @@ class Panes:
         f = '[MClient] prior_block.controller.Panes.set_target_right_single'
         items = self.gui.tree2.find(self.gui.tree2.source)
         if not items:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         self.gui.tree2.target = items[0]
 
     def move2right(self):
         f = '[MClient] prior_block.controller.Panes.move2right'
         mes = _('Move items from left to right')
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
         self.set_target_right()
         self.gui.tree2._set_item(self.gui.tree2.target, self.gui.tree1.children)
         ''' Wrong order of this procedure or clearing both panes may break
@@ -73,7 +77,7 @@ class Panes:
     def move2left(self):
         f = '[MClient] prior_block.controller.Panes.move2left'
         mes = _('Move items from right to left')
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
         self.set_target_left()
         self.gui.tree1._set_item(self.gui.tree1.target, self.gui.tree2.children)
         ''' Wrong order of this procedure or clearing both panes may break
@@ -85,11 +89,11 @@ class Panes:
         f = '[MClient] prior_block.controller.Panes.drop_left'
         if self.gui.tree2.source and self.gui.tree1.find(self.gui.tree2.source):
             mes = _('Two-pane mode')
-            sh.objs.get_mes(f, mes, True).show_debug()
+            Message(f, mes).show_debug()
             self.move2left()
         else:
             mes = _('Single-pane mode')
-            sh.objs.get_mes(f, mes, True).show_debug()
+            Message(f, mes).show_debug()
             self.set_target_left_single()
             self.gui.tree1._set_item(self.gui.tree1.target, self.gui.tree1.children)
             #self.gui.tree1.clear_selection()
@@ -99,11 +103,11 @@ class Panes:
         f = '[MClient] prior_block.controller.Panes.drop_right'
         if self.gui.tree1.source and self.gui.tree2.find(self.gui.tree1.source):
             mes = _('Two-pane mode')
-            sh.objs.get_mes(f, mes, True).show_debug()
+            Message(f, mes).show_debug()
             self.move2right()
         else:
             mes = _('Single-pane mode')
-            sh.objs.get_mes(f, mes, True).show_debug()
+            Message(f, mes).show_debug()
             self.set_target_right_single()
             self.gui.tree2._set_item(self.gui.tree2.target, self.gui.tree2.children)
             #self.gui.tree2.clear_selection()
@@ -192,10 +196,9 @@ if __name__ == '__main__':
                }
            }
     
-    sh.com.start()
     panes = Panes()
     panes.fill(dic1, dic2)
     # For some reason, this does not work when run within Panes
     panes.expand_all()
     panes.show()
-    sh.com.end()
+    ROOT.end()

@@ -7,7 +7,9 @@ import html
 import w3lib.url
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
+from skl_shared_qt.online import Online
+from skl_shared_qt.get_url import Get as shGet
 
 
 CODING = 'UTF-8'
@@ -46,7 +48,7 @@ class Extension:
             elif 'uk' in result:
                 self.ext = '&SHL=33'
         mes = f'{result} -> {self.ext}'
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
     
     def run(self):
         self.set_ext()
@@ -72,20 +74,18 @@ class Suggest:
         self.pattern = search
         if not self.pattern:
             self.Success = False
-            sh.com.rep_empty(f)
+            rep.empty(f)
     
     def get_url(self):
         f = '[MClient] plugins.multitrancom.get.Suggest.get_url'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         #NOTE: The encoding here MUST be 'utf-8' irrespective of the plugin!
-        self.url = sh.Online (base = self.pair
-                             ,pattern = self.pattern
-                             ,coding = 'utf-8'
-                             ).get_url()
+        self.url = Online(base = self.pair, pattern = self.pattern
+                         ,coding = 'utf-8').get_url()
         if not self.url:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             self.Success = False
             return
         if not '&SHL=' in self.url:
@@ -94,18 +94,16 @@ class Suggest:
     def get(self):
         f = '[MClient] plugins.multitrancom.get.Suggest.get'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         #NOTE: the encoding here (unlike 'self.url') is plugin-dependent
-        self.items = sh.Get (url = self.url
-                            ,coding = CODING
-                            ).run()
+        self.items = shGet(url=self.url, coding=CODING).run()
         if not self.items:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         self.items = html.unescape(self.items)
         self.items = [item for item in self.items.splitlines() if item]
-        sh.objs.get_mes(f, self.items, True).show_debug()
+        Message(f, self.items).show_debug()
         return self.items
     
     def run(self):
@@ -123,7 +121,7 @@ class Get:
         self.url = com.fix_url(url)
         if not self.url or not self.pattern or not CODING:
             self.Success = False
-            sh.com.rep_empty(f)
+            rep.empty(f)
     
     def set_values(self):
         self.Success = True
@@ -138,11 +136,11 @@ class Get:
     def decode(self):
         f = '[MClient] plugins.multitrancom.get.Get.decode'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         # If the page is not loaded, we obviously cannot change its encoding
         if not self.text:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         try:
             self.htm = self.text = self.text.decode(CODING)
@@ -152,17 +150,17 @@ class Get:
             self.text = ''
             mes = _('Unable to change the web-page encoding!\n\nDetails: {}')
             mes = mes.format(e)
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
     
     def get(self):
         f = '[MClient] plugins.multitrancom.get.Get.get'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         while not self.text:
             try:
                 mes = _('Get online: "{}"').format(self.pattern)
-                sh.objs.get_mes(f, mes, True).show_info()
+                Message(f, mes).show_info()
                 ''' - If the page is loaded using
                       "page=urllib.request.urlopen(my_url)", we get
                       HTTPResponse as a result, which is useful only to remove
@@ -172,15 +170,15 @@ class Get:
                 '''
                 self.text = urllib.request.urlopen(self.url, None, TIMEOUT).read()
                 mes = _('[OK]: "{}"').format(self.pattern)
-                sh.objs.get_mes(f, mes, True).show_info()
+                Message(f, mes).show_info()
             # Too many possible exceptions
             except Exception as e:
                 mes = _('[FAILED]: "{}"').format(self.pattern)
-                sh.objs.get_mes(f, mes, True).show_error()
+                Message(f, mes).show_error()
                 # For some reason, 'break' does not work here
                 mes = _('Unable to get the webpage. Do you want to try again?\n\nDetails: {}')
                 mes = mes.format(e)
-                if not sh.objs.get_mes(f, mes).show_question():
+                if not Message(f, mes, True).show_question():
                     return
 
 
@@ -196,15 +194,12 @@ class Commands:
     def get_url(self, code1, code2, search):
         f = '[MClient] plugins.multitrancom.get.Commands.get_url'
         if not search or not code1 or not code2:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         #NOTE: The encoding here should always be 'utf-8'!
         base = 'https://www.multitran.com/m.exe?s=%s&l1={}&l2={}'
         base = base.format(code1, code2)
-        url = sh.Online (base = base
-                        ,pattern = search
-                        ,coding = 'utf-8'
-                        ).get_url()
+        url = Online(base=base, pattern=search, coding='utf-8').get_url()
         if url and not '&SHL=' in url:
             url += EXT
         return url
@@ -212,7 +207,7 @@ class Commands:
     def fix_url(self, url):
         f = '[MClient] plugins.multitrancom.get.Commands.fix_url'
         if not url:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return ''
         try:
             ind = url.index('" title')
@@ -228,9 +223,7 @@ class Commands:
 
     def is_accessible(self):
         try:
-            code = urllib.request.urlopen (url = URL
-                                          ,timeout = TIMEOUT
-                                          ).code
+            code = urllib.request.urlopen(url=URL, timeout=TIMEOUT).code
             if (code / 100 < 4):
                 return True
         except: #urllib.error.URLError, socket.timeout

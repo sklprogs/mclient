@@ -4,7 +4,9 @@
 import html
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
+from skl_shared_qt.table import Table
+from skl_shared_qt.logic import lat_alphabet_low
 
 import instance as ic
 
@@ -67,7 +69,7 @@ class AnalyzeTag:
         f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.check'
         if not self.fragm:
             self.Success = False
-            sh.com.rep_empty(f)
+            rep.empty(f)
     
     def _set_subjf(self):
         pattern = ' title="'
@@ -98,12 +100,12 @@ class AnalyzeTag:
             self.tag.text = self.tag.text[1:]
         else:
             mes = _('Pattern "{}" is not a tag!').format(self.tag.text)
-            sh.objs.get_mes(f, mes, True).show_warning()
+            Message(f, mes).show_warning()
         if self.tag.text.endswith('>'):
             self.tag.text = self.tag.text[:-1]
         else:
             mes = _('Pattern "{}" is not a tag!').format(self.tag.text)
-            sh.objs.get_mes(f, mes, True).show_warning()
+            Message(f, mes).show_warning()
 
     def _is_tag(self):
         if self.fragm.startswith('<') and self.fragm.endswith('>'):
@@ -201,7 +203,7 @@ class AnalyzeTag:
     def set_attr(self):
         f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.set_attr'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if self._is_tag():
             self._set_close()
@@ -269,7 +271,7 @@ class Tags:
     def set_inherent(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.set_inherent'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         for tag in self.tags:
             if tag.Close:
@@ -282,7 +284,7 @@ class Tags:
     def set_nos(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.set_nos'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         curcell = -1
         for tag in self.tags:
@@ -305,21 +307,17 @@ class Tags:
                   )
         # 10'' monitor: 20 symbols per a column
         # 23'' monitor: 50 symbols per a column
-        mes = sh.FastTable (iterable = iterable
-                           ,headers = headers
-                           ,maxrow = 50
-                           ,maxrows = self.maxrows
-                           ).run()
+        mes = Table(iterable = iterable, headers = headers, maxrow = 50
+                   ,maxrows = self.maxrows).run()
         return _('Blocks:') + '\n' + mes
     
     def set_blocks(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.set_blocks'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         tags = [tag for tag in self.tags if tag.type == 'text' \
-                and not self._is_script(tag)
-               ]
+               and not self._is_script(tag)]
         for tag in tags:
             block = ic.Block()
             for subtag in tag.inherent:
@@ -340,7 +338,7 @@ class Tags:
     def assign(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.assign'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         for fragm in self.fragms:
             self.tags.append(AnalyzeTag(fragm).run())
@@ -378,21 +376,17 @@ class Tags:
                   )
         # 10'' monitor: 13 symbols per a column
         # 23'' monitor: 30 symbols per a column
-        mes = sh.FastTable (iterable = iterable
-                           ,headers = headers
-                           ,maxrow = 30
-                           ,maxrows = self.maxrows
-                           ,FromEnd = True
-                           ).run()
+        mes = Table(iterable = iterable, headers = headers, maxrow = 30
+                   ,maxrows = self.maxrows, FromEnd = True).run()
         return _('Tags:') + '\n' + mes
     
     def debug(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.debug'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return ''
         if not self.Debug:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return ''
         '''
         mes = [self._debug_code(), self._debug_fragms(), self._debug_tags()
@@ -408,12 +402,12 @@ class Tags:
             # Avoid None on output
             self.code = ''
             self.Success = False
-            sh.com.rep_empty(f)
+            rep.empty(f)
     
     def split(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.split'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         fragm = ''
         for sym in list(self.code):
@@ -438,12 +432,12 @@ class Tags:
         '''
         f = '[MClient] plugins.multitrancom.tags.Tags.fix_non_tags'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         count = 0
         mes = []
         # <!--, </
-        allowed = sh.lg.lat_alphabet_low + '!' + '/'
+        allowed = lat_alphabet_low + '!' + '/'
         for i in range(len(self.fragms)):
             ''' We should check only symbol #1 since 'multitran.com' uses URI
                 instead of URL (https://stackoverflow.com/questions/1547899/which-characters-make-a-url-invalid),
@@ -458,8 +452,8 @@ class Tags:
                 count += 1
         #mes = sorted(set(mes))
         mes = '; '.join(mes)
-        sh.objs.get_mes(f, mes, True).show_debug()
-        sh.com.rep_matches(f, count)
+        Message(f, mes).show_debug()
+        rep.matches(f, count)
     
     def run(self):
         self.check()

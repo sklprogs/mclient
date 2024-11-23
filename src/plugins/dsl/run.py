@@ -2,7 +2,8 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
+from skl_shared_qt.list import List
 
 import plugins.dsl.get as gt
 import plugins.dsl.tags as tg
@@ -108,7 +109,7 @@ class Plugin:
         else:
             lang = (_('Any'),)
         mes = '"{}"'.format(lang)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
         return lang
     
     def get_lang2(self):
@@ -122,7 +123,7 @@ class Plugin:
         else:
             lang = (_('Any'),)
         mes = '"{}"'.format(lang)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
         return lang
     
     def fix_raw_htm(self):
@@ -136,9 +137,9 @@ class Plugin:
     def set_lang1(self, lang1=''):
         f = '[MClient] plugins.dsl.run.Plugin.set_lang1'
         if lang1 == _('Any'):
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
         elif not lang1:
-            sh.com.rep_empty(f)
+            rep.empty(f)
         else:
             lang1 = gt.objs.get_all_dics().get_code(lang1)
             gt.LANG1 = lang1
@@ -146,9 +147,9 @@ class Plugin:
     def set_lang2(self, lang2=''):
         f = '[MClient] plugins.dsl.run.Plugin.set_lang2'
         if lang2 == _('Any'):
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
         elif not lang2:
-            sh.com.rep_empty(f)
+            rep.empty(f)
         else:
             lang2 = gt.objs.get_all_dics().get_code(lang2)
             gt.LANG2 = lang2
@@ -190,15 +191,13 @@ class Plugin:
             htm.append(iarticle.code)
             code = cu.CleanUp(iarticle.code).run()
             code = cu.TagLike(code).run()
-            self.blocks += tg.Tags (code = code
-                                   ,Debug = self.Debug
-                                   ,maxrows = self.maxrows
-                                   ,dicname = iarticle.dic
-                                   ).run()
+            self.blocks += tg.Tags(code = code
+                                  ,Debug = self.Debug
+                                  ,maxrows = self.maxrows
+                                  ,dicname = iarticle.dic).run()
         self.htm = '\n'.join(htm)
         texts = [block.text for block in self.blocks if block.text]
-        self.text = sh.List(texts).space_items()
-        self.blocks = el.Elems (blocks = self.blocks
-                               ,Debug = self.Debug
-                               ).run()
+        self.text = List(texts).space_items()
+        self.blocks = el.Elems(blocks = self.blocks
+                              ,Debug = self.Debug).run()
         return self.blocks

@@ -4,7 +4,7 @@
 import re
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
 
 
 class CleanUp:
@@ -19,7 +19,7 @@ class CleanUp:
         pattern = r'<a name="([a-zA-Z]*)"></a><span style="color:gray">((?![\d_])\w.*?)</span><a href="(.*?)">(.*?)</a>'
         matches = re.findall(pattern, self.text)
         if not matches:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         count = 0
         for match in matches:
@@ -29,14 +29,14 @@ class CleanUp:
             self.text = self.text.replace(what, with_)
             if old != self.text:
                 count += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def fix_wforms(self):
         f = '[MClient] plugins.multitrancom.cleanup.CleanUp.fix_wforms'
         pattern = r'<a name="([a-zA-Z]*)"></a><a href="(.*?)">(.*?)</a>'
         matches = re.findall(pattern, self.text)
         if not matches:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         count = 0
         for match in matches:
@@ -46,7 +46,7 @@ class CleanUp:
             self.text = self.text.replace(what, with_)
             if old != self.text:
                 count += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def delete_trash_tags(self):
         # Do not divide a single block into parts
@@ -69,12 +69,10 @@ class CleanUp:
         '''
         f = '[MClient] plugins.multitrancom.cleanup.CleanUp.fix_href'
         if not self.text:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         count = 0
-        isearch = sh.Search (text = self.text
-                            ,pattern = 'href="'
-                            )
+        isearch = Search(text=self.text, pattern='href="')
         poses = isearch.get_next_loop()
         poses = poses[::-1]
         for pos in poses:
@@ -86,7 +84,7 @@ class CleanUp:
             pos1 = isearch.get_next()
             if not str(pos1).isdigit():
                 mes = _('Malformed HTML code!')
-                sh.objs.get_mes(f, mes, True).show_warning()
+                Message(f, mes).show_warning()
                 continue
             fragm = self.text[pos:pos1]
             if '<' in fragm or '>' in fragm:
@@ -94,7 +92,7 @@ class CleanUp:
                 fragm = fragm.replace('>', '&gt;')
                 self.text = self.text[0:pos] + fragm + self.text[pos1:]
                 count += 1
-        sh.com.rep_matches(f, count)
+        rep.matches(f, count)
     
     def fix_tags(self):
         ''' - Multitran does not escape '<' and '>' in user terms/comments
@@ -115,14 +113,13 @@ class CleanUp:
             self.text = self.text.replace('  ', ' ')
         self.text = re.sub(r'\>[\s]{0,1}\<', '><', self.text)
         # RU-EN: "вспоминать"
-        self.text = self.text.replace ('<font color="darkgoldenrod" &gt'
-                                      ,'<font color="darkgoldenrod">'
-                                      )
+        self.text = self.text.replace('<font color="darkgoldenrod" &gt'
+                                     ,'<font color="darkgoldenrod">')
     
     def run(self):
         f = '[MClient] plugins.multitrancom.cleanup.CleanUp.run'
         if not self.text:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return ''
         self.delete_trash_tags()
         self.fix_href()

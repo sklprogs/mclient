@@ -1,16 +1,20 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import PyQt6.QtWidgets
+from PyQt6.QtWidgets import QVBoxLayout, QTableView, QAbstractItemView
+from PyQt6.QtWidgets import QStyledItemDelegate, QStyleOptionViewItem, QStyle
+from PyQt6.QtWidgets import QWidget, QApplication
+from PyQt6.QtGui import QShortcut, QKeySequence, QAbstractTextDocumentLayout
+from PyQt6.QtGui import QTextDocument
+from PyQt6.QtCore import Qt, QAbstractTableModel, QVariant, QSize
 
-#from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.graphics.root.controller import ROOT
 
 
-class TableModel(PyQt6.QtCore.QAbstractTableModel):
+class TableModel(QAbstractTableModel):
     
     def __init__(self, datain, parent=None, *args):
-        PyQt6.QtCore.QAbstractTableModel.__init__(self, parent, *args)
+        QAbstractTableModel.__init__(self, parent, *args)
         self.arraydata = datain
 
     def rowCount(self, parent):
@@ -21,17 +25,17 @@ class TableModel(PyQt6.QtCore.QAbstractTableModel):
 
     def data(self, index, role):
         if not index.isValid():
-            return PyQt6.QtCore.QVariant()
-        if role == PyQt6.QtCore.Qt.ItemDataRole.DisplayRole:
+            return QVariant()
+        if role == Qt.ItemDataRole.DisplayRole:
             try:
-                return PyQt6.QtCore.QVariant(self.arraydata[index.row()][index.column()])
+                return QVariant(self.arraydata[index.row()][index.column()])
             except Exception:
                 # We will have this exception regularly for merged cells
-                return PyQt6.QtCore.QVariant()
+                return QVariant()
 
 
 
-class TableDelegate(PyQt6.QtWidgets.QStyledItemDelegate):
+class TableDelegate(QStyledItemDelegate):
     ''' akej74, https://stackoverflow.com/questions/35397943/how-to-make-a-fast-qtableview-with-html-formatted-and-clickable-cells
         #NOTE: Do not set a default font here since Welcome has rows with
         different fonts and wrong sizeHint will be returned causing rows not to
@@ -43,26 +47,26 @@ class TableDelegate(PyQt6.QtWidgets.QStyledItemDelegate):
     def paint(self, painter, option, index):
         # index:   PyQt6.QtCore.QModelIndex
         # painter: PyQt6.QtGui.QPainter
-        # option:  PyQt6.QtWidgets.QStyleOptionViewItem
-        options = PyQt6.QtWidgets.QStyleOptionViewItem(option)
+        # option:  QStyleOptionViewItem
+        options = QStyleOptionViewItem(option)
         self.initStyleOption(options, index)
         
         if options.widget:
             style = options.widget.style()
         else:
-            style = PyQt6.QtWidgets.QApplication.style()
+            style = QApplication.style()
         
-        doc = PyQt6.QtGui.QTextDocument()
+        doc = QTextDocument()
         doc.setHtml(options.text)
         options.text = ''
         
         # This enables text wrapping in the delegate
         doc.setTextWidth(options.rect.width())
         
-        style.drawControl(PyQt6.QtWidgets.QStyle.ControlElement.CE_ItemViewItem, options, painter)
-        ctx = PyQt6.QtGui.QAbstractTextDocumentLayout.PaintContext()
+        style.drawControl(QStyle.ControlElement.CE_ItemViewItem, options, painter)
+        ctx = QAbstractTextDocumentLayout.PaintContext()
         
-        textRect = style.subElementRect(PyQt6.QtWidgets.QStyle.SubElement.SE_ItemViewItemText, options)
+        textRect = style.subElementRect(QStyle.SubElement.SE_ItemViewItemText, options)
         
         painter.save()
     
@@ -74,26 +78,22 @@ class TableDelegate(PyQt6.QtWidgets.QStyledItemDelegate):
         painter.restore()
     
     def sizeHint(self, option, index):
-        options = PyQt6.QtWidgets.QStyleOptionViewItem(option)
+        options = QStyleOptionViewItem(option)
         self.initStyleOption(options, index)
         
-        doc = PyQt6.QtGui.QTextDocument()
+        doc = QTextDocument()
         doc.setHtml(options.text)
         doc.setTextWidth(options.rect.width())
         # We have 'float' at input which will crash Qt
-        return PyQt6.QtCore.QSize(int(doc.idealWidth()), int(doc.size().height()))
+        return QSize(int(doc.idealWidth()), int(doc.size().height()))
 
 
 
-class Welcome(PyQt6.QtWidgets.QWidget):
+class Welcome(QWidget):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.set_gui()
-    
-    def set_icon(self):
-        # Does not accent None
-        self.setWindowIcon(sh.gi.objs.get_icon())
     
     def show_rows(self, rownos):
         for rowno in rownos:
@@ -120,13 +120,13 @@ class Welcome(PyQt6.QtWidgets.QWidget):
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:
-            PyQt6.QtGui.QShortcut(PyQt6.QtGui.QKeySequence(hotkey), self).activated.connect(action)
+            QShortcut(QKeySequence(hotkey), self).activated.connect(action)
     
     def centralize(self):
-        self.move(sh.objs.get_root().primaryScreen().geometry().center() - self.rect().center())
+        self.move(ROOT.get_root().primaryScreen().geometry().center() - self.rect().center())
     
     def set_gui(self):
-        self.layout_ = PyQt6.QtWidgets.QVBoxLayout()
+        self.layout_ = QVBoxLayout()
         self.layout_.setContentsMargins(0, 0, 0, 0)
         self.table = Table()
         self.layout_.addWidget(self.table)
@@ -134,7 +134,7 @@ class Welcome(PyQt6.QtWidgets.QWidget):
 
 
 
-class Table(PyQt6.QtWidgets.QTableView):
+class Table(QTableView):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -157,8 +157,8 @@ class Table(PyQt6.QtWidgets.QTableView):
         vheader.setVisible(False)
         self.show_borders(False)
         # Disable selecting cells
-        self.setFocusPolicy(PyQt6.QtCore.Qt.FocusPolicy.NoFocus)
-        self.setSelectionMode(PyQt6.QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
     
     def resize_rows(self):
         self.resizeRowsToContents()
@@ -171,18 +171,3 @@ class Table(PyQt6.QtWidgets.QTableView):
     
     def show_borders(self, Show=False):
         self.setShowGrid(Show)
-
-
-
-class Objects:
-    
-    def __init__(self):
-        self.welcome = None
-    
-    def get_welcome(self):
-        if self.welcome is None:
-            self.welcome = Welcome()
-        return self.welcome
-
-
-objs = Objects()

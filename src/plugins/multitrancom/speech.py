@@ -2,7 +2,11 @@
 
 import json
 
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import rep
+from skl_shared_qt.paths import PDIR
+from skl_shared_qt.logic import com
+from skl_shared_qt.paths import Path
+from skl_shared_qt.text_file import Read
 
 
 class Speech:
@@ -14,21 +18,19 @@ class Speech:
         self.Success = True
         self.code = ''
         self.dic = {}
-        self.file_ptrn = sh.objs.get_pdir().add ('..', 'resources', 'plugins'
-                                                ,'multitrancom', 'speech'
-                                                ,'{}.json'
-                                                )
+        self.file_ptrn = PDIR.add('..', 'resources', 'plugins', 'multitrancom'
+                                 ,'speech', '{}.json')
     
     def set_dic(self):
         f = '[MClient] plugins.multitrancom.speech.Speech.set_dic'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         try:
             self.dic = json.loads(self.code)
         except Exception as e:
             self.Success = False
-            sh.com.rep_third_party(f, e)
+            rep.third_party(f, e)
     
     def get_dic(self):
         return self.dic
@@ -36,17 +38,17 @@ class Speech:
     def load(self):
         f = '[MClient] plugins.multitrancom.speech.Speech.load'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
-        file = self.file_ptrn.format(sh.com.lang)
+        file = self.file_ptrn.format(com.lang)
         ''' Show the full path in case of not finding the file to make
             debugging easier.
         '''
-        file = sh.Path(file).get_absolute()
-        self.code = sh.ReadTextFile(file).get()
+        file = Path(file).get_absolute()
+        self.code = Read(file).get()
         if not self.code:
             self.Success = False
-            sh.com.rep_out(f)
+            rep.empty_output(f)
             return
     
     def run(self):

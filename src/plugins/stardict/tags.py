@@ -3,7 +3,7 @@
 
 import copy
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.table import Table
 
 import instance as ic
 
@@ -213,19 +213,10 @@ class Tags:
         headers = ('NO', 'CELLNO', 'TYPE', 'TEXT', 'URL')
         rows = []
         for i in range(len(self.blocks)):
-            rows.append ([i + 1
-                         ,self.blocks[i].cellno
-                         ,self.blocks[i].type
-                         ,self.blocks[i].text
-                         ,self.blocks[i].url
-                         ]
-                        )
-        mes = sh.FastTable (headers = headers
-                           ,iterable = rows
-                           ,maxrow = self.maxrow
-                           ,maxrows = self.maxrows
-                           ,Transpose = True
-                           ).run()
+            rows.append([i+1, self.blocks[i].cellno, self.blocks[i].type
+                       ,self.blocks[i].text, self.blocks[i].url])
+        mes = Table(headers=headers, iterable=rows, maxrow=self.maxrow
+                   ,maxrows=self.maxrows, Transpose=True).run()
         return f + ':\n' + mes
 
     def debug(self):

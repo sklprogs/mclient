@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
 
 import plugins.multitrancom.get as gt
 import plugins.multitrancom.cleanup as cu
@@ -51,7 +51,7 @@ class Plugin:
         if not self.majors:
             result = ms.objs.get_groups().get_lists()
             if not result:
-                sh.com.rep_empty(f)
+                rep.empty(f)
                 return []
             self.majors, self.minors = result[0], result[1]
         return self.majors
@@ -61,7 +61,7 @@ class Plugin:
         if not self.minors:
             result = ms.objs.get_groups().get_lists()
             if not result:
-                sh.com.rep_empty(f)
+                rep.empty(f)
                 return []
             self.majors, self.minors = result[0], result[1]
         return self.minors
@@ -97,34 +97,31 @@ class Plugin:
         code1 = pr.objs.get_pairs().get_code(pr.LANG1)
         code2 = pr.objs.pairs.get_code(pr.LANG2)
         if not (code1 and code2 and search):
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return ''
-        return gt.com.get_url (code1 = code1
-                              ,code2 = code2
-                              ,search = search
-                              )
+        return gt.com.get_url(code1 = code1, code2 = code2, search = search)
     
     def set_lang1(self, lang1):
         f = '[MClient] plugins.multitrancom.run.Plugin.set_lang1'
         if not lang1:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         if lang1 in pr.LANGS:
             pr.LANG1 = lang1
         else:
             mes = _('Wrong input data: "{}"!').format(lang1)
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
     
     def set_lang2(self, lang2):
         f = '[MClient] plugins.multitrancom.run.Plugin.set_lang2'
         if not lang2:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         if lang2 in pr.LANGS:
             pr.LANG2 = lang2
         else:
             mes = _('Wrong input data: "{}"!').format(lang2)
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
     
     def set_timeout(self, timeout=6):
         gt.TIMEOUT = timeout
@@ -164,9 +161,7 @@ class Plugin:
     
     def request(self, search='', url=''):
         self.search = search
-        self.htm = gt.Get (search = search
-                          ,url = url
-                          ).run()
+        self.htm = gt.Get(search = search, url = url).run()
         code = cu.CleanUp(self.htm).run()
         blocks = tg.Tags(code).run()
         ielems = el.Elems(blocks)

@@ -2,7 +2,8 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
+from skl_shared_qt.logic import Input
 
 import config as cf
 import plugins.stardict.get
@@ -39,56 +40,56 @@ class Plugins:
     def get_fixed_urls(self):
         f = '[MClient] manager.Plugins.get_fixed_urls'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return {}
         return self.plugin.get_fixed_urls()
     
     def get_article_subjects(self):
         f = '[MClient] manager.Plugins.get_article_subjects'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return {}
         return self.plugin.get_article_subjects()
     
     def get_speeches(self):
         f = '[MClient] manager.Plugins.get_speeches'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return {}
         return self.plugin.get_speeches()
     
     def get_majors(self):
         f = '[MClient] manager.Plugins.get_majors'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return []
         return self.plugin.get_majors()
     
     def get_minors(self):
         f = '[MClient] manager.Plugins.get_minors'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return []
         return self.plugin.get_minors()
     
     def get_search(self):
         f = '[MClient] manager.Plugins.get_search'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return ''
         return self.plugin.get_search()
     
     def fix_url(self, url):
         f = '[MClient] manager.Plugins.fix_url'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return url
         return self.plugin.fix_url(url)
     
     def is_oneway(self):
         f = '[MClient] manager.Plugins.is_oneway'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         return self.plugin.is_oneway()
     
@@ -101,14 +102,14 @@ class Plugins:
     def get_lang1(self):
         f = '[MClient] manager.Plugins.get_lang1'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         return self.plugin.get_lang1()
     
     def get_lang2(self):
         f = '[MClient] manager.Plugins.get_lang2'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         return self.plugin.get_lang2()
     
@@ -116,17 +117,17 @@ class Plugins:
         # Whether or not the plugin is actually a wrapper over other plugins
         f = '[MClient] manager.Plugins.is_combined'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         return self.plugin.is_combined()
     
     def fix_raw_htm(self, code):
         f = '[MClient] manager.Plugins.fix_raw_htm'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return code
         code = self.plugin.fix_raw_htm(code)
-        code = sh.Input(f, code).get_not_none()
+        code = Input(f, code).get_not_none()
         if not '</html>' in code.lower():
             search = self.get_search()
             # '.format' does not work properly for 'multitrandem'
@@ -141,7 +142,7 @@ class Plugins:
     def get_url(self, search):
         f = '[MClient] manager.Plugins.get_url'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return ''
         url = self.plugin.get_url(search)
         if not url:
@@ -150,11 +151,7 @@ class Plugins:
     
     def get_unique(self):
         # Return all non-combined plugins
-        return (self.sdplugin
-               ,self.mcplugin
-               ,self.mbplugin
-               ,self.lgplugin
-               )
+        return (self.sdplugin, self.mcplugin, self.mbplugin, self.lgplugin)
     
     def set_lang1(self, lang1):
         self.plugin.set_lang1(lang1)
@@ -165,21 +162,21 @@ class Plugins:
     def set_timeout(self, timeout=5.0):
         f = '[MClient] manager.Plugins.set_timeout'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         self.plugin.set_timeout(timeout)
     
     def is_accessible(self):
         f = '[MClient] manager.Plugins.is_accessible'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         return self.plugin.is_accessible()
 
     def suggest(self, search):
         f = '[MClient] manager.Plugins.suggest'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         return self.plugin.suggest(search)
     
@@ -198,14 +195,14 @@ class Plugins:
     def get_langs1(self, lang2=''):
         f = '[MClient] manager.Plugins.get_langs1'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         return self.plugin.get_langs1(lang2)
     
     def get_langs2(self, lang1=''):
         f = '[MClient] manager.Plugins.get_langs2'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         return self.plugin.get_langs2(lang1)
 
@@ -216,23 +213,19 @@ class Plugins:
         plugins.stardict.get.objs.get_all_dics()
         plugins.dsl.get.objs.get_all_dics()
         plugins.multitrandem.get.objs.get_all_dics()
-        self.sdplugin = sdrun.Plugin (Debug = self.Debug
-                                     ,maxrows = self.maxrows
-                                     )
-        self.mcplugin = mcrun.Plugin (Debug = self.Debug
-                                     ,maxrows = self.maxrows
-                                     )
-        self.mbplugin = mbrun.Plugin (Debug = self.Debug
-                                     ,maxrows = self.maxrows
-                                     )
-        self.lgplugin = lgrun.Plugin (Debug = self.Debug
-                                     ,maxrows = self.maxrows
-                                     )
+        self.sdplugin = sdrun.Plugin(Debug = self.Debug
+                                    ,maxrows = self.maxrows)
+        self.mcplugin = mcrun.Plugin(Debug = self.Debug
+                                    ,maxrows = self.maxrows)
+        self.mbplugin = mbrun.Plugin(Debug = self.Debug
+                                    ,maxrows = self.maxrows)
+        self.lgplugin = lgrun.Plugin(Debug = self.Debug
+                                    ,maxrows = self.maxrows)
     
     def set(self, source):
         f = '[MClient] manager.Plugins.set'
         if not source:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         self.source = source
         if source == _('Stardict'):
@@ -246,42 +239,41 @@ class Plugins:
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(self.source, self.get_sources())
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
     
     def get_text(self):
         f = '[MClient] manager.Plugins.get_text'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         return self.plugin.get_text()
     
     def get_htm(self):
         f = '[MClient] manager.Plugins.get_htm'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         return self.plugin.get_htm()
     
     def request(self, search='', url=''):
         f = '[MClient] manager.Plugins.request'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
-        return self.plugin.request (search = search
-                                   ,url = url
-                                   )
+        return self.plugin.request(search = search
+                                  ,url = url)
     
     def is_parallel(self):
         f = '[MClient] manager.Plugins.is_parallel'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         return self.plugin.is_parallel()
     
     def is_separate(self):
         f = '[MClient] manager.Plugins.is_separate'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         return self.plugin.is_separate()
     
@@ -289,7 +281,7 @@ class Plugins:
         # Get all available subjects (if any)
         f = '[MClient] manager.Plugins.get_subjects'
         if not self.plugin:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return {}
         dic = self.plugin.get_subjects()
         if not dic:

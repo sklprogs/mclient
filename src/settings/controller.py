@@ -2,10 +2,11 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message
+from skl_shared_qt.logic import Input
 
 import config as cf
-from . import gui as gi
+from settings.gui import Settings as guiSettings
 
 
 class Load:
@@ -94,12 +95,12 @@ class Save:
     def _report_wrong_range(self, f, start, end):
         mes = _('A value of this field should be within the range of {}-{}!')
         mes = mes.format(start, end)
-        sh.objs.get_mes(f, mes).show_warning()
+        Message(f, mes, True).show_warning()
     
     def save_col_num(self):
         f = '[MClient] settings.controller.Save.save_col_num'
         col_num = self.gui.ent_num.get()
-        col_num = sh.Input(f, col_num).get_integer()
+        col_num = Input(f, col_num).get_integer()
         if not 0 < col_num <= 10:
             self._report_wrong_range(f, 1, 10)
             col_num = 5
@@ -110,7 +111,7 @@ class Save:
     def save_fixed_col_width(self):
         f = '[MClient] settings.controller.Save.save_fixed_col_width'
         width = self.gui.ent_fix.get()
-        width = sh.Input(f, width).get_integer()
+        width = Input(f, width).get_integer()
         if not 50 <= width <= 512:
             self._report_wrong_range(f, 50, 512)
             width = 63
@@ -121,7 +122,7 @@ class Save:
     def save_term_col_width(self):
         f = '[MClient] settings.controller.Save.save_term_col_width'
         width = self.gui.ent_trm.get()
-        width = sh.Input(f, width).get_integer()
+        width = Input(f, width).get_integer()
         if not 50 <= width <= 512:
             self._report_wrong_range(f, 50, 512)
             width = 157
@@ -146,7 +147,7 @@ class Settings:
         self.set_gui()
     
     def set_gui(self):
-        self.gui = gi.Settings()
+        self.gui = guiSettings()
         self.set_title()
         self.set_bindings()
     

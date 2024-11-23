@@ -1,17 +1,24 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import PyQt6.QtWidgets
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QFormLayout, QGridLayout, QHBoxLayout
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtGui import QShortcut, QKeySequence
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.graphics.root.controller import ROOT
+from skl_shared_qt.graphics.button.controller import Button
+from skl_shared_qt.graphics.label.controller import Label
+from skl_shared_qt.graphics.entry.controller import Entry
+from skl_shared_qt.graphics.checkbox.controller import CheckBox
+from skl_shared_qt.graphics.option_menu.controller import OptionMenu
 
 PRODUCT = 'MClient'
 
 
-class Settings(PyQt6.QtWidgets.QWidget):
+class Settings(QWidget):
     
-    sig_close = PyQt6.QtCore.pyqtSignal()
+    sig_close = pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -22,14 +29,11 @@ class Settings(PyQt6.QtWidgets.QWidget):
         self.allowed = []
         self.spallow = []
         self.items = (_('Subjects'), _('Word forms'), _('Transcription')
-                     ,_('Parts of speech'), _('Do not set')
-                     )
+                     ,_('Parts of speech'), _('Do not set'))
         self.stitems = (PRODUCT, _('Multitran'), _('Cut to the chase')
-                       ,_('Clearness'), _('Custom')
-                       )
+                       ,_('Clearness'), _('Custom'))
         self.spitems = (_('Noun'), _('Verb'), _('Adjective'), _('Abbreviation')
-                       ,_('Adverb'), _('Preposition'), _('Pronoun')
-                       )
+                       ,_('Adverb'), _('Preposition'), _('Pronoun'))
 
     def update_sp1(self):
         f = '[MClient] settings.gui.Settings.update_sp1'
@@ -43,7 +47,7 @@ class Settings(PyQt6.QtWidgets.QWidget):
             self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
     
     def update_sp2(self):
         f = '[MClient] settings.gui.Settings.update_sp2'
@@ -57,7 +61,7 @@ class Settings(PyQt6.QtWidgets.QWidget):
             self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
                        
     def update_sp3(self):
         f = '[MClient] settings.gui.Settings.update_sp3'
@@ -71,7 +75,7 @@ class Settings(PyQt6.QtWidgets.QWidget):
             self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
                        
     def update_sp4(self):
         f = '[MClient] settings.gui.Settings.update_sp4'
@@ -85,7 +89,7 @@ class Settings(PyQt6.QtWidgets.QWidget):
             self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
                        
     def update_sp5(self):
         f = '[MClient] settings.gui.Settings.update_sp5'
@@ -99,7 +103,7 @@ class Settings(PyQt6.QtWidgets.QWidget):
             self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
                        
     def update_sp6(self):
         f = '[MClient] settings.gui.Settings.update_sp6'
@@ -113,7 +117,7 @@ class Settings(PyQt6.QtWidgets.QWidget):
             self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
                        
     def update_sp7(self):
         f = '[MClient] settings.gui.Settings.update_sp7'
@@ -127,7 +131,7 @@ class Settings(PyQt6.QtWidgets.QWidget):
             self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
     
     def update_col1(self):
         f = '[MClient] settings.gui.Settings.update_col1'
@@ -143,7 +147,7 @@ class Settings(PyQt6.QtWidgets.QWidget):
             self.allowed.remove(self.allowed[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
 
     def update_col2(self):
         f = '[MClient] settings.gui.Settings.update_col2'
@@ -159,7 +163,7 @@ class Settings(PyQt6.QtWidgets.QWidget):
             self.allowed.remove(self.allowed[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
 
     def update_col3(self):
         f = '[MClient] settings.gui.Settings.update_col3'
@@ -175,7 +179,7 @@ class Settings(PyQt6.QtWidgets.QWidget):
             self.allowed.remove(self.allowed[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
 
     def update_col4(self):
         f = '[MClient] settings.gui.Settings.update_col4'
@@ -191,7 +195,7 @@ class Settings(PyQt6.QtWidgets.QWidget):
             self.allowed.remove(self.allowed[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
 
     def update_style(self):
         cond11 = self.opt_cl1.get() == _('Subjects')
@@ -244,7 +248,7 @@ class Settings(PyQt6.QtWidgets.QWidget):
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(self.opt_stl.get(), self.stitems)
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
 
     def update_by_col1(self):
         self.allowed = list(self.items)
@@ -375,87 +379,71 @@ class Settings(PyQt6.QtWidgets.QWidget):
         return super().closeEvent(event)
     
     def centralize(self):
-        self.move(sh.objs.get_root().primaryScreen().geometry().center() - self.rect().center())
+        self.move(ROOT.get_root().primaryScreen().geometry().center() - self.rect().center())
     
     def set_labels(self):
-        self.lbl_stl = sh.Label(_('Style:'))
+        self.lbl_stl = Label(_('Style:'))
         mes = _('Column {}:')
-        self.lbl_cl1 = sh.Label(mes.format(1))
-        self.lbl_cl2 = sh.Label(mes.format(2))
-        self.lbl_cl3 = sh.Label(mes.format(3))
-        self.lbl_cl4 = sh.Label(mes.format(4))
+        self.lbl_cl1 = Label(mes.format(1))
+        self.lbl_cl2 = Label(mes.format(2))
+        self.lbl_cl3 = Label(mes.format(3))
+        self.lbl_cl4 = Label(mes.format(4))
         mes = _('Part of speech {}:')
-        self.lbl_sp1 = sh.Label(mes.format(1))
-        self.lbl_sp2 = sh.Label(mes.format(2))
-        self.lbl_sp3 = sh.Label(mes.format(3))
-        self.lbl_sp4 = sh.Label(mes.format(4))
-        self.lbl_sp5 = sh.Label(mes.format(5))
-        self.lbl_sp6 = sh.Label(mes.format(6))
-        self.lbl_sp7 = sh.Label(mes.format(7))
+        self.lbl_sp1 = Label(mes.format(1))
+        self.lbl_sp2 = Label(mes.format(2))
+        self.lbl_sp3 = Label(mes.format(3))
+        self.lbl_sp4 = Label(mes.format(4))
+        self.lbl_sp5 = Label(mes.format(5))
+        self.lbl_sp6 = Label(mes.format(6))
+        self.lbl_sp7 = Label(mes.format(7))
     
     def set_menus(self):
-        self.opt_stl = sh.OptionMenu (items = self.stitems
-                                     ,default = PRODUCT
-                                     ,action = self.update_by_st
-                                     )
-        self.opt_cl1 = sh.OptionMenu (items = self.items
-                                     ,default = _('Subjects')
-                                     ,action = self.update_by_col1
-                                     )
-        self.opt_cl2 = sh.OptionMenu (items = self.items
-                                     ,default = _('Word forms')
-                                     ,action = self.update_by_col2
-                                     )
-        self.opt_cl3 = sh.OptionMenu (items = self.items
-                                     ,default = _('Transcription')
-                                     ,action = self.update_by_col3
-                                     )
-        self.opt_cl4 = sh.OptionMenu (items = self.items
-                                     ,default = _('Parts of speech')
-                                     ,action = self.update_by_col4
-                                     )
-        self.opt_sp1 = sh.OptionMenu (items = self.spitems
-                                     ,default = _('Noun')
-                                     ,action = self.update_by_sp1
-                                     )
-        self.opt_sp2 = sh.OptionMenu (items = self.spitems
-                                     ,default = _('Verb')
-                                     ,action = self.update_by_sp2
-                                     )
-        self.opt_sp3 = sh.OptionMenu (items = self.spitems
-                                     ,default = _('Adjective')
-                                     ,action = self.update_by_sp3
-                                     )
-        self.opt_sp4 = sh.OptionMenu (items = self.spitems
-                                     ,default = _('Abbreviation')
-                                     ,action = self.update_by_sp4
-                                     )
-        self.opt_sp5 = sh.OptionMenu (items = self.spitems
-                                     ,default = _('Adverb')
-                                     ,action = self.update_by_sp5
-                                     )
-        self.opt_sp6 = sh.OptionMenu (items = self.spitems
-                                     ,default = _('Preposition')
-                                     ,action = self.update_by_sp6
-                                     )
-        self.opt_sp7 = sh.OptionMenu (items = self.spitems
-                                     ,default = _('Pronoun')
-                                     ,action = self.update_by_sp7
-                                     )
+        self.opt_stl = OptionMenu(items = self.stitems, default = PRODUCT
+                                 ,action = self.update_by_st)
+        self.opt_cl1 = OptionMenu(items = self.items, default = _('Subjects')
+                                 ,action = self.update_by_col1)
+        self.opt_cl2 = OptionMenu(items = self.items, default = _('Word forms')
+                                 ,action = self.update_by_col2)
+        self.opt_cl3 = OptionMenu(items = self.items
+                                  ,default = _('Transcription')
+                                 ,action = self.update_by_col3)
+        self.opt_cl4 = OptionMenu(items = self.items
+                                 ,default = _('Parts of speech')
+                                 ,action = self.update_by_col4)
+        self.opt_sp1 = OptionMenu(items = self.spitems
+                                 ,default = _('Noun')
+                                 ,action = self.update_by_sp1)
+        self.opt_sp2 = OptionMenu(items = self.spitems, default = _('Verb')
+                                 ,action = self.update_by_sp2)
+        self.opt_sp3 = OptionMenu(items = self.spitems
+                                 ,default = _('Adjective')
+                                 ,action = self.update_by_sp3)
+        self.opt_sp4 = OptionMenu(items = self.spitems
+                                 ,default = _('Abbreviation')
+                                 ,action = self.update_by_sp4)
+        self.opt_sp5 = OptionMenu(items = self.spitems
+                                 ,default = _('Adverb')
+                                 ,action = self.update_by_sp5)
+        self.opt_sp6 = OptionMenu(items = self.spitems
+                                 ,default = _('Preposition')
+                                 ,action = self.update_by_sp6)
+        self.opt_sp7 = OptionMenu(items = self.spitems
+                                 ,default = _('Pronoun')
+                                 ,action = self.update_by_sp7)
     
     def set_layouts(self):
-        self.lay_prm = PyQt6.QtWidgets.QVBoxLayout(self)
-        self.lay_col = PyQt6.QtWidgets.QGridLayout()
-        self.lay_psp = PyQt6.QtWidgets.QGridLayout()
-        self.lay_cbx = PyQt6.QtWidgets.QVBoxLayout()
-        self.lay_sug = PyQt6.QtWidgets.QHBoxLayout()
-        self.lay_sgl = PyQt6.QtWidgets.QHBoxLayout()
+        self.lay_prm = QVBoxLayout(self)
+        self.lay_col = QGridLayout()
+        self.lay_psp = QGridLayout()
+        self.lay_cbx = QVBoxLayout()
+        self.lay_sug = QHBoxLayout()
+        self.lay_sgl = QHBoxLayout()
         ''' Position widgets in "Suggest" row correctly for different languages
             irrespectively of label widths.
         '''
-        self.fml_sug = PyQt6.QtWidgets.QFormLayout()
+        self.fml_sug = QFormLayout()
         self.fml_sug.addRow(self.lay_sgl)
-        self.lay_btn = PyQt6.QtWidgets.QHBoxLayout()
+        self.lay_btn = QHBoxLayout()
         self.lay_sug.addLayout(self.fml_sug)
         self.lay_prm.addLayout(self.lay_col)
         self.lay_prm.addLayout(self.lay_psp)
@@ -464,37 +452,37 @@ class Settings(PyQt6.QtWidgets.QWidget):
         self.lay_prm.addLayout(self.lay_btn)
     
     def set_checkboxes(self):
-        self.cbx_no1 = sh.CheckBox(_('Sort by each column (if it is set, except for transcription) and order parts of speech'))
-        self.cbx_no2 = sh.CheckBox(_('Shorten subject titles'))
-        self.cbx_no3 = sh.CheckBox(_('Shorten parts of speech'))
-        self.cbx_no4 = sh.CheckBox(_('Show user names'))
-        self.cbx_no5 = sh.CheckBox(_('Iconify the program window after copying'))
-        self.cbx_no6 = sh.CheckBox(_('Autoswap Russian and the other language if appropriate'))
-        self.cbx_no7 = sh.CheckBox(_('Show a phrase count'))
-        self.cbx_no8 = sh.CheckBox(_('Adjust columns by width'))
+        self.cbx_no1 = CheckBox(_('Sort by each column (if it is set, except for transcription) and order parts of speech'))
+        self.cbx_no2 = CheckBox(_('Shorten subject titles'))
+        self.cbx_no3 = CheckBox(_('Shorten parts of speech'))
+        self.cbx_no4 = CheckBox(_('Show user names'))
+        self.cbx_no5 = CheckBox(_('Iconify the program window after copying'))
+        self.cbx_no6 = CheckBox(_('Autoswap Russian and the other language if appropriate'))
+        self.cbx_no7 = CheckBox(_('Show a phrase count'))
+        self.cbx_no8 = CheckBox(_('Adjust columns by width'))
     
     def set_bg(self):
-        self.bg_col = PyQt6.QtWidgets.QWidget()
+        self.bg_col = QWidget()
         # Cannot reuse the same widget
-        self.bg_psp = PyQt6.QtWidgets.QWidget()
+        self.bg_psp = QWidget()
         self.lay_col.addWidget(self.bg_col, 0, 0, 1, 5)
         self.lay_psp.addWidget(self.bg_psp, 0, 0, 1, 7)
     
     def set_suggest(self):
-        self.lbl_num = sh.Label(_('Preferred number of columns:'))
-        self.ent_num = sh.Entry()
-        self.lbl_fix = sh.Label(_('Fixed column width:'))
-        self.ent_fix = sh.Entry()
-        self.lbl_trm = sh.Label(_('Term column width:'))
-        self.ent_trm = sh.Entry()
-        self.btn_sug = sh.Button(_('Suggest'))
+        self.lbl_num = Label(_('Preferred number of columns:'))
+        self.ent_num = Entry()
+        self.lbl_fix = Label(_('Fixed column width:'))
+        self.ent_fix = Entry()
+        self.lbl_trm = Label(_('Term column width:'))
+        self.ent_trm = Entry()
+        self.btn_sug = Button(_('Suggest'))
     
     def _add_columns(self):
-        self.lay_col.addWidget(self.lbl_stl.widget, 0, 0, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.lay_col.addWidget(self.lbl_cl1.widget, 0, 1, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.lay_col.addWidget(self.lbl_cl2.widget, 0, 2, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.lay_col.addWidget(self.lbl_cl3.widget, 0, 3, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.lay_col.addWidget(self.lbl_cl4.widget, 0, 4, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.lay_col.addWidget(self.lbl_stl.widget, 0, 0, Qt.AlignmentFlag.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl1.widget, 0, 1, Qt.AlignmentFlag.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl2.widget, 0, 2, Qt.AlignmentFlag.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl3.widget, 0, 3, Qt.AlignmentFlag.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl4.widget, 0, 4, Qt.AlignmentFlag.AlignCenter)
         self.lay_col.addWidget(self.opt_stl.widget, 1, 0)
         self.lay_col.addWidget(self.opt_cl1.widget, 1, 1)
         self.lay_col.addWidget(self.opt_cl2.widget, 1, 2)
@@ -502,13 +490,13 @@ class Settings(PyQt6.QtWidgets.QWidget):
         self.lay_col.addWidget(self.opt_cl4.widget, 1, 4)
     
     def _add_speech(self):
-        self.lay_psp.addWidget(self.lbl_sp1.widget, 0, 0, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp2.widget, 0, 1, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp3.widget, 0, 2, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp4.widget, 0, 3, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp5.widget, 0, 4, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp6.widget, 0, 5, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.lay_psp.addWidget(self.lbl_sp7.widget, 0, 6, PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp1.widget, 0, 0, Qt.AlignmentFlag.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp2.widget, 0, 1, Qt.AlignmentFlag.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp3.widget, 0, 2, Qt.AlignmentFlag.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp4.widget, 0, 3, Qt.AlignmentFlag.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp5.widget, 0, 4, Qt.AlignmentFlag.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp6.widget, 0, 5, Qt.AlignmentFlag.AlignCenter)
+        self.lay_psp.addWidget(self.lbl_sp7.widget, 0, 6, Qt.AlignmentFlag.AlignCenter)
         self.lay_psp.addWidget(self.opt_sp1.widget, 1, 0)
         self.lay_psp.addWidget(self.opt_sp2.widget, 1, 1)
         self.lay_psp.addWidget(self.opt_sp3.widget, 1, 2)
@@ -591,17 +579,11 @@ class Settings(PyQt6.QtWidgets.QWidget):
         self.lay_sgl.addStretch(0)
     
     def set_buttons(self):
-        self.btn_res = sh.Button (text = _('Reset')
-                                 ,hint = _('Restore recommended settings')
-                                 ,action = self.reset
-                                 )
-        self.btn_apl = sh.Button (text = _('Apply')
-                                 ,hint = _('Apply current settings and reload the article')
-                                 )
-    
-    def set_icon(self):
-        # Does not accent None
-        self.setWindowIcon(sh.gi.objs.get_icon())
+        self.btn_res = Button(text = _('Reset')
+                             ,hint = _('Restore recommended settings')
+                             ,action = self.reset)
+        self.btn_apl = Button(text = _('Apply')
+                             ,hint = _('Apply current settings and reload the article'))
     
     def set_gui(self):
         self.set_layouts()
@@ -615,19 +597,10 @@ class Settings(PyQt6.QtWidgets.QWidget):
         self.configure()
         # The window width will be larger than 1024px otherwise 
         self.setFixedWidth(800)
-        self.set_icon()
     
     def set_title(self, title):
         self.setWindowTitle(title)
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:
-            PyQt6.QtGui.QShortcut(PyQt6.QtGui.QKeySequence(hotkey), self).activated.connect(action)
-
-
-if __name__ == '__main__':
-    f = '__main__'
-    sh.com.start()
-    app = Settings()
-    app.show()
-    sh.com.end()
+            QShortcut(QKeySequence(hotkey), self).activated.connect(action)

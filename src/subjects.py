@@ -4,7 +4,8 @@
 import re
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import rep
+from skl_shared_qt.table import Table
 
 import instance as ic
 import config as cf
@@ -20,9 +21,9 @@ class Split:
     def debug(self):
         f = '[MClient] subjects.Split.debug'
         mes = _('Indexes: {}').format(self.indexes)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
         mes = _('Parts: {}').format(sorted(self.parts))
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
     
     def run(self):
         self.set_indexes()
@@ -58,9 +59,9 @@ class PriorIndex:
     def debug(self):
         f = '[MClient] subjects.PriorIndex.debug'
         mes = _('Indexes: {}').format(self.indexes)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
         mes = _('Minimal index: {}').format(self.min)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
     
     def _get(self, subjf):
         try:
@@ -116,19 +117,19 @@ class Create:
         f = '[MClient] subjects.Create.set_prior_all'
         self._set_prior_section(cf.objs.get_config().new['subjects']['prioritized'])
         mes = '; '.join(self.prior_all)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
     
     def set_blocked_all(self):
         f = '[MClient] subjects.Create.set_blocked_all'
         self._set_block_section(cf.objs.get_config().new['subjects']['blocked'])
         mes = '; '.join(self.block_all)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
     
     def reset(self, pairs):
         f = '[MClient] subjects.Create.reset'
         self.set_values()
         if not pairs:
-            sh.com.rep_empty(f)
+            rep.empty(f)
         self.pairs = pairs
         self.run()
     
@@ -171,16 +172,13 @@ class Create:
             subjpr.append(isubj.subjpr)
         headers = ('SUBJ', 'SUBJF', _('BLOCKED'), 'PRIOR_INDEX', 'SUBJPR')
         iterable = [subj, subjf, blocked, indexes, subjpr]
-        mes = sh.FastTable (iterable = iterable
-                           ,headers = headers
-                           ,maxrow = 70
-                           ).run()
+        mes = Table(iterable=iterable, headers=headers, maxrow=70).run()
         return f'{f}:\n{mes}'
     
     def set_subjects(self):
         f = '[MClient] subjects.Create.set_subjects'
         if not self.pairs:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         for subj, subjf in self.pairs.items():
             isubj = ic.Subject()

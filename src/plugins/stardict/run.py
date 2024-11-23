@@ -2,7 +2,6 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-#import skl_shared_qt.shared as sh
 import plugins.stardict.get as gt
 import plugins.stardict.cleanup as cu
 import plugins.stardict.tags as tg

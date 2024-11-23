@@ -2,9 +2,9 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import rep
 
-from . import gui as gi
+from suggest.gui import Suggest as guiSuggest
 
 
 class Suggest:
@@ -20,7 +20,7 @@ class Suggest:
         try:
             return self.gui.get()
         except IndexError:
-            sh.com.rep_input(f)
+            rep.empty_output(f)
         return ''
     
     def set_geometry(self, x, y, width, height):
@@ -30,7 +30,7 @@ class Suggest:
         return self.gui.get_height()
     
     def set_gui(self):
-        self.gui = gi.Suggest()
+        self.gui = guiSuggest()
         self.set_bindings()
     
     def set_bindings(self):
@@ -44,14 +44,14 @@ class Suggest:
     def fill(self, lst):
         f = '[MClient] suggest.controller.Suggest.fill'
         if not lst:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         self.gui.fill(lst)
     
     def go_end(self):
         f = '[MClient] suggest.controller.Suggest.go_end'
         if not self.gui.model.items:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         rowno = len(self.gui.model.items) - 1
         self.go_row(rowno)
@@ -67,19 +67,3 @@ class Suggest:
     
     def set_width(self, width):
         self.gui.set_width(width)
-
-
-if __name__ == '__main__':
-    f = '[MClient] suggest.controller.Suggest.__main__'
-    sh.com.start()
-    lst = []
-    for i in range(20):
-        lst.append(f'item {i+1}')
-    app = Suggest()
-    app.fill(lst)
-    app.go_end()
-    app.show()
-    app.set_width(96)
-    mes = _('Goodbye!')
-    sh.objs.get_mes(f, mes, True).show_debug()
-    sh.com.end()

@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
 
 import instance as ic
 
@@ -71,7 +71,7 @@ class Plugin:
     def _adapt_lang(self, lang):
         f = '[MClient] plugins.multitrandem.run.Plugin._adapt_lang'
         if not lang:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return 'English'
         if lang in self.langloc:
             ind = self.langloc.index(lang)
@@ -83,7 +83,7 @@ class Plugin:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             modes = self.langloc + self.langint
             mes = mes.format(lang, ';'.join(modes))
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
         return 'English'
     
     def set_values(self):
@@ -171,11 +171,9 @@ class Plugin:
             blocks = tg.Tags(chunks[i], i).run()
             if blocks:
                 self.blocks += blocks
-        self.cells = el.Elems (blocks = self.blocks
-                              ,abbr = None
-                              ,langs = gt.objs.get_all_dics().get_langs()
-                              ,search = search
-                              ).run()
+        self.cells = el.Elems(blocks=self.blocks, abbr=None
+                             ,langs = gt.objs.get_all_dics().get_langs()
+                             ,search=search).run()
         self.get_text()
         self.get_htm()
         return self.cells

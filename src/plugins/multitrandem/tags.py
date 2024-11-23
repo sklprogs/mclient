@@ -4,7 +4,8 @@
 import struct
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
+from skl_shared_qt.table import Table
 
 import instance as ic
 
@@ -36,10 +37,10 @@ class Tags:
     def get_types(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.get_types'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if not self.tags:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         if len(self.tags) % 2 != 0:
             ''' #TODO: Number of tags was always even in small mt demos. We
@@ -56,7 +57,7 @@ class Tags:
     def set_types(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.set_types'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         for i in range(len(self.content)):
             self.blocks.append(ic.Block())
@@ -75,24 +76,16 @@ class Tags:
                 self.blocks[i].type = 'invalid'
                 #TODO: convert to a string
                 mes = _('Unknown type "{}"!').format(self.types[i])
-                sh.objs.get_mes(f, mes, True).show_warning()
+                Message(f, mes).show_warning()
     
     def debug_blocks(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.debug_blocks'
         headers = ('NO', 'TYPE', 'TEXT')
         rows = []
         for i in range(len(self.blocks)):
-            rows.append ([i + 1
-                         ,self.blocks[i].type
-                         ,self.blocks[i].text
-                         ]
-                        )
-        mes = sh.FastTable (headers = headers
-                           ,iterable = rows
-                           ,maxrow = self.maxrow
-                           ,maxrows = self.maxrows
-                           ,Transpose = True
-                           ).run()
+            rows.append([i+1, self.blocks[i].type, self.blocks[i].text])
+        mes = Table(headers=headers, iterable=rows, maxrow=self.maxrow
+                   ,maxrows=self.maxrows, Transpose=True).run()
         return f'{f}:\n{mes}'
     
     def debug(self):
@@ -111,7 +104,7 @@ class Tags:
     def decode(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.decode'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         i = 1
         while i < len(self.tags):
@@ -122,14 +115,14 @@ class Tags:
     def set_seps(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.set_seps'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         self.seps = [self.seplg1, self.seplg2, self.sepdic, self.sepcom]
     
     def split(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.split'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         tmp = b''
         for i in range(len(self.entry)):
@@ -146,11 +139,11 @@ class Tags:
     def set_langs(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.set_langs'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if not self.lang1 or not self.lang2:
             self.Success = False
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         try:
             self.seplg1 = struct.pack('<b', self.lang1)
@@ -158,14 +151,14 @@ class Tags:
         except:
             self.Success = False
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            Message(f, mes, True).show_warning()
     
     def check(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.check'
         # Dictionary section is optional, so we do not check for it
         if not self.entry or not self.lang1 or not self.lang2:
             self.Success = False
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         return True
     
@@ -188,7 +181,7 @@ class Tags:
     def set_cellnos(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.set_cellnos'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         for block in self.blocks:
             block.cellno = self.cellno

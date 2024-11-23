@@ -2,9 +2,9 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import Message, rep
 
-from . import gui as gi
+from history.gui import History as guiHistory
 
 
 class History:
@@ -15,7 +15,7 @@ class History:
         self.fill_model()
     
     def set_gui(self):
-        self.gui = gi.History()
+        self.gui = guiHistory()
         self.set_title()
         self.set_bindings()
     
@@ -25,14 +25,13 @@ class History:
             load the new article twice when the history window is opened.
         '''
         if not self.Shown:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         rowno = self.gui.get_row()
         try:
             id_ = self.model.items[rowno][0]
         except IndexError:
-            mes = _('Wrong input data: "{}"!').format(rowno)
-            sh.objs.get_mes(f, mes).show_warning()
+            rep.wrong_input(f, rowno)
             return
         self.gui.sig_go.emit(int(id_) - 1)
     
@@ -55,7 +54,7 @@ class History:
         # Qt already goes down/up, but without looping
         f = '[MClient] history.controller.History.go_down'
         if not self.model.items or not self.model.items[0]:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         old = rowno = self.gui.get_row()
         if rowno == len(self.model.items) - 1:
@@ -67,7 +66,7 @@ class History:
         # Qt already goes down/up, but without looping
         f = '[MClient] history.controller.History.go_up'
         if not self.model.items or not self.model.items[0]:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         old = rowno = self.gui.get_row()
         if rowno == 0:
@@ -83,7 +82,7 @@ class History:
     def add_row(self, id_, source, lang1, lang2, search):
         f = '[MClient] history.controller.History.add_row'
         if not self.model.items:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         # Avoid getting out of bounds, since our table is initially [[]]
         if self.model.items[0] == []:

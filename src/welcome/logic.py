@@ -2,9 +2,9 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
+from skl_shared_qt.message.controller import rep
 
-import config as cf
+from config import CONFIG
 
 
 COLNUM = 6
@@ -27,7 +27,7 @@ class Hotkeys:
     def get(self):
         f = '[MClient] welcome.logic.Hotkeys.get'
         if not self.hotkeys:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return []
         rows = []
         hotkeys = '; '.join(self.hotkeys[0][1])
@@ -82,33 +82,27 @@ class Welcome:
         return self.table
     
     def _add_hotkeys(self, key):
-        self.ihotkeys.add (cf.objs.config.new['actions'][key]['hint']
-                          ,cf.objs.config.new['actions'][key]['hotkeys']
-                          )
+        self.ihotkeys.add(CONFIG.new['actions'][key]['hint']
+                         ,CONFIG.new['actions'][key]['hotkeys'])
     
     def set_hotkeys(self):
-        cf.objs.get_config()
         self.ihotkeys = Hotkeys()
         
-        self.ihotkeys.add (_('Translate the current input or selection')
-                          ,(_('Left mouse button'), 'Return')
-                          )
+        self.ihotkeys.add(_('Translate the current input or selection')
+                         ,(_('Left mouse button'), 'Return'))
         
-        self.ihotkeys.add (cf.objs.config.new['actions']['copy_sel']['hint']
-                          ,[_('Right mouse button')] + cf.objs.config.new['actions']['copy_sel']['hotkeys']
-                          )
+        self.ihotkeys.add(CONFIG.new['actions']['copy_sel']['hint']
+                         ,[_('Right mouse button')] + CONFIG.new['actions']['copy_sel']['hotkeys'])
         
         self.ihotkeys.add(_('Show the program window (system-wide)'), ('Alt+~',))
         
-        self.ihotkeys.add (_('Translate selection from an external program')
-                          ,('Ctrl+Ins+Ins', 'Ctrl+C+C')
-                          )
+        self.ihotkeys.add(_('Translate selection from an external program')
+                         ,('Ctrl+Ins+Ins', 'Ctrl+C+C'))
         
         self.ihotkeys.add(_('Minimize the program window'), ('Esc',))
         
-        self.ihotkeys.add (cf.objs.config.new['actions']['quit']['hint']
-                          ,['Ctrl+Q'] + cf.objs.config.new['actions']['quit']['hotkeys']
-                          )
+        self.ihotkeys.add(CONFIG.new['actions']['quit']['hint']
+                         ,['Ctrl+Q'] + CONFIG.new['actions']['quit']['hotkeys'])
         
         self._add_hotkeys('copy_url')
         self._add_hotkeys('copy_article_url')

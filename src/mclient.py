@@ -2,8 +2,18 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
-import skl_shared_qt.web as wb
+from skl_shared_qt.message.controller import Message, rep
+from skl_shared_qt.pretty_html import make_pretty
+from skl_shared_qt.text_file import Read, Write
+from skl_shared_qt.paths import Path
+from skl_shared_qt.graphics.root.controller import ROOT
+from skl_shared_qt.graphics.clipboard.controller import CLIPBOARD
+from skl_shared_qt.graphics.debug.controller import Debug
+from skl_shared_qt.list import List
+from skl_shared_qt.logic import OS, Input, Text
+from skl_shared_qt.online import Online
+from skl_shared_qt.timer import Timer
+from skl_shared_qt.articles import ARTICLES
 
 import config as cf
 import logic as lg
@@ -59,10 +69,10 @@ class Priorities(pr.Panes):
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(mode, '; '.join(self.gui.opt_src.items))
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
             return
         mes = _('Mode: "{}"').format(mode)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
     
     def reset(self):
         self.dic1 = cf.objs.config.new['subjects']['prioritized']
@@ -112,10 +122,10 @@ class Block(pr.Panes):
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(mode, '; '.join(self.gui.opt_src.items))
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
             return
         mes = _('Mode: "{}"').format(mode)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
     
     def reset(self):
         self.dic1 = cf.objs.config.new['subjects']['blocked']
@@ -170,7 +180,7 @@ class UpdateUI:
     
     def update_prioritization(self):
         mes = [_('Subject prioritization')]
-        prioritized = lg.objs.get_articles().get_prioritized()
+        prioritized = ARTICLES.get_prioritized()
         if cf.objs.config.new['PrioritizeSubjects'] and prioritized \
         and not self.Parallel:
             gi.objs.get_panel().btn_pri.activate()
@@ -193,11 +203,11 @@ class UpdateUI:
     
     def update_block(self):
         f = '[MClient] mclient.UpdateUI.update_block'
-        ''' #NOTE: We cannot use 'lg.objs.get_articles().get_cells()' since
+        ''' #NOTE: We cannot use 'ARTICLES.get_cells()' since
             it does not have blocked items.
         '''
-        blocked_subj = lg.objs.get_articles().get_blocked()
-        blocked_cells = lg.objs.get_articles().get_blocked_cells()
+        blocked_subj = ARTICLES.get_blocked()
+        blocked_cells = ARTICLES.get_blocked_cells()
         if blocked_subj:
             blocked_subj = len(blocked_subj)
         else:
@@ -227,28 +237,28 @@ class UpdateUI:
             objs.get_block().gui.cbx_pri.disable()
     
     def update_go_next(self):
-        if lg.objs.get_articles().is_last():
+        if ARTICLES.is_last():
             gi.objs.get_panel().btn_nxt.inactivate()
         else:
             gi.objs.get_panel().btn_nxt.activate()
     
     def update_go_prev(self):
         # Update the button to move to the previous article
-        if lg.objs.get_articles().get_len():
+        if ARTICLES.get_len():
             gi.objs.get_panel().btn_prv.activate()
         else:
             gi.objs.get_panel().btn_prv.inactivate()
     
     def update_last_search(self):
         # Update the button to insert a current search string
-        if lg.objs.get_articles().get_len():
+        if ARTICLES.get_len():
             gi.objs.get_panel().btn_rp1.activate()
         else:
             gi.objs.get_panel().btn_rp1.inactivate()
     
     def update_prev_search(self):
         # Update the button to insert a previous search string
-        if lg.objs.get_articles().get_len() > 1:
+        if ARTICLES.get_len() > 1:
             gi.objs.get_panel().btn_rp2.activate()
         else:
             gi.objs.get_panel().btn_rp2.inactivate()
@@ -264,7 +274,7 @@ class UpdateUI:
             self.update_block()
             self.update_prioritization()
         else:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
         self.update_global_hotkey()
         self.update_alphabetization()
     
@@ -310,7 +320,7 @@ class FontLimits:
     def get_space(self):
         space = self.gui.get_space(self.text, self.font)
         #mes = _('Space: {}').format(space)
-        #sh.objs.get_mes(f, mes, True).show_debug()
+        #Message(f, mes).show_debug()
         return space
 
 
@@ -325,9 +335,9 @@ class Save(sv.Save):
         f = '[MClient] mclient.Save._get_text'
         text = []
         text_row = []
-        cells = lg.objs.get_articles().get_table()
+        cells = ARTICLES.get_table()
         if not cells:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return ''
         for row in cells:
             for cell in row:
@@ -359,7 +369,7 @@ class Save(sv.Save):
         f = '[MClient] mclient.Save.select'
         opt = self.get()
         if not opt:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         self.close()
         if opt == _('Save the current view as a web-page (*.htm)'):
@@ -375,10 +385,10 @@ class Save(sv.Save):
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(opt, '; '.join(self.model.items))
-            sh.objs.get_mes(f, mes).show_error()
+            Message(f, mes, True).show_error()
 
     def _add_web_ext(self):
-        if not sh.Path(self.file).get_ext_low() in ('.htm', '.html'):
+        if not Path(self.file).get_ext_low() in ('.htm', '.html'):
             self.file += '.htm'
     
     def save_view_as_htm(self):
@@ -386,21 +396,21 @@ class Save(sv.Save):
         self.gui.ask.filter = _('Web-pages (*.htm, *.html)')
         self.file = self.gui.ask.save()
         if not self.file:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         # Can be an empty list
-        cells = lg.objs.get_articles().get_table()
+        cells = ARTICLES.get_table()
         #TODO: elaborate
         skipped = []
         #skipped = com.get_skipped_terms()
         code = lg.HTM(cells, skipped).run()
         if not code:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         self._add_web_ext()
         # Takes ~0.47s for 'set' on Intel Atom, do not call in 'load_article'
-        code = wb.WebPage(code).make_pretty()
-        sh.WriteTextFile(self.file).write(code)
+        code = make_pretty(code)
+        Write(self.file).write(code)
 
     def save_raw_as_htm(self):
         f = '[MClient] mclient.Save.save_raw_as_htm'
@@ -412,13 +422,13 @@ class Save(sv.Save):
         '''
         self.gui.ask.filter = _('Web-pages (*.htm, *.html)')
         self.file = self.gui.ask.save()
-        code = lg.objs.get_articles().get_raw_code()
+        code = ARTICLES.get_raw_code()
         if not self.file or not code:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         self._add_web_ext()
         code = lg.objs.get_plugins().fix_raw_htm(code)
-        sh.WriteTextFile(self.file).write(code)
+        Write(self.file).write(code)
 
     def save_view_as_txt(self):
         f = '[MClient] mclient.Save.save_view_as_txt'
@@ -426,17 +436,17 @@ class Save(sv.Save):
         self.file = self.gui.ask.save()
         text = self._get_text()
         if not self.file or not text:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
-        if not sh.Path(self.file).get_ext_low() == '.txt':
+        if not Path(self.file).get_ext_low() == '.txt':
             self.file += '.txt'
-        sh.WriteTextFile(self.file).write(text)
+        Write(self.file).write(text)
 
     def copy_raw(self):
-        sh.Clipboard().copy(lg.objs.get_articles().get_raw_code())
+        CLIPBOARD.copy(ARTICLES.get_raw_code())
 
     def copy_view(self):
-        sh.Clipboard().copy(self._get_text())
+        CLIPBOARD.copy(self._get_text())
 
 
 
@@ -444,9 +454,9 @@ class Commands:
     
     def get_article_subjects(self):
         f = '[MClient] mclient.Commands.get_article_subjects'
-        subjfs = lg.objs.get_articles().get_subjf()
+        subjfs = ARTICLES.get_subjf()
         if not subjfs:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return {}
         subjfs = sorted(set(subjfs), key=lambda s: s.casefold())
         dic = {}
@@ -501,12 +511,12 @@ class Welcome(wl.Welcome):
     def set_online_sources(self):
         f = '[MClient] mclient.Welcome.set_online_sources'
         if not cf.objs.config.new['Ping']:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         old = lg.objs.get_plugins().source
         dics = lg.objs.plugins.get_online_sources()
         if not dics:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         for dic in dics:
             lg.objs.plugins.set(dic)
@@ -523,7 +533,7 @@ class Welcome(wl.Welcome):
         f = '[MClient] mclient.Welcome.set_offline_sources'
         dics = lg.objs.plugins.get_offline_sources()
         if not dics:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         old = lg.objs.get_plugins().source
         for dic in dics:
@@ -568,390 +578,6 @@ class About(ab.About):
 
 
 
-class Table:
-
-    def __init__(self):
-        self.set_values()
-        self.logic = lg.Table([], [])
-        self.search = Search()
-        self.popup = pp.Popup()
-        self.set_gui()
-    
-    def _get_page_row(self, page):
-        for rowno in self.coords2:
-            if self.coords2[rowno] == page:
-                return rowno
-    
-    def go_page_up(self):
-        f = '[MClient] mclient.Table.go_page_up'
-        if not self.coords2:
-            self.set_coords()
-        if not self.coords2:
-            sh.com.rep_empty(f)
-            return
-        rowno, colno = self.get_cell()
-        cur_page = self.coords2[rowno]
-        if cur_page < 0:
-            mes = '{} >= 0'.format(cur_page)
-            sh.com.rep_condition(f, mes)
-            return
-        if cur_page == 0:
-            sh.com.rep_lazy(f)
-            return
-        rowno = self._get_page_row(cur_page-1)
-        if rowno is None:
-            sh.com.rep_empty(f)
-            return
-        self.select(rowno, colno)
-    
-    def go_page_down(self):
-        f = '[MClient] mclient.Table.go_page_down'
-        if not self.coords2:
-            self.set_coords()
-        if not self.coords2:
-            sh.com.rep_empty(f)
-            return
-        rowno, colno = self.get_cell()
-        cur_page = self.coords2[rowno]
-        max_page = self.coords2[max(self.coords2.keys())]
-        if cur_page > max_page:
-            mes = f'{max_page} >= {cur_page}'
-            sh.com.rep_condition(f, mes)
-            return
-        if cur_page == max_page:
-            sh.com.rep_lazy(f)
-            return
-        rowno = self._get_page_row(cur_page+1)
-        if rowno is None:
-            sh.com.rep_empty(f)
-            return
-        self.select(rowno, colno)
-    
-    def show_popup(self):
-        f = '[MClient] mclient.Table.show_popup'
-        text = self.get_cell_code()
-        if not text:
-            sh.com.rep_empty(f)
-            return
-        rowno, colno = self.get_cell()
-        max_width = objs.get_app().get_width()
-        width = gi.objs.get_table().get_col_width(colno)
-        height = gi.objs.table.get_row_height(rowno)
-        win_y = objs.app.gui.get_y()
-        x1 = gi.objs.table.get_cell_x(colno) + objs.app.gui.get_x()
-        if cf.objs.config.new['popup']['center']:
-            y1 = gi.objs.table.get_cell_y(rowno) + win_y - height / 2
-            if y1 < win_y:
-                y1 = win_y
-        else:
-            # The value is picked up by the trial-and-error method
-            y1 = gi.objs.table.get_cell_y(rowno) + win_y - height + 10
-        x2 = x1 + width
-        y2 = y1 + height
-        self.popup.fill(text)
-        self.popup.adjust_position (x1, width, y1, height, max_width
-                                   ,cf.objs.config.new['popup']['center']
-                                   )
-        self.popup.show()
-    
-    def go_next_section(self, no):
-        rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_next_row_by_col(rowno, colno, no)
-        self.select(rowno, colno)
-    
-    def go_prev_section(self, no):
-        rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_prev_row_by_col(rowno, colno, no)
-        self.select(rowno, colno)
-    
-    def close_search_next(self):
-        self.search.close()
-        self.reset_search()
-        rowno, colno = self.search.search_next()
-        self.select(rowno, colno)
-    
-    def reset_search(self):
-        rowno, colno = self.get_cell()
-        self.search.reset(self.logic.plain, rowno, colno)
-    
-    def search_next(self):
-        self.reset_search()
-        rowno, colno = self.search.search_next()
-        self.select(rowno, colno)
-    
-    def search_prev(self):
-        self.reset_search()
-        rowno, colno = self.search.search_prev()
-        self.select(rowno, colno)
-    
-    def set_values(self):
-        self.model = None
-        self.coords = {}
-        self.old_rowno = -1
-        self.old_colno = -1
-    
-    def go_end(self):
-        rowno, colno = self.logic.get_end()
-        self.select(rowno, colno)
-    
-    def go_start(self):
-        rowno, colno = self.logic.get_start()
-        self.select(rowno, colno)
-    
-    def go_first_term(self):
-        f = '[MClient] mclient.Table.go_first_term'
-        cell = self.logic.get_first_term()
-        if not cell:
-            sh.com.rep_empty(f)
-            self.go_start()
-            return
-        rowno, colno = cell[0], cell[1]
-        self.select(rowno, colno)
-    
-    def go_down(self):
-        ''' #NOTE: This should run only after an event since Qt returns dummy
-            geometry values right after startup.
-        '''
-        rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_next_row(rowno, colno)
-        self.select(rowno, colno)
-    
-    def select(self, rowno, colno, Mouse=False):
-        f = '[MClient] mclient.Table.select'
-        if Mouse and self.search.Shown:
-            return
-        if rowno == self.old_rowno and colno == self.old_colno:
-            return
-        if not self.logic.plain:
-            sh.com.rep_empty(f)
-            return
-        if rowno >= len(self.logic.plain) \
-        or colno >= len(self.logic.plain[rowno]):
-            mes = _('Wrong input data: "{}"!').format((rowno, colno,))
-            sh.objs.get_mes(f, mes, True).show_warning()
-            return
-        if not self.logic.plain[rowno][colno].strip():
-            return
-        self.old_rowno = rowno
-        self.old_colno = colno
-        self.model.update(gi.objs.get_table().get_index())
-        new_index = self.model.index(rowno, colno)
-        if Mouse:
-            gi.objs.table.set_index(new_index)
-        else:
-            gi.objs.table.set_cur_index(new_index)
-        self.model.update(new_index)
-        if not Mouse:
-            self.scroll_top()
-        if Mouse:
-            if new_index in gi.objs.table.delegate.long:
-                self.show_popup()
-            else:
-                self.popup.close()
-        lg.objs.get_articles().set_bookmark(rowno, colno)
-    
-    def go_up(self):
-        rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_prev_row(rowno, colno)
-        self.select(rowno, colno)
-    
-    def go_line_start(self):
-        rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_line_start(rowno)
-        self.select(rowno, colno)
-    
-    def go_line_end(self):
-        rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_line_end(rowno)
-        self.select(rowno, colno)
-    
-    def go_left(self):
-        rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_prev_col(rowno, colno)
-        self.select(rowno, colno)
-    
-    def go_right(self):
-        rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_next_col(rowno, colno)
-        self.select(rowno, colno)
-    
-    def scroll_top(self):
-        f = '[MClient] mclient.Table.scroll_top'
-        if not self.coords or not self.model:
-            sh.com.rep_empty(f)
-            return
-        rowno, colno = gi.objs.get_table().get_cell()
-        if rowno == -1 or colno == -1:
-            mes = _('No cell is selected!')
-            sh.objs.get_mes(f, mes, True).show_warning()
-            return
-        index_ = self.model.index(self.coords[rowno], colno)
-        gi.objs.table.scroll2index(index_)
-    
-    def get_cell(self):
-        f = '[MClient] mclient.Table.get_cell'
-        try:
-            return gi.objs.get_table().get_cell()
-        except Exception as e:
-            sh.com.rep_third_party(f, e)
-            return(0, 0)
-    
-    def get_cell_text(self):
-        f = '[MClient] mclient.Table.get_cell_text'
-        if not self.logic.plain:
-            sh.com.rep_empty(f)
-            return ''
-        rowno, colno = self.get_cell()
-        try:
-            return self.logic.plain[rowno][colno]
-        except IndexError:
-            mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
-        return ''
-    
-    def get_cell_code(self):
-        f = '[MClient] mclient.Table.get_cell_code'
-        if not self.logic.code:
-            sh.com.rep_empty(f)
-            return ''
-        rowno, colno = self.get_cell()
-        try:
-            return self.logic.code[rowno][colno]
-        except IndexError:
-            mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_debug()
-        return ''
-    
-    def copy_cell(self):
-        f = '[MClient] mclient.Table.copy_cell'
-        if not lg.objs.get_articles().get_len():
-            # Do not warn when there are no articles yet
-            sh.com.rep_lazy(f)
-            return
-        text = self.get_cell_text()
-        if text:
-            sh.Clipboard().copy(text)
-            return True
-    
-    def set_row_height(self, height=42):
-        for no in range(self.logic.rownum):
-            gi.objs.get_table().set_row_height(no, height)
-    
-    def set_col_width(self):
-        # For some reason, this works only after filling cells
-        for no in range(self.logic.colnum):
-            if no in self.logic.empty_cols:
-                #TODO: Check this for articles prepared for printing
-                width = 0
-            elif no == 0:
-                #TODO: Constant widths should depend on types
-                width = 123
-            elif no == 1:
-                width = cf.objs.config.new['columns']['fixed']['width']
-            elif no in (2, 3):
-                width = 80
-            else:
-                width = cf.objs.config.new['columns']['terms']['width']
-            gi.objs.get_table().set_col_width(no, width)
-    
-    def go_bookmark(self):
-        bookmark = lg.objs.get_articles().get_bookmark()
-        if not bookmark:
-            self.go_first_term()
-            return
-        rowno, colno = bookmark[0], bookmark[1]
-        if rowno > -1 and colno > -1:
-            self.select(rowno, colno)
-        else:
-            self.go_first_term()
-    
-    def reset(self, plain, code):
-        f = '[MClient] mclient.Table.reset'
-        if not plain or not code:
-            sh.com.rep_empty(f)
-            # Keep old article functioning if nothing was found
-            return
-        # Reset values only if the article is not empty
-        self.set_values()
-        self.logic.reset(plain, code)
-        self.model = gi.TableModel(self.logic.code)
-        self.fill()
-        self.set_col_width()
-        self.set_row_height(cf.objs.config.new['rows']['height'])
-        self.show_borders(False)
-        self.set_long()
-        ''' Coordinates are recreated each time the app window is resized. Here
-            we merely suppress a warning at 'self.go_start'.
-        '''
-        self.set_coords()
-    
-    def set_long(self):
-        # Takes ~0.56s for 'set' on Intel Atom
-        f = '[MClient] mclient.Table.set_long'
-        ilimits = FontLimits (family = cf.objs.config.new['terms']['font']['family']
-                             ,size = cf.objs.config.new['terms']['font']['size']
-                             ,Bold = False
-                             ,Italic = False
-                             )
-        timer = sh.Timer(f)
-        timer.start()
-        gi.objs.get_table().delegate.long = []
-        for rowno in range(self.logic.rownum):
-            for colno in range(self.logic.colnum):
-                ilimits.set_text(self.logic.plain[rowno][colno])
-                space = ilimits.get_space()
-                index_ = self.model.index(rowno, colno)
-                hint_space = cf.objs.config.new['rows']['height'] * gi.objs.table.get_col_width(colno)
-                if space > hint_space:
-                    gi.objs.table.delegate.long.append(index_)
-        timer.end()
-        mes = _('Number of cells: {}').format(self.logic.rownum*self.logic.colnum)
-        sh.objs.get_mes(f, mes, True).show_debug()
-        mes = _('Number of long cells: {}').format(len(gi.objs.table.delegate.long))
-        sh.objs.get_mes(f, mes, True).show_debug()
-    
-    def set_coords(self, event=None):
-        ''' Calculating Y is very fast (~0.05s for 'set' on Intel Atom). We
-            need 'event' since this procedure overrides
-            gi.objs.get_table().parent.resizeEvent.
-        '''
-        f = '[MClient] mclient.Table.set_coords'
-        gi.objs.get_table().scroll2top()
-        #TODO: Get rid of this
-        self.coords2 = {}
-        height = gi.objs.table.get_height()
-        mes = _('Window height: {}').format(height)
-        sh.objs.get_mes(f, mes, True).show_debug()
-        for rowno in range(self.logic.rownum):
-            y = gi.objs.table.get_cell_y(rowno) + gi.objs.table.get_row_height(rowno)
-            pageno = int(y / height)
-            page_y = pageno * height
-            page_rowno = gi.objs.table.get_row_by_y(page_y)
-            self.coords[rowno] = page_rowno
-            self.coords2[rowno] = pageno
-    
-    def fill(self):
-        gi.objs.get_table().set_model(self.model)
-    
-    def set_max_row_height(self, height=150):
-        gi.objs.get_table().set_max_row_height(height)
-    
-    def show_borders(self, Show=False):
-        gi.objs.get_table().show_borders(Show)
-    
-    def set_gui(self):
-        #self.set_max_row_height()
-        self.set_bindings()
-    
-    def set_bindings(self):
-        gi.objs.get_table().sig_select.connect(self.select)
-        self.search.gui.ent_src.bind(('Return',), self.close_search_next)
-        self.search.gui.btn_srp.set_action(self.search_prev)
-        self.search.gui.btn_srn.set_action(self.search_next)
-        self.popup.gui.sig_close.connect(self.popup.close)
-
-
-
 class BlockMode:
     
     def __init__(self):
@@ -961,20 +587,20 @@ class BlockMode:
     def copy_block(self):
         f = '[MClient] mclient.BlockMode.copy_block'
         if not self.cell or not self.cell.blocks:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         try:
-            sh.Clipboard().copy(self.cell.blocks[self.blockno].text.strip())
+            CLIPBOARD.copy(self.cell.blocks[self.blockno].text.strip())
             return True
         except IndexError:
             mes = _('Wrong input data: "{}"!').format(self.blockno)
-            sh.objs.get_mes(f, mes).show_warning()
+            Message(f, mes, True).show_warning()
     
     def select_next(self):
         f = '[MClient] mclient.BlockMode.select_next'
         self.enable()
         if not self.cell or not self.cell.blocks:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         self.blockno += 1
         if self.blockno == len(self.cell.blocks):
@@ -986,7 +612,7 @@ class BlockMode:
         f = '[MClient] mclient.BlockMode.select_prev'
         self.enable()
         if not self.cell or not self.cell.blocks:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         self.blockno -= 1
         if self.blockno < 0:
@@ -1004,18 +630,18 @@ class BlockMode:
         f = '[MClient] mclient.BlockMode.disable'
         self.blockno = -1
         mes = _('Disable block mode')
-        sh.objs.get_mes(f, mes, True).show_info()
+        Message(f, mes).show_info()
         self.set_cell()
         self.select()
     
     def enable(self):
         f = '[MClient] mclient.BlockMode.enable'
         if self.blockno > -1:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         self.blockno = 0
         mes = _('Enable block mode')
-        sh.objs.get_mes(f, mes, True).show_info()
+        Message(f, mes).show_info()
         self.set_cell()
         self.select()
     
@@ -1023,37 +649,37 @@ class BlockMode:
         f = '[MClient] mclient.BlockMode.set_cell'
         tuple_ = objs.get_app().table.get_cell()
         if not tuple_:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         rowno, colno = tuple_[0], tuple_[1]
         mes = _('Row #{}. Column #{}').format(rowno, colno)
-        sh.objs.get_mes(f, mes, True).show_debug()
-        cells = lg.objs.get_articles().get_table()
+        Message(f, mes).show_debug()
+        cells = ARTICLES.get_table()
         if not cells:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         try:
             self.cell = cells[rowno][colno]
         except (KeyError, IndexError):
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f, mes).show_warning()
+            Message(f, mes, True).show_warning()
             return
     
     def select(self):
         f = '[MClient] mclient.BlockMode.select'
         if not self.cell:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         try:
             block = self.cell.blocks[self.blockno]
         except IndexError:
             mes = _('Wrong input data: "{}"!').format(self.blockno)
-            sh.objs.get_mes(f, mes, True).show_warning()
+            Message(f, mes).show_warning()
             return
         code = []
         for i in range(len(self.cell.blocks)):
             code.append(fm.Block(self.cell.blocks[i], self.cell.colno, i==self.blockno).run())
-        self.cell.code = sh.List(code).space_items()
+        self.cell.code = List(code).space_items()
         objs.get_app().table.logic.code[self.cell.rowno][self.cell.colno] = self.cell.code
         objs.app.table.reset(objs.app.table.logic.plain, objs.app.table.logic.code)
         objs.app.table.select(self.cell.rowno, self.cell.colno)
@@ -1152,14 +778,14 @@ class App:
         f = '[MClient] mclient.App.show_suggestions'
         fragment = gi.objs.get_panel().ent_src.get().strip()
         if not fragment:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         items = lg.com.suggest (search = fragment
                                ,limit = 35
                                )
         if not items:
             mes = _('No suggestions are available!')
-            sh.objs.get_mes(f, mes, True).show_info()
+            Message(f, mes).show_info()
             return
         self.suggest.fill(items)
         self.suggest.show()
@@ -1170,56 +796,56 @@ class App:
     
     def get_cell(self):
         f = '[MClient] mclient.App.get_cell'
-        table = lg.objs.get_articles().get_table()
+        table = ARTICLES.get_table()
         if not table:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         rowno, colno = self.table.get_cell()
         try:
             return table[rowno][colno]
         except IndexError:
             mes = _('Wrong input data: "{}"!').format((rowno, colno))
-            sh.objs.get_mes(f, mes).show_warning()
+            Message(f, mes, True).show_warning()
         return
     
     def get_wform(self):
         f = '[MClient] mclient.App.get_wform'
-        table = lg.objs.get_articles().get_table()
+        table = ARTICLES.get_table()
         if not table:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         cell = self.get_cell()
         if not cell:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         return cell.wform
     
     def copy_wform(self):
         f = '[MClient] mclient.App.copy_wform'
-        if not lg.objs.get_articles().get_len():
+        if not ARTICLES.get_len():
             # Do not warn when there are no articles yet
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         wform = self.get_wform()
         if not wform:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
-        sh.Clipboard().copy(wform)
+        CLIPBOARD.copy(wform)
         if cf.objs.config.new['Iconify']:
             self.minimize()
     
     def copy_article_url(self):
         f = '[MClient] mclient.App.copy_article_url'
-        if not lg.objs.get_articles().get_len():
+        if not ARTICLES.get_len():
             # Do not warn when there are no articles yet
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
-        url = lg.objs.get_articles().get_url()
+        url = ARTICLES.get_url()
         if not url:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         url = lg.objs.get_plugins().fix_url(url)
-        sh.Clipboard().copy(url)
+        CLIPBOARD.copy(url)
         if cf.objs.config.new['Iconify']:
             self.minimize()
     
@@ -1227,22 +853,22 @@ class App:
         f = '[MClient] mclient.App.get_cell_url'
         cell = self.get_cell()
         if not cell:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         return cell.url
     
     def copy_cell_url(self):
         f = '[MClient] mclient.App.copy_cell_url'
-        if not lg.objs.get_articles().get_len():
+        if not ARTICLES.get_len():
             # Do not warn when there are no articles yet
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         url = self.get_cell_url()
         if not url:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         url = lg.objs.get_plugins().fix_url(url)
-        sh.Clipboard().copy(url)
+        CLIPBOARD.copy(url)
         if cf.objs.config.new['Iconify']:
             self.minimize()
     
@@ -1250,22 +876,20 @@ class App:
         f = '[MClient] mclient.App.go_phrases'
         tuple_ = self.table.logic.get_phsubj()
         if not tuple_:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         text, url = tuple_[0], tuple_[1]
         if not url:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         lg.objs.get_request().search = text
         lg.objs.request.url = url
         mes = _('Open link: {}').format(lg.objs.request.url)
-        sh.objs.get_mes(f, mes, True).show_info()
-        self.load_article (search = lg.objs.request.search
-                          ,url = lg.objs.request.url
-                          )
+        Message(f, mes).show_info()
+        self.load_article(lg.objs.request.search, lg.objs.request.url)
     
     def activate(self):
-        if sh.objs.get_os().is_win():
+        if OS.is_win():
             objs.get_geometry().keyword = self.about.logic.product
             objs.geometry.activate()
         else:
@@ -1274,17 +898,17 @@ class App:
     def catch(self, status=0):
         f = '[MClient] mclient.App.catch'
         mes = _('Status: {}').format(status)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
         if not cf.objs.config.new['CaptureHotkey'] or not status:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         self.activate()
         if status != 1:
             return
-        new_clipboard = sh.Clipboard().paste()
+        new_clipboard = CLIPBOARD.paste()
         new_clipboard = new_clipboard.strip()
         if not new_clipboard:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         lg.objs.get_request().search = new_clipboard
         self.go_search()
@@ -1307,10 +931,10 @@ class App:
         new_list = objs.block.get1()
         if (old_list == new_list) \
         and (old_key == cf.objs.config.new['BlockSubjects']):
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         lg.objs.default.block = new_list
-        lg.objs.get_articles().delete_bookmarks()
+        ARTICLES.delete_bookmarks()
         self.load_article()
     
     def watch_clipboard(self):
@@ -1330,15 +954,14 @@ class App:
         else:
             pattern = lg.objs.get_request().search
         if not pattern:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         pattern = _('what is "{}"?').format(pattern)
-        sh.Online (base = cf.objs.config.new['web_search_url']
-                  ,pattern = pattern
-                  ).browse()
+        Online(base = cf.objs.config.new['web_search_url']
+              ,pattern = pattern).browse()
     
     def reload(self):
-        search = lg.objs.get_articles().get_search()
+        search = ARTICLES.get_search()
         url = lg.objs.articles.get_url()
         lg.objs.articles.clear_article()
         self.load_article(search, url)
@@ -1348,16 +971,16 @@ class App:
             cf.objs.config.new['AlphabetizeTerms'] = False
         else:
             cf.objs.config.new['AlphabetizeTerms'] = True
-        lg.objs.get_articles().delete_bookmarks()
+        ARTICLES.delete_bookmarks()
         self.load_article()
     
     def add_history(self):
         # Call this only after assigning an article ID for a new article
         f = '[MClient] mclient.App.add_history'
         if not lg.objs.get_request().search:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
-        self.history.add_row (id_ = lg.objs.get_articles().id
+        self.history.add_row (id_ = ARTICLES.id
                              ,source = lg.objs.get_plugins().source
                              ,lang1 = lg.objs.plugins.get_lang1()
                              ,lang2 = lg.objs.plugins.get_lang2()
@@ -1369,19 +992,19 @@ class App:
     def go_history(self, id_):
         f = '[MClient] mclient.App.go_history'
         if id_ is None:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
-        lg.objs.get_articles().set_id(id_)
+        ARTICLES.set_id(id_)
         source = lg.objs.articles.get_source()
         lang1 = lg.objs.articles.get_lang1()
         lang2 = lg.objs.articles.get_lang2()
         if not source or not lang1 or not lang2:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         cf.objs.config.new['source'] = source
         mes = _('Set source to "{}"')
         mes = mes.format(cf.objs.config.new['source'])
-        sh.objs.get_mes(f, mes, True).show_info()
+        Message(f, mes).show_info()
         lg.objs.get_plugins().set(cf.objs.config.new['source'])
         lg.objs.plugins.set_lang1(lang1)
         lg.objs.plugins.set_lang2(lang2)
@@ -1389,14 +1012,14 @@ class App:
         self.load_article()
     
     def clear_history(self):
-        lg.objs.get_articles().reset()
+        ARTICLES.reset()
         lg.objs.get_request().reset()
         self.solve_screen()
     
     def go_back(self):
         f = '[MClient] mclient.App.go_back'
-        if lg.objs.get_articles().get_len() in (0, 1):
-            sh.com.rep_lazy(f)
+        if ARTICLES.get_len() in (0, 1):
+            rep.lazy(f)
             return
         if lg.objs.articles.id == 0:
             lg.objs.articles.set_id(lg.objs.articles.get_max_id())
@@ -1406,7 +1029,7 @@ class App:
         lang1 = lg.objs.articles.get_lang1()
         lang2 = lg.objs.articles.get_lang2()
         if not source or not lang1 or not lang2:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         cf.objs.config.new['source'] = source
         lg.objs.get_plugins().set(cf.objs.config.new['source'])
@@ -1418,8 +1041,8 @@ class App:
     
     def go_next(self):
         f = '[MClient] mclient.App.go_next'
-        if lg.objs.get_articles().get_len() in (0, 1):
-            sh.com.rep_lazy(f)
+        if ARTICLES.get_len() in (0, 1):
+            rep.lazy(f)
             return
         if lg.objs.articles.is_last():
             lg.objs.articles.set_id(0)
@@ -1429,7 +1052,7 @@ class App:
         lang1 = lg.objs.articles.get_lang1()
         lang2 = lg.objs.articles.get_lang2()
         if not source or not lang1 or not lang2:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         cf.objs.config.new['source'] = source
         lg.objs.get_plugins().set(cf.objs.config.new['source'])
@@ -1452,16 +1075,16 @@ class App:
         f = '[MClient] mclient.App.suggest_col_widths'
         table_width = self.get_width()
         if not table_width:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         col_num = self.settings.gui.ent_num.get()
         if not col_num:
             col_num = self._set_col_num(table_width)
-        col_num = sh.Input(f, col_num).get_integer()
+        col_num = Input(f, col_num).get_integer()
         if not 0 < col_num <= 10:
             mes = _('A value of this field should be within the range of {}-{}!')
             mes = mes.format(1, 10)
-            sh.objs.get_mes(f, mes).show_warning()
+            Message(f, mes, True).show_warning()
             col_num = self._set_col_num(table_width)
         
         ''' How we got this formula. The recommended fixed column width
@@ -1477,9 +1100,9 @@ class App:
         term_width = int(term_width)
         
         mes = _('Table width: {}').format(table_width)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
         mes = _('Term column width: {}').format(term_width)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
         
         self.settings.gui.ent_num.set_text(col_num)
         self.settings.gui.ent_fix.set_text(63)
@@ -1505,7 +1128,7 @@ class App:
     def set_columns(self):
         self.reset_columns()
         if not gi.objs.get_article_proxy().is_welcome():
-            lg.objs.get_articles().delete_bookmarks()
+            ARTICLES.delete_bookmarks()
             self.load_article()
         gi.objs.get_panel().ent_src.focus()
 
@@ -1515,13 +1138,12 @@ class App:
         '''
         f = '[MClient] mclient.App.reset_columns'
         if not lg.com.is_parallel():
-            cf.objs.config.new['columns']['num'] = sh.Input (title = f
-                                                            ,value = gi.objs.get_panel().opt_col.get()
-                                                            ).get_integer()
+            cf.objs.config.new['columns']['num'] = Input(title = f
+                                                        ,value = gi.objs.get_panel().opt_col.get()).get_integer()
         collimit = lg.objs.get_column_width().fixed_num + lg.objs.column_width.term_num
         mes = _('Set the number of columns to {} ({} in total)')
         mes = mes.format(lg.objs.column_width.term_num, collimit)
-        sh.objs.get_mes(f, mes, True).show_info()
+        Message(f, mes).show_info()
     
     def update_columns(self):
         ''' Update a column number in GUI; adjust the column number (both logic
@@ -1534,13 +1156,13 @@ class App:
         collimit = lg.objs.get_column_width().fixed_num + lg.objs.column_width.term_num
         mes = _('Set the number of columns to {} ({} in total)')
         mes = mes.format(lg.objs.column_width.term_num, collimit)
-        sh.objs.get_mes(f, mes, True).show_info()
+        Message(f, mes).show_info()
     
     def set_source(self):
         f = '[MClient] mclient.App.set_source'
         cf.objs.config.new['source'] = gi.objs.get_panel().opt_src.get()
         mes = _('Set source to "{}"').format(cf.objs.config.new['source'])
-        sh.objs.get_mes(f, mes, True).show_info()
+        Message(f, mes).show_info()
         lg.objs.get_plugins().set(cf.objs.config.new['source'])
         self.reset_opt(cf.objs.config.new['source'])
         self.go_search()
@@ -1552,16 +1174,16 @@ class App:
         if lg.objs.get_plugins().is_oneway() \
         or not cf.objs.config.new['Autoswap'] \
         or not lg.objs.get_request().search:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
-        if sh.Text(lg.objs.request.search).has_cyrillic():
+        if Text(lg.objs.request.search).has_cyrillic():
             if lang2 in (_('Russian'), 'Russian'):
                 mes = f'{lang1}-{lang2} -> {lang2}-{lang1}'
-                sh.objs.get_mes(f, mes, True).show_info()
+                Message(f, mes).show_info()
                 self.swap_langs()
         elif lang1 in (_('Russian'), 'Russian'):
             mes = f'{lang1}-{lang2} -> {lang2}-{lang1}'
-            sh.objs.get_mes(f, mes, True).show_info()
+            Message(f, mes).show_info()
             self.swap_langs()
     
     def reset_opt(self, default=_('Multitran')):
@@ -1573,18 +1195,15 @@ class App:
         langs2 = lg.objs.plugins.get_langs2(lang1)
         sources = lg.objs.plugins.get_sources()
         if not (langs1 and langs2 and lang1 and lang2 and sources):
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
-        gi.objs.get_panel().opt_lg1.reset (items = langs1
-                                          ,default = lang1
-                                          )
-        gi.objs.panel.opt_lg2.reset (items = langs2
-                                    ,default = lang2
-                                    )
+        gi.objs.get_panel().opt_lg1.reset(items = langs1
+                                         ,default = lang1)
+        gi.objs.panel.opt_lg2.reset(items = langs2
+                                   ,default = lang2)
         #NOTE: change this upon the change of the default source
-        gi.objs.panel.opt_src.reset (items = sources
-                                    ,default = default
-                                    )
+        gi.objs.panel.opt_src.reset(items = sources
+                                   ,default = default)
     
     def set_next_lang1(self):
         ''' We want to navigate through the full list of supported languages
@@ -1631,7 +1250,7 @@ class App:
         lang = gi.objs.get_panel().opt_lg1.get()
         if lg.objs.get_plugins().get_lang1() != lang:
             mes = _('Set language: {}').format(lang)
-            sh.objs.get_mes(f, mes, True).show_info()
+            Message(f, mes).show_info()
             cf.objs.config.new['lang1'] = lang
             lg.objs.get_plugins().set_lang1(lang)
     
@@ -1640,7 +1259,7 @@ class App:
         lang = gi.objs.get_panel().opt_lg2.get()
         if lg.objs.get_plugins().get_lang2() != lang:
             mes = _('Set language: {}').format(lang)
-            sh.objs.get_mes(f, mes, True).show_info()
+            Message(f, mes).show_info()
             cf.objs.config.new['lang2'] = lang
             lg.objs.get_plugins().set_lang2(lang)
     
@@ -1651,7 +1270,7 @@ class App:
         lang1 = lg.objs.get_plugins().get_lang1()
         langs1 = lg.objs.plugins.get_langs1()
         if not langs1:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         gi.objs.get_panel().opt_lg1.set(lang1)
         self.set_lang1()
@@ -1664,7 +1283,7 @@ class App:
         lang2 = lg.objs.plugins.get_lang2()
         langs2 = lg.objs.plugins.get_langs2(lang1)
         if not langs2:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         if not lang2 in langs2:
             lang2 = langs2[0]
@@ -1677,7 +1296,7 @@ class App:
         f = '[MClient] mclient.App.swap_langs'
         if lg.objs.get_plugins().is_oneway():
             mes = _('Cannot swap languages, this is a one-way dictionary!')
-            sh.objs.get_mes(f, mes).show_info()
+            Message(f, mes, True).show_info()
             return
         self.update_lang1()
         self.update_lang2()
@@ -1687,11 +1306,11 @@ class App:
         langs1 = lg.objs.get_plugins().get_langs1()
         langs2 = lg.objs.plugins.get_langs2(lang1)
         if not langs1:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         if not (langs2 and lang1 in langs1 and lang2 in langs2):
             mes = _('Pair {}-{} is not supported!').format(lang1, lang2)
-            sh.objs.get_mes(f, mes).show_warning()
+            Message(f, mes, True).show_warning()
             return
         gi.objs.panel.opt_lg1.reset (items = langs1
                                     ,default = lang1
@@ -1705,39 +1324,39 @@ class App:
     def insert_repeat_sign2(self):
         # Insert the previous search string
         f = '[MClient] mclient.App.insert_repeat_sign2'
-        if lg.objs.get_articles().get_len() < 2:
-            sh.com.rep_empty(f)
+        if ARTICLES.get_len() < 2:
+            rep.empty(f)
             return
         lg.objs.articles.set_id(lg.objs.articles.id-1)
-        sh.Clipboard().copy(lg.objs.articles.get_search())
+        CLIPBOARD.copy(lg.objs.articles.get_search())
         self.paste()
         lg.objs.articles.set_id(lg.objs.articles.id+1)
     
     def insert_repeat_sign(self):
         # Insert the current search string
-        sh.Clipboard().copy(lg.objs.get_articles().get_search())
+        CLIPBOARD.copy(ARTICLES.get_search())
         self.paste()
     
     def go_url(self):
         f = '[MClient] mclient.App.go_url'
-        if lg.objs.get_articles().get_len() == 0:
+        if ARTICLES.get_len() == 0:
             # Do not warn when there are no articles yet
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
             return
         cell = self.table.get_cell()
         if not cell:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         rowno, colno = cell[0], cell[1]
         cell = lg.objs.articles.get_cell(rowno, colno)
         if not cell:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         lg.objs.get_request().search = cell.text
         if cell.url:
             lg.objs.request.url = cell.url
             mes = _('Open link: {}').format(lg.objs.request.url)
-            sh.objs.get_mes(f, mes, True).show_info()
+            Message(f, mes).show_info()
             self.load_article (search = lg.objs.request.search
                               ,url = lg.objs.request.url
                               )
@@ -1754,14 +1373,14 @@ class App:
     
     def copy_symbol(self):
         symbol = self.symbols.get()
-        sh.Clipboard().copy(symbol)
+        CLIPBOARD.copy(symbol)
     
     def paste_symbol(self):
         symbol = self.symbols.get()
         gi.objs.get_panel().ent_src.insert(symbol)
     
     def solve_screen(self):
-        if lg.objs.get_articles().get_len():
+        if ARTICLES.get_len():
             gi.objs.get_article_proxy().go_article()
         else:
             gi.objs.get_article_proxy().go_welcome()
@@ -1772,37 +1391,34 @@ class App:
             (e.g., due to prioritizing), bookmarks must be deleted.
         '''
         self.suggest.close()
-        timer = sh.Timer(f)
+        timer = Timer(f)
         timer.start()
 
         if search or url:
-            artid = lg.objs.get_articles().find (source = cf.objs.config.new['source']
-                                                ,search = search
-                                                ,url = url
-                                                )
+            artid = ARTICLES.find(source = cf.objs.config.new['source']
+                                 ,search = search
+                                 ,url = url)
         else:
             # Just reload the article if no parameters are provided
-            artid = lg.objs.get_articles().id
+            artid = ARTICLES.id
             
         if artid == -1:
-            cells = lg.objs.get_plugins().request (search = search
-                                                  ,url = url
-                                                  )
+            cells = lg.objs.get_plugins().request(search = search
+                                                 ,url = url)
             sj.objs.get_subjects().reset(lg.objs.plugins.get_article_subjects())
-            lg.objs.articles.add (search = search
-                                 ,url = url
-                                 ,cells = cells
-                                 ,fixed_urls = lg.objs.plugins.get_fixed_urls()
-                                 ,raw_code = lg.objs.plugins.get_htm()
-                                 ,subjf = sj.objs.subjects.article
-                                 ,blocked = sj.objs.subjects.block
-                                 ,prioritized = sj.objs.subjects.prior
-                                 )
+            lg.objs.articles.add(search = search
+                                ,url = url
+                                ,cells = cells
+                                ,fixed_urls = lg.objs.plugins.get_fixed_urls()
+                                ,raw_code = lg.objs.plugins.get_htm()
+                                ,subjf = sj.objs.subjects.article
+                                ,blocked = sj.objs.subjects.block
+                                ,prioritized = sj.objs.subjects.prior)
             cf.HistorySubjects().add(lg.objs.plugins.get_article_subjects())
             self.add_history()
         else:
             mes = _('Load article No. {} from memory').format(artid)
-            sh.objs.get_mes(f, mes, True).show_info()
+            Message(f, mes).show_info()
             lg.objs.articles.set_id(artid)
             sj.objs.get_subjects().reset(lg.objs.get_plugins().get_article_subjects())
             cells = lg.objs.articles.get_cells()
@@ -1842,10 +1458,10 @@ class App:
         elif skipped:
             mes = _('Nothing has been found (skipped subjects: {}).')
             mes = mes.format(skipped)
-            sh.objs.get_mes(f, mes).show_info()
+            Message(f, mes, True).show_info()
         else:
             mes = _('Nothing has been found.')
-            sh.objs.get_mes(f, mes).show_info()
+            Message(f, mes, True).show_info()
         
         #objs.get_suggest().close()
         UpdateUI().run()
@@ -1880,11 +1496,10 @@ class App:
             self.update_lang2()
             self.auto_swap()
             mes = f'"{lg.objs.request.search}"'
-            sh.objs.get_mes(f, mes, True).show_debug()
+            Message(f, mes).show_debug()
             lg.com.set_url()
-            self.load_article (search = lg.objs.request.search
-                              ,url = lg.objs.request.url
-                              )
+            self.load_article(search = lg.objs.request.search
+                             ,url = lg.objs.request.url)
     
     def load_suggestion(self, text):
         self.suggest.close()
@@ -1897,7 +1512,7 @@ class App:
         gi.objs.get_panel().ent_src.clear()
     
     def paste(self):
-        gi.objs.get_panel().ent_src.set_text(sh.Clipboard().paste())
+        gi.objs.get_panel().ent_src.set_text(CLIPBOARD.paste())
     
     def minimize(self):
         self.table.popup.close()
@@ -1919,10 +1534,10 @@ class App:
         cf.objs.config.quit()
         self.thread.end()
         ''' For this code to be executed last, it's not enough to put it in 
-            '__main__' right before 'sh.com.end'.
+            '__main__' right before 'ROOT.end'.
         '''
         mes = _('Goodbye!')
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
     
     def close(self):
         self.table.popup.close()
@@ -1962,124 +1577,87 @@ class App:
         self.gui.bind(('Alt+8',), lambda:self.change_col_no(8))
         self.gui.bind(('Alt+9',), lambda:self.change_col_no(9))
         
-        self.gui.bind (cf.objs.config.new['actions']['clear_history']['hotkeys']
-                      ,self.clear_history
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['col1_down']['hotkeys']
-                      ,lambda:self.table.go_next_section(0)
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['col2_down']['hotkeys']
-                      ,lambda:self.table.go_next_section(1)
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['col3_down']['hotkeys']
-                      ,lambda:self.table.go_next_section(2)
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['col4_down']['hotkeys']
-                      ,lambda:self.table.go_next_section(3)
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['col1_up']['hotkeys']
-                      ,lambda:self.table.go_prev_section(0)
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['col2_up']['hotkeys']
-                      ,lambda:self.table.go_prev_section(1)
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['col3_up']['hotkeys']
-                      ,lambda:self.table.go_prev_section(2)
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['col4_up']['hotkeys']
-                      ,lambda:self.table.go_prev_section(3)
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['go_next']['hotkeys']
-                      ,self.go_next
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['go_back']['hotkeys']
-                      ,self.go_back
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['toggle_history']['hotkeys']
-                      ,self.history.toggle
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['save_article']['hotkeys']
-                      ,self.save.toggle
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['toggle_settings']['hotkeys']
-                      ,self.settings.toggle
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys']
-                      ,self.symbols.show
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['swap_langs']['hotkeys']
-                      ,self.swap_langs
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['toggle_block']['hotkeys']
-                      ,objs.get_block().toggle_use
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['toggle_priority']['hotkeys']
-                      ,objs.get_prior().toggle_use
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['show_block']['hotkeys']
-                      ,objs.get_block().toggle
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['show_prior']['hotkeys']
-                      ,objs.get_prior().toggle
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['toggle_popup']['hotkeys']
-                      ,self.table.show_popup
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['toggle_alphabet']['hotkeys']
-                      ,self.toggle_alphabet
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['reload_article']['hotkeys']
-                      ,self.reload
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['open_in_browser']['hotkeys']
-                      ,self.logic.open_in_browser
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['print']['hotkeys']
-                      ,self.logic.print
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['define']['hotkeys']
-                      ,self.define
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['go_phrases']['hotkeys']
-                      ,self.go_phrases
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['copy_article_url']['hotkeys']
-                      ,self.copy_article_url
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['copy_url']['hotkeys']
-                      ,self.copy_cell_url
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['copy_nominative']['hotkeys']
-                      ,self.copy_wform
-                      )
-        self.gui.bind (cf.objs.config.new['actions']['select_block']['hotkeys']
-                      ,self.block_mode.toggle
-                      )
+        self.gui.bind(cf.objs.config.new['actions']['clear_history']['hotkeys']
+                     ,self.clear_history)
+        self.gui.bind(cf.objs.config.new['actions']['col1_down']['hotkeys']
+                     ,lambda:self.table.go_next_section(0))
+        self.gui.bind(cf.objs.config.new['actions']['col2_down']['hotkeys']
+                     ,lambda:self.table.go_next_section(1))
+        self.gui.bind(cf.objs.config.new['actions']['col3_down']['hotkeys']
+                     ,lambda:self.table.go_next_section(2))
+        self.gui.bind(cf.objs.config.new['actions']['col4_down']['hotkeys']
+                     ,lambda:self.table.go_next_section(3))
+        self.gui.bind(cf.objs.config.new['actions']['col1_up']['hotkeys']
+                     ,lambda:self.table.go_prev_section(0))
+        self.gui.bind(cf.objs.config.new['actions']['col2_up']['hotkeys']
+                     ,lambda:self.table.go_prev_section(1))
+        self.gui.bind(cf.objs.config.new['actions']['col3_up']['hotkeys']
+                     ,lambda:self.table.go_prev_section(2))
+        self.gui.bind(cf.objs.config.new['actions']['col4_up']['hotkeys']
+                     ,lambda:self.table.go_prev_section(3))
+        self.gui.bind(cf.objs.config.new['actions']['go_next']['hotkeys']
+                     ,self.go_next)
+        self.gui.bind(cf.objs.config.new['actions']['go_back']['hotkeys']
+                     ,self.go_back)
+        self.gui.bind(cf.objs.config.new['actions']['toggle_history']['hotkeys']
+                     ,self.history.toggle)
+        self.gui.bind(cf.objs.config.new['actions']['save_article']['hotkeys']
+                     ,self.save.toggle)
+        self.gui.bind(cf.objs.config.new['actions']['toggle_settings']['hotkeys']
+                     ,self.settings.toggle)
+        self.gui.bind(cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys']
+                     ,self.symbols.show)
+        self.gui.bind(cf.objs.config.new['actions']['swap_langs']['hotkeys']
+                     ,self.swap_langs)
+        self.gui.bind(cf.objs.config.new['actions']['toggle_block']['hotkeys']
+                     ,objs.get_block().toggle_use)
+        self.gui.bind(cf.objs.config.new['actions']['toggle_priority']['hotkeys']
+                     ,objs.get_prior().toggle_use)
+        self.gui.bind(cf.objs.config.new['actions']['show_block']['hotkeys']
+                     ,objs.get_block().toggle)
+        self.gui.bind(cf.objs.config.new['actions']['show_prior']['hotkeys']
+                     ,objs.get_prior().toggle)
+        self.gui.bind(cf.objs.config.new['actions']['toggle_popup']['hotkeys']
+                     ,self.table.show_popup)
+        self.gui.bind(cf.objs.config.new['actions']['toggle_alphabet']['hotkeys']
+                     ,self.toggle_alphabet)
+        self.gui.bind(cf.objs.config.new['actions']['reload_article']['hotkeys']
+                     ,self.reload)
+        self.gui.bind(cf.objs.config.new['actions']['open_in_browser']['hotkeys']
+                     ,self.logic.open_in_browser)
+        self.gui.bind(cf.objs.config.new['actions']['print']['hotkeys']
+                     ,self.logic.print)
+        self.gui.bind(cf.objs.config.new['actions']['define']['hotkeys']
+                     ,self.define)
+        self.gui.bind(cf.objs.config.new['actions']['go_phrases']['hotkeys']
+                     ,self.go_phrases)
+        self.gui.bind(cf.objs.config.new['actions']['copy_article_url']['hotkeys']
+                     ,self.copy_article_url)
+        self.gui.bind(cf.objs.config.new['actions']['copy_url']['hotkeys']
+                     ,self.copy_cell_url)
+        self.gui.bind(cf.objs.config.new['actions']['copy_nominative']['hotkeys']
+                     ,self.copy_wform)
+        self.gui.bind(cf.objs.config.new['actions']['select_block']['hotkeys']
+                     ,self.block_mode.toggle)
         
-        self.history.gui.bind (cf.objs.config.new['actions']['toggle_history']['hotkeys']
-                              ,self.history.close
-                              )
-        objs.get_block().gui.bind (cf.objs.config.new['actions']['show_block']['hotkeys']
-                                  ,objs.block.close
-                                  )
-        objs.get_prior().gui.bind (cf.objs.config.new['actions']['show_prior']['hotkeys']
-                                  ,objs.prior.close
-                                  )
+        self.history.gui.bind(cf.objs.config.new['actions']['toggle_history']['hotkeys']
+                             ,self.history.close)
+        objs.get_block().gui.bind(cf.objs.config.new['actions']['show_block']['hotkeys']
+                                 ,objs.block.close)
+        objs.get_prior().gui.bind(cf.objs.config.new['actions']['show_prior']['hotkeys']
+                                 ,objs.prior.close)
         
-        self.settings.gui.bind (cf.objs.config.new['actions']['toggle_settings']['hotkeys']
-                               ,self.settings.close
-                               )
+        self.settings.gui.bind(cf.objs.config.new['actions']['toggle_settings']['hotkeys']
+                              ,self.settings.close)
                       
         #TODO: iterate through all keys
         if cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys'] == ['Ctrl+E']:
             gi.objs.get_panel().ent_src.widget.sig_ctrl_e.connect(self.symbols.show)
         else:
-            gi.objs.get_panel().ent_src.bind (cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys']
-                                             ,self.symbols.show
-                                             )
-        self.symbols.gui.bind (cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys']
-                              ,self.symbols.close
-                              )
+            gi.objs.get_panel().ent_src.bind(cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys']
+                                            ,self.symbols.show)
+        self.symbols.gui.bind(cf.objs.config.new['actions']['toggle_spec_symbols']['hotkeys']
+                             ,self.symbols.close)
         
         gi.objs.get_table().clicked.connect(self.go_url)
         gi.objs.table.sig_mmb.connect(self.minimize)
@@ -2166,69 +1744,6 @@ class App:
 
 
 
-class Search:
-    
-    def __init__(self):
-        self.Shown = False
-        self.logic = lg.Search()
-        self.gui = gi.Search()
-        self.set_bindings()
-        self.gui.ent_src.focus()
-    
-    def toggle(self):
-        if self.Shown:
-            self.close()
-        else:
-            self.show()
-    
-    def clear(self):
-        self.gui.clear()
-    
-    def close(self):
-        self.Shown = False
-        self.gui.close()
-    
-    def show(self):
-        self.Shown = True
-        self.gui.show()
-    
-    def set_bindings(self):
-        self.gui.bind(('Esc',), self.close)
-        self.gui.btn_cls.action = self.close
-        self.gui.btn_clr.action = self.clear
-        self.gui.btn_cls.set_action()
-        self.gui.btn_clr.set_action()
-        self.gui.sig_close.connect(self.close)
-    
-    def reset(self, plain, rowno, colno):
-        self.pattern = self.gui.ent_src.get()
-        Case = self.gui.cbx_cas.get()
-        self.logic.reset(plain, self.pattern, rowno, colno, Case)
-    
-    def search_next(self):
-        f = '[MClient] mclient.Search.search_next'
-        rowno, colno = self.logic.search_next()
-        if rowno < self.logic.rowno:
-            mes = _('The end has been reached. Searching from the start.')
-            sh.objs.get_mes(f, mes).show_info()
-        elif rowno == self.logic.rowno and colno == self.logic.colno:
-            mes = _('No matches!')
-            sh.objs.get_mes(f, mes).show_info()
-        return(rowno, colno)
-    
-    def search_prev(self):
-        f = '[MClient] mclient.Search.search_prev'
-        rowno, colno = self.logic.search_prev()
-        if rowno > self.logic.rowno:
-            mes = _('The start has been reached. Searching from the end.')
-            sh.objs.get_mes(f, mes).show_info()
-        elif rowno == self.logic.rowno and colno == self.logic.colno:
-            mes = _('No matches!')
-            sh.objs.get_mes(f, mes).show_info()
-        return(rowno, colno)
-
-
-
 class Objects:
     
     def __init__(self):
@@ -2262,7 +1777,6 @@ com = Commands()
 
 if __name__ == '__main__':
     f = '[MClient] mclient.__main__'
-    sh.com.start()
     if cf.objs.get_config().Success:
         lg.objs.get_plugins(Debug=False, maxrows=1000)
         objs.get_app().run_thread()
@@ -2273,7 +1787,7 @@ if __name__ == '__main__':
     else:
         mes = _('Invalid configuration!')
         #FIX: quit app normally after common dialog
-        #sh.objs.get_mes(f, mes).show_error()
-        idebug = sh.Debug(f, mes)
+        #Message(f, mes, True).show_error()
+        idebug = Debug(f, mes)
         idebug.show()
-    sh.com.end()
+    ROOT.end()

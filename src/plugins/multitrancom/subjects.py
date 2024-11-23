@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import skl_shared_qt.shared as sh
-import skl_shared_qt.config as qc
+from skl_shared_qt.message.controller import rep
+from skl_shared_qt.paths import PDIR, Path, File
+from skl_shared_qt.config import Schema, Json
+from skl_shared_qt.logic import com
 
 ''' About this module:
     - This structure describes subjects at multitran.com.
@@ -29,58 +31,54 @@ class ByLangs:
     
     def __init__(self):
         self.Success = True
-        self.psubjects = sh.objs.get_pdir().add ('..', 'resources', 'plugins'
-                                                ,'multitrancom', 'subjects'
-                                                ,'subjects.json'
-                                                )
-        self.pschema = sh.objs.pdir.add ('..', 'resources', 'plugins'
-                                        ,'multitrancom', 'subjects'
-                                        ,'schema.json'
-                                        )
+        self.psubjects = PDIR.add('..', 'resources', 'plugins', 'multitrancom'
+                                 ,'subjects', 'subjects.json')
+        self.pschema = PDIR('..', 'resources', 'plugins', 'multitrancom'
+                           ,'subjects', 'schema.json')
     
     def set_files(self):
         f = '[MClient] plugins.multitrancom.subjects.ByLangs.set_files'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
         if not self.psubjects or not self.pschema:
             self.Success = False
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
-        self.psubjects = sh.Path(self.psubjects).get_absolute()
-        self.pschema = sh.Path(self.pschema).get_absolute()
-        self.Success = sh.File(self.psubjects).Success and sh.File(self.pschema).Success
+        self.psubjects = Path(self.psubjects).get_absolute()
+        self.pschema = Path(self.pschema).get_absolute()
+        self.Success = File(self.psubjects).Success and File(self.pschema).Success
     
     def load(self):
         f = '[MClient] plugins.multitrancom.subjects.ByLangs.load'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return
-        self.ischema = qc.Schema(self.pschema)
+        self.ischema = Schema(self.pschema)
         self.ischema.run()
-        self.iconfig = qc.Json(self.psubjects)
+        self.iconfig = Json(self.psubjects)
         self.iconfig.load()
         self.Success = self.ischema.Success and self.iconfig.validate(self.ischema.get())
     
     def get(self):
         f = '[MClient] plugins.multitrancom.subjects.ByLangs.get'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return {}
         try:
-            return self.iconfig.json[sh.com.lang]
+            return self.iconfig.json[com.lang]
         except KeyError:
-            sh.com.rep_input(f)
+            rep.input(f)
         return {}
     
     def dump(self):
         f = '[MClient] plugins.multitrancom.subjects.ByLangs.dump'
         if not self.Success:
-            sh.com.cancel(f)
+            rep.cancel(f)
             return ''
         code = self.iconfig.dump()
         if not code:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return ''
         return code
     
