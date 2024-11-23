@@ -171,3 +171,6 @@ class Table(QTableView):
     
     def show_borders(self, Show=False):
         self.setShowGrid(Show)
+
+
+WELCOME = Welcome()

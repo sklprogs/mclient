@@ -105,5 +105,5 @@ class Save(QWidget):
         self.layout_.setContentsMargins(0, 0, 0, 0)
         self.layout_.addWidget(self.save)
         self.setLayout(self.layout_)
-        self.ask = FileDialog()
+        self.ask = FILE_DIALOG
         self.resize(550, 115)

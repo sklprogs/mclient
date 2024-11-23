@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from welcome.gui import Welcome as guiWelcome, TableModel as guiTableModel
+from welcome.gui import WELCOME as guiWelcome, TableModel as guiTableModel
 from welcome.logic import Welcome as lgWelcome, COLNUM
 
 
@@ -16,7 +16,7 @@ class TableModel(guiTableModel):
 class Welcome:
     
     def __init__(self, desc='Product Current Version'):
-        self.gui = guiWelcome()
+        self.gui = guiWelcome
         self.logic = lgWelcome()
         self.logic.desc = desc
     

@@ -20,7 +20,9 @@ from skl_shared_qt.graphics.entry.gui import Entry as shguiEntry
 from skl_shared_qt.graphics.button.controller import Button
 from skl_shared_qt.paths import PDIR
 
-import welcome.gui
+from welcome.gui import WELCOME
+from table.controller import Table
+from table.gui import TABLE
 
 ICON.set(PDIR.add('..', 'resources', 'mclient.png'))
 WIDE_ROW_COLOR = '#CCCCCC'
@@ -147,7 +149,7 @@ class TableProxy(QWidget):
     def set_gui(self):
         self.layout_ = QVBoxLayout()
         self.layout_.setContentsMargins(0, 0, 0, 0)
-        self.layout_.addWidget(objs.get_table())
+        self.layout_.addWidget(TABLE)
         self.setLayout(self.layout_)
 
 
@@ -156,19 +158,19 @@ class ArticleProxy(QWidget):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.active = welcome.gui.objs.get_welcome()
+        self.active = WELCOME
         self.set_gui()
     
     def set_gui(self):
         self.layout_ = QStackedLayout()
         self.layout_.setContentsMargins(0, 0, 0, 0)
-        self.layout_.addWidget(welcome.gui.objs.get_welcome())
+        self.layout_.addWidget(WELCOME)
         self.table = TableProxy()
         self.layout_.addWidget(self.table)
         self.setLayout(self.layout_)
     
     def is_welcome(self):
-        return self.active == welcome.gui.objs.get_welcome()
+        return self.active == WELCOME
     
     def go_welcome(self):
         f = '[MClient] gui.ArticleProxy.go_welcome'
@@ -178,7 +180,7 @@ class ArticleProxy(QWidget):
         width = self.table.width()
         height = self.table.height()
         self.table.hide()
-        self.active = welcome.gui.objs.get_welcome()
+        self.active = WELCOME
         self.active.show()
         self.active.resize(width, height)
     
@@ -187,9 +189,9 @@ class ArticleProxy(QWidget):
         if self.active == self.table:
             rep.lazy(f)
             return
-        width = welcome.gui.objs.get_welcome().width()
-        height = welcome.gui.objs.welcome.height()
-        welcome.gui.objs.welcome.hide()
+        width = WELCOME.width()
+        height = WELCOME.height()
+        WELCOME.hide()
         self.active = self.table
         self.active.show()
         self.active.resize(width, height)
@@ -413,11 +415,11 @@ class Panel(QWidget):
         # A button to insert special symbols
         self.btn_sym = Button(inactive = self.icn_sym, active = self.icn_sym)
         # Drop-down list with dictionary sources
-        self.opt_src = OPTION_MENU()
+        self.opt_src = OPTION_MENU
         # Drop-down lists with languages
-        self.opt_lg1 = OPTION_MENU()
+        self.opt_lg1 = OPTION_MENU
         self.btn_swp = Button(inactive = self.icn_swp, active = self.icn_swp)
-        self.opt_lg2 = OPTION_MENU()
+        self.opt_lg2 = OPTION_MENU
         self.opt_col = OPTION_MENU
         self.opt_col.reset(range(1, 11), 5)
         # A settings button
@@ -514,11 +516,6 @@ class Objects:
         if self.panel is None:
             self.panel = Panel()
         return self.panel
-    
-    def get_table(self):
-        if self.table is None:
-            self.table = Table()
-        return self.table
 
 
 objs = Objects()

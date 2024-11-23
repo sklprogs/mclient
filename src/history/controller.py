@@ -4,7 +4,7 @@
 from skl_shared_qt.localize import _
 from skl_shared_qt.message.controller import Message, rep
 
-from history.gui import History as guiHistory
+from history.gui import History as guiHistory, TableModel
 
 
 class History:
@@ -36,10 +36,10 @@ class History:
         self.gui.sig_go.emit(int(id_) - 1)
     
     def fill_model(self, table=[[]]):
-        ''' Do not assign 'gi.TableModel' externally, this will not change
+        ''' Do not assign 'gui.TableModel' externally, this will not change
             the actual model.
         '''
-        self.model = gi.TableModel(table)
+        self.model = TableModel(table)
         self.gui.set_model(self.model)
         # Must be done only after setting a model
         self.gui.history.selectionModel().selectionChanged.connect(self.change_row)

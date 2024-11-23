@@ -3,7 +3,7 @@
 
 from skl_shared_qt.localize import _
 from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.graphics.controller import ROOT
+from skl_shared_qt.graphics.root.controller import ROOT
 
 from prior_block.gui import Panes as guiPanes
 

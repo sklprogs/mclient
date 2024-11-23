@@ -33,8 +33,8 @@ class ByLangs:
         self.Success = True
         self.psubjects = PDIR.add('..', 'resources', 'plugins', 'multitrancom'
                                  ,'subjects', 'subjects.json')
-        self.pschema = PDIR('..', 'resources', 'plugins', 'multitrancom'
-                           ,'subjects', 'schema.json')
+        self.pschema = PDIR.add('..', 'resources', 'plugins', 'multitrancom'
+                               ,'subjects', 'schema.json')
     
     def set_files(self):
         f = '[MClient] plugins.multitrancom.subjects.ByLangs.set_files'

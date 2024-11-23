@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from PyQt6.QtWidgets import QWidget, QTreeWidget, QGridLayout
+from PyQt6.QtWidgets import QWidget, QTreeWidget, QTreeWidgetItem, QGridLayout
 from PyQt6.QtCore import pyqtSignal, Qt
 from PyQt6.QtGui import QShortcut, QKeySequence
 

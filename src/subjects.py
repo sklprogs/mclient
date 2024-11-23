@@ -4,7 +4,7 @@
 import re
 
 from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import rep
+from skl_shared_qt.message.controller import Message, rep
 from skl_shared_qt.table import Table
 
 import instance as ic

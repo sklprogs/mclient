@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.message.controller import rep
+from skl_shared_qt.localize import _
+from skl_shared_qt.message.controller import Message, rep
 from skl_shared_qt.time import Timer
 from skl_shared_qt.graphics.clipboard.controller import CLIPBOARD
 
-from popup import Popup
+from popup.controller import Popup
 from config import CONFIG
 from articles import ARTICLES
 from table.gui import TABLE
@@ -18,6 +19,7 @@ class Table:
     def __init__(self):
         self.set_values()
         self.logic = lgTable([], [])
+        self.gui = TABLE
         self.search = Search()
         self.popup = Popup()
         self.set_gui()

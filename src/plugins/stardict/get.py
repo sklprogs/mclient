@@ -7,8 +7,8 @@ import zlib
 from skl_shared_qt.localize import _
 from skl_shared_qt.message.controller import Message, rep
 from skl_shared_qt.time import Timer
-from skl_shared_qt.paths import File
-from skl_shared_qt.logic import Input, Directory
+from skl_shared_qt.paths import File, Directory
+from skl_shared_qt.logic import Input
 
 
 ''' A directory storing all stardict files.

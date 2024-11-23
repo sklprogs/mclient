@@ -53,7 +53,6 @@ class Search(QWidget):
     def set_gui(self):
         self.add_widgets()
         self.set_title()
-        self.set_icon()
     
     def bind(self, hotkeys, action):
         for hotkey in hotkeys:

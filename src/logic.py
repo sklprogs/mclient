@@ -5,7 +5,7 @@ import ssl
 
 from skl_shared_qt.localize import _
 from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.online.controller import Online
+from skl_shared_qt.online import Online
 from skl_shared_qt.pretty_html import make_pretty
 import skl_shared_qt.temp_file as temp_file
 from skl_shared_qt.text_file import Read, Write
@@ -14,6 +14,7 @@ from skl_shared_qt.paths import PDIR, Home
 
 from config import CONFIG, PRODUCT_LOW
 import manager
+from table.controller import Table
 
 
 class Speech:
@@ -268,11 +269,6 @@ class Objects:
         self.online = self.request = self.plugins = self.speech_prior \
                     = self.column_width = self.articles = None
 
-    def get_articles(self):
-        if self.articles is None:
-            self.articles = Articles()
-        return self.articles
-    
     def get_column_width(self):
         if self.column_width is None:
             self.column_width = ColumnWidth()

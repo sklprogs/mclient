@@ -99,9 +99,9 @@ class TableDelegate(QStyledItemDelegate):
 
 class Table(QTableView):
     
-    sig_select = pyqtSignal.pyqtSignal(int, int, bool)
-    sig_rmb = pyqtSignal.pyqtSignal()
-    sig_mmb = pyqtSignal.pyqtSignal()
+    sig_select = pyqtSignal(int, int, bool)
+    sig_rmb = pyqtSignal()
+    sig_mmb = pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -227,5 +227,5 @@ class Table(QTableView):
         self.setShowGrid(Show)
 
 
-TABLE = Table()
 DELEGATE = TableDelegate()
+TABLE = Table()

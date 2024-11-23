@@ -4,6 +4,7 @@
 from skl_shared_qt.localize import _
 from skl_shared_qt.message.controller import Message, rep
 from config import CONFIG
+import logic as lg
 
 
 class Articles:
@@ -99,10 +100,10 @@ class Articles:
             return
         id_ = self.get_max_id() + 1
         self.articles['ids'][id_] = {'source'        : CONFIG.new['source']
-                                    ,'lang1'         : objs.get_plugins().get_lang1()
-                                    ,'lang2'         : objs.plugins.get_lang2()
-                                    ,'Parallel'      : objs.plugins.is_parallel()
-                                    ,'Separate'      : objs.plugins.is_separate()
+                                    ,'lang1'         : lg.objs.get_plugins().get_lang1()
+                                    ,'lang2'         : lg.objs.plugins.get_lang2()
+                                    ,'Parallel'      : lg.objs.plugins.is_parallel()
+                                    ,'Separate'      : lg.objs.plugins.is_separate()
                                     ,'search'        : search
                                     ,'url'           : url
                                     ,'cells'         : cells

@@ -66,4 +66,3 @@ class About(QWidget):
         self.add_buttons()
         self.configure()
         self.add_layout()
-        self.set_icon()

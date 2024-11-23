@@ -12,13 +12,13 @@ from skl_shared_qt.graphics.debug.controller import Debug
 from skl_shared_qt.list import List
 from skl_shared_qt.logic import OS, Input, Text
 from skl_shared_qt.online import Online
-from skl_shared_qt.timer import Timer
-from skl_shared_qt.articles import ARTICLES
+from skl_shared_qt.time import Timer
 
 from config import CONFIG, HistorySubjects
+from articles import ARTICLES
+from table.controller import Table
 import logic as lg
 import gui as gi
-
 import format as fm
 import cells as cl
 import prior_block.controller as pr
@@ -962,8 +962,8 @@ class App:
     
     def reload(self):
         search = ARTICLES.get_search()
-        url = lg.objs.articles.get_url()
-        lg.objs.articles.clear_article()
+        url = ARTICLES.get_url()
+        ARTICLES.clear_article()
         self.load_article(search, url)
     
     def toggle_alphabet(self):
@@ -984,7 +984,7 @@ class App:
                              ,source = lg.objs.get_plugins().source
                              ,lang1 = lg.objs.plugins.get_lang1()
                              ,lang2 = lg.objs.plugins.get_lang2()
-                             ,search = lg.objs.articles.get_search()
+                             ,search = ARTICLES.get_search()
                              )
         # Setting column width works only after updating the model, see https://stackoverflow.com/questions/8364061/how-do-you-set-the-column-width-on-a-qtreeview
         self.history.gui.set_col_width()
@@ -995,9 +995,9 @@ class App:
             rep.empty(f)
             return
         ARTICLES.set_id(id_)
-        source = lg.objs.articles.get_source()
-        lang1 = lg.objs.articles.get_lang1()
-        lang2 = lg.objs.articles.get_lang2()
+        source = ARTICLES.get_source()
+        lang1 = ARTICLES.get_lang1()
+        lang2 = ARTICLES.get_lang2()
         if not source or not lang1 or not lang2:
             rep.empty(f)
             return
@@ -1021,13 +1021,13 @@ class App:
         if ARTICLES.get_len() in (0, 1):
             rep.lazy(f)
             return
-        if lg.objs.articles.id == 0:
-            lg.objs.articles.set_id(lg.objs.articles.get_max_id())
+        if ARTICLES.id == 0:
+            ARTICLES.set_id(ARTICLES.get_max_id())
         else:
-            lg.objs.articles.set_id(lg.objs.articles.id - 1)
-        source = lg.objs.articles.get_source()
-        lang1 = lg.objs.articles.get_lang1()
-        lang2 = lg.objs.articles.get_lang2()
+            ARTICLES.set_id(ARTICLES.id - 1)
+        source = ARTICLES.get_source()
+        lang1 = ARTICLES.get_lang1()
+        lang2 = ARTICLES.get_lang2()
         if not source or not lang1 or not lang2:
             rep.empty(f)
             return
@@ -1044,13 +1044,13 @@ class App:
         if ARTICLES.get_len() in (0, 1):
             rep.lazy(f)
             return
-        if lg.objs.articles.is_last():
-            lg.objs.articles.set_id(0)
+        if ARTICLES.is_last():
+            ARTICLES.set_id(0)
         else:
-            lg.objs.articles.set_id(lg.objs.articles.id + 1)
-        source = lg.objs.articles.get_source()
-        lang1 = lg.objs.articles.get_lang1()
-        lang2 = lg.objs.articles.get_lang2()
+            ARTICLES.set_id(ARTICLES.id + 1)
+        source = ARTICLES.get_source()
+        lang1 = ARTICLES.get_lang1()
+        lang2 = ARTICLES.get_lang2()
         if not source or not lang1 or not lang2:
             rep.empty(f)
             return
@@ -1327,10 +1327,10 @@ class App:
         if ARTICLES.get_len() < 2:
             rep.empty(f)
             return
-        lg.objs.articles.set_id(lg.objs.articles.id-1)
-        CLIPBOARD.copy(lg.objs.articles.get_search())
+        ARTICLES.set_id(ARTICLES.id-1)
+        CLIPBOARD.copy(ARTICLES.get_search())
         self.paste()
-        lg.objs.articles.set_id(lg.objs.articles.id+1)
+        ARTICLES.set_id(ARTICLES.id+1)
     
     def insert_repeat_sign(self):
         # Insert the current search string
@@ -1348,7 +1348,7 @@ class App:
             rep.empty(f)
             return
         rowno, colno = cell[0], cell[1]
-        cell = lg.objs.articles.get_cell(rowno, colno)
+        cell = ARTICLES.get_cell(rowno, colno)
         if not cell:
             rep.empty(f)
             return
@@ -1406,22 +1406,22 @@ class App:
             cells = lg.objs.get_plugins().request(search = search
                                                  ,url = url)
             sj.objs.get_subjects().reset(lg.objs.plugins.get_article_subjects())
-            lg.objs.articles.add(search = search
-                                ,url = url
-                                ,cells = cells
-                                ,fixed_urls = lg.objs.plugins.get_fixed_urls()
-                                ,raw_code = lg.objs.plugins.get_htm()
-                                ,subjf = sj.objs.subjects.article
-                                ,blocked = sj.objs.subjects.block
-                                ,prioritized = sj.objs.subjects.prior)
+            ARTICLES.add(search = search
+                        ,url = url
+                        ,cells = cells
+                        ,fixed_urls = lg.objs.plugins.get_fixed_urls()
+                        ,raw_code = lg.objs.plugins.get_htm()
+                        ,subjf = sj.objs.subjects.article
+                        ,blocked = sj.objs.subjects.block
+                        ,prioritized = sj.objs.subjects.prior)
             HistorySubjects().add(lg.objs.plugins.get_article_subjects())
             self.add_history()
         else:
             mes = _('Load article No. {} from memory').format(artid)
             Message(f, mes).show_info()
-            lg.objs.articles.set_id(artid)
+            ARTICLES.set_id(artid)
             sj.objs.get_subjects().reset(lg.objs.get_plugins().get_article_subjects())
-            cells = lg.objs.articles.get_cells()
+            cells = ARTICLES.get_cells()
             
         self.solve_screen()
         
@@ -1441,8 +1441,8 @@ class App:
         
         self.table.reset(iwrap.plain, iwrap.code)
         
-        lg.objs.articles.set_blocked_cells(iomit.omit_cells)
-        lg.objs.articles.set_table(iwrap.cells)
+        ARTICLES.set_blocked_cells(iomit.omit_cells)
+        ARTICLES.set_table(iwrap.cells)
         
         #lg.objs.request.text = lg.com.get_text(cells)
         #colors = lg.com.get_colors(blocks)
@@ -1659,8 +1659,8 @@ class App:
         self.symbols.gui.bind(CONFIG.new['actions']['toggle_spec_symbols']['hotkeys']
                              ,self.symbols.close)
         
-        gi.objs.get_table().clicked.connect(self.go_url)
-        gi.objs.table.sig_mmb.connect(self.minimize)
+        self.table.gui.clicked.connect(self.go_url)
+        self.table.gui.sig_mmb.connect(self.minimize)
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be
             returned before the window is shown.
@@ -1704,7 +1704,7 @@ class App:
         gi.objs.panel.opt_src.widget.activated.connect(self.set_source)
         gi.objs.panel.opt_col.set_action(self.set_columns)
         
-        gi.objs.table.sig_rmb.connect(self.solve_copy)
+        self.table.gui.sig_rmb.connect(self.solve_copy)
         
         self.symbols.gui.table.clicked.connect(self.paste_symbol)
         self.symbols.gui.table.sig_space.connect(self.paste_symbol)
