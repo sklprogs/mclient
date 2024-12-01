@@ -3,15 +3,15 @@
 
 from skl_shared_qt.localize import _
 
-from . import gui as gi
-from . import logic as lg
+from gui import About as guiAbout
+from logic import About as lgAbout
 
 
 class About:
     
     def __init__(self):
-        self.gui = gi.About()
-        self.logic = lg.About()
+        self.gui = guiAbout()
+        self.logic = lgAbout()
         self.Shown = False
         self.set_text()
         self.set_title()
