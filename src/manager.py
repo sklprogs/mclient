@@ -4,8 +4,9 @@
 from skl_shared_qt.localize import _
 from skl_shared_qt.message.controller import Message, rep
 from skl_shared_qt.logic import Input
+from skl_shared_qt.paths import Home
 
-from config import CONFIG
+from config import CONFIG, PRODUCT_LOW
 import plugins.stardict.get
 import plugins.dsl.get
 import plugins.stardict.run as sdrun
@@ -287,3 +288,8 @@ class Plugins:
         if not dic:
             return {}
         return dic
+
+
+DICS = Home(PRODUCT_LOW).add_config('dics')
+PLUGINS = Plugins(sdpath=DICS, mbpath=DICS, timeout=CONFIG.new['timeout']
+                 ,Debug=False, maxrows=1000)

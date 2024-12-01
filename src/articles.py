@@ -4,7 +4,7 @@
 from skl_shared_qt.localize import _
 from skl_shared_qt.message.controller import Message, rep
 from config import CONFIG
-import logic as lg
+from manager import PLUGINS
 
 
 class Articles:
@@ -100,10 +100,10 @@ class Articles:
             return
         id_ = self.get_max_id() + 1
         self.articles['ids'][id_] = {'source'        : CONFIG.new['source']
-                                    ,'lang1'         : lg.objs.get_plugins().get_lang1()
-                                    ,'lang2'         : lg.objs.plugins.get_lang2()
-                                    ,'Parallel'      : lg.objs.plugins.is_parallel()
-                                    ,'Separate'      : lg.objs.plugins.is_separate()
+                                    ,'lang1'         : PLUGINS.get_lang1()
+                                    ,'lang2'         : PLUGINS.get_lang2()
+                                    ,'Parallel'      : PLUGINS.is_parallel()
+                                    ,'Separate'      : PLUGINS.is_separate()
                                     ,'search'        : search
                                     ,'url'           : url
                                     ,'cells'         : cells
@@ -115,8 +115,7 @@ class Articles:
                                     ,'prioritized'   : prioritized
                                     ,'rowno'         : -1
                                     ,'colno'         : -1
-                                    ,'blocked_cells' : []
-                                    }
+                                    ,'blocked_cells' : []}
         self.set_id(id_)
     
     def get_blocked_cells(self):

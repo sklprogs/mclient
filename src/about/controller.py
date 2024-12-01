@@ -3,8 +3,8 @@
 
 from skl_shared_qt.localize import _
 
-from gui import About as guiAbout
-from logic import About as lgAbout
+from about.gui import About as guiAbout
+from about.logic import About as lgAbout
 
 
 class About:

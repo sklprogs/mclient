@@ -13,7 +13,8 @@ from skl_shared_qt.launch import Launch
 from skl_shared_qt.paths import PDIR, Home
 
 from config import CONFIG, PRODUCT_LOW
-import manager
+from manager import PLUGINS
+from articles import ARTICLES
 from table.controller import Table
 
 
@@ -22,7 +23,7 @@ class Speech:
         dictionary is reused and not recreated.
     '''
     def __init__(self):
-        self.dic = objs.get_plugins().get_speeches()
+        self.dic = PLUGINS.get_speeches()
     
     def _get_short(self, full):
         f = '[MClient] logic.Speech._get_short'
@@ -56,7 +57,7 @@ class App:
     def open_in_browser(self):
         ionline = Online()
         url = objs.get_request().url
-        ionline.url = objs.get_plugins().fix_url(url)
+        ionline.url = PLUGINS.fix_url(url)
         ionline.browse()
     
     def print(self):
@@ -266,26 +267,13 @@ class CurRequest:
 class Objects:
     
     def __init__(self):
-        self.online = self.request = self.plugins = self.speech_prior \
-                    = self.column_width = self.articles = None
+        self.request = self.column_width = None
 
     def get_column_width(self):
         if self.column_width is None:
             self.column_width = ColumnWidth()
             self.column_width.run()
         return self.column_width
-    
-    def get_dics(self):
-        return Home(PRODUCT_LOW).add_config('dics')
-    
-    def get_plugins(self, Debug=False, maxrows=1000):
-        if self.plugins is None:
-            self.plugins = manager.Plugins(sdpath = self.get_dics()
-                                          ,mbpath = self.get_dics()
-                                          ,timeout = CONFIG.new['timeout']
-                                          ,Debug = Debug
-                                          ,maxrows = maxrows)
-        return self.plugins
     
     def get_request(self):
         if self.request is None:
@@ -330,10 +318,10 @@ class Commands:
         return types
     
     def is_parallel(self):
-        return objs.get_articles().get_len() > 0 and objs.articles.is_parallel()
+        return ARTICLES.get_len() > 0 and ARTICLES.is_parallel()
     
     def is_separate(self):
-        return objs.get_articles().get_len() > 0 and objs.articles.is_separate()
+        return ARTICLES.get_len() > 0 and ARTICLES.is_separate()
     
     def get_text(self, cells):
         f = '[MClient] logic.Commands.get_text'
@@ -369,7 +357,7 @@ class Commands:
     def set_url(self):
         f = '[MClient] logic.Commands.set_url'
         #NOTE: update source and target languages first
-        objs.get_request().url = objs.get_plugins().get_url(objs.request.search)
+        objs.get_request().url = PLUGINS.get_url(objs.request.search)
         mes = objs.request.url
         Message(f, mes).show_debug()
     
@@ -436,7 +424,7 @@ class Commands:
     
     def suggest(self, search, limit=0):
         f = '[MClient] logic.Commands.suggest'
-        items = objs.get_plugins().suggest(search)
+        items = PLUGINS.suggest(search)
         if not items:
             rep.empty(f)
             return []

@@ -10,9 +10,11 @@ from skl_shared_qt.table import Table
 
 from instance import Block, Cell
 from config import CONFIG
+from manager import PLUGINS
 import format as fm
 import logic as lg
 import subjects as sj
+from articles import ARTICLES
 
 
 class Expand:
@@ -34,24 +36,24 @@ class Expand:
         # This takes ~0.0015s for 'set' on AMD E-300 (no IDE, no warnings)
         f = '[MClient] cells.Expand.expand_speeches'
         if CONFIG.new['ShortSpeech']:
-            ms.rep.lazy(f)
+            rep.lazy(f)
             return
-        speeches = lg.objs.get_plugins().get_speeches()
+        speeches = PLUGINS.get_speeches()
         if not speeches:
-            ms.rep.lazy(f)
+            rep.lazy(f)
             return
         for cell in self.cells:
             try:
                 cell.speech = speeches[cell.speech]
             except KeyError:
                 mes = _('Wrong input data: "{}"!').format(cell.speech)
-                ms.Message(f, mes, True).show_warning()
+                Message(f, mes, True).show_warning()
     
     def expand_subjects(self):
         # This takes ~0.0086s for 'set' on AMD E-300
         f = '[MClient] cells.Expand.expand_subjects'
         if CONFIG.new['ShortSubjects']:
-            ms.rep.lazy(f)
+            rep.lazy(f)
             return
         for cell in self.cells:
             cell.subj = sj.objs.get_subjects().expand(cell.subj)
@@ -73,7 +75,7 @@ class Omit:
     def set_subjects(self):
         f = '[MClient] cells.Omit.set_subjects'
         if not CONFIG.new['BlockSubjects']:
-            ms.rep.lazy(f)
+            rep.lazy(f)
             return
         subjects = [cell.subj for cell in self.cells]
         subjects = sorted(set(subjects))
@@ -81,12 +83,12 @@ class Omit:
             if sj.objs.get_subjects().is_blocked(subject):
                 self.subj.append(subject)
         mes = '; '.join(self.subj)
-        ms.Message(f, mes).show_debug()
+        Message(f, mes).show_debug()
     
     def omit_subjects(self):
         f = '[MClient] cells.Omit.omit_subjects'
         if not CONFIG.new['BlockSubjects']:
-            ms.rep.lazy(f)
+            rep.lazy(f)
             return
         cells = []
         for cell in self.cells:
@@ -95,15 +97,15 @@ class Omit:
                 self.omit_cells.append(cell.text)
             else:
                 cells.append(cell)
-        ms.rep.matches(f, len(self.cells) - len(cells))
+        rep.matches(f, len(self.cells) - len(cells))
         self.cells = cells
         mes = _('Omitted cells: {}').format('; '.join(self.omit_cells))
-        ms.Message(f, mes).show_debug()
+        Message(f, mes).show_debug()
     
     def omit_users(self):
         f = '[MClient] cells.Omit.omit_users'
         if CONFIG.new['ShowUserNames']:
-            ms.rep.lazy(f)
+            rep.lazy(f)
             return
         count = 0
         for cell in self.cells:
@@ -114,7 +116,7 @@ class Omit:
                 fragms = [block.text for block in cell.blocks]
                 cell.text = List(fragms).space_items().strip()
             count += delta
-        ms.rep.matches(f, count)
+        rep.matches(f, count)
     
     def run(self):
         self.set_subjects()
@@ -251,7 +253,7 @@ class View:
         self.view = []
         self.cells = cells
         self.fixed_types = lg.com.get_col_types()
-        self.fixed_urls = lg.objs.get_articles().get_fixed_urls()
+        self.fixed_urls = ARTICLES.get_fixed_urls()
 
     def check(self):
         f = '[MClient] cells.View.check'

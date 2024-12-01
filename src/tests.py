@@ -106,7 +106,7 @@ class Wrap:
     
     def run_multitrancom(self):
         f = '[MClient] tests.Wrap.run_multitrancom'
-        import logic as lg
+        import articles as ARTICLES
         import plugins.multitrancom.cleanup as cu
         import plugins.multitrancom.tags as tg
         import plugins.multitrancom.elems as el
@@ -116,15 +116,10 @@ class Wrap:
         timer = sh.Timer(f)
         timer.start()
         text = cu.CleanUp(text).run()
-        blocks = tg.Tags (text = text
-                         ,maxrows = 0
-                         ).run()
+        blocks = tg.Tags(text=text, maxrows=0).run()
         cells = el.Elems(blocks).run()
         
-        lg.objs.get_articles().add (search = SEARCH
-                                   ,url = URL
-                                   ,cells = cells
-                                   )
+        ARTICLES.add(search=SEARCH, url=URL, cells=cells)
         
         cells = cl.Omit(cells).run()
         cells = cl.Prioritize(cells).run()
@@ -166,13 +161,12 @@ class Prioritize:
             return
         sj.objs.get_subjects().reset(pairs)
         
-        lg.objs.get_articles().add (search = SEARCH
-                                   ,url = URL
-                                   ,cells = cells
-                                   ,subjf = sj.objs.subjects.article
-                                   ,blocked = sj.objs.subjects.block
-                                   ,prioritized = sj.objs.subjects.prior
-                                   )
+        ARTICLES.add(search = SEARCH
+                    ,url = URL
+                    ,cells = cells
+                    ,subjf = sj.objs.subjects.article
+                    ,blocked = sj.objs.subjects.block
+                    ,prioritized = sj.objs.subjects.prior)
 
         cells = cl.Omit(cells).run()
         iprior = cl.Prioritize(cells)
@@ -195,10 +189,7 @@ class View:
         text = cu.CleanUp(text).run()
         blocks = tg.Tags(text).run()
         cells = el.Elems(blocks).run()
-        lg.objs.get_articles().add (search = SEARCH
-                                   ,url = URL
-                                   ,cells = cells
-                                   )
+        ARTICLES.add(search=SEARCH, url=URL, cells=cells)
         cells = cl.Omit(cells).run()
         cells = cl.Prioritize(cells).run()
         iview = cl.View(cells)
@@ -217,15 +208,10 @@ class View:
         timer = sh.Timer(f)
         timer.start()
         text = cu.CleanUp(text).run()
-        blocks = tg.Tags (text = text
-                         ,maxrows = 0
-                         ).run()
+        blocks = tg.Tags(text=text, maxrows=0).run()
         cells = el.Elems(blocks).run()
         
-        lg.objs.get_articles().add (search = SEARCH
-                                   ,url = URL
-                                   ,cells = cells
-                                   )
+        ARTICLES.add(search=SEARCH, url=URL, cells=cells)
         
         cells = cl.Omit(cells).run()
         cells = cl.Prioritize(cells).run()
@@ -252,17 +238,13 @@ class View:
         for iarticle in articles:
             code = cu.CleanUp(iarticle.code).run()
             code = cu.TagLike(code).run()
-            blocks += tg.Tags (code = code
-                              ,Debug = DEBUG
-                              ,maxrows = 0
-                              ,dicname = iarticle.dic
-                              ).run()
+            blocks += tg.Tags(code = code
+                             ,Debug = DEBUG
+                             ,maxrows = 0
+                             ,dicname = iarticle.dic).run()
         cells = el.Elems(blocks).run()
         
-        lg.objs.get_articles().add (search = SEARCH
-                                   ,url = URL
-                                   ,cells = cells
-                                   )
+        ARTICLES.add(search=SEARCH, url=URL, cells=cells)
         
         cells = cl.Omit(cells).run()
         cells = cl.Prioritize(cells).run()
@@ -456,9 +438,10 @@ class Get:
     
     def run_multitrandem(self):
         f = '[MClient] tests.Get.run_multitrandem'
-        import logic as lg
+        from manager import PLUGINS
         import plugins.multitrandem.get as gt
-        lg.objs.get_plugins(Debug=False, maxrows=1000)
+        PLUGINS.Debug = False
+        PLUGINS.maxrows = 1000
         result = gt.Get(SEARCH).run()
         if not result:
             sh.com.rep_empty(f)
@@ -476,22 +459,20 @@ class Get:
         search = 'working documentation'
         timer = sh.Timer(f)
         timer.start()
-        result = gt.Get (search = search
-                        ,url = url
-                        ).run()
+        result = gt.Get(search=search, url=url).run()
         timer.end()
         basename = f'{search} ({sh.Time().get_date()}).html'
-        file = sh.Home().add ('docs', 'mclient_tests'
-                             ,'multitrancom (saved with Get.get)', basename
-                             )
+        file = sh.Home().add('docs', 'mclient_tests'
+                            ,'multitrancom (saved with Get.get)', basename)
         sh.WriteTextFile(file).write(result)
         sh.Launch(file).launch_default()
     
     def run_stardict(self):
         f = '[MClient] tests.Get.run_stardict'
-        import logic as lg
+        from manager import PLUGINS
         import plugins.stardict.get
-        lg.objs.get_plugins(Debug=False, maxrows=1000)
+        PLUGINS.Debug = False
+        PLUGINS.maxrows = 1000
         #search = 'компьютер'
         search = 'aberrance'
         #search = 'abstract'
@@ -509,10 +490,11 @@ class Tags:
     
     def run_multitrandem(self):
         f = '[MClient] tests.Tags.run_multitrandem'
-        import logic as lg
+        from manager import PLUGINS
         import plugins.multitrandem.get as gt
         import plugins.multitrandem.tags as tg
-        lg.objs.get_plugins(Debug=False, maxrows=1000)
+        PLUGINS.Debug = False
+        PLUGINS.maxrows = 1000
         chunks = gt.Get(SEARCH).run()
         if not chunks:
             sh.com.rep_empty(f)
@@ -539,11 +521,10 @@ class Tags:
         for iarticle in articles:
             code = plugins.dsl.cleanup.CleanUp(iarticle.code).run()
             code = plugins.dsl.cleanup.TagLike(code).run()
-            itags = plugins.dsl.tags.Tags (code = code
-                                          ,Debug = DEBUG
-                                          ,maxrows = 0
-                                          ,dicname = iarticle.dic
-                                          )
+            itags = plugins.dsl.tags.Tags(code = code
+                                         ,Debug = DEBUG
+                                         ,maxrows = 0
+                                         ,dicname = iarticle.dic)
             blocks += itags.run()
             debug.append(itags.debug())
         return '\n'.join(debug)
@@ -608,13 +589,9 @@ class Plugin:
             here.
         '''
         plugins.multitrandem.get.PATH = '/home/pete/.config/mclient/dics'
-        iplug = mb.Plugin (Debug = DEBUG
-                          ,maxrows = 150
-                          )
+        iplug = mb.Plugin(Debug=DEBUG, maxrows=150)
         
-        blocks = iplug.request (url = url
-                               ,search = search
-                               )
+        blocks = iplug.request(url=url, search=search)
         if not blocks:
             blocks = []
         for i in range(len(blocks)):
@@ -706,9 +683,7 @@ class Commands:
         import plugins.multitrancom.elems as el
         text = sh.ReadTextFile(HTM_FILE).get()
         text = cu.CleanUp(text).run()
-        blocks = tg.Tags (text = text
-                         ,maxrows = 0
-                         ).run()
+        blocks = tg.Tags(text=text, maxrows=0).run()
         ielems = el.Elems(blocks)
         ielems.run()
         mes = json.dumps(ielems.fixed_urls, ensure_ascii=False, indent=4)
@@ -734,18 +709,14 @@ class Commands:
     
     def get_priority(self):
         f = '[MClient] tests.Commands.get_priority'
-        import logic as lg
+        from manager import PLUGINS
+        from articles import ARTICLES
         import subjects as sj
         #NOTE: the article must comprise example subjects to be expanded
         search = 'code'
         url = 'https://www.multitran.com/m.exe?s=code&l1=2&l2=1&SHL=2'
-        cells = lg.objs.get_plugins().request (search = search
-                                              ,url = url
-                                              )
-        lg.objs.get_articles().add (search = search
-                                   ,url = url
-                                   ,cells = cells
-                                   )
+        cells = PLUGINS.request(search=search, url=url)
+        ARTICLES.add(search=search, url=url, cells=cells)
         mes = []
         sub = f'{f}:'
         mes.append(sub)
@@ -776,18 +747,14 @@ class Commands:
     
     def run_article_subjects(self):
         f = '[MClient] tests.Commands.run_article_subjects'
-        import logic as lg
+        from manager import PLUGINS
+        from articles import ARTICLES
         search = 'set'
         # SHL should correspond to locale
         url = 'https://www.multitran.com/m.exe?s=set&l1=2&l2=1'
-        cells = lg.objs.get_plugins().request (search = search
-                                              ,url = url
-                                              )
-        lg.objs.get_articles().add (search = search
-                                   ,url = url
-                                   ,cells = cells
-                                   )
-        subjects = lg.objs.get_articles().get_subjects()
+        cells = PLUGINS.request(search=search, url=url)
+        ARTICLES.add(search=search, url=url, cells=cells)
+        subjects = ARTICLES.get_subjects()
         if not subjects:
             sh.com.rep_empty(f)
             return
@@ -970,23 +937,23 @@ class Commands:
         return mes
     
     def edit_priorities(self):
+        from manager import PLUGINS
         import mclient as mc
-        import logic as lg
-        mc.objs.get_priorities().reset (lst1 = lg.objs.get_order().priorlst
-                                       ,lst2 = lg.objs.get_plugins().get_subjects()
-                                       ,art_subjects = []
-                                       ,majors = lg.objs.plugins.get_majors()
-                                       )
+        #TODO: Rework lg.objs.get_order
+        mc.objs.get_priorities().reset(lst1 = lg.objs.get_order().priorlst
+                                      ,lst2 = PLUGINS.get_subjects()
+                                      ,art_subjects = []
+                                      ,majors = PLUGINS.get_majors())
         mc.objs.priorities.show()
     
     def edit_blacklist(self):
+        from manager import PLUGINS
         import mclient as mc
-        import logic as lg
-        mc.objs.get_blacklist().reset (lst1 = lg.objs.get_order().blacklst
-                                      ,lst2 = lg.objs.get_plugins().get_subjects()
-                                      ,art_subjects = []
-                                      ,majors = lg.objs.plugins.get_majors()
-                                      )
+        #TODO: Rework lg.objs.get_order
+        mc.objs.get_blacklist().reset(lst1 = lg.objs.get_order().blacklst
+                                     ,lst2 = PLUGINS.get_subjects()
+                                     ,art_subjects = []
+                                     ,majors = PLUGINS.get_majors())
         mc.objs.blacklist.show()
     
     def show_about(self):
@@ -1074,87 +1041,74 @@ class Commands:
         sh.com.run_fast_txt(data)
     
     def request(self):
-        import logic as lg
+        from manager import PLUGINS
         f = '[MClient] tests.Commands.request'
         source = _('Multitran')
         pair = 'DEU <=> RUS'
         search = 'ernährung'
-        mes = _('Source: "{}"; pair: "{}"; search: "{}"').format (source
-                                                                 ,pair
-                                                                 ,search
-                                                                 )
-        lg.objs.get_plugins().set(source)
-        lg.objs.plugins.set_pair(pair)
+        mes = _('Source: "{}"; pair: "{}"; search: "{}"').format(source, pair
+                                                                ,search)
+        PLUGINS.set(source)
+        PLUGINS.set_pair(pair)
         sh.objs.get_mes(f, mes, True).show_info()
-        data = lg.objs.plugins.request (search = search
-                                       ,url = ''
-                                       )
+        data = PLUGINS.request(search=search, url='')
         if not data:
             sh.com.rep_empty(f)
             return
         sh.com.run_fast_txt(data)
     
     def get_url(self):
-        import logic as lg
+        from manager import PLUGINS
         f = '[MClient] tests.Commands.get_url'
         source = 'multitran.com'
         pair = 'RUS <=> XAL'
         search = 'До свидания!'
         mes = 'Source: "{}"; pair: "{}"; search: "{}"'
         mes = mes.format(source, pair, search)
-        lg.objs.get_plugins().set(source)
-        lg.objs.plugins.set_pair(pair)
+        PLUGINS.set(source)
+        PLUGINS.set_pair(pair)
         sh.objs.get_mes(f, mes, True).show_info()
-        lg.objs.plugins.get_url(search)
+        PLUGINS.get_url(search)
     
     def suggest(self):
-        import logic as lg
+        from manager import PLUGINS
         f = '[MClient] tests.Commands.suggest'
         source = 'multitran.com'
         pair = 'DEU <=> RUS'
         search = 'Scheiße'
         mes = 'Source: "{}"; pair: "{}"; search: "{}"'
         mes = mes.format(source, pair, search)
-        lg.objs.get_plugins().set(source)
-        lg.objs.plugins.set_pair(pair)
+        PLUGINS.set(source)
+        PLUGINS.set_pair(pair)
         sh.objs.get_mes(f, mes, True).show_info()
         lg.com.suggest(search)
     
     def _set_timeout(self, module, source, timeout):
-        import logic as lg
+        from manager import PLUGINS
         f = '[MClient] tests.Commands._set_timeout'
-        lg.objs.get_plugins().set(source)
-        lg.objs.plugins.set_timeout(timeout)
+        PLUGINS.set(source)
+        PLUGINS.set_timeout(timeout)
         mes = _('Source: {}; timeout: {}').format(source, module.TIMEOUT)
         sh.objs.get_mes(f, mes, True).show_debug()
     
     def set_timeout(self):
         import plugins.multitrancom.get as mc
         import plugins.stardict.get as sd
-        self._set_timeout (module = sd
-                          ,source = _('Offline')
-                          ,timeout = 1
-                          )
-        self._set_timeout (module = mc
-                          ,source = _('Multitran')
-                          ,timeout = 2
-                          )
-        self._set_timeout (module = mc
-                          ,source = 'multitran.com'
-                          ,timeout = 3
-                          )
+        self._set_timeout(module=sd, source=_('Offline'), timeout=1)
+        self._set_timeout(module=mc, source=_('Multitran'), timeout=2)
+        self._set_timeout(module=mc, source='multitran.com', timeout=3)
     
     def is_accessible(self):
-        import logic as lg
+        from manager import PLUGINS
         f = '[MClient] tests.Commands.is_accessible'
         source = _('Offline')
-        lg.objs.get_plugins().set(source)
-        result = lg.objs.plugins.is_accessible()
+        PLUGINS.set(source)
+        result = PLUGINS.is_accessible()
         mes = _('Source: {}; accessibility: {}').format(source, result)
         sh.objs.get_mes(f, mes, True).show_debug()
         source = 'multitran.com'
-        lg.objs.plugins.set(source)
-        result = lg.objs.plugins.is_accessible()
+        PLUGINS.set(source)
+        result = PLUGINS.is_accessible()
         mes = _('Source: {}; accessibility: {}').format(source, result)
         sh.objs.get_mes(f, mes, True).show_debug()
     
@@ -1170,20 +1124,17 @@ class Commands:
             sh.com.rep_empty(f)
     
     def set_pair(self):
-        import logic as lg
+        from manager import PLUGINS
         f = '[MClient] tests.Commands.set_pair'
         import plugins.multitrancom.get
         pair = 'RUS <=> XAL'
         source = 'multitran.com'
-        lg.objs.get_plugins().set(source)
-        lg.objs.plugins.set_pair(pair)
-        
+        PLUGINS.set(source)
+        PLUGINS.set_pair(pair)
         mes = f'{source}: {plugins.multitrancom.get.PAIR}'
         sh.objs.get_mes(f, mes, True).show_debug()
-        pair = 'XAL <=> RUS'
-        source = _('Multitran')
-        lg.objs.plugins.set(source)
-        lg.objs.plugins.set_pair(pair)
+        PLUGINS.set(_('Multitran'))
+        PLUGINS.set_pair('XAL <=> RUS')
         mes = 'multitrancom: {}'.format(plugins.multitrancom.get.PAIR)
         sh.objs.get_mes(f, mes, True).show_debug()
 

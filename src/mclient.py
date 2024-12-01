@@ -15,6 +15,7 @@ from skl_shared_qt.online import Online
 from skl_shared_qt.time import Timer
 
 from config import CONFIG, HistorySubjects
+from manager import PLUGINS
 from articles import ARTICLES
 from table.controller import Table
 import logic as lg
@@ -63,7 +64,7 @@ class Priorities(pr.Panes):
         f = '[MClient] mclient.Priorities.set_mode'
         mode = self.gui.opt_src.get()
         if mode == _('All subjects'):
-            self.dic2 = lg.objs.get_plugins().get_subjects()
+            self.dic2 = PLUGINS.get_subjects()
         elif mode == _('From the article'):
             self.dic2 = com.get_article_subjects()
         else:
@@ -116,7 +117,7 @@ class Block(pr.Panes):
         f = '[MClient] mclient.Block.set_mode'
         mode = self.gui.opt_src.get()
         if mode == _('All subjects'):
-            self.dic2 = lg.objs.get_plugins().get_subjects()
+            self.dic2 = PLUGINS.get_subjects()
         elif mode == _('From the article'):
             self.dic2 = com.get_article_subjects()
         else:
@@ -427,7 +428,7 @@ class Save(sv.Save):
             rep.empty(f)
             return
         self._add_web_ext()
-        code = lg.objs.get_plugins().fix_raw_htm(code)
+        code = PLUGINS.fix_raw_htm(code)
         Write(self.file).write(code)
 
     def save_view_as_txt(self):
@@ -513,39 +514,39 @@ class Welcome(wl.Welcome):
         if not CONFIG.new['Ping']:
             rep.lazy(f)
             return
-        old = lg.objs.get_plugins().source
-        dics = lg.objs.plugins.get_online_sources()
+        old = PLUGINS.source
+        dics = PLUGINS.get_online_sources()
         if not dics:
             rep.empty(f)
             return
         for dic in dics:
-            lg.objs.plugins.set(dic)
+            PLUGINS.set(dic)
             isource = lg.Source()
             isource.title = dic
             isource.Online = True
-            if lg.objs.plugins.is_accessible():
+            if PLUGINS.is_accessible():
                 isource.status = _('running')
                 isource.color = 'green'
             self.sources.append(isource)
-        lg.objs.plugins.set(old)
+        PLUGINS.set(old)
     
     def set_offline_sources(self):
         f = '[MClient] mclient.Welcome.set_offline_sources'
-        dics = lg.objs.plugins.get_offline_sources()
+        dics = PLUGINS.get_offline_sources()
         if not dics:
             rep.empty(f)
             return
-        old = lg.objs.get_plugins().source
+        old = PLUGINS.source
         for dic in dics:
-            lg.objs.plugins.set(dic)
+            PLUGINS.set(dic)
             isource = lg.Source()
             isource.title = dic
-            dic_num = lg.objs.plugins.is_accessible()
+            dic_num = PLUGINS.is_accessible()
             isource.status = dic_num
             if dic_num:
                 isource.color = 'green'
             self.sources.append(isource)
-        lg.objs.plugins.set(old)
+        PLUGINS.set(old)
     
     def set_sources(self):
         self.set_online_sources()
@@ -844,7 +845,7 @@ class App:
         if not url:
             rep.empty(f)
             return
-        url = lg.objs.get_plugins().fix_url(url)
+        url = PLUGINS.fix_url(url)
         CLIPBOARD.copy(url)
         if CONFIG.new['Iconify']:
             self.minimize()
@@ -867,7 +868,7 @@ class App:
         if not url:
             rep.empty(f)
             return
-        url = lg.objs.get_plugins().fix_url(url)
+        url = PLUGINS.fix_url(url)
         CLIPBOARD.copy(url)
         if CONFIG.new['Iconify']:
             self.minimize()
@@ -921,9 +922,9 @@ class App:
         old_list = CONFIG.new['subjects']['blocked']
         old_key = CONFIG.new['BlockSubjects']
         objs.get_block().reset (lst1 = old_list
-                               ,lst2 = lg.objs.get_plugins().get_subjects()
+                               ,lst2 = PLUGINS.get_subjects()
                                ,art_subjects = com.get_article_subjects()
-                               ,majors = lg.objs.plugins.get_majors()
+                               ,majors = PLUGINS.get_majors()
                                )
         objs.block.set_checkbox(CONFIG.new['BlockSubjects'])
         objs.block.show()
@@ -981,9 +982,9 @@ class App:
             rep.lazy(f)
             return
         self.history.add_row (id_ = ARTICLES.id
-                             ,source = lg.objs.get_plugins().source
-                             ,lang1 = lg.objs.plugins.get_lang1()
-                             ,lang2 = lg.objs.plugins.get_lang2()
+                             ,source = PLUGINS.source
+                             ,lang1 = PLUGINS.get_lang1()
+                             ,lang2 = PLUGINS.get_lang2()
                              ,search = ARTICLES.get_search()
                              )
         # Setting column width works only after updating the model, see https://stackoverflow.com/questions/8364061/how-do-you-set-the-column-width-on-a-qtreeview
@@ -1005,9 +1006,9 @@ class App:
         mes = _('Set source to "{}"')
         mes = mes.format(CONFIG.new['source'])
         Message(f, mes).show_info()
-        lg.objs.get_plugins().set(CONFIG.new['source'])
-        lg.objs.plugins.set_lang1(lang1)
-        lg.objs.plugins.set_lang2(lang2)
+        PLUGINS.set(CONFIG.new['source'])
+        PLUGINS.set_lang1(lang1)
+        PLUGINS.set_lang2(lang2)
         self.reset_opt(CONFIG.new['source'])
         self.load_article()
     
@@ -1032,9 +1033,9 @@ class App:
             rep.empty(f)
             return
         CONFIG.new['source'] = source
-        lg.objs.get_plugins().set(CONFIG.new['source'])
-        lg.objs.plugins.set_lang1(lang1)
-        lg.objs.plugins.set_lang2(lang2)
+        PLUGINS.set(CONFIG.new['source'])
+        PLUGINS.set_lang1(lang1)
+        PLUGINS.set_lang2(lang2)
         self.reset_opt(CONFIG.new['source'])
         self.load_article()
         self.history.go_up()
@@ -1055,9 +1056,9 @@ class App:
             rep.empty(f)
             return
         CONFIG.new['source'] = source
-        lg.objs.get_plugins().set(CONFIG.new['source'])
-        lg.objs.plugins.set_lang1(lang1)
-        lg.objs.plugins.set_lang2(lang2)
+        PLUGINS.set(CONFIG.new['source'])
+        PLUGINS.set_lang1(lang1)
+        PLUGINS.set_lang2(lang2)
         self.reset_opt(CONFIG.new['source'])
         self.load_article()
         self.history.go_down()
@@ -1163,7 +1164,7 @@ class App:
         CONFIG.new['source'] = gi.objs.get_panel().opt_src.get()
         mes = _('Set source to "{}"').format(CONFIG.new['source'])
         Message(f, mes).show_info()
-        lg.objs.get_plugins().set(CONFIG.new['source'])
+        PLUGINS.set(CONFIG.new['source'])
         self.reset_opt(CONFIG.new['source'])
         self.go_search()
     
@@ -1171,7 +1172,7 @@ class App:
         f = '[MClient] mclient.App.auto_swap'
         lang1 = gi.objs.get_panel().opt_lg1.get()
         lang2 = gi.objs.panel.opt_lg2.get()
-        if lg.objs.get_plugins().is_oneway() \
+        if PLUGINS.is_oneway() \
         or not CONFIG.new['Autoswap'] \
         or not lg.objs.get_request().search:
             rep.lazy(f)
@@ -1189,11 +1190,11 @@ class App:
     def reset_opt(self, default=_('Multitran')):
         f = '[MClient] mclient.App.reset_opt'
         # Reset OptionMenus
-        lang1 = lg.objs.get_plugins().get_lang1()
-        lang2 = lg.objs.plugins.get_lang2()
-        langs1 = lg.objs.plugins.get_langs1()
-        langs2 = lg.objs.plugins.get_langs2(lang1)
-        sources = lg.objs.plugins.get_sources()
+        lang1 = PLUGINS.get_lang1()
+        lang2 = PLUGINS.get_lang2()
+        langs1 = PLUGINS.get_langs1()
+        langs2 = PLUGINS.get_langs2(lang1)
+        sources = PLUGINS.get_sources()
         if not (langs1 and langs2 and lang1 and lang2 and sources):
             rep.empty(f)
             return
@@ -1211,7 +1212,7 @@ class App:
             widget first.
         '''
         old = gi.objs.get_panel().opt_lg1.get()
-        gi.objs.panel.opt_lg1.reset (items = lg.objs.get_plugins().get_langs1()
+        gi.objs.panel.opt_lg1.reset (items = PLUGINS.get_langs1()
                                     ,default = old
                                     )
         gi.objs.panel.opt_lg1.set_next()
@@ -1231,7 +1232,7 @@ class App:
             widget first.
         '''
         old = gi.objs.get_panel().opt_lg1.get()
-        gi.objs.panel.opt_lg1.reset (items = lg.objs.get_plugins().get_langs1()
+        gi.objs.panel.opt_lg1.reset (items = PLUGINS.get_langs1()
                                     ,default = old
                                     )
         gi.objs.panel.opt_lg1.set_prev()
@@ -1248,27 +1249,27 @@ class App:
     def set_lang1(self):
         f = '[MClient] mclient.App.set_lang1'
         lang = gi.objs.get_panel().opt_lg1.get()
-        if lg.objs.get_plugins().get_lang1() != lang:
+        if PLUGINS.get_lang1() != lang:
             mes = _('Set language: {}').format(lang)
             Message(f, mes).show_info()
             CONFIG.new['lang1'] = lang
-            lg.objs.get_plugins().set_lang1(lang)
+            PLUGINS.set_lang1(lang)
     
     def set_lang2(self):
         f = '[MClient] mclient.App.set_lang2'
         lang = gi.objs.get_panel().opt_lg2.get()
-        if lg.objs.get_plugins().get_lang2() != lang:
+        if PLUGINS.get_lang2() != lang:
             mes = _('Set language: {}').format(lang)
             Message(f, mes).show_info()
             CONFIG.new['lang2'] = lang
-            lg.objs.get_plugins().set_lang2(lang)
+            PLUGINS.set_lang2(lang)
     
     def update_lang1(self):
         f = '[MClient] mclient.App.update_lang1'
         self.set_lang1()
         self.set_lang2()
-        lang1 = lg.objs.get_plugins().get_lang1()
-        langs1 = lg.objs.plugins.get_langs1()
+        lang1 = PLUGINS.get_lang1()
+        langs1 = PLUGINS.get_langs1()
         if not langs1:
             rep.empty(f)
             return
@@ -1279,9 +1280,9 @@ class App:
         f = '[MClient] mclient.App.update_lang2'
         self.set_lang1()
         self.set_lang2()
-        lang1 = lg.objs.get_plugins().get_lang1()
-        lang2 = lg.objs.plugins.get_lang2()
-        langs2 = lg.objs.plugins.get_langs2(lang1)
+        lang1 = PLUGINS.get_lang1()
+        lang2 = PLUGINS.get_lang2()
+        langs2 = PLUGINS.get_langs2(lang1)
         if not langs2:
             rep.empty(f)
             return
@@ -1294,7 +1295,7 @@ class App:
     
     def swap_langs(self):
         f = '[MClient] mclient.App.swap_langs'
-        if lg.objs.get_plugins().is_oneway():
+        if PLUGINS.is_oneway():
             mes = _('Cannot swap languages, this is a one-way dictionary!')
             Message(f, mes, True).show_info()
             return
@@ -1303,8 +1304,8 @@ class App:
         lang1 = gi.objs.get_panel().opt_lg1.get()
         lang2 = gi.objs.panel.opt_lg2.get()
         lang1, lang2 = lang2, lang1
-        langs1 = lg.objs.get_plugins().get_langs1()
-        langs2 = lg.objs.plugins.get_langs2(lang1)
+        langs1 = PLUGINS.get_langs1()
+        langs2 = PLUGINS.get_langs2(lang1)
         if not langs1:
             rep.empty(f)
             return
@@ -1403,24 +1404,24 @@ class App:
             artid = ARTICLES.id
             
         if artid == -1:
-            cells = lg.objs.get_plugins().request(search = search
+            cells = PLUGINS.request(search = search
                                                  ,url = url)
-            sj.objs.get_subjects().reset(lg.objs.plugins.get_article_subjects())
+            sj.objs.get_subjects().reset(PLUGINS.get_article_subjects())
             ARTICLES.add(search = search
                         ,url = url
                         ,cells = cells
-                        ,fixed_urls = lg.objs.plugins.get_fixed_urls()
-                        ,raw_code = lg.objs.plugins.get_htm()
+                        ,fixed_urls = PLUGINS.get_fixed_urls()
+                        ,raw_code = PLUGINS.get_htm()
                         ,subjf = sj.objs.subjects.article
                         ,blocked = sj.objs.subjects.block
                         ,prioritized = sj.objs.subjects.prior)
-            HistorySubjects().add(lg.objs.plugins.get_article_subjects())
+            HistorySubjects().add(PLUGINS.get_article_subjects())
             self.add_history()
         else:
             mes = _('Load article No. {} from memory').format(artid)
             Message(f, mes).show_info()
             ARTICLES.set_id(artid)
-            sj.objs.get_subjects().reset(lg.objs.get_plugins().get_article_subjects())
+            sj.objs.get_subjects().reset(PLUGINS.get_article_subjects())
             cells = ARTICLES.get_cells()
             
         self.solve_screen()
@@ -1778,7 +1779,8 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] mclient.__main__'
     if CONFIG.Success:
-        lg.objs.get_plugins(Debug=False, maxrows=1000)
+        PLUGINS.Debug = False
+        PLUGINS.maxrows = 1000
         objs.get_app().run_thread()
         objs.app.welcome.reset()
         objs.app.solve_screen()

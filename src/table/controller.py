@@ -6,6 +6,7 @@ from skl_shared_qt.message.controller import Message, rep
 from skl_shared_qt.time import Timer
 from skl_shared_qt.graphics.clipboard.controller import CLIPBOARD
 
+from gui import TableModel
 from popup.controller import Popup
 from config import CONFIG
 from articles import ARTICLES
@@ -317,7 +318,7 @@ class Table:
         # Reset values only if the article is not empty
         self.set_values()
         self.logic.reset(plain, code)
-        self.model = gi.TableModel(self.logic.code)
+        self.model = TableModel(self.logic.code)
         self.fill()
         self.set_col_width()
         self.set_row_height(CONFIG.new['rows']['height'])
