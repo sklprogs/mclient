@@ -3,11 +3,47 @@
 
 from PyQt6.QtWidgets import QTableView, QStyleOptionViewItem, QAbstractItemView
 from PyQt6.QtWidgets import QStyledItemDelegate, QApplication, QStyle
-from PyQt6.QtCore import pyqtSignal, Qt, QSize
+from PyQt6.QtCore import pyqtSignal, Qt, QSize, QAbstractTableModel, QVariant
 from PyQt6.QtGui import QTextCursor, QTextDocument, QAbstractTextDocumentLayout
 from PyQt6.QtGui import QColor, QPen
 
+from skl_shared_qt.localize import _
 from skl_shared_qt.message.controller import rep, Message
+
+WIDE_ROW_COLOR = '#CCCCCC'
+WIDE_ROW_LEN = 70
+
+
+class TableModel(QAbstractTableModel):
+    
+    def __init__(self, datain, parent=None, *args):
+        QAbstractTableModel.__init__(self, parent, *args)
+        self.arraydata = datain
+
+    def rowCount(self, parent):
+        return len(self.arraydata)
+
+    def columnCount(self, parent):
+        if not self.arraydata:
+            return 0
+        return len(self.arraydata[0])
+
+    def data(self, index, role):
+        f = '[MClient] table.gui.TableModel.data'
+        if not index.isValid():
+            return QVariant()
+        if role == Qt.ItemDataRole.DisplayRole:
+            try:
+                return QVariant(self.arraydata[index.row()][index.column()])
+            except Exception:
+                mes = _('List out of bounds at row #{}, column #{}!')
+                mes = mes.format(index.row(), index.column())
+                Message(f, mes).show_warning()
+                return QVariant()
+    
+    def update(self, index_):
+        self.dataChanged.emit(index_, index_)
+
 
 
 class TableDelegate(QStyledItemDelegate):

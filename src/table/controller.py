@@ -6,13 +6,13 @@ from skl_shared_qt.message.controller import Message, rep
 from skl_shared_qt.time import Timer
 from skl_shared_qt.graphics.clipboard.controller import CLIPBOARD
 
-from gui import TableModel
 from popup.controller import Popup
 from config import CONFIG
 from articles import ARTICLES
-from table.gui import TABLE
+from table.gui import TABLE, DELEGATE, TableModel
 from table.logic import Table as lgTable
 from search.controller import Search
+from font_limits.controller import FontLimits
 
 
 class Table:
@@ -190,7 +190,7 @@ class Table:
         if not Mouse:
             self.scroll_top()
         if Mouse:
-            if new_index in TABLE.delegate.long:
+            if new_index in DELEGATE.long:
                 self.show_popup()
             else:
                 self.popup.close()
@@ -332,14 +332,13 @@ class Table:
     def set_long(self):
         # Takes ~0.56s for 'set' on Intel Atom
         f = '[MClient] table.controller.Table.set_long'
-        ilimits = FontLimits (family = CONFIG.new['terms']['font']['family']
-                             ,size = CONFIG.new['terms']['font']['size']
-                             ,Bold = False
-                             ,Italic = False
-                             )
+        ilimits = FontLimits(family = CONFIG.new['terms']['font']['family']
+                            ,size = CONFIG.new['terms']['font']['size']
+                            ,Bold = False
+                            ,Italic = False)
         timer = Timer(f)
         timer.start()
-        TABLE.delegate.long = []
+        DELEGATE.long = []
         for rowno in range(self.logic.rownum):
             for colno in range(self.logic.colnum):
                 ilimits.set_text(self.logic.plain[rowno][colno])
@@ -347,11 +346,11 @@ class Table:
                 index_ = self.model.index(rowno, colno)
                 hint_space = CONFIG.new['rows']['height'] * TABLE.get_col_width(colno)
                 if space > hint_space:
-                    TABLE.delegate.long.append(index_)
+                    DELEGATE.long.append(index_)
         timer.end()
         mes = _('Number of cells: {}').format(self.logic.rownum*self.logic.colnum)
         Message(f, mes).show_debug()
-        mes = _('Number of long cells: {}').format(len(TABLE.delegate.long))
+        mes = _('Number of long cells: {}').format(len(DELEGATE.long))
         Message(f, mes).show_debug()
     
     def set_coords(self, event=None):

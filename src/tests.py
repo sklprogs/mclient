@@ -794,14 +794,14 @@ class Commands:
     
     def run_font_limits(self):
         f = '[MClient] tests.Commands.run_font_limits'
-        import mclient as mc
+        from font_limits.controller import FontLimits
+        from skl_shared_qt.time import Timer
         text = 'Раз, два, три, четыре, пять - вышел зайчик погулять'
-        ilimits = mc.FontLimits (family = cf.objs.get_config().new['terms']['font']['family']
-                                ,size = cf.objs.config.new['terms']['font']['size']
-                                ,Bold = False
-                                ,Italic = False
-                                )
-        timer = sh.Timer(f)
+        ilimits = FontLimits(family = cf.objs.get_config().new['terms']['font']['family']
+                            ,size = cf.objs.config.new['terms']['font']['size']
+                            ,Bold = False
+                            ,Italic = False)
+        timer = Timer(f)
         timer.start()
         ilimits.set_text(text)
         ilimits.get_space()

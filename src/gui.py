@@ -1,13 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import PyQt6
-import PyQt6.QtWidgets
-
 from PyQt6.QtWidgets import QWidget, QLineEdit, QHBoxLayout, QVBoxLayout
 from PyQt6.QtWidgets import QApplication, QMainWindow, QStackedLayout
-from PyQt6.QtGui import QFont, QShortcut, QKeySequence, QCursor
-from PyQt6.QtCore import pyqtSignal, QEvent, Qt, QAbstractTableModel, QVariant
+from PyQt6.QtGui import QShortcut, QKeySequence, QCursor
+from PyQt6.QtCore import pyqtSignal, QEvent, Qt
 
 from skl_shared_qt.localize import _
 from skl_shared_qt.message.controller import Message, rep
@@ -25,22 +22,6 @@ from table.controller import Table
 from table.gui import TABLE
 
 ICON.set(PDIR.add('..', 'resources', 'mclient.png'))
-WIDE_ROW_COLOR = '#CCCCCC'
-WIDE_ROW_LEN = 70
-
-
-class FontLimits:
-    
-    def __init__(self):
-        pass
-    
-    def get_font(self, family, size, weight, italic):
-        return QFont(family, pointSize = size, weight = weight, italic = italic)
-    
-    def get_space(self, text, qfont):
-        qrect = QFontMetrics(qfont).boundingRect(text)
-        return qrect.width() * qrect.height()
-
 
 
 class Entry(shEntry):
@@ -105,38 +86,6 @@ class MinEntryCore(QLineEdit):
         elif key == Qt.Key.Key_End:
             self.sig_end.emit()
         return super().keyPressEvent(event)
-
-
-
-class TableModel(QAbstractTableModel):
-    
-    def __init__(self, datain, parent=None, *args):
-        QAbstractTableModel.__init__(self, parent, *args)
-        self.arraydata = datain
-
-    def rowCount(self, parent):
-        return len(self.arraydata)
-
-    def columnCount(self, parent):
-        if not self.arraydata:
-            return 0
-        return len(self.arraydata[0])
-
-    def data(self, index, role):
-        f = '[MClient] gui.TableModel.data'
-        if not index.isValid():
-            return QVariant()
-        if role == Qt.ItemDataRole.DisplayRole:
-            try:
-                return QVariant(self.arraydata[index.row()][index.column()])
-            except Exception:
-                mes = _('List out of bounds at row #{}, column #{}!')
-                mes = mes.format(index.row(), index.column())
-                Message(f, mes).show_warning()
-                return QVariant()
-    
-    def update(self, index_):
-        self.dataChanged.emit(index_, index_)
 
 
 

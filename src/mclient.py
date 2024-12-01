@@ -18,6 +18,7 @@ from config import CONFIG, HistorySubjects
 from manager import PLUGINS
 from articles import ARTICLES
 from table.controller import Table
+import table.gui
 import logic as lg
 import gui as gi
 import format as fm
@@ -281,48 +282,6 @@ class UpdateUI:
     
     def run(self):
         self.update_buttons()
-
-
-
-class FontLimits:
-    
-    def __init__(self, family, size, Bold=False, Italic=False):
-        self.set_values()
-        self.family = family
-        self.size = size
-        self.Bold = Bold
-        self.Italic = Italic
-        self.gui = gi.FontLimits()
-        self.set_font()
-    
-    def set_values(self):
-        self.family = 'Sans'
-        self.text = ''
-        self.font = None
-        self.size = 0
-        self.Bold = False
-        self.Italic = False
-    
-    def set_text(self, text):
-        self.text = str(text)
-    
-    def set_font(self):
-        # 400 is normal, 700 - bold
-        if self.Bold:
-            weight = 700
-        else:
-            weight = 400
-        self.font = self.gui.get_font (self.family
-                                      ,size = self.size
-                                      ,weight = weight
-                                      ,italic = self.Italic
-                                      )
-    
-    def get_space(self):
-        space = self.gui.get_space(self.text, self.font)
-        #mes = _('Space: {}').format(space)
-        #Message(f, mes).show_debug()
-        return space
 
 
 
@@ -694,8 +653,8 @@ class App:
         self.thread = kg.Thread()
         self.logic = lg.App()
         self.gui = gi.App()
-        self.gui.WIDE_ROW_COLOR = CONFIG.new["rows"]["border"]["color"]
-        self.gui.WIDE_ROW_LEN = CONFIG.new["rows"]["border"]["length"]
+        table.gui.WIDE_ROW_COLOR = CONFIG.new["rows"]["border"]["color"]
+        table.gui.WIDE_ROW_LEN = CONFIG.new["rows"]["border"]["length"]
         self.set_gui()
         self.set_hints()
         self.update_ui()
