@@ -11,7 +11,7 @@ from skl_shared_qt.message.controller import Message, rep
 from skl_shared_qt.graphics.root.controller import ROOT
 from skl_shared_qt.graphics.icon.controller import ICON
 from skl_shared_qt.graphics.entry.controller import Entry as shEntry
-from skl_shared_qt.graphics.option_menu.controller import OPTION_MENU
+from skl_shared_qt.graphics.option_menu.controller import OptionMenu
 #TODO: Delete
 from skl_shared_qt.graphics.entry.gui import Entry as shguiEntry
 from skl_shared_qt.graphics.button.controller import Button
@@ -364,13 +364,12 @@ class Panel(QWidget):
         # A button to insert special symbols
         self.btn_sym = Button(inactive = self.icn_sym, active = self.icn_sym)
         # Drop-down list with dictionary sources
-        self.opt_src = OPTION_MENU
+        self.opt_src = OptionMenu()
         # Drop-down lists with languages
-        self.opt_lg1 = OPTION_MENU
+        self.opt_lg1 = OptionMenu()
         self.btn_swp = Button(inactive = self.icn_swp, active = self.icn_swp)
-        self.opt_lg2 = OPTION_MENU
-        self.opt_col = OPTION_MENU
-        self.opt_col.reset(range(1, 11), 5)
+        self.opt_lg2 = OptionMenu()
+        self.opt_col = OptionMenu(range(1, 11), 5)
         # A settings button
         self.btn_set = Button(inactive = self.icn_set, active = self.icn_set)
         # A button to toggle subject blocking
