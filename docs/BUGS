@@ -1,3 +1,9 @@
+Traceback (most recent call last):
+  File "/home/pete/bin/mclient/src/table/controller.py", line 85, in show_popup
+    max_width = objs.get_app().get_width()
+                ^^^^
+NameError: name 'objs' is not defined
+
 mclient:
 Traceback (most recent call last):
   File "/home/pete/bin/mclient/src/symbols/gui.py", line 106, in keyPressEvent
