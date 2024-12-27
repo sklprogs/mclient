@@ -90,9 +90,8 @@ class Articles:
     def get_len(self):
         return self.get_max_id() + 1
     
-    def add (self, search='', url='', cells=[], table=[], raw_code=''
-            ,fixed_urls=[], subjf=[], blocked=[], prioritized=[]
-            ):
+    def add(self, search='', url='', cells=[], table=[], raw_code=''
+           ,fixed_urls=[], subjf=[], blocked=[], prioritized=[]):
         f = '[MClient] articles.Articles.add'
         # Do not add articles that were not found to history
         if not cells:
@@ -167,8 +166,7 @@ class Articles:
         f = '[MClient] articles.Articles.get_bookmark'
         try:
             return (self.articles['ids'][self.id]['rowno']
-                   ,self.articles['ids'][self.id]['colno']
-                   )
+                   ,self.articles['ids'][self.id]['colno'])
         except KeyError:
             rep.wrong_input(f)
     
