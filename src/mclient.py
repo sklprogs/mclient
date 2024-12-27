@@ -205,8 +205,8 @@ class UpdateUI:
     
     def update_block(self):
         f = '[MClient] mclient.UpdateUI.update_block'
-        ''' #NOTE: We cannot use 'ARTICLES.get_cells()' since
-            it does not have blocked items.
+        ''' #NOTE: We cannot use 'ARTICLES.get_cells()' since it does not have
+            blocked items.
         '''
         blocked_subj = ARTICLES.get_blocked()
         blocked_cells = ARTICLES.get_blocked_cells()
@@ -436,10 +436,9 @@ class Welcome(wl.Welcome):
         code = []
         for source in self.sources:
             if source.Online:
-                desc = self.gen_online_source (title = source.title
-                                              ,status = source.status
-                                              ,color = source.color
-                                              )
+                desc = self.gen_online_source(title = source.title
+                                             ,status = source.status
+                                             ,color = source.color)
                 code.append(desc)
         code = ', '.join(code) + '.'
         code = self.set_font(code)
@@ -449,10 +448,9 @@ class Welcome(wl.Welcome):
         code = []
         for source in self.sources:
             if not source.Online:
-                desc = self.gen_offline_source (title = source.title
-                                               ,status = source.status
-                                               ,color = source.color
-                                               )
+                desc = self.gen_offline_source(title = source.title
+                                              ,status = source.status
+                                              ,color = source.color)
                 code.append(desc)
         code = _('Offline dictionaries loaded: ') + ', '.join(code) + '.'
         code = self.set_font(code)
@@ -717,8 +715,7 @@ class App:
                 ,(gi.objs.panel.btn_prn, 'print')
                 ,(gi.objs.panel.btn_def, 'define')
                 ,(gi.objs.panel.btn_abt, 'toggle_about')
-                ,(gi.objs.panel.btn_qit, 'quit')
-                )
+                ,(gi.objs.panel.btn_qit, 'quit'))
         for pair in pairs:
             self._set_hint(pair[0], pair[1])
     
@@ -740,9 +737,7 @@ class App:
         if not fragment:
             rep.empty(f)
             return
-        items = lg.com.suggest (search = fragment
-                               ,limit = 35
-                               )
+        items = lg.com.suggest(search=fragment, limit=35)
         if not items:
             mes = _('No suggestions are available!')
             Message(f, mes).show_info()
@@ -880,11 +875,10 @@ class App:
         f = '[MClient] mclient.App.edit_blacklist'
         old_list = CONFIG.new['subjects']['blocked']
         old_key = CONFIG.new['BlockSubjects']
-        objs.get_block().reset (lst1 = old_list
-                               ,lst2 = PLUGINS.get_subjects()
-                               ,art_subjects = com.get_article_subjects()
-                               ,majors = PLUGINS.get_majors()
-                               )
+        objs.get_block().reset(lst1 = old_list
+                              ,lst2 = PLUGINS.get_subjects()
+                              ,art_subjects = com.get_article_subjects()
+                              ,majors = PLUGINS.get_majors())
         objs.block.set_checkbox(CONFIG.new['BlockSubjects'])
         objs.block.show()
         CONFIG.new['BlockSubjects'] = self.block.get_checkbox()
@@ -940,12 +934,11 @@ class App:
         if not lg.objs.get_request().search:
             rep.lazy(f)
             return
-        self.history.add_row (id_ = ARTICLES.id
-                             ,source = PLUGINS.source
-                             ,lang1 = PLUGINS.get_lang1()
-                             ,lang2 = PLUGINS.get_lang2()
-                             ,search = ARTICLES.get_search()
-                             )
+        self.history.add_row(id_ = ARTICLES.id
+                            ,source = PLUGINS.source
+                            ,lang1 = PLUGINS.get_lang1()
+                            ,lang2 = PLUGINS.get_lang2()
+                            ,search = ARTICLES.get_search())
         # Setting column width works only after updating the model, see https://stackoverflow.com/questions/8364061/how-do-you-set-the-column-width-on-a-qtreeview
         self.history.gui.set_col_width()
     
@@ -1099,7 +1092,7 @@ class App:
         f = '[MClient] mclient.App.reset_columns'
         if not lg.com.is_parallel():
             CONFIG.new['columns']['num'] = Input(title = f
-                                                        ,value = gi.objs.get_panel().opt_col.get()).get_integer()
+                                                ,value = gi.objs.get_panel().opt_col.get()).get_integer()
         collimit = lg.objs.get_column_width().fixed_num + lg.objs.column_width.term_num
         mes = _('Set the number of columns to {} ({} in total)')
         mes = mes.format(lg.objs.column_width.term_num, collimit)
@@ -1131,8 +1124,7 @@ class App:
         f = '[MClient] mclient.App.auto_swap'
         lang1 = gi.objs.get_panel().opt_lg1.get()
         lang2 = gi.objs.panel.opt_lg2.get()
-        if PLUGINS.is_oneway() \
-        or not CONFIG.new['Autoswap'] \
+        if PLUGINS.is_oneway() or not CONFIG.new['Autoswap'] \
         or not lg.objs.get_request().search:
             rep.lazy(f)
             return
@@ -1157,13 +1149,10 @@ class App:
         if not (langs1 and langs2 and lang1 and lang2 and sources):
             rep.empty(f)
             return
-        gi.objs.get_panel().opt_lg1.reset(items = langs1
-                                         ,default = lang1)
-        gi.objs.panel.opt_lg2.reset(items = langs2
-                                   ,default = lang2)
+        gi.objs.get_panel().opt_lg1.reset(items=langs1, default=lang1)
+        gi.objs.panel.opt_lg2.reset(items=langs2, default=lang2)
         #NOTE: change this upon the change of the default source
-        gi.objs.panel.opt_src.reset(items = sources
-                                   ,default = default)
+        gi.objs.panel.opt_src.reset(items=sources, default=default)
     
     def set_next_lang1(self):
         ''' We want to navigate through the full list of supported languages
@@ -1171,9 +1160,8 @@ class App:
             widget first.
         '''
         old = gi.objs.get_panel().opt_lg1.get()
-        gi.objs.panel.opt_lg1.reset (items = PLUGINS.get_langs1()
-                                    ,default = old
-                                    )
+        gi.objs.panel.opt_lg1.reset(items = PLUGINS.get_langs1()
+                                   ,default = old)
         gi.objs.panel.opt_lg1.set_next()
         self.update_lang1()
         self.update_lang2()
@@ -1191,9 +1179,8 @@ class App:
             widget first.
         '''
         old = gi.objs.get_panel().opt_lg1.get()
-        gi.objs.panel.opt_lg1.reset (items = PLUGINS.get_langs1()
-                                    ,default = old
-                                    )
+        gi.objs.panel.opt_lg1.reset(items = PLUGINS.get_langs1()
+                                   ,default = old)
         gi.objs.panel.opt_lg1.set_prev()
         self.update_lang1()
         self.update_lang2()
@@ -1247,9 +1234,7 @@ class App:
             return
         if not lang2 in langs2:
             lang2 = langs2[0]
-        gi.objs.get_panel().opt_lg2.reset (items = langs2
-                                          ,default = lang2
-                                          )
+        gi.objs.get_panel().opt_lg2.reset(items=langs2, default=lang2)
         self.set_lang2()
     
     def swap_langs(self):
@@ -1272,12 +1257,8 @@ class App:
             mes = _('Pair {}-{} is not supported!').format(lang1, lang2)
             Message(f, mes, True).show_warning()
             return
-        gi.objs.panel.opt_lg1.reset (items = langs1
-                                    ,default = lang1
-                                    )
-        gi.objs.panel.opt_lg2.reset (items = langs2
-                                    ,default = lang2
-                                    )
+        gi.objs.panel.opt_lg1.reset(items=langs1, default=lang1)
+        gi.objs.panel.opt_lg2.reset(items=langs2, default=lang2)
         self.update_lang1()
         self.update_lang2()
     
@@ -1317,9 +1298,8 @@ class App:
             lg.objs.request.url = cell.url
             mes = _('Open link: {}').format(lg.objs.request.url)
             Message(f, mes).show_info()
-            self.load_article (search = lg.objs.request.search
-                              ,url = lg.objs.request.url
-                              )
+            self.load_article(search = lg.objs.request.search
+                             ,url = lg.objs.request.url)
         else:
             self.go_search()
     
@@ -1363,8 +1343,7 @@ class App:
             artid = ARTICLES.id
             
         if artid == -1:
-            cells = PLUGINS.request(search = search
-                                                 ,url = url)
+            cells = PLUGINS.request(search=search, url=url)
             sj.objs.get_subjects().reset(PLUGINS.get_article_subjects())
             ARTICLES.add(search = search
                         ,url = url
