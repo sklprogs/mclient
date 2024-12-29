@@ -33,6 +33,7 @@ from save.controller import Save
 import popup.controller as pp
 import keylistener.gui as kg
 import subjects as sj
+from block_mode import BLOCK_MODE
 
 
 DEBUG = False
@@ -182,114 +183,6 @@ class UpdateUI:
 
 
 
-class BlockMode:
-    
-    def __init__(self):
-        self.cell = None
-        self.blockno = -1
-    
-    def copy_block(self):
-        f = '[MClient] mclient.BlockMode.copy_block'
-        if not self.cell or not self.cell.blocks:
-            rep.empty(f)
-            return
-        try:
-            CLIPBOARD.copy(self.cell.blocks[self.blockno].text.strip())
-            return True
-        except IndexError:
-            mes = _('Wrong input data: "{}"!').format(self.blockno)
-            Message(f, mes, True).show_warning()
-    
-    def select_next(self):
-        f = '[MClient] mclient.BlockMode.select_next'
-        self.enable()
-        if not self.cell or not self.cell.blocks:
-            rep.empty(f)
-            return
-        self.blockno += 1
-        if self.blockno == len(self.cell.blocks):
-            self.blockno = 0
-        self.set_cell()
-        self.select()
-    
-    def select_prev(self):
-        f = '[MClient] mclient.BlockMode.select_prev'
-        self.enable()
-        if not self.cell or not self.cell.blocks:
-            rep.empty(f)
-            return
-        self.blockno -= 1
-        if self.blockno < 0:
-            self.blockno = len(self.cell.blocks) - 1
-        self.set_cell()
-        self.select()
-    
-    def toggle(self):
-        if self.blockno == -1:
-            self.enable()
-        else:
-            self.disable()
-    
-    def disable(self):
-        f = '[MClient] mclient.BlockMode.disable'
-        self.blockno = -1
-        mes = _('Disable block mode')
-        Message(f, mes).show_info()
-        self.set_cell()
-        self.select()
-    
-    def enable(self):
-        f = '[MClient] mclient.BlockMode.enable'
-        if self.blockno > -1:
-            rep.lazy(f)
-            return
-        self.blockno = 0
-        mes = _('Enable block mode')
-        Message(f, mes).show_info()
-        self.set_cell()
-        self.select()
-    
-    def set_cell(self):
-        f = '[MClient] mclient.BlockMode.set_cell'
-        tuple_ = objs.get_app().table.get_cell()
-        if not tuple_:
-            rep.empty(f)
-            return
-        rowno, colno = tuple_[0], tuple_[1]
-        mes = _('Row #{}. Column #{}').format(rowno, colno)
-        Message(f, mes).show_debug()
-        cells = ARTICLES.get_table()
-        if not cells:
-            rep.empty(f)
-            return
-        try:
-            self.cell = cells[rowno][colno]
-        except (KeyError, IndexError):
-            mes = _('Wrong input data!')
-            Message(f, mes, True).show_warning()
-            return
-    
-    def select(self):
-        f = '[MClient] mclient.BlockMode.select'
-        if not self.cell:
-            rep.empty(f)
-            return
-        try:
-            block = self.cell.blocks[self.blockno]
-        except IndexError:
-            mes = _('Wrong input data: "{}"!').format(self.blockno)
-            Message(f, mes).show_warning()
-            return
-        code = []
-        for i in range(len(self.cell.blocks)):
-            code.append(fm.Block(self.cell.blocks[i], self.cell.colno, i==self.blockno).run())
-        self.cell.code = List(code).space_items()
-        objs.get_app().table.logic.code[self.cell.rowno][self.cell.colno] = self.cell.code
-        objs.app.table.reset(objs.app.table.logic.plain, objs.app.table.logic.code)
-        objs.app.table.select(self.cell.rowno, self.cell.colno)
-
-
-
 class App:
     
     def __init__(self):
@@ -304,37 +197,37 @@ class App:
         self.update_ui()
     
     def copy_block(self):
-        if self.block_mode.copy_block():
+        if BLOCK_MODE.copy_block():
             if CONFIG.new['Iconify']:
                 self.minimize()
     
     def solve_copy(self):
-        if self.block_mode.blockno > -1:
+        if BLOCK_MODE.blockno > -1:
             self.copy_block()
         else:
             self.copy_cell()
     
     def solve_go_left(self):
-        if self.block_mode.blockno > -1:
-            self.block_mode.select_prev()
+        if BLOCK_MODE.blockno > -1:
+            BLOCK_MODE.select_prev()
         else:
             TABLE.go_left()
     
     def solve_go_right(self):
-        if self.block_mode.blockno > -1:
-            self.block_mode.select_next()
+        if BLOCK_MODE.blockno > -1:
+            BLOCK_MODE.select_next()
         else:
             TABLE.go_right()
     
     def solve_go_down(self):
-        if self.block_mode.blockno > -1:
-            self.block_mode.select_next()
+        if BLOCK_MODE.blockno > -1:
+            BLOCK_MODE.select_next()
         else:
             TABLE.go_down()
     
     def solve_go_up(self):
-        if self.block_mode.blockno > -1:
-            self.block_mode.select_prev()
+        if BLOCK_MODE.blockno > -1:
+            BLOCK_MODE.select_prev()
         else:
             TABLE.go_up()
     
@@ -1223,7 +1116,7 @@ class App:
         self.gui.bind(CONFIG.new['actions']['copy_nominative']['hotkeys']
                      ,self.copy_wform)
         self.gui.bind(CONFIG.new['actions']['select_block']['hotkeys']
-                     ,self.block_mode.toggle)
+                     ,BLOCK_MODE.toggle)
         
         self.history.gui.bind(CONFIG.new['actions']['toggle_history']['hotkeys']
                              ,self.history.close)
@@ -1323,7 +1216,6 @@ class App:
         self.history = hs.History()
         self.save = Save()
         self.suggest = sg.Suggest()
-        self.block_mode = BlockMode()
         self.set_title(ABOUT.logic.product)
         self.set_bindings()
 
