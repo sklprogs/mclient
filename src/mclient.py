@@ -415,9 +415,9 @@ class App:
         old_list = CONFIG.new['subjects']['blocked']
         old_key = CONFIG.new['BlockSubjects']
         BLOCK.reset(lst1 = old_list
-                              ,lst2 = PLUGINS.get_subjects()
-                              ,art_subjects = com.get_article_subjects()
-                              ,majors = PLUGINS.get_majors())
+                   ,lst2=PLUGINS.get_subjects()
+                   ,art_subjects = com.get_article_subjects()
+                   ,majors = PLUGINS.get_majors())
         BLOCK.set_checkbox(CONFIG.new['BlockSubjects'])
         BLOCK.show()
         CONFIG.new['BlockSubjects'] = self.block.get_checkbox()
