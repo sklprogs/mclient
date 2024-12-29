@@ -5,7 +5,24 @@ from skl_shared_qt.localize import _
 from skl_shared_qt.message.controller import Message, rep
 from skl_shared_qt.graphics.root.controller import ROOT
 
+from config import CONFIG
+from manager import PLUGINS
+from articles import ARTICLES
+
 from prior_block.gui import Panes as guiPanes
+
+
+def get_article_subjects():
+    f = '[MClient] prior_block.controller.get_article_subjects'
+    subjfs = ARTICLES.get_subjf()
+    if not subjfs:
+        rep.empty(f)
+        return {}
+    subjfs = sorted(set(subjfs), key=lambda s: s.casefold())
+    dic = {}
+    for subjf in subjfs:
+        dic[subjf] = {}
+    return dic
 
 
 class Panes:
@@ -144,61 +161,106 @@ class Panes:
         self.gui.set_title(title)
 
 
-if __name__ == '__main__':
-    dic1 = {'LeftRoot':
-               {'LeftLevel1':
-                   {'LeftLevel1_item1': {}
-                   ,'LeftLevel1_item2': {}
-                   ,'LeftLevel1_item3': {}
-                   }
-               ,'LeftLevel2':
-                   {'LeftLevel2_SubLevel1':
-                       {'LeftLevel2_SubLevel1_item1': {}
-                       ,'LeftLevel2_SubLevel1_item2': {}
-                       ,'LeftLevel2_SubLevel1_item3': {}
-                       }
-                   ,'LeftLevel2_SubLevel2':
-                       {'LeftLevel2_SubLevel2_item1': {}
-                       ,'LeftLevel2_SubLevel2_item2': {}
-                       ,'LeftLevel2_SubLevel2_item3': {}
-                       }
-                   }
-               ,'LeftLevel3':
-                   {'LeftLevel3_item1': {}
-                   ,'LeftLevel3_item2': {}
-                   ,'LeftLevel3_item3': {}
-                   }
-               }
-           }
-    dic2 = {'RightRoot':
-               {'RightLevel1':
-                   {'RightLevel1_item1': {}
-                   ,'RightLevel1_item2': {}
-                   ,'RightLevel1_item3': {}
-                   }
-               ,'RightLevel2':
-                   {'RightLevel2_SubLevel1':
-                       {'RightLevel2_SubLevel1_item1': {}
-                       ,'RightLevel2_SubLevel1_item2': {}
-                       ,'RightLevel2_SubLevel1_item3': {}
-                       }
-                   ,'RightLevel2_SubLevel2':
-                       {'RightLevel2_SubLevel2_item1': {}
-                       ,'RightLevel2_SubLevel2_item2': {}
-                       ,'RightLevel2_SubLevel2_item3': {}
-                       }
-                   }
-               ,'RightLevel3':
-                   {'RightLevel3_item1': {}
-                   ,'RightLevel3_item2': {}
-                   ,'RightLevel3_item3': {}
-                   }
-               }
-           }
+
+class Block(Panes):
     
-    panes = Panes()
-    panes.fill(dic1, dic2)
-    # For some reason, this does not work when run within Panes
-    panes.expand_all()
-    panes.show()
-    ROOT.end()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.set_titles()
+        self.add_bindings()
+        self.reset()
+    
+    def set_titles(self):
+        self.gui.set_title(_('Blocking'))
+        self.gui.tree1.set_header(_('Blocked subjects'))
+    
+    def toggle_use(self):
+        self.gui.cbx_pri.toggle()
+        self.save()
+    
+    def save(self):
+        CONFIG.new['subjects']['blocked'] = self.dump1()
+        CONFIG.new['BlockSubjects'] = self.gui.cbx_pri.get()
+        self.gui.load_article()
+    
+    def add_bindings(self):
+        self.gui.btn_res.set_action(self.reset)
+        self.gui.btn_apl.set_action(self.apply)
+        self.gui.opt_src.set_action(self.reset)
+    
+    def set_mode(self):
+        f = '[MClient] prior_block.controller.Block.set_mode'
+        mode = self.gui.opt_src.get()
+        if mode == _('All subjects'):
+            self.dic2 = PLUGINS.get_subjects()
+        elif mode == _('From the article'):
+            self.dic2 = get_article_subjects()
+        else:
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(mode, '; '.join(self.gui.opt_src.items))
+            Message(f, mes, True).show_error()
+            return
+        mes = _('Mode: "{}"').format(mode)
+        Message(f, mes).show_debug()
+    
+    def reset(self):
+        self.dic1 = CONFIG.new['subjects']['blocked']
+        self.set_mode()
+        #TODO: Elaborate
+        self.fill(self.dic1, self.dic2)
+    
+    def apply(self):
+        self.close()
+        self.save()
+
+
+
+class Priorities(Panes):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.add_bindings()
+        self.reset()
+    
+    def toggle_use(self):
+        self.gui.cbx_pri.toggle()
+        self.save()
+    
+    def save(self):
+        CONFIG.new['subjects']['prioritized'] = self.dump1()
+        CONFIG.new['PrioritizeSubjects'] = self.gui.cbx_pri.get()
+        self.gui.load_article()
+    
+    def add_bindings(self):
+        self.gui.btn_res.set_action(self.reset)
+        self.gui.btn_apl.set_action(self.apply)
+        self.gui.opt_src.set_action(self.reset)
+    
+    def set_mode(self):
+        f = '[MClient] prior_block.controller.Priorities.set_mode'
+        mode = self.gui.opt_src.get()
+        if mode == _('All subjects'):
+            self.dic2 = PLUGINS.get_subjects()
+        elif mode == _('From the article'):
+            self.dic2 = get_article_subjects()
+        else:
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(mode, '; '.join(self.gui.opt_src.items))
+            Message(f, mes, True).show_error()
+            return
+        mes = _('Mode: "{}"').format(mode)
+        Message(f, mes).show_debug()
+    
+    def reset(self):
+        self.dic1 = CONFIG.new['subjects']['prioritized']
+        self.set_mode()
+        #TODO: Elaborate
+        self.fill(self.dic1, self.dic2)
+    
+    def apply(self):
+        self.close()
+        self.save()
+
+
+BLOCK = Block()
+PRIOR = Priorities()

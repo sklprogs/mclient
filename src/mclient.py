@@ -22,7 +22,7 @@ import logic as lg
 import gui as gi
 import format as fm
 import cells as cl
-import prior_block.controller as pr
+from prior_block.controller import BLOCK, PRIOR
 import settings.controller as st
 import suggest.controller as sg
 from about.controller import ABOUT
@@ -36,107 +36,6 @@ import subjects as sj
 
 
 DEBUG = False
-
-
-class Priorities(pr.Panes):
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.add_bindings()
-        self.reset()
-    
-    def toggle_use(self):
-        objs.get_prior().gui.cbx_pri.toggle()
-        self.save()
-    
-    def save(self):
-        CONFIG.new['subjects']['prioritized'] = self.dump1()
-        CONFIG.new['PrioritizeSubjects'] = objs.get_prior().gui.cbx_pri.get()
-        objs.get_app().load_article()
-    
-    def add_bindings(self):
-        self.gui.btn_res.set_action(self.reset)
-        self.gui.btn_apl.set_action(self.apply)
-        self.gui.opt_src.set_action(self.reset)
-    
-    def set_mode(self):
-        f = '[MClient] mclient.Priorities.set_mode'
-        mode = self.gui.opt_src.get()
-        if mode == _('All subjects'):
-            self.dic2 = PLUGINS.get_subjects()
-        elif mode == _('From the article'):
-            self.dic2 = com.get_article_subjects()
-        else:
-            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(mode, '; '.join(self.gui.opt_src.items))
-            Message(f, mes, True).show_error()
-            return
-        mes = _('Mode: "{}"').format(mode)
-        Message(f, mes).show_debug()
-    
-    def reset(self):
-        self.dic1 = CONFIG.new['subjects']['prioritized']
-        self.set_mode()
-        #TODO: Elaborate
-        self.fill(self.dic1, self.dic2)
-    
-    def apply(self):
-        self.close()
-        self.save()
-
-
-
-class Block(pr.Panes):
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.set_titles()
-        self.add_bindings()
-        self.reset()
-    
-    def set_titles(self):
-        self.gui.set_title(_('Blocking'))
-        self.gui.tree1.set_header(_('Blocked subjects'))
-    
-    def toggle_use(self):
-        objs.get_block().gui.cbx_pri.toggle()
-        self.save()
-    
-    def save(self):
-        CONFIG.new['subjects']['blocked'] = self.dump1()
-        CONFIG.new['BlockSubjects'] = objs.get_block().gui.cbx_pri.get()
-        objs.get_app().load_article()
-    
-    def add_bindings(self):
-        self.gui.btn_res.set_action(self.reset)
-        self.gui.btn_apl.set_action(self.apply)
-        self.gui.opt_src.set_action(self.reset)
-    
-    def set_mode(self):
-        f = '[MClient] mclient.Block.set_mode'
-        mode = self.gui.opt_src.get()
-        if mode == _('All subjects'):
-            self.dic2 = PLUGINS.get_subjects()
-        elif mode == _('From the article'):
-            self.dic2 = com.get_article_subjects()
-        else:
-            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(mode, '; '.join(self.gui.opt_src.items))
-            Message(f, mes, True).show_error()
-            return
-        mes = _('Mode: "{}"').format(mode)
-        Message(f, mes).show_debug()
-    
-    def reset(self):
-        self.dic1 = CONFIG.new['subjects']['blocked']
-        self.set_mode()
-        #TODO: Elaborate
-        self.fill(self.dic1, self.dic2)
-    
-    def apply(self):
-        self.close()
-        self.save()
-
 
 
 class UpdateUI:
@@ -188,10 +87,10 @@ class UpdateUI:
             gi.objs.get_panel().btn_pri.inactivate()
         if CONFIG.new['PrioritizeSubjects']:
             mes.append(_('Status: ON'))
-            objs.get_prior().gui.cbx_pri.enable()
+            PRIOR.gui.cbx_pri.enable()
         else:
             mes.append(_('Status: OFF'))
-            objs.get_prior().gui.cbx_pri.disable()
+            PRIOR.gui.cbx_pri.disable()
         if prioritized:
             sub = _('{} subjects were prioritized')
             sub = sub.format(len(prioritized))
@@ -232,9 +131,9 @@ class UpdateUI:
         gi.objs.panel.btn_blk.hint = '\n'.join(mes)
         gi.objs.panel.btn_blk.set_hint()
         if CONFIG.new['BlockSubjects']:
-            objs.get_block().gui.cbx_pri.enable()
+            BLOCK.gui.cbx_pri.enable()
         else:
-            objs.get_block().gui.cbx_pri.disable()
+            BLOCK.gui.cbx_pri.disable()
     
     def update_go_next(self):
         if ARTICLES.is_last():
@@ -280,22 +179,6 @@ class UpdateUI:
     
     def run(self):
         self.update_buttons()
-
-
-
-class Commands:
-    
-    def get_article_subjects(self):
-        f = '[MClient] mclient.Commands.get_article_subjects'
-        subjfs = ARTICLES.get_subjf()
-        if not subjfs:
-            rep.empty(f)
-            return {}
-        subjfs = sorted(set(subjfs), key=lambda s: s.casefold())
-        dic = {}
-        for subjf in subjfs:
-            dic[subjf] = {}
-        return dic
 
 
 
@@ -638,14 +521,14 @@ class App:
         f = '[MClient] mclient.App.edit_blacklist'
         old_list = CONFIG.new['subjects']['blocked']
         old_key = CONFIG.new['BlockSubjects']
-        objs.get_block().reset(lst1 = old_list
+        BLOCK.reset(lst1 = old_list
                               ,lst2 = PLUGINS.get_subjects()
                               ,art_subjects = com.get_article_subjects()
                               ,majors = PLUGINS.get_majors())
-        objs.block.set_checkbox(CONFIG.new['BlockSubjects'])
-        objs.block.show()
+        BLOCK.set_checkbox(CONFIG.new['BlockSubjects'])
+        BLOCK.show()
         CONFIG.new['BlockSubjects'] = self.block.get_checkbox()
-        new_list = objs.block.get1()
+        new_list = BLOCK.get1()
         if (old_list == new_list) \
         and (old_key == CONFIG.new['BlockSubjects']):
             rep.lazy(f)
@@ -1312,13 +1195,13 @@ class App:
         self.gui.bind(CONFIG.new['actions']['swap_langs']['hotkeys']
                      ,self.swap_langs)
         self.gui.bind(CONFIG.new['actions']['toggle_block']['hotkeys']
-                     ,objs.get_block().toggle_use)
+                     ,BLOCK.toggle_use)
         self.gui.bind(CONFIG.new['actions']['toggle_priority']['hotkeys']
-                     ,objs.get_prior().toggle_use)
+                     ,PRIOR.toggle_use)
         self.gui.bind(CONFIG.new['actions']['show_block']['hotkeys']
-                     ,objs.get_block().toggle)
+                     ,BLOCK.toggle)
         self.gui.bind(CONFIG.new['actions']['show_prior']['hotkeys']
-                     ,objs.get_prior().toggle)
+                     ,PRIOR.toggle)
         self.gui.bind(CONFIG.new['actions']['toggle_popup']['hotkeys']
                      ,TABLE.show_popup)
         self.gui.bind(CONFIG.new['actions']['toggle_alphabet']['hotkeys']
@@ -1344,10 +1227,10 @@ class App:
         
         self.history.gui.bind(CONFIG.new['actions']['toggle_history']['hotkeys']
                              ,self.history.close)
-        objs.get_block().gui.bind(CONFIG.new['actions']['show_block']['hotkeys']
-                                 ,objs.block.close)
-        objs.get_prior().gui.bind(CONFIG.new['actions']['show_prior']['hotkeys']
-                                 ,objs.prior.close)
+        BLOCK.gui.bind(CONFIG.new['actions']['show_block']['hotkeys']
+                      ,BLOCK.close)
+        PRIOR.gui.bind(CONFIG.new['actions']['show_prior']['hotkeys']
+                      ,PRIOR.close)
         
         self.settings.gui.bind(CONFIG.new['actions']['toggle_settings']['hotkeys']
                               ,self.settings.close)
@@ -1371,7 +1254,7 @@ class App:
         
         gi.objs.panel.btn_abt.set_action(ABOUT.toggle)
         gi.objs.panel.btn_alp.set_action(self.toggle_alphabet)
-        gi.objs.panel.btn_blk.set_action(objs.block.toggle)
+        gi.objs.panel.btn_blk.set_action(BLOCK.toggle)
         gi.objs.panel.btn_brw.set_action(self.logic.open_in_browser)
         gi.objs.panel.btn_cap.set_action(self.watch_clipboard)
         gi.objs.panel.btn_clr.set_action(self.clear_search_field)
@@ -1379,7 +1262,7 @@ class App:
         gi.objs.panel.btn_hst.set_action(self.history.toggle)
         gi.objs.panel.btn_ins.set_action(self.paste)
         gi.objs.panel.btn_nxt.set_action(self.go_next)
-        gi.objs.panel.btn_pri.set_action(objs.prior.toggle)
+        gi.objs.panel.btn_pri.set_action(PRIOR.toggle)
         gi.objs.panel.btn_prn.set_action(self.logic.print)
         gi.objs.panel.btn_prv.set_action(self.go_back)
         gi.objs.panel.btn_qit.set_action(self.close)
@@ -1423,8 +1306,11 @@ class App:
         
         self.suggest.gui.sig_load.connect(self.load_suggestion)
         
-        objs.block.gui.sig_close.connect(objs.block.close)
-        objs.prior.gui.sig_close.connect(objs.prior.close)
+        BLOCK.gui.sig_close.connect(BLOCK.close)
+        PRIOR.gui.sig_close.connect(PRIOR.close)
+        
+        BLOCK.gui.sig_load.connect(self.load_article)
+        PRIOR.gui.sig_load.connect(self.load_article)
         
         self.thread.bind_catch(self.catch)
     
@@ -1458,20 +1344,9 @@ class Objects:
             import windows.geometry.controller as wg
             self.geometry = wg.Geometry()
         return self.geometry
-    
-    def get_block(self):
-        if self.block is None:
-            self.block = Block()
-        return self.block
-    
-    def get_prior(self):
-        if self.prior is None:
-            self.prior = Priorities()
-        return self.prior
 
 
 objs = Objects()
-com = Commands()
 
 
 if __name__ == '__main__':

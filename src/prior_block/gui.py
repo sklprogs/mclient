@@ -106,6 +106,7 @@ class TreeWidget(QTreeWidget):
 class Panes(QWidget):
     
     sig_close = pyqtSignal()
+    sig_load = pyqtSignal()
     
     def __init__(self):
         super().__init__()
@@ -114,6 +115,9 @@ class Panes(QWidget):
     def closeEvent(self, event):
         self.sig_close.emit()
         return super().closeEvent(event)
+    
+    def load_article(self):
+        self.sig_load.emit()
     
     def reset_drop(self):
         self.tree1.reset_drop()
