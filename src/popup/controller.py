@@ -99,3 +99,6 @@ class Popup:
         self.gui.bind(('Esc',), self.close)
         self.gui.bind(CONFIG.new['actions']['toggle_popup']['hotkeys']
                      ,self.toggle)
+
+
+POPUP = Popup()

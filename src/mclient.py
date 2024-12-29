@@ -30,7 +30,7 @@ import symbols.controller as sm
 from welcome.controller import WELCOME
 import history.controller as hs
 from save.controller import Save
-import popup.controller as pp
+from popup.controller import POPUP
 import keylistener.gui as kg
 import subjects as sj
 from block_mode import BLOCK_MODE
@@ -287,6 +287,32 @@ class App:
         y = self.get_height() + self.get_y() - self.suggest.get_height() \
                               - gi.objs.panel.ent_src.get_root_y()
         self.suggest.set_geometry(x, y, 170, self.suggest.get_height())
+    
+    def show_popup(self):
+        f = '[MClient] mclient.App.show_popup'
+        text = TABLE.get_cell_code()
+        if not text:
+            rep.empty(f)
+            return
+        rowno, colno = TABLE.get_cell()
+        max_width = self.get_width()
+        width = TABLE.get_col_width(colno)
+        height = TABLE.get_row_height(rowno)
+        win_y = self.get_y()
+        x1 = TABLE.get_cell_x(colno) + self.get_x()
+        if CONFIG.new['popup']['center']:
+            y1 = TABLE.get_cell_y(rowno) + win_y - height / 2
+            if y1 < win_y:
+                y1 = win_y
+        else:
+            # The value is picked up by the trial-and-error method
+            y1 = TABLE.get_cell_y(rowno) + win_y - height + 10
+        x2 = x1 + width
+        y2 = y1 + height
+        POPUP.fill(text)
+        POPUP.adjust_position(x1, width, y1, height, max_width
+                             ,CONFIG.new['popup']['center'])
+        POPUP.show()
     
     def get_cell(self):
         f = '[MClient] mclient.App.get_cell'
@@ -1139,6 +1165,8 @@ class App:
         
         TABLE.gui.clicked.connect(self.go_url)
         TABLE.gui.sig_mmb.connect(self.minimize)
+        TABLE.gui.sig_rmb.connect(self.solve_copy)
+        TABLE.gui.sig_popup.connect(self.show_popup)
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be
             returned before the window is shown.
@@ -1181,8 +1209,6 @@ class App:
         gi.objs.panel.opt_lg2.widget.activated.connect(self.go_search)
         gi.objs.panel.opt_src.widget.activated.connect(self.set_source)
         gi.objs.panel.opt_col.set_action(self.set_columns)
-        
-        TABLE.gui.sig_rmb.connect(self.solve_copy)
         
         self.symbols.gui.table.clicked.connect(self.paste_symbol)
         self.symbols.gui.table.sig_space.connect(self.paste_symbol)

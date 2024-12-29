@@ -6,7 +6,7 @@ from skl_shared_qt.message.controller import Message, rep
 from skl_shared_qt.time import Timer
 from skl_shared_qt.graphics.clipboard.controller import CLIPBOARD
 
-from popup.controller import Popup
+from popup.controller import POPUP
 from config import CONFIG
 from articles import ARTICLES
 from table.gui import Table as guiTable, TableModel
@@ -22,8 +22,16 @@ class Table:
         self.logic = lgTable([], [])
         self.gui = guiTable()
         self.search = Search()
-        self.popup = Popup()
         self.set_gui()
+    
+    def get_row_height(self, rowno):
+        return self.gui.get_row_height(rowno)
+    
+    def get_col_width(self, colno):
+        return self.gui.get_col_width(colno)
+    
+    def show_popup(self):
+        self.gui.show_popup()
     
     def _get_page_row(self, page):
         for rowno in self.coords2:
@@ -74,32 +82,6 @@ class Table:
             rep.empty(f)
             return
         self.select(rowno, colno)
-    
-    def show_popup(self):
-        f = '[MClient] table.controller.Table.show_popup'
-        text = self.get_cell_code()
-        if not text:
-            rep.empty(f)
-            return
-        rowno, colno = self.get_cell()
-        max_width = objs.get_app().get_width()
-        width = self.gui.get_col_width(colno)
-        height = self.gui.get_row_height(rowno)
-        win_y = objs.app.gui.get_y()
-        x1 = self.gui.get_cell_x(colno) + objs.app.gui.get_x()
-        if CONFIG.new['popup']['center']:
-            y1 = self.gui.get_cell_y(rowno) + win_y - height / 2
-            if y1 < win_y:
-                y1 = win_y
-        else:
-            # The value is picked up by the trial-and-error method
-            y1 = self.gui.get_cell_y(rowno) + win_y - height + 10
-        x2 = x1 + width
-        y2 = y1 + height
-        self.popup.fill(text)
-        self.popup.adjust_position(x1, width, y1, height, max_width
-                                  ,CONFIG.new['popup']['center'])
-        self.popup.show()
     
     def go_next_section(self, no):
         rowno, colno = self.get_cell()
@@ -193,7 +175,7 @@ class Table:
             if new_index in self.gui.delegate.long:
                 self.show_popup()
             else:
-                self.popup.close()
+                POPUP.close()
         ARTICLES.set_bookmark(rowno, colno)
     
     def go_up(self):
@@ -241,6 +223,12 @@ class Table:
         except Exception as e:
             rep.third_party(f, e)
             return(0, 0)
+    
+    def get_cell_x(self, colno):
+        return self.gui.get_cell_x(colno)
+    
+    def get_cell_y(self, rowno):
+        return self.gui.get_cell_y(rowno)
     
     def get_cell_text(self):
         f = '[MClient] table.controller.Table.get_cell_text'
@@ -391,7 +379,6 @@ class Table:
         self.search.gui.ent_src.bind(('Return',), self.close_search_next)
         self.search.gui.btn_srp.set_action(self.search_prev)
         self.search.gui.btn_srn.set_action(self.search_next)
-        self.popup.gui.sig_close.connect(self.popup.close)
 
 
 TABLE = Table()

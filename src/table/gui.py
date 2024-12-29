@@ -138,6 +138,7 @@ class Table(QTableView):
     sig_select = pyqtSignal(int, int, bool)
     sig_rmb = pyqtSignal()
     sig_mmb = pyqtSignal()
+    sig_popup = pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -262,3 +263,6 @@ class Table(QTableView):
     
     def show_borders(self, Show=False):
         self.setShowGrid(Show)
+    
+    def show_popup(self):
+        self.sig_popup.emit()
