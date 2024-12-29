@@ -17,7 +17,7 @@ from skl_shared_qt.graphics.entry.gui import Entry as shguiEntry
 from skl_shared_qt.graphics.button.controller import Button
 from skl_shared_qt.paths import PDIR
 
-from welcome.gui import WELCOME
+from welcome.controller import WELCOME
 from table.controller import Table
 from table.gui import TABLE
 
@@ -107,19 +107,19 @@ class ArticleProxy(QWidget):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.active = WELCOME
+        self.active = WELCOME.gui
         self.set_gui()
     
     def set_gui(self):
         self.layout_ = QStackedLayout()
         self.layout_.setContentsMargins(0, 0, 0, 0)
-        self.layout_.addWidget(WELCOME)
+        self.layout_.addWidget(WELCOME.gui)
         self.table = TableProxy()
         self.layout_.addWidget(self.table)
         self.setLayout(self.layout_)
     
     def is_welcome(self):
-        return self.active == WELCOME
+        return self.active == WELCOME.gui
     
     def go_welcome(self):
         f = '[MClient] gui.ArticleProxy.go_welcome'
@@ -129,7 +129,7 @@ class ArticleProxy(QWidget):
         width = self.table.width()
         height = self.table.height()
         self.table.hide()
-        self.active = WELCOME
+        self.active = WELCOME.gui
         self.active.show()
         self.active.resize(width, height)
     
@@ -138,8 +138,8 @@ class ArticleProxy(QWidget):
         if self.active == self.table:
             rep.lazy(f)
             return
-        width = WELCOME.width()
-        height = WELCOME.height()
+        width = WELCOME.get_width()
+        height = WELCOME.get_height()
         WELCOME.hide()
         self.active = self.table
         self.active.show()

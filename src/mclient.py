@@ -28,7 +28,7 @@ import settings.controller as st
 import suggest.controller as sg
 from about.controller import ABOUT
 import symbols.controller as sm
-import welcome.controller as wl
+from welcome.controller import WELCOME
 import history.controller as hs
 from save.controller import Save
 import popup.controller as pp
@@ -297,102 +297,6 @@ class Commands:
         for subjf in subjfs:
             dic[subjf] = {}
         return dic
-
-
-
-class Welcome(wl.Welcome):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.sources = []
-    
-    def loop_online_sources(self):
-        code = []
-        for source in self.sources:
-            if source.Online:
-                desc = self.gen_online_source(title = source.title
-                                             ,status = source.status
-                                             ,color = source.color)
-                code.append(desc)
-        code = ', '.join(code) + '.'
-        code = self.set_font(code)
-        self.logic.table.append([code])
-    
-    def loop_offline_sources(self):
-        code = []
-        for source in self.sources:
-            if not source.Online:
-                desc = self.gen_offline_source(title = source.title
-                                              ,status = source.status
-                                              ,color = source.color)
-                code.append(desc)
-        code = _('Offline dictionaries loaded: ') + ', '.join(code) + '.'
-        code = self.set_font(code)
-        self.logic.table.append([code])
-    
-    def gen_online_source(self, title, status, color):
-        return f'<b>{title} <font color="{color}">{status}</font></b>'
-    
-    def gen_offline_source(self, title, status, color):
-        return f'{title}: <font color="{color}">{status}</font>'
-    
-    def fill(self):
-        model = wl.TableModel(self.run())
-        self.set_model(model)
-    
-    def set_online_sources(self):
-        f = '[MClient] mclient.Welcome.set_online_sources'
-        if not CONFIG.new['Ping']:
-            rep.lazy(f)
-            return
-        old = PLUGINS.source
-        dics = PLUGINS.get_online_sources()
-        if not dics:
-            rep.empty(f)
-            return
-        for dic in dics:
-            PLUGINS.set(dic)
-            isource = lg.Source()
-            isource.title = dic
-            isource.Online = True
-            if PLUGINS.is_accessible():
-                isource.status = _('running')
-                isource.color = 'green'
-            self.sources.append(isource)
-        PLUGINS.set(old)
-    
-    def set_offline_sources(self):
-        f = '[MClient] mclient.Welcome.set_offline_sources'
-        dics = PLUGINS.get_offline_sources()
-        if not dics:
-            rep.empty(f)
-            return
-        old = PLUGINS.source
-        for dic in dics:
-            PLUGINS.set(dic)
-            isource = lg.Source()
-            isource.title = dic
-            dic_num = PLUGINS.is_accessible()
-            isource.status = dic_num
-            if dic_num:
-                isource.color = 'green'
-            self.sources.append(isource)
-        PLUGINS.set(old)
-    
-    def set_sources(self):
-        self.set_online_sources()
-        self.set_offline_sources()
-
-    def set_middle(self):
-        self.set_sources()
-        self.loop_online_sources()
-        self.loop_offline_sources()
-    
-    def run(self):
-        self.set_head()
-        self.set_middle()
-        self.set_tail()
-        return self.logic.table
 
 
 
@@ -1531,7 +1435,6 @@ class App:
     def set_gui(self):
         self.table = Table()
         self.symbols = sm.Symbols()
-        self.welcome = Welcome(ABOUT.get_product())
         self.settings = st.objs.get_settings()
         self.history = hs.History()
         self.save = Save()
@@ -1579,10 +1482,10 @@ if __name__ == '__main__':
         PLUGINS.Debug = False
         PLUGINS.maxrows = 1000
         objs.get_app().run_thread()
-        objs.app.welcome.reset()
+        WELCOME.reset()
         objs.app.solve_screen()
         objs.app.show()
-        objs.app.welcome.resize_rows()
+        WELCOME.resize_rows()
     else:
         mes = _('Invalid configuration!')
         #FIX: quit app normally after common dialog

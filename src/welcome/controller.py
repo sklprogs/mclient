@@ -1,24 +1,119 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from welcome.gui import WELCOME as guiWelcome, TableModel as guiTableModel
+from skl_shared_qt.localize import _
+from skl_shared_qt.message.controller import rep
+
+from config import CONFIG
+from manager import PLUGINS
+from logic import Source
+
+from about.controller import ABOUT
+
+from welcome.gui import Welcome as guiWelcome, TableModel as guiTableModel
 from welcome.logic import Welcome as lgWelcome, COLNUM
-
-
-#TODO: Do we need this?
-class TableModel(guiTableModel):
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
 
 
 class Welcome:
     
-    def __init__(self, desc='Product Current Version'):
-        self.gui = guiWelcome
+    def __init__(self):
+        self.gui = guiWelcome()
         self.logic = lgWelcome()
-        self.logic.desc = desc
+        self.logic.desc = ABOUT.get_product()
+        self.sources = []
+    
+    def get_width(self):
+        return self.gui.width()
+    
+    def get_height(self):
+        return self.gui.height()
+    
+    def hide(self):
+        self.gui.hide()
+    
+    def loop_online_sources(self):
+        code = []
+        for source in self.sources:
+            if source.Online:
+                desc = self.gen_online_source(title = source.title
+                                             ,status = source.status
+                                             ,color = source.color)
+                code.append(desc)
+        code = ', '.join(code) + '.'
+        code = self.set_font(code)
+        self.logic.table.append([code])
+    
+    def loop_offline_sources(self):
+        code = []
+        for source in self.sources:
+            if not source.Online:
+                desc = self.gen_offline_source(title = source.title
+                                              ,status = source.status
+                                              ,color = source.color)
+                code.append(desc)
+        code = _('Offline dictionaries loaded: ') + ', '.join(code) + '.'
+        code = self.set_font(code)
+        self.logic.table.append([code])
+    
+    def gen_online_source(self, title, status, color):
+        return f'<b>{title} <font color="{color}">{status}</font></b>'
+    
+    def gen_offline_source(self, title, status, color):
+        return f'{title}: <font color="{color}">{status}</font>'
+    
+    def set_online_sources(self):
+        f = '[MClient] welcome.controller.Welcome.set_online_sources'
+        if not CONFIG.new['Ping']:
+            rep.lazy(f)
+            return
+        old = PLUGINS.source
+        dics = PLUGINS.get_online_sources()
+        if not dics:
+            rep.empty(f)
+            return
+        for dic in dics:
+            PLUGINS.set(dic)
+            isource = Source()
+            isource.title = dic
+            isource.Online = True
+            if PLUGINS.is_accessible():
+                isource.status = _('running')
+                isource.color = 'green'
+            self.sources.append(isource)
+        PLUGINS.set(old)
+    
+    def set_offline_sources(self):
+        f = '[MClient] welcome.controller.Welcome.set_offline_sources'
+        dics = PLUGINS.get_offline_sources()
+        if not dics:
+            rep.empty(f)
+            return
+        old = PLUGINS.source
+        for dic in dics:
+            PLUGINS.set(dic)
+            isource = Source()
+            isource.title = dic
+            dic_num = PLUGINS.is_accessible()
+            isource.status = dic_num
+            if dic_num:
+                isource.color = 'green'
+            self.sources.append(isource)
+        PLUGINS.set(old)
+    
+    def set_sources(self):
+        self.set_online_sources()
+        self.set_offline_sources()
+
+    def set_middle(self):
+        self.set_sources()
+        self.loop_online_sources()
+        self.loop_offline_sources()
+    
+    def run(self):
+        self.set_head()
+        self.set_middle()
+        self.set_tail()
+        return self.logic.table
     
     def hide_rows(self, rownos):
         self.gui.hide_rows(rownos)
@@ -64,5 +159,9 @@ class Welcome:
         self.fill()
     
     def fill(self):
-        model = guiTableModel(self.logic.run())
-        self.gui.set_model(model)
+        #model = guiTableModel(self.logic.run())
+        model = guiTableModel(self.run())
+        self.set_model(model)
+
+
+WELCOME = Welcome()
