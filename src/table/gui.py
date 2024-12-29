@@ -141,6 +141,7 @@ class Table(QTableView):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.delegate = TableDelegate()
         # Do not override internal 'x' and 'y'
         self.x_ = 0
         self.y_ = 0
@@ -166,11 +167,11 @@ class Table(QTableView):
     
     def get_cell_hint(self, index_):
         option = QStyleOptionViewItem()
-        return DELEGATE.sizeHint(option, index_).height()
+        return self.delegate.sizeHint(option, index_).height()
     
     def get_cell_space(self, index_):
         option = QStyleOptionViewItem()
-        hint = DELEGATE.sizeHint(option, index_)
+        hint = self.delegate.sizeHint(option, index_)
         return hint.width() * hint.height()
     
     def scroll2index(self, index_):
@@ -195,14 +196,14 @@ class Table(QTableView):
         return index_.column()
     
     def get_index(self):
-        return DELEGATE.index
+        return self.delegate.index
     
     def set_index(self, index_):
-        DELEGATE.index = index_
+        self.delegate.index = index_
     
     def set_cur_index(self, index_):
         self.setCurrentIndex(index_)
-        DELEGATE.index = index_
+        self.delegate.index = index_
     
     def get_cur_index(self):
         return self.currentIndex()
@@ -212,7 +213,7 @@ class Table(QTableView):
         return(index_.row(), index_.column())
     
     def get_cell(self):
-        return(DELEGATE.index.row(), DELEGATE.index.column())
+        return(self.delegate.index.row(), self.delegate.index.column())
     
     def get_height(self):
         ''' #NOTE: Run only after events since Qt returns dummy geometry values
@@ -248,8 +249,8 @@ class Table(QTableView):
         self.vheader.setMaximumSectionSize(height)
     
     def set_gui(self):
-        DELEGATE.index = self.get_cur_index()
-        self.setItemDelegate(DELEGATE)
+        self.delegate.index = self.get_cur_index()
+        self.setItemDelegate(self.delegate)
         self.hheader = self.horizontalHeader()
         self.vheader = self.verticalHeader()
         self.hheader.setVisible(False)
@@ -261,7 +262,3 @@ class Table(QTableView):
     
     def show_borders(self, Show=False):
         self.setShowGrid(Show)
-
-
-DELEGATE = TableDelegate()
-TABLE = Table()

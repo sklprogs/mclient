@@ -9,7 +9,7 @@ from skl_shared_qt.graphics.clipboard.controller import CLIPBOARD
 from popup.controller import Popup
 from config import CONFIG
 from articles import ARTICLES
-from table.gui import TABLE, DELEGATE, TableModel
+from table.gui import Table as guiTable, TableModel
 from table.logic import Table as lgTable
 from search.controller import Search
 from font_limits.controller import FontLimits
@@ -20,7 +20,7 @@ class Table:
     def __init__(self):
         self.set_values()
         self.logic = lgTable([], [])
-        self.gui = TABLE
+        self.gui = guiTable()
         self.search = Search()
         self.popup = Popup()
         self.set_gui()
@@ -83,17 +83,17 @@ class Table:
             return
         rowno, colno = self.get_cell()
         max_width = objs.get_app().get_width()
-        width = TABLE.get_col_width(colno)
-        height = TABLE.get_row_height(rowno)
+        width = self.gui.get_col_width(colno)
+        height = self.gui.get_row_height(rowno)
         win_y = objs.app.gui.get_y()
-        x1 = TABLE.get_cell_x(colno) + objs.app.gui.get_x()
+        x1 = self.gui.get_cell_x(colno) + objs.app.gui.get_x()
         if CONFIG.new['popup']['center']:
-            y1 = TABLE.get_cell_y(rowno) + win_y - height / 2
+            y1 = self.gui.get_cell_y(rowno) + win_y - height / 2
             if y1 < win_y:
                 y1 = win_y
         else:
             # The value is picked up by the trial-and-error method
-            y1 = TABLE.get_cell_y(rowno) + win_y - height + 10
+            y1 = self.gui.get_cell_y(rowno) + win_y - height + 10
         x2 = x1 + width
         y2 = y1 + height
         self.popup.fill(text)
@@ -180,17 +180,17 @@ class Table:
             return
         self.old_rowno = rowno
         self.old_colno = colno
-        self.model.update(TABLE.get_index())
+        self.model.update(self.gui.get_index())
         new_index = self.model.index(rowno, colno)
         if Mouse:
-            TABLE.set_index(new_index)
+            self.gui.set_index(new_index)
         else:
-            TABLE.set_cur_index(new_index)
+            self.gui.set_cur_index(new_index)
         self.model.update(new_index)
         if not Mouse:
             self.scroll_top()
         if Mouse:
-            if new_index in DELEGATE.long:
+            if new_index in self.gui.delegate.long:
                 self.show_popup()
             else:
                 self.popup.close()
@@ -226,18 +226,18 @@ class Table:
         if not self.coords or not self.model:
             rep.empty(f)
             return
-        rowno, colno = TABLE.get_cell()
+        rowno, colno = self.gui.get_cell()
         if rowno == -1 or colno == -1:
             mes = _('No cell is selected!')
             Message(f, mes).show_warning()
             return
         index_ = self.model.index(self.coords[rowno], colno)
-        TABLE.scroll2index(index_)
+        self.gui.scroll2index(index_)
     
     def get_cell(self):
         f = '[MClient] table.controller.Table.get_cell'
         try:
-            return TABLE.get_cell()
+            return self.gui.get_cell()
         except Exception as e:
             rep.third_party(f, e)
             return(0, 0)
@@ -279,7 +279,7 @@ class Table:
     
     def set_row_height(self, height=42):
         for no in range(self.logic.rownum):
-            TABLE.set_row_height(no, height)
+            self.gui.set_row_height(no, height)
     
     def set_col_width(self):
         # For some reason, this works only after filling cells
@@ -296,7 +296,7 @@ class Table:
                 width = 80
             else:
                 width = CONFIG.new['columns']['terms']['width']
-            TABLE.set_col_width(no, width)
+            self.gui.set_col_width(no, width)
     
     def go_bookmark(self):
         bookmark = ARTICLES.get_bookmark()
@@ -338,57 +338,60 @@ class Table:
                             ,Italic = False)
         timer = Timer(f)
         timer.start()
-        DELEGATE.long = []
+        self.gui.delegate.long = []
         for rowno in range(self.logic.rownum):
             for colno in range(self.logic.colnum):
                 ilimits.set_text(self.logic.plain[rowno][colno])
                 space = ilimits.get_space()
                 index_ = self.model.index(rowno, colno)
-                hint_space = CONFIG.new['rows']['height'] * TABLE.get_col_width(colno)
+                hint_space = CONFIG.new['rows']['height'] * self.gui.get_col_width(colno)
                 if space > hint_space:
-                    DELEGATE.long.append(index_)
+                    self.gui.delegate.long.append(index_)
         timer.end()
         mes = _('Number of cells: {}').format(self.logic.rownum*self.logic.colnum)
         Message(f, mes).show_debug()
-        mes = _('Number of long cells: {}').format(len(DELEGATE.long))
+        mes = _('Number of long cells: {}').format(len(self.gui.delegate.long))
         Message(f, mes).show_debug()
     
     def set_coords(self, event=None):
         ''' Calculating Y is very fast (~0.05s for 'set' on Intel Atom). We
             need 'event' since this procedure overrides
-            TABLE.parent.resizeEvent.
+            self.gui.parent.resizeEvent.
         '''
         f = '[MClient] table.controller.Table.set_coords'
-        TABLE.scroll2top()
+        self.gui.scroll2top()
         #TODO: Get rid of this
         self.coords2 = {}
-        height = TABLE.get_height()
+        height = self.gui.get_height()
         mes = _('Window height: {}').format(height)
         Message(f, mes).show_debug()
         for rowno in range(self.logic.rownum):
-            y = TABLE.get_cell_y(rowno) + TABLE.get_row_height(rowno)
+            y = self.gui.get_cell_y(rowno) + self.gui.get_row_height(rowno)
             pageno = int(y / height)
             page_y = pageno * height
-            page_rowno = TABLE.get_row_by_y(page_y)
+            page_rowno = self.gui.get_row_by_y(page_y)
             self.coords[rowno] = page_rowno
             self.coords2[rowno] = pageno
     
     def fill(self):
-        TABLE.set_model(self.model)
+        self.gui.set_model(self.model)
     
     def set_max_row_height(self, height=150):
-        TABLE.set_max_row_height(height)
+        self.gui.set_max_row_height(height)
     
     def show_borders(self, Show=False):
-        TABLE.show_borders(Show)
+        self.gui.show_borders(Show)
     
     def set_gui(self):
         #self.set_max_row_height()
         self.set_bindings()
     
     def set_bindings(self):
-        TABLE.sig_select.connect(self.select)
+        self.gui.sig_select.connect(self.select)
         self.search.gui.ent_src.bind(('Return',), self.close_search_next)
         self.search.gui.btn_srp.set_action(self.search_prev)
         self.search.gui.btn_srn.set_action(self.search_next)
         self.popup.gui.sig_close.connect(self.popup.close)
+
+
+TABLE = Table()

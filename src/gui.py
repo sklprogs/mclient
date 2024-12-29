@@ -18,8 +18,7 @@ from skl_shared_qt.graphics.button.controller import Button
 from skl_shared_qt.paths import PDIR
 
 from welcome.controller import WELCOME
-from table.controller import Table
-from table.gui import TABLE
+from table.controller import TABLE
 
 ICON.set(PDIR.add('..', 'resources', 'mclient.png'))
 
@@ -98,7 +97,7 @@ class TableProxy(QWidget):
     def set_gui(self):
         self.layout_ = QVBoxLayout()
         self.layout_.setContentsMargins(0, 0, 0, 0)
-        self.layout_.addWidget(TABLE)
+        self.layout_.addWidget(TABLE.gui)
         self.setLayout(self.layout_)
 
 

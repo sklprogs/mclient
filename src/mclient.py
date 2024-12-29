@@ -17,8 +17,7 @@ from skl_shared_qt.time import Timer
 from config import CONFIG, HistorySubjects
 from manager import PLUGINS
 from articles import ARTICLES
-from table.controller import Table
-import table.gui
+from table.controller import TABLE
 import logic as lg
 import gui as gi
 import format as fm
@@ -415,8 +414,8 @@ class App:
         self.thread = kg.Thread()
         self.logic = lg.App()
         self.gui = gi.App()
-        table.gui.WIDE_ROW_COLOR = CONFIG.new["rows"]["border"]["color"]
-        table.gui.WIDE_ROW_LEN = CONFIG.new["rows"]["border"]["length"]
+        TABLE.gui.WIDE_ROW_COLOR = CONFIG.new["rows"]["border"]["color"]
+        TABLE.gui.WIDE_ROW_LEN = CONFIG.new["rows"]["border"]["length"]
         self.set_gui()
         self.set_hints()
         self.update_ui()
@@ -436,25 +435,25 @@ class App:
         if self.block_mode.blockno > -1:
             self.block_mode.select_prev()
         else:
-            self.table.go_left()
+            TABLE.go_left()
     
     def solve_go_right(self):
         if self.block_mode.blockno > -1:
             self.block_mode.select_next()
         else:
-            self.table.go_right()
+            TABLE.go_right()
     
     def solve_go_down(self):
         if self.block_mode.blockno > -1:
             self.block_mode.select_next()
         else:
-            self.table.go_down()
+            TABLE.go_down()
     
     def solve_go_up(self):
         if self.block_mode.blockno > -1:
             self.block_mode.select_prev()
         else:
-            self.table.go_up()
+            TABLE.go_up()
     
     def _set_hint(self, widget, action):
         section = CONFIG.new['actions'][action]
@@ -519,7 +518,7 @@ class App:
         if not table:
             rep.empty(f)
             return
-        rowno, colno = self.table.get_cell()
+        rowno, colno = TABLE.get_cell()
         try:
             return table[rowno][colno]
         except IndexError:
@@ -593,7 +592,7 @@ class App:
     
     def go_phrases(self):
         f = '[MClient] mclient.App.go_phrases'
-        tuple_ = self.table.logic.get_phsubj()
+        tuple_ = TABLE.logic.get_phsubj()
         if not tuple_:
             rep.empty(f)
             return
@@ -668,7 +667,7 @@ class App:
         # Selected: True: Selected term; False: Article title
         f = '[MClient] mclient.App.define'
         if Selected:
-            pattern = self.table.get_cell_text()
+            pattern = TABLE.get_cell_text()
         else:
             pattern = lg.objs.get_request().search
         if not pattern:
@@ -1048,7 +1047,7 @@ class App:
             # Do not warn when there are no articles yet
             rep.lazy(f)
             return
-        cell = self.table.get_cell()
+        cell = TABLE.get_cell()
         if not cell:
             rep.empty(f)
             return
@@ -1071,7 +1070,7 @@ class App:
         ''' Do not combine these conditions with 'and' since the interpreter
             may decide to check the lighter condition first.
         '''
-        if self.table.copy_cell():
+        if TABLE.copy_cell():
             if CONFIG.new['Iconify']:
                 self.minimize()
     
@@ -1142,7 +1141,7 @@ class App:
         iwrap = cl.Wrap(cells)
         iwrap.run()
         
-        self.table.reset(iwrap.plain, iwrap.code)
+        TABLE.reset(iwrap.plain, iwrap.code)
         
         ARTICLES.set_blocked_cells(iomit.omit_cells)
         ARTICLES.set_table(iwrap.cells)
@@ -1175,7 +1174,7 @@ class App:
         ''' Do not put this in 'Table.reset' - that is too early, the article
             dictionary is not filled yet!
         '''
-        self.table.go_bookmark()
+        TABLE.go_bookmark()
     
     def go_keyboard(self):
         search = gi.objs.get_panel().ent_src.get().strip()
@@ -1218,7 +1217,7 @@ class App:
         gi.objs.get_panel().ent_src.set_text(CLIPBOARD.paste())
     
     def minimize(self):
-        self.table.popup.close()
+        TABLE.popup.close()
         self.suggest.close()
         self.gui.minimize()
     
@@ -1243,7 +1242,7 @@ class App:
         Message(f, mes).show_debug()
     
     def close(self):
-        self.table.popup.close()
+        TABLE.popup.close()
         self.suggest.close()
         self.gui.close()
     
@@ -1251,21 +1250,21 @@ class App:
         # Mouse buttons cannot be bound
         self.gui.sig_close.connect(self.close)
         self.gui.sig_close.connect(self.quit)
-        self.gui.sig_pgdn.connect(self.table.go_page_down)
-        self.gui.sig_pgup.connect(self.table.go_page_up)
+        self.gui.sig_pgdn.connect(TABLE.go_page_down)
+        self.gui.sig_pgup.connect(TABLE.go_page_up)
         
         self.gui.bind(('Ctrl+Q',), self.close)
         self.gui.bind(('Esc',), self.minimize)
         self.gui.bind(('Down',), self.solve_go_down)
         self.gui.bind(('Up',), self.solve_go_up)
-        self.gui.bind(('Ctrl+Home',), self.table.go_start)
-        self.gui.bind(('Ctrl+End',), self.table.go_end)
-        self.gui.bind(('Home',), self.table.go_line_start)
-        self.gui.bind(('End',), self.table.go_line_end)
+        self.gui.bind(('Ctrl+Home',), TABLE.go_start)
+        self.gui.bind(('Ctrl+End',), TABLE.go_end)
+        self.gui.bind(('Home',), TABLE.go_line_start)
+        self.gui.bind(('End',), TABLE.go_line_end)
         self.gui.bind(('F1',), ABOUT.toggle)
-        self.gui.bind(('F3',), self.table.search_next)
-        self.gui.bind(('Shift+F3',), self.table.search_prev)
-        self.gui.bind(('Ctrl+F',), self.table.search.show)
+        self.gui.bind(('F3',), TABLE.search_next)
+        self.gui.bind(('Shift+F3',), TABLE.search_prev)
+        self.gui.bind(('Ctrl+F',), TABLE.search.show)
         self.gui.bind(('Return', 'Enter',), self.go_keyboard)
         self.gui.bind(('Ctrl+Return', 'Ctrl+Enter',), self.solve_copy)
         
@@ -1283,21 +1282,21 @@ class App:
         self.gui.bind(CONFIG.new['actions']['clear_history']['hotkeys']
                      ,self.clear_history)
         self.gui.bind(CONFIG.new['actions']['col1_down']['hotkeys']
-                     ,lambda:self.table.go_next_section(0))
+                     ,lambda:TABLE.go_next_section(0))
         self.gui.bind(CONFIG.new['actions']['col2_down']['hotkeys']
-                     ,lambda:self.table.go_next_section(1))
+                     ,lambda:TABLE.go_next_section(1))
         self.gui.bind(CONFIG.new['actions']['col3_down']['hotkeys']
-                     ,lambda:self.table.go_next_section(2))
+                     ,lambda:TABLE.go_next_section(2))
         self.gui.bind(CONFIG.new['actions']['col4_down']['hotkeys']
-                     ,lambda:self.table.go_next_section(3))
+                     ,lambda:TABLE.go_next_section(3))
         self.gui.bind(CONFIG.new['actions']['col1_up']['hotkeys']
-                     ,lambda:self.table.go_prev_section(0))
+                     ,lambda:TABLE.go_prev_section(0))
         self.gui.bind(CONFIG.new['actions']['col2_up']['hotkeys']
-                     ,lambda:self.table.go_prev_section(1))
+                     ,lambda:TABLE.go_prev_section(1))
         self.gui.bind(CONFIG.new['actions']['col3_up']['hotkeys']
-                     ,lambda:self.table.go_prev_section(2))
+                     ,lambda:TABLE.go_prev_section(2))
         self.gui.bind(CONFIG.new['actions']['col4_up']['hotkeys']
-                     ,lambda:self.table.go_prev_section(3))
+                     ,lambda:TABLE.go_prev_section(3))
         self.gui.bind(CONFIG.new['actions']['go_next']['hotkeys']
                      ,self.go_next)
         self.gui.bind(CONFIG.new['actions']['go_back']['hotkeys']
@@ -1321,7 +1320,7 @@ class App:
         self.gui.bind(CONFIG.new['actions']['show_prior']['hotkeys']
                      ,objs.get_prior().toggle)
         self.gui.bind(CONFIG.new['actions']['toggle_popup']['hotkeys']
-                     ,self.table.show_popup)
+                     ,TABLE.show_popup)
         self.gui.bind(CONFIG.new['actions']['toggle_alphabet']['hotkeys']
                      ,self.toggle_alphabet)
         self.gui.bind(CONFIG.new['actions']['reload_article']['hotkeys']
@@ -1362,13 +1361,13 @@ class App:
         self.symbols.gui.bind(CONFIG.new['actions']['toggle_spec_symbols']['hotkeys']
                              ,self.symbols.close)
         
-        self.table.gui.clicked.connect(self.go_url)
-        self.table.gui.sig_mmb.connect(self.minimize)
+        TABLE.gui.clicked.connect(self.go_url)
+        TABLE.gui.sig_mmb.connect(self.minimize)
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be
             returned before the window is shown.
         '''
-        self.gui.parent.resizeEvent = self.table.set_coords
+        self.gui.parent.resizeEvent = TABLE.set_coords
         
         gi.objs.panel.btn_abt.set_action(ABOUT.toggle)
         gi.objs.panel.btn_alp.set_action(self.toggle_alphabet)
@@ -1388,16 +1387,16 @@ class App:
         gi.objs.panel.btn_rp1.set_action(self.insert_repeat_sign)
         gi.objs.panel.btn_rp2.set_action(self.insert_repeat_sign2)
         gi.objs.panel.btn_sav.set_action(self.save.toggle)
-        gi.objs.panel.btn_ser.set_action(self.table.search.toggle)
+        gi.objs.panel.btn_ser.set_action(TABLE.search.toggle)
         gi.objs.panel.btn_set.set_action(self.settings.toggle)
         gi.objs.panel.btn_sym.set_action(self.symbols.show)
         gi.objs.panel.btn_swp.set_action(self.swap_langs)
         gi.objs.panel.btn_trn.set_action(self.go_keyboard)
         
-        gi.objs.panel.ent_src.widget.sig_home.connect(self.table.go_line_start)
-        gi.objs.panel.ent_src.widget.sig_end.connect(self.table.go_line_end)
-        gi.objs.panel.ent_src.widget.sig_ctrl_home.connect(self.table.go_start)
-        gi.objs.panel.ent_src.widget.sig_ctrl_end.connect(self.table.go_end)
+        gi.objs.panel.ent_src.widget.sig_home.connect(TABLE.go_line_start)
+        gi.objs.panel.ent_src.widget.sig_end.connect(TABLE.go_line_end)
+        gi.objs.panel.ent_src.widget.sig_ctrl_home.connect(TABLE.go_start)
+        gi.objs.panel.ent_src.widget.sig_ctrl_end.connect(TABLE.go_end)
         gi.objs.panel.ent_src.widget.sig_ctrl_space.connect(self.show_suggestions)
         # Binding 'Left' and 'Right' to self.gui does not work for some reason
         gi.objs.panel.ent_src.widget.sig_left_arrow.connect(self.solve_go_left)
@@ -1407,7 +1406,7 @@ class App:
         gi.objs.panel.opt_src.widget.activated.connect(self.set_source)
         gi.objs.panel.opt_col.set_action(self.set_columns)
         
-        self.table.gui.sig_rmb.connect(self.solve_copy)
+        TABLE.gui.sig_rmb.connect(self.solve_copy)
         
         self.symbols.gui.table.clicked.connect(self.paste_symbol)
         self.symbols.gui.table.sig_space.connect(self.paste_symbol)
@@ -1433,7 +1432,6 @@ class App:
         self.gui.set_title(title)
     
     def set_gui(self):
-        self.table = Table()
         self.symbols = sm.Symbols()
         self.settings = st.objs.get_settings()
         self.history = hs.History()
