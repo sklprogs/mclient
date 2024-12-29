@@ -100,7 +100,7 @@ class Symbols(QWidget):
     def keyPressEvent(self, event):
         key = event.key()
         modifiers = event.modifiers()
-        if key in (Qt.Key_Return, Qt.Key.Key_Enter):
+        if key in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
             if modifiers & Qt.KeyboardModifier.ControlModifier:
                 self.sig_ctrl_return.emit()
             else:
