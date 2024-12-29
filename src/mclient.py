@@ -31,7 +31,7 @@ import third_parties.controller as tp
 import symbols.controller as sm
 import welcome.controller as wl
 import history.controller as hs
-import save.controller as sv
+from save.controller import Save
 import popup.controller as pp
 import keylistener.gui as kg
 import subjects as sj
@@ -282,131 +282,6 @@ class UpdateUI:
     
     def run(self):
         self.update_buttons()
-
-
-
-class Save(sv.Save):
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.add_bindings()
-    
-    def _get_text(self):
-        f = '[MClient] mclient.Save._get_text'
-        text = []
-        text_row = []
-        cells = ARTICLES.get_table()
-        if not cells:
-            rep.empty(f)
-            return ''
-        for row in cells:
-            for cell in row:
-                if not cell.text.strip():
-                    continue
-                if cell.colno == 0 and cell.fixed_block:
-                    if text_row:
-                        text_row = ''.join(text_row)
-                        # Removing '; ' before subject-related cells
-                        text.append(text_row[:-2])
-                        text_row = []
-                text_row.append(cell.text)
-                if cell.colno == 0 and cell.fixed_block:
-                    text_row.append(': ')
-                else:
-                    text_row.append('; ')
-        if text_row:
-            # Removing '; ' before subject-related cells
-            text_row = ''.join(text_row)
-            text.append(text_row[:-2])
-        return '\n\n'.join(text)
-    
-    def add_bindings(self):
-        self.gui.save.clicked.connect(self.select)
-        self.gui.bind(('Return',), self.select)
-        self.gui.bind(('Enter',), self.select)
-    
-    def select(self):
-        f = '[MClient] mclient.Save.select'
-        opt = self.get()
-        if not opt:
-            rep.empty(f)
-            return
-        self.close()
-        if opt == _('Save the current view as a web-page (*.htm)'):
-            self.save_view_as_htm()
-        elif opt == _('Save the original article as a web-page (*.htm)'):
-            self.save_raw_as_htm()
-        elif opt == _('Save the article as plain text in UTF-8 (*.txt)'):
-            self.save_view_as_txt()
-        elif opt == _('Copy the code of the article to clipboard'):
-            self.copy_raw()
-        elif opt == _('Copy the text of the article to clipboard'):
-            self.copy_view()
-        else:
-            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(opt, '; '.join(self.model.items))
-            Message(f, mes, True).show_error()
-
-    def _add_web_ext(self):
-        if not Path(self.file).get_ext_low() in ('.htm', '.html'):
-            self.file += '.htm'
-    
-    def save_view_as_htm(self):
-        f = '[MClient] mclient.Save.save_view_as_htm'
-        self.gui.ask.filter = _('Web-pages (*.htm, *.html)')
-        self.file = self.gui.ask.save()
-        if not self.file:
-            rep.empty(f)
-            return
-        # Can be an empty list
-        cells = ARTICLES.get_table()
-        #TODO: elaborate
-        skipped = []
-        #skipped = com.get_skipped_terms()
-        code = lg.HTM(cells, skipped).run()
-        if not code:
-            rep.empty(f)
-            return
-        self._add_web_ext()
-        # Takes ~0.47s for 'set' on Intel Atom, do not call in 'load_article'
-        code = make_pretty(code)
-        Write(self.file).write(code)
-
-    def save_raw_as_htm(self):
-        f = '[MClient] mclient.Save.save_raw_as_htm'
-        ''' Key 'html' may be needed to write a file in the UTF-8 encoding,
-            therefore, in order to ensure that the web-page is read correctly,
-            we change the encoding manually. We also replace abbreviated
-            hyperlinks with full ones in order to ensure that they are also
-            valid in the local file.
-        '''
-        self.gui.ask.filter = _('Web-pages (*.htm, *.html)')
-        self.file = self.gui.ask.save()
-        code = ARTICLES.get_raw_code()
-        if not self.file or not code:
-            rep.empty(f)
-            return
-        self._add_web_ext()
-        code = PLUGINS.fix_raw_htm(code)
-        Write(self.file).write(code)
-
-    def save_view_as_txt(self):
-        f = '[MClient] mclient.Save.save_view_as_txt'
-        self.gui.ask.filter = _('Plain text (*.txt)')
-        self.file = self.gui.ask.save()
-        text = self._get_text()
-        if not self.file or not text:
-            rep.empty(f)
-            return
-        if not Path(self.file).get_ext_low() == '.txt':
-            self.file += '.txt'
-        Write(self.file).write(text)
-
-    def copy_raw(self):
-        CLIPBOARD.copy(ARTICLES.get_raw_code())
-
-    def copy_view(self):
-        CLIPBOARD.copy(self._get_text())
 
 
 
