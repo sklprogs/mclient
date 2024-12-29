@@ -41,3 +41,6 @@ class ThirdParties:
     
     def set_bindings(self):
         self.gui.bind(('Esc',), self.close)
+
+
+THIRD_PARTIES = ThirdParties()

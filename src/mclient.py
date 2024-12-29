@@ -26,8 +26,7 @@ import cells as cl
 import prior_block.controller as pr
 import settings.controller as st
 import suggest.controller as sg
-import about.controller as ab
-import third_parties.controller as tp
+from about.controller import ABOUT
 import symbols.controller as sm
 import welcome.controller as wl
 import history.controller as hs
@@ -394,20 +393,6 @@ class Welcome(wl.Welcome):
         self.set_middle()
         self.set_tail()
         return self.logic.table
-
-
-
-class About(ab.About):
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.parties = tp.ThirdParties()
-        self.add_bindings()
-
-    def add_bindings(self):
-        self.gui.btn_thd.set_action(self.parties.show)
-        self.gui.btn_lic.set_action(self.parties.open_license_url)
-        self.gui.btn_eml.set_action(self.parties.send_feedback)
 
 
 
@@ -1373,7 +1358,7 @@ class App:
         self.gui.bind(('Ctrl+End',), self.table.go_end)
         self.gui.bind(('Home',), self.table.go_line_start)
         self.gui.bind(('End',), self.table.go_line_end)
-        self.gui.bind(('F1',), self.about.toggle)
+        self.gui.bind(('F1',), ABOUT.toggle)
         self.gui.bind(('F3',), self.table.search_next)
         self.gui.bind(('Shift+F3',), self.table.search_prev)
         self.gui.bind(('Ctrl+F',), self.table.search.show)
@@ -1481,7 +1466,7 @@ class App:
         '''
         self.gui.parent.resizeEvent = self.table.set_coords
         
-        gi.objs.panel.btn_abt.set_action(self.about.toggle)
+        gi.objs.panel.btn_abt.set_action(ABOUT.toggle)
         gi.objs.panel.btn_alp.set_action(self.toggle_alphabet)
         gi.objs.panel.btn_blk.set_action(objs.block.toggle)
         gi.objs.panel.btn_brw.set_action(self.logic.open_in_browser)
@@ -1545,15 +1530,14 @@ class App:
     
     def set_gui(self):
         self.table = Table()
-        self.about = About()
         self.symbols = sm.Symbols()
-        self.welcome = Welcome(self.about.get_product())
+        self.welcome = Welcome(ABOUT.get_product())
         self.settings = st.objs.get_settings()
         self.history = hs.History()
         self.save = Save()
         self.suggest = sg.Suggest()
         self.block_mode = BlockMode()
-        self.set_title(self.about.logic.product)
+        self.set_title(ABOUT.logic.product)
         self.set_bindings()
 
 

@@ -3,6 +3,8 @@
 
 from skl_shared_qt.localize import _
 
+from third_parties.controller import THIRD_PARTIES
+
 from about.gui import About as guiAbout
 from about.logic import About as lgAbout
 
@@ -32,6 +34,9 @@ class About:
         self.gui.bind(('Esc',), self.close)
         self.gui.bind(('F1',), self.toggle)
         self.gui.sig_close.connect(self.close)
+        self.gui.btn_thd.set_action(THIRD_PARTIES.show)
+        self.gui.btn_lic.set_action(THIRD_PARTIES.open_license_url)
+        self.gui.btn_eml.set_action(THIRD_PARTIES.send_feedback)
     
     def centralize(self):
         self.gui.centralize()
@@ -50,3 +55,6 @@ class About:
             self.close()
         else:
             self.show()
+
+
+ABOUT = About()
