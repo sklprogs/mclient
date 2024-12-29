@@ -1019,7 +1019,7 @@ class App:
         gi.objs.get_panel().ent_src.set_text(CLIPBOARD.paste())
     
     def minimize(self):
-        TABLE.popup.close()
+        POPUP.close()
         self.suggest.close()
         self.gui.minimize()
     
@@ -1044,7 +1044,7 @@ class App:
         Message(f, mes).show_debug()
     
     def close(self):
-        TABLE.popup.close()
+        POPUP.close()
         self.suggest.close()
         self.gui.close()
     
