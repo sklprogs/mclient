@@ -309,8 +309,7 @@ class Commands:
         types = [CONFIG.new['columns']['1']['type']
                 ,CONFIG.new['columns']['2']['type']
                 ,CONFIG.new['columns']['3']['type']
-                ,CONFIG.new['columns']['4']['type']
-                ]
+                ,CONFIG.new['columns']['4']['type']]
         for i in range(len(types)):
             types[i] = self._get_col_type(types[i])
         mes = ', '.join(types)
@@ -391,9 +390,8 @@ class Commands:
         lst = [choice for choice in (CONFIG.new['columns']['1']['type']
                                     ,CONFIG.new['columns']['2']['type']
                                     ,CONFIG.new['columns']['3']['type']
-                                    ,CONFIG.new['columns']['4']['type']
-                                    ) \
-               if choice != _('Do not set')]
+                                    ,CONFIG.new['columns']['4']['type']) \
+              if choice != _('Do not set')]
         ''' #NOTE: The following assignment does not change the list:
             for item in lst:
                 if item == something:
@@ -410,8 +408,7 @@ class Commands:
                 lst[i] = 'transc'
             else:
                 sub = (_('Subjects'), _('Word forms'), _('Transcription')
-                      ,_('Parts of speech')
-                      )
+                      ,_('Parts of speech'))
                 sub = '; '.join(sub)
                 mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
                 mes = mes.format(lst[i], sub)
