@@ -23,7 +23,7 @@ import gui as gi
 import format as fm
 import cells as cl
 from prior_block.controller import BLOCK, PRIOR
-import settings.controller as st
+from settings.controller import SETTINGS, SAVE_SETTINGS
 import suggest.controller as sg
 from about.controller import ABOUT
 import symbols.controller as sm
@@ -410,8 +410,10 @@ class App:
     
     def activate(self):
         if OS.is_win():
-            objs.get_geometry().keyword = self.about.logic.product
-            objs.geometry.activate()
+            from windows.geometry.controller import Geometry
+            self.geometry = Geometry()
+            self.geometry.keyword = self.about.logic.product
+            self.geometry.activate()
         else:
             self.gui.activate()
     
@@ -595,7 +597,7 @@ class App:
         if not table_width:
             rep.empty(f)
             return
-        col_num = self.settings.gui.ent_num.get()
+        col_num = SETTINGS.gui.ent_num.get()
         if not col_num:
             col_num = self._set_col_num(table_width)
         col_num = Input(f, col_num).get_integer()
@@ -622,16 +624,16 @@ class App:
         mes = _('Term column width: {}').format(term_width)
         Message(f, mes).show_debug()
         
-        self.settings.gui.ent_num.set_text(col_num)
-        self.settings.gui.ent_fix.set_text(63)
-        self.settings.gui.ent_trm.set_text(term_width)
+        SETTINGS.gui.ent_num.set_text(col_num)
+        SETTINGS.gui.ent_fix.set_text(63)
+        SETTINGS.gui.ent_trm.set_text(term_width)
     
     def set_col_num(self):
         gi.objs.get_panel().opt_col.set(lg.objs.get_column_width().term_num)
     
     def apply_settings(self):
-        self.settings.close()
-        st.Save().run()
+        SETTINGS.close()
+        SAVE_SETTINGS.run()
         lg.com.export_style()
         lg.objs.get_column_width().reset()
         lg.objs.column_width.run()
@@ -1108,7 +1110,7 @@ class App:
         self.gui.bind(CONFIG.new['actions']['save_article']['hotkeys']
                      ,self.save.toggle)
         self.gui.bind(CONFIG.new['actions']['toggle_settings']['hotkeys']
-                     ,self.settings.toggle)
+                     ,SETTINGS.toggle)
         self.gui.bind(CONFIG.new['actions']['toggle_spec_symbols']['hotkeys']
                      ,self.symbols.show)
         self.gui.bind(CONFIG.new['actions']['swap_langs']['hotkeys']
@@ -1151,8 +1153,8 @@ class App:
         PRIOR.gui.bind(CONFIG.new['actions']['show_prior']['hotkeys']
                       ,PRIOR.close)
         
-        self.settings.gui.bind(CONFIG.new['actions']['toggle_settings']['hotkeys']
-                              ,self.settings.close)
+        SETTINGS.gui.bind(CONFIG.new['actions']['toggle_settings']['hotkeys']
+                         ,SETTINGS.close)
                       
         #TODO: iterate through all keys
         if CONFIG.new['actions']['toggle_spec_symbols']['hotkeys'] == ['Ctrl+E']:
@@ -1192,7 +1194,7 @@ class App:
         gi.objs.panel.btn_rp2.set_action(self.insert_repeat_sign2)
         gi.objs.panel.btn_sav.set_action(self.save.toggle)
         gi.objs.panel.btn_ser.set_action(TABLE.search.toggle)
-        gi.objs.panel.btn_set.set_action(self.settings.toggle)
+        gi.objs.panel.btn_set.set_action(SETTINGS.toggle)
         gi.objs.panel.btn_sym.set_action(self.symbols.show)
         gi.objs.panel.btn_swp.set_action(self.swap_langs)
         gi.objs.panel.btn_trn.set_action(self.go_keyboard)
@@ -1216,9 +1218,9 @@ class App:
         self.symbols.gui.table.sig_rmb.connect(self.copy_symbol)
         self.symbols.gui.sig_ctrl_return.connect(self.copy_symbol)
         
-        self.settings.gui.btn_apl.set_action(self.apply_settings)
-        self.settings.gui.btn_sug.set_action(self.suggest_col_widths)
-        self.settings.gui.sig_close.connect(self.settings.close)
+        SETTINGS.gui.btn_apl.set_action(self.apply_settings)
+        SETTINGS.gui.btn_sug.set_action(self.suggest_col_widths)
+        SETTINGS.gui.sig_close.connect(SETTINGS.close)
         
         self.history.gui.sig_close.connect(self.history.close)
         self.history.gui.sig_go.connect(self.go_history)
@@ -1238,7 +1240,6 @@ class App:
     
     def set_gui(self):
         self.symbols = sm.Symbols()
-        self.settings = st.objs.get_settings()
         self.history = hs.History()
         self.save = Save()
         self.suggest = sg.Suggest()
@@ -1246,36 +1247,16 @@ class App:
         self.set_bindings()
 
 
-
-class Objects:
-    
-    def __init__(self):
-        self.geometry = self.panel = self.block = self.prior = self.app = None
-    
-    def get_app(self):
-        if self.app is None:
-            self.app = App()
-        return self.app
-    
-    def get_geometry(self):
-        if not self.geometry:
-            import windows.geometry.controller as wg
-            self.geometry = wg.Geometry()
-        return self.geometry
-
-
-objs = Objects()
-
-
 if __name__ == '__main__':
     f = '[MClient] mclient.__main__'
     if CONFIG.Success:
         PLUGINS.Debug = False
         PLUGINS.maxrows = 1000
-        objs.get_app().run_thread()
+        app = App()
+        app.run_thread()
         WELCOME.reset()
-        objs.app.solve_screen()
-        objs.app.show()
+        app.solve_screen()
+        app.show()
         WELCOME.resize_rows()
     else:
         mes = _('Invalid configuration!')
