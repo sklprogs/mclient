@@ -12,7 +12,7 @@ from settings.gui import Settings as guiSettings
 class Load:
     
     def __init__(self):
-        self.gui = objs.get_settings().gui
+        self.gui = SETTINGS.gui
     
     def load_style_area(self):
         self.gui.opt_stl.set(CONFIG.new['style'])
@@ -62,7 +62,7 @@ class Load:
 class Save:
     
     def __init__(self):
-        self.gui = objs.get_settings().gui
+        self.gui = SETTINGS.gui
     
     def save_speech_area(self):
         CONFIG.new['speech1'] = self.gui.opt_sp1.get()
@@ -175,16 +175,5 @@ class Settings:
             self.show()
 
 
-
-class Objects:
-    
-    def __init__(self):
-        self.settings = None
-    
-    def get_settings(self):
-        if self.settings is None:
-            self.settings = Settings()
-        return self.settings
-
-
-objs = Objects()
+SETTINGS = Settings()
+SAVE_SETTINGS = Save()
