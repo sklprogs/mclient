@@ -297,6 +297,12 @@ class Table:
         else:
             self.go_first_term()
     
+    def select_row_height(self):
+        if CONFIG.new['rows']['height']:
+            self.set_row_height(CONFIG.new['rows']['height'])
+        else:
+            self.gui.resize_to_contents()
+    
     def reset(self, plain, code):
         f = '[MClient] table.controller.Table.reset'
         if not plain or not code:
@@ -309,7 +315,7 @@ class Table:
         self.model = TableModel(self.logic.code)
         self.fill()
         self.set_col_width()
-        self.set_row_height(CONFIG.new['rows']['height'])
+        self.select_row_height()
         self.show_borders(False)
         self.set_long()
         ''' Coordinates are recreated each time the app window is resized. Here

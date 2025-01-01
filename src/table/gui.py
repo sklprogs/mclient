@@ -128,8 +128,9 @@ class TableDelegate(QStyledItemDelegate):
         doc = QTextDocument()
         doc.setHtml(options.text)
         doc.setTextWidth(options.rect.width())
-        
-        return QSize(doc.idealWidth(), doc.size().height())
+
+        # 'float' is possible but not allowed
+        return QSize(int(doc.idealWidth()), int(doc.size().height()))
 
 
 
@@ -266,3 +267,6 @@ class Table(QTableView):
     
     def show_popup(self):
         self.sig_popup.emit()
+    
+    def resize_to_contents(self):
+        self.resizeRowsToContents()
