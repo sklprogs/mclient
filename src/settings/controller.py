@@ -82,7 +82,6 @@ class Save:
         CONFIG.new['Iconify'] = SETTINGS.gui.cbx_no5.get()
         CONFIG.new['Autoswap'] = SETTINGS.gui.cbx_no6.get()
         CONFIG.new['PhraseCount'] = SETTINGS.gui.cbx_no7.get()
-        #TODO: Rework
         if SETTINGS.gui.cbx_no8.get():
             CONFIG.new['rows']['height'] = 0
     

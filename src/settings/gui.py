@@ -459,7 +459,7 @@ class Settings(QWidget):
         self.cbx_no5 = CheckBox(_('Iconify the program window after copying'))
         self.cbx_no6 = CheckBox(_('Autoswap Russian and the other language if appropriate'))
         self.cbx_no7 = CheckBox(_('Show a phrase count'))
-        self.cbx_no8 = CheckBox(_('Adjust columns by width'))
+        self.cbx_no8 = CheckBox(_('Resize rows to contents'))
     
     def set_bg(self):
         self.bg_col = QWidget()
