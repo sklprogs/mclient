@@ -1,5 +1,10 @@
 (in development)
 
+## 7.0.3
+* Adopt [multitran.com](https://www.multitran.com) updates (remove excessive
+  text)
+* Refactor the code to comnform with skl_shared_qt
+
 7.0.2
 * Adopt [multitran.com](https://www.multitran.com) updates (thesauruses,
   multi-word word forms, a comment prior to a word form)
