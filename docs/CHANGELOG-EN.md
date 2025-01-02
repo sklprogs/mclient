@@ -1,7 +1,7 @@
 (in development)
 
 ## 7.1
-* Resizing rows by contents (if the corresponding option is enabled)
+* Resize rows by contents (if the corresponding option is enabled)
 * Adopt [multitran.com](https://www.multitran.com) updates (remove excessive
   text)
 * Refactor the code to comnform with skl_shared_qt
