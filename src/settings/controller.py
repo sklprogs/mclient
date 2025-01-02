@@ -84,6 +84,8 @@ class Save:
         CONFIG.new['PhraseCount'] = SETTINGS.gui.cbx_no7.get()
         if SETTINGS.gui.cbx_no8.get():
             CONFIG.new['rows']['height'] = 0
+        elif CONFIG.new['rows']['height'] == 0:
+            CONFIG.new['rows']['height'] = 42
     
     def _report_wrong_range(self, f, start, end):
         mes = _('A value of this field should be within the range of {}-{}!')
