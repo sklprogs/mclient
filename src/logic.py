@@ -418,14 +418,6 @@ class Commands:
             return
         objs.get_request().cols = tuple(lst)
         #TODO: Should we change objs.request.collimit here?
-    
-    def suggest(self, search, limit=0):
-        f = '[MClient] logic.Commands.suggest'
-        items = PLUGINS.suggest(search)
-        if not items:
-            rep.empty(f)
-            return []
-        return items[0:limit]
         
     def use_unverified(self):
         f = '[MClient] logic.Commands.use_unverified'

@@ -24,7 +24,7 @@ import format as fm
 import cells as cl
 from prior_block.controller import BLOCK, PRIOR
 from settings.controller import SETTINGS, SAVE_SETTINGS
-import suggest.controller as sg
+from suggest.controller import SUGGEST
 from about.controller import ABOUT
 import symbols.controller as sm
 from welcome.controller import WELCOME
@@ -276,17 +276,17 @@ class App:
         if not fragment:
             rep.empty(f)
             return
-        items = lg.com.suggest(search=fragment, limit=35)
+        items = SUGGEST.suggest(fragment, 35)
         if not items:
             mes = _('No suggestions are available!')
             Message(f, mes).show_info()
             return
-        self.suggest.fill(items)
-        self.suggest.show()
+        SUGGEST.fill(items)
+        SUGGEST.show()
         x = self.get_x() + gi.objs.panel.ent_src.get_x()
-        y = self.get_height() + self.get_y() - self.suggest.get_height() \
+        y = self.get_height() + self.get_y() - SUGGEST.get_height() \
                               - gi.objs.panel.ent_src.get_root_y()
-        self.suggest.set_geometry(x, y, 170, self.suggest.get_height())
+        SUGGEST.set_geometry(x, y, 170, SUGGEST.get_height())
     
     def show_popup(self):
         f = '[MClient] mclient.App.show_popup'
@@ -897,7 +897,7 @@ class App:
         ''' #NOTE: each time the contents of the current page is changed
             (e.g., due to prioritizing), bookmarks must be deleted.
         '''
-        self.suggest.close()
+        SUGGEST.close()
         timer = Timer(f)
         timer.start()
 
@@ -1008,7 +1008,7 @@ class App:
                              ,url = lg.objs.request.url)
     
     def load_suggestion(self, text):
-        self.suggest.close()
+        SUGGEST.close()
         lg.objs.get_request().search = text
         self.go_search()
     
@@ -1022,7 +1022,7 @@ class App:
     
     def minimize(self):
         POPUP.close()
-        self.suggest.close()
+        SUGGEST.close()
         self.gui.minimize()
     
     def update_ui(self):
@@ -1047,7 +1047,7 @@ class App:
     
     def close(self):
         POPUP.close()
-        self.suggest.close()
+        SUGGEST.close()
         self.gui.close()
     
     def set_bindings(self):
@@ -1225,7 +1225,7 @@ class App:
         self.history.gui.sig_close.connect(self.history.close)
         self.history.gui.sig_go.connect(self.go_history)
         
-        self.suggest.gui.sig_load.connect(self.load_suggestion)
+        SUGGEST.gui.sig_load.connect(self.load_suggestion)
         
         BLOCK.gui.sig_close.connect(BLOCK.close)
         PRIOR.gui.sig_close.connect(PRIOR.close)
@@ -1242,7 +1242,6 @@ class App:
         self.symbols = sm.Symbols()
         self.history = hs.History()
         self.save = Save()
-        self.suggest = sg.Suggest()
         self.set_title(ABOUT.logic.product)
         self.set_bindings()
 
