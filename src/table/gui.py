@@ -83,7 +83,7 @@ class TableDelegate(QStyledItemDelegate):
         
         self.set_line_spacing(doc)
         
-        # This enables text wrapping in the delegate
+        # Enable text wrapping
         doc.setTextWidth(options.rect.width())
         
         style.drawControl(QStyle.ControlElement.CE_ItemViewItem, options, painter)

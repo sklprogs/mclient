@@ -326,6 +326,9 @@ class Table:
     def set_long(self):
         # Takes ~0.56s for 'set' on Intel Atom
         f = '[MClient] table.controller.Table.set_long'
+        if not CONFIG.new['rows']['height']:
+            rep.lazy(f)
+            return
         ilimits = FontLimits(family = CONFIG.new['terms']['font']['family']
                             ,size = CONFIG.new['terms']['font']['size']
                             ,Bold = False
