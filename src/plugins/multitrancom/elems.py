@@ -137,16 +137,15 @@ class Trash:
             self.blocks = self.blocks[:self.tail]
         if self.head is not None:
             self.blocks = self.blocks[self.head+1:]
-        rep.matches(f, old_len - len(self.blocks))
+        rep.matches(f, old_len-len(self.blocks))
     
     def remove_stresses(self):
         # Remove useless "stresses" block
         f = '[MClient] plugins.multitrancom.elems.Trash.remove_stresses'
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks \
-                       if not block.url.startswith('a=467&s=')
-                      ]
-        rep.matches(f, old_len - len(self.blocks))
+                      if not block.url.startswith('a=467&s=')]
+        rep.matches(f, old_len-len(self.blocks))
     
     def run(self):
         self.remove_stresses()
@@ -169,13 +168,11 @@ class Thesaurus:
         self.en = ('English thesaurus', 'Английский тезаурус'
                   ,'Englisch Thesaurus', 'Anglais glossaire', 'Inglés tesauro'
                   ,'אנגלית אוצר מילים', 'Angielski tezaurus', '英语 词库'
-                  ,'Англійський тезаурус'
-                  )
+                  ,'Англійський тезаурус')
         self.ru = ('Russian thesaurus', 'Русский тезаурус'
                   ,'Russisch Thesaurus', 'Russe glossaire', 'Ruso tesauro'
                   ,'רוסית אוצר מילים', 'Rosyjski tezaurus', '俄语 词库'
-                  , 'Російський тезаурус'
-                  )
+                  , 'Російський тезаурус')
         self.names = self.en + self.ru
         self.blocks = blocks
     
@@ -235,8 +232,7 @@ class SeparateWords:
                         ,'- se han encontrado palabras individuales'
                         ,'- знайдено окремі слова'
                         ,'- znaleziono osobne słowa'
-                        ,'- 只找到单语'
-                        )
+                        ,'- 只找到单语')
         self.Separate = False
         self.blocks = blocks
     
@@ -281,8 +277,7 @@ class SeparateWords:
             self.blocks[i].cellno = self.blocks[i-1].cellno
             i += 1
         self.blocks = [block for block in self.blocks \
-                       if block.text and block.text != '|'
-                      ]
+                      if block.text and block.text != '|']
     
     def _has(self, text):
         for pattern in self.patterns:
@@ -321,7 +316,7 @@ class SeparateWords:
         self._set()
         self._delete()
         self._set_terms()
-        rep.deleted(f, old_len - len(self.blocks))
+        rep.deleted(f, old_len-len(self.blocks))
         self._add_subject()
         self.Separate = True
     
@@ -353,8 +348,7 @@ class Suggestions:
     def __init__(self, blocks):
         self.patterns = (' Варианты замены: ', ' Suggest: '
                         ,' Mögliche Varianten: ', ' Variantes de sustitución: '
-                        ,' Варіанти заміни: ', ' Opcje zamiany: ', ' 建议: '
-                        )
+                        ,' Варіанти заміни: ', ' Opcje zamiany: ', ' 建议: ')
         self.head = None
         self.tail = None
         # This class can be either failed or interrupted where necessary
@@ -460,7 +454,7 @@ class Suggestions:
             return
         old_len = len(self.blocks)
         self.blocks = self.blocks[self.head:self.tail]
-        rep.deleted(f, old_len - len(self.blocks))
+        rep.deleted(f, old_len-len(self.blocks))
     
     def debug(self):
         # Orphaned
@@ -483,7 +477,7 @@ class Suggestions:
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks \
                       if not block.text in ('; ', ';')]
-        rep.deleted(f, old_len - len(self.blocks))
+        rep.deleted(f, old_len-len(self.blocks))
     
     def run(self):
         self.has()
@@ -638,7 +632,7 @@ class Elems:
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_semi'
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks if block.text != '; ']
-        rep.matches(f, old_len - len(self.blocks))
+        rep.matches(f, old_len-len(self.blocks))
     
     def unite_brackets(self):
         ''' Combine a cell with a preceding or following bracket such that the
@@ -708,7 +702,7 @@ class Elems:
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_empty'
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks if block.text.strip()]
-        rep.matches(f, old_len - len(self.blocks))
+        rep.matches(f, old_len-len(self.blocks))
     
     def convert_user_subj(self):
         # "Gruzovik" and other entries that function as 'subj'
