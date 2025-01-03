@@ -303,8 +303,7 @@ class Tags:
         cellnos = [block.cellno for block in self.blocks]
         iterable = [nos, types, texts, urls, subjs, subjfs, cellnos]
         headers = (_('#'), _('TYPE'), _('TEXT'), 'URL', 'SUBJ', 'SUBJF'
-                  ,_('CELL #')
-                  )
+                  ,_('CELL #'))
         # 10'' monitor: 20 symbols per a column
         # 23'' monitor: 50 symbols per a column
         mes = Table(iterable = iterable, headers = headers, maxrow = 50
@@ -369,15 +368,13 @@ class Tags:
             subtags = ', '.join(subtags)
             inherent.append(subtags)
         iterable = [nos, closes, names, types, texts, urls, subjfs, inherent
-                   ,cellnos
-                   ]
+                   ,cellnos]
         headers = (_('#'), _('CLOSING'), _('NAME'), _('TYPE'), _('TEXT'), 'URL'
-                  ,'DICF', _('OPEN'), _('CELL')
-                  )
+                  ,'DICF', _('OPEN'), _('CELL'))
         # 10'' monitor: 13 symbols per a column
         # 23'' monitor: 30 symbols per a column
         mes = Table(iterable = iterable, headers = headers, maxrow = 30
-                   ,maxrows = self.maxrows, FromEnd = True).run()
+                   ,maxrows = self.maxrows, CutStart = True).run()
         return _('Tags:') + '\n' + mes
     
     def debug(self):
@@ -390,8 +387,7 @@ class Tags:
             return ''
         '''
         mes = [self._debug_code(), self._debug_fragms(), self._debug_tags()
-              ,self._debug_blocks()
-              ]
+              ,self._debug_blocks()]
         '''
         mes = [self._debug_tags(), self._debug_blocks()]
         return '\n\n'.join(mes)

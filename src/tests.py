@@ -2,8 +2,10 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
-import skl_shared_qt.shared as sh
-import skl_shared_qt.config as qc
+from skl_shared_qt.message.controller import Message, rep
+from skl_shared_qt.graphics.root.controller import ROOT
+from skl_shared_qt.graphics.debug.controller import Debug
+from skl_shared_qt.config import Default, Schema, Local
 
 import config as cf
 import subjects as sj
@@ -12,7 +14,7 @@ DEBUG = True
 
 SEARCH = 'inundated'
 URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=inundated&l2=2'
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/inundated (2024-04-08).html'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/hello (2025-01-02).html'
 
 
 class Config:
@@ -23,7 +25,7 @@ class Config:
         self.local = sh.Home(cf.PRODUCT_LOW).add_config(cf.PRODUCT_LOW + '.json')
     
     def run_schema(self):
-        ischema = qc.Schema(self.schema)
+        ischema = Schema(self.schema)
         ischema.run()
         mes = []
         sub = _('Configuration file: {}').format(ischema.file)
@@ -38,9 +40,9 @@ class Config:
         return '\n'.join(mes)
     
     def run_default(self):
-        ischema = qc.Schema(self.schema)
+        ischema = Schema(self.schema)
         ischema.run()
-        idefault = qc.Default(self.default, ischema.get())
+        idefault = Default(self.default, ischema.get())
         idefault.run()
         mes = []
         sub = _('Configuration file: {}').format(self.default)
@@ -59,7 +61,7 @@ class Config:
     def run_local(self):
         f = '[SharedQt] config.Tests.run_local'
         min_version = 2
-        ilocal = qc.Local(self.local, min_version)
+        ilocal = Local(self.local, min_version)
         ilocal.run()
         timer = sh.Timer(f)
         timer.start()
@@ -319,17 +321,18 @@ class Elems:
     
     def run_multitrancom(self):
         f = '[MClient] tests.Elems.run_multitrancom'
-        import plugins.multitrancom.cleanup as cu
-        import plugins.multitrancom.tags as tg
-        import plugins.multitrancom.elems as el
-        text = sh.ReadTextFile(HTM_FILE).get()
-        timer = sh.Timer(f)
+        from skl_shared_qt.text_file import Read
+        from skl_shared_qt.time import Timer
+        from plugins.multitrancom.cleanup import CleanUp
+        from plugins.multitrancom.tags import Tags
+        from plugins.multitrancom.elems import Elems
+        text = Read(HTM_FILE).get()
+        timer = Timer(f)
         timer.start()
-        text = cu.CleanUp(text).run()
-        blocks = tg.Tags (text = text
-                         ,maxrows = 0
-                         ).run()
-        ielems = el.Elems(blocks)
+        text = CleanUp(text).run()
+        blocks = Tags(text = text
+                     ,maxrows = 0).run()
+        ielems = Elems(blocks)
         ielems.run()
         timer.end()
         return ielems.debug()
@@ -552,14 +555,14 @@ class Tags:
         return itags.debug()
     
     def run_multitrancom(self):
-        import plugins.multitrancom.cleanup as cu
-        import plugins.multitrancom.tags as tg
-        text = sh.ReadTextFile(HTM_FILE).get()
-        text = cu.CleanUp(text).run()
-        itags = tg.Tags (text = text
-                        ,Debug = DEBUG
-                        ,maxrows = 0
-                        )
+        from skl_shared_qt.text_file import Read
+        from plugins.multitrancom.cleanup import CleanUp
+        from plugins.multitrancom.tags import Tags
+        text = Read(HTM_FILE).get()
+        text = CleanUp(text).run()
+        itags = Tags(text = text
+                    ,Debug = DEBUG
+                    ,maxrows = 0)
         itags.run()
         return itags.debug()
 
@@ -1145,7 +1148,7 @@ com = Commands()
 
 if __name__ == '__main__':
     f = '[MClient] tests.__main__'
-    sh.com.start()
+    ROOT.get_root()
     ''' #NOTE: Putting QMainWindow.show() or QWidget.show() (without
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
@@ -1154,7 +1157,7 @@ if __name__ == '__main__':
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
     #mes = Tags().run_stardict()
-    #mes = Tags().run_multitrancom()
+    mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
     #mes = Elems().run_multitrancom()
@@ -1163,11 +1166,11 @@ if __name__ == '__main__':
     #mes = View().run_stardict()
     #mes = Subjects().run()
     #mes = View().run_multitrancom()
-    mes = Wrap().run_multitrancom()
+    #mes = Wrap().run_multitrancom()
     #mes = Elems().run_multitrandem()
     #mes = Prioritize().run_multitrancom()
     #mes = Get().run_multitrandem()
-    idebug = sh.Debug(f, mes)
+    idebug = Debug(f, mes)
     idebug.show()
     #idebug = sh.Debug(f, com.get_fixed_urls())
     #idebug = sh.Debug(f, Tags().run_multitrandem())
@@ -1178,7 +1181,7 @@ if __name__ == '__main__':
     #idebug = sh.Debug(f, View().run_multitrancom())
     #idebug = sh.Debug(f, Wrap().run_multitrancom())
     # This MUST be on a separate line, the widget will not be shown otherwise
-    idebug.show()
+    #idebug.show()
     
     #mes = com.run_speech()
     #sh.objs.get_mes(f, mes).show_debug()
@@ -1224,5 +1227,5 @@ if __name__ == '__main__':
     #iwelcome.show()
 
     mes = _('Goodbye!')
-    sh.objs.get_mes(f, mes, True).show_debug()
-    sh.com.end()
+    Message(f, mes).show_debug()
+    ROOT.end()
