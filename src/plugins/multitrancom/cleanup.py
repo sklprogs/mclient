@@ -59,6 +59,10 @@ class CleanUp:
         self.text = self.text.replace('<em><span style="color:gray">', '<em>')
         self.text = self.text.replace('</span></em>', '</em>')
     
+    def fix_javascript(self):
+        # Do this before 'fix_href'
+        self.text = self.text.replace('<script type="text/javascript" >', '<script type="text/javascript">')
+    
     def fix_href(self):
         ''' Fix a malformed URL, e.g., 'href="/m.exe?a=110&l1=1&l2=2&s=process (<редк.>)&sc=671"'
             multitran.com provides for URLs that are not entirely correct: they
@@ -78,9 +82,8 @@ class CleanUp:
         poses = poses[::-1]
         for pos in poses:
             pos += len('href="')
-            isearch.reset (text = self.text
-                          ,pattern = '"'
-                          )
+            isearch.reset(text = self.text
+                         ,pattern = '"')
             isearch.i = pos
             pos1 = isearch.get_next()
             if not str(pos1).isdigit():
@@ -100,7 +103,7 @@ class CleanUp:
               properly. We try to fix this here.
             - Takes ~0.0044s for 'set' (EN-RU) on AMD E-300.
         '''
-        self.text = re.sub(' >+', r' &gt', self.text)
+        self.text = re.sub(' >+', r' &gt;', self.text)
     
     def run_common(self):
         # Delete unicode control codes
@@ -123,6 +126,7 @@ class CleanUp:
             rep.empty(f)
             return ''
         self.delete_trash_tags()
+        self.fix_javascript()
         self.fix_href()
         self.fix_tags()
         self.run_common()
