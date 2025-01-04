@@ -169,6 +169,11 @@ class AnalyzeTag:
     def _is_script(self):
         return self.tag.name == 'script'
     
+    def _is_trash_link(self):
+        return 'div class="offset1"' in self.tag.text \
+        or 'div class="middle_mobile"' in self.tag.text \
+        or 'div style="float:left"' in self.tag.text
+    
     def _set_type(self):
         if self._is_term():
             self.tag.type = 'term'
@@ -195,6 +200,8 @@ class AnalyzeTag:
             self.tag.type = 'script'
         elif self._is_phcount():
             self.tag.type = 'phcount'
+        elif self._is_trash_link():
+            self.tag.type = 'trash_link'
     
     def _set_close(self):
         if self.fragm.startswith('</'):
@@ -260,6 +267,11 @@ class Tags:
             if subtag.name == 'script':
                 return True
     
+    def _is_trash_link(self, tag):
+        for subtag in tag.inherent:
+            if subtag.type == 'trash_link':
+                return True
+    
     def _close(self, name):
         i = len(self.open) - 1
         while i >= 0:
@@ -316,7 +328,7 @@ class Tags:
             rep.cancel(f)
             return
         tags = [tag for tag in self.tags if tag.type == 'text' \
-               and not self._is_script(tag)]
+               and not self._is_script(tag) and not self._is_trash_link(tag)]
         for tag in tags:
             block = ic.Block()
             for subtag in tag.inherent:
