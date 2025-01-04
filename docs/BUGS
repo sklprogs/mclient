@@ -2,11 +2,6 @@
 - Changing mode does not work
 
 mclient:
-Traceback (most recent call last):
-  File "/home/pete/bin/mclient/src/symbols/gui.py", line 106, in keyPressEvent
-    if key in (PyQt6.QtCore.Qt.Key_Return, PyQt6.QtCore.Qt.Key.Key_Enter):
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: type object 'Qt' has no attribute 'Key_Return'
 - Alt-Left or Alt-Right: history item is not updated
 - Properly update model after blocking new subjects (table index becomes out of
   bounds)
@@ -20,6 +15,9 @@ AttributeError: type object 'Qt' has no attribute 'Key_Return'
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
+- RU-EN, восемь: flying comment block: 'восемь', 'восьми', 'восемью'
+- RU-EN, восемь: 'echt () восьми-'
+- RU-EN, eight: flying comment block: 'eight-' (should be wform before "восьми-")
 - RU-EN, mapping (Multitran mode): word forms are not properly sorted
 - RU-EN, catnip: "catmint (Amer.)" is separated into 2 blocks
 - RU-EN, teetotaller: "(American spelling)" is a separate cell
