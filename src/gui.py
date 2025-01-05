@@ -206,8 +206,7 @@ class App(QMainWindow):
         self.parent.setLayout(self.layout_)
     
     def set_icon(self):
-        # Does not accent None
-        self.setWindowIcon(ICON.get())
+        ROOT.set_icon()
     
     def set_gui(self):
         self.set_layout()
