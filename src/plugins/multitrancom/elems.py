@@ -893,6 +893,15 @@ class Elems:
             i += 1
         rep.matches(f, count)
     
+    def run_com_url(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.run_com_url'
+        count = 0
+        for block in self.blocks:
+            if block.type == 'comment' and block.url:
+                count += 1
+                block.type = 'wform'
+        rep.matches(f, count)
+    
     def run_com_sp_com(self):
         ''' '<em>' tag usually denoting a speech part can actually be
             a comment: EN-RU: bit.
@@ -940,6 +949,7 @@ class Elems:
         self.set_transc()
         self.separate_speech()
         self.convert_user_subj()
+        self.run_com_url()
         self.set_see_also()
         self.set_fixed_blocks()
         self.separate_fixed()
