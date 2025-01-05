@@ -12,8 +12,6 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
-- RU-EN, восемь: flying comment block: 'восемь', 'восьми', 'восемью'
-- RU-EN, восемь: 'echt () восьми-'
 - RU-EN, eight: flying comment block: 'eight-' (should be wform before "восьми-")
 - RU-EN, mapping (Multitran mode): word forms are not properly sorted
 - RU-EN, catnip: "catmint (Amer.)" is separated into 2 blocks

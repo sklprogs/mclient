@@ -151,7 +151,9 @@ class AnalyzeTag:
                or 'a name="pronoun"' in self.tag.text \
                or 'a name="word form"' in self.tag.text \
                or 'a name="automatically"' in self.tag.text \
-               or 'a name=""' in self.tag.text
+               or 'a name=""' in self.tag.text \
+               or 'a name="numeral"' in self.tag.text \
+               or 'a name="ordinal number"' in self.tag.text
     
     def _is_speech(self):
         return self.tag.text == 'em'
