@@ -4,7 +4,7 @@
 * Resize rows by contents (if the corresponding option is enabled)
 * Adopt [multitran.com](https://www.multitran.com) updates (remove excessive
   text)
-* Refactor the code to comnform with skl_shared_qt
+* Refactor the code to conform with skl_shared_qt
 
 ## 7.0.2
 * Adopt [multitran.com](https://www.multitran.com) updates (thesauruses,
