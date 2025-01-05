@@ -1,6 +1,3 @@
-- When using ThirdParties, Email.run_outlook issues a warning
-- Changing mode does not work
-
 mclient:
 - Alt-Left or Alt-Right: history item is not updated
 - Properly update model after blocking new subjects (table index becomes out of
