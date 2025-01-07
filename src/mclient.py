@@ -19,6 +19,7 @@ from manager import PLUGINS
 from articles import ARTICLES
 from table.controller import TABLE
 import logic as lg
+from logic import REQUEST
 import gui as gi
 import format as fm
 import cells as cl
@@ -169,7 +170,7 @@ class UpdateUI:
         self.update_last_search()
         self.update_prev_search()
         # Suppress useless error output
-        if lg.objs.get_request().search:
+        if REQUEST.search:
             self.update_go_prev()
             self.update_go_next()
             self.update_block()
@@ -403,11 +404,11 @@ class App:
         if not url:
             rep.empty(f)
             return
-        lg.objs.get_request().search = text
-        lg.objs.request.url = url
-        mes = _('Open link: {}').format(lg.objs.request.url)
+        REQUEST.search = text
+        REQUEST.url = url
+        mes = _('Open link: {}').format(REQUEST.url)
         Message(f, mes).show_info()
-        self.load_article(lg.objs.request.search, lg.objs.request.url)
+        self.load_article(REQUEST.search, REQUEST.url)
     
     def activate(self):
         if OS.is_win():
@@ -433,7 +434,7 @@ class App:
         if not new_clipboard:
             rep.empty(f)
             return
-        lg.objs.get_request().search = new_clipboard
+        REQUEST.search = new_clipboard
         self.go_search()
     
     def run_thread(self):
@@ -474,7 +475,7 @@ class App:
         if Selected:
             pattern = TABLE.get_cell_text()
         else:
-            pattern = lg.objs.get_request().search
+            pattern = REQUEST.search
         if not pattern:
             rep.empty(f)
             return
@@ -499,7 +500,7 @@ class App:
     def add_history(self):
         # Call this only after assigning an article ID for a new article
         f = '[MClient] mclient.App.add_history'
-        if not lg.objs.get_request().search:
+        if not REQUEST.search:
             rep.lazy(f)
             return
         self.history.add_row(id_ = ARTICLES.id
@@ -534,7 +535,7 @@ class App:
     
     def clear_history(self):
         ARTICLES.reset()
-        lg.objs.get_request().reset()
+        REQUEST.reset()
         self.solve_screen()
     
     def go_back(self):
@@ -694,10 +695,10 @@ class App:
         lang1 = gi.objs.get_panel().opt_lg1.get()
         lang2 = gi.objs.panel.opt_lg2.get()
         if PLUGINS.is_oneway() or not CONFIG.new['Autoswap'] \
-        or not lg.objs.get_request().search:
+        or not REQUEST.search:
             rep.lazy(f)
             return
-        if Text(lg.objs.request.search).has_cyrillic():
+        if Text(REQUEST.search).has_cyrillic():
             if lang2 in (_('Russian'), 'Russian'):
                 mes = f'{lang1}-{lang2} -> {lang2}-{lang1}'
                 Message(f, mes).show_info()
@@ -862,13 +863,13 @@ class App:
         if not cell:
             rep.empty(f)
             return
-        lg.objs.get_request().search = cell.text
+        REQUEST.search = cell.text
         if cell.url:
-            lg.objs.request.url = cell.url
-            mes = _('Open link: {}').format(lg.objs.request.url)
+            REQUEST.url = cell.url
+            mes = _('Open link: {}').format(REQUEST.url)
             Message(f, mes).show_info()
-            self.load_article(search = lg.objs.request.search
-                             ,url = lg.objs.request.url)
+            self.load_article(search = REQUEST.search
+                             ,url = REQUEST.url)
         else:
             self.go_search()
     
@@ -952,7 +953,7 @@ class App:
         ARTICLES.set_blocked_cells(iomit.omit_cells)
         ARTICLES.set_table(iwrap.cells)
         
-        #lg.objs.request.text = lg.com.get_text(cells)
+        #REQUEST.text = lg.com.get_text(cells)
         #colors = lg.com.get_colors(blocks)
         #lg.com.fix_colors(colors)
         
@@ -991,27 +992,27 @@ class App:
         elif search == CONFIG.new['repeat_sign2']:
             self.insert_repeat_sign2()
         else:
-            lg.objs.get_request().search = search
+            REQUEST.search = search
             self.go_search()
     
     def go_search(self):
         f = '[MClient] mclient.App.go_search'
-        if lg.objs.get_request().search is None:
-            lg.objs.request.search = ''
-        lg.objs.request.search = lg.objs.request.search.strip()
+        if REQUEST.search is None:
+            REQUEST.search = ''
+        REQUEST.search = REQUEST.search.strip()
         if lg.com.control_length():
             self.update_lang1()
             self.update_lang2()
             self.auto_swap()
-            mes = f'"{lg.objs.request.search}"'
+            mes = f'"{REQUEST.search}"'
             Message(f, mes).show_debug()
             lg.com.set_url()
-            self.load_article(search = lg.objs.request.search
-                             ,url = lg.objs.request.url)
+            self.load_article(search = REQUEST.search
+                             ,url = REQUEST.url)
     
     def load_suggestion(self, text):
         SUGGEST.close()
-        lg.objs.get_request().search = text
+        REQUEST.search = text
         self.go_search()
     
     def clear_search_field(self):

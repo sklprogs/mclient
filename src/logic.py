@@ -56,13 +56,13 @@ class App:
     
     def open_in_browser(self):
         ionline = Online()
-        url = objs.get_request().url
+        url = REQUEST.url
         ionline.url = PLUGINS.fix_url(url)
         ionline.browse()
     
     def print(self):
         f = '[MClient] logic.App.print'
-        code = make_pretty(objs.get_request().htm)
+        code = make_pretty(REQUEST.htm)
         if not code:
             rep.empty(f)
             return
@@ -184,18 +184,6 @@ class CurRequest:
 
 
 
-class Objects:
-    
-    def __init__(self):
-        self.request = None
-
-    def get_request(self):
-        if self.request is None:
-            self.request = CurRequest()
-        return self.request
-
-
-
 class Commands:
     
     def __init__(self):
@@ -219,7 +207,7 @@ class Commands:
             rep.empty(f)
             return
         for color in colors:
-            objs.get_request().htm = objs.request.htm.replace(f"'{color}'", color)
+            REQUEST.htm = REQUEST.htm.replace(f"'{color}'", color)
     
     def get_colors(self, blocks):
         f = '[MClient] logic.Commands.get_colors'
@@ -235,17 +223,17 @@ class Commands:
     def set_url(self):
         f = '[MClient] logic.Commands.set_url'
         #NOTE: update source and target languages first
-        objs.get_request().url = PLUGINS.get_url(objs.request.search)
-        mes = objs.request.url
+        REQUEST.url = PLUGINS.get_url(REQUEST.search)
+        mes = REQUEST.url
         Message(f, mes).show_debug()
     
     def control_length(self):
         # Confirm too long requests
         f = '[MClient] logic.Commands.control_length'
         Confirmed = True
-        if len(objs.get_request().search) >= 150:
+        if len(REQUEST.search) >= 150:
             mes = _('The request is long ({} symbols). Do you really want to send it?')
-            mes = mes.format(len(objs.request.search))
+            mes = mes.format(len(REQUEST.search))
             if not Message(f, mes, True).show_question():
                 Confirmed = False
         return Confirmed
@@ -284,8 +272,8 @@ class Commands:
         if not lst:
             rep.lazy(f)
             return
-        objs.get_request().cols = tuple(lst)
-        #TODO: Should we change objs.request.collimit here?
+        REQUEST.cols = tuple(lst)
+        #TODO: Should we change REQUEST.collimit here?
         
     def use_unverified(self):
         f = '[MClient] logic.Commands.use_unverified'
@@ -393,5 +381,5 @@ class Search(Table):
                 return(rowno, colno)
 
 
-objs = Objects()
 com = Commands()
+REQUEST = CurRequest()
