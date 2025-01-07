@@ -11,10 +11,11 @@ from skl_shared_qt.table import Table
 from instance import Block, Cell
 from config import CONFIG
 from manager import PLUGINS
-import format as fm
-import logic as lg
-import subjects as sj
+from format import Block as fmBlock
+from logic import Speech
+from subjects import SUBJECTS
 from articles import ARTICLES
+from columns import COL_WIDTH, Types as ColTypes
 
 
 class Expand:
@@ -56,7 +57,7 @@ class Expand:
             rep.lazy(f)
             return
         for cell in self.cells:
-            cell.subj = sj.objs.get_subjects().expand(cell.subj)
+            cell.subj = SUBJECTS.expand(cell.subj)
     
     def run(self):
         self.expand_speeches()
@@ -80,7 +81,7 @@ class Omit:
         subjects = [cell.subj for cell in self.cells]
         subjects = sorted(set(subjects))
         for subject in subjects:
-            if sj.objs.get_subjects().is_blocked(subject):
+            if SUBJECTS.is_blocked(subject):
                 self.subj.append(subject)
         mes = '; '.join(self.subj)
         Message(f, mes).show_debug()
@@ -129,7 +130,7 @@ class Omit:
 class Prioritize:
     
     def __init__(self, cells):
-        self.speech = lg.Speech().get_settings()
+        self.speech = Speech().get_settings()
         self.cells = cells
     
     def debug(self):
@@ -156,11 +157,11 @@ class Prioritize:
         return f + ':\n' + mes
     
     def set_speech(self):
-        ph_cells = [cell for cell in self.cells if com.is_phrase_type(cell)]
+        ph_cells = [cell for cell in self.cells if is_phrase_type(cell)]
         all_speech = sorted(set([cell.speech for cell in self.cells \
                                  if not cell in ph_cells]))
         speech_unp = [speech for speech in all_speech \
-                      if not speech in self.speech]
+                     if not speech in self.speech]
         all_speech = self.speech + speech_unp
         for i in range(len(all_speech)):
             for cell in self.cells:
@@ -190,14 +191,14 @@ class Prioritize:
             multitran.com, EN-RU, 'full of it'.
         '''
         for cell in self.cells:
-            priority = sj.objs.get_subjects().get_priority(cell.subj)
+            priority = SUBJECTS.get_priority(cell.subj)
             if priority is not None:
                 cell.subjpr = priority
         pr_cells = [cell for cell in self.cells if cell.subjpr > -1]
         unp_cells = [cell for cell in self.cells if cell.subjpr == -1 \
-                     and not com.is_phrase_type(cell)]
+                    and not is_phrase_type(cell)]
         ph_cells = [cell for cell in self.cells if cell.subjpr == -1 \
-                    and com.is_phrase_type(cell)]
+                   and is_phrase_type(cell)]
         
         pr_cells.sort(key=lambda x: (x.subjpr, x.no))
         unp_cells.sort(key=lambda x: (x.subj.lower(), x.no))
@@ -252,9 +253,10 @@ class View:
         self.phi = None
         self.view = []
         self.cells = cells
-        self.fixed_types = lg.com.get_col_types()
         self.fixed_urls = ARTICLES.get_fixed_urls()
-
+        # Must be recreated for each article loading/reloading
+        self.fixed_cols = ColTypes().run()
+    
     def check(self):
         f = '[MClient] cells.View.check'
         if not self.cells:
@@ -267,8 +269,8 @@ class View:
         if not self.Success:
             rep.cancel(f)
             return
-        if CONFIG.new['AlphabetizeTerms'] \
-        and not lg.com.is_parallel() and not lg.com.is_separate():
+        if CONFIG.new['AlphabetizeTerms'] and not ARTICLES.is_parallel() \
+        and not ARTICLES.is_separate():
             self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.text, x.no))
         else:
             self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.no))
@@ -281,7 +283,7 @@ class View:
         cell.fixed_block = block
         cell.blocks = [block]
         cell.rowno = rowno
-        if com.is_phrase_type(self.cells[i]):
+        if is_phrase_type(self.cells[i]):
             cell.subjpr = self.cells[i].subjpr
             cell.speechpr = self.cells[i].speechpr
             if type_ == 'subj':
@@ -320,7 +322,7 @@ class View:
         while i < len(self.cells):
             if self.cells[i-1].rowno != self.cells[i].rowno:
                 rowno = self.cells[i].rowno
-                for type_ in self.fixed_types:
+                for type_ in self.fixed_cols:
                     count += 1
                     cell = self._create_fixed(i, type_, rowno)
                     self.cells.insert(i, cell)
@@ -336,7 +338,7 @@ class View:
             return
         count = 0
         rowno = self.cells[0].rowno
-        for type_ in self.fixed_types[::-1]:
+        for type_ in self.fixed_cols[::-1]:
             count += 1
             cell = self._create_fixed(0, type_, rowno)
             self.cells.insert(0, cell)
@@ -483,9 +485,8 @@ class View:
             if not cell.fixed_block or not cell.text:
                 continue
             if cell.fixed_block.type in ('subj', 'wform', 'phsubj'):
-                cell.url = cell.fixed_block.url = self.get_fixed_url (cell.fixed_block.type
-                                                                     ,cell.text
-                                                                     )
+                cell.url = cell.fixed_block.url = self.get_fixed_url(cell.fixed_block.type
+                                                                    ,cell.text)
     
     def clear_phrase_fields(self):
         f = '[MClient] cells.View.clear_phrase_fields'
@@ -509,47 +510,46 @@ class View:
         if not self.Success:
             rep.cancel(f)
             return
-        types = lg.com.get_col_types()
-        if not types:
+        if not self.fixed_cols:
             rep.lazy(f)
             return
         for cell in self.cells:
-            for i in range(len(types)):
+            for i in range(len(self.fixed_cols)):
                 if i == 0:
-                    if types[i] == 'subj':
+                    if self.fixed_cols[i] == 'subj':
                         cell.col1 = cell.subjpr
-                    elif types[i] == 'wform':
+                    elif self.fixed_cols[i] == 'wform':
                         cell.col1 = cell.wform.lower()
-                    elif types[i] == 'speech':
+                    elif self.fixed_cols[i] == 'speech':
                         cell.col1 = cell.speechpr
-                    elif types[i] == 'transc':
+                    elif self.fixed_cols[i] == 'transc':
                         cell.col1 = cell.transc.lower()
                 elif i == 1:
-                    if types[i] == 'subj':
+                    if self.fixed_cols[i] == 'subj':
                         cell.col2 = cell.subjpr
-                    elif types[i] == 'wform':
+                    elif self.fixed_cols[i] == 'wform':
                         cell.col2 = cell.wform.lower()
-                    elif types[i] == 'speech':
+                    elif self.fixed_cols[i] == 'speech':
                         cell.col2 = cell.speechpr
-                    elif types[i] == 'transc':
+                    elif self.fixed_cols[i] == 'transc':
                         cell.col2 = cell.transc.lower()
                 elif i == 2:
-                    if types[i] == 'subj':
+                    if self.fixed_cols[i] == 'subj':
                         cell.col3 = cell.subjpr
-                    elif types[i] == 'wform':
+                    elif self.fixed_cols[i] == 'wform':
                         cell.col3 = cell.wform.lower()
-                    elif types[i] == 'speech':
+                    elif self.fixed_cols[i] == 'speech':
                         cell.col3 = cell.speechpr
-                    elif types[i] == 'transc':
+                    elif self.fixed_cols[i] == 'transc':
                         cell.col3 = cell.transc.lower()
                 elif i == 3:
-                    if types[i] == 'subj':
+                    if self.fixed_cols[i] == 'subj':
                         cell.col4 = cell.subjpr
-                    elif types[i] == 'wform':
+                    elif self.fixed_cols[i] == 'wform':
                         cell.col4 = cell.wform.lower()
-                    elif types[i] == 'speech':
+                    elif self.fixed_cols[i] == 'speech':
                         cell.col4 = cell.speechpr
-                    elif types[i] == 'transc':
+                    elif self.fixed_cols[i] == 'transc':
                         cell.col4 = cell.transc.lower()
     
     def run(self):
@@ -577,10 +577,8 @@ class Wrap:
         self.plain = []
         self.code = []
         self.cells = cells
-        self.fixed_len = lg.objs.get_column_width().fixed_num
-        self.collimit = lg.objs.column_width.fixed_num \
-                      + lg.objs.column_width.term_num
-        self.fixed_types = lg.com.get_col_types()
+        self.fixed_len = COL_WIDTH.fixed_num
+        self.collimit = COL_WIDTH.fixed_num + COL_WIDTH.term_num
     
     def check(self):
         f = '[MClient] cells.Wrap.check'
@@ -639,8 +637,7 @@ class Wrap:
         f = '[MClient] cells.Wrap._debug_cells'
         mes = [f'{f}:']
         headers = (_('CELL #'), _('ROW #'), _('COLUMN #'), _('TEXT'), _('CODE')
-                  ,'URL'
-                  )
+                  ,'URL')
         no = []
         rowno = []
         colno = []
@@ -723,7 +720,7 @@ class Wrap:
             for cell in row:
                 cell_code = []
                 for block in cell.blocks:
-                    cell_code.append(fm.Block(block, cell.colno).run())
+                    cell_code.append(fmBlock(block, cell.colno).run())
                 cell.code = List(cell_code).space_items()
     
     def set_plain(self):
@@ -759,12 +756,7 @@ class Wrap:
 
 
 
-class Commands:
-    
-    def is_phrase_type(self, cell):
-        for block in cell.blocks:
-            if block.type in ('phsubj', 'phrase', 'phcount'):
-                return True
-
-
-com = Commands()
+def is_phrase_type(cell):
+    for block in cell.blocks:
+        if block.type in ('phsubj', 'phrase', 'phcount'):
+            return True

@@ -4,7 +4,7 @@
 from skl_shared_qt.graphics.color.controller import Color
 
 from config import CONFIG
-import subjects as sj
+from subjects import SUBJECTS
 
 
 class Block:
@@ -21,21 +21,21 @@ class Block:
     
     def _is_phrase_prior(self):
         if self.block.type == 'phrase':
-            return sj.objs.get_subjects().is_phrase_prior(self.block.text)
+            return SUBJECTS.is_phrase_prior(self.block.text)
     
     def _is_phrase_blocked(self):
         if self.block.type == 'phrase':
-            return sj.objs.get_subjects().is_phrase_blocked(self.block.text)
+            return SUBJECTS.is_phrase_blocked(self.block.text)
     
     def _is_subj_prior(self):
         # 'phsubj' cannot be prioritized or blocked
         if self.block.type == 'subj':
-            return sj.objs.get_subjects().is_prioritized(self.block.text)
+            return SUBJECTS.is_prioritized(self.block.text)
     
     def _is_subj_blocked(self):
         # 'phsubj' cannot be prioritized or blocked
         if self.block.type == 'subj':
-            return sj.objs.get_subjects().is_blocked(self.block.text)
+            return SUBJECTS.is_blocked(self.block.text)
     
     def get_color(self):
         if self._is_phrase_prior():

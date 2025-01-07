@@ -8,7 +8,6 @@ from skl_shared_qt.graphics.debug.controller import Debug
 from skl_shared_qt.config import Default, Schema, Local
 
 import config as cf
-import subjects as sj
 
 DEBUG = True
 
@@ -143,7 +142,7 @@ class Prioritize:
         import plugins.multitrancom.tags as tg
         import plugins.multitrancom.elems as el
         import cells as cl
-        import subjects as sj
+        from subjects import SUBJECTS
         
         text = sh.ReadTextFile(HTM_FILE).get()
         timer = sh.Timer(f)
@@ -162,14 +161,14 @@ class Prioritize:
         if not pairs:
             sh.com.rep_empty(f)
             return
-        sj.objs.get_subjects().reset(pairs)
+        SUBJECTS.reset(pairs)
         
         ARTICLES.add(search = SEARCH
                     ,url = URL
                     ,cells = cells
-                    ,subjf = sj.objs.subjects.article
-                    ,blocked = sj.objs.subjects.block
-                    ,prioritized = sj.objs.subjects.prior)
+                    ,subjf = SUBJECTS.article
+                    ,blocked = SUBJECTS.block
+                    ,prioritized = SUBJECTS.prior)
 
         cells = cl.Omit(cells).run()
         iprior = cl.Prioritize(cells)
@@ -368,7 +367,9 @@ class Offline:
 class Subjects:
     
     def __init__(self):
+        from subjects import SUBJECTS
         self.report = []
+        self.isubj = SUBJECTS
     
     def create(self):
         pairs = {'общ.': 'Общая лексика', 'комп.': 'Компьютеры'
@@ -376,19 +377,18 @@ class Subjects:
                 ,'разг., сл.': 'Разговорная лексика, Сленг'
                 ,'сокр., воен., авиац.': 'Сокращение, Военный термин, Авиация'
                 ,'тлф.': 'Телефония', 'устн.': 'Устная речь'
-                ,'СМИ.': 'Средства массовой информации'
-                }
-        sj.objs.get_subjects().reset(pairs)
-        self.report.append(sj.objs.subjects.debug())
+                ,'СМИ.': 'Средства массовой информации'}
+        self.isubj.reset(pairs)
+        self.report.append(self.isubj.debug())
     
     def expand(self, subj):
         f = '[MClient] tests.Subjects.expand'
-        sub = sj.objs.subjects.expand(subj)
+        sub = self.isubj.expand(subj)
         self.report.append(f'{f}:\n{sub}')
     
     def is_phrase_blocked(self, subject):
         f = '[MClient] tests.Subjects.is_phrase_blocked'
-        if sj.objs.subjects.is_phrase_blocked(subject):
+        if self.isubj.is_phrase_blocked(subject):
             sub = _('Phrase "{}" is blocked').format(subject)
         else:
             sub = _('Phrase "{}" is NOT blocked').format(subject)
@@ -396,7 +396,7 @@ class Subjects:
     
     def is_phrase_prior(self, subject):
         f = '[MClient] tests.Subjects.is_phrase_prior'
-        if sj.objs.subjects.is_phrase_prior(subject):
+        if self.isubj.is_phrase_prior(subject):
             sub = _('Phrase "{}" is prioritized').format(subject)
         else:
             sub = _('Phrase "{}" is NOT prioritized').format(subject)
@@ -404,7 +404,7 @@ class Subjects:
     
     def is_blocked(self, subject):
         f = '[MClient] tests.Subjects.is_blocked'
-        if sj.objs.subjects.is_blocked(subject):
+        if self.isubj.is_blocked(subject):
             sub = _('Subject "{}" is blocked').format(subject)
         else:
             sub = _('Subject "{}" is NOT blocked').format(subject)
@@ -412,7 +412,7 @@ class Subjects:
     
     def is_prioritized(self, subject):
         f = '[MClient] tests.Subjects.is_prioritized'
-        if sj.objs.subjects.is_prioritized(subject):
+        if self.isubj.is_prioritized(subject):
             sub = _('Subject "{}" is prioritized').format(subject)
         else:
             sub = _('Subject "{}" is NOT prioritized').format(subject)
@@ -715,7 +715,7 @@ class Commands:
         f = '[MClient] tests.Commands.get_priority'
         from manager import PLUGINS
         from articles import ARTICLES
-        import subjects as sj
+        from subjects import SUBJECTS
         #NOTE: the article must comprise example subjects to be expanded
         search = 'code'
         url = 'https://www.multitran.com/m.exe?s=code&l1=2&l2=1&SHL=2'
@@ -731,8 +731,7 @@ class Commands:
         subject = 'тест., ИТ., Gruzovik, прогр.'
         sub = _('Subject: "{}"').format(subject)
         mes.append(sub)
-        isubj = sj.Subjects()
-        priority = isubj.get_priority(subject)
+        priority = SUBJECTS.get_priority(subject)
         sub = _('Highest priority (ascending order): {}').format(priority)
         mes.append(sub)
         mes.append('')

@@ -7,7 +7,7 @@ from skl_shared_qt.localize import _
 from skl_shared_qt.message.controller import Message, rep
 from skl_shared_qt.table import Table
 
-import instance as ic
+from instance import Subject
 from config import CONFIG
 
 
@@ -181,7 +181,7 @@ class Create:
             rep.empty(f)
             return
         for subj, subjf in self.pairs.items():
-            isubj = ic.Subject()
+            isubj = Subject()
             isubj.subj = subj
             isubj.subjf = subjf
             self.subjects.append(isubj)
@@ -274,15 +274,4 @@ class Subjects(Create):
                 return isubj.prior_index > -1
 
 
-class Objects:
-    
-    def __init__(self):
-        self.subjects = None
-    
-    def get_subjects(self):
-        if self.subjects is None:
-            self.subjects = Subjects()
-        return self.subjects
-
-
-objs = Objects()
+SUBJECTS = Subjects()

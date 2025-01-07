@@ -32,8 +32,9 @@ import history.controller as hs
 from save.controller import Save
 from popup.controller import POPUP
 import keylistener.gui as kg
-import subjects as sj
+from subjects import SUBJECTS
 from block_mode import BLOCK_MODE
+from columns import COL_WIDTH
 
 
 DEBUG = False
@@ -42,8 +43,8 @@ DEBUG = False
 class UpdateUI:
     
     def __init__(self):
-        self.Parallel = lg.com.is_parallel()
-        self.Separate = lg.com.is_separate()
+        self.Parallel = ARTICLES.is_parallel()
+        self.Separate = ARTICLES.is_separate()
     
     def _update_alphabet_image(self):
         if CONFIG.new['AlphabetizeTerms'] and not self.Parallel \
@@ -629,14 +630,15 @@ class App:
         SETTINGS.gui.ent_trm.set_text(term_width)
     
     def set_col_num(self):
-        gi.objs.get_panel().opt_col.set(lg.objs.get_column_width().term_num)
+        gi.objs.get_panel().opt_col.set(COL_WIDTH.term_num)
     
     def apply_settings(self):
         SETTINGS.close()
+        SUBJECTS.reset(PLUGINS.get_article_subjects())
         SAVE_SETTINGS.run()
         lg.com.export_style()
-        lg.objs.get_column_width().reset()
-        lg.objs.column_width.run()
+        COL_WIDTH.reset()
+        COL_WIDTH.run()
         self.set_col_num()
         # This loads the article and must come the last
         self.set_columns()
@@ -657,12 +659,12 @@ class App:
             (they are not visible to the user and are not considered by them).
         '''
         f = '[MClient] mclient.App.reset_columns'
-        if not lg.com.is_parallel():
+        if not ARTICLES.is_parallel():
             CONFIG.new['columns']['num'] = Input(title = f
                                                 ,value = gi.objs.get_panel().opt_col.get()).get_integer()
-        collimit = lg.objs.get_column_width().fixed_num + lg.objs.column_width.term_num
+        collimit = COL_WIDTH.fixed_num + COL_WIDTH.term_num
         mes = _('Set the number of columns to {} ({} in total)')
-        mes = mes.format(lg.objs.column_width.term_num, collimit)
+        mes = mes.format(COL_WIDTH.term_num, collimit)
         Message(f, mes).show_info()
     
     def update_columns(self):
@@ -670,12 +672,12 @@ class App:
             and GUI) in special cases.
         '''
         f = '[MClient] mclient.App.update_columns'
-        if not lg.com.is_parallel():
-            CONFIG.new['columns']['num'] = lg.objs.get_column_width().term_num
-        gi.objs.get_panel().opt_col.set(lg.objs.get_column_width().term_num)
-        collimit = lg.objs.get_column_width().fixed_num + lg.objs.column_width.term_num
+        if not ARTICLES.is_parallel():
+            CONFIG.new['columns']['num'] = COL_WIDTH.term_num
+        gi.objs.get_panel().opt_col.set(COL_WIDTH.term_num)
+        collimit = COL_WIDTH.fixed_num + COL_WIDTH.term_num
         mes = _('Set the number of columns to {} ({} in total)')
-        mes = mes.format(lg.objs.column_width.term_num, collimit)
+        mes = mes.format(COL_WIDTH.term_num, collimit)
         Message(f, mes).show_info()
     
     def set_source(self):
@@ -911,22 +913,22 @@ class App:
             
         if artid == -1:
             cells = PLUGINS.request(search=search, url=url)
-            sj.objs.get_subjects().reset(PLUGINS.get_article_subjects())
+            SUBJECTS.reset(PLUGINS.get_article_subjects())
             ARTICLES.add(search = search
                         ,url = url
                         ,cells = cells
                         ,fixed_urls = PLUGINS.get_fixed_urls()
                         ,raw_code = PLUGINS.get_htm()
-                        ,subjf = sj.objs.subjects.article
-                        ,blocked = sj.objs.subjects.block
-                        ,prioritized = sj.objs.subjects.prior)
+                        ,subjf = SUBJECTS.article
+                        ,blocked = SUBJECTS.block
+                        ,prioritized = SUBJECTS.prior)
             HistorySubjects().add(PLUGINS.get_article_subjects())
             self.add_history()
         else:
             mes = _('Load article No. {} from memory').format(artid)
             Message(f, mes).show_info()
             ARTICLES.set_id(artid)
-            sj.objs.get_subjects().reset(PLUGINS.get_article_subjects())
+            SUBJECTS.reset(PLUGINS.get_article_subjects())
             cells = ARTICLES.get_cells()
             
         self.solve_screen()
@@ -936,8 +938,8 @@ class App:
         cells = iomit.run()
         cells = cl.Prioritize(cells).run()
         
-        lg.objs.get_column_width().reset()
-        lg.objs.column_width.run()
+        COL_WIDTH.reset()
+        COL_WIDTH.run()
         
         self.update_columns()
         

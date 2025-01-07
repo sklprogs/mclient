@@ -252,14 +252,14 @@ class Articles:
     def is_parallel(self):
         f = '[MClient] articles.Articles.is_parallel'
         try:
-            return self.articles['ids'][self.id]['Parallel']
+            return self.get_len() > 0 and self.articles['ids'][self.id]['Parallel']
         except KeyError:
             rep.wrong_input(f)
     
     def is_separate(self):
         f = '[MClient] articles.Articles.is_separate'
         try:
-            return self.articles['ids'][self.id]['Separate']
+            return self.get_len() > 0 and self.articles['ids'][self.id]['Separate']
         except KeyError:
             rep.wrong_input(f)
 

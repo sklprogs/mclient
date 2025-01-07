@@ -159,86 +159,6 @@ class Source:
 
 
 
-class Column:
-    
-    def __init__(self):
-        self.no = 0
-        self.width = 0
-        self.Fixed = False
-
-
-
-class ColumnWidth:
-    ''' Adjust fixed columns to have a constant width. A fixed value in pixels
-        rather than percentage should be used to adjust columns since we cannot
-        say if gaps between columns are too large without calculating a text
-        width first.
-    '''
-    def __init__(self):
-        self.set_values()
-    
-    def set_values(self):
-        # This approach includes percentage only
-        self.fixed_num = 0
-        self.term_num = 0
-        self.min_width = 1
-        self.columns = []
-    
-    def set_col_width(self):
-        f = '[MClient] logic.ColumnWidth.set_col_width'
-        if not CONFIG.new['rows']['height']:
-            rep.lazy(f)
-            return
-        for column in self.columns:
-            if column.Fixed:
-                column.width = CONFIG.new['columns']['fixed']['width']
-            else:
-                column.width = CONFIG.new['columns']['terms']['width']
-#            if objs.get_blocksdb().is_col_empty(column.no):
-#                column.width = self.min_width
-#            elif column.Fixed:
-#                column.width = CONFIG.new['columns']['fixed']['width']
-#            else:
-#                column.width = CONFIG.new['columns']['terms']['width']
-    
-    def reset(self):
-        self.set_values()
-    
-    def run(self):
-        self.set_fixed_num()
-        self.set_term_num()
-        self.set_columns()
-        self.set_col_width()
-    
-    def set_fixed_num(self):
-        f = '[MClient] logic.ColumnWidth.set_fixed_num'
-        self.fixed_num = 4
-        mes = _('Number of fixed columns: {}').format(self.fixed_num)
-        Message(f, mes).show_debug()
-    
-    def set_term_num(self):
-        f = '[MClient] logic.ColumnWidth.set_term_num'
-        self.term_num = com.get_colnum()
-        mes = _('Number of term columns: {}')
-        mes = mes.format(self.term_num)
-        Message(f, mes).show_debug()
-    
-    def set_columns(self):
-        col_nos = self.fixed_num + self.term_num
-        for i in range(self.fixed_num):
-            column = Column()
-            column.no = i
-            column.Fixed = True
-            self.columns.append(column)
-        i = self.fixed_num
-        while i < col_nos:
-            column = Column()
-            column.no = i
-            self.columns.append(column)
-            i += 1
-
-
-
 class CurRequest:
 
     def __init__(self):
@@ -267,14 +187,8 @@ class CurRequest:
 class Objects:
     
     def __init__(self):
-        self.request = self.column_width = None
+        self.request = None
 
-    def get_column_width(self):
-        if self.column_width is None:
-            self.column_width = ColumnWidth()
-            self.column_width.run()
-        return self.column_width
-    
     def get_request(self):
         if self.request is None:
             self.request = CurRequest()
@@ -286,41 +200,6 @@ class Commands:
     
     def __init__(self):
         self.use_unverified()
-    
-    def _get_col_type(self, type_):
-        f = '[MClient] logic.Commands._get_col_type'
-        if type_ == _('Subjects'):
-            return 'subj'
-        elif type_ == _('Word forms'):
-            return 'wform'
-        elif type_ == _('Parts of speech'):
-            return 'speech'
-        elif type_ == _('Transcription'):
-            return 'transc'
-        elif type_ == _('Do not set'):
-            pass
-        else:
-            mes = _('Wrong input data: "{}"!').format(type_)
-            Message(f, mes, True).show_error()
-        return ''
-    
-    def get_col_types(self):
-        f = '[MClient] logic.Commands.get_col_types'
-        types = [CONFIG.new['columns']['1']['type']
-                ,CONFIG.new['columns']['2']['type']
-                ,CONFIG.new['columns']['3']['type']
-                ,CONFIG.new['columns']['4']['type']]
-        for i in range(len(types)):
-            types[i] = self._get_col_type(types[i])
-        mes = ', '.join(types)
-        Message(f, mes).show_debug()
-        return types
-    
-    def is_parallel(self):
-        return ARTICLES.get_len() > 0 and ARTICLES.is_parallel()
-    
-    def is_separate(self):
-        return ARTICLES.get_len() > 0 and ARTICLES.is_separate()
     
     def get_text(self, cells):
         f = '[MClient] logic.Commands.get_text'
@@ -370,17 +249,6 @@ class Commands:
             if not Message(f, mes, True).show_question():
                 Confirmed = False
         return Confirmed
-    
-    def get_colnum(self):
-        ''' A subject from the 'Phrases' section usually has an 'original +
-            translation' structure, so we need to switch off sorting terms and
-            ensure that the number of columns is divisible by 2.
-        '''
-        if not self.is_parallel() or CONFIG.new['columns']['num'] % 2 == 0:
-            return CONFIG.new['columns']['num']
-        if CONFIG.new['columns']['num'] > 2:
-            return CONFIG.new['columns']['num'] - 1
-        return 2
     
     def export_style(self):
         f = '[MClient] logic.Commands.export_style'
