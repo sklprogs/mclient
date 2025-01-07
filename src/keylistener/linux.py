@@ -84,24 +84,20 @@ class KeyListener(threading.Thread):
         mes = f'RECORD extension version {r.major_version}.{r.minor_version}'
         print_v(mes)
         # Create a recording context; we only want key events
-        self.ctx = self.record_dpy.record_create_context (
-                0
-               ,[Xlib.ext.record.AllClients]
-               ,[{
-                  'core_requests'   : (0, 0)
-                 ,'core_replies'    : (0, 0)
-                 ,'ext_requests'    : (0, 0, 0, 0)
-                 ,'ext_replies'     : (0, 0, 0, 0)
-                 ,'delivered_events': (0, 0)
-                 # (X.KeyPress, X.ButtonPress)
-                 ,'device_events'   : tuple(self.contextEventMask)
-                 ,'errors'          : (0, 0)
-                 ,'client_started'  : False
-                 ,'client_died'     : False
-                 ,
-                 }
-                ]
-                                                         )
+        self.ctx = self.record_dpy.record_create_context(
+                   0
+                   ,[Xlib.ext.record.AllClients]
+                   ,[{'core_requests'   : (0, 0)
+                     ,'core_replies'    : (0, 0)
+                     ,'ext_requests'    : (0, 0, 0, 0)
+                     ,'ext_replies'     : (0, 0, 0, 0)
+                     ,'delivered_events': (0, 0)
+                     # (X.KeyPress, X.ButtonPress)
+                     ,'device_events'   : tuple(self.contextEventMask)
+                     ,'errors'          : (0, 0)
+                     ,'client_started'  : False
+                     ,'client_died'     : False
+                     ,}])
 
         ''' Enable the context; this only returns after a call to
             record_disable_context, while calling the callback function in the
