@@ -1,5 +1,9 @@
 (in development)
 
+## 7.1.1
+* Remove languages from a phrase-type article
+  \([multitran.com](https://www.multitran.com)\).
+
 ## 7.1
 * Resize rows by contents (if the corresponding option is enabled)
 * Adopt [multitran.com](https://www.multitran.com) updates (remove excessive
