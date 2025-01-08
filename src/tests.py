@@ -11,10 +11,10 @@ import config as cf
 
 DEBUG = True
 
-SEARCH = 'eight'
-URL = 'https://www.multitran.com/m.exe?s=eight&l1=1&l2=2'
+SEARCH = 'vulpes'
+URL = 'https://www.multitran.com/m.exe?a=3&sc=119&s=vulpes&l1=1&l2=2&SHL=2'
 #HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/hello (2025-01-02).html'
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/eight (2025-01-05).html'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/vulpes (2025-01-08).html'
 
 
 class Config:

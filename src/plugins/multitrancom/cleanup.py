@@ -13,6 +13,15 @@ class CleanUp:
     def __init__(self, text):
         self.text = text
     
+    def delete_langs(self):
+        # Delete the 1st row containing 'Subject' and a list of languages
+        f = '[MClient] plugins.multitrancom.cleanup.CleanUp.delete_langs'
+        pattern = r'<table id="phrasetable"><tr>(.*?)</tr>'
+        match = re.search(pattern, self.text)
+        if match:
+            self.text = self.text.replace(match.group(1), '', 1)
+            rep.matches(f, 1)
+    
     def fix_wform_com(self):
         # EN-RU, hello
         f = '[MClient] plugins.multitrancom.cleanup.CleanUp.fix_wform_com'
@@ -126,6 +135,7 @@ class CleanUp:
             rep.empty(f)
             return ''
         self.delete_trash_tags()
+        self.delete_langs()
         self.fix_javascript()
         self.fix_href()
         self.fix_tags()
