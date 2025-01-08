@@ -3,13 +3,9 @@
 
 from skl_shared_qt.localize import _
 from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.pretty_html import make_pretty
-from skl_shared_qt.text_file import Read, Write
-from skl_shared_qt.paths import Path
 from skl_shared_qt.graphics.root.controller import ROOT
 from skl_shared_qt.graphics.clipboard.controller import CLIPBOARD
-from skl_shared_qt.graphics.debug.controller import Debug
-from skl_shared_qt.list import List
+from skl_shared_qt.graphics.debug.controller import DEBUG
 from skl_shared_qt.logic import OS, Input, Text
 from skl_shared_qt.online import Online
 from skl_shared_qt.time import Timer
@@ -38,7 +34,7 @@ from block_mode import BLOCK_MODE
 from columns import COL_WIDTH
 
 
-DEBUG = False
+#DEBUG = False
 
 
 class UpdateUI:
@@ -1263,7 +1259,7 @@ if __name__ == '__main__':
     else:
         mes = _('Invalid configuration!')
         #FIX: quit app normally after common dialog
-        #Message(f, mes, True).show_error()
-        idebug = Debug(f, mes)
-        idebug.show()
+        Message(f, mes, True).show_error()
+        #DEBUG.reset(f, mes)
+        #DEBUG.show()
     ROOT.end()

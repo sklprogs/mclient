@@ -29,6 +29,9 @@ class Types:
     
     def get(self):
         f = '[MClient] columns.Types.get'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
         types = [CONFIG.new['columns']['1']['type']
                 ,CONFIG.new['columns']['2']['type']
                 ,CONFIG.new['columns']['3']['type']
@@ -71,6 +74,9 @@ class Width:
     
     def set_width(self):
         f = '[MClient] columns.Width.set_width'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
         if not CONFIG.new['rows']['height']:
             rep.lazy(f)
             return
@@ -108,6 +114,10 @@ class Width:
             translation' structure, so we need to switch off sorting terms and
             ensure that the number of columns is divisible by 2.
         '''
+        f = '[MClient] columns.Width.get_col_num'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return 2
         if not ARTICLES.is_parallel() or CONFIG.new['columns']['num'] % 2 == 0:
             return CONFIG.new['columns']['num']
         if CONFIG.new['columns']['num'] > 2:

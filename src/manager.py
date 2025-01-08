@@ -290,6 +290,11 @@ class Plugins:
         return dic
 
 
+f = '[MClient] manager.__main__'
 DICS = Home(PRODUCT_LOW).add_config('dics')
-PLUGINS = Plugins(sdpath=DICS, mbpath=DICS, timeout=CONFIG.new['timeout']
-                 ,Debug=False, maxrows=1000)
+if CONFIG.Success:
+    PLUGINS = Plugins(sdpath=DICS, mbpath=DICS, timeout=CONFIG.new['timeout']
+                     ,Debug=False, maxrows=1000)
+else:
+    PLUGINS = None
+    rep.cancel(f)

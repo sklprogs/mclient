@@ -167,7 +167,7 @@ class CurRequest:
     
     def set_values(self):
         self.cols = ('subj', 'wform', 'transc', 'speech')
-        self.collimit = CONFIG.new['columns']['num'] + len(self.cols)
+        self.collimit = len(self.cols)
         ''' Toggling blacklisting should not depend on a number of blocked
             subjects (otherwise, it is not clear how blacklisting should be
             toggled).
@@ -176,11 +176,19 @@ class CurRequest:
             new articles.
         '''
     
+    def set_col_limit(self):
+        f = '[MClient] logic.CurRequest.set_col_limit'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
+        self.collimit = CONFIG.new['columns']['num'] + len(self.cols)
+    
     def reset(self):
         self.htm = ''
         self.text = ''
         self.search = ''
         self.url = ''
+        self.set_col_limit()
 
 
 

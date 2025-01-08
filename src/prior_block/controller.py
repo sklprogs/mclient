@@ -204,6 +204,10 @@ class Block(Panes):
         Message(f, mes).show_debug()
     
     def reset(self):
+        f = '[MClient] prior_block.controller.Block.reset'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
         self.dic1 = CONFIG.new['subjects']['blocked']
         self.set_mode()
         #TODO: Elaborate
@@ -252,6 +256,10 @@ class Priorities(Panes):
         Message(f, mes).show_debug()
     
     def reset(self):
+        f = '[MClient] prior_block.controller.Priorities.reset'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
         self.dic1 = CONFIG.new['subjects']['prioritized']
         self.set_mode()
         #TODO: Elaborate

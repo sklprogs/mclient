@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.localize import _
+from skl_shared_qt.message.controller import rep
 
 from config import CONFIG
 from popup.gui import Popup as guiPopup, HEIGHT, WIDTH
@@ -96,7 +97,11 @@ class Popup:
         self.gui.close()
     
     def set_bindings(self):
+        f = '[MClient] popup.controller.Popup.set_bindings'
         self.gui.bind(('Esc',), self.close)
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
         self.gui.bind(CONFIG.new['actions']['toggle_popup']['hotkeys']
                      ,self.toggle)
 
