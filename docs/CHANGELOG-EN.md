@@ -1,5 +1,8 @@
 (in development)
 
+## 7.1.2
+* Attempt to fix a locale issue
+
 ## 7.1.1
 * Remove languages from a phrase-type article
   \([multitran.com](https://www.multitran.com)\).
