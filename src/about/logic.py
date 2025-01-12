@@ -9,7 +9,7 @@ class About:
     
     def __init__(self):
         self.product = 'MClient'
-        self.version = '7.1.2'
+        self.version = '7.1.3'
         self.curyear = 2025
         self.code = []
     
