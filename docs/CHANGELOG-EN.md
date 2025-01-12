@@ -1,5 +1,8 @@
 (in development)
 
+## 7.1.3
+* Fix searching in an article
+
 ## 7.1.2
 * Attempt to fix a locale issue
 
