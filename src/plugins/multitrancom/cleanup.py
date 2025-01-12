@@ -5,7 +5,7 @@ import re
 
 from skl_shared_qt.localize import _
 from skl_shared_qt.message.controller import Message, rep
-from search.logic import Search
+from skl_shared_qt.logic import Search as shSearch
 
 
 class CleanUp:
@@ -86,7 +86,7 @@ class CleanUp:
             rep.empty(f)
             return
         count = 0
-        isearch = Search(text=self.text, pattern='href="')
+        isearch = shSearch(text=self.text, pattern='href="')
         poses = isearch.get_next_loop()
         poses = poses[::-1]
         for pos in poses:
