@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared_qt.message.controller import rep
-from geometry.gui import Geometry as guiGeometry
+from windows.geometry.gui import Geometry as guiGeometry
 
 
 class Geometry:

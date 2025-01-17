@@ -24,8 +24,7 @@ class Geometry:
         if win32gui.IsIconic(handle):
             win32gui.ShowWindow(handle, win32con.SW_RESTORE)
         elif win32gui.GetWindowPlacement(handle)[1] in (win32con.SW_SHOWMAXIMIZED
-                                                       ,win32con.SW_MAXIMIZE
-                                                       ):
+                                                       ,win32con.SW_MAXIMIZE):
             win32gui.ShowWindow(handle, win32con.SW_MINIMIZE)
             win32gui.ShowWindow(handle, win32con.SW_RESTORE)
         else:
