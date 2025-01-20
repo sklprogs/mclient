@@ -410,7 +410,7 @@ class App:
         if OS.is_win():
             from windows.geometry.controller import Geometry
             self.geometry = Geometry()
-            self.geometry.keyword = self.about.logic.product
+            self.geometry.keyword = ABOUT.logic.product
             self.geometry.activate()
         else:
             self.gui.activate()
