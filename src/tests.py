@@ -11,10 +11,12 @@ import config as cf
 
 DEBUG = True
 
-SEARCH = 'vulpes'
-URL = 'https://www.multitran.com/m.exe?a=3&sc=119&s=vulpes&l1=1&l2=2&SHL=2'
-#HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/hello (2025-01-02).html'
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/vulpes (2025-01-08).html'
+#SEARCH = 'chicken wing'
+#URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing&l2=2'
+#HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/chicken wing (2025-01-24).htm'
+SEARCH = 'chicken wing pork friday coding style'
+URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing+pork+friday+coding+style'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/chicken wing pork friday coding style (2025-01-24).htm'
 
 
 class Config:

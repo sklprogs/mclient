@@ -226,119 +226,60 @@ class Thesaurus:
 class SeparateWords:
     
     def __init__(self, blocks):
-        self.patterns = ('- найдены отдельные слова'
-                        ,'- only individual words found'
-                        ,'- einzelne Wörter gefunden'
-                        ,'- se han encontrado palabras individuales'
-                        ,'- знайдено окремі слова'
-                        ,'- znaleziono osobne słowa'
-                        ,'- 只找到单语')
+        self.patterns = (' - найдены отдельные слова'
+                        ,' - only individual words found'
+                        ,' - einzelne Wörter gefunden'
+                        ,' - se han encontrado palabras individuales'
+                        ,' - знайдено окремі слова'
+                        ,' - znaleziono osobne słowa'
+                        ,' - 只找到单语')
         self.Separate = False
         self.blocks = blocks
     
-    def _set(self):
-        ''' Cannot just limit blocks to those which URL starts with 'l1' since
-            there can be unknown words.
-        '''
-        blocks = []
-        for i in range(len(self.blocks)):
-            if self.blocks[i].url.startswith('l'):
-                blocks.append(self.blocks[i])
-            elif self.blocks[i].text == '|':
-                if not self.blocks[i-1].url:
-                    blocks.append(self.blocks[i-1])
-                if not self.blocks[i+1].url:
-                    blocks.append(self.blocks[i+1])
-            elif self._has(self.blocks[i].text):
-                blocks.append(self.blocks[i])
-        ''' Includes an unknown word that comes last. Other unknown words are
-            already included.
-        '''
-        if len(self.blocks) > 1:
-            no = len(self.blocks) - 2
-            if self.blocks[no].type == 'comment' \
-            and self.blocks[no].text.startswith(' ') \
-            and not self.blocks[no].url:
-                blocks.append(self.blocks[no])
-        self.blocks = blocks
-
-    def _delete(self):
-        i = 1
-        while i < len(self.blocks):
-            ''' Those words that were not found will not have a URL and should
-                be kept as comments (as in a source). However, 'cellno' should
-                differ from a previous cell.
-            '''
-            if self.blocks[i].url:
-                self.blocks[i].type = 'term'
-            else:
-                for pattern in self.patterns:
-                    self.blocks[i].text = self.blocks[i].text.replace(pattern, '')
-            self.blocks[i].cellno = self.blocks[i-1].cellno
-            i += 1
-        self.blocks = [block for block in self.blocks \
-                      if block.text and block.text != '|']
+    def has(self):
+        for block in self.blocks:
+            if block.text in self.patterns:
+                self.Separate = True
+                break
+        return self.Separate
     
-    def _has(self, text):
-        for pattern in self.patterns:
-            if pattern in text:
-                return True
-    
-    def _add_subject(self):
+    def add_subject(self):
         block = ic.Block()
         block.type = 'subj'
         block.text = block.subjf = _('Separate words')
         block.subj = _('sep. words')
         self.blocks.insert(0, block)
     
-    def _set_terms(self):
-        for i in range(len(self.blocks)):
-            self.blocks[i].cellno = i
-            if self.blocks[i].type == 'comment' \
-            and self.blocks[i].url.startswith('l1'):
-                self.blocks[i].type = 'term'
+    def set_terms(self):
+        for block in self.blocks:
+            block.type = 'term'
     
     def set(self):
         f = '[MClient] plugins.multitrancom.elems.SeparateWords.set'
-        old_len = len(self.blocks)
-        tail = self.get_tail()
-        if not tail:
-            rep.lazy(f)
+        if not self.blocks:
+            rep.empty(f)
             return
-        head = self.get_head()
-        if not head:
-            rep.lazy(f)
+        if len(self.blocks) < 2:
+            rep.wrong_input(f, [block.text for block in self.blocks])
             return
-        self.blocks = self.blocks[head[1]:tail+1]
-        if len(self.blocks) < 3:
-            rep.lazy(f)
-            return
-        self._set()
-        self._delete()
-        self._set_terms()
-        rep.deleted(f, old_len-len(self.blocks))
-        self._add_subject()
-        self.Separate = True
-    
-    def get_head(self):
-        blocks = ('Forvo', '|', '+')
-        texts = [block.text for block in self.blocks]
-        return List(texts, blocks).find()
-    
-    def get_tail(self):
-        i = 0
+        blocks = [self.blocks[0]]
+        i = 1
         while i < len(self.blocks):
-            ''' If the last word is correct, then 'block.text' will be
-                ' - найдены отдельные слова', otherwise, it will be
-                ' wrong_word - найдены отдельные слова'.
-            '''
-            for pattern in self.patterns:
-                if pattern in self.blocks[i].text:
-                    return i
+            if self.blocks[i-1].text in ('|', '// -->'):
+                blocks.append(self.blocks[i])
             i += 1
+        rep.deleted(f, len(self.blocks)-len(blocks))
+        self.blocks = blocks
     
     def run(self):
+        f = '[MClient] plugins.multitrancom.elems.SeparateWords.run'
+        if not self.has():
+            rep.lazy(f)
+            # Blocks are further assigned, do not return None
+            return self.blocks
         self.set()
+        self.set_terms()
+        self.add_subject()
         return self.blocks
 
 
