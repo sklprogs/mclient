@@ -12,6 +12,7 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
+- RU-EN, Fill the list: wrong wforms
 - RU-EN, herpe: nothing found (actually there is a list of languages)
 - RU-EN, wardlow: at startup, shows a warning
 - RU-EN, chicken wing: найдены отдельные слова (mode does not work)
