@@ -12,6 +12,7 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
+- RU-EN, fill: transcriptions are part of wforms: "fill with [fɪl]"
 - RU-EN, Fill the list: wrong wforms
 - RU-EN, herpe: nothing found (actually there is a list of languages)
 - RU-EN, wardlow: at startup, shows a warning
