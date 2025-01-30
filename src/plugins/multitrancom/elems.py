@@ -613,16 +613,16 @@ class Elems:
             i += 1
         rep.matches(f, count)
     
-    def separate_speech(self):
-        ''' Speech can come in structures like 'wform + comment + speech', but
-            it should always take a separate cell.
+    def separate_sp_transc(self):
+        ''' There can be structures like 'wform + comment + speech/transc', but
+            speech and transc should always take a separate cell.
         '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.separate_speech'
+        f = '[MClient] plugins.multitrancom.elems.Elems.separate_sp_transc'
         count = 0
         i = 1
         while i < len(self.blocks):
             # It is not enough to set 'Fixed'
-            if self.blocks[i].type == 'speech':
+            if self.blocks[i].type in ('speech', 'transc'):
                 count += 1
                 # We just need a different 'cellno' (will be reassigned anyway)
                 self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
@@ -879,7 +879,7 @@ class Elems:
         # Remove empty blocks only after removing trash
         self.delete_empty()
         self.set_transc()
-        self.separate_speech()
+        self.separate_sp_transc()
         self.convert_user_subj()
         self.set_see_also()
         self.set_fixed_blocks()
