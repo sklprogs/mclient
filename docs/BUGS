@@ -12,6 +12,7 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
+- RU-EN, mumblety peg: 1) Wrong layout; 2) -> Фразы - condition is not observed
 - RU-EN, herpe: nothing found (actually there is a list of languages)
 - RU-EN, injuctive relief: найдены отдельные слова (mode does not work)
 - RU-EN, mapping (Multitran mode): word forms are not properly sorted
