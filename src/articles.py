@@ -21,6 +21,9 @@ class Articles:
     
     def get_blocked(self):
         f = '[MClient] articles.Articles.get_blocked'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return []
         try:
             return self.articles['ids'][self.id]['blocked']
         except KeyError:
@@ -29,6 +32,9 @@ class Articles:
     
     def get_prioritized(self):
         f = '[MClient] articles.Articles.get_prioritized'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return []
         try:
             return self.articles['ids'][self.id]['prioritized']
         except KeyError:
@@ -37,6 +43,9 @@ class Articles:
     
     def get_subjf(self):
         f = '[MClient] articles.Articles.get_subjf'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return
         try:
             return self.articles['ids'][self.id]['subjf']
         except KeyError:
@@ -44,6 +53,9 @@ class Articles:
     
     def get_fixed_urls(self):
         f = '[MClient] articles.Articles.get_fixed_urls'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return {}
         try:
             return self.articles['ids'][self.id]['fixed_urls']
         except KeyError:
@@ -64,7 +76,7 @@ class Articles:
     
     def set_table(self, table):
         f = '[MClient] articles.Articles.set_table'
-        if not table:
+        if not table or not self.articles['ids']:
             rep.empty(f)
             # Keep old article
             return
@@ -75,6 +87,9 @@ class Articles:
     
     def get_table(self):
         f = '[MClient] articles.Articles.get_table'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return
         try:
             return self.articles['ids'][self.id]['table']
         except KeyError:
@@ -82,6 +97,9 @@ class Articles:
     
     def get_cell(self, rowno, colno):
         f = '[MClient] articles.Articles.get_cell'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return
         try:
             return self.articles['ids'][self.id]['table'][rowno][colno]
         except (KeyError, IndexError):
@@ -98,6 +116,10 @@ class Articles:
             rep.lazy(f)
             return
         id_ = self.get_max_id() + 1
+        if id_ < 0:
+            mes = _('Wrong input data: "{}"!').format(id_)
+            Message(f, mes).show_warning()
+            return
         self.articles['ids'][id_] = {'source'        : CONFIG.new['source']
                                     ,'lang1'         : PLUGINS.get_lang1()
                                     ,'lang2'         : PLUGINS.get_lang2()
@@ -119,13 +141,20 @@ class Articles:
     
     def get_blocked_cells(self):
         f = '[MClient] articles.Articles.get_blocked_cells'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return []
         try:
             return self.articles['ids'][self.id]['blocked_cells']
         except KeyError:
             rep.wrong_input(f)
+        return []
     
     def set_blocked_cells(self, texts):
         f = '[MClient] articles.Articles.set_blocked_cells'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return
         try:
             self.articles['ids'][self.id]['blocked_cells'] = texts
         except KeyError:
@@ -133,6 +162,9 @@ class Articles:
     
     def clear_article(self):
         f = '[MClient] articles.Articles.clear_article'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return
         try:
             del self.articles['ids'][self.id]
         except KeyError:
@@ -145,10 +177,8 @@ class Articles:
     
     def delete_bookmarks(self):
         f = '[MClient] articles.Articles.delete_bookmarks'
-        try:
-            self.articles['ids']
-        except KeyError:
-            rep.wrong_input(f)
+        if not self.articles['ids']:
+            rep.empty(f)
             return
         for id_ in self.articles['ids']:
             self.articles['ids'][id_]['rowno'] = -1
@@ -156,6 +186,9 @@ class Articles:
     
     def set_bookmark(self, rowno, colno):
         f = '[MClient] articles.Articles.set_bookmark'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return
         try:
             self.articles['ids'][self.id]['rowno'] = rowno
             self.articles['ids'][self.id]['colno'] = colno
@@ -164,6 +197,9 @@ class Articles:
     
     def get_bookmark(self):
         f = '[MClient] articles.Articles.get_bookmark'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return
         try:
             return (self.articles['ids'][self.id]['rowno']
                    ,self.articles['ids'][self.id]['colno'])
@@ -172,6 +208,9 @@ class Articles:
     
     def set_id(self, id_):
         f = '[MClient] articles.Articles.set_id'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return
         try:
             self.articles['ids'][id_]
         except KeyError:
@@ -181,6 +220,9 @@ class Articles:
     
     def get_search(self):
         f = '[MClient] articles.Articles.get_search'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return ''
         try:
             return self.articles['ids'][self.id]['search']
         except KeyError:
@@ -189,6 +231,9 @@ class Articles:
     
     def get_source(self):
         f = '[MClient] articles.Articles.get_source'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return ''
         try:
             return self.articles['ids'][self.id]['source']
         except KeyError:
@@ -197,6 +242,9 @@ class Articles:
     
     def get_url(self):
         f = '[MClient] articles.Articles.get_url'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return ''
         try:
             return self.articles['ids'][self.id]['url']
         except KeyError:
@@ -205,6 +253,9 @@ class Articles:
     
     def get_lang1(self):
         f = '[MClient] articles.Articles.get_lang1'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return ''
         try:
             return self.articles['ids'][self.id]['lang1']
         except KeyError:
@@ -213,6 +264,9 @@ class Articles:
     
     def get_lang2(self):
         f = '[MClient] articles.Articles.get_lang2'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return ''
         try:
             return self.articles['ids'][self.id]['lang2']
         except KeyError:
@@ -221,6 +275,9 @@ class Articles:
     
     def get_raw_code(self):
         f = '[MClient] articles.Articles.get_raw_code'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return ''
         try:
             return self.articles['ids'][self.id]['raw_code']
         except KeyError:
@@ -229,6 +286,9 @@ class Articles:
     
     def get_cells(self):
         f = '[MClient] articles.Articles.get_cells'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return []
         try:
             return self.articles['ids'][self.id]['cells']
         except KeyError:
@@ -237,11 +297,9 @@ class Articles:
     
     def find(self, source, search, url):
         f = '[MClient] articles.Articles.find'
-        try:
-            self.articles['ids']
-        except KeyError:
-            rep.wrong_input(f)
-            return
+        if not self.articles['ids']:
+            rep.empty(f)
+            return -1
         for id_ in self.articles['ids']:
             if self.articles['ids'][id_]['source'] == source \
             and self.articles['ids'][id_]['search'] == search \
@@ -251,6 +309,9 @@ class Articles:
     
     def is_parallel(self):
         f = '[MClient] articles.Articles.is_parallel'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return
         try:
             return self.get_len() > 0 and self.articles['ids'][self.id]['Parallel']
         except KeyError:
@@ -258,6 +319,9 @@ class Articles:
     
     def is_separate(self):
         f = '[MClient] articles.Articles.is_separate'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return
         try:
             return self.get_len() > 0 and self.articles['ids'][self.id]['Separate']
         except KeyError:
