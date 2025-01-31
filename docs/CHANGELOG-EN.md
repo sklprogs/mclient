@@ -1,5 +1,12 @@
 (in development)
 
+## 7.1.4
+* Fix Alt-~ on Windows
+* Fix "Separate words" mode (should be improved)
+* Remove a warning about wrong input data in the "Nothing has been found" mode
+* Comments having a URL are no longer detected as a word form
+* Now transcriptions always start a new cell
+
 ## 7.1.3
 * Fix searching in an article
 
