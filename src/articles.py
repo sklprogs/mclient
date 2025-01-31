@@ -310,7 +310,8 @@ class Articles:
     def is_parallel(self):
         f = '[MClient] articles.Articles.is_parallel'
         if not self.articles['ids']:
-            rep.empty(f)
+            # Do not warn here - procedure is called before loading any article
+            rep.lazy(f)
             return
         try:
             return self.get_len() > 0 and self.articles['ids'][self.id]['Parallel']
