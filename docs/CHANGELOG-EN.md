@@ -1,5 +1,8 @@
 (in development)
 
+## 7.1.5
+* Fix word forms
+
 ## 7.1.4
 * Fix Alt-~ on Windows
 * Fix "Separate words" mode (should be improved)
