@@ -12,11 +12,12 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
+- RU-EN, grey area: (UK spelling) and (US spelling) are dangling comments
 - RU-EN, метка (Multitran mode): go to the end -> PgUp does not work
-- RU-EN, mumblety peg: 1) Wrong layout; 2) -> Фразы - condition is not observed
+- RU-EN, mumblety peg, 1099: 1) Wrong layout; 2) -> Фразы - condition is not observed
 - RU-EN, herpe: nothing found (actually there is a list of languages)
 - RU-EN, injuctive relief: найдены отдельные слова (mode does not work)
-- RU-EN, mapping (Multitran mode): word forms are not properly sorted
+- RU-EN, mapping, trips (Multitran mode): word forms are not properly sorted
 - RU-EN, catnip: "catmint (Amer.)" is separated into 2 blocks
 - RU-EN, teetotaller: "(American spelling)" is a separate cell
 - RU-EN, inundated: ")" at new lines in many places (column settings: 6-100-250)
