@@ -1,5 +1,8 @@
 (in development)
 
+## 7.1.6
+* Adopt [multitran.com](https://www.multitran.com) changes (remove useless text)
+
 ## 7.1.5
 * Fix word forms
 
