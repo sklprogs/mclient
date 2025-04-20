@@ -174,7 +174,7 @@ class AnalyzeTag:
         or 'div class="middle_mobile"' in self.tag.text \
         or 'div style="float:left"' in self.tag.text \
         or 'div style="padding-top:0px; padding-bottom:0px;"' in self.tag.text\
-        or self.tag.name in ('script', 'title')
+        or self.tag.name in ('script', 'title', 'audio')
     
     def _set_type(self):
         if self._is_term():
