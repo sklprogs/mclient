@@ -12,6 +12,7 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
+- RU-EN, warhawk: condition not observed
 - RU-EN, grey area: (UK spelling) and (US spelling) are dangling comments
 - RU-EN, метка (Multitran mode): go to the end -> PgUp does not work
 - RU-EN, mumblety peg, 1099: 1) Wrong layout; 2) -> Фразы - condition is not observed
