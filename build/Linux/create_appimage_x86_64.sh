@@ -7,9 +7,8 @@ productlow='mclient'
 arch="x86_64"
 os="Linux" # Linux or Wine
 oslow="linux"
-# We need to use Debian 10 or newer since Debian 9 has Python 3.5
-# by default which is buggy (some blocks are skipped in EN-RU, "hello"
-# article)
+# We need to use Debian 10 or newer since Debian 9 has Python 3.5 by default 
+# which is buggy (some blocks are skipped in EN-RU, "hello" article)
 glibc="2.36"
 pythonve="$HOME/software/python/3.11.2_mclient"
 xlibdir="$pythonve/lib/python3.11/site-packages/Xlib"
@@ -91,10 +90,10 @@ rsync -ar "$schemas/" "$tmpdir/app/usr/bin/jsonschema_specifications/schemas"
 cd "$tmpdir"
 # This argument allows to avoid a permission error
 ./appimagetool-$arch.AppImage --appimage-extract-and-run app
-read -p "Update the AppImage? (Y/n) " choice
-if [ "$choice" = "N" ] || [ "$choice" = "n" ]; then
-    exit;
-fi
+#read -p "Update the AppImage? (Y/n) " choice
+#if [ "$choice" = "N" ] || [ "$choice" = "n" ]; then
+#    exit;
+#fi
 
 mv -fv "$tmpdir/$productlow-$arch.AppImage" "$HOME/binaries/$product/$productlow-$oslow-$arch-glibc$glibc.AppImage"
 rm -rf "$tmpdir"
