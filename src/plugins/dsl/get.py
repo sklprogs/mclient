@@ -7,8 +7,9 @@ import re
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.time import Timer
-from skl_shared.logic import Input, com
+from skl_shared.logic import Input, com as shcom
 from skl_shared.paths import Path, File, Directory
+from skl_shared.graphics.progress_bar.controller import PROGRESS
 
 
 ''' A directory storing all DSL files.
@@ -258,7 +259,7 @@ class DSL:
                         self.index_.append(line)
                         self.poses.append(i)
             mes = _('Dictionary "{}" ({}) has {} records')
-            linesnum = com.set_figure_commas(len(self.index_))
+            linesnum = shcom.set_figure_commas(len(self.index_))
             mes = mes.format(self.fname, self.dicname, linesnum)
             Message(f, mes).show_info()
         return self.index_
@@ -523,17 +524,21 @@ class AllDics:
         if not self.locate():
             rep.lazy(f)
             return
-        objs.get_progress().show()
+        PROGRESS.set_title(_('Dictionary Loader'))
+        PROGRESS.show()
         timer = Timer(f)
         timer.start()
+        PROGRESS.set_value(0)
+        PROGRESS.set_max(len(self.dics))
         for i in range(len(self.dics)):
+            PROGRESS.update()
             text = _('Load DSL dictionaries ({}/{})')
             text = text.format(i + 1, len(self.dics))
-            objs.progress.set_text(text)
-            objs.progress.update(i, len(self.dics))
+            PROGRESS.set_info(text)
             self.dics[i].run()
+            PROGRESS.inc()
         timer.end()
-        objs.progress.close()
+        PROGRESS.close()
         total_no = len(self.dics)
         self.dics = [dic for dic in self.dics if dic.Success]
         mes = _('Dictionaries loaded: {}/{}')
@@ -545,13 +550,7 @@ class AllDics:
 class Objects:
     
     def __init__(self):
-        self.all_dics = self.progress = None
-        
-    def get_progress(self):
-        if self.progress is None:
-            self.progress = ProgressBar()
-            self.progress.add()
-        return self.progress
+        self.all_dics = None
     
     def get_all_dics(self):
         if self.all_dics is None:
