@@ -3,10 +3,10 @@
 
 import html
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.table import Table
-from skl_shared_qt.logic import lat_alphabet_low
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.table import Table
+from skl_shared.logic import lat_alphabet_low
 
 import instance as ic
 

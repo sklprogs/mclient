@@ -4,11 +4,11 @@
 import os
 import re
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.time import Timer
-from skl_shared_qt.logic import Input, com
-from skl_shared_qt.paths import Path, File, Directory
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.time import Timer
+from skl_shared.logic import Input, com
+from skl_shared.paths import Path, File, Directory
 
 
 ''' A directory storing all DSL files.
@@ -86,9 +86,8 @@ class Get:
                ]
         dicnames = [idic.dicname for idic in dics]
         mes = _('Dictionaries to search in ({}/{}): {}')
-        mes = mes.format (len(dicnames), len(objs.all_dics.dics)
-                         ,'; '.join(dicnames)
-                         )
+        mes = mes.format(len(dicnames), len(objs.all_dics.dics)
+                        ,'; '.join(dicnames))
         Message(f, mes).show_debug()
         for idic in dics:
             iarticle = idic.search(self.pattern)
@@ -260,7 +259,7 @@ class DSL:
                         self.poses.append(i)
             mes = _('Dictionary "{}" ({}) has {} records')
             linesnum = com.set_figure_commas(len(self.index_))
-            mes = mes.format(self.bname, self.dicname, linesnum)
+            mes = mes.format(self.fname, self.dicname, linesnum)
             Message(f, mes).show_info()
         return self.index_
     
@@ -277,7 +276,7 @@ class DSL:
         if not self.Success:
             rep.cancel(f)
             return
-        self.bname = Path(self.file).get_basename()
+        self.fname = Path(self.file).get_filename()
         mes = _('Load "{}"').format(self.file)
         Message(f, mes).show_info()
         text = ''
@@ -300,7 +299,7 @@ class DSL:
     
     def set_values(self):
         self.file = ''
-        self.bname = ''
+        self.fname = ''
         self.lst = []
         self.lang1 = _('Any')
         self.lang2 = _('Any')

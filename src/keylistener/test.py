@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import QWidget, QPushButton, QHBoxLayout
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QShortcut, QKeySequence
 
-from skl_shared_qt.graphics.root.controller import ROOT
+from skl_shared.graphics.root.controller import ROOT
 
 from keylistener.gui import Thread
 

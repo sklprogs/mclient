@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.localize import _
+from skl_shared.localize import _
 import plugins.stardict.get as gt
 import plugins.stardict.cleanup as cu
 import plugins.stardict.tags as tg

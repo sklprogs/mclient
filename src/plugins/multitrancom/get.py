@@ -6,10 +6,10 @@ import urllib.request
 import html
 import w3lib.url
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.online import Online
-from skl_shared_qt.get_url import Get as shGet
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.online import Online
+from skl_shared.get_url import Get as shGet
 
 
 CODING = 'UTF-8'

@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.message.controller import rep
-from skl_shared_qt.paths import PDIR, Path, File
-from skl_shared_qt.config import Schema, Json
-from skl_shared_qt.logic import com
+from skl_shared.message.controller import rep
+from skl_shared.paths import PDIR, Path, File
+from skl_shared.config import Schema, Json
+from skl_shared.logic import com
 
 ''' About this module:
     - This structure describes subjects at multitran.com.

@@ -3,9 +3,9 @@
 
 import re
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.logic import Search as shSearch
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.logic import Search as shSearch
 
 
 class CleanUp:

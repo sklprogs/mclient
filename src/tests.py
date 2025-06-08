@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.graphics.root.controller import ROOT
-from skl_shared_qt.graphics.debug.controller import Debug
-from skl_shared_qt.config import Default, Schema, Local
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.graphics.root.controller import ROOT
+from skl_shared.graphics.debug.controller import Debug
+from skl_shared.config import Default, Schema, Local
 
 import config as cf
 
@@ -309,22 +309,20 @@ class Elems:
             htm.append(iarticle.code)
             code = cu.CleanUp(iarticle.code).run()
             code = cu.TagLike(code).run()
-            blocks += tg.Tags (code = code
-                              ,Debug = DEBUG
-                              ,maxrows = 0
-                              ,dicname = iarticle.dic
-                              ).run()
+            blocks += tg.Tags(code = code
+                             ,Debug = DEBUG
+                             ,maxrows = 0
+                             ,dicname = iarticle.dic).run()
         htm = '\n'.join(htm)
-        ielems = el.Elems (blocks = blocks
-                          ,Debug = DEBUG
-                          )
+        ielems = el.Elems(blocks = blocks
+                         ,Debug = DEBUG)
         blocks = ielems.run()
         return ielems.debug()
     
     def run_multitrancom(self):
         f = '[MClient] tests.Elems.run_multitrancom'
-        from skl_shared_qt.text_file import Read
-        from skl_shared_qt.time import Timer
+        from skl_shared.text_file import Read
+        from skl_shared.time import Timer
         from plugins.multitrancom.cleanup import CleanUp
         from plugins.multitrancom.tags import Tags
         from plugins.multitrancom.elems import Elems
@@ -467,9 +465,9 @@ class Get:
         timer.start()
         result = gt.Get(search=search, url=url).run()
         timer.end()
-        basename = f'{search} ({sh.Time().get_date()}).html'
+        filename = f'{search} ({sh.Time().get_date()}).html'
         file = sh.Home().add('docs', 'mclient_tests'
-                            ,'multitrancom (saved with Get.get)', basename)
+                            ,'multitrancom (saved with Get.get)', filename)
         sh.WriteTextFile(file).write(result)
         sh.Launch(file).launch_default()
     
@@ -558,7 +556,7 @@ class Tags:
         return itags.debug()
     
     def run_multitrancom(self):
-        from skl_shared_qt.text_file import Read
+        from skl_shared.text_file import Read
         from plugins.multitrancom.cleanup import CleanUp
         from plugins.multitrancom.tags import Tags
         text = Read(HTM_FILE).get()
@@ -800,7 +798,7 @@ class Commands:
     def run_font_limits(self):
         f = '[MClient] tests.Commands.run_font_limits'
         from font_limits.controller import FontLimits
-        from skl_shared_qt.time import Timer
+        from skl_shared.time import Timer
         text = 'Раз, два, три, четыре, пять - вышел зайчик погулять'
         ilimits = FontLimits(family = cf.objs.get_config().new['terms']['font']['family']
                             ,size = cf.objs.config.new['terms']['font']['size']

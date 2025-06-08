@@ -5,10 +5,10 @@ from PyQt6.QtWidgets import QWidget, QSizePolicy, QGridLayout
 from PyQt6.QtCore import pyqtSignal, Qt
 from PyQt6.QtGui import QShortcut, QKeySequence
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.graphics.root.controller import ROOT
-from skl_shared_qt.graphics.button.controller import Button
-from skl_shared_qt.graphics.label.controller import Label
+from skl_shared.localize import _
+from skl_shared.graphics.root.controller import ROOT
+from skl_shared.graphics.button.controller import Button
+from skl_shared.graphics.label.controller import Label
 
 
 class About(QWidget):

@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTextEdit
 from PyQt6.QtGui import QTextDocument, QTextCursor, QFont, QShortcut, QKeySequence
 from PyQt6.QtCore import pyqtSignal, Qt
 
-from skl_shared_qt.graphics.root.controller import ROOT
+from skl_shared.graphics.root.controller import ROOT
 
 WIDTH = 270
 HEIGHT = 150

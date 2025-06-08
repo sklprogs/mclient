@@ -4,7 +4,7 @@
 import time
 from PyQt6.QtCore import QObject, pyqtSignal, QThread
 
-from skl_shared_qt.logic import OS
+from skl_shared.logic import OS
 
 if OS.is_win():
     import keylistener.windows as osid

@@ -3,11 +3,11 @@
 
 import os
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.config import Config as shConfig, Update as shUpdate
-from skl_shared_qt.logic import Input
-from skl_shared_qt.paths import Home, Path, Directory, PDIR
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.config import Config as shConfig, Update as shUpdate
+from skl_shared.logic import Input
+from skl_shared.paths import Home, Path, Directory, PDIR
 
 PRODUCT_LOW = 'mclient'
 

@@ -7,8 +7,8 @@ from PyQt6.QtCore import pyqtSignal, Qt, QSize, QAbstractTableModel, QVariant
 from PyQt6.QtGui import QTextCursor, QTextDocument, QAbstractTextDocumentLayout
 from PyQt6.QtGui import QColor, QPen
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import rep, Message
+from skl_shared.localize import _
+from skl_shared.message.controller import rep, Message
 
 WIDE_ROW_COLOR = '#CCCCCC'
 WIDE_ROW_LEN = 70

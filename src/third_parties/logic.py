@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.online import Email, ONLINE
-from skl_shared_qt.logic import email, com
-from skl_shared_qt.paths import PDIR
-from skl_shared_qt.text_file import Read
+from skl_shared.localize import _
+from skl_shared.online import Email, ONLINE
+from skl_shared.logic import email, com
+from skl_shared.paths import PDIR
+from skl_shared.text_file import Read
 
 
 class ThirdParties:

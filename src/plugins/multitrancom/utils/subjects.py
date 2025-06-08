@@ -3,12 +3,12 @@
 
 import json
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.text_file import Write
-from skl_shared_qt.paths import PDIR
-from skl_shared_qt.graphics.clipboard.controller import CLIPBOARD
-from skl_shared_qt.text_file import Write
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.text_file import Write
+from skl_shared.paths import PDIR
+from skl_shared.graphics.clipboard.controller import CLIPBOARD
+from skl_shared.text_file import Write
 
 
 class Dic:

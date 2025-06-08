@@ -2,11 +2,11 @@
 
 import json
 
-from skl_shared_qt.message.controller import rep
-from skl_shared_qt.paths import PDIR
-from skl_shared_qt.logic import com
-from skl_shared_qt.paths import Path
-from skl_shared_qt.text_file import Read
+from skl_shared.message.controller import rep
+from skl_shared.paths import PDIR
+from skl_shared.logic import com
+from skl_shared.paths import Path
+from skl_shared.text_file import Read
 
 
 class Speech:

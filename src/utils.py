@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from plugins.multitrancom.utils.subjects.compile import Compile, Check, Missing
-from skl_shared_qt.graphics.root.controller import ROOT
+from skl_shared.graphics.root.controller import ROOT
 
 
 if __name__ == '__main__':

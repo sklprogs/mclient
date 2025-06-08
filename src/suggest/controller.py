@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import rep
+from skl_shared.localize import _
+from skl_shared.message.controller import rep
 
 from manager import PLUGINS
 from suggest.gui import Suggest as guiSuggest

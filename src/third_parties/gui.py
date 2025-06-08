@@ -4,7 +4,7 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTextEdit
 from PyQt6.QtGui import QTextDocument, QTextCursor, QFont, QShortcut, QKeySequence
 
-from skl_shared_qt.graphics.root.controller import ROOT
+from skl_shared.graphics.root.controller import ROOT
 
 
 class ThirdParties(QWidget):

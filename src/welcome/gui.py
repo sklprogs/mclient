@@ -8,7 +8,7 @@ from PyQt6.QtGui import QShortcut, QKeySequence, QAbstractTextDocumentLayout
 from PyQt6.QtGui import QTextDocument
 from PyQt6.QtCore import Qt, QAbstractTableModel, QVariant, QSize
 
-from skl_shared_qt.graphics.root.controller import ROOT
+from skl_shared.graphics.root.controller import ROOT
 
 
 class TableModel(QAbstractTableModel):

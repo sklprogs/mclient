@@ -6,9 +6,9 @@ from PyQt6.QtGui import QShortcut, QKeySequence
 from PyQt6.QtCore import QAbstractTableModel, QVariant, Qt, pyqtSignal
 from PyQt6.QtCore import QItemSelectionModel
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.graphics.root.controller import ROOT
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.graphics.root.controller import ROOT
 
 
 class TableModel(QAbstractTableModel):

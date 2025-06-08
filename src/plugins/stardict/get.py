@@ -4,11 +4,11 @@
 import struct
 import os
 import zlib
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.time import Timer
-from skl_shared_qt.paths import File, Directory
-from skl_shared_qt.logic import Input
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.time import Timer
+from skl_shared.paths import File, Directory
+from skl_shared.logic import Input
 
 
 ''' A directory storing all stardict files.
@@ -208,7 +208,7 @@ class StarDict:
             does the same thing (providing that extensions are only 3 symbols
             long). 'Path' is more precise for other cases.
         '''
-        self.fname = os.path.join(ipath.get_dirname(), ipath.get_filename())
+        self.bname = os.path.join(ipath.get_dirname(), ipath.get_basename())
         self.Success = File(self.path).Success
         self.check()
         self.set_meta()
@@ -221,7 +221,7 @@ class StarDict:
         self.ifo = {}
         self.wcount = 0
         self.path = ''
-        self.fname = ''
+        self.bname = ''
         self.title = ''
         self.transl = ''
     
@@ -236,7 +236,7 @@ class StarDict:
         if not 'bookname' in self.ifo or not 'wordcount' in self.ifo:
             self.Success = False
             mes = _('File "{}" is incorrect!')
-            mes = mes.format(self.fname + '.ifo')
+            mes = mes.format(self.bname + '.ifo')
             Message(f, mes, True).show_warning()
             return
         self.title = str(self.ifo['bookname'])
@@ -257,17 +257,17 @@ class StarDict:
             rep.cancel(f)
             return
         try:
-            for line in open (file = self.fname + '.ifo'
+            for line in open (file = self.bname + '.ifo'
                              ,encoding = 'UTF-8'
                              ).readlines()[1:]:
                 pair = line.split('=')
                 self.ifo[pair[0]] = pair[1][:-1]
 
-            if (not os.path.exists(self.fname+'.idx')):
+            if (not os.path.exists(self.bname + '.idx')):
                 raise ValueError('An .idx file is missing!')
 
-            if (not os.path.exists(self.fname + '.dict') and \
-            not os.path.exists(self.fname + '.dict.dz')):
+            if (not os.path.exists(self.bname + '.dict') and \
+            not os.path.exists(self.bname + '.dict.dz')):
                 raise ValueError('A .dict file is missing!')
         except Exception as e:
             self.fail(f, e)
@@ -280,7 +280,7 @@ class StarDict:
         if not self.Success:
             rep.cancel(f)
             return
-        idx = self.fname + '.idx'
+        idx = self.bname + '.idx'
         iopen = open(idx, 'rb')
         data = iopen.read(os.path.getsize(idx))
         iopen.close()
@@ -306,9 +306,9 @@ class StarDict:
             return
         # Compression of .dict is optional
         try:
-            self.dictf = open(self.fname + '.dict', 'rb')
+            self.dictf = open(self.bname + '.dict', 'rb')
         except IOError:
-            self.dictf = DictZip(self.fname + '.dict.dz')
+            self.dictf = DictZip(self.bname + '.dict.dz')
 
     def unload(self):
         # Release idx word list and opened .dict file
@@ -479,10 +479,8 @@ class AllDics:
                 '''
                 name = file[:-4]
                 if (name + '.idx' in files and (name + '.dict.dz' in files
-                                                or name + '.dict' in files
-                                               )
-                   ):
-                       self.ifos.append(os.path.join(root, name + '.ifo'))
+                                                or name + '.dict' in files)):
+                    self.ifos.append(os.path.join(root, name + '.ifo'))
         return self.ifos
     
     def locate(self):

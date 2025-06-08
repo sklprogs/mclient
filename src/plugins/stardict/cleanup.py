@@ -3,9 +3,9 @@
 
 import re
 import html
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.logic import Text, ru_alphabet, lat_alphabet
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.logic import Text, ru_alphabet, lat_alphabet
 
 
 #TODO (?): use shared

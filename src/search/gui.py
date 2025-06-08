@@ -5,10 +5,10 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QShortcut, QKeySequence
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.graphics.entry.controller import Entry
-from skl_shared_qt.graphics.button.controller import Button
-from skl_shared_qt.graphics.checkbox.controller import CheckBox
+from skl_shared.localize import _
+from skl_shared.graphics.entry.controller import Entry
+from skl_shared.graphics.button.controller import Button
+from skl_shared.graphics.checkbox.controller import CheckBox
 
 
 class Search(QWidget):

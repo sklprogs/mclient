@@ -3,11 +3,11 @@
 
 import re
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.list import List
-from skl_shared_qt.table import Table
-from skl_shared_qt.logic import Text
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.list import List
+from skl_shared.table import Table
+from skl_shared.logic import Text
 
 import instance as ic
 

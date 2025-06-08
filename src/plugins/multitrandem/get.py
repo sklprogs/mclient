@@ -7,12 +7,12 @@ import struct
 import codecs
 import locale
 import itertools
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.text_file import Read
-from skl_shared_qt.logic import Text, Input, com as shcom
-from skl_shared_qt.paths import Path, File, Directory
-from skl_shared_qt.table import Table
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.text_file import Read
+from skl_shared.logic import Text, Input, com as shcom
+from skl_shared.paths import Path, File, Directory
+from skl_shared.table import Table
 
 # Do not localize language names here
 CODING = 'windows-1251'
@@ -244,7 +244,7 @@ class Binary:
         self.fsize = 0
         self.bsize = 0
         self.file = file
-        self.bname = Path(file).get_basename()
+        self.fname = Path(file).get_filename()
         # We need silent logging here (not 'File.Success')
         self.Success = os.path.exists(self.file)
         self.open()
@@ -580,13 +580,13 @@ class Binary:
         if DEBUG:
             if end == -1:
                 s_result = shcom.set_figure_commas(result)
-                mes = f'{self.bname}, "{com.get_string(pattern)}" => {s_result}'
+                mes = f'{self.fname}, "{com.get_string(pattern)}" => {s_result}'
             else:
                 s_start = shcom.set_figure_commas(start)
                 s_end = shcom.set_figure_commas(end)
                 s_pattern = com.get_string(pattern)
                 s_result = shcom.set_figure_commas(result)
-                mes = f'{self.bname}, [{s_start}:{s_end}], "{s_pattern}" => {s_result}'
+                mes = f'{self.fname}, [{s_start}:{s_end}], "{s_pattern}" => {s_result}'
             Message(f, mes).show_debug()
         if result >= 0:
             return result
@@ -850,11 +850,11 @@ class Walker:
             return self.ending
         if self.ending:
             return self.ending
-        bname = 'sik.' + self.lang13
-        file = self.get_file(bname)
+        fname = 'sik.' + self.lang13
+        file = self.get_file(fname)
         if not file:
             self.Success = False
-            mes = _('File "{}" does not exist!').format(bname)
+            mes = _('File "{}" does not exist!').format(fname)
             Message(f, mes).show_warning()
             return self.ending
         self.ending = file
@@ -866,16 +866,16 @@ class Walker:
             rep.cancel(f)
             return self.subject
         # Suppress useless error output
-        if not self.bnames:
+        if not self.fnames:
             rep.lazy(f)
             return self.subject
         if self.subject:
             return self.subject
-        bname = 'subjects.txt'
-        file = self.get_file(bname)
+        fname = 'subjects.txt'
+        file = self.get_file(fname)
         if not file:
             self.Success = False
-            mes = _('File "{}" does not exist!').format(bname)
+            mes = _('File "{}" does not exist!').format(fname)
             Message(f, mes).show_warning()
             return self.subject
         self.subject = file
@@ -888,11 +888,11 @@ class Walker:
             return self.typein1
         if self.typein1:
             return self.typein1
-        bname = 'typein.' + self.lang11 + self.lang21
-        file = self.get_file(bname)
+        fname = 'typein.' + self.lang11 + self.lang21
+        file = self.get_file(fname)
         if not file:
             self.Success = False
-            mes = _('File "{}" does not exist!').format(bname)
+            mes = _('File "{}" does not exist!').format(fname)
             Message(f, mes).show_warning()
             return self.typein1
         self.typein1 = file
@@ -906,11 +906,11 @@ class Walker:
             return self.typein2
         if self.typein2:
             return self.typein2
-        bname = 'typein.' + self.lang21 + self.lang11
-        file = self.get_file(bname)
+        fname = 'typein.' + self.lang21 + self.lang11
+        file = self.get_file(fname)
         if not file:
             self.Success = False
-            mes = _('File "{}" does not exist!').format(bname)
+            mes = _('File "{}" does not exist!').format(fname)
             Message(f, mes).show_warning()
             return self.typein2
         self.typein2 = file
@@ -934,13 +934,13 @@ class Walker:
             return self.article
         if self.article:
             return self.article
-        bname = 'dict.' + self.lang11 + self.lang21 + 't'
-        if not bname in self.bnames:
-            bname = 'dict.' + self.lang21 + self.lang11 + 't'
-        file = self.get_file(bname)
+        fname = 'dict.' + self.lang11 + self.lang21 + 't'
+        if not fname in self.fnames:
+            fname = 'dict.' + self.lang21 + self.lang11 + 't'
+        file = self.get_file(fname)
         if not file:
             self.Success = False
-            mes = _('File "{}" does not exist!').format(bname)
+            mes = _('File "{}" does not exist!').format(fname)
             Message(f, mes).show_warning()
             return self.article
         self.article = file
@@ -954,11 +954,11 @@ class Walker:
             return self.glue1
         if self.glue1:
             return self.glue1
-        bname = 'dict.' + self.lang11 + self.lang21 + 'd'
-        file = self.get_file(bname)
+        fname = 'dict.' + self.lang11 + self.lang21 + 'd'
+        file = self.get_file(fname)
         if not file:
             self.Success = False
-            mes = _('File "{}" does not exist!').format(bname)
+            mes = _('File "{}" does not exist!').format(fname)
             Message(f, mes).show_warning()
             return self.glue1
         self.glue1 = file
@@ -972,11 +972,11 @@ class Walker:
             return self.glue2
         if self.glue2:
             return self.glue2
-        bname = 'dict.' + self.lang21 + self.lang11 + 'd'
-        file = self.get_file(bname)
+        fname = 'dict.' + self.lang21 + self.lang11 + 'd'
+        file = self.get_file(fname)
         if not file:
             self.Success = False
-            mes = _('File "{}" does not exist!').format(bname)
+            mes = _('File "{}" does not exist!').format(fname)
             Message(f, mes).show_warning()
             return self.glue2
         self.glue2 = file
@@ -1017,11 +1017,11 @@ class Walker:
             return self.stems1
         if self.stems1:
             return self.stems1
-        bname = 'stem.' + self.lang13
-        file = self.get_file(bname)
+        fname = 'stem.' + self.lang13
+        file = self.get_file(fname)
         if not file:
             self.Success = False
-            mes = _('File "{}" does not exist!').format(bname)
+            mes = _('File "{}" does not exist!').format(fname)
             Message(f, mes).show_warning()
             return self.stems1
         self.stems1 = file
@@ -1034,23 +1034,23 @@ class Walker:
             return self.stems2
         if self.stems2:
             return self.stems2
-        bname = 'stem.' + self.lang23
-        file = self.get_file(bname)
+        fname = 'stem.' + self.lang23
+        file = self.get_file(fname)
         if not file:
             self.Success = False
-            mes = _('File "{}" does not exist!').format(bname)
+            mes = _('File "{}" does not exist!').format(fname)
             Message(f, mes).show_warning()
             return self.stems2
         self.stems2 = file
         return self.stems2
     
-    def get_file(self, bname):
+    def get_file(self, fname):
         f = '[MClient] plugins.multitrandem.get.Walker.get_file'
         if not self.Success:
             rep.cancel(f)
             return
         try:
-            ind = self.bnames.index(bname)
+            ind = self.fnames.index(fname)
             return self.files[ind]
         except (ValueError, IndexError):
             mes = _('Wrong input data!')
@@ -1058,7 +1058,7 @@ class Walker:
     
     def set_values(self):
         self.article = ''
-        self.bnames = []
+        self.fnames = []
         self.ending = ''
         self.files = []
         self.glue1 = ''
@@ -1082,10 +1082,10 @@ class Walker:
             return self.files
         self.files = self.idir.get_subfiles()
         for file in self.files:
-            self.bnames.append(Path(file).get_basename_low())
+            self.fnames.append(Path(file).get_filename_low())
         self.Success = False
-        for bname in self.bnames:
-            if bname.startswith('dict.') and bname.endswith('t'):
+        for fname in self.fnames:
+            if fname.startswith('dict.') and fname.endswith('t'):
                 self.Success = True
                 break
         return self.files
@@ -1218,10 +1218,10 @@ class AllDics:
         if self.langs:
             return self.langs
         if objs.get_files().iwalker.Success:
-            for bname in objs.files.iwalker.bnames:
+            for fname in objs.files.iwalker.fnames:
                 # Relative paths are already lowercased
-                if bname.startswith('dict.') and bname.endswith('t'):
-                    self.langs.append(bname)
+                if fname.startswith('dict.') and fname.endswith('t'):
+                    self.langs.append(fname)
         return self.langs
     
     def set_values(self):

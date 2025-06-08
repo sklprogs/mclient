@@ -7,15 +7,15 @@ import struct
 import codecs
 import termcolor
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.paths import Home
-from skl_shared_qt.logic import OS, Input, nbspace, com as shcom
-from skl_shared_qt.table import Table
-from skl_shared_qt.graphics.clipboard.controller import CLIPBOARD
-from skl_shared_qt.graphics.debug.controller import DEBUG
-from skl_shared_qt.text_file import Write, rewrite
-from skl_shared_qt.launch import Launch
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.paths import Home
+from skl_shared.logic import OS, Input, nbspace, com as shcom
+from skl_shared.table import Table
+from skl_shared.graphics.clipboard.controller import CLIPBOARD
+from skl_shared.graphics.debug.controller import DEBUG
+from skl_shared.text_file import Write, rewrite
+from skl_shared.launch import Launch
 import get as gt
 
 

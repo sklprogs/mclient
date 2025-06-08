@@ -3,13 +3,13 @@
 
 import io
 import struct
-from skl_shared_qt.localize import _
-import skl_shared_qt.message.controller as ms
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.table import Table
-from skl_shared_qt.graphics.debug.controller import DEBUG
-from skl_shared_qt.logic import com as shcom
-from skl_shared_qt.time import Timer
+from skl_shared.localize import _
+import skl_shared.message.controller as ms
+from skl_shared.message.controller import Message, rep
+from skl_shared.table import Table
+from skl_shared.graphics.debug.controller import DEBUG
+from skl_shared.logic import com as shcom
+from skl_shared.time import Timer
 import get as gt
 
 

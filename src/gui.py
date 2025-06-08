@@ -6,16 +6,16 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QStackedLayout
 from PyQt6.QtGui import QShortcut, QKeySequence, QCursor
 from PyQt6.QtCore import pyqtSignal, QEvent, Qt
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.graphics.root.controller import ROOT
-from skl_shared_qt.graphics.icon.controller import ICON
-from skl_shared_qt.graphics.entry.controller import Entry as shEntry
-from skl_shared_qt.graphics.option_menu.controller import OptionMenu
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.graphics.root.controller import ROOT
+from skl_shared.graphics.icon.controller import ICON
+from skl_shared.graphics.entry.controller import Entry as shEntry
+from skl_shared.graphics.option_menu.controller import OptionMenu
 #TODO: Delete
-from skl_shared_qt.graphics.entry.gui import Entry as shguiEntry
-from skl_shared_qt.graphics.button.controller import Button
-from skl_shared_qt.paths import PDIR
+from skl_shared.graphics.entry.gui import Entry as shguiEntry
+from skl_shared.graphics.button.controller import Button
+from skl_shared.paths import PDIR
 
 from welcome.controller import WELCOME
 from table.controller import TABLE

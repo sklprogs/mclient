@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.graphics.root.controller import ROOT
-from skl_shared_qt.graphics.clipboard.controller import CLIPBOARD
-from skl_shared_qt.graphics.debug.controller import DEBUG
-from skl_shared_qt.logic import OS, Input, Text
-from skl_shared_qt.online import Online
-from skl_shared_qt.time import Timer
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.graphics.root.controller import ROOT
+from skl_shared.graphics.clipboard.controller import CLIPBOARD
+from skl_shared.graphics.debug.controller import DEBUG
+from skl_shared.logic import OS, Input, Text
+from skl_shared.online import Online
+from skl_shared.time import Timer
 
 from config import CONFIG, HistorySubjects
 from manager import PLUGINS

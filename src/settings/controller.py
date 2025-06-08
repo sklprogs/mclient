@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message
-from skl_shared_qt.logic import Input
+from skl_shared.localize import _
+from skl_shared.message.controller import Message
+from skl_shared.logic import Input
 
 from config import CONFIG
 from settings.gui import Settings as guiSettings

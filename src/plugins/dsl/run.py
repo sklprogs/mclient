@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.list import List
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.list import List
 
 import plugins.dsl.get as gt
 import plugins.dsl.tags as tg

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.graphics.color.controller import Color
+from skl_shared.graphics.color.controller import Color
 
 from config import CONFIG
 from subjects import SUBJECTS

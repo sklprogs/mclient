@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.localize import _
+from skl_shared.localize import _
 
 ''' These are translations that Poedit considers outdated and tries to remove
     since they are either stored in non-Python files (e.g. in JSON) or Poedit

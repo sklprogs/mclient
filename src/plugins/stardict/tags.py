@@ -2,8 +2,8 @@
 # -*- coding: UTF-8 -*-
 
 import copy
-from skl_shared_qt.localize import _
-from skl_shared_qt.table import Table
+from skl_shared.localize import _
+from skl_shared.table import Table
 
 import instance as ic
 

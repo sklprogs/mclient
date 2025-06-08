@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.message.controller import rep
+from skl_shared.message.controller import rep
 from windows.geometry.gui import Geometry as guiGeometry
 
 

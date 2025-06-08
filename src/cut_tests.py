@@ -1,5 +1,5 @@
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
 
 f = '[MClient] plugins.dsl.subjects.__main__'
     sh.com.start()

@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
 
 import plugins.multitrancom.get as gt
 import plugins.multitrancom.cleanup as cu

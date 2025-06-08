@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from skl_shared_qt.localize import _
-from skl_shared_qt.message.controller import Message, rep
-from skl_shared_qt.time import Timer
-from skl_shared_qt.graphics.clipboard.controller import CLIPBOARD
+from skl_shared.localize import _
+from skl_shared.message.controller import Message, rep
+from skl_shared.time import Timer
+from skl_shared.graphics.clipboard.controller import CLIPBOARD
 
 from popup.controller import POPUP
 from config import CONFIG
