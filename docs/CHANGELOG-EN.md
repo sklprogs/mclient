@@ -1,5 +1,9 @@
 (in development)
 
+## 7.1.7
+* Fix loading .dsl and Stardict dictionaries
+* Synchronize changes with shared module
+
 ## 7.1.6
 * Adopt [multitran.com](https://www.multitran.com) changes (remove useless text)
 
