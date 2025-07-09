@@ -4,10 +4,16 @@
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.graphics.root.controller import ROOT
-from skl_shared.graphics.debug.controller import Debug
+from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
 from skl_shared.config import Default, Schema, Local
+from skl_shared.paths import Home, PDIR
+from skl_shared.time import Timer
+from skl_shared.text_file import Read, Write
+from skl_shared.launch import Launch
+from skl_shared.table import Table
+from skl_shared.logic import Text
 
-import config as cf
+from config import CONFIG
 
 DEBUG = True
 
@@ -17,93 +23,6 @@ DEBUG = True
 SEARCH = 'chicken wing pork friday coding style'
 URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing+pork+friday+coding+style'
 HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/chicken wing pork friday coding style (2025-01-24).htm'
-
-
-class Config:
-    
-    def __init__(self):
-        self.schema = sh.objs.get_pdir().add('..', 'resources', 'config', 'schema.json')
-        self.default = sh.objs.pdir.add('..', 'resources', 'config', 'default.json')
-        self.local = sh.Home(cf.PRODUCT_LOW).add_config(cf.PRODUCT_LOW + '.json')
-    
-    def run_schema(self):
-        ischema = Schema(self.schema)
-        ischema.run()
-        mes = []
-        sub = _('Configuration file: {}').format(ischema.file)
-        mes.append(sub)
-        if ischema.Success:
-            sub = _('Result: Success')
-        else:
-            sub = _('Result: Failed')
-        mes.append(sub)
-        sub = _('Dictionary:\n{}').format(ischema.dump())
-        mes.append(sub)
-        return '\n'.join(mes)
-    
-    def run_default(self):
-        ischema = Schema(self.schema)
-        ischema.run()
-        idefault = Default(self.default, ischema.get())
-        idefault.run()
-        mes = []
-        sub = _('Configuration file: {}').format(self.default)
-        mes.append(sub)
-        sub = _('Version: {}').format(idefault.get_version())
-        mes.append(sub)
-        if idefault.Success:
-            sub = _('Result: Success')
-        else:
-            sub = _('Result: Failed')
-        mes.append(sub)
-        sub = _('Dictionary:\n{}').format(idefault.dump())
-        mes.append(sub)
-        return '\n'.join(mes)
-    
-    def run_local(self):
-        f = '[SharedQt] config.Tests.run_local'
-        min_version = 2
-        ilocal = Local(self.local, min_version)
-        ilocal.run()
-        timer = sh.Timer(f)
-        timer.start()
-        mes = []
-        sub = _('Configuration file: {}').format(self.local)
-        mes.append(sub)
-        sub = _('Version: {}').format(ilocal.get_version())
-        mes.append(sub)
-        if ilocal.Success:
-            sub = _('Result: Success')
-        else:
-            sub = _('Result: Failed')
-        mes.append(sub)
-        sub = _('Dictionary:\n{}').format(ilocal.dump())
-        mes.append(sub)
-        timer.end()
-        return '\n'.join(mes)
-    
-    def run_config(self):
-        f = '[SharedQt] config.Tests.run_config'
-        timer = sh.Timer(f)
-        timer.start()
-        iconfig = cf.Config(self.default, self.schema, self.local)
-        iconfig.run()
-        mes = []
-        sub = _('Configuration file: {}').format(self.local)
-        mes.append(sub)
-        sub = _('Version: {}').format(iconfig.ilocal.get_version())
-        mes.append(sub)
-        if iconfig.Success:
-            sub = _('Result: Success')
-        else:
-            sub = _('Result: Failed')
-        mes.append(sub)
-        #iconfig.quit()
-        sub = _('Dictionary:\n{}').format(iconfig.dump())
-        mes.append(sub)
-        timer.end()
-        return '\n'.join(mes)
-
 
 
 class Wrap:
@@ -116,8 +35,8 @@ class Wrap:
         import plugins.multitrancom.elems as el
         import cells as cl
         
-        text = sh.ReadTextFile(HTM_FILE).get()
-        timer = sh.Timer(f)
+        text = Read(HTM_FILE).get()
+        timer = Timer(f)
         timer.start()
         text = cu.CleanUp(text).run()
         blocks = tg.Tags(text=text, maxrows=0).run()
@@ -146,8 +65,8 @@ class Prioritize:
         import cells as cl
         from subjects import SUBJECTS
         
-        text = sh.ReadTextFile(HTM_FILE).get()
-        timer = sh.Timer(f)
+        text = Read(HTM_FILE).get()
+        timer = Timer(f)
         timer.start()
         text = cu.CleanUp(text).run()
         blocks = tg.Tags (text = text
@@ -161,7 +80,7 @@ class Prioritize:
         '''
         pairs = ielems.art_subj
         if not pairs:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         SUBJECTS.reset(pairs)
         
@@ -189,7 +108,7 @@ class View:
         import plugins.stardict.elems as el
         import cells as cl
         file = '/home/pete/docs/mclient_tests/stardict/EnRu full cut.txt'
-        text = sh.ReadTextFile(file).get()
+        text = Read(file).get()
         text = cu.CleanUp(text).run()
         blocks = tg.Tags(text).run()
         cells = el.Elems(blocks).run()
@@ -208,8 +127,8 @@ class View:
         import plugins.multitrancom.elems as el
         import cells as cl
         
-        text = sh.ReadTextFile(HTM_FILE).get()
-        timer = sh.Timer(f)
+        text = Read(HTM_FILE).get()
+        timer = Timer(f)
         timer.start()
         text = cu.CleanUp(text).run()
         blocks = tg.Tags(text=text, maxrows=0).run()
@@ -235,9 +154,9 @@ class View:
         
         blocks = []
         
-        timer = sh.Timer(f)
+        timer = Timer(f)
         timer.start()
-        gt.PATH = sh.Home('mclient').add_config('dics')
+        gt.PATH = Home('mclient').add_config('dics')
         articles = gt.Get(SEARCH).run()
         for iarticle in articles:
             code = cu.CleanUp(iarticle.code).run()
@@ -265,7 +184,7 @@ class Elems:
         import plugins.multitrandem.get as gt
         import plugins.multitrandem.tags as tg
         import plugins.multitrandem.elems as el
-        gt.PATH = sh.Home('mclient').add_config('dics')
+        gt.PATH = Home('mclient').add_config('dics')
         iget = gt.Get(SEARCH)
         chunks = iget.run()
         if not chunks:
@@ -288,7 +207,7 @@ class Elems:
         import plugins.stardict.tags as tg
         import plugins.stardict.elems as el
         file = '/home/pete/docs/mclient_tests/stardict/EnRu full cut.txt'
-        text = sh.ReadTextFile(file).get()
+        text = Read(file).get()
         text = cu.CleanUp(text).run()
         blocks = tg.Tags(text).run()
         ielems = el.Elems(blocks)
@@ -300,7 +219,7 @@ class Elems:
         import plugins.dsl.get as gt
         import plugins.dsl.tags as tg
         import plugins.dsl.elems as el
-        gt.PATH = sh.Home('mclient').add_config('dics')
+        gt.PATH = Home('mclient').add_config('dics')
         blocks = []
         htm = []
         search = 'account'
@@ -348,7 +267,7 @@ class Offline:
         import plugins.multitrancom.cleanup as cu
         import plugins.multitrancom.tags as tg
         import plugins.multitrancom.elems as el
-        self.htm = sh.ReadTextFile(HTM_FILE).get()
+        self.htm = Read(HTM_FILE).get()
         self.text = cu.CleanUp(self.htm).run()
         itags = tg.Tags (text = self.text
                         ,Debug = DEBUG
@@ -433,10 +352,8 @@ class Get:
     
     def run_dsl(self):
         import plugins.dsl.get
-        plugins.dsl.get.PATH = sh.Home('mclient').add_config('dics')
-        iget = plugins.dsl.get.Get (pattern = 'account'
-                                   ,Debug = DEBUG
-                                   )
+        plugins.dsl.get.PATH = Home('mclient').add_config('dics')
+        iget = plugins.dsl.get.Get(pattern = 'account', Debug = DEBUG)
         iget.run()
         return iget.debug()
     
@@ -448,7 +365,7 @@ class Get:
         PLUGINS.maxrows = 1000
         result = gt.Get(SEARCH).run()
         if not result:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         for i in range(len(result)):
             result[i] = result[i].decode(gt.CODING)
@@ -461,15 +378,15 @@ class Get:
         #search = 'Медицина'
         url = 'https://www.multitran.com/m.exe?s=working%20documentation&l1=1&l2=2&SHL=2'
         search = 'working documentation'
-        timer = sh.Timer(f)
+        timer = Timer(f)
         timer.start()
         result = gt.Get(search=search, url=url).run()
         timer.end()
-        filename = f'{search} ({sh.Time().get_date()}).html'
-        file = sh.Home().add('docs', 'mclient_tests'
-                            ,'multitrancom (saved with Get.get)', filename)
-        sh.WriteTextFile(file).write(result)
-        sh.Launch(file).launch_default()
+        filename = f'{search} ({Time().get_date()}).html'
+        file = Home().add('docs', 'mclient_tests'
+                         ,'multitrancom (saved with Get.get)', filename)
+        Write(file).write(result)
+        Launch(file).launch_default()
     
     def run_stardict(self):
         f = '[MClient] tests.Get.run_stardict'
@@ -478,11 +395,12 @@ class Get:
         PLUGINS.Debug = False
         PLUGINS.maxrows = 1000
         #search = 'компьютер'
-        search = 'aberrance'
+        #search = 'aberrance'
         #search = 'abstract'
         #search = 'АБЕРРАЦИЯ'
         #search = 'акцепт'
-        timer = sh.Timer(f)
+        search = 'автоматический режим работы'
+        timer = Timer(f)
         timer.start()
         result = plugins.stardict.get.Get(search).run()
         timer.end()
@@ -501,7 +419,7 @@ class Tags:
         PLUGINS.maxrows = 1000
         chunks = gt.Get(SEARCH).run()
         if not chunks:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         tags = []
         blocks = []
@@ -518,7 +436,7 @@ class Tags:
         import plugins.dsl.get
         import plugins.dsl.cleanup
         import plugins.dsl.tags
-        plugins.dsl.get.PATH = sh.Home('mclient').add_config('dics')
+        plugins.dsl.get.PATH = Home('mclient').add_config('dics')
         articles = plugins.dsl.get.Get('account balance').run()
         blocks = []
         debug = []
@@ -546,7 +464,7 @@ class Tags:
         import plugins.stardict.cleanup as cu
         import plugins.stardict.tags as tg
         file = '/home/pete/docs/mclient_tests/stardict/EnRu full cut.txt'
-        text = sh.ReadTextFile(file).get()
+        text = Read(file).get()
         text = cu.CleanUp(text).run()
         itags = tg.Tags (text = text
                         ,Debug = DEBUG
@@ -613,7 +531,7 @@ class Plugin:
         import plugins.dsl.get
         import plugins.dsl.run as dr
         plugins.dsl.get.DEBUG = DEBUG
-        plugins.dsl.get.PATH = sh.Home('mclient').add_config('dics')
+        plugins.dsl.get.PATH = Home('mclient').add_config('dics')
         #search = 'компьютер'
         #search = 'computer'
         #search = 'bunker'
@@ -685,7 +603,7 @@ class Commands:
         import plugins.multitrancom.cleanup as cu
         import plugins.multitrancom.tags as tg
         import plugins.multitrancom.elems as el
-        text = sh.ReadTextFile(HTM_FILE).get()
+        text = Read(HTM_FILE).get()
         text = cu.CleanUp(text).run()
         blocks = tg.Tags(text=text, maxrows=0).run()
         ielems = el.Elems(blocks)
@@ -696,9 +614,6 @@ class Commands:
     def get_all_subjects(self):
         import plugins.multitrancom.subjects as sj
         return sj.objs.get_subjects().dump()
-    
-    def run_config(self):
-        cf.objs.get_config().run()
     
     def run_suggest(self):
         import suggest.controller as sg
@@ -725,7 +640,7 @@ class Commands:
         sub = f'{f}:'
         mes.append(sub)
         mes.append(_('Prioritized subjects:'))
-        sub = '; '.join(cf.objs.get_config().new['subjects']['prioritized'])
+        sub = '; '.join(CONFIG.new['subjects']['prioritized'])
         mes.append(sub)
         mes.append('')
         subject = 'тест., ИТ., Gruzovik, прогр.'
@@ -742,9 +657,8 @@ class Commands:
         for part in parts:
             priorities.append(isubj.get_priority(part))
         parts = [f'"{part}"' for part in parts]
-        sub = sh.FastTable (headers = (_('SUBJECT'), _('PRIORITY'))
-                           ,iterable = [parts, priorities]
-                           ).run()
+        sub = Table(headers = (_('SUBJECT'), _('PRIORITY'))
+                   ,iterable = [parts, priorities]).run()
         mes.append(sub)
         return '\n'.join(mes)
     
@@ -759,23 +673,21 @@ class Commands:
         ARTICLES.add(search=search, url=url, cells=cells)
         subjects = ARTICLES.get_subjects()
         if not subjects:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
         shorts = []
         fulls = []
         for short in subjects:
             shorts.append(short)
             fulls.append(subjects[short])
-        mes = sh.FastTable (headers = (_('SHORT'), _('FULL'))
-                           ,iterable = [shorts, fulls]
-                           ,maxrow = 70
-                           ).run()
+        mes = Table(headers = (_('SHORT'), _('FULL'))
+                   ,iterable = [shorts, fulls]
+                   ,maxrow = 70).run()
         return mes
     
     def run_prior(self):
         import config as cf
         import mclient as mc
-        cf.objs.get_config()
         return mc.Priorities()
     
     def run_prior_contr(self):
@@ -789,9 +701,9 @@ class Commands:
     def run_popup(self):
         import popup.controller as pp
         ipopup = pp.Popup()
-        file = sh.objs.get_pdir().add('..', 'resources', 'third parties.txt')
-        text = sh.ReadTextFile(file).get()
-        text = sh.Text(text, True).delete_line_breaks() * 10
+        file = PDIR.add('..', 'resources', 'third parties.txt')
+        text = Read(file).get()
+        text = Text(text, True).delete_line_breaks() * 10
         ipopup.fill(text)
         return ipopup
     
@@ -800,8 +712,8 @@ class Commands:
         from font_limits.controller import FontLimits
         from skl_shared.time import Timer
         text = 'Раз, два, три, четыре, пять - вышел зайчик погулять'
-        ilimits = FontLimits(family = cf.objs.get_config().new['terms']['font']['family']
-                            ,size = cf.objs.config.new['terms']['font']['size']
+        ilimits = FontLimits(family = CONFIG.new['terms']['font']['family']
+                            ,size = CONFIG.new['terms']['font']['size']
                             ,Bold = False
                             ,Italic = False)
         timer = Timer(f)
@@ -829,7 +741,6 @@ class Commands:
     
     def run_welcome(self):
         import mclient as mc
-        cf.objs.get_config()
         iwelcome = mc.Welcome(mc.About().get_product())
         iwelcome.reset()
         return iwelcome
@@ -861,20 +772,19 @@ class Commands:
         import symbols.controller as sm
         sym = sm.Symbols()
         sym.show()
-        sh.com.end()
     
     def get_column_width(self):
         f = '[MClient] tests.Commands.get_column_width'
         import logic as lg
-        #cf.objs.get_config().new['columns']['num'] = 0
+        #CONFIG.new['columns']['num'] = 0
         mes = f'"{lg.com.get_column_width()}%"'
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
     
     def check_width(self):
         import mclient as mc
         file = '/home/pete/tmp/frame rate.htm'
         #file = '/tmp/f.htm'
-        code = sh.ReadTextFile(file).get()
+        code = Read(file).get()
         mc.objs.get_webframe().fill(code)
         mc.objs.webframe.show()
     
@@ -892,9 +802,10 @@ class Commands:
         titles = sorted(set(titles))
         if titles:
             mes = '\n'.join(titles)
-            sh.com.run_fast_debug(f, mes)
+            shDEBUG.reset(f, mes)
+            shDEBUG.show()
         else:
-            sh.com.rep_lazy(f)
+            rep.lazy(f)
     
     def get_modified_subjects(self):
         f = '[MClient] tests.Commands.get_modified_subjects'
@@ -905,7 +816,8 @@ class Commands:
                 titles.append(sj.SUBJECTS[key]['ru']['title'])
         titles.sort()
         mes = '\n'.join(titles)
-        sh.com.run_fast_debug(f, mes)
+        shDEBUG.reset(f, mes)
+        shDEBUG.show()
     
     def get_majors_en(self):
         f = '[MClient] tests.Commands.get_majors_en'
@@ -921,11 +833,11 @@ class Commands:
         nos = [i + 1 for i in range(len(groups))]
         headers = (_('#'), _('MAJOR (EN)'), _('SHORT'), _('TITLE'))
         iterable = [nos, groups, shorts, titles]
-        mes = sh.FastTable (iterable = iterable
-                           ,headers = headers
-                           ,maxrow = 30
-                           ).run()
-        sh.com.run_fast_debug(f, mes)
+        mes = Table(iterable = iterable
+                   ,headers = headers
+                   ,maxrow = 30).run()
+        shDEBUG.reset(f, mes)
+        shDEBUG.show()
     
     def get_majors(self):
         import plugins.multitrancom.subjects as sj
@@ -988,9 +900,10 @@ class Commands:
         lst.sort()
         mes = _('The following pairs are not supported:\n{}')
         mes = mes.format(lst)
-        sh.objs.get_mes(f, mes, True).show_info()
+        Message(f, mes).show_info()
     
     def compare_elems(self):
+        f = '[MClient] tests.Commands.compare_elems'
         import plugins.multitran.elems as el
         data1 = []
         data2 = []
@@ -1040,8 +953,8 @@ class Commands:
         # Compare
         data = el.Elems(data1, data2).run()
         data = [str(item) for item in data]
-        data = '\n'.join(data)
-        sh.com.run_fast_txt(data)
+        shDEBUG.reset(f, '\n'.join(data))
+        shDEBUG.show()
     
     def request(self):
         from manager import PLUGINS
@@ -1053,12 +966,13 @@ class Commands:
                                                                 ,search)
         PLUGINS.set(source)
         PLUGINS.set_pair(pair)
-        sh.objs.get_mes(f, mes, True).show_info()
+        Message(f, mes).show_info()
         data = PLUGINS.request(search=search, url='')
         if not data:
-            sh.com.rep_empty(f)
+            rep.empty(f)
             return
-        sh.com.run_fast_txt(data)
+        shDEBUG.reset(f, data)
+        shDEBUG.show()
     
     def get_url(self):
         from manager import PLUGINS
@@ -1070,7 +984,7 @@ class Commands:
         mes = mes.format(source, pair, search)
         PLUGINS.set(source)
         PLUGINS.set_pair(pair)
-        sh.objs.get_mes(f, mes, True).show_info()
+        Message(f, mes).show_info()
         PLUGINS.get_url(search)
     
     def suggest(self):
@@ -1083,7 +997,7 @@ class Commands:
         mes = mes.format(source, pair, search)
         PLUGINS.set(source)
         PLUGINS.set_pair(pair)
-        sh.objs.get_mes(f, mes, True).show_info()
+        Message(f, mes).show_info()
         lg.com.suggest(search)
     
     def _set_timeout(self, module, source, timeout):
@@ -1092,7 +1006,7 @@ class Commands:
         PLUGINS.set(source)
         PLUGINS.set_timeout(timeout)
         mes = _('Source: {}; timeout: {}').format(source, module.TIMEOUT)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
     
     def set_timeout(self):
         import plugins.multitrancom.get as mc
@@ -1108,12 +1022,12 @@ class Commands:
         PLUGINS.set(source)
         result = PLUGINS.is_accessible()
         mes = _('Source: {}; accessibility: {}').format(source, result)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
         source = 'multitran.com'
         PLUGINS.set(source)
         result = PLUGINS.is_accessible()
         mes = _('Source: {}; accessibility: {}').format(source, result)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
     
     def welcome(self):
         import logic as lg
@@ -1121,10 +1035,10 @@ class Commands:
         file_w = '/tmp/test.html'
         code = lg.Welcome().run()
         if code:
-            sh.WriteTextFile(file_w).write(code)
-            sh.Launch(file_w).launch_default()
+            Write(file_w).write(code)
+            Launch(file_w).launch_default()
         else:
-            sh.com.rep_empty(f)
+            rep.empty(f)
     
     def set_pair(self):
         from manager import PLUGINS
@@ -1135,11 +1049,11 @@ class Commands:
         PLUGINS.set(source)
         PLUGINS.set_pair(pair)
         mes = f'{source}: {plugins.multitrancom.get.PAIR}'
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
         PLUGINS.set(_('Multitran'))
         PLUGINS.set_pair('XAL <=> RUS')
         mes = 'multitrancom: {}'.format(plugins.multitrancom.get.PAIR)
-        sh.objs.get_mes(f, mes, True).show_debug()
+        Message(f, mes).show_debug()
 
 
 
@@ -1156,8 +1070,8 @@ if __name__ == '__main__':
     #mes = com.get_all_subjects()
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
-    #mes = Tags().run_stardict()
-    mes = Tags().run_multitrancom()
+    mes = Tags().run_stardict()
+    #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
     #mes = Elems().run_multitrancom()
@@ -1170,21 +1084,13 @@ if __name__ == '__main__':
     #mes = Elems().run_multitrandem()
     #mes = Prioritize().run_multitrancom()
     #mes = Get().run_multitrandem()
-    idebug = Debug(f, mes)
-    idebug.show()
-    #idebug = sh.Debug(f, com.get_fixed_urls())
-    #idebug = sh.Debug(f, Tags().run_multitrandem())
-    #idebug = sh.Debug(f, Elems().run_multitrandem())
-    #idebug = sh.Debug(f, Tags().run_multitrancom())
-    #idebug = sh.Debug(f, Elems().run_multitrancom())
-    #idebug = sh.Debug(f, Prioritize().run_multitrancom())
-    #idebug = sh.Debug(f, View().run_multitrancom())
-    #idebug = sh.Debug(f, Wrap().run_multitrancom())
+    shDEBUG.reset(f, mes)
+    shDEBUG.show()
     # This MUST be on a separate line, the widget will not be shown otherwise
     #idebug.show()
     
     #mes = com.run_speech()
-    #sh.objs.get_mes(f, mes).show_debug()
+    #Message(f, mes, True).show_debug()
     
     #isuggest = com.run_suggest()
     #isuggest.show()
