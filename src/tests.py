@@ -466,10 +466,9 @@ class Tags:
         file = '/home/pete/docs/mclient_tests/stardict/EnRu full cut.txt'
         text = Read(file).get()
         text = cu.CleanUp(text).run()
-        itags = tg.Tags (text = text
-                        ,Debug = DEBUG
-                        ,maxrows = 0
-                        )
+        itags = tg.Tags(text = text
+                       ,Debug = DEBUG
+                       ,maxrows = 0)
         itags.run()
         return itags.debug()
     
