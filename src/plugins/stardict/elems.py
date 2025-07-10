@@ -29,6 +29,22 @@ class Elems:
         self.Parallel = False
         self.Separate = False
     
+    def _is_block_fixed(self, block):
+        return block.type in ('subj', 'wform', 'speech', 'transc', 'phsubj')
+    
+    def _get_fixed_block(self, cell):
+        for block in cell.blocks:
+            if block.Fixed:
+                return block
+    
+    def set_fixed_blocks(self):
+        for block in self.blocks:
+            block.Fixed = self._is_block_fixed(block)
+    
+    def set_fixed_cells(self):
+        for cell in self.cells:
+            cell.fixed_block = self._get_fixed_block(cell)
+    
     def expand_dic(self):
         #TODO (?): implement
         pass
@@ -205,6 +221,12 @@ class Elems:
             self.cells[i].transc = transc
             i -= 1
     
+    def _get_fixed_type(self, cell):
+        if cell.fixed_block:
+            return cell.fixed_block.type
+        else:
+            return 'invalid'
+    
     def delete_fixed(self):
         f = '[MClient] plugins.stardict.elems.Elems.delete_fixed'
         count = 0
@@ -228,6 +250,7 @@ class Elems:
             return []
         self.set_phrases()
         self.delete_straight_line()
+        self.set_fixed_blocks()
         self.run_comments()
         ''' These 2 procedures should not be combined (otherwise, corrections
             will have the same color as comments)
@@ -235,14 +258,12 @@ class Elems:
         self.unite_comments()
         self.set_com_same()
         self.add_space()
-        self.fill()
-        self.remove_fixed()
-        self.insert_fixed()
         self.expand_dic()
         self.set_cells()
         self.set_urls()
         self.unite_brackets()
         self.set_text()
+        self.set_fixed_cells()
         self.set_row_nos()
         self.save_urls()
         self.set_art_subj()
@@ -457,102 +478,3 @@ class Elems:
                 block.type = 'subj'
                 block.subj = block.text.strip()
                 break
-                
-    def fill(self):
-        dic = wform = speech = transc = term = ''
-        
-        # Find first non-empty values and set them as default
-        for block in self.blocks:
-            if block.type == 'subj':
-                dic = block.text
-                break
-        for block in self.blocks:
-            if block.type == 'wform':
-                wform = block.text
-                break
-        for block in self.blocks:
-            if block.type == 'speech':
-                speech = block.text
-                break
-        for block in self.blocks:
-            if block.type == 'transc':
-                transc = block.text
-                break
-        for block in self.blocks:
-            if block.type == 'term' or block.type == 'phrase':
-                term = block.text
-                break
-        
-        for block in self.blocks:
-            if block.type == 'subj':
-                dic = block.text
-            elif block.type == 'wform':
-                wform = block.text
-            elif block.type == 'speech':
-                speech = block.text
-            elif block.type == 'transc':
-                transc = block.text
-                ''' #TODO: Is there a difference if we use both term/phrase
-                    here or the term only?
-                '''
-            elif block.type in ('term', 'phrase'):
-                term = block.text
-            block.subj = dic.strip()
-            block.wform = wform
-            block.speech = speech
-            block.transc = transc
-    
-    def insert_fixed(self):
-        dic = wform = speech = ''
-        i = 0
-        while i < len(self.blocks):
-            if dic != self.blocks[i].subj \
-            or wform != self.blocks[i].wform \
-            or speech != self.blocks[i].speech:
-                
-                block = ic.Block()
-                block.type = 'speech'
-                block.text = self.blocks[i].speech
-                block.subj = self.blocks[i].subj
-                block.wform = self.blocks[i].wform
-                block.speech = self.blocks[i].speech
-                block.transc = self.blocks[i].transc
-                self.blocks.insert(i, block)
-                
-                block = ic.Block()
-                block.type = 'transc'
-                block.text = self.blocks[i].transc
-                block.subj = self.blocks[i].subj
-                block.wform = self.blocks[i].wform
-                block.speech = self.blocks[i].speech
-                block.transc = self.blocks[i].transc
-                self.blocks.insert(i, block)
-
-                block = ic.Block()
-                block.type = 'wform'
-                block.text = self.blocks[i].wform
-                block.subj = self.blocks[i].subj
-                block.wform = self.blocks[i].wform
-                block.speech = self.blocks[i].speech
-                block.transc = self.blocks[i].transc
-                self.blocks.insert(i, block)
-                
-                block = ic.Block()
-                block.type = 'subj'
-                block.text = self.blocks[i].subj
-                block.subj = self.blocks[i].subj
-                block.wform = self.blocks[i].wform
-                block.speech = self.blocks[i].speech
-                block.transc = self.blocks[i].transc
-                self.blocks.insert(i, block)
-                
-                dic = self.blocks[i].subj
-                wform = self.blocks[i].wform
-                speech = self.blocks[i].speech
-                i += 4
-            i += 1
-            
-    def remove_fixed(self):
-        self.blocks = [block for block in self.blocks if block.type \
-                       not in ('subj', 'wform', 'transc', 'speech')
-                      ]

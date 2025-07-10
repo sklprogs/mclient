@@ -53,6 +53,7 @@ class Block:
             'speech', 'subj', 'term', 'transc', 'wform'.
         '''
         self.type = 'comment'
+        self.Fixed = False
 
 
 
