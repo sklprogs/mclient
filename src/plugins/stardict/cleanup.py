@@ -157,12 +157,9 @@ class Type1:
                     block = ''
             else:
                 block += sym
-        self.blocks = [block.strip() for block in self.blocks \
-                       if block.strip()
-                      ]
+        self.blocks = [block.strip() for block in self.blocks if block.strip()]
         self.blocks = [block.strip(',') for block in self.blocks \
-                       if block.strip(',')
-                      ]
+                      if block.strip(',')]
         return self.blocks
 
     def get_tags(self):
