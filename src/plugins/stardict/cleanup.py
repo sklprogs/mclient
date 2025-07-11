@@ -254,12 +254,9 @@ class Type2:
                     block = ''
             else:
                 block += self.text[i]
-        self.blocks = [block.strip() for block in self.blocks \
-                       if block.strip()
-                      ]
+        self.blocks = [block.strip() for block in self.blocks if block.strip()]
         self.blocks = [block.strip(',') for block in self.blocks \
-                       if block.strip(',')
-                      ]
+                      if block.strip(',')]
         return self.blocks
     
     def delete_numbering(self):
