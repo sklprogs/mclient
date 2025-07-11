@@ -176,8 +176,7 @@ class Type1:
                 ''' #TODO: create a 'Synonyms' subject, split items after it
                     and set 'term' type to them.
                 '''
-            elif block.startswith('(') or '≈' in block or 'Syn :' \
-            in block:
+            elif block.startswith('(') or '≈' in block or 'Syn :' in block:
                 #TODO: (?) use variables instead of hardcoding
                 self.tags.append('<co>' + block + '</co>')
             else:
