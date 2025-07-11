@@ -30,6 +30,7 @@ class Wrap:
     def run_multitrancom(self):
         f = '[MClient] tests.Wrap.run_multitrancom'
         import articles as ARTICLES
+        # Do not change import style - we already have there Get, Tags, etc.
         import plugins.multitrancom.cleanup as cu
         import plugins.multitrancom.tags as tg
         import plugins.multitrancom.elems as el
@@ -42,7 +43,7 @@ class Wrap:
         blocks = tg.Tags(text=text, maxrows=0).run()
         cells = el.Elems(blocks).run()
         
-        ARTICLES.add(search=SEARCH, url=URL, cells=cells)
+        ARTICLES.add(SEARCH, URL, cells)
         
         cells = cl.Omit(cells).run()
         cells = cl.Prioritize(cells).run()
@@ -112,7 +113,7 @@ class View:
         text = cu.CleanUp(text).run()
         blocks = tg.Tags(text).run()
         cells = el.Elems(blocks).run()
-        ARTICLES.add(search=SEARCH, url=URL, cells=cells)
+        ARTICLES.add(SEARCH, URL, cells)
         cells = cl.Omit(cells).run()
         cells = cl.Prioritize(cells).run()
         iview = cl.View(cells)
@@ -134,7 +135,7 @@ class View:
         blocks = tg.Tags(text=text, maxrows=0).run()
         cells = el.Elems(blocks).run()
         
-        ARTICLES.add(search=SEARCH, url=URL, cells=cells)
+        ARTICLES.add(SEARCH, URL, cells)
         
         cells = cl.Omit(cells).run()
         cells = cl.Prioritize(cells).run()
@@ -167,7 +168,7 @@ class View:
                              ,dicname = iarticle.dic).run()
         cells = el.Elems(blocks).run()
         
-        ARTICLES.add(search=SEARCH, url=URL, cells=cells)
+        ARTICLES.add(SEARCH, URL, cells)
         
         cells = cl.Omit(cells).run()
         cells = cl.Prioritize(cells).run()
@@ -194,11 +195,10 @@ class Elems:
             add = tg.Tags(chunks[i], i).run()
             if add:
                 blocks += add
-        ielems = el.Elems (blocks = blocks
-                          ,abbr = None
-                          ,langs = gt.objs.get_all_dics().get_langs()
-                          ,search = SEARCH
-                          )
+        ielems = el.Elems(blocks = blocks
+                         ,abbr = None
+                         ,langs = gt.objs.get_all_dics().get_langs()
+                         ,search = SEARCH)
         ielems.run()
         return ielems.debug()
     
@@ -270,15 +270,13 @@ class Offline:
         import plugins.multitrancom.elems as el
         self.htm = Read(HTM_FILE).get()
         self.text = cu.CleanUp(self.htm).run()
-        itags = tg.Tags (text = self.text
-                        ,Debug = DEBUG
-                        ,maxrows = self.maxrows
-                        )
+        itags = tg.Tags(text = self.text
+                       ,Debug = DEBUG
+                       ,maxrows = self.maxrows)
         blocks = itags.run()
-        ielems = el.Elems (blocks = blocks
-                          ,Debug = DEBUG
-                          ,maxrows = self.maxrows
-                          )
+        ielems = el.Elems(blocks = blocks
+                         ,Debug = DEBUG
+                         ,maxrows = self.maxrows)
         ielems.run()
         return ielems.debug()
 
@@ -587,11 +585,9 @@ class Plugin:
         url = 'https://www.multitran.com/m.exe?s=reticulated+siren&l1=1&l2=10000&SHL=33'
         search = 'reticulated siren'
         
-        mc.Plugin (Debug = DEBUG
-                  ,maxrows = 0
-                  ).request (url = url
-                            ,search = search
-                            )
+        mc.Plugin(Debug = DEBUG
+                 ,maxrows = 0).request(url = url
+                                      ,search = search)
 
 
 
@@ -752,8 +748,7 @@ class Commands:
                 ,['2', _('Russian'), _('English'), 'hello']
                 ,['3', _('English'), _('Russian'), 'bye']
                 ,['4', _('English'), _('Russian'), 'fourth']
-                ,['5', _('English'), _('Russian'), 'fifth']
-                ]
+                ,['5', _('English'), _('Russian'), 'fifth']]
         ihis.fill_model(table)
         # The model is updated entirely each time, but still this is fast
         count = 0
@@ -962,8 +957,8 @@ class Commands:
         source = _('Multitran')
         pair = 'DEU <=> RUS'
         search = 'ernährung'
-        mes = _('Source: "{}"; pair: "{}"; search: "{}"').format(source, pair
-                                                                ,search)
+        mes = _('Source: "{}"; pair: "{}"; search: "{}"')
+        mes = mes.format(source, pair, search)
         PLUGINS.set(source)
         PLUGINS.set_pair(pair)
         Message(f, mes).show_info()
