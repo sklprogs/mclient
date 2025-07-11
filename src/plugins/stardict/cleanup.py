@@ -157,6 +157,8 @@ class Type1:
                     block = ''
             else:
                 block += sym
+        if block:
+            self.blocks.append(block)
         self.blocks = [block.strip() for block in self.blocks if block.strip()]
         self.blocks = [block.strip(',') for block in self.blocks \
                       if block.strip(',')]
