@@ -14,6 +14,7 @@ import instance as ic
     •  Short dictionary titles:
          define them manually by the file name
     •  Terms:
+         (no tags at all, see "'cellist")
          <dtrn></dtrn>
          <kref></kref> (in phrases)
     •  Comments:
@@ -46,10 +47,9 @@ ptm = '<dtrn>'
 pph = '<kref>'
 
 # Transcription
-ptr1 = '<tr>'
-ptr2 = '</tr>'
+ptr = '<tr>'
 
-useful_tags = [pdic, pcom, ptr1, pwf, ptm, pph, psp]
+useful_tags = [pdic, pcom, ptr, pwf, ptm, pph, psp]
 
 
 
@@ -142,14 +142,8 @@ class AnalyzeTag:
             self.cur.type = 'term'
 
     def set_transc(self):
-        # Transcription
-        if ptr1 in self.block:
-            type_ = 'transc'
-            text = self.block.replace(ptr1, '', 1).replace(ptr2, '', 1)
-            # Will be empty for non-Stardict sources
-            if text:
-                self.cur.type, self.cur.text = type_, text
-                self.elems.append(copy.copy(self.cur))
+        if ptr in self.block:
+            self.cur.type = 'transc'
 
     def set_speech(self):
         if psp in self.block:
