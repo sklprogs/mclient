@@ -11,8 +11,10 @@ import instance as ic
 ''' Tag patterns:
     •  Dictionary titles:
          define them by the .ifo file, set the tag manually
+         <dic></dic>
     •  Short dictionary titles:
          define them manually by the file name
+         <abr></abr>
     •  Terms:
          (no tags at all, see "'cellist")
          <dtrn></dtrn>

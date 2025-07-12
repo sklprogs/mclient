@@ -399,7 +399,10 @@ class Get:
         #search = 'АБЕРРАЦИЯ'
         #search = 'акцепт'
         #search = 'автоматический режим работы'
-        search = '\'cellist'
+        #search = 'modify'
+        #search = '13th month salary'
+        #search = 'abandon'
+        search = 'понятие сложной функции'
         timer = Timer(f)
         timer.start()
         result = plugins.stardict.get.Get(search).run()
@@ -1066,8 +1069,8 @@ if __name__ == '__main__':
     #mes = com.get_all_subjects()
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
-    #mes = Get().run_stardict()
-    mes = Tags().run_stardict()
+    mes = Get().run_stardict()
+    #mes = Tags().run_stardict()
     #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
