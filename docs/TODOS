@@ -77,6 +77,13 @@ multitrandem:
 - implement speech parts
 
 stardict:
+- Unknown tags should be ignored, but not their contents which depend on
+previous tags. After loading an article, a warning should be logged with a list
+of unknown tags.
+- Support <ex> tag (example) (e.g., "a fit of rage")
+- Support <abbr> tag (abbreviated subject) (e.g., '13th month salary')
+- Tags can be embedded (e.g., '13th month salary'), but they are not supported
+for now. Inbound tags have priority over outbound tags.
 - (gcide) abase, abased: Separate cells only where forced
 - stardict.cleanup: move block-creating code to stardict.parse
 - accelerate suggestions (especially for 2+ passes)
