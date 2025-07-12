@@ -167,34 +167,32 @@ class Tags:
         self.maxrows = maxrows
         self.tags = []
 
-    def get_tags(self):
+    def set_tags(self):
         ''' Split the text by closing tags. To speed up, we remove closing tags
             right away.
         '''
-        if not self.tags:
-            Ignore = False
-            tmp = ''
-            for i in range(len(self.text)):
-                if self.text[i] == '<':
-                    if i < len(self.text) - 1 \
-                    and self.text[i+1] == '/':
-                        Ignore = True
-                        if tmp:
-                            self.tags.append(tmp)
-                            tmp = ''
-                    else:
-                        tmp += self.text[i]
-                elif self.text[i] == '>':
-                    if Ignore:
-                        Ignore = False
-                    else:
-                        tmp += self.text[i]
-                elif not Ignore:
+        Ignore = False
+        tmp = ''
+        for i in range(len(self.text)):
+            if self.text[i] == '<':
+                if i < len(self.text) - 1 \
+                and self.text[i+1] == '/':
+                    Ignore = True
+                    if tmp:
+                        self.tags.append(tmp)
+                        tmp = ''
+                else:
                     tmp += self.text[i]
-            # Should be needed only for broken tags
-            if tmp:
-                self.tags.append(tmp)
-        return self.tags
+            elif self.text[i] == '>':
+                if Ignore:
+                    Ignore = False
+                else:
+                    tmp += self.text[i]
+            elif not Ignore:
+                tmp += self.text[i]
+        # Should be needed only for broken tags
+        if tmp:
+            self.tags.append(tmp)
 
     def debug_tags(self):
         f = '[MClient] plugins.stardict.tags.Tags.debug_tags'
@@ -220,25 +218,35 @@ class Tags:
         report = [item for item in report if item]
         return '\n\n'.join(report)
 
-    def get_blocks(self):
-        if not self.blocks:
-            cellno = -1
-            for tag in self.tags:
-                analyze = AnalyzeTag(tag)
-                analyze.run()
-                lst = analyze.elems
-                if not lst:
-                    continue
-                cellno += 1
-                lst[0].cellno = cellno
-                i = 1
-                while i < len(lst):
-                    lst[i].cellno = cellno
-                    i += 1
-                self.blocks += lst
-        return self.blocks
+    def set_blocks(self):
+        cellno = -1
+        for tag in self.tags:
+            analyze = AnalyzeTag(tag)
+            analyze.run()
+            lst = analyze.elems
+            if not lst:
+                continue
+            cellno += 1
+            lst[0].cellno = cellno
+            i = 1
+            while i < len(lst):
+                lst[i].cellno = cellno
+                i += 1
+            self.blocks += lst
 
+    def split_lines(self):
+        tags = []
+        for tag in self.tags:
+            tag = tag.splitlines()
+            tag = [item.strip() for item in tag if item.strip()]
+            for i in range(len(tag)):
+                if not '<' in tag[i] and not '>' in tag[i]:
+                    tag[i] = f'<dtrn>{tag[i]}</dtrn>'
+            tags += tag
+        self.tags = tags
+    
     def run(self):
-        self.get_tags()
-        self.get_blocks()
+        self.set_tags()
+        self.split_lines()
+        self.set_blocks()
         return self.blocks
