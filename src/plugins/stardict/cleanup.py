@@ -33,7 +33,7 @@ class CleanUp:
         ''' Needed both for MT and Stardict. Convert HTM entities to a human
             readable format, e.g., '&copy;' -> '©'.
         '''
-        f = '[MClient] plugins.stardict.cleanup.Common.decode'
+        f = '[MClient] plugins.stardict.cleanup.CleanUp.decode'
         try:
             self.text = html.unescape(self.text)
         except Exception as e:
@@ -78,15 +78,54 @@ class CleanUp:
         #self.text = re.sub('\d+\> ', ';',self.text)
     
     def delete_alpha_numbering(self):
-        self.text = re.sub(r'[\s]{0,1}[а-я]\)[\s]', '\n', self.text)
-        self.text = re.sub(r'[\s]{0,1}[a-z]\)[\s]', '\n', self.text)
+        self.text = re.sub(r'[\s][а-я]\)[\s]', '\n', self.text)
+        self.text = re.sub(r'[\s][a-z]\)[\s]', '\n', self.text)
     
     def restore_header(self):
         self.text = self.text.replace('*', header).replace('~', header)
     
-    def split_by_lang(self):
-        #TODO: Add line breaks when the current language is changed
-        pass
+    def separate_phrases(self):
+        lang = ''
+        text = ''
+        SepFound = False
+        Pair = False
+        for char in self.text:
+            if char == '\n':
+                SepFound = False
+                Pair = False
+            elif char in ('~', '≈', '*'):
+                SepFound = True
+            elif char in ru_alphabet:
+                if not lang:
+                    lang = 'ru'
+                elif lang == 'en':
+                    lang = 'ru'
+                    if SepFound:
+                        if Pair:
+                            text += '\n'
+                            SepFound = False
+                            Pair = False
+                        else:
+                            Pair = True
+            elif char in lat_alphabet:
+                if not lang:
+                    lang = 'en'
+                elif lang == 'ru':
+                    lang = 'en'
+                    if SepFound:
+                        if Pair:
+                            text += '\n'
+                            SepFound = False
+                            Pair = False
+                        else:
+                            Pair = True
+            text += char
+        text = text.replace('* \n', '\n* ')
+        text = text.replace('*\n', '\n*')
+        # Risky
+        text = text.replace(' - ', '\n')
+        text = text.replace('\n\n', '\n')
+        self.text = text
     
     def set_blocks(self):
         self.blocks = self.text.splitlines()
@@ -106,7 +145,7 @@ class CleanUp:
                 ''' #TODO: create a 'Synonyms' subject, split items after it
                     and set 'term' type to them.
                 '''
-            elif block.startswith('(') or '≈' in block or 'Syn :' in block:
+            elif '≈' in block or 'Syn :' in block:
                 #TODO: (?) use variables instead of hardcoding
                 self.tags.append('<co>' + block + '</co>')
             else:
@@ -143,7 +182,7 @@ class CleanUp:
         self.delete_numbering()
         self.delete_alpha_numbering()
         self.restore_header()
-        self.split_by_lang()
+        self.separate_phrases()
         self.set_blocks()
         self.swap_dics()
         self.set_tags()
