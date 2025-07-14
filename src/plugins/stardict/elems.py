@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared.localize import _
-from skl_shared.message.controller import rep
+from skl_shared.message.controller import rep, Message
 from skl_shared.table import Table
 from skl_shared.list import List
 from skl_shared.logic import Text, punc_array
@@ -23,6 +23,7 @@ class Elems:
             rep.empty(f)
 
     def set_values(self):
+        self.phsubj_name = _('Phrases')
         self.cells = []
         self.art_subj = {}
         self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
@@ -131,16 +132,6 @@ class Elems:
             i += 1
         rep.matches(f, count)
     
-    def save_urls(self):
-        for cell in self.cells:
-            if not cell.fixed_block:
-                continue
-            if cell.fixed_block.type == 'subj':
-                self.fixed_urls[cell.fixed_block.type][cell.fixed_block.subj] = cell.url
-                self.fixed_urls[cell.fixed_block.type][cell.fixed_block.subjf] = cell.url
-            elif cell.fixed_block.type in ('phsubj', 'wform') and cell.url:
-                self.fixed_urls[cell.fixed_block.type][cell.text] = cell.url
-    
     def set_art_subj(self):
         f = '[MClient] plugins.stardict.elems.Elems.set_art_subj'
         count = 0
@@ -248,7 +239,6 @@ class Elems:
         if not self.Success:
             rep.cancel(f)
             return []
-        self.set_phrases()
         self.delete_straight_line()
         self.set_fixed_blocks()
         self.run_comments()
@@ -259,13 +249,17 @@ class Elems:
         self.set_com_same()
         self.add_space()
         self.expand_dic()
+        self.set_phrases()
+        self.move_phrases()
+        self.set_phsubj_name()
+        self.set_phsubj()
         self.set_cells()
         self.set_urls()
         self.unite_brackets()
         self.set_text()
+        self.set_fixed_blocks()
         self.set_fixed_cells()
         self.set_row_nos()
-        self.save_urls()
         self.set_art_subj()
         self.fill_fixed()
         self.delete_fixed()
@@ -472,9 +466,60 @@ class Elems:
                     self.blocks[i].text = ' ' + self.blocks[i].text
             i += 1
 
+    def _has_sep(self, fragm):
+        for sep in ('~', '≈', '*'):
+            if sep in fragm:
+                return True
+    
+    def _is_mixed(self, fragm):
+        return Text(fragm).has_latin() and Text(fragm).has_cyrillic()
+    
+    def _is_phrase(self, fragm):
+        return self._has_sep(fragm) and self._is_mixed(fragm)
+    
+    def get_first_phrase(self):
+        for i in range(len(self.blocks)):
+            if self.blocks[i].type == 'phrase':
+                return i
+    
     def set_phrases(self):
         for block in self.blocks:
+            if self._is_phrase(block.text):
+                block.type = 'phrase'
+    
+    def move_phrases(self):
+        phrases = [block for block in self.blocks if block.type == 'phrase']
+        other = [block for block in self.blocks if block.type != 'phrase']
+        self.blocks = other + phrases
+    
+    def set_phsubj_name(self):
+        f = '[MClient] plugins.stradict.elems.Elems.set_phsubj_name'
+        count = 0
+        for block in self.blocks:
             if block.type == 'phrase':
-                block.type = 'subj'
-                block.subj = block.text.strip()
-                break
+                count += 1
+        if not count:
+            rep.lazy(f)
+            return
+        self.phsubj_name = _('Phrases ({})').format(count)
+        mes = f'"{self.phsubj_name}"'
+        Message(f, mes).show_debug()
+        for block in self.blocks:
+            if block.type == 'phrase':
+                block.subj = block.subjf = self.phsubj_name
+    
+    def set_phsubj(self):
+        f = '[MClient] plugins.stradict.elems.Elems.set_phsubj'
+        no = self.get_first_phrase()
+        if no is None:
+            rep.lazy(f)
+            return
+        block = ic.Block()
+        if no > 1:
+            block.cellno = self.blocks[no-1].cellno + 0.1
+        block.subj = self.phsubj_name
+        block.subjf = self.phsubj_name
+        block.text = self.phsubj_name
+        block.type = 'phsubj'
+        block.Fixed = True
+        self.blocks.insert(no, block)

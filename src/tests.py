@@ -17,12 +17,13 @@ from config import CONFIG
 
 DEBUG = True
 
-#SEARCH = 'chicken wing'
-#URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing&l2=2'
+SEARCH = 'chicken wing'
+URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing&l2=2'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/fill (2025-01-31).htm'
 #HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/chicken wing (2025-01-24).htm'
-SEARCH = 'chicken wing pork friday coding style'
-URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing+pork+friday+coding+style'
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/chicken wing pork friday coding style (2025-01-24).htm'
+#SEARCH = 'chicken wing pork friday coding style'
+#URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing+pork+friday+coding+style'
+#HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/chicken wing pork friday coding style (2025-01-24).htm'
 
 
 class Wrap:
@@ -207,7 +208,7 @@ class Elems:
         import plugins.stardict.tags as tg
         import plugins.stardict.elems as el
         #file = '/home/pete/docs/mclient_tests/stardict/EnRu full cut.txt'
-        file = '/home/pete/docs/mclient_tests/stardict/BuildingRE - автоматический режим работы.txt'
+        file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - product.txt'
         text = Read(file).get()
         text = cu.CleanUp(text).run()
         blocks = tg.Tags(text).run()
@@ -1071,10 +1072,10 @@ if __name__ == '__main__':
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
     #mes = Get().run_stardict()
-    mes = Tags().run_stardict()
+    #mes = Tags().run_stardict()
     #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
-    #mes = Elems().run_stardict()
+    mes = Elems().run_stardict()
     #mes = Elems().run_multitrancom()
     #mes = Subjects().run()
     #mes = View().run_dsl()
