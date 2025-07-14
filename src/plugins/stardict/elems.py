@@ -488,6 +488,7 @@ class Elems:
                 block.type = 'phrase'
     
     def move_phrases(self):
+        # phsubj is set to an incorrect row without this
         phrases = [block for block in self.blocks if block.type == 'phrase']
         other = [block for block in self.blocks if block.type != 'phrase']
         self.blocks = other + phrases
