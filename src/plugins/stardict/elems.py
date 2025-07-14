@@ -10,6 +10,35 @@ from skl_shared.logic import Text, punc_array
 import instance as ic
 
 
+class Phrases:
+    
+    def __init__(self, blocks):
+        self.blocks = blocks
+    
+    def _get_prev_wform(self, blockno):
+        i = blockno
+        while i >= 0:
+            if self.blocks[i].type == 'wform':
+                return self.blocks[i].text
+            i -= 1
+    
+    def replace_seps(self):
+        for i in range(len(self.blocks)):
+            if self.blocks[i].type != 'phrase':
+                continue
+            wform = self._get_prev_wform(i)
+            if not wform:
+                rep.empty(f)
+                return
+            self.blocks[i].text = self.blocks[i].text.replace('~', wform)
+            self.blocks[i].text = self.blocks[i].text.replace('*', wform)
+    
+    def run(self):
+        self.replace_seps()
+        return self.blocks
+
+
+
 class Elems:
 
     def __init__(self, blocks):
@@ -258,6 +287,7 @@ class Elems:
         self.unite_brackets()
         self.set_text()
         self.set_fixed_blocks()
+        self.blocks = Phrases(self.blocks).run()
         self.set_fixed_cells()
         self.set_row_nos()
         self.set_art_subj()
