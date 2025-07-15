@@ -7,27 +7,15 @@ from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.logic import Text, ru_alphabet, lat_alphabet
 
-
-#TODO (?): use shared
-speech_abbr = ('гл.', 'нареч.', 'нар.', 'прил.', 'сокр.', 'сущ.')
-dic_abbr = ('вчт.', 'карт.', 'мор.', 'разг.', 'уст.', 'хир.', 'эл.')
-#TODO: read from file
-dic_titles = ('(австралийское)', '(американизм)', '(военное)', '(горное)'
-             ,'(железнодорожное)', '(карточное)', '(кулинарное)'
-             ,'(новозеландское)', '(профессионализм)', '(разговорное)'
-             ,'(сленг)', '(спортивное)', '(текстильное)', '(теннис)'
-             ,'(химическое)', '(электротехника)')
 header = '~'
 
 
 class CleanUp:
-    # This class is basically needed for compliance with other code
+    
     def __init__(self, text):
-        self.blocks = []
-        self.tags = []
+        if text is None:
+            text = ''
         self.text = text
-        if self.text is None:
-            self.text = ''
 
     def decode(self):
         ''' Needed both for MT and Stardict. Convert HTM entities to a human
@@ -80,9 +68,6 @@ class CleanUp:
     def delete_alpha_numbering(self):
         self.text = re.sub(r'[\s][а-я]\)[\s]', '\n', self.text)
         self.text = re.sub(r'[\s][a-z]\)[\s]', '\n', self.text)
-    
-    def restore_header(self):
-        self.text = self.text.replace('*', header).replace('~', header)
     
     def separate_phrases(self):
         lang = ''
@@ -138,6 +123,5 @@ class CleanUp:
         self.delete_roman_numbering()
         self.delete_numbering()
         self.delete_alpha_numbering()
-        self.restore_header()
         self.separate_phrases()
         return self.text
