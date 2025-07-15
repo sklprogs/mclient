@@ -26,15 +26,14 @@ class Phrases:
     
     def replace_seps(self):
         for i in range(len(self.blocks)):
-            if self.blocks[i].type != 'phrase':
+            if self.blocks[i].type not in ('term', 'phrase'):
                 continue
             wform = self._get_prev_wform(i)
             if not wform:
                 rep.empty(f)
-                return
+                continue
             self.blocks[i].text = self.blocks[i].text.replace('~', wform)
             self.blocks[i].text = self.blocks[i].text.replace('*', wform)
-            self.blocks[i].text = self.blocks[i].text.replace('≈', '')
             self.blocks[i].text = self.blocks[i].text.strip()
     
     def _get_first_lang(self, line):
@@ -86,9 +85,27 @@ class Phrases:
             blocks.append(new_block)
         self.blocks = blocks
     
+    def remove_trash(self):
+        for block in self.blocks:
+            block.text = block.text.strip(' ≈')
+            block.text = block.text.strip(' ∙')
+            block.text = block.text.strip(' >')
+            block.text = block.text.replace('≈', '—')
+    
+    def fix_bracket(self):
+        # Fix bracket after splitting phrases (we should not join them)
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].text.endswith(' ('):
+                self.blocks[i-1].text = self.blocks[i-1].text.strip(' (')
+                self.blocks[i].text = '(' + self.blocks[i].text
+            i += 1
+    
     def run(self):
         self.replace_seps()
         self.split()
+        self.remove_trash()
+        self.fix_bracket()
         return self.blocks
 
 
