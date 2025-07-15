@@ -58,55 +58,56 @@ useful_tags = [pdic, pcom, ptr, pwf, ptm, pph, psp]
 class AnalyzeTag:
 
     def __init__(self, tag):
-        self.block = ''
+        self.fragm = ''
+        self.fragms = []
         self.blocks = []
-        self.cur = ic.Block()
-        self.elems = []
+        self.block = ic.Block()
         self.tag = tag
 
     def set_dic(self):
-        if pdic in self.block:
-            self.cur.type = 'subj'
+        if pdic in self.fragm:
+            self.block.type = 'subj'
     
     def run(self):
         self.split()
-        self.blocks = [block for block in self.blocks if block.strip()]
-        for self.block in self.blocks:
-            if not self.block.startswith('<'):
+        self.fragms = [fragm for fragm in self.fragms if fragm.strip()]
+        for self.fragm in self.fragms:
+            if not self.fragm.startswith('<'):
                 self.run_plain()
                 continue
             if not self.is_useful():
-                self.cur.type = 'invalid'
+                self.block.type = 'invalid'
                 continue
-            self.cur.type = ''
+            self.block.type = ''
             self.set_phrases()
             # Phrases and word forms have conflicting tags
             # We check 'type' to speed up
-            if not self.cur.type:
+            if not self.block.type:
                 self.set_wform()
-            if not self.cur.type:
+            if not self.block.type:
                 self.set_dic()
-            if not self.cur.type:
+            if not self.block.type:
                 self.set_term()
-            if not self.cur.type:
+            if not self.block.type:
                 self.set_speech()
-            if not self.cur.type:
+            if not self.block.type:
                 self.set_comment()
-            if not self.cur.type:
+            if not self.block.type:
                 self.set_transc()
+        return self.blocks
 
     def is_useful(self):
         for tag in useful_tags:
-            if tag in self.block:
+            if tag in self.fragm:
                 return True
 
     def run_plain(self):
-        self.cur.text = self.block
+        self.block.text = self.fragm
         ''' #NOTE: The analysis must be reset after '</', otherwise, plain text
             following it will be marked as 'invalid' rather than 'comment'.
         '''
-        if self.cur.type != 'invalid':
-            self.elems.append(copy.copy(self.cur))
+        if self.block.type != 'invalid':
+            self.blocks.append(copy.copy(self.block))
 
     def split(self):
         ''' Use custom split because we need to preserve delimeters (cannot
@@ -116,40 +117,40 @@ class AnalyzeTag:
         for sym in self.tag:
             if sym == '>':
                 tmp += sym
-                self.blocks.append(tmp)
+                self.fragms.append(tmp)
                 tmp = ''
             elif sym == '<':
                 if tmp:
-                    self.blocks.append(tmp)
+                    self.fragms.append(tmp)
                 tmp = sym
             else:
                 tmp += sym
         if tmp:
-            self.blocks.append(tmp)
+            self.fragms.append(tmp)
 
     def set_comment(self):
-        if self.block.startswith(pcom):
-            self.cur.type = 'comment'
+        if self.fragm.startswith(pcom):
+            self.block.type = 'comment'
 
     def set_wform(self):
-        if pwf in self.block:
-            self.cur.type = 'wform'
+        if pwf in self.fragm:
+            self.block.type = 'wform'
 
     def set_phrases(self):
-        if pph in self.block:
-            self.cur.type = 'phrase'
+        if pph in self.fragm:
+            self.block.type = 'phrase'
 
     def set_term(self):
-        if ptm in self.block:
-            self.cur.type = 'term'
+        if ptm in self.fragm:
+            self.block.type = 'term'
 
     def set_transc(self):
-        if ptr in self.block:
-            self.cur.type = 'transc'
+        if ptr in self.fragm:
+            self.block.type = 'transc'
 
     def set_speech(self):
-        if psp in self.block:
-            self.cur.type = 'speech'
+        if psp in self.fragm:
+            self.block.type = 'speech'
 
 
 
@@ -166,7 +167,7 @@ class Tags:
         self.maxrow = maxrow
         self.maxrows = maxrows
         self.tags = []
-
+    
     def set_tags(self):
         ''' Split the text by closing tags. To speed up, we remove closing tags
             right away.
@@ -221,17 +222,16 @@ class Tags:
         cellno = -1
         for tag in self.tags:
             analyze = AnalyzeTag(tag)
-            analyze.run()
-            lst = analyze.elems
-            if not lst:
+            blocks = analyze.run()
+            if not blocks:
                 continue
             cellno += 1
-            lst[0].cellno = cellno
+            blocks[0].cellno = cellno
             i = 1
-            while i < len(lst):
-                lst[i].cellno = cellno
+            while i < len(blocks):
+                blocks[i].cellno = cellno
                 i += 1
-            self.blocks += lst
+            self.blocks += blocks
 
     def split_lines(self):
         tags = []
