@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import copy
+
 from skl_shared.localize import _
 from skl_shared.message.controller import rep, Message
 from skl_shared.table import Table
 from skl_shared.list import List
-from skl_shared.logic import Text, punc_array
+from skl_shared.logic import Text, punc_array, ru_alphabet, lat_alphabet
 
 import instance as ic
 
@@ -32,9 +34,61 @@ class Phrases:
                 return
             self.blocks[i].text = self.blocks[i].text.replace('~', wform)
             self.blocks[i].text = self.blocks[i].text.replace('*', wform)
+            self.blocks[i].text = self.blocks[i].text.replace('≈', '')
+            self.blocks[i].text = self.blocks[i].text.strip()
+    
+    def _get_first_lang(self, line):
+        for char in line:
+            if char in ru_alphabet:
+                return 'ru'
+            elif char in lat_alphabet:
+                return 'en'
+    
+    def _get_new_lang_pos(self, line, first_lang):
+        for i in range(len(line)):
+            if line[i] in ru_alphabet and first_lang == 'en':
+                return i
+            elif line[i] in lat_alphabet and first_lang == 'ru':
+                return i
+    
+    def _split_block(self, block):
+        f = '[MClient] plugins.stardict.elems.Phrases._split_block'
+        first_lang = self._get_first_lang(block.text)
+        if not first_lang:
+            rep.empty(f)
+            return
+        pos = self._get_new_lang_pos(block.text, first_lang)
+        if pos is None:
+            rep.empty(f)
+            return
+        part1 = block.text[:pos].strip()
+        part2 = block.text[pos:].strip()
+        if not part1 or not part2:
+            rep.empty(f)
+            return
+        block.text = part1
+        new_block = copy.deepcopy(block)
+        new_block.text = part2
+        return new_block
+    
+    def split(self):
+        f = '[MClient] plugins.stardict.elems.Phrases.split'
+        blocks = []
+        for block in self.blocks:
+            blocks.append(block)
+            if block.type != 'phrase':
+                continue
+            new_block = self._split_block(block)
+            if not new_block:
+                rep.empty(f)
+                continue
+            block.cellno += 0.1
+            blocks.append(new_block)
+        self.blocks = blocks
     
     def run(self):
         self.replace_seps()
+        self.split()
         return self.blocks
 
 
@@ -282,12 +336,12 @@ class Elems:
         self.move_phrases()
         self.set_phsubj_name()
         self.set_phsubj()
+        self.blocks = Phrases(self.blocks).run()
         self.set_cells()
         self.set_urls()
         self.unite_brackets()
         self.set_text()
         self.set_fixed_blocks()
-        self.blocks = Phrases(self.blocks).run()
         self.set_fixed_cells()
         self.set_row_nos()
         self.set_art_subj()
