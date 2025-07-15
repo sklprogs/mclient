@@ -151,10 +151,6 @@ class CleanUp:
             else:
                 self.tags.append('<dtrn>' + block + '</dtrn>')
     
-    def is_dic(self, string):
-        if string.startswith('_') and string == string.lower():
-            return True
-    
     def run(self):
         f = '[MClient] plugins.stardict.cleanup.CleanUp.run'
         if not self.text or not header:
