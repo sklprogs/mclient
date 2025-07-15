@@ -127,30 +127,6 @@ class CleanUp:
         text = text.replace('\n\n', '\n')
         self.text = text
     
-    def set_blocks(self):
-        self.blocks = self.text.splitlines()
-    
-    def set_tags(self):
-        #TODO (?): Assign tags in elems
-        for block in self.blocks:
-            if '<' in block or '>' in block:
-                self.tags.append(block)
-            elif block in speech_abbr:
-                self.tags.append('<gr>' + block + '</gr>')
-            # Risky
-            elif block in dic_abbr:
-                self.tags.append('<dic>' + block + '</dic>')
-            elif block in dic_titles:
-                self.tags.append('<dic>' + block + '</dic>')
-                ''' #TODO: create a 'Synonyms' subject, split items after it
-                    and set 'term' type to them.
-                '''
-            elif '≈' in block or 'Syn :' in block:
-                #TODO: (?) use variables instead of hardcoding
-                self.tags.append('<co>' + block + '</co>')
-            else:
-                self.tags.append('<dtrn>' + block + '</dtrn>')
-    
     def run(self):
         f = '[MClient] plugins.stardict.cleanup.CleanUp.run'
         if not self.text or not header:
@@ -164,6 +140,4 @@ class CleanUp:
         self.delete_alpha_numbering()
         self.restore_header()
         self.separate_phrases()
-        self.set_blocks()
-        self.set_tags()
         return self.text
