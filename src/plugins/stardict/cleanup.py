@@ -9,7 +9,7 @@ from skl_shared.logic import Text, ru_alphabet, lat_alphabet
 
 
 #TODO (?): use shared
-speech_abbr = ('гл.', 'нареч.', 'прил.', 'сокр.', 'сущ.')
+speech_abbr = ('гл.', 'нареч.', 'нар.', 'прил.', 'сокр.', 'сущ.')
 dic_abbr = ('вчт.', 'карт.', 'мор.', 'разг.', 'уст.', 'хир.', 'эл.')
 #TODO: read from file
 dic_titles = ('(австралийское)', '(американизм)', '(военное)', '(горное)'

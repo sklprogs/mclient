@@ -468,7 +468,8 @@ class Tags:
     def run_stardict(self):
         import plugins.stardict.cleanup as cu
         import plugins.stardict.tags as tg
-        file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - product.txt'
+        #file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - product.txt'
+        file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - good.txt'
         text = Read(file).get()
         text = cu.CleanUp(text).run()
         itags = tg.Tags(text = text
@@ -1072,10 +1073,10 @@ if __name__ == '__main__':
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
     #mes = Get().run_stardict()
-    #mes = Tags().run_stardict()
+    mes = Tags().run_stardict()
     #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
-    mes = Elems().run_stardict()
+    #mes = Elems().run_stardict()
     #mes = Elems().run_multitrancom()
     #mes = Subjects().run()
     #mes = View().run_dsl()
