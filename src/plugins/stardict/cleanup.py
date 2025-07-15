@@ -155,21 +155,6 @@ class CleanUp:
         if string.startswith('_') and string == string.lower():
             return True
     
-    def swap_dics(self):
-        for i in range(len(self.blocks)):
-            if self.blocks[i] in dic_titles:
-                Condition = False
-                if i > 0:
-                    if Text(self.blocks[i]).has_cyrillic() \
-                    and Text(self.blocks[i-1]).has_latin():
-                        Condition = True
-                    elif Text(self.blocks[i]).has_latin() \
-                    and Text(self.blocks[i-1]).has_cyrillic():
-                        Condition = True
-                if Condition:
-                    self.blocks[i-1], self.blocks[i] = self.blocks[i], self.blocks[i-1]
-        return self.blocks
-    
     def run(self):
         f = '[MClient] plugins.stardict.cleanup.CleanUp.run'
         if not self.text or not header:
@@ -184,6 +169,5 @@ class CleanUp:
         self.restore_header()
         self.separate_phrases()
         self.set_blocks()
-        self.swap_dics()
         self.set_tags()
         return self.text
