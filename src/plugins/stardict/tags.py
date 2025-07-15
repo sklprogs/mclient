@@ -157,10 +157,9 @@ class AnalyzeTag:
 class Tags:
 
     def __init__(self, text, Debug=False, maxrow=20, maxrows=1000):
-        if text:
-            self.text = list(text)
-        else:
-            self.text = ''
+        if not text:
+            text = ''
+        self.text = text
         self.abbr = {}
         self.blocks = []
         self.Debug = Debug
