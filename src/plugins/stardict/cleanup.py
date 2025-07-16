@@ -71,6 +71,29 @@ class CleanUp:
         self.text = re.sub(r'[\s][а-я]\)[\s]', '\n', self.text)
         self.text = re.sub(r'[\s][a-z]\)[\s]', '\n', self.text)
     
+    def _get_prev_lang(self, i):
+        i -= 1
+        while i >= 0:
+            if self.text[i] in ru_alphabet:
+                return 'ru'
+            elif self.text[i] in lat_alphabet:
+                return 'en'
+            i -= 1
+    
+    def _get_next_lang(self, i):
+        i += 1
+        while i < len(self.text):
+            if self.text[i] in ru_alphabet:
+                return 'ru'
+            elif self.text[i] in lat_alphabet:
+                return 'en'
+            i += 1
+    
+    def _is_lang_mixed(self, i):
+        prev_lang = self._get_prev_lang(i)
+        next_lang = self._get_next_lang(i)
+        return prev_lang and next_lang and prev_lang != next_lang
+    
     def separate_phrases(self):
         lang = ''
         text = ''
@@ -109,10 +132,18 @@ class CleanUp:
             text += char
         text = text.replace('* \n', '\n* ')
         text = text.replace('*\n', '\n*')
-        # Risky: 'что имеем - не храним, потерявши - плачем'
-        text = text.replace(' - ', '\n')
         text = text.replace('\n\n', '\n')
         self.text = text
+    
+    def replace_punc(self):
+        ''' It's risky to replace at once, e.g.:
+            'что имеем - не храним, потерявши - плачем'.
+        '''
+        self.text = list(self.text)
+        for i in range(len(self.text)):
+            if self.text[i] in ('-', ';') and self._is_lang_mixed(i):
+                self.text[i] = '\n'
+        self.text = ''.join(self.text)
     
     def run(self):
         f = '[MClient] plugins.stardict.cleanup.CleanUp.run'
@@ -125,5 +156,6 @@ class CleanUp:
         self.delete_roman_numbering()
         self.delete_numbering()
         self.delete_alpha_numbering()
+        self.replace_punc()
         self.separate_phrases()
         return self.text
