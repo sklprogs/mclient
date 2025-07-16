@@ -11,6 +11,14 @@ from skl_shared.logic import Text, punc_array, ru_alphabet, lat_alphabet
 
 import instance as ic
 
+SPEECH_ABBR = ('гл.', 'нареч.', 'нар.', 'прил.', 'сокр.', 'сущ.')
+SUBJ_ABBR = ('амер.', 'вчт.', 'геогр.', 'карт.', 'мор.', 'разг.', 'уст.', 'хир.', 'эл.')
+#TODO: read from file
+SUBJ = ('(австралийское)', '(американизм)', '(военное)', '(горное)'
+       ,'(железнодорожное)', '(карточное)', '(кулинарное)', '(новозеландское)'
+       ,'(профессионализм)', '(разговорное)', '(сленг)', '(спортивное)'
+       ,'(текстильное)', '(теннис)', '(химическое)', '(электротехника)')
+
 
 class Phrases:
     
@@ -334,12 +342,31 @@ class Elems:
         for i in range(len(self.cells)):
             self.cells[i].no = i
     
+    def set_speech(self):
+        for block in self.blocks:
+            if block.text in SPEECH_ABBR:
+                block.type = 'speech'
+    
+    def set_subjects(self):
+        for block in self.blocks:
+            if block.text in SUBJ_ABBR or block.text in SUBJ:
+                block.type = 'subj'
+    
+    def set_synonyms(self):
+        for block in self.blocks:
+            if 'Syn :' in block.text:
+                block.text = block.text.replace('Syn :', _('Synonyms:'))
+                block.type = 'comment'
+    
     def run(self):
         f = '[MClient] plugins.stardict.elems.Elems.run'
         if not self.Success:
             rep.cancel(f)
             return []
         self.delete_straight_line()
+        self.set_subjects()
+        self.set_speech()
+        self.set_synonyms()
         self.set_fixed_blocks()
         self.run_comments()
         ''' These 2 procedures should not be combined (otherwise, corrections
