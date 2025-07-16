@@ -39,6 +39,7 @@ class CleanUp:
         # Semicolons should not be replaced with line breaks within phrases
         #self.text = self.text.replace('; ', '\n')
         #self.text = self.text.replace(';', '\n')
+        self.text = self.text.replace('∙', '\n')
         self.text = self.text.replace('_Id: ', '')
     
     def delete_disamb(self):
@@ -108,7 +109,7 @@ class CleanUp:
             text += char
         text = text.replace('* \n', '\n* ')
         text = text.replace('*\n', '\n*')
-        # Risky
+        # Risky: 'что имеем - не храним, потерявши - плачем'
         text = text.replace(' - ', '\n')
         text = text.replace('\n\n', '\n')
         self.text = text
