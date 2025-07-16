@@ -174,7 +174,11 @@ class Tags:
         Ignore = False
         tmp = ''
         for i in range(len(self.text)):
-            if self.text[i] == '<':
+            if self.text[i] == '\n':
+                if tmp:
+                    self.tags.append(tmp)
+                    tmp = ''
+            elif self.text[i] == '<':
                 if i < len(self.text) - 1 and self.text[i+1] == '/':
                     Ignore = True
                     if tmp:
