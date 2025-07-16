@@ -36,8 +36,9 @@ class CleanUp:
         self.text = re.sub(r'\>[\s]{0,1}\<', '\><', self.text)
         self.text = self.text.replace('&gt;', '').replace('&lt;', '')
         #self.text = self.text.replace(' ∙ ', ';').replace(' - ', ';')
-        self.text = self.text.replace('; ', '\n')
-        self.text = self.text.replace(';', '\n')
+        # Semicolons should not be replaced with line breaks within phrases
+        #self.text = self.text.replace('; ', '\n')
+        #self.text = self.text.replace(';', '\n')
         self.text = self.text.replace('_Id: ', '')
     
     def delete_disamb(self):
