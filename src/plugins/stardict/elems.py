@@ -33,6 +33,7 @@ class Phrases:
             i -= 1
     
     def replace_seps(self):
+        f = '[MClient] plugins.stardict.elems.Phrases.replace_seps'
         for i in range(len(self.blocks)):
             if self.blocks[i].type not in ('term', 'phrase'):
                 continue
@@ -353,10 +354,13 @@ class Elems:
                 block.type = 'subj'
     
     def set_synonyms(self):
-        for block in self.blocks:
-            if 'Syn :' in block.text:
-                block.text = block.text.replace('Syn :', _('Synonyms:'))
-                block.type = 'comment'
+        i = 1
+        while i < len(self.blocks):
+            if 'Syn :' in self.blocks[i].text:
+                self.blocks[i].text = self.blocks[i].text.replace('Syn :', _('Synonyms:'))
+                self.blocks[i].type = 'comment'
+                self.blocks[i].cellno = self.blocks[i-1].cellno
+            i += 1
     
     def run(self):
         f = '[MClient] plugins.stardict.elems.Elems.run'
@@ -616,10 +620,15 @@ class Elems:
                 block.type = 'phrase'
     
     def move_phrases(self):
-        # phsubj is set to an incorrect row without this
-        phrases = [block for block in self.blocks if block.type == 'phrase']
-        other = [block for block in self.blocks if block.type != 'phrase']
-        self.blocks = other + phrases
+        ''' - phsubj is set to an incorrect row without this.
+            - Phrases may have synonyms attached to them and formatted as
+              comments, so moving by cellno is more precise.
+        '''
+        cellnos = [block.cellno for block in self.blocks \
+                  if block.type == 'phrase']
+        move = [block for block in self.blocks if block.cellno in cellnos]
+        other = [block for block in self.blocks if not block.cellno in cellnos]
+        self.blocks = other + move
     
     def set_phsubj_name(self):
         f = '[MClient] plugins.stradict.elems.Elems.set_phsubj_name'
