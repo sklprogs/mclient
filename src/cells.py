@@ -375,8 +375,7 @@ class View:
             rep.cancel(f)
             return
         headers = (_('ROW #'), _('CELL #'), _('TEXT'), _('TYPES'), 'URL'
-                  ,'COL1' ,'COL2', 'COL3', 'COL4'
-                  )
+                  ,'COL1' ,'COL2', 'COL3', 'COL4')
         rowno = []
         no = []
         text = []
