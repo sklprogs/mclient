@@ -258,9 +258,8 @@ class StarDict:
             rep.cancel(f)
             return
         try:
-            for line in open (file = self.bname + '.ifo'
-                             ,encoding = 'UTF-8'
-                             ).readlines()[1:]:
+            for line in open(file = self.bname + '.ifo'
+                            ,encoding = 'UTF-8').readlines()[1:]:
                 pair = line.split('=')
                 self.ifo[pair[0]] = pair[1][:-1]
 
@@ -289,9 +288,8 @@ class StarDict:
         b = data.find(b'\0', a)
         while b > 0:
             try:
-                self.idx.append ((data[a:b].decode('utf-8')
-                                 ,struct.unpack('>LL', data[b+1:b+9])
-                                 ))
+                self.idx.append((data[a:b].decode('utf-8')
+                               ,struct.unpack('>LL', data[b+1:b+9])))
             except Exception as e:
                 self.fail(f, e)
                 return
