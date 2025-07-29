@@ -18,6 +18,7 @@ mclient:
 - Do not add entries that were not found to history
 
 multitrancom:
+- RU-EN, padding: sort wforms properly
 - RU-EN, Linux distribution, phytophotodermatitis, coregone: Add subj for other
   languages
 - RU-EN, q: Fix "16q сокр.", etc.
