@@ -12,6 +12,8 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
+- RU-EN, pedding (Cut-to-the chase mode, 1st part of speech is verb): condition
+  not observed
 - RU-EN, warhawk: condition not observed
 - RU-EN, grey area: (UK spelling) and (US spelling) are dangling comments
 - RU-EN, метка (Multitran mode): go to the end -> PgUp does not work
