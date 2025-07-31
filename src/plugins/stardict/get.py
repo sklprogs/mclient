@@ -436,7 +436,7 @@ class AllDics:
             if not str(ind).isdigit():
                 mes = _('No matches for "{}"!').format(dic.title)
                 Message(f, mes).show_info()
-                return ''
+                continue
             result = dic.get_dict_data(ind)
             if result:
                 # Set offline dictionary title
