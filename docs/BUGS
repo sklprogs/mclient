@@ -43,8 +43,7 @@ stardict:
 - dash: 'to m', 't', 'a', 'o' - dangling block parts ('a', 'o', 'y' are
 actually Cyrillic)
 - good: How'm I going?" - adjacent blocks are dangling
-- Searches only in 1 dictionary, e.g., '13th month salary'. If not found in the
-1st dictionary, no matches are returned.
+- 13th month salary: Fix heuristics
 - RU-EN, "Akrotiri Government" from CIA World Factbook 2014: https://tuxor1337.frama.io/firedict/dictionaries.html: some text was not found
 - RU-EN, full: search gate: found by 'Suggest' and logged as found by
   'AllDics.get', but could not be shown
