@@ -513,10 +513,10 @@ class AllDics:
         timer = Timer(f)
         timer.start()
         for i in range(len(self.dics)):
-            PROGRESS.update()
             text = _('Load Stardict dictionaries ({}/{})')
             text = text.format(i + 1, len(self.dics))
             PROGRESS.set_info(text)
+            PROGRESS.update()
             self.dics[i].load()
             PROGRESS.inc()
         timer.end()
