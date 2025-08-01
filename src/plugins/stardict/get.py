@@ -10,7 +10,6 @@ from skl_shared.message.controller import Message, rep
 from skl_shared.time import Timer
 from skl_shared.paths import Path, File, Directory
 from skl_shared.logic import Input
-from skl_shared.graphics.progress_bar.controller import PROGRESS
 
 
 ''' A directory storing all stardict files.
@@ -441,25 +440,15 @@ class AllDics:
         if not self.locate():
             rep.lazy(f)
             return
-        PROGRESS.set_title(_('Dictionary Loader'))
-        PROGRESS.show()
-        PROGRESS.set_value(0)
-        PROGRESS.set_max(len(self.dics))
         timer = Timer(f)
         timer.start()
-        for i in range(len(self.dics)):
-            text = _('Load Stardict dictionaries ({}/{})')
-            text = text.format(i + 1, len(self.dics))
-            PROGRESS.set_info(text)
-            PROGRESS.update()
-            self.dics[i].load()
-            PROGRESS.inc()
+        for idic in self.dics:
+            idic.load()
         timer.end()
         total_no = len(self.dics)
         self.dics = [dic for dic in self.dics if dic.Success]
         mes = _('Dictionaries loaded: {}/{}').format(len(self.dics), total_no)
         Message(f, mes).show_info()
-        PROGRESS.close()
 
 
 
