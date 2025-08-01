@@ -3,6 +3,7 @@
 
 import struct
 import os
+import mmap
 import zlib
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
@@ -218,7 +219,8 @@ class StarDict:
         self.Success = True
         self.Block = False
         self.dictf = None
-        self.idx = []
+        self.idx = None
+        self.map = None
         self.ifo = {}
         self.wcount = 0
         self.path = ''
@@ -281,28 +283,9 @@ class StarDict:
             rep.cancel(f)
             return
         idx = self.bname + '.idx'
-        iopen = open(idx, 'rb')
-        data = iopen.read(os.path.getsize(idx))
-        iopen.close()
-        a = 0
-        b = data.find(b'\0', a)
-        while b > 0:
-            try:
-                self.idx.append((data[a:b].decode('utf-8')
-                               ,struct.unpack('>LL', data[b+1:b+9])))
-            except Exception as e:
-                self.fail(f, e)
-                return
-            a = b + 9
-            b = data.find(b'\0', a)
-        if self.wcount != len(self.idx):
-            self.Success = False
-            sub = f'{self.wcount} = {len(self.idx)}'
-            mes = _('The condition "{}" is not observed!').format(sub)
-            Message(f, mes, True).show_error()
-        if not self.Success:
-            rep.cancel(f)
-            return
+        self.idx = open(idx, 'rb')
+        # Setting 'prot' avoids PermissionError
+        self.map = mmap.mmap(self.idx.fileno(), 0, prot=mmap.PROT_READ)
         # Compression of .dict is optional
         try:
             self.dictf = open(self.bname + '.dict', 'rb')
@@ -310,81 +293,34 @@ class StarDict:
             self.dictf = DictZip(self.bname + '.dict.dz')
 
     def unload(self):
-        # Release idx word list and opened .dict file
         f = '[MClient] plugins.stardict.get.Stardict.unload'
         if not self.Success:
             rep.cancel(f)
             return
-        self.idx = []
+        self.map = None
+        self.idx.close()
         self.dictf.close()
 
-    def __len__(self):
-        return len(self.idx)
-
-    def __getitem__(self, key):
-        ''' int and slice return coresponding words string key is used for
-            reverse lookup.
-        '''
-        f = '[MClient] plugins.stardict.get.Stardict.__getitem__'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if type(key) is int:
-            return self.idx[key][0]
-        if type(key) is slice:
-            return [w[0] for w in self.idx[key]]
-        if type(key) is str:
-            return Input(title=f, value=self.search(key)).get_integer()
-
-    def search(self, word, prefix=False):
-        ''' Binary search for words in idx list. In case prefix=True,
-            the search will be performed for the lowest record with 'word' as
-            its prefix.
-        '''
+    def search(self, pattern):
         f = '[MClient] plugins.stardict.get.Stardict.search'
         if not self.Success:
             rep.cancel(f)
             return
-        if word == '':
-            return -1
-        a, b = 0, len(self.idx) - 1
-        if (b < 0):
-             return -1
-        word = word.lower()
-        while a <= b:                
-            i = a + (b - a) // 2
-            if prefix:
-                # Search words that include 'word' in their prefix
-                if self.idx[i][0].lower().startswith(word):
-                    if i and self.idx[i-1][0].lower().startswith(word):
-                        b = i - 1
-                        continue
-                    else:
-                        return i
-            else:
-                # Search for the entire match
-                if self.idx[i][0].lower() == word:
-                    return i
-            if a == b:
-                # No match
-                return -1
-            elif word > self.idx[i][0].lower():
-                # Move upward
-                a = i + 1
-            else:
-                # Move downward
-                b = i - 1
-        return -1
-    
-    def get_dict_link(self, index):
-        f = '[MClient] plugins.stardict.get.Stardict.get_dict_link'
-        if not self.Success:
-            rep.cancel(f)
+        if not pattern:
+            rep.empty(f)
             return
-        # Return (dict_index, len) tuple of a word on a given index
-        return self.idx[index][1]
-
-    def get_dict_data(self, index):
+        pattern = bytes(pattern, 'utf-8') + b'\x00'
+        pos = self.map.find(pattern)
+        if pos == -1:
+            return
+        self.idx.seek(pos + len(pattern))
+        chunk = self.idx.read(8)
+        index, len_ = struct.unpack('>LL', chunk)
+        mes = _('Found a match at position {} with length {}').format(index, len_)
+        Message(f, mes).show_debug()
+        return(index, len_)
+    
+    def get_dict_data(self, index, len_):
         f = '[MClient] plugins.stardict.get.Stardict.get_dict_data'
         if not self.Success:
             rep.cancel(f)
@@ -393,10 +329,10 @@ class StarDict:
         if not self.dictf:
             rep.empty(f)
             return
-        self.dictf.seek(self.idx[index][1][0])
-        result = self.dictf.read(self.idx[index][1][1])
-        if result:
-            return result.decode()
+        self.dictf.seek(index)
+        chunk = self.dictf.read(len_)
+        if chunk:
+            return chunk.decode(errors='ignore')
 
     def __str__(self):
         return str(self.ifo)
@@ -431,13 +367,12 @@ class AllDics:
         dics = [dic for dic in self.dics if not dic.Block]
         lst = []
         for dic in dics:
-            ind = dic.search(search, True)
-            # Returns True if ind >= 0
-            if not str(ind).isdigit():
+            tuple_ = dic.search(search)
+            if tuple_ is None:
                 mes = _('No matches for "{}"!').format(dic.title)
                 Message(f, mes).show_info()
                 continue
-            result = dic.get_dict_data(ind)
+            result = dic.get_dict_data(tuple_[0], tuple_[1])
             if result:
                 # Set offline dictionary title
                 lst.append(f'<dic>{dic.title}</dic>{result}')

@@ -405,7 +405,8 @@ class Get:
         #search = 'abandon'
         #search = 'понятие сложной функции'
         #search = 'product'
-        search = 'good'
+        #search = 'good'
+        search = 'cable'
         timer = Timer(f)
         timer.start()
         result = plugins.stardict.get.Get(search).run()
