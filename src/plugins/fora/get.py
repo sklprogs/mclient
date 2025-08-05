@@ -250,6 +250,11 @@ class Fora:
             rep.cancel(f)
             return
         pos = self.index.search(pattern)
+        if not pos:
+            mes = _('No matches for "{}" in "{}" ({})!')
+            mes = mes.format(pattern, self.prop.name, self.dic.file)
+            Message(f, mes).show_debug()
+            return
         indexes = self.index.get(pos)
         text = self.dic.get(indexes)
         mes = f'"{text}"'
