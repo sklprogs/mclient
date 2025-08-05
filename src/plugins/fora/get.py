@@ -165,3 +165,74 @@ class Index:
             retval = retval | (val << shiftval)
             shiftval += 6
         return retval
+
+
+
+class Properties:
+    
+    def __init__(self, folder):
+        self.file = ''
+        self.lang1 = ''
+        self.lang2 = ''
+        self.format = ''
+        self.name = _('Fora Dictionary')
+        self.Success = True
+        self.folder = folder
+        self.set_file()
+        self.load()
+        self.set_attrs()
+    
+    def set_file(self):
+        f = '[MClient] plugins.fora.get.Properties.set_file'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self.file = os.path.join(self.folder, 'fdblite.properties')
+        self.Success = File(self.file).Success
+    
+    def load(self):
+        f = '[MClient] plugins.fora.get.Properties.load'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        try:
+            self.root = etree.parse(self.file)
+        except Exception as e:
+            #TODO: Try recover=True
+            self.Success = False
+            mes = _('Unable to process "{}"! Details: {}').format(self.file, e)
+            Message(f, mes).show_error()
+    
+    def _get_attr(self, attr):
+        items = self.root.xpath(f'//entry[@key="{attr}"]/text()')
+        if items:
+            return items[0]
+    
+    def set_attrs(self):
+        f = '[MClient] plugins.fora.get.Properties.set_attrs'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self.name = self._get_attr('name')
+        self.format = self._get_attr('contentFormat')
+        self.lang1 = self._get_attr('sourceLanguage')
+        self.lang2 = self._get_attr('targetLanguage')
+    
+    def debug(self):
+        f = '[MClient] plugins.fora.get.Properties.debug'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        mes = []
+        sub = _('File: "{}"').format(self.file)
+        mes.append(sub)
+        sub = _('Dictionary name: "{}"').format(self.name)
+        mes.append(sub)
+        sub = _('Format: "{}"').format(self.format)
+        mes.append(sub)
+        sub = _('Source language: "{}"').format(self.lang1)
+        mes.append(sub)
+        sub = _('Target language: "{}"').format(self.lang2)
+        mes.append(sub)
+        mes.append('')
+        return '\n'.join(mes)
