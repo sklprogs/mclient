@@ -52,10 +52,7 @@ class Dic:
             return
         self.imap.seek(indexes[0])
         text = self.imap.read(indexes[1])
-        text = text.decode()
-        mes = f'"{text}"'
-        Message(f, mes).show_debug()
-        return text
+        return text.decode()
     
     def set_file(self):
         f = '[MClient] plugins.fora.get.Dic.set_file'
@@ -236,3 +233,33 @@ class Properties:
         mes.append(sub)
         mes.append('')
         return '\n'.join(mes)
+
+
+
+class Fora:
+    
+    def __init__(self, folder):
+        self.prop = Properties(folder)
+        self.index = Index(folder)
+        self.dic = Dic(folder)
+        self.Success = self.prop.Success and self.index.Success and self.dic.Success
+    
+    def search(self, pattern):
+        f = '[MClient] plugins.fora.get.Fora.search'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        pos = self.index.search(pattern)
+        indexes = self.index.get(pos)
+        text = self.dic.get(indexes)
+        mes = f'"{text}"'
+        Message(f, mes).show_debug()
+        return text
+    
+    def close(self):
+        f = '[MClient] plugins.fora.get.Fora.close'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self.index.close()
+        self.dic.close()
