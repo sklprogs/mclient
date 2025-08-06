@@ -132,7 +132,7 @@ class Index:
         if None in indexes:
             rep.wrong_input(f, indexes)
             return
-        Message(f, indexes).show_debug()
+        #Message(f, indexes).show_debug()
         return indexes
     
     def set_file(self):
@@ -329,6 +329,7 @@ class AllDics:
             rep.empty_output(f)
     
     def search(self, pattern):
+        #NOTE: The first search is the longest
         f = '[MClient] plugins.fora.get.AllDics.search'
         if not self.Success:
             rep.cancel(f)
