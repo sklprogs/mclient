@@ -246,6 +246,15 @@ class Fora:
         self.dic = Dic(folder)
         self.Success = self.prop.Success and self.index.Success and self.dic.Success
     
+    def get_lang1(self):
+        return self.prop.lang1
+    
+    def get_lang2(self):
+        return self.prop.lang2
+    
+    def get_format(self):
+        return self.prop.format
+    
     def get_name(self):
         return self.prop.name
     
@@ -290,6 +299,50 @@ class AllDics:
         self.dics = []
         self.path = Home('mclient').add_config('dics', 'Fora')
         self.set()
+    
+    def get_summary(self):
+        f = '[MClient] plugins.fora.get.AllDics.get_summary'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        format_dic = {}
+        errors = []
+        mes = []
+        names = []
+        pairs = []
+        formats = []
+        sub = _('Names:')
+        mes.append(sub)
+        for dic in self.dics:
+            if not dic.Success:
+                errors.append(dic.get_file())
+                continue
+            names.append(dic.get_name())
+            pairs.append(f'{dic.get_lang1()}-{dic.get_lang2()}')
+            formats.append(dic.get_format())
+            if not dic.get_format() in format_dic:
+                format_dic[dic.get_format()] = []
+            format_dic[dic.get_format()].append(dic.get_file())
+        mes += names
+        mes.append('')
+        pairs = sorted(set(pairs))
+        sub = _('Languages: {}').format(', '.join(pairs))
+        mes.append(sub)
+        formats = sorted(set(formats))
+        sub = _('Formats: {}').format(', '.join(formats))
+        mes.append(sub)
+        if errors:
+            mes.append('')
+            sub = _('Files with errors:')
+            mes.append(sub)
+            mes += errors
+        mes.append('')
+        for format_ in format_dic:
+            sub = f'{format_}:'
+            mes.append(sub)
+            mes += format_dic[format_]
+            mes.append('')
+        return '{}:\n{}'.format(f, '\n'.join(mes))
     
     def set_successful(self):
         f = '[MClient] plugins.fora.get.AllDics.set_successful'
@@ -364,6 +417,9 @@ class Get:
     def __init__(self, search):
         self.htm = ''
         self.pattern = search
+    
+    def debug(self):
+        return ALL_DICS.get_summary()
     
     def run(self):
         return ALL_DICS.search(self.pattern)
