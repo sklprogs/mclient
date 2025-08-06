@@ -8,7 +8,8 @@ from lxml.etree import XMLSyntaxError
 
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
-from skl_shared.paths import File
+from skl_shared.paths import File, Directory, Path
+from skl_shared.time import Timer
 
 
 class Dic:
@@ -239,27 +240,37 @@ class Properties:
 class Fora:
     
     def __init__(self, folder):
+        self.article = ''
         self.prop = Properties(folder)
         self.index = Index(folder)
         self.dic = Dic(folder)
         self.Success = self.prop.Success and self.index.Success and self.dic.Success
+    
+    def get_name(self):
+        return self.prop.name
+    
+    def get_file(self):
+        return self.dic.file
     
     def search(self, pattern):
         f = '[MClient] plugins.fora.get.Fora.search'
         if not self.Success:
             rep.cancel(f)
             return
+        self.article = ''
         pos = self.index.search(pattern)
         if not pos:
+            '''
             mes = _('No matches for "{}" in "{}" ({})!')
             mes = mes.format(pattern, self.prop.name, self.dic.file)
             Message(f, mes).show_debug()
+            '''
             return
         indexes = self.index.get(pos)
-        text = self.dic.get(indexes)
-        mes = f'"{text}"'
-        Message(f, mes).show_debug()
-        return text
+        self.article = self.dic.get(indexes)
+        #mes = f'"{self.article}"'
+        #Message(f, mes).show_debug()
+        return self.article
     
     def close(self):
         f = '[MClient] plugins.fora.get.Fora.close'
@@ -268,3 +279,75 @@ class Fora:
             return
         self.index.close()
         self.dic.close()
+
+
+
+class AllDics:
+    
+    def __init__(self, path):
+        self.Success = True
+        self.successful = 0
+        self.dics = []
+        self.path = path
+        self.set()
+    
+    def set_successful(self):
+        f = '[MClient] plugins.fora.get.AllDics.set_successful'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        for dic in self.dics:
+            if dic.Success:
+                self.successful += 1
+    
+    def set(self):
+        f = '[MClient] plugins.fora.get.AllDics.set'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        if not self.path:
+            self.Success = False
+            rep.empty(f)
+            return
+        timer = Timer(f)
+        timer.start()
+        idir = Directory(self.path)
+        files = idir.get_subfiles()
+        if not files:
+            self.Success = False
+            rep.empty(f)
+            return
+        for file in files:
+            ipath = Path(file)
+            if ipath.get_filename() != 'fdblite.properties':
+                continue
+            self.dics.append(Fora(ipath.get_dirname()))
+        self.set_successful()
+        timer.end()
+        if not self.successful:
+            self.Success = False
+            rep.empty_output(f)
+    
+    def search(self, pattern):
+        f = '[MClient] plugins.fora.get.AllDics.search'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        timer = Timer(f)
+        timer.start()
+        count = 0
+        for dic in self.dics:
+            if dic.search(pattern):
+                count += 1
+        timer.end()
+        mes = _('"{}": {} matches in {} Fora dictionaries')
+        mes = mes.format(pattern, count, self.successful)
+        Message(f, mes).show_debug()
+    
+    def close(self):
+        f = '[MClient] plugins.fora.get.AllDics.close'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        for dic in self.dics:
+            dic.close()
