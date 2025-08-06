@@ -351,12 +351,12 @@ class Subjects:
 class Get:
     
     def run_fora(self):
-        from manager import PLUGINS
-        import plugins.fora.get
-        PLUGINS.Debug = False
-        PLUGINS.maxrows = 1000
+        from plugins.fora.get import Get
         search = 'интеллигент'
-        return plugins.fora.get.Get(search).run()
+        iget = Get(search)
+        mes = [iget.run(), iget.debug()]
+        mes = [item for item in mes if item]
+        return '\n\n'.join(mes)
     
     def run_dsl(self):
         import plugins.dsl.get
