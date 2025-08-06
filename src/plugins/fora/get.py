@@ -8,7 +8,7 @@ from lxml.etree import XMLSyntaxError
 
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
-from skl_shared.paths import File, Directory, Path
+from skl_shared.paths import File, Directory, Path, Home
 from skl_shared.time import Timer
 
 
@@ -284,11 +284,11 @@ class Fora:
 
 class AllDics:
     
-    def __init__(self, path):
+    def __init__(self):
         self.Success = True
         self.successful = 0
         self.dics = []
-        self.path = path
+        self.path = Home('mclient').add_config('dics', 'Fora')
         self.set()
     
     def set_successful(self):
@@ -334,16 +334,20 @@ class AllDics:
         if not self.Success:
             rep.cancel(f)
             return
+        if not pattern:
+            rep.empty(f)
+            return
         timer = Timer(f)
         timer.start()
-        count = 0
+        articles = []
         for dic in self.dics:
-            if dic.search(pattern):
-                count += 1
+            articles.append(dic.search(pattern))
         timer.end()
+        articles = [article for article in articles if article]
         mes = _('"{}": {} matches in {} Fora dictionaries')
-        mes = mes.format(pattern, count, self.successful)
+        mes = mes.format(pattern, len(articles), self.successful)
         Message(f, mes).show_debug()
+        return '\n\n'.join(articles)
     
     def close(self):
         f = '[MClient] plugins.fora.get.AllDics.close'
@@ -352,3 +356,17 @@ class AllDics:
             return
         for dic in self.dics:
             dic.close()
+
+
+
+class Get:
+    # This class is basically needed for compliance with other code
+    def __init__(self, search):
+        self.htm = ''
+        self.pattern = search
+    
+    def run(self):
+        return ALL_DICS.search(self.pattern)
+
+
+ALL_DICS = AllDics()
