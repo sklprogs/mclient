@@ -350,6 +350,14 @@ class Subjects:
 
 class Get:
     
+    def run_fora(self):
+        from manager import PLUGINS
+        import plugins.fora.get
+        PLUGINS.Debug = False
+        PLUGINS.maxrows = 1000
+        search = 'интеллигент'
+        return plugins.fora.get.Get(search).run()
+    
     def run_dsl(self):
         import plugins.dsl.get
         plugins.dsl.get.PATH = Home('mclient').add_config('dics')
@@ -495,6 +503,12 @@ class Tags:
 
 
 class Plugin:
+    
+    def run_fora(self):
+        from plugins.fora.run import Plugin
+        search = 'about'
+        iplug = Plugin(Debug=DEBUG)
+        iplug.request(search=search)
     
     def run_multitrandem(self):
         import plugins.multitrandem.get
@@ -1074,7 +1088,8 @@ if __name__ == '__main__':
     #mes = com.get_all_subjects()
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
-    mes = Get().run_stardict()
+    #mes = Get().run_stardict()
+    mes = Get().run_fora()
     #mes = Tags().run_stardict()
     #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
