@@ -44,7 +44,7 @@ class Dic:
         self.bin.close()
     
     def get(self, indexes):
-        f = '[MClient] plugins.fora.get.Dic.search'
+        f = '[MClient] plugins.fora.get.Dic.get'
         if not self.Success:
             rep.cancel(f)
             return
@@ -52,7 +52,8 @@ class Dic:
             rep.empty(f)
             return
         self.imap.seek(indexes[0])
-        text = self.imap.read(indexes[1])
+        # -1 allows to avoid broken UTF-8
+        text = self.imap.read(indexes[1] - 1)
         return text.decode()
     
     def set_file(self):
