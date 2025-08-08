@@ -17,7 +17,8 @@ from config import CONFIG
 
 DEBUG = True
 
-SEARCH = 'chicken wing'
+SEARCH = 'мамонт'
+#SEARCH = 'chicken wing'
 URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing&l2=2'
 HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/fill (2025-01-31).htm'
 #HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/chicken wing (2025-01-24).htm'
@@ -216,6 +217,16 @@ class Elems:
         ielems.run()
         return ielems.debug()
     
+    def run_fora(self):
+        import plugins.fora.get as gt
+        import plugins.fora.cleanup as cu
+        import plugins.fora.elems as el
+        text = gt.Get(SEARCH).run()
+        text = cu.CleanUp(text).run()
+        ielems = el.Elems(text)
+        ielems.run()
+        return ielems.debug()
+    
     def run_dsl(self):
         import plugins.dsl.cleanup as cu
         import plugins.dsl.get as gt
@@ -352,11 +363,14 @@ class Get:
     
     def run_fora(self):
         from plugins.fora.get import Get
-        search = 'интеллигент'
-        iget = Get(search)
-        mes = [iget.run(), iget.debug()]
-        mes = [item for item in mes if item]
-        return '\n\n'.join(mes)
+        from plugins.fora.cleanup import CleanUp
+        mes = Get(SEARCH).run()
+        mes = CleanUp(mes).run()
+        mes = mes.splitlines()
+        mes = [line.strip() for line in mes if line.strip()]
+        mes = [f'"{line}"' for line in mes]
+        mes = '\n'.join(mes)
+        return mes
     
     def run_dsl(self):
         import plugins.dsl.get
@@ -1089,11 +1103,12 @@ if __name__ == '__main__':
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
     #mes = Get().run_stardict()
-    mes = Get().run_fora()
+    #mes = Get().run_fora()
     #mes = Tags().run_stardict()
     #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
+    mes = Elems().run_fora()
     #mes = Elems().run_multitrancom()
     #mes = Subjects().run()
     #mes = View().run_dsl()
