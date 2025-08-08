@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared.localize import _
-from plugins.fora.get import Get
+from plugins.fora.get import Get, ALL_DICS
 from plugins.fora.cleanup import CleanUp
 from plugins.fora.elems import Elems
 
@@ -89,7 +89,7 @@ class Plugin:
         return short
     
     def quit(self):
-        pass
+        ALL_DICS.close()
     
     def get_lang1(self):
         # This is needed only for compliance with a general method
@@ -136,7 +136,7 @@ class Plugin:
         return True
     
     def is_accessible(self):
-        return gt.com.is_accessible()
+        return len(ALL_DICS.dics)
     
     def suggest(self, search):
         #TODO: implement

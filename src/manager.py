@@ -13,6 +13,7 @@ import plugins.stardict.run as sdrun
 import plugins.multitrancom.run as mcrun
 import plugins.multitrandem.run as mbrun
 import plugins.dsl.run as lgrun
+import plugins.fora.run as forun
 
 
 class Plugins:
@@ -36,6 +37,7 @@ class Plugins:
         self.mbplugin = None
         self.mcplugin = None
         self.sdplugin = None
+        self.frplugin = None
         self.source = CONFIG.new['source']
     
     def get_fixed_urls(self):
@@ -99,6 +101,7 @@ class Plugins:
         self.mcplugin.quit()
         self.sdplugin.quit()
         self.lgplugin.quit()
+        self.frplugin.quit()
     
     def get_lang1(self):
         f = '[MClient] manager.Plugins.get_lang1'
@@ -152,7 +155,8 @@ class Plugins:
     
     def get_unique(self):
         # Return all non-combined plugins
-        return (self.sdplugin, self.mcplugin, self.mbplugin, self.lgplugin)
+        return (self.sdplugin, self.mcplugin, self.mbplugin, self.lgplugin
+               ,self.frplugin)
     
     def set_lang1(self, lang1):
         self.plugin.set_lang1(lang1)
@@ -182,10 +186,10 @@ class Plugins:
         return self.plugin.suggest(search)
     
     def get_sources(self):
-        return (_('Multitran'), _('Stardict'), 'Lingvo (DSL)', _('Local MT'))
+        return (_('Multitran'), _('Stardict'), 'Lingvo (DSL)', _('Local MT'), 'Fora')
     
     def get_offline_sources(self):
-        return (_('Stardict'), 'Lingvo (DSL)', _('Local MT'))
+        return (_('Stardict'), 'Lingvo (DSL)', _('Local MT'), 'Fora')
     
     def get_online_sources(self):
         ''' This is used by lg.Welcome to check the availability of online
@@ -222,6 +226,8 @@ class Plugins:
                                     ,maxrows = self.maxrows)
         self.lgplugin = lgrun.Plugin(Debug = self.Debug
                                     ,maxrows = self.maxrows)
+        self.frplugin = forun.Plugin(Debug = self.Debug
+                                    ,maxrows = self.maxrows)
     
     def set(self, source):
         f = '[MClient] manager.Plugins.set'
@@ -237,6 +243,8 @@ class Plugins:
             self.plugin = self.lgplugin
         elif source == _('Local MT'):
             self.plugin = self.mbplugin
+        elif source == 'Fora':
+            self.plugin = self.frplugin
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(self.source, self.get_sources())
