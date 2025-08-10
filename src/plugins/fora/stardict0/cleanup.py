@@ -42,7 +42,7 @@ class CleanUp:
         self.text = self.text.replace(', ', '\n')
     
     def run(self):
-        f = '[MClient] plugins.fora.cleanup.CleanUp.run'
+        f = '[MClient] plugins.fora.stardict0.cleanup.CleanUp.run'
         if not self.text:
             rep.empty(f)
             return ''

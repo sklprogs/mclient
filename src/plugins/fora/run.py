@@ -5,16 +5,15 @@ from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 
 from plugins.fora.get import Get, ALL_DICS
-from plugins.fora.cleanup import CleanUp
-from plugins.fora.elems import Elems
+import plugins.fora.stardict0.cleanup
+import plugins.fora.stardict0.elems
 
 
 class Plugin:
     
     def __init__(self, Debug=False, maxrows=1000):
-        ''' - Extra unused input variables are preserved so it would be easy to
-              use an abstract class for all dictionary sources.
-            - #NOTE: Do not forget to set plugins.fora.get.PATH earlier.
+        ''' Extra unused input variables are preserved so it would be easy to
+            use an abstract class for all dictionary sources.
         '''
         self.set_values()
         self.Debug = Debug
@@ -148,7 +147,6 @@ class Plugin:
     def request(self, search='', url=''):
         f = '[MClient] plugins.fora.run.Plugin.request'
         self.search = search
-        #TODO: implement
         self.htm = self.text = ''
         cells = []
         ALL_DICS.search(self.search)
@@ -160,17 +158,17 @@ class Plugin:
                 Message(f, mes).show_warning()
                 continue
             if format_ == 'stardict-0':
-                text = CleanUp(dic.article).run()
-                cells = Elems(text, self.search, dic.get_name()).run()
-                if not cells:
-                    rep.empty(f)
-                    continue
-        '''
-        ielems = Elems(self.text)
-        self.cells = ielems.run()
-        self.fixed_urls = ielems.fixed_urls
-        self.art_subj = ielems.art_subj
-        self.Parallel = ielems.Parallel
-        self.Separate = ielems.Separate
-        '''
+                CleanUp = plugins.fora.stardict0.cleanup.CleanUp
+                Elems = plugins.fora.stardict0.elems.Elems
+            text = CleanUp(dic.article).run()
+            ielems = Elems(text, self.search, dic.get_name())
+            cells = ielems.run()
+            if not cells:
+                rep.empty(f)
+                continue
+            self.htm = self.text = ielems.text
+            self.fixed_urls = ielems.fixed_urls
+            self.art_subj = ielems.art_subj
+            self.Parallel = ielems.Parallel
+            self.Separate = ielems.Separate
         return cells

@@ -38,7 +38,7 @@ class Elems:
             self.blocks.append(block)
     
     def set_cells(self):
-        f = '[MClient] plugins.fora.elems.Elems.set_cells'
+        f = '[MClient] plugins.fora.stardict0.elems.Elems.set_cells'
         if not self.blocks:
             rep.empty(f)
             return
@@ -84,7 +84,7 @@ class Elems:
     
     def set_row_nos(self):
         # Run this before deleting fixed types
-        f = '[MClient] plugins.fora.elems.Elems.set_row_nos'
+        f = '[MClient] plugins.fora.stardict0.elems.Elems.set_row_nos'
         count = 0
         if self.cells:
             count += 1
@@ -100,7 +100,7 @@ class Elems:
         rep.matches(f, count)
     
     def set_art_subj(self):
-        f = '[MClient] plugins.fora.elems.Elems.set_art_subj'
+        f = '[MClient] plugins.fora.stardict0.elems.Elems.set_art_subj'
         count = 0
         for block in self.blocks:
             if block.type in ('subj', 'phsubj') and block.subj and block.subjf:
@@ -180,7 +180,7 @@ class Elems:
             i -= 1
     
     def delete_fixed(self):
-        f = '[MClient] plugins.fora.elems.Elems.delete_fixed'
+        f = '[MClient] plugins.fora.stardict0.elems.Elems.delete_fixed'
         count = 0
         i = 0
         while i < len(self.cells):
@@ -201,7 +201,7 @@ class Elems:
         return '\n\n'.join(report)
     
     def _debug_blocks(self, maxrow=30, maxrows=0):
-        f = '[MClient] plugins.fora.elems.Elems._debug_blocks'
+        f = '[MClient] plugins.fora.stardict0.elems.Elems._debug_blocks'
         headers = (_('CELL #'), _('TYPES'), _('TEXT'), 'SUBJ', 'SUBJF', 'URL')
         nos = []
         types = []
@@ -222,7 +222,7 @@ class Elems:
         return f'{f}:\n{mes}'
     
     def _debug_cells(self, maxrow=30, maxrows=0):
-        f = '[MClient] plugins.fora.elems.Elems._debug_cells'
+        f = '[MClient] plugins.fora.stardict0.elems.Elems._debug_cells'
         headers = ('SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #'), _('CELL #')
                   ,_('TYPES'), _('TEXT'), 'URL')
         subj = []
@@ -268,7 +268,7 @@ class Elems:
         self.blocks.append(block)
     
     def run(self):
-        f = '[MClient] plugins.fora.elems.Elems.run'
+        f = '[MClient] plugins.fora.stardict0.elems.Elems.run'
         if not self.text or not self.search or not self.dic:
             rep.cancel(f)
             return []
