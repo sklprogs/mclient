@@ -14,9 +14,11 @@ SUBJ_ABBR = ('разг.', 'уст.', 'диал.')
 
 class Elems:
     
-    def __init__(self, text):
+    def __init__(self, text, search, dic):
         self.set_values()
         self.text = text
+        self.search = search
+        self.dic = dic
     
     def set_values(self):
         self.blocks = []
@@ -32,7 +34,7 @@ class Elems:
             block = Block()
             block.text = lines[i]
             block.type = 'term'
-            block.cellno = i
+            block.cellno = i + 2
             self.blocks.append(block)
     
     def set_cells(self):
@@ -249,11 +251,29 @@ class Elems:
                    ,maxrow = maxrow, maxrows = maxrows).run()
         return f'{f}:\n{mes}'
     
+    def add_subj(self):
+        block = Block()
+        block.cellno = 0
+        block.text = self.dic
+        block.type = 'subj'
+        block.Fixed = True
+        self.blocks.append(block)
+    
+    def add_wform(self):
+        block = Block()
+        block.cellno = 1
+        block.text = self.search
+        block.type = 'wform'
+        block.Fixed = True
+        self.blocks.append(block)
+    
     def run(self):
         f = '[MClient] plugins.fora.elems.Elems.run'
-        if not self.text:
+        if not self.text or not self.search or not self.dic:
             rep.cancel(f)
             return []
+        self.add_subj()
+        self.add_wform()
         self.set_blocks()
         self.set_cells()
         self.set_text()
