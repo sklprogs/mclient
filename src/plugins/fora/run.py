@@ -7,6 +7,9 @@ from skl_shared.message.controller import Message, rep
 from plugins.fora.get import Get, ALL_DICS
 import plugins.fora.stardict0.cleanup
 import plugins.fora.stardict0.elems
+import plugins.stardict.cleanup
+import plugins.stardict.tags
+import plugins.stardict.elems
 
 
 class Plugin:
@@ -160,13 +163,21 @@ class Plugin:
             if format_ == 'stardict-0':
                 CleanUp = plugins.fora.stardict0.cleanup.CleanUp
                 Elems = plugins.fora.stardict0.elems.Elems
-            text = CleanUp(dic.article).run()
-            ielems = Elems(text, self.search, dic.get_name())
+                text = CleanUp(dic.article).run()
+                ielems = Elems(text, self.search, dic.get_name())
+                self.htm = self.text = ielems.text
+            elif format_ == 'stardict-x':
+                CleanUp = plugins.stardict.cleanup.CleanUp
+                Tags = plugins.stardict.tags.Tags
+                Elems = plugins.stardict.elems.Elems
+                text = CleanUp(dic.article).run()
+                blocks = Tags(text).run()
+                ielems = Elems(blocks)
+                self.htm = self.text = text
             cells = ielems.run()
             if not cells:
                 rep.empty(f)
                 continue
-            self.htm = self.text = ielems.text
             self.fixed_urls = ielems.fixed_urls
             self.art_subj = ielems.art_subj
             self.Parallel = ielems.Parallel
