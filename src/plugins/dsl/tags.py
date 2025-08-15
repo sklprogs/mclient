@@ -153,8 +153,7 @@ class Tags:
         useful = ('com', 'ex', 'i', 'p', 'ref', 't', 'term', 'trn', 'wform')
         for item in self.tagged:
             item.tags = [tag for tag in item.tags \
-                         if tag in useful or 'ref dict' in tag
-                        ]
+                        if tag in useful or 'ref dict' in tag]
     
     def rename_types(self):
         f = '[MClient] plugins.dsl.tags.Tags.rename_types'
