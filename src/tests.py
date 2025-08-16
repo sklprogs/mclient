@@ -17,7 +17,11 @@ from config import CONFIG
 
 DEBUG = True
 
-SEARCH = 'мамонт'
+SEARCH = 'aprobować'
+#SEARCH = 'adiutant'
+#SEARCH = 'administration cost'
+#SEARCH = 'account'
+#SEARCH = 'мамонт'
 #SEARCH = 'chicken wing'
 URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing&l2=2'
 HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/fill (2025-01-31).htm'
@@ -218,12 +222,18 @@ class Elems:
         return ielems.debug()
     
     def run_fora(self):
+        f = '[MClient] tests.Elems.run_fora'
         import plugins.fora.get as gt
         import plugins.fora.cleanup as cu
         import plugins.fora.elems as el
-        text = gt.Get(SEARCH).run()
-        text = cu.CleanUp(text).run()
-        ielems = el.Elems(text)
+        articles = gt.Get(SEARCH).run()
+        if not articles:
+            rep.empty(f)
+            return
+        article = articles[0]
+        dic = gt.ALL_DICS.dics[0].get_name()
+        article = cu.CleanUp(article).run()
+        ielems = el.Elems(article, SEARCH, dic)
         ielems.run()
         return ielems.debug()
     
@@ -361,16 +371,34 @@ class Subjects:
 
 class Get:
     
+    def decode_indexes(self, indexes):
+        from plugins.fora.get import Index
+        iindex = Index('/home/pete/.config/mclient/dics/Fora/dict pl-ru')
+        for i in range(len(indexes)):
+            indexes[i][0] = iindex.decode(indexes[i][0])
+            indexes[i][1] = iindex.decode(indexes[i][1])
+        return indexes
+    
+    def run_fora_many_matches(self):
+        from plugins.fora.get import ALL_DICS
+        articles = []
+        # Multiple occurrences of 'aprobować' (and many others) in 'dict pl-ru'
+        indexes = [['JbY', '8'], ['JcV', 'BK'], ['Jdg', 'BA']]
+        indexes = self.decode_indexes(indexes)
+        for index in indexes:
+            for ifora in ALL_DICS.dics:
+                article = ifora.dic.get(index)
+                if article:
+                    articles.append(article)
+        return '\n\n'.join(articles)
+    
     def run_fora(self):
-        from plugins.fora.get import Get
-        from plugins.fora.cleanup import CleanUp
-        mes = Get(SEARCH).run()
-        mes = CleanUp(mes).run()
-        mes = mes.splitlines()
-        mes = [line.strip() for line in mes if line.strip()]
-        mes = [f'"{line}"' for line in mes]
-        mes = '\n'.join(mes)
-        return mes
+        import os
+        from plugins.fora.get import Fora
+        dic = 'dict pl-ru'
+        folder = '/home/pete/.config/mclient/dics/Fora'
+        folder = os.path.join(folder, dic)
+        return Fora(folder).search(SEARCH)
     
     def run_dsl(self):
         import plugins.dsl.get
@@ -1104,11 +1132,12 @@ if __name__ == '__main__':
     #mes = Tags().run_dsl()
     #mes = Get().run_stardict()
     #mes = Get().run_fora()
+    mes = Get().run_fora_many_matches()
     #mes = Tags().run_stardict()
     #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
-    mes = Elems().run_fora()
+    #mes = Elems().run_fora()
     #mes = Elems().run_multitrancom()
     #mes = Subjects().run()
     #mes = View().run_dsl()
