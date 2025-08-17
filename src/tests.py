@@ -17,7 +17,7 @@ from config import CONFIG
 
 DEBUG = True
 
-SEARCH = 'aprobować'
+SEARCH = 'программа'
 #SEARCH = 'adiutant'
 #SEARCH = 'administration cost'
 #SEARCH = 'account'
@@ -221,19 +221,17 @@ class Elems:
         ielems.run()
         return ielems.debug()
     
-    def run_fora(self):
-        f = '[MClient] tests.Elems.run_fora'
-        import plugins.fora.get as gt
-        import plugins.fora.cleanup as cu
-        import plugins.fora.elems as el
-        articles = gt.Get(SEARCH).run()
-        if not articles:
+    def run_fora_stardictx(self):
+        f = '[MClient] tests.Elems.run_fora_stardictx'
+        from plugins.fora.get import ALL_DICS
+        from plugins.stardict.tags import Tags
+        from plugins.stardict.elems import Elems
+        article = ALL_DICS.search(SEARCH)
+        if not article:
             rep.empty(f)
             return
-        article = articles[0]
-        dic = gt.ALL_DICS.dics[0].get_name()
-        article = cu.CleanUp(article).run()
-        ielems = el.Elems(article, SEARCH, dic)
+        blocks = Tags(article).run()
+        ielems = Elems(blocks)
         ielems.run()
         return ielems.debug()
     
@@ -395,7 +393,7 @@ class Get:
     def run_fora(self):
         import os
         from plugins.fora.get import Fora
-        dic = 'dict pl-ru'
+        dic = 'ComputersRuEn'
         folder = '/home/pete/.config/mclient/dics/Fora'
         folder = os.path.join(folder, dic)
         return Fora(folder).search(SEARCH)
@@ -1132,12 +1130,12 @@ if __name__ == '__main__':
     #mes = Tags().run_dsl()
     #mes = Get().run_stardict()
     #mes = Get().run_fora()
-    mes = Get().run_fora_many_matches()
+    #mes = Get().run_fora_many_matches()
     #mes = Tags().run_stardict()
     #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
-    #mes = Elems().run_fora()
+    mes = Elems().run_fora_stardictx()
     #mes = Elems().run_multitrancom()
     #mes = Subjects().run()
     #mes = View().run_dsl()
