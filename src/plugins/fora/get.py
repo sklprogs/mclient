@@ -11,6 +11,12 @@ from skl_shared.message.controller import Message, rep
 from skl_shared.paths import File, Directory, Path, Home
 from skl_shared.time import Timer
 
+'''
+FORMATS = ('stardict-0', 'stardict-h', 'stardict-m', 'stardict-x', 'xdxf'
+          , 'dictd', 'dsl')
+'''
+FORMATS = ('stardict-x')
+
 
 class Dic:
     
@@ -190,6 +196,18 @@ class Properties:
         self.set_file()
         self.load()
         self.set_attrs()
+        self.check_format()
+    
+    def check_format(self):
+        f = '[MClient] plugins.fora.get.Properties.check_format'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        if not self.format.lower() in FORMATS:
+            self.Success = False
+            mes = _('Dictionary "{}" has an unknown format "{}"!')
+            mes = mes.format(self.file, self.format)
+            Message(f, mes).show_warning()
     
     def set_file(self):
         f = '[MClient] plugins.fora.get.Properties.set_file'
@@ -389,7 +407,6 @@ class AllDics:
             rep.empty_output(f)
     
     def search(self, pattern):
-        #NOTE: The first search is the longest
         f = '[MClient] plugins.fora.get.AllDics.search'
         if not self.Success:
             rep.cancel(f)
