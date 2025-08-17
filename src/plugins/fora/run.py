@@ -29,8 +29,6 @@ class Plugin:
         '''
         self.Parallel = False
         self.Separate = False
-        self.formats = ('stardict-0', 'stardict-h', 'stardict-m', 'stardict-x'
-                       ,'xdxf', 'dictd', 'dsl')
         self.majors = []
         self.minors = []
         self.fixed_urls = {}
@@ -150,36 +148,14 @@ class Plugin:
     def request(self, search='', url=''):
         f = '[MClient] plugins.fora.run.Plugin.request'
         self.search = search
-        self.htm = self.text = ''
-        cells = []
-        ALL_DICS.search(self.search)
-        for dic in ALL_DICS.dics:
-            format_ = dic.get_format().lower()
-            if not format_ in self.formats:
-                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-                mes = mes.format(format_, *self.formats)
-                Message(f, mes).show_warning()
-                continue
-            if format_ == 'stardict-0':
-                CleanUp = plugins.fora.stardict0.cleanup.CleanUp
-                Elems = plugins.fora.stardict0.elems.Elems
-                text = CleanUp(dic.article).run()
-                ielems = Elems(text, self.search, dic.get_name())
-                self.htm = self.text = ielems.text
-            elif format_ == 'stardict-x':
-                CleanUp = plugins.stardict.cleanup.CleanUp
-                Tags = plugins.stardict.tags.Tags
-                Elems = plugins.stardict.elems.Elems
-                text = CleanUp(dic.article).run()
-                blocks = Tags(text).run()
-                ielems = Elems(blocks)
-                self.htm = self.text = text
-            cells = ielems.run()
-            if not cells:
-                rep.empty(f)
-                continue
-            self.fixed_urls = ielems.fixed_urls
-            self.art_subj = ielems.art_subj
-            self.Parallel = ielems.Parallel
-            self.Separate = ielems.Separate
+        text = ALL_DICS.search(self.search)
+        text = plugins.stardict.cleanup.CleanUp(text).run()
+        blocks = plugins.stardict.tags.Tags(text).run()
+        ielems = plugins.stardict.elems.Elems(blocks)
+        self.htm = self.text = text
+        cells = ielems.run()
+        self.fixed_urls = ielems.fixed_urls
+        self.art_subj = ielems.art_subj
+        self.Parallel = ielems.Parallel
+        self.Separate = ielems.Separate
         return cells
