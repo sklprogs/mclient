@@ -280,17 +280,12 @@ class Fora:
         self.article = ''
         poses = self.index.search(pattern)
         if not poses:
-            '''
-            mes = _('No matches for "{}" in "{}" ({})!')
-            mes = mes.format(pattern, self.prop.name, self.dic.file)
-            Message(f, mes).show_debug()
-            '''
             return
         for pos in poses:
             indexes = self.index.get(pos)
             self.article += self.dic.get(indexes) + '\n'
-        #mes = f'"{self.article}"'
-        #Message(f, mes).show_debug()
+        if self.article:
+            self.article = '<dic>' + self.get_name() + '</dic>' + self.article
         return self.article
     
     def close(self):
