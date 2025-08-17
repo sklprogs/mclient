@@ -53,7 +53,10 @@ class Dic:
             return
         self.imap.seek(indexes[0])
         # -1 allows to avoid broken UTF-8
-        text = self.imap.read(indexes[1] - 1)
+        try:
+            text = self.imap.read(indexes[1])
+        except:
+            text = self.imap.read(indexes[1] - 1)
         return text.decode()
     
     def set_file(self):
@@ -103,14 +106,21 @@ class Index:
         if not self.Success:
             rep.cancel(f)
             return
-        bpattern = bytes('\n' + pattern + '\t', 'utf-8')
-        pos = self.imap.find(bpattern)
-        if pos > -1:
-            return pos + len(bpattern)
-        bpattern = bytes(pattern + '\t', 'utf-8')
-        pos = self.imap.find(bpattern)
-        if pos == 0:
-            return len(bpattern)
+        bpattern = bytes(pattern, 'utf-8')
+        poses = []
+        pos = 0
+        while True:
+            pos = self.imap.find(bpattern, pos)
+            if pos == -1:
+                break
+            pos = self.imap.find(b'\t', pos)
+            if pos == -1:
+                mes = _('File {} has an invalid structure!').format(self.file)
+                Message(f, mes).show_warning()
+                break
+            pos += 1
+            poses.append(pos)
+        return poses
     
     def get(self, pos):
         f = '[MClient] plugins.fora.get.Index.get'
@@ -268,16 +278,17 @@ class Fora:
             rep.cancel(f)
             return
         self.article = ''
-        pos = self.index.search(pattern)
-        if not pos:
+        poses = self.index.search(pattern)
+        if not poses:
             '''
             mes = _('No matches for "{}" in "{}" ({})!')
             mes = mes.format(pattern, self.prop.name, self.dic.file)
             Message(f, mes).show_debug()
             '''
             return
-        indexes = self.index.get(pos)
-        self.article = self.dic.get(indexes)
+        for pos in poses:
+            indexes = self.index.get(pos)
+            self.article += self.dic.get(indexes) + '\n'
         #mes = f'"{self.article}"'
         #Message(f, mes).show_debug()
         return self.article
