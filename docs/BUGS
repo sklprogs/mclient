@@ -74,7 +74,3 @@ multitrandem:
 - academic: adjective, not a noun
 
 - fora:
-- pave: File "/home/pete/bin/mclient/src/plugins/fora/get.py", line 304, in search
-  self.article += self.dic.get(indexes) + '\n'
-                  ~~~~~~~~~~~~~~~~~~~~~~^~~~~~
-TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
