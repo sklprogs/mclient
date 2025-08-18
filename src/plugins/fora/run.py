@@ -139,7 +139,7 @@ class Plugin:
         return True
     
     def is_accessible(self):
-        return len(ALL_DICS.dics)
+        return ALL_DICS.successful
     
     def suggest(self, search):
         #TODO: implement
