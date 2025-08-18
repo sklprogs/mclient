@@ -63,7 +63,7 @@ class Dic:
             text = self.imap.read(indexes[1])
         except:
             text = self.imap.read(indexes[1] - 1)
-        return text.decode()
+        return text.decode('errors=ignore')
     
     def set_file(self):
         f = '[MClient] plugins.fora.get.Dic.set_file'
@@ -107,8 +107,8 @@ class Index:
         self.imap.flush()
         self.bin.close()
     
-    def search(self, pattern):
-        f = '[MClient] plugins.fora.get.Index.search'
+    def search_all(self, pattern):
+        f = '[MClient] plugins.fora.get.Index.search_all'
         if not self.Success:
             rep.cancel(f)
             return
@@ -290,19 +290,21 @@ class Fora:
     def get_file(self):
         return self.dic.file
     
-    def search(self, pattern):
-        f = '[MClient] plugins.fora.get.Fora.search'
+    def search_all(self, pattern):
+        f = '[MClient] plugins.fora.get.Fora.search_all'
         if not self.Success:
             rep.cancel(f)
             return
         self.article = ''
-        poses = self.index.search(pattern)
+        poses = self.index.search_all(pattern)
         if not poses:
             return
         for pos in poses:
             indexes = self.index.get(pos)
-            self.article += self.dic.get(indexes) + '\n'
-        if self.article:
+            article = self.dic.get(indexes)
+            if article:
+                self.article += article + '\n'
+        if self.article.strip():
             self.article = '<dic>' + self.get_name() + '</dic>' + self.article
         return self.article
     
