@@ -71,7 +71,7 @@ class Dic:
             rep.cancel(f)
             return
         self.file = os.path.join(self.folder, 'dict.data')
-        self.Success = File(self.file).Success
+        self.Success = File(self.file, Graphical=False).Success
 
 
 
@@ -172,7 +172,7 @@ class Index:
             rep.cancel(f)
             return
         self.file = os.path.join(self.folder, 'dict.index')
-        self.Success = File(self.file).Success
+        self.Success = File(self.file, Graphical=False).Success
     
     def decode(self, index):
         ''' - See https://github.com/jgoerzen/dictdlib.git.
