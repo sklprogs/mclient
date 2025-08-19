@@ -7,9 +7,9 @@ from skl_shared.message.controller import Message, rep
 from plugins.fora.get import Get, ALL_DICS
 import plugins.fora.stardict0.cleanup
 import plugins.fora.stardict0.elems
-import plugins.stardict.cleanup
-import plugins.stardict.tags
-import plugins.stardict.elems
+import plugins.fora.stardictx.cleanup
+import plugins.fora.stardictx.tags
+import plugins.fora.stardictx.elems
 
 
 class Plugin:
@@ -149,9 +149,9 @@ class Plugin:
         f = '[MClient] plugins.fora.run.Plugin.request'
         self.search = search
         text = ALL_DICS.search(self.search)
-        text = plugins.stardict.cleanup.CleanUp(text).run()
-        blocks = plugins.stardict.tags.Tags(text).run()
-        ielems = plugins.stardict.elems.Elems(blocks)
+        text = plugins.fora.stardictx.cleanup.CleanUp(text).run()
+        blocks = plugins.fora.stardictx.tags.Tags(text).run()
+        ielems = plugins.fora.stardictx.elems.Elems(blocks)
         self.htm = self.text = text
         cells = ielems.run()
         self.fixed_urls = ielems.fixed_urls

@@ -224,8 +224,8 @@ class Elems:
     def run_fora_stardictx(self):
         f = '[MClient] tests.Elems.run_fora_stardictx'
         from plugins.fora.get import ALL_DICS
-        from plugins.stardict.tags import Tags
-        from plugins.stardict.elems import Elems
+        from plugins.fora.stardictx.tags import Tags
+        from plugins.fora.stardictx.elems import Elems
         article = ALL_DICS.search(SEARCH)
         if not article:
             rep.empty(f)
