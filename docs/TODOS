@@ -94,4 +94,4 @@ for now. Inbound tags have priority over outbound tags.
   autosuggestion, but not found by 'plugins.stardict.get.AllDics.get'
 
 fora:
-- Implement better splitting for "pave".
+- Implement better splitting for "pave", "точка с запятой".
