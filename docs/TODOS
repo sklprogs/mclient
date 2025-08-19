@@ -92,3 +92,6 @@ for now. Inbound tags have priority over outbound tags.
 - support idx.gz files
 - fix: "Вы попались на удочку" (ComputersRE, EngineeringRE) - found by
   autosuggestion, but not found by 'plugins.stardict.get.AllDics.get'
+
+fora:
+- Implement better splitting for "pave".
