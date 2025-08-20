@@ -17,7 +17,7 @@ from config import CONFIG
 
 DEBUG = True
 
-SEARCH = 'программа'
+SEARCH = 'точка с запятой'
 #SEARCH = 'adiutant'
 #SEARCH = 'administration cost'
 #SEARCH = 'account'
@@ -464,6 +464,20 @@ class Get:
 
 
 class Tags:
+    
+    def run_fora_stardictx(self):
+        f = '[MClient] tests.Tags.run_fora_stardictx'
+        from plugins.fora.get import ALL_DICS
+        from plugins.fora.stardictx.cleanup import CleanUp
+        from plugins.fora.stardictx.tags import Tags
+        article = ALL_DICS.search(SEARCH)
+        if not article:
+            rep.empty(f)
+            return
+        article = CleanUp(article).run()
+        itags = Tags(article)
+        itags.run()
+        return itags.debug()
     
     def run_multitrandem(self):
         f = '[MClient] tests.Tags.run_multitrandem'
@@ -1132,10 +1146,11 @@ if __name__ == '__main__':
     #mes = Get().run_fora()
     #mes = Get().run_fora_many_matches()
     #mes = Tags().run_stardict()
+    mes = Tags().run_fora_stardictx()
     #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
-    mes = Elems().run_fora_stardictx()
+    #mes = Elems().run_fora_stardictx()
     #mes = Elems().run_multitrancom()
     #mes = Subjects().run()
     #mes = View().run_dsl()
