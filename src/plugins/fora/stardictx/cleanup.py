@@ -33,6 +33,9 @@ class CleanUp:
         # This is done to speed up and eliminate tag disambiguation
         try:
             self.text = self.text.replace('<i>', '').replace('</i>', '')
+            self.text = self.text.replace('<nu />', '')
+            self.text = self.text.replace('[/&apos;]', '')
+            self.text = self.text.replace('[&apos;]', '')
         # Encoding has failed
         except TypeError:
             self.text = ''
