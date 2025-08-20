@@ -71,6 +71,7 @@ class AnalyzeTag:
             self.block.type = 'subj'
     
     def run(self):
+        f = '[MClient] plugins.fora.stardictx.tags.AnalyzeTag.run'
         self.split()
         self.fragms = [fragm for fragm in self.fragms if fragm.strip()]
         for self.fragm in self.fragms:
@@ -78,6 +79,7 @@ class AnalyzeTag:
                 self.run_plain()
                 continue
             if not self.is_useful():
+                rep.wrong_input(f, self.fragm, False)
                 self.block.type = 'invalid'
                 continue
             self.block.type = ''
