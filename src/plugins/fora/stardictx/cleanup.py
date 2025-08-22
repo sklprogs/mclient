@@ -152,6 +152,10 @@ class CleanUp:
                 self.text[i] = '\n'
         self.text = ''.join(self.text)
     
+    def fix_tags(self):
+        self.text = self.text.replace('</dic\>', '</dic>')
+        self.text = self.text.replace('</k\>', '</k>')
+    
     def run(self):
         f = '[MClient] plugins.fora.stardictx.cleanup.CleanUp.run'
         if not self.text or not header:
@@ -162,6 +166,7 @@ class CleanUp:
         self.delete_roman_numbering()
         self.delete_numbering()
         self.delete_alpha_numbering()
+        self.fix_tags()
         self.replace_punc()
         self.separate_phrases()
         return self.text
