@@ -8,7 +8,7 @@ from skl_shared.message.controller import Message, rep
 from skl_shared.table import Table
 from skl_shared.logic import lat_alphabet_low
 
-import instance as ic
+from instance import Tag, Block
 
 ''' Tag patterns:
     •  Short subject titles:
@@ -61,7 +61,7 @@ class AnalyzeTag:
     
     def set_values(self):
         self.Success = True
-        self.tag = ic.Tag()
+        self.tag = Tag()
         self.cur_row = 0
         self.cur_cell = 0
     
@@ -325,7 +325,7 @@ class Tags:
         tags = [tag for tag in self.tags if tag.type == 'text' \
                and not self._is_trash(tag)]
         for tag in tags:
-            block = ic.Block()
+            block = Block()
             for subtag in tag.inherent:
                 if subtag.type == 'url':
                     block.url = subtag.url
