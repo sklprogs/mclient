@@ -15,14 +15,14 @@ from instance import Block, Tag
     •  Full dictionary titles:
          define them by the .ifo file, set the tag manually
          <dic></dic>
-    •  Short dictionary titles:
-         define them manually by the file name
+    •  Any abbreviation (a short dictionary title, a comment, etc.)
          <abr></abr>
     •  Terms:
          (no tags at all, see "'cellist")
          <dtrn></dtrn>
     •  Comments:
          <co></co>
+         <ex></ex>
          <kref></kref> ("See also" section items)
     •  Word forms:
          <k></k>
@@ -31,8 +31,6 @@ from instance import Block, Tag
     •  Parts of speech:
          # XDXF tag meaning grammar information about the word <gr></gr>
     '''
-
-useful_tags = ['<dic>', '<co>', '<tr>', '<k>', '<dtrn>', '<kref>', '<gr>']
 
 
 class AnalyzeTag:
@@ -90,7 +88,7 @@ class AnalyzeTag:
         return self.tag.name == 'dic'
     
     def _is_comment(self):
-        return self.tag.name in ('co', 'kref')
+        return self.tag.name in ('co', 'ex', 'kref')
     
     def _is_wform(self):
         return self.tag.name == 'k'
@@ -115,7 +113,7 @@ class AnalyzeTag:
         elif self._is_transc():
             self.tag.type = 'transc'
         else:
-            self.tag.type = 'invalid'
+            self.tag.type = 'comment'
     
     def _set_close(self):
         if self.fragm.startswith('</'):
@@ -190,7 +188,7 @@ class Tags:
         curcell = -1
         for tag in self.tags:
             if not tag.Close:
-                if tag.name in ('dic', 'dtrn', 'tr'):
+                if tag.name in ('dic', 'dtrn', 'k', 'tr'):
                     curcell += 1
             tag.cellno = curcell
     
