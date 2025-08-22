@@ -34,11 +34,23 @@ class CleanUp:
         try:
             self.text = self.text.replace('<i>', '').replace('</i>', '')
             self.text = self.text.replace('<nu />', '')
+            self.text = self.text.replace('<abr>', '').replace('</abr>', '')
             self.text = self.text.replace('[/&apos;]', '')
             self.text = self.text.replace('[&apos;]', '')
         # Encoding has failed
         except TypeError:
             self.text = ''
+    
+    def fix_tags(self):
+        #TODO: Use regexp
+        # This one is the only that is actually an opening tag
+        self.text = self.text.replace('<dtrn\>', '<dtrn>')
+        self.text = self.text.replace('</dic\>', '</dic>')
+        self.text = self.text.replace('</k\>', '</k>')
+        self.text = self.text.replace('</i\>', '</i>')
+        self.text = self.text.replace('</c\>', '</c>')
+        self.text = self.text.replace('</b\>', '</b>')
+        self.text = self.text.replace('</abr\>', '</abr>')
     
     def delete_roman_numbering(self):
         f = '[MClient] plugins.fora.stardictx.cleanup.CleanUp.delete_roman_numbering'
@@ -152,21 +164,17 @@ class CleanUp:
                 self.text[i] = '\n'
         self.text = ''.join(self.text)
     
-    def fix_tags(self):
-        self.text = self.text.replace('</dic\>', '</dic>')
-        self.text = self.text.replace('</k\>', '</k>')
-    
     def run(self):
         f = '[MClient] plugins.fora.stardictx.cleanup.CleanUp.run'
         if not self.text or not header:
             rep.empty(f)
             return ''
         self.delete_trash()
+        self.fix_tags()
         self.delete_disamb()
         self.delete_roman_numbering()
         self.delete_numbering()
         self.delete_alpha_numbering()
-        self.fix_tags()
         self.replace_punc()
         self.separate_phrases()
         return self.text
