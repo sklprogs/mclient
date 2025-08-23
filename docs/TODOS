@@ -1,6 +1,7 @@
 
 
 mclient:
+- go places: "разг." is misformatted owing to new <nobr> tag
 - search: Refactor searching in article
 - History: Copy article title using RMB
 - ctrl+c+c for not found: not found item is not pasted in search field
