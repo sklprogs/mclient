@@ -1,4 +1,6 @@
 (in development)
+* Support Fora dictionaries
+* Show number of dictionaries that could not be loaded in main window
 
 ## 7.1.7
 * Fix loading .dsl and Stardict dictionaries
