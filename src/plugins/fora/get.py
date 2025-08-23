@@ -15,7 +15,7 @@ from skl_shared.time import Timer
 FORMATS = ('stardict-0', 'stardict-h', 'stardict-m', 'stardict-x', 'xdxf'
           , 'dictd', 'dsl')
 '''
-FORMATS = ('stardict-x')
+FORMATS = ('stardict-x', 'dsl')
 
 
 class Dic:
@@ -58,11 +58,8 @@ class Dic:
             rep.empty(f)
             return
         self.imap.seek(indexes[0])
-        # -1 allows to avoid broken UTF-8
-        try:
-            text = self.imap.read(indexes[1])
-        except:
-            text = self.imap.read(indexes[1] - 1)
+        # -1 may be required by stardict-0 to avoid broken UTF-8
+        text = self.imap.read(indexes[1])
         return text.decode(errors='ignore')
     
     def set_file(self):
