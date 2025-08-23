@@ -77,13 +77,11 @@ class Get:
         if not self.Success:
             rep.cancel(f)
             return
-        dics = [idic for idic in objs.get_all_dics().dics \
-                if idic.lang1 == LANG1 and idic.lang2 == LANG2
-               ]
+        dics = [idic for idic in ALL_DICS.dics \
+               if idic.lang1 == LANG1 and idic.lang2 == LANG2]
         dicnames = [idic.dicname for idic in dics]
         mes = _('Dictionaries to search in ({}/{}): {}')
-        mes = mes.format(len(dicnames), len(objs.all_dics.dics)
-                        ,'; '.join(dicnames))
+        mes = mes.format(len(dicnames), len(ALL_DICS.dics), '; '.join(dicnames))
         Message(f, mes).show_debug()
         for idic in dics:
             iarticle = idic.search(self.pattern)
@@ -330,7 +328,7 @@ class Suggest:
         if not self.Success:
             rep.cancel(f)
             return
-        items = objs.get_all_dics().get_index()
+        items = ALL_DICS.get_index()
         if not items:
             self.Success = False
             rep.empty(f)
