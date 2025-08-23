@@ -35,7 +35,7 @@ class Suggest:
         if not self.Success:
             rep.cancel(f)
             return
-        items = objs.get_all_dics().get_index()
+        items = ALL_DICS.get_index()
         if not items:
             self.Success = False
             rep.empty(f)
@@ -62,10 +62,10 @@ class Get:
     
     def run(self):
         f = '[MClient] plugins.stardict.get.Get.run'
-        if not PATH or not self.pattern:
+        if not self.pattern:
             rep.empty(f)
             return
-        return objs.get_all_dics().get(self.pattern)
+        return ALL_DICS.get(self.pattern)
 
 
 
