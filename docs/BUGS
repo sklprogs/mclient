@@ -58,6 +58,7 @@ dsl:
 - Fix the wrong position (at top) of a phrase section
 
 multitrandem:
+- RU-EN: Searching any word results in "Invalid continuation byte"
 - Throws an error during a search when Stardict/DSL dics (but not MT)
   are available
 - RU-EN, 'цепь: провод': fails when no dics are available (option menus
