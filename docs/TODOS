@@ -55,6 +55,7 @@ multitrancom:
 - Restore selection upon changing a setting and loading the article again
 
 dsl:
+- Follow symlinks in "DSL" folder
 - Test "frame" article (a lot of entries; brackets should be in place)
 - Delete tags like ['], [/']; do not split continuous words
 - Expand dictionary abbreviations (use *_abrv.dsl)
