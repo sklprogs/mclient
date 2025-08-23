@@ -176,8 +176,8 @@ class Plugin:
         '''
         return False
     
-    def is_accessible(self):
-        return gt.com.is_accessible()
+    def count_valid(self):
+        return gt.com.count_valid()
     
     def suggest(self, search):
         return gt.Suggest(search).run()

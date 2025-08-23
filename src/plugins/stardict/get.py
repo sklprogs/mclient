@@ -467,7 +467,7 @@ class Objects:
 
 class Commands:
     
-    def is_accessible(self):
+    def count_valid(self):
         return len(objs.get_all_dics().dics)
 
 

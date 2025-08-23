@@ -171,12 +171,12 @@ class Plugins:
             return
         self.plugin.set_timeout(timeout)
     
-    def is_accessible(self):
-        f = '[MClient] manager.Plugins.is_accessible'
+    def count_valid(self):
+        f = '[MClient] manager.Plugins.count_valid'
         if not self.plugin:
             rep.empty(f)
             return
-        return self.plugin.is_accessible()
+        return self.plugin.count_valid()
 
     def suggest(self, search):
         f = '[MClient] manager.Plugins.suggest'

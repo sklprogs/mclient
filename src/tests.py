@@ -1087,17 +1087,17 @@ class Commands:
         self._set_timeout(module=mc, source=_('Multitran'), timeout=2)
         self._set_timeout(module=mc, source='multitran.com', timeout=3)
     
-    def is_accessible(self):
+    def count_valid(self):
         from manager import PLUGINS
-        f = '[MClient] tests.Commands.is_accessible'
+        f = '[MClient] tests.Commands.count_valid'
         source = _('Offline')
         PLUGINS.set(source)
-        result = PLUGINS.is_accessible()
+        result = PLUGINS.count_valid()
         mes = _('Source: {}; accessibility: {}').format(source, result)
         Message(f, mes).show_debug()
         source = 'multitran.com'
         PLUGINS.set(source)
-        result = PLUGINS.is_accessible()
+        result = PLUGINS.count_valid()
         mes = _('Source: {}; accessibility: {}').format(source, result)
         Message(f, mes).show_debug()
     

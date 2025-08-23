@@ -221,7 +221,7 @@ class Commands:
             url += EXT
         return url
 
-    def is_accessible(self):
+    def count_valid(self):
         try:
             code = urllib.request.urlopen(url=URL, timeout=TIMEOUT).code
             if (code / 100 < 4):

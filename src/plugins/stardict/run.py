@@ -136,8 +136,8 @@ class Plugin:
         # Whether or not the plugin is actually a wrapper over other plugins
         return False
     
-    def is_accessible(self):
-        return gt.com.is_accessible()
+    def count_valid(self):
+        return gt.com.count_valid()
     
     def suggest(self, search):
         return gt.Suggest(search).run()

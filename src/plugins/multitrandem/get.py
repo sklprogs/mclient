@@ -1508,7 +1508,7 @@ class Commands:
             mes = _('Third-party module has failed!\n\nDetails: {}').format(e)
             Message(f, mes).show_warning()
     
-    def is_accessible(self):
+    def count_valid(self):
         return len(objs.get_all_dics().get_langs())
     
     def get_string(self, chunk, limit=200):

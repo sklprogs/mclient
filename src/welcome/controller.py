@@ -76,7 +76,7 @@ class Welcome:
             isource = Source()
             isource.title = dic
             isource.Online = True
-            if PLUGINS.is_accessible():
+            if PLUGINS.count_valid():
                 isource.status = _('running')
                 isource.color = 'green'
             self.sources.append(isource)
@@ -93,7 +93,7 @@ class Welcome:
             PLUGINS.set(dic)
             isource = Source()
             isource.title = dic
-            dic_num = PLUGINS.is_accessible()
+            dic_num = PLUGINS.count_valid()
             isource.status = dic_num
             if dic_num:
                 isource.color = 'green'

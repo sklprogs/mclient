@@ -138,7 +138,7 @@ class Plugin:
         # Whether or not the plugin is actually a wrapper over other plugins
         return True
     
-    def is_accessible(self):
+    def count_valid(self):
         return ALL_DICS.successful
     
     def suggest(self, search):
