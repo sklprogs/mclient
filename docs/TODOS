@@ -78,6 +78,7 @@ multitrandem:
 - implement speech parts
 
 stardict:
+- Follow symlinks in "Stardict" folder
 - Unknown tags should be ignored, but not their contents which depend on
 previous tags. After loading an article, a warning should be logged with a list
 of unknown tags.
