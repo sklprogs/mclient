@@ -8,15 +8,8 @@ import zlib
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.time import Timer
-from skl_shared.paths import Path, File, Directory
+from skl_shared.paths import Home, Path, File, Directory
 from skl_shared.logic import Input
-
-
-''' A directory storing all stardict files.
-    #NOTE: Do not forget to change this variable externally before calling
-    anything from this module.
-'''
-PATH = ''
 
 
 class Suggest:
@@ -341,8 +334,18 @@ class StarDict:
 class AllDics:
     
     def __init__(self):
-        self.set_values()
-        self.reset()
+        self.ifos = []
+        self.dics = []
+        self.index_ = []
+        self.path = Home('mclient').add_config('dics', 'Stardict')
+        self.Success = Directory(self.path).Success
+        self.load()
+    
+    def get_valid(self):
+        return [dic for dic in self.dics if dic.Success]
+    
+    def get_invalid(self):
+        return [dic for dic in self.dics if not dic.Success]
     
     def get_index(self):
         f = '[MClient] plugins.stardict.get.AllDics.get_index'
@@ -379,19 +382,6 @@ class AllDics:
                 mes = mes.format(dic.title, search)
                 Message(f, mes).show_debug()
         return '\n'.join(lst)
-    
-    def set_values(self):
-        self.ifos = []
-        self.dics = []
-        self.index_ = []
-        self.path = ''
-        # Do not run anything if 'self.reset' was not run
-        self.Success = False
-    
-    def reset(self):
-        self.set_values()
-        self.path = PATH
-        self.Success = Directory(self.path).Success
     
     def walk(self):
         ''' Explore all subdirectories of path searching for filenames that
@@ -451,25 +441,4 @@ class AllDics:
         Message(f, mes).show_info()
 
 
-
-class Objects:
-    
-    def __init__(self):
-        self.alldics = None
-        
-    def get_all_dics(self):
-        if self.alldics is None:
-            self.alldics = AllDics()
-            self.alldics.load()
-        return self.alldics
-
-
-
-class Commands:
-    
-    def count_valid(self):
-        return len(objs.get_all_dics().dics)
-
-
-objs = Objects()
-com = Commands()
+ALL_DICS = AllDics()

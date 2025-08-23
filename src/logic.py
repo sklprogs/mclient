@@ -156,6 +156,8 @@ class Source:
         self.status = _('not running')
         self.color = 'red'
         self.Online = False
+        self.successful = 0
+        self.failed = 0
 
 
 

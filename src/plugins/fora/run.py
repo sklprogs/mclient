@@ -139,7 +139,10 @@ class Plugin:
         return True
     
     def count_valid(self):
-        return ALL_DICS.successful
+        return len(ALL_DICS.get_valid())
+    
+    def count_invalid(self):
+        return len(ALL_DICS.get_invalid())
     
     def suggest(self, search):
         #TODO: implement

@@ -351,10 +351,15 @@ class AllDics:
     
     def __init__(self):
         self.Success = True
-        self.successful = 0
         self.dics = []
         self.path = Home('mclient').add_config('dics', 'Fora')
         self.set()
+    
+    def get_valid(self):
+        return [dic for dic in self.dics if dic.Success]
+    
+    def get_invalid(self):
+        return [dic for dic in self.dics if not dic.Success]
     
     def get_summary(self):
         f = '[MClient] plugins.fora.get.AllDics.get_summary'
@@ -400,15 +405,6 @@ class AllDics:
             mes.append('')
         return '{}:\n{}'.format(f, '\n'.join(mes))
     
-    def set_successful(self):
-        f = '[MClient] plugins.fora.get.AllDics.set_successful'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        for dic in self.dics:
-            if dic.Success:
-                self.successful += 1
-    
     def set(self):
         f = '[MClient] plugins.fora.get.AllDics.set'
         if not self.Success:
@@ -431,9 +427,8 @@ class AllDics:
             if ipath.get_filename() != 'fdblite.properties':
                 continue
             self.dics.append(Fora(ipath.get_dirname()))
-        self.set_successful()
         timer.end()
-        if not self.successful:
+        if not self.get_valid():
             self.Success = False
             rep.empty_output(f)
     
@@ -453,7 +448,7 @@ class AllDics:
         timer.end()
         articles = [article for article in articles if article]
         mes = _('"{}": {} matches in {} Fora dictionaries')
-        mes = mes.format(pattern, len(articles), self.successful)
+        mes = mes.format(pattern, len(articles), len(self.get_valid()))
         Message(f, mes).show_debug()
         return '\n\n'.join(articles)
     

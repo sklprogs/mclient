@@ -16,14 +16,12 @@ import plugins.multitrandem.subjects as sj
 class Plugin:
     
     def __init__(self, Debug=False, maxrows=1000):
-        ''' - Extra unused input variables are preserved so it would be easy to
-              use an abstract class for all dictionary sources.
-            - #NOTE: Do not forget to set plugins.multitrandem.get.PATH
-              earlier.
+        ''' Extra unused input variables are preserved so it would be easy to
+            use an abstract class for all dictionary sources.
         '''
         self.set_values()
         #TODO: elaborate
-        self.abbr = gt.objs.get_files().get_subject()
+        self.abbr = gt.FILES.get_subject()
         self.Debug = Debug
         self.maxrows = maxrows
     
@@ -66,7 +64,7 @@ class Plugin:
         return False
     
     def quit(self):
-        gt.objs.get_files().close()
+        gt.FILES.close()
     
     def _adapt_lang(self, lang):
         f = '[MClient] plugins.multitrandem.run.Plugin._adapt_lang'
@@ -110,8 +108,7 @@ class Plugin:
             for block in self.blocks:
                 if block.text and block.type in ('dic', 'wform', 'term'
                                                 ,'comment', 'correction'
-                                                ,'user'
-                                                ):
+                                                ,'user'):
                     mes.append(block.text)
             self.text = ''.join(mes)
         return self.text
@@ -132,11 +129,11 @@ class Plugin:
     
     def set_lang1(self, lang1):
         gt.LANG1 = self._adapt_lang(lang1)
-        gt.objs.get_files().reset()
+        gt.FILES.reset()
     
     def set_lang2(self, lang2):
         gt.LANG2 = self._adapt_lang(lang2)
-        gt.objs.get_files().reset()
+        gt.FILES.reset()
     
     def set_timeout(self, timeout=0):
         # This is needed only for compliance with a general method
@@ -157,6 +154,9 @@ class Plugin:
     def count_valid(self):
         return gt.com.count_valid()
     
+    def count_invalid(self):
+        return gt.com.count_invalid()
+    
     def suggest(self, search):
         return gt.Suggest(search).run()
     
@@ -172,7 +172,7 @@ class Plugin:
             if blocks:
                 self.blocks += blocks
         self.cells = el.Elems(blocks=self.blocks, abbr=None
-                             ,langs = gt.objs.get_all_dics().get_langs()
+                             ,langs = gt.ALL_DICS.get_langs()
                              ,search=search).run()
         self.get_text()
         self.get_htm()

@@ -129,6 +129,12 @@ class Plugin:
     def count_valid(self):
         return gt.com.count_valid()
     
+    def count_invalid(self):
+        if self.count_valid():
+            return 0
+        else:
+            return 1
+    
     def suggest(self, search):
         return gt.Suggest(search).run()
     

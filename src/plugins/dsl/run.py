@@ -141,7 +141,7 @@ class Plugin:
         elif not lang1:
             rep.empty(f)
         else:
-            lang1 = gt.objs.get_all_dics().get_code(lang1)
+            lang1 = gt.ALL_DICS.get_code(lang1)
             gt.LANG1 = lang1
     
     def set_lang2(self, lang2=''):
@@ -151,7 +151,7 @@ class Plugin:
         elif not lang2:
             rep.empty(f)
         else:
-            lang2 = gt.objs.get_all_dics().get_code(lang2)
+            lang2 = gt.ALL_DICS.get_code(lang2)
             gt.LANG2 = lang2
     
     def set_timeout(self, timeout=0):
@@ -160,15 +160,15 @@ class Plugin:
     
     def get_langs1(self, lang2=''):
         if lang2:
-            return gt.objs.get_all_dics().get_pairs(lang2)
+            return gt.ALL_DICS.get_pairs(lang2)
         else:
-            return gt.objs.get_all_dics().get_langs1()
+            return gt.ALL_DICS.get_langs1()
     
     def get_langs2(self, lang1=''):
         if lang1:
-            return gt.objs.get_all_dics().get_pairs(lang1)
+            return gt.ALL_DICS.get_pairs(lang1)
         else:
-            return gt.objs.get_all_dics().get_langs2()
+            return gt.ALL_DICS.get_langs2()
     
     def is_combined(self):
         ''' Whether or not the plugin is actually a wrapper over other
@@ -177,7 +177,10 @@ class Plugin:
         return False
     
     def count_valid(self):
-        return gt.com.count_valid()
+        return len(gt.ALL_DICS.get_valid())
+    
+    def count_invalid(self):
+        return len(gt.ALL_DICS.get_invalid())
     
     def suggest(self, search):
         return gt.Suggest(search).run()

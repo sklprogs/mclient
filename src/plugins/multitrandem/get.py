@@ -11,14 +11,13 @@ from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.text_file import Read
 from skl_shared.logic import Text, Input, com as shcom
-from skl_shared.paths import Path, File, Directory
+from skl_shared.paths import Home, Path, File, Directory
 from skl_shared.table import Table
 
 # Do not localize language names here
 CODING = 'windows-1251'
 LANG1 = 'English'
 LANG2 = 'Russian'
-PATH = ''
 MAXSTEMS = 2
 DEBUG = False
 
@@ -147,7 +146,7 @@ class Subject:
         self.file = file
         self.get_locale()
         # Suppress useless error output
-        if objs.get_files().iwalker.Success:
+        if FILES.iwalker.Success:
             self.load()
             self.parse()
         else:
@@ -655,9 +654,8 @@ class UPage(Binary):
             Message(f, mes, True).show_error()
     
     def _decode(self, pattern):
-        if self.file in (objs.get_files().iwalker.get_stems1()
-                        ,objs.files.iwalker.get_stems2()
-                        ):
+        if self.file in (FILES.iwalker.get_stems1()
+                        ,FILES.iwalker.get_stems2()):
             result = pattern.decode(CODING, 'replace')
         else:
             result = com.get_string(pattern, 0)
@@ -672,13 +670,11 @@ class UPage(Binary):
         if self.part1[i] == b'':
             stem1 = _('Start')
         else:
-            stem1 = _('{} (#{})').format (self._decode(self.part1[i])
-                                         ,self._get_no(self.part1[i])
-                                         )
+            stem1 = _('{} (#{})').format(self._decode(self.part1[i])
+                                        ,self._get_no(self.part1[i]))
         if i + 1 < len(self.part1):
-            stem2 = _('{} (#{})').format (self._decode(self.part1[i+1])
-                                         ,self._get_no(self.part1[i+1])
-                                         )
+            stem2 = _('{} (#{})').format(self._decode(self.part1[i+1])
+                                        ,self._get_no(self.part1[i+1]))
         else:
             stem2 = _('End')
         mes = f'{stem1} {oper} {self._decode(pattern)} < {stem2}'
@@ -839,9 +835,26 @@ class UPage(Binary):
 class Walker:
     
     def __init__(self):
-        self.set_values()
-        if PATH:
-            self.reset()
+        self.article = ''
+        self.fnames = []
+        self.ending = ''
+        self.files = []
+        self.glue1 = ''
+        self.glue2 = ''
+        self.idir = None
+        self.lang11 = ''
+        self.lang21 = ''
+        self.lang13 = ''
+        self.lang23 = ''
+        self.typein1 = ''
+        self.typein2 = ''
+        self.stems1 = ''
+        self.stems2 = ''
+        self.subject = ''
+        self.path = Home('mclient').add_config('dics', 'Multitran (Demo)')
+        self.check()
+        self.set_langs()
+        self.walk()
     
     def get_ending(self):
         f = '[MClient] plugins.multitrandem.get.Walker.get_ending'
@@ -983,12 +996,6 @@ class Walker:
         Message(f, self.glue2).show_debug()
         return self.glue2
     
-    def reset(self):
-        self.set_values()
-        self.check()
-        self.set_langs()
-        self.walk()
-    
     def set_langs(self):
         f = '[MClient] plugins.multitrandem.get.Walker.set_langs'
         if not self.Success:
@@ -1003,11 +1010,11 @@ class Walker:
     
     def check(self):
         f = '[MClient] plugins.multitrandem.get.Walker.check'
-        if not PATH or not LANG1 or not LANG2:
+        if not self.path or not LANG1 or not LANG2:
             self.Success = False
             rep.empty(f)
             return
-        self.idir = Directory(PATH)
+        self.idir = Directory(self.path)
         self.Success = self.idir.Success
     
     def get_stems1(self):
@@ -1055,25 +1062,6 @@ class Walker:
         except (ValueError, IndexError):
             mes = _('Wrong input data!')
             Message(f, mes).show_warning()
-    
-    def set_values(self):
-        self.article = ''
-        self.fnames = []
-        self.ending = ''
-        self.files = []
-        self.glue1 = ''
-        self.glue2 = ''
-        self.idir = None
-        self.lang11 = ''
-        self.lang21 = ''
-        self.lang13 = ''
-        self.lang23 = ''
-        self.typein1 = ''
-        self.typein2 = ''
-        self.stems1 = ''
-        self.stems2 = ''
-        self.subject = ''
-        self.Success = False
     
     def walk(self):
         f = '[MClient] plugins.multitrandem.get.Walker.walk'
@@ -1192,7 +1180,7 @@ class Suggest:
         if not self.Success:
             rep.cancel(f)
             return
-        suggestions = objs.get_files().get_typein1().search(self.pattern)
+        suggestions = FILES.get_typein1().search(self.pattern)
         if suggestions:
             return suggestions[0:20]
     
@@ -1205,8 +1193,10 @@ class Suggest:
 class AllDics:
     
     def __init__(self):
-        self.set_values()
-        self.reset()
+        self.dics = []
+        self.langs = []
+        self.path = Home('mclient').add_config('dics', 'Multitran (Demo)')
+        self.Success = Directory(self.path).Success
     
     def get_langs(self):
         # Return all available languages
@@ -1217,24 +1207,12 @@ class AllDics:
         #TODO: elaborate
         if self.langs:
             return self.langs
-        if objs.get_files().iwalker.Success:
-            for fname in objs.files.iwalker.fnames:
+        if FILES.iwalker.Success:
+            for fname in FILES.iwalker.fnames:
                 # Relative paths are already lowercased
                 if fname.startswith('dict.') and fname.endswith('t'):
                     self.langs.append(fname)
         return self.langs
-    
-    def set_values(self):
-        self.dics = []
-        self.langs = []
-        self.path = ''
-        # Do not run anything if 'self.reset' was not run
-        self.Success = False
-    
-    def reset(self):
-        self.set_values()
-        self.path = PATH
-        self.Success = Directory(self.path).Success
 
 
 
@@ -1509,7 +1487,13 @@ class Commands:
             Message(f, mes).show_warning()
     
     def count_valid(self):
-        return len(objs.get_all_dics().get_langs())
+        return len(ALL_DICS.get_langs())
+    
+    def count_invalid(self):
+        if self.count_valid():
+            return 0
+        else:
+            return 1
     
     def get_string(self, chunk, limit=200):
         ''' Only raw strings should be used in GUI (otherwise, for example,
@@ -1557,6 +1541,21 @@ class Files:
     
     def __init__(self):
         self.reset()
+    
+    def reset(self):
+        self.iwalker = None
+        self.typein1 = None
+        self.typein2 = None
+        self.stems1 = None
+        self.stems2 = None
+        self.glue1 = None
+        self.glue2 = None
+        self.article = None
+        self.subject = None
+        self.ending = None
+        self.iwalker = Walker()
+        self.Success = self.iwalker.Success
+        self.open()
     
     def get_ending(self):
         if self.Success:
@@ -1637,45 +1636,6 @@ class Files:
         self.get_glue1().close()
         self.get_glue2().close()
         self.get_article().close()
-    
-    def reset(self):
-        self.set_values()
-        self.iwalker = Walker()
-        self.Success = self.iwalker.Success
-    
-    def set_values(self):
-        self.iwalker = None
-        self.Success = False
-        self.typein1 = None
-        self.typein2 = None
-        self.stems1 = None
-        self.stems2 = None
-        self.glue1 = None
-        self.glue2 = None
-        self.article = None
-        self.subject = None
-        self.ending = None
-
-
-
-class Objects:
-    
-    def __init__(self):
-        self.reset()
-    
-    def reset(self):
-        self.alldics = self.files = None
-    
-    def get_files(self):
-        if self.files is None:
-            self.files = Files()
-            self.files.open()
-        return self.files
-    
-    def get_all_dics(self):
-        if self.alldics is None:
-            self.alldics = AllDics()
-        return self.alldics
 
 
 
@@ -1777,7 +1737,7 @@ class Stems(UPage):
             if result:
                 chnos, endnos = result[0], result[1]
                 for i in range(len(endnos)):
-                    if objs.get_files().get_ending().has_match(endnos[i], end):
+                    if FILES.get_ending().has_match(endnos[i], end):
                         if DEBUG:
                             no = com.unpack(chnos[i])
                             no = shcom.set_figure_commas(no)
@@ -1820,7 +1780,7 @@ class Get:
             rep.empty(f)
             return
         chno = self.stemnos[0][0:3]
-        stems1 = objs.get_files().get_stems1()
+        stems1 = FILES.get_stems1()
         if not stems1:
             rep.lazy(f)
             return
@@ -1948,7 +1908,7 @@ class Get:
                 ''' Since we swap languages, the needed stems will always be
                     stored in stem file #1.
                 '''
-                stems1 = objs.get_files().get_stems1()
+                stems1 = FILES.get_stems1()
                 if not stems1:
                     rep.lazy(f)
                     return
@@ -1982,7 +1942,7 @@ class Get:
         if not self.Success:
             rep.cancel(f)
             return
-        glue1 = objs.get_files().get_glue1()
+        glue1 = FILES.get_glue1()
         if not glue1:
             rep.lazy(f)
             return
@@ -1998,7 +1958,7 @@ class Get:
         Message(f, mes).show_info()
         articles = []
         for art_no in art_nos:
-            article = objs.get_files().get_article().search(art_no)
+            article = FILES.get_article().search(art_no)
             if article:
                 articles.append(article)
         return articles
@@ -2006,12 +1966,13 @@ class Get:
     def run(self):
         self.check()
         self.strip()
-        objs.get_files().reset()
+        FILES.reset()
         self.get_stems()
         self.get_combos()
         self.set_speech()
         return self.search()
 
 
-objs = Objects()
+ALL_DICS = AllDics()
+FILES = Files()
 com = Commands()

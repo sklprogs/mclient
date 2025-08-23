@@ -74,5 +74,6 @@ multitrandem:
 - academic: adjective, not a noun
 
 - fora:
+stardict-x:
 - words from index are randomly not found
-- subj and wform are joined
+- 'lost count авто': joined wform

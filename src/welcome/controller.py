@@ -47,9 +47,7 @@ class Welcome:
         code = []
         for source in self.sources:
             if not source.Online:
-                desc = self.gen_offline_source(title = source.title
-                                              ,status = source.status
-                                              ,color = source.color)
+                desc = self.gen_offline_source(source)
                 code.append(desc)
         code = _('Offline dictionaries loaded: ') + ', '.join(code) + '.'
         code = self.set_font(code)
@@ -58,8 +56,14 @@ class Welcome:
     def gen_online_source(self, title, status, color):
         return f'<b>{title} <font color="{color}">{status}</font></b>'
     
-    def gen_offline_source(self, title, status, color):
-        return f'{title}: <font color="{color}">{status}</font>'
+    def gen_offline_source(self, source):
+        if source.successful and source.failed:
+            mes = f'{source.title}: <font color="green">{source.successful}</font>/<font color="red">{source.failed}</font>'
+        elif source.successful:
+            mes = f'{source.title}: <font color="green">{source.successful}</font>'
+        else:
+            mes = f'{source.title}: <font color="red">0</font>'
+        return mes
     
     def set_online_sources(self):
         f = '[MClient] welcome.controller.Welcome.set_online_sources'
@@ -93,10 +97,8 @@ class Welcome:
             PLUGINS.set(dic)
             isource = Source()
             isource.title = dic
-            dic_num = PLUGINS.count_valid()
-            isource.status = dic_num
-            if dic_num:
-                isource.color = 'green'
+            isource.successful = PLUGINS.count_valid()
+            isource.failed = PLUGINS.count_invalid()
             self.sources.append(isource)
         PLUGINS.set(old)
     

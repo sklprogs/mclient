@@ -8,15 +8,10 @@ from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.time import Timer
 from skl_shared.logic import Input, com as shcom
-from skl_shared.paths import Path, File, Directory
+from skl_shared.paths import Home, Path, File, Directory
 from skl_shared.graphics.progress_bar.controller import PROGRESS
 
 
-''' A directory storing all DSL files.
-    #NOTE: Do not forget to change this variable externally before
-    calling anything from this module.
-'''
-PATH = ''
 LANG1 = 'English'
 LANG2 = 'Russian'
 DEBUG = False
@@ -357,7 +352,22 @@ class Suggest:
 class AllDics:
     
     def __init__(self):
-        self.reset()
+        self.dsls = []
+        self.dics = []
+        self.index_ = []
+        self.langs = {}
+        self.langs1 = []
+        self.langs2 = []
+        self.path = Home('mclient').add_config('dics', 'DSL')
+        self.Success = Directory(self.path).Success
+        self.load()
+        self.set_langs()
+    
+    def get_valid(self):
+        return [dic for dic in self.dics if dic.Success]
+    
+    def get_invalid(self):
+        return [dic for dic in self.dics if not dic.Success]
     
     def get_langs2(self):
         f = '[MClient] plugins.dsl.get.AllDics.get_langs2'
@@ -468,22 +478,6 @@ class AllDics:
             Message(f, mes).show_info()
         return self.index_
     
-    def set_values(self):
-        self.path = ''
-        self.dsls = []
-        self.dics = []
-        self.index_ = []
-        self.langs = {}
-        self.langs1 = []
-        self.langs2 = []
-        # Do not run anything if 'self.reset' was not run
-        self.Success = False
-    
-    def reset(self):
-        self.set_values()
-        self.path = PATH
-        self.Success = Directory(self.path).Success
-    
     def walk(self):
         f = '[MClient] plugins.dsl.get.AllDics.walk'
         if not self.Success:
@@ -546,26 +540,4 @@ class AllDics:
         Message(f, mes).show_info()
 
 
-
-class Objects:
-    
-    def __init__(self):
-        self.all_dics = None
-    
-    def get_all_dics(self):
-        if self.all_dics is None:
-            self.all_dics = AllDics()
-            self.all_dics.load()
-            self.all_dics.set_langs()
-        return self.all_dics
-
-
-
-class Commands:
-    
-    def count_valid(self):
-        return len(objs.get_all_dics().dics)
-
-
-objs = Objects()
-com = Commands()
+ALL_DICS = AllDics()

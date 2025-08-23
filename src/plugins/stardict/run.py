@@ -89,7 +89,7 @@ class Plugin:
         return short
     
     def quit(self):
-        for idic in gt.objs.get_all_dics().dics:
+        for idic in gt.ALL_DICS.dics:
             idic.unload()
     
     def get_lang1(self):
@@ -137,7 +137,10 @@ class Plugin:
         return False
     
     def count_valid(self):
-        return gt.com.count_valid()
+        return len(gt.ALL_DICS.get_valid())
+    
+    def count_invalid(self):
+        return len(gt.ALL_DICS.get_invalid())
     
     def suggest(self, search):
         return gt.Suggest(search).run()

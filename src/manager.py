@@ -18,27 +18,21 @@ import plugins.fora.run as forun
 
 class Plugins:
     
-    def __init__(self, sdpath, mbpath, timeout=5.0, Debug=False, maxrows=1000):
-        self.set_values()
-        self.Debug = Debug
-        self.lgpath = sdpath
-        self.maxrows = maxrows
-        self.mbpath = sdpath
-        self.plugin = self.mcplugin
-        self.sdpath = sdpath
-        self.timeout = timeout
-        self.load()
-        #NOTE: either put this on top of 'self.sources' or synchronize with GUI
-        self.set(self.source)
-        self.set_timeout(self.timeout)
-    
-    def set_values(self):
+    def __init__(self, timeout=5.0, Debug=False, maxrows=1000):
         self.lgplugin = None
         self.mbplugin = None
         self.mcplugin = None
         self.sdplugin = None
         self.frplugin = None
         self.source = CONFIG.new['source']
+        self.Debug = Debug
+        self.maxrows = maxrows
+        self.plugin = self.mcplugin
+        self.timeout = timeout
+        self.load()
+        #NOTE: either put this on top of 'self.sources' or synchronize with GUI
+        self.set(self.source)
+        self.set_timeout(self.timeout)
     
     def get_fixed_urls(self):
         f = '[MClient] manager.Plugins.get_fixed_urls'
@@ -177,6 +171,13 @@ class Plugins:
             rep.empty(f)
             return
         return self.plugin.count_valid()
+    
+    def count_invalid(self):
+        f = '[MClient] manager.Plugins.count_invalid'
+        if not self.plugin:
+            rep.empty(f)
+            return
+        return self.plugin.count_invalid()
 
     def suggest(self, search):
         f = '[MClient] manager.Plugins.suggest'
@@ -212,12 +213,6 @@ class Plugins:
         return self.plugin.get_langs2(lang1)
 
     def load(self):
-        plugins.stardict.get.PATH = self.sdpath
-        plugins.dsl.get.PATH = self.lgpath
-        plugins.multitrandem.get.PATH = self.mbpath
-        plugins.stardict.get.objs.get_all_dics()
-        plugins.dsl.get.objs.get_all_dics()
-        plugins.multitrandem.get.objs.get_all_dics()
         self.sdplugin = sdrun.Plugin(Debug = self.Debug
                                     ,maxrows = self.maxrows)
         self.mcplugin = mcrun.Plugin(Debug = self.Debug
@@ -299,10 +294,8 @@ class Plugins:
 
 
 f = '[MClient] manager.__main__'
-DICS = Home(PRODUCT_LOW).add_config('dics')
 if CONFIG.Success:
-    PLUGINS = Plugins(sdpath=DICS, mbpath=DICS, timeout=CONFIG.new['timeout']
-                     ,Debug=False, maxrows=1000)
+    PLUGINS = Plugins(timeout=CONFIG.new['timeout'], Debug=False, maxrows=1000)
 else:
     PLUGINS = None
     rep.cancel(f)

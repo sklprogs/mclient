@@ -225,9 +225,17 @@ class Commands:
         try:
             code = urllib.request.urlopen(url=URL, timeout=TIMEOUT).code
             if (code / 100 < 4):
-                return True
+                return 1
         except: #urllib.error.URLError, socket.timeout
-            return False
+            return 0
+        return 0
+    
+    def count_invalid(self):
+        #TODO: Rework manager logic, will cause a delay
+        if self.count_valid():
+            return 0
+        else:
+            return 1
 
 
 com = Commands()
