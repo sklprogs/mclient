@@ -15,31 +15,22 @@ PRODUCT_LOW = 'mclient'
 class Paths:
     
     def __init__(self):
-        self.set_values()
-    
-    def set_values(self):
+        self.folders = ('DSL', 'Fora', 'Multitran (Demo)', 'Stardict')
         self.Success = True
-        self.dics = ''
     
     def check(self):
         self.ihome = Home(PRODUCT_LOW)
         self.Success = self.ihome.create_conf()
     
-    def set_dics(self):
-        f = '[MClient] config.Paths.set_dics'
+    def create_folders(self):
+        f = '[MClient] config.Paths.create_folders'
         if not self.Success:
             rep.cancel(f)
             return
-        self.dics = self.ihome.add_config('dics')
-        if not self.dics:
-            self.Success = False
-            rep.empty(f)
-            return
-        if os.path.exists(self.dics):
-            self.Success = Directory(self.dics).Success
-        else:
-            self.Success = Path(self.dics).create()
-        return self.dics
+        for folder in self.folders:
+            self.Success = Path(self.ihome.add_config('dics', folder)).create()
+            if not self.Success:
+                break
     
     def get_default(self):
         return PDIR.add('..', 'resources', 'config', 'default.json')
@@ -52,7 +43,7 @@ class Paths:
     
     def run(self):
         self.check()
-        self.set_dics()
+        self.create_folders()
 
 
 
