@@ -9,6 +9,7 @@ import locale
 import itertools
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
+from skl_shared.basic_text import Shorten
 from skl_shared.text_file import Read
 from skl_shared.logic import Text, Input, com as shcom
 from skl_shared.paths import Home, Path, File, Directory
@@ -1510,7 +1511,7 @@ class Commands:
             result = result.replace('\\\\', '\\')
             result = result[2:-1]
             if limit:
-                result = Text(result).shorten(limit)
+                result = Shorten(result, limit).run()
         except Exception as e:
             Message(f, str(e), True).show_warning()
             result = str(chunk)
