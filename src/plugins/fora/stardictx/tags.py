@@ -36,14 +36,11 @@ from instance import Block, Tag
 class AnalyzeTag:
 
     def __init__(self, fragm):
-        self.set_values()
-        self.fragm = fragm
-    
-    def set_values(self):
         self.Success = True
         self.tag = Tag()
         self.cur_row = 0
         self.cur_cell = 0
+        self.fragm = fragm
     
     def check(self):
         f = '[MClient] plugins.fora.stardictx.tags.AnalyzeTag.check'
@@ -143,16 +140,13 @@ class AnalyzeTag:
 class Tags:
     
     def __init__(self, text):
-        self.set_values()
-        self.code = text
-    
-    def set_values(self):
         self.Success = True
         self.abbr = {}
         self.blocks = []
         self.fragms = []
         self.tags = []
         self.open = []
+        self.code = text
     
     def _is_trash(self, tag):
         for subtag in tag.inherent:
