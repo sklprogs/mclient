@@ -11,6 +11,7 @@ from skl_shared.logic import Text, punc_array, ru_alphabet, lat_alphabet
 
 from instance import Block, Cell
 
+#TODO: Comment out heuristics through this module
 HEURISTICS = False
 SPEECH_ABBR = ('гл.', 'нареч.', 'нар.', 'прил.', 'сокр.', 'сущ.')
 SUBJ_ABBR = ('амер.', 'вчт.', 'геогр.', 'карт.', 'мор.', 'разг.', 'уст.', 'хир.', 'эл.')
@@ -484,6 +485,10 @@ class Elems:
             i += 1
             
     def delete_straight_line(self):
+        f = '[MClient] plugins.fora.stardictx.elems.Elems.delete_straight_line'
+        if not HEURISTICS:
+            rep.lazy(f)
+            return
         self.blocks = [block for block in self.blocks if block.text.strip() != '|']
     
     def run_comments(self):
