@@ -216,10 +216,10 @@ class Elems:
             and self.blocks[i-1].type == 'transc' \
             and self.blocks[i-2].type == 'comment' \
             and self.blocks[i-2].text == r'\[':
-                self.blocks[i].type = 'transc'
                 self.blocks[i-2].type = 'transc'
                 self.blocks[i-2].cellno = self.blocks[i].cellno
                 self.blocks[i-2].text = '['
+                self.blocks[i].type = 'transc'
                 self.blocks[i].text = ']'
             i += 1
     
