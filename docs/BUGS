@@ -78,3 +78,5 @@ multitrandem:
 stardict-x:
 - words from index are randomly not found
 - 'lost count авто': joined wform
+dsl:
+- hello -> breed of cat -> not found (but present in index)
