@@ -204,11 +204,31 @@ class Elems:
             i -= 1
         return ''
     
+    def fix_transc(self):
+        f = '[MClient] plugins.fora.dsl.elems.Elems.fix_transc'
+        if len(self.blocks) < 3:
+            return
+        count = 0
+        i = 2
+        while i < len(self.blocks):
+            if self.blocks[i].type == 'comment' \
+            and self.blocks[i].text == r'\]' \
+            and self.blocks[i-1].type == 'transc' \
+            and self.blocks[i-2].type == 'comment' \
+            and self.blocks[i-2].text == r'\[':
+                self.blocks[i].type = 'transc'
+                self.blocks[i-2].type = 'transc'
+                self.blocks[i-2].cellno = self.blocks[i].cellno
+                self.blocks[i-2].text = '['
+                self.blocks[i].text = ']'
+            i += 1
+    
     def run(self):
         f = '[MClient] plugins.fora.dsl.elems.Elems.run'
         if not self.Success:
             rep.cancel(f)
             return []
+        self.fix_transc()
         self.fill()
         self.set_fixed_blocks()
         self.set_cells()
