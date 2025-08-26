@@ -440,14 +440,17 @@ class AllDics:
             return
         timer = Timer(f)
         timer.start()
-        articles = []
         for dic in self.dics:
-            articles.append(dic.search(pattern))
+            dic.search(pattern)
         timer.end()
-        articles = [article for article in articles if article]
+        articles = [dic.article for dic in self.dics \
+                   if dic.Success and dic.article]
         mes = _('"{}": {} matches in {} Fora dictionaries')
         mes = mes.format(pattern, len(articles), len(self.get_valid()))
         Message(f, mes).show_debug()
+        ''' #NOTE: This output should be used for debugging purposes only,
+            since it is incorrect to join articles of different formats.
+        '''
         return '\n\n'.join(articles)
     
     def close(self):
@@ -470,6 +473,9 @@ class Get:
         return ALL_DICS.get_summary()
     
     def run(self):
+        ''' #NOTE: This output should be used for debugging purposes only,
+            since it is incorrect to join articles of different formats.
+        '''
         return ALL_DICS.search(self.pattern)
 
 
