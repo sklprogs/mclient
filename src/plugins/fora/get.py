@@ -110,13 +110,12 @@ class Index:
         if not self.Success:
             rep.cancel(f)
             return
-        self.imap.seek(0)
         bpattern = bytes('\n' + pattern + '\t', 'utf-8')
-        pos = self.imap.find(bpattern)
+        pos = self.imap.find(bpattern, 0)
         if pos > -1:
             return pos + len(bpattern)
         bpattern = bytes(pattern + '\t', 'utf-8')
-        pos = self.imap.find(bpattern)
+        pos = self.imap.find(bpattern, 0)
         if pos == 0:
             return len(bpattern)
     
