@@ -15,7 +15,8 @@ from skl_shared.time import Timer
 FORMATS = ('stardict-0', 'stardict-h', 'stardict-m', 'stardict-x', 'xdxf'
           , 'dictd', 'dsl')
 '''
-FORMATS = ('stardict-x', 'dsl')
+#FORMATS = ('stardict-x', 'dsl')
+FORMATS = ('dsl')
 
 
 class Dic:
@@ -109,6 +110,7 @@ class Index:
         if not self.Success:
             rep.cancel(f)
             return
+        self.imap.seek(0)
         bpattern = bytes('\n' + pattern + '\t', 'utf-8')
         pos = self.imap.find(bpattern)
         if pos > -1:
