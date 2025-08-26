@@ -11,12 +11,12 @@ from skl_shared.message.controller import Message, rep
 from skl_shared.paths import File, Directory, Path, Home
 from skl_shared.time import Timer
 
+# Must be lowercase
 '''
 FORMATS = ('stardict-0', 'stardict-h', 'stardict-m', 'stardict-x', 'xdxf'
           , 'dictd', 'dsl')
 '''
-#FORMATS = ('stardict-x', 'dsl')
-FORMATS = ('dsl')
+FORMATS = ('stardict-x', 'dsl')
 
 
 class Dic:
@@ -215,7 +215,7 @@ class Properties:
         if not self.Success:
             rep.cancel(f)
             return
-        if not self.format.lower() in FORMATS:
+        if not self.format in FORMATS:
             self.Success = False
             mes = _('Dictionary "{}" has an unknown format "{}"!')
             mes = mes.format(self.file, self.format)
@@ -254,6 +254,9 @@ class Properties:
             return
         self.name = self._get_attr('name')
         self.format = self._get_attr('contentFormat')
+        # Format can be called several times, so we just save the trouble here
+        if self.format:
+            self.format = self.format.lower()
         self.lang1 = self._get_attr('sourceLanguage')
         self.lang2 = self._get_attr('targetLanguage')
     
@@ -282,6 +285,7 @@ class Fora:
     
     def __init__(self, folder):
         self.article = ''
+        self.pattern = ''
         self.prop = Properties(folder)
         self.index = Index(folder)
         self.dic = Dic(folder)
@@ -308,7 +312,8 @@ class Fora:
             rep.cancel(f)
             return
         self.article = ''
-        pos = self.index.search(pattern)
+        self.pattern = pattern
+        pos = self.index.search(self.pattern)
         if not pos:
             return
         indexes = self.index.get(pos)
