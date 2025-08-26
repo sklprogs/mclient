@@ -328,7 +328,8 @@ class Fora:
             rep.cancel(f)
             return
         self.article = ''
-        poses = self.index.search_all(pattern)
+        self.pattern = pattern
+        poses = self.index.search_all(self.pattern)
         if not poses:
             return
         for pos in poses:
