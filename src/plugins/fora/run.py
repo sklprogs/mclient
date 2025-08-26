@@ -10,6 +10,9 @@ import plugins.fora.stardict0.elems
 import plugins.fora.stardictx.cleanup
 import plugins.fora.stardictx.tags
 import plugins.fora.stardictx.elems
+import plugins.fora.dsl.cleanup
+import plugins.fora.dsl.tags
+import plugins.fora.dsl.elems
 
 
 class Plugin:
@@ -148,17 +151,102 @@ class Plugin:
         #TODO: implement
         return []
     
+    def _request_stardictx(self, dic):
+        text = plugins.fora.stardictx.cleanup.CleanUp(dic.article).run()
+        blocks = plugins.fora.stardictx.tags.Tags(text).run()
+        return plugins.fora.stardictx.elems.Elems(blocks).run()
+    
+    def _request_stardict0(self, dic):
+        text = plugins.fora.stardict0.cleanup.CleanUp(dic.article).run()
+        return plugins.fora.stardict0.elems.Elems(text, dic.pattern, dic.get_name()).run()
+    
+    def _request_stardicth(self, dic):
+        text = plugins.fora.stardicth.cleanup.CleanUp(dic.article).run()
+        blocks = plugins.fora.stardicth.tags.Tags(text).run()
+        return plugins.fora.stardicth.elems.Elems(blocks).run()
+    
+    def _request_stardictm(self, dic):
+        text = plugins.fora.stardictm.cleanup.CleanUp(dic.article).run()
+        blocks = plugins.fora.stardictm.tags.Tags(text).run()
+        return plugins.fora.stardictm.elems.Elems(blocks).run()
+    
+    def _request_dsl(self, dic):
+        text = plugins.fora.dsl.cleanup.CleanUp(dic.article).run()
+        blocks = plugins.fora.dsl.tags.Tags(text).run()
+        return plugins.fora.dsl.elems.Elems(blocks).run()
+    
+    def _request_xdxf(self, dic):
+        text = plugins.fora.xdxf.cleanup.CleanUp(dic.article).run()
+        blocks = plugins.fora.xdxf.tags.Tags(text).run()
+        return plugins.fora.xdxf.elems.Elems(blocks).run()
+    
+    def _request_dictd(self, dic):
+        text = plugins.fora.dictd.cleanup.CleanUp(dic.article).run()
+        blocks = plugins.fora.dictd.tags.Tags(text).run()
+        return plugins.fora.dictd.elems.Elems(blocks).run()
+    
+    def _join_cells(self, cells):
+        f = '[MClient] plugins.fora.run.Plugin._join_cells'
+        if not cells:
+            rep.empty(f)
+            return []
+        if not cells[0] or not cells[0][-1].blocks:
+            rep.wrong_input(f)
+            return []
+        no = cells[0][-1].no + 1
+        rowno = cells[0][-1].rowno + 1
+        cellno = cells[0][-1].blocks[-1].cellno + 1
+        i = 1
+        while i < len(cells):
+            for cell in cells[i]:
+                cell.no = no
+                cell.rowno = rowno
+                no += 1
+                rowno += 1
+                for block in cell.blocks:
+                    block.cellno = cellno
+                    cellno += 1
+            i += 1
+        result = []
+        for items in cells:
+            result += items
+        return result
+    
     def request(self, search='', url=''):
         f = '[MClient] plugins.fora.run.Plugin.request'
         self.search = search
-        text = ALL_DICS.search(self.search)
-        text = plugins.fora.stardictx.cleanup.CleanUp(text).run()
-        blocks = plugins.fora.stardictx.tags.Tags(text).run()
-        ielems = plugins.fora.stardictx.elems.Elems(blocks)
+        ALL_DICS.search(self.search)
+        text = ''
+        cells = []
+        for dic in ALL_DICS.dics:
+            if not dic.Success or not dic.article:
+                continue
+            text += dic.article + '\n\n'
+            ''' It is not necessary to warn about the format here, since
+                the format support is already checked by
+                plugins.fora.get.Properties.check_format.
+            '''
+            match dic.get_format():
+                case 'stardict-x':
+                    cells.append(self._request_stardictx(dic))
+                case 'dsl':
+                    cells.append(self._request_dsl(dic))
+                case 'stardict-0':
+                    cells.append(self._request_stardict0(dic))
+                case 'stardict-h':
+                    cells.append(self._request_stardicth(dic))
+                case 'stardict-m':
+                    cells.append(self._request_stardictm(dic))
+                case 'xdxf':
+                    cells.append(self._request_xdxf(dic))
+                case 'dictd':
+                    cells.append(self._request_dictd(dic))
         self.htm = self.text = text
-        cells = ielems.run()
-        self.fixed_urls = ielems.fixed_urls
-        self.art_subj = ielems.art_subj
-        self.Parallel = ielems.Parallel
-        self.Separate = ielems.Separate
+        cells = [result for result in cells if result]
+        cells = self._join_cells(cells)
+        #TODO: Implement or drop
+        #self.fixed_urls = ielems.fixed_urls
+        #self.art_subj = ielems.art_subj
+        #self.Parallel = ielems.Parallel
+        #self.Separate = ielems.Separate
         return cells
