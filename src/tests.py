@@ -17,18 +17,10 @@ from config import CONFIG
 
 DEBUG = True
 
-SEARCH = 'точка с запятой'
-#SEARCH = 'adiutant'
-#SEARCH = 'administration cost'
-#SEARCH = 'account'
-#SEARCH = 'мамонт'
-#SEARCH = 'chicken wing'
+SEARCH = 'address'
 URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing&l2=2'
 HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/fill (2025-01-31).htm'
-#HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/chicken wing (2025-01-24).htm'
 #SEARCH = 'chicken wing pork friday coding style'
-#URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing+pork+friday+coding+style'
-#HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/chicken wing pork friday coding style (2025-01-24).htm'
 
 
 class Wrap:
@@ -221,6 +213,18 @@ class Elems:
         ielems.run()
         return ielems.debug()
     
+    def run_fora(self):
+        f = '[MClient] tests.Elems.run_fora'
+        from plugins.fora.run import Plugin
+        from plugins.fora.stardictx.elems import Elems
+        cells = Plugin().request(SEARCH)
+        if not cells:
+            rep.lazy(f)
+            return
+        ielems = Elems(cells[-1].blocks)
+        ielems.cells = cells
+        return ielems.debug()
+    
     def run_fora_stardictx(self):
         f = '[MClient] tests.Elems.run_fora_stardictx'
         from plugins.fora.get import ALL_DICS
@@ -230,6 +234,22 @@ class Elems:
         if not article:
             rep.empty(f)
             return
+        blocks = Tags(article).run()
+        ielems = Elems(blocks)
+        ielems.run()
+        return ielems.debug()
+    
+    def run_fora_dsl(self):
+        f = '[MClient] tests.Elems.run_fora_dsl'
+        from plugins.fora.get import ALL_DICS
+        from plugins.fora.dsl.cleanup import CleanUp
+        from plugins.fora.dsl.tags import Tags
+        from plugins.fora.dsl.elems import Elems
+        article = ALL_DICS.search(SEARCH)
+        if not article:
+            rep.empty(f)
+            return
+        article = CleanUp(article).run()
         blocks = Tags(article).run()
         ielems = Elems(blocks)
         ielems.run()
@@ -470,6 +490,20 @@ class Tags:
         from plugins.fora.get import ALL_DICS
         from plugins.fora.stardictx.cleanup import CleanUp
         from plugins.fora.stardictx.tags import Tags
+        article = ALL_DICS.search(SEARCH)
+        if not article:
+            rep.empty(f)
+            return
+        article = CleanUp(article).run()
+        itags = Tags(article)
+        itags.run()
+        return itags.debug()
+    
+    def run_fora_dsl(self):
+        f = '[MClient] tests.Tags.run_fora_dsl'
+        from plugins.fora.get import ALL_DICS
+        from plugins.fora.dsl.cleanup import CleanUp
+        from plugins.fora.dsl.tags import Tags
         article = ALL_DICS.search(SEARCH)
         if not article:
             rep.empty(f)
@@ -1146,11 +1180,14 @@ if __name__ == '__main__':
     #mes = Get().run_fora()
     #mes = Get().run_fora_many_matches()
     #mes = Tags().run_stardict()
-    mes = Tags().run_fora_stardictx()
+    #mes = Tags().run_fora_stardictx()
+    #mes = Tags().run_fora_dsl()
     #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
     #mes = Elems().run_fora_stardictx()
+    #mes = Elems().run_fora_dsl()
+    mes = Elems().run_fora()
     #mes = Elems().run_multitrancom()
     #mes = Subjects().run()
     #mes = View().run_dsl()
