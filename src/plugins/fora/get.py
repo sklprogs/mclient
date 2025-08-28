@@ -424,7 +424,7 @@ class AllDics:
         files = idir.get_subfiles()
         if not files:
             self.Success = False
-            rep.empty(f)
+            rep.lazy(f)
             return
         for file in files:
             ipath = Path(file)
