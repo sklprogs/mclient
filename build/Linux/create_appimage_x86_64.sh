@@ -9,10 +9,10 @@ os="Linux" # Linux or Wine
 oslow="linux"
 # We need to use Debian 10 or newer since Debian 9 has Python 3.5 by default 
 # which is buggy (some blocks are skipped in EN-RU, "hello" article)
-glibc="2.36"
-pythonve="$HOME/software/python/3.11.2_mclient"
-xlibdir="$pythonve/lib/python3.11/site-packages/Xlib"
-schemas="$pythonve/lib/python3.11/site-packages/jsonschema_specifications/schemas"
+glibc="2.41"
+pythonve="$HOME/software/python/3.13.5_mclient"
+xlibdir="$pythonve/lib/python3.13/site-packages/Xlib"
+schemas="$pythonve/lib/python3.13/site-packages/jsonschema_specifications/schemas"
 binariesdir="$HOME/binaries"
 appimagedir="$binariesdir/appimage"
 srcdir="$HOME/bin/$product/src"
