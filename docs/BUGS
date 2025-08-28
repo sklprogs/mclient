@@ -12,6 +12,7 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
+- RU-EN, zero-sum game: wrong input data!
 - RU-EN, pedding (Cut-to-the chase mode, 1st part of speech is verb): condition
   not observed
 - RU-EN, warhawk: condition not observed
@@ -75,6 +76,7 @@ multitrandem:
 - academic: adjective, not a noun
 
 - fora:
+- scuttle: article formatted as dic
 stardict-x:
 - words from index are randomly not found
 - 'lost count авто': joined wform
