@@ -29,7 +29,10 @@ class Article:
 class Get:
     
     def __init__(self, pattern, Debug=False, maxrows=0):
-        self.set_values()
+        self.articles = []
+        self.blocks = []
+        self.pattern = ''
+        self.Success = True
         self.Debug = Debug
         self.maxrows = maxrows
         self.pattern = pattern
@@ -88,12 +91,6 @@ class Get:
             if iarticle:
                 iarticle.dic = idic.dicname
                 self.articles.append(iarticle)
-    
-    def set_values(self):
-        self.articles = []
-        self.blocks = []
-        self.pattern = ''
-        self.Success = True
 
 
 
@@ -308,13 +305,10 @@ class DSL:
 class Suggest:
     
     def __init__(self, search):
-        self.set_values()
-        if search:
-            self.reset(search)
-    
-    def set_values(self):
         self.Success = True
         self.pattern = ''
+        if search:
+            self.reset(search)
     
     def reset(self, search):
         f = '[MClient] plugins.dsl.get.Suggest.reset'

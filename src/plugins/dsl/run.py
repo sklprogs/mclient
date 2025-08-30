@@ -193,14 +193,9 @@ class Plugin:
         for iarticle in articles:
             htm.append(iarticle.code)
             code = cu.CleanUp(iarticle.code).run()
-            code = cu.TagLike(code).run()
-            self.blocks += tg.Tags(code = code
-                                  ,Debug = self.Debug
-                                  ,maxrows = self.maxrows
-                                  ,dicname = iarticle.dic).run()
+            self.blocks += tg.Tags(code).run()
         self.htm = '\n'.join(htm)
         texts = [block.text for block in self.blocks if block.text]
         self.text = List(texts).space_items()
-        self.blocks = el.Elems(blocks = self.blocks
-                              ,Debug = self.Debug).run()
+        self.blocks = el.Elems(self.blocks).run()
         return self.blocks

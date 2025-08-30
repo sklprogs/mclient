@@ -17,7 +17,7 @@ from config import CONFIG
 
 DEBUG = True
 
-SEARCH = 'address'
+SEARCH = 'computer'
 URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing&l2=2'
 HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/fill (2025-01-31).htm'
 #SEARCH = 'chicken wing pork friday coding style'
@@ -260,22 +260,15 @@ class Elems:
         import plugins.dsl.get as gt
         import plugins.dsl.tags as tg
         import plugins.dsl.elems as el
-        gt.PATH = Home('mclient').add_config('dics')
         blocks = []
         htm = []
-        search = 'account'
-        articles = gt.Get(search).run()
+        articles = gt.Get(SEARCH).run()
         for iarticle in articles:
             htm.append(iarticle.code)
             code = cu.CleanUp(iarticle.code).run()
-            code = cu.TagLike(code).run()
-            blocks += tg.Tags(code = code
-                             ,Debug = DEBUG
-                             ,maxrows = 0
-                             ,dicname = iarticle.dic).run()
+            blocks += tg.Tags(code).run()
         htm = '\n'.join(htm)
-        ielems = el.Elems(blocks = blocks
-                         ,Debug = DEBUG)
+        ielems = el.Elems(blocks)
         blocks = ielems.run()
         return ielems.debug()
     
@@ -413,15 +406,14 @@ class Get:
     def run_fora(self):
         import os
         from plugins.fora.get import Fora
-        dic = 'ComputersRuEn'
+        dic = 'ComputersEnRu'
         folder = '/home/pete/.config/mclient/dics/Fora'
         folder = os.path.join(folder, dic)
-        return Fora(folder).search(SEARCH)
+        return Fora(folder).search('account')
     
     def run_dsl(self):
-        import plugins.dsl.get
-        plugins.dsl.get.PATH = Home('mclient').add_config('dics')
-        iget = plugins.dsl.get.Get(pattern = 'account', Debug = DEBUG)
+        from plugins.dsl.get import Get
+        iget = Get('account')
         iget.run()
         return iget.debug()
     
@@ -462,19 +454,7 @@ class Get:
         import plugins.stardict.get
         PLUGINS.Debug = False
         PLUGINS.maxrows = 1000
-        #search = 'компьютер'
-        #search = 'aberrance'
-        #search = 'abstract'
-        #search = 'АБЕРРАЦИЯ'
-        #search = 'акцепт'
-        #search = 'автоматический режим работы'
-        #search = 'modify'
-        #search = '13th month salary'
-        #search = 'abandon'
-        #search = 'понятие сложной функции'
-        #search = 'product'
-        #search = 'good'
-        search = 'cable'
+        search = 'abstersion'
         timer = Timer(f)
         timer.start()
         result = plugins.stardict.get.Get(search).run()
@@ -566,13 +546,15 @@ class Tags:
     def run_stardict(self):
         import plugins.stardict.cleanup as cu
         import plugins.stardict.tags as tg
-        #file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - product.txt'
-        file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - good.txt'
+        file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - abstersion.txt'
         text = Read(file).get()
         text = cu.CleanUp(text).run()
+        itags = tg.Tags(text)
+        '''
         itags = tg.Tags(text = text
                        ,Debug = DEBUG
                        ,maxrows = 0)
+        '''
         itags.run()
         return itags.debug()
     
@@ -1177,7 +1159,8 @@ if __name__ == '__main__':
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
     #mes = Get().run_stardict()
-    #mes = Get().run_fora()
+    #mes = Get().run_dsl()
+    mes = Get().run_fora()
     #mes = Get().run_fora_many_matches()
     #mes = Tags().run_stardict()
     #mes = Tags().run_fora_stardictx()
@@ -1187,7 +1170,7 @@ if __name__ == '__main__':
     #mes = Elems().run_stardict()
     #mes = Elems().run_fora_stardictx()
     #mes = Elems().run_fora_dsl()
-    mes = Elems().run_fora()
+    #mes = Elems().run_fora()
     #mes = Elems().run_multitrancom()
     #mes = Subjects().run()
     #mes = View().run_dsl()

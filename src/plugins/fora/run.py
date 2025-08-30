@@ -10,9 +10,9 @@ import plugins.fora.stardict0.elems
 import plugins.stardict.cleanup
 import plugins.stardict.tags
 import plugins.stardict.elems
-import plugins.fora.dsl.cleanup
-import plugins.fora.dsl.tags
-import plugins.fora.dsl.elems
+import plugins.dsl.cleanup
+import plugins.dsl.tags
+import plugins.dsl.elems
 
 
 class Plugin:
@@ -171,9 +171,9 @@ class Plugin:
         return plugins.fora.stardictm.elems.Elems(blocks).run()
     
     def _request_dsl(self, dic):
-        text = plugins.fora.dsl.cleanup.CleanUp(dic.article).run()
-        blocks = plugins.fora.dsl.tags.Tags(text).run()
-        return plugins.fora.dsl.elems.Elems(blocks).run()
+        text = plugins.dsl.cleanup.CleanUp(dic.article).run()
+        blocks = plugins.dsl.tags.Tags(text).run()
+        return plugins.dsl.elems.Elems(blocks).run()
     
     def _request_xdxf(self, dic):
         text = plugins.fora.xdxf.cleanup.CleanUp(dic.article).run()

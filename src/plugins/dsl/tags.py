@@ -7,7 +7,7 @@ from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.table import Table
 
-import instance as ic
+from instance import Block, Tag
 
 
 ''' Tag patterns:
@@ -17,16 +17,22 @@ import instance as ic
         #INDEX_LANGUAGE	"English"
     •  Dictionary titles:
         #NAME	"DicTitle (En-Ru)"
+        <dic>DicTitle (En-Ru)</dic>
+    •  Subjects:
+        (when there is [m1] before this tag, don't mix up with "Parts of
+        speech")
+        [m1][p][c green]орнит.[/c][/p]
     •  Terms:
         <A line that does not start with '\t'>
         [trn]term[/trn]
     •  Comments:
         [com]comment[/com]
         [i]comment[/i]
-        [p][i]comment[/i][/p]
+        [s]sound file[/s]
     •  Transcription:
         \[[t]-əbl[/t]\]
     •  Parts of speech:
+        (when there is no [m1] before this tag)
         [p]n[/p]
           adj: adjective
           adv: adverb
@@ -42,196 +48,213 @@ import instance as ic
 '''
 
 
-class Tag:
+class AnalyzeTag:
+
+    def __init__(self, fragm):
+        self.Success = True
+        self.tag = Tag()
+        self.cur_row = 0
+        self.cur_cell = 0
+        self.fragm = fragm.strip()
     
-    def __init__(self):
-        self.text = ''
-        self.tags = []
+    def check(self):
+        f = '[MClient] plugins.dsl.tags.AnalyzeTag.check'
+        if not self.fragm:
+            self.Success = False
+            rep.empty(f)
+    
+    def _set_name(self):
+        # Do this before setting a URL
+        self.tag.name = self.tag.text
+        if self.tag.name.startswith('['):
+            self.tag.name = self.tag.name[1:]
+        pos = self.tag.name.find(' ')
+        if pos > -1:
+            self.tag.name = self.tag.name[:pos]
+        self.tag.name = self.tag.name.lower()
+    
+    def _set_text(self):
+        f = '[MClient] plugins.dsl.tags.Tags._set_text'
+        self.tag.text = self.fragm
+        if self.tag.text.startswith('[/'):
+            self.tag.text = self.tag.text[2:]
+        elif self.tag.text.startswith('['):
+            self.tag.text = self.tag.text[1:]
+        else:
+            mes = _('Pattern "{}" is not a tag!').format(self.tag.text)
+            Message(f, mes).show_warning()
+        if self.tag.text.endswith(']'):
+            self.tag.text = self.tag.text[:-1]
+        else:
+            mes = _('Pattern "{}" is not a tag!').format(self.tag.text)
+            Message(f, mes).show_warning()
+
+    def _is_tag(self):
+        if self.fragm.startswith('[') and self.fragm.endswith(']'):
+            return True
+    
+    def _is_term(self):
+        return self.tag.name in ('dtrn', 'trn')
+    
+    def _is_subj(self):
+        return self.tag.name == 'dic'
+    
+    def _is_comment(self):
+        return self.tag.name in ('c', 'com', 'ex', 'i', 'ref', 's')
+    
+    def _is_wform(self):
+        return self.tag.name in ('k', 'wform')
+    
+    def _is_transc(self):
+        return self.tag.name == 't'
+    
+    def _is_speech(self):
+        return self.tag.name == 'p'
+    
+    def _set_type(self):
+        if self._is_term():
+            self.tag.type = 'term'
+        elif self._is_subj():
+            self.tag.type = 'subj'
+        elif self._is_wform():
+            self.tag.type = 'wform'
+        elif self._is_speech():
+            self.tag.type = 'speech'
+        elif self._is_transc():
+            self.tag.type = 'transc'
+        elif self._is_comment():
+            self.tag.type = 'comment'
+        else:
+            self.tag.type = 'comment'
+    
+    def _set_close(self):
+        if self.fragm.startswith('[/'):
+            self.tag.Close = True
+    
+    def set_attr(self):
+        f = '[MClient] plugins.dsl.tags.AnalyzeTag.set_attr'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        if self._is_tag():
+            self._set_close()
+            self._set_text()
+            self._set_name()
+            self._set_type()
+        else:
+            self.tag.type = 'text'
+            self.tag.text = self.fragm
+    
+    def run(self):
+        self.check()
+        self.set_attr()
+        return self.tag
 
 
 
 class Tags:
     
-    def __init__(self, code, dicname='', Debug=False, maxrows=0):
-        self.set_values()
-        self.all_prior = [i for i in range(len(self.all_types))]
-        self.code = code
-        self.Debug = Debug
-        self.dicname = dicname
-        self.maxrows = maxrows
+    def __init__(self, text):
+        self.Success = True
+        self.abbr = {}
+        self.blocks = []
+        self.fragms = []
+        self.tags = []
+        self.open = []
+        self.code = text
     
-    def set_subj_block(self):
-        f = '[MClient] plugins.dsl.tags.Tags.set_subj_block'
+    def _is_trash(self, tag):
+        for subtag in tag.inherent:
+            if subtag.type == 'trash':
+                return True
+    
+    def _close(self, name):
+        i = len(self.open) - 1
+        while i >= 0:
+            if self.open[i].name == name:
+                del self.open[i]
+                return True
+            i -= 1
+    
+    def set_inherent(self):
+        f = '[MClient] plugins.dsl.tags.Tags.set_inherent'
         if not self.Success:
             rep.cancel(f)
             return
-        if not self.blocks:
-            rep.lazy(f)
-            return
-        block = ic.Block()
-        block.text = block.subjf = block.subj = self.dicname
-        block.type = 'subj'
-        self.blocks.insert(0, block)
+        for tag in self.tags:
+            if tag.Close:
+                self._close(tag.name)
+            elif tag.type == 'text':
+                tag.inherent = list(self.open)
+            elif tag.type:
+                self.open.append(tag)
     
-    def set_values(self):
-        self.all_types = ['term', 'subj', 'wform', 'transc', 'comment', 'phrase']
-        self.blocks = []
-        self.fragms = []
-        self.open = []
-        self.Success = True
-        self.tagged = []
+    def set_nos(self):
+        f = '[MClient] plugins.dsl.tags.Tags.set_nos'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        curcell = -1
+        for tag in self.tags:
+            if not tag.Close:
+                #TODO: Do we need 'm1' here?
+                if tag.name in ('dic', 'p', 't', 'trn', 'wform'):
+                    curcell += 1
+            tag.cellno = curcell
     
     def _debug_blocks(self):
         nos = [i + 1 for i in range(len(self.blocks))]
-        texts = [block.text for block in self.blocks]
         types = [block.type for block in self.blocks]
-        iterable = [nos, types, texts]
-        headers = (_('#'), _('TYPES'), _('TEXT'))
+        texts = [f'"{block.text}"' for block in self.blocks]
+        urls = [f'"{block.url}"' for block in self.blocks]
+        subjs = [f'"{block.subj}"' for block in self.blocks]
+        subjfs = [f'"{block.subjf}"' for block in self.blocks]
+        cellnos = [block.cellno for block in self.blocks]
+        iterable = [nos, types, texts, urls, subjs, subjfs, cellnos]
+        headers = (_('#'), _('TYPE'), _('TEXT'), 'URL', 'SUBJ', 'SUBJF'
+                  ,_('CELL #'))
+        # 10'' monitor: 20 symbols per a column
+        # 23'' monitor: 50 symbols per a column
         mes = Table(iterable = iterable, headers = headers, maxrow = 50
-                   ,maxrows = self.maxrows).run()
+                   ,maxrows = 1000).run()
         return _('Blocks:') + '\n' + mes
     
-    def _get_max_type(self, types):
-        f = '[MClient] plugins.dsl.tags.Tags._get_max_type'
-        prior = []
-        i = 0
-        while i < len(types):
-            try:
-                index_ = self.all_types.index(types[i])
-                prior.append(self.all_prior[index_])
-            except ValueError:
-                rep.wrong_input(f, types[i])
-                del types[i]
-                i -= 1
-            i += 1
-        if not types:
-            rep.empty(f)
+    def _set_block_type(self, block, tag):
+        if not tag.inherent:
             return
-        index_ = prior.index(max(prior))
-        return types[index_]
+        if self._has_inherent_wform(tag):
+            block.type = 'wform'
+        elif self._has_inherent_speech(tag):
+            if self._has_inherent_m1(tag):
+                block.type = 'subj'
+            else:
+                block.type = 'speech'
+        else:
+            block.type = tag.inherent[-1].type
     
     def set_blocks(self):
         f = '[MClient] plugins.dsl.tags.Tags.set_blocks'
         if not self.Success:
             rep.cancel(f)
             return
-        for item in self.tagged:
-            type_ = self._get_max_type(item.tags)
-            if not type_:
-                rep.empty(f)
-                continue
-            block = ic.Block()
-            block.type = type_
-            block.text = item.text
+        tags = [tag for tag in self.tags if tag.type == 'text' \
+               and not self._is_trash(tag)]
+        for tag in tags:
+            block = Block()
+            self._set_block_type(block, tag)
+            block.text = tag.text
+            block.cellno = tag.cellno
+            if block.type in ('subj', 'phsubj'):
+                block.subj = block.text
             self.blocks.append(block)
     
-    def delete_empty(self):
-        f = '[MClient] plugins.dsl.tags.Tags.delete_empty'
+    def assign(self):
+        f = '[MClient] plugins.dsl.tags.Tags.assign'
         if not self.Success:
             rep.cancel(f)
             return
-        deleted = []
-        i = 0
-        while i < len(self.tagged):
-            if self.tagged[i].tags == []:
-                deleted.append(self.tagged[i].text)
-                del self.tagged[i]
-                i -= 1
-            i += 1
-        if deleted:
-            deleted = sorted(set(deleted))
-            deleted = ['"{}"'.format(item) for item in deleted]
-            deleted = ', '.join(deleted)
-            mes = _('Ignore blocks: {}').format(deleted)
-            Message(f, mes).show_debug()
-    
-    def keep_useful(self):
-        f = '[MClient] plugins.dsl.tags.Tags.keep_useful'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        useful = ('com', 'ex', 'i', 'p', 'ref', 't', 'term', 'trn', 'wform')
-        for item in self.tagged:
-            item.tags = [tag for tag in item.tags \
-                        if tag in useful or 'ref dict' in tag]
-    
-    def rename_types(self):
-        f = '[MClient] plugins.dsl.tags.Tags.rename_types'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        for item in self.tagged:
-            for i in range(len(item.tags)):
-                if item.tags[i] == 'trn':
-                    item.tags[i] = 'term'
-                elif item.tags[i] in ('com', 'ex', 'i'):
-                    item.tags[i] = 'comment'
-                elif item.tags[i] == 'p':
-                    item.tags[i] = 'wform'
-                elif item.tags[i] == 't':
-                    item.tags[i] = 'transc'
-                elif item.tags[i] == 'ref' or 'ref dict' in item.tags[i]:
-                    item.tags[i] = 'phrase'
-    
-    def _close_tag(self, tag):
-        f = '[MClient] plugins.dsl.tags.Tags._close_tag'
-        if tag in self.open:
-            self.open.remove(tag)
-        elif tag == 'm':
-            for item in self.open:
-                if re.match('m\d+', item):
-                    self.open.remove(item)
-        elif tag == 'ref':
-            for item in self.open:
-                if 'ref dict' in item:
-                    self.open.remove(item)
-        elif tag == 'lang':
-            for item in self.open:
-                if 'lang id' in item:
-                    self.open.remove(item)
-        else:
-            mes = _('Tag "{}" has not been opened yet!').format(tag)
-            Message(f, mes).show_warning()
-    
-    def _get_tag_name(self, tag):
-        tag = tag[:-1]
-        tag = tag.replace('[', '', 1)
-        if tag.startswith('/'):
-            tag = tag[1:]
-        return tag
-    
-    def set(self):
-        f = '[MClient] plugins.dsl.tags.Tags.set'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        # The 1st fragment should always be an article title
-        i = 1
         for fragm in self.fragms:
-            if fragm.startswith('['):
-                tag = self._get_tag_name(fragm)
-                if fragm.startswith('[/'):
-                    self._close_tag(tag)
-                elif not tag in self.open:
-                    self.open.append(tag)
-            else:
-                itag = Tag()
-                itag.text = fragm
-                itag.tags = list(self.open)
-                self.tagged.append(itag)
-            i += 1
-    
-    def delete_trash(self):
-        ''' Delete unnecessary items by line (as opposite to manipulating the
-            entire code in cleanup.CleanUp.delete_trash).
-        '''
-        f = '[MClient] plugins.dsl.tags.Tags.delete_trash'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        self.fragms = [fragm.strip() for fragm in self.fragms \
-                       if fragm not in ('\n', '\n\t')
-                      ]
+            self.tags.append(AnalyzeTag(fragm).run())
     
     def _debug_code(self):
         return _('Code:') + '\n' + '"{}"'.format(self.code)
@@ -239,32 +262,46 @@ class Tags:
     def _debug_fragms(self):
         mes = []
         for i in range(len(self.fragms)):
-            sub = '{}: "{}"'.format(i + 1, self.fragms[i])
-            mes.append(sub)
+            mes.append(f'{i+1}: "{self.fragms[i]}"')
         return _('Fragments:') + '\n' + '\n'.join(mes)
     
-    def _debug_tagged(self):
-        nos = [i + 1 for i in range(len(self.tagged))]
-        texts = [item.text for item in self.tagged]
-        tags = [', '.join(item.tags) for item in self.tagged]
-        iterable = [nos, tags, texts]
-        headers = (_('#'), _('TAGS'), _('TEXT'))
-        mes = Table(iterable = iterable, headers = headers, maxrow = 50
-                   ,maxrows = self.maxrows).run()
+    def _debug_tags(self):
+        nos = [i + 1 for i in range(len(self.tags))]
+        closes = [f'{tag.Close}' for tag in self.tags]
+        names = [f'"{tag.name}"' for tag in self.tags]
+        types = [f'"{tag.type}"' for tag in self.tags]
+        texts = [f'"{tag.text}"' for tag in self.tags]
+        urls = [f'"{tag.url}"' for tag in self.tags]
+        subjfs = [f'"{tag.subjf}"' for tag in self.tags]
+        cellnos = [f'{tag.cellno}' for tag in self.tags]
+        inherent = []
+        for tag in self.tags:
+            subtags = []
+            for subtag in tag.inherent:
+                subtags.append(subtag.name)
+            subtags = ', '.join(subtags)
+            inherent.append(subtags)
+        iterable = [nos, closes, names, types, texts, urls, subjfs, inherent
+                   ,cellnos]
+        headers = (_('#'), _('CLOSING'), _('NAME'), _('TYPE'), _('TEXT'), 'URL'
+                  ,'DICF', _('OPEN'), _('CELL'))
+        # 10'' monitor: 13 symbols per a column
+        # 23'' monitor: 30 symbols per a column
+        mes = Table(iterable = iterable, headers = headers, maxrow = 70
+                   ,maxrows = 1000).run()
         return _('Tags:') + '\n' + mes
     
     def debug(self):
         f = '[MClient] plugins.dsl.tags.Tags.debug'
         if not self.Success:
             rep.cancel(f)
-            return
-        if not self.Debug:
-            rep.lazy(f)
-            return
-        mes = [self._debug_code(), self._debug_fragms(), self._debug_tagged()
+            return ''
+        '''
+        mes = [self._debug_code(), self._debug_fragms(), self._debug_tags()
               ,self._debug_blocks()]
-        mes = '\n\n'.join(mes)
-        return mes
+        '''
+        mes = [self._debug_tags(), self._debug_blocks()]
+        return '\n\n'.join(mes)
     
     def check(self):
         f = '[MClient] plugins.dsl.tags.Tags.check'
@@ -280,28 +317,50 @@ class Tags:
             rep.cancel(f)
             return
         fragm = ''
-        for sym in list(self.code):
-            if sym == '[':
+        i = 1
+        while i < len(list(self.code)):
+            if self.code[i] == '[':
+                if self.code[i-1] == '\\':
+                    fragm += self.code[i]
+                    i += 1
+                    continue
                 if fragm:
                     self.fragms.append(fragm)
-                fragm = sym
-            elif sym == ']':
-                fragm += sym
+                fragm = self.code[i]
+            elif self.code[i] == ']':
+                if self.code[i-1] == '\\':
+                    fragm += self.code[i]
+                    i += 1
+                    continue
+                fragm += self.code[i]
                 self.fragms.append(fragm)
                 fragm = ''
             else:
-                fragm += sym
+                fragm += self.code[i]
+            i += 1
         if fragm:
             self.fragms.append(fragm)
+    
+    def _has_inherent_wform(self, tag):
+        for subtag in tag.inherent:
+            if subtag.type == 'wform':
+                return True
+    
+    def _has_inherent_speech(self, tag):
+        for subtag in tag.inherent:
+            if subtag.type == 'speech':
+                return True
+    
+    def _has_inherent_m1(self, tag):
+        for subtag in tag.inherent:
+            if subtag.name == 'm1':
+                return True
     
     def run(self):
         self.check()
         self.split()
-        self.delete_trash()
-        self.set()
-        self.keep_useful()
-        self.delete_empty()
-        self.rename_types()
+        self.assign()
+        self.set_inherent()
+        self.set_nos()
         self.set_blocks()
-        self.set_subj_block()
         return self.blocks

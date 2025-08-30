@@ -10,7 +10,7 @@ from skl_shared.list import List
 from skl_shared.logic import Text, punc_array
 from skl_shared.table import Table
 
-import instance as ic
+from instance import Block, Cell
 
 
 class Elems:
@@ -39,7 +39,7 @@ class Elems:
             mes = f'{len(self.blocks)} >= 2'
             rep.condition(f, mes)
             return
-        cell = ic.Cell()
+        cell = Cell()
         cell.blocks.append(self.blocks[0])
         i = 1
         while i < len(self.blocks):
@@ -48,34 +48,11 @@ class Elems:
             else:
                 if cell.blocks:
                     self.cells.append(cell)
-                cell = ic.Cell()
+                cell = Cell()
                 cell.blocks.append(self.blocks[i])
             i += 1
         if cell.blocks:
             self.cells.append(cell)
-    
-    def delete_trash(self):
-        self.blocks = [block for block in self.blocks \
-                      if block.text.strip() and block.text != ',']
-    
-    def divide_block(self):
-        sep1 = ' || '
-        sep2 = '; '
-        i = 0
-        while i < len(self.blocks):
-            if sep1 in self.blocks[i].text \
-            or sep2 in self.blocks[i].text:
-                text = self.blocks[i].text
-                text = text.replace(sep2, sep1)
-                split = text.split(sep1)
-                block = copy.copy(self.blocks[i])
-                del self.blocks[i]
-                for item in split[::-1]:
-                    block_copy = copy.copy(block)
-                    block_copy.text = item
-                    self.blocks.insert(i, block_copy)
-                i = i - 1 + len(split)
-            i += 1
     
     def _is_block_fixed(self, block):
         return block.type in ('subj', 'wform', 'speech', 'transc', 'phsubj')
@@ -148,18 +125,6 @@ class Elems:
         for cell in self.cells:
             cell.fixed_block = self._get_fixed_block(cell)
     
-    def rename_phsubj(self):
-        for cell in self.cells:
-            if cell.fixed_block and cell.fixed_block.type == 'phsubj':
-                match = re.search(r'(\d+)', cell.text)
-                if match:
-                    title = _('Phrases ({})').format(match.group(1))
-                    # 'fill_fixed' is block-oriented
-                    cell.text = cell.fixed_block.text = cell.fixed_block.subj \
-                              = cell.fixed_block.subjf = title
-                    # There should be only one 'phsubj'
-                    return
-    
     def set_row_nos(self):
         # Run this before deleting fixed types
         f = '[MClient] plugins.dsl.elems.Elems.set_row_nos'
@@ -207,10 +172,6 @@ class Elems:
             i += 1
         rep.matches(f, count)
     
-    def set_cellno(self):
-        for i in range(len(self.blocks)):
-            self.blocks[i].cellno = i
-    
     def _get_prev_subj(self, i):
         while i >= 0:
             if self.cells[i].fixed_block \
@@ -243,27 +204,37 @@ class Elems:
             i -= 1
         return ''
     
+    def fix_transc(self):
+        f = '[MClient] plugins.dsl.elems.Elems.fix_transc'
+        if len(self.blocks) < 3:
+            return
+        count = 0
+        i = 2
+        while i < len(self.blocks):
+            if self.blocks[i].type == 'comment' \
+            and self.blocks[i].text == r'\]' \
+            and self.blocks[i-1].type == 'transc' \
+            and self.blocks[i-2].type == 'comment' \
+            and self.blocks[i-2].text == r'\[':
+                self.blocks[i-2].type = 'transc'
+                self.blocks[i-2].cellno = self.blocks[i].cellno
+                self.blocks[i-2].text = '['
+                self.blocks[i].type = 'transc'
+                self.blocks[i].text = ']'
+            i += 1
+    
     def run(self):
         f = '[MClient] plugins.dsl.elems.Elems.run'
         if not self.Success:
             rep.cancel(f)
             return []
-        self.divide_block()
-        self.set_phsubj()
-        self.delete_trash()
-        self.add_space()
+        self.fix_transc()
         self.fill()
-        #self.remove_fixed()
-        #self.insert_fixed()
-        self.set_cellno()
         self.set_fixed_blocks()
         self.set_cells()
         self.set_text()
         self.set_fixed_cells()
-        self.rename_phsubj()
         self.set_row_nos()
-        #self.save_urls()
-        #self.set_art_subj()
         self.unite_brackets()
         self.fill_fixed()
         self.delete_fixed()
@@ -325,7 +296,7 @@ class Elems:
     
     def debug(self, maxrow=70, maxrows=1000):
         f = '[MClient] plugins.dsl.elems.Elems.debug'
-        if not self.Debug or not self.blocks:
+        if not self.blocks:
             rep.lazy(f)
             return
         report = [self._debug_blocks(maxrow, maxrows)
@@ -333,39 +304,6 @@ class Elems:
         report = [item for item in report if item]
         return '\n\n'.join(report)
     
-    def add_space(self):
-        f = '[MClient] plugins.dsl.elems.Elems.add_space'
-        count = 0
-        i = 1
-        while i < len(self.blocks):
-            if self.blocks[i].cellno == self.blocks[i-1].cellno:
-                if self.blocks[i].text and self.blocks[i-1].text \
-                and not self.blocks[i].text[0].isspace() \
-                and not self.blocks[i].text[0] in punc_array \
-                and not self.blocks[i].text[0] in [')', ']', '}'] \
-                and not self.blocks[i-1].text[-1] in ['(', '[', '{']:
-                    count += 1
-                    self.blocks[i].text = ' ' + self.blocks[i].text
-            i += 1
-        rep.matches(f, count)
-
-    def set_phsubj(self):
-        count = 0
-        for block in self.blocks:
-            if block.type == 'phrase':
-                count += 1
-        for i in range(len(self.blocks)):
-            if self.blocks[i].type == 'phrase':
-                block = ic.Block()
-                block.type = 'phsubj'
-                block.same = 0
-                # There is no separate section for phrases
-                block.select = 0
-                mes = _('{} phrases').format(count)
-                block.text = block.subj = block.subjf = mes
-                self.blocks.insert(i, block)
-                return True
-                
     def fill(self):
         subj = wform = speech = transc = ''
         
@@ -403,62 +341,3 @@ class Elems:
             block.wform = wform
             block.speech = speech
             block.transc = transc
-    
-    def insert_fixed(self):
-        subj = subjf = wform = speech = ''
-        i = 0
-        while i < len(self.blocks):
-            if subj != self.blocks[i].subj or subjf != self.blocks[i].subjf \
-            or wform != self.blocks[i].wform \
-            or speech != self.blocks[i].speech:
-                
-                block = ic.Block()
-                block.type = 'speech'
-                block.text = self.blocks[i].speech
-                block.subj = self.blocks[i].subj
-                block.subjf = self.blocks[i].subjf
-                block.wform = self.blocks[i].wform
-                block.speech = self.blocks[i].speech
-                block.transc = self.blocks[i].transc
-                self.blocks.insert(i, block)
-                
-                block = ic.Block()
-                block.type = 'transc'
-                block.text = self.blocks[i].transc
-                block.subj = self.blocks[i].subj
-                block.subjf = self.blocks[i].subjf
-                block.wform = self.blocks[i].wform
-                block.speech = self.blocks[i].speech
-                block.transc = self.blocks[i].transc
-                self.blocks.insert(i, block)
-
-                block = ic.Block()
-                block.type = 'wform'
-                block.text = self.blocks[i].wform
-                block.subj = self.blocks[i].subj
-                block.subjf = self.blocks[i].subjf
-                block.wform = self.blocks[i].wform
-                block.speech = self.blocks[i].speech
-                block.transc = self.blocks[i].transc
-                self.blocks.insert(i, block)
-                
-                block = ic.Block()
-                block.type = 'subj'
-                block.text = self.blocks[i].subj
-                block.subj = self.blocks[i].subj
-                block.subjf = self.blocks[i].subjf
-                block.wform = self.blocks[i].wform
-                block.speech = self.blocks[i].speech
-                block.transc = self.blocks[i].transc
-                self.blocks.insert(i, block)
-                
-                subj = self.blocks[i].subj
-                subjf = self.blocks[i].subjf
-                wform = self.blocks[i].wform
-                speech = self.blocks[i].speech
-                i += 4
-            i += 1
-            
-    def remove_fixed(self):
-        self.blocks = [block for block in self.blocks if block.type \
-                      not in ('subj', 'wform', 'transc', 'speech')]
