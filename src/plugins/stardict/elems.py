@@ -9,8 +9,10 @@ from skl_shared.table import Table
 from skl_shared.list import List
 from skl_shared.logic import Text, punc_array, ru_alphabet, lat_alphabet
 
-import instance as ic
+from instance import Block, Cell
 
+#TODO: Comment out heuristics through this module
+HEURISTICS = False
 SPEECH_ABBR = ('гл.', 'нареч.', 'нар.', 'прил.', 'сокр.', 'сущ.')
 SUBJ_ABBR = ('амер.', 'вчт.', 'геогр.', 'карт.', 'мор.', 'разг.', 'уст.', 'хир.', 'эл.')
 #TODO: read from file
@@ -111,6 +113,10 @@ class Phrases:
             i += 1
     
     def run(self):
+        f = '[MClient] plugins.stardict.elems.Phrases.run'
+        if not HEURISTICS:
+            rep.lazy(f)
+            return self.blocks
         self.replace_seps()
         self.split()
         self.remove_trash()
@@ -168,7 +174,7 @@ class Elems:
             mes = f'{len(self.blocks)} >= 2'
             rep.condition(f, mes)
             return
-        cell = ic.Cell()
+        cell = Cell()
         cell.blocks.append(self.blocks[0])
         i = 1
         while i < len(self.blocks):
@@ -177,7 +183,7 @@ class Elems:
             else:
                 if cell.blocks:
                     self.cells.append(cell)
-                cell = ic.Cell()
+                cell = Cell()
                 cell.blocks.append(self.blocks[i])
             i += 1
         if cell.blocks:
@@ -194,6 +200,10 @@ class Elems:
             cell.url = self._get_url(cell)
     
     def unite_brackets(self):
+        f = '[MClient] plugins.stardict.elems.Elems.unite_brackets'
+        if not HEURISTICS:
+            rep.lazy(f)
+            return
         ''' Combine a cell with a preceding or following bracket such that the
             user would not see '()' when the cell is ignored/blocked.
         '''
@@ -354,6 +364,10 @@ class Elems:
                 block.type = 'subj'
     
     def set_synonyms(self):
+        f = '[MClient] plugins.stardict.elems.Elems.set_synonyms'
+        if not HEURISTICS:
+            rep.lazy(f)
+            return
         i = 1
         while i < len(self.blocks):
             if 'Syn :' in self.blocks[i].text:
@@ -455,6 +469,10 @@ class Elems:
         return f'{f}:\n{mes}'
         
     def unite_comments(self):
+        f = '[MClient] plugins.stardict.elems.Elems.unite_comments'
+        if not HEURISTICS:
+            rep.lazy(f)
+            return
         i = 1
         while i < len(self.blocks):
             if self.blocks[i].type == 'comment' \
@@ -467,9 +485,17 @@ class Elems:
             i += 1
             
     def delete_straight_line(self):
+        f = '[MClient] plugins.stardict.elems.Elems.delete_straight_line'
+        if not HEURISTICS:
+            rep.lazy(f)
+            return
         self.blocks = [block for block in self.blocks if block.text.strip() != '|']
     
     def run_comments(self):
+        f = '[MClient] plugins.stardict.elems.Elems.run_comments'
+        if not HEURISTICS:
+            rep.lazy(f)
+            return
         i = 0
         cellno = -1
         while i < len(self.blocks):
@@ -500,6 +526,10 @@ class Elems:
             i += 1
             
     def set_com_same(self):
+        f = '[MClient] plugins.stardict.elems.Elems.set_com_same'
+        if not HEURISTICS:
+            rep.lazy(f)
+            return
         ''' Sometimes sources do not provide sufficient information on
             SAMECELL blocks, and the tag parser cannot handle sequences
             such as 'any type (not same) -> comment (not same) ->
@@ -583,6 +613,10 @@ class Elems:
             self.blocks[i].cellno = self.blocks[i-1].cellno
     
     def add_space(self):
+        f = '[MClient] plugins.stardict.elems.Elems.add_space'
+        if not HEURISTICS:
+            rep.lazy(f)
+            return
         i = 1
         while i < len(self.blocks):
             if self.blocks[i-1].cellno == self.blocks[i].cellno:
@@ -652,7 +686,7 @@ class Elems:
         if no is None:
             rep.lazy(f)
             return
-        block = ic.Block()
+        block = Block()
         if no > 1:
             block.cellno = self.blocks[no-1].cellno + 0.1
         block.subj = self.phsubj_name
