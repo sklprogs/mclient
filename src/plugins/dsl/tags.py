@@ -51,17 +51,10 @@ from instance import Block, Tag
 class AnalyzeTag:
 
     def __init__(self, fragm):
-        self.Success = True
         self.tag = Tag()
         self.cur_row = 0
         self.cur_cell = 0
         self.fragm = fragm.strip()
-    
-    def check(self):
-        f = '[MClient] plugins.dsl.tags.AnalyzeTag.check'
-        if not self.fragm:
-            self.Success = False
-            rep.empty(f)
     
     def _set_name(self):
         # Do this before setting a URL
@@ -74,7 +67,7 @@ class AnalyzeTag:
         self.tag.name = self.tag.name.lower()
     
     def _set_text(self):
-        f = '[MClient] plugins.dsl.tags.Tags._set_text'
+        f = '[MClient] plugins.dsl.tags.AnalyzeTag._set_text'
         self.tag.text = self.fragm
         if self.tag.text.startswith('[/'):
             self.tag.text = self.tag.text[2:]
@@ -132,10 +125,6 @@ class AnalyzeTag:
             self.tag.Close = True
     
     def set_attr(self):
-        f = '[MClient] plugins.dsl.tags.AnalyzeTag.set_attr'
-        if not self.Success:
-            rep.cancel(f)
-            return
         if self._is_tag():
             self._set_close()
             self._set_text()
@@ -146,7 +135,11 @@ class AnalyzeTag:
             self.tag.text = self.fragm
     
     def run(self):
-        self.check()
+        f = '[MClient] plugins.dsl.tags.AnalyzeTag.run'
+        # This can actually happen and this is not an error, e.g., '\n\t'
+        if not self.fragm:
+            rep.lazy(f)
+            return
         self.set_attr()
         return self.tag
 
@@ -255,6 +248,7 @@ class Tags:
             return
         for fragm in self.fragms:
             self.tags.append(AnalyzeTag(fragm).run())
+        self.tags = [tag for tag in self.tags if tag]
     
     def _debug_code(self):
         return _('Code:') + '\n' + '"{}"'.format(self.code)
@@ -318,7 +312,7 @@ class Tags:
             return
         fragm = ''
         i = 1
-        while i < len(list(self.code)):
+        while i < len(self.code):
             if self.code[i] == '[':
                 if self.code[i-1] == '\\':
                     fragm += self.code[i]
