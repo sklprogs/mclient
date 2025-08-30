@@ -337,7 +337,7 @@ class AllDics:
         self.ifos = []
         self.dics = []
         self.index_ = []
-        self.path = Home('mclient').add_config('dics', 'Stardict')
+        self.path = Home('mclient').add_config('dics')
         self.Success = Directory(self.path).Success
         self.load()
     

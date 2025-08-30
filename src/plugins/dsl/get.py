@@ -356,7 +356,7 @@ class AllDics:
         self.langs = {}
         self.langs1 = []
         self.langs2 = []
-        self.path = Home('mclient').add_config('dics', 'DSL')
+        self.path = Home('mclient').add_config('dics')
         self.Success = Directory(self.path).Success
         self.load()
         self.set_langs()

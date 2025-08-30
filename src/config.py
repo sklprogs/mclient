@@ -15,7 +15,7 @@ PRODUCT_LOW = 'mclient'
 class Paths:
     
     def __init__(self):
-        self.folders = ('DSL', 'Fora', 'Multitran (Demo)', 'Stardict')
+        self.folders = ('Multitran (Demo)', 'Multitran')
         self.Success = True
     
     def check(self):
@@ -27,6 +27,9 @@ class Paths:
         if not self.Success:
             rep.cancel(f)
             return
+        ''' Only Multitran distributions must have separate folders since they
+            conflict with each other.
+        '''
         for folder in self.folders:
             self.Success = Path(self.ihome.add_config('dics', folder)).create()
             if not self.Success:

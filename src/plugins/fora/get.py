@@ -356,7 +356,7 @@ class AllDics:
     def __init__(self):
         self.Success = True
         self.dics = []
-        self.path = Home('mclient').add_config('dics', 'Fora')
+        self.path = Home('mclient').add_config('dics')
         self.set()
     
     def get_valid(self):
