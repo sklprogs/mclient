@@ -17,7 +17,7 @@ from config import CONFIG
 
 DEBUG = True
 
-SEARCH = 'computer'
+SEARCH = 'account'
 URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing&l2=2'
 HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/fill (2025-01-31).htm'
 #SEARCH = 'chicken wing pork friday coding style'
@@ -256,19 +256,19 @@ class Elems:
         return ielems.debug()
     
     def run_dsl(self):
-        import plugins.dsl.cleanup as cu
-        import plugins.dsl.get as gt
-        import plugins.dsl.tags as tg
-        import plugins.dsl.elems as el
+        from plugins.dsl.cleanup import CleanUp
+        from plugins.dsl.get import Get
+        from plugins.dsl.tags import Tags
+        from plugins.dsl.elems import Elems
         blocks = []
         htm = []
-        articles = gt.Get(SEARCH).run()
+        articles = Get(SEARCH).run()
         for iarticle in articles:
             htm.append(iarticle.code)
-            code = cu.CleanUp(iarticle.code).run()
-            blocks += tg.Tags(code).run()
+            code = CleanUp(iarticle.code).run()
+            blocks += Tags(code).run()
         htm = '\n'.join(htm)
-        ielems = el.Elems(blocks)
+        ielems = Elems(blocks)
         blocks = ielems.run()
         return ielems.debug()
     
@@ -516,21 +516,15 @@ class Tags:
         return itags.debug()
     
     def run_dsl(self):
-        import plugins.dsl.get
-        import plugins.dsl.cleanup
-        import plugins.dsl.tags
-        plugins.dsl.get.PATH = Home('mclient').add_config('dics')
-        articles = plugins.dsl.get.Get('account balance').run()
-        blocks = []
+        from plugins.dsl.get import Get
+        from plugins.dsl.cleanup import CleanUp
+        from plugins.dsl.tags import Tags
+        articles = Get('account').run()
         debug = []
         for iarticle in articles:
-            code = plugins.dsl.cleanup.CleanUp(iarticle.code).run()
-            code = plugins.dsl.cleanup.TagLike(code).run()
-            itags = plugins.dsl.tags.Tags(code = code
-                                         ,Debug = DEBUG
-                                         ,maxrows = 0
-                                         ,dicname = iarticle.dic)
-            blocks += itags.run()
+            code = CleanUp(iarticle.code).run()
+            itags = Tags(code)
+            itags.run()
             debug.append(itags.debug())
         return '\n'.join(debug)
     
@@ -1160,13 +1154,14 @@ if __name__ == '__main__':
     #mes = Tags().run_dsl()
     #mes = Get().run_stardict()
     #mes = Get().run_dsl()
-    mes = Get().run_fora()
+    #mes = Get().run_fora()
     #mes = Get().run_fora_many_matches()
     #mes = Tags().run_stardict()
     #mes = Tags().run_fora_stardictx()
+    #mes = Tags().run_dsl()
     #mes = Tags().run_fora_dsl()
     #mes = Tags().run_multitrancom()
-    #mes = Elems().run_dsl()
+    mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
     #mes = Elems().run_fora_stardictx()
     #mes = Elems().run_fora_dsl()
