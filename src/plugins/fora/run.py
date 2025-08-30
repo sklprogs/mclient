@@ -7,9 +7,9 @@ from skl_shared.message.controller import Message, rep
 from plugins.fora.get import Get, ALL_DICS
 import plugins.fora.stardict0.cleanup
 import plugins.fora.stardict0.elems
-import plugins.fora.stardictx.cleanup
-import plugins.fora.stardictx.tags
-import plugins.fora.stardictx.elems
+import plugins.stardict.cleanup
+import plugins.stardict.tags
+import plugins.stardict.elems
 import plugins.fora.dsl.cleanup
 import plugins.fora.dsl.tags
 import plugins.fora.dsl.elems
@@ -152,9 +152,9 @@ class Plugin:
         return []
     
     def _request_stardictx(self, dic):
-        text = plugins.fora.stardictx.cleanup.CleanUp(dic.article).run()
-        blocks = plugins.fora.stardictx.tags.Tags(text).run()
-        return plugins.fora.stardictx.elems.Elems(blocks).run()
+        text = plugins.stardict.cleanup.CleanUp(dic.article).run()
+        blocks = plugins.stardict.tags.Tags(text).run()
+        return plugins.stardict.elems.Elems(blocks).run()
     
     def _request_stardict0(self, dic):
         text = plugins.fora.stardict0.cleanup.CleanUp(dic.article).run()
