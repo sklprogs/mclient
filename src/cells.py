@@ -493,7 +493,7 @@ class View:
             rep.cancel(f)
             return
         if self.phi is None:
-            rep.lazy()
+            rep.lazy(f)
             return
         i = self.phi
         while i < len(self.cells):
