@@ -89,7 +89,8 @@ class Get:
         for idic in dics:
             iarticle = idic.search(self.pattern)
             if iarticle:
-                iarticle.dic = idic.dicname
+                iarticle.dic = idic.dicname.replace('[', '(').replace(']', ')')
+                iarticle.code = f'[dic]{iarticle.dic}[/dic]{iarticle.code}'
                 self.articles.append(iarticle)
 
 

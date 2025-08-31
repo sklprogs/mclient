@@ -51,7 +51,7 @@ class CleanUp:
         '''
         self.text = self.text.replace('[trn][com]', '[com]')
         self.text = self.text.replace('[dtrn][co]', '[co]')
-
+    
     def run(self):
         f = '[MClient] plugins.dsl.cleanup.CleanUp.run'
         if not self.text:

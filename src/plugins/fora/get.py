@@ -246,13 +246,14 @@ class Properties:
         items = self.root.xpath(f'//entry[@key="{attr}"]/text()')
         if items:
             return items[0]
+        return ''
     
     def set_attrs(self):
         f = '[MClient] plugins.fora.get.Properties.set_attrs'
         if not self.Success:
             rep.cancel(f)
             return
-        self.name = self._get_attr('name')
+        self.name = self._get_attr('name').replace('[', '(').replace(']', ')')
         self.format = self._get_attr('contentFormat')
         # Format can be called several times, so we just save the trouble here
         if self.format:
