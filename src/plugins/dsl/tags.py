@@ -301,27 +301,23 @@ class Tags:
             rep.cancel(f)
             return
         fragm = ''
-        i = 1
-        while i < len(self.code):
+        for i in range(len(self.code)):
             if self.code[i] == '[':
-                if self.code[i-1] == '\\':
+                if i > 0 and self.code[i-1] == '\\':
                     fragm += self.code[i]
-                    i += 1
                     continue
                 if fragm:
                     self.fragms.append(fragm)
                 fragm = self.code[i]
             elif self.code[i] == ']':
-                if self.code[i-1] == '\\':
+                if i > 0 and self.code[i-1] == '\\':
                     fragm += self.code[i]
-                    i += 1
                     continue
                 fragm += self.code[i]
                 self.fragms.append(fragm)
                 fragm = ''
             else:
                 fragm += self.code[i]
-            i += 1
         if fragm:
             self.fragms.append(fragm)
     
