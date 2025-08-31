@@ -90,7 +90,11 @@ class Get:
             iarticle = idic.search(self.pattern)
             if iarticle:
                 iarticle.dic = idic.dicname.replace('[', '(').replace(']', ')')
-                iarticle.code = f'[dic]{iarticle.dic}[/dic]{iarticle.code}'
+                ''' \n avoids incorrectly assigning wforms if the article
+                    already contains a dictionary name
+                    (see plugins.dsl.tags.Tags._set_block_type).
+                '''
+                iarticle.code = f'[dic]{iarticle.dic}[/dic]\n{iarticle.code}'
                 self.articles.append(iarticle)
 
 
