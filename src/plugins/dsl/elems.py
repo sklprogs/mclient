@@ -223,11 +223,20 @@ class Elems:
                 self.blocks[i].text = ']'
             i += 1
     
+    def delete_numeration(self):
+        f = '[MClient] plugins.dsl.elems.Elems.delete_numeration'
+        old_len = len(self.blocks)
+        self.blocks = [block for block in self.blocks \
+                      if not re.match(r'\d+\)[\s]{0,1}', block.text)]
+        count = old_len - len(self.blocks)
+        rep.matches(f, count)
+    
     def run(self):
         f = '[MClient] plugins.dsl.elems.Elems.run'
         if not self.Success:
             rep.cancel(f)
             return []
+        self.delete_numeration()
         self.fix_transc()
         self.fill()
         self.set_fixed_blocks()
