@@ -32,7 +32,8 @@ from instance import Block, Tag
     •  Transcription:
         \[[t]-əbl[/t]\]
     •  Parts of speech:
-        (when there is no [m1] before this tag)
+        Do not rely on 'p', it can be 'speech', 'wform' and 'comment' and it is
+        hard to tell when:
         [p]n[/p]
           adj: adjective
           adv: adverb
@@ -101,9 +102,6 @@ class AnalyzeTag:
     def _is_transc(self):
         return self.tag.name == 't'
     
-    def _is_speech(self):
-        return self.tag.name == 'p'
-    
     def _set_type(self):
         if self._is_term():
             self.tag.type = 'term'
@@ -111,8 +109,6 @@ class AnalyzeTag:
             self.tag.type = 'subj'
         elif self._is_wform():
             self.tag.type = 'wform'
-        elif self._is_speech():
-            self.tag.type = 'speech'
         elif self._is_transc():
             self.tag.type = 'transc'
         elif self._is_comment():
@@ -190,8 +186,7 @@ class Tags:
         curcell = -1
         for tag in self.tags:
             if not tag.Close:
-                #TODO: Do we need 'm1' here?
-                if tag.name in ('dic', 'p', 't', 'trn', 'wform'):
+                if tag.name in ('dic', 't', 'trn', 'wform'):
                     curcell += 1
             tag.cellno = curcell
     
@@ -217,11 +212,6 @@ class Tags:
             return
         if self._has_inherent_wform(tag):
             block.type = 'wform'
-        elif self._has_inherent_speech(tag):
-            if self._has_inherent_m1(tag):
-                block.type = 'subj'
-            else:
-                block.type = 'speech'
         else:
             block.type = tag.inherent[-1].type
     
@@ -338,16 +328,6 @@ class Tags:
     def _has_inherent_wform(self, tag):
         for subtag in tag.inherent:
             if subtag.type == 'wform':
-                return True
-    
-    def _has_inherent_speech(self, tag):
-        for subtag in tag.inherent:
-            if subtag.type == 'speech':
-                return True
-    
-    def _has_inherent_m1(self, tag):
-        for subtag in tag.inherent:
-            if subtag.name == 'm1':
                 return True
     
     def run(self):
