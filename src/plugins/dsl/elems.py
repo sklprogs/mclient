@@ -294,7 +294,7 @@ class Elems:
         mes.append('')
         return '\n'.join(mes)
     
-    def debug(self, maxrow=70, maxrows=1000):
+    def debug(self, maxrow=50, maxrows=1000):
         f = '[MClient] plugins.dsl.elems.Elems.debug'
         if not self.blocks:
             rep.lazy(f)
