@@ -380,6 +380,21 @@ class Subjects:
 
 
 
+class CleanUp:
+    
+    def run_dsl(self):
+        f = '[MClient] tests.CleanUp.run_dsl'
+        import plugins.dsl.get as gt
+        import plugins.dsl.cleanup as cu
+        code = []
+        articles = gt.Get(SEARCH).run()
+        for iarticle in articles:
+            code.append(cu.CleanUp(iarticle.code).run())
+        code = '\n\n'.join(code)
+        return f + '\n"' + cu.CleanUp(code).run() + '"'
+
+
+
 class Get:
     
     def decode_indexes(self, indexes):
@@ -516,17 +531,17 @@ class Tags:
         return itags.debug()
     
     def run_dsl(self):
-        from plugins.dsl.get import Get
-        from plugins.dsl.cleanup import CleanUp
-        from plugins.dsl.tags import Tags
-        articles = Get('account').run()
+        import plugins.dsl.get as gt
+        import plugins.dsl.cleanup as cu
+        import plugins.dsl.tags as tg
+        articles = gt.Get('account').run()
         debug = []
         for iarticle in articles:
-            code = CleanUp(iarticle.code).run()
-            itags = Tags(code)
+            code = cu.CleanUp(iarticle.code).run()
+            itags = tg.Tags(code)
             itags.run()
             debug.append(itags.debug())
-        return '\n'.join(debug)
+        return '\n\n'.join(debug)
     
     def analyze_tag(self):
         import plugins.multitrancom.tags as tg
@@ -1156,12 +1171,13 @@ if __name__ == '__main__':
     #mes = Get().run_dsl()
     #mes = Get().run_fora()
     #mes = Get().run_fora_many_matches()
+    #mes = CleanUp().run_dsl()
     #mes = Tags().run_stardict()
     #mes = Tags().run_fora_stardictx()
-    #mes = Tags().run_dsl()
+    mes = Tags().run_dsl()
     #mes = Tags().run_fora_dsl()
     #mes = Tags().run_multitrancom()
-    mes = Elems().run_dsl()
+    #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
     #mes = Elems().run_fora_stardictx()
     #mes = Elems().run_fora_dsl()
