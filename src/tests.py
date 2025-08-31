@@ -242,33 +242,33 @@ class Elems:
     def run_fora_dsl(self):
         f = '[MClient] tests.Elems.run_fora_dsl'
         from plugins.fora.get import ALL_DICS
-        from plugins.fora.dsl.cleanup import CleanUp
-        from plugins.fora.dsl.tags import Tags
-        from plugins.fora.dsl.elems import Elems
+        import plugins.dsl.cleanup as cu
+        import plugins.dsl.tags as tg
+        import plugins.dsl.elems as el
         article = ALL_DICS.search(SEARCH)
         if not article:
             rep.empty(f)
             return
-        article = CleanUp(article).run()
-        blocks = Tags(article).run()
-        ielems = Elems(blocks)
+        article = cu.CleanUp(article).run()
+        blocks = tg.Tags(article).run()
+        ielems = el.Elems(blocks)
         ielems.run()
         return ielems.debug()
     
     def run_dsl(self):
-        from plugins.dsl.cleanup import CleanUp
-        from plugins.dsl.get import Get
-        from plugins.dsl.tags import Tags
-        from plugins.dsl.elems import Elems
+        import plugins.dsl.cleanup as cu
+        import plugins.dsl.get as gt
+        import plugins.dsl.tags as tg
+        import plugins.dsl.elems as el
         blocks = []
         htm = []
-        articles = Get(SEARCH).run()
+        articles = gt.Get(SEARCH).run()
         for iarticle in articles:
             htm.append(iarticle.code)
-            code = CleanUp(iarticle.code).run()
-            blocks += Tags(code).run()
+            code = cu.CleanUp(iarticle.code).run()
+            blocks += tg.Tags(code).run()
         htm = '\n'.join(htm)
-        ielems = Elems(blocks)
+        ielems = el.Elems(blocks)
         blocks = ielems.run()
         return ielems.debug()
     
@@ -427,8 +427,8 @@ class Get:
         return Fora(folder).search('account')
     
     def run_dsl(self):
-        from plugins.dsl.get import Get
-        iget = Get('account')
+        import plugins.dsl.get as gt
+        iget = gt.Get('account')
         iget.run()
         return iget.debug()
     
@@ -482,29 +482,29 @@ class Tags:
     
     def run_fora_stardictx(self):
         f = '[MClient] tests.Tags.run_fora_stardictx'
-        from plugins.fora.get import ALL_DICS
-        from plugins.fora.stardictx.cleanup import CleanUp
-        from plugins.fora.stardictx.tags import Tags
-        article = ALL_DICS.search(SEARCH)
+        import plugins.fora.get as gt
+        import plugins.fora.stardictx.cleanup as cu
+        import plugins.fora.stardictx.tags as tg
+        article = gt.ALL_DICS.search(SEARCH)
         if not article:
             rep.empty(f)
             return
-        article = CleanUp(article).run()
-        itags = Tags(article)
+        article = cu.CleanUp(article).run()
+        itags = tg.Tags(article)
         itags.run()
         return itags.debug()
     
     def run_fora_dsl(self):
         f = '[MClient] tests.Tags.run_fora_dsl'
-        from plugins.fora.get import ALL_DICS
-        from plugins.fora.dsl.cleanup import CleanUp
-        from plugins.fora.dsl.tags import Tags
-        article = ALL_DICS.search(SEARCH)
+        import plugins.fora.get as gt
+        import plugins.dsl.cleanup as cu
+        import plugins.dsl.tags as tg
+        article = gt.ALL_DICS.search(SEARCH)
         if not article:
             rep.empty(f)
             return
-        article = CleanUp(article).run()
-        itags = Tags(article)
+        article = cu.CleanUp(article).run()
+        itags = tg.Tags(article)
         itags.run()
         return itags.debug()
     
@@ -1174,13 +1174,13 @@ if __name__ == '__main__':
     #mes = CleanUp().run_dsl()
     #mes = Tags().run_stardict()
     #mes = Tags().run_fora_stardictx()
-    mes = Tags().run_dsl()
+    #mes = Tags().run_dsl()
     #mes = Tags().run_fora_dsl()
     #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
     #mes = Elems().run_fora_stardictx()
-    #mes = Elems().run_fora_dsl()
+    mes = Elems().run_fora_dsl()
     #mes = Elems().run_fora()
     #mes = Elems().run_multitrancom()
     #mes = Subjects().run()
