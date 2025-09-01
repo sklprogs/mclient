@@ -258,13 +258,20 @@ class Elems:
         rep.matches(f, count)
 
     def fix_cellnos(self):
-        #NOTE: We assume that adjacent fixed blocks have a different type
+        ''' By design, fixed blocks can lie within the same cell in DSL.
+            We force incrementing block.cellno here. By the same reason, we
+            cannot increment cellno only for fixed blocks.
+        '''
         f = '[MClient] plugins.dsl.elems.Elems.fix_cellnos'
+        cellno = 0
         count = 0
         for block in self.blocks:
             if block.Fixed:
                 count += 1
-                block.cellno += 0.01
+                cellno += 0.01
+                block.cellno = cellno
+            else:
+                cellno = block.cellno
         rep.matches(f, count)
     
     def run(self):
@@ -276,9 +283,9 @@ class Elems:
         self.fix_transc()
         self.set_speech()
         self.set_subjects()
+        self.set_fixed_blocks()
         self.fix_cellnos()
         self.fill()
-        self.set_fixed_blocks()
         self.set_cells()
         self.set_text()
         self.set_fixed_cells()
