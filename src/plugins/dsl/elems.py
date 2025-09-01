@@ -215,6 +215,12 @@ class Elems:
             i -= 1
         return ''
     
+    def _is_transc(self, i):
+        return self.blocks[i-2].type == 'comment' \
+        and self.blocks[i-2].text == r'\[' \
+        and self.blocks[i-1].type == 'transc' \
+        and self.blocks[i].type == 'comment' and self.blocks[i].text == r'\]'
+    
     def fix_transc(self):
         f = '[MClient] plugins.dsl.elems.Elems.fix_transc'
         if len(self.blocks) < 3:
@@ -222,17 +228,15 @@ class Elems:
         count = 0
         i = 2
         while i < len(self.blocks):
-            if self.blocks[i].type == 'comment' \
-            and self.blocks[i].text == r'\]' \
-            and self.blocks[i-1].type == 'transc' \
-            and self.blocks[i-2].type == 'comment' \
-            and self.blocks[i-2].text == r'\[':
-                self.blocks[i-2].type = 'transc'
-                self.blocks[i-2].cellno = self.blocks[i].cellno
-                self.blocks[i-2].text = '['
-                self.blocks[i].type = 'transc'
-                self.blocks[i].text = ']'
+            if self._is_transc(i):
+                count += 1
+                self.blocks[i-1].cellno = self.blocks[i].cellno
+                self.blocks[i-1].text = '[' + self.blocks[i-1].text + ']'
             i += 1
+        rep.matches(f, count)
+        if count > 0:
+            self.blocks = [block for block in self.blocks \
+                          if not block.text in (r'\[', r'\]')]
     
     def _is_numeration(self, text):
         return re.match(r'\d+[\),\.][\s]{0,1}', text) \
