@@ -308,7 +308,7 @@ class Elems:
             return
         others = [block for block in self.blocks if block.type != 'phrase']
         phsubj = Block()
-        phsubj.text = _('{} phrases').format(len(others))
+        phsubj.text = _('{} phrases').format(len(phrases))
         phsubj.type = 'phsubj'
         self.blocks = others + [phsubj] + phrases
     
