@@ -294,10 +294,14 @@ class Elems:
         rep.matches(f, old_len - len(self.blocks))
     
     def move_phrases(self):
+        f = '[MClient] plugins.dsl.elems.Elems.move_phrases'
         ''' Unlike other sources, we can move phrases directly to the bottom
             without taking into account blocks with the same cellno.
         '''
         phrases = [block for block in self.blocks if block.type == 'phrase']
+        if not phrases:
+            rep.lazy(f)
+            return
         others = [block for block in self.blocks if block.type != 'phrase']
         phsubj = Block()
         phsubj.text = _('{} phrases').format(len(others))
