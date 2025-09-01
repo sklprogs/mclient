@@ -260,7 +260,7 @@ class Elems:
     def fix_cellnos(self):
         ''' By design, fixed blocks can lie within the same cell in DSL.
             We force incrementing block.cellno here. By the same reason, we
-            cannot increment cellno only for fixed blocks.
+            cannot increment cellno only on the basis of fixed blocks.
         '''
         f = '[MClient] plugins.dsl.elems.Elems.fix_cellnos'
         cellno = 0
