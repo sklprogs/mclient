@@ -278,7 +278,7 @@ class Elems:
         cellno = 0
         count = 0
         for block in self.blocks:
-            if block.Fixed:
+            if block.Fixed or block.type == 'phrase':
                 count += 1
                 cellno += 0.01
                 block.cellno = cellno
@@ -290,19 +290,31 @@ class Elems:
         f = '[MClient] plugins.dsl.elems.Elems.delete_trash'
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks \
-                      if not block.text.strip() in ('-', ',')]
+                      if not block.text.strip() in ('-', ',', 'See:', 'см. тж')]
         rep.matches(f, old_len - len(self.blocks))
+    
+    def move_phrases(self):
+        ''' Unlike other sources, we can move phrases directly to the bottom
+            without taking into account blocks with the same cellno.
+        '''
+        phrases = [block for block in self.blocks if block.type == 'phrase']
+        others = [block for block in self.blocks if block.type != 'phrase']
+        phsubj = Block()
+        phsubj.text = _('{} phrases').format(len(others))
+        phsubj.type = 'phsubj'
+        self.blocks = others + [phsubj] + phrases
     
     def run(self):
         f = '[MClient] plugins.dsl.elems.Elems.run'
         if not self.Success:
             rep.cancel(f)
             return []
+        self.fix_transc()
         self.delete_trash()
         self.delete_numeration()
-        self.fix_transc()
         self.set_speech()
         self.set_subjects()
+        self.move_phrases()
         self.set_fixed_blocks()
         self.fix_cellnos()
         self.fill()
