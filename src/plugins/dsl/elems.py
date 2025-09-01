@@ -231,7 +231,7 @@ class Elems:
         f = '[MClient] plugins.dsl.elems.Elems.delete_numeration'
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks \
-                      if not re.match(r'\d+\)[\s]{0,1}', block.text)]
+                      if not re.match(r'\d+[\),\.][\s]{0,1}', block.text)]
         count = old_len - len(self.blocks)
         rep.matches(f, count)
     
