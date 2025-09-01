@@ -320,14 +320,22 @@ class Elems:
             self.cells[i].no = i
     
     def set_speech(self):
+        f = '[MClient] plugins.stardict.elems.Elems.set_speech'
+        count = 0
         for block in self.blocks:
             if block.text in SPEECH_ABBR:
+                count += 1
                 block.type = 'speech'
+        rep.matches(f, count)
     
     def set_subjects(self):
+        f = '[MClient] plugins.stardict.elems.Elems.set_subjects'
+        count = 0
         for block in self.blocks:
             if block.text in SUBJ_ABBR or block.text in SUBJ:
+                count += 1
                 block.type = 'subj'
+        rep.matches(f, count)
     
     def run(self):
         f = '[MClient] plugins.stardict.elems.Elems.run'
