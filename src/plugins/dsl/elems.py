@@ -13,12 +13,15 @@ from skl_shared.table import Table
 from instance import Block, Cell
 
 SPEECH_ABBR = ('гл.', 'нареч.', 'нар.', 'прил.', 'сокр.', 'сущ.')
-SUBJ_ABBR = ('SAP.фин.', 'автом.', 'амер.', 'банк.', 'бизн.', 'бирж.', 'брит.'
-            ,'бур.', 'бухг.', 'валют.', 'воен.', 'вчт.', 'выч.', 'геогр.'
-            ,'дор.', 'инвест.', 'ист.', 'карт.', 'комп.', 'Майкрософт.'
+SUBJ_ABBR = ('SAP.тех.', 'SAP.фин.', 'авиа.', 'автом.', 'амер.', 'арх.'
+            ,'банк.', 'бизн.', 'бирж.', 'брит.', 'бур.', 'бухг.', 'валют.'
+            ,'воен.', 'вчт.', 'выч.', 'геогр.', 'грам.', 'дор.', 'зоол.'
+            ,'инвест.', 'ист.', 'карт.', 'комп.', 'контр.кач.', 'Майкрософт.'
             ,'Макаров.', 'марк.', 'маркет.', 'матем.', 'мор.', 'нефт.'
-            ,'нефт.газ.', 'общ.', 'разг.', 'рекл.', 'стат.', 'тех.', 'торг.'
-            ,'уст.', 'хир.', 'экон.', 'эл.', 'юр.', 'юр.Н.П.')
+            ,'нефт.газ.', 'обр.', 'общ.', 'патент.', 'полигр.', 'разг.'
+            ,'рекл.', 'рел.', 'сл.', 'стат.', 'стр.', 'табу.', 'тех.', 'торг.'
+            ,'уст.', 'хир.', 'эк.', 'эк. обр.', 'экон.', 'эл.', 'юр.'
+            ,'юр.Н.П.')
 
 
 class Elems:
@@ -231,11 +234,16 @@ class Elems:
                 self.blocks[i].text = ']'
             i += 1
     
+    def _is_numeration(self, text):
+        return re.match(r'\d+[\),\.][\s]{0,1}', text) \
+        or re.match(r'[а-я][\),\.][\s]{0,1}', text) \
+        or re.match(r'[a-z][\),\.][\s]{0,1}', text)
+    
     def delete_numeration(self):
         f = '[MClient] plugins.dsl.elems.Elems.delete_numeration'
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks \
-                      if not re.match(r'\d+[\),\.][\s]{0,1}', block.text)]
+                      if not self._is_numeration(block.text)]
         count = old_len - len(self.blocks)
         rep.matches(f, count)
     
@@ -278,11 +286,19 @@ class Elems:
                 cellno = block.cellno
         rep.matches(f, count)
     
+    def delete_trash(self):
+        f = '[MClient] plugins.dsl.elems.Elems.delete_trash'
+        old_len = len(self.blocks)
+        self.blocks = [block for block in self.blocks \
+                      if not block.text.strip() in ('-', ',')]
+        rep.matches(f, old_len - len(self.blocks))
+    
     def run(self):
         f = '[MClient] plugins.dsl.elems.Elems.run'
         if not self.Success:
             rep.cancel(f)
             return []
+        self.delete_trash()
         self.delete_numeration()
         self.fix_transc()
         self.set_speech()
