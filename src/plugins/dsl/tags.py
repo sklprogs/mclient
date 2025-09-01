@@ -94,7 +94,10 @@ class AnalyzeTag:
         return self.tag.name == 'dic'
     
     def _is_comment(self):
-        return self.tag.name in ('c', 'com', 'ex', 'i', 'ref', 's')
+        return self.tag.name in ('c', 'com', 'ex', 'i', 's')
+    
+    def _is_phrase(self):
+        return self.tag.name == 'ref'
     
     def _is_wform(self):
         return self.tag.name in ('k', 'wform')
@@ -113,6 +116,8 @@ class AnalyzeTag:
             self.tag.type = 'transc'
         elif self._is_comment():
             self.tag.type = 'comment'
+        elif self._is_phrase():
+            self.tag.type = 'phrase'
         else:
             self.tag.type = 'comment'
     
