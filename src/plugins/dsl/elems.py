@@ -12,6 +12,10 @@ from skl_shared.table import Table
 
 from instance import Block, Cell
 
+SPEECH_ABBR = ('гл.', 'нареч.', 'нар.', 'прил.', 'сокр.', 'сущ.')
+SUBJ_ABBR = ('амер.', 'бирж.', 'банк.', 'вчт.', 'геогр.', 'карт.', 'марк.'
+            ,'мор.', 'общ.', 'разг.', 'стат.', 'торг.', 'уст.', 'хир.', 'эл.')
+
 
 class Elems:
 
@@ -231,6 +235,38 @@ class Elems:
         count = old_len - len(self.blocks)
         rep.matches(f, count)
     
+    def set_speech(self):
+        f = '[MClient] plugins.dsl.elems.Elems.set_speech'
+        count = 0
+        for block in self.blocks:
+            if block.text in SPEECH_ABBR:
+                count += 1
+                block.type = 'speech'
+                block.speech = block.text
+                block.Fixed = True
+        rep.matches(f, count)
+    
+    def set_subjects(self):
+        f = '[MClient] plugins.dsl.elems.Elems.set_subjects'
+        count = 0
+        for block in self.blocks:
+            if block.text in SUBJ_ABBR:
+                count += 1
+                block.type = 'subj'
+                block.subj = block.text
+                block.Fixed = True
+        rep.matches(f, count)
+
+    def fix_cellnos(self):
+        #NOTE: We assume that adjacent fixed blocks have a different type
+        f = '[MClient] plugins.dsl.elems.Elems.fix_cellnos'
+        count = 0
+        for block in self.blocks:
+            if block.Fixed:
+                count += 1
+                block.cellno += 0.01
+        rep.matches(f, count)
+    
     def run(self):
         f = '[MClient] plugins.dsl.elems.Elems.run'
         if not self.Success:
@@ -238,6 +274,9 @@ class Elems:
             return []
         self.delete_numeration()
         self.fix_transc()
+        self.set_speech()
+        self.set_subjects()
+        self.fix_cellnos()
         self.fill()
         self.set_fixed_blocks()
         self.set_cells()
