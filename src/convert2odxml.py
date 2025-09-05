@@ -5,14 +5,35 @@ from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
+from skl_shared.paths import Path
 
-import plugins.dsl.get
+from plugins.dsl.get import DSL as PLUGIN_DSL
+from plugins.dsl.cleanup import CleanUp
+from plugins.dsl.get import Get
+from plugins.dsl.tags import Tags
+from plugins.dsl.elems import Elems
+from plugins.fora.run import Plugin
 
 
-class DSL(plugins.dsl.get.DSL):
+class DSL(PLUGIN_DSL):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+    
+    def get_name(self):
+        ''' Do not put this inside plugins.dsl, since the name depends on Fora
+            properties too.
+        '''
+        f = '[MClient] convert2odxml.DSL.get_name'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        if self.dicname:
+            return self.dicname
+        bname = Path(self.file).get_basename()
+        if bname:
+            return bname
+        return _('DSL Dictionary')
     
     def set_blocks(self):
         f = '[MClient] convert2odxml.DSL.set_blocks'
@@ -26,8 +47,9 @@ class DSL(plugins.dsl.get.DSL):
         i = 1
         while i < len(self.poses):
             block = self.lst[self.poses[i-1]:self.poses[i]]
-            self.blocks.append(block)
+            self.blocks.append('\n'.join(block))
             i += 1
+        return self.blocks
     
     def debug_blocks(self, limit=1000):
         f = '[MClient] convert2odxml.DSL.debug_blocks'
@@ -44,18 +66,120 @@ class DSL(plugins.dsl.get.DSL):
             debug += self.blocks[i]
             debug.append('\n')
         return '\n'.join(debug)
-        
+
+
+
+class Parser:
+    
+    def __init__(self, file):
+        self.Success = True
+        self.cells = []
+        self.articles = []
+        self.dicname = ''
+        self.file = file
+    
+    def set_articles(self):
+        f = '[MClient] convert2odxml.Parser.set_articles'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        idic = DSL(self.file)
+        idic.run()
+        self.dicname = idic.get_name()
+        self.articles = idic.set_blocks()
+        #cur
+        self.articles = self.articles[:10]
+        self.Success = idic.Success and self.dicname and self.articles
+    
+    def set_cells(self):
+        f = '[MClient] convert2odxml.Parser.set_cells'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        blocks = []
+        for article in self.articles:
+            code = CleanUp(article).run()
+            blocks += Tags(code).run()
+            if not blocks:
+                rep.empty(f)
+                continue
+            self.cells.append(Elems(blocks).run())
+        self.cells = [items for items in self.cells if items]
+        self.cells = Plugin()._join_cells(self.cells)
+        if not self.cells:
+            self.Success = False
+            rep.empty_output(f)
+            return
+    
+    def run(self):
+        self.set_articles()
+        self.set_cells()
+        return self.cells
+
+
+
+class XML:
+    
+    def __init__(self, cells, dicname):
+        self.Success = True
+        self.xml = []
+        self.cells = cells
+        self.dicname = dicname
+    
+    def check(self):
+        f = '[MClient] convert2odxml.XML.check'
+        if not self.cells or not self.dicname:
+            self.Success = False
+            rep.empty(f)
+    
+    def open_dictionary(self):
+        self.xml.append(f'<dictionary name="{self.dicname}">')
+    
+    def close_dictionary(self):
+        self.xml.append(f'</dictionary>')
+    
+    def open_entry(self, text):
+        self.xml.append(f'<entry term="{text}">')
+    
+    def close_entry(self):
+        self.xml.append(f'</entry>')
+    
+    def fill(self):
+        f = '[MClient] convert2odxml.XML.fill'
+        wform = None
+        for cell in self.cells:
+            if not cell:
+                rep.empty(f)
+                continue
+            if not cell.blocks:
+                rep.empty(f)
+                continue
+            if wform != cell.blocks[0].wform:
+                wform = cell.blocks[0].wform
+                self.open_entry(wform)
+                self.close_entry()
+    
+    def run(self):
+        f = '[MClient] convert2odxml.XML.run'
+        self.check()
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self.open_dictionary()
+        self.fill()
+        self.close_dictionary()
+        return '\n'.join(self.xml)
 
 
 if __name__ == '__main__':
     f = '[MClient] convert2odxml.__main__'
     ROOT.get_root()
-    idic = DSL('/home/pete/.config/mclient/dics/ComputerEnRu.dsl')
-    idic.run()
-    idic.set_blocks()
-    mes = idic.debug_blocks()
-    shDEBUG.reset(f, mes)
-    shDEBUG.show()
+    iparse = Parser('/home/pete/.config/mclient/dics/ComputerEnRu.dsl')
+    cells = iparse.run()
+    if cells:
+        mes = XML(cells, iparse.dicname).run()
+        shDEBUG.reset(f, mes)
+        shDEBUG.show()
     mes = _('Goodbye!')
     Message(f, mes).show_debug()
     ROOT.end()
