@@ -77,6 +77,22 @@ class Parser:
         self.dicname = ''
         self.file = file
     
+    def _has_phrase(self, cell):
+        for block in cell.blocks:
+            if block.type == 'phrase':
+                return True
+    
+    def remove_phrases(self):
+        ''' Dumping to ODXML needs wforms to be sorted; however, combining
+            different unassociated articles results in phrases being put at
+            the end and their wforms shuffled.
+        '''
+        f = '[MClient] convert2odxml.Parser.remove_phrases'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self.cells = [cell for cell in self.cells if not self._has_phrase(cell)]
+    
     def set_articles(self):
         f = '[MClient] convert2odxml.Parser.set_articles'
         if not self.Success:
@@ -125,6 +141,7 @@ class Parser:
     def run(self):
         self.set_articles()
         self.set_cells()
+        self.remove_phrases()
         return self.cells
 
 
@@ -184,7 +201,7 @@ class XML:
         if not self.Success:
             rep.cancel(f)
             return
-        #self.debug()
+        self.debug()
         self.open_dictionary()
         self.fill()
         self.close_dictionary()
