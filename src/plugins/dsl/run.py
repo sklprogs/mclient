@@ -191,6 +191,7 @@ class Plugin:
         self.search = search
         articles = gt.Get(search).run()
         for iarticle in articles:
+            iarticle.code = '[wform]' + search + '[/wform]' + iarticle.code
             htm.append(iarticle.code)
             code = cu.CleanUp(iarticle.code).run()
             self.blocks += tg.Tags(code).run()
