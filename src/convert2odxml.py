@@ -91,6 +91,15 @@ class Parser:
         self.articles = self.articles[:10]
         self.Success = idic.Success and self.dicname and self.articles
     
+    def _add_wform(self, article):
+        f = '[MClient] convert2odxml.Parser._add_wform'
+        if not article:
+            rep.empty(f)
+            return
+        article = article.splitlines()
+        article[0] = '[wform]' + article[0] + '[/wform]'
+        return '\n'.join(article)
+    
     def set_cells(self):
         f = '[MClient] convert2odxml.Parser.set_cells'
         if not self.Success:
@@ -98,6 +107,7 @@ class Parser:
             return
         blocks = []
         for article in self.articles:
+            article = self._add_wform(article)
             code = CleanUp(article).run()
             blocks += Tags(code).run()
             if not blocks:
@@ -144,9 +154,14 @@ class XML:
     def close_entry(self):
         self.xml.append(f'</entry>')
     
+    def debug(self):
+        for cell in self.cells:
+            for i in range(len(cell.blocks)):
+                print(f'Block #{i}: text: "{cell.blocks[i].text}", type: "{cell.blocks[i].type}", wform: "{cell.blocks[i].wform}", subj: "{cell.blocks[i].subj}"')
+    
     def fill(self):
         f = '[MClient] convert2odxml.XML.fill'
-        wform = None
+        wform = ''
         for cell in self.cells:
             if not cell:
                 rep.empty(f)
@@ -154,6 +169,9 @@ class XML:
             if not cell.blocks:
                 rep.empty(f)
                 continue
+            if not cell.blocks[0].wform:
+                mes = _('Empty word forms are not allowed!')
+                Message(f, mes).show_warning()
             if wform != cell.blocks[0].wform:
                 wform = cell.blocks[0].wform
                 self.open_entry(wform)
@@ -165,6 +183,7 @@ class XML:
         if not self.Success:
             rep.cancel(f)
             return
+        #self.debug()
         self.open_dictionary()
         self.fill()
         self.close_dictionary()
