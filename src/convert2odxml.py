@@ -12,7 +12,6 @@ from plugins.dsl.cleanup import CleanUp
 from plugins.dsl.get import Get
 from plugins.dsl.tags import Tags
 from plugins.dsl.elems import Elems
-from plugins.fora.run import Plugin
 
 
 class DSL(PLUGIN_DSL):
@@ -113,9 +112,11 @@ class Parser:
             if not blocks:
                 rep.empty(f)
                 continue
-            self.cells.append(Elems(blocks).run())
-        self.cells = [items for items in self.cells if items]
-        self.cells = Plugin()._join_cells(self.cells)
+            ''' When exporting to Odict XML, we do not care about cell or row
+                numbers, so we do not need plugins.fora.run.Plugin._join_cells.
+            '''
+            self.cells += Elems(blocks).run()
+        self.cells = [cell for cell in self.cells if cell]
         if not self.cells:
             self.Success = False
             rep.empty_output(f)
