@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import xml.dom.minidom
+
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
 from skl_shared.paths import Path
-from skl_shared.pretty_html import make_pretty
 
 from plugins.dsl.get import DSL as PLUGIN_DSL
 from plugins.dsl.cleanup import CleanUp
@@ -170,6 +171,24 @@ class XML:
         self.cells = cells
         self.dicname = dicname
     
+    def _make_pretty(self, code):
+        f = '[MClient] convert2odxml.XML._make_pretty'
+        try:
+            code = xml.dom.minidom.parseString(code)
+            code = code.toprettyxml()
+        except Exception as e:
+            mes = _('Third-party module has failed!\n\nDetails: {}').format(e)
+            Message(f, mes).show_error()
+        return code
+    
+    def _escape(self, text):
+        text = text.replace('&', '&amp;')
+        text = text.replace('"', '&quot;')
+        text = text.replace("'", '&apos;')
+        text = text.replace('<', '&lt;')
+        text = text.replace('>', '&gt;')
+        return text
+    
     def check(self):
         f = '[MClient] convert2odxml.XML.check'
         if not self.cells or not self.dicname:
@@ -247,7 +266,9 @@ class XML:
                 mes = _('Empty speeches are not allowed!')
                 Message(f, mes).show_warning()
                 continue
+            NewWform = False
             if wform != cell.blocks[0].wform:
+                NewWform = True
                 #TODO: Should we check it?
                 self.close_definition()
                 self.close_sense()
@@ -256,14 +277,14 @@ class XML:
                 wform = cell.blocks[0].wform
                 self.open_entry(wform)
                 self.open_ety()
-            if speech != cell.blocks[0].speech:
+            if NewWform or speech != cell.blocks[0].speech:
                 #TODO: Should we check it?
                 self.close_definition()
                 self.close_sense()
                 speech = cell.blocks[0].speech
                 self.open_sense(speech)
             #TODO: Rework
-            self.open_definition(cell.text)
+            self.open_definition(self._escape(cell.text))
             self.close_definition()
         #TODO: Should we check it?
         self.close_definition()
@@ -280,7 +301,7 @@ class XML:
             return
         #self.debug()
         self.fill()
-        return make_pretty('\n'.join(self.xml))
+        return self._make_pretty('\n'.join(self.xml))
 
 
 if __name__ == '__main__':
