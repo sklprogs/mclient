@@ -301,7 +301,7 @@ class XML:
             return
         #self.debug()
         self.fill()
-        return self._make_pretty('\n'.join(self.xml))
+        return self._make_pretty(''.join(self.xml))
 
 
 if __name__ == '__main__':
