@@ -6,6 +6,7 @@ from skl_shared.message.controller import Message, rep
 from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
 from skl_shared.paths import Path
+from skl_shared.pretty_html import make_pretty
 
 from plugins.dsl.get import DSL as PLUGIN_DSL
 from plugins.dsl.cleanup import CleanUp
@@ -115,6 +116,20 @@ class Parser:
         article[0] = '[wform]' + article[0] + '[/wform]'
         return '\n'.join(article)
     
+    def set_speech(self):
+        # Speech is crucial for OXML, so we must assign it if empty
+        f = '[MClient] convert2odxml.Parser.set_speech'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        count = 0
+        for cell in self.cells:
+            for block in cell.blocks:
+                if not block.speech:
+                    count += 1
+                    block.speech = 'un'
+        rep.matches(count)
+    
     def set_cells(self):
         f = '[MClient] convert2odxml.Parser.set_cells'
         if not self.Success:
@@ -142,6 +157,7 @@ class Parser:
         self.set_articles()
         self.set_cells()
         self.remove_phrases()
+        self.set_speech()
         return self.cells
 
 
@@ -164,22 +180,58 @@ class XML:
         self.xml.append(f'<dictionary name="{self.dicname}">')
     
     def close_dictionary(self):
+        ''' ODXML allows only 1 dictionary, even upon merging, so there is no
+            need to check whether it is open.
+        '''
         self.xml.append(f'</dictionary>')
     
     def open_entry(self, text):
+        self.open.append('entry')
         self.xml.append(f'<entry term="{text}">')
     
     def close_entry(self):
-        self.xml.append(f'</entry>')
+        if 'entry' in self.open:
+            self.open.remove('entry')
+            self.xml.append(f'</entry>')
+    
+    def open_ety(self):
+        self.open.append('ety')
+        self.xml.append('<ety>')
+    
+    def close_ety(self):
+        if 'ety' in self.open:
+            self.open.remove('ety')
+            self.xml.append('</ety>')
+    
+    def open_sense(self, speech):
+        self.open.append('sense')
+        self.xml.append(f'<sense pos="{speech}">')
+    
+    def close_sense(self):
+        if 'sense' in self.open:
+            self.open.remove('sense')
+            self.xml.append(f'</sense>')
+    
+    def open_definition(self, term):
+        self.open.append('definition')
+        self.xml.append(f'<definition value="{term}">')
+    
+    def close_definition(self):
+        if 'definition' in self.open:
+            self.open.remove('definition')
+            self.xml.append(f'</definition>')
     
     def debug(self):
         for cell in self.cells:
             for i in range(len(cell.blocks)):
-                print(f'Block #{i}: text: "{cell.blocks[i].text}", type: "{cell.blocks[i].type}", wform: "{cell.blocks[i].wform}", subj: "{cell.blocks[i].subj}"')
+                print(f'Block #{i}: text: "{cell.blocks[i].text}", type: "{cell.blocks[i].type}", wform: "{cell.blocks[i].wform}", speech: "{cell.blocks[i].speech}"')
     
     def fill(self):
         f = '[MClient] convert2odxml.XML.fill'
+        self.open = []
         wform = ''
+        speech = ''
+        self.open_dictionary()
         for cell in self.cells:
             if not cell:
                 rep.empty(f)
@@ -190,10 +242,35 @@ class XML:
             if not cell.blocks[0].wform:
                 mes = _('Empty word forms are not allowed!')
                 Message(f, mes).show_warning()
+                continue
+            if not cell.blocks[0].speech:
+                mes = _('Empty speeches are not allowed!')
+                Message(f, mes).show_warning()
+                continue
             if wform != cell.blocks[0].wform:
+                #TODO: Should we check it?
+                self.close_definition()
+                self.close_sense()
+                self.close_ety()
+                self.close_entry()
                 wform = cell.blocks[0].wform
                 self.open_entry(wform)
-                self.close_entry()
+                self.open_ety()
+            if speech != cell.blocks[0].speech:
+                #TODO: Should we check it?
+                self.close_definition()
+                self.close_sense()
+                speech = cell.blocks[0].speech
+                self.open_sense(speech)
+            #TODO: Rework
+            self.open_definition(cell.text)
+            self.close_definition()
+        #TODO: Should we check it?
+        self.close_definition()
+        self.close_sense()
+        self.close_ety()
+        self.close_entry()
+        self.close_dictionary()
     
     def run(self):
         f = '[MClient] convert2odxml.XML.run'
@@ -201,11 +278,9 @@ class XML:
         if not self.Success:
             rep.cancel(f)
             return
-        self.debug()
-        self.open_dictionary()
+        #self.debug()
         self.fill()
-        self.close_dictionary()
-        return '\n'.join(self.xml)
+        return make_pretty('\n'.join(self.xml))
 
 
 if __name__ == '__main__':
