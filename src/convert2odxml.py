@@ -136,8 +136,8 @@ class Parser:
         if not self.Success:
             rep.cancel(f)
             return
-        blocks = []
         for article in self.articles:
+            blocks = []
             article = self._add_wform(article)
             code = CleanUp(article).run()
             blocks += Tags(code).run()
