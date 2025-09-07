@@ -8,6 +8,7 @@ from skl_shared.message.controller import Message, rep
 from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
 from skl_shared.paths import Path
+from skl_shared.text_file import Write
 
 from plugins.dsl.get import DSL as PLUGIN_DSL
 from plugins.dsl.cleanup import CleanUp
@@ -104,8 +105,6 @@ class Parser:
         idic.run()
         self.dicname = idic.get_name()
         self.articles = idic.set_blocks()
-        #cur
-        self.articles = self.articles[:10]
         self.Success = idic.Success and self.dicname and self.articles
     
     def _add_wform(self, article):
@@ -311,8 +310,9 @@ if __name__ == '__main__':
     cells = iparse.run()
     if cells:
         mes = XML(cells, iparse.dicname).run()
-        shDEBUG.reset(f, mes)
-        shDEBUG.show()
+        Write('/home/pete/bin/third-party/odict-bin/ComputersEnRu.xml').write(mes)
+        #shDEBUG.reset(f, mes)
+        #shDEBUG.show()
     mes = _('Goodbye!')
     Message(f, mes).show_debug()
     ROOT.end()
