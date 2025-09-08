@@ -8,12 +8,11 @@ from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
-from skl_shared.paths import Path
+from skl_shared.paths import Home, Path, Directory
 from skl_shared.text_file import Write
 
 from plugins.dsl.get import DSL as PLUGIN_DSL
 from plugins.dsl.cleanup import CleanUp
-from plugins.dsl.get import Get
 from plugins.dsl.tags import Tags
 from plugins.dsl.elems import Elems
 
@@ -149,25 +148,16 @@ class Parser:
                 numbers, so we do not need plugins.fora.run.Plugin._join_cells.
             '''
             self.cells += Elems(blocks).run()
-        self.cells = [cell for cell in self.cells if cell]
         if not self.cells:
             self.Success = False
             rep.empty_output(f)
             return
-    
-    def sort(self):
-        f = '[MClient] convert2odxml.Parser.sort'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        self.cells.sort(key=lambda cell: (cell.blocks[0].wform, cell.blocks[0].speech))
     
     def run(self):
         self.set_articles()
         self.set_cells()
         self.remove_phrases()
         self.set_speech()
-        self.sort()
         return self.cells
 
 
@@ -305,16 +295,73 @@ class XML:
         return self._make_pretty(''.join(self.xml))
 
 
+
+class Runner:
+    
+    def __init__(self):
+        self.files = []
+        self.cells = []
+        self.path = Home('mclient').add_config('dics')
+        self.idir = Directory(self.path)
+        self.Success = self.idir.Success
+    
+    def set_files(self):
+        f = '[MClient] convert2odxml.Runner.set_files'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        files = self.idir.get_subfiles()
+        for file in files:
+            if Path(file).get_ext_low() == '.dsl':
+                self.files.append(file)
+        if not self.files:
+            self.Success = False
+            rep.empty_output(f)
+    
+    def set_cells(self):
+        f = '[MClient] convert2odxml.Runner.set_cells'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        for file in self.files:
+            iparse = Parser(file)
+            self.cells += iparse.run()
+            self.Success = iparse.Success
+            if not self.Success:
+                break
+        self.cells = [cell for cell in self.cells if cell]
+    
+    def sort(self):
+        f = '[MClient] convert2odxml.Runner.sort'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self.cells.sort(key=lambda cell: (cell.blocks[0].wform, cell.blocks[0].speech))
+    
+    def create_xml(self):
+        f = '[MClient] convert2odxml.Runner.create_xml'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        dicname = _('.dsl dictionaries: {}. Cells: {}')
+        dicname = dicname.format(len(self.files), len(self.cells))
+        mes = XML(self.cells, dicname).run()
+        Write('/home/pete/bin/third-party/odict-bin/single.xml', True).write(mes)
+    
+    def run(self):
+        self.set_files()
+        self.set_cells()
+        self.sort()
+        self.create_xml()
+        
+
+
 if __name__ == '__main__':
     f = '[MClient] convert2odxml.__main__'
     ROOT.get_root()
-    iparse = Parser('/home/pete/.config/mclient/dics/sample1.dsl')
-    cells = iparse.run()
-    if cells:
-        mes = XML(cells, iparse.dicname).run()
-        Write('/home/pete/bin/third-party/odict-bin/single.xml', True).write(mes)
-        #shDEBUG.reset(f, mes)
-        #shDEBUG.show()
+    Runner().run()
+    #shDEBUG.reset(f, mes)
+    #shDEBUG.show()
     mes = _('Goodbye!')
     Message(f, mes).show_debug()
     ROOT.end()
