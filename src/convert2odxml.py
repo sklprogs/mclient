@@ -47,6 +47,7 @@ class DSL(PLUGIN_DSL):
             self.Success = False
             rep.empty(f)
             return
+        self.poses.append(len(self.lst) - 1)
         i = 1
         while i < len(self.poses):
             block = self.lst[self.poses[i-1]:self.poses[i]]
@@ -154,11 +155,19 @@ class Parser:
             rep.empty_output(f)
             return
     
+    def sort(self):
+        f = '[MClient] convert2odxml.Parser.sort'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self.cells.sort(key=lambda cell: (cell.blocks[0].wform, cell.blocks[0].speech))
+    
     def run(self):
         self.set_articles()
         self.set_cells()
         self.remove_phrases()
         self.set_speech()
+        self.sort()
         return self.cells
 
 
@@ -299,11 +308,11 @@ class XML:
 if __name__ == '__main__':
     f = '[MClient] convert2odxml.__main__'
     ROOT.get_root()
-    iparse = Parser('/home/pete/.config/mclient/dics/ComputerEnRu.dsl')
+    iparse = Parser('/home/pete/.config/mclient/dics/sample1.dsl')
     cells = iparse.run()
     if cells:
         mes = XML(cells, iparse.dicname).run()
-        Write('/home/pete/bin/third-party/odict-bin/ComputersEnRu.xml', True).write(mes)
+        Write('/home/pete/bin/third-party/odict-bin/single.xml', True).write(mes)
         #shDEBUG.reset(f, mes)
         #shDEBUG.show()
     mes = _('Goodbye!')
