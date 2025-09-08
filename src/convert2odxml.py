@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import html
 import xml.dom.minidom
 
 from skl_shared.localize import _
@@ -180,14 +181,6 @@ class XML:
             Message(f, mes).show_error()
         return code
     
-    def _escape(self, text):
-        text = text.replace('&', '&amp;')
-        text = text.replace('"', '&quot;')
-        text = text.replace("'", '&apos;')
-        text = text.replace('<', '&lt;')
-        text = text.replace('>', '&gt;')
-        return text
-    
     def check(self):
         f = '[MClient] convert2odxml.XML.check'
         if not self.cells or not self.dicname:
@@ -195,7 +188,7 @@ class XML:
             rep.empty(f)
     
     def open_dictionary(self):
-        self.xml.append(f'<dictionary name="{self.dicname}">')
+        self.xml.append(f'<dictionary name="{html.escape(self.dicname)}">')
     
     def close_dictionary(self):
         ''' ODXML allows only 1 dictionary, even upon merging, so there is no
@@ -205,7 +198,7 @@ class XML:
     
     def open_entry(self, text):
         self.open.append('entry')
-        self.xml.append(f'<entry term="{text}">')
+        self.xml.append(f'<entry term="{html.escape(text)}">')
     
     def close_entry(self):
         if 'entry' in self.open:
@@ -223,7 +216,7 @@ class XML:
     
     def open_sense(self, speech):
         self.open.append('sense')
-        self.xml.append(f'<sense pos="{speech}">')
+        self.xml.append(f'<sense pos="{html.escape(speech)}">')
     
     def close_sense(self):
         if 'sense' in self.open:
@@ -232,7 +225,7 @@ class XML:
     
     def open_definition(self, term):
         self.open.append('definition')
-        self.xml.append(f'<definition value="{term}">')
+        self.xml.append(f'<definition value="{html.escape(term)}">')
     
     def close_definition(self):
         if 'definition' in self.open:
@@ -251,7 +244,7 @@ class XML:
         speech = ''
         self.open_dictionary()
         for cell in self.cells:
-            if not cell:
+            if not cell or not cell.text:
                 rep.empty(f)
                 continue
             if not cell.blocks:
@@ -283,7 +276,7 @@ class XML:
                 speech = cell.blocks[0].speech
                 self.open_sense(speech)
             #TODO: Rework
-            self.open_definition(self._escape(cell.text))
+            self.open_definition(cell.text)
             self.close_definition()
         #TODO: Should we check it?
         self.close_definition()
@@ -310,7 +303,7 @@ if __name__ == '__main__':
     cells = iparse.run()
     if cells:
         mes = XML(cells, iparse.dicname).run()
-        Write('/home/pete/bin/third-party/odict-bin/ComputersEnRu.xml').write(mes)
+        Write('/home/pete/bin/third-party/odict-bin/ComputersEnRu.xml', True).write(mes)
         #shDEBUG.reset(f, mes)
         #shDEBUG.show()
     mes = _('Goodbye!')
