@@ -55,6 +55,7 @@ actually Cyrillic)
   (sdict_EnRu_full - cut (manual).txt) are not separated when sorting
 
 dsl:
+- Ru-En search does not work
 - Cannot find anything in Ozhegov's and Ushakov's dictionaries
 - Fix the wrong position (at top) of a phrase section
 
