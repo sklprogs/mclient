@@ -4,6 +4,8 @@
 import os
 import re
 
+from instance import Article
+
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.time import Timer
@@ -15,15 +17,6 @@ from skl_shared.graphics.progress_bar.controller import PROGRESS
 LANG1 = 'English'
 LANG2 = 'Russian'
 DEBUG = False
-
-
-class Article:
-    
-    def __init__(self):
-        self.dic = ''
-        self.code = ''
-        self.search = ''
-
 
 
 class Get:
@@ -236,7 +229,7 @@ class DSL:
             Message(f, mes).show_info()
     
     def _delete_curly_brackets(self, line):
-        line = re.sub('\{.*\}', '', line)
+        line = re.sub(r'\{.*\}', '', line)
         line = line.strip()
         line = line.lower()
         return line
