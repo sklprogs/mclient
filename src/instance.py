@@ -65,3 +65,12 @@ class Subject:
         self.prior_index = -1
         self.subjpr = -1
         self.Block = False
+
+
+
+class Article:
+    
+    def __init__(self):
+        self.dic = ''
+        self.code = ''
+        self.search = ''
