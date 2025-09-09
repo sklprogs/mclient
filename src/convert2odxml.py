@@ -362,7 +362,7 @@ class XML:
                 Message(f, mes).show_warning()
                 continue
             if not cell.blocks[0].speech:
-                mes = _('Empty speeches are not allowed!')
+                mes = _('Empty parts of speech are not allowed!')
                 Message(f, mes).show_warning()
                 continue
             NewWform = False
