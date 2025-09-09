@@ -9,6 +9,7 @@ from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
+from skl_shared.graphics.progress_bar.controller import PROGRESS
 from skl_shared.paths import Home, Path, File, Directory
 from skl_shared.text_file import Write
 from skl_shared.time import Timer
@@ -425,18 +426,29 @@ class Runner:
         if not self.files:
             self.Success = False
             rep.empty_output(f)
-    
+
     def set_cells(self):
         f = '[MClient] convert2odxml.Runner.set_cells'
         if not self.Success:
             rep.cancel(f)
             return
-        for file in self.files:
-            iparse = Parser(file)
+        PROGRESS.set_title(_('DSL Dictionary Converter'))
+        PROGRESS.show()
+        PROGRESS.set_value(0)
+        PROGRESS.set_max(len(self.files))
+        for i in range(len(self.files)):
+            filename = Path(self.files[i]).get_filename()
+            PROGRESS.update()
+            mes = _('Process {} ({}/{})')
+            mes = mes.format(filename, i + 1, len(self.files))
+            PROGRESS.set_info(mes)
+            iparse = Parser(self.files[i])
             self.cells += iparse.run()
             self.Success = iparse.Success
             if not self.Success:
                 break
+            PROGRESS.inc()
+        PROGRESS.close()
         self.cells = [cell for cell in self.cells if cell]
     
     def sort(self):
