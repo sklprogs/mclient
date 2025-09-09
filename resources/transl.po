@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-09 03:36+0300\n"
-"PO-Revision-Date: 2025-09-09 03:37+0300\n"
+"POT-Creation-Date: 2025-09-09 03:54+0300\n"
+"PO-Revision-Date: 2025-09-09 03:55+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -445,7 +445,7 @@ msgstr "Обновление конфигурации по умолчанию"
 msgid "Use default configuration"
 msgstr "Используется конфигурация по умолчанию"
 
-#: mclient/src/convert2odxml.py:94 mclient/src/plugins/dsl/get.py:188
+#: mclient/src/convert2odxml.py:95 mclient/src/plugins/dsl/get.py:188
 #: mclient/src/plugins/multitrandem/get.py:104
 #: mclient/src/plugins/multitrandem/get.py:431
 #: mclient/src/plugins/multitrandem/get.py:438
@@ -460,15 +460,15 @@ msgstr "Используется конфигурация по умолчани�
 msgid "The condition \"{}\" is not observed!"
 msgstr "Условие \"{}\" не выполнено!"
 
-#: mclient/src/convert2odxml.py:131 mclient/src/plugins/dsl/get.py:249
+#: mclient/src/convert2odxml.py:132 mclient/src/plugins/dsl/get.py:249
 msgid "Dictionary \"{}\" ({}) has {} records"
 msgstr "В словаре \"{}\" ({}) {} записей"
 
-#: mclient/src/convert2odxml.py:151 mclient/src/plugins/dsl/get.py:269
+#: mclient/src/convert2odxml.py:152 mclient/src/plugins/dsl/get.py:269
 msgid "Load \"{}\""
 msgstr "Загрузка \"{}\""
 
-#: mclient/src/convert2odxml.py:159 mclient/src/plugins/dsl/get.py:277
+#: mclient/src/convert2odxml.py:160 mclient/src/plugins/dsl/get.py:277
 #: mclient/src/plugins/multitrandem/utils.py:694
 #: mclient/src/plugins/multitrandem/utils.py:748
 #: mclient/src/plugins/multitrandem/utils.py:780
@@ -485,7 +485,7 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: mclient/src/convert2odxml.py:175 mclient/src/convert2odxml.py:176
+#: mclient/src/convert2odxml.py:176 mclient/src/convert2odxml.py:177
 #: mclient/src/plugins/dsl/get.py:293 mclient/src/plugins/dsl/get.py:294
 #: mclient/src/plugins/dsl/run.py:110 mclient/src/plugins/dsl/run.py:124
 #: mclient/src/plugins/dsl/run.py:139 mclient/src/plugins/dsl/run.py:149
@@ -499,11 +499,11 @@ msgstr ""
 msgid "Any"
 msgstr "Любой"
 
-#: mclient/src/convert2odxml.py:181 mclient/src/plugins/dsl/get.py:299
+#: mclient/src/convert2odxml.py:182 mclient/src/plugins/dsl/get.py:299
 msgid "Untitled dictionary"
 msgstr "Безымянный словарь"
 
-#: mclient/src/convert2odxml.py:287 mclient/src/plugins/fora/get.py:42
+#: mclient/src/convert2odxml.py:288 mclient/src/plugins/fora/get.py:42
 #: mclient/src/plugins/fora/get.py:97 mclient/src/plugins/multitrandem/get.py:470
 #: mclient/src/plugins/multitrandem/get.py:607
 #: mclient/src/plugins/multitrandem/get.py:1487
@@ -519,19 +519,27 @@ msgstr ""
 "\n"
 "Детали: {}"
 
-#: mclient/src/convert2odxml.py:361
+#: mclient/src/convert2odxml.py:362
 msgid "Empty word forms are not allowed!"
 msgstr "Пустые словоформы не допускаются!"
 
-#: mclient/src/convert2odxml.py:365
+#: mclient/src/convert2odxml.py:366
 msgid "Empty parts of speech are not allowed!"
 msgstr "Пустые части речи не допускаются!"
 
-#: mclient/src/convert2odxml.py:454
+#: mclient/src/convert2odxml.py:435
+msgid "DSL Dictionary Converter"
+msgstr "Конвертация словарей DSL"
+
+#: mclient/src/convert2odxml.py:442
+msgid "Process {} ({}/{})"
+msgstr "Обработка {} ({}/{})"
+
+#: mclient/src/convert2odxml.py:466
 msgid ".dsl dictionaries: {}. Cells: {}"
 msgstr "Словарей .dsl: {}. Ячеек: {}"
 
-#: mclient/src/convert2odxml.py:473 mclient/src/cut_tests.py:70
+#: mclient/src/convert2odxml.py:485 mclient/src/cut_tests.py:70
 #: mclient/src/mclient.py:1044 mclient/src/plugins/multitrandem/utils.py:943
 #: mclient/src/plugins/multitrandem/utils.py:1400 mclient/src/tests.py:1243
 msgid "Goodbye!"
