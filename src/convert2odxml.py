@@ -6,6 +6,7 @@ import html
 import xml.dom.minidom
 
 from skl_shared.localize import _
+import skl_shared.message.controller as ms
 from skl_shared.message.controller import Message, rep
 from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
@@ -91,10 +92,8 @@ class DSL:
         pos = Input(f, pos).get_integer()
         # We expect a translation which occupies the following line
         if not (0 <= pos < len(self.lst) - 1):
-            sub = '0 <= {} < {}'.format(pos + 1, len(self.lst))
-            mes = _('The condition "{}" is not observed!')
-            mes = mes.format(sub)
-            Message(f, mes, True).show_error()
+            mes = '0 <= {} < {}'.format(pos + 1, len(self.lst))
+            rep.condition(f, mes, False)
             return
         article = []
         i = pos + 1
@@ -263,10 +262,12 @@ class Parser:
             return
     
     def run(self):
+        ms.STOP = True
         self.set_articles()
         self.set_cells()
         self.remove_phrases()
         self.set_speech()
+        ms.STOP = False
         return self.cells
 
 
@@ -399,6 +400,8 @@ class XML:
         if not self.Success:
             rep.cancel(f)
             return
+        mes = _('Generate HTML')
+        Message(f, mes).show_info()
         #self.debug()
         self.fill()
         return self._make_pretty(''.join(self.xml))
@@ -450,12 +453,16 @@ class Runner:
             PROGRESS.inc()
         PROGRESS.close()
         self.cells = [cell for cell in self.cells if cell]
+        mes = _('Cells have been created')
+        Message(f, mes).show_info()
     
     def sort(self):
         f = '[MClient] convert2odxml.Runner.sort'
         if not self.Success:
             rep.cancel(f)
             return
+        mes = _('Sort cells')
+        Message(f, mes).show_info()
         self.cells.sort(key=lambda cell: (cell.blocks[0].wform, cell.blocks[0].speech))
     
     def create_xml(self):
@@ -466,7 +473,7 @@ class Runner:
         dicname = _('.dsl dictionaries: {}. Cells: {}')
         dicname = dicname.format(len(self.files), len(self.cells))
         mes = XML(self.cells, dicname).run()
-        Write('/home/pete/bin/third-party/odict-bin/single.xml', True).write(mes)
+        Write('/home/pete/bin/third-party/odict-bin/dsl-ru-en.xml', True).write(mes)
     
     def run(self):
         self.set_files()
