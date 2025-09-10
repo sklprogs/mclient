@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-09 03:54+0300\n"
-"PO-Revision-Date: 2025-09-09 03:55+0300\n"
+"POT-Creation-Date: 2025-09-11 00:59+0300\n"
+"PO-Revision-Date: 2025-09-11 01:00+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -445,30 +445,15 @@ msgstr "Обновление конфигурации по умолчанию"
 msgid "Use default configuration"
 msgstr "Используется конфигурация по умолчанию"
 
-#: mclient/src/convert2odxml.py:95 mclient/src/plugins/dsl/get.py:188
-#: mclient/src/plugins/multitrandem/get.py:104
-#: mclient/src/plugins/multitrandem/get.py:431
-#: mclient/src/plugins/multitrandem/get.py:438
-#: mclient/src/plugins/multitrandem/get.py:521
-#: mclient/src/plugins/multitrandem/get.py:559
-#: mclient/src/plugins/multitrandem/get.py:791
-#: mclient/src/plugins/multitrandem/utils.py:54
-#: mclient/src/plugins/multitrandem/utils.py:448
-#: mclient/src/plugins/multitrandem/utils.py:726
-#: mclient/src/plugins/multitrandem/utils.py:1134
-#: skl_shared/src/message/controller.py:60 skl_shared/src/table.py:104
-msgid "The condition \"{}\" is not observed!"
-msgstr "Условие \"{}\" не выполнено!"
-
-#: mclient/src/convert2odxml.py:132 mclient/src/plugins/dsl/get.py:249
+#: mclient/src/convert2odxml.py:131 mclient/src/plugins/dsl/get.py:249
 msgid "Dictionary \"{}\" ({}) has {} records"
 msgstr "В словаре \"{}\" ({}) {} записей"
 
-#: mclient/src/convert2odxml.py:152 mclient/src/plugins/dsl/get.py:269
+#: mclient/src/convert2odxml.py:151 mclient/src/plugins/dsl/get.py:269
 msgid "Load \"{}\""
 msgstr "Загрузка \"{}\""
 
-#: mclient/src/convert2odxml.py:160 mclient/src/plugins/dsl/get.py:277
+#: mclient/src/convert2odxml.py:159 mclient/src/plugins/dsl/get.py:277
 #: mclient/src/plugins/multitrandem/utils.py:694
 #: mclient/src/plugins/multitrandem/utils.py:748
 #: mclient/src/plugins/multitrandem/utils.py:780
@@ -485,7 +470,7 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: mclient/src/convert2odxml.py:176 mclient/src/convert2odxml.py:177
+#: mclient/src/convert2odxml.py:175 mclient/src/convert2odxml.py:176
 #: mclient/src/plugins/dsl/get.py:293 mclient/src/plugins/dsl/get.py:294
 #: mclient/src/plugins/dsl/run.py:110 mclient/src/plugins/dsl/run.py:124
 #: mclient/src/plugins/dsl/run.py:139 mclient/src/plugins/dsl/run.py:149
@@ -499,11 +484,11 @@ msgstr ""
 msgid "Any"
 msgstr "Любой"
 
-#: mclient/src/convert2odxml.py:182 mclient/src/plugins/dsl/get.py:299
+#: mclient/src/convert2odxml.py:181 mclient/src/plugins/dsl/get.py:299
 msgid "Untitled dictionary"
 msgstr "Безымянный словарь"
 
-#: mclient/src/convert2odxml.py:288 mclient/src/plugins/fora/get.py:42
+#: mclient/src/convert2odxml.py:290 mclient/src/plugins/fora/get.py:42
 #: mclient/src/plugins/fora/get.py:97 mclient/src/plugins/multitrandem/get.py:470
 #: mclient/src/plugins/multitrandem/get.py:607
 #: mclient/src/plugins/multitrandem/get.py:1487
@@ -519,27 +504,39 @@ msgstr ""
 "\n"
 "Детали: {}"
 
-#: mclient/src/convert2odxml.py:362
+#: mclient/src/convert2odxml.py:364
 msgid "Empty word forms are not allowed!"
 msgstr "Пустые словоформы не допускаются!"
 
-#: mclient/src/convert2odxml.py:366
+#: mclient/src/convert2odxml.py:368
 msgid "Empty parts of speech are not allowed!"
 msgstr "Пустые части речи не допускаются!"
 
-#: mclient/src/convert2odxml.py:435
+#: mclient/src/convert2odxml.py:404
+msgid "Generate HTML"
+msgstr "Генерация HTML"
+
+#: mclient/src/convert2odxml.py:439
 msgid "DSL Dictionary Converter"
 msgstr "Конвертация словарей DSL"
 
-#: mclient/src/convert2odxml.py:442
+#: mclient/src/convert2odxml.py:446
 msgid "Process {} ({}/{})"
 msgstr "Обработка {} ({}/{})"
 
-#: mclient/src/convert2odxml.py:466
+#: mclient/src/convert2odxml.py:457
+msgid "Cells have been created"
+msgstr "Ячейки были созданы"
+
+#: mclient/src/convert2odxml.py:465
+msgid "Sort cells"
+msgstr "Сортировка ячеек"
+
+#: mclient/src/convert2odxml.py:474
 msgid ".dsl dictionaries: {}. Cells: {}"
 msgstr "Словарей .dsl: {}. Ячеек: {}"
 
-#: mclient/src/convert2odxml.py:485 mclient/src/cut_tests.py:70
+#: mclient/src/convert2odxml.py:493 mclient/src/cut_tests.py:70
 #: mclient/src/mclient.py:1044 mclient/src/plugins/multitrandem/utils.py:943
 #: mclient/src/plugins/multitrandem/utils.py:1400 mclient/src/tests.py:1243
 msgid "Goodbye!"
@@ -1264,6 +1261,20 @@ msgstr "Словари для поиска ({}/{}): {}"
 #: mclient/src/plugins/dsl/get.py:132 mclient/src/plugins/dsl/get.py:150
 msgid "The file \"{}\" is too short ({} lines)!"
 msgstr "Файл \"{}\" слишком короткий ({} строк)!"
+
+#: mclient/src/plugins/dsl/get.py:188 mclient/src/plugins/multitrandem/get.py:104
+#: mclient/src/plugins/multitrandem/get.py:431
+#: mclient/src/plugins/multitrandem/get.py:438
+#: mclient/src/plugins/multitrandem/get.py:521
+#: mclient/src/plugins/multitrandem/get.py:559
+#: mclient/src/plugins/multitrandem/get.py:791
+#: mclient/src/plugins/multitrandem/utils.py:54
+#: mclient/src/plugins/multitrandem/utils.py:448
+#: mclient/src/plugins/multitrandem/utils.py:726
+#: mclient/src/plugins/multitrandem/utils.py:1134
+#: skl_shared/src/message/controller.py:60 skl_shared/src/table.py:104
+msgid "The condition \"{}\" is not observed!"
+msgstr "Условие \"{}\" не выполнено!"
 
 #: mclient/src/plugins/dsl/get.py:227
 msgid "No search results for \"{}\" in \"{}\""
@@ -16710,9 +16721,6 @@ msgstr ""
 #~ msgid "Column #1: {} px; #2: {} px; #3: {} px; #4: {} px; others: {} px"
 #~ msgstr ""
 #~ "Столбец №1: {} пкс; №2: {} пкс; №3: {} пкс; №4: {} пкс; другие: {} пкс"
-
-#~ msgid "Term cells:"
-#~ msgstr "Ячейки с терминами:"
 
 #~| msgid "A width of the shortest cell: {} pixels"
 #~ msgid "A width of the shortest cell of column #{}: {} pixels"
