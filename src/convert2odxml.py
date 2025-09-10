@@ -262,6 +262,7 @@ class Parser:
             return
     
     def run(self):
+        # We don't want millions of debug messages
         ms.STOP = True
         self.set_articles()
         self.set_cells()
