@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-11 03:12+0300\n"
-"PO-Revision-Date: 2025-09-11 03:13+0300\n"
+"POT-Creation-Date: 2025-09-11 03:52+0300\n"
+"PO-Revision-Date: 2025-09-11 03:53+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -445,15 +445,15 @@ msgstr "Обновление конфигурации по умолчанию"
 msgid "Use default configuration"
 msgstr "Используется конфигурация по умолчанию"
 
-#: mclient/src/convert2odxml.py:131 mclient/src/plugins/dsl/get.py:249
+#: mclient/src/convert2odxml.py:127 mclient/src/plugins/dsl/get.py:249
 msgid "Dictionary \"{}\" ({}) has {} records"
 msgstr "В словаре \"{}\" ({}) {} записей"
 
-#: mclient/src/convert2odxml.py:151 mclient/src/plugins/dsl/get.py:269
+#: mclient/src/convert2odxml.py:147 mclient/src/plugins/dsl/get.py:269
 msgid "Load \"{}\""
 msgstr "Загрузка \"{}\""
 
-#: mclient/src/convert2odxml.py:159 mclient/src/plugins/dsl/get.py:277
+#: mclient/src/convert2odxml.py:155 mclient/src/plugins/dsl/get.py:277
 #: mclient/src/plugins/multitrandem/utils.py:694
 #: mclient/src/plugins/multitrandem/utils.py:748
 #: mclient/src/plugins/multitrandem/utils.py:780
@@ -470,7 +470,7 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: mclient/src/convert2odxml.py:175 mclient/src/convert2odxml.py:176
+#: mclient/src/convert2odxml.py:171 mclient/src/convert2odxml.py:172
 #: mclient/src/plugins/dsl/get.py:293 mclient/src/plugins/dsl/get.py:294
 #: mclient/src/plugins/dsl/run.py:110 mclient/src/plugins/dsl/run.py:124
 #: mclient/src/plugins/dsl/run.py:139 mclient/src/plugins/dsl/run.py:149
@@ -484,11 +484,11 @@ msgstr ""
 msgid "Any"
 msgstr "Любой"
 
-#: mclient/src/convert2odxml.py:181 mclient/src/plugins/dsl/get.py:299
+#: mclient/src/convert2odxml.py:177 mclient/src/plugins/dsl/get.py:299
 msgid "Untitled dictionary"
 msgstr "Безымянный словарь"
 
-#: mclient/src/convert2odxml.py:290 mclient/src/plugins/fora/get.py:42
+#: mclient/src/convert2odxml.py:286 mclient/src/plugins/fora/get.py:42
 #: mclient/src/plugins/fora/get.py:97 mclient/src/plugins/multitrandem/get.py:470
 #: mclient/src/plugins/multitrandem/get.py:607
 #: mclient/src/plugins/multitrandem/get.py:1487
@@ -504,44 +504,51 @@ msgstr ""
 "\n"
 "Детали: {}"
 
-#: mclient/src/convert2odxml.py:360
-#| msgid "Process {} ({}/{})"
+#: mclient/src/convert2odxml.py:349
+msgid "Generate XML"
+msgstr "Генерация XML"
+
+#: mclient/src/convert2odxml.py:362
 msgid "Process cell #{}/{}"
 msgstr "Обработка ячейки №{}/{}"
 
-#: mclient/src/convert2odxml.py:369
+#: mclient/src/convert2odxml.py:372
 msgid "Empty word forms are not allowed!"
 msgstr "Пустые словоформы не допускаются!"
 
-#: mclient/src/convert2odxml.py:373
+#: mclient/src/convert2odxml.py:376
 msgid "Empty parts of speech are not allowed!"
 msgstr "Пустые части речи не допускаются!"
 
-#: mclient/src/convert2odxml.py:409
+#: mclient/src/convert2odxml.py:413
 msgid "Generate HTML"
 msgstr "Генерация HTML"
 
-#: mclient/src/convert2odxml.py:445
+#: mclient/src/convert2odxml.py:449
 msgid "DSL Dictionary Converter"
 msgstr "Конвертация словарей DSL"
 
-#: mclient/src/convert2odxml.py:452
+#: mclient/src/convert2odxml.py:456
 msgid "Process {} ({}/{})"
 msgstr "Обработка {} ({}/{})"
 
-#: mclient/src/convert2odxml.py:463
+#: mclient/src/convert2odxml.py:467
 msgid "Cells have been created"
 msgstr "Ячейки были созданы"
 
-#: mclient/src/convert2odxml.py:471
+#: mclient/src/convert2odxml.py:475
 msgid "Sort cells"
 msgstr "Сортировка ячеек"
 
-#: mclient/src/convert2odxml.py:480
+#: mclient/src/convert2odxml.py:484
 msgid ".dsl dictionaries: {}. Cells: {}"
 msgstr "Словарей .dsl: {}. Ячеек: {}"
 
-#: mclient/src/convert2odxml.py:499 mclient/src/cut_tests.py:70
+#: mclient/src/convert2odxml.py:498
+msgid "The operation has taken {}."
+msgstr "Операция завершена за {}."
+
+#: mclient/src/convert2odxml.py:507 mclient/src/cut_tests.py:70
 #: mclient/src/mclient.py:1044 mclient/src/plugins/multitrandem/utils.py:943
 #: mclient/src/plugins/multitrandem/utils.py:1400 mclient/src/tests.py:1243
 msgid "Goodbye!"
