@@ -64,13 +64,9 @@ class DSL:
         return '\n'.join(debug)
     
     def run(self):
-        f = '[MClient] plugins.dsl.get.DSL.run'
-        timer = Timer(f)
-        timer.start()
         self.load()
         self.cleanup()
         self.get_index()
-        timer.end()
     
     def cleanup(self):
         f = '[MClient] plugins.dsl.get.DSL.cleanup'
@@ -491,10 +487,16 @@ class Runner:
         Write('/home/pete/bin/third-party/odict-bin/dsl-ru-en.xml', True).write(mes)
     
     def run(self):
+        f = '[MClient] convert2odxml.Runner.run'
+        timer = Timer(f)
+        timer.start()
         self.set_files()
         self.set_cells()
         self.sort()
         self.create_xml()
+        sub = shcom.get_human_time(timer.end())
+        mes = _('The operation has taken {}.').format(sub)
+        Message(f, mes, True).show_info()
         
 
 
@@ -502,8 +504,6 @@ if __name__ == '__main__':
     f = '[MClient] convert2odxml.__main__'
     ROOT.get_root()
     Runner().run()
-    #shDEBUG.reset(f, mes)
-    #shDEBUG.show()
     mes = _('Goodbye!')
     Message(f, mes).show_debug()
     ROOT.end()
