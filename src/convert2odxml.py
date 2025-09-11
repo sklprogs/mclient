@@ -349,6 +349,11 @@ class XML:
     
     def fill(self):
         f = '[MClient] convert2odxml.XML.fill'
+        step = 1000
+        PROGRESS.set_title(_('Generate XML'))
+        PROGRESS.set_value(0)
+        PROGRESS.set_max(round(len(self.cells) / step))
+        PROGRESS.show()
         self.open = []
         wform = ''
         speech = ''
@@ -356,9 +361,11 @@ class XML:
         count = 0
         for cell in self.cells:
             count += 1
-            if count % 5000 == 0:
+            if count % step == 0:
+                PROGRESS.update()
                 mes = _('Process cell #{}/{}').format(count, len(self.cells))
-                Message(f, mes).show_debug()
+                PROGRESS.set_info(mes)
+                PROGRESS.inc()
             if not cell or not cell.text:
                 rep.empty(f)
                 continue
@@ -399,6 +406,7 @@ class XML:
         self.close_ety()
         self.close_entry()
         self.close_dictionary()
+        PROGRESS.close()
     
     def run(self):
         f = '[MClient] convert2odxml.XML.run'
@@ -411,7 +419,7 @@ class XML:
         #self.debug()
         self.fill()
         #return self._make_pretty(''.join(self.xml))
-        return self.xml
+        return ''.join(self.xml)
 
 
 
