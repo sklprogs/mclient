@@ -353,7 +353,12 @@ class XML:
         wform = ''
         speech = ''
         self.open_dictionary()
+        count = 0
         for cell in self.cells:
+            count += 1
+            if count % 300 == 0:
+                mes = _('Process cell #{}/{}').format(count, len(self.cells))
+                Message(f, mes).show_debug()
             if not cell or not cell.text:
                 rep.empty(f)
                 continue
@@ -405,7 +410,8 @@ class XML:
         Message(f, mes).show_info()
         #self.debug()
         self.fill()
-        return self._make_pretty(''.join(self.xml))
+        #return self._make_pretty(''.join(self.xml))
+        return self.xml
 
 
 
