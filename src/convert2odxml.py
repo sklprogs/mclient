@@ -356,7 +356,7 @@ class XML:
         count = 0
         for cell in self.cells:
             count += 1
-            if count % 300 == 0:
+            if count % 5000 == 0:
                 mes = _('Process cell #{}/{}').format(count, len(self.cells))
                 Message(f, mes).show_debug()
             if not cell or not cell.text:

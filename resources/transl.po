@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-11 00:59+0300\n"
-"PO-Revision-Date: 2025-09-11 01:00+0300\n"
+"POT-Creation-Date: 2025-09-11 03:12+0300\n"
+"PO-Revision-Date: 2025-09-11 03:13+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -504,39 +504,44 @@ msgstr ""
 "\n"
 "Детали: {}"
 
-#: mclient/src/convert2odxml.py:364
+#: mclient/src/convert2odxml.py:360
+#| msgid "Process {} ({}/{})"
+msgid "Process cell #{}/{}"
+msgstr "Обработка ячейки №{}/{}"
+
+#: mclient/src/convert2odxml.py:369
 msgid "Empty word forms are not allowed!"
 msgstr "Пустые словоформы не допускаются!"
 
-#: mclient/src/convert2odxml.py:368
+#: mclient/src/convert2odxml.py:373
 msgid "Empty parts of speech are not allowed!"
 msgstr "Пустые части речи не допускаются!"
 
-#: mclient/src/convert2odxml.py:404
+#: mclient/src/convert2odxml.py:409
 msgid "Generate HTML"
 msgstr "Генерация HTML"
 
-#: mclient/src/convert2odxml.py:439
+#: mclient/src/convert2odxml.py:445
 msgid "DSL Dictionary Converter"
 msgstr "Конвертация словарей DSL"
 
-#: mclient/src/convert2odxml.py:446
+#: mclient/src/convert2odxml.py:452
 msgid "Process {} ({}/{})"
 msgstr "Обработка {} ({}/{})"
 
-#: mclient/src/convert2odxml.py:457
+#: mclient/src/convert2odxml.py:463
 msgid "Cells have been created"
 msgstr "Ячейки были созданы"
 
-#: mclient/src/convert2odxml.py:465
+#: mclient/src/convert2odxml.py:471
 msgid "Sort cells"
 msgstr "Сортировка ячеек"
 
-#: mclient/src/convert2odxml.py:474
+#: mclient/src/convert2odxml.py:480
 msgid ".dsl dictionaries: {}. Cells: {}"
 msgstr "Словарей .dsl: {}. Ячеек: {}"
 
-#: mclient/src/convert2odxml.py:493 mclient/src/cut_tests.py:70
+#: mclient/src/convert2odxml.py:499 mclient/src/cut_tests.py:70
 #: mclient/src/mclient.py:1044 mclient/src/plugins/multitrandem/utils.py:943
 #: mclient/src/plugins/multitrandem/utils.py:1400 mclient/src/tests.py:1243
 msgid "Goodbye!"
