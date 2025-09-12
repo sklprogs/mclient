@@ -100,12 +100,12 @@ class Parser:
     
     def run(self):
         # We don't want millions of debug messages
-        #ms.STOP = True
+        ms.STOP = True
         self.set_articles()
         self.set_cells()
         self.remove_phrases()
         self.set_speech()
-        #ms.STOP = False
+        ms.STOP = False
         return self.cells
 
 
