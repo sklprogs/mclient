@@ -111,6 +111,27 @@ class DSL:
         self.get_index()
         timer.end()
     
+    def set_articles(self):
+        # Used by converters
+        f = '[MClient] plugins.dsl.get.DSL.set_articles'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        if not self.poses:
+            self.Success = False
+            rep.empty(f)
+            return
+        # 'self.poses' denote index poses, so we need a new list
+        poses = self.poses
+        if self.lst[-1].startswith('\t'):
+            # Not -1 because of slices
+            poses.append(len(self.lst))
+        i = 1
+        while i < len(poses):
+            article = self.lst[poses[i-1]:poses[i]]
+            self.articles.append('\n'.join(article))
+            i += 1
+    
     def cleanup(self):
         f = '[MClient] plugins.dsl.get.DSL.cleanup'
         if not self.Success:
@@ -184,10 +205,8 @@ class DSL:
         pos = Input(f, pos).get_integer()
         # We expect a translation which occupies the following line
         if not (0 <= pos < len(self.lst) - 1):
-            sub = '0 <= {} < {}'.format(pos + 1, len(self.lst))
-            mes = _('The condition "{}" is not observed!')
-            mes = mes.format(sub)
-            Message(f, mes, True).show_error()
+            mes = '0 <= {} < {}'.format(pos + 1, len(self.lst))
+            rep.condition(f, mes)
             return
         article = []
         i = pos + 1
@@ -294,7 +313,7 @@ class DSL:
         self.lang2 = _('Any')
         self.poses = []
         self.index_ = []
-        self.blocks = []
+        self.articles = []
         self.Success = True
         self.dicname = _('Untitled dictionary')
 
