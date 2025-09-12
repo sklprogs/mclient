@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import os
 import re
 import html
 import xml.dom.minidom
@@ -484,7 +485,8 @@ class Runner:
         dicname = _('.dsl dictionaries: {}. Cells: {}')
         dicname = dicname.format(len(self.files), len(self.cells))
         mes = XML(self.cells, dicname).run()
-        Write('/home/pete/bin/third-party/odict-bin/dsl-ru-en.xml', True).write(mes)
+        pathw = os.path.join(self.idir.dir, 'dsl-odxml.xml')
+        Write(pathw, True).write(mes)
     
     def run(self):
         f = '[MClient] convert2odxml.Runner.run'
