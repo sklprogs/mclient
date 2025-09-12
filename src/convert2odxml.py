@@ -18,174 +18,17 @@ from skl_shared.time import Timer
 from skl_shared.logic import com as shcom
 
 from plugins.dsl.cleanup import CleanUp
+from plugins.dsl.get import ALL_DICS
 from plugins.dsl.tags import Tags
 from plugins.dsl.elems import Elems
 
 
-class DSL:
-    ''' Recreate the class fully since importing plugins.dsl.get will
-        automatically read all .dsl files because of ALL_DICS.
-    '''
-    def __init__(self, file):
-        self.set_values()
-        self.file = file
-        self.check()
-    
-    def set_blocks(self):
-        f = '[MClient] convert2odxml.DSL.set_blocks'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if not self.poses:
-            self.Success = False
-            rep.empty(f)
-            return
-        self.poses.append(len(self.lst) - 1)
-        i = 1
-        while i < len(self.poses):
-            block = self.lst[self.poses[i-1]:self.poses[i]]
-            self.blocks.append('\n'.join(block))
-            i += 1
-        return self.blocks
-    
-    def debug_blocks(self, limit=1000):
-        f = '[MClient] convert2odxml.DSL.debug_blocks'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        debug = []
-        if limit == 0:
-            limit = len(self.blocks)
-        else:
-            limit = min(limit, len(self.blocks))
-        for i in range(limit):
-            debug.append(f'{f}: {i+1}')
-            debug += self.blocks[i]
-            debug.append('\n')
-        return '\n'.join(debug)
-    
-    def run(self):
-        self.load()
-        self.cleanup()
-        self.get_index()
-    
-    def cleanup(self):
-        f = '[MClient] plugins.dsl.get.DSL.cleanup'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        ''' #NOTE: a line can consist of spaces (actually happened).
-            Be careful: 'strip' also deletes tabulation.
-        '''
-        self.lst = [line.strip(' ') for line in self.lst]
-        self.lst = [line for line in self.lst if line \
-                   and not line.startswith('#')]
-    
-    def get_entry(self, pos):
-        f = '[MClient] plugins.dsl.get.DSL.get_entry'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        pos = Input(f, pos).get_integer()
-        # We expect a translation which occupies the following line
-        if not (0 <= pos < len(self.lst) - 1):
-            mes = '0 <= {} < {}'.format(pos + 1, len(self.lst))
-            rep.condition(f, mes, False)
-            return
-        article = []
-        i = pos + 1
-        while i < len(self.lst):
-            if self.lst[i].startswith('\t'):
-                article.append(self.lst[i])
-            else:
-                break
-            i += 1
-        iarticle = Article()
-        iarticle.search = self.lst[pos]
-        iarticle.code = '\n'.join(article)
-        mes = f'"{iarticle.code}"'
-        Message(f, mes).show_debug()
-        return iarticle
-    
-    def _delete_curly_brackets(self, line):
-        line = re.sub(r'\{.*\}', '', line)
-        line = line.strip()
-        line = line.lower()
-        return line
-    
-    def get_index(self):
-        f = '[MClient] plugins.dsl.get.DSL.get_index'
-        if not self.Success:
-            rep.cancel(f)
-            return self.index_
-        if not self.index_:
-            for i in range(len(self.lst)):
-                if not self.lst[i].startswith('\t'):
-                    line = self._delete_curly_brackets(self.lst[i])
-                    if line:
-                        self.index_.append(line)
-                        self.poses.append(i)
-            mes = _('Dictionary "{}" ({}) has {} records')
-            linesnum = shcom.set_figure_commas(len(self.index_))
-            mes = mes.format(self.fname, self.dicname, linesnum)
-            Message(f, mes).show_info()
-        return self.index_
-    
-    def check(self):
-        f = '[MClient] plugins.dsl.get.DSL.check'
-        if not self.file:
-            self.Success = False
-            rep.empty(f)
-            return
-        self.Success = File(self.file).Success
-    
-    def load(self):
-        f = '[MClient] plugins.dsl.get.DSL.load'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        self.fname = Path(self.file).get_filename()
-        mes = _('Load "{}"').format(self.file)
-        Message(f, mes).show_info()
-        text = ''
-        try:
-            with open(self.file, 'r', encoding='UTF-16') as fi:
-                text = fi.read()
-        except Exception as e:
-            self.Success = False
-            mes = _('Operation has failed!\n\nDetails: {}')
-            mes = mes.format(e)
-            Message(f, mes, True).show_warning()
-        ''' Possibly, a memory consumption will be lower if we do not store
-            'self.text'.
-        '''
-        if not text:
-            self.Success = False
-            rep.empty(f)
-            return
-        self.lst = text.splitlines()
-    
-    def set_values(self):
-        self.file = ''
-        self.fname = ''
-        self.lst = []
-        self.lang1 = _('Any')
-        self.lang2 = _('Any')
-        self.poses = []
-        self.index_ = []
-        self.blocks = []
-        self.Success = True
-        self.dicname = _('Untitled dictionary')
-
-
-
 class Parser:
     
-    def __init__(self, file):
-        self.Success = True
+    def __init__(self, idic):
+        self.idic = idic
+        self.Success = self.idic.Success
         self.cells = []
-        self.articles = []
-        self.file = file
     
     def _has_phrase(self, cell):
         for block in cell.blocks:
@@ -208,10 +51,8 @@ class Parser:
         if not self.Success:
             rep.cancel(f)
             return
-        idic = DSL(self.file)
-        idic.run()
-        self.articles = idic.set_blocks()
-        self.Success = idic.Success and self.articles
+        self.idic.set_articles()
+        self.Success = self.idic.Success and self.idic.articles
     
     def _add_wform(self, article):
         f = '[MClient] convert2odxml.Parser._add_wform'
@@ -241,7 +82,7 @@ class Parser:
         if not self.Success:
             rep.cancel(f)
             return
-        for article in self.articles:
+        for article in self.idic.articles:
             blocks = []
             article = self._add_wform(article)
             code = CleanUp(article).run()
@@ -260,12 +101,12 @@ class Parser:
     
     def run(self):
         # We don't want millions of debug messages
-        ms.STOP = True
+        #ms.STOP = True
         self.set_articles()
         self.set_cells()
         self.remove_phrases()
         self.set_speech()
-        ms.STOP = False
+        #ms.STOP = False
         return self.cells
 
 
@@ -423,24 +264,8 @@ class XML:
 class Runner:
     
     def __init__(self):
-        self.files = []
         self.cells = []
-        self.path = Home('mclient').add_config('dics')
-        self.idir = Directory(self.path)
-        self.Success = self.idir.Success
-    
-    def set_files(self):
-        f = '[MClient] convert2odxml.Runner.set_files'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        files = self.idir.get_subfiles()
-        for file in files:
-            if Path(file).get_ext_low() == '.dsl':
-                self.files.append(file)
-        if not self.files:
-            self.Success = False
-            rep.empty_output(f)
+        self.Success = ALL_DICS.Success
 
     def set_cells(self):
         f = '[MClient] convert2odxml.Runner.set_cells'
@@ -450,14 +275,13 @@ class Runner:
         PROGRESS.set_title(_('DSL Dictionary Converter'))
         PROGRESS.show()
         PROGRESS.set_value(0)
-        PROGRESS.set_max(len(self.files))
-        for i in range(len(self.files)):
-            filename = Path(self.files[i]).get_filename()
+        PROGRESS.set_max(len(ALL_DICS.dics))
+        for i in range(len(ALL_DICS.dics)):
             PROGRESS.update()
             mes = _('Process {} ({}/{})')
-            mes = mes.format(filename, i + 1, len(self.files))
+            mes = mes.format(ALL_DICS.dics[i].fname, i + 1, len(ALL_DICS.dics))
             PROGRESS.set_info(mes)
-            iparse = Parser(self.files[i])
+            iparse = Parser(ALL_DICS.dics[i])
             self.cells += iparse.run()
             self.Success = iparse.Success
             if not self.Success:
@@ -483,16 +307,15 @@ class Runner:
             rep.cancel(f)
             return
         dicname = _('.dsl dictionaries: {}. Cells: {}')
-        dicname = dicname.format(len(self.files), len(self.cells))
+        dicname = dicname.format(len(ALL_DICS.dics), len(self.cells))
         mes = XML(self.cells, dicname).run()
-        pathw = os.path.join(self.idir.dir, 'dsl-odxml.xml')
+        pathw = os.path.join(ALL_DICS.path, 'dsl-odxml.xml')
         Write(pathw, True).write(mes)
     
     def run(self):
         f = '[MClient] convert2odxml.Runner.run'
         timer = Timer(f)
         timer.start()
-        self.set_files()
         self.set_cells()
         self.sort()
         self.create_xml()
