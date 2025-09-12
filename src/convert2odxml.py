@@ -4,7 +4,6 @@
 import os
 import re
 import html
-import xml.dom.minidom
 
 from skl_shared.localize import _
 import skl_shared.message.controller as ms
@@ -119,16 +118,6 @@ class XML:
         self.cells = cells
         self.dicname = dicname
     
-    def _make_pretty(self, code):
-        f = '[MClient] convert2odxml.XML._make_pretty'
-        try:
-            code = xml.dom.minidom.parseString(code)
-            code = code.toprettyxml()
-        except Exception as e:
-            mes = _('Third-party module has failed!\n\nDetails: {}').format(e)
-            Message(f, mes).show_error()
-        return code
-    
     def check(self):
         f = '[MClient] convert2odxml.XML.check'
         if not self.cells or not self.dicname:
@@ -179,11 +168,6 @@ class XML:
         if 'definition' in self.open:
             self.open.remove('definition')
             self.xml.append(f'</definition>')
-    
-    def debug(self):
-        for cell in self.cells:
-            for i in range(len(cell.blocks)):
-                print(f'Block #{i}: text: "{cell.blocks[i].text}", type: "{cell.blocks[i].type}", wform: "{cell.blocks[i].wform}", speech: "{cell.blocks[i].speech}"')
     
     def fill(self):
         f = '[MClient] convert2odxml.XML.fill'
@@ -254,9 +238,7 @@ class XML:
             return
         mes = _('Generate HTML')
         Message(f, mes).show_info()
-        #self.debug()
         self.fill()
-        #return self._make_pretty(''.join(self.xml))
         return ''.join(self.xml)
 
 
