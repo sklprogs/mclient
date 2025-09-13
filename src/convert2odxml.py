@@ -51,6 +51,10 @@ class Parser:
             rep.cancel(f)
             return
         self.idic.set_articles()
+        # Reclaim memory
+        self.idic.lst = []
+        self.idic.poses = []
+        self.idic.index_ = []
         self.Success = self.idic.Success and self.idic.articles
     
     def _add_wform(self, article):
@@ -93,6 +97,8 @@ class Parser:
                 numbers, so we do not need plugins.fora.run.Plugin._join_cells.
             '''
             self.cells += Elems(blocks).run()
+        # Reclaim memory
+        self.idic.articles = []
         if not self.cells:
             self.Success = False
             rep.empty_output(f)
@@ -114,6 +120,7 @@ class XML:
     
     def __init__(self, cells, dicname):
         self.Success = True
+        self.open = []
         self.xml = []
         self.cells = cells
         self.dicname = dicname
@@ -176,7 +183,6 @@ class XML:
         PROGRESS.set_value(0)
         PROGRESS.set_max(round(len(self.cells) / step))
         PROGRESS.show()
-        self.open = []
         wform = ''
         speech = ''
         self.open_dictionary()
@@ -291,8 +297,12 @@ class Runner:
         dicname = _('.dsl dictionaries: {}. Cells: {}')
         dicname = dicname.format(len(ALL_DICS.dics), len(self.cells))
         mes = XML(self.cells, dicname).run()
+        # Reclaim memory (but do we need this?)
+        self.cells = []
         pathw = os.path.join(ALL_DICS.path, 'dsl-odxml.xml')
         Write(pathw, True).write(mes)
+        # Reclaim memory (but do we need this?)
+        mes = ''
     
     def run(self):
         f = '[MClient] convert2odxml.Runner.run'
