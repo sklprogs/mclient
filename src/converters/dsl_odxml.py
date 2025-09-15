@@ -39,14 +39,14 @@ class Parser:
             different unassociated articles results in phrases being put at
             the end and their wforms shuffled.
         '''
-        f = '[MClient] convert2odxml.Parser.remove_phrases'
+        f = '[MClient] converters.dsl_odxml.Parser.remove_phrases'
         if not self.Success:
             rep.cancel(f)
             return
         self.cells = [cell for cell in self.cells if not self._has_phrase(cell)]
     
     def set_articles(self):
-        f = '[MClient] convert2odxml.Parser.set_articles'
+        f = '[MClient] converters.dsl_odxml.Parser.set_articles'
         if not self.Success:
             rep.cancel(f)
             return
@@ -58,7 +58,7 @@ class Parser:
         self.Success = self.idic.Success and self.idic.articles
     
     def _add_wform(self, article):
-        f = '[MClient] convert2odxml.Parser._add_wform'
+        f = '[MClient] converters.dsl_odxml.Parser._add_wform'
         if not article:
             rep.empty(f)
             return
@@ -68,7 +68,7 @@ class Parser:
     
     def set_speech(self):
         # Speech is crucial for OXML, so we must assign it if empty
-        f = '[MClient] convert2odxml.Parser.set_speech'
+        f = '[MClient] converters.dsl_odxml.Parser.set_speech'
         if not self.Success:
             rep.cancel(f)
             return
@@ -81,7 +81,7 @@ class Parser:
         rep.matches(count)
     
     def set_cells(self):
-        f = '[MClient] convert2odxml.Parser.set_cells'
+        f = '[MClient] converters.dsl_odxml.Parser.set_cells'
         if not self.Success:
             rep.cancel(f)
             return
@@ -105,7 +105,7 @@ class Parser:
             return
     
     def run(self):
-        # We don't want millions of debug messages
+        # We do not want millions of debug messages
         ms.STOP = True
         self.set_articles()
         self.set_cells()
@@ -126,7 +126,7 @@ class XML:
         self.dicname = dicname
     
     def check(self):
-        f = '[MClient] convert2odxml.XML.check'
+        f = '[MClient] converters.dsl_odxml.XML.check'
         if not self.cells or not self.dicname:
             self.Success = False
             rep.empty(f)
@@ -177,7 +177,7 @@ class XML:
             self.xml.append(f'</definition>')
     
     def fill(self):
-        f = '[MClient] convert2odxml.XML.fill'
+        f = '[MClient] converters.dsl_odxml.XML.fill'
         step = 1000
         PROGRESS.set_title(_('Generate XML'))
         PROGRESS.set_value(0)
@@ -237,7 +237,7 @@ class XML:
         PROGRESS.close()
     
     def run(self):
-        f = '[MClient] convert2odxml.XML.run'
+        f = '[MClient] converters.dsl_odxml.XML.run'
         self.check()
         if not self.Success:
             rep.cancel(f)
@@ -256,7 +256,7 @@ class Runner:
         self.Success = ALL_DICS.Success
 
     def set_cells(self):
-        f = '[MClient] convert2odxml.Runner.set_cells'
+        f = '[MClient] converters.dsl_odxml.Runner.set_cells'
         if not self.Success:
             rep.cancel(f)
             return
@@ -281,7 +281,7 @@ class Runner:
         Message(f, mes).show_info()
     
     def sort(self):
-        f = '[MClient] convert2odxml.Runner.sort'
+        f = '[MClient] converters.dsl_odxml.Runner.sort'
         if not self.Success:
             rep.cancel(f)
             return
@@ -290,7 +290,7 @@ class Runner:
         self.cells.sort(key=lambda cell: (cell.blocks[0].wform, cell.blocks[0].speech))
     
     def create_xml(self):
-        f = '[MClient] convert2odxml.Runner.create_xml'
+        f = '[MClient] converters.dsl_odxml.Runner.create_xml'
         if not self.Success:
             rep.cancel(f)
             return
@@ -305,7 +305,7 @@ class Runner:
         mes = ''
     
     def run(self):
-        f = '[MClient] convert2odxml.Runner.run'
+        f = '[MClient] converters.dsl_odxml.Runner.run'
         timer = Timer(f)
         timer.start()
         self.set_cells()
@@ -318,7 +318,7 @@ class Runner:
 
 
 if __name__ == '__main__':
-    f = '[MClient] convert2odxml.__main__'
+    f = '[MClient] converters.dsl_odxml.__main__'
     ROOT.get_root()
     Runner().run()
     mes = _('Goodbye!')
