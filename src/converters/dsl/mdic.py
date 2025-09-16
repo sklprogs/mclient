@@ -21,17 +21,72 @@ from converters.dsl.shared import Parser as shParser
 from converters.dsl.shared import Runner as shRunner
 
 
+class Block:
+    
+    def __init__(self, block):
+        self.json = {}
+        self.block = block
+    
+    def assign(self):
+        self.json['cellno'] = self.block.cellno
+        self.json['subj'] = self.block.subj
+        self.json['subjf'] = self.block.subjf
+        self.json['text'] = self.block.text
+        self.json['url'] = self.block.url
+        self.json['type'] = self.block.type
+        self.json['Fixed'] = self.block.Fixed
+    
+    def run(self):
+        f = '[MClient] converters.dsl.mdic.Block.run'
+        if not self.block:
+            # Cell.fixed_block is allowed to be None
+            rep.lazy(f)
+            return {}
+        self.assign()
+        return self.json
+
+
+
+class Cell:
+    
+    def __init__(self, cell):
+        self.json = {}
+        self.cell = cell
+    
+    def assign(self):
+        # Attributes that are not stored: wform, text, col1, col2, col3, col4
+        self.json['no'] = self.cell.no
+        self.json['rowno'] = self.cell.rowno
+        self.json['colno'] = self.cell.colno
+        self.json['subjpr'] = self.cell.subjpr
+        self.json['speechpr'] = self.cell.speechpr
+        self.json['code'] = self.cell.code
+        self.json['speech'] = self.cell.speech
+        self.json['subj'] = self.cell.subj
+        self.json['transc'] = self.cell.transc
+        self.json['url'] = self.cell.url
+        self.json['fixed_block'] = Block(self.cell.fixed_block).run()
+        self.json['blocks'] = {}
+        for block in self.cell.blocks:
+            # Rewrite blocks with the same text (should we allow that?)
+            self.json['blocks'][block.text] = Block(block).run()
+    
+    def run(self):
+        f = '[MClient] converters.dsl.mdic.Cell.run'
+        if not self.cell:
+            rep.empty(f)
+            return {}
+        self.assign()
+        return self.json
+
+
+
 class Parser(shParser):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.json = {}
         self.source = _('unknown source')
-    
-    def _add_blocks(self, cell):
-        #TODO: implement
-        self.json[self.source][self.wform][cell.text]['fixed_block'] = {}
-        self.json[self.source][self.wform][cell.text]['blocks'] = {}
     
     def add_cells(self, cells):
         f = '[MClient] converters.dsl.mdic.Parser.add_cells'
@@ -45,22 +100,7 @@ class Parser(shParser):
             ''' Rewrite cells having the same text (may relate to different
                 subjects) (should we do that?).
             '''
-            self.json[self.source][self.wform][cell.text] = {}
-            self.json[self.source][self.wform][cell.text]['no'] = cell.no
-            self.json[self.source][self.wform][cell.text]['rowno'] = cell.rowno
-            self.json[self.source][self.wform][cell.text]['colno'] = cell.colno
-            self.json[self.source][self.wform][cell.text]['subjpr'] = cell.subjpr
-            self.json[self.source][self.wform][cell.text]['speechpr'] = cell.speechpr
-            self.json[self.source][self.wform][cell.text]['code'] = cell.code
-            self.json[self.source][self.wform][cell.text]['speech'] = cell.speech
-            self.json[self.source][self.wform][cell.text]['subj'] = cell.subj
-            self.json[self.source][self.wform][cell.text]['transc'] = cell.transc
-            self.json[self.source][self.wform][cell.text]['url'] = cell.url
-            self.json[self.source][self.wform][cell.text]['col1'] = cell.col1
-            self.json[self.source][self.wform][cell.text]['col2'] = cell.col2
-            self.json[self.source][self.wform][cell.text]['col3'] = cell.col3
-            self.json[self.source][self.wform][cell.text]['col4'] = cell.col4
-            self._add_blocks(cell)
+            self.json[self.source][self.wform][cell.text] = Cell(cell).run()
     
     def _add_wform(self, article):
         f = '[MClient] converters.dsl.mdic.Parser._add_wform'
@@ -113,7 +153,8 @@ class Parser(shParser):
         #ms.STOP = True
         self.set_articles()
         #cur
-        self.idic.articles = [self.idic.articles[0]]
+        #self.idic.articles = [self.idic.articles[0]]
+        self.idic.articles = self.idic.articles[:2]
         self.set_cells()
         #ms.STOP = False
         print(self.json)
