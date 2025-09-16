@@ -20,6 +20,8 @@ from plugins.dsl.elems import Elems
 from converters.dsl.shared import Parser as shParser
 from converters.dsl.shared import Runner as shRunner
 
+JSON = {}
+
 
 class Block:
     
@@ -85,7 +87,6 @@ class Parser(shParser):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.json = {}
         self.source = _('unknown source')
     
     def add_cells(self, cells):
@@ -100,22 +101,22 @@ class Parser(shParser):
             ''' Rewrite cells having the same text (may relate to different
                 subjects) (should we do that?).
             '''
-            self.json[self.source][self.wform][cell.text] = Cell(cell).run()
+            JSON[self.source][self.wform][cell.text] = Cell(cell).run()
     
     def _add_wform(self, article):
         f = '[MClient] converters.dsl.mdic.Parser._add_wform'
         if not article:
             rep.empty(f)
             self.wform = _('unknown word form')
-            if not self.wform in self.json[self.source]:
-                self.json[self.source][self.wform] = {}
+            if not self.wform in JSON[self.source]:
+                JSON[self.source][self.wform] = {}
             return
         article = article.splitlines()
         article[0] = article[0].strip()
         self.wform = article[0].lower()
         article[0] = '[wform]' + article[0] + '[/wform]'
-        if not self.wform in self.json[self.source]:
-            self.json[self.source][self.wform] = {}
+        if not self.wform in JSON[self.source]:
+            JSON[self.source][self.wform] = {}
         return '\n'.join(article)
     
     def set_cells(self):
@@ -125,8 +126,8 @@ class Parser(shParser):
             return
         self.source = self.idic.dicname
         # Do not overwrite contents of dictionaries having the same name
-        if not self.source in self.json:
-            self.json[self.source] = {}
+        if not self.source in JSON:
+            JSON[self.source] = {}
         for article in self.idic.articles:
             blocks = []
             article = self._add_wform(article)
@@ -157,7 +158,6 @@ class Parser(shParser):
         self.idic.articles = self.idic.articles[:2]
         self.set_cells()
         #ms.STOP = False
-        print(self.json)
         return self.cells
 
 
@@ -208,6 +208,7 @@ class Runner(shRunner):
         timer.start()
         self.set_cells()
         #self.sort()
+        print(JSON)
         sub = shcom.get_human_time(timer.end())
         mes = _('The operation has taken {}.').format(sub)
         Message(f, mes, True).show_info()
