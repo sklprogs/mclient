@@ -167,15 +167,6 @@ class Runner(shRunner):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
     
-    def sort(self):
-        f = '[MClient] converters.dsl.mdic.Runner.sort'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        mes = _('Sort cells')
-        Message(f, mes).show_info()
-        self.cells.sort(key=lambda cell: (cell.blocks[0].wform, cell.blocks[0].speech))
-    
     def set_cells(self):
         # Call Parser from this module
         f = '[MClient] converters.dsl.mdic.Runner.set_cells'
@@ -207,8 +198,6 @@ class Runner(shRunner):
         timer = Timer(f)
         timer.start()
         self.set_cells()
-        #self.sort()
-        print(JSON)
         sub = shcom.get_human_time(timer.end())
         mes = _('The operation has taken {}.').format(sub)
         Message(f, mes, True).show_info()
