@@ -211,6 +211,7 @@ class Dump:
     def __init__(self):
         self.pos = 0
         self.index = []
+        self.fragms = []
         self.Success = JSON
         self.file = Home('mclient').add_config('dics', 'single.mdic')
     
@@ -232,18 +233,29 @@ class Dump:
                 fragm = self._dump_wform(JSON[source][wform])
                 #bytes_ = bytes(fragm, 'utf-8')
                 #length = len(bytes_)
+                self.fragms.append(fragm)
                 length = len(fragm)
                 index_ = f'{wform}\t{self.pos}\t{length}'
                 self.pos += length
                 self.index.append(index_)
         self.index.sort()
+        self.fragms = ''.join(self.fragms)
     
     def debug(self):
         f = '[MClient] converters.dsl.mdic.Dump.debug'
         if not self.Success:
             rep.cancel(f)
             return
-        shDEBUG.reset(f, '\n'.join(self.index))
+        mes = [f + ':']
+        for index in self.index:
+            mes.append(index)
+            parts = index.split('\t')
+            pos1 = int(parts[1])
+            pos2 = pos1 + int(parts[2])
+            text = self.fragms[pos1:pos2]
+            mes.append('"' + text + '"')
+            mes.append('')
+        shDEBUG.reset(f, '\n'.join(mes))
         shDEBUG.show()
     
     def run(self):
