@@ -1,15 +1,16 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import os
-import html
+import json
 
 from skl_shared.localize import _
 import skl_shared.message.controller as ms
 from skl_shared.message.controller import Message, rep
 from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.progress_bar.controller import PROGRESS
+from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
 from skl_shared.time import Timer
+from skl_shared.paths import Home
 from skl_shared.logic import com as shcom
 
 from plugins.dsl.cleanup import CleanUp
@@ -198,6 +199,54 @@ class Runner(shRunner):
         timer = Timer(f)
         timer.start()
         self.set_cells()
+        Dump().run()
         sub = shcom.get_human_time(timer.end())
         mes = _('The operation has taken {}.').format(sub)
         Message(f, mes, True).show_info()
+
+
+
+class Dump:
+    
+    def __init__(self):
+        self.pos = 0
+        self.index = []
+        self.Success = JSON
+        self.file = Home('mclient').add_config('dics', 'single.mdic')
+    
+    def _dump_wform(self, dic):
+        f = '[MClient] converters.dsl.mdic.Dump._dump_wform'
+        try:
+            return json.dumps(dic, ensure_ascii=False, indent=4)
+        except Exception as e:
+            rep.third_party(f, e)
+        return ''
+    
+    def loop(self):
+        f = '[MClient] converters.dsl.mdic.Dump.loop'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        for source in JSON:
+            for wform in JSON[source]:
+                fragm = self._dump_wform(JSON[source][wform])
+                #bytes_ = bytes(fragm, 'utf-8')
+                #length = len(bytes_)
+                length = len(fragm)
+                index_ = f'{wform}\t{self.pos}\t{length}'
+                self.pos += length
+                self.index.append(index_)
+        self.index.sort()
+    
+    def debug(self):
+        f = '[MClient] converters.dsl.mdic.Dump.debug'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        shDEBUG.reset(f, '\n'.join(self.index))
+        shDEBUG.show()
+    
+    def run(self):
+        f = '[MClient] converters.dsl.mdic.Dump.run'
+        self.loop()
+        self.debug()
