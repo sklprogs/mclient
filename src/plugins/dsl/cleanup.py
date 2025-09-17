@@ -44,14 +44,6 @@ class CleanUp:
         self.text = self.text.replace('<', '[')
         self.text = self.text.replace('>', ']')
     
-    def fix_tags(self):
-        ''' Avoid incrementing block number if we actually have a comment here.
-            Can leave closing tags as they are, since it may be incorrect to
-            replace '[/com][/trn]'.
-        '''
-        self.text = self.text.replace('[trn][com]', '[com]')
-        self.text = self.text.replace('[dtrn][co]', '[co]')
-    
     def run(self):
         f = '[MClient] plugins.dsl.cleanup.CleanUp.run'
         if not self.text:
@@ -61,5 +53,4 @@ class CleanUp:
         self.convert_tags()
         self.tag_wforms()
         self.convert_dic_names()
-        self.fix_tags()
         return self.text
