@@ -254,6 +254,19 @@ class Dump:
         if not self.Success:
             rep.cancel(f)
             return
+        mes = self._debug_index() + '\n\n' + self._debug_body()
+        shDEBUG.reset(f, mes)
+        shDEBUG.show()
+    
+    def _debug_index(self):
+        f = '[MClient] converters.dsl.mdic.Dump._debug_index'
+        mes = [f + ':']
+        mes.append(self._dump_wform(self.index))
+        mes = [item for item in mes if item]
+        return '\n'.join(mes)
+    
+    def _debug_body(self):
+        f = '[MClient] converters.dsl.mdic.Dump._debug_body'
         mes = [f + ':']
         abbrs = sorted(self.index.keys())
         for abbr in abbrs:
@@ -266,8 +279,7 @@ class Dump:
                 text = self.fragms[pos1:pos2]
                 mes.append('"' + text + '"')
                 mes.append('')
-        shDEBUG.reset(f, '\n'.join(mes))
-        shDEBUG.show()
+        return '\n'.join(mes)
     
     def run(self):
         f = '[MClient] converters.dsl.mdic.Dump.run'
