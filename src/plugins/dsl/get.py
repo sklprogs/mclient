@@ -205,7 +205,7 @@ class DSL:
         pos = Input(f, pos).get_integer()
         # We expect a translation which occupies the following line
         if not (0 <= pos < len(self.lst) - 1):
-            mes = '0 <= {} < {}'.format(pos + 1, len(self.lst))
+            mes = f'0 <= {pos + 1} < {len(self.lst)}'
             rep.condition(f, mes)
             return
         article = []
