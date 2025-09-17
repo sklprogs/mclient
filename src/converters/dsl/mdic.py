@@ -156,7 +156,8 @@ class Parser(shParser):
         self.set_articles()
         #cur
         #self.idic.articles = [self.idic.articles[0]]
-        self.idic.articles = self.idic.articles[:2]
+        #self.idic.articles = self.idic.articles[:5]
+        self.idic.articles = self.idic.articles[:350]
         self.set_cells()
         #ms.STOP = False
         return self.cells
@@ -209,8 +210,7 @@ class Runner(shRunner):
 class Dump:
     
     def __init__(self):
-        self.pos = 0
-        self.index = []
+        self.index = {}
         self.fragms = []
         self.Success = JSON
         self.file = Home('mclient').add_config('dics', 'single.mdic')
@@ -228,17 +228,23 @@ class Dump:
         if not self.Success:
             rep.cancel(f)
             return
+        pos = 0
         for source in JSON:
             for wform in JSON[source]:
                 fragm = self._dump_wform(JSON[source][wform])
                 #bytes_ = bytes(fragm, 'utf-8')
                 #length = len(bytes_)
                 self.fragms.append(fragm)
+                #TODO: Delete characters not supported in file names
+                abbr = wform.replace(' ', '')
+                # Index abbreviation may be shorter than 3 characters
+                abbr = abbr[0:2]
+                # Do not rewrite index!
+                if not abbr in self.index:
+                    self.index[abbr] = {}
                 length = len(fragm)
-                index_ = f'{wform}\t{self.pos}\t{length}'
-                self.pos += length
-                self.index.append(index_)
-        self.index.sort()
+                self.index[abbr] = {'wform': wform, 'pos': pos, 'len': length}
+                pos += length
         self.fragms = ''.join(self.fragms)
     
     def debug(self):
@@ -247,11 +253,12 @@ class Dump:
             rep.cancel(f)
             return
         mes = [f + ':']
-        for index in self.index:
+        abbrs = sorted(self.index.keys())
+        for abbr in abbrs:
+            index = f"{self.index[abbr]['wform']}\t{self.index[abbr]['pos']}\t{self.index[abbr]['len']}"
             mes.append(index)
-            parts = index.split('\t')
-            pos1 = int(parts[1])
-            pos2 = pos1 + int(parts[2])
+            pos1 = self.index[abbr]['pos']
+            pos2 = pos1 + self.index[abbr]['len']
             text = self.fragms[pos1:pos2]
             mes.append('"' + text + '"')
             mes.append('')
