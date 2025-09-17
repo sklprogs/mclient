@@ -152,14 +152,14 @@ class Parser(shParser):
     
     def run(self):
         # We do not want millions of debug messages
-        #ms.STOP = True
+        ms.STOP = True
         self.set_articles()
         #cur
         #self.idic.articles = [self.idic.articles[0]]
         #self.idic.articles = self.idic.articles[:5]
         self.idic.articles = self.idic.articles[:350]
         self.set_cells()
-        #ms.STOP = False
+        ms.STOP = False
         return self.cells
 
 
@@ -230,7 +230,8 @@ class Dump:
             return
         pos = 0
         for source in JSON:
-            for wform in JSON[source]:
+            wforms = sorted(JSON[source].keys())
+            for wform in wforms:
                 fragm = self._dump_wform(JSON[source][wform])
                 #bytes_ = bytes(fragm, 'utf-8')
                 #length = len(bytes_)
@@ -243,7 +244,8 @@ class Dump:
                 if not abbr in self.index:
                     self.index[abbr] = {}
                 length = len(fragm)
-                self.index[abbr] = {'wform': wform, 'pos': pos, 'len': length}
+                #TODO: Allow duplicate wforms
+                self.index[abbr][wform] = {'pos': pos, 'len': length}
                 pos += length
         self.fragms = ''.join(self.fragms)
     
@@ -255,13 +257,15 @@ class Dump:
         mes = [f + ':']
         abbrs = sorted(self.index.keys())
         for abbr in abbrs:
-            index = f"{self.index[abbr]['wform']}\t{self.index[abbr]['pos']}\t{self.index[abbr]['len']}"
-            mes.append(index)
-            pos1 = self.index[abbr]['pos']
-            pos2 = pos1 + self.index[abbr]['len']
-            text = self.fragms[pos1:pos2]
-            mes.append('"' + text + '"')
-            mes.append('')
+            wforms = sorted(self.index[abbr].keys())
+            for wform in wforms:
+                index = f"{wform}\t{self.index[abbr][wform]['pos']}\t{self.index[abbr][wform]['len']}"
+                mes.append(index)
+                pos1 = self.index[abbr][wform]['pos']
+                pos2 = pos1 + self.index[abbr][wform]['len']
+                text = self.fragms[pos1:pos2]
+                mes.append('"' + text + '"')
+                mes.append('')
         shDEBUG.reset(f, '\n'.join(mes))
         shDEBUG.show()
     
