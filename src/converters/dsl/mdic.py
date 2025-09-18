@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import os
 import json
 
 from skl_shared.localize import _
@@ -10,7 +11,7 @@ from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.progress_bar.controller import PROGRESS
 from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
 from skl_shared.time import Timer
-from skl_shared.paths import Home
+from skl_shared.paths import Home, Path
 from skl_shared.logic import com as shcom
 
 from plugins.dsl.cleanup import CleanUp
@@ -210,24 +211,78 @@ class Runner(shRunner):
 class Dump:
     
     def __init__(self):
+        #TODO: Read index from files
         self.index = {}
-        self.fragms = []
-        self.Success = JSON
-        self.file = Home('mclient').add_config('dics', 'single.mdic')
+        self.fragms = b''
+        self.body_folder = Home('mclient').add_config('dics', 'MDIC')
+        self.index_folder = Home('mclient').add_config('dics', 'MDIC', 'collection.indexes')
+        self.file = os.path.join(self.body_folder, 'collection.mdic')
+        ''' By design, the index folder is created inside the body folder.
+            Path is created recursively. So, just create the index folder.
+        '''
+        self.Success = JSON and Path(self.index_folder).create()
     
     def _dump_wform(self, dic):
         f = '[MClient] converters.dsl.mdic.Dump._dump_wform'
         try:
             return json.dumps(dic, ensure_ascii=False, indent=4)
         except Exception as e:
+            self.Success = False
             rep.third_party(f, e)
         return ''
+    
+    def _save_index(self, abbr, bytes_):
+        f = '[MClient] converters.dsl.mdic.Dump._save_index'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        file = os.path.join(self.index_folder, str(hash(abbr)))
+        mes = _('Write "{}"').format(file)
+        Message(f, mes).show_info()
+        try:
+            with open(file, 'b+a') as iindex:
+                iindex.write(bytes_)
+        except Exception as e:
+            self.Success = False
+            rep.third_party(f, e)
+    
+    def save_indexes(self):
+        f = '[MClient] converters.dsl.mdic.Dump.save_indexes'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        abbrs = sorted(self.index.keys())
+        for abbr in abbrs:
+            wforms = sorted(self.index[abbr].keys())
+            indexes = []
+            for wform in wforms:
+                index = f"{wform}\t{self.index[abbr][wform]['pos']}\t{self.index[abbr][wform]['len']}"
+                indexes.append(index)
+            bytes_ = bytes('\n'.join(indexes), 'utf-8')
+            self._save_index(abbr, bytes_)
+            if not self.Success:
+                break
+    
+    def save_body(self):
+        f = '[MClient] converters.dsl.mdic.Dump.save_body'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        mes = _('Write "{}"').format(self.file)
+        Message(f, mes).show_info()
+        try:
+            with open(self.file, 'b+a') as ibody:
+                ibody.write(self.fragms)
+        except Exception as e:
+            self.Success = False
+            rep.third_party(f, e)
     
     def loop(self):
         f = '[MClient] converters.dsl.mdic.Dump.loop'
         if not self.Success:
             rep.cancel(f)
             return
+        # Currently pos is not saved anywhere, so process everything at once
         pos = 0
         for source in JSON:
             wforms = sorted(JSON[source].keys())
@@ -235,7 +290,7 @@ class Dump:
                 fragm = self._dump_wform(JSON[source][wform])
                 bytes_ = bytes(fragm, 'utf-8')
                 length = len(bytes_)
-                self.fragms.append(bytes_)
+                self.fragms += bytes_
                 #TODO: Delete characters not supported in file names
                 abbr = wform.replace(' ', '')
                 # Index abbreviation may be shorter than 3 characters
@@ -246,9 +301,15 @@ class Dump:
                 #TODO: Allow duplicate wforms
                 self.index[abbr][wform] = {'pos': pos, 'len': length}
                 pos += length
-        self.fragms = b''.join(self.fragms)
+            # Write body binary to release memory before processing new source
+            self.save_body()
+            # Release memory
+            self.fragms = b''
+            JSON[source] = {}
+        self.save_indexes()
     
     def debug(self):
+        # Do this before releasing memory
         f = '[MClient] converters.dsl.mdic.Dump.debug'
         if not self.Success:
             rep.cancel(f)
@@ -265,6 +326,7 @@ class Dump:
         return '\n'.join(mes)
     
     def _debug_body(self):
+        # Do this before releasing memory
         f = '[MClient] converters.dsl.mdic.Dump._debug_body'
         mes = [f + ':']
         abbrs = sorted(self.index.keys())
@@ -276,6 +338,9 @@ class Dump:
                 pos1 = self.index[abbr][wform]['pos']
                 pos2 = pos1 + self.index[abbr][wform]['len']
                 bytes_ = self.fragms[pos1:pos2]
+                if not bytes_:
+                    rep.empty(f)
+                    break
                 text = bytes_.decode('utf-8')
                 mes.append('"' + text + '"')
                 mes.append('')
@@ -284,4 +349,3 @@ class Dump:
     def run(self):
         f = '[MClient] converters.dsl.mdic.Dump.run'
         self.loop()
-        self.debug()
