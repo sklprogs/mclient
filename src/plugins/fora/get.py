@@ -39,8 +39,7 @@ class Dic:
             self.imap = mmap.mmap(self.bin.fileno(), 0, prot=mmap.PROT_READ)
         except Exception as e:
             self.Success = False
-            mes = _('Third-party module has failed!\n\nDetails: {}').format(e)
-            Message(f, mes).show_error()
+            rep.third_party(f, e)
     
     def close(self):
         f = '[MClient] plugins.fora.get.Dic.close'
