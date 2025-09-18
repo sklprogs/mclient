@@ -233,9 +233,9 @@ class Dump:
             wforms = sorted(JSON[source].keys())
             for wform in wforms:
                 fragm = self._dump_wform(JSON[source][wform])
-                #bytes_ = bytes(fragm, 'utf-8')
-                #length = len(bytes_)
-                self.fragms.append(fragm)
+                bytes_ = bytes(fragm, 'utf-8')
+                length = len(bytes_)
+                self.fragms.append(bytes_)
                 #TODO: Delete characters not supported in file names
                 abbr = wform.replace(' ', '')
                 # Index abbreviation may be shorter than 3 characters
@@ -243,11 +243,10 @@ class Dump:
                 # Do not rewrite index!
                 if not abbr in self.index:
                     self.index[abbr] = {}
-                length = len(fragm)
                 #TODO: Allow duplicate wforms
                 self.index[abbr][wform] = {'pos': pos, 'len': length}
                 pos += length
-        self.fragms = ''.join(self.fragms)
+        self.fragms = b''.join(self.fragms)
     
     def debug(self):
         f = '[MClient] converters.dsl.mdic.Dump.debug'
@@ -276,7 +275,8 @@ class Dump:
                 mes.append(index)
                 pos1 = self.index[abbr][wform]['pos']
                 pos2 = pos1 + self.index[abbr][wform]['len']
-                text = self.fragms[pos1:pos2]
+                bytes_ = self.fragms[pos1:pos2]
+                text = bytes_.decode('utf-8')
                 mes.append('"' + text + '"')
                 mes.append('')
         return '\n'.join(mes)
