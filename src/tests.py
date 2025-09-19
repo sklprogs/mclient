@@ -397,6 +397,13 @@ class CleanUp:
 
 class Get:
     
+    def run_mdic(self):
+        from plugins.mdic.get import ALL_DICS
+        #search = 'attack'
+        #search = "cabernet d'anjou"
+        search = 'abaft the beam'
+        return ALL_DICS.search(search)
+    
     def decode_indexes(self, indexes):
         from plugins.fora.get import Index
         iindex = Index('/home/pete/.config/mclient/dics/Fora/dict pl-ru')
@@ -1167,10 +1174,12 @@ if __name__ == '__main__':
     #mes = com.get_all_subjects()
     #mes = Plugin().run_dsl()
     #mes = Tags().run_dsl()
+    #mes = Get().run_multitrandem()
     #mes = Get().run_stardict()
     #mes = Get().run_dsl()
     #mes = Get().run_fora()
     #mes = Get().run_fora_many_matches()
+    mes = Get().run_mdic()
     #mes = CleanUp().run_dsl()
     #mes = Tags().run_stardict()
     #mes = Tags().run_fora_stardictx()
@@ -1180,7 +1189,7 @@ if __name__ == '__main__':
     #mes = Elems().run_dsl()
     #mes = Elems().run_stardict()
     #mes = Elems().run_fora_stardictx()
-    mes = Elems().run_fora_dsl()
+    #mes = Elems().run_fora_dsl()
     #mes = Elems().run_fora()
     #mes = Elems().run_multitrancom()
     #mes = Subjects().run()
@@ -1191,7 +1200,6 @@ if __name__ == '__main__':
     #mes = Wrap().run_multitrancom()
     #mes = Elems().run_multitrandem()
     #mes = Prioritize().run_multitrancom()
-    #mes = Get().run_multitrandem()
     shDEBUG.reset(f, mes)
     shDEBUG.show()
     # This MUST be on a separate line, the widget will not be shown otherwise
