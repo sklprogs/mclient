@@ -236,7 +236,8 @@ class Dump:
         if not self.Success:
             rep.cancel(f)
             return
-        file = os.path.join(self.index_folder, str(hash(abbr)))
+        #file = os.path.join(self.index_folder, str(hash(abbr)))
+        file = os.path.join(self.index_folder, abbr)
         mes = _('Write "{}"').format(file)
         Message(f, mes).show_info()
         try:
