@@ -59,7 +59,7 @@ class Index:
         pos = self.imap.find(bpattern, 0)
         if pos > -1:
             return pos + len(bpattern)
-        bpattern = bytes(pattern + '\t', 'utf-8')
+        bpattern = bytes(self.wform + '\t', 'utf-8')
         pos = self.imap.find(bpattern, 0)
         if pos == 0:
             return len(bpattern)
@@ -72,21 +72,19 @@ class Index:
         self.imap.flush()
         self.bin.close()
     
-    def set(self):
-        f = '[MClient] plugins.mdic.get.Index.set'
+    def set_pos(self):
+        f = '[MClient] plugins.mdic.get.Index.set_pos'
         if not self.Success:
             rep.cancel(f)
             return
         pos = self.search()
         if pos is None:
-            self.Success = False
             mes = _('No matches!')
-            Message(f, mes).show_warning()
+            Message(f, mes).show_info()
             return
-        self.bin.seek(pos)
-        bytes_ = self.bin.readline()
+        self.imap.seek(pos)
+        bytes_ = self.imap.readline()
         line = bytes_.decode('utf-8')
-        Message(f, f'"{line}"').show_debug()
         parts = line.split('\t')
         if len(parts) != 2:
             self.Success = False
@@ -100,13 +98,62 @@ class Index:
     def run(self):
         self.set_file()
         self.load()
-        self.set()
+        self.set_pos()
         self.close()
 
 
 
-class Mdic:
+class Body:
     
     def __init__(self):
-        self.body_folder = Home('mclient').add_config('dics', 'MDIC')
-        self.file = os.path.join(self.body_folder, 'collection.mdic')
+        self.file = Home('mclient').add_config('dics', 'MDIC', 'collection.mdic')
+        self.Success = File(self.file).Success
+        self.load()
+    
+    def load(self):
+        f = '[MClient] plugins.mdic.get.Body.load'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self.bin = open(self.file, 'rb')
+        # 'mmap' fails upon opening an empty file!
+        try:
+            self.imap = mmap.mmap(self.bin.fileno(), 0, prot=mmap.PROT_READ)
+        except Exception as e:
+            self.Success = False
+            rep.third_part(f, e)
+    
+    def _get(self, pos, length):
+        f = '[MClient] plugins.mdic.get.Body._get'
+        self.imap.seek(pos)
+        text = self.imap.read(length)
+        return text.decode(errors='ignore')
+    
+    def search(self, wform):
+        f = '[MClient] plugins.mdic.get.Body.search'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        if not wform:
+            rep.empty(f)
+            return
+        iindex = Index(wform)
+        iindex.run()
+        self.Success = iindex.Success
+        if not self.Success:
+            return
+        if not iindex.length:
+            rep.lazy(f)
+            return
+        return self._get(iindex.pos, iindex.length)
+    
+    def close(self):
+        f = '[MClient] plugins.mdic.get.Body.close'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self.imap.flush()
+        self.bin.close()
+
+
+ALL_DICS = Body()
