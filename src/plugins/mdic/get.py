@@ -7,6 +7,7 @@ import mmap
 from skl_shared.localize import _
 from skl_shared.message.controller import rep, Message
 from skl_shared.paths import Home, File
+from skl_shared.time import Timer
 
 
 class Index:
@@ -28,12 +29,9 @@ class Index:
             self.Success = False
             rep.empty(f)
             return
-        #abbr = [char for char in self.wform.lower() if str(char).isalpha()]
-        #abbr = ''.join(abbr)
-        #abbr = abbr[:2]
-        abbr = self.wform.replace(' ', '')
+        abbr = [char for char in self.wform.lower() if str(char).isalpha()]
+        abbr = ''.join(abbr)
         abbr = abbr[0:2]
-        #self.file = os.path.join(self.folder, str(hash(abbr)))
         self.file = os.path.join(self.folder, abbr)
         self.Success = File(self.file).Success
     
@@ -137,6 +135,8 @@ class Body:
         if not wform:
             rep.empty(f)
             return
+        timer = Timer(f)
+        timer.start()
         iindex = Index(wform)
         iindex.run()
         self.Success = iindex.Success
@@ -145,7 +145,9 @@ class Body:
         if not iindex.length:
             rep.lazy(f)
             return
-        return self._get(iindex.pos, iindex.length)
+        text = self._get(iindex.pos, iindex.length)
+        timer.end()
+        return text
     
     def close(self):
         f = '[MClient] plugins.mdic.get.Body.close'
