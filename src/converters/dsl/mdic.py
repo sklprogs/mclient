@@ -155,10 +155,6 @@ class Parser(shParser):
         # We do not want millions of debug messages
         ms.STOP = True
         self.set_articles()
-        #cur
-        #self.idic.articles = [self.idic.articles[0]]
-        #self.idic.articles = self.idic.articles[:5]
-        self.idic.articles = self.idic.articles[:350]
         self.set_cells()
         ms.STOP = False
         return self.cells
@@ -241,7 +237,7 @@ class Dump:
         mes = _('Write "{}"').format(file)
         Message(f, mes).show_info()
         try:
-            with open(file, 'b+a') as iindex:
+            with open(file, 'ba') as iindex:
                 iindex.write(bytes_)
         except Exception as e:
             self.Success = False
@@ -272,7 +268,7 @@ class Dump:
         mes = _('Write "{}"').format(self.file)
         Message(f, mes).show_info()
         try:
-            with open(self.file, 'b+a') as ibody:
+            with open(self.file, 'ba') as ibody:
                 ibody.write(self.fragms)
         except Exception as e:
             self.Success = False
