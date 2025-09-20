@@ -96,29 +96,32 @@ class Parser(shParser):
         if not self.Success:
             rep.cancel(f)
             return
+        if not self.wform in JSON:
+            JSON[self.wform] = {}
+        if not self.source in JSON[self.wform]:
+            JSON[self.wform][self.source] = {}
         for cell in cells:
             if not cell or not cell.text:
                 rep.empty(f)
                 continue
             ''' Rewrite cells having the same text (may relate to different
-                subjects) (should we do that?).
+                subjects of the same source) (should we do that?).
             '''
-            JSON[self.source][self.wform][cell.text] = Cell(cell).run()
+            JSON[self.wform][self.source][cell.text] = Cell(cell).run()
     
     def _add_wform(self, article):
         f = '[MClient] converters.dsl.mdic.Parser._add_wform'
         if not article:
             rep.empty(f)
             self.wform = _('unknown word form')
-            if not self.wform in JSON[self.source]:
-                JSON[self.source][self.wform] = {}
+            if not self.wform in JSON:
+                JSON[self.wform] = {}
+                JSON[self.wform][self.source] = {}
             return
         article = article.splitlines()
         article[0] = article[0].strip()
         self.wform = article[0].lower()
         article[0] = '[wform]' + article[0] + '[/wform]'
-        if not self.wform in JSON[self.source]:
-            JSON[self.source][self.wform] = {}
         return '\n'.join(article)
     
     def set_cells(self):
@@ -127,9 +130,6 @@ class Parser(shParser):
             rep.cancel(f)
             return
         self.source = self.idic.dicname
-        # Do not overwrite contents of dictionaries having the same name
-        if not self.source in JSON:
-            JSON[self.source] = {}
         for article in self.idic.articles:
             blocks = []
             article = self._add_wform(article)
@@ -237,7 +237,7 @@ class Dump:
         mes = _('Write "{}"').format(file)
         Message(f, mes).show_info()
         try:
-            with open(file, 'ba') as iindex:
+            with open(file, 'ba', buffering=65536) as iindex:
                 iindex.write(bytes_)
         except Exception as e:
             self.Success = False
@@ -268,11 +268,14 @@ class Dump:
         mes = _('Write "{}"').format(self.file)
         Message(f, mes).show_info()
         try:
-            with open(self.file, 'ba') as ibody:
+            with open(self.file, 'ba', buffering=65536) as ibody:
                 ibody.write(self.fragms)
         except Exception as e:
             self.Success = False
             rep.third_party(f, e)
+        #cur
+        mes = _('"{}" has been written!').format(self.file)
+        Message(f, mes).show_info()
     
     def loop(self):
         f = '[MClient] converters.dsl.mdic.Dump.loop'
@@ -281,28 +284,29 @@ class Dump:
             return
         # Currently pos is not saved anywhere, so process everything at once
         pos = 0
-        for source in JSON:
-            wforms = sorted(JSON[source].keys())
-            for wform in wforms:
-                fragm = self._dump_wform(JSON[source][wform])
-                bytes_ = bytes(fragm, 'utf-8')
-                length = len(bytes_)
-                self.fragms += bytes_
-                #TODO: Delete characters not supported in file names
-                abbr = wform.replace(' ', '')
-                # Index abbreviation may be shorter than 3 characters
-                abbr = abbr[0:2]
-                # Do not rewrite index!
-                if not abbr in self.index:
-                    self.index[abbr] = {}
-                #TODO: Allow duplicate wforms
-                self.index[abbr][wform] = {'pos': pos, 'len': length}
-                pos += length
-            # Write body binary to release memory before processing new source
-            self.save_body()
-            # Release memory
-            self.fragms = b''
-            JSON[source] = {}
+        wforms = sorted(JSON.keys())
+        for wform in wforms:
+            fragm = self._dump_wform(JSON[wform])
+            bytes_ = bytes(fragm, 'utf-8')
+            length = len(bytes_)
+            self.fragms += bytes_
+            #TODO: Delete characters not supported in file names
+            abbr = wform.replace(' ', '')
+            # Index abbreviation may be shorter than 3 characters
+            abbr = abbr[0:2]
+            # Do not rewrite index!
+            if not abbr in self.index:
+                self.index[abbr] = {}
+            #TODO: Allow duplicate wforms
+            self.index[abbr][wform] = {'pos': pos, 'len': length}
+            pos += length
+        # Write body binary to release memory before processing new source
+        self.save_body()
+        mes = _('Release memory')
+        Message(f, mes).show_info()
+        # Release memory
+        self.fragms = b''
+        JSON.clear()
         self.save_indexes()
     
     def debug(self):
