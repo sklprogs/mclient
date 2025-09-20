@@ -232,7 +232,6 @@ class Dump:
         if not self.Success:
             rep.cancel(f)
             return
-        #file = os.path.join(self.index_folder, str(hash(abbr)))
         file = os.path.join(self.index_folder, abbr)
         mes = _('Write "{}"').format(file)
         Message(f, mes).show_info()
@@ -277,6 +276,11 @@ class Dump:
         mes = _('"{}" has been written!').format(self.file)
         Message(f, mes).show_info()
     
+    def _get_abbr(self, wform):
+        abbr = [char for char in wform.lower() if str(char).isalpha()]
+        abbr = ''.join(abbr)
+        return abbr[0:2]
+    
     def loop(self):
         f = '[MClient] converters.dsl.mdic.Dump.loop'
         if not self.Success:
@@ -290,10 +294,7 @@ class Dump:
             bytes_ = bytes(fragm, 'utf-8')
             length = len(bytes_)
             self.fragms += bytes_
-            #TODO: Delete characters not supported in file names
-            abbr = wform.replace(' ', '')
-            # Index abbreviation may be shorter than 3 characters
-            abbr = abbr[0:2]
+            abbr = self._get_abbr(wform)
             # Do not rewrite index!
             if not abbr in self.index:
                 self.index[abbr] = {}
