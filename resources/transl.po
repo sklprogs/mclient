@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-11 03:52+0300\n"
-"PO-Revision-Date: 2025-09-11 03:53+0300\n"
+"POT-Creation-Date: 2025-09-20 15:54+0300\n"
+"PO-Revision-Date: 2025-09-20 15:56+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -287,7 +287,7 @@ msgstr "Опущенные ячейки: {}"
 #: mclient/src/plugins/multitrancom/tags.py:312
 #: mclient/src/plugins/multitrancom/tags.py:379
 #: mclient/src/plugins/stardict/tags.py:198
-#: mclient/src/plugins/stardict/tags.py:263 mclient/src/tests.py:931
+#: mclient/src/plugins/stardict/tags.py:263 mclient/src/tests.py:940
 #: skl_shared/src/test.py:728
 msgid "#"
 msgstr "№"
@@ -309,7 +309,7 @@ msgstr "№"
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
-#: mclient/src/cells.py:151 mclient/src/tests.py:758
+#: mclient/src/cells.py:151 mclient/src/tests.py:767
 msgid "SUBJECT"
 msgstr "ТЕМАТИКА"
 
@@ -445,114 +445,86 @@ msgstr "Обновление конфигурации по умолчанию"
 msgid "Use default configuration"
 msgstr "Используется конфигурация по умолчанию"
 
-#: mclient/src/convert2odxml.py:127 mclient/src/plugins/dsl/get.py:249
-msgid "Dictionary \"{}\" ({}) has {} records"
-msgstr "В словаре \"{}\" ({}) {} записей"
+#: mclient/src/convert.py:16 mclient/src/cut_tests.py:70
+#: mclient/src/mclient.py:1044 mclient/src/plugins/multitrandem/utils.py:943
+#: mclient/src/plugins/multitrandem/utils.py:1400 mclient/src/tests.py:1253
+msgid "Goodbye!"
+msgstr "До свидания!"
 
-#: mclient/src/convert2odxml.py:147 mclient/src/plugins/dsl/get.py:269
-msgid "Load \"{}\""
-msgstr "Загрузка \"{}\""
+#: mclient/src/converters/dsl/mdic.py:92
+msgid "unknown source"
+msgstr "безымянный источник"
 
-#: mclient/src/convert2odxml.py:155 mclient/src/plugins/dsl/get.py:277
-#: mclient/src/plugins/multitrandem/utils.py:694
-#: mclient/src/plugins/multitrandem/utils.py:748
-#: mclient/src/plugins/multitrandem/utils.py:780
-#: mclient/src/plugins/multitrandem/utils.py:1065
-#: mclient/src/plugins/multitrandem/utils.py:1152
-#: mclient/src/plugins/multitrandem/utils.py:1186
-#: skl_shared/src/message/controller.py:20
-msgid ""
-"Operation has failed!\n"
-"\n"
-"Details: {}"
-msgstr ""
-"Операция завершилась неудачно!\n"
-"\n"
-"Подробности: {}"
+#: mclient/src/converters/dsl/mdic.py:116
+msgid "unknown word form"
+msgstr "безымянная словоформа"
 
-#: mclient/src/convert2odxml.py:171 mclient/src/convert2odxml.py:172
-#: mclient/src/plugins/dsl/get.py:293 mclient/src/plugins/dsl/get.py:294
-#: mclient/src/plugins/dsl/run.py:110 mclient/src/plugins/dsl/run.py:124
-#: mclient/src/plugins/dsl/run.py:139 mclient/src/plugins/dsl/run.py:149
-#: mclient/src/plugins/fora/run.py:102 mclient/src/plugins/fora/run.py:106
-#: mclient/src/plugins/fora/run.py:134 mclient/src/plugins/fora/run.py:138
-#: mclient/src/plugins/multitrandem/run.py:144
-#: mclient/src/plugins/multitrandem/run.py:148
-#: mclient/src/plugins/stardict/run.py:97 mclient/src/plugins/stardict/run.py:101
-#: mclient/src/plugins/stardict/run.py:129
-#: mclient/src/plugins/stardict/run.py:133
-msgid "Any"
-msgstr "Любой"
-
-#: mclient/src/convert2odxml.py:177 mclient/src/plugins/dsl/get.py:299
-msgid "Untitled dictionary"
-msgstr "Безымянный словарь"
-
-#: mclient/src/convert2odxml.py:286 mclient/src/plugins/fora/get.py:42
-#: mclient/src/plugins/fora/get.py:97 mclient/src/plugins/multitrandem/get.py:470
-#: mclient/src/plugins/multitrandem/get.py:607
-#: mclient/src/plugins/multitrandem/get.py:1487
-#: skl_shared/src/graphics/font/controller.py:23
-#: skl_shared/src/message/controller.py:56 skl_shared/src/pretty_html.py:22
-#: skl_shared/src/temp_file.py:18
-msgid ""
-"Third-party module has failed!\n"
-"\n"
-"Details: {}"
-msgstr ""
-"Ошибка модуля третьей стороны!\n"
-"\n"
-"Детали: {}"
-
-#: mclient/src/convert2odxml.py:349
-msgid "Generate XML"
-msgstr "Генерация XML"
-
-#: mclient/src/convert2odxml.py:362
-msgid "Process cell #{}/{}"
-msgstr "Обработка ячейки №{}/{}"
-
-#: mclient/src/convert2odxml.py:372
-msgid "Empty word forms are not allowed!"
-msgstr "Пустые словоформы не допускаются!"
-
-#: mclient/src/convert2odxml.py:376
-msgid "Empty parts of speech are not allowed!"
-msgstr "Пустые части речи не допускаются!"
-
-#: mclient/src/convert2odxml.py:413
-msgid "Generate HTML"
-msgstr "Генерация HTML"
-
-#: mclient/src/convert2odxml.py:449
+#: mclient/src/converters/dsl/mdic.py:175 mclient/src/converters/dsl/odxml.py:239
+#: mclient/src/converters/dsl/shared.py:90
 msgid "DSL Dictionary Converter"
 msgstr "Конвертация словарей DSL"
 
-#: mclient/src/convert2odxml.py:456
+#: mclient/src/converters/dsl/mdic.py:180 mclient/src/converters/dsl/odxml.py:245
+#: mclient/src/converters/dsl/shared.py:96
 msgid "Process {} ({}/{})"
 msgstr "Обработка {} ({}/{})"
 
-#: mclient/src/convert2odxml.py:467
+#: mclient/src/converters/dsl/mdic.py:192 mclient/src/converters/dsl/odxml.py:256
+#: mclient/src/converters/dsl/shared.py:107
 msgid "Cells have been created"
 msgstr "Ячейки были созданы"
 
-#: mclient/src/convert2odxml.py:475
-msgid "Sort cells"
-msgstr "Сортировка ячеек"
-
-#: mclient/src/convert2odxml.py:484
-msgid ".dsl dictionaries: {}. Cells: {}"
-msgstr "Словарей .dsl: {}. Ячеек: {}"
-
-#: mclient/src/convert2odxml.py:498
+#: mclient/src/converters/dsl/mdic.py:202 mclient/src/converters/dsl/odxml.py:267
+#: mclient/src/converters/dsl/shared.py:116
 msgid "The operation has taken {}."
 msgstr "Операция завершена за {}."
 
-#: mclient/src/convert2odxml.py:507 mclient/src/cut_tests.py:70
-#: mclient/src/mclient.py:1044 mclient/src/plugins/multitrandem/utils.py:943
-#: mclient/src/plugins/multitrandem/utils.py:1400 mclient/src/tests.py:1243
-msgid "Goodbye!"
-msgstr "До свидания!"
+#: mclient/src/converters/dsl/mdic.py:236 mclient/src/converters/dsl/mdic.py:267
+#: mclient/src/plugins/multitrandem/utils.py:743
+#: mclient/src/plugins/multitrandem/utils.py:1143
+#: mclient/src/plugins/multitrandem/utils.py:1147
+msgid "Write \"{}\""
+msgstr "Запись \"{}\""
+
+#: mclient/src/converters/dsl/mdic.py:289 mclient/src/converters/dsl/mdic.py:293
+msgid "Export word forms"
+msgstr "Экспорт словоформ"
+
+#: mclient/src/converters/dsl/mdic.py:301
+msgid "Process {}/{}"
+msgstr "Обработка {}/{}"
+
+#: mclient/src/converters/dsl/mdic.py:320
+msgid "Release memory"
+msgstr "Освобождение памяти"
+
+#: mclient/src/converters/dsl/odxml.py:134
+msgid "Generate XML"
+msgstr "Генерация XML"
+
+#: mclient/src/converters/dsl/odxml.py:146
+msgid "Process cell #{}/{}"
+msgstr "Обработка ячейки №{}/{}"
+
+#: mclient/src/converters/dsl/odxml.py:156
+msgid "Empty word forms are not allowed!"
+msgstr "Пустые словоформы не допускаются!"
+
+#: mclient/src/converters/dsl/odxml.py:160
+msgid "Empty parts of speech are not allowed!"
+msgstr "Пустые части речи не допускаются!"
+
+#: mclient/src/converters/dsl/odxml.py:197
+msgid "Generate HTML"
+msgstr "Генерация HTML"
+
+#: mclient/src/converters/dsl/odxml.py:214
+msgid "Sort cells"
+msgstr "Сортировка ячеек"
+
+#: mclient/src/converters/dsl/odxml.py:223
+msgid ".dsl dictionaries: {}. Cells: {}"
+msgstr "Словарей .dsl: {}. Ячеек: {}"
 
 #: mclient/src/gui.py:348
 msgid "Translate"
@@ -737,10 +709,10 @@ msgstr "Выход за границы массива, ряд №{}, столб�
 #: mclient/src/plugins/multitrancom/pairs.py:2710
 #: mclient/src/plugins/multitrandem/run.py:95
 #: mclient/src/plugins/multitrandem/run.py:144
-#: mclient/src/plugins/multitrandem/run.py:148 mclient/src/tests.py:849
-#: mclient/src/tests.py:850 mclient/src/tests.py:851 mclient/src/tests.py:852
-#: mclient/src/tests.py:853 mclient/src/tests.py:859 mclient/src/tests.py:861
-#: mclient/src/tests.py:865
+#: mclient/src/plugins/multitrandem/run.py:148 mclient/src/tests.py:858
+#: mclient/src/tests.py:859 mclient/src/tests.py:860 mclient/src/tests.py:861
+#: mclient/src/tests.py:862 mclient/src/tests.py:868 mclient/src/tests.py:870
+#: mclient/src/tests.py:874
 msgid "Russian"
 msgstr "Русский"
 
@@ -863,10 +835,10 @@ msgstr "Русский"
 #: mclient/src/plugins/multitrancom/pairs.py:2694
 #: mclient/src/plugins/multitrandem/run.py:95
 #: mclient/src/plugins/multitrandem/run.py:144
-#: mclient/src/plugins/multitrandem/run.py:148 mclient/src/tests.py:849
-#: mclient/src/tests.py:850 mclient/src/tests.py:851 mclient/src/tests.py:852
-#: mclient/src/tests.py:853 mclient/src/tests.py:859 mclient/src/tests.py:861
-#: mclient/src/tests.py:865
+#: mclient/src/plugins/multitrandem/run.py:148 mclient/src/tests.py:858
+#: mclient/src/tests.py:859 mclient/src/tests.py:860 mclient/src/tests.py:861
+#: mclient/src/tests.py:862 mclient/src/tests.py:868 mclient/src/tests.py:870
+#: mclient/src/tests.py:874
 msgid "English"
 msgstr "Английский"
 
@@ -1083,7 +1055,7 @@ msgstr "Арабский"
 #: mclient/src/plugins/multitrancom/pairs.py:2652
 #: mclient/src/plugins/multitrancom/pairs.py:2656
 #: mclient/src/plugins/multitrancom/pairs.py:2676
-#: mclient/src/plugins/multitrancom/pairs.py:2695 mclient/src/tests.py:863
+#: mclient/src/plugins/multitrancom/pairs.py:2695 mclient/src/tests.py:872
 msgid "French"
 msgstr "Французский"
 
@@ -1126,7 +1098,7 @@ msgstr "Строка №{}, столбец №{}. Текст: \"{}\""
 #: mclient/src/manager.py:190 mclient/src/manager.py:235
 #: mclient/src/mclient.py:707 mclient/src/settings/gui.py:33
 #: mclient/src/settings/gui.py:216 mclient/src/settings/gui.py:231
-#: mclient/src/tests.py:1059 mclient/src/tests.py:1112 mclient/src/tests.py:1150
+#: mclient/src/tests.py:1068 mclient/src/tests.py:1121 mclient/src/tests.py:1159
 msgid "Multitran"
 msgstr "Мультитран"
 
@@ -1270,45 +1242,73 @@ msgstr "Код:"
 msgid "Dictionaries to search in ({}/{}): {}"
 msgstr "Словари для поиска ({}/{}): {}"
 
-#: mclient/src/plugins/dsl/get.py:132 mclient/src/plugins/dsl/get.py:150
+#: mclient/src/plugins/dsl/get.py:153 mclient/src/plugins/dsl/get.py:171
 msgid "The file \"{}\" is too short ({} lines)!"
 msgstr "Файл \"{}\" слишком короткий ({} строк)!"
 
-#: mclient/src/plugins/dsl/get.py:188 mclient/src/plugins/multitrandem/get.py:104
-#: mclient/src/plugins/multitrandem/get.py:431
-#: mclient/src/plugins/multitrandem/get.py:438
-#: mclient/src/plugins/multitrandem/get.py:521
-#: mclient/src/plugins/multitrandem/get.py:559
-#: mclient/src/plugins/multitrandem/get.py:791
-#: mclient/src/plugins/multitrandem/utils.py:54
-#: mclient/src/plugins/multitrandem/utils.py:448
-#: mclient/src/plugins/multitrandem/utils.py:726
-#: mclient/src/plugins/multitrandem/utils.py:1134
-#: skl_shared/src/message/controller.py:60 skl_shared/src/table.py:104
-msgid "The condition \"{}\" is not observed!"
-msgstr "Условие \"{}\" не выполнено!"
-
-#: mclient/src/plugins/dsl/get.py:227
+#: mclient/src/plugins/dsl/get.py:246
 msgid "No search results for \"{}\" in \"{}\""
 msgstr "Нет совпадений для \"{}\" в \"{}\""
 
-#: mclient/src/plugins/dsl/get.py:467
+#: mclient/src/plugins/dsl/get.py:268
+msgid "Dictionary \"{}\" ({}) has {} records"
+msgstr "В словаре \"{}\" ({}) {} записей"
+
+#: mclient/src/plugins/dsl/get.py:288
+msgid "Load \"{}\""
+msgstr "Загрузка \"{}\""
+
+#: mclient/src/plugins/dsl/get.py:296
+#: mclient/src/plugins/multitrandem/utils.py:694
+#: mclient/src/plugins/multitrandem/utils.py:748
+#: mclient/src/plugins/multitrandem/utils.py:780
+#: mclient/src/plugins/multitrandem/utils.py:1065
+#: mclient/src/plugins/multitrandem/utils.py:1152
+#: mclient/src/plugins/multitrandem/utils.py:1186
+#: skl_shared/src/message/controller.py:20
+msgid ""
+"Operation has failed!\n"
+"\n"
+"Details: {}"
+msgstr ""
+"Операция завершилась неудачно!\n"
+"\n"
+"Подробности: {}"
+
+#: mclient/src/plugins/dsl/get.py:312 mclient/src/plugins/dsl/get.py:313
+#: mclient/src/plugins/dsl/run.py:110 mclient/src/plugins/dsl/run.py:124
+#: mclient/src/plugins/dsl/run.py:139 mclient/src/plugins/dsl/run.py:149
+#: mclient/src/plugins/fora/run.py:102 mclient/src/plugins/fora/run.py:106
+#: mclient/src/plugins/fora/run.py:134 mclient/src/plugins/fora/run.py:138
+#: mclient/src/plugins/multitrandem/run.py:144
+#: mclient/src/plugins/multitrandem/run.py:148
+#: mclient/src/plugins/stardict/run.py:97 mclient/src/plugins/stardict/run.py:101
+#: mclient/src/plugins/stardict/run.py:129
+#: mclient/src/plugins/stardict/run.py:133
+msgid "Any"
+msgstr "Любой"
+
+#: mclient/src/plugins/dsl/get.py:318
+msgid "Untitled dictionary"
+msgstr "Безымянный словарь"
+
+#: mclient/src/plugins/dsl/get.py:486
 msgid "Index has {} entries"
 msgstr "{} вхождений в индексе"
 
-#: mclient/src/plugins/dsl/get.py:498 mclient/src/plugins/stardict/get.py:421
+#: mclient/src/plugins/dsl/get.py:517 mclient/src/plugins/stardict/get.py:421
 msgid "{} offline dictionaries are available"
 msgstr "Доступно {} локальных словарей"
 
-#: mclient/src/plugins/dsl/get.py:511
+#: mclient/src/plugins/dsl/get.py:530
 msgid "Dictionary Loader"
 msgstr "Загрузчик словарей"
 
-#: mclient/src/plugins/dsl/get.py:519
+#: mclient/src/plugins/dsl/get.py:538
 msgid "Load DSL dictionaries ({}/{})"
 msgstr "Загрузка словарей DSL ({}/{})"
 
-#: mclient/src/plugins/dsl/get.py:528 mclient/src/plugins/stardict/get.py:440
+#: mclient/src/plugins/dsl/get.py:547 mclient/src/plugins/stardict/get.py:440
 msgid "Dictionaries loaded: {}/{}"
 msgstr "Загружено словарей: {}/{}"
 
@@ -1364,64 +1364,96 @@ msgstr "ЯЧЕЙКА"
 msgid "Tags:"
 msgstr "Теги:"
 
-#: mclient/src/plugins/fora/get.py:136
+#: mclient/src/plugins/fora/get.py:96 mclient/src/plugins/multitrandem/get.py:470
+#: mclient/src/plugins/multitrandem/get.py:607
+#: mclient/src/plugins/multitrandem/get.py:1487
+#: skl_shared/src/graphics/font/controller.py:23
+#: skl_shared/src/message/controller.py:56 skl_shared/src/pretty_html.py:22
+#: skl_shared/src/temp_file.py:18
+msgid ""
+"Third-party module has failed!\n"
+"\n"
+"Details: {}"
+msgstr ""
+"Ошибка модуля третьей стороны!\n"
+"\n"
+"Детали: {}"
+
+#: mclient/src/plugins/fora/get.py:135
 msgid "File {} has an invalid structure!"
 msgstr "Файл {} имеет некорректную структуру!"
 
-#: mclient/src/plugins/fora/get.py:205
+#: mclient/src/plugins/fora/get.py:204
 msgid "Fora Dictionary"
 msgstr "Словарь Fora"
 
-#: mclient/src/plugins/fora/get.py:220
+#: mclient/src/plugins/fora/get.py:219
 msgid "Dictionary \"{}\" has an unknown format \"{}\"!"
 msgstr "Словарь \"{}\": неизвестный формат \"{}\"!"
 
-#: mclient/src/plugins/fora/get.py:242
+#: mclient/src/plugins/fora/get.py:241
 msgid "Unable to process \"{}\"! Details: {}"
 msgstr "Не удается обработать \"{}\"! Подробности: {}"
 
-#: mclient/src/plugins/fora/get.py:270
+#: mclient/src/plugins/fora/get.py:269
 #: mclient/src/plugins/multitrandem/tests.py:39
 #: mclient/src/plugins/multitrandem/tests.py:60
 #: mclient/src/plugins/multitrandem/utils.py:460
 msgid "File: \"{}\""
 msgstr "Файл: \"{}\""
 
-#: mclient/src/plugins/fora/get.py:272
+#: mclient/src/plugins/fora/get.py:271
 msgid "Dictionary name: \"{}\""
 msgstr "Название словаря: \"{}\""
 
-#: mclient/src/plugins/fora/get.py:274
+#: mclient/src/plugins/fora/get.py:273
 msgid "Format: \"{}\""
 msgstr "Формат: \"{}\""
 
-#: mclient/src/plugins/fora/get.py:276
+#: mclient/src/plugins/fora/get.py:275
 msgid "Source language: \"{}\""
 msgstr "Исходный язык: \"{}\""
 
-#: mclient/src/plugins/fora/get.py:278
+#: mclient/src/plugins/fora/get.py:277
 msgid "Target language: \"{}\""
 msgstr "Конечный язык: \"{}\""
 
-#: mclient/src/plugins/fora/get.py:380
+#: mclient/src/plugins/fora/get.py:379
 msgid "Names:"
 msgstr "Названия:"
 
-#: mclient/src/plugins/fora/get.py:395
+#: mclient/src/plugins/fora/get.py:394
 msgid "Languages: {}"
 msgstr "Языки: {}"
 
-#: mclient/src/plugins/fora/get.py:398
+#: mclient/src/plugins/fora/get.py:397
 msgid "Formats: {}"
 msgstr "Форматы: {}"
 
-#: mclient/src/plugins/fora/get.py:402
+#: mclient/src/plugins/fora/get.py:401
 msgid "Files with errors:"
 msgstr "Файлы с ошибками:"
 
-#: mclient/src/plugins/fora/get.py:455
+#: mclient/src/plugins/fora/get.py:454
 msgid "\"{}\": {} matches in {} Fora dictionaries"
 msgstr "\"{}\": {} совпадений в {} словарях Fora"
+
+#: mclient/src/plugins/mdic/get.py:82
+#: mclient/src/plugins/multitrandem/utils.py:273
+#: mclient/src/plugins/multitrandem/utils.py:594
+#: mclient/src/plugins/multitrandem/utils.py:599
+#: mclient/src/plugins/multitrandem/utils.py:614
+#: mclient/src/plugins/multitrandem/utils.py:624
+#: mclient/src/plugins/multitrandem/utils.py:633
+#: mclient/src/plugins/multitrandem/utils.py:668
+#: mclient/src/search/controller.py:57 mclient/src/search/controller.py:68
+msgid "No matches!"
+msgstr "Совпадений нет!"
+
+#: mclient/src/plugins/mdic/get.py:95
+#| msgid "Position {}: "
+msgid "Position: {}. Length: {}"
+msgstr "Позиция: {}. Длина: {}"
 
 #: mclient/src/plugins/multitrancom/cleanup.py:99
 msgid "Malformed HTML code!"
@@ -6496,7 +6528,7 @@ msgstr "Чешский"
 #: mclient/src/plugins/multitrancom/pairs.py:2534
 #: mclient/src/plugins/multitrancom/pairs.py:2550
 #: mclient/src/plugins/multitrancom/pairs.py:2554
-#: mclient/src/plugins/multitrancom/pairs.py:2652 mclient/src/tests.py:863
+#: mclient/src/plugins/multitrancom/pairs.py:2652 mclient/src/tests.py:872
 msgid "Esperanto"
 msgstr "Эсперанто"
 
@@ -13689,6 +13721,20 @@ msgstr "№: {}; Образец: \"{}\"; Совпадение: {}"
 msgid "Empty output is not allowed!"
 msgstr "Пустые выходные данные не допускаются!"
 
+#: mclient/src/plugins/multitrandem/get.py:104
+#: mclient/src/plugins/multitrandem/get.py:431
+#: mclient/src/plugins/multitrandem/get.py:438
+#: mclient/src/plugins/multitrandem/get.py:521
+#: mclient/src/plugins/multitrandem/get.py:559
+#: mclient/src/plugins/multitrandem/get.py:791
+#: mclient/src/plugins/multitrandem/utils.py:54
+#: mclient/src/plugins/multitrandem/utils.py:448
+#: mclient/src/plugins/multitrandem/utils.py:726
+#: mclient/src/plugins/multitrandem/utils.py:1134
+#: skl_shared/src/message/controller.py:60 skl_shared/src/table.py:104
+msgid "The condition \"{}\" is not observed!"
+msgstr "Условие \"{}\" не выполнено!"
+
 #: mclient/src/plugins/multitrandem/get.py:228
 #: mclient/src/plugins/multitrandem/get.py:871
 #: mclient/src/plugins/multitrandem/get.py:892
@@ -14039,17 +14085,6 @@ msgstr "Восстановить поврежденный файл?"
 msgid "Operation has been canceled by the user."
 msgstr "Операция отменена пользователем."
 
-#: mclient/src/plugins/multitrandem/utils.py:273
-#: mclient/src/plugins/multitrandem/utils.py:594
-#: mclient/src/plugins/multitrandem/utils.py:599
-#: mclient/src/plugins/multitrandem/utils.py:614
-#: mclient/src/plugins/multitrandem/utils.py:624
-#: mclient/src/plugins/multitrandem/utils.py:633
-#: mclient/src/plugins/multitrandem/utils.py:668
-#: mclient/src/search/controller.py:57 mclient/src/search/controller.py:68
-msgid "No matches!"
-msgstr "Совпадений нет!"
-
 #: mclient/src/plugins/multitrandem/utils.py:309
 #: mclient/src/plugins/multitrandem/utils.py:311
 msgid "List {}:"
@@ -14092,12 +14127,6 @@ msgstr "Позиция {}: "
 #: mclient/src/plugins/multitrandem/utils.py:729
 msgid "An output file: "
 msgstr "Выходной файл:"
-
-#: mclient/src/plugins/multitrandem/utils.py:743
-#: mclient/src/plugins/multitrandem/utils.py:1143
-#: mclient/src/plugins/multitrandem/utils.py:1147
-msgid "Write \"{}\""
-msgstr "Запись \"{}\""
 
 #: mclient/src/plugins/multitrandem/utils.py:789
 #: mclient/src/plugins/multitrandem/utils.py:1195
@@ -14561,55 +14590,55 @@ msgstr "Тематика \"{}\" имеет приоритет"
 msgid "Subject \"{}\" is NOT prioritized"
 msgstr "Тематика \"{}\" НЕ имеет приоритета"
 
-#: mclient/src/tests.py:643
+#: mclient/src/tests.py:652
 msgid "Number of blocks: {}"
 msgstr "Число блоков: {}"
 
-#: mclient/src/tests.py:645
+#: mclient/src/tests.py:654
 msgid "Web-page:"
 msgstr "Веб-страница:"
 
-#: mclient/src/tests.py:649
+#: mclient/src/tests.py:658
 msgid "Text:"
 msgstr "Текст:"
 
-#: mclient/src/tests.py:740
+#: mclient/src/tests.py:749
 msgid "Prioritized subjects:"
 msgstr "Приоритетные тематики"
 
-#: mclient/src/tests.py:745
+#: mclient/src/tests.py:754
 msgid "Subject: \"{}\""
 msgstr "Тематика: \"{}\""
 
-#: mclient/src/tests.py:748
+#: mclient/src/tests.py:757
 msgid "Highest priority (ascending order): {}"
 msgstr "Самый высокий приоритет (упорядоченность по возрастанию): {}"
 
-#: mclient/src/tests.py:751
+#: mclient/src/tests.py:760
 msgid "Details:"
 msgstr "Подробности:"
 
-#: mclient/src/tests.py:758
+#: mclient/src/tests.py:767
 msgid "PRIORITY"
 msgstr "ПРИОРИТЕТ"
 
-#: mclient/src/tests.py:781 mclient/src/tests.py:931
+#: mclient/src/tests.py:790 mclient/src/tests.py:940
 msgid "SHORT"
 msgstr "КОРОТКО"
 
-#: mclient/src/tests.py:781
+#: mclient/src/tests.py:790
 msgid "FULL"
 msgstr "ПОЛНАЯ"
 
-#: mclient/src/tests.py:931
+#: mclient/src/tests.py:940
 msgid "MAJOR (EN)"
 msgstr "ОСНОВНАЯ (EN)"
 
-#: mclient/src/tests.py:931
+#: mclient/src/tests.py:940
 msgid "TITLE"
 msgstr "ЗАГОЛОВОК"
 
-#: mclient/src/tests.py:998
+#: mclient/src/tests.py:1007
 msgid ""
 "The following pairs are not supported:\n"
 "{}"
@@ -14617,19 +14646,19 @@ msgstr ""
 "Следующие пары не поддерживаются:\n"
 "{}"
 
-#: mclient/src/tests.py:1062
+#: mclient/src/tests.py:1071
 msgid "Source: \"{}\"; pair: \"{}\"; search: \"{}\""
 msgstr "Источник: \"{}\"; пара: \"{}\"; запрос: \"{}\""
 
-#: mclient/src/tests.py:1105
+#: mclient/src/tests.py:1114
 msgid "Source: {}; timeout: {}"
 msgstr "Источник: {}; таймаут: {}"
 
-#: mclient/src/tests.py:1111 mclient/src/tests.py:1118
+#: mclient/src/tests.py:1120 mclient/src/tests.py:1127
 msgid "Offline"
 msgstr "Оффлайн"
 
-#: mclient/src/tests.py:1121 mclient/src/tests.py:1126
+#: mclient/src/tests.py:1130 mclient/src/tests.py:1135
 msgid "Source: {}; accessibility: {}"
 msgstr "Источник: {}; доступность: {}"
 
