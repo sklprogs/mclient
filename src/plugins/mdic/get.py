@@ -20,6 +20,11 @@ class Index:
         self.pos = -1
         self.length = 0
     
+    def _get_abbr(self):
+        abbr = [char for char in self.wform.lower() if str(char).isalpha()]
+        abbr = ''.join(abbr)
+        return abbr[0:2]
+    
     def set_file(self):
         f = '[MClient] plugins.mdic.get.Index.set_file'
         if not self.Success:
@@ -29,10 +34,7 @@ class Index:
             self.Success = False
             rep.empty(f)
             return
-        abbr = [char for char in self.wform.lower() if str(char).isalpha()]
-        abbr = ''.join(abbr)
-        abbr = abbr[0:2]
-        self.file = os.path.join(self.folder, abbr)
+        self.file = os.path.join(self.folder, self._get_abbr())
         self.Success = File(self.file).Success
     
     def load(self):
