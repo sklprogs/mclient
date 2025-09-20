@@ -177,10 +177,10 @@ class Runner(shRunner):
         PROGRESS.set_value(0)
         PROGRESS.set_max(len(ALL_DICS.dics))
         for i in range(len(ALL_DICS.dics)):
-            PROGRESS.update()
             mes = _('Process {} ({}/{})')
             mes = mes.format(ALL_DICS.dics[i].fname, i + 1, len(ALL_DICS.dics))
             PROGRESS.set_info(mes)
+            PROGRESS.update()
             iparse = Parser(ALL_DICS.dics[i])
             self.cells += iparse.run()
             self.Success = iparse.Success
@@ -236,7 +236,7 @@ class Dump:
         mes = _('Write "{}"').format(file)
         Message(f, mes).show_info()
         try:
-            with open(file, 'ba', buffering=65536) as iindex:
+            with open(file, 'ba') as iindex:
                 iindex.write(bytes_)
         except Exception as e:
             self.Success = False
@@ -267,14 +267,11 @@ class Dump:
         mes = _('Write "{}"').format(self.file)
         Message(f, mes).show_info()
         try:
-            with open(self.file, 'ba', buffering=65536) as ibody:
+            with open(self.file, 'ba') as ibody:
                 ibody.write(self.fragms)
         except Exception as e:
             self.Success = False
             rep.third_party(f, e)
-        #cur
-        mes = _('"{}" has been written!').format(self.file)
-        Message(f, mes).show_info()
     
     def _get_abbr(self, wform):
         abbr = [char for char in wform.lower() if str(char).isalpha()]
@@ -289,18 +286,35 @@ class Dump:
         # Currently pos is not saved anywhere, so process everything at once
         pos = 0
         wforms = sorted(JSON.keys())
-        for wform in wforms:
-            fragm = self._dump_wform(JSON[wform])
+        mes = f + ': ' + _('Export word forms')
+        timer = Timer(mes)
+        timer.start()
+        source_len = len(JSON.keys())
+        PROGRESS.set_title(_('Export word forms'))
+        PROGRESS.show()
+        PROGRESS.set_value(0)
+        PROGRESS.set_max(source_len)
+        ''' Even for big ranges, adding a progress bar slows down the progress
+            insignificantly.
+        '''
+        for i in range(len(wforms)):
+            mes = _('Process {}/{}').format(i + 1, source_len)
+            PROGRESS.set_info(mes)
+            PROGRESS.update()
+            fragm = self._dump_wform(JSON[wforms[i]])
             bytes_ = bytes(fragm, 'utf-8')
             length = len(bytes_)
             self.fragms += bytes_
-            abbr = self._get_abbr(wform)
+            abbr = self._get_abbr(wforms[i])
             # Do not rewrite index!
             if not abbr in self.index:
                 self.index[abbr] = {}
             #TODO: Allow duplicate wforms
-            self.index[abbr][wform] = {'pos': pos, 'len': length}
+            self.index[abbr][wforms[i]] = {'pos': pos, 'len': length}
             pos += length
+            PROGRESS.inc()
+        timer.end()
+        PROGRESS.close()
         # Write body binary to release memory before processing new source
         self.save_body()
         mes = _('Release memory')
