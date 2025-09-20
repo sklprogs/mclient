@@ -277,10 +277,17 @@ class Dump:
     def _get_abbr(self, wform):
         abbr = [char for char in wform.lower() if str(char).isalpha()]
         abbr = ''.join(abbr)
-        return abbr[0:2]
+        abbr = abbr[0:2]
+        ''' If abbr is empty and there is no extension, the app tries to save
+            the file as a directory and fails. Either use an extension or
+            do not allow an empty name.
+        '''
+        if not abbr:
+            abbr = 'unknown'
+        return abbr
     
-    def loop(self):
-        f = '[MClient] converters.dsl.mdic.Dump.loop'
+    def export_wforms(self):
+        f = '[MClient] converters.dsl.mdic.Dump.export_wforms'
         if not self.Success:
             rep.cancel(f)
             return
@@ -365,4 +372,4 @@ class Dump:
     
     def run(self):
         f = '[MClient] converters.dsl.mdic.Dump.run'
-        self.loop()
+        self.export_wforms()
