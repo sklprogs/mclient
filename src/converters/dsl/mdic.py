@@ -221,7 +221,8 @@ class Dump:
     def _dump_wform(self, dic):
         f = '[MClient] converters.dsl.mdic.Dump._dump_wform'
         try:
-            return json.dumps(dic, ensure_ascii=False, indent=4)
+            # Adding 'indent=4' will significantly slow down exporting
+            return json.dumps(dic, ensure_ascii=False)
         except Exception as e:
             self.Success = False
             rep.third_party(f, e)
