@@ -209,7 +209,8 @@ class Dump:
     def __init__(self):
         #TODO: Read index from files
         self.index = {}
-        self.fragms = b''
+        self.fragms = []
+        self.body = b''
         self.body_folder = Home('mclient').add_config('dics', 'MDIC')
         self.index_folder = Home('mclient').add_config('dics', 'MDIC', 'collection.indexes')
         self.file = os.path.join(self.body_folder, 'collection.mdic')
@@ -218,15 +219,25 @@ class Dump:
         '''
         self.Success = JSON and Path(self.index_folder).create()
     
-    def _dump_wform(self, dic):
-        f = '[MClient] converters.dsl.mdic.Dump._dump_wform'
+    def dump_json(self):
+        f = '[MClient] converters.dsl.mdic.Dump.dump_json'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        timer = Timer(f)
+        timer.start()
         try:
-            # Adding 'indent=4' will significantly slow down exporting
-            return json.dumps(dic, ensure_ascii=False)
+            ''' Adding 'indent=4' will significantly slow down exporting, but
+                we need this to parse the resulting string manually, because
+                calling 'json.dumps' on each fragment is unbearably slow.
+            '''
+            code = json.dumps(JSON, ensure_ascii=False, indent=4)
         except Exception as e:
+            code = ''
             self.Success = False
             rep.third_party(f, e)
-        return ''
+        timer.end()
+        return code
     
     def _save_index(self, abbr, bytes_):
         f = '[MClient] converters.dsl.mdic.Dump._save_index'
@@ -269,7 +280,7 @@ class Dump:
         Message(f, mes).show_info()
         try:
             with open(self.file, 'ba') as ibody:
-                ibody.write(self.fragms)
+                ibody.write(self.body)
         except Exception as e:
             self.Success = False
             rep.third_party(f, e)
@@ -286,33 +297,34 @@ class Dump:
             abbr = 'unknown'
         return abbr
     
+    def set_fragms(self):
+        f = '[MClient] converters.dsl.mdic.Dump.set_fragms'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        code = self.dump_json()
+        iposes = Poses(code)
+        iposes.run()
+        self.fragms = iposes.fragms
+        self.Success = iposes.Success
+    
     def export_wforms(self):
         f = '[MClient] converters.dsl.mdic.Dump.export_wforms'
         if not self.Success:
             rep.cancel(f)
             return
-        # Currently pos is not saved anywhere, so process everything at once
+        # Fragments are already set, do not sort word forms
+        wforms = list(JSON.keys())
+        if len(wforms) != len(self.fragms):
+            self.Success = False
+            mes = f'{len(wforms)} == {len(self.fragms)}'
+            rep.condition(f, mes)
+            return
         pos = 0
-        wforms = sorted(JSON.keys())
-        mes = f + ': ' + _('Export word forms')
-        timer = Timer(mes)
-        timer.start()
-        source_len = len(JSON.keys())
-        PROGRESS.set_title(_('Export word forms'))
-        PROGRESS.show()
-        PROGRESS.set_value(0)
-        PROGRESS.set_max(source_len)
-        ''' Even for big ranges, adding a progress bar slows down the progress
-            insignificantly.
-        '''
         for i in range(len(wforms)):
-            mes = _('Process {}/{}').format(i + 1, source_len)
-            PROGRESS.set_info(mes)
-            PROGRESS.update()
-            fragm = self._dump_wform(JSON[wforms[i]])
-            bytes_ = bytes(fragm, 'utf-8')
+            bytes_ = bytes(self.fragms[i], 'utf-8')
             length = len(bytes_)
-            self.fragms += bytes_
+            self.body += bytes_
             abbr = self._get_abbr(wforms[i])
             # Do not rewrite index!
             if not abbr in self.index:
@@ -320,17 +332,6 @@ class Dump:
             #TODO: Allow duplicate wforms
             self.index[abbr][wforms[i]] = {'pos': pos, 'len': length}
             pos += length
-            PROGRESS.inc()
-        timer.end()
-        PROGRESS.close()
-        # Write body binary to release memory before processing new source
-        self.save_body()
-        mes = _('Release memory')
-        Message(f, mes).show_info()
-        # Release memory
-        self.fragms = b''
-        JSON.clear()
-        self.save_indexes()
     
     def debug(self):
         # Do this before releasing memory
@@ -370,6 +371,122 @@ class Dump:
                 mes.append('')
         return '\n'.join(mes)
     
+    def release_memory(self):
+        f = '[MClient] converters.dsl.mdic.Dump.release_memory'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        mes = _('Release memory')
+        Message(f, mes).show_info()
+        self.fragms = []
+        self.body = b''
+        JSON.clear()
+    
     def run(self):
-        f = '[MClient] converters.dsl.mdic.Dump.run'
+        self.set_fragms()
         self.export_wforms()
+        self.save_body()
+        self.release_memory()
+        self.save_indexes()
+
+
+
+class Poses:
+    
+    def __init__(self, code):
+        self.start = []
+        self.end = []
+        self.start_pattern = '\n        "'
+        self.end_pattern = '\n        }'
+        self.fragms = []
+        self.code = code
+        self.Success = self.code
+    
+    def _search(self, pattern, pos):
+        return self.code.find(pattern, pos)
+    
+    def set_start(self):
+        f = '[MClient] converters.dsl.mdic.Poses.set_start'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        pos = 0
+        while True:
+            pos = self._search(self.start_pattern, pos)
+            if pos == -1:
+                break
+            self.start.append(pos - 1)
+            pos += 1
+    
+    def set_end(self):
+        f = '[MClient] converters.dsl.mdic.Poses.set_end'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        pos = 0
+        while True:
+            pos = self._search(self.end_pattern, pos)
+            if pos == -1:
+                break
+            self.end.append(pos + len(self.end_pattern))
+            pos += 1
+    
+    def check(self):
+        f = '[MClient] converters.dsl.mdic.Poses.check'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        if len(self.start) != len(self.end):
+            self.Success = False
+            mes = f'{len(self.start)} == {len(self.end)}'
+            rep.condition(f, mes)
+    
+    def set_fragms(self):
+        f = '[MClient] converters.dsl.mdic.Poses.set_fragms'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        for i in range(len(self.start)):
+            self.fragms.append(self.code[self.start[i]:self.end[i]])
+        if not self.fragms:
+            self.Success = False
+            rep.empty_output(f)
+    
+    def _debug_poses(self):
+        f = '[MClient] converters.dsl.mdic.Poses._debug_poses'
+        print(f + ':')
+        print('start:', self.start)
+        print('end:', self.end)
+    
+    def _debug_fragms(self):
+        f = '[MClient] converters.dsl.mdic.Poses._debug_fragms'
+        print(f + ':')
+        for i in range(len(self.fragms)):
+            print(i + 1, ':')
+            print('"' + self.fragms[i] + '"')
+            print()
+    
+    def _debug_dics(self):
+        f = '[MClient] converters.dsl.mdic.Poses._debug_dics'
+        print(f + ':')
+        for i in range(len(self.fragms)):
+            dic = json.loads(self.fragms[i])
+            print(i + 1, ':')
+            print(dic)
+            print()
+    
+    def debug(self):
+        f = '[MClient] converters.dsl.mdic.Poses.debug'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self._debug_poses()
+        self._debug_fragms()
+        self._debug_dics()
+    
+    def run(self):
+        self.set_start()
+        self.set_end()
+        self.check()
+        self.set_fragms()
+        #self.debug()
