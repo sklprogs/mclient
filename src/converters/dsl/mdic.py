@@ -210,7 +210,7 @@ class Dump:
         #TODO: Read index from files
         self.index = {}
         self.fragms = []
-        self.body = b''
+        self.body = []
         self.body_folder = Home('mclient').add_config('dics', 'MDIC')
         self.index_folder = Home('mclient').add_config('dics', 'MDIC', 'collection.indexes')
         self.file = os.path.join(self.body_folder, 'collection.mdic')
@@ -224,8 +224,6 @@ class Dump:
         if not self.Success:
             rep.cancel(f)
             return
-        timer = Timer(f)
-        timer.start()
         try:
             ''' Adding 'indent=4' will significantly slow down exporting, but
                 we need this to parse the resulting string manually, because
@@ -236,7 +234,6 @@ class Dump:
             code = ''
             self.Success = False
             rep.third_party(f, e)
-        timer.end()
         return code
     
     def _save_index(self, abbr, bytes_):
@@ -324,7 +321,8 @@ class Dump:
         for i in range(len(wforms)):
             bytes_ = bytes(self.fragms[i], 'utf-8')
             length = len(bytes_)
-            self.body += bytes_
+            # This is significantly faster than doing += for string of bytes
+            self.body.append(bytes_)
             abbr = self._get_abbr(wforms[i])
             # Do not rewrite index!
             if not abbr in self.index:
@@ -332,6 +330,7 @@ class Dump:
             #TODO: Allow duplicate wforms
             self.index[abbr][wforms[i]] = {'pos': pos, 'len': length}
             pos += length
+        self.body = b''.join(self.body)
     
     def debug(self):
         # Do this before releasing memory
@@ -379,7 +378,7 @@ class Dump:
         mes = _('Release memory')
         Message(f, mes).show_info()
         self.fragms = []
-        self.body = b''
+        self.body = []
         JSON.clear()
     
     def run(self):
