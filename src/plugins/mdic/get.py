@@ -8,22 +8,32 @@ from skl_shared.localize import _
 from skl_shared.message.controller import rep, Message
 from skl_shared.paths import Home, File
 from skl_shared.time import Timer
+from skl_shared.logic import Input
 
 
 class Index:
-    
+    ''' This class is recreated each time upon search (should be cheap
+        because of mmap), so self.pos and self.length are OK.
+    '''
     def __init__(self, wform):
         self.Success = True
         self.wform = wform
         self.folder = Home('mclient').add_config('dics', 'MDIC', 'collection.indexes')
         self.file = ''
-        self.pos = -1
-        self.length = 0
+        self.pos = []
+        self.length = []
     
     def _get_abbr(self):
         abbr = [char for char in self.wform.lower() if str(char).isalpha()]
         abbr = ''.join(abbr)
-        return abbr[0:2]
+        abbr = abbr[0:2]
+        ''' If abbr is empty and there is no extension, the app tries to save
+            the file as a directory and fails. Either use an extension or
+            do not allow an empty name.
+        '''
+        if not abbr:
+            abbr = 'unknown'
+        return abbr
     
     def set_file(self):
         f = '[MClient] plugins.mdic.get.Index.set_file'
@@ -85,15 +95,28 @@ class Index:
         self.imap.seek(pos)
         bytes_ = self.imap.readline()
         line = bytes_.decode('utf-8')
-        parts = line.split('\t')
-        if len(parts) != 2:
-            self.Success = False
-            rep.wrong_input(f)
+        if not line:
+            rep.empty(f)
             return
-        self.pos = int(parts[0])
-        self.length = int(parts[1])
-        mes = _('Position: {}. Length: {}').format(self.pos, self.length)
-        Message(f, mes).show_debug()
+        parts = line.split('\t')
+        ''' Remove empty items because 'test\t'.split('\t') outputs
+            ['test', '']. Strip to remove \n at the end. Do not strip before
+            splitting - we need \t.
+        '''
+        parts = [part.strip() for part in parts if part.strip()]
+        if len(parts) == 1 or len(parts) % 2 != 0:
+            self.Success = False
+            rep.wrong_input(f, parts)
+            return
+        for i in range(len(parts)):
+            if (i + 1) % 2 == 0:
+                self.length.append(parts[i])
+            else:
+                self.pos.append(parts[i])
+        for i in range(len(self.pos)):
+            mes = _('Pattern: "{}". Position: {}. Length: {}')
+            mes = mes.format(self.wform, self.pos, self.length)
+            Message(f, mes).show_debug()
     
     def run(self):
         self.set_file()
@@ -125,6 +148,8 @@ class Body:
     
     def _get(self, pos, length):
         f = '[MClient] plugins.mdic.get.Body._get'
+        pos = Input(f, pos).get_integer()
+        length = Input(f, length).get_integer()
         self.imap.seek(pos)
         text = self.imap.read(length)
         return text.decode(errors='ignore')
@@ -147,7 +172,10 @@ class Body:
         if not iindex.length:
             rep.lazy(f)
             return
-        text = self._get(iindex.pos, iindex.length)
+        text = []
+        for i in range(len(iindex.pos)):
+            text.append(self._get(iindex.pos[i], iindex.length[i]))
+        text = '\n'.join(text)
         timer.end()
         return text
     
