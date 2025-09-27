@@ -19,10 +19,201 @@ from plugins.dsl.get import ALL_DICS
 from plugins.dsl.tags import Tags
 from plugins.dsl.elems import Elems
 
-from converters.dsl.shared import Parser as shParser
-from converters.dsl.shared import Runner as shRunner
+BODY_FOLDER = Home('mclient').add_config('dics', 'MDIC')
+INDEX_FOLDER = os.path.join(BODY_FOLDER, 'collection.indexes')
+CREATE_FOLDER = Path(INDEX_FOLDER).create()
+BIN_FILE = os.path.join(BODY_FOLDER, 'collection.mdic')
+INDEX = {}
 
-JSON = {}
+
+class Portion:
+    
+    def __init__(self, articles, source):
+        self.json = {}
+        self.code = ''
+        self.body = []
+        self.cells = []
+        self.wforms = []
+        ''' A source name should not be empty; however, json accepts '' as keys
+            so we do not force non-empty sources here.
+        '''
+        self.Success = self.articles = articles
+        self.source = source
+    
+    def set_wforms(self):
+        f = '[MClient] converters.dsl.mdic.Portion.set_wforms'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        for article_cells in self.cells:
+            self.wforms.append(self._get_wform(article_cells))
+    
+    def set_cells(self):
+        f = '[MClient] converters.dsl.mdic.Portion.set_cells'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        # We do not want millions of debug messages
+        ms.STOP = True
+        for article in self.articles:
+            code = CleanUp(article).run()
+            blocks = Tags(code).run()
+            if not blocks:
+                rep.empty(f)
+                continue
+            cells = Elems(blocks).run()
+            if cells:
+                self.cells.append(cells)
+        ms.STOP = False
+        if not self.cells:
+            self.Success = False
+            rep.empty_output(f)
+            return
+    
+    def _get_wform(self, article_cells):
+        if not article_cells[0]:
+            return ''
+        if not article_cells[0].blocks:
+            return ''
+        return article_cells[0].blocks[0].wform
+    
+    def set_json(self):
+        f = '[MClient] converters.dsl.mdic.Portion.set_json'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        ms.STOP = True
+        self.json['source'] = self.source
+        self.json['wforms'] = {}
+        for article_cells in self.cells:
+            wform = self._get_wform(article_cells)
+            if not wform in self.json['wforms']:
+                self.json['wforms'][wform] = {}
+            for cell in article_cells:
+                if not cell or not cell.text:
+                    rep.empty(f)
+                    continue
+                ''' Rewrite cells having the same text (may relate to different
+                    subjects of the same source) (should we do that?).
+                '''
+                self.json['wforms'][wform][cell.text] = Cell(cell).run()    
+        ms.STOP = False
+    
+    def dump_json(self):
+        f = '[MClient] converters.dsl.mdic.Portion.dump_json'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        try:
+            ''' Adding 'indent=4' will significantly slow down exporting, but
+                we need this to parse the resulting string manually, because
+                calling 'json.dumps' on each fragment is unbearably slow.
+            '''
+            self.code = json.dumps(self.json, ensure_ascii=False, indent=4)
+        except Exception as e:
+            self.Success = False
+            rep.third_party(f, e)
+    
+    def set_fragms(self):
+        f = '[MClient] converters.dsl.mdic.Portion.set_fragms'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self.fragms = Poses(self.code).run()
+        if not self.fragms:
+            rep.empty_output(f)
+            self.Success = False
+        if len(self.wforms) != len(self.fragms):
+            self.Success = False
+            mes = f'{len(self.wforms)} == {len(self.fragms)}'
+            rep.condition(f, mes)
+    
+    def _get_abbr(self, wform):
+        abbr = [char for char in wform.lower() if str(char).isalpha()]
+        abbr = ''.join(abbr)
+        abbr = abbr[0:2]
+        ''' If abbr is empty and there is no extension, the app tries to save
+            the file as a directory and fails. Either use an extension or
+            do not allow an empty name.
+        '''
+        if not abbr:
+            abbr = 'unknown'
+        return abbr
+    
+    def _add_index(self, i, pos, length):
+        abbr = self._get_abbr(self.wforms[i])
+        # Do not rewrite index!
+        if not abbr in INDEX:
+            INDEX[abbr] = {}
+        if not self.wforms[i] in INDEX[abbr]:
+            INDEX[abbr][self.wforms[i]] = []
+        INDEX[abbr][self.wforms[i]].append({'pos': pos, 'len': length})
+    
+    def set_body(self):
+        f = '[MClient] converters.dsl.mdic.Portion.set_body'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        pos = 0
+        for i in range(len(self.fragms)):
+            bytes_ = bytes(self.fragms[i], 'utf-8')
+            # This is significantly faster than doing += for string of bytes
+            self.body.append(bytes_)
+            self._add_index(i, pos, len(bytes_))
+            pos += len(bytes_)
+        self.body = b''.join(self.body)
+    
+    def save_body(self):
+        f = '[MClient] converters.dsl.mdic.Portion.save_body'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        mes = _('Write "{}"').format(BIN_FILE)
+        Message(f, mes).show_info()
+        try:
+            with open(BIN_FILE, 'ba') as ibody:
+                ibody.write(self.body)
+        except Exception as e:
+            self.Success = False
+            rep.third_party(f, e)
+    
+    def free_memory(self):
+        # Should be processed even if the class fails
+        self.json = {}
+        self.code = ''
+        self.body = b''
+        self.cells = []
+        self.fragms = []
+        self.wforms = []
+        self.articles = []
+    
+    def add_wforms(self):
+        #TODO: Do this somewhere else
+        for i in range(len(self.articles)):
+            self.articles[i] = self._add_wform(self.articles[i])
+    
+    def _add_wform(self, article):
+        f = '[MClient] converters.dsl.mdic.Portion._add_wform'
+        if not article:
+            rep.empty(f)
+            return ''
+        article = article.splitlines()
+        article[0] = article[0].strip()
+        article[0] = '[wform]' + article[0] + '[/wform]'
+        return '\n'.join(article)
+    
+    def run(self):
+        self.add_wforms()
+        self.set_cells()
+        self.set_wforms()
+        self.set_json()
+        self.dump_json()
+        self.set_fragms()
+        self.set_body()
+        self.save_body()
+        self.free_memory()
+        return self.Success
+
 
 
 class Block:
@@ -85,308 +276,45 @@ class Cell:
 
 
 
-class Parser(shParser):
+class Runner:
     
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.source = _('unknown source')
+    def __init__(self):
+        self.Success = CREATE_FOLDER and ALL_DICS.Success
     
-    def add_cells(self, cells):
-        f = '[MClient] converters.dsl.mdic.Parser.add_cells'
+    def loop_sources(self):
+        f = '[MClient] converters.dsl.mdic.Runner.loop_sources'
         if not self.Success:
             rep.cancel(f)
             return
-        if not self.wform in JSON:
-            JSON[self.wform] = {}
-        if not self.source in JSON[self.wform]:
-            JSON[self.wform][self.source] = {}
-        for cell in cells:
-            if not cell or not cell.text:
-                rep.empty(f)
-                continue
-            ''' Rewrite cells having the same text (may relate to different
-                subjects of the same source) (should we do that?).
-            '''
-            JSON[self.wform][self.source][cell.text] = Cell(cell).run()
-    
-    def _add_wform(self, article):
-        f = '[MClient] converters.dsl.mdic.Parser._add_wform'
-        if not article:
-            rep.empty(f)
-            self.wform = _('unknown word form')
-            if not self.wform in JSON:
-                JSON[self.wform] = {}
-                JSON[self.wform][self.source] = {}
-            return
-        article = article.splitlines()
-        article[0] = article[0].strip()
-        self.wform = article[0].lower()
-        article[0] = '[wform]' + article[0] + '[/wform]'
-        return '\n'.join(article)
-    
-    def set_cells(self):
-        f = '[MClient] converters.dsl.mdic.Parser.set_cells'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        self.source = self.idic.dicname
-        for article in self.idic.articles:
-            blocks = []
-            article = self._add_wform(article)
-            code = CleanUp(article).run()
-            blocks += Tags(code).run()
-            if not blocks:
-                rep.empty(f)
-                continue
-            cells = Elems(blocks).run()
-            if not cells:
-                rep.empty(f)
-                continue
-            self.add_cells(cells)
-            self.cells += cells
-        # Reclaim memory
-        self.idic.articles = []
-        if not self.cells:
-            self.Success = False
-            rep.empty_output(f)
-            return
-    
-    def run(self):
-        # We do not want millions of debug messages
-        ms.STOP = True
-        self.set_articles()
-        self.set_cells()
-        ms.STOP = False
-        return self.cells
-
-
-
-class Runner(shRunner):
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-    
-    def set_cells(self):
-        # Call Parser from this module
-        f = '[MClient] converters.dsl.mdic.Runner.set_cells'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        PROGRESS.set_title(_('DSL Dictionary Converter'))
-        PROGRESS.show()
-        PROGRESS.set_value(0)
-        PROGRESS.set_max(len(ALL_DICS.dics))
-        for i in range(len(ALL_DICS.dics)):
-            mes = _('Process {} ({}/{})')
-            mes = mes.format(ALL_DICS.dics[i].fname, i + 1, len(ALL_DICS.dics))
-            PROGRESS.set_info(mes)
-            PROGRESS.update()
-            iparse = Parser(ALL_DICS.dics[i])
-            self.cells += iparse.run()
-            self.Success = iparse.Success
+        for idic in ALL_DICS.dics:
+            mes = _('Process "{}"').format(idic.fname)
+            Message(f, mes).show_info()
+            idic.set_articles()
+            self.Success = idic.Success
             if not self.Success:
                 break
-            PROGRESS.inc()
-        PROGRESS.close()
-        self.cells = [cell for cell in self.cells if cell]
-        mes = _('Cells have been created')
-        Message(f, mes).show_info()
+            #cur
+            #TODO: Split by limit
+            #articles = idic.articles[0:1000]
+            articles = idic.articles
+            self.Success = Portion(articles, idic.fname).run()
+            if not self.Success:
+                break
     
     def run(self):
         f = '[MClient] converters.dsl.mdic.Runner.run'
         timer = Timer(f)
         timer.start()
-        self.set_cells()
-        Dump().run()
+        self.loop_sources()
+        self.Success = self.Success and Index().run()
         sub = shcom.get_human_time(timer.end())
-        mes = _('The operation has taken {}.').format(sub)
-        Message(f, mes, True).show_info()
-
-
-
-class Dump:
-    
-    def __init__(self):
-        #TODO: Read index from files
-        self.index = {}
-        self.fragms = []
-        self.body = []
-        self.body_folder = Home('mclient').add_config('dics', 'MDIC')
-        self.index_folder = Home('mclient').add_config('dics', 'MDIC', 'collection.indexes')
-        self.file = os.path.join(self.body_folder, 'collection.mdic')
-        ''' By design, the index folder is created inside the body folder.
-            Path is created recursively. So, just create the index folder.
-        '''
-        self.Success = JSON and Path(self.index_folder).create()
-    
-    def dump_json(self):
-        f = '[MClient] converters.dsl.mdic.Dump.dump_json'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        try:
-            ''' Adding 'indent=4' will significantly slow down exporting, but
-                we need this to parse the resulting string manually, because
-                calling 'json.dumps' on each fragment is unbearably slow.
-            '''
-            code = json.dumps(JSON, ensure_ascii=False, indent=4)
-        except Exception as e:
-            code = ''
-            self.Success = False
-            rep.third_party(f, e)
-        return code
-    
-    def _save_index(self, abbr, bytes_):
-        f = '[MClient] converters.dsl.mdic.Dump._save_index'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        file = os.path.join(self.index_folder, abbr)
-        mes = _('Write "{}"').format(file)
-        Message(f, mes).show_info()
-        try:
-            with open(file, 'ba') as iindex:
-                iindex.write(bytes_)
-        except Exception as e:
-            self.Success = False
-            rep.third_party(f, e)
-    
-    def save_indexes(self):
-        f = '[MClient] converters.dsl.mdic.Dump.save_indexes'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        abbrs = sorted(self.index.keys())
-        for abbr in abbrs:
-            wforms = sorted(self.index[abbr].keys())
-            indexes = []
-            for wform in wforms:
-                index = f"{wform}\t{self.index[abbr][wform]['pos']}\t{self.index[abbr][wform]['len']}"
-                indexes.append(index)
-            bytes_ = bytes('\n'.join(indexes), 'utf-8')
-            self._save_index(abbr, bytes_)
-            if not self.Success:
-                break
-    
-    def save_body(self):
-        f = '[MClient] converters.dsl.mdic.Dump.save_body'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        mes = _('Write "{}"').format(self.file)
-        Message(f, mes).show_info()
-        try:
-            with open(self.file, 'ba') as ibody:
-                ibody.write(self.body)
-        except Exception as e:
-            self.Success = False
-            rep.third_party(f, e)
-    
-    def _get_abbr(self, wform):
-        abbr = [char for char in wform.lower() if str(char).isalpha()]
-        abbr = ''.join(abbr)
-        abbr = abbr[0:2]
-        ''' If abbr is empty and there is no extension, the app tries to save
-            the file as a directory and fails. Either use an extension or
-            do not allow an empty name.
-        '''
-        if not abbr:
-            abbr = 'unknown'
-        return abbr
-    
-    def set_fragms(self):
-        f = '[MClient] converters.dsl.mdic.Dump.set_fragms'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        code = self.dump_json()
-        iposes = Poses(code)
-        iposes.run()
-        self.fragms = iposes.fragms
-        self.Success = iposes.Success
-    
-    def export_wforms(self):
-        f = '[MClient] converters.dsl.mdic.Dump.export_wforms'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        # Fragments are already set, do not sort word forms
-        wforms = list(JSON.keys())
-        if len(wforms) != len(self.fragms):
-            self.Success = False
-            mes = f'{len(wforms)} == {len(self.fragms)}'
-            rep.condition(f, mes)
-            return
-        pos = 0
-        for i in range(len(wforms)):
-            bytes_ = bytes(self.fragms[i], 'utf-8')
-            length = len(bytes_)
-            # This is significantly faster than doing += for string of bytes
-            self.body.append(bytes_)
-            abbr = self._get_abbr(wforms[i])
-            # Do not rewrite index!
-            if not abbr in self.index:
-                self.index[abbr] = {}
-            #TODO: Allow duplicate wforms
-            self.index[abbr][wforms[i]] = {'pos': pos, 'len': length}
-            pos += length
-        self.body = b''.join(self.body)
-    
-    def debug(self):
-        # Do this before releasing memory
-        f = '[MClient] converters.dsl.mdic.Dump.debug'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        mes = self._debug_index() + '\n\n' + self._debug_body()
-        shDEBUG.reset(f, mes)
-        shDEBUG.show()
-    
-    def _debug_index(self):
-        f = '[MClient] converters.dsl.mdic.Dump._debug_index'
-        mes = [f + ':']
-        mes.append(self._dump_wform(self.index))
-        mes = [item for item in mes if item]
-        return '\n'.join(mes)
-    
-    def _debug_body(self):
-        # Do this before releasing memory
-        f = '[MClient] converters.dsl.mdic.Dump._debug_body'
-        mes = [f + ':']
-        abbrs = sorted(self.index.keys())
-        for abbr in abbrs:
-            wforms = sorted(self.index[abbr].keys())
-            for wform in wforms:
-                index = f"{wform}\t{self.index[abbr][wform]['pos']}\t{self.index[abbr][wform]['len']}"
-                mes.append(index)
-                pos1 = self.index[abbr][wform]['pos']
-                pos2 = pos1 + self.index[abbr][wform]['len']
-                bytes_ = self.fragms[pos1:pos2]
-                if not bytes_:
-                    rep.empty(f)
-                    break
-                text = bytes_.decode('utf-8')
-                mes.append('"' + text + '"')
-                mes.append('')
-        return '\n'.join(mes)
-    
-    def release_memory(self):
-        f = '[MClient] converters.dsl.mdic.Dump.release_memory'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        mes = _('Release memory')
-        Message(f, mes).show_info()
-        self.fragms = []
-        self.body = []
-        JSON.clear()
-    
-    def run(self):
-        self.set_fragms()
-        self.export_wforms()
-        self.save_body()
-        self.release_memory()
-        self.save_indexes()
+        if self.Success:
+            mes = _('The operation has taken {}.')
+            mes = mes.format(sub)
+            Message(f, mes, True).show_info()
+        else:
+            mes = _('The operation has failed! Time wasted: {}').format(sub)
+            Message(f, mes, True).show_error()
 
 
 
@@ -483,9 +411,69 @@ class Poses:
         self._debug_fragms()
         self._debug_dics()
     
+    def free_memory(self):
+        f = '[MClient] converters.dsl.mdic.Poses.free_memory'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self.start = []
+        self.end = []
+        self.code = ''
+    
     def run(self):
         self.set_start()
         self.set_end()
         self.check()
         self.set_fragms()
         #self.debug()
+        self.free_memory()
+        return self.fragms
+
+
+
+class Index:
+    
+    def __init__(self):
+        self.Success = True
+    
+    def _save(self, abbr, bytes_):
+        f = '[MClient] converters.dsl.mdic.Index._save'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        file = os.path.join(INDEX_FOLDER, abbr)
+        mes = _('Write "{}"').format(file)
+        Message(f, mes).show_info()
+        try:
+            with open(file, 'ba') as iindex:
+                iindex.write(bytes_)
+        except Exception as e:
+            self.Success = False
+            rep.third_party(f, e)
+        return self.Success
+    
+    def save(self):
+        f = '[MClient] converters.dsl.mdic.Index.save'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        abbrs = sorted(INDEX.keys())
+        for abbr in abbrs:
+            wforms = sorted(INDEX[abbr].keys())
+            indexes = []
+            for wform in wforms:
+                wform_string = []
+                wform_lst = INDEX[abbr][wform]
+                for wform_dic in wform_lst:
+                    wform_string.append(str(wform_dic['pos']))
+                    wform_string.append(str(wform_dic['len']))
+                wform_string = '\t'.join(wform_string)
+                index = f"{wform}\t{wform_string}"
+                indexes.append(index)
+            bytes_ = bytes('\n'.join(indexes), 'utf-8')
+            if not self._save(abbr, bytes_):
+                break
+    
+    def run(self):
+        self.save()
+        return self.Success
