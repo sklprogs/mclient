@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-27 23:04+0300\n"
-"PO-Revision-Date: 2025-09-27 23:04+0300\n"
+"POT-Creation-Date: 2025-09-28 00:13+0300\n"
+"PO-Revision-Date: 2025-09-28 00:14+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -445,7 +445,7 @@ msgstr "Обновление конфигурации по умолчанию"
 msgid "Use default configuration"
 msgstr "Используется конфигурация по умолчанию"
 
-#: mclient/src/convert.py:17 mclient/src/cut_tests.py:70
+#: mclient/src/convert.py:16 mclient/src/cut_tests.py:70
 #: mclient/src/mclient.py:1044 mclient/src/plugins/multitrandem/utils.py:943
 #: mclient/src/plugins/multitrandem/utils.py:1400 mclient/src/tests.py:1252
 msgid "Goodbye!"
@@ -1426,7 +1426,7 @@ msgstr "Файлы с ошибками:"
 msgid "\"{}\": {} matches in {} Fora dictionaries"
 msgstr "\"{}\": {} совпадений в {} словарях Fora"
 
-#: mclient/src/plugins/mdic/get.py:82
+#: mclient/src/plugins/mdic/get.py:92
 #: mclient/src/plugins/multitrandem/utils.py:273
 #: mclient/src/plugins/multitrandem/utils.py:594
 #: mclient/src/plugins/multitrandem/utils.py:599
@@ -1438,9 +1438,9 @@ msgstr "\"{}\": {} совпадений в {} словарях Fora"
 msgid "No matches!"
 msgstr "Совпадений нет!"
 
-#: mclient/src/plugins/mdic/get.py:95
-msgid "Position: {}. Length: {}"
-msgstr "Позиция: {}. Длина: {}"
+#: mclient/src/plugins/mdic/get.py:117
+msgid "Pattern: \"{}\". Position: {}. Length: {}"
+msgstr "Образец: \"{}\". Позиция: {}. Длина: {}"
 
 #: mclient/src/plugins/multitrancom/cleanup.py:99
 msgid "Malformed HTML code!"
