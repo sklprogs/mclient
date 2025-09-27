@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-20 15:54+0300\n"
-"PO-Revision-Date: 2025-09-20 15:56+0300\n"
+"POT-Creation-Date: 2025-09-27 23:04+0300\n"
+"PO-Revision-Date: 2025-09-27 23:04+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -287,7 +287,7 @@ msgstr "Опущенные ячейки: {}"
 #: mclient/src/plugins/multitrancom/tags.py:312
 #: mclient/src/plugins/multitrancom/tags.py:379
 #: mclient/src/plugins/stardict/tags.py:198
-#: mclient/src/plugins/stardict/tags.py:263 mclient/src/tests.py:940
+#: mclient/src/plugins/stardict/tags.py:263 mclient/src/tests.py:939
 #: skl_shared/src/test.py:728
 msgid "#"
 msgstr "№"
@@ -309,7 +309,7 @@ msgstr "№"
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
-#: mclient/src/cells.py:151 mclient/src/tests.py:767
+#: mclient/src/cells.py:151 mclient/src/tests.py:766
 msgid "SUBJECT"
 msgstr "ТЕМАТИКА"
 
@@ -445,58 +445,31 @@ msgstr "Обновление конфигурации по умолчанию"
 msgid "Use default configuration"
 msgstr "Используется конфигурация по умолчанию"
 
-#: mclient/src/convert.py:16 mclient/src/cut_tests.py:70
+#: mclient/src/convert.py:17 mclient/src/cut_tests.py:70
 #: mclient/src/mclient.py:1044 mclient/src/plugins/multitrandem/utils.py:943
-#: mclient/src/plugins/multitrandem/utils.py:1400 mclient/src/tests.py:1253
+#: mclient/src/plugins/multitrandem/utils.py:1400 mclient/src/tests.py:1252
 msgid "Goodbye!"
 msgstr "До свидания!"
 
-#: mclient/src/converters/dsl/mdic.py:92
-msgid "unknown source"
-msgstr "безымянный источник"
-
-#: mclient/src/converters/dsl/mdic.py:116
-msgid "unknown word form"
-msgstr "безымянная словоформа"
-
-#: mclient/src/converters/dsl/mdic.py:175 mclient/src/converters/dsl/odxml.py:239
-#: mclient/src/converters/dsl/shared.py:90
-msgid "DSL Dictionary Converter"
-msgstr "Конвертация словарей DSL"
-
-#: mclient/src/converters/dsl/mdic.py:180 mclient/src/converters/dsl/odxml.py:245
-#: mclient/src/converters/dsl/shared.py:96
-msgid "Process {} ({}/{})"
-msgstr "Обработка {} ({}/{})"
-
-#: mclient/src/converters/dsl/mdic.py:192 mclient/src/converters/dsl/odxml.py:256
-#: mclient/src/converters/dsl/shared.py:107
-msgid "Cells have been created"
-msgstr "Ячейки были созданы"
-
-#: mclient/src/converters/dsl/mdic.py:202 mclient/src/converters/dsl/odxml.py:267
-#: mclient/src/converters/dsl/shared.py:116
-msgid "The operation has taken {}."
-msgstr "Операция завершена за {}."
-
-#: mclient/src/converters/dsl/mdic.py:236 mclient/src/converters/dsl/mdic.py:267
+#: mclient/src/converters/dsl/mdic.py:171 mclient/src/converters/dsl/mdic.py:445
 #: mclient/src/plugins/multitrandem/utils.py:743
 #: mclient/src/plugins/multitrandem/utils.py:1143
 #: mclient/src/plugins/multitrandem/utils.py:1147
 msgid "Write \"{}\""
 msgstr "Запись \"{}\""
 
-#: mclient/src/converters/dsl/mdic.py:289 mclient/src/converters/dsl/mdic.py:293
-msgid "Export word forms"
-msgstr "Экспорт словоформ"
+#: mclient/src/converters/dsl/mdic.py:290
+msgid "Process \"{}\""
+msgstr "Обработка \"{}\""
 
-#: mclient/src/converters/dsl/mdic.py:301
-msgid "Process {}/{}"
-msgstr "Обработка {}/{}"
+#: mclient/src/converters/dsl/mdic.py:312 mclient/src/converters/dsl/odxml.py:267
+#: mclient/src/converters/dsl/shared.py:116
+msgid "The operation has taken {}."
+msgstr "Операция завершена за {}."
 
-#: mclient/src/converters/dsl/mdic.py:320
-msgid "Release memory"
-msgstr "Освобождение памяти"
+#: mclient/src/converters/dsl/mdic.py:316
+msgid "The operation has failed! Time wasted: {}"
+msgstr "Операция завершилась неудачно! Потрачено впустую {}"
 
 #: mclient/src/converters/dsl/odxml.py:134
 msgid "Generate XML"
@@ -525,6 +498,21 @@ msgstr "Сортировка ячеек"
 #: mclient/src/converters/dsl/odxml.py:223
 msgid ".dsl dictionaries: {}. Cells: {}"
 msgstr "Словарей .dsl: {}. Ячеек: {}"
+
+#: mclient/src/converters/dsl/odxml.py:239
+#: mclient/src/converters/dsl/shared.py:90
+msgid "DSL Dictionary Converter"
+msgstr "Конвертация словарей DSL"
+
+#: mclient/src/converters/dsl/odxml.py:245
+#: mclient/src/converters/dsl/shared.py:96
+msgid "Process {} ({}/{})"
+msgstr "Обработка {} ({}/{})"
+
+#: mclient/src/converters/dsl/odxml.py:256
+#: mclient/src/converters/dsl/shared.py:107
+msgid "Cells have been created"
+msgstr "Ячейки были созданы"
 
 #: mclient/src/gui.py:348
 msgid "Translate"
@@ -709,10 +697,10 @@ msgstr "Выход за границы массива, ряд №{}, столб�
 #: mclient/src/plugins/multitrancom/pairs.py:2710
 #: mclient/src/plugins/multitrandem/run.py:95
 #: mclient/src/plugins/multitrandem/run.py:144
-#: mclient/src/plugins/multitrandem/run.py:148 mclient/src/tests.py:858
-#: mclient/src/tests.py:859 mclient/src/tests.py:860 mclient/src/tests.py:861
-#: mclient/src/tests.py:862 mclient/src/tests.py:868 mclient/src/tests.py:870
-#: mclient/src/tests.py:874
+#: mclient/src/plugins/multitrandem/run.py:148 mclient/src/tests.py:857
+#: mclient/src/tests.py:858 mclient/src/tests.py:859 mclient/src/tests.py:860
+#: mclient/src/tests.py:861 mclient/src/tests.py:867 mclient/src/tests.py:869
+#: mclient/src/tests.py:873
 msgid "Russian"
 msgstr "Русский"
 
@@ -835,10 +823,10 @@ msgstr "Русский"
 #: mclient/src/plugins/multitrancom/pairs.py:2694
 #: mclient/src/plugins/multitrandem/run.py:95
 #: mclient/src/plugins/multitrandem/run.py:144
-#: mclient/src/plugins/multitrandem/run.py:148 mclient/src/tests.py:858
-#: mclient/src/tests.py:859 mclient/src/tests.py:860 mclient/src/tests.py:861
-#: mclient/src/tests.py:862 mclient/src/tests.py:868 mclient/src/tests.py:870
-#: mclient/src/tests.py:874
+#: mclient/src/plugins/multitrandem/run.py:148 mclient/src/tests.py:857
+#: mclient/src/tests.py:858 mclient/src/tests.py:859 mclient/src/tests.py:860
+#: mclient/src/tests.py:861 mclient/src/tests.py:867 mclient/src/tests.py:869
+#: mclient/src/tests.py:873
 msgid "English"
 msgstr "Английский"
 
@@ -1055,7 +1043,7 @@ msgstr "Арабский"
 #: mclient/src/plugins/multitrancom/pairs.py:2652
 #: mclient/src/plugins/multitrancom/pairs.py:2656
 #: mclient/src/plugins/multitrancom/pairs.py:2676
-#: mclient/src/plugins/multitrancom/pairs.py:2695 mclient/src/tests.py:872
+#: mclient/src/plugins/multitrancom/pairs.py:2695 mclient/src/tests.py:871
 msgid "French"
 msgstr "Французский"
 
@@ -1098,7 +1086,7 @@ msgstr "Строка №{}, столбец №{}. Текст: \"{}\""
 #: mclient/src/manager.py:190 mclient/src/manager.py:235
 #: mclient/src/mclient.py:707 mclient/src/settings/gui.py:33
 #: mclient/src/settings/gui.py:216 mclient/src/settings/gui.py:231
-#: mclient/src/tests.py:1068 mclient/src/tests.py:1121 mclient/src/tests.py:1159
+#: mclient/src/tests.py:1067 mclient/src/tests.py:1120 mclient/src/tests.py:1158
 msgid "Multitran"
 msgstr "Мультитран"
 
@@ -1451,7 +1439,6 @@ msgid "No matches!"
 msgstr "Совпадений нет!"
 
 #: mclient/src/plugins/mdic/get.py:95
-#| msgid "Position {}: "
 msgid "Position: {}. Length: {}"
 msgstr "Позиция: {}. Длина: {}"
 
@@ -6528,7 +6515,7 @@ msgstr "Чешский"
 #: mclient/src/plugins/multitrancom/pairs.py:2534
 #: mclient/src/plugins/multitrancom/pairs.py:2550
 #: mclient/src/plugins/multitrancom/pairs.py:2554
-#: mclient/src/plugins/multitrancom/pairs.py:2652 mclient/src/tests.py:872
+#: mclient/src/plugins/multitrancom/pairs.py:2652 mclient/src/tests.py:871
 msgid "Esperanto"
 msgstr "Эсперанто"
 
@@ -14590,55 +14577,55 @@ msgstr "Тематика \"{}\" имеет приоритет"
 msgid "Subject \"{}\" is NOT prioritized"
 msgstr "Тематика \"{}\" НЕ имеет приоритета"
 
-#: mclient/src/tests.py:652
+#: mclient/src/tests.py:651
 msgid "Number of blocks: {}"
 msgstr "Число блоков: {}"
 
-#: mclient/src/tests.py:654
+#: mclient/src/tests.py:653
 msgid "Web-page:"
 msgstr "Веб-страница:"
 
-#: mclient/src/tests.py:658
+#: mclient/src/tests.py:657
 msgid "Text:"
 msgstr "Текст:"
 
-#: mclient/src/tests.py:749
+#: mclient/src/tests.py:748
 msgid "Prioritized subjects:"
 msgstr "Приоритетные тематики"
 
-#: mclient/src/tests.py:754
+#: mclient/src/tests.py:753
 msgid "Subject: \"{}\""
 msgstr "Тематика: \"{}\""
 
-#: mclient/src/tests.py:757
+#: mclient/src/tests.py:756
 msgid "Highest priority (ascending order): {}"
 msgstr "Самый высокий приоритет (упорядоченность по возрастанию): {}"
 
-#: mclient/src/tests.py:760
+#: mclient/src/tests.py:759
 msgid "Details:"
 msgstr "Подробности:"
 
-#: mclient/src/tests.py:767
+#: mclient/src/tests.py:766
 msgid "PRIORITY"
 msgstr "ПРИОРИТЕТ"
 
-#: mclient/src/tests.py:790 mclient/src/tests.py:940
+#: mclient/src/tests.py:789 mclient/src/tests.py:939
 msgid "SHORT"
 msgstr "КОРОТКО"
 
-#: mclient/src/tests.py:790
+#: mclient/src/tests.py:789
 msgid "FULL"
 msgstr "ПОЛНАЯ"
 
-#: mclient/src/tests.py:940
+#: mclient/src/tests.py:939
 msgid "MAJOR (EN)"
 msgstr "ОСНОВНАЯ (EN)"
 
-#: mclient/src/tests.py:940
+#: mclient/src/tests.py:939
 msgid "TITLE"
 msgstr "ЗАГОЛОВОК"
 
-#: mclient/src/tests.py:1007
+#: mclient/src/tests.py:1006
 msgid ""
 "The following pairs are not supported:\n"
 "{}"
@@ -14646,19 +14633,19 @@ msgstr ""
 "Следующие пары не поддерживаются:\n"
 "{}"
 
-#: mclient/src/tests.py:1071
+#: mclient/src/tests.py:1070
 msgid "Source: \"{}\"; pair: \"{}\"; search: \"{}\""
 msgstr "Источник: \"{}\"; пара: \"{}\"; запрос: \"{}\""
 
-#: mclient/src/tests.py:1114
+#: mclient/src/tests.py:1113
 msgid "Source: {}; timeout: {}"
 msgstr "Источник: {}; таймаут: {}"
 
-#: mclient/src/tests.py:1120 mclient/src/tests.py:1127
+#: mclient/src/tests.py:1119 mclient/src/tests.py:1126
 msgid "Offline"
 msgstr "Оффлайн"
 
-#: mclient/src/tests.py:1130 mclient/src/tests.py:1135
+#: mclient/src/tests.py:1129 mclient/src/tests.py:1134
 msgid "Source: {}; accessibility: {}"
 msgstr "Источник: {}; доступность: {}"
 
@@ -15514,6 +15501,21 @@ msgstr ""
 "Заданные параметры времени неверны или не поддерживаются.\n"
 "\n"
 "Подробности: {}"
+
+#~ msgid "unknown source"
+#~ msgstr "безымянный источник"
+
+#~ msgid "unknown word form"
+#~ msgstr "безымянная словоформа"
+
+#~ msgid "Release memory"
+#~ msgstr "Освобождение памяти"
+
+#~ msgid "The operation has successfully finished in {}."
+#~ msgstr "Операция успешно завершена за {}."
+
+#~ msgid "Export word forms"
+#~ msgstr "Экспорт словоформ"
 
 #~ msgid "Tag-like structures are invalid!"
 #~ msgstr "Некорректные тегоподобные структуры!"
@@ -16498,15 +16500,6 @@ msgstr ""
 
 #~ msgid "Restore geometry: {}"
 #~ msgstr "Восстановление геометрии: {}"
-
-#~ msgid ""
-#~ "The operation has failed!\n"
-#~ "\n"
-#~ "Details: {}"
-#~ msgstr ""
-#~ "Операция завершилась неудачно!\n"
-#~ "\n"
-#~ "Подробности: {}"
 
 #~ msgid "Test:"
 #~ msgstr "Тест:"
