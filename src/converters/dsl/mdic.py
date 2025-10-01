@@ -13,6 +13,7 @@ from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
 from skl_shared.time import Timer
 from skl_shared.paths import Home, Path
 from skl_shared.logic import com as shcom
+from skl_shared.list import List
 
 from plugins.dsl.cleanup import CleanUp
 from plugins.dsl.get import ALL_DICS
@@ -288,26 +289,36 @@ class Runner:
     
     def __init__(self):
         self.Success = CREATE_FOLDER and ALL_DICS.Success
+        self.feed_limit = 1000
     
     def loop_sources(self):
         f = '[MClient] converters.dsl.mdic.Runner.loop_sources'
         if not self.Success:
             rep.cancel(f)
             return
+        PROGRESS.set_title(_('Process articles'))
+        PROGRESS.show()
         for idic in ALL_DICS.dics:
+            PROGRESS.set_value(0)
+            PROGRESS.set_max(len(idic.articles))
             mes = _('Process "{}"').format(idic.fname)
-            Message(f, mes).show_info()
+            PROGRESS.set_info(mes)
+            PROGRESS.update()
             idic.set_articles()
             self.Success = idic.Success
             if not self.Success:
                 break
-            #cur
-            #TODO: Split by limit
-            #articles = idic.articles[0:1000]
-            articles = idic.articles
-            self.Success = Portion(articles, idic.fname).run()
-            if not self.Success:
-                break
+            count = 0
+            for articles in List(idic.articles).split_by_len(self.feed_limit):
+                mes = _('Process "{}" [{}]').format(idic.fname, count)
+                PROGRESS.set_info(mes)
+                PROGRESS.set_value(count * self.feed_limit)
+                PROGRESS.update()
+                self.Success = Portion(articles, idic.fname).run()
+                count += len(articles)
+                if not self.Success:
+                    break
+        PROGRESS.close()
     
     def run(self):
         f = '[MClient] converters.dsl.mdic.Runner.run'
