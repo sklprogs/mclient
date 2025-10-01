@@ -21,7 +21,7 @@ from plugins.dsl.elems import Elems
 
 BODY_FOLDER = Home('mclient').add_config('dics', 'MDIC')
 INDEX_FOLDER = os.path.join(BODY_FOLDER, 'collection.indexes')
-CREATE_FOLDER = Path(INDEX_FOLDER).create()
+CREATE_FOLDER = Path(BODY_FOLDER).create() and Path(INDEX_FOLDER).create()
 BIN_FILE = os.path.join(BODY_FOLDER, 'collection.mdic')
 INDEX = {}
 
