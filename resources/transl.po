@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-28 00:13+0300\n"
-"PO-Revision-Date: 2025-09-28 00:14+0300\n"
+"POT-Creation-Date: 2025-10-02 00:32+0300\n"
+"PO-Revision-Date: 2025-10-02 00:35+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -287,7 +287,7 @@ msgstr "Опущенные ячейки: {}"
 #: mclient/src/plugins/multitrancom/tags.py:312
 #: mclient/src/plugins/multitrancom/tags.py:379
 #: mclient/src/plugins/stardict/tags.py:198
-#: mclient/src/plugins/stardict/tags.py:263 mclient/src/tests.py:939
+#: mclient/src/plugins/stardict/tags.py:263 mclient/src/tests.py:941
 #: skl_shared/src/test.py:728
 msgid "#"
 msgstr "№"
@@ -309,7 +309,7 @@ msgstr "№"
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
-#: mclient/src/cells.py:151 mclient/src/tests.py:766
+#: mclient/src/cells.py:151 mclient/src/tests.py:768
 msgid "SUBJECT"
 msgstr "ТЕМАТИКА"
 
@@ -447,27 +447,35 @@ msgstr "Используется конфигурация по умолчани�
 
 #: mclient/src/convert.py:16 mclient/src/cut_tests.py:70
 #: mclient/src/mclient.py:1044 mclient/src/plugins/multitrandem/utils.py:943
-#: mclient/src/plugins/multitrandem/utils.py:1400 mclient/src/tests.py:1252
+#: mclient/src/plugins/multitrandem/utils.py:1400 mclient/src/tests.py:1254
 msgid "Goodbye!"
 msgstr "До свидания!"
 
-#: mclient/src/converters/dsl/mdic.py:171 mclient/src/converters/dsl/mdic.py:445
+#: mclient/src/converters/dsl/mdic.py:180 mclient/src/converters/dsl/mdic.py:472
 #: mclient/src/plugins/multitrandem/utils.py:743
 #: mclient/src/plugins/multitrandem/utils.py:1143
 #: mclient/src/plugins/multitrandem/utils.py:1147
 msgid "Write \"{}\""
 msgstr "Запись \"{}\""
 
-#: mclient/src/converters/dsl/mdic.py:290
-msgid "Process \"{}\""
-msgstr "Обработка \"{}\""
+#: mclient/src/converters/dsl/mdic.py:309
+msgid "Process articles"
+msgstr "Обработка статей"
 
-#: mclient/src/converters/dsl/mdic.py:312 mclient/src/converters/dsl/odxml.py:267
+#: mclient/src/converters/dsl/mdic.py:318
+msgid ""
+"Dictionary: {}\n"
+"Articles processed in total: {}"
+msgstr ""
+"Словарь: {}\n"
+"Всего обработано статей: {}"
+
+#: mclient/src/converters/dsl/mdic.py:338 mclient/src/converters/dsl/odxml.py:267
 #: mclient/src/converters/dsl/shared.py:116
 msgid "The operation has taken {}."
 msgstr "Операция завершена за {}."
 
-#: mclient/src/converters/dsl/mdic.py:316
+#: mclient/src/converters/dsl/mdic.py:342
 msgid "The operation has failed! Time wasted: {}"
 msgstr "Операция завершилась неудачно! Потрачено впустую {}"
 
@@ -697,10 +705,10 @@ msgstr "Выход за границы массива, ряд №{}, столб�
 #: mclient/src/plugins/multitrancom/pairs.py:2710
 #: mclient/src/plugins/multitrandem/run.py:95
 #: mclient/src/plugins/multitrandem/run.py:144
-#: mclient/src/plugins/multitrandem/run.py:148 mclient/src/tests.py:857
-#: mclient/src/tests.py:858 mclient/src/tests.py:859 mclient/src/tests.py:860
-#: mclient/src/tests.py:861 mclient/src/tests.py:867 mclient/src/tests.py:869
-#: mclient/src/tests.py:873
+#: mclient/src/plugins/multitrandem/run.py:148 mclient/src/tests.py:859
+#: mclient/src/tests.py:860 mclient/src/tests.py:861 mclient/src/tests.py:862
+#: mclient/src/tests.py:863 mclient/src/tests.py:869 mclient/src/tests.py:871
+#: mclient/src/tests.py:875
 msgid "Russian"
 msgstr "Русский"
 
@@ -823,10 +831,10 @@ msgstr "Русский"
 #: mclient/src/plugins/multitrancom/pairs.py:2694
 #: mclient/src/plugins/multitrandem/run.py:95
 #: mclient/src/plugins/multitrandem/run.py:144
-#: mclient/src/plugins/multitrandem/run.py:148 mclient/src/tests.py:857
-#: mclient/src/tests.py:858 mclient/src/tests.py:859 mclient/src/tests.py:860
-#: mclient/src/tests.py:861 mclient/src/tests.py:867 mclient/src/tests.py:869
-#: mclient/src/tests.py:873
+#: mclient/src/plugins/multitrandem/run.py:148 mclient/src/tests.py:859
+#: mclient/src/tests.py:860 mclient/src/tests.py:861 mclient/src/tests.py:862
+#: mclient/src/tests.py:863 mclient/src/tests.py:869 mclient/src/tests.py:871
+#: mclient/src/tests.py:875
 msgid "English"
 msgstr "Английский"
 
@@ -1043,7 +1051,7 @@ msgstr "Арабский"
 #: mclient/src/plugins/multitrancom/pairs.py:2652
 #: mclient/src/plugins/multitrancom/pairs.py:2656
 #: mclient/src/plugins/multitrancom/pairs.py:2676
-#: mclient/src/plugins/multitrancom/pairs.py:2695 mclient/src/tests.py:871
+#: mclient/src/plugins/multitrancom/pairs.py:2695 mclient/src/tests.py:873
 msgid "French"
 msgstr "Французский"
 
@@ -1086,7 +1094,7 @@ msgstr "Строка №{}, столбец №{}. Текст: \"{}\""
 #: mclient/src/manager.py:190 mclient/src/manager.py:235
 #: mclient/src/mclient.py:707 mclient/src/settings/gui.py:33
 #: mclient/src/settings/gui.py:216 mclient/src/settings/gui.py:231
-#: mclient/src/tests.py:1067 mclient/src/tests.py:1120 mclient/src/tests.py:1158
+#: mclient/src/tests.py:1069 mclient/src/tests.py:1122 mclient/src/tests.py:1160
 msgid "Multitran"
 msgstr "Мультитран"
 
@@ -6515,7 +6523,7 @@ msgstr "Чешский"
 #: mclient/src/plugins/multitrancom/pairs.py:2534
 #: mclient/src/plugins/multitrancom/pairs.py:2550
 #: mclient/src/plugins/multitrancom/pairs.py:2554
-#: mclient/src/plugins/multitrancom/pairs.py:2652 mclient/src/tests.py:871
+#: mclient/src/plugins/multitrancom/pairs.py:2652 mclient/src/tests.py:873
 msgid "Esperanto"
 msgstr "Эсперанто"
 
@@ -14577,55 +14585,55 @@ msgstr "Тематика \"{}\" имеет приоритет"
 msgid "Subject \"{}\" is NOT prioritized"
 msgstr "Тематика \"{}\" НЕ имеет приоритета"
 
-#: mclient/src/tests.py:651
+#: mclient/src/tests.py:653
 msgid "Number of blocks: {}"
 msgstr "Число блоков: {}"
 
-#: mclient/src/tests.py:653
+#: mclient/src/tests.py:655
 msgid "Web-page:"
 msgstr "Веб-страница:"
 
-#: mclient/src/tests.py:657
+#: mclient/src/tests.py:659
 msgid "Text:"
 msgstr "Текст:"
 
-#: mclient/src/tests.py:748
+#: mclient/src/tests.py:750
 msgid "Prioritized subjects:"
 msgstr "Приоритетные тематики"
 
-#: mclient/src/tests.py:753
+#: mclient/src/tests.py:755
 msgid "Subject: \"{}\""
 msgstr "Тематика: \"{}\""
 
-#: mclient/src/tests.py:756
+#: mclient/src/tests.py:758
 msgid "Highest priority (ascending order): {}"
 msgstr "Самый высокий приоритет (упорядоченность по возрастанию): {}"
 
-#: mclient/src/tests.py:759
+#: mclient/src/tests.py:761
 msgid "Details:"
 msgstr "Подробности:"
 
-#: mclient/src/tests.py:766
+#: mclient/src/tests.py:768
 msgid "PRIORITY"
 msgstr "ПРИОРИТЕТ"
 
-#: mclient/src/tests.py:789 mclient/src/tests.py:939
+#: mclient/src/tests.py:791 mclient/src/tests.py:941
 msgid "SHORT"
 msgstr "КОРОТКО"
 
-#: mclient/src/tests.py:789
+#: mclient/src/tests.py:791
 msgid "FULL"
 msgstr "ПОЛНАЯ"
 
-#: mclient/src/tests.py:939
+#: mclient/src/tests.py:941
 msgid "MAJOR (EN)"
 msgstr "ОСНОВНАЯ (EN)"
 
-#: mclient/src/tests.py:939
+#: mclient/src/tests.py:941
 msgid "TITLE"
 msgstr "ЗАГОЛОВОК"
 
-#: mclient/src/tests.py:1006
+#: mclient/src/tests.py:1008
 msgid ""
 "The following pairs are not supported:\n"
 "{}"
@@ -14633,19 +14641,19 @@ msgstr ""
 "Следующие пары не поддерживаются:\n"
 "{}"
 
-#: mclient/src/tests.py:1070
+#: mclient/src/tests.py:1072
 msgid "Source: \"{}\"; pair: \"{}\"; search: \"{}\""
 msgstr "Источник: \"{}\"; пара: \"{}\"; запрос: \"{}\""
 
-#: mclient/src/tests.py:1113
+#: mclient/src/tests.py:1115
 msgid "Source: {}; timeout: {}"
 msgstr "Источник: {}; таймаут: {}"
 
-#: mclient/src/tests.py:1119 mclient/src/tests.py:1126
+#: mclient/src/tests.py:1121 mclient/src/tests.py:1128
 msgid "Offline"
 msgstr "Оффлайн"
 
-#: mclient/src/tests.py:1129 mclient/src/tests.py:1134
+#: mclient/src/tests.py:1131 mclient/src/tests.py:1136
 msgid "Source: {}; accessibility: {}"
 msgstr "Источник: {}; доступность: {}"
 
@@ -15501,6 +15509,9 @@ msgstr ""
 "Заданные параметры времени неверны или не поддерживаются.\n"
 "\n"
 "Подробности: {}"
+
+#~ msgid "Process \"{}\""
+#~ msgstr "Обработка \"{}\""
 
 #~ msgid "unknown source"
 #~ msgstr "безымянный источник"
