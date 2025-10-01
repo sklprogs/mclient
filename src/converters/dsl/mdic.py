@@ -83,12 +83,10 @@ class Portion:
             rep.cancel(f)
             return
         ms.STOP = True
-        self.json['source'] = self.source
-        self.json['wforms'] = {}
         for article_cells in self.cells:
             wform = self._get_wform(article_cells)
-            if not wform in self.json['wforms']:
-                self.json['wforms'][wform] = {}
+            if not wform in self.json:
+                self.json[wform] = {'source': self.source, 'cells': {}}
             for cell in article_cells:
                 if not cell or not cell.text:
                     rep.empty(f)
@@ -96,7 +94,7 @@ class Portion:
                 ''' Rewrite cells having the same text (may relate to different
                     subjects of the same source) (should we do that?).
                 '''
-                self.json['wforms'][wform][cell.text] = Cell(cell).run()    
+                self.json[wform]['cells'][cell.text] = Cell(cell).run()    
         ms.STOP = False
     
     def dump_json(self):
@@ -113,6 +111,16 @@ class Portion:
         except Exception as e:
             self.Success = False
             rep.third_party(f, e)
+        '''
+        # Debug JSON structure
+        if not self.Success:
+            return
+        from skl_shared.text_file import Write
+        from skl_shared.launch import Launch
+        file = '/tmp/dump.json'
+        Write(file, True).write(self.code)
+        Launch(file).launch_default()
+        '''
     
     def set_fragms(self):
         f = '[MClient] converters.dsl.mdic.Portion.set_fragms'
@@ -323,8 +331,9 @@ class Poses:
     def __init__(self, code):
         self.start = []
         self.end = []
-        self.start_pattern = '\n        "'
-        self.end_pattern = '\n        }'
+        #NOTE: Change this upon changing JSON structure
+        self.start_pattern = '\n    "'
+        self.end_pattern = '\n    }'
         self.fragms = []
         self.code = code
         self.Success = self.code
