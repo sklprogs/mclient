@@ -296,28 +296,35 @@ class Runner:
         if not self.Success:
             rep.cancel(f)
             return
+        if self.feed_limit <= 0:
+            self.Success = False
+            mes = f'{self.feed_limit} > 0'
+            rep.condition(f, mes)
+            return
+        PROGRESS.set_value(0)
+        ''' We cannot set the number of articles here since they are
+            not processed yet.
+        '''
+        PROGRESS.set_max(len(ALL_DICS.dics))
         PROGRESS.set_title(_('Process articles'))
         PROGRESS.show()
+        count = 0
         for idic in ALL_DICS.dics:
-            PROGRESS.set_value(0)
-            PROGRESS.set_max(len(idic.articles))
-            mes = _('Process "{}"').format(idic.fname)
-            PROGRESS.set_info(mes)
-            PROGRESS.update()
             idic.set_articles()
             self.Success = idic.Success
             if not self.Success:
                 break
-            count = 0
             for articles in List(idic.articles).split_by_len(self.feed_limit):
-                mes = _('Process "{}" [{}]').format(idic.fname, count)
-                PROGRESS.set_info(mes)
-                PROGRESS.set_value(count * self.feed_limit)
+                mes = _('Dictionary: {}\nArticles processed in total: {}')
+                mes = mes.format(idic.fname, count)
+                PROGRESS.set_info(mes, 69)
                 PROGRESS.update()
                 self.Success = Portion(articles, idic.fname).run()
                 count += len(articles)
                 if not self.Success:
                     break
+            PROGRESS.inc()
+            PROGRESS.update()
         PROGRESS.close()
     
     def run(self):
