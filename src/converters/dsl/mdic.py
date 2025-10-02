@@ -14,6 +14,8 @@ from skl_shared.time import Timer
 from skl_shared.paths import Home, Path
 from skl_shared.logic import com as shcom
 from skl_shared.list import List
+from skl_shared.text_file import Write
+from skl_shared.launch import Launch
 
 from plugins.dsl.cleanup import CleanUp
 from plugins.dsl.get import ALL_DICS
@@ -48,6 +50,18 @@ class Portion:
             return
         for article_cells in self.cells:
             self.wforms.append(self._get_wform(article_cells))
+        old_len = len(self.wforms)
+        ''' Articles with empty word forms are unsearchable and cause bugs
+            when verifying the len(self.wforms) == len(self.fragms) condition.
+        '''
+        self.wforms = [wform for wform in self.wforms if wform]
+        ''' By design, duplicate word forms of the same source and portion are
+            not supported by the current JSON structure. If they occur, cells
+            with the same text will be overwritten. However, some sources
+            actually have duplicate word forms.
+        '''
+        self.wforms = List(self.wforms).delete_duplicates()
+        rep.deleted(f, old_len - len(self.wforms))
     
     def set_cells(self):
         f = '[MClient] converters.dsl.mdic.Portion.set_cells'
@@ -98,6 +112,16 @@ class Portion:
                 self.json[wform]['cells'][cell.text] = Cell(cell).run()    
         ms.STOP = False
     
+    def _debug_json(self):
+        # Debug JSON structure of the current portion
+        f = '[MClient] converters.dsl.mdic.Portion._debug_json'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        file = Home('mclient').add_config('dics', 'debug-portion-json.txt')
+        Write(file, True).write(self.code)
+        Launch(file).launch_default()
+    
     def dump_json(self):
         f = '[MClient] converters.dsl.mdic.Portion.dump_json'
         if not self.Success:
@@ -112,16 +136,33 @@ class Portion:
         except Exception as e:
             self.Success = False
             rep.third_party(f, e)
-        '''
-        # Debug JSON structure
-        if not self.Success:
-            return
-        from skl_shared.text_file import Write
-        from skl_shared.launch import Launch
-        file = '/tmp/dump.json'
-        Write(file, True).write(self.code)
+        #self._debug_json()
+    
+    def _is_invalid_fragm(self, fragm):
+        if not fragm:
+            return True
+        fragm = fragm.splitlines()
+        # When formatted, JSON section should be at least 3 lines long
+        if len(fragm) < 3:
+            return True
+        if fragm[1].strip() == '"": {':
+            return True
+    
+    def _debug_wforms_fragms(self):
+        # Debug word forms and fragments as a table upon failure
+        f = '[MClient] converters.dsl.mdic.Portion._debug_wforms_fragms'
+        mes = ['wforms:'] + self.wforms
+        mes.append('')
+        mes.append('fragms:')
+        for fragm in self.fragms:
+            fragm = fragm.splitlines()
+            if len(fragm) < 2:
+                rep.wrong_input(f, '\n'.join(fragm))
+                continue
+            mes.append(fragm[1])
+        file = Home('mclient').add_config('dics', 'debug-wforms-fragms.txt')
+        Write(file, True).write('\n'.join(mes))
         Launch(file).launch_default()
-        '''
     
     def set_fragms(self):
         f = '[MClient] converters.dsl.mdic.Portion.set_fragms'
@@ -129,13 +170,18 @@ class Portion:
             rep.cancel(f)
             return
         self.fragms = Poses(self.code).run()
+        old_len = len(self.fragms)
+        self.fragms = [fragm for fragm in self.fragms \
+                      if not self._is_invalid_fragm(fragm)]
         if not self.fragms:
             rep.empty_output(f)
             self.Success = False
+        rep.deleted(f, old_len - len(self.fragms))
         if len(self.wforms) != len(self.fragms):
             self.Success = False
             mes = f'{len(self.wforms)} == {len(self.fragms)}'
             rep.condition(f, mes)
+            self._debug_wforms_fragms()
     
     def _get_abbr(self, wform):
         abbr = [char for char in wform.lower() if str(char).isalpha()]
@@ -159,6 +205,9 @@ class Portion:
         INDEX[abbr][self.wforms[i]].append({'pos': pos, 'len': length})
     
     def set_body(self):
+        ''' Without compression, the resulting body is ~7.3 times larger than
+            the original DSL source.
+        '''
         f = '[MClient] converters.dsl.mdic.Portion.set_body'
         if not self.Success:
             rep.cancel(f)
