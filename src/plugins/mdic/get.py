@@ -176,6 +176,9 @@ class Body:
         for i in range(len(iindex.pos)):
             text.append(self._get(iindex.pos[i], iindex.length[i]))
         text = '\n'.join(text)
+        if text:
+            # Create valid JSON structure
+            text = '{' + text + '}'
         timer.end()
         return text
     
