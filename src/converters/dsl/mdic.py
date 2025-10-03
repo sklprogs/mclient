@@ -50,7 +50,7 @@ class Portion:
         if not self.Success:
             rep.cancel(f)
             return
-        self.wforms = [item for item in self.json.keys() if item]
+        self.wforms = [item.lower().strip() for item in self.json.keys() if item]
     
     def set_cells(self):
         f = '[MClient] converters.dsl.mdic.Portion.set_cells'
