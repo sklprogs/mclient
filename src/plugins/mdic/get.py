@@ -159,6 +159,7 @@ class Body:
         if not self.Success:
             rep.cancel(f)
             return
+        wform = wform.lower().strip()
         if not wform:
             rep.empty(f)
             return
