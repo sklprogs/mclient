@@ -42,26 +42,14 @@ class Portion:
         '''
         self.Success = self.articles = articles
         self.source = source
-    
+   
     def set_wforms(self):
+        # Do this only after 'self.set_json'
         f = '[MClient] converters.dsl.mdic.Portion.set_wforms'
         if not self.Success:
             rep.cancel(f)
             return
-        for article_cells in self.cells:
-            self.wforms.append(self._get_wform(article_cells))
-        old_len = len(self.wforms)
-        ''' Articles with empty word forms are unsearchable and cause bugs
-            when verifying the len(self.wforms) == len(self.fragms) condition.
-        '''
-        self.wforms = [wform for wform in self.wforms if wform]
-        ''' By design, duplicate word forms of the same source and portion are
-            not supported by the current JSON structure. If they occur, cells
-            with the same text will be overwritten. However, some sources
-            actually have duplicate word forms.
-        '''
-        self.wforms = List(self.wforms).delete_duplicates()
-        rep.deleted(f, old_len - len(self.wforms))
+        self.wforms = [item for item in self.json.keys() if item]
     
     def set_cells(self):
         f = '[MClient] converters.dsl.mdic.Portion.set_cells'
@@ -263,9 +251,9 @@ class Portion:
     def run(self):
         self.add_wforms()
         self.set_cells()
-        self.set_wforms()
         self.set_json()
         self.dump_json()
+        self.set_wforms()
         self.set_fragms()
         self.set_body()
         self.save_body()
