@@ -31,7 +31,7 @@ INDEX = {}
 
 class Portion:
     
-    def __init__(self, articles, source):
+    def __init__(self, articles, source, pos=0):
         self.json = {}
         self.code = ''
         self.body = []
@@ -42,6 +42,7 @@ class Portion:
         '''
         self.Success = self.articles = articles
         self.source = source
+        self.pos = pos
    
     def set_wforms(self):
         # Do this only after 'self.set_json'
@@ -200,13 +201,13 @@ class Portion:
         if not self.Success:
             rep.cancel(f)
             return
-        pos = 0
         for i in range(len(self.fragms)):
             bytes_ = bytes(self.fragms[i], 'utf-8')
             # This is significantly faster than doing += for string of bytes
             self.body.append(bytes_)
-            self._add_index(i, pos, len(bytes_))
-            pos += len(bytes_)
+            # +1/-1 to get rid of starting/ending commas or curly braces
+            self._add_index(i, self.pos+1, len(bytes_)-1)
+            self.pos += len(bytes_)
         self.body = b''.join(self.body)
     
     def save_body(self):
@@ -258,7 +259,8 @@ class Portion:
         self.set_body()
         self.save_body()
         self.free_memory()
-        return self.Success
+        # We return tuple in order not to keep in memory this class
+        return(self.Success, self.pos)
 
 
 
@@ -345,8 +347,11 @@ class Runner:
         PROGRESS.set_max(len(ALL_DICS.dics))
         PROGRESS.set_title(_('Process articles'))
         PROGRESS.show()
+        pos = 0
         count = 0
         for idic in ALL_DICS.dics:
+            if not self.Success:
+                break
             idic.set_articles()
             self.Success = idic.Success
             if not self.Success:
@@ -356,8 +361,8 @@ class Runner:
                 mes = mes.format(idic.fname, count)
                 PROGRESS.set_info(mes, 69)
                 PROGRESS.update()
-                self.Success = Portion(articles, idic.fname).run()
                 count += len(articles)
+                self.Success, pos = Portion(articles, idic.fname, pos).run()
                 if not self.Success:
                     break
             PROGRESS.inc()
