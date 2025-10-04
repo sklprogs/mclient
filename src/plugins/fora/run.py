@@ -137,10 +137,6 @@ class Plugin:
         # This is needed only for compliance with a general method
         return(_('Any'),)
     
-    def is_combined(self):
-        # Whether or not the plugin is actually a wrapper over other plugins
-        return True
-    
     def count_valid(self):
         return len(ALL_DICS.get_valid())
     
