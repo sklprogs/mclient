@@ -3,6 +3,7 @@
 
 import os
 import json
+import zstd
 
 from skl_shared.localize import _
 import skl_shared.message.controller as ms
@@ -193,6 +194,14 @@ class Portion:
             INDEX[abbr][self.wforms[i]] = []
         INDEX[abbr][self.wforms[i]].append({'pos': pos, 'len': length})
     
+    def _compress(self, data):
+        f = '[MClient] converters.dsl.mdic.Portion._compress'
+        try:
+            return zstd.compress(data)
+        except Exception as e:
+            self.Success = False
+            rep.third_party(f, e)
+    
     def set_body(self):
         ''' Without compression, the resulting body is ~7.3 times larger than
             the original DSL source.
@@ -203,6 +212,10 @@ class Portion:
             return
         for i in range(len(self.fragms)):
             bytes_ = bytes(self.fragms[i], 'utf-8')
+            bytes_ = self._compress(bytes_)
+            if not self.Success:
+                rep.cancel(f)
+                return
             # This is significantly faster than doing += for string of bytes
             self.body.append(bytes_)
             # +1/-1 to get rid of starting/ending commas or curly braces
