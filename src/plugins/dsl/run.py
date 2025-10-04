@@ -170,12 +170,6 @@ class Plugin:
         else:
             return gt.ALL_DICS.get_langs2()
     
-    def is_combined(self):
-        ''' Whether or not the plugin is actually a wrapper over other
-            plugins.
-        '''
-        return False
-    
     def count_valid(self):
         return len(gt.ALL_DICS.get_valid())
     
