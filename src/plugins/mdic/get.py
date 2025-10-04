@@ -131,7 +131,7 @@ class Body:
     
     def __init__(self):
         self.file = Home('mclient').add_config('dics', 'MDIC', 'collection.mdic')
-        self.Success = File(self.file).Success
+        self.Success = File(self.file, Graphical=False).Success
         self.load()
     
     def load(self):
