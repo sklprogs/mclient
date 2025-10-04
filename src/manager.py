@@ -111,14 +111,6 @@ class Plugins:
             return
         return self.plugin.get_lang2()
     
-    def is_combined(self):
-        # Whether or not the plugin is actually a wrapper over other plugins
-        f = '[MClient] manager.Plugins.is_combined'
-        if not self.plugin:
-            rep.empty(f)
-            return
-        return self.plugin.is_combined()
-    
     def fix_raw_htm(self, code):
         f = '[MClient] manager.Plugins.fix_raw_htm'
         if not self.plugin:
