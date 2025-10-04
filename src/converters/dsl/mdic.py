@@ -211,9 +211,7 @@ class Portion:
             rep.cancel(f)
             return
         for i in range(len(self.fragms)):
-            fragm = self.fragms[i].lstrip('{')
-            fragm = fragm.lstrip(',')
-            # .rstrip('}') is not needed
+            fragm = self.fragms[i].lstrip(',')
             fragm = fragm.rstrip(',')
             bytes_ = bytes(fragm, 'utf-8')
             bytes_ = self._compress(bytes_)
