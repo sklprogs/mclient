@@ -32,7 +32,7 @@ INDEX = {}
 
 class Portion:
     
-    def __init__(self, articles, source, pos=0):
+    def __init__(self, articles, dic_name, pos=0):
         self.json = {}
         self.code = ''
         self.body = []
@@ -42,7 +42,7 @@ class Portion:
             so we do not force non-empty sources here.
         '''
         self.Success = self.articles = articles
-        self.source = source
+        self.dic_name = dic_name
         self.pos = pos
    
     def set_wforms(self):
@@ -83,6 +83,9 @@ class Portion:
         return article_cells[0].blocks[0].wform
     
     def set_json(self):
+        ''' #NOTE: Edit Poses.start_pattern and Poses.end_pattern upon changing
+            JSON structure.
+        '''
         f = '[MClient] converters.dsl.mdic.Portion.set_json'
         if not self.Success:
             rep.cancel(f)
@@ -91,23 +94,23 @@ class Portion:
         for article_cells in self.cells:
             wform = self._get_wform(article_cells)
             if not wform in self.json:
-                self.json[wform] = {'source': self.source, 'cells': {}}
+                self.json[wform] = {}
             for cell in article_cells:
                 if not cell or not cell.text:
                     rep.empty(f)
                     continue
                 ''' Rewrite cells having the same text (may relate to different
-                    subjects of the same source) (should we do that?).
+                    subjects of the same dictionary). Cells of different
+                    dictionaries are not affected since Portion is executed for
+                    a single dictionary.
                 '''
-                self.json[wform]['cells'][cell.text] = Cell(cell).run()    
+                self.json[wform][cell.text] = Cell(cell).run()
         ms.STOP = False
     
     def _debug_json(self):
-        # Debug JSON structure of the current portion
-        f = '[MClient] converters.dsl.mdic.Portion._debug_json'
-        if not self.Success:
-            rep.cancel(f)
-            return
+        ''' Debug JSON structure of the current portion. Should work even when
+            self.Success == False.
+        '''
         file = Home('mclient').add_config('dics', 'debug-portion-json.txt')
         Write(file, True).write(self.code)
         Launch(file).launch_default()
@@ -124,9 +127,9 @@ class Portion:
             '''
             self.code = json.dumps(self.json, ensure_ascii=False, indent=4)
         except Exception as e:
+            self._debug_json()
             self.Success = False
             rep.third_party(f, e)
-        #self._debug_json()
     
     def _is_invalid_fragm(self, fragm):
         if not fragm:
@@ -195,6 +198,9 @@ class Portion:
         INDEX[abbr][self.wforms[i]].append({'pos': pos, 'len': length})
     
     def _compress(self, data):
+        ''' Without compression, the resulting body is ~7.3 times larger than
+            the original DSL source.
+        '''
         f = '[MClient] converters.dsl.mdic.Portion._compress'
         try:
             return zstd.compress(data)
@@ -203,9 +209,6 @@ class Portion:
             rep.third_party(f, e)
     
     def set_body(self):
-        ''' Without compression, the resulting body is ~7.3 times larger than
-            the original DSL source.
-        '''
         f = '[MClient] converters.dsl.mdic.Portion.set_body'
         if not self.Success:
             rep.cancel(f)
@@ -264,10 +267,22 @@ class Portion:
         article[0] = '[wform]' + article[0] + '[/wform]'
         return '\n'.join(article)
     
+    def set_sources(self):
+        # This can be done directly in Cell but it should be shared
+        f = '[MClient] converters.dsl.mdic.Portion.set_sources'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        for wform in self.json:
+            for cell_text in self.json[wform]:
+                self.json[wform][cell_text]['source'] = 'MClient (.mdic)'
+                self.json[wform][cell_text]['dic'] = self.dic_name
+    
     def run(self):
         self.add_wforms()
         self.set_cells()
         self.set_json()
+        self.set_sources()
         self.dump_json()
         self.set_wforms()
         self.set_fragms()
@@ -320,6 +335,8 @@ class Cell:
         self.json['speechpr'] = self.cell.speechpr
         self.json['code'] = self.cell.code
         self.json['speech'] = self.cell.speech
+        self.json['source'] = self.cell.source
+        self.json['dic'] = self.cell.dic
         self.json['subj'] = self.cell.subj
         self.json['transc'] = self.cell.transc
         self.json['url'] = self.cell.url
