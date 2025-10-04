@@ -168,6 +168,7 @@ class Body:
             rep.third_party(f, e)
     
     def search(self, wform):
+        # Search is case-insensitive for MDIC
         f = '[MClient] plugins.mdic.get.Body.search'
         if not self.Success:
             rep.cancel(f)
