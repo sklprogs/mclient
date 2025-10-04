@@ -32,7 +32,7 @@ INDEX = {}
 
 class Portion:
     
-    def __init__(self, articles, dic_name, pos=0):
+    def __init__(self, articles, dicname, pos=0):
         self.json = {}
         self.code = ''
         self.body = []
@@ -42,7 +42,7 @@ class Portion:
             so we do not force non-empty sources here.
         '''
         self.Success = self.articles = articles
-        self.dic_name = dic_name
+        self.dicname = dicname
         self.pos = pos
    
     def set_wforms(self):
@@ -276,7 +276,7 @@ class Portion:
         for wform in self.json:
             for cell_text in self.json[wform]:
                 self.json[wform][cell_text]['source'] = 'MClient (.mdic)'
-                self.json[wform][cell_text]['dic'] = self.dic_name
+                self.json[wform][cell_text]['dic'] = self.dicname
     
     def run(self):
         self.add_wforms()
@@ -394,7 +394,7 @@ class Runner:
                 PROGRESS.set_info(mes, 69)
                 PROGRESS.update()
                 count += len(articles)
-                self.Success, pos = Portion(articles, idic.fname, pos).run()
+                self.Success, pos = Portion(articles, idic.dicname, pos).run()
                 if not self.Success:
                     break
             PROGRESS.inc()
