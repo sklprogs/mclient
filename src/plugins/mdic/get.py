@@ -3,6 +3,7 @@
 
 import os
 import mmap
+import zstd
 
 from skl_shared.localize import _
 from skl_shared.message.controller import rep, Message
@@ -151,8 +152,20 @@ class Body:
         pos = Input(f, pos).get_integer()
         length = Input(f, length).get_integer()
         self.imap.seek(pos)
-        text = self.imap.read(length)
-        return text.decode(errors='ignore')
+        return self.imap.read(length)
+    
+    def _decompress(self, data):
+        f = '[MClient] plugins.mdic.get.Body._decompress'
+        # If this happens, .mdic is malformed
+        if not data:
+            self.Success = False
+            rep.empty(f)
+            return
+        try:
+            return zstd.decompress(data)
+        except Exception as e:
+            self.Success = False
+            rep.third_party(f, e)
     
     def search(self, wform):
         f = '[MClient] plugins.mdic.get.Body.search'
@@ -169,17 +182,23 @@ class Body:
         iindex.run()
         self.Success = iindex.Success
         if not self.Success:
+            rep.cancel(f)
             return
         if not iindex.length:
-            rep.lazy(f)
+            self.Success = False
+            rep.empty(f)
             return
         matches = []
         for i in range(len(iindex.pos)):
-            fragm = self._get(iindex.pos[i], iindex.length[i])
-            # If this happens, .mdic is malformed
-            if not fragm:
-                rep.empty(f)
-                continue
+            bytes_ = self._get(iindex.pos[i], iindex.length[i])
+            bytes_ = self._decompress(bytes_)
+            ''' We do not allow empty or malformed fragments because they can
+                be caused by a failing storage.
+            '''
+            if not self.Success:
+                rep.cancel(f)
+                return
+            fragm = bytes_.decode(errors='ignore')
             # Create valid JSON structure
             fragm = '{' + fragm + '}'
             matches.append(fragm)
