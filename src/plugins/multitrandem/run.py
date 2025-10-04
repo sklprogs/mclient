@@ -147,10 +147,6 @@ class Plugin:
         #TODO: elaborate
         return(_('Any'), _('English'), _('Russian'))
     
-    def is_combined(self):
-        # Whether or not the plugin is actually a wrapper over other plugins
-        return False
-    
     def count_valid(self):
         return gt.com.count_valid()
     
