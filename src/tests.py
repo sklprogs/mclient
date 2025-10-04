@@ -399,10 +399,14 @@ class Get:
     
     def run_mdic(self):
         from plugins.mdic.get import ALL_DICS
-        #search = 'attack'
-        #search = "cabernet d'anjou"
-        search = 'abaft the beam'
-        return ALL_DICS.search(search)
+        # Search is case-insensitive for MDIC
+        search = 'attack'
+        result = ALL_DICS.search(search)
+        if result:
+            # Useful for debugging only
+            return '\n\n'.join(result)
+        else:
+            return ''
     
     def decode_indexes(self, indexes):
         from plugins.fora.get import Index
