@@ -85,10 +85,6 @@ class Plugin:
     def get_lang2(self):
         return pr.LANG2
     
-    def is_combined(self):
-        # Whether or not the plugin is actually a wrapper over other plugins
-        return False
-    
     def fix_raw_htm(self, code):
         return gt.com.fix_raw_htm(code)
     
