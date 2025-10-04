@@ -211,15 +211,19 @@ class Portion:
             rep.cancel(f)
             return
         for i in range(len(self.fragms)):
-            bytes_ = bytes(self.fragms[i], 'utf-8')
+            fragm = self.fragms[i].lstrip('{')
+            fragm = fragm.lstrip(',')
+            # .rstrip('}') is not needed
+            fragm = fragm.rstrip(',')
+            bytes_ = bytes(fragm, 'utf-8')
             bytes_ = self._compress(bytes_)
             if not self.Success:
                 rep.cancel(f)
                 return
             # This is significantly faster than doing += for string of bytes
             self.body.append(bytes_)
-            # +1/-1 to get rid of starting/ending commas or curly braces
-            self._add_index(i, self.pos+1, len(bytes_)-1)
+            # Changing index here causes decompression error
+            self._add_index(i, self.pos, len(bytes_))
             self.pos += len(bytes_)
         self.body = b''.join(self.body)
     
