@@ -173,15 +173,18 @@ class Body:
         if not iindex.length:
             rep.lazy(f)
             return
-        text = []
+        matches = []
         for i in range(len(iindex.pos)):
-            text.append(self._get(iindex.pos[i], iindex.length[i]))
-        text = '\n'.join(text)
-        if text:
+            fragm = self._get(iindex.pos[i], iindex.length[i])
+            # If this happens, .mdic is malformed
+            if not fragm:
+                rep.empty(f)
+                continue
             # Create valid JSON structure
-            text = '{' + text + '}'
+            fragm = '{' + fragm + '}'
+            matches.append(fragm)
         timer.end()
-        return text
+        return matches
     
     def close(self):
         f = '[MClient] plugins.mdic.get.Body.close'
