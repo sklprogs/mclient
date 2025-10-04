@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+from skl_shared.localize import _
+
+
 class Tag:
     
     def __init__(self):
