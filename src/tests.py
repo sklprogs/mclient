@@ -647,6 +647,12 @@ class Plugin:
         iplug = sr.Plugin(Debug=DEBUG)
         iplug.request(search=search)
     
+    def run_mdic(self):
+        import plugins.mdic.run as md
+        iplugin = md.Plugin()
+        iplugin.request(SEARCH)
+        return iplugin.get_text()
+    
     def run_dsl(self):
         f = '[MClient] tests.Plugin.run_dsl'
         import plugins.dsl.get
@@ -1186,8 +1192,6 @@ if __name__ == '__main__':
         e.g. com.run_welcome, will cause an infinite loop.
     '''
     #mes = com.get_all_subjects()
-    #mes = Plugin().run_dsl()
-    #mes = Tags().run_dsl()
     #mes = Get().run_multitrandem()
     #mes = Get().run_stardict()
     #mes = Get().run_dsl()
@@ -1201,7 +1205,7 @@ if __name__ == '__main__':
     #mes = Tags().run_fora_dsl()
     #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
-    mes = Elems().run_mdic()
+    #mes = Elems().run_mdic()
     #mes = Elems().run_stardict()
     #mes = Elems().run_fora_stardictx()
     #mes = Elems().run_fora_dsl()
@@ -1215,6 +1219,8 @@ if __name__ == '__main__':
     #mes = Wrap().run_multitrancom()
     #mes = Elems().run_multitrandem()
     #mes = Prioritize().run_multitrancom()
+    #mes = Plugin().run_dsl()
+    mes = Plugin().run_mdic()
     shDEBUG.reset(f, mes)
     shDEBUG.show()
     # This MUST be on a separate line, the widget will not be shown otherwise
