@@ -14,6 +14,7 @@ import plugins.multitrancom.run as mcrun
 import plugins.multitrandem.run as mbrun
 import plugins.dsl.run as lgrun
 import plugins.fora.run as forun
+import plugins.mdic.run as mdrun
 
 
 class Plugins:
@@ -24,6 +25,7 @@ class Plugins:
         self.mcplugin = None
         self.sdplugin = None
         self.frplugin = None
+        self.mdplugin = None
         self.source = CONFIG.new['source']
         self.Debug = Debug
         self.maxrows = maxrows
@@ -96,6 +98,7 @@ class Plugins:
         self.sdplugin.quit()
         self.lgplugin.quit()
         self.frplugin.quit()
+        self.mdplugin.quit()
     
     def get_lang1(self):
         f = '[MClient] manager.Plugins.get_lang1'
@@ -179,10 +182,10 @@ class Plugins:
         return self.plugin.suggest(search)
     
     def get_sources(self):
-        return (_('Multitran'), _('Stardict'), 'Lingvo (DSL)', _('Local MT'), 'Fora')
+        return (_('Multitran'), _('Stardict'), 'Lingvo (.dsl)', _('Local MT'), 'Fora', 'MClient (.mdic)')
     
     def get_offline_sources(self):
-        return (_('Stardict'), 'Lingvo (DSL)', _('Local MT'), 'Fora')
+        return (_('Stardict'), 'Lingvo (.dsl)', _('Local MT'), 'Fora', 'MClient (.mdic)')
     
     def get_online_sources(self):
         ''' This is used by lg.Welcome to check the availability of online
@@ -215,6 +218,8 @@ class Plugins:
                                     ,maxrows = self.maxrows)
         self.frplugin = forun.Plugin(Debug = self.Debug
                                     ,maxrows = self.maxrows)
+        self.mdplugin = mdrun.Plugin(Debug = self.Debug
+                                    ,maxrows = self.maxrows)
     
     def set(self, source):
         f = '[MClient] manager.Plugins.set'
@@ -226,12 +231,14 @@ class Plugins:
             self.plugin = self.sdplugin
         elif source in (_('Multitran'), 'multitran.com'):
             self.plugin = self.mcplugin
-        elif source == 'Lingvo (DSL)':
+        elif source == 'Lingvo (.dsl)':
             self.plugin = self.lgplugin
         elif source == _('Local MT'):
             self.plugin = self.mbplugin
         elif source == 'Fora':
             self.plugin = self.frplugin
+        elif source == 'MClient (.mdic)':
+            self.plugin = self.mdplugin
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(self.source, self.get_sources())
