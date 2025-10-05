@@ -151,7 +151,7 @@ class Plugin:
         cells = Elems(str_lst).run()
         if not cells:
             rep.empty(f)
-            return
+            return []
         texts = [cell.text for cell in cells]
         self.htm = self.text = List(texts).space_items()
         #TODO: Implement or drop
