@@ -255,6 +255,14 @@ class Elems:
         ielems.run()
         return ielems.debug()
     
+    def run_mdic(self):
+        import plugins.mdic.get as gt
+        import plugins.mdic.elems as el
+        result = gt.ALL_DICS.search(SEARCH)
+        ielems = el.Elems(result)
+        ielems.run()
+        return ielems.debug()
+    
     def run_dsl(self):
         import plugins.dsl.cleanup as cu
         import plugins.dsl.get as gt
@@ -269,7 +277,7 @@ class Elems:
             blocks += tg.Tags(code).run()
         htm = '\n'.join(htm)
         ielems = el.Elems(blocks)
-        blocks = ielems.run()
+        ielems.run()
         return ielems.debug()
     
     def run_multitrancom(self):
@@ -400,7 +408,9 @@ class Get:
     def run_mdic(self):
         from plugins.mdic.get import ALL_DICS
         # Search is case-insensitive for MDIC
-        search = 'attack'
+        search = 'account'
+        #search = 'attack'
+        #search = 'wine'
         result = ALL_DICS.search(search)
         if result:
             # Useful for debugging only
@@ -1183,7 +1193,7 @@ if __name__ == '__main__':
     #mes = Get().run_dsl()
     #mes = Get().run_fora()
     #mes = Get().run_fora_many_matches()
-    mes = Get().run_mdic()
+    #mes = Get().run_mdic()
     #mes = CleanUp().run_dsl()
     #mes = Tags().run_stardict()
     #mes = Tags().run_fora_stardictx()
@@ -1191,6 +1201,7 @@ if __name__ == '__main__':
     #mes = Tags().run_fora_dsl()
     #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
+    mes = Elems().run_mdic()
     #mes = Elems().run_stardict()
     #mes = Elems().run_fora_stardictx()
     #mes = Elems().run_fora_dsl()
