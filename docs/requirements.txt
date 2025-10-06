@@ -5,3 +5,4 @@ lxml
 termcolor
 w3lib
 xlib
+zstd
