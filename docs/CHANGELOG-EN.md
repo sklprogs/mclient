@@ -1,6 +1,9 @@
 (in development)
+* Improve support of online dictionaries
 * Support Fora dictionaries
+* Implement MClient (.mdic) dictionary format
 * Show number of dictionaries that could not be loaded in main window
+* Add modules for converting .dsl to .xml (ODICT ODXML) and .dsl to .mdic
 
 ## 7.1.7
 * Fix loading .dsl and Stardict dictionaries
