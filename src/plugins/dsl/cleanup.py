@@ -4,6 +4,8 @@
 from skl_shared.localize import _
 from skl_shared.message.controller import rep, Message
 
+FORA = False
+
 
 class CleanUp:
     
@@ -15,6 +17,10 @@ class CleanUp:
             self.text = self.text.replace('  ', ' ')
     
     def tag_wforms(self):
+        f = '[MClient] plugins.dsl.cleanup.CleanUp.tag_wforms'
+        if not FORA:
+            rep.lazy(f)
+            return
         self.text = self.text.splitlines()
         for i in range(len(self.text)):
             parts = self.text[i].split('[/dic]')
@@ -26,6 +32,10 @@ class CleanUp:
         self.text = '\n'.join(self.text)
     
     def convert_dic_names(self):
+        f = '[MClient] plugins.dsl.cleanup.CleanUp.convert_dic_names'
+        if FORA:
+            rep.lazy(f)
+            return
         # Process cases like '#NAME\t"DicTitle (En-Ru)"'
         self.text = self.text.splitlines()
         for i in range(len(self.text)):
@@ -44,6 +54,18 @@ class CleanUp:
         self.text = self.text.replace('<', '[')
         self.text = self.text.replace('>', ']')
     
+    def add_wforms(self):
+        f = '[MClient] plugins.dsl.cleanup.CleanUp.add_wforms'
+        if FORA:
+            rep.lazy(f)
+            return
+        if self.text.startswith('#'):
+            rep.lazy(f)
+            return
+        self.text = self.text.splitlines()
+        self.text[0] = '[wform]' + self.text[0] + '[/wform]'
+        self.text = '\n'.join(self.text)
+    
     def run(self):
         f = '[MClient] plugins.dsl.cleanup.CleanUp.run'
         if not self.text:
@@ -52,5 +74,6 @@ class CleanUp:
         self.delete_trash()
         self.convert_tags()
         self.tag_wforms()
+        self.add_wforms()
         self.convert_dic_names()
         return self.text
