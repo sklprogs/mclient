@@ -94,7 +94,7 @@ class AnalyzeTag:
         return self.tag.name == 'dic'
     
     def _is_comment(self):
-        return self.tag.name in ('c', 'com', 'ex', 'i', 's')
+        return self.tag.name in ('c', 'com', 'p', 'ex', 'i', 's')
     
     def _is_phrase(self):
         return self.tag.name == 'ref'
