@@ -167,6 +167,7 @@ class Plugin:
         return plugins.fora.stardictm.elems.Elems(blocks).run()
     
     def _request_dsl(self, dic):
+        plugins.dsl.cleanup.FORA = True
         text = plugins.dsl.cleanup.CleanUp(dic.article).run()
         blocks = plugins.dsl.tags.Tags(text).run()
         return plugins.dsl.elems.Elems(blocks).run()
