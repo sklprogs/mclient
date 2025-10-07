@@ -18,9 +18,9 @@ from skl_shared.list import List
 from skl_shared.text_file import Write
 from skl_shared.launch import Launch
 
-from plugins.dsl.cleanup import CleanUp
+import plugins.dsl.cleanup as cu
 from plugins.dsl.get import ALL_DICS
-from plugins.dsl.tags import Tags
+import plugins.dsl.tags as tg
 from plugins.dsl.elems import Elems
 
 BODY_FOLDER = Home('mclient').add_config('dics', 'MDIC')
@@ -60,9 +60,11 @@ class Portion:
             return
         # We do not want millions of debug messages
         ms.STOP = True
+        cu.FORA = False
+        tg.FORA = False
         for article in self.articles:
-            code = CleanUp(article).run()
-            blocks = Tags(code).run()
+            code = cu.CleanUp(article).run()
+            blocks = tg.Tags(code).run()
             if not blocks:
                 rep.empty(f)
                 continue
@@ -252,21 +254,6 @@ class Portion:
         self.wforms = []
         self.articles = []
     
-    def add_wforms(self):
-        #TODO: Do this somewhere else
-        for i in range(len(self.articles)):
-            self.articles[i] = self._add_wform(self.articles[i])
-    
-    def _add_wform(self, article):
-        f = '[MClient] converters.dsl.mdic.Portion._add_wform'
-        if not article:
-            rep.empty(f)
-            return ''
-        article = article.splitlines()
-        article[0] = article[0].strip()
-        article[0] = '[wform]' + article[0] + '[/wform]'
-        return '\n'.join(article)
-    
     def set_sources(self):
         # This can be done directly in Cell but it should be shared
         f = '[MClient] converters.dsl.mdic.Portion.set_sources'
@@ -279,7 +266,6 @@ class Portion:
                 self.json[wform][cell_text]['dic'] = self.dicname
     
     def run(self):
-        self.add_wforms()
         self.set_cells()
         self.set_json()
         self.set_sources()
