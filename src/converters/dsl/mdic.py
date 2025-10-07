@@ -61,7 +61,6 @@ class Portion:
         # We do not want millions of debug messages
         ms.STOP = True
         cu.FORA = False
-        tg.FORA = False
         for article in self.articles:
             code = cu.CleanUp(article).run()
             blocks = tg.Tags(code).run()
