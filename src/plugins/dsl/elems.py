@@ -302,15 +302,18 @@ class Elems:
         ''' Unlike other sources, we can move phrases directly to the bottom
             without taking into account blocks with the same cellno.
         '''
-        phrases = [block for block in self.blocks if block.type == 'phrase']
+        phrases = [copy.deepcopy(block) for block in self.blocks \
+                  if block.type == 'phrase']
         if not phrases:
             rep.lazy(f)
             return
-        others = [block for block in self.blocks if block.type != 'phrase']
+        for block in self.blocks:
+            if block.type == 'phrase':
+                block.type = 'comment'
         phsubj = Block()
         phsubj.text = _('{} phrases').format(len(phrases))
         phsubj.type = 'phsubj'
-        self.blocks = others + [phsubj] + phrases
+        self.blocks += [phsubj] + phrases
     
     def run(self):
         f = '[MClient] plugins.dsl.elems.Elems.run'
