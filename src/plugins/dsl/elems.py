@@ -13,7 +13,7 @@ from skl_shared.table import Table
 from instance import Block, Cell
 from subjects import SUBJECTS
 
-SPEECH_ABBR = ('гл.', 'нареч.', 'нар.', 'прил.', 'сокр.', 'сущ.', 'n', 'v')
+SPEECH_ABBR = ('гл.', 'глаг.', 'нареч.', 'нар.', 'прил.', 'сокр.', 'сущ.', 'n', 'v')
 
 
 class Elems:
