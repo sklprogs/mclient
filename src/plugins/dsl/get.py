@@ -46,9 +46,6 @@ class Get:
     
     def debug(self):
         f = '[MClient] plugins.dsl.get.Get.debug'
-        if not self.Debug:
-            rep.lazy(f)
-            return
         if not self.Success:
             rep.cancel(f)
             return
