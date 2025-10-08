@@ -326,7 +326,7 @@ class Elems:
             i += 1
         rep.matches(f, count)
     
-    def delete_slash(self):
+    def delete_backslash(self):
         for block in self.blocks:
             block.text = block.text.replace(r'\[', r'[').replace(r'\]', r']')
     
@@ -338,7 +338,7 @@ class Elems:
         self.fix_transc()
         self.delete_trash()
         self.delete_numeration()
-        self.delete_slash()
+        self.delete_backslash()
         self.set_speech()
         self.set_subjects()
         self.move_phrases()
