@@ -326,6 +326,10 @@ class Elems:
             i += 1
         rep.matches(f, count)
     
+    def delete_slash(self):
+        for block in self.blocks:
+            block.text = block.text.replace(r'\[', r'[').replace(r'\]', r']')
+    
     def run(self):
         f = '[MClient] plugins.dsl.elems.Elems.run'
         if not self.Success:
@@ -334,6 +338,7 @@ class Elems:
         self.fix_transc()
         self.delete_trash()
         self.delete_numeration()
+        self.delete_slash()
         self.set_speech()
         self.set_subjects()
         self.move_phrases()
