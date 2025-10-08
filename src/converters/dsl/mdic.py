@@ -384,6 +384,7 @@ class Runner:
                     break
             PROGRESS.inc()
             PROGRESS.update()
+            idic.free_memory()
         PROGRESS.close()
     
     def run(self):
