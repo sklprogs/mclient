@@ -301,6 +301,7 @@ class Elems:
         if not phrases:
             rep.lazy(f)
             return
+        self.separate_refs()
         for block in self.blocks:
             if block.type == 'phrase':
                 block.type = 'comment'
@@ -308,6 +309,22 @@ class Elems:
         phsubj.text = _('{} phrases').format(len(phrases))
         phsubj.type = 'phsubj'
         self.blocks += [phsubj] + phrases
+    
+    def separate_refs(self):
+        f = '[MClient] plugins.dsl.elems.Elems.separate_refs'
+        count = 0
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].type == 'phrase' \
+            and self.blocks[i].type == 'phrase':
+                text = self.blocks[i-1].text.strip()
+                if not text or text[-1] in punc_array:
+                    i += 1
+                    continue
+                count += 1
+                self.blocks[i-1].text = self.blocks[i-1].text + ', '
+            i += 1
+        rep.matches(f, count)
     
     def run(self):
         f = '[MClient] plugins.dsl.elems.Elems.run'
