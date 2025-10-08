@@ -302,6 +302,12 @@ class DSL:
             return
         self.lst = text.splitlines()
     
+    def free_memory(self):
+        self.lst = []
+        self.poses = []
+        self.index_ = []
+        self.articles = []
+    
     def set_values(self):
         self.file = ''
         self.fname = ''
