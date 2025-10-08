@@ -11,17 +11,9 @@ from skl_shared.logic import Text, punc_array
 from skl_shared.table import Table
 
 from instance import Block, Cell
+from subjects import SUBJECTS
 
 SPEECH_ABBR = ('гл.', 'нареч.', 'нар.', 'прил.', 'сокр.', 'сущ.', 'n', 'v')
-SUBJ_ABBR = ('SAP.тех.', 'SAP.фин.', 'авиа.', 'автом.', 'амер.', 'арх.'
-            ,'банк.', 'бизн.', 'бирж.', 'брит.', 'бур.', 'бухг.', 'валют.'
-            ,'воен.', 'вчт.', 'выч.', 'геогр.', 'грам.', 'дор.', 'зоол.'
-            ,'инвест.', 'ист.', 'карт.', 'комп.', 'контр.кач.', 'лат.'
-            ,'Майкрософт.', 'Макаров.', 'марк.', 'маркет.', 'матем.', 'мор.'
-            ,'нефт.', 'нефт.газ.', 'обр.', 'общ.', 'патент.', 'полигр.'
-            ,'разг.', 'рекл.', 'рел.', 'сл.', 'стат.', 'стр.', 'табу.', 'тех.'
-            ,'торг.', 'уст.', 'хир.', 'эк.', 'эк. обр.', 'экон.', 'эл.', 'юр.'
-            ,'юр.Н.П.')
 
 
 class Elems:
@@ -266,10 +258,12 @@ class Elems:
         f = '[MClient] plugins.dsl.elems.Elems.set_subjects'
         count = 0
         for block in self.blocks:
-            if block.text in SUBJ_ABBR:
+            subjf = SUBJECTS.expand(block.text)
+            if subjf != block.text:
                 count += 1
                 block.type = 'subj'
                 block.subj = block.text
+                block.subjf = subjf
                 block.Fixed = True
         rep.matches(f, count)
 
