@@ -70,6 +70,22 @@ class Get:
         if not self.Success:
             rep.cancel(f)
             return
+        PROGRESS.set_title(_('Dictionary Loader'))
+        PROGRESS.set_value(0)
+        PROGRESS.set_max(len(ALL_DICS.dics))
+        PROGRESS.show()
+        for i in range(len(ALL_DICS.dics)):
+            mes = _('Load DSL dictionaries ({}/{})')
+            mes = mes.format(i + 1, len(ALL_DICS.dics))
+            PROGRESS.set_info(mes)
+            PROGRESS.update()
+            ALL_DICS.dics[i].run()
+            self.Success = ALL_DICS.dics[i].Success
+            if not self.Success:
+                rep.cancel(f)
+                return
+            PROGRESS.inc()
+        PROGRESS.close()
         dics = [idic for idic in ALL_DICS.dics \
                if idic.lang1 == LANG1 and idic.lang2 == LANG2]
         dicnames = [idic.dicname for idic in dics]
@@ -98,6 +114,9 @@ class DSL:
     
     def run(self):
         f = '[MClient] plugins.dsl.get.DSL.run'
+        if self.lst:
+            rep.lazy(f)
+            return
         timer = Timer(f)
         timer.start()
         self.load()
@@ -372,7 +391,7 @@ class AllDics:
         self.langs2 = []
         self.path = Home('mclient').add_config('dics')
         self.Success = Directory(self.path).Success
-        self.load()
+        self.locate()
         self.set_langs()
     
     def get_valid(self):
@@ -521,35 +540,6 @@ class AllDics:
         mes = mes.format(len(self.dics))
         Message(f, mes).show_info()
         return self.dics
-    
-    def load(self):
-        f = '[MClient] plugins.dsl.get.AllDics.load'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if not self.locate():
-            rep.lazy(f)
-            return
-        PROGRESS.set_title(_('Dictionary Loader'))
-        PROGRESS.show()
-        timer = Timer(f)
-        timer.start()
-        PROGRESS.set_value(0)
-        PROGRESS.set_max(len(self.dics))
-        for i in range(len(self.dics)):
-            PROGRESS.update()
-            text = _('Load DSL dictionaries ({}/{})')
-            text = text.format(i + 1, len(self.dics))
-            PROGRESS.set_info(text)
-            self.dics[i].run()
-            PROGRESS.inc()
-        timer.end()
-        PROGRESS.close()
-        total_no = len(self.dics)
-        self.dics = [dic for dic in self.dics if dic.Success]
-        mes = _('Dictionaries loaded: {}/{}')
-        mes = mes.format(len(self.dics), total_no)
-        Message(f, mes).show_info()
 
 
 ALL_DICS = AllDics()
