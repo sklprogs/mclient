@@ -403,7 +403,7 @@ class Runner:
         sub = _('The operation has taken {}.').format(interval)
         mes.append(sub)
         mes = '\n'.join(mes)
-        Message(f, mes).show_info()
+        Message(f, mes, True).show_info()
     
     def run(self):
         f = '[MClient] converters.dsl.mdic.Runner.run'
