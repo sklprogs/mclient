@@ -346,6 +346,7 @@ class Runner:
     def __init__(self):
         self.Success = CREATE_FOLDER and ALL_DICS.Success
         self.feed_limit = 1000
+        self.count = 0
     
     def loop_sources(self):
         f = '[MClient] converters.dsl.mdic.Runner.loop_sources'
@@ -365,7 +366,6 @@ class Runner:
         PROGRESS.set_title(_('Process articles'))
         PROGRESS.show()
         pos = 0
-        count = 0
         for idic in ALL_DICS.dics:
             idic.run()
             idic.set_articles()
@@ -374,10 +374,10 @@ class Runner:
                 return
             for articles in List(idic.articles).split_by_len(self.feed_limit):
                 mes = _('Dictionary: {}\nArticles processed in total: {}')
-                mes = mes.format(idic.fname, count)
+                mes = mes.format(idic.fname, self.count)
                 PROGRESS.set_info(mes, 69)
                 PROGRESS.update()
-                count += len(articles)
+                self.count += len(articles)
                 self.Success, pos = Portion(articles, idic.dicname, pos).run()
                 if not self.Success:
                     return
@@ -386,20 +386,32 @@ class Runner:
             idic.free_memory()
         PROGRESS.close()
     
+    def report(self, interval):
+        f = '[MClient] converters.dsl.mdic.Runner.report'
+        interval = shcom.get_human_time(interval)
+        if not self.Success:
+            mes = _('The operation has failed! Time wasted: {}')
+            mes = mes.format(interval)
+            Message(f, mes, True).show_error()
+            return
+        len_ = shcom.set_figure_commas(len(ALL_DICS.dics))
+        count = shcom.set_figure_commas(self.count)
+        mes = []
+        sub = _('Processed in total: dictionaries: {}; articles: {}')
+        sub = sub.format(len_, count)
+        mes.append(sub)
+        sub = _('The operation has taken {}.').format(interval)
+        mes.append(sub)
+        mes = '\n'.join(mes)
+        Message(f, mes).show_info()
+    
     def run(self):
         f = '[MClient] converters.dsl.mdic.Runner.run'
         timer = Timer(f)
         timer.start()
         self.loop_sources()
         self.Success = self.Success and Index().run()
-        sub = shcom.get_human_time(timer.end())
-        if self.Success:
-            mes = _('The operation has taken {}.')
-            mes = mes.format(sub)
-            Message(f, mes, True).show_info()
-        else:
-            mes = _('The operation has failed! Time wasted: {}').format(sub)
-            Message(f, mes, True).show_error()
+        self.report(timer.end())
 
 
 
