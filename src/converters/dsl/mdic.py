@@ -367,12 +367,11 @@ class Runner:
         pos = 0
         count = 0
         for idic in ALL_DICS.dics:
-            if not self.Success:
-                break
+            idic.run()
             idic.set_articles()
             self.Success = idic.Success
             if not self.Success:
-                break
+                return
             for articles in List(idic.articles).split_by_len(self.feed_limit):
                 mes = _('Dictionary: {}\nArticles processed in total: {}')
                 mes = mes.format(idic.fname, count)
@@ -381,7 +380,7 @@ class Runner:
                 count += len(articles)
                 self.Success, pos = Portion(articles, idic.dicname, pos).run()
                 if not self.Success:
-                    break
+                    return
             PROGRESS.inc()
             PROGRESS.update()
             idic.free_memory()
