@@ -165,15 +165,12 @@ class Elems:
             rep.wrong_input(f)
             return []
         no = self.cells[0][-1].no + 1
-        rowno = self.cells[0][-1].rowno + 1
         cellno = self.cells[0][-1].blocks[-1].cellno + 1
         i = 1
         while i < len(self.cells):
             for cell in self.cells[i]:
                 cell.no = no
-                cell.rowno = rowno
                 no += 1
-                rowno += 1
                 for block in cell.blocks:
                     block.cellno = cellno
                     cellno += 1
