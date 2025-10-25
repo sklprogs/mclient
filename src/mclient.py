@@ -18,7 +18,7 @@ import logic as lg
 from logic import REQUEST
 import gui as gi
 import format as fm
-import cells as cl
+from view import Expand, Omit, View, Prioritize, Wrap
 from prior_block.controller import BLOCK, PRIOR
 from settings.controller import SETTINGS, SAVE_SETTINGS
 from suggest.controller import SUGGEST
@@ -930,18 +930,18 @@ class App:
             
         self.solve_screen()
         
-        cells = cl.Expand(cells).run()
-        iomit = cl.Omit(cells)
+        cells = Expand(cells).run()
+        iomit = Omit(cells)
         cells = iomit.run()
-        cells = cl.Prioritize(cells).run()
+        cells = Prioritize(cells).run()
         
         COL_WIDTH.reset()
         COL_WIDTH.run()
         
         self.update_columns()
         
-        cells = cl.View(cells).run()
-        iwrap = cl.Wrap(cells)
+        cells = View(cells).run()
+        iwrap = Wrap(cells)
         iwrap.run()
         
         TABLE.reset(iwrap.plain, iwrap.code)
