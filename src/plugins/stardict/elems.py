@@ -9,7 +9,7 @@ from skl_shared.table import Table
 from skl_shared.list import List
 from skl_shared.logic import Text, punc_array, ru_alphabet, lat_alphabet
 
-from instance import Block, Cell
+from instance import Block
 
 SPEECH_ABBR = ('гл.', 'нареч.', 'нар.', 'прил.', 'сокр.', 'сущ.')
 SUBJ_ABBR = ('амер.', 'вчт.', 'геогр.', 'карт.', 'мор.', 'разг.', 'уст.', 'хир.', 'эл.')
@@ -123,99 +123,27 @@ class Elems:
 
     def __init__(self, blocks):
         f = '[MClient] plugins.stardict.elems.Elems.__init__'
-        self.set_values()
+        self.phsubj_name = _('Phrases')
+        self.art_subj = {}
+        self.Parallel = False
+        self.Separate = False
         self.blocks = blocks
         if self.blocks:
             self.Success = True
         else:
             self.Success = False
             rep.empty(f)
-
-    def set_values(self):
-        self.phsubj_name = _('Phrases')
-        self.cells = []
-        self.art_subj = {}
-        self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
-        self.Parallel = False
-        self.Separate = False
     
     def _is_block_fixed(self, block):
         return block.type in ('subj', 'wform', 'speech', 'transc', 'phsubj')
-    
-    def _get_fixed_block(self, cell):
-        for block in cell.blocks:
-            if block.Fixed:
-                return block
     
     def set_fixed_blocks(self):
         for block in self.blocks:
             block.Fixed = self._is_block_fixed(block)
     
-    def set_fixed_cells(self):
-        for cell in self.cells:
-            cell.fixed_block = self._get_fixed_block(cell)
-    
     def expand_dic(self):
         #TODO (?): implement
         pass
-    
-    def set_cells(self):
-        f = '[MClient] plugins.stardict.elems.Elems.set_cells'
-        if not self.blocks:
-            rep.empty(f)
-            return
-        if len(self.blocks) < 2:
-            mes = f'{len(self.blocks)} >= 2'
-            rep.condition(f, mes)
-            return
-        cell = Cell()
-        cell.blocks.append(self.blocks[0])
-        i = 1
-        while i < len(self.blocks):
-            if self.blocks[i-1].cellno == self.blocks[i].cellno:
-                cell.blocks.append(self.blocks[i])
-            else:
-                if cell.blocks:
-                    self.cells.append(cell)
-                cell = Cell()
-                cell.blocks.append(self.blocks[i])
-            i += 1
-        if cell.blocks:
-            self.cells.append(cell)
-    
-    def _get_url(self, cell):
-        for block in cell.blocks:
-            if block.url:
-                return block.url
-        return ''
-    
-    def set_urls(self):
-        for cell in self.cells:
-            cell.url = self._get_url(cell)
-    
-    def set_text(self):
-        for cell in self.cells:
-            fragms = [block.text for block in cell.blocks]
-            cell.text = List(fragms).space_items().strip()
-            # 'phsubj' text may have multiple spaces for some reason
-            cell.text = Text(cell.text).delete_duplicate_spaces()
-    
-    def set_row_nos(self):
-        # Run this before deleting fixed types
-        f = '[MClient] plugins.stardict.elems.Elems.set_row_nos'
-        count = 0
-        if self.cells:
-            count += 1
-            self.cells[0].rowno = 0
-        rowno = 0
-        i = 1
-        while i < len(self.cells):
-            if not self.cells[i-1].fixed_block and self.cells[i].fixed_block:
-                count += 1
-                rowno += 1
-            self.cells[i].rowno = rowno
-            i += 1
-        rep.matches(f, count)
     
     def set_art_subj(self):
         f = '[MClient] plugins.stardict.elems.Elems.set_art_subj'
@@ -226,98 +154,6 @@ class Elems:
                 self.art_subj[block.subj] = block.subjf
                 self.art_subj[block.subjf] = block.subj
         rep.matches(f, count)
-    
-    def _get_last_subj(self):
-        for cell in self.cells[::-1]:
-            if cell.fixed_block and cell.fixed_block.type in ('subj', 'phsubj'):
-                return cell.text
-    
-    def _get_last_wform(self):
-        for cell in self.cells[::-1]:
-            if cell.fixed_block and cell.fixed_block.type == 'wform':
-                return cell.text
-    
-    def _get_last_speech(self):
-        for cell in self.cells[::-1]:
-            if cell.fixed_block and cell.fixed_block.type == 'speech':
-                return cell.text
-    
-    def _get_last_transc(self):
-        for cell in self.cells[::-1]:
-            if cell.fixed_block and cell.fixed_block.type == 'transc':
-                return cell.text
-    
-    def _get_prev_subj(self, i):
-        while i >= 0:
-            if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type in ('subj', 'phsubj'):
-                return self.cells[i].text
-            i -= 1
-        return ''
-    
-    def _get_prev_wform(self, i):
-        while i >= 0:
-            if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type == 'wform':
-                return self.cells[i].text
-            i -= 1
-        return ''
-    
-    def _get_prev_speech(self, i):
-        while i >= 0:
-            if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type == 'speech':
-                return self.cells[i].text
-            i -= 1
-        return ''
-    
-    def _get_prev_transc(self, i):
-        while i >= 0:
-            if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type == 'transc':
-                return self.cells[i].text
-            i -= 1
-        return ''
-    
-    def fill_fixed(self):
-        subj = self._get_last_subj()
-        wform = self._get_last_wform()
-        transc = self._get_last_transc()
-        speech = self._get_last_speech()
-        i = len(self.cells) - 1
-        while i >= 0:
-            if not self.cells[i].fixed_block:
-                subj = self._get_prev_subj(i)
-                wform = self._get_prev_wform(i)
-                speech = self._get_prev_speech(i)
-                transc = self._get_prev_transc(i)
-            self.cells[i].subj = subj
-            self.cells[i].wform = wform
-            self.cells[i].speech = speech
-            self.cells[i].transc = transc
-            i -= 1
-    
-    def _get_fixed_type(self, cell):
-        if cell.fixed_block:
-            return cell.fixed_block.type
-        else:
-            return 'invalid'
-    
-    def delete_fixed(self):
-        f = '[MClient] plugins.stardict.elems.Elems.delete_fixed'
-        count = 0
-        i = 0
-        while i < len(self.cells):
-            if self.cells[i].fixed_block:
-                count += 1
-                del self.cells[i]
-                i -= 1
-            i += 1
-        rep.matches(f, count)
-    
-    def renumber(self):
-        for i in range(len(self.cells)):
-            self.cells[i].no = i
     
     def set_speech(self):
         f = '[MClient] plugins.stardict.elems.Elems.set_speech'
@@ -351,25 +187,10 @@ class Elems:
         #self.set_phsubj_name()
         #self.set_phsubj()
         #self.blocks = Phrases(self.blocks).run()
-        self.set_cells()
-        self.set_urls()
-        self.set_text()
-        self.set_fixed_blocks()
-        self.set_fixed_cells()
-        self.set_row_nos()
-        self.set_art_subj()
-        self.fill_fixed()
-        self.delete_fixed()
-        self.renumber()
-        return self.cells
+        return self.blocks
     
-    def debug(self):
-        report = [self._debug_blocks(), self._debug_cells()]
-        report = [item for item in report if item]
-        return '\n\n'.join(report)
-    
-    def _debug_blocks(self, maxrow=30, maxrows=0):
-        f = '[MClient] plugins.stradict.elems.Elems._debug_blocks'
+    def debug(self, maxrow=30, maxrows=0):
+        f = '[MClient] plugins.stradict.elems.Elems.debug'
         headers = (_('CELL #'), _('TYPES'), _('TEXT'), 'SUBJ', 'SUBJF', 'URL')
         nos = []
         types = []
@@ -386,36 +207,6 @@ class Elems:
             urls.append(block.url)
         mes = Table(headers = headers
                    ,iterable = (nos, types, texts, subj, subjf, urls)
-                   ,maxrow = maxrow, maxrows = maxrows).run()
-        return f'{f}:\n{mes}'
-    
-    def _debug_cells(self, maxrow=30, maxrows=0):
-        f = '[MClient] plugins.stradict.elems.Elems._debug_cells'
-        headers = ('SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #'), _('CELL #')
-                  ,_('TYPES'), _('TEXT'), 'URL')
-        subj = []
-        wform = []
-        speech = []
-        transc = []
-        rownos = []
-        nos = []
-        types = []
-        texts = []
-        urls = []
-        for cell in self.cells:
-            subj.append(cell.subj)
-            wform.append(cell.wform)
-            speech.append(cell.speech)
-            transc.append(cell.transc)
-            rownos.append(cell.rowno)
-            nos.append(cell.no)
-            texts.append(f'"{cell.text}"')
-            cell_types = [block.type for block in cell.blocks]
-            types.append(', '.join(cell_types))
-            urls.append(cell.url)
-        mes = Table(headers = headers
-                   ,iterable = (subj, wform, speech, transc, rownos, nos, types
-                               ,texts, urls)
                    ,maxrow = maxrow, maxrows = maxrows).run()
         return f'{f}:\n{mes}'
 
