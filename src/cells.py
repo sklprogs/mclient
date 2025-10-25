@@ -1,761 +1,266 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import copy
+import re
 
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.list import List
 from skl_shared.table import Table
+from skl_shared.logic import Text
 
-from instance import Block, Cell
-from config import CONFIG
-from manager import PLUGINS
-from format import Block as fmBlock
-from logic import Speech
-from subjects import SUBJECTS
-from articles import ARTICLES
-from columns import COL_WIDTH, Types as ColTypes
+from instance import Cell
 
 
-class Expand:
+class Cells:
     
-    def __init__(self, cells):
-        ''' - Runs just after 'elems'. Fixed types are not restored yet at this
-              point.
-            - Run this class before blocking and prioritization since short and
-              full values can be sorted differently (especially this concerns
-              subjects, in which first letters of shortened and full texts may
-              differ).
-            - Creating a full clone of cells is necessary since blocks and
-              cells change their attributes. 'list' or 'copy.copy' is not
-              enough. Works with None.
-        '''
-        self.cells = copy.deepcopy(cells)
+    def __init__(self, blocks):
+        self.cells = []
+        self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
+        self.blocks = blocks
     
-    def expand_speeches(self):
-        # This takes ~0.0015s for 'set' on AMD E-300 (no IDE, no warnings)
-        f = '[MClient] cells.Expand.expand_speeches'
-        if CONFIG.new['ShortSpeech']:
-            rep.lazy(f)
-            return
-        speeches = PLUGINS.get_speeches()
-        if not speeches:
-            rep.lazy(f)
-            return
+    def _get_fixed_block(self, cell):
+        for block in cell.blocks:
+            if block.Fixed:
+                return block
+    
+    def set_fixed_cells(self):
         for cell in self.cells:
-            try:
-                cell.speech = speeches[cell.speech]
-            except KeyError:
-                mes = _('Wrong input data: "{}"!').format(cell.speech)
-                Message(f, mes, True).show_warning()
+            cell.fixed_block = self._get_fixed_block(cell)
     
-    def expand_subjects(self):
-        # This takes ~0.0086s for 'set' on AMD E-300
-        f = '[MClient] cells.Expand.expand_subjects'
-        if CONFIG.new['ShortSubjects']:
-            rep.lazy(f)
-            return
-        for cell in self.cells:
-            cell.subj = SUBJECTS.expand(cell.subj)
-    
-    def run(self):
-        self.expand_speeches()
-        self.expand_subjects()
-        return self.cells
-
-
-
-class Omit:
-    
-    def __init__(self, cells):
-        self.cells = cells
-        self.subj = []
-        self.omit_cells = []
-    
-    def set_subjects(self):
-        f = '[MClient] cells.Omit.set_subjects'
-        if not CONFIG.new['BlockSubjects']:
-            rep.lazy(f)
-            return
-        subjects = [cell.subj for cell in self.cells]
-        subjects = sorted(set(subjects))
-        for subject in subjects:
-            if SUBJECTS.is_blocked(subject):
-                self.subj.append(subject)
-        mes = '; '.join(self.subj)
-        Message(f, mes).show_debug()
-    
-    def omit_subjects(self):
-        f = '[MClient] cells.Omit.omit_subjects'
-        if not CONFIG.new['BlockSubjects']:
-            rep.lazy(f)
-            return
-        cells = []
-        for cell in self.cells:
-            if cell.subj in self.subj:
-                # Fixed types are not recreated yet
-                self.omit_cells.append(cell.text)
-            else:
-                cells.append(cell)
-        rep.matches(f, len(self.cells) - len(cells))
-        self.cells = cells
-        mes = _('Omitted cells: {}').format('; '.join(self.omit_cells))
-        Message(f, mes).show_debug()
-    
-    def omit_users(self):
-        f = '[MClient] cells.Omit.omit_users'
-        if CONFIG.new['ShowUserNames']:
-            rep.lazy(f)
-            return
-        count = 0
-        for cell in self.cells:
-            old_len = len(cell.blocks)
-            cell.blocks = [block for block in cell.blocks if block.type != 'user']
-            delta = old_len - len(cell.blocks)
-            if delta:
-                fragms = [block.text for block in cell.blocks]
-                cell.text = List(fragms).space_items().strip()
-            count += delta
-        rep.matches(f, count)
-    
-    def run(self):
-        self.set_subjects()
-        self.omit_subjects()
-        self.omit_users()
-        return self.cells
-
-
-
-class Prioritize:
-    
-    def __init__(self, cells):
-        self.speech = Speech().get_settings()
-        self.cells = cells
-    
-    def debug(self):
-        f = '[MClient] cells.Prioritize.debug'
-        subj = []
-        subjpr = []
-        text = []
-        nos = []
-        speech = []
-        speechpr = []
-        for cell in self.cells:
-            text.append(cell.text)
-            nos.append(cell.no)
-            subj.append(cell.subj)
-            subjpr.append(cell.subjpr)
-            speech.append(cell.speech)
-            speechpr.append(cell.speechpr)
-        headers = (_('#'), _('TEXT'), _('SUBJECT'), 'SUBJPR', _('SPEECH')
-                  ,'SPEECHPR')
-        iterable = [nos, text, subj, subjpr, speech, speechpr]
-        mes = Table(headers = headers
-                   ,iterable = iterable
-                   ,maxrow = 60).run()
-        return f + ':\n' + mes
-    
-    def set_speech(self):
-        ph_cells = [cell for cell in self.cells if is_phrase_type(cell)]
-        all_speech = sorted(set([cell.speech for cell in self.cells \
-                                 if not cell in ph_cells]))
-        speech_unp = [speech for speech in all_speech \
-                     if not speech in self.speech]
-        all_speech = self.speech + speech_unp
-        for i in range(len(all_speech)):
-            for cell in self.cells:
-                if cell.speech == all_speech[i]:
-                    cell.speechpr = i
-        ''' Phrases must be put at the end, otherwise we will have issues in
-            the "Cut to the chase" mode.
-        '''
-        i += 1
-        for cell in ph_cells:
-            cell.speechpr = i
-    
-    def get_last_sorted_wform(self):
-        ''' Fix a bug when phrases are not at the bottom in the Multitran mode.
-            Alternatively, we can use just set 'wform' to 'яяяяя' here
-            (Cyrillic letters are sorted such that they are farther in a
-            descending order than Latin ones), but this looks hacky.
-        '''
-        wforms = sorted(set([cell.wform for cell in self.cells]), reverse=True)
-        if wforms:
-            return wforms[0]
-    
-    def set_subjects(self):
-        ''' All cells must have 'subjpr' set since they will not be further
-            sorted by 'subj', so do not cancel this procedure even if there are
-            no prioritized subjects, otherwise there may be sorting bugs, e.g.
-            multitran.com, EN-RU, 'full of it'.
-        '''
-        for cell in self.cells:
-            priority = SUBJECTS.get_priority(cell.subj)
-            if priority is not None:
-                cell.subjpr = priority
-        pr_cells = [cell for cell in self.cells if cell.subjpr > -1]
-        unp_cells = [cell for cell in self.cells if cell.subjpr == -1 \
-                    and not is_phrase_type(cell)]
-        ph_cells = [cell for cell in self.cells if cell.subjpr == -1 \
-                   and is_phrase_type(cell)]
-        
-        pr_cells.sort(key=lambda x: (x.subjpr, x.no))
-        unp_cells.sort(key=lambda x: (x.subj.lower(), x.no))
-        
-        ''' Keep old 'subjpr' if 'subj' is the same since we may need to
-            alphabetize terms later.
-        '''
-        subj = ''
-        subjpr = -1
-        for cell in pr_cells:
-            if cell.subj == subj:
-                cell.subjpr = subjpr
-            else:
-                subj = cell.subj
-                subjpr += 1
-                cell.subjpr = subjpr
-        for cell in unp_cells:
-            if cell.subj == subj:
-                cell.subjpr = subjpr
-            else:
-                subj = cell.subj
-                subjpr += 1
-                cell.subjpr = subjpr
-        wform = self.get_last_sorted_wform()
-        if not wform:
-            ''' Cyrillic letters are sorted such that they are farther in a
-                descending order than Latin ones.
-            '''
-            wform = 'яяяяя'
-        for cell in ph_cells:
-            if cell.subj == subj:
-                cell.subjpr = subjpr
-            else:
-                subj = cell.subj
-                subjpr += 1
-                cell.subjpr = subjpr
-            cell.wform = wform
-        # [] + ['example'] == ['example']
-        self.cells = pr_cells + unp_cells + ph_cells
-    
-    def run(self):
-        self.set_subjects()
-        self.set_speech()
-        return self.cells
-
-
-
-class View:
-    # Create user-specific cells
-    def __init__(self, cells):
-        self.Success = True
-        self.phi = None
-        self.view = []
-        self.cells = cells
-        self.fixed_urls = ARTICLES.get_fixed_urls()
-        # Must be recreated for each article loading/reloading
-        self.fixed_cols = ColTypes().run()
-    
-    def check(self):
-        f = '[MClient] cells.View.check'
-        if not self.cells:
-            self.Success = False
+    def set_cells(self):
+        f = '[MClient] cells.Cells.set_cells'
+        if not self.blocks:
             rep.empty(f)
             return
-    
-    def sort(self):
-        f = '[MClient] cells.View.sort'
-        if not self.Success:
-            rep.cancel(f)
+        if len(self.blocks) < 2:
+            rep.condition(f, f'{len(self.blocks)} >= 2')
             return
-        if CONFIG.new['AlphabetizeTerms'] and not ARTICLES.is_parallel() \
-        and not ARTICLES.is_separate():
-            self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.text, x.no))
-        else:
-            self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.no))
-    
-    def _create_fixed(self, i, type_, rowno):
-        f = '[MClient] cells.View._create_fixed'
         cell = Cell()
-        block = Block()
-        block.type = type_
-        cell.fixed_block = block
-        cell.blocks = [block]
-        cell.rowno = rowno
-        if is_phrase_type(self.cells[i]):
-            cell.subjpr = self.cells[i].subjpr
-            cell.speechpr = self.cells[i].speechpr
-            if type_ == 'subj':
-                cell.text = block.text = self.cells[i].subj
-            return cell
-        cell.subj = self.cells[i].subj
-        cell.subjpr = self.cells[i].subjpr
-        cell.wform = self.cells[i].wform
-        cell.transc = self.cells[i].transc
-        cell.speech = self.cells[i].speech
-        cell.speechpr = self.cells[i].speechpr
-        if type_ == 'subj':
-            cell.text = block.text = self.cells[i].subj
-        elif type_ == 'wform':
-            cell.text = block.text = self.cells[i].wform
-        elif type_ == 'transc':
-            cell.text = block.text = self.cells[i].transc
-        elif type_ == 'speech':
-            cell.text = block.text = self.cells[i].speech
-        elif not type_:
-            # Empty types are actually allowed since we can have empty columns
-            pass
-        else:
-            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(type_, 'subj, wform, transc, speech, or empty')
-            Message(f, mes, True).show_error()
-        return cell
-    
-    def restore_fixed(self):
-        f = '[MClient] cells.View.restore_fixed'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        count = 0
+        cell.blocks.append(self.blocks[0])
         i = 1
-        while i < len(self.cells):
-            if self.cells[i-1].rowno != self.cells[i].rowno:
-                rowno = self.cells[i].rowno
-                for type_ in self.fixed_cols:
-                    count += 1
-                    cell = self._create_fixed(i, type_, rowno)
-                    self.cells.insert(i, cell)
-                    i += 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].cellno == self.blocks[i].cellno:
+                cell.blocks.append(self.blocks[i])
+            else:
+                if cell.blocks:
+                    self.cells.append(cell)
+                cell = Cell()
+                cell.blocks.append(self.blocks[i])
             i += 1
-        rep.matches(f, count)
+        if cell.blocks:
+            self.cells.append(cell)
     
-    def restore_first(self):
-        # Add fixed cells for the very first row
-        f = '[MClient] cells.View.restore_first'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        count = 0
-        rowno = self.cells[0].rowno
-        for type_ in self.fixed_cols[::-1]:
-            count += 1
-            cell = self._create_fixed(0, type_, rowno)
-            self.cells.insert(0, cell)
-        rep.matches(f, count)
-    
-    def _has_phrase(self):
-        for cell in self.cells[::-1]:
-            for block in cell.blocks:
-                if block.type == 'phrase':
-                    return True
-    
-    def restore_phsubj(self):
-        f = '[MClient] cells.View.restore_phsubj'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if not self._has_phrase():
-            rep.lazy(f)
-            return
-        i = len(self.cells) - 1
-        while i >= 0:
-            if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type == 'subj':
-                self.cells[i].fixed_block.type = 'phsubj'
-                self.phi = i
-                mes = f'"{self.cells[i].fixed_block.text}"'
-                Message(f, mes).show_debug()
-                return
-            i -= 1
-    
-    def debug(self):
-        f = '[MClient] cells.View.debug'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        headers = (_('ROW #'), _('CELL #'), _('TEXT'), _('TYPES'), 'URL'
-                  ,'COL1' ,'COL2', 'COL3', 'COL4')
-        rowno = []
-        no = []
-        text = []
-        types = []
-        url = []
-        col1 = []
-        col2 = []
-        col3 = []
-        col4 = []
-        for cell in self.cells:
-            rowno.append(cell.rowno)
-            no.append(cell.no)
-            text.append(cell.text)
-            url.append(cell.url)
-            col1.append(cell.col1)
-            col2.append(cell.col2)
-            col3.append(cell.col3)
-            col4.append(cell.col4)
-            cell_types = []
-            for block in cell.blocks:
-                cell_types.append(block.type)
-            types.append(', '.join(cell_types))
-        iterable = [rowno, no, text, types, url, col1, col2, col3, col4]
-        return Table(headers = headers, iterable = iterable, maxrow = 45).run()
-    
-    def _renumber_cell_nos(self):
+    def renumber(self):
         for i in range(len(self.cells)):
             self.cells[i].no = i
     
-    def _renumber_row_nos(self):
-        # Actually, we do this for prettier debug output
-        rownos = [0]
+    def debug(self, maxrow=70, maxrows=0):
+        f = '[MClient] cells.Cells.debug'
+        headers = ('SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #'), _('CELL #')
+                  ,_('TYPES'), _('TEXT'), 'URL')
+        subj = []
+        wform = []
+        speech = []
+        transc = []
+        rownos = []
+        nos = []
+        types = []
+        texts = []
+        urls = []
+        for cell in self.cells:
+            subj.append(cell.subj)
+            wform.append(cell.wform)
+            speech.append(cell.speech)
+            transc.append(cell.transc)
+            rownos.append(cell.rowno)
+            nos.append(cell.no)
+            texts.append(f'"{cell.text}"')
+            cell_types = [block.type for block in cell.blocks]
+            types.append(', '.join(cell_types))
+            urls.append(cell.url)
+        mes = Table(headers = headers
+                   ,iterable = (subj, wform, speech, transc, rownos, nos, types
+                               ,texts, urls)
+                   ,maxrow = maxrow, maxrows = maxrows).run()
+        return f'{f}:\n{mes}'
+    
+    def unite_brackets(self):
+        ''' Combine a cell with a preceding or following bracket such that the
+            user would not see '()' when the cell is ignored/blocked.
+        '''
+        f = '[MClient] cells.Cells.unite_brackets'
+        count = 0
+        for cell in self.cells:
+            i = 2
+            while i < len(cell.blocks):
+                if cell.blocks[i-2].text.strip() == '(' \
+                and cell.blocks[i].text.strip() == ')':
+                    count += 1
+                    ''' Add brackets to text of a cell (usually of the 'user'
+                        type), not vice versa, to preserve its type.
+                    '''
+                    cell.blocks[i-1].text = cell.blocks[i-2].text \
+                                          + cell.blocks[i-1].text \
+                                          + cell.blocks[i].text
+                    del cell.blocks[i]
+                    del cell.blocks[i-2]
+                    i -= 2
+                i += 1
+        rep.matches(f, count)
+    
+    def _get_url(self, cell):
+        #TODO: Do we need to support several URLs in one cell?
+        for block in cell.blocks:
+            if block.url:
+                return block.url
+        return ''
+    
+    def set_urls(self):
+        for cell in self.cells:
+            cell.url = self._get_url(cell)
+    
+    def _get_last_subj(self):
+        for cell in self.cells[::-1]:
+            if cell.fixed_block and cell.fixed_block.type in ('subj', 'phsubj'):
+                return cell.text
+    
+    def _get_last_wform(self):
+        for cell in self.cells[::-1]:
+            if cell.fixed_block and cell.fixed_block.type == 'wform':
+                return cell.text
+    
+    def _get_last_speech(self):
+        for cell in self.cells[::-1]:
+            if cell.fixed_block and cell.fixed_block.type == 'speech':
+                return cell.text
+    
+    def _get_last_transc(self):
+        for cell in self.cells[::-1]:
+            if cell.fixed_block and cell.fixed_block.type == 'transc':
+                return cell.text
+    
+    def _get_prev_subj(self, i):
+        while i >= 0:
+            if self.cells[i].fixed_block \
+            and self.cells[i].fixed_block.type in ('subj', 'phsubj'):
+                return self.cells[i].text
+            i -= 1
+        return ''
+    
+    def _get_prev_wform(self, i):
+        while i >= 0:
+            if self.cells[i].fixed_block \
+            and self.cells[i].fixed_block.type == 'wform':
+                return self.cells[i].text
+            i -= 1
+        return ''
+    
+    def _get_prev_speech(self, i):
+        while i >= 0:
+            if self.cells[i].fixed_block \
+            and self.cells[i].fixed_block.type == 'speech':
+                return self.cells[i].text
+            i -= 1
+        return ''
+    
+    def _get_prev_transc(self, i):
+        while i >= 0:
+            if self.cells[i].fixed_block:
+                if self.cells[i].fixed_block.type == 'wform':
+                    return ''
+                if self.cells[i].fixed_block.type == 'transc':
+                    return self.cells[i].text
+            i -= 1
+        return ''
+    
+    def fill_fixed(self):
+        subj = self._get_last_subj()
+        wform = self._get_last_wform()
+        transc = self._get_last_transc()
+        speech = self._get_last_speech()
+        i = len(self.cells) - 1
+        while i >= 0:
+            if not self.cells[i].fixed_block:
+                subj = self._get_prev_subj(i)
+                wform = self._get_prev_wform(i)
+                speech = self._get_prev_speech(i)
+                transc = self._get_prev_transc(i)
+            self.cells[i].subj = subj
+            self.cells[i].wform = wform
+            self.cells[i].speech = speech
+            self.cells[i].transc = transc
+            i -= 1
+    
+    def rename_phsubj(self):
+        for cell in self.cells:
+            if cell.fixed_block and cell.fixed_block.type == 'phsubj':
+                match = re.search(r'(\d+)', cell.text)
+                if match:
+                    title = _('Phrases ({})').format(match.group(1))
+                    # 'fill_fixed' is block-oriented
+                    cell.text = cell.fixed_block.text = cell.fixed_block.subj \
+                              = cell.fixed_block.subjf = title
+                    # There should be only one 'phsubj'
+                    return
+    
+    def delete_fixed(self):
+        f = '[MClient] cells.Cells.delete_fixed'
+        count = 0
+        i = 0
+        while i < len(self.cells):
+            if self.cells[i].fixed_block:
+                count += 1
+                del self.cells[i]
+                i -= 1
+            i += 1
+        rep.matches(f, count)
+    
+    def set_row_nos(self):
+        # Run this before deleting fixed types
+        f = '[MClient] cells.Cells.set_row_nos'
+        count = 0
+        if self.cells:
+            count += 1
+            self.cells[0].rowno = 0
         rowno = 0
         i = 1
         while i < len(self.cells):
-            if self.cells[i-1].rowno != self.cells[i].rowno:
+            if not self.cells[i-1].fixed_block and self.cells[i].fixed_block:
+                count += 1
                 rowno += 1
-            rownos.append(rowno)
+            self.cells[i].rowno = rowno
             i += 1
-        i = 0
-        while i < len(self.cells):
-            self.cells[i].rowno = rownos[i]
-            i += 1
+        rep.matches(f, count)
     
-    def renumber(self):
-        f = '[MClient] cells.View.renumber'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        self._renumber_cell_nos()
-        self._renumber_row_nos()
+    def set_text(self):
+        for cell in self.cells:
+            fragms = [block.text for block in cell.blocks]
+            cell.text = List(fragms).space_items().strip()
+            # 'phsubj' text may have multiple spaces for some reason
+            cell.text = Text(cell.text).delete_duplicate_spaces()
     
-    def clear_duplicates(self):
-        f = '[MClient] cells.View.clear_duplicates'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        subj = wform = transc = speech = ''
+    def save_urls(self):
         for cell in self.cells:
             if not cell.fixed_block:
-               continue
-            if cell.fixed_block.type == 'subj':
-                if cell.text == subj:
-                    cell.text = cell.fixed_block.text = ''
-                else:
-                    subj = cell.subj
-            elif cell.fixed_block.type == 'wform':
-                if cell.text == wform:
-                    cell.text = cell.fixed_block.text = ''
-                else:
-                    wform = cell.wform
-            elif cell.fixed_block.type == 'transc':
-                if cell.text == transc:
-                    cell.text = cell.fixed_block.text = ''
-                else:
-                    transc = cell.transc
-            elif cell.fixed_block.type == 'speech':
-                if cell.text == speech:
-                    cell.text = cell.fixed_block.text = ''
-                else:
-                    speech = cell.speech
-    
-    def get_fixed_url(self, type_, text):
-        f = '[MClient] cells.View.get_fixed_url'
-        try:
-            return self.fixed_urls[type_][text]
-        except KeyError:
-            mes = _('"{}" has not been found in "{}"!')
-            if not type_ in self.fixed_urls:
-                mes = mes.format(type_, self.fixed_urls)
-            elif not text in self.fixed_urls[type_]:
-                mes = mes.format(text, self.fixed_urls[type_])
-            Message(f, mes).show_warning()
-        return ''
-    
-    def restore_urls(self):
-        f = '[MClient] cells.View.restore_urls'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if not self.fixed_urls:
-            # Fixed cell URLs are relevant for multitrancom plugin only
-            rep.lazy(f)
-            return
-        for cell in self.cells:
-            if not cell.fixed_block or not cell.text:
                 continue
-            if cell.fixed_block.type in ('subj', 'wform', 'phsubj'):
-                cell.url = cell.fixed_block.url = self.get_fixed_url(cell.fixed_block.type
-                                                                    ,cell.text)
-    
-    def clear_phrase_fields(self):
-        f = '[MClient] cells.View.clear_phrase_fields'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if self.phi is None:
-            rep.lazy(f)
-            return
-        i = self.phi
-        while i < len(self.cells):
-            cell = self.cells[i]
-            if cell.fixed_block \
-            and cell.fixed_block.type in ('wform', 'transc', 'speech'):
-                cell.text = ''
-            cell.wform = cell.speech = cell.transc = ''
-            i += 1
-
-    def fill_cols(self):
-        f = '[MClient] cells.View.fill_cols'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if not self.fixed_cols:
-            rep.lazy(f)
-            return
-        for cell in self.cells:
-            for i in range(len(self.fixed_cols)):
-                if i == 0:
-                    if self.fixed_cols[i] == 'subj':
-                        cell.col1 = cell.subjpr
-                    elif self.fixed_cols[i] == 'wform':
-                        cell.col1 = cell.wform.lower()
-                    elif self.fixed_cols[i] == 'speech':
-                        cell.col1 = cell.speechpr
-                    elif self.fixed_cols[i] == 'transc':
-                        cell.col1 = cell.transc.lower()
-                elif i == 1:
-                    if self.fixed_cols[i] == 'subj':
-                        cell.col2 = cell.subjpr
-                    elif self.fixed_cols[i] == 'wform':
-                        cell.col2 = cell.wform.lower()
-                    elif self.fixed_cols[i] == 'speech':
-                        cell.col2 = cell.speechpr
-                    elif self.fixed_cols[i] == 'transc':
-                        cell.col2 = cell.transc.lower()
-                elif i == 2:
-                    if self.fixed_cols[i] == 'subj':
-                        cell.col3 = cell.subjpr
-                    elif self.fixed_cols[i] == 'wform':
-                        cell.col3 = cell.wform.lower()
-                    elif self.fixed_cols[i] == 'speech':
-                        cell.col3 = cell.speechpr
-                    elif self.fixed_cols[i] == 'transc':
-                        cell.col3 = cell.transc.lower()
-                elif i == 3:
-                    if self.fixed_cols[i] == 'subj':
-                        cell.col4 = cell.subjpr
-                    elif self.fixed_cols[i] == 'wform':
-                        cell.col4 = cell.wform.lower()
-                    elif self.fixed_cols[i] == 'speech':
-                        cell.col4 = cell.speechpr
-                    elif self.fixed_cols[i] == 'transc':
-                        cell.col4 = cell.transc.lower()
+            if cell.fixed_block.type == 'subj':
+                self.fixed_urls[cell.fixed_block.type][cell.fixed_block.subj] = cell.url
+                self.fixed_urls[cell.fixed_block.type][cell.fixed_block.subjf] = cell.url
+            elif cell.fixed_block.type in ('phsubj', 'wform') and cell.url:
+                self.fixed_urls[cell.fixed_block.type][cell.text] = cell.url
     
     def run(self):
-        self.check()
-        self.fill_cols()
-        self.sort()
-        self.restore_fixed()
-        self.restore_first()
-        self.restore_phsubj()
-        self.clear_duplicates()
-        self.clear_phrase_fields()
-        self.restore_urls()
+        self.set_cells()
+        self.set_urls()
+        self.unite_brackets()
+        self.set_text()
+        self.set_fixed_cells()
+        self.rename_phsubj()
+        self.set_row_nos()
+        self.save_urls()
+        #self.set_art_subj()
+        self.fill_fixed()
+        self.delete_fixed()
         self.renumber()
         return self.cells
-
-
-
-class Wrap:
-    
-    def __init__(self, cells):
-        ''' Since we create even empty columns, the number of fixed cells in
-            a row should always be 4 (unless new fixed types are added).
-        '''
-        self.Success = True
-        self.plain = []
-        self.code = []
-        self.cells = cells
-        self.fixed_len = COL_WIDTH.fixed_num
-        self.collimit = COL_WIDTH.fixed_num + COL_WIDTH.term_num
-    
-    def check(self):
-        f = '[MClient] cells.Wrap.check'
-        if not self.cells:
-            self.Success = False
-            rep.empty(f)
-            return
-        if self.collimit <= self.fixed_len:
-            self.Success = False
-            rep.condition(f, f'{self.collimit} > {self.fixed_len}')
-    
-    def get_empty_cells(self, delta):
-        row = []
-        for type_ in range(delta):
-            cell = Cell()
-            cell.blocks = [Block()]
-            row.append(cell)
-        return row
-    
-    def wrap(self):
-        f = '[MClient] cells.Wrap.wrap'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        cells = []
-        row = []
-        rowno = 0
-        for cell in self.cells:
-            if len(row) == self.collimit:
-                cells.append(row)
-                if cell.rowno == rowno:
-                    row = self.get_empty_cells(self.fixed_len)
-                else:
-                    row = []
-            elif cell.rowno != rowno:
-                row += self.get_empty_cells(self.collimit - len(row))
-                cells.append(row)
-                row = []
-            row.append(cell)
-            rowno = cell.rowno
-        row += self.get_empty_cells(self.collimit - len(row))
-        cells.append(row)
-        self.cells = cells
-    
-    def _get_prev_cell(self, i, j):
-        if i >= len(self.cells):
-            return
-        while j >= 0:
-            try:
-                return self.cells[i][j]
-            except IndexError:
-                pass
-            j -= 1
-    
-    def _debug_cells(self):
-        f = '[MClient] cells.Wrap._debug_cells'
-        mes = [f'{f}:']
-        headers = (_('CELL #'), _('ROW #'), _('COLUMN #'), _('TEXT'), _('CODE')
-                  ,'URL')
-        no = []
-        rowno = []
-        colno = []
-        text = []
-        code = []
-        url = []
-        for row in self.cells:
-            for cell in row:
-                no.append(cell.no)
-                rowno.append(cell.rowno)
-                colno.append(cell.colno)
-                text.append(cell.text)
-                code.append(cell.code)
-                url.append(cell.url)
-        iterable = [no, rowno,  colno, text, code, url]
-        return Table(headers = headers, iterable = iterable, maxrow = 60
-                    ,maxrows = 700).run()
-        return '\n'.join(mes)
-    
-    def _debug_plain(self):
-        f = '[MClient] cells.Wrap._debug_plain'
-        mes = [f'{f}:']
-        plain = []
-        for row in self.cells:
-            new_row = []
-            for cell in row:
-                text = f'({cell.rowno}, {cell.no}): {cell.text}'
-                new_row.append(text)
-            plain.append(new_row)
-        mes.append(str(plain))
-        return '\n'.join(mes)
-    
-    def _debug_code(self):
-        f = '[MClient] cells.Wrap._debug_code'
-        mes = [f'{f}:']
-        code = []
-        for row in self.cells:
-            new_row = []
-            for cell in row:
-                text = f'({cell.rowno}, {cell.no}): {cell.code}'
-                new_row.append(text)
-            code.append(new_row)
-        mes.append(str(code))
-        return '\n'.join(mes)
-    
-    def debug(self):
-        f = '[MClient] cells.Wrap.debug'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        mes = [self._debug_cells()]
-        mes.append(self._debug_plain())
-        mes.append(self._debug_code())
-        return '\n\n'.join(mes)
-    
-    def renumber(self):
-        f = '[MClient] cells.Wrap.renumber'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if not self.cells[0]:
-            self.Success = False
-            rep.empty(f)
-            return
-        no = 0
-        for i in range(len(self.cells)):
-            for j in range(len(self.cells[i])):
-                self.cells[i][j].no = no
-                self.cells[i][j].rowno = i
-                self.cells[i][j].colno = j
-                no += 1
-    
-    def format(self):
-        # Takes ~0.871s for 'set' on AMD E-300
-        f = '[MClient] cells.Wrap.format'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        for row in self.cells:
-            for cell in row:
-                cell_code = []
-                for block in cell.blocks:
-                    cell_code.append(fmBlock(block, cell.colno).run())
-                cell.code = List(cell_code).space_items()
-    
-    def set_plain(self):
-        f = '[MClient] cells.Wrap.set_plain'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        for row in self.cells:
-            new_row = []
-            for cell in row:
-                new_row.append(cell.text)
-            self.plain.append(new_row)
-    
-    def set_code(self):
-        f = '[MClient] cells.Wrap.set_code'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        for row in self.cells:
-            new_row = []
-            for cell in row:
-                new_row.append(cell.code)
-            self.code.append(new_row)
-    
-    def run(self):
-        self.check()
-        self.wrap()
-        self.renumber()
-        self.format()
-        self.set_plain()
-        self.set_code()
-        return self.cells
-
-
-
-def is_phrase_type(cell):
-    for block in cell.blocks:
-        if block.type in ('phsubj', 'phrase', 'phcount'):
-            return True
