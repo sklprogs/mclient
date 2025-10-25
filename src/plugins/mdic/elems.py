@@ -81,22 +81,20 @@ class Elems:
 
     def __init__(self, str_lst):
         f = '[MClient] plugins.mdic.elems.Elems.__init__'
-        self.set_values()
+        self.phsubj_name = _('Phrases')
+        self.jsons = []
+        self.blocks = []
+        self.cells = []
+        self.art_subj = {}
+        self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
+        self.Parallel = False
+        self.Separate = False
         self.str_lst = str_lst
         if self.str_lst:
             self.Success = True
         else:
             self.Success = False
             rep.empty(f)
-
-    def set_values(self):
-        self.phsubj_name = _('Phrases')
-        self.jsons = []
-        self.cells = []
-        self.art_subj = {}
-        self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
-        self.Parallel = False
-        self.Separate = False
     
     def _load_json(self, string):
         f = '[MClient] plugins.mdic.elems.Elems._load_json'
@@ -177,13 +175,22 @@ class Elems:
             i += 1
         self.cells = List(self.cells).join_sublists()
     
+    def set_blocks(self):
+        f = '[MClient] plugins.mdic.elems.Elems.set_blocks'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        for cell in self.cells:
+            self.blocks += cell.blocks
+    
     def run(self):
         self.set_jsons()
         self.expand_dic()
         self.set_cells()
         self.join_cells()
         self.set_art_subj()
-        return self.cells
+        self.set_blocks()
+        return self.blocks
     
     def debug(self):
         f = '[MClient] plugins.mdic.elems.Elems.debug'
