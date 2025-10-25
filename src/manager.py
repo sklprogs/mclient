@@ -7,6 +7,7 @@ from skl_shared.logic import Input
 from skl_shared.paths import Home
 
 from config import CONFIG, PRODUCT_LOW
+from cells import Cells
 import plugins.stardict.get
 import plugins.dsl.get
 import plugins.stardict.run as sdrun
@@ -26,6 +27,7 @@ class Plugins:
         self.sdplugin = None
         self.frplugin = None
         self.mdplugin = None
+        self.fixed_urls = {}
         self.source = CONFIG.new['source']
         self.Debug = Debug
         self.maxrows = maxrows
@@ -41,7 +43,7 @@ class Plugins:
         if not self.plugin:
             rep.empty(f)
             return {}
-        return self.plugin.get_fixed_urls()
+        return self.fixed_urls
     
     def get_article_subjects(self):
         f = '[MClient] manager.Plugins.get_article_subjects'
@@ -263,8 +265,12 @@ class Plugins:
         if not self.plugin:
             rep.empty(f)
             return
-        return self.plugin.request(search = search
-                                  ,url = url)
+        blocks = self.plugin.request(search = search
+                                    ,url = url)
+        icells = Cells(blocks)
+        icells.run()
+        self.fixed_urls = icells.fixed_urls
+        return icells.cells
     
     def is_parallel(self):
         f = '[MClient] manager.Plugins.is_parallel'
