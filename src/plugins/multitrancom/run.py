@@ -17,25 +17,21 @@ import plugins.multitrancom.speech as sp
 class Plugin:
     
     def __init__(self, Debug=False, maxrows=1000):
-        self.set_values()
-        self.Debug = Debug
-        self.maxrows = maxrows
-    
-    def set_values(self):
-        ''' #NOTE: 'fixed_urls', 'art_subj', 'Parallel' and 'Separate' are
-            temporary variables that should be externally referred to only
-            after getting a NEW article.
+        ''' #NOTE: 'art_subj', 'Parallel' and 'Separate' are temporary
+            variables that should be externally referred to only after getting
+            a NEW article.
         '''
         self.Parallel = False
         self.Separate = False
         self.cells = []
         self.majors = []
         self.minors = []
-        self.fixed_urls = {}
         self.art_subj = {}
         self.htm = ''
         self.text = ''
         self.search = ''
+        self.Debug = Debug
+        self.maxrows = maxrows
     
     def get_htm(self):
         return self.htm
@@ -146,9 +142,6 @@ class Plugin:
         else:
             return pr.objs.get_pairs().get_alive()
     
-    def get_fixed_urls(self):
-        return self.fixed_urls
-    
     def get_article_subjects(self):
         return self.art_subj
     
@@ -168,7 +161,6 @@ class Plugin:
         blocks = tg.Tags(code).run()
         ielems = el.Elems(blocks)
         self.cells = ielems.run()
-        self.fixed_urls = ielems.fixed_urls
         self.art_subj = ielems.art_subj
         self.Parallel = ielems.Parallel
         self.Separate = ielems.Separate
