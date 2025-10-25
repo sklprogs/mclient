@@ -16,26 +16,21 @@ class Plugin:
         ''' - Extra unused input variables are preserved so it would be easy to
               use an abstract class for all dictionary sources.
             - #NOTE: Do not forget to set plugins.stardict.get.PATH earlier.
-        '''
-        self.set_values()
-        self.Debug = Debug
-        self.maxrows = maxrows
-    
-    def set_values(self):
-        ''' #NOTE: 'fixed_urls', 'art_subj', 'Parallel' and 'Separate' are
-            temporary variables that should be externally referred to only
-            after getting a NEW article.
+            - #NOTE: 'art_subj', 'Parallel' and 'Separate' are temporary
+              variables that should be externally referred to only after
+              getting a NEW article.
         '''
         self.Parallel = False
         self.Separate = False
         self.cells = []
         self.majors = []
         self.minors = []
-        self.fixed_urls = {}
         self.art_subj = {}
         self.htm = ''
         self.text = ''
         self.search = ''
+        self.Debug = Debug
+        self.maxrows = maxrows
     
     def is_parallel(self):
         return self.Parallel
@@ -48,9 +43,6 @@ class Plugin:
     
     def get_minors(self):
         return self.minors
-    
-    def get_fixed_urls(self):
-        return self.fixed_urls
     
     def get_htm(self):
         return self.htm
@@ -148,7 +140,6 @@ class Plugin:
         blocks = tg.Tags(self.text).run()
         ielems = el.Elems(blocks)
         self.cells = ielems.run()
-        self.fixed_urls = ielems.fixed_urls
         self.art_subj = ielems.art_subj
         self.Parallel = ielems.Parallel
         self.Separate = ielems.Separate
