@@ -16,10 +16,23 @@ import plugins.multitrandem.subjects as sj
 class Plugin:
     
     def __init__(self, Debug=False, maxrows=1000):
-        ''' Extra unused input variables are preserved so it would be easy to
-            use an abstract class for all dictionary sources.
+        ''' - Extra unused input variables are preserved so it would be easy to
+              use an abstract class for all dictionary sources.
+            - #NOTE: 'art_subj', 'Parallel' and 'Separate' are temporary
+              variables that should be externally referred to only after
+              getting a NEW article.
         '''
-        self.set_values()
+        self.Parallel = False
+        self.Separate = False
+        self.langint = ('English', 'Russian')
+        self.langloc = (_('English'), _('Russian'))
+        self.cells = []
+        self.majors = []
+        self.minors = []
+        self.art_subj = {}
+        self.htm = ''
+        self.text = ''
+        self.search = ''
         #TODO: elaborate
         self.abbr = gt.FILES.get_subject()
         self.Debug = Debug
@@ -34,9 +47,6 @@ class Plugin:
     def get_speeches(self):
         #TODO: implement or rework
         return {}
-    
-    def get_fixed_urls(self):
-        return self.fixed_urls
     
     def get_htm(self):
         return self.htm
@@ -83,24 +93,6 @@ class Plugin:
             mes = mes.format(lang, ';'.join(modes))
             Message(f, mes, True).show_error()
         return 'English'
-    
-    def set_values(self):
-        ''' #NOTE: 'fixed_urls', 'art_subj', 'Parallel' and 'Separate' are
-            temporary variables that should be externally referred to only
-            after getting a NEW article.
-        '''
-        self.Parallel = False
-        self.Separate = False
-        self.langint = ('English', 'Russian')
-        self.langloc = (_('English'), _('Russian'))
-        self.cells = []
-        self.majors = []
-        self.minors = []
-        self.fixed_urls = {}
-        self.art_subj = {}
-        self.htm = ''
-        self.text = ''
-        self.search = ''
     
     def get_text(self):
         mes = []
