@@ -18,27 +18,22 @@ import plugins.dsl.elems
 class Plugin:
     
     def __init__(self, Debug=False, maxrows=1000):
-        ''' Extra unused input variables are preserved so it would be easy to
-            use an abstract class for all dictionary sources.
-        '''
-        self.set_values()
-        self.Debug = Debug
-        self.maxrows = maxrows
-    
-    def set_values(self):
-        ''' #NOTE: 'fixed_urls', 'art_subj', 'Parallel' and 'Separate' are
-            temporary variables that should be externally referred to only
-            after getting a NEW article.
+        ''' - Extra unused input variables are preserved so it would be easy to
+              use an abstract class for all dictionary sources.
+            - #NOTE: 'art_subj', 'Parallel' and 'Separate' are temporary
+              variables that should be externally referred to only after
+              getting a NEW article.
         '''
         self.Parallel = False
         self.Separate = False
         self.majors = []
         self.minors = []
-        self.fixed_urls = {}
         self.art_subj = {}
         self.htm = ''
         self.text = ''
         self.search = ''
+        self.Debug = Debug
+        self.maxrows = maxrows
     
     def is_parallel(self):
         return self.Parallel
@@ -51,9 +46,6 @@ class Plugin:
     
     def get_minors(self):
         return self.minors
-    
-    def get_fixed_urls(self):
-        return self.fixed_urls
     
     def get_htm(self):
         return self.htm
@@ -182,39 +174,32 @@ class Plugin:
         blocks = plugins.fora.dictd.tags.Tags(text).run()
         return plugins.fora.dictd.elems.Elems(blocks).run()
     
-    def _join_cells(self, cells):
-        f = '[MClient] plugins.fora.run.Plugin._join_cells'
-        if not cells:
+    def _join_blocks(self, groups):
+        f = '[MClient] plugins.fora.run.Plugin._join_blocks'
+        if not groups:
             rep.empty(f)
             return []
-        if not cells[0] or not cells[0][-1].blocks:
+        if not groups[0]:
             rep.wrong_input(f)
             return []
-        no = cells[0][-1].no + 1
-        rowno = cells[0][-1].rowno + 1
-        cellno = cells[0][-1].blocks[-1].cellno + 1
+        cellno = groups[0][-1].cellno + 1
         i = 1
-        while i < len(cells):
-            for cell in cells[i]:
-                cell.no = no
-                cell.rowno = rowno
-                no += 1
-                rowno += 1
-                for block in cell.blocks:
-                    block.cellno = cellno
-                    cellno += 1
+        while i < len(groups):
+            for block in groups[i]:
+                block.cellno = cellno
+                cellno += 1
             i += 1
-        result = []
-        for items in cells:
-            result += items
-        return result
+        blocks = []
+        for group in groups:
+            blocks += group
+        return blocks
     
     def request(self, search='', url=''):
         f = '[MClient] plugins.fora.run.Plugin.request'
         self.search = search
         ALL_DICS.search(self.search)
         text = ''
-        cells = []
+        blocks = []
         for dic in ALL_DICS.dics:
             if not dic.Success or not dic.article:
                 continue
@@ -225,25 +210,24 @@ class Plugin:
             '''
             match dic.get_format():
                 case 'stardict-x':
-                    cells.append(self._request_stardictx(dic))
+                    blocks.append(self._request_stardictx(dic))
                 case 'dsl':
-                    cells.append(self._request_dsl(dic))
+                    blocks.append(self._request_dsl(dic))
                 case 'stardict-0':
-                    cells.append(self._request_stardict0(dic))
+                    blocks.append(self._request_stardict0(dic))
                 case 'stardict-h':
-                    cells.append(self._request_stardicth(dic))
+                    blocks.append(self._request_stardicth(dic))
                 case 'stardict-m':
-                    cells.append(self._request_stardictm(dic))
+                    blocks.append(self._request_stardictm(dic))
                 case 'xdxf':
-                    cells.append(self._request_xdxf(dic))
+                    blocks.append(self._request_xdxf(dic))
                 case 'dictd':
-                    cells.append(self._request_dictd(dic))
+                    blocks.append(self._request_dictd(dic))
         self.htm = self.text = text
-        cells = [result for result in cells if result]
-        cells = self._join_cells(cells)
+        blocks = [result for result in blocks if result]
+        blocks = self._join_blocks(blocks)
         #TODO: Implement or drop
-        #self.fixed_urls = ielems.fixed_urls
         #self.art_subj = ielems.art_subj
         #self.Parallel = ielems.Parallel
         #self.Separate = ielems.Separate
-        return cells
+        return blocks
