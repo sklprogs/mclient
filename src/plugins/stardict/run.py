@@ -22,7 +22,7 @@ class Plugin:
         '''
         self.Parallel = False
         self.Separate = False
-        self.cells = []
+        self.blocks = []
         self.majors = []
         self.minors = []
         self.art_subj = {}
@@ -139,8 +139,8 @@ class Plugin:
         self.text = cu.CleanUp(self.text).run()
         blocks = tg.Tags(self.text).run()
         ielems = el.Elems(blocks)
-        self.cells = ielems.run()
+        self.blocks = ielems.run()
         self.art_subj = ielems.art_subj
         self.Parallel = ielems.Parallel
         self.Separate = ielems.Separate
-        return self.cells
+        return self.blocks
