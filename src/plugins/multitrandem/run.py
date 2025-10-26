@@ -26,7 +26,7 @@ class Plugin:
         self.Separate = False
         self.langint = ('English', 'Russian')
         self.langloc = (_('English'), _('Russian'))
-        self.cells = []
+        self.blocks = []
         self.majors = []
         self.minors = []
         self.art_subj = {}
@@ -149,7 +149,6 @@ class Plugin:
         return gt.Suggest(search).run()
     
     def request(self, search='', url=''):
-        self.blocks = []
         self.search = search
         iget = gt.Get(search)
         chunks = iget.run()
@@ -159,9 +158,9 @@ class Plugin:
             blocks = tg.Tags(chunks[i], i).run()
             if blocks:
                 self.blocks += blocks
-        self.cells = el.Elems(blocks=self.blocks, abbr=None
-                             ,langs = gt.ALL_DICS.get_langs()
-                             ,search=search).run()
+        self.blocks = el.Elems(blocks=self.blocks, abbr=None
+                              ,langs = gt.ALL_DICS.get_langs()
+                              ,search=search).run()
         self.get_text()
         self.get_htm()
-        return self.cells
+        return self.blocks
