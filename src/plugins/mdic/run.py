@@ -140,14 +140,14 @@ class Plugin:
         f = '[MClient] plugins.mdic.run.Plugin.request'
         self.search = search
         str_lst = ALL_DICS.search(self.search)
-        cells = Elems(str_lst).run()
-        if not cells:
+        blocks = Elems(str_lst).run()
+        if not blocks:
             rep.empty(f)
             return []
-        texts = [cell.text for cell in cells]
+        texts = [block.text for block in blocks]
         self.htm = self.text = List(texts).space_items()
         #TODO: Implement or drop
         #self.art_subj = ielems.art_subj
         #self.Parallel = ielems.Parallel
         #self.Separate = ielems.Separate
-        return cells
+        return blocks
