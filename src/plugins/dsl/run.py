@@ -24,7 +24,7 @@ class Plugin:
         '''
         self.Parallel = False
         self.Separate = False
-        self.cells = []
+        self.blocks = []
         self.majors = []
         self.minors = []
         self.art_subj = {}
@@ -173,7 +173,6 @@ class Plugin:
     
     def request(self, search='', url=''):
         cu.FORA = False
-        self.blocks = []
         htm = []
         self.search = search
         articles = gt.Get(search).run()
