@@ -33,20 +33,22 @@ class Wrap:
         import plugins.multitrancom.tags as tg
         import plugins.multitrancom.elems as el
         import cells as cl
+        import view as vw
         
         text = Read(HTM_FILE).get()
         timer = Timer(f)
         timer.start()
         text = cu.CleanUp(text).run()
         blocks = tg.Tags(text=text, maxrows=0).run()
-        cells = el.Elems(blocks).run()
+        blocks = el.Elems(blocks).run()
+        cells = cl.Cells(blocks).run()
         
         ARTICLES.add(SEARCH, URL, cells)
         
-        cells = cl.Omit(cells).run()
-        cells = cl.Prioritize(cells).run()
-        cells = cl.View(cells).run()
-        iwrap = cl.Wrap(cells)
+        cells = vw.Omit(cells).run()
+        cells = vw.Prioritize(cells).run()
+        cells = vw.View(cells).run()
+        iwrap = vw.Wrap(cells)
         iwrap.run()
         timer.end()
         return iwrap.debug()
@@ -62,6 +64,7 @@ class Prioritize:
         import plugins.multitrancom.tags as tg
         import plugins.multitrancom.elems as el
         import cells as cl
+        import view as vw
         from subjects import SUBJECTS
         
         text = Read(HTM_FILE).get()
@@ -72,7 +75,8 @@ class Prioritize:
                          ,maxrows = 0
                          ).run()
         ielems = el.Elems(blocks)
-        cells = ielems.run()
+        blocks = ielems.run()
+        cells = cl.Cells(blocks).run()
         
         ''' #FIX: For some reason, lg.objs.get_plugins().get_article_subjects()
             is empty.
@@ -90,8 +94,8 @@ class Prioritize:
                     ,blocked = SUBJECTS.block
                     ,prioritized = SUBJECTS.prior)
 
-        cells = cl.Omit(cells).run()
-        iprior = cl.Prioritize(cells)
+        cells = vw.Omit(cells).run()
+        iprior = vw.Prioritize(cells)
         iprior.run()
         timer.end()
         return iprior.debug()
@@ -106,15 +110,17 @@ class View:
         import plugins.stardict.tags as tg
         import plugins.stardict.elems as el
         import cells as cl
+        import view as vw
         file = '/home/pete/docs/mclient_tests/stardict/EnRu full cut.txt'
         text = Read(file).get()
         text = cu.CleanUp(text).run()
         blocks = tg.Tags(text).run()
-        cells = el.Elems(blocks).run()
+        blocks = el.Elems(blocks).run()
+        cells = cl.Cells(blocks).run()
         ARTICLES.add(SEARCH, URL, cells)
-        cells = cl.Omit(cells).run()
-        cells = cl.Prioritize(cells).run()
-        iview = cl.View(cells)
+        cells = vw.Omit(cells).run()
+        cells = vw.Prioritize(cells).run()
+        iview = vw.View(cells)
         iview.run()
         return iview.debug()
     
@@ -125,19 +131,21 @@ class View:
         import plugins.multitrancom.tags as tg
         import plugins.multitrancom.elems as el
         import cells as cl
+        import view as vw
         
         text = Read(HTM_FILE).get()
         timer = Timer(f)
         timer.start()
         text = cu.CleanUp(text).run()
         blocks = tg.Tags(text=text, maxrows=0).run()
-        cells = el.Elems(blocks).run()
+        blocks = el.Elems(blocks).run()
+        cells = cl.Cells(blocks).run()
         
         ARTICLES.add(SEARCH, URL, cells)
         
-        cells = cl.Omit(cells).run()
-        cells = cl.Prioritize(cells).run()
-        iview = cl.View(cells)
+        cells = vw.Omit(cells).run()
+        cells = vw.Prioritize(cells).run()
+        iview = vw.View(cells)
         iview.run()
         timer.end()
         return iview.debug()
@@ -150,6 +158,7 @@ class View:
         import plugins.dsl.tags as tg
         import plugins.dsl.elems as el
         import cells as cl
+        import view as vw
         
         blocks = []
         
@@ -164,13 +173,14 @@ class View:
                              ,Debug = DEBUG
                              ,maxrows = 0
                              ,dicname = iarticle.dic).run()
-        cells = el.Elems(blocks).run()
+        blocks = el.Elems(blocks).run()
+        cells = cl.Cells(blocks).run()
         
         ARTICLES.add(SEARCH, URL, cells)
         
-        cells = cl.Omit(cells).run()
-        cells = cl.Prioritize(cells).run()
-        iview = cl.View(cells)
+        cells = vw.Omit(cells).run()
+        cells = vw.Prioritize(cells).run()
+        iview = vw.View(cells)
         iview.run()
         timer.end()
         return iview.debug()
@@ -642,10 +652,13 @@ class Plugin:
             print(mes)
     
     def run_stardict(self):
+        import cells as cl
         import plugins.stardict.run as sr
-        search = 'about'
         iplug = sr.Plugin(Debug=DEBUG)
-        iplug.request(search=search)
+        blocks = iplug.request(SEARCH)
+        icells = cl.Cells(blocks)
+        icells.run()
+        return icells.debug()
     
     def run_mdic(self):
         import plugins.mdic.run as md
@@ -1220,7 +1233,8 @@ if __name__ == '__main__':
     #mes = Elems().run_multitrandem()
     #mes = Prioritize().run_multitrancom()
     #mes = Plugin().run_dsl()
-    mes = Plugin().run_mdic()
+    mes = Plugin().run_stardict()
+    #mes = Plugin().run_mdic()
     shDEBUG.reset(f, mes)
     shDEBUG.show()
     # This MUST be on a separate line, the widget will not be shown otherwise
