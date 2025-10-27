@@ -143,7 +143,7 @@ class Elems:
         # Extra spaces in the beginning may cause sorting problems
         self.add_space()
         #TODO: expand parts of speech (n -> noun, etc.)
-        self.blocks
+        return self.blocks
     
     def debug(self, maxrow=20, maxrows=0):
         f = 'plugins.multitrandem.elems.Elems.debug'
