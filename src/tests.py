@@ -223,15 +223,15 @@ class Elems:
     
     def run_fora(self):
         f = '[MClient] tests.Elems.run_fora'
+        from cells import Cells
         from plugins.fora.run import Plugin
-        from plugins.fora.stardictx.elems import Elems
-        cells = Plugin().request(SEARCH)
-        if not cells:
+        blocks = Plugin().request(SEARCH)
+        if not blocks:
             rep.lazy(f)
             return
-        ielems = Elems(cells[-1].blocks)
-        ielems.cells = cells
-        return ielems.debug()
+        icells = Cells(blocks)
+        icells.run()
+        return icells.debug()
     
     def run_fora_stardictx(self):
         f = '[MClient] tests.Elems.run_fora_stardictx'
@@ -1135,7 +1135,7 @@ if __name__ == '__main__':
     #mes = Elems().run_stardict()
     #mes = Elems().run_fora_stardictx()
     #mes = Elems().run_fora_dsl()
-    #mes = Elems().run_fora()
+    mes = Elems().run_fora()
     #mes = Elems().run_multitrancom()
     #mes = Subjects().run()
     #mes = View().run_dsl()
@@ -1150,7 +1150,7 @@ if __name__ == '__main__':
     #mes = Plugin().run_mdic()
     #mes = Plugin().run_multitrancom()
     #mes = Plugin().run_multitrandem()
-    mes = Plugin().run_stardict()
+    #mes = Plugin().run_stardict()
     shDEBUG.reset(f, mes)
     shDEBUG.show()
     # This MUST be on a separate line, the widget will not be shown otherwise
