@@ -212,6 +212,11 @@ class Tags:
                and not self._is_trash(tag)]
         for tag in tags:
             block = Block()
+            ''' When a dictionary is reconverted from another format,
+                an article can consist of comments and fixed blocks only.
+                cells.Cells.delete_fixed removes all cells in that case.
+            '''
+            block.type = 'term'
             for subtag in tag.inherent:
                 if subtag.type == 'url':
                     block.url = subtag.url
