@@ -19,8 +19,7 @@ DEBUG = True
 
 SEARCH = 'account'
 URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing&l2=2'
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/fill (2025-01-31).htm'
-#SEARCH = 'chicken wing pork friday coding style'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/account (2025-10-26).htm'
 
 
 class Wrap:
@@ -211,15 +210,14 @@ class Elems:
         return ielems.debug()
     
     def run_stardict(self):
-        import plugins.stardict.cleanup as cu
-        import plugins.stardict.tags as tg
-        import plugins.stardict.elems as el
-        #file = '/home/pete/docs/mclient_tests/stardict/EnRu full cut.txt'
-        file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - product.txt'
+        from plugins.stardict.cleanup import CleanUp as mCleanUp
+        from plugins.stardict.tags import Tags as mTags
+        from plugins.stardict.elems import Elems as mElems
+        file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - account.txt'
         text = Read(file).get()
-        text = cu.CleanUp(text).run()
-        blocks = tg.Tags(text).run()
-        ielems = el.Elems(blocks)
+        text = mCleanUp(text).run()
+        blocks = mTags(text).run()
+        ielems = mElems(blocks)
         ielems.run()
         return ielems.debug()
     
@@ -450,31 +448,23 @@ class Get:
         return '\n\n'.join(articles)
     
     def run_fora(self):
-        import os
-        from plugins.fora.get import Fora
-        dic = 'ComputersEnRu'
-        folder = '/home/pete/.config/mclient/dics/Fora'
-        folder = os.path.join(folder, dic)
-        return Fora(folder).search('account')
+        from plugins.fora.get import Get as mGet
+        return mGet(SEARCH).run()
     
     def run_dsl(self):
-        import plugins.dsl.get as gt
-        iget = gt.Get('account')
+        from plugins.dsl.get import Get as mGet
+        iget = mGet(SEARCH)
         iget.run()
         return iget.debug()
     
     def run_multitrandem(self):
-        f = '[MClient] tests.Get.run_multitrandem'
-        from manager import PLUGINS
-        import plugins.multitrandem.get as gt
-        PLUGINS.Debug = False
-        PLUGINS.maxrows = 1000
-        result = gt.Get(SEARCH).run()
+        from plugins.multitrandem.get import CODING, Get as mGet
+        result = mGet(SEARCH).run()
         if not result:
             rep.empty(f)
             return
         for i in range(len(result)):
-            result[i] = result[i].decode(gt.CODING)
+            result[i] = result[i].decode(CODING)
         return str(result)
     
     def run_multitrancom(self):
@@ -495,17 +485,8 @@ class Get:
         Launch(file).launch_default()
     
     def run_stardict(self):
-        f = '[MClient] tests.Get.run_stardict'
-        from manager import PLUGINS
-        import plugins.stardict.get
-        PLUGINS.Debug = False
-        PLUGINS.maxrows = 1000
-        search = 'abstersion'
-        timer = Timer(f)
-        timer.start()
-        result = plugins.stardict.get.Get(search).run()
-        timer.end()
-        return result
+        from plugins.stardict.get import Get as mGet
+        return mGet(SEARCH).run()
 
 
 
@@ -615,121 +596,52 @@ class Tags:
 class Plugin:
     
     def run_fora(self):
-        from plugins.fora.run import Plugin
-        search = 'about'
-        iplug = Plugin(Debug=DEBUG)
-        iplug.request(search=search)
+        from cells import Cells
+        from plugins.fora.run import Plugin as mPlugin
+        blocks = mPlugin().request(SEARCH)
+        icells = Cells(blocks)
+        icells.run()
+        return icells.debug()
     
     def run_multitrandem(self):
-        import plugins.multitrandem.get
-        import plugins.multitrandem.run as mb
-        #search = 'Kafir'
-        search = 'abasin'
-        #search = 'a posteriori'
-        #search = 'abed'
-        #search = 'accommodation coefficient'
-        #search = 'according'
-        #search = 'фабричный корпус'
-        #search = 'build market'
-        #search = 'bunching device'
-        #search = 'valve rocker shank'
-        # пласт, характеризуемый определённой скоростью
-        #search = 'velocity bed'
-        #отравление хинной коркой и её алкалоидами = quininism
-        url = ''
-        
-        ''' #NOTE: This is a standard 'dics' folder, do not include subfolders
-            here.
-        '''
-        plugins.multitrandem.get.PATH = '/home/pete/.config/mclient/dics'
-        iplug = mb.Plugin(Debug=DEBUG, maxrows=150)
-        
-        blocks = iplug.request(url=url, search=search)
-        if not blocks:
-            blocks = []
-        for i in range(len(blocks)):
-            mes = f'{i}: {blocks[i].type}: "{blocks[i].text}"'
-            print(mes)
+        from cells import Cells
+        from plugins.multitrandem.run import Plugin as mPlugin
+        blocks = mPlugin().request(search=SEARCH)
+        icells = Cells(blocks)
+        icells.run()
+        return icells.debug()
     
     def run_stardict(self):
-        import cells as cl
-        import plugins.stardict.run as sr
-        iplug = sr.Plugin(Debug=DEBUG)
-        blocks = iplug.request(SEARCH)
-        icells = cl.Cells(blocks)
+        from cells import Cells
+        from plugins.stardict.run import Plugin as mPlugin
+        blocks = mPlugin().request(SEARCH)
+        icells = Cells(blocks)
         icells.run()
         return icells.debug()
     
     def run_mdic(self):
-        import plugins.mdic.run as md
-        iplugin = md.Plugin()
-        iplugin.request(SEARCH)
-        return iplugin.get_text()
+        from cells import Cells
+        from plugins.mdic.run import Plugin as mPlugin
+        blocks = mPlugin().request(SEARCH)
+        icells = Cells(blocks)
+        icells.run()
+        return icells.debug()
     
     def run_dsl(self):
-        f = '[MClient] tests.Plugin.run_dsl'
-        import plugins.dsl.get
-        import plugins.dsl.run as dr
-        plugins.dsl.get.DEBUG = DEBUG
-        plugins.dsl.get.PATH = Home('mclient').add_config('dics')
-        #search = 'компьютер'
-        #search = 'computer'
-        #search = 'bunker'
-        #search = 'accounting'
-        search = 'gear'
-        iplug = dr.Plugin(Debug=DEBUG)
-        iplug.request(search=search)
-        mes = [f'{f}:']
-        sub = _('Number of blocks: {}').format(len(iplug.blocks))
-        mes.append(sub)
-        sub = _('Web-page:')
-        mes.append(sub)
-        sub = iplug.get_htm()
-        mes.append(sub)
-        sub = _('Text:')
-        mes.append(sub)
-        sub = iplug.get_text()
-        mes.append(sub)
-        return '\n'.join(mes)
+        from cells import Cells
+        from plugins.dsl.run import Plugin as mPlugin
+        blocks = mPlugin().request(SEARCH)
+        icells = Cells(blocks)
+        icells.run()
+        return icells.debug()
     
     def run_multitrancom(self):
-        import plugins.multitrancom.run as mc
-        #url = 'https://www.multitran.com/m.exe?s=memory%20pressure&l1=2&l2=1&SHL=2'
-        #search = 'memory pressure'
-        #url = 'https://www.multitran.com/m.exe?s=nucleoside%20reverse%20transcriptase%20inhibitors&l1=2&l2=1&SHL=2'
-        #search = 'nucleoside reverse transcriptase inhibitors'
-        #url = 'https://www.multitran.com/m.exe?s=%D0%BD%D1%83%D0%BA%D0%BB%D0%B5%D0%B8%D0%BD%D0%BE%D0%B2%D1%8B%D0%B9&l1=2&l2=1&SHL=2'
-        #search = 'нуклеиновый'
-        #url = 'https://www.multitran.com/m.exe?a=3&l1=2&l2=1&s=%D0%B2%2B%D1%8F%D0%B1%D0%BB%D0%BE%D1%87%D0%BA%D0%BE&SHL=2'
-        #search = '47 фраз'
-        #url = 'https://www.multitran.com/m.exe?s=Antiquity&l1=1&l2=2&SHL=2'
-        #search = 'Antiquity'
-        #url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
-        #search = 'hello'
-        #url = 'https://www.multitran.com/m.exe?s=set&l1=1&l2=2&SHL=2'
-        #search = 'set'
-        #url = 'https://www.multitran.com/m.exe?a=3&l1=1&l2=2&s=hello&SHL=2'
-        #search = '97 фраз в 16 тематиках'
-        #url = 'https://www.multitran.com/m.exe?a=3&l1=1&l2=2&s=icon&SHL=2'
-        #search = 'icon'
-        #url = 'https://www.multitran.com/m.exe?a=3&l1=1&l2=2&s=heaven+and+hell+bond&SHL=2'
-        #search = 'heaven and hell bond'
-        #url = 'https://www.multitran.com/m.exe?s=%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B0&l1=1&l2=2&SHL=2'
-        #search = 'задача'
-        #url = 'https://www.multitran.com/m.exe?s=ntthing&l1=1&l2=2&SHL=2'
-        #search = 'ntthing'
-        #url = 'https://www.multitran.com/m.exe?s=question&l1=2&l2=1&SHL=2'
-        #search = 'question'
-        #url = 'https://www.multitran.com/m.exe?s=%D1%86%D0%B5%D0%BF%D1%8C:+%D0%BF%D1%80%D0%BE%D0%B2%D0%BE%D0%B4&l1=2&l2=1'
-        #search = 'цепь: провод'
-        #url = 'https://www.multitran.com/m.exe?s=%D0%B2%D1%81%D0%BF%D0%BE%D0%BC%D0%B8%D0%BD%D0%B0%D1%82%D1%8C&l1=2&l2=1&SHL=2'
-        #search = 'вспоминать'
-        url = 'https://www.multitran.com/m.exe?s=reticulated+siren&l1=1&l2=10000&SHL=33'
-        search = 'reticulated siren'
-        
-        mc.Plugin(Debug = DEBUG
-                 ,maxrows = 0).request(url = url
-                                      ,search = search)
+        from cells import Cells
+        from plugins.multitrancom.run import Plugin as mPlugin
+        blocks = mPlugin().request(url=url, search=SEARCH)
+        icells = Cells(blocks)
+        icells.run()
+        return icells.debug()
 
 
 
@@ -1205,12 +1117,13 @@ if __name__ == '__main__':
         e.g. com.run_welcome, will cause an infinite loop.
     '''
     #mes = com.get_all_subjects()
-    #mes = Get().run_multitrandem()
-    #mes = Get().run_stardict()
     #mes = Get().run_dsl()
     #mes = Get().run_fora()
     #mes = Get().run_fora_many_matches()
     #mes = Get().run_mdic()
+    #mes = Get().run_multitrancom()
+    #mes = Get().run_multitrandem()
+    #mes = Get().run_stardict()
     #mes = CleanUp().run_dsl()
     #mes = Tags().run_stardict()
     #mes = Tags().run_fora_stardictx()
@@ -1233,8 +1146,11 @@ if __name__ == '__main__':
     #mes = Elems().run_multitrandem()
     #mes = Prioritize().run_multitrancom()
     #mes = Plugin().run_dsl()
-    mes = Plugin().run_stardict()
+    #mes = Plugin().run_fora()
     #mes = Plugin().run_mdic()
+    #mes = Plugin().run_multitrancom()
+    #mes = Plugin().run_multitrandem()
+    mes = Plugin().run_stardict()
     shDEBUG.reset(f, mes)
     shDEBUG.show()
     # This MUST be on a separate line, the widget will not be shown otherwise
