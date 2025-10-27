@@ -124,21 +124,25 @@ class Cells:
         for cell in self.cells[::-1]:
             if cell.fixed_block and cell.fixed_block.type in ('subj', 'phsubj'):
                 return cell.text
+        return ''
     
     def _get_last_wform(self):
         for cell in self.cells[::-1]:
             if cell.fixed_block and cell.fixed_block.type == 'wform':
                 return cell.text
+        return ''
     
     def _get_last_speech(self):
         for cell in self.cells[::-1]:
             if cell.fixed_block and cell.fixed_block.type == 'speech':
                 return cell.text
+        return ''
     
     def _get_last_transc(self):
         for cell in self.cells[::-1]:
             if cell.fixed_block and cell.fixed_block.type == 'transc':
                 return cell.text
+        return ''
     
     def _get_prev_subj(self, i):
         while i >= 0:
