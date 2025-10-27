@@ -55,7 +55,7 @@ class Cells:
         for i in range(len(self.cells)):
             self.cells[i].no = i
     
-    def debug(self, maxrow=70, maxrows=0):
+    def debug(self, maxrow=15, maxrows=0):
         f = '[MClient] cells.Cells.debug'
         headers = ('SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #'), _('CELL #')
                   ,_('TYPES'), _('TEXT'), 'URL')
@@ -261,6 +261,6 @@ class Cells:
         self.save_urls()
         #self.set_art_subj()
         self.fill_fixed()
-        self.delete_fixed()
+        #self.delete_fixed()
         self.renumber()
         return self.cells
