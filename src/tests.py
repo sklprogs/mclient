@@ -17,9 +17,12 @@ from config import CONFIG
 
 DEBUG = True
 
-SEARCH = 'account'
+#SEARCH = 'account'
+#SEARCH = 'book'
+SEARCH = 'good'
 URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing&l2=2'
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/account (2025-10-26).htm'
+#HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/account (2025-10-26).htm'
+HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/inundate (2024-04-08).html'
 
 
 class Wrap:
@@ -213,7 +216,7 @@ class Elems:
         from plugins.stardict.cleanup import CleanUp as mCleanUp
         from plugins.stardict.tags import Tags as mTags
         from plugins.stardict.elems import Elems as mElems
-        file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - account.txt'
+        file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - good.txt'
         text = Read(file).get()
         text = mCleanUp(text).run()
         blocks = mTags(text).run()
@@ -292,19 +295,21 @@ class Elems:
         f = '[MClient] tests.Elems.run_multitrancom'
         from skl_shared.text_file import Read
         from skl_shared.time import Timer
-        from plugins.multitrancom.cleanup import CleanUp
-        from plugins.multitrancom.tags import Tags
-        from plugins.multitrancom.elems import Elems
+        from cells import Cells
+        from plugins.multitrancom.cleanup import CleanUp as mCleanUp
+        from plugins.multitrancom.tags import Tags as mTags
+        from plugins.multitrancom.elems import Elems as mElems
         text = Read(HTM_FILE).get()
         timer = Timer(f)
         timer.start()
-        text = CleanUp(text).run()
-        blocks = Tags(text = text
-                     ,maxrows = 0).run()
-        ielems = Elems(blocks)
-        ielems.run()
+        text = mCleanUp(text).run()
+        blocks = mTags(text = text
+                      ,maxrows = 0).run()
+        blocks = mElems(blocks).run()
         timer.end()
-        return ielems.debug()
+        icells = Cells(blocks)
+        icells.run()
+        return icells.debug()
 
 
 
@@ -1132,10 +1137,10 @@ if __name__ == '__main__':
     #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
     #mes = Elems().run_mdic()
-    #mes = Elems().run_stardict()
+    mes = Elems().run_stardict()
     #mes = Elems().run_fora_stardictx()
     #mes = Elems().run_fora_dsl()
-    mes = Elems().run_fora()
+    #mes = Elems().run_fora()
     #mes = Elems().run_multitrancom()
     #mes = Subjects().run()
     #mes = View().run_dsl()
