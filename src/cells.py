@@ -265,6 +265,6 @@ class Cells:
         self.save_urls()
         #self.set_art_subj()
         self.fill_fixed()
-        #self.delete_fixed()
+        self.delete_fixed()
         self.renumber()
         return self.cells
