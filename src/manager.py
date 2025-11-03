@@ -45,13 +45,6 @@ class Plugins:
             return {}
         return self.fixed_urls
     
-    def get_article_subjects(self):
-        f = '[MClient] manager.Plugins.get_article_subjects'
-        if not self.plugin:
-            rep.empty(f)
-            return {}
-        return self.plugin.get_article_subjects()
-    
     def get_speeches(self):
         f = '[MClient] manager.Plugins.get_speeches'
         if not self.plugin:
@@ -265,12 +258,8 @@ class Plugins:
         if not self.plugin:
             rep.empty(f)
             return
-        blocks = self.plugin.request(search = search
-                                    ,url = url)
-        icells = Cells(blocks)
-        icells.run()
-        self.fixed_urls = icells.fixed_urls
-        return icells.cells
+        return self.plugin.request(search = search
+                                  ,url = url)
     
     def is_parallel(self):
         f = '[MClient] manager.Plugins.is_parallel'
