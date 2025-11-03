@@ -51,6 +51,16 @@ class Articles:
         except KeyError:
             rep.wrong_input(f)
     
+    def get_art_subj(self):
+        f = '[MClient] articles.Articles.get_art_subj'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return
+        try:
+            return self.articles['ids'][self.id]['art_subj']
+        except KeyError:
+            rep.wrong_input(f)
+    
     def get_fixed_urls(self):
         f = '[MClient] articles.Articles.get_fixed_urls'
         if not self.articles['ids']:
@@ -109,7 +119,7 @@ class Articles:
         return self.get_max_id() + 1
     
     def add(self, search='', url='', cells=[], table=[], raw_code=''
-           ,fixed_urls=[], subjf=[], blocked=[], prioritized=[]):
+           ,fixed_urls=[], subjf=[], blocked=[], prioritized=[], art_subj={}):
         f = '[MClient] articles.Articles.add'
         # Do not add articles that were not found to history
         if not cells:
@@ -136,7 +146,8 @@ class Articles:
                                     ,'prioritized'   : prioritized
                                     ,'rowno'         : -1
                                     ,'colno'         : -1
-                                    ,'blocked_cells' : []}
+                                    ,'blocked_cells' : []
+                                    ,'art_subj'      : art_subj}
         self.set_id(id_)
     
     def get_blocked_cells(self):
