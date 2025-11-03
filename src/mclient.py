@@ -32,6 +32,7 @@ import keylistener.gui as kg
 from subjects import SUBJECTS
 from block_mode import BLOCK_MODE
 from columns import COL_WIDTH
+from cells import Elems, Cells
 
 
 #DEBUG = False
@@ -909,23 +910,29 @@ class App:
             artid = ARTICLES.id
             
         if artid == -1:
-            cells = PLUGINS.request(search=search, url=url)
-            SUBJECTS.reset(PLUGINS.get_article_subjects())
+            blocks = PLUGINS.request(search=search, url=url)
+            ielems = Elems(blocks)
+            blocks = ielems.run()
+            icells = Cells(blocks)
+            icells.run()
+            cells = icells.cells
+            SUBJECTS.reset(ielems.art_subj)
             ARTICLES.add(search = search
                         ,url = url
                         ,cells = cells
-                        ,fixed_urls = PLUGINS.get_fixed_urls()
+                        ,fixed_urls = icells.fixed_urls
                         ,raw_code = PLUGINS.get_htm()
                         ,subjf = SUBJECTS.article
                         ,blocked = SUBJECTS.block
-                        ,prioritized = SUBJECTS.prior)
-            HistorySubjects().add(PLUGINS.get_article_subjects())
+                        ,prioritized = SUBJECTS.prior
+                        ,art_subj = ielems.art_subj)
+            HistorySubjects().add(ielems.art_subj)
             self.add_history()
         else:
             mes = _('Load article No. {} from memory').format(artid)
             Message(f, mes).show_info()
             ARTICLES.set_id(artid)
-            SUBJECTS.reset(PLUGINS.get_article_subjects())
+            SUBJECTS.reset(ARTICLES.get_art_subj())
             cells = ARTICLES.get_cells()
             
         self.solve_screen()
