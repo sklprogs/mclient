@@ -18,16 +18,14 @@ class Plugin:
         ''' - Extra unused input variables are preserved so it would be easy to
               use an abstract class for all dictionary sources.
             - #NOTE: Do not forget to set plugins.dsl.get.PATH earlier.
-            - #NOTE: 'art_subj', 'Parallel' and 'Separate' are temporary
-              variables that should be externally referred to only after
-              getting a NEW article.
+            - #NOTE: 'Parallel' and 'Separate' are temporary variables that
+              should be externally referred to only after getting a NEW article.
         '''
         self.Parallel = False
         self.Separate = False
         self.blocks = []
         self.majors = []
         self.minors = []
-        self.art_subj = {}
         self.htm = ''
         self.text = ''
         self.search = ''
@@ -61,9 +59,6 @@ class Plugin:
     
     def get_text(self):
         return self.text
-    
-    def get_article_subjects(self):
-        return self.art_subj
     
     def get_majors(self):
         return ds.objs.get_subjects().get_majors()
