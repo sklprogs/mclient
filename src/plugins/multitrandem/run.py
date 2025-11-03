@@ -18,9 +18,8 @@ class Plugin:
     def __init__(self, Debug=False, maxrows=1000):
         ''' - Extra unused input variables are preserved so it would be easy to
               use an abstract class for all dictionary sources.
-            - #NOTE: 'art_subj', 'Parallel' and 'Separate' are temporary
-              variables that should be externally referred to only after
-              getting a NEW article.
+            - #NOTE: 'Parallel' and 'Separate' are temporary variables that
+              should be externally referred to only after getting a NEW article.
         '''
         self.Parallel = False
         self.Separate = False
@@ -29,7 +28,6 @@ class Plugin:
         self.blocks = []
         self.majors = []
         self.minors = []
-        self.art_subj = {}
         self.htm = ''
         self.text = ''
         self.search = ''
@@ -50,9 +48,6 @@ class Plugin:
     
     def get_htm(self):
         return self.htm
-    
-    def get_article_subjects(self):
-        return self.art_subj
     
     def get_subjects(self):
         return sj.objs.get_subjects().get_list()
