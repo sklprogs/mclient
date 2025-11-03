@@ -285,7 +285,6 @@ class Cells:
         self.rename_phsubj()
         self.set_row_nos()
         self.save_urls()
-        #self.set_art_subj()
         self.fill_fixed()
         self.delete_fixed()
         self.renumber()
