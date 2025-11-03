@@ -202,7 +202,7 @@ class Elems:
         return '\n\n'.join(report)
     
     def _debug_blocks(self, maxrow=30, maxrows=0):
-        f = '[MClient] plugins.stradict.elems.Elems._debug_blocks'
+        f = '[MClient] plugins.mdic.elems.Elems._debug_blocks'
         headers = (_('CELL #'), _('TYPES'), _('TEXT'), 'SUBJ', 'SUBJF', 'URL')
         nos = []
         types = []
@@ -224,7 +224,7 @@ class Elems:
         return f'{f}:\n{mes}'
     
     def _debug_cells(self, maxrow=30, maxrows=0):
-        f = '[MClient] plugins.stradict.elems.Elems._debug_cells'
+        f = '[MClient] plugins.mdic.elems.Elems._debug_cells'
         headers = ('SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #'), _('CELL #')
                   ,_('TYPES'), _('TEXT'), 'URL')
         subj = []
