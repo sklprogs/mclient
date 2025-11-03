@@ -919,6 +919,28 @@ class Commands:
         from manager import PLUGINS
         import mclient as mc
         #TODO: Rework lg.objs.get_order
+        '''
+        def edit_blacklist(self):
+            f = '[MClient] mclient.App.edit_blacklist'
+            old_list = CONFIG.new['subjects']['blocked']
+            old_key = CONFIG.new['BlockSubjects']
+            BLOCK.reset(lst1 = old_list
+                       ,lst2=PLUGINS.get_subjects()
+                       ,art_subjects = com.get_article_subjects()
+                       ,majors = PLUGINS.get_majors())
+            BLOCK.set_checkbox(CONFIG.new['BlockSubjects'])
+            BLOCK.show()
+            CONFIG.new['BlockSubjects'] = self.block.get_checkbox()
+            new_list = BLOCK.get1()
+            if (old_list == new_list) \
+            and (old_key == CONFIG.new['BlockSubjects']):
+                rep.lazy(f)
+                return
+            lg.objs.default.block = new_list
+            ARTICLES.delete_bookmarks()
+            self.load_article()
+        '''
+        
         mc.objs.get_blacklist().reset(lst1 = lg.objs.get_order().blacklst
                                      ,lst2 = PLUGINS.get_subjects()
                                      ,art_subjects = []
