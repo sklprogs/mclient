@@ -16,7 +16,6 @@ class Cells:
     
     def __init__(self, blocks):
         self.cells = []
-        self.art_subj = {}
         self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
         self.blocks = blocks
     
@@ -255,15 +254,6 @@ class Cells:
             elif cell.fixed_block.type in ('phsubj', 'wform') and cell.url:
                 self.fixed_urls[cell.fixed_block.type][cell.text] = cell.url
     
-    def set_art_subj(self):
-        f = '[MClient] cells.Cells.set_art_subj'
-        count = 0
-        for block in self.blocks:
-            if block.type in ('subj', 'phsubj') and block.subj and block.subjf:
-                count += 1
-                self.art_subj[block.subj] = block.subjf
-        rep.matches(f, count)
-    
     def run(self):
         self.set_cells()
         self.set_urls()
@@ -273,7 +263,7 @@ class Cells:
         self.rename_phsubj()
         self.set_row_nos()
         self.save_urls()
-        self.set_art_subj()
+        #self.set_art_subj()
         self.fill_fixed()
         self.delete_fixed()
         self.renumber()
