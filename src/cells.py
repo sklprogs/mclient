@@ -12,6 +12,28 @@ from skl_shared.logic import Text
 from instance import Cell
 
 
+class Elems:
+    
+    def __init__(self, blocks):
+        self.art_subj = {}
+        self.blocks = blocks
+    
+    def set_art_subj(self):
+        # Works only before deleting fixed blocks
+        f = '[MClient] cells.Elems.set_art_subj'
+        count = 0
+        for block in self.blocks:
+            if block.type in ('subj', 'phsubj') and block.subj and block.subjf:
+                count += 1
+                self.art_subj[block.subj] = block.subjf
+        rep.matches(f, count)
+    
+    def run(self):
+        self.set_art_subj()
+        return self.blocks
+
+
+
 class Cells:
     
     def __init__(self, blocks):
