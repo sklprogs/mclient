@@ -307,10 +307,6 @@ class Articles:
         return []
     
     def find(self, source, search, url):
-        f = '[MClient] articles.Articles.find'
-        if not self.articles['ids']:
-            rep.empty(f)
-            return -1
         for id_ in self.articles['ids']:
             if self.articles['ids'][id_]['source'] == source \
             and self.articles['ids'][id_]['search'] == search \
