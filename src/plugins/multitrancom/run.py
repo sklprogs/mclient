@@ -17,16 +17,14 @@ import plugins.multitrancom.speech as sp
 class Plugin:
     
     def __init__(self, Debug=False, maxrows=1000):
-        ''' #NOTE: 'art_subj', 'Parallel' and 'Separate' are temporary
-            variables that should be externally referred to only after getting
-            a NEW article.
+        ''' #NOTE: 'Parallel' and 'Separate' are temporary variables that
+            should be externally referred to only after getting a NEW article.
         '''
         self.Parallel = False
         self.Separate = False
         self.blocks = []
         self.majors = []
         self.minors = []
-        self.art_subj = {}
         self.htm = ''
         self.text = ''
         self.search = ''
@@ -142,9 +140,6 @@ class Plugin:
         else:
             return pr.objs.get_pairs().get_alive()
     
-    def get_article_subjects(self):
-        return self.art_subj
-    
     def get_speeches(self):
         return sp.objs.get_speech().get_dic()
     
@@ -161,7 +156,6 @@ class Plugin:
         blocks = tg.Tags(code).run()
         ielems = el.Elems(blocks)
         self.blocks = ielems.run()
-        self.art_subj = ielems.art_subj
         self.Parallel = ielems.Parallel
         self.Separate = ielems.Separate
         return self.blocks
