@@ -566,6 +566,7 @@ class Elems:
             block.text = block.text.strip()
     
     def set_art_subj(self):
+        # Works only before deleting fixed blocks
         f = '[MClient] plugins.multitrancom.elems.Elems.set_art_subj'
         count = 0
         for block in self.blocks:
@@ -652,4 +653,5 @@ class Elems:
         self.run_com_sp_com()
         self.unite_comments()
         self.renumber_by_type()
+        self.set_art_subj()
         return self.blocks
