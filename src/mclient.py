@@ -437,26 +437,6 @@ class App:
     def run_thread(self):
         self.thread.run_thread()
     
-    def edit_blacklist(self):
-        f = '[MClient] mclient.App.edit_blacklist'
-        old_list = CONFIG.new['subjects']['blocked']
-        old_key = CONFIG.new['BlockSubjects']
-        BLOCK.reset(lst1 = old_list
-                   ,lst2=PLUGINS.get_subjects()
-                   ,art_subjects = com.get_article_subjects()
-                   ,majors = PLUGINS.get_majors())
-        BLOCK.set_checkbox(CONFIG.new['BlockSubjects'])
-        BLOCK.show()
-        CONFIG.new['BlockSubjects'] = self.block.get_checkbox()
-        new_list = BLOCK.get1()
-        if (old_list == new_list) \
-        and (old_key == CONFIG.new['BlockSubjects']):
-            rep.lazy(f)
-            return
-        lg.objs.default.block = new_list
-        ARTICLES.delete_bookmarks()
-        self.load_article()
-    
     def watch_clipboard(self):
         # Watch clipboard
         if CONFIG.new['CaptureHotkey']:
@@ -632,7 +612,7 @@ class App:
     
     def apply_settings(self):
         SETTINGS.close()
-        SUBJECTS.reset(PLUGINS.get_article_subjects())
+        SUBJECTS.reset(ARTICLES.get_art_subj())
         SAVE_SETTINGS.run()
         lg.com.export_style()
         COL_WIDTH.reset()
