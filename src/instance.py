@@ -58,6 +58,8 @@ class Block:
             'speech', 'subj', 'term', 'transc', 'wform'.
         '''
         self.type = 'comment'
+        self.dic = ''
+        self.source = ''
 
 
 
