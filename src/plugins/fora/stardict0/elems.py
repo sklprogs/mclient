@@ -6,7 +6,7 @@ from skl_shared.message.controller import rep, Message
 from skl_shared.list import List
 from skl_shared.table import Table
 
-from instance import Block, Cell
+from instance import Block, Cell, is_block_fixed
 
 COM = ('мн') # '{{мн}}' that can be treated as comments
 SUBJ_ABBR = ('разг.', 'уст.', 'диал.')
@@ -23,7 +23,6 @@ class Elems:
     def set_values(self):
         self.blocks = []
         self.cells = []
-        self.art_subj = {}
         self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
         self.Parallel = False
         self.Separate = False
@@ -66,17 +65,10 @@ class Elems:
             fragms = [block.text for block in cell.blocks]
             cell.text = List(fragms).space_items().strip()
     
-    def _is_block_fixed(self, block):
-        return block.type in ('subj', 'wform', 'speech', 'transc', 'phsubj')
-    
     def _get_fixed_block(self, cell):
         for block in cell.blocks:
-            if block.Fixed:
+            if is_block_fixed(block):
                 return block
-    
-    def set_fixed_blocks(self):
-        for block in self.blocks:
-            block.Fixed = self._is_block_fixed(block)
     
     def set_fixed_cells(self):
         for cell in self.cells:
@@ -97,16 +89,6 @@ class Elems:
                 rowno += 1
             self.cells[i].rowno = rowno
             i += 1
-        rep.matches(f, count)
-    
-    def set_art_subj(self):
-        f = '[MClient] plugins.fora.stardict0.elems.Elems.set_art_subj'
-        count = 0
-        for block in self.blocks:
-            if block.type in ('subj', 'phsubj') and block.subj and block.subjf:
-                count += 1
-                self.art_subj[block.subj] = block.subjf
-                self.art_subj[block.subjf] = block.subj
         rep.matches(f, count)
     
     def _get_last_subj(self):
@@ -256,7 +238,6 @@ class Elems:
         block.cellno = 0
         block.text = self.dic
         block.type = 'subj'
-        block.Fixed = True
         self.blocks.append(block)
     
     def add_wform(self):
@@ -264,7 +245,6 @@ class Elems:
         block.cellno = 1
         block.text = self.search
         block.type = 'wform'
-        block.Fixed = True
         self.blocks.append(block)
     
     def run(self):
@@ -277,10 +257,8 @@ class Elems:
         self.set_blocks()
         self.set_cells()
         self.set_text()
-        self.set_fixed_blocks()
         self.set_fixed_cells()
         self.set_row_nos()
-        self.set_art_subj()
         self.fill_fixed()
         self.delete_fixed()
         self.renumber()
