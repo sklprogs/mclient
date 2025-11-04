@@ -14,7 +14,7 @@ import plugins.dsl.subjects as ds
 
 class Plugin:
     
-    def __init__(self, Debug=False, maxrow=20, maxrows=1000):
+    def __init__(self):
         ''' - Extra unused input variables are preserved so it would be easy to
               use an abstract class for all dictionary sources.
             - #NOTE: Do not forget to set plugins.dsl.get.PATH earlier.
@@ -29,9 +29,6 @@ class Plugin:
         self.htm = ''
         self.text = ''
         self.search = ''
-        self.Debug = Debug
-        self.maxrow = maxrow
-        self.maxrows = maxrows
     
     def is_parallel(self):
         return self.Parallel
@@ -95,8 +92,7 @@ class Plugin:
                 lang = langs[0]
         else:
             lang = (_('Any'),)
-        mes = '"{}"'.format(lang)
-        Message(f, mes).show_debug()
+        Message(f, f'"{lang}"').show_debug()
         return lang
     
     def get_lang2(self):
@@ -109,8 +105,7 @@ class Plugin:
                 lang = langs[0]
         else:
             lang = (_('Any'),)
-        mes = '"{}"'.format(lang)
-        Message(f, mes).show_debug()
+        Message(f, f'"{lang}"').show_debug()
         return lang
     
     def fix_raw_htm(self):
