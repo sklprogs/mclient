@@ -10,7 +10,7 @@ from skl_shared.list import List
 from skl_shared.logic import Text, punc_array
 from skl_shared.table import Table
 
-from instance import Block
+from instance import Block, is_block_fixed
 from subjects import SUBJECTS
 
 SPEECH_ABBR = ('гл.', 'глаг.', 'нареч.', 'нар.', 'прил.', 'сокр.', 'сущ.', 'n', 'v')
@@ -30,13 +30,6 @@ class Elems:
         else:
             self.Success = False
             rep.empty(f)
-    
-    def _is_block_fixed(self, block):
-        return block.type in ('subj', 'wform', 'speech', 'transc', 'phsubj')
-    
-    def set_fixed_blocks(self):
-        for block in self.blocks:
-            block.Fixed = self._is_block_fixed(block)
     
     def _is_transc(self, i):
         return self.blocks[i-2].type == 'comment' \
@@ -82,7 +75,6 @@ class Elems:
                 count += 1
                 block.type = 'speech'
                 block.speech = block.text
-                block.Fixed = True
         rep.matches(f, count)
     
     def set_subjects(self):
@@ -95,7 +87,6 @@ class Elems:
                 block.type = 'subj'
                 block.subj = block.text
                 block.subjf = subjf
-                block.Fixed = True
         rep.matches(f, count)
 
     def fix_cellnos(self):
@@ -107,7 +98,7 @@ class Elems:
         cellno = 0
         count = 0
         for block in self.blocks:
-            if block.Fixed or block.type == 'phrase':
+            if is_block_fixed(block) or block.type == 'phrase':
                 count += 1
                 cellno += 0.01
                 block.cellno = cellno
@@ -173,7 +164,6 @@ class Elems:
         self.set_speech()
         self.set_subjects()
         self.move_phrases()
-        self.set_fixed_blocks()
         self.fix_cellnos()
         self.fill()
         return self.blocks
