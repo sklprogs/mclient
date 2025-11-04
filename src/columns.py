@@ -55,14 +55,7 @@ class Width:
         width first.
     '''
     def __init__(self):
-        self.set_values()
-    
-    def set_values(self):
-        # This approach includes percentage only
-        self.fixed_num = 0
-        self.term_num = 0
-        self.min_width = 1
-        self.columns = []
+        self.reset()
     
     def set_width(self):
         f = '[MClient] columns.Width.set_width'
@@ -87,7 +80,11 @@ class Width:
             '''
     
     def reset(self):
-        self.set_values()
+        # This approach includes percentage only
+        self.fixed_num = 0
+        self.term_num = 0
+        self.min_width = 1
+        self.columns = []
     
     def run(self):
         self.set_fixed_num()
