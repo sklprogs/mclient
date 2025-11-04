@@ -85,7 +85,6 @@ class Elems:
         self.jsons = []
         self.blocks = []
         self.cells = []
-        self.art_subj = {}
         self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
         self.Parallel = False
         self.Separate = False
@@ -139,21 +138,6 @@ class Elems:
             self.Success = False
             rep.empty_output(f)
     
-    def set_art_subj(self):
-        #TODO: Share
-        f = '[MClient] plugins.mdic.elems.Elems.set_art_subj'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        count = 0
-        for cell in self.cells:
-            for block in cell.blocks:
-                if block.type in ('subj', 'phsubj') and block.subj and block.subjf:
-                    count += 1
-                    self.art_subj[block.subj] = block.subjf
-                    self.art_subj[block.subjf] = block.subj
-        rep.matches(f, count)
-    
     def join_cells(self):
         f = '[MClient] plugins.mdic.elems.Elems.join_cells'
         if not self.Success:
@@ -188,7 +172,6 @@ class Elems:
         self.expand_dic()
         self.set_cells()
         self.join_cells()
-        self.set_art_subj()
         self.set_blocks()
         return self.blocks
     
