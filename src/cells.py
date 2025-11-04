@@ -9,7 +9,7 @@ from skl_shared.list import List
 from skl_shared.table import Table
 from skl_shared.logic import Text
 
-from instance import Cell
+from instance import Cell, is_block_fixed
 
 
 class Elems:
@@ -64,7 +64,7 @@ class Cells:
     
     def _get_fixed_block(self, cell):
         for block in cell.blocks:
-            if block.Fixed:
+            if is_block_fixed(block):
                 return block
     
     def set_fixed_cells(self):
