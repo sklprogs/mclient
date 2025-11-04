@@ -9,7 +9,7 @@ from skl_shared.list import List
 from skl_shared.table import Table
 from skl_shared.logic import Text
 
-import instance as ic
+from instance import Block, is_block_fixed
 
 
 class Trash:
@@ -244,7 +244,7 @@ class SeparateWords:
         return self.Separate
     
     def add_subject(self):
-        block = ic.Block()
+        block = Block()
         block.type = 'subj'
         block.text = block.subjf = _('Separate words')
         block.subj = _('sep. words')
@@ -395,7 +395,7 @@ class Suggestions:
             return
         old_len = len(self.blocks)
         self.blocks = self.blocks[self.head:self.tail]
-        rep.deleted(f, old_len-len(self.blocks))
+        rep.deleted(f, old_len - len(self.blocks))
     
     def debug(self):
         # Orphaned
@@ -438,13 +438,6 @@ class Elems:
         self.Separate = False
         self.blocks = blocks
     
-    def _is_block_fixed(self, block):
-        return block.type in ('subj', 'wform', 'speech', 'transc', 'phsubj')
-    
-    def set_fixed_blocks(self):
-        for block in self.blocks:
-            block.Fixed = self._is_block_fixed(block)
-    
     def run_phcount(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.run_phcount'
         count = 0
@@ -482,7 +475,7 @@ class Elems:
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_semi'
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks if block.text != '; ']
-        rep.matches(f, old_len-len(self.blocks))
+        rep.matches(f, old_len - len(self.blocks))
     
     def separate_fixed(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.separate_fixed'
@@ -490,7 +483,8 @@ class Elems:
         i = 1
         while i < len(self.blocks):
             # There can be multiple 'wform' blocks
-            if self.blocks[i-1].Fixed and self.blocks[i].Fixed \
+            if is_block_fixed(self.blocks[i-1]) \
+            and is_block_fixed(self.blocks[i]) \
             and self.blocks[i-1].type != self.blocks[i].type:
                 count += 1
                 # We just need a different 'cellno' (will be reassigned anyway)
@@ -560,9 +554,8 @@ class Elems:
     def strip_blocks(self):
         # Needed for 'phsubj' and such 'wform' as 'English Thesaurus'
         for block in self.blocks:
-            if not block.Fixed:
-                continue
-            block.text = block.text.strip()
+            if is_block_fixed(block):
+                block.text = block.text.strip()
     
     def set_not_found(self):
         for block in self.blocks:
@@ -634,7 +627,6 @@ class Elems:
         self.separate_sp_transc()
         self.convert_user_subj()
         self.set_see_also()
-        self.set_fixed_blocks()
         self.separate_fixed()
         self.run_phcount()
         self.strip_blocks()
