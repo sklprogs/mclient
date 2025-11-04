@@ -10,17 +10,17 @@ from config import CONFIG, PRODUCT_LOW
 from cells import Cells
 import plugins.stardict.get
 import plugins.dsl.get
-import plugins.stardict.run as sdrun
-import plugins.multitrancom.run as mcrun
-import plugins.multitrandem.run as mbrun
-import plugins.dsl.run as lgrun
-import plugins.fora.run as forun
-import plugins.mdic.run as mdrun
+import plugins.stardict.run
+import plugins.multitrancom.run
+import plugins.multitrandem.run
+import plugins.dsl.run
+import plugins.fora.run
+import plugins.mdic.run
 
 
 class Plugins:
     
-    def __init__(self, timeout=5.0, Debug=False, maxrows=1000):
+    def __init__(self, timeout=5.0):
         self.lgplugin = None
         self.mbplugin = None
         self.mcplugin = None
@@ -29,8 +29,6 @@ class Plugins:
         self.mdplugin = None
         self.fixed_urls = {}
         self.source = CONFIG.new['source']
-        self.Debug = Debug
-        self.maxrows = maxrows
         self.plugin = self.mcplugin
         self.timeout = timeout
         self.load()
@@ -203,18 +201,12 @@ class Plugins:
         return self.plugin.get_langs2(lang1)
 
     def load(self):
-        self.sdplugin = sdrun.Plugin(Debug = self.Debug
-                                    ,maxrows = self.maxrows)
-        self.mcplugin = mcrun.Plugin(Debug = self.Debug
-                                    ,maxrows = self.maxrows)
-        self.mbplugin = mbrun.Plugin(Debug = self.Debug
-                                    ,maxrows = self.maxrows)
-        self.lgplugin = lgrun.Plugin(Debug = self.Debug
-                                    ,maxrows = self.maxrows)
-        self.frplugin = forun.Plugin(Debug = self.Debug
-                                    ,maxrows = self.maxrows)
-        self.mdplugin = mdrun.Plugin(Debug = self.Debug
-                                    ,maxrows = self.maxrows)
+        self.sdplugin = plugins.stardict.run.Plugin()
+        self.mcplugin = plugins.multitrancom.run.Plugin()
+        self.mbplugin = plugins.multitrandem.run.Plugin()
+        self.lgplugin = plugins.dsl.run.Plugin()
+        self.frplugin = plugins.fora.run.Plugin()
+        self.mdplugin = plugins.mdic.run.Plugin()
     
     def set(self, source):
         f = '[MClient] manager.Plugins.set'
@@ -289,7 +281,7 @@ class Plugins:
 
 f = '[MClient] manager.__main__'
 if CONFIG.Success:
-    PLUGINS = Plugins(timeout=CONFIG.new['timeout'], Debug=False, maxrows=1000)
+    PLUGINS = Plugins(CONFIG.new['timeout'])
 else:
     PLUGINS = None
     rep.cancel(f)
