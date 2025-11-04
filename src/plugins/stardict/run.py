@@ -12,7 +12,7 @@ import plugins.stardict.subjects as sj
 
 class Plugin:
     
-    def __init__(self, Debug=False, maxrows=1000):
+    def __init__(self):
         ''' - Extra unused input variables are preserved so it would be easy to
               use an abstract class for all dictionary sources.
             - #NOTE: Do not forget to set plugins.stardict.get.PATH earlier.
@@ -27,8 +27,6 @@ class Plugin:
         self.htm = ''
         self.text = ''
         self.search = ''
-        self.Debug = Debug
-        self.maxrows = maxrows
     
     def is_parallel(self):
         return self.Parallel
