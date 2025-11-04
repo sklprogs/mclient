@@ -79,3 +79,12 @@ class Article:
         self.dic = ''
         self.code = ''
         self.search = ''
+
+
+
+class Column:
+    
+    def __init__(self):
+        self.no = 0
+        self.width = 0
+        self.Fixed = False
