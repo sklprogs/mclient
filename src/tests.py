@@ -19,7 +19,8 @@ DEBUG = True
 
 #SEARCH = 'account'
 #SEARCH = 'book'
-SEARCH = 'good'
+#SEARCH = 'good'
+SEARCH = 'orderly'
 URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing&l2=2'
 #HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/account (2025-10-26).htm'
 HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/inundate (2024-04-08).html'
@@ -269,10 +270,13 @@ class Elems:
     def run_mdic(self):
         import plugins.mdic.get as gt
         import plugins.mdic.elems as el
+        import cells as cl
         result = gt.ALL_DICS.search(SEARCH)
-        ielems = el.Elems(result)
-        ielems.run()
-        return ielems.debug()
+        blocks = el.Elems(result).run()
+        blocks = cl.Elems(blocks).run()
+        icell = cl.Cells(blocks)
+        icell.run()
+        return icell.debug()
     
     def run_dsl(self):
         import plugins.dsl.cleanup as cu
@@ -421,10 +425,7 @@ class Get:
     def run_mdic(self):
         from plugins.mdic.get import ALL_DICS
         # Search is case-insensitive for MDIC
-        search = 'account'
-        #search = 'attack'
-        #search = 'wine'
-        result = ALL_DICS.search(search)
+        result = ALL_DICS.search(SEARCH)
         if result:
             # Useful for debugging only
             return '\n\n'.join(result)
@@ -1144,6 +1145,9 @@ if __name__ == '__main__':
         e.g. com.run_welcome, will cause an infinite loop.
     '''
     #mes = com.get_all_subjects()
+    #mes = Subjects().run()
+    #mes = Prioritize().run_multitrancom()
+    #mes = CleanUp().run_dsl()
     #mes = Get().run_dsl()
     #mes = Get().run_fora()
     #mes = Get().run_fora_many_matches()
@@ -1151,27 +1155,23 @@ if __name__ == '__main__':
     #mes = Get().run_multitrancom()
     #mes = Get().run_multitrandem()
     #mes = Get().run_stardict()
-    #mes = CleanUp().run_dsl()
     #mes = Tags().run_stardict()
     #mes = Tags().run_fora_stardictx()
     #mes = Tags().run_dsl()
     #mes = Tags().run_fora_dsl()
     #mes = Tags().run_multitrancom()
     #mes = Elems().run_dsl()
-    #mes = Elems().run_mdic()
-    mes = Elems().run_stardict()
+    mes = Elems().run_mdic()
+    #mes = Elems().run_stardict()
     #mes = Elems().run_fora_stardictx()
     #mes = Elems().run_fora_dsl()
     #mes = Elems().run_fora()
+    #mes = Elems().run_multitrandem()
     #mes = Elems().run_multitrancom()
-    #mes = Subjects().run()
     #mes = View().run_dsl()
     #mes = View().run_stardict()
-    #mes = Subjects().run()
     #mes = View().run_multitrancom()
     #mes = Wrap().run_multitrancom()
-    #mes = Elems().run_multitrandem()
-    #mes = Prioritize().run_multitrancom()
     #mes = Plugin().run_dsl()
     #mes = Plugin().run_fora()
     #mes = Plugin().run_mdic()
@@ -1182,10 +1182,8 @@ if __name__ == '__main__':
     shDEBUG.show()
     # This MUST be on a separate line, the widget will not be shown otherwise
     #idebug.show()
-    
     #mes = com.run_speech()
     #Message(f, mes, True).show_debug()
-    
     #isuggest = com.run_suggest()
     #isuggest.show()
 
