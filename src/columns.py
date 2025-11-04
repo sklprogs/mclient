@@ -6,6 +6,7 @@ from skl_shared.message.controller import rep, Message
 
 from config import CONFIG
 from articles import ARTICLES
+from instance import Column
 
 
 class Types:
@@ -44,15 +45,6 @@ class Types:
     
     def run(self):
         return self.get()
-
-
-
-class Column:
-    
-    def __init__(self):
-        self.no = 0
-        self.width = 0
-        self.Fixed = False
 
 
 
