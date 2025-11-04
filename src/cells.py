@@ -18,6 +18,27 @@ class Elems:
         self.art_subj = {}
         self.blocks = blocks
     
+    def debug(self, maxrow=30, maxrows=0):
+        f = '[MClient] cells.Elems.debug'
+        headers = (_('CELL #'), _('TYPES'), _('TEXT'), 'SUBJ', 'SUBJF', 'URL')
+        nos = []
+        types = []
+        texts = []
+        subj = []
+        subjf = []
+        urls = []
+        for block in self.blocks:
+            nos.append(block.cellno)
+            types.append(block.type)
+            texts.append(f'"{block.text}"')
+            subj.append(block.subj)
+            subjf.append(block.subjf)
+            urls.append(block.url)
+        mes = Table(headers = headers
+                   ,iterable = (nos, types, texts, subj, subjf, urls)
+                   ,maxrow = maxrow, maxrows = maxrows).run()
+        return f'{f}:\n{mes}'
+    
     def set_art_subj(self):
         # Works only before deleting fixed blocks
         f = '[MClient] cells.Elems.set_art_subj'
