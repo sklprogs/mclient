@@ -434,7 +434,6 @@ class Suggestions:
 class Elems:
     
     def __init__(self, blocks):
-        self.art_subj = {}
         self.Parallel = False
         self.Separate = False
         self.blocks = blocks
@@ -565,16 +564,6 @@ class Elems:
                 continue
             block.text = block.text.strip()
     
-    def set_art_subj(self):
-        # Works only before deleting fixed blocks
-        f = '[MClient] plugins.multitrancom.elems.Elems.set_art_subj'
-        count = 0
-        for block in self.blocks:
-            if block.type in ('subj', 'phsubj') and block.subj and block.subjf:
-                count += 1
-                self.art_subj[block.subj] = block.subjf
-        rep.matches(f, count)
-    
     def set_not_found(self):
         for block in self.blocks:
             if block.type == 'comment' and block.text \
@@ -653,5 +642,4 @@ class Elems:
         self.run_com_sp_com()
         self.unite_comments()
         self.renumber_by_type()
-        self.set_art_subj()
         return self.blocks
