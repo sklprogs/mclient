@@ -9,7 +9,7 @@ from skl_shared.table import Table
 from skl_shared.list import List
 from skl_shared.logic import Text, punc_array, ru_alphabet, lat_alphabet
 
-from instance import Block
+from instance import Block, is_block_fixed
 
 SPEECH_ABBR = ('гл.', 'нареч.', 'нар.', 'прил.', 'сокр.', 'сущ.')
 SUBJ_ABBR = ('амер.', 'вчт.', 'геогр.', 'карт.', 'мор.', 'разг.', 'уст.', 'хир.', 'эл.')
@@ -134,13 +134,6 @@ class Elems:
             self.Success = False
             rep.empty(f)
     
-    def _is_block_fixed(self, block):
-        return block.type in ('subj', 'wform', 'speech', 'transc', 'phsubj')
-    
-    def set_fixed_blocks(self):
-        for block in self.blocks:
-            block.Fixed = self._is_block_fixed(block)
-    
     def expand_dic(self):
         #TODO (?): implement
         pass
@@ -180,7 +173,6 @@ class Elems:
             return []
         self.set_subjects()
         self.set_speech()
-        self.set_fixed_blocks()
         self.expand_dic()
         #self.set_phrases()
         #self.move_phrases()
@@ -271,5 +263,4 @@ class Elems:
         block.subjf = self.phsubj_name
         block.text = self.phsubj_name
         block.type = 'phsubj'
-        block.Fixed = True
         self.blocks.insert(no, block)
