@@ -500,7 +500,6 @@ class Elems:
         count = 0
         i = 1
         while i < len(self.blocks):
-            # It is not enough to set 'Fixed'
             if self.blocks[i].type in ('speech', 'transc'):
                 count += 1
                 # We just need a different 'cellno' (will be reassigned anyway)
