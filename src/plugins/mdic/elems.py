@@ -73,14 +73,6 @@ class Elems:
                 return
             self.jsons.append(dic)
     
-    def expand_dic(self):
-        f = '[MClient] plugins.mdic.elems.Elems.expand_dic'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        #TODO (?): implement
-        pass
-    
     def set_blocks(self):
         f = '[MClient] plugins.mdic.elems.Elems.set_blocks'
         if not self.Success:
@@ -96,6 +88,5 @@ class Elems:
     
     def run(self):
         self.set_jsons()
-        self.expand_dic()
         self.set_blocks()
         return self.blocks
