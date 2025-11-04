@@ -20,7 +20,7 @@ from skl_shared.launch import Launch
 
 import plugins.dsl.cleanup as cu
 from plugins.dsl.get import ALL_DICS
-import plugins.dsl.tags as tg
+from plugins.dsl.tags import Tags
 from plugins.dsl.elems import Elems
 
 BODY_FOLDER = Home('mclient').add_config('dics', 'MDIC')
@@ -36,7 +36,7 @@ class Portion:
         self.json = {}
         self.code = ''
         self.body = []
-        self.cells = []
+        self.blocks = []
         self.wforms = []
         ''' A source name should not be empty; however, json accepts '' as keys
             so we do not force non-empty sources here.
@@ -53,8 +53,8 @@ class Portion:
             return
         self.wforms = [item.lower().strip() for item in self.json.keys() if item]
     
-    def set_cells(self):
-        f = '[MClient] converters.dsl.mdic.Portion.set_cells'
+    def set_blocks(self):
+        f = '[MClient] converters.dsl.mdic.Portion.set_blocks'
         if not self.Success:
             rep.cancel(f)
             return
@@ -63,25 +63,23 @@ class Portion:
         cu.FORA = False
         for article in self.articles:
             code = cu.CleanUp(article).run()
-            blocks = tg.Tags(code).run()
+            blocks = Tags(code).run()
             if not blocks:
                 rep.empty(f)
                 continue
-            cells = Elems(blocks).run()
-            if cells:
-                self.cells.append(cells)
+            blocks = Elems(blocks).run()
+            if blocks:
+                self.blocks.append(blocks)
         ms.STOP = False
-        if not self.cells:
+        if not self.blocks:
             self.Success = False
             rep.empty_output(f)
             return
     
-    def _get_wform(self, article_cells):
-        if not article_cells[0]:
+    def _get_wform(self, blocks):
+        if not blocks:
             return ''
-        if not article_cells[0].blocks:
-            return ''
-        return article_cells[0].blocks[0].wform
+        return blocks[0].wform
     
     def set_json(self):
         ''' #NOTE: Edit Poses.start_pattern and Poses.end_pattern upon changing
@@ -92,20 +90,18 @@ class Portion:
             rep.cancel(f)
             return
         ms.STOP = True
-        for article_cells in self.cells:
-            wform = self._get_wform(article_cells)
+        for article_blocks in self.blocks:
+            wform = self._get_wform(article_blocks)
             if not wform in self.json:
                 self.json[wform] = {}
-            for cell in article_cells:
-                if not cell or not cell.text:
-                    rep.empty(f)
-                    continue
-                ''' Rewrite cells having the same text (may relate to different
-                    subjects of the same dictionary). Cells of different
-                    dictionaries are not affected since Portion is executed for
-                    a single dictionary.
+            for block in article_blocks:
+                #TODO: Use block no
+                ''' Rewrite blocks having the same text (may relate to
+                    different subjects of the same dictionary). Blocks of
+                    different dictionaries are not affected since Portion is
+                    executed for a single dictionary.
                 '''
-                self.json[wform][cell.text] = Cell(cell).run()
+                self.json[wform][block.text] = Block(block).run()
         ms.STOP = False
     
     def _debug_json(self):
@@ -248,7 +244,7 @@ class Portion:
         self.json = {}
         self.code = ''
         self.body = b''
-        self.cells = []
+        self.blocks = []
         self.fragms = []
         self.wforms = []
         self.articles = []
@@ -260,12 +256,12 @@ class Portion:
             rep.cancel(f)
             return
         for wform in self.json:
-            for cell_text in self.json[wform]:
-                self.json[wform][cell_text]['source'] = 'MClient (.mdic)'
-                self.json[wform][cell_text]['dic'] = self.dicname
+            for block_text in self.json[wform]:
+                self.json[wform][block_text]['source'] = 'MClient (.mdic)'
+                self.json[wform][block_text]['dic'] = self.dicname
     
     def run(self):
-        self.set_cells()
+        self.set_blocks()
         self.set_json()
         self.set_sources()
         self.dump_json()
@@ -292,49 +288,12 @@ class Block:
         self.json['text'] = self.block.text
         self.json['url'] = self.block.url
         self.json['type'] = self.block.type
-        self.json['Fixed'] = self.block.Fixed
     
     def run(self):
         f = '[MClient] converters.dsl.mdic.Block.run'
         if not self.block:
             # Cell.fixed_block is allowed to be None
             rep.lazy(f)
-            return {}
-        self.assign()
-        return self.json
-
-
-
-class Cell:
-    
-    def __init__(self, cell):
-        self.json = {}
-        self.cell = cell
-    
-    def assign(self):
-        # Attributes that are not stored: wform, text, col1, col2, col3, col4
-        self.json['no'] = self.cell.no
-        self.json['rowno'] = self.cell.rowno
-        self.json['colno'] = self.cell.colno
-        self.json['subjpr'] = self.cell.subjpr
-        self.json['speechpr'] = self.cell.speechpr
-        self.json['code'] = self.cell.code
-        self.json['speech'] = self.cell.speech
-        self.json['source'] = self.cell.source
-        self.json['dic'] = self.cell.dic
-        self.json['subj'] = self.cell.subj
-        self.json['transc'] = self.cell.transc
-        self.json['url'] = self.cell.url
-        self.json['fixed_block'] = Block(self.cell.fixed_block).run()
-        self.json['blocks'] = {}
-        for block in self.cell.blocks:
-            # Rewrite blocks with the same text (should we allow that?)
-            self.json['blocks'][block.text] = Block(block).run()
-    
-    def run(self):
-        f = '[MClient] converters.dsl.mdic.Cell.run'
-        if not self.cell:
-            rep.empty(f)
             return {}
         self.assign()
         return self.json
