@@ -58,7 +58,6 @@ class Block:
             'speech', 'subj', 'term', 'transc', 'wform'.
         '''
         self.type = 'comment'
-        self.Fixed = False
 
 
 
@@ -88,3 +87,7 @@ class Column:
         self.no = 0
         self.width = 0
         self.Fixed = False
+
+
+def is_block_fixed(block):
+    return block.type in ('subj', 'wform', 'speech', 'transc', 'phsubj')
