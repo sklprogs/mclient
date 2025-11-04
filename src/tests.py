@@ -15,8 +15,6 @@ from skl_shared.logic import Text
 
 from config import CONFIG
 
-DEBUG = True
-
 #SEARCH = 'account'
 #SEARCH = 'book'
 #SEARCH = 'good'
@@ -42,7 +40,7 @@ class Wrap:
         timer = Timer(f)
         timer.start()
         text = cu.CleanUp(text).run()
-        blocks = tg.Tags(text=text, maxrows=0).run()
+        blocks = tg.Tags(text).run()
         blocks = el.Elems(blocks).run()
         cells = cl.Cells(blocks).run()
         
@@ -74,9 +72,7 @@ class Prioritize:
         timer = Timer(f)
         timer.start()
         text = cu.CleanUp(text).run()
-        blocks = tg.Tags (text = text
-                         ,maxrows = 0
-                         ).run()
+        blocks = tg.Tags(text).run()
         ielems = el.Elems(blocks)
         blocks = ielems.run()
         cells = cl.Cells(blocks).run()
@@ -140,7 +136,7 @@ class View:
         timer = Timer(f)
         timer.start()
         text = cu.CleanUp(text).run()
-        blocks = tg.Tags(text=text, maxrows=0).run()
+        blocks = tg.Tags(text).run()
         blocks = el.Elems(blocks).run()
         cells = cl.Cells(blocks).run()
         
@@ -173,8 +169,6 @@ class View:
             code = cu.CleanUp(iarticle.code).run()
             code = cu.TagLike(code).run()
             blocks += tg.Tags(code = code
-                             ,Debug = DEBUG
-                             ,maxrows = 0
                              ,dicname = iarticle.dic).run()
         blocks = el.Elems(blocks).run()
         cells = cl.Cells(blocks).run()
@@ -307,8 +301,7 @@ class Elems:
         timer = Timer(f)
         timer.start()
         text = mCleanUp(text).run()
-        blocks = mTags(text = text
-                      ,maxrows = 0).run()
+        blocks = mTags(text).run()
         blocks = mElems(blocks).run()
         timer.end()
         icells = Cells(blocks)
@@ -319,22 +312,15 @@ class Elems:
 
 class Offline:
     
-    def __init__(self):
-        self.maxrows = 0
-    
     def run_multitrancom(self):
         import plugins.multitrancom.cleanup as cu
         import plugins.multitrancom.tags as tg
         import plugins.multitrancom.elems as el
         self.htm = Read(HTM_FILE).get()
         self.text = cu.CleanUp(self.htm).run()
-        itags = tg.Tags(text = self.text
-                       ,Debug = DEBUG
-                       ,maxrows = self.maxrows)
+        itags = tg.Tags(self.text)
         blocks = itags.run()
-        ielems = el.Elems(blocks = blocks
-                         ,Debug = DEBUG
-                         ,maxrows = self.maxrows)
+        ielems = el.Elems(blocks)
         ielems.run()
         return ielems.debug()
 
@@ -531,8 +517,6 @@ class Tags:
         from manager import PLUGINS
         import plugins.multitrandem.get as gt
         import plugins.multitrandem.tags as tg
-        PLUGINS.Debug = False
-        PLUGINS.maxrows = 1000
         chunks = gt.Get(SEARCH).run()
         if not chunks:
             rep.empty(f)
@@ -577,11 +561,6 @@ class Tags:
         text = Read(file).get()
         text = cu.CleanUp(text).run()
         itags = tg.Tags(text)
-        '''
-        itags = tg.Tags(text = text
-                       ,Debug = DEBUG
-                       ,maxrows = 0)
-        '''
         itags.run()
         return itags.debug()
     
@@ -591,9 +570,7 @@ class Tags:
         from plugins.multitrancom.tags import Tags
         text = Read(HTM_FILE).get()
         text = CleanUp(text).run()
-        itags = Tags(text = text
-                    ,Debug = DEBUG
-                    ,maxrows = 0)
+        itags = Tags(text)
         itags.run()
         return itags.debug()
 
@@ -661,7 +638,7 @@ class Commands:
         import plugins.multitrancom.elems as el
         text = Read(HTM_FILE).get()
         text = cu.CleanUp(text).run()
-        blocks = tg.Tags(text=text, maxrows=0).run()
+        blocks = tg.Tags(text).run()
         ielems = el.Elems(blocks)
         ielems.run()
         mes = json.dumps(ielems.fixed_urls, ensure_ascii=False, indent=4)
