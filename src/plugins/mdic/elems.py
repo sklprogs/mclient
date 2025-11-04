@@ -25,7 +25,6 @@ class Block:
         self.block.text = self.json['text']
         self.block.url = self.json['url']
         self.block.type = self.json['type']
-        self.block.Fixed = self.json['Fixed']
     
     def run(self):
         f = '[MClient] plugins.mdic.elems.Block.run'
