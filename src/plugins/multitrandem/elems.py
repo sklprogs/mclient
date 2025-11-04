@@ -7,7 +7,7 @@ from skl_shared.logic import Input, Text, digits, punc_array
 from skl_shared.table import Table
 from skl_shared.list import List
 
-import instance as ic
+from instance import Block
 
 
 class Elems:
@@ -116,13 +116,6 @@ class Elems:
         rep.deleted(f, len(self.blocks) - len(blocks))
         self.blocks = blocks
     
-    def _is_block_fixed(self, block):
-        return block.type in ('subj', 'wform', 'speech', 'transc', 'phsubj')
-    
-    def set_fixed_blocks(self):
-        for block in self.blocks:
-            block.Fixed = self._is_block_fixed(block)
-    
     def run(self):
         f = '[MClient] plugins.multitrandem.elems.Elems.run'
         if not self.Success:
@@ -138,7 +131,6 @@ class Elems:
         self.fill()
         self.remove_fixed()
         self.insert_fixed()
-        self.set_fixed_blocks()
         self.set_cellnos()
         # Extra spaces in the beginning may cause sorting problems
         self.add_space()
@@ -244,7 +236,7 @@ class Elems:
                 if i > 0:
                     cellno = self.blocks[i-1].cellno
                 
-                block = ic.Block()
+                block = Block()
                 block.type = 'speech'
                 block.text = self.blocks[i].speech
                 block.subj = self.blocks[i].subj
@@ -256,7 +248,7 @@ class Elems:
                 block.cellno = cellno
                 self.blocks.insert(i, block)
                 
-                block = ic.Block()
+                block = Block()
                 block.type = 'transc'
                 block.text = self.blocks[i].transc
                 block.subj = self.blocks[i].subj
@@ -268,7 +260,7 @@ class Elems:
                 block.cellno = cellno
                 self.blocks.insert(i, block)
 
-                block = ic.Block()
+                block = Block()
                 block.type = 'wform'
                 block.text = self.blocks[i].wform
                 block.subj = self.blocks[i].subj
@@ -280,7 +272,7 @@ class Elems:
                 block.cellno = cellno
                 self.blocks.insert(i, block)
                 
-                block = ic.Block()
+                block = Block()
                 block.type = 'subj'
                 block.text = self.blocks[i].subj
                 block.subj = self.blocks[i].subj
@@ -314,16 +306,14 @@ if __name__ == '__main__':
         chunks = []
     blocks = []
     for chunk in chunks:
-        add = tg.Tags (chunk = chunk
-                      ,Debug = True
-                      ).run()
+        add = tg.Tags(chunk = chunk
+                     ,Debug = True).run()
         if add:
             blocks += add
-    blocks = Elems (blocks = blocks
-                   ,abbr = None
-                   ,search = search
-                   ,Debug = True
-                   ).run()
+    blocks = Elems(blocks = blocks
+                  ,abbr = None
+                  ,search = search
+                  ,Debug = True).run()
     for i in range(len(blocks)):
         mes = f'{i}: {blocks[i].type}: "{blocks[i].text}"'
         print(mes)
