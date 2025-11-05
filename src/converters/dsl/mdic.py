@@ -482,7 +482,6 @@ class Poses:
         self.set_end()
         self.check()
         self.set_fragms()
-        #self.debug()
         self.free_memory()
         return self.fragms
 
