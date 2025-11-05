@@ -293,27 +293,3 @@ class Elems:
     def remove_fixed(self):
         self.blocks = [block for block in self.blocks if block.type \
                       not in ('subj', 'wform', 'transc', 'speech')]
-
-
-if __name__ == '__main__':
-    f = '[MClient] plugins.multitrandem.elems.__main__'
-    search = 'phrenosin'
-    import get as gt
-    import tags as tg
-    iget = gt.Get(search)
-    chunks = iget.run()
-    if not chunks:
-        chunks = []
-    blocks = []
-    for chunk in chunks:
-        add = tg.Tags(chunk = chunk
-                     ,Debug = True).run()
-        if add:
-            blocks += add
-    blocks = Elems(blocks = blocks
-                  ,abbr = None
-                  ,search = search
-                  ,Debug = True).run()
-    for i in range(len(blocks)):
-        mes = f'{i}: {blocks[i].type}: "{blocks[i].text}"'
-        print(mes)
