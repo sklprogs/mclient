@@ -477,8 +477,7 @@ class UPage(gt.UPage):
             rep.cancel(f)
             return
         if self.file in (gt.objs.get_files().iwalker.get_stems1()
-                        ,gt.objs.files.iwalker.get_stems2()
-                        ):
+                        ,gt.objs.files.iwalker.get_stems2()):
             self.debug_stems()
         else:
             self.debug_glue()
@@ -536,5 +535,4 @@ if __name__ == '__main__':
     #Tests().get_speech('DARE')
     #Tests().translate('DARE')
     #Binary(gt.objs.get_files().iwalker.get_glue1()).show_info()
-    gt.DEBUG = True
     gt.com.overflowh(-1841)
