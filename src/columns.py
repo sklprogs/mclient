@@ -13,19 +13,20 @@ class Types:
     
     def _get(self, type_):
         f = '[MClient] columns.Types._get'
-        if type_ == _('Subjects'):
-            return 'subj'
-        elif type_ == _('Word forms'):
-            return 'wform'
-        elif type_ == _('Parts of speech'):
-            return 'speech'
-        elif type_ == _('Transcription'):
-            return 'transc'
-        elif type_ == _('Do not set'):
-            pass
-        else:
-            mes = _('Wrong input data: "{}"!').format(type_)
-            Message(f, mes, True).show_error()
+        match type_:
+            case _('Subjects'):
+                return 'subj'
+            case _('Word forms'):
+                return 'wform'
+            case _('Parts of speech'):
+                return 'speech'
+            case _('Transcription'):
+                return 'transc'
+            case _('Do not set'):
+                pass
+            case other:
+                mes = _('Wrong input data: "{}"!').format(other)
+                Message(f, mes, True).show_error()
         return ''
     
     def get(self):
