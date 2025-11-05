@@ -16,18 +16,15 @@ from skl_shared.graphics.progress_bar.controller import PROGRESS
 
 LANG1 = 'English'
 LANG2 = 'Russian'
-DEBUG = False
 
 
 class Get:
     
-    def __init__(self, pattern, Debug=False, maxrows=0):
+    def __init__(self, pattern):
         self.articles = []
         self.blocks = []
         self.pattern = ''
         self.Success = True
-        self.Debug = Debug
-        self.maxrows = maxrows
         self.pattern = pattern
     
     def _debug_articles(self):
