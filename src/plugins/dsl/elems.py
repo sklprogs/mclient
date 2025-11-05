@@ -18,13 +18,12 @@ SPEECH_ABBR = ('гл.', 'глаг.', 'нареч.', 'нар.', 'прил.', 'с�
 
 class Elems:
 
-    def __init__(self, blocks, Debug=False):
+    def __init__(self, blocks):
         f = '[MClient] plugins.dsl.elems.Elems.__init__'
         self.art_subj = {}
         self.Parallel = False
         self.Separate = False
         self.blocks = blocks
-        self.Debug = Debug
         if self.blocks:
             self.Success = True
         else:
