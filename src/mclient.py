@@ -35,9 +35,6 @@ from columns import COL_WIDTH
 from cells import Elems, Cells
 
 
-#DEBUG = False
-
-
 class UpdateUI:
     
     def __init__(self):
@@ -959,8 +956,6 @@ class App:
         UpdateUI().run()
         timer.end()
         gi.objs.get_panel().ent_src.focus()
-        #self.run_final_debug()
-        #self.debug_settings()
         ''' Do not put this in 'Table.reset' - that is too early, the article
             dictionary is not filled yet!
         '''
@@ -1235,8 +1230,6 @@ class App:
 if __name__ == '__main__':
     f = '[MClient] mclient.__main__'
     if CONFIG.Success:
-        PLUGINS.Debug = False
-        PLUGINS.maxrows = 1000
         app = App()
         app.run_thread()
         WELCOME.reset()
