@@ -56,14 +56,11 @@ from instance import Tag, Block
 class AnalyzeTag:
 
     def __init__(self, fragm):
-        self.set_values()
-        self.fragm = fragm
-    
-    def set_values(self):
         self.Success = True
         self.tag = Tag()
         self.cur_row = 0
         self.cur_cell = 0
+        self.fragm = fragm
     
     def check(self):
         f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.check'
@@ -249,18 +246,13 @@ class AnalyzeTag:
 
 class Tags:
     
-    def __init__(self, text, Debug=False, maxrows=0):
-        self.set_values()
-        self.code = text
-        self.Debug = Debug
-        self.maxrows = maxrows
-    
-    def set_values(self):
+    def __init__(self, text):
         self.Success = True
         self.blocks = []
         self.fragms = []
         self.tags = []
         self.open = []
+        self.code = text
     
     def _is_trash(self, tag):
         for subtag in tag.inherent:
@@ -300,7 +292,7 @@ class Tags:
                     curcell += 1
             tag.cellno = curcell
     
-    def _debug_blocks(self):
+    def _debug_blocks(self, maxrow=50, maxrows=1000):
         nos = [i + 1 for i in range(len(self.blocks))]
         types = [block.type for block in self.blocks]
         texts = [f'"{block.text}"' for block in self.blocks]
@@ -313,8 +305,8 @@ class Tags:
                   ,_('CELL #'))
         # 10'' monitor: 20 symbols per a column
         # 23'' monitor: 50 symbols per a column
-        mes = Table(iterable = iterable, headers = headers, maxrow = 50
-                   ,maxrows = self.maxrows).run()
+        mes = Table(iterable=iterable, headers=headers, maxrow=maxrow
+                   ,maxrows=maxrows).run()
         return _('Blocks:') + '\n' + mes
     
     def set_blocks(self):
@@ -358,7 +350,7 @@ class Tags:
             mes.append(f'{i+1}: "{self.fragms[i]}"')
         return _('Fragments:') + '\n' + '\n'.join(mes)
     
-    def _debug_tags(self):
+    def _debug_tags(self, maxrow=30, maxrows=1000):
         nos = [i + 1 for i in range(len(self.tags))]
         closes = [f'{tag.Close}' for tag in self.tags]
         names = [f'"{tag.name}"' for tag in self.tags]
@@ -380,17 +372,14 @@ class Tags:
                   ,'DICF', _('OPEN'), _('CELL'))
         # 10'' monitor: 13 symbols per a column
         # 23'' monitor: 30 symbols per a column
-        mes = Table(iterable = iterable, headers = headers, maxrow = 30
-                   ,maxrows = self.maxrows, CutStart = True).run()
+        mes = Table(iterable=iterable, headers=headers, maxrow=maxrow
+                   ,maxrows=maxrows, CutStart=True).run()
         return _('Tags:') + '\n' + mes
     
     def debug(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.debug'
         if not self.Success:
             rep.cancel(f)
-            return ''
-        if not self.Debug:
-            rep.lazy(f)
             return ''
         '''
         mes = [self._debug_code(), self._debug_fragms(), self._debug_tags()
