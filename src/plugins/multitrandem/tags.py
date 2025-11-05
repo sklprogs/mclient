@@ -24,15 +24,25 @@ ptm2 = b'\x02'
 
 class Tags:
     #TODO: elaborate setting languages
-    def __init__(self, chunk, cellno, Debug=False, maxrow=20, maxrows=50, lang1=1, lang2=2):
-        self.set_values()
-        self.Debug = Debug
+    def __init__(self, chunk, cellno, lang1=1, lang2=2):
+        self.blocks = []
+        self.content = []
+        self.entry = ''
+        self.lang1 = 0
+        self.lang2 = 0
+        self.seplg1 = b''
+        self.seplg2 = b''
+        # The result of 'struct.pack('<b', 15)'
+        self.sepdic = b'\x0f'
+        self.sepcom = b'\x06'
+        self.seps = []
+        self.Success = True
+        self.tags = []
+        self.types = []
         self.entry = chunk
         self.cellno = cellno
         self.lang1 = lang1
         self.lang2 = lang2
-        self.maxrow = maxrow
-        self.maxrows = maxrows
     
     def get_types(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.get_types'
@@ -78,23 +88,27 @@ class Tags:
                 mes = _('Unknown type "{}"!').format(self.types[i])
                 Message(f, mes).show_warning()
     
-    def debug_blocks(self):
-        f = '[MClient] plugins.multitrandem.tags.Tags.debug_blocks'
+    def _debug_blocks(self, maxrow=40, maxrows=1000):
+        f = '[MClient] plugins.multitrandem.tags.Tags._debug_blocks'
         headers = ('NO', 'TYPE', 'TEXT')
         rows = []
         for i in range(len(self.blocks)):
             rows.append([i+1, self.blocks[i].type, self.blocks[i].text])
-        mes = Table(headers=headers, iterable=rows, maxrow=self.maxrow
-                   ,maxrows=self.maxrows, Transpose=True).run()
+        mes = Table(headers=headers, iterable=rows, maxrow=maxrow
+                   ,maxrows=maxrows, Transpose=True).run()
         return f'{f}:\n{mes}'
     
     def debug(self):
-        report = [self.debug_tags(), self.debug_blocks()]
+        f = '[MClient] plugins.multitrandem.tags.Tags.debug'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        report = [self._debug_tags(), self._debug_blocks()]
         report = [item for item in report if item]
         return '\n\n'.join(report)
     
-    def debug_tags(self):
-        f = '[MClient] plugins.multitrandem.tags.Tags.debug_tags'
+    def _debug_tags(self):
+        f = '[MClient] plugins.multitrandem.tags.Tags._debug_tags'
         mes = []
         for i in range(len(self.tags)):
             mes.append(f'{i}:{self.tags[i]}')
@@ -161,22 +175,6 @@ class Tags:
             rep.empty(f)
             return
         return True
-    
-    def set_values(self):
-        self.blocks = []
-        self.content = []
-        self.entry = ''
-        self.lang1 = 0
-        self.lang2 = 0
-        self.seplg1 = b''
-        self.seplg2 = b''
-        # The result of 'struct.pack('<b', 15)'
-        self.sepdic = b'\x0f'
-        self.sepcom = b'\x06'
-        self.seps = []
-        self.Success = True
-        self.tags = []
-        self.types = []
     
     def set_cellnos(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.set_cellnos'
