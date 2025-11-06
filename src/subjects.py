@@ -128,9 +128,10 @@ class Create:
     def reset(self, pairs):
         f = '[MClient] subjects.Create.reset'
         self.set_values()
-        if not pairs:
+        if pairs:
+            self.pairs = pairs
+        else:
             rep.empty(f)
-        self.pairs = pairs
         self.run()
     
     def debug(self):
