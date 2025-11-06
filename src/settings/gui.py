@@ -246,9 +246,9 @@ class Settings(QWidget):
         cond42 = self.opt_cl4.get() == _('Parts of speech')
         cond43 = self.opt_cl4.get() == _('Subjects')
         cond44 = self.opt_cl4.get() == _('Do not set')
-        cond51 = self.opt_cl5.get() == _('Parts of speech')
+        cond51 = self.opt_cl5.get() == _('Transcription')
         cond52 = self.opt_cl5.get() == _('Do not set')
-        cond61 = self.opt_cl6.get() == _('Transcription')
+        cond61 = self.opt_cl6.get() == _('Parts of speech')
         cond62 = self.opt_cl6.get() == _('Do not set')
         if cond11 and cond21 and cond31 and cond41 and cond51 and cond61:
             self.opt_stl.set(_('Full'))
