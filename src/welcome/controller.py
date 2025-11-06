@@ -6,7 +6,7 @@ from skl_shared.message.controller import rep
 
 from config import CONFIG
 from manager import PLUGINS
-from logic import Source
+from instance import Source
 
 from about.controller import ABOUT
 
