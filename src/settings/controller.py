@@ -17,6 +17,8 @@ class Load:
         SETTINGS.gui.opt_cl2.set(CONFIG.new['columns']['2']['type'])
         SETTINGS.gui.opt_cl3.set(CONFIG.new['columns']['3']['type'])
         SETTINGS.gui.opt_cl4.set(CONFIG.new['columns']['4']['type'])
+        SETTINGS.gui.opt_cl5.set(CONFIG.new['columns']['5']['type'])
+        SETTINGS.gui.opt_cl6.set(CONFIG.new['columns']['6']['type'])
     
     def load_speech_area(self):
         SETTINGS.gui.opt_sp1.set(CONFIG.new['speech1'])
@@ -73,6 +75,8 @@ class Save:
         CONFIG.new['columns']['2']['type'] = SETTINGS.gui.opt_cl2.get()
         CONFIG.new['columns']['3']['type'] = SETTINGS.gui.opt_cl3.get()
         CONFIG.new['columns']['4']['type'] = SETTINGS.gui.opt_cl4.get()
+        CONFIG.new['columns']['5']['type'] = SETTINGS.gui.opt_cl5.get()
+        CONFIG.new['columns']['6']['type'] = SETTINGS.gui.opt_cl6.get()
     
     def save_checkboxes(self):
         CONFIG.new['SortByColumns'] = SETTINGS.gui.cbx_no1.get()
