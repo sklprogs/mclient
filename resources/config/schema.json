@@ -5,7 +5,8 @@
         {"type": "object"
         ,"required":
             ["clear_history", "col1_down", "col1_up", "col2_down", "col2_up"
-            ,"col3_down", "col3_up", "col4_down", "col4_up", "copy_article_url"
+            ,"col3_down", "col3_up", "col4_down", "col4_up", "col5_down"
+            ,"col5_up", "col6_down", "col6_up", "copy_article_url"
             ,"copy_nominative", "copy_sel", "copy_url", "define", "go_back"
             ,"go_next", "go_phrases", "next_lang1", "next_lang2"
             ,"open_in_browser", "prev_lang1", "prev_lang2", "print", "quit"
@@ -82,6 +83,38 @@
                     }
                 }
             ,"col4_up":
+                {"type": "object"
+                ,"required": ["hotkeys", "hint"]
+                ,"properties":
+                    {"hotkeys": {"type": "array"}
+                    ,"hint": {"type": "string"}
+                    }
+                }
+            ,"col5_down":
+                {"type": "object"
+                ,"required": ["hotkeys", "hint"]
+                ,"properties":
+                    {"hotkeys": {"type": "array"}
+                    ,"hint": {"type": "string"}
+                    }
+                }
+            ,"col5_up":
+                {"type": "object"
+                ,"required": ["hotkeys", "hint"]
+                ,"properties":
+                    {"hotkeys": {"type": "array"}
+                    ,"hint": {"type": "string"}
+                    }
+                }
+            ,"col6_down":
+                {"type": "object"
+                ,"required": ["hotkeys", "hint"]
+                ,"properties":
+                    {"hotkeys": {"type": "array"}
+                    ,"hint": {"type": "string"}
+                    }
+                }
+            ,"col6_up":
                 {"type": "object"
                 ,"required": ["hotkeys", "hint"]
                 ,"properties":

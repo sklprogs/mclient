@@ -35,6 +35,22 @@
         {"hotkeys": ["Ctrl+Shift+Up"]
         ,"hint": "Go to the previous section of column #4"
         }
+    ,"col5_down":
+        {"hotkeys": ["Ctrl+Shift+Down"]
+        ,"hint": "Go to the next section of column #5"
+        }
+    ,"col5_up":
+        {"hotkeys": ["Ctrl+Shift+Up"]
+        ,"hint": "Go to the previous section of column #5"
+        }
+    ,"col6_down":
+        {"hotkeys": ["Ctrl+Shift+Down"]
+        ,"hint": "Go to the next section of column #6"
+        }
+    ,"col6_up":
+        {"hotkeys": ["Ctrl+Shift+Up"]
+        ,"hint": "Go to the previous section of column #6"
+        }
     ,"copy_article_url":
         {"hotkeys": ["Ctrl+F7"]
         ,"hint": "Copy the URL of the current article"
