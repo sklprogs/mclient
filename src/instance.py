@@ -41,6 +41,8 @@ class Cell:
         self.col2 = ''
         self.col3 = ''
         self.col4 = ''
+        self.col5 = ''
+        self.col6 = ''
 
 
 
