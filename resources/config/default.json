@@ -168,7 +168,7 @@
          ,"border": {"color": "#CCCCCC", "length": 70}
          }
 ,"columns":
-    {"num": 4
+    {"num": 6
     ,"fixed": {"width": 63}
     ,"terms": {"width": 157}
     ,"1":
@@ -185,6 +185,14 @@
         }
     ,"4":
         {"type": "Transcription"
+        ,"font": {"family": "Mono", "size": 11, "color": "slate gray", "align": "center"}
+        }
+    ,"5":
+        {"type": "Do not set"
+        ,"font": {"family": "Mono", "size": 11, "color": "slate gray", "align": "center"}
+        }
+    ,"6":
+        {"type": "Do not set"
         ,"font": {"family": "Mono", "size": 11, "color": "slate gray", "align": "center"}
         }
     }
