@@ -133,7 +133,7 @@ class Prioritize:
         self.speech = Speech().get_settings()
         self.cells = cells
     
-    def debug(self):
+    def debug(self, maxrow=60):
         f = '[MClient] view.Prioritize.debug'
         subj = []
         subjpr = []
@@ -153,7 +153,7 @@ class Prioritize:
         iterable = [nos, text, subj, subjpr, speech, speechpr]
         mes = Table(headers = headers
                    ,iterable = iterable
-                   ,maxrow = 60).run()
+                   ,maxrow = maxrow).run()
         return f + ':\n' + mes
     
     def set_speech(self):
@@ -271,9 +271,9 @@ class View:
             return
         if CONFIG.new['AlphabetizeTerms'] and not ARTICLES.is_parallel() \
         and not ARTICLES.is_separate():
-            self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.text, x.no))
+            self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.col5, x.col6, x.text, x.no))
         else:
-            self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.no))
+            self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.col5, x.col6, x.no))
     
     def _create_fixed(self, i, type_, rowno):
         f = '[MClient] view.View._create_fixed'
@@ -289,13 +289,19 @@ class View:
             if type_ == 'subj':
                 cell.text = block.text = self.cells[i].subj
             return cell
+        cell.source = self.cells[i].source
+        cell.dic = self.cells[i].dic
         cell.subj = self.cells[i].subj
         cell.subjpr = self.cells[i].subjpr
         cell.wform = self.cells[i].wform
         cell.transc = self.cells[i].transc
         cell.speech = self.cells[i].speech
         cell.speechpr = self.cells[i].speechpr
-        if type_ == 'subj':
+        if type_ == 'source':
+            cell.text = block.text = self.cells[i].source
+        elif type_ == 'dic':
+            cell.text = block.text = self.cells[i].dic
+        elif type_ == 'subj':
             cell.text = block.text = self.cells[i].subj
         elif type_ == 'wform':
             cell.text = block.text = self.cells[i].wform
@@ -308,7 +314,7 @@ class View:
             pass
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(type_, 'subj, wform, transc, speech, or empty')
+            mes = mes.format(type_, 'source, dic, subj, wform, transc, speech, or empty')
             Message(f, mes, True).show_error()
         return cell
     
@@ -369,13 +375,13 @@ class View:
                 return
             i -= 1
     
-    def debug(self):
+    def debug(self, maxrow=35):
         f = '[MClient] view.View.debug'
         if not self.Success:
             rep.cancel(f)
             return
         headers = (_('ROW #'), _('CELL #'), _('TEXT'), _('TYPES'), 'URL'
-                  ,'COL1' ,'COL2', 'COL3', 'COL4')
+                  ,'COL1' ,'COL2', 'COL3', 'COL4', 'COL5', 'COL6')
         rowno = []
         no = []
         text = []
@@ -385,6 +391,8 @@ class View:
         col2 = []
         col3 = []
         col4 = []
+        col5 = []
+        col6 = []
         for cell in self.cells:
             rowno.append(cell.rowno)
             no.append(cell.no)
@@ -394,12 +402,14 @@ class View:
             col2.append(cell.col2)
             col3.append(cell.col3)
             col4.append(cell.col4)
+            col5.append(cell.col5)
+            col6.append(cell.col6)
             cell_types = []
             for block in cell.blocks:
                 cell_types.append(block.type)
             types.append(', '.join(cell_types))
-        iterable = [rowno, no, text, types, url, col1, col2, col3, col4]
-        return Table(headers = headers, iterable = iterable, maxrow = 45).run()
+        iterable = [rowno, no, text, types, url, col1, col2, col3, col4, col5, col6]
+        return Table(headers=headers, iterable=iterable, maxrow=maxrow).run()
     
     def _renumber_cell_nos(self):
         for i in range(len(self.cells)):
@@ -433,11 +443,21 @@ class View:
         if not self.Success:
             rep.cancel(f)
             return
-        subj = wform = transc = speech = ''
+        source = dic = subj = wform = transc = speech = ''
         for cell in self.cells:
             if not cell.fixed_block:
                continue
-            if cell.fixed_block.type == 'subj':
+            if cell.fixed_block.type == 'source':
+                if cell.text == source:
+                    cell.text = cell.fixed_block.text = ''
+                else:
+                    subj = cell.source
+            elif cell.fixed_block.type == 'dic':
+                if cell.text == dic:
+                    cell.text = cell.fixed_block.text = ''
+                else:
+                    subj = cell.dic
+            elif cell.fixed_block.type == 'subj':
                 if cell.text == subj:
                     cell.text = cell.fixed_block.text = ''
                 else:
@@ -515,7 +535,11 @@ class View:
         for cell in self.cells:
             for i in range(len(self.fixed_cols)):
                 if i == 0:
-                    if self.fixed_cols[i] == 'subj':
+                    if self.fixed_cols[i] == 'source':
+                        cell.col1 = cell.source.lower()
+                    elif self.fixed_cols[i] == 'dic':
+                        cell.col1 = cell.dic.lower()
+                    elif self.fixed_cols[i] == 'subj':
                         cell.col1 = cell.subjpr
                     elif self.fixed_cols[i] == 'wform':
                         cell.col1 = cell.wform.lower()
@@ -524,7 +548,11 @@ class View:
                     elif self.fixed_cols[i] == 'transc':
                         cell.col1 = cell.transc.lower()
                 elif i == 1:
-                    if self.fixed_cols[i] == 'subj':
+                    if self.fixed_cols[i] == 'source':
+                        cell.col2 = cell.source.lower()
+                    elif self.fixed_cols[i] == 'dic':
+                        cell.col2 = cell.dic.lower()
+                    elif self.fixed_cols[i] == 'subj':
                         cell.col2 = cell.subjpr
                     elif self.fixed_cols[i] == 'wform':
                         cell.col2 = cell.wform.lower()
@@ -533,7 +561,11 @@ class View:
                     elif self.fixed_cols[i] == 'transc':
                         cell.col2 = cell.transc.lower()
                 elif i == 2:
-                    if self.fixed_cols[i] == 'subj':
+                    if self.fixed_cols[i] == 'source':
+                        cell.col3 = cell.source.lower()
+                    elif self.fixed_cols[i] == 'dic':
+                        cell.col3 = cell.dic.lower()
+                    elif self.fixed_cols[i] == 'subj':
                         cell.col3 = cell.subjpr
                     elif self.fixed_cols[i] == 'wform':
                         cell.col3 = cell.wform.lower()
@@ -542,7 +574,11 @@ class View:
                     elif self.fixed_cols[i] == 'transc':
                         cell.col3 = cell.transc.lower()
                 elif i == 3:
-                    if self.fixed_cols[i] == 'subj':
+                    if self.fixed_cols[i] == 'source':
+                        cell.col4 = cell.source.lower()
+                    elif self.fixed_cols[i] == 'dic':
+                        cell.col4 = cell.dic.lower()
+                    elif self.fixed_cols[i] == 'subj':
                         cell.col4 = cell.subjpr
                     elif self.fixed_cols[i] == 'wform':
                         cell.col4 = cell.wform.lower()
@@ -550,6 +586,32 @@ class View:
                         cell.col4 = cell.speechpr
                     elif self.fixed_cols[i] == 'transc':
                         cell.col4 = cell.transc.lower()
+                elif i == 4:
+                    if self.fixed_cols[i] == 'source':
+                        cell.col5 = cell.source.lower()
+                    elif self.fixed_cols[i] == 'dic':
+                        cell.col5 = cell.dic.lower()
+                    elif self.fixed_cols[i] == 'subj':
+                        cell.col5 = cell.subjpr
+                    elif self.fixed_cols[i] == 'wform':
+                        cell.col5 = cell.wform.lower()
+                    elif self.fixed_cols[i] == 'speech':
+                        cell.col5 = cell.speechpr
+                    elif self.fixed_cols[i] == 'transc':
+                        cell.col5 = cell.transc.lower()
+                elif i == 5:
+                    if self.fixed_cols[i] == 'source':
+                        cell.col6 = cell.source.lower()
+                    elif self.fixed_cols[i] == 'dic':
+                        cell.col6 = cell.dic.lower()
+                    elif self.fixed_cols[i] == 'subj':
+                        cell.col6 = cell.subjpr
+                    elif self.fixed_cols[i] == 'wform':
+                        cell.col6 = cell.wform.lower()
+                    elif self.fixed_cols[i] == 'speech':
+                        cell.col6 = cell.speechpr
+                    elif self.fixed_cols[i] == 'transc':
+                        cell.col6 = cell.transc.lower()
     
     def run(self):
         self.check()
@@ -632,7 +694,7 @@ class Wrap:
                 pass
             j -= 1
     
-    def _debug_cells(self):
+    def _debug_cells(self, maxrow=60, maxrows=700):
         f = '[MClient] view.Wrap._debug_cells'
         mes = [f'{f}:']
         headers = (_('CELL #'), _('ROW #'), _('COLUMN #'), _('TEXT'), _('CODE')
@@ -651,9 +713,9 @@ class Wrap:
                 text.append(cell.text)
                 code.append(cell.code)
                 url.append(cell.url)
-        iterable = [no, rowno,  colno, text, code, url]
-        return Table(headers = headers, iterable = iterable, maxrow = 60
-                    ,maxrows = 700).run()
+        iterable = [no, rowno, colno, text, code, url]
+        mes += Table(headers=headers, iterable=iterable, maxrow=maxrow
+                    ,maxrows=maxrows).run()
         return '\n'.join(mes)
     
     def _debug_plain(self):
