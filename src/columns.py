@@ -13,20 +13,23 @@ class Types:
     
     def _get(self, type_):
         f = '[MClient] columns.Types._get'
-        match type_:
-            case _('Subjects'):
-                return 'subj'
-            case _('Word forms'):
-                return 'wform'
-            case _('Parts of speech'):
-                return 'speech'
-            case _('Transcription'):
-                return 'transc'
-            case _('Do not set'):
-                pass
-            case other:
-                mes = _('Wrong input data: "{}"!').format(other)
-                Message(f, mes, True).show_error()
+        if type_ == _('Sources'):
+            return 'source'
+        elif type_ == _('Dictionaries'):
+            return 'dic'
+        elif type_ == _('Subjects'):
+            return 'subj'
+        elif type_ == _('Word forms'):
+            return 'wform'
+        elif type_ == _('Parts of speech'):
+            return 'speech'
+        elif type_ == _('Transcription'):
+            return 'transc'
+        elif type_ == _('Do not set'):
+            pass
+        else:
+            mes = _('Wrong input data: "{}"!').format(type_)
+            Message(f, mes, True).show_error()
         return ''
     
     def get(self):
@@ -37,7 +40,9 @@ class Types:
         types = [CONFIG.new['columns']['1']['type']
                 ,CONFIG.new['columns']['2']['type']
                 ,CONFIG.new['columns']['3']['type']
-                ,CONFIG.new['columns']['4']['type']]
+                ,CONFIG.new['columns']['4']['type']
+                ,CONFIG.new['columns']['5']['type']
+                ,CONFIG.new['columns']['6']['type']]
         for i in range(len(types)):
             types[i] = self._get(types[i])
         mes = ', '.join(types)
@@ -95,7 +100,7 @@ class Width:
     
     def set_fixed_num(self):
         f = '[MClient] columns.Width.set_fixed_num'
-        self.fixed_num = 4
+        self.fixed_num = 6
         mes = _('Number of fixed columns: {}').format(self.fixed_num)
         Message(f, mes).show_debug()
     
@@ -117,8 +122,7 @@ class Width:
     def set_term_num(self):
         f = '[MClient] columns.Width.set_term_num'
         self.term_num = self.get_col_num()
-        mes = _('Number of term columns: {}')
-        mes = mes.format(self.term_num)
+        mes = _('Number of term columns: {}').format(self.term_num)
         Message(f, mes).show_debug()
     
     def set_columns(self):
