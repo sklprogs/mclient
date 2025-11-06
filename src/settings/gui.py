@@ -560,7 +560,7 @@ class Settings(QWidget):
         self.bg_col = QWidget()
         # Cannot reuse the same widget
         self.bg_psp = QWidget()
-        self.lay_col.addWidget(self.bg_col, 0, 0, 1, 5)
+        self.lay_col.addWidget(self.bg_col, 0, 0, 1, 7)
         self.lay_psp.addWidget(self.bg_psp, 0, 0, 1, 7)
     
     def set_suggest(self):
