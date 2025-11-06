@@ -451,12 +451,12 @@ class View:
                 if cell.text == source:
                     cell.text = cell.fixed_block.text = ''
                 else:
-                    subj = cell.source
+                    source = cell.source
             elif cell.fixed_block.type == 'dic':
                 if cell.text == dic:
                     cell.text = cell.fixed_block.text = ''
                 else:
-                    subj = cell.dic
+                    dic = cell.dic
             elif cell.fixed_block.type == 'subj':
                 if cell.text == subj:
                     cell.text = cell.fixed_block.text = ''
