@@ -106,4 +106,5 @@ class Source:
 
 
 def is_block_fixed(block):
-    return block.type in ('subj', 'wform', 'speech', 'transc', 'phsubj')
+    return block.type in ('source', 'dic', 'subj', 'wform', 'speech', 'transc'
+                         ,'phsubj')
