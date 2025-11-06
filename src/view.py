@@ -519,9 +519,9 @@ class View:
         while i < len(self.cells):
             cell = self.cells[i]
             if cell.fixed_block \
-            and cell.fixed_block.type in ('wform', 'transc', 'speech'):
+            and cell.fixed_block.type in ('source', 'dic', 'wform', 'transc', 'speech'):
                 cell.text = ''
-            cell.wform = cell.speech = cell.transc = ''
+            cell.source = cell.dic = cell.wform = cell.speech = cell.transc = ''
             i += 1
 
     def fill_cols(self):
@@ -534,84 +534,91 @@ class View:
             return
         for cell in self.cells:
             for i in range(len(self.fixed_cols)):
-                if i == 0:
-                    if self.fixed_cols[i] == 'source':
-                        cell.col1 = cell.source.lower()
-                    elif self.fixed_cols[i] == 'dic':
-                        cell.col1 = cell.dic.lower()
-                    elif self.fixed_cols[i] == 'subj':
-                        cell.col1 = cell.subjpr
-                    elif self.fixed_cols[i] == 'wform':
-                        cell.col1 = cell.wform.lower()
-                    elif self.fixed_cols[i] == 'speech':
-                        cell.col1 = cell.speechpr
-                    elif self.fixed_cols[i] == 'transc':
-                        cell.col1 = cell.transc.lower()
-                elif i == 1:
-                    if self.fixed_cols[i] == 'source':
-                        cell.col2 = cell.source.lower()
-                    elif self.fixed_cols[i] == 'dic':
-                        cell.col2 = cell.dic.lower()
-                    elif self.fixed_cols[i] == 'subj':
-                        cell.col2 = cell.subjpr
-                    elif self.fixed_cols[i] == 'wform':
-                        cell.col2 = cell.wform.lower()
-                    elif self.fixed_cols[i] == 'speech':
-                        cell.col2 = cell.speechpr
-                    elif self.fixed_cols[i] == 'transc':
-                        cell.col2 = cell.transc.lower()
-                elif i == 2:
-                    if self.fixed_cols[i] == 'source':
-                        cell.col3 = cell.source.lower()
-                    elif self.fixed_cols[i] == 'dic':
-                        cell.col3 = cell.dic.lower()
-                    elif self.fixed_cols[i] == 'subj':
-                        cell.col3 = cell.subjpr
-                    elif self.fixed_cols[i] == 'wform':
-                        cell.col3 = cell.wform.lower()
-                    elif self.fixed_cols[i] == 'speech':
-                        cell.col3 = cell.speechpr
-                    elif self.fixed_cols[i] == 'transc':
-                        cell.col3 = cell.transc.lower()
-                elif i == 3:
-                    if self.fixed_cols[i] == 'source':
-                        cell.col4 = cell.source.lower()
-                    elif self.fixed_cols[i] == 'dic':
-                        cell.col4 = cell.dic.lower()
-                    elif self.fixed_cols[i] == 'subj':
-                        cell.col4 = cell.subjpr
-                    elif self.fixed_cols[i] == 'wform':
-                        cell.col4 = cell.wform.lower()
-                    elif self.fixed_cols[i] == 'speech':
-                        cell.col4 = cell.speechpr
-                    elif self.fixed_cols[i] == 'transc':
-                        cell.col4 = cell.transc.lower()
-                elif i == 4:
-                    if self.fixed_cols[i] == 'source':
-                        cell.col5 = cell.source.lower()
-                    elif self.fixed_cols[i] == 'dic':
-                        cell.col5 = cell.dic.lower()
-                    elif self.fixed_cols[i] == 'subj':
-                        cell.col5 = cell.subjpr
-                    elif self.fixed_cols[i] == 'wform':
-                        cell.col5 = cell.wform.lower()
-                    elif self.fixed_cols[i] == 'speech':
-                        cell.col5 = cell.speechpr
-                    elif self.fixed_cols[i] == 'transc':
-                        cell.col5 = cell.transc.lower()
-                elif i == 5:
-                    if self.fixed_cols[i] == 'source':
-                        cell.col6 = cell.source.lower()
-                    elif self.fixed_cols[i] == 'dic':
-                        cell.col6 = cell.dic.lower()
-                    elif self.fixed_cols[i] == 'subj':
-                        cell.col6 = cell.subjpr
-                    elif self.fixed_cols[i] == 'wform':
-                        cell.col6 = cell.wform.lower()
-                    elif self.fixed_cols[i] == 'speech':
-                        cell.col6 = cell.speechpr
-                    elif self.fixed_cols[i] == 'transc':
-                        cell.col6 = cell.transc.lower()
+                match i:
+                    case 0:
+                        match self.fixed_cols[i]:
+                            case 'source':
+                                cell.col1 = cell.source.lower()
+                            case 'dic':
+                                cell.col1 = cell.dic.lower()
+                            case 'subj':
+                                cell.col1 = cell.subjpr
+                            case 'wform':
+                                cell.col1 = cell.wform.lower()
+                            case 'speech':
+                                cell.col1 = cell.speechpr
+                            case 'transc':
+                                cell.col1 = cell.transc.lower()
+                    case 1:
+                        match self.fixed_cols[i]:
+                            case 'source':
+                                cell.col2 = cell.source.lower()
+                            case 'dic':
+                                cell.col2 = cell.dic.lower()
+                            case 'subj':
+                                cell.col2 = cell.subjpr
+                            case 'wform':
+                                cell.col2 = cell.wform.lower()
+                            case 'speech':
+                                cell.col2 = cell.speechpr
+                            case 'transc':
+                                cell.col2 = cell.transc.lower()
+                    case 2:
+                        match self.fixed_cols[i]:
+                            case 'source':
+                                cell.col3 = cell.source.lower()
+                            case 'dic':
+                                cell.col3 = cell.dic.lower()
+                            case 'subj':
+                                cell.col3 = cell.subjpr
+                            case 'wform':
+                                cell.col3 = cell.wform.lower()
+                            case 'speech':
+                                cell.col3 = cell.speechpr
+                            case 'transc':
+                                cell.col3 = cell.transc.lower()
+                    case 3:
+                        match self.fixed_cols[i]:
+                            case 'source':
+                                cell.col4 = cell.source.lower()
+                            case 'dic':
+                                cell.col4 = cell.dic.lower()
+                            case 'subj':
+                                cell.col4 = cell.subjpr
+                            case 'wform':
+                                cell.col4 = cell.wform.lower()
+                            case 'speech':
+                                cell.col4 = cell.speechpr
+                            case 'transc':
+                                cell.col4 = cell.transc.lower()
+                    case 4:
+                        match self.fixed_cols[i]:
+                            case 'source':
+                                cell.col5 = cell.source.lower()
+                            case 'dic':
+                                cell.col5 = cell.dic.lower()
+                            case 'subj':
+                                cell.col5 = cell.subjpr
+                            case 'wform':
+                                cell.col5 = cell.wform.lower()
+                            case 'speech':
+                                cell.col5 = cell.speechpr
+                            case 'transc':
+                                cell.col5 = cell.transc.lower()
+                    case 5:
+                        match self.fixed_cols[i]:
+                            case 'source':
+                                cell.col6 = cell.source.lower()
+                            case 'dic':
+                                cell.col6 = cell.dic.lower()
+                            case 'subj':
+                                cell.col6 = cell.subjpr
+                            case 'wform':
+                                cell.col6 = cell.wform.lower()
+                            case 'speech':
+                                cell.col6 = cell.speechpr
+                            case 'transc':
+                                cell.col6 = cell.transc.lower()
     
     def run(self):
         self.check()
@@ -632,7 +639,7 @@ class Wrap:
     
     def __init__(self, cells):
         ''' Since we create even empty columns, the number of fixed cells in
-            a row should always be 4 (unless new fixed types are added).
+            a row should always be 6 (unless new fixed types are added).
         '''
         self.Success = True
         self.plain = []
