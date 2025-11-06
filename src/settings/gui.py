@@ -28,10 +28,11 @@ class Settings(QWidget):
     def set_values(self):
         self.allowed = []
         self.spallow = []
-        self.items = (_('Subjects'), _('Word forms'), _('Transcription')
+        self.items = (_('Sources'), _('Dictionaries'), _('Subjects')
+                     ,_('Word forms'), _('Transcription')
                      ,_('Parts of speech'), _('Do not set'))
-        self.stitems = (PRODUCT, _('Multitran'), _('Cut to the chase')
-                       ,_('Clearness'), _('Custom'))
+        self.stitems = (_('Full'), PRODUCT, _('Multitran')
+                       ,_('Cut to the chase'), _('Clearness'), _('Custom'))
         self.spitems = (_('Noun'), _('Verb'), _('Adjective'), _('Abbreviation')
                        ,_('Adverb'), _('Preposition'), _('Pronoun'))
 
@@ -139,41 +140,41 @@ class Settings(QWidget):
             return
         if self.opt_cl1.get() in self.allowed:
             self.allowed.remove(self.opt_cl1.get())
-        elif _('Subjects') in self.allowed:
-            self.opt_cl1.set(_('Subjects'))
-            self.allowed.remove(_('Subjects'))
+        elif _('Sources') in self.allowed:
+            self.opt_cl1.set(_('Sources'))
+            self.allowed.remove(_('Sources'))
         elif self.allowed:
             self.opt_cl1.set(self.allowed[0])
             self.allowed.remove(self.allowed[0])
         else:
             mes = _('Empty input is not allowed!')
             Message(f, mes, True).show_error()
-
+    
     def update_col2(self):
         f = '[MClient] settings.gui.Settings.update_col2'
         if self.opt_cl2.get() == _('Do not set'):
             return
         if self.opt_cl2.get() in self.allowed:
             self.allowed.remove(self.opt_cl2.get())
-        elif _('Word forms') in self.allowed:
-            self.opt_cl2.set(_('Word forms'))
-            self.allowed.remove(_('Word forms'))
+        elif _('Dictionaries') in self.allowed:
+            self.opt_cl2.set(_('Dictionaries'))
+            self.allowed.remove(_('Dictionaries'))
         elif self.allowed:
             self.opt_cl2.set(self.allowed[0])
             self.allowed.remove(self.allowed[0])
         else:
             mes = _('Empty input is not allowed!')
             Message(f, mes, True).show_error()
-
+    
     def update_col3(self):
         f = '[MClient] settings.gui.Settings.update_col3'
         if self.opt_cl3.get() == _('Do not set'):
             return
         if self.opt_cl3.get() in self.allowed:
             self.allowed.remove(self.opt_cl3.get())
-        elif _('Parts of speech') in self.allowed:
-            self.opt_cl3.set(_('Parts of speech'))
-            self.allowed.remove(_('Parts of speech'))
+        elif _('Subjects') in self.allowed:
+            self.opt_cl3.set(_('Subjects'))
+            self.allowed.remove(_('Subjects'))
         elif self.allowed:
             self.opt_cl3.set(self.allowed[0])
             self.allowed.remove(self.allowed[0])
@@ -187,9 +188,9 @@ class Settings(QWidget):
             return
         if self.opt_cl4.get() in self.allowed:
             self.allowed.remove(self.opt_cl4.get())
-        elif _('Transcription') in self.allowed:
-            self.opt_cl4.set(_('Transcription'))
-            self.allowed.remove(_('Transcription'))
+        elif _('Word forms') in self.allowed:
+            self.opt_cl4.set(_('Word forms'))
+            self.allowed.remove(_('Word forms'))
         elif self.allowed:
             self.opt_cl4.set(self.allowed[0])
             self.allowed.remove(self.allowed[0])
@@ -197,52 +198,108 @@ class Settings(QWidget):
             mes = _('Empty input is not allowed!')
             Message(f, mes, True).show_error()
 
-    def update_style(self):
-        cond11 = self.opt_cl1.get() == _('Subjects')
-        cond12 = self.opt_cl1.get() == _('Word forms')
-        cond13 = self.opt_cl1.get() == _('Parts of speech')
-        cond21 = self.opt_cl2.get() == _('Word forms')
-        cond22 = self.opt_cl2.get() == _('Transcription')
-        cond31 = self.opt_cl3.get() == _('Transcription')
-        cond32 = self.opt_cl3.get() == _('Parts of speech')
-        cond33 = self.opt_cl3.get() == _('Do not set')
-        cond41 = self.opt_cl4.get() == _('Parts of speech')
-        cond42 = self.opt_cl4.get() == _('Subjects')
-        cond43 = self.opt_cl4.get() == _('Do not set')
+    def update_col5(self):
+        f = '[MClient] settings.gui.Settings.update_col5'
+        if self.opt_cl5.get() == _('Do not set'):
+            return
+        if self.opt_cl5.get() in self.allowed:
+            self.allowed.remove(self.opt_cl5.get())
+        elif _('Parts of speech') in self.allowed:
+            self.opt_cl5.set(_('Parts of speech'))
+            self.allowed.remove(_('Parts of speech'))
+        elif self.allowed:
+            self.opt_cl5.set(self.allowed[0])
+            self.allowed.remove(self.allowed[0])
+        else:
+            mes = _('Empty input is not allowed!')
+            Message(f, mes, True).show_error()
 
-        if cond11 and cond21 and cond31 and cond41:
+    def update_col6(self):
+        f = '[MClient] settings.gui.Settings.update_col6'
+        if self.opt_cl6.get() == _('Do not set'):
+            return
+        if self.opt_cl6.get() in self.allowed:
+            self.allowed.remove(self.opt_cl6.get())
+        elif _('Transcription') in self.allowed:
+            self.opt_cl6.set(_('Transcription'))
+            self.allowed.remove(_('Transcription'))
+        elif self.allowed:
+            self.opt_cl6.set(self.allowed[0])
+            self.allowed.remove(self.allowed[0])
+        else:
+            mes = _('Empty input is not allowed!')
+            Message(f, mes, True).show_error()
+
+    def update_style(self):
+        cond11 = self.opt_cl1.get() == _('Sources')
+        cond12 = self.opt_cl1.get() == _('Subjects')
+        cond13 = self.opt_cl1.get() == _('Word forms')
+        cond14 = self.opt_cl1.get() == _('Parts of speech')
+        cond21 = self.opt_cl2.get() == _('Dictionaries')
+        cond22 = self.opt_cl2.get() == _('Word forms')
+        cond23 = self.opt_cl2.get() == _('Transcription')
+        cond31 = self.opt_cl3.get() == _('Subjects')        
+        cond32 = self.opt_cl3.get() == _('Transcription')
+        cond33 = self.opt_cl3.get() == _('Parts of speech')
+        cond34 = self.opt_cl3.get() == _('Do not set')
+        cond41 = self.opt_cl4.get() == _('Word forms')
+        cond42 = self.opt_cl4.get() == _('Parts of speech')
+        cond43 = self.opt_cl4.get() == _('Subjects')
+        cond44 = self.opt_cl4.get() == _('Do not set')
+        cond51 = self.opt_cl5.get() == _('Parts of speech')
+        cond52 = self.opt_cl5.get() == _('Do not set')
+        cond61 = self.opt_cl6.get() == _('Transcription')
+        cond62 = self.opt_cl6.get() == _('Do not set')
+        if cond11 and cond21 and cond31 and cond41 and cond51 and cond61:
+            self.opt_stl.set(_('Full'))
+        elif cond12 and cond22 and cond32 and cond42 and cond52 and cond62:
             self.opt_stl.set(PRODUCT)
-        elif cond12 and cond22 and cond32 and cond42:
+        elif cond13 and cond23 and cond33 and cond43 and cond52 and cond62:
             self.opt_stl.set(_('Multitran'))
-        elif cond13 and cond21 and cond31 and cond42:
+        elif cond14 and cond22 and cond32 and cond43 and cond52 and cond62:
             self.opt_stl.set(_('Cut to the chase'))
-        elif cond13 and cond21 and cond33 and cond43:
+        elif cond14 and cond22 and cond34 and cond44 and cond52 and cond62:
             self.opt_stl.set(_('Clearness'))
         else:
             self.opt_stl.set(_('Custom'))
 
     def update_by_st(self, event=None):
         f = '[MClient] settings.gui.Settings.update_by_st'
-        if self.opt_stl.get() == PRODUCT:
+        if self.opt_stl.get() == _('Full'):
+            self.opt_cl1.set(_('Sources'))
+            self.opt_cl2.set(_('Dictionaries'))
+            self.opt_cl3.set(_('Subjects'))
+            self.opt_cl4.set(_('Word forms'))
+            self.opt_cl5.set(_('Transcription'))
+            self.opt_cl6.set(_('Parts of speech'))
+        elif self.opt_stl.get() == PRODUCT:
             self.opt_cl1.set(_('Subjects'))
             self.opt_cl2.set(_('Word forms'))
             self.opt_cl3.set(_('Transcription'))
             self.opt_cl4.set(_('Parts of speech'))
+            self.opt_cl5.set(_('Do not set'))
+            self.opt_cl6.set(_('Do not set'))
         elif self.opt_stl.get() == _('Multitran'):
             self.opt_cl1.set(_('Word forms'))
             self.opt_cl2.set(_('Transcription'))
             self.opt_cl3.set(_('Parts of speech'))
             self.opt_cl4.set(_('Subjects'))
+            self.opt_cl5.set(_('Do not set'))
+            self.opt_cl6.set(_('Do not set'))
         elif self.opt_stl.get() == _('Cut to the chase'):
             self.opt_cl1.set(_('Parts of speech'))
             self.opt_cl2.set(_('Word forms'))
             self.opt_cl3.set(_('Transcription'))
             self.opt_cl4.set(_('Subjects'))
+            self.opt_cl5.set(_('Do not set'))
+            self.opt_cl6.set(_('Do not set'))
         elif self.opt_stl.get() == _('Clearness'):
             self.opt_cl1.set(_('Parts of speech'))
             self.opt_cl2.set(_('Word forms'))
             self.opt_cl3.set(_('Do not set'))
             self.opt_cl4.set(_('Do not set'))
+            self.opt_cl5.set(_('Do not set'))
+            self.opt_cl6.set(_('Do not set'))
         elif self.opt_stl.get() == _('Custom'):
             pass
         else:
@@ -256,6 +313,8 @@ class Settings(QWidget):
         self.update_col2()
         self.update_col3()
         self.update_col4()
+        self.update_col5()
+        self.update_col6()
         self.update_style()
 
     def update_by_col2(self):
@@ -264,6 +323,8 @@ class Settings(QWidget):
         self.update_col1()
         self.update_col3()
         self.update_col4()
+        self.update_col5()
+        self.update_col6()
         self.update_style()
 
     def update_by_col3(self):
@@ -272,6 +333,8 @@ class Settings(QWidget):
         self.update_col1()
         self.update_col2()
         self.update_col4()
+        self.update_col5()
+        self.update_col6()
         self.update_style()
 
     def update_by_col4(self, event=None):
@@ -280,6 +343,28 @@ class Settings(QWidget):
         self.update_col1()
         self.update_col2()
         self.update_col3()
+        self.update_col5()
+        self.update_col6()
+        self.update_style()
+    
+    def update_by_col5(self, event=None):
+        self.allowed = list(self.items)
+        self.update_col5()
+        self.update_col1()
+        self.update_col2()
+        self.update_col3()
+        self.update_col4()
+        self.update_col6()
+        self.update_style()
+    
+    def update_by_col6(self, event=None):
+        self.allowed = list(self.items)
+        self.update_col6()
+        self.update_col1()
+        self.update_col2()
+        self.update_col3()
+        self.update_col4()
+        self.update_col5()
         self.update_style()
         
     def update_by_sp1(self):
@@ -358,6 +443,8 @@ class Settings(QWidget):
         self.opt_cl2.set(_('Word forms'))
         self.opt_cl3.set(_('Parts of speech'))
         self.opt_cl4.set(_('Transcription'))
+        self.opt_cl5.set(_('Do not set'))
+        self.opt_cl6.set(_('Do not set'))
         self.opt_sp1.set(_('Noun'))
         self.opt_sp2.set(_('Verb'))
         self.opt_sp3.set(_('Adjective'))
@@ -388,6 +475,8 @@ class Settings(QWidget):
         self.lbl_cl2 = Label(mes.format(2))
         self.lbl_cl3 = Label(mes.format(3))
         self.lbl_cl4 = Label(mes.format(4))
+        self.lbl_cl5 = Label(mes.format(5))
+        self.lbl_cl6 = Label(mes.format(6))
         mes = _('Part of speech {}:')
         self.lbl_sp1 = Label(mes.format(1))
         self.lbl_sp2 = Label(mes.format(2))
@@ -405,11 +494,17 @@ class Settings(QWidget):
         self.opt_cl2 = OptionMenu(items = self.items, default = _('Word forms')
                                  ,action = self.update_by_col2)
         self.opt_cl3 = OptionMenu(items = self.items
-                                  ,default = _('Transcription')
+                                 ,default = _('Transcription')
                                  ,action = self.update_by_col3)
         self.opt_cl4 = OptionMenu(items = self.items
                                  ,default = _('Parts of speech')
                                  ,action = self.update_by_col4)
+        self.opt_cl5 = OptionMenu(items = self.items
+                                 ,default = _('Do not set')
+                                 ,action = self.update_by_col5)
+        self.opt_cl6 = OptionMenu(items = self.items
+                                 ,default = _('Do not set')
+                                 ,action = self.update_by_col6)
         self.opt_sp1 = OptionMenu(items = self.spitems
                                  ,default = _('Noun')
                                  ,action = self.update_by_sp1)
@@ -483,11 +578,15 @@ class Settings(QWidget):
         self.lay_col.addWidget(self.lbl_cl2.widget, 0, 2, Qt.AlignmentFlag.AlignCenter)
         self.lay_col.addWidget(self.lbl_cl3.widget, 0, 3, Qt.AlignmentFlag.AlignCenter)
         self.lay_col.addWidget(self.lbl_cl4.widget, 0, 4, Qt.AlignmentFlag.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl5.widget, 0, 5, Qt.AlignmentFlag.AlignCenter)
+        self.lay_col.addWidget(self.lbl_cl6.widget, 0, 6, Qt.AlignmentFlag.AlignCenter)
         self.lay_col.addWidget(self.opt_stl.widget, 1, 0)
         self.lay_col.addWidget(self.opt_cl1.widget, 1, 1)
         self.lay_col.addWidget(self.opt_cl2.widget, 1, 2)
         self.lay_col.addWidget(self.opt_cl3.widget, 1, 3)
         self.lay_col.addWidget(self.opt_cl4.widget, 1, 4)
+        self.lay_col.addWidget(self.opt_cl5.widget, 1, 5)
+        self.lay_col.addWidget(self.opt_cl6.widget, 1, 6)
     
     def _add_speech(self):
         self.lay_psp.addWidget(self.lbl_sp1.widget, 0, 0, Qt.AlignmentFlag.AlignCenter)
