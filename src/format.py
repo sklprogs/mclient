@@ -10,10 +10,10 @@ from subjects import SUBJECTS
 class Block:
     
     def __init__(self, block, colno, Select=False):
-        self.colors_bl = (objs.get_colors().b1, objs.colors.b2, objs.colors.b3
-                         ,objs.colors.b4)
-        self.colors_pr = (objs.colors.p1, objs.colors.p2, objs.colors.p3
-                         ,objs.colors.p4)
+        self.colors_bl = (COLORS.b1, COLORS.b2, COLORS.b3, COLORS.b4, COLORS.b5
+                         ,COLORS.b6)
+        self.colors_pr = (COLORS.p1, COLORS.p2, COLORS.p3, COLORS.p4, COLORS.p5
+                         ,COLORS.p6)
         self.code = ''
         self.block = block
         self.colno = colno
@@ -39,29 +39,34 @@ class Block:
     
     def get_color(self):
         if self._is_phrase_prior():
-            return objs.get_colors().php
+            return COLORS.php
         if self._is_phrase_blocked():
-            return objs.get_colors().phb
+            return COLORS.phb
         if self.block.type in ('phrase', 'term'):
             return CONFIG.new['terms']['font']['color']
         if self.block.type in ('comment', 'phcount', 'transc'):
             return CONFIG.new['comments']['font']['color']
         if self.block.type == 'user':
-            return objs.get_colors().user
+            return COLORS.user
         if self.block.type == 'correction':
-            return objs.get_colors().correction
+            return COLORS.correction
         if self._is_subj_blocked():
             return self.colors_bl[self.colno]
         if self._is_subj_prior():
             return self.colors_pr[self.colno]
-        if self.colno == 0:
-            return CONFIG.new['columns']['1']['font']['color']
-        if self.colno == 1:
-            return CONFIG.new['columns']['2']['font']['color']
-        if self.colno == 2:
-            return CONFIG.new['columns']['3']['font']['color']
-        if self.colno == 3:
-            return CONFIG.new['columns']['4']['font']['color']
+        match self.colno:
+            case 0:
+                return CONFIG.new['columns']['1']['font']['color']
+            case 1:
+                return CONFIG.new['columns']['2']['font']['color']
+            case 2:
+                return CONFIG.new['columns']['3']['font']['color']
+            case 3:
+                return CONFIG.new['columns']['4']['font']['color']
+            case 4:
+                return CONFIG.new['columns']['5']['font']['color']
+            case 5:
+                return CONFIG.new['columns']['6']['font']['color']
         # Qt accepts empty color names
         return ''
     
@@ -71,14 +76,19 @@ class Block:
             self.code = '<i>' + self.code + '</i>'
     
     def set_fixed(self):
-        if self.colno == 0:
-            self.code = f'''<b><div align="{CONFIG.new['columns']['1']['font']['align']}">{self.code}</div></b>'''
-        elif self.colno == 1:
-            self.code = f'''<b><div align="{CONFIG.new['columns']['2']['font']['align']}">{self.code}</div></b>'''
-        elif self.colno == 2:
-            self.code = f'''<div align="{CONFIG.new['columns']['3']['font']['align']}">{self.code}</div>'''
-        elif self.colno == 3:
-            self.code = f'''<div align="{CONFIG.new['columns']['4']['font']['align']}">{self.code}</div>'''
+        match self.colno:
+            case 0:
+                self.code = f'''<b><div align="{CONFIG.new['columns']['1']['font']['align']}">{self.code}</div></b>'''
+            case 1:
+                self.code = f'''<b><div align="{CONFIG.new['columns']['2']['font']['align']}">{self.code}</div></b>'''
+            case 2:
+                self.code = f'''<div align="{CONFIG.new['columns']['3']['font']['align']}">{self.code}</div>'''
+            case 3:
+                self.code = f'''<div align="{CONFIG.new['columns']['4']['font']['align']}">{self.code}</div>'''
+            case 4:
+                self.code = f'''<div align="{CONFIG.new['columns']['5']['font']['align']}">{self.code}</div>'''
+            case 5:
+                self.code = f'''<div align="{CONFIG.new['columns']['6']['font']['align']}">{self.code}</div>'''
     
     def get_family(self):
         if self.block.type in ('phrase', 'term'):
@@ -86,14 +96,19 @@ class Block:
         if self.block.type in ('comment', 'correction', 'phcount', 'transc'
                               ,'user'):
             return CONFIG.new['comments']['font']['family']
-        if self.colno == 0:
-            return CONFIG.new['columns']['1']['font']['family']
-        if self.colno == 1:
-            return CONFIG.new['columns']['2']['font']['family']
-        if self.colno == 2:
-            return CONFIG.new['columns']['3']['font']['family']
-        if self.colno == 3:
-            return CONFIG.new['columns']['4']['font']['family']
+        match self.colno:
+            case 0:
+                return CONFIG.new['columns']['1']['font']['family']
+            case 1:
+                return CONFIG.new['columns']['2']['font']['family']
+            case 2:
+                return CONFIG.new['columns']['3']['font']['family']
+            case 3:
+                return CONFIG.new['columns']['4']['font']['family']
+            case 4:
+                return CONFIG.new['columns']['5']['font']['family']
+            case 5:
+                return CONFIG.new['columns']['6']['font']['family']
         return 'Sans'
     
     def get_size(self):
@@ -102,14 +117,19 @@ class Block:
         if self.block.type in ('comment', 'correction', 'phcount', 'transc'
                               ,'user'):
             return CONFIG.new['comments']['font']['size']
-        if self.colno == 0:
-            return CONFIG.new['columns']['1']['font']['size']
-        if self.colno == 1:
-            return CONFIG.new['columns']['2']['font']['size']
-        if self.colno == 2:
-            return CONFIG.new['columns']['3']['font']['size']
-        if self.colno == 3:
-            return CONFIG.new['columns']['4']['font']['size']
+        match self.colno:
+            case 0:
+                return CONFIG.new['columns']['1']['font']['size']
+            case 1:
+                return CONFIG.new['columns']['2']['font']['size']
+            case 2:
+                return CONFIG.new['columns']['3']['font']['size']
+            case 3:
+                return CONFIG.new['columns']['4']['font']['size']
+            case 4:
+                return CONFIG.new['columns']['5']['font']['size']
+            case 5:
+                return CONFIG.new['columns']['6']['font']['size']
         return 11
 
     def set_style(self):
@@ -142,15 +162,13 @@ class Block:
 class Colors:
     
     def __init__(self):
-        self.set_values()
-        self.set_constants()
-        self.set_tints()
-    
-    def set_values(self):
         self.factor = 140
         # No need to set default colors, Qt ignores empty names at input
-        self.p1 = self.p2 = self.p3 = self.p4 = self.b1 = self.b2 = self.b3 \
-        = self.b4 = self.user = self.php = self.phb = ''
+        self.p1 = self.p2 = self.p3 = self.p4 = self.p5 = self.p6 = self.b1 \
+                = self.b2 = self.b3 = self.b4 = self.b5 = self.b6 = self.user \
+                = self.php = self.phb = ''
+        self.set_constants()
+        self.set_tints()
     
     def set_constants(self):
         self.correction = Color('green').get_hex()
@@ -191,18 +209,16 @@ class Colors:
         icolor = Color(CONFIG.new['columns']['4']['font']['color'])
         CONFIG.new['columns']['4']['font']['color'] = icolor.get_hex()
         self.p4, self.b4 = icolor.modify(self.factor)
+        
+        # color_col5
+        icolor = Color(CONFIG.new['columns']['5']['font']['color'])
+        CONFIG.new['columns']['5']['font']['color'] = icolor.get_hex()
+        self.p5, self.b5 = icolor.modify(self.factor)
+        
+        # color_col6
+        icolor = Color(CONFIG.new['columns']['6']['font']['color'])
+        CONFIG.new['columns']['6']['font']['color'] = icolor.get_hex()
+        self.p6, self.b6 = icolor.modify(self.factor)
 
 
-
-class Objects:
-    
-    def __init__(self):
-        self.colors = None
-    
-    def get_colors(self):
-        if self.colors is None:
-            self.colors = Colors()
-        return self.colors
-
-
-objs = Objects()
+COLORS = Colors()
