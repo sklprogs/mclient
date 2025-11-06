@@ -93,5 +93,17 @@ class Column:
         self.Fixed = False
 
 
+
+class Source:
+    
+    def __init__(self):
+        self.title = ''
+        self.status = _('not running')
+        self.color = 'red'
+        self.Online = False
+        self.successful = 0
+        self.failed = 0
+
+
 def is_block_fixed(block):
     return block.type in ('subj', 'wform', 'speech', 'transc', 'phsubj')
