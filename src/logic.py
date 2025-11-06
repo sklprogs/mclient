@@ -78,7 +78,9 @@ class HTM:
         ''' - Takes ~0.01s for 'set' on AMD E-300.
             - 'collimit' includes fixed blocks.
         '''
-        self.set_values()
+        self.code = ['<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">']
+        self.landscape = ''
+        self.skipped = 0
         self.cells = cells
         self.skipped = skipped
         
@@ -99,11 +101,6 @@ class HTM:
         self.set_landscape()
         self.create()
         return ''.join(self.code)
-    
-    def set_values(self):
-        self.code = ['<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">']
-        self.landscape = ''
-        self.skipped = 0
     
     def add_landscape(self):
         self.code.append(self.landscape)
@@ -149,25 +146,9 @@ class HTM:
 
 
 
-class Source:
-    
-    def __init__(self):
-        self.title = ''
-        self.status = _('not running')
-        self.color = 'red'
-        self.Online = False
-        self.successful = 0
-        self.failed = 0
-
-
-
 class CurRequest:
 
     def __init__(self):
-        self.set_values()
-        self.reset()
-    
-    def set_values(self):
         self.cols = ('source', 'dic', 'subj', 'wform', 'transc', 'speech')
         self.collimit = len(self.cols)
         ''' Toggling blacklisting should not depend on a number of blocked
@@ -177,6 +158,7 @@ class CurRequest:
             with 'sep_words_found' and in phrases; use previous settings for
             new articles.
         '''
+        self.reset()
     
     def set_col_limit(self):
         f = '[MClient] logic.CurRequest.set_col_limit'
@@ -342,6 +324,9 @@ class Search(Table):
         self.lower()
     
     def set_values(self):
+        ''' This procedure is still reused in table.controller.Table inherited
+            by the current class, so do not delete it.
+        '''
         self.plain = []
         self.Success = True
         self.Case = False
