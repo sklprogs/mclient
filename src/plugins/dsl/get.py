@@ -105,7 +105,16 @@ class Get:
 class DSL:
     
     def __init__(self, file):
-        self.set_values()
+        self.file = ''
+        self.fname = ''
+        self.lst = []
+        self.lang1 = _('Any')
+        self.lang2 = _('Any')
+        self.poses = []
+        self.index_ = []
+        self.articles = []
+        self.Success = True
+        self.dicname = _('Untitled dictionary')
         self.file = file
         self.check()
     
@@ -323,18 +332,6 @@ class DSL:
         self.poses = []
         self.index_ = []
         self.articles = []
-    
-    def set_values(self):
-        self.file = ''
-        self.fname = ''
-        self.lst = []
-        self.lang1 = _('Any')
-        self.lang2 = _('Any')
-        self.poses = []
-        self.index_ = []
-        self.articles = []
-        self.Success = True
-        self.dicname = _('Untitled dictionary')
 
 
 
