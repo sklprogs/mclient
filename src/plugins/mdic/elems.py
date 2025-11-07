@@ -19,6 +19,8 @@ class Block:
     
     def assign(self):
         self.block.cellno = self.json['cellno']
+        self.block.source = self.json['source']
+        self.block.dic = self.json['dic']
         self.block.subj = self.json['subj']
         self.block.subjf = self.json['subjf']
         self.block.text = self.json['text']
