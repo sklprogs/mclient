@@ -167,7 +167,7 @@ class Elems:
         self.set_speech()
         self.set_subjects()
         self.set_source()
-        self.move_phrases()
+        #self.move_phrases()
         self.fix_cellnos()
         self.fill()
         return self.blocks
