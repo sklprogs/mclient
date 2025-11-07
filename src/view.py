@@ -488,7 +488,8 @@ class View:
                 mes = mes.format(type_, self.fixed_urls)
             elif not text in self.fixed_urls[type_]:
                 mes = mes.format(text, self.fixed_urls[type_])
-            Message(f, mes).show_warning()
+            #TODO: Uncomment when ready
+            #Message(f, mes).show_warning()
         return ''
     
     def restore_urls(self):
