@@ -151,6 +151,10 @@ class Elems:
         for block in self.blocks:
             block.text = block.text.replace(r'\[', r'[').replace(r'\]', r']')
     
+    def set_source(self):
+        for block in self.blocks:
+            block.source = 'Lingvo (.dsl)'
+    
     def run(self):
         f = '[MClient] plugins.dsl.elems.Elems.run'
         if not self.Success:
@@ -162,6 +166,7 @@ class Elems:
         self.delete_backslash()
         self.set_speech()
         self.set_subjects()
+        self.set_source()
         self.move_phrases()
         self.fix_cellnos()
         self.fill()
