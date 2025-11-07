@@ -15,10 +15,11 @@ from skl_shared.logic import Text
 
 from config import CONFIG
 
+SEARCH = 'hello'
 #SEARCH = 'account'
 #SEARCH = 'book'
 #SEARCH = 'good'
-SEARCH = 'orderly'
+#SEARCH = 'orderly'
 URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing&l2=2'
 #HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/account (2025-10-26).htm'
 HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/inundate (2024-04-08).html'
@@ -211,13 +212,28 @@ class Elems:
         from plugins.stardict.cleanup import CleanUp as mCleanUp
         from plugins.stardict.tags import Tags as mTags
         from plugins.stardict.elems import Elems as mElems
-        file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - good.txt'
+        file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - hello.txt'
         text = Read(file).get()
         text = mCleanUp(text).run()
         blocks = mTags(text).run()
         ielems = mElems(blocks)
         ielems.run()
         return ielems.debug()
+    
+    def run_stardict_cells(self):
+        from plugins.stardict.cleanup import CleanUp as mCleanUp
+        from plugins.stardict.tags import Tags as mTags
+        from plugins.stardict.elems import Elems as mElems
+        from cells import Elems as cElems, Cells
+        file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - hello.txt'
+        text = Read(file).get()
+        text = mCleanUp(text).run()
+        blocks = mTags(text).run()
+        blocks = mElems(blocks).run()
+        blocks = cElems(blocks).run()
+        icells = Cells(blocks)
+        icells.run()
+        return icells.debug()
     
     def run_fora(self):
         f = '[MClient] tests.Elems.run_fora'
@@ -557,7 +573,7 @@ class Tags:
     def run_stardict(self):
         import plugins.stardict.cleanup as cu
         import plugins.stardict.tags as tg
-        file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - abstersion.txt'
+        file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - good.txt'
         text = Read(file).get()
         text = cu.CleanUp(text).run()
         itags = tg.Tags(text)
@@ -1137,9 +1153,11 @@ if __name__ == '__main__':
     #mes = Tags().run_dsl()
     #mes = Tags().run_fora_dsl()
     #mes = Tags().run_multitrancom()
+    #mes = Tags().run_stardict()
     #mes = Elems().run_dsl()
-    mes = Elems().run_mdic()
+    #mes = Elems().run_mdic()
     #mes = Elems().run_stardict()
+    mes = Elems().run_stardict_cells()
     #mes = Elems().run_fora_stardictx()
     #mes = Elems().run_fora_dsl()
     #mes = Elems().run_fora()
