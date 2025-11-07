@@ -116,6 +116,14 @@ class Elems:
         rep.deleted(f, len(self.blocks) - len(blocks))
         self.blocks = blocks
     
+    def set_source(self):
+        f = '[MClient] plugins.multitrandem.elems.Elems.set_source'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        for block in self.blocks:
+            block.source = _('Local MT')
+    
     def run(self):
         f = '[MClient] plugins.multitrandem.elems.Elems.run'
         if not self.Success:
@@ -125,6 +133,7 @@ class Elems:
         self.strip()
         # Prepare contents
         self.set_dic_titles()
+        self.set_source()
         self.add_brackets()
         self.remove_dupl_wforms()
         # Prepare for cells
