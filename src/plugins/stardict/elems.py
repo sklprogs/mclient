@@ -134,10 +134,6 @@ class Elems:
             self.Success = False
             rep.empty(f)
     
-    def expand_dic(self):
-        #TODO (?): implement
-        pass
-    
     def set_art_subj(self):
         f = '[MClient] plugins.stardict.elems.Elems.set_art_subj'
         count = 0
@@ -170,6 +166,22 @@ class Elems:
         for block in self.blocks:
             block.source = _('Stardict')
     
+    def separate_term(self):
+        ''' This can be necessary if the dictionary is incorrectly tagged -
+            terms following transcription can be not tagged at all.
+        '''
+        f = '[MClient] plugins.stardict.elems.Elems.separate_term'
+        count = 0
+        i = 1
+        while i < len(self.blocks):
+            if is_block_fixed(self.blocks[i-1]) \
+            and self.blocks[i].type == 'term' \
+            and self.blocks[i-1].cellno == self.blocks[i].cellno:
+                count += 1
+                self.blocks[i].cellno += 0.01
+            i += 1
+        rep.matches(f, count)
+    
     def run(self):
         f = '[MClient] plugins.stardict.elems.Elems.run'
         if not self.Success:
@@ -178,7 +190,8 @@ class Elems:
         self.set_subjects()
         self.set_speech()
         self.set_source()
-        self.expand_dic()
+        self.set_art_subj()
+        self.separate_term()
         #self.set_phrases()
         #self.move_phrases()
         #self.set_phsubj_name()
