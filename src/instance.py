@@ -30,8 +30,8 @@ class Cell:
         self.speechpr = -1
         self.code = ''
         self.speech = ''
-        self.source = _('Untitled source')
-        self.dic = _('Untitled dictionary')
+        self.source = ''
+        self.dic = ''
         self.subj = ''
         self.text = ''
         self.transc = ''
