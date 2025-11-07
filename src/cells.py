@@ -297,11 +297,19 @@ class Cells:
             elif cell.fixed_block.type in ('phsubj', 'wform') and cell.url:
                 self.fixed_urls[cell.fixed_block.type][cell.text] = cell.url
     
+    def set_sources(self):
+        for cell in self.cells:
+            if not cell or not cell.blocks:
+                continue
+            cell.source = cell.blocks[0].source
+            cell.dic = cell.blocks[0].dic
+    
     def run(self):
         self.set_cells()
         self.set_urls()
         self.unite_brackets()
         self.set_text()
+        self.set_sources()
         self.set_fixed_cells()
         self.rename_phsubj()
         self.set_row_nos()
