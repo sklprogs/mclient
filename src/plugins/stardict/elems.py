@@ -166,6 +166,10 @@ class Elems:
                 block.type = 'subj'
         rep.matches(f, count)
     
+    def set_source(self):
+        for block in self.blocks:
+            block.source = _('Stardict')
+    
     def run(self):
         f = '[MClient] plugins.stardict.elems.Elems.run'
         if not self.Success:
@@ -173,6 +177,7 @@ class Elems:
             return []
         self.set_subjects()
         self.set_speech()
+        self.set_source()
         self.expand_dic()
         #self.set_phrases()
         #self.move_phrases()
