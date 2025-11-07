@@ -607,6 +607,10 @@ class Elems:
             i -= 1
         rep.matches(f, count)
     
+    def set_source(self):
+        for block in self.blocks:
+            block.source = _('Multitran')
+    
     def run(self):
         # Find thesaurus before deleting empty blocks
         self.blocks = Thesaurus(self.blocks).run()
@@ -633,4 +637,5 @@ class Elems:
         self.run_com_sp_com()
         self.unite_comments()
         self.renumber_by_type()
+        self.set_source()
         return self.blocks
