@@ -23,7 +23,7 @@ class Types:
             return 'wform'
         elif type_ == _('Parts of speech'):
             return 'speech'
-        elif type_ == _('Transcription'):
+        elif type_ == _('Transcriptions'):
             return 'transc'
         elif type_ == _('Do not set'):
             pass

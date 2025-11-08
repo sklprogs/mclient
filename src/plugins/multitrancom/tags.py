@@ -40,7 +40,7 @@ from instance import Tag, Block
     •  Thesaurus:
          <td colspan="2">&nbsp;<b>Английский тезаурус</b></td>
          <td colspan="2">&nbsp;<b>Русский тезаурус</b></td>
-    •  Transcription:
+    •  Transcriptions:
          <span style="color:gray">['ɪnəndeɪt]</span>
     •  Full subj titles:
          ' title="Религия, Латынь">рел., лат.</a></td>'

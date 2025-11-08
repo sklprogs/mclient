@@ -29,7 +29,7 @@ from instance import Block, Tag
         [com]comment[/com]
         [i]comment[/i]
         [s]sound file[/s]
-    •  Transcription:
+    •  Transcriptions:
         \[[t]-əbl[/t]\]
     •  Parts of speech:
         Do not rely on 'p', it can be 'speech', 'wform' and 'comment' and it is

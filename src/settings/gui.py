@@ -29,7 +29,7 @@ class Settings(QWidget):
         self.allowed = []
         self.spallow = []
         self.items = (_('Sources'), _('Dictionaries'), _('Subjects')
-                     ,_('Word forms'), _('Transcription')
+                     ,_('Word forms'), _('Transcriptions')
                      ,_('Parts of speech'), _('Do not set'))
         self.stitems = (_('Full'), PRODUCT, _('Multitran')
                        ,_('Cut to the chase'), _('Clearness'), _('Custom'))
@@ -220,9 +220,9 @@ class Settings(QWidget):
             return
         if self.opt_cl6.get() in self.allowed:
             self.allowed.remove(self.opt_cl6.get())
-        elif _('Transcription') in self.allowed:
-            self.opt_cl6.set(_('Transcription'))
-            self.allowed.remove(_('Transcription'))
+        elif _('Transcriptions') in self.allowed:
+            self.opt_cl6.set(_('Transcriptions'))
+            self.allowed.remove(_('Transcriptions'))
         elif self.allowed:
             self.opt_cl6.set(self.allowed[0])
             self.allowed.remove(self.allowed[0])
@@ -235,7 +235,7 @@ class Settings(QWidget):
                and self.opt_cl2.get() == _('Dictionaries') \
                and self.opt_cl3.get() == _('Subjects') \
                and self.opt_cl4.get() == _('Word forms') \
-               and self.opt_cl5.get() == _('Transcription') \
+               and self.opt_cl5.get() == _('Transcriptions') \
                and self.opt_cl6.get() == _('Parts of speech')
     
     def _is_mclient(self):
@@ -243,14 +243,14 @@ class Settings(QWidget):
                and self.opt_cl2.get() == _('Do not set') \
                and self.opt_cl3.get() == _('Subjects') \
                and self.opt_cl4.get() == _('Word forms') \
-               and self.opt_cl5.get() == _('Transcription') \
+               and self.opt_cl5.get() == _('Transcriptions') \
                and self.opt_cl6.get() == _('Parts of speech')
     
     def _is_multitran(self):
         return self.opt_cl1.get() == _('Do not set') \
                and self.opt_cl2.get() == _('Do not set') \
                and self.opt_cl3.get() == _('Word forms') \
-               and self.opt_cl4.get() == _('Transcription') \
+               and self.opt_cl4.get() == _('Transcriptions') \
                and self.opt_cl5.get() == _('Parts of speech') \
                and self.opt_cl6.get() == _('Subjects')
     
@@ -259,7 +259,7 @@ class Settings(QWidget):
                and self.opt_cl2.get() == _('Do not set') \
                and self.opt_cl3.get() == _('Parts of speech') \
                and self.opt_cl4.get() == _('Word forms') \
-               and self.opt_cl5.get() == _('Transcription') \
+               and self.opt_cl5.get() == _('Transcriptions') \
                and self.opt_cl6.get() == _('Subjects')
     
     def _is_clearness(self):
@@ -291,20 +291,20 @@ class Settings(QWidget):
             self.opt_cl2.set(_('Dictionaries'))
             self.opt_cl3.set(_('Subjects'))
             self.opt_cl4.set(_('Word forms'))
-            self.opt_cl5.set(_('Transcription'))
+            self.opt_cl5.set(_('Transcriptions'))
             self.opt_cl6.set(_('Parts of speech'))
         elif self.opt_stl.get() == PRODUCT:
             self.opt_cl1.set(_('Do not set'))
             self.opt_cl2.set(_('Do not set'))
             self.opt_cl3.set(_('Subjects'))
             self.opt_cl4.set(_('Word forms'))
-            self.opt_cl5.set(_('Transcription'))
+            self.opt_cl5.set(_('Transcriptions'))
             self.opt_cl6.set(_('Parts of speech'))
         elif self.opt_stl.get() == _('Multitran'):
             self.opt_cl1.set(_('Do not set'))
             self.opt_cl2.set(_('Do not set'))
             self.opt_cl3.set(_('Word forms'))
-            self.opt_cl4.set(_('Transcription'))
+            self.opt_cl4.set(_('Transcriptions'))
             self.opt_cl5.set(_('Parts of speech'))
             self.opt_cl6.set(_('Subjects'))
         elif self.opt_stl.get() == _('Cut to the chase'):
@@ -312,7 +312,7 @@ class Settings(QWidget):
             self.opt_cl2.set(_('Do not set'))
             self.opt_cl3.set(_('Parts of speech'))
             self.opt_cl4.set(_('Word forms'))
-            self.opt_cl5.set(_('Transcription'))
+            self.opt_cl5.set(_('Transcriptions'))
             self.opt_cl6.set(_('Subjects'))
         elif self.opt_stl.get() == _('Clearness'):
             self.opt_cl1.set(_('Do not set'))
@@ -463,7 +463,7 @@ class Settings(QWidget):
         self.opt_cl1.set(_('Subjects'))
         self.opt_cl2.set(_('Word forms'))
         self.opt_cl3.set(_('Parts of speech'))
-        self.opt_cl4.set(_('Transcription'))
+        self.opt_cl4.set(_('Transcriptions'))
         self.opt_cl5.set(_('Do not set'))
         self.opt_cl6.set(_('Do not set'))
         self.opt_sp1.set(_('Noun'))
@@ -515,7 +515,7 @@ class Settings(QWidget):
         self.opt_cl2 = OptionMenu(items = self.items, default = _('Word forms')
                                  ,action = self.update_by_col2)
         self.opt_cl3 = OptionMenu(items = self.items
-                                 ,default = _('Transcription')
+                                 ,default = _('Transcriptions')
                                  ,action = self.update_by_col3)
         self.opt_cl4 = OptionMenu(items = self.items
                                  ,default = _('Parts of speech')

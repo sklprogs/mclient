@@ -258,11 +258,11 @@ class Commands:
                 lst[i] = 'wform'
             elif lst[i] == _('Parts of speech'):
                 lst[i] = 'speech'
-            elif lst[i] == _('Transcription'):
+            elif lst[i] == _('Transcriptions'):
                 lst[i] = 'transc'
             else:
                 sub = (_('Sources'), _('Dictionaries'), _('Subjects')
-                      ,_('Word forms'), _('Transcription')
+                      ,_('Word forms'), _('Transcriptions')
                       ,_('Parts of speech'))
                 sub = '; '.join(sub)
                 mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')

@@ -204,7 +204,7 @@
         ,"font": {"family": "Arial", "size": 12, "weight": "bold", "color": "cadet blue", "align": "center"}
         }
     ,"5":
-        {"type": "Transcription"
+        {"type": "Transcriptions"
         ,"font": {"family": "Mono", "size": 11, "weight": "normal", "color": "slate gray", "align": "center"}
         }
     ,"6":

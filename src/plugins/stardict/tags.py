@@ -26,7 +26,7 @@ from instance import Block, Tag
          <kref></kref> ("See also" section items)
     •  Word forms:
          <k></k>
-    •  Transcription:
+    •  Transcriptions:
         <tr></tr>
     •  Parts of speech:
          # XDXF tag meaning grammar information about the word <gr></gr>
