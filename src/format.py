@@ -54,41 +54,39 @@ class Block:
             return self.colors_bl[self.colno]
         if self._is_subj_prior():
             return self.colors_pr[self.colno]
-        match self.colno:
-            case 0:
-                return CONFIG.new['columns']['1']['font']['color']
-            case 1:
-                return CONFIG.new['columns']['2']['font']['color']
-            case 2:
-                return CONFIG.new['columns']['3']['font']['color']
-            case 3:
-                return CONFIG.new['columns']['4']['font']['color']
-            case 4:
-                return CONFIG.new['columns']['5']['font']['color']
-            case 5:
-                return CONFIG.new['columns']['6']['font']['color']
-        # Qt accepts empty color names
-        return ''
+        try:
+            return CONFIG.new['columns'][str(self.colno + 1)]['font']['color']
+        except KeyError:
+            # Qt accepts empty color names
+            return ''
     
     def set_italic(self):
         if self.block.type in ('comment', 'user', 'correction', 'phcount'
                               ,'speech', 'transc'):
             self.code = '<i>' + self.code + '</i>'
     
+    def _get_weight(self):
+        try:
+            weight = CONFIG.new['columns'][str(self.colno + 1)]['font']['weight']
+        except KeyError:
+            return ('', '')
+        match weight:
+            case 'bold':
+                return ('<b>', '</b>')
+            case 'italic':
+                return ('<i>', '</i>')
+        return ('', '')
+    
+    def _get_align(self):
+        try:
+            return CONFIG.new['columns'][str(self.colno + 1)]['font']['align']
+        except KeyError:
+            return 'left'
+    
     def set_fixed(self):
-        match self.colno:
-            case 0:
-                self.code = f'''<b><div align="{CONFIG.new['columns']['1']['font']['align']}">{self.code}</div></b>'''
-            case 1:
-                self.code = f'''<b><div align="{CONFIG.new['columns']['2']['font']['align']}">{self.code}</div></b>'''
-            case 2:
-                self.code = f'''<div align="{CONFIG.new['columns']['3']['font']['align']}">{self.code}</div>'''
-            case 3:
-                self.code = f'''<div align="{CONFIG.new['columns']['4']['font']['align']}">{self.code}</div>'''
-            case 4:
-                self.code = f'''<div align="{CONFIG.new['columns']['5']['font']['align']}">{self.code}</div>'''
-            case 5:
-                self.code = f'''<div align="{CONFIG.new['columns']['6']['font']['align']}">{self.code}</div>'''
+        weight1, weight2 = self._get_weight()
+        align = self._get_align()
+        self.code = f'''{weight1}<div align="{align}">{self.code}</div>{weight2}'''
     
     def get_family(self):
         if self.block.type in ('phrase', 'term'):
@@ -96,20 +94,10 @@ class Block:
         if self.block.type in ('comment', 'correction', 'phcount', 'transc'
                               ,'user'):
             return CONFIG.new['comments']['font']['family']
-        match self.colno:
-            case 0:
-                return CONFIG.new['columns']['1']['font']['family']
-            case 1:
-                return CONFIG.new['columns']['2']['font']['family']
-            case 2:
-                return CONFIG.new['columns']['3']['font']['family']
-            case 3:
-                return CONFIG.new['columns']['4']['font']['family']
-            case 4:
-                return CONFIG.new['columns']['5']['font']['family']
-            case 5:
-                return CONFIG.new['columns']['6']['font']['family']
-        return 'Sans'
+        try:
+            return CONFIG.new['columns'][str(self.colno + 1)]['font']['family']
+        except KeyError:
+            return 'Sans'
     
     def get_size(self):
         if self.block.type in ('phrase', 'term'):
@@ -117,20 +105,10 @@ class Block:
         if self.block.type in ('comment', 'correction', 'phcount', 'transc'
                               ,'user'):
             return CONFIG.new['comments']['font']['size']
-        match self.colno:
-            case 0:
-                return CONFIG.new['columns']['1']['font']['size']
-            case 1:
-                return CONFIG.new['columns']['2']['font']['size']
-            case 2:
-                return CONFIG.new['columns']['3']['font']['size']
-            case 3:
-                return CONFIG.new['columns']['4']['font']['size']
-            case 4:
-                return CONFIG.new['columns']['5']['font']['size']
-            case 5:
-                return CONFIG.new['columns']['6']['font']['size']
-        return 11
+        try:
+            return CONFIG.new['columns'][str(self.colno + 1)]['font']['size']
+        except KeyError:
+            return 11
 
     def set_style(self):
         family = self.get_family()
