@@ -230,35 +230,56 @@ class Settings(QWidget):
             mes = _('Empty input is not allowed!')
             Message(f, mes, True).show_error()
 
+    def _is_full(self):
+        return self.opt_cl1.get() == _('Sources') \
+               and self.opt_cl2.get() == _('Dictionaries') \
+               and self.opt_cl3.get() == _('Subjects') \
+               and self.opt_cl4.get() == _('Word forms') \
+               and self.opt_cl5.get() == _('Transcription') \
+               and self.opt_cl6.get() == _('Parts of speech')
+    
+    def _is_mclient(self):
+        return self.opt_cl1.get() == _('Do not set') \
+               and self.opt_cl2.get() == _('Do not set') \
+               and self.opt_cl3.get() == _('Subjects') \
+               and self.opt_cl4.get() == _('Word forms') \
+               and self.opt_cl5.get() == _('Transcription') \
+               and self.opt_cl6.get() == _('Parts of speech')
+    
+    def _is_multitran(self):
+        return self.opt_cl1.get() == _('Do not set') \
+               and self.opt_cl2.get() == _('Do not set') \
+               and self.opt_cl3.get() == _('Word forms') \
+               and self.opt_cl4.get() == _('Transcription') \
+               and self.opt_cl5.get() == _('Parts of speech') \
+               and self.opt_cl6.get() == _('Subjects')
+    
+    def _is_chase(self):
+        return self.opt_cl1.get() == _('Do not set') \
+               and self.opt_cl2.get() == _('Do not set') \
+               and self.opt_cl3.get() == _('Parts of speech') \
+               and self.opt_cl4.get() == _('Word forms') \
+               and self.opt_cl5.get() == _('Transcription') \
+               and self.opt_cl6.get() == _('Subjects')
+    
+    def _is_clearness(self):
+        return self.opt_cl1.get() == _('Do not set') \
+               and self.opt_cl2.get() == _('Do not set') \
+               and self.opt_cl3.get() == _('Parts of speech') \
+               and self.opt_cl4.get() == _('Word forms') \
+               and self.opt_cl5.get() == _('Do not set') \
+               and self.opt_cl6.get() == _('Do not set')
+    
     def update_style(self):
-        cond11 = self.opt_cl1.get() == _('Sources')
-        cond12 = self.opt_cl1.get() == _('Subjects')
-        cond13 = self.opt_cl1.get() == _('Word forms')
-        cond14 = self.opt_cl1.get() == _('Parts of speech')
-        cond21 = self.opt_cl2.get() == _('Dictionaries')
-        cond22 = self.opt_cl2.get() == _('Word forms')
-        cond23 = self.opt_cl2.get() == _('Transcription')
-        cond31 = self.opt_cl3.get() == _('Subjects')        
-        cond32 = self.opt_cl3.get() == _('Transcription')
-        cond33 = self.opt_cl3.get() == _('Parts of speech')
-        cond34 = self.opt_cl3.get() == _('Do not set')
-        cond41 = self.opt_cl4.get() == _('Word forms')
-        cond42 = self.opt_cl4.get() == _('Parts of speech')
-        cond43 = self.opt_cl4.get() == _('Subjects')
-        cond44 = self.opt_cl4.get() == _('Do not set')
-        cond51 = self.opt_cl5.get() == _('Transcription')
-        cond52 = self.opt_cl5.get() == _('Do not set')
-        cond61 = self.opt_cl6.get() == _('Parts of speech')
-        cond62 = self.opt_cl6.get() == _('Do not set')
-        if cond11 and cond21 and cond31 and cond41 and cond51 and cond61:
+        if self._is_full():
             self.opt_stl.set(_('Full'))
-        elif cond12 and cond22 and cond32 and cond42 and cond52 and cond62:
+        elif self._is_mclient():
             self.opt_stl.set(PRODUCT)
-        elif cond13 and cond23 and cond33 and cond43 and cond52 and cond62:
+        elif self._is_multitran():
             self.opt_stl.set(_('Multitran'))
-        elif cond14 and cond22 and cond32 and cond43 and cond52 and cond62:
+        elif self._is_chase():
             self.opt_stl.set(_('Cut to the chase'))
-        elif cond14 and cond22 and cond34 and cond44 and cond52 and cond62:
+        elif self._is_clearness():
             self.opt_stl.set(_('Clearness'))
         else:
             self.opt_stl.set(_('Custom'))
@@ -273,31 +294,31 @@ class Settings(QWidget):
             self.opt_cl5.set(_('Transcription'))
             self.opt_cl6.set(_('Parts of speech'))
         elif self.opt_stl.get() == PRODUCT:
-            self.opt_cl1.set(_('Subjects'))
-            self.opt_cl2.set(_('Word forms'))
-            self.opt_cl3.set(_('Transcription'))
-            self.opt_cl4.set(_('Parts of speech'))
-            self.opt_cl5.set(_('Do not set'))
-            self.opt_cl6.set(_('Do not set'))
+            self.opt_cl1.set(_('Do not set'))
+            self.opt_cl2.set(_('Do not set'))
+            self.opt_cl3.set(_('Subjects'))
+            self.opt_cl4.set(_('Word forms'))
+            self.opt_cl5.set(_('Transcription'))
+            self.opt_cl6.set(_('Parts of speech'))
         elif self.opt_stl.get() == _('Multitran'):
-            self.opt_cl1.set(_('Word forms'))
-            self.opt_cl2.set(_('Transcription'))
-            self.opt_cl3.set(_('Parts of speech'))
-            self.opt_cl4.set(_('Subjects'))
-            self.opt_cl5.set(_('Do not set'))
-            self.opt_cl6.set(_('Do not set'))
+            self.opt_cl1.set(_('Do not set'))
+            self.opt_cl2.set(_('Do not set'))
+            self.opt_cl3.set(_('Word forms'))
+            self.opt_cl4.set(_('Transcription'))
+            self.opt_cl5.set(_('Parts of speech'))
+            self.opt_cl6.set(_('Subjects'))
         elif self.opt_stl.get() == _('Cut to the chase'):
-            self.opt_cl1.set(_('Parts of speech'))
-            self.opt_cl2.set(_('Word forms'))
-            self.opt_cl3.set(_('Transcription'))
-            self.opt_cl4.set(_('Subjects'))
-            self.opt_cl5.set(_('Do not set'))
-            self.opt_cl6.set(_('Do not set'))
+            self.opt_cl1.set(_('Do not set'))
+            self.opt_cl2.set(_('Do not set'))
+            self.opt_cl3.set(_('Parts of speech'))
+            self.opt_cl4.set(_('Word forms'))
+            self.opt_cl5.set(_('Transcription'))
+            self.opt_cl6.set(_('Subjects'))
         elif self.opt_stl.get() == _('Clearness'):
-            self.opt_cl1.set(_('Parts of speech'))
-            self.opt_cl2.set(_('Word forms'))
-            self.opt_cl3.set(_('Do not set'))
-            self.opt_cl4.set(_('Do not set'))
+            self.opt_cl1.set(_('Do not set'))
+            self.opt_cl2.set(_('Do not set'))
+            self.opt_cl3.set(_('Parts of speech'))
+            self.opt_cl4.set(_('Word forms'))
             self.opt_cl5.set(_('Do not set'))
             self.opt_cl6.set(_('Do not set'))
         elif self.opt_stl.get() == _('Custom'):
