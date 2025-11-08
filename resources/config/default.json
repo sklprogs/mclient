@@ -188,28 +188,28 @@
     ,"fixed": {"width": 63}
     ,"terms": {"width": 157}
     ,"1":
-        {"type": "Subjects"
-        ,"font": {"family": "Arial", "size": 12, "color": "coral", "align": "center"}
+        {"type": "Sources"
+        ,"font": {"family": "Arial", "size": 12, "weight": "bold", "color": "red", "align": "center"}
         }
     ,"2":
-        {"type": "Word forms"
-        ,"font": {"family": "Arial", "size": 12, "color": "cadet blue", "align": "center"}
+        {"type": "Dictionaries"
+        ,"font": {"family": "Arial", "size": 12, "weight": "bold", "color": "orange", "align": "center"}
         }
     ,"3":
-        {"type": "Parts of speech"
-        ,"font": {"family": "Mono", "size": 11, "color": "slate gray", "align": "center"}
+        {"type": "Subjects"
+        ,"font": {"family": "Arial", "size": 12, "weight": "bold", "color": "coral", "align": "center"}
         }
     ,"4":
-        {"type": "Transcription"
-        ,"font": {"family": "Mono", "size": 11, "color": "slate gray", "align": "center"}
+        {"type": "Word forms"
+        ,"font": {"family": "Arial", "size": 12, "weight": "bold", "color": "cadet blue", "align": "center"}
         }
     ,"5":
-        {"type": "Do not set"
-        ,"font": {"family": "Mono", "size": 11, "color": "slate gray", "align": "center"}
+        {"type": "Transcription"
+        ,"font": {"family": "Mono", "size": 11, "weight": "normal", "color": "slate gray", "align": "center"}
         }
     ,"6":
-        {"type": "Do not set"
-        ,"font": {"family": "Mono", "size": 11, "color": "slate gray", "align": "center"}
+        {"type": "Parts of speech"
+        ,"font": {"family": "Mono", "size": 11, "weight": "italic", "color": "slate gray", "align": "center"}
         }
     }
 ,"subjects":
@@ -231,7 +231,7 @@
 ,"speech5": "Adverb"
 ,"speech6": "Preposition"
 ,"speech7": "Pronoun"
-,"style": "MClient"
+,"style": "Full"
 ,"web_search_url": "http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s"
 ,"AlphabetizeTerms": false
 ,"Autoswap": false

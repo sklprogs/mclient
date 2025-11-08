@@ -415,10 +415,11 @@
                 ,"properties":
                     {"font":
                         {"type": "object"
-                        ,"required": ["family", "size", "color", "align"]
+                        ,"required": ["family", "size", "weight", "color", "align"]
                         ,"properties":
                             {"family": {"type": "string"}
                             ,"size": {"type": "integer"}
+                            ,"weight": {"type": "string"}
                             ,"color": {"type": "string"}
                             ,"align": {"type": "string"}
                             }
@@ -432,10 +433,11 @@
                 ,"properties":
                     {"font":
                         {"type": "object"
-                        ,"required": ["family", "size", "color", "align"]
+                        ,"required": ["family", "size", "weight", "color", "align"]
                         ,"properties":
                             {"family": {"type": "string"}
                             ,"size": {"type": "integer"}
+                            ,"weight": {"type": "string"}
                             ,"color": {"type": "string"}
                             ,"align": {"type": "string"}
                             }
@@ -449,10 +451,11 @@
                 ,"properties":
                     {"font":
                         {"type": "object"
-                        ,"required": ["family", "size", "color", "align"]
+                        ,"required": ["family", "size", "weight", "color", "align"]
                         ,"properties":
                             {"family": {"type": "string"}
                             ,"size": {"type": "integer"}
+                            ,"weight": {"type": "string"}
                             ,"color": {"type": "string"}
                             ,"align": {"type": "string"}
                             }
@@ -466,10 +469,11 @@
                 ,"properties":
                     {"font":
                         {"type": "object"
-                        ,"required": ["family", "size", "color", "align"]
+                        ,"required": ["family", "size", "weight", "color", "align"]
                         ,"properties":
                             {"family": {"type": "string"}
                             ,"size": {"type": "integer"}
+                            ,"weight": {"type": "string"}
                             ,"color": {"type": "string"}
                             ,"align": {"type": "string"}
                             }
@@ -483,10 +487,11 @@
                 ,"properties":
                     {"font":
                         {"type": "object"
-                        ,"required": ["family", "size", "color", "align"]
+                        ,"required": ["family", "size", "weight", "color", "align"]
                         ,"properties":
                             {"family": {"type": "string"}
                             ,"size": {"type": "integer"}
+                            ,"weight": {"type": "string"}
                             ,"color": {"type": "string"}
                             ,"align": {"type": "string"}
                             }
@@ -500,10 +505,11 @@
                 ,"properties":
                     {"font":
                         {"type": "object"
-                        ,"required": ["family", "size", "color", "align"]
+                        ,"required": ["family", "size", "weight", "color", "align"]
                         ,"properties":
                             {"family": {"type": "string"}
                             ,"size": {"type": "integer"}
+                            ,"weight": {"type": "string"}
                             ,"color": {"type": "string"}
                             ,"align": {"type": "string"}
                             }
