@@ -55,6 +55,7 @@ actually Cyrillic)
   (sdict_EnRu_full - cut (manual).txt) are not separated when sorting
 
 dsl:
+- hello -> handshaking goes back to hello
 - Ru-En search does not work
 - Cannot find anything in Ozhegov's and Ushakov's dictionaries
 - Fix the wrong position (at top) of a phrase section
@@ -87,3 +88,4 @@ dsl:
 
 - mdic:
 - Not finding anything causes the next search to fail.
+- hello: \n in blocks
