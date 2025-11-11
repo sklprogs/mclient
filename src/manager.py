@@ -18,7 +18,7 @@ import sources.fora.run
 import sources.mdic.run
 
 
-class Plugins:
+class Sources:
     
     def __init__(self, timeout=5.0):
         self.lgplugin = None
@@ -37,49 +37,49 @@ class Plugins:
         self.set_timeout(self.timeout)
     
     def get_fixed_urls(self):
-        f = '[MClient] manager.Plugins.get_fixed_urls'
+        f = '[MClient] manager.Sources.get_fixed_urls'
         if not self.plugin:
             rep.empty(f)
             return {}
         return self.fixed_urls
     
     def get_speeches(self):
-        f = '[MClient] manager.Plugins.get_speeches'
+        f = '[MClient] manager.Sources.get_speeches'
         if not self.plugin:
             rep.empty(f)
             return {}
         return self.plugin.get_speeches()
     
     def get_majors(self):
-        f = '[MClient] manager.Plugins.get_majors'
+        f = '[MClient] manager.Sources.get_majors'
         if not self.plugin:
             rep.empty(f)
             return []
         return self.plugin.get_majors()
     
     def get_minors(self):
-        f = '[MClient] manager.Plugins.get_minors'
+        f = '[MClient] manager.Sources.get_minors'
         if not self.plugin:
             rep.empty(f)
             return []
         return self.plugin.get_minors()
     
     def get_search(self):
-        f = '[MClient] manager.Plugins.get_search'
+        f = '[MClient] manager.Sources.get_search'
         if not self.plugin:
             rep.empty(f)
             return ''
         return self.plugin.get_search()
     
     def fix_url(self, url):
-        f = '[MClient] manager.Plugins.fix_url'
+        f = '[MClient] manager.Sources.fix_url'
         if not self.plugin:
             rep.empty(f)
             return url
         return self.plugin.fix_url(url)
     
     def is_oneway(self):
-        f = '[MClient] manager.Plugins.is_oneway'
+        f = '[MClient] manager.Sources.is_oneway'
         if not self.plugin:
             rep.empty(f)
             return
@@ -94,21 +94,21 @@ class Plugins:
         self.mdplugin.quit()
     
     def get_lang1(self):
-        f = '[MClient] manager.Plugins.get_lang1'
+        f = '[MClient] manager.Sources.get_lang1'
         if not self.plugin:
             rep.empty(f)
             return
         return self.plugin.get_lang1()
     
     def get_lang2(self):
-        f = '[MClient] manager.Plugins.get_lang2'
+        f = '[MClient] manager.Sources.get_lang2'
         if not self.plugin:
             rep.empty(f)
             return
         return self.plugin.get_lang2()
     
     def fix_raw_htm(self, code):
-        f = '[MClient] manager.Plugins.fix_raw_htm'
+        f = '[MClient] manager.Sources.fix_raw_htm'
         if not self.plugin:
             rep.empty(f)
             return code
@@ -126,7 +126,7 @@ class Plugins:
         return code
     
     def get_url(self, search):
-        f = '[MClient] manager.Plugins.get_url'
+        f = '[MClient] manager.Sources.get_url'
         if not self.plugin:
             rep.empty(f)
             return ''
@@ -147,28 +147,28 @@ class Plugins:
         self.plugin.set_lang2(lang2)
     
     def set_timeout(self, timeout=5.0):
-        f = '[MClient] manager.Plugins.set_timeout'
+        f = '[MClient] manager.Sources.set_timeout'
         if not self.plugin:
             rep.empty(f)
             return
         self.plugin.set_timeout(timeout)
     
     def count_valid(self):
-        f = '[MClient] manager.Plugins.count_valid'
+        f = '[MClient] manager.Sources.count_valid'
         if not self.plugin:
             rep.empty(f)
             return
         return self.plugin.count_valid()
     
     def count_invalid(self):
-        f = '[MClient] manager.Plugins.count_invalid'
+        f = '[MClient] manager.Sources.count_invalid'
         if not self.plugin:
             rep.empty(f)
             return
         return self.plugin.count_invalid()
 
     def suggest(self, search):
-        f = '[MClient] manager.Plugins.suggest'
+        f = '[MClient] manager.Sources.suggest'
         if not self.plugin:
             rep.empty(f)
             return
@@ -187,14 +187,14 @@ class Plugins:
         return ['multitran.com']
     
     def get_langs1(self, lang2=''):
-        f = '[MClient] manager.Plugins.get_langs1'
+        f = '[MClient] manager.Sources.get_langs1'
         if not self.plugin:
             rep.empty(f)
             return
         return self.plugin.get_langs1(lang2)
     
     def get_langs2(self, lang1=''):
-        f = '[MClient] manager.Plugins.get_langs2'
+        f = '[MClient] manager.Sources.get_langs2'
         if not self.plugin:
             rep.empty(f)
             return
@@ -209,7 +209,7 @@ class Plugins:
         self.mdplugin = sources.mdic.run.Plugin()
     
     def set(self, source):
-        f = '[MClient] manager.Plugins.set'
+        f = '[MClient] manager.Sources.set'
         if not source:
             rep.empty(f)
             return
@@ -232,21 +232,21 @@ class Plugins:
             Message(f, mes, True).show_error()
     
     def get_text(self):
-        f = '[MClient] manager.Plugins.get_text'
+        f = '[MClient] manager.Sources.get_text'
         if not self.plugin:
             rep.empty(f)
             return
         return self.plugin.get_text()
     
     def get_htm(self):
-        f = '[MClient] manager.Plugins.get_htm'
+        f = '[MClient] manager.Sources.get_htm'
         if not self.plugin:
             rep.empty(f)
             return
         return self.plugin.get_htm()
     
     def request(self, search='', url=''):
-        f = '[MClient] manager.Plugins.request'
+        f = '[MClient] manager.Sources.request'
         if not self.plugin:
             rep.empty(f)
             return
@@ -254,14 +254,14 @@ class Plugins:
                                   ,url = url)
     
     def is_parallel(self):
-        f = '[MClient] manager.Plugins.is_parallel'
+        f = '[MClient] manager.Sources.is_parallel'
         if not self.plugin:
             rep.empty(f)
             return
         return self.plugin.is_parallel()
     
     def is_separate(self):
-        f = '[MClient] manager.Plugins.is_separate'
+        f = '[MClient] manager.Sources.is_separate'
         if not self.plugin:
             rep.empty(f)
             return
@@ -269,7 +269,7 @@ class Plugins:
     
     def get_subjects(self):
         # Get all available subjects (if any)
-        f = '[MClient] manager.Plugins.get_subjects'
+        f = '[MClient] manager.Sources.get_subjects'
         if not self.plugin:
             rep.empty(f)
             return {}
@@ -281,7 +281,7 @@ class Plugins:
 
 f = '[MClient] manager.__main__'
 if CONFIG.Success:
-    SOURCES = Plugins(CONFIG.new['timeout'])
+    SOURCES = Sources(CONFIG.new['timeout'])
 else:
     SOURCES = None
     rep.cancel(f)
