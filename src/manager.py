@@ -246,12 +246,13 @@ class Sources:
         return self.plugin.get_htm()
     
     def request(self, search='', url=''):
-        f = '[MClient] manager.Sources.request'
-        if not self.plugin:
-            rep.empty(f)
-            return
-        return self.plugin.request(search = search
-                                  ,url = url)
+        blocks = self.mcplugin.request(search, url)
+        blocks += self.sdplugin.request(search, url)
+        blocks += self.mbplugin.request(search, url)
+        blocks += self.lgplugin.request(search, url)
+        blocks += self.frplugin.request(search, url)
+        blocks += self.mdplugin.request(search, url)
+        return blocks
     
     def is_parallel(self):
         f = '[MClient] manager.Sources.is_parallel'
