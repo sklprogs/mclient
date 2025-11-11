@@ -6,7 +6,7 @@ from skl_shared.message.controller import Message, rep
 from skl_shared.graphics.root.controller import ROOT
 
 from config import CONFIG
-from manager import PLUGINS
+from manager import SOURCES
 from articles import ARTICLES
 
 from prior_block.gui import Panes as guiPanes
@@ -192,7 +192,7 @@ class Block(Panes):
         f = '[MClient] prior_block.controller.Block.set_mode'
         mode = self.gui.opt_src.get()
         if mode == _('All subjects'):
-            self.dic2 = PLUGINS.get_subjects()
+            self.dic2 = SOURCES.get_subjects()
         elif mode == _('From the article'):
             self.dic2 = get_article_subjects()
         else:
@@ -244,7 +244,7 @@ class Priorities(Panes):
         f = '[MClient] prior_block.controller.Priorities.set_mode'
         mode = self.gui.opt_src.get()
         if mode == _('All subjects'):
-            self.dic2 = PLUGINS.get_subjects()
+            self.dic2 = SOURCES.get_subjects()
         elif mode == _('From the article'):
             self.dic2 = get_article_subjects()
         else:

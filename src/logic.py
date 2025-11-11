@@ -13,7 +13,7 @@ from skl_shared.launch import Launch
 from skl_shared.paths import PDIR, Home
 
 from config import CONFIG, PRODUCT_LOW
-from manager import PLUGINS
+from manager import SOURCES
 from articles import ARTICLES
 from table.controller import Table
 
@@ -23,7 +23,7 @@ class Speech:
         dictionary is reused and not recreated.
     '''
     def __init__(self):
-        self.dic = PLUGINS.get_speeches()
+        self.dic = SOURCES.get_speeches()
     
     def _get_short(self, full):
         f = '[MClient] logic.Speech._get_short'
@@ -57,7 +57,7 @@ class App:
     def open_in_browser(self):
         ionline = Online()
         url = REQUEST.url
-        ionline.url = PLUGINS.fix_url(url)
+        ionline.url = SOURCES.fix_url(url)
         ionline.browse()
     
     def print(self):
@@ -215,7 +215,7 @@ class Commands:
     def set_url(self):
         f = '[MClient] logic.Commands.set_url'
         #NOTE: update source and target languages first
-        REQUEST.url = PLUGINS.get_url(REQUEST.search)
+        REQUEST.url = SOURCES.get_url(REQUEST.search)
         mes = REQUEST.url
         Message(f, mes).show_debug()
     

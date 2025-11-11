@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from plugins.multitrancom.utils.subjects.compile import Compile, Check, Missing
+from sources.multitrancom.utils.subjects.compile import Compile, Check, Missing
 from skl_shared.graphics.root.controller import ROOT
 
 

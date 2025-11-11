@@ -5,7 +5,7 @@ from skl_shared.localize import _
 from skl_shared.message.controller import rep
 
 from config import CONFIG
-from manager import PLUGINS
+from manager import SOURCES
 from instance import Source
 
 from about.controller import ABOUT
@@ -70,37 +70,37 @@ class Welcome:
         if not CONFIG.new['Ping']:
             rep.lazy(f)
             return
-        old = PLUGINS.source
-        dics = PLUGINS.get_online_sources()
+        old = SOURCES.source
+        dics = SOURCES.get_online_sources()
         if not dics:
             rep.empty(f)
             return
         for dic in dics:
-            PLUGINS.set(dic)
+            SOURCES.set(dic)
             isource = Source()
             isource.title = dic
             isource.Online = True
-            if PLUGINS.count_valid():
+            if SOURCES.count_valid():
                 isource.status = _('running')
                 isource.color = 'green'
             self.sources.append(isource)
-        PLUGINS.set(old)
+        SOURCES.set(old)
     
     def set_offline_sources(self):
         f = '[MClient] welcome.controller.Welcome.set_offline_sources'
-        dics = PLUGINS.get_offline_sources()
+        dics = SOURCES.get_offline_sources()
         if not dics:
             rep.empty(f)
             return
-        old = PLUGINS.source
+        old = SOURCES.source
         for dic in dics:
-            PLUGINS.set(dic)
+            SOURCES.set(dic)
             isource = Source()
             isource.title = dic
-            isource.successful = PLUGINS.count_valid()
-            isource.failed = PLUGINS.count_invalid()
+            isource.successful = SOURCES.count_valid()
+            isource.failed = SOURCES.count_invalid()
             self.sources.append(isource)
-        PLUGINS.set(old)
+        SOURCES.set(old)
     
     def set_sources(self):
         self.set_online_sources()

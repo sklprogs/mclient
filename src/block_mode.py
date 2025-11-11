@@ -7,7 +7,7 @@ from skl_shared.graphics.clipboard.controller import CLIPBOARD
 from skl_shared.list import List
 
 from config import CONFIG
-from manager import PLUGINS
+from manager import SOURCES
 from articles import ARTICLES
 from table.controller import TABLE
 from format import Block

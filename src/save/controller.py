@@ -10,7 +10,7 @@ from skl_shared.pretty_html import make_pretty
 
 from config import CONFIG
 from logic import HTM
-from manager import PLUGINS
+from manager import SOURCES
 from articles import ARTICLES
 from save.gui import Save as guiSave, TableModel
 
@@ -233,7 +233,7 @@ class Save:
             rep.empty(f)
             return
         self._add_web_ext()
-        code = PLUGINS.fix_raw_htm(code)
+        code = SOURCES.fix_raw_htm(code)
         Write(self.file).write(code)
 
     def save_view_as_txt(self):

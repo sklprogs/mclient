@@ -1,7 +1,7 @@
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 
-f = '[MClient] plugins.dsl.subjects.__main__'
+f = '[MClient] sources.dsl.subjects.__main__'
     sh.com.start()
     timer = sh.Timer(f)
     timer.start()
@@ -10,11 +10,11 @@ f = '[MClient] plugins.dsl.subjects.__main__'
     timer.end()
     sh.com.end()
 
-f = '[MClient] plugins.dsl.get.__main__'
+f = '[MClient] sources.dsl.get.__main__'
     PATH = Home('mclient').add_config('dics')
     objs.get_all_dics().locate()
 
-f = '[MClient] plugins.multitrandem.subjects.__main__'
+f = '[MClient] sources.multitrandem.subjects.__main__'
     sh.com.start()
     timer = sh.Timer(f)
     timer.start()
@@ -24,7 +24,7 @@ f = '[MClient] plugins.multitrandem.subjects.__main__'
     sh.com.end()
 
 if __name__ == '__main__':
-    f = '[MClient] plugins.multitrancom.utils.subjects.__main__'
+    f = '[MClient] sources.multitrancom.utils.subjects.__main__'
     sh.com.start()
     mes = com.get_string(Loop().run())
     idebug = sh.Debug(f, mes)
@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
 
 if __name__ == '__main__':
-    f = '[MClient] plugins.stardict.subjects.__main__'
+    f = '[MClient] sources.stardict.subjects.__main__'
     sh.com.start()
     timer = sh.Timer(f)
     timer.start()

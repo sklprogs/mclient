@@ -11,7 +11,7 @@ from skl_shared.online import Online
 from skl_shared.time import Timer
 
 from config import CONFIG, HistorySubjects
-from manager import PLUGINS
+from manager import SOURCES
 from articles import ARTICLES
 from table.controller import TABLE
 import logic as lg
@@ -360,7 +360,7 @@ class App:
         if not url:
             rep.empty(f)
             return
-        url = PLUGINS.fix_url(url)
+        url = SOURCES.fix_url(url)
         CLIPBOARD.copy(url)
         if CONFIG.new['Iconify']:
             self.minimize()
@@ -383,7 +383,7 @@ class App:
         if not url:
             rep.empty(f)
             return
-        url = PLUGINS.fix_url(url)
+        url = SOURCES.fix_url(url)
         CLIPBOARD.copy(url)
         if CONFIG.new['Iconify']:
             self.minimize()
@@ -478,9 +478,9 @@ class App:
             rep.lazy(f)
             return
         self.history.add_row(id_ = ARTICLES.id
-                            ,source = PLUGINS.source
-                            ,lang1 = PLUGINS.get_lang1()
-                            ,lang2 = PLUGINS.get_lang2()
+                            ,source = SOURCES.source
+                            ,lang1 = SOURCES.get_lang1()
+                            ,lang2 = SOURCES.get_lang2()
                             ,search = ARTICLES.get_search())
         # Setting column width works only after updating the model, see https://stackoverflow.com/questions/8364061/how-do-you-set-the-column-width-on-a-qtreeview
         self.history.gui.set_col_width()
@@ -501,9 +501,9 @@ class App:
         mes = _('Set source to "{}"')
         mes = mes.format(CONFIG.new['source'])
         Message(f, mes).show_info()
-        PLUGINS.set(CONFIG.new['source'])
-        PLUGINS.set_lang1(lang1)
-        PLUGINS.set_lang2(lang2)
+        SOURCES.set(CONFIG.new['source'])
+        SOURCES.set_lang1(lang1)
+        SOURCES.set_lang2(lang2)
         self.reset_opt(CONFIG.new['source'])
         self.load_article()
     
@@ -528,9 +528,9 @@ class App:
             rep.empty(f)
             return
         CONFIG.new['source'] = source
-        PLUGINS.set(CONFIG.new['source'])
-        PLUGINS.set_lang1(lang1)
-        PLUGINS.set_lang2(lang2)
+        SOURCES.set(CONFIG.new['source'])
+        SOURCES.set_lang1(lang1)
+        SOURCES.set_lang2(lang2)
         self.reset_opt(CONFIG.new['source'])
         self.load_article()
         self.history.go_up()
@@ -551,9 +551,9 @@ class App:
             rep.empty(f)
             return
         CONFIG.new['source'] = source
-        PLUGINS.set(CONFIG.new['source'])
-        PLUGINS.set_lang1(lang1)
-        PLUGINS.set_lang2(lang2)
+        SOURCES.set(CONFIG.new['source'])
+        SOURCES.set_lang1(lang1)
+        SOURCES.set_lang2(lang2)
         self.reset_opt(CONFIG.new['source'])
         self.load_article()
         self.history.go_down()
@@ -660,7 +660,7 @@ class App:
         CONFIG.new['source'] = gi.objs.get_panel().opt_src.get()
         mes = _('Set source to "{}"').format(CONFIG.new['source'])
         Message(f, mes).show_info()
-        PLUGINS.set(CONFIG.new['source'])
+        SOURCES.set(CONFIG.new['source'])
         self.reset_opt(CONFIG.new['source'])
         self.go_search()
     
@@ -668,7 +668,7 @@ class App:
         f = '[MClient] mclient.App.auto_swap'
         lang1 = gi.objs.get_panel().opt_lg1.get()
         lang2 = gi.objs.panel.opt_lg2.get()
-        if PLUGINS.is_oneway() or not CONFIG.new['Autoswap'] \
+        if SOURCES.is_oneway() or not CONFIG.new['Autoswap'] \
         or not REQUEST.search:
             rep.lazy(f)
             return
@@ -685,11 +685,11 @@ class App:
     def reset_opt(self, default=_('Multitran')):
         f = '[MClient] mclient.App.reset_opt'
         # Reset OptionMenus
-        lang1 = PLUGINS.get_lang1()
-        lang2 = PLUGINS.get_lang2()
-        langs1 = PLUGINS.get_langs1()
-        langs2 = PLUGINS.get_langs2(lang1)
-        sources = PLUGINS.get_sources()
+        lang1 = SOURCES.get_lang1()
+        lang2 = SOURCES.get_lang2()
+        langs1 = SOURCES.get_langs1()
+        langs2 = SOURCES.get_langs2(lang1)
+        sources = SOURCES.get_sources()
         if not (langs1 and langs2 and lang1 and lang2 and sources):
             rep.empty(f)
             return
@@ -704,7 +704,7 @@ class App:
             widget first.
         '''
         old = gi.objs.get_panel().opt_lg1.get()
-        gi.objs.panel.opt_lg1.reset(items = PLUGINS.get_langs1()
+        gi.objs.panel.opt_lg1.reset(items = SOURCES.get_langs1()
                                    ,default = old)
         gi.objs.panel.opt_lg1.set_next()
         self.update_lang1()
@@ -723,7 +723,7 @@ class App:
             widget first.
         '''
         old = gi.objs.get_panel().opt_lg1.get()
-        gi.objs.panel.opt_lg1.reset(items = PLUGINS.get_langs1()
+        gi.objs.panel.opt_lg1.reset(items = SOURCES.get_langs1()
                                    ,default = old)
         gi.objs.panel.opt_lg1.set_prev()
         self.update_lang1()
@@ -739,27 +739,27 @@ class App:
     def set_lang1(self):
         f = '[MClient] mclient.App.set_lang1'
         lang = gi.objs.get_panel().opt_lg1.get()
-        if PLUGINS.get_lang1() != lang:
+        if SOURCES.get_lang1() != lang:
             mes = _('Set language: {}').format(lang)
             Message(f, mes).show_info()
             CONFIG.new['lang1'] = lang
-            PLUGINS.set_lang1(lang)
+            SOURCES.set_lang1(lang)
     
     def set_lang2(self):
         f = '[MClient] mclient.App.set_lang2'
         lang = gi.objs.get_panel().opt_lg2.get()
-        if PLUGINS.get_lang2() != lang:
+        if SOURCES.get_lang2() != lang:
             mes = _('Set language: {}').format(lang)
             Message(f, mes).show_info()
             CONFIG.new['lang2'] = lang
-            PLUGINS.set_lang2(lang)
+            SOURCES.set_lang2(lang)
     
     def update_lang1(self):
         f = '[MClient] mclient.App.update_lang1'
         self.set_lang1()
         self.set_lang2()
-        lang1 = PLUGINS.get_lang1()
-        langs1 = PLUGINS.get_langs1()
+        lang1 = SOURCES.get_lang1()
+        langs1 = SOURCES.get_langs1()
         if not langs1:
             rep.empty(f)
             return
@@ -770,9 +770,9 @@ class App:
         f = '[MClient] mclient.App.update_lang2'
         self.set_lang1()
         self.set_lang2()
-        lang1 = PLUGINS.get_lang1()
-        lang2 = PLUGINS.get_lang2()
-        langs2 = PLUGINS.get_langs2(lang1)
+        lang1 = SOURCES.get_lang1()
+        lang2 = SOURCES.get_lang2()
+        langs2 = SOURCES.get_langs2(lang1)
         if not langs2:
             rep.empty(f)
             return
@@ -783,7 +783,7 @@ class App:
     
     def swap_langs(self):
         f = '[MClient] mclient.App.swap_langs'
-        if PLUGINS.is_oneway():
+        if SOURCES.is_oneway():
             mes = _('Cannot swap languages, this is a one-way dictionary!')
             Message(f, mes, True).show_info()
             return
@@ -792,8 +792,8 @@ class App:
         lang1 = gi.objs.get_panel().opt_lg1.get()
         lang2 = gi.objs.panel.opt_lg2.get()
         lang1, lang2 = lang2, lang1
-        langs1 = PLUGINS.get_langs1()
-        langs2 = PLUGINS.get_langs2(lang1)
+        langs1 = SOURCES.get_langs1()
+        langs2 = SOURCES.get_langs2(lang1)
         if not langs1:
             rep.empty(f)
             return
@@ -887,7 +887,7 @@ class App:
             artid = ARTICLES.id
             
         if artid == -1:
-            blocks = PLUGINS.request(search=search, url=url)
+            blocks = SOURCES.request(search=search, url=url)
             ielems = Elems(blocks)
             blocks = ielems.run()
             icells = Cells(blocks)
@@ -898,7 +898,7 @@ class App:
                         ,url = url
                         ,cells = cells
                         ,fixed_urls = icells.fixed_urls
-                        ,raw_code = PLUGINS.get_htm()
+                        ,raw_code = SOURCES.get_htm()
                         ,subjf = SUBJECTS.article
                         ,blocked = SUBJECTS.block
                         ,prioritized = SUBJECTS.prior

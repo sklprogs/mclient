@@ -31,9 +31,9 @@ class Wrap:
         f = '[MClient] tests.Wrap.run_multitrancom'
         import articles as ARTICLES
         # Do not change import style - we already have there Get, Tags, etc.
-        import plugins.multitrancom.cleanup as cu
-        import plugins.multitrancom.tags as tg
-        import plugins.multitrancom.elems as el
+        import sources.multitrancom.cleanup as cu
+        import sources.multitrancom.tags as tg
+        import sources.multitrancom.elems as el
         import cells as cl
         import view as vw
         
@@ -62,9 +62,9 @@ class Prioritize:
     def run_multitrancom(self):
         f = '[MClient] tests.Prioritize.run_multitrancom'
         import logic as lg
-        import plugins.multitrancom.cleanup as cu
-        import plugins.multitrancom.tags as tg
-        import plugins.multitrancom.elems as el
+        import sources.multitrancom.cleanup as cu
+        import sources.multitrancom.tags as tg
+        import sources.multitrancom.elems as el
         import cells as cl
         import view as vw
         from subjects import SUBJECTS
@@ -78,7 +78,7 @@ class Prioritize:
         blocks = ielems.run()
         cells = cl.Cells(blocks).run()
         
-        ''' #FIX: For some reason, lg.objs.get_plugins().get_article_subjects()
+        ''' #FIX: For some reason, lg.objs.get_sources().get_article_subjects()
             is empty.
         '''
         pairs = ielems.art_subj
@@ -106,9 +106,9 @@ class View:
     
     def run_stardict(self):
         import logic as lg
-        import plugins.stardict.cleanup as cu
-        import plugins.stardict.tags as tg
-        import plugins.stardict.elems as el
+        import sources.stardict.cleanup as cu
+        import sources.stardict.tags as tg
+        import sources.stardict.elems as el
         import cells as cl
         import view as vw
         file = '/home/pete/docs/mclient_tests/stardict/EnRu full cut.txt'
@@ -127,9 +127,9 @@ class View:
     def run_multitrancom(self):
         f = '[MClient] tests.View.run_multitrancom'
         import logic as lg
-        import plugins.multitrancom.cleanup as cu
-        import plugins.multitrancom.tags as tg
-        import plugins.multitrancom.elems as el
+        import sources.multitrancom.cleanup as cu
+        import sources.multitrancom.tags as tg
+        import sources.multitrancom.elems as el
         import cells as cl
         import view as vw
         
@@ -153,10 +153,10 @@ class View:
     def run_dsl(self):
         f = '[MClient] tests.View.run_dsl'
         import logic as lg
-        import plugins.dsl.get as gt
-        import plugins.dsl.cleanup as cu
-        import plugins.dsl.tags as tg
-        import plugins.dsl.elems as el
+        import sources.dsl.get as gt
+        import sources.dsl.cleanup as cu
+        import sources.dsl.tags as tg
+        import sources.dsl.elems as el
         import cells as cl
         import view as vw
         
@@ -188,9 +188,9 @@ class View:
 class Elems:
     
     def run_multitrandem(self):
-        import plugins.multitrandem.get as gt
-        import plugins.multitrandem.tags as tg
-        import plugins.multitrandem.elems as el
+        import sources.multitrandem.get as gt
+        import sources.multitrandem.tags as tg
+        import sources.multitrandem.elems as el
         gt.PATH = Home('mclient').add_config('dics')
         iget = gt.Get(SEARCH)
         chunks = iget.run()
@@ -209,9 +209,9 @@ class Elems:
         return ielems.debug()
     
     def run_stardict(self):
-        from plugins.stardict.cleanup import CleanUp as mCleanUp
-        from plugins.stardict.tags import Tags as mTags
-        from plugins.stardict.elems import Elems as mElems
+        from sources.stardict.cleanup import CleanUp as mCleanUp
+        from sources.stardict.tags import Tags as mTags
+        from sources.stardict.elems import Elems as mElems
         file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - hello.txt'
         text = Read(file).get()
         text = mCleanUp(text).run()
@@ -221,9 +221,9 @@ class Elems:
         return ielems.debug()
     
     def run_stardict_cells(self):
-        from plugins.stardict.cleanup import CleanUp as mCleanUp
-        from plugins.stardict.tags import Tags as mTags
-        from plugins.stardict.elems import Elems as mElems
+        from sources.stardict.cleanup import CleanUp as mCleanUp
+        from sources.stardict.tags import Tags as mTags
+        from sources.stardict.elems import Elems as mElems
         from cells import Elems as cElems, Cells
         file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - hello.txt'
         text = Read(file).get()
@@ -238,7 +238,7 @@ class Elems:
     def run_fora(self):
         f = '[MClient] tests.Elems.run_fora'
         from cells import Cells
-        from plugins.fora.run import Plugin
+        from sources.fora.run import Plugin
         blocks = Plugin().request(SEARCH)
         if not blocks:
             rep.lazy(f)
@@ -249,9 +249,9 @@ class Elems:
     
     def run_fora_stardictx(self):
         f = '[MClient] tests.Elems.run_fora_stardictx'
-        from plugins.fora.get import ALL_DICS
-        from plugins.fora.stardictx.tags import Tags
-        from plugins.fora.stardictx.elems import Elems
+        from sources.fora.get import ALL_DICS
+        from sources.fora.stardictx.tags import Tags
+        from sources.fora.stardictx.elems import Elems
         article = ALL_DICS.search(SEARCH)
         if not article:
             rep.empty(f)
@@ -263,10 +263,10 @@ class Elems:
     
     def run_fora_dsl(self):
         f = '[MClient] tests.Elems.run_fora_dsl'
-        from plugins.fora.get import ALL_DICS
-        import plugins.dsl.cleanup as cu
-        import plugins.dsl.tags as tg
-        import plugins.dsl.elems as el
+        from sources.fora.get import ALL_DICS
+        import sources.dsl.cleanup as cu
+        import sources.dsl.tags as tg
+        import sources.dsl.elems as el
         article = ALL_DICS.search(SEARCH)
         if not article:
             rep.empty(f)
@@ -278,8 +278,8 @@ class Elems:
         return ielems.debug()
     
     def run_mdic(self):
-        import plugins.mdic.get as gt
-        import plugins.mdic.elems as el
+        import sources.mdic.get as gt
+        import sources.mdic.elems as el
         import cells as cl
         result = gt.ALL_DICS.search(SEARCH)
         blocks = el.Elems(result).run()
@@ -289,10 +289,10 @@ class Elems:
         return icell.debug()
     
     def run_dsl(self):
-        import plugins.dsl.cleanup as cu
-        import plugins.dsl.get as gt
-        import plugins.dsl.tags as tg
-        import plugins.dsl.elems as el
+        import sources.dsl.cleanup as cu
+        import sources.dsl.get as gt
+        import sources.dsl.tags as tg
+        import sources.dsl.elems as el
         blocks = []
         htm = []
         articles = gt.Get(SEARCH).run()
@@ -310,9 +310,9 @@ class Elems:
         from skl_shared.text_file import Read
         from skl_shared.time import Timer
         from cells import Cells
-        from plugins.multitrancom.cleanup import CleanUp as mCleanUp
-        from plugins.multitrancom.tags import Tags as mTags
-        from plugins.multitrancom.elems import Elems as mElems
+        from sources.multitrancom.cleanup import CleanUp as mCleanUp
+        from sources.multitrancom.tags import Tags as mTags
+        from sources.multitrancom.elems import Elems as mElems
         text = Read(HTM_FILE).get()
         timer = Timer(f)
         timer.start()
@@ -329,9 +329,9 @@ class Elems:
 class Offline:
     
     def run_multitrancom(self):
-        import plugins.multitrancom.cleanup as cu
-        import plugins.multitrancom.tags as tg
-        import plugins.multitrancom.elems as el
+        import sources.multitrancom.cleanup as cu
+        import sources.multitrancom.tags as tg
+        import sources.multitrancom.elems as el
         self.htm = Read(HTM_FILE).get()
         self.text = cu.CleanUp(self.htm).run()
         itags = tg.Tags(self.text)
@@ -411,8 +411,8 @@ class CleanUp:
     
     def run_dsl(self):
         f = '[MClient] tests.CleanUp.run_dsl'
-        import plugins.dsl.get as gt
-        import plugins.dsl.cleanup as cu
+        import sources.dsl.get as gt
+        import sources.dsl.cleanup as cu
         code = []
         articles = gt.Get(SEARCH).run()
         for iarticle in articles:
@@ -425,7 +425,7 @@ class CleanUp:
 class Get:
     
     def run_mdic(self):
-        from plugins.mdic.get import ALL_DICS
+        from sources.mdic.get import ALL_DICS
         # Search is case-insensitive for MDIC
         result = ALL_DICS.search(SEARCH)
         if result:
@@ -435,7 +435,7 @@ class Get:
             return ''
     
     def decode_indexes(self, indexes):
-        from plugins.fora.get import Index
+        from sources.fora.get import Index
         iindex = Index('/home/pete/.config/mclient/dics/Fora/dict pl-ru')
         for i in range(len(indexes)):
             indexes[i][0] = iindex.decode(indexes[i][0])
@@ -443,7 +443,7 @@ class Get:
         return indexes
     
     def run_fora_many_matches(self):
-        from plugins.fora.get import ALL_DICS
+        from sources.fora.get import ALL_DICS
         articles = []
         # Multiple occurrences of 'aprobować' (and many others) in 'dict pl-ru'
         indexes = [['JbY', '8'], ['JcV', 'BK'], ['Jdg', 'BA']]
@@ -456,17 +456,17 @@ class Get:
         return '\n\n'.join(articles)
     
     def run_fora(self):
-        from plugins.fora.get import Get as mGet
+        from sources.fora.get import Get as mGet
         return mGet(SEARCH).run()
     
     def run_dsl(self):
-        from plugins.dsl.get import Get as mGet
+        from sources.dsl.get import Get as mGet
         iget = mGet(SEARCH)
         iget.run()
         return iget.debug()
     
     def run_multitrandem(self):
-        from plugins.multitrandem.get import CODING, Get as mGet
+        from sources.multitrandem.get import CODING, Get as mGet
         result = mGet(SEARCH).run()
         if not result:
             rep.empty(f)
@@ -477,7 +477,7 @@ class Get:
     
     def run_multitrancom(self):
         f = '[MClient] tests.Get.run_multitrancom'
-        import plugins.multitrancom.get as gt
+        import sources.multitrancom.get as gt
         #url = 'https://www.multitran.com/m.exe?a=3&sc=8&s=%D1%81%D0%B8%D0%BC%D0%BF%D1%82%D0%BE%D0%BC&l1=2&l2=1&SHL=2'
         #search = 'Медицина'
         url = 'https://www.multitran.com/m.exe?s=working%20documentation&l1=1&l2=2&SHL=2'
@@ -493,7 +493,7 @@ class Get:
         Launch(file).launch_default()
     
     def run_stardict(self):
-        from plugins.stardict.get import Get as mGet
+        from sources.stardict.get import Get as mGet
         return mGet(SEARCH).run()
 
 
@@ -502,9 +502,9 @@ class Tags:
     
     def run_fora_stardictx(self):
         f = '[MClient] tests.Tags.run_fora_stardictx'
-        import plugins.fora.get as gt
-        import plugins.fora.stardictx.cleanup as cu
-        import plugins.fora.stardictx.tags as tg
+        import sources.fora.get as gt
+        import sources.fora.stardictx.cleanup as cu
+        import sources.fora.stardictx.tags as tg
         article = gt.ALL_DICS.search(SEARCH)
         if not article:
             rep.empty(f)
@@ -516,9 +516,9 @@ class Tags:
     
     def run_fora_dsl(self):
         f = '[MClient] tests.Tags.run_fora_dsl'
-        import plugins.fora.get as gt
-        import plugins.dsl.cleanup as cu
-        import plugins.dsl.tags as tg
+        import sources.fora.get as gt
+        import sources.dsl.cleanup as cu
+        import sources.dsl.tags as tg
         article = gt.ALL_DICS.search(SEARCH)
         if not article:
             rep.empty(f)
@@ -530,9 +530,9 @@ class Tags:
     
     def run_multitrandem(self):
         f = '[MClient] tests.Tags.run_multitrandem'
-        from manager import PLUGINS
-        import plugins.multitrandem.get as gt
-        import plugins.multitrandem.tags as tg
+        from manager import SOURCES
+        import sources.multitrandem.get as gt
+        import sources.multitrandem.tags as tg
         chunks = gt.Get(SEARCH).run()
         if not chunks:
             rep.empty(f)
@@ -549,9 +549,9 @@ class Tags:
         return itags.debug()
     
     def run_dsl(self):
-        import plugins.dsl.get as gt
-        import plugins.dsl.cleanup as cu
-        import plugins.dsl.tags as tg
+        import sources.dsl.get as gt
+        import sources.dsl.cleanup as cu
+        import sources.dsl.tags as tg
         articles = gt.Get('account').run()
         debug = []
         for iarticle in articles:
@@ -562,7 +562,7 @@ class Tags:
         return '\n\n'.join(debug)
     
     def analyze_tag(self):
-        import plugins.multitrancom.tags as tg
+        import sources.multitrancom.tags as tg
         #tag = '<tr><td class="subj" width="1"><a href="https://www.multitran.com/m.exe?a=110&amp;l1=2&amp;l2=1&amp;s=%D1%82%D1%80%D0%BE%D1%81&amp;sc=371" title="Автоматика">автомат.'
         #tag = '''<tr><td class="subj" width="1"><a href="https://www.multitran.com/m.exe?a=110&amp;l1=2&amp;l2=1&amp;s=%D1%82%D1%80%D0%BE%D1%81&amp;sc=0" title="Общая лексика">общ.'''
         tag = '<tr><td class="subj" width="1"><a href="https://www.multitran.com/m.exe?a=110&amp;l1=2&amp;l2=1&amp;s=%D1%82%D1%80%D0%BE%D1%81&amp;sc=134" title="Электроника">эл.'
@@ -571,8 +571,8 @@ class Tags:
         itag.debug()
     
     def run_stardict(self):
-        import plugins.stardict.cleanup as cu
-        import plugins.stardict.tags as tg
+        import sources.stardict.cleanup as cu
+        import sources.stardict.tags as tg
         file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - good.txt'
         text = Read(file).get()
         text = cu.CleanUp(text).run()
@@ -582,8 +582,8 @@ class Tags:
     
     def run_multitrancom(self):
         from skl_shared.text_file import Read
-        from plugins.multitrancom.cleanup import CleanUp
-        from plugins.multitrancom.tags import Tags
+        from sources.multitrancom.cleanup import CleanUp
+        from sources.multitrancom.tags import Tags
         text = Read(HTM_FILE).get()
         text = CleanUp(text).run()
         itags = Tags(text)
@@ -596,7 +596,7 @@ class Plugin:
     
     def run_fora(self):
         from cells import Cells
-        from plugins.fora.run import Plugin as mPlugin
+        from sources.fora.run import Plugin as mPlugin
         blocks = mPlugin().request(SEARCH)
         icells = Cells(blocks)
         icells.run()
@@ -604,7 +604,7 @@ class Plugin:
     
     def run_multitrandem(self):
         from cells import Cells
-        from plugins.multitrandem.run import Plugin as mPlugin
+        from sources.multitrandem.run import Plugin as mPlugin
         blocks = mPlugin().request(search=SEARCH)
         icells = Cells(blocks)
         icells.run()
@@ -612,7 +612,7 @@ class Plugin:
     
     def run_stardict(self):
         from cells import Cells
-        from plugins.stardict.run import Plugin as mPlugin
+        from sources.stardict.run import Plugin as mPlugin
         blocks = mPlugin().request(SEARCH)
         icells = Cells(blocks)
         icells.run()
@@ -620,7 +620,7 @@ class Plugin:
     
     def run_mdic(self):
         from cells import Cells
-        from plugins.mdic.run import Plugin as mPlugin
+        from sources.mdic.run import Plugin as mPlugin
         blocks = mPlugin().request(SEARCH)
         icells = Cells(blocks)
         icells.run()
@@ -628,7 +628,7 @@ class Plugin:
     
     def run_dsl(self):
         from cells import Cells
-        from plugins.dsl.run import Plugin as mPlugin
+        from sources.dsl.run import Plugin as mPlugin
         blocks = mPlugin().request(SEARCH)
         icells = Cells(blocks)
         icells.run()
@@ -636,7 +636,7 @@ class Plugin:
     
     def run_multitrancom(self):
         from cells import Cells
-        from plugins.multitrancom.run import Plugin as mPlugin
+        from sources.multitrancom.run import Plugin as mPlugin
         blocks = mPlugin().request(url=url, search=SEARCH)
         icells = Cells(blocks)
         icells.run()
@@ -649,9 +649,9 @@ class Commands:
     def get_fixed_urls(self):
         f = '[MClient] tests.Commands.get_fixed_urls'
         import json
-        import plugins.multitrancom.cleanup as cu
-        import plugins.multitrancom.tags as tg
-        import plugins.multitrancom.elems as el
+        import sources.multitrancom.cleanup as cu
+        import sources.multitrancom.tags as tg
+        import sources.multitrancom.elems as el
         text = Read(HTM_FILE).get()
         text = cu.CleanUp(text).run()
         blocks = tg.Tags(text).run()
@@ -661,7 +661,7 @@ class Commands:
         return mes
     
     def get_all_subjects(self):
-        import plugins.multitrancom.subjects as sj
+        import sources.multitrancom.subjects as sj
         return sj.objs.get_subjects().dump()
     
     def run_suggest(self):
@@ -677,13 +677,13 @@ class Commands:
     
     def get_priority(self):
         f = '[MClient] tests.Commands.get_priority'
-        from manager import PLUGINS
+        from manager import SOURCES
         from articles import ARTICLES
         from subjects import SUBJECTS
         #NOTE: the article must comprise example subjects to be expanded
         search = 'code'
         url = 'https://www.multitran.com/m.exe?s=code&l1=2&l2=1&SHL=2'
-        cells = PLUGINS.request(search=search, url=url)
+        cells = SOURCES.request(search=search, url=url)
         ARTICLES.add(search=search, url=url, cells=cells)
         mes = []
         sub = f'{f}:'
@@ -713,12 +713,12 @@ class Commands:
     
     def run_article_subjects(self):
         f = '[MClient] tests.Commands.run_article_subjects'
-        from manager import PLUGINS
+        from manager import SOURCES
         from articles import ARTICLES
         search = 'set'
         # SHL should correspond to locale
         url = 'https://www.multitran.com/m.exe?s=set&l1=2&l2=1'
-        cells = PLUGINS.request(search=search, url=url)
+        cells = SOURCES.request(search=search, url=url)
         ARTICLES.add(search=search, url=url, cells=cells)
         subjects = ARTICLES.get_subjects()
         if not subjects:
@@ -841,7 +841,7 @@ class Commands:
             and can be witnessed sometimes at multitran.com.
         '''
         f = '[MClient] tests.Commands.get_subjects_wo_majors'
-        import plugins.multitrancom.subjects as sj
+        import sources.multitrancom.subjects as sj
         titles = []
         for key in sj.SUBJECTS.keys():
             if not sj.SUBJECTS[key]['major_en'] \
@@ -857,7 +857,7 @@ class Commands:
     
     def get_modified_subjects(self):
         f = '[MClient] tests.Commands.get_modified_subjects'
-        import plugins.multitrancom.subjects as sj
+        import sources.multitrancom.subjects as sj
         titles = []
         for key in sj.SUBJECTS.keys():
             if sj.SUBJECTS[key]['Modified']:
@@ -869,7 +869,7 @@ class Commands:
     
     def get_majors_en(self):
         f = '[MClient] tests.Commands.get_majors_en'
-        import plugins.multitrancom.subjects as sj
+        import sources.multitrancom.subjects as sj
         groups = []
         shorts = []
         titles = []
@@ -888,11 +888,11 @@ class Commands:
         shDEBUG.show()
     
     def get_majors(self):
-        import plugins.multitrancom.subjects as sj
+        import sources.multitrancom.subjects as sj
         print(sj.objs.get_subjects().get_majors())
     
     def run_speech(self):
-        import plugins.multitrancom.speech as sp
+        import sources.multitrancom.speech as sp
         # ru_RU locale is required
         short = 'прил.'
         full = sp.objs.get_speech().find(short)
@@ -900,17 +900,17 @@ class Commands:
         return mes
     
     def edit_priorities(self):
-        from manager import PLUGINS
+        from manager import SOURCES
         import mclient as mc
         #TODO: Rework lg.objs.get_order
         mc.objs.get_priorities().reset(lst1 = lg.objs.get_order().priorlst
-                                      ,lst2 = PLUGINS.get_subjects()
+                                      ,lst2 = SOURCES.get_subjects()
                                       ,art_subjects = []
-                                      ,majors = PLUGINS.get_majors())
+                                      ,majors = SOURCES.get_majors())
         mc.objs.priorities.show()
     
     def edit_blacklist(self):
-        from manager import PLUGINS
+        from manager import SOURCES
         import mclient as mc
         #TODO: Rework lg.objs.get_order
         '''
@@ -919,9 +919,9 @@ class Commands:
             old_list = CONFIG.new['subjects']['blocked']
             old_key = CONFIG.new['BlockSubjects']
             BLOCK.reset(lst1 = old_list
-                       ,lst2=PLUGINS.get_subjects()
+                       ,lst2=SOURCES.get_subjects()
                        ,art_subjects = com.get_article_subjects()
-                       ,majors = PLUGINS.get_majors())
+                       ,majors = SOURCES.get_majors())
             BLOCK.set_checkbox(CONFIG.new['BlockSubjects'])
             BLOCK.show()
             CONFIG.new['BlockSubjects'] = self.block.get_checkbox()
@@ -936,9 +936,9 @@ class Commands:
         '''
         
         mc.objs.get_blacklist().reset(lst1 = lg.objs.get_order().blacklst
-                                     ,lst2 = PLUGINS.get_subjects()
+                                     ,lst2 = SOURCES.get_subjects()
                                      ,art_subjects = []
-                                     ,majors = PLUGINS.get_majors())
+                                     ,majors = SOURCES.get_majors())
         mc.objs.blacklist.show()
     
     def show_about(self):
@@ -950,7 +950,7 @@ class Commands:
             both directions.
         '''
         f = '[MClient] tests.Commands.get_nonpairs'
-        import plugins.multitrancom.pairs as pairs
+        import sources.multitrancom.pairs as pairs
         lst = []
         for lang in pairs.LANGS:
             pairs1 = pairs.objs.get_pairs().get_pairs1(lang)
@@ -974,7 +974,7 @@ class Commands:
     
     def compare_elems(self):
         f = '[MClient] tests.Commands.compare_elems'
-        import plugins.multitran.elems as el
+        import sources.multitran.elems as el
         data1 = []
         data2 = []
         # Create blocks
@@ -1027,17 +1027,17 @@ class Commands:
         shDEBUG.show()
     
     def request(self):
-        from manager import PLUGINS
+        from manager import SOURCES
         f = '[MClient] tests.Commands.request'
         source = _('Multitran')
         pair = 'DEU <=> RUS'
         search = 'ernährung'
         mes = _('Source: "{}"; pair: "{}"; search: "{}"')
         mes = mes.format(source, pair, search)
-        PLUGINS.set(source)
-        PLUGINS.set_pair(pair)
+        SOURCES.set(source)
+        SOURCES.set_pair(pair)
         Message(f, mes).show_info()
-        data = PLUGINS.request(search=search, url='')
+        data = SOURCES.request(search=search, url='')
         if not data:
             rep.empty(f)
             return
@@ -1045,57 +1045,57 @@ class Commands:
         shDEBUG.show()
     
     def get_url(self):
-        from manager import PLUGINS
+        from manager import SOURCES
         f = '[MClient] tests.Commands.get_url'
         source = 'multitran.com'
         pair = 'RUS <=> XAL'
         search = 'До свидания!'
         mes = 'Source: "{}"; pair: "{}"; search: "{}"'
         mes = mes.format(source, pair, search)
-        PLUGINS.set(source)
-        PLUGINS.set_pair(pair)
+        SOURCES.set(source)
+        SOURCES.set_pair(pair)
         Message(f, mes).show_info()
-        PLUGINS.get_url(search)
+        SOURCES.get_url(search)
     
     def suggest(self):
-        from manager import PLUGINS
+        from manager import SOURCES
         f = '[MClient] tests.Commands.suggest'
         source = 'multitran.com'
         pair = 'DEU <=> RUS'
         search = 'Scheiße'
         mes = 'Source: "{}"; pair: "{}"; search: "{}"'
         mes = mes.format(source, pair, search)
-        PLUGINS.set(source)
-        PLUGINS.set_pair(pair)
+        SOURCES.set(source)
+        SOURCES.set_pair(pair)
         Message(f, mes).show_info()
         lg.com.suggest(search)
     
     def _set_timeout(self, module, source, timeout):
-        from manager import PLUGINS
+        from manager import SOURCES
         f = '[MClient] tests.Commands._set_timeout'
-        PLUGINS.set(source)
-        PLUGINS.set_timeout(timeout)
+        SOURCES.set(source)
+        SOURCES.set_timeout(timeout)
         mes = _('Source: {}; timeout: {}').format(source, module.TIMEOUT)
         Message(f, mes).show_debug()
     
     def set_timeout(self):
-        import plugins.multitrancom.get as mc
-        import plugins.stardict.get as sd
+        import sources.multitrancom.get as mc
+        import sources.stardict.get as sd
         self._set_timeout(module=sd, source=_('Offline'), timeout=1)
         self._set_timeout(module=mc, source=_('Multitran'), timeout=2)
         self._set_timeout(module=mc, source='multitran.com', timeout=3)
     
     def count_valid(self):
-        from manager import PLUGINS
+        from manager import SOURCES
         f = '[MClient] tests.Commands.count_valid'
         source = _('Offline')
-        PLUGINS.set(source)
-        result = PLUGINS.count_valid()
+        SOURCES.set(source)
+        result = SOURCES.count_valid()
         mes = _('Source: {}; accessibility: {}').format(source, result)
         Message(f, mes).show_debug()
         source = 'multitran.com'
-        PLUGINS.set(source)
-        result = PLUGINS.count_valid()
+        SOURCES.set(source)
+        result = SOURCES.count_valid()
         mes = _('Source: {}; accessibility: {}').format(source, result)
         Message(f, mes).show_debug()
     
@@ -1111,18 +1111,18 @@ class Commands:
             rep.empty(f)
     
     def set_pair(self):
-        from manager import PLUGINS
+        from manager import SOURCES
         f = '[MClient] tests.Commands.set_pair'
-        import plugins.multitrancom.get
+        import sources.multitrancom.get
         pair = 'RUS <=> XAL'
         source = 'multitran.com'
-        PLUGINS.set(source)
-        PLUGINS.set_pair(pair)
-        mes = f'{source}: {plugins.multitrancom.get.PAIR}'
+        SOURCES.set(source)
+        SOURCES.set_pair(pair)
+        mes = f'{source}: {sources.multitrancom.get.PAIR}'
         Message(f, mes).show_debug()
-        PLUGINS.set(_('Multitran'))
-        PLUGINS.set_pair('XAL <=> RUS')
-        mes = 'multitrancom: {}'.format(plugins.multitrancom.get.PAIR)
+        SOURCES.set(_('Multitran'))
+        SOURCES.set_pair('XAL <=> RUS')
+        mes = 'multitrancom: {}'.format(sources.multitrancom.get.PAIR)
         Message(f, mes).show_debug()
 
 

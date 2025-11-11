@@ -4,7 +4,7 @@
 from skl_shared.localize import _
 from skl_shared.message.controller import rep
 
-from manager import PLUGINS
+from manager import SOURCES
 from suggest.gui import Suggest as guiSuggest
 
 
@@ -71,7 +71,7 @@ class Suggest:
     
     def suggest(self, search, limit=0):
         f = '[MClient] suggest.controller.Suggest.suggest'
-        items = PLUGINS.suggest(search)
+        items = SOURCES.suggest(search)
         if not items:
             rep.empty(f)
             return []

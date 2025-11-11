@@ -13,7 +13,7 @@ from skl_shared.text_file import Write
 from skl_shared.time import Timer
 from skl_shared.logic import com as shcom
 
-from plugins.dsl.get import ALL_DICS
+from sources.dsl.get import ALL_DICS
 
 from converters.dsl.shared import Parser as shParser
 from converters.dsl.shared import Runner as shRunner

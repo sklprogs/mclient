@@ -8,14 +8,14 @@ from skl_shared.paths import Home
 
 from config import CONFIG, PRODUCT_LOW
 from cells import Cells
-import plugins.stardict.get
-import plugins.dsl.get
-import plugins.stardict.run
-import plugins.multitrancom.run
-import plugins.multitrandem.run
-import plugins.dsl.run
-import plugins.fora.run
-import plugins.mdic.run
+import sources.stardict.get
+import sources.dsl.get
+import sources.stardict.run
+import sources.multitrancom.run
+import sources.multitrandem.run
+import sources.dsl.run
+import sources.fora.run
+import sources.mdic.run
 
 
 class Plugins:
@@ -136,7 +136,7 @@ class Plugins:
         return url
     
     def get_unique(self):
-        # Return all non-combined plugins
+        # Return all non-combined sources
         return (self.sdplugin, self.mcplugin, self.mbplugin, self.lgplugin
                ,self.frplugin)
     
@@ -201,12 +201,12 @@ class Plugins:
         return self.plugin.get_langs2(lang1)
 
     def load(self):
-        self.sdplugin = plugins.stardict.run.Plugin()
-        self.mcplugin = plugins.multitrancom.run.Plugin()
-        self.mbplugin = plugins.multitrandem.run.Plugin()
-        self.lgplugin = plugins.dsl.run.Plugin()
-        self.frplugin = plugins.fora.run.Plugin()
-        self.mdplugin = plugins.mdic.run.Plugin()
+        self.sdplugin = sources.stardict.run.Plugin()
+        self.mcplugin = sources.multitrancom.run.Plugin()
+        self.mbplugin = sources.multitrandem.run.Plugin()
+        self.lgplugin = sources.dsl.run.Plugin()
+        self.frplugin = sources.fora.run.Plugin()
+        self.mdplugin = sources.mdic.run.Plugin()
     
     def set(self, source):
         f = '[MClient] manager.Plugins.set'
@@ -281,7 +281,7 @@ class Plugins:
 
 f = '[MClient] manager.__main__'
 if CONFIG.Success:
-    PLUGINS = Plugins(CONFIG.new['timeout'])
+    SOURCES = Plugins(CONFIG.new['timeout'])
 else:
-    PLUGINS = None
+    SOURCES = None
     rep.cancel(f)

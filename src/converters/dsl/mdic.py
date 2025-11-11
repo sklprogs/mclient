@@ -18,10 +18,10 @@ from skl_shared.list import List
 from skl_shared.text_file import Write
 from skl_shared.launch import Launch
 
-import plugins.dsl.cleanup as cu
-from plugins.dsl.get import ALL_DICS
-from plugins.dsl.tags import Tags
-from plugins.dsl.elems import Elems
+import sources.dsl.cleanup as cu
+from sources.dsl.get import ALL_DICS
+from sources.dsl.tags import Tags
+from sources.dsl.elems import Elems
 
 BODY_FOLDER = Home('mclient').add_config('dics', 'MDIC')
 INDEX_FOLDER = os.path.join(BODY_FOLDER, 'collection.indexes')

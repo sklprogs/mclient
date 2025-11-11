@@ -4,7 +4,7 @@
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from config import CONFIG
-from manager import PLUGINS
+from manager import SOURCES
 
 
 class Articles:
@@ -131,10 +131,10 @@ class Articles:
             Message(f, mes).show_warning()
             return
         self.articles['ids'][id_] = {'source'        : CONFIG.new['source']
-                                    ,'lang1'         : PLUGINS.get_lang1()
-                                    ,'lang2'         : PLUGINS.get_lang2()
-                                    ,'Parallel'      : PLUGINS.is_parallel()
-                                    ,'Separate'      : PLUGINS.is_separate()
+                                    ,'lang1'         : SOURCES.get_lang1()
+                                    ,'lang2'         : SOURCES.get_lang2()
+                                    ,'Parallel'      : SOURCES.is_parallel()
+                                    ,'Separate'      : SOURCES.is_separate()
                                     ,'search'        : search
                                     ,'url'           : url
                                     ,'cells'         : cells

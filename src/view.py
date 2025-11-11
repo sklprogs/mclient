@@ -10,7 +10,7 @@ from skl_shared.table import Table
 
 from instance import Block, Cell
 from config import CONFIG
-from manager import PLUGINS
+from manager import SOURCES
 from format import Block as fmBlock
 from logic import Speech
 from subjects import SUBJECTS
@@ -39,7 +39,7 @@ class Expand:
         if CONFIG.new['ShortSpeech']:
             rep.lazy(f)
             return
-        speeches = PLUGINS.get_speeches()
+        speeches = SOURCES.get_speeches()
         if not speeches:
             rep.lazy(f)
             return

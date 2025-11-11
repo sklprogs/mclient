@@ -8,10 +8,10 @@ from skl_shared.graphics.progress_bar.controller import PROGRESS
 from skl_shared.time import Timer
 from skl_shared.logic import com as shcom
 
-from plugins.dsl.cleanup import CleanUp
-from plugins.dsl.get import ALL_DICS
-from plugins.dsl.tags import Tags
-from plugins.dsl.elems import Elems
+from sources.dsl.cleanup import CleanUp
+from sources.dsl.get import ALL_DICS
+from sources.dsl.tags import Tags
+from sources.dsl.elems import Elems
 
 
 class Parser:
@@ -56,7 +56,7 @@ class Parser:
                 rep.empty(f)
                 continue
             ''' When exporting to Odict XML, we do not care about cell or row
-                numbers, so we do not need plugins.fora.run.Plugin._join_cells.
+                numbers, so we do not need sources.fora.run.Plugin._join_cells.
             '''
             self.cells += Elems(blocks).run()
         # Reclaim memory

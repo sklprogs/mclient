@@ -47,7 +47,7 @@ class Cell:
 
 
 class Block:
-    ''' Cannot be reimported in plugins since we would need to load this module
+    ''' Cannot be reimported in sources since we would need to load this module
         from different places.    
     '''
     def __init__(self):
