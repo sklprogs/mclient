@@ -1,3 +1,7 @@
+all:
+- ударить головой -> headbutt: freeze, probably on multitrandem
+- head -> устройство или приспособление...: blocks from previous article
+
 mclient:
 - Alt-Left or Alt-Right: history item is not updated
 - Properly update model after blocking new subjects (table index becomes out of
