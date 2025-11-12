@@ -3,6 +3,9 @@ all:
 - head -> устройство или приспособление...: blocks from previous article
 
 mclient:
+- капюшон: Не задано - Словоформы - Тематики - Части речи - Источники -
+  Не задано: Ctrl+Down -> Ctrl+Up: table.controller.Table.select:
+  ПРЕДУПРЕЖДЕНИЕ:Недопустимые входные данные: "(22, 6)"!
 - Alt-Left or Alt-Right: history item is not updated
 - Properly update model after blocking new subjects (table index becomes out of
   bounds)
