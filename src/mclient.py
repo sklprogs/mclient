@@ -655,15 +655,6 @@ class App:
         mes = mes.format(COL_WIDTH.term_num, collimit)
         Message(f, mes).show_info()
     
-    def set_source(self):
-        f = '[MClient] mclient.App.set_source'
-        CONFIG.new['source'] = gi.objs.get_panel().opt_src.get()
-        mes = _('Set source to "{}"').format(CONFIG.new['source'])
-        Message(f, mes).show_info()
-        SOURCES.set(CONFIG.new['source'])
-        self.reset_opt(CONFIG.new['source'])
-        self.go_search()
-    
     def auto_swap(self):
         f = '[MClient] mclient.App.auto_swap'
         lang1 = gi.objs.get_panel().opt_lg1.get()
@@ -695,8 +686,6 @@ class App:
             return
         gi.objs.get_panel().opt_lg1.reset(items=langs1, default=lang1)
         gi.objs.panel.opt_lg2.reset(items=langs2, default=lang2)
-        #NOTE: change this upon the change of the default source
-        gi.objs.panel.opt_src.reset(items=sources, default=default)
     
     def set_next_lang1(self):
         ''' We want to navigate through the full list of supported languages
@@ -1190,7 +1179,6 @@ class App:
         gi.objs.panel.ent_src.widget.sig_right_arrow.connect(self.solve_go_right)
         gi.objs.panel.opt_lg1.widget.activated.connect(self.go_search)
         gi.objs.panel.opt_lg2.widget.activated.connect(self.go_search)
-        gi.objs.panel.opt_src.widget.activated.connect(self.set_source)
         gi.objs.panel.opt_col.set_action(self.set_columns)
         
         self.symbols.gui.table.clicked.connect(self.paste_symbol)

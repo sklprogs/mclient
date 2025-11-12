@@ -361,8 +361,6 @@ class Panel(QWidget):
                              ,inactive = self.icn_r20, active = self.icn_r21)
         # A button to insert special symbols
         self.btn_sym = Button(inactive = self.icn_sym, active = self.icn_sym)
-        # Drop-down list with dictionary sources
-        self.opt_src = OptionMenu()
         # Drop-down lists with languages
         self.opt_lg1 = OptionMenu()
         self.btn_swp = Button(inactive = self.icn_swp, active = self.icn_swp)
@@ -408,7 +406,6 @@ class Panel(QWidget):
         self.layout_.addWidget(self.btn_rp1.widget)
         self.layout_.addWidget(self.btn_rp2.widget)
         self.layout_.addWidget(self.btn_sym.widget)
-        self.layout_.addWidget(self.opt_src.widget)
         self.layout_.addWidget(self.opt_lg1.widget)
         self.layout_.addWidget(self.btn_swp.widget)
         self.layout_.addWidget(self.opt_lg2.widget)
@@ -435,7 +432,6 @@ class Panel(QWidget):
         self.panel.sig_hover.connect(self.trigger_hover)
     
     def set_max_opt_width(self):
-        self.opt_src.widget.setMaximumWidth(self.max_opt_width)
         self.opt_lg1.widget.setMaximumWidth(self.max_opt_width)
         self.opt_lg2.widget.setMaximumWidth(self.max_opt_width)
         self.opt_col.widget.setMaximumWidth(self.max_opt_width)
