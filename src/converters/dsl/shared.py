@@ -56,7 +56,7 @@ class Parser:
                 rep.empty(f)
                 continue
             ''' When exporting to Odict XML, we do not care about cell or row
-                numbers, so we do not need sources.fora.run.Plugin._join_cells.
+                numbers, so we do not need sources.fora.run.Source._join_cells.
             '''
             self.cells += Elems(blocks).run()
         # Reclaim memory

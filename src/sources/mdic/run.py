@@ -9,7 +9,7 @@ from sources.mdic.get import ALL_DICS
 from sources.mdic.elems import Elems
 
 
-class Plugin:
+class Source:
     
     def __init__(self):
         ''' - Extra unused input variables are preserved so it would be easy to
@@ -130,7 +130,7 @@ class Plugin:
         return []
     
     def request(self, search='', url=''):
-        f = '[MClient] sources.mdic.run.Plugin.request'
+        f = '[MClient] sources.mdic.run.Source.request'
         self.search = search
         str_lst = ALL_DICS.search(self.search)
         blocks = Elems(str_lst).run()

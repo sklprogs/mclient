@@ -12,7 +12,7 @@ import sources.dsl.cleanup as cu
 import sources.dsl.subjects as ds
 
 
-class Plugin:
+class Source:
     
     def __init__(self):
         ''' - Extra unused input variables are preserved so it would be easy to
@@ -83,7 +83,7 @@ class Plugin:
         #TODO (?): Unload dictionaries
     
     def get_lang1(self):
-        f = '[MClient] sources.dsl.run.Plugin.get_lang1'
+        f = '[MClient] sources.dsl.run.Source.get_lang1'
         lang = _(gt.LANG1)
         langs = self.get_langs1()
         if langs:
@@ -96,7 +96,7 @@ class Plugin:
         return lang
     
     def get_lang2(self):
-        f = '[MClient] sources.dsl.run.Plugin.get_lang2'
+        f = '[MClient] sources.dsl.run.Source.get_lang2'
         lang = _(gt.LANG2)
         langs = self.get_langs2()
         if langs:
@@ -117,7 +117,7 @@ class Plugin:
         return ''
     
     def set_lang1(self, lang1=''):
-        f = '[MClient] sources.dsl.run.Plugin.set_lang1'
+        f = '[MClient] sources.dsl.run.Source.set_lang1'
         if lang1 == _('Any'):
             rep.lazy(f)
         elif not lang1:
@@ -127,7 +127,7 @@ class Plugin:
             gt.LANG1 = lang1
     
     def set_lang2(self, lang2=''):
-        f = '[MClient] sources.dsl.run.Plugin.set_lang2'
+        f = '[MClient] sources.dsl.run.Source.set_lang2'
         if lang2 == _('Any'):
             rep.lazy(f)
         elif not lang2:

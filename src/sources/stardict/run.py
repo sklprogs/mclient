@@ -10,7 +10,7 @@ import sources.stardict.subjects as sj
 
 
 
-class Plugin:
+class Source:
     
     def __init__(self):
         ''' - Extra unused input variables are preserved so it would be easy to

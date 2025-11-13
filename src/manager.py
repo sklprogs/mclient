@@ -201,12 +201,12 @@ class Sources:
         return self.plugin.get_langs2(lang1)
 
     def load(self):
-        self.sdplugin = sources.stardict.run.Plugin()
-        self.mcplugin = sources.multitrancom.run.Plugin()
-        self.mbplugin = sources.multitrandem.run.Plugin()
-        self.lgplugin = sources.dsl.run.Plugin()
-        self.frplugin = sources.fora.run.Plugin()
-        self.mdplugin = sources.mdic.run.Plugin()
+        self.sdplugin = sources.stardict.run.Source()
+        self.mcplugin = sources.multitrancom.run.Source()
+        self.mbplugin = sources.multitrandem.run.Source()
+        self.lgplugin = sources.dsl.run.Source()
+        self.frplugin = sources.fora.run.Source()
+        self.mdplugin = sources.mdic.run.Source()
     
     def set(self, source):
         f = '[MClient] manager.Sources.set'

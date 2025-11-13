@@ -238,8 +238,8 @@ class Elems:
     def run_fora(self):
         f = '[MClient] tests.Elems.run_fora'
         from cells import Cells
-        from sources.fora.run import Plugin
-        blocks = Plugin().request(SEARCH)
+        from sources.fora.run import Source
+        blocks = Source().request(SEARCH)
         if not blocks:
             rep.lazy(f)
             return
@@ -592,52 +592,52 @@ class Tags:
 
 
 
-class Plugin:
+class Source:
     
     def run_fora(self):
         from cells import Cells
-        from sources.fora.run import Plugin as mPlugin
-        blocks = mPlugin().request(SEARCH)
+        from sources.fora.run import Source as mSource
+        blocks = mSource().request(SEARCH)
         icells = Cells(blocks)
         icells.run()
         return icells.debug()
     
     def run_multitrandem(self):
         from cells import Cells
-        from sources.multitrandem.run import Plugin as mPlugin
-        blocks = mPlugin().request(search=SEARCH)
+        from sources.multitrandem.run import Source as mSource
+        blocks = mSource().request(search=SEARCH)
         icells = Cells(blocks)
         icells.run()
         return icells.debug()
     
     def run_stardict(self):
         from cells import Cells
-        from sources.stardict.run import Plugin as mPlugin
-        blocks = mPlugin().request(SEARCH)
+        from sources.stardict.run import Source as mSource
+        blocks = mSource().request(SEARCH)
         icells = Cells(blocks)
         icells.run()
         return icells.debug()
     
     def run_mdic(self):
         from cells import Cells
-        from sources.mdic.run import Plugin as mPlugin
-        blocks = mPlugin().request(SEARCH)
+        from sources.mdic.run import Source as mSource
+        blocks = mSource().request(SEARCH)
         icells = Cells(blocks)
         icells.run()
         return icells.debug()
     
     def run_dsl(self):
         from cells import Cells
-        from sources.dsl.run import Plugin as mPlugin
-        blocks = mPlugin().request(SEARCH)
+        from sources.dsl.run import Source as mSource
+        blocks = mSource().request(SEARCH)
         icells = Cells(blocks)
         icells.run()
         return icells.debug()
     
     def run_multitrancom(self):
         from cells import Cells
-        from sources.multitrancom.run import Plugin as mPlugin
-        blocks = mPlugin().request(url=url, search=SEARCH)
+        from sources.multitrancom.run import Source as mSource
+        blocks = mSource().request(url=url, search=SEARCH)
         icells = Cells(blocks)
         icells.run()
         return icells.debug()
@@ -1167,12 +1167,12 @@ if __name__ == '__main__':
     #mes = View().run_stardict()
     #mes = View().run_multitrancom()
     #mes = Wrap().run_multitrancom()
-    #mes = Plugin().run_dsl()
-    #mes = Plugin().run_fora()
-    #mes = Plugin().run_mdic()
-    #mes = Plugin().run_multitrancom()
-    #mes = Plugin().run_multitrandem()
-    #mes = Plugin().run_stardict()
+    #mes = Source().run_dsl()
+    #mes = Source().run_fora()
+    #mes = Source().run_mdic()
+    #mes = Source().run_multitrancom()
+    #mes = Source().run_multitrandem()
+    #mes = Source().run_stardict()
     shDEBUG.reset(f, mes)
     shDEBUG.show()
     # This MUST be on a separate line, the widget will not be shown otherwise

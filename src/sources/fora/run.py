@@ -15,7 +15,7 @@ import sources.dsl.tags
 import sources.dsl.elems
 
 
-class Plugin:
+class Source:
     
     def __init__(self):
         ''' - Extra unused input variables are preserved so it would be easy to
@@ -168,7 +168,7 @@ class Plugin:
         return sources.fora.dictd.elems.Elems(blocks).run()
     
     def _join_blocks(self, groups):
-        f = '[MClient] sources.fora.run.Plugin._join_blocks'
+        f = '[MClient] sources.fora.run.Source._join_blocks'
         if not groups:
             rep.empty(f)
             return []
@@ -188,7 +188,7 @@ class Plugin:
         return blocks
     
     def request(self, search='', url=''):
-        f = '[MClient] sources.fora.run.Plugin.request'
+        f = '[MClient] sources.fora.run.Source.request'
         self.search = search
         ALL_DICS.search(self.search)
         text = ''

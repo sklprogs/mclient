@@ -14,7 +14,7 @@ import sources.multitrancom.speech as sp
 
 
 
-class Plugin:
+class Source:
     
     def __init__(self):
         ''' #NOTE: 'Parallel' and 'Separate' are temporary variables that
@@ -39,7 +39,7 @@ class Plugin:
         return ms.objs.get_subjects().get()
     
     def get_majors(self):
-        f = '[MClient] sources.multitrancom.run.Plugin.get_majors'
+        f = '[MClient] sources.multitrancom.run.Source.get_majors'
         if not self.majors:
             result = ms.objs.get_groups().get_lists()
             if not result:
@@ -49,7 +49,7 @@ class Plugin:
         return self.majors
     
     def get_minors(self):
-        f = '[MClient] sources.multitrancom.run.Plugin.get_minors'
+        f = '[MClient] sources.multitrancom.run.Source.get_minors'
         if not self.minors:
             result = ms.objs.get_groups().get_lists()
             if not result:
@@ -81,7 +81,7 @@ class Plugin:
         return gt.com.fix_raw_htm(code)
     
     def get_url(self, search):
-        f = '[MClient] sources.multitrancom.run.Plugin.get_url'
+        f = '[MClient] sources.multitrancom.run.Source.get_url'
         code1 = pr.objs.get_pairs().get_code(pr.LANG1)
         code2 = pr.objs.pairs.get_code(pr.LANG2)
         if not (code1 and code2 and search):
@@ -90,7 +90,7 @@ class Plugin:
         return gt.com.get_url(code1 = code1, code2 = code2, search = search)
     
     def set_lang1(self, lang1):
-        f = '[MClient] sources.multitrancom.run.Plugin.set_lang1'
+        f = '[MClient] sources.multitrancom.run.Source.set_lang1'
         if not lang1:
             rep.empty(f)
             return
@@ -101,7 +101,7 @@ class Plugin:
             Message(f, mes, True).show_error()
     
     def set_lang2(self, lang2):
-        f = '[MClient] sources.multitrancom.run.Plugin.set_lang2'
+        f = '[MClient] sources.multitrancom.run.Source.set_lang2'
         if not lang2:
             rep.empty(f)
             return

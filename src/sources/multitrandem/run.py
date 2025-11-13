@@ -13,7 +13,7 @@ import sources.multitrandem.subjects as sj
 
 
 
-class Plugin:
+class Source:
     
     def __init__(self):
         ''' - Extra unused input variables are preserved so it would be easy to
@@ -70,7 +70,7 @@ class Plugin:
         gt.FILES.close()
     
     def _adapt_lang(self, lang):
-        f = '[MClient] sources.multitrandem.run.Plugin._adapt_lang'
+        f = '[MClient] sources.multitrandem.run.Source._adapt_lang'
         if not lang:
             rep.empty(f)
             return 'English'
