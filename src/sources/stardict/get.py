@@ -54,21 +54,6 @@ class Suggest:
 
 
 
-class Get:
-    # This class is basically needed for compliance with other code
-    def __init__(self, search):
-        self.htm = ''
-        self.pattern = search
-    
-    def run(self):
-        f = '[MClient] sources.stardict.get.Get.run'
-        if not self.pattern:
-            rep.empty(f)
-            return
-        return ALL_DICS.get(self.pattern)
-
-
-
 class DictZip:
     # Based on https://github.com/cz7asm/pyStarDictViewer
     # Read archives in '.dict.dz' format

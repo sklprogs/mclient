@@ -115,7 +115,7 @@ class Source:
     
     def request(self, search='', url=''):
         self.search = search
-        self.htm = self.text = gt.Get(search).run()
+        self.text = gt.ALL_DICS.get(self.search)
         self.text = cu.CleanUp(self.text).run()
         blocks = tg.Tags(self.text).run()
         ielems = el.Elems(blocks)

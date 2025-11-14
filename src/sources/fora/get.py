@@ -468,21 +468,4 @@ class AllDics:
             dic.close()
 
 
-
-class Get:
-    # This class is basically needed for compliance with other code
-    def __init__(self, search):
-        self.htm = ''
-        self.pattern = search
-    
-    def debug(self):
-        return ALL_DICS.get_summary()
-    
-    def run(self):
-        ''' #NOTE: This output should be used for debugging purposes only,
-            since it is incorrect to join articles of different formats.
-        '''
-        return ALL_DICS.search(self.pattern)
-
-
 ALL_DICS = AllDics()

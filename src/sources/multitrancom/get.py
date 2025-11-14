@@ -116,22 +116,18 @@ class Get:
     
     def __init__(self, search='', url=''):
         f = '[MClient] sources.multitrancom.get.Get.__init__'
-        self.set_values()
+        self.Success = True
+        self.code = ''
         self.pattern = search
         self.url = com.fix_url(url)
         if not self.url or not self.pattern or not CODING:
             self.Success = False
             rep.empty(f)
     
-    def set_values(self):
-        self.Success = True
-        self.htm = ''
-        self.text = ''
-    
     def run(self):
         self.get()
         self.decode()
-        return self.text
+        return self.code
         
     def decode(self):
         f = '[MClient] sources.multitrancom.get.Get.decode'
@@ -139,15 +135,14 @@ class Get:
             rep.cancel(f)
             return
         # If the page is not loaded, we obviously cannot change its encoding
-        if not self.text:
+        if not self.code:
             rep.empty(f)
             return
         try:
-            self.htm = self.text = self.text.decode(CODING)
+            self.code = self.code.decode(CODING)
         except Exception as e:
             self.Success = False
-            self.htm = ''
-            self.text = ''
+            self.code = ''
             mes = _('Unable to change the web-page encoding!\n\nDetails: {}')
             mes = mes.format(e)
             Message(f, mes, True).show_error()
@@ -157,7 +152,7 @@ class Get:
         if not self.Success:
             rep.cancel(f)
             return
-        while not self.text:
+        while not self.code:
             try:
                 mes = _('Get online: "{}"').format(self.pattern)
                 Message(f, mes).show_info()
@@ -168,7 +163,7 @@ class Get:
                       manually, then we need a string as output.
                     - If 'self.url' is empty, then an error is thrown.
                 '''
-                self.text = urllib.request.urlopen(self.url, None, TIMEOUT).read()
+                self.code = urllib.request.urlopen(self.url, None, TIMEOUT).read()
                 mes = _('[OK]: "{}"').format(self.pattern)
                 Message(f, mes).show_info()
             # Too many possible exceptions

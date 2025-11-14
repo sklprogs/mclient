@@ -4,7 +4,7 @@
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 
-from sources.fora.get import Get, ALL_DICS
+from sources.fora.get import ALL_DICS
 import sources.fora.stardict0.cleanup
 import sources.fora.stardict0.elems
 import sources.stardict.cleanup
