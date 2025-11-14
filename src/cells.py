@@ -59,7 +59,6 @@ class Cells:
     
     def __init__(self, blocks):
         self.cells = []
-        self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
         self.blocks = blocks
     
     def _get_fixed_block(self, cell):
@@ -287,16 +286,6 @@ class Cells:
             # 'phsubj' text may have multiple spaces for some reason
             cell.text = Text(cell.text).delete_duplicate_spaces()
     
-    def save_urls(self):
-        for cell in self.cells:
-            if not cell.fixed_block:
-                continue
-            if cell.fixed_block.type == 'subj':
-                self.fixed_urls[cell.fixed_block.type][cell.fixed_block.subj] = cell.url
-                self.fixed_urls[cell.fixed_block.type][cell.fixed_block.subjf] = cell.url
-            elif cell.fixed_block.type in ('phsubj', 'wform') and cell.url:
-                self.fixed_urls[cell.fixed_block.type][cell.text] = cell.url
-    
     def set_sources(self):
         for cell in self.cells:
             if not cell or not cell.blocks:
@@ -313,7 +302,6 @@ class Cells:
         self.set_fixed_cells()
         self.rename_phsubj()
         self.set_row_nos()
-        self.save_urls()
         self.fill_fixed()
         self.delete_fixed()
         self.renumber()

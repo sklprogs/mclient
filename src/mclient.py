@@ -886,7 +886,6 @@ class App:
             ARTICLES.add(search = search
                         ,url = url
                         ,cells = cells
-                        ,fixed_urls = icells.fixed_urls
                         ,subjf = SUBJECTS.article
                         ,blocked = SUBJECTS.block
                         ,prioritized = SUBJECTS.prior

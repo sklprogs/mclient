@@ -253,7 +253,6 @@ class View:
         self.phi = None
         self.view = []
         self.cells = cells
-        self.fixed_urls = ARTICLES.get_fixed_urls()
         # Must be recreated for each article loading/reloading
         self.fixed_cols = ColTypes().run()
     
@@ -478,36 +477,6 @@ class View:
                 else:
                     speech = cell.speech
     
-    def get_fixed_url(self, type_, text):
-        f = '[MClient] view.View.get_fixed_url'
-        try:
-            return self.fixed_urls[type_][text]
-        except KeyError:
-            mes = _('"{}" has not been found in "{}"!')
-            if not type_ in self.fixed_urls:
-                mes = mes.format(type_, self.fixed_urls)
-            elif not text in self.fixed_urls[type_]:
-                mes = mes.format(text, self.fixed_urls[type_])
-            #TODO: Uncomment when ready
-            #Message(f, mes).show_warning()
-        return ''
-    
-    def restore_urls(self):
-        f = '[MClient] view.View.restore_urls'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if not self.fixed_urls:
-            # Fixed cell URLs are relevant for multitrancom plugin only
-            rep.lazy(f)
-            return
-        for cell in self.cells:
-            if not cell.fixed_block or not cell.text:
-                continue
-            if cell.fixed_block.type in ('subj', 'wform', 'phsubj'):
-                cell.url = cell.fixed_block.url = self.get_fixed_url(cell.fixed_block.type
-                                                                    ,cell.text)
-    
     def clear_phrase_fields(self):
         f = '[MClient] view.View.clear_phrase_fields'
         if not self.Success:
@@ -630,7 +599,6 @@ class View:
         self.restore_phsubj()
         self.clear_duplicates()
         self.clear_phrase_fields()
-        self.restore_urls()
         self.renumber()
         return self.cells
 

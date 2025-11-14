@@ -15,17 +15,13 @@ SUBJ_ABBR = ('разг.', 'уст.', 'диал.')
 class Elems:
     
     def __init__(self, text, search, dic):
-        self.set_values()
+        self.blocks = []
+        self.cells = []
+        self.Parallel = False
+        self.Separate = False
         self.text = text
         self.search = search
         self.dic = dic
-    
-    def set_values(self):
-        self.blocks = []
-        self.cells = []
-        self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
-        self.Parallel = False
-        self.Separate = False
     
     def set_blocks(self):
         lines = self.text.splitlines()

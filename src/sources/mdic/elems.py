@@ -45,7 +45,6 @@ class Elems:
         self.phsubj_name = _('Phrases')
         self.jsons = []
         self.blocks = []
-        self.fixed_urls = {'subj':{}, 'wform':{}, 'phsubj':{}}
         self.Parallel = False
         self.Separate = False
         self.str_lst = str_lst

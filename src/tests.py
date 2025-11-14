@@ -646,20 +646,6 @@ class Source:
 
 class Commands:
     
-    def get_fixed_urls(self):
-        f = '[MClient] tests.Commands.get_fixed_urls'
-        import json
-        import sources.multitrancom.cleanup as cu
-        import sources.multitrancom.tags as tg
-        import sources.multitrancom.elems as el
-        text = Read(HTM_FILE).get()
-        text = cu.CleanUp(text).run()
-        blocks = tg.Tags(text).run()
-        ielems = el.Elems(blocks)
-        ielems.run()
-        mes = json.dumps(ielems.fixed_urls, ensure_ascii=False, indent=4)
-        return mes
-    
     def get_all_subjects(self):
         import sources.multitrancom.subjects as sj
         return sj.objs.get_subjects().dump()

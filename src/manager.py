@@ -27,7 +27,6 @@ class Sources:
         self.sdplugin = None
         self.frplugin = None
         self.mdplugin = None
-        self.fixed_urls = {}
         self.source = CONFIG.new['source']
         self.plugin = self.mcplugin
         self.timeout = timeout
@@ -35,13 +34,6 @@ class Sources:
         #NOTE: either put this on top of 'self.sources' or synchronize with GUI
         self.set(self.source)
         self.set_timeout(self.timeout)
-    
-    def get_fixed_urls(self):
-        f = '[MClient] manager.Sources.get_fixed_urls'
-        if not self.plugin:
-            rep.empty(f)
-            return {}
-        return self.fixed_urls
     
     def get_speeches(self):
         f = '[MClient] manager.Sources.get_speeches'
