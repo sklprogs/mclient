@@ -15,7 +15,6 @@ class Source:
     def __init__(self):
         ''' - Extra unused input variables are preserved so it would be easy to
               use an abstract class for all dictionary sources.
-            - #NOTE: Do not forget to set sources.stardict.get.PATH earlier.
             - #NOTE: 'Parallel' and 'Separate' are temporary variables that
               should be externally referred to only after getting a NEW article.
         '''
@@ -24,7 +23,6 @@ class Source:
         self.blocks = []
         self.majors = []
         self.minors = []
-        self.htm = ''
         self.text = ''
         self.search = ''
     
@@ -40,9 +38,6 @@ class Source:
     def get_minors(self):
         return self.minors
     
-    def get_htm(self):
-        return self.htm
-    
     def get_text(self):
         return self.text
     
@@ -57,10 +52,6 @@ class Source:
     
     def get_search(self):
         return self.search
-    
-    def set_htm(self, code):
-        # This is needed only for compliance with a general method
-        self.htm = code
     
     def fix_url(self, url):
         # This is needed only for compliance with a general method
@@ -88,10 +79,6 @@ class Source:
     def get_server(self):
         # This is needed only for compliance with a general method
         return ''
-    
-    def fix_raw_htm(self, code=''):
-        # This is needed only for compliance with a general method
-        return self.htm
     
     def get_url(self, search=''):
         # This is needed only for compliance with a general method

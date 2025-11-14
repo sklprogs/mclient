@@ -118,8 +118,8 @@ class Articles:
     def get_len(self):
         return self.get_max_id() + 1
     
-    def add(self, search='', url='', cells=[], table=[], raw_code=''
-           ,fixed_urls=[], subjf=[], blocked=[], prioritized=[], art_subj={}):
+    def add(self, search='', url='', cells=[], table=[], fixed_urls=[]
+           ,subjf=[], blocked=[], prioritized=[], art_subj={}):
         f = '[MClient] articles.Articles.add'
         # Do not add articles that were not found to history
         if not cells:
@@ -139,7 +139,6 @@ class Articles:
                                     ,'url'           : url
                                     ,'cells'         : cells
                                     ,'table'         : table
-                                    ,'raw_code'      : raw_code
                                     ,'fixed_urls'    : fixed_urls
                                     ,'subjf'         : subjf
                                     ,'blocked'       : blocked
@@ -280,17 +279,6 @@ class Articles:
             return ''
         try:
             return self.articles['ids'][self.id]['lang2']
-        except KeyError:
-            rep.wrong_input(f)
-        return ''
-    
-    def get_raw_code(self):
-        f = '[MClient] articles.Articles.get_raw_code'
-        if not self.articles['ids']:
-            rep.empty(f)
-            return ''
-        try:
-            return self.articles['ids'][self.id]['raw_code']
         except KeyError:
             rep.wrong_input(f)
         return ''

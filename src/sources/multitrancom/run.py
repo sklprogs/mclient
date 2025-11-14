@@ -25,12 +25,8 @@ class Source:
         self.blocks = []
         self.majors = []
         self.minors = []
-        self.htm = ''
         self.text = ''
         self.search = ''
-    
-    def get_htm(self):
-        return self.htm
     
     def get_text(self):
         return self.text
@@ -76,9 +72,6 @@ class Source:
     
     def get_lang2(self):
         return pr.LANG2
-    
-    def fix_raw_htm(self, code):
-        return gt.com.fix_raw_htm(code)
     
     def get_url(self, search):
         f = '[MClient] sources.multitrancom.run.Source.get_url'

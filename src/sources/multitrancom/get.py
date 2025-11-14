@@ -96,7 +96,7 @@ class Suggest:
         if not self.Success:
             rep.cancel(f)
             return
-        #NOTE: the encoding here (unlike 'self.url') is plugin-dependent
+        #NOTE: the encoding here (unlike 'self.url') is source-dependent
         self.items = shGet(url=self.url, coding=CODING).run()
         if not self.items:
             rep.empty(f)
@@ -184,12 +184,6 @@ class Get:
 
 
 class Commands:
-    
-    def fix_raw_htm(self, code):
-        #TODO: fix remaining links to localhost
-        code = code.replace('charset={}"'.format(CODING), 'charset=utf-8"')
-        code = code.replace('<a href="/m.exe?', '<a href="' + PAIRROOT)
-        return code
     
     def get_url(self, code1, code2, search):
         f = '[MClient] sources.multitrancom.get.Commands.get_url'

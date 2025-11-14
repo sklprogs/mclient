@@ -28,7 +28,6 @@ class Source:
         self.blocks = []
         self.majors = []
         self.minors = []
-        self.htm = ''
         self.text = ''
         self.search = ''
         #TODO: elaborate
@@ -43,9 +42,6 @@ class Source:
     def get_speeches(self):
         #TODO: implement or rework
         return {}
-    
-    def get_htm(self):
-        return self.htm
     
     def get_subjects(self):
         return sj.objs.get_subjects().get_list()
@@ -104,10 +100,6 @@ class Source:
     def get_lang2(self):
         return self._adapt_lang(gt.LANG2)
     
-    def fix_raw_htm(self, code=''):
-        # This is needed only for compliance with a general method
-        return self.htm
-    
     def get_url(self, search=''):
         # This is needed only for compliance with a general method
         return ''
@@ -155,5 +147,4 @@ class Source:
                               ,langs = gt.ALL_DICS.get_langs()
                               ,search=search).run()
         self.get_text()
-        self.get_htm()
         return self.blocks

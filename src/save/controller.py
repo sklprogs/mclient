@@ -180,12 +180,8 @@ class Save:
         self.close()
         if opt == _('Save the current view as a web-page (*.htm)'):
             self.save_view_as_htm()
-        elif opt == _('Save the original article as a web-page (*.htm)'):
-            self.save_raw_as_htm()
         elif opt == _('Save the article as plain text in UTF-8 (*.txt)'):
             self.save_view_as_txt()
-        elif opt == _('Copy the code of the article to clipboard'):
-            self.copy_raw()
         elif opt == _('Copy the text of the article to clipboard'):
             self.copy_view()
         else:
@@ -218,24 +214,6 @@ class Save:
         code = make_pretty(code)
         Write(self.file).write(code)
 
-    def save_raw_as_htm(self):
-        f = '[MClient] mclient.Save.save_raw_as_htm'
-        ''' Key 'html' may be needed to write a file in the UTF-8 encoding,
-            therefore, in order to ensure that the web-page is read correctly,
-            we change the encoding manually. We also replace abbreviated
-            hyperlinks with full ones in order to ensure that they are also
-            valid in the local file.
-        '''
-        self.gui.ask.filter = _('Web-pages (*.htm, *.html)')
-        self.file = self.gui.ask.save()
-        code = ARTICLES.get_raw_code()
-        if not self.file or not code:
-            rep.empty(f)
-            return
-        self._add_web_ext()
-        code = SOURCES.fix_raw_htm(code)
-        Write(self.file).write(code)
-
     def save_view_as_txt(self):
         f = '[MClient] mclient.Save.save_view_as_txt'
         self.gui.ask.filter = _('Plain text (*.txt)')
@@ -247,9 +225,6 @@ class Save:
         if not Path(self.file).get_ext_low() == '.txt':
             self.file += '.txt'
         Write(self.file).write(text)
-
-    def copy_raw(self):
-        CLIPBOARD.copy(ARTICLES.get_raw_code())
 
     def copy_view(self):
         CLIPBOARD.copy(self._get_text())

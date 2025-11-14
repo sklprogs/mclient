@@ -107,24 +107,6 @@ class Sources:
             return
         return self.plugin.get_lang2()
     
-    def fix_raw_htm(self, code):
-        f = '[MClient] manager.Sources.fix_raw_htm'
-        if not self.plugin:
-            rep.empty(f)
-            return code
-        code = self.plugin.fix_raw_htm(code)
-        code = Input(f, code).get_not_none()
-        if not '</html>' in code.lower():
-            search = self.get_search()
-            # '.format' does not work properly for 'multitrandem'
-            mes = '<!doctype html><title>'
-            mes += search
-            mes += '</title><body>'
-            mes += code
-            mes += '</body></html>'
-            code = mes
-        return code
-    
     def get_url(self, search):
         f = '[MClient] manager.Sources.get_url'
         if not self.plugin:
@@ -237,13 +219,6 @@ class Sources:
             rep.empty(f)
             return
         return self.plugin.get_text()
-    
-    def get_htm(self):
-        f = '[MClient] manager.Sources.get_htm'
-        if not self.plugin:
-            rep.empty(f)
-            return
-        return self.plugin.get_htm()
     
     def request(self, search='', url=''):
         blocks = self.mcplugin.request(search, url)

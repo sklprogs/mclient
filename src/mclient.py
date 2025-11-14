@@ -887,7 +887,6 @@ class App:
                         ,url = url
                         ,cells = cells
                         ,fixed_urls = icells.fixed_urls
-                        ,raw_code = SOURCES.get_htm()
                         ,subjf = SUBJECTS.article
                         ,blocked = SUBJECTS.block
                         ,prioritized = SUBJECTS.prior
