@@ -124,6 +124,7 @@ class Elems:
     def __init__(self, blocks):
         f = '[MClient] sources.stardict.elems.Elems.__init__'
         self.phsubj_name = _('Phrases')
+        self.phsubj_url = ''
         self.art_subj = {}
         self.Parallel = False
         self.Separate = False
@@ -192,8 +193,7 @@ class Elems:
         self.set_source()
         self.set_art_subj()
         self.separate_term()
-        #self.set_phrases()
-        #self.move_phrases()
+        self.set_phrases()
         #self.set_phsubj_name()
         #self.set_phsubj()
         #self.blocks = Phrases(self.blocks).run()
@@ -231,54 +231,7 @@ class Elems:
     def _is_phrase(self, fragm):
         return self._has_sep(fragm) and self._is_mixed(fragm)
     
-    def get_first_phrase(self):
-        for i in range(len(self.blocks)):
-            if self.blocks[i].type == 'phrase':
-                return i
-    
     def set_phrases(self):
         for block in self.blocks:
             if self._is_phrase(block.text):
                 block.type = 'phrase'
-    
-    def move_phrases(self):
-        ''' - phsubj is set to an incorrect row without this.
-            - Phrases may have synonyms attached to them and formatted as
-              comments, so moving by cellno is more precise.
-        '''
-        cellnos = [block.cellno for block in self.blocks \
-                  if block.type == 'phrase']
-        move = [block for block in self.blocks if block.cellno in cellnos]
-        other = [block for block in self.blocks if not block.cellno in cellnos]
-        self.blocks = other + move
-    
-    def set_phsubj_name(self):
-        f = '[MClient] sources.stradict.elems.Elems.set_phsubj_name'
-        count = 0
-        for block in self.blocks:
-            if block.type == 'phrase':
-                count += 1
-        if not count:
-            rep.lazy(f)
-            return
-        self.phsubj_name = _('Phrases ({})').format(count)
-        mes = f'"{self.phsubj_name}"'
-        Message(f, mes).show_debug()
-        for block in self.blocks:
-            if block.type == 'phrase':
-                block.subj = block.subjf = self.phsubj_name
-    
-    def set_phsubj(self):
-        f = '[MClient] sources.stradict.elems.Elems.set_phsubj'
-        no = self.get_first_phrase()
-        if no is None:
-            rep.lazy(f)
-            return
-        block = Block()
-        if no > 1:
-            block.cellno = self.blocks[no-1].cellno + 0.1
-        block.subj = self.phsubj_name
-        block.subjf = self.phsubj_name
-        block.text = self.phsubj_name
-        block.type = 'phsubj'
-        self.blocks.insert(no, block)

@@ -879,9 +879,7 @@ class App:
             blocks = SOURCES.request(search=search, url=url)
             ielems = Elems(blocks)
             blocks = ielems.run()
-            icells = Cells(blocks)
-            icells.run()
-            cells = icells.cells
+            cells = Cells(blocks).run()
             SUBJECTS.reset(ielems.art_subj)
             ARTICLES.add(search = search
                         ,url = url
@@ -889,7 +887,8 @@ class App:
                         ,subjf = SUBJECTS.article
                         ,blocked = SUBJECTS.block
                         ,prioritized = SUBJECTS.prior
-                        ,art_subj = ielems.art_subj)
+                        ,art_subj = ielems.art_subj
+                        ,phsubj_url = ielems.phsubj_url)
             HistorySubjects().add(ielems.art_subj)
             self.add_history()
         else:

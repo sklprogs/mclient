@@ -9,13 +9,14 @@ from skl_shared.list import List
 from skl_shared.table import Table
 from skl_shared.logic import Text
 
-from instance import Cell, is_block_fixed
+from instance import Block, Cell, is_block_fixed
 
 
 class Elems:
     
     def __init__(self, blocks):
         self.art_subj = {}
+        self.phsubj_url = ''
         self.blocks = blocks
     
     def debug(self, maxrow=30, maxrows=0):
@@ -51,6 +52,9 @@ class Elems:
     
     def run(self):
         self.set_art_subj()
+        iphrases = Phrases(self.blocks)
+        self.blocks = iphrases.run()
+        self.phsubj_url = iphrases.phsubj_url
         return self.blocks
 
 
@@ -238,18 +242,6 @@ class Cells:
             self.cells[i].transc = transc
             i -= 1
     
-    def rename_phsubj(self):
-        for cell in self.cells:
-            if cell.fixed_block and cell.fixed_block.type == 'phsubj':
-                match = re.search(r'(\d+)', cell.text)
-                if match:
-                    title = _('Phrases ({})').format(match.group(1))
-                    # 'fill_fixed' is block-oriented
-                    cell.text = cell.fixed_block.text = cell.fixed_block.subj \
-                              = cell.fixed_block.subjf = title
-                    # There should be only one 'phsubj'
-                    return
-    
     def delete_fixed(self):
         f = '[MClient] cells.Cells.delete_fixed'
         count = 0
@@ -300,9 +292,98 @@ class Cells:
         self.set_text()
         self.set_sources()
         self.set_fixed_cells()
-        self.rename_phsubj()
         self.set_row_nos()
         self.fill_fixed()
         self.delete_fixed()
         self.renumber()
         return self.cells
+
+
+
+class Phrases:
+    
+    def __init__(self, blocks):
+        self.phsubj_url = ''
+        self.blocks = blocks
+        
+    def move(self):
+        ''' - phsubj is set to an incorrect row without this.
+            - Phrases may have synonyms attached to them and formatted as
+              comments, so moving by cellno is more precise.
+        '''
+        cellnos = [block.cellno for block in self.blocks \
+                  if block.type == 'phrase']
+        move = [block for block in self.blocks if block.cellno in cellnos]
+        other = [block for block in self.blocks if not block.cellno in cellnos]
+        self.blocks = other + move
+    
+    def set_phsubj_name(self):
+        f = '[MClient] cells.Phrases.set_phsubj_name'
+        count = 0
+        for block in self.blocks:
+            if block.type == 'phrase':
+                count += 1
+        if not count:
+            rep.lazy(f)
+            return
+        self.phsubj_name = _('Phrases ({})').format(count)
+        mes = f'"{self.phsubj_name}"'
+        Message(f, mes).show_debug()
+        for block in self.blocks:
+            if block.type == 'phrase':
+                block.subj = block.subjf = self.phsubj_name
+    
+    def get_first_phrase(self):
+        for i in range(len(self.blocks)):
+            if self.blocks[i].type == 'phrase':
+                return i
+    
+    def set_phsubj(self):
+        f = '[MClient] cells.Phrases.set_phsubj'
+        no = self.get_first_phrase()
+        if no is None:
+            rep.lazy(f)
+            return
+        block = Block()
+        if no > 1:
+            block.cellno = self.blocks[no-1].cellno + 0.1
+        block.subj = self.phsubj_name
+        block.subjf = self.phsubj_name
+        block.text = self.phsubj_name
+        block.url = self.phsubj_url
+        block.type = 'phsubj'
+        self.blocks.insert(no, block)
+    
+    def _get_last_subj(self):
+        i = len(self.blocks) - 1
+        while i >= 0:
+            if self.blocks[i].type in ('phsubj', 'subj') and self.blocks[i].url:
+                return self.blocks[i]
+            i -= 1
+    
+    def _has_phrases(self):
+        i = len(self.blocks) - 1
+        while i >= 0:
+            if self.blocks[i].type == 'phrase':
+                return True
+            i -= 1
+    
+    def set_phsubj_url(self):
+        f = '[MClient] cells.Phrases.set_phsubj_url'
+        if not self._has_phrases():
+            rep.lazy(f)
+            return
+        block = self._get_last_subj()
+        if not block:
+            rep.lazy(f)
+            return
+        self.phsubj_url = block.url
+        mes = f'URL: "{self.phsubj_url}"'
+        Message(f, mes).show_debug()
+    
+    def run(self):
+        self.move()
+        self.set_phsubj_url()
+        self.set_phsubj_name()
+        self.set_phsubj()
+        return self.blocks

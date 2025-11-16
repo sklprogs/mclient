@@ -261,7 +261,6 @@ class View:
         if not self.cells:
             self.Success = False
             rep.empty(f)
-            return
     
     def sort(self):
         f = '[MClient] view.View.sort'
@@ -368,6 +367,7 @@ class View:
             if self.cells[i].fixed_block \
             and self.cells[i].fixed_block.type == 'subj':
                 self.cells[i].fixed_block.type = 'phsubj'
+                self.cells[i].fixed_block.url = ARTICLES.get_phsubj_url()
                 self.phi = i
                 mes = f'"{self.cells[i].fixed_block.text}"'
                 Message(f, mes).show_debug()

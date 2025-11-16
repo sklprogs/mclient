@@ -21,6 +21,7 @@ class Elems:
     def __init__(self, blocks):
         f = '[MClient] sources.dsl.elems.Elems.__init__'
         self.art_subj = {}
+        self.phsubj_url = ''
         self.Parallel = False
         self.Separate = False
         self.blocks = blocks

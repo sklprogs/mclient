@@ -19,6 +19,17 @@ class Articles:
     def reset(self):
         self.set_values()
     
+    def get_phsubj_url(self):
+        f = '[MClient] articles.Articles.get_phsubj_url'
+        if not self.articles['ids']:
+            rep.empty(f)
+            return []
+        try:
+            return self.articles['ids'][self.id]['phsubj_url']
+        except KeyError:
+            rep.wrong_input(f)
+        return []
+    
     def get_blocked(self):
         f = '[MClient] articles.Articles.get_blocked'
         if not self.articles['ids']:
@@ -108,7 +119,7 @@ class Articles:
         return self.get_max_id() + 1
     
     def add(self, search='', url='', cells=[], table=[], subjf=[], blocked=[]
-           ,prioritized=[], art_subj={}):
+           ,prioritized=[], art_subj={}, phsubj_url=''):
         f = '[MClient] articles.Articles.add'
         # Do not add articles that were not found to history
         if not cells:
@@ -134,7 +145,8 @@ class Articles:
                                     ,'rowno'         : -1
                                     ,'colno'         : -1
                                     ,'blocked_cells' : []
-                                    ,'art_subj'      : art_subj}
+                                    ,'art_subj'      : art_subj
+                                    ,'phsubj_url'    : phsubj_url}
         self.set_id(id_)
     
     def get_blocked_cells(self):
