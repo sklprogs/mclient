@@ -123,7 +123,6 @@ class Elems:
 
     def __init__(self, blocks):
         f = '[MClient] sources.stardict.elems.Elems.__init__'
-        self.phsubj_name = _('Phrases')
         self.art_subj = {}
         self.Parallel = False
         self.Separate = False
@@ -193,9 +192,7 @@ class Elems:
         self.set_art_subj()
         self.separate_term()
         self.set_phrases()
-        #self.set_phsubj_name()
-        #self.set_phsubj()
-        #self.blocks = Phrases(self.blocks).run()
+        self.blocks = Phrases(self.blocks).run()
         return self.blocks
     
     def debug(self, maxrow=30, maxrows=0):
