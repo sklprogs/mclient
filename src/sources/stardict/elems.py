@@ -124,7 +124,6 @@ class Elems:
     def __init__(self, blocks):
         f = '[MClient] sources.stardict.elems.Elems.__init__'
         self.phsubj_name = _('Phrases')
-        self.phsubj_url = ''
         self.art_subj = {}
         self.Parallel = False
         self.Separate = False

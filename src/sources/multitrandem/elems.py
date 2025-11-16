@@ -15,7 +15,6 @@ class Elems:
     def __init__(self, blocks, abbr, langs=[], search=''):
         f = '[MClient] sources.multitrandem.elems.Elems.__init__'
         self.art_subj = {}
-        self.phsubj_url = ''
         self.Parallel = False
         self.Separate = False
         self.abbr = abbr

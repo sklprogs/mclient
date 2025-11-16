@@ -42,7 +42,6 @@ class Elems:
 
     def __init__(self, str_lst):
         f = '[MClient] sources.mdic.elems.Elems.__init__'
-        self.phsubj_url = ''
         self.jsons = []
         self.blocks = []
         self.Parallel = False

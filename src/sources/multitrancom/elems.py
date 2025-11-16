@@ -434,7 +434,6 @@ class Suggestions:
 class Elems:
     
     def __init__(self, blocks):
-        self.phsubj_url = ''
         self.Parallel = False
         self.Separate = False
         self.blocks = blocks
