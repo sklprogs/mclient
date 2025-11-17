@@ -10,7 +10,8 @@ import sources.fora.stardict0.elems
 import sources.stardict.cleanup
 import sources.stardict.tags
 import sources.stardict.elems
-import sources.fora.cleanup
+import sources.fora.dsl.cleanup
+import sources.fora.stardictx.elems
 import sources.dsl.tags
 import sources.dsl.elems
 
@@ -123,7 +124,7 @@ class Source:
     def _request_stardictx(self, dic):
         text = sources.stardict.cleanup.CleanUp(dic.article).run()
         blocks = sources.stardict.tags.Tags(text).run()
-        return sources.stardict.elems.Elems(blocks).run()
+        return sources.fora.stardictx.elems.Elems(blocks).run()
     
     def _request_stardict0(self, dic):
         text = sources.fora.stardict0.cleanup.CleanUp(dic.article).run()
@@ -140,7 +141,7 @@ class Source:
         return sources.fora.stardictm.elems.Elems(blocks).run()
     
     def _request_dsl(self, dic):
-        text = sources.fora.cleanup.CleanUp(dic.article).run()
+        text = sources.fora.dsl.cleanup.CleanUp(dic.article).run()
         blocks = sources.dsl.tags.Tags(text).run()
         return sources.dsl.elems.Elems(blocks).run()
     

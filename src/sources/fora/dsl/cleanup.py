@@ -24,7 +24,7 @@ class CleanUp(DslCleanUp):
         self.text = '\n'.join(self.text)
     
     def run(self):
-        f = '[MClient] sources.fora.cleanup.CleanUp.run'
+        f = '[MClient] sources.fora.dsl.cleanup.CleanUp.run'
         if not self.text:
             rep.empty(f)
             return ''

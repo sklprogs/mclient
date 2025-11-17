@@ -163,7 +163,7 @@ class Elems:
     
     def set_source(self):
         for block in self.blocks:
-            block.source = _('Stardict')
+            block.source = 'Stardict'
     
     def separate_term(self):
         ''' This can be necessary if the dictionary is incorrectly tagged -
