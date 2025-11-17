@@ -4,8 +4,6 @@
 from skl_shared.localize import _
 from skl_shared.message.controller import rep, Message
 
-FORA = False
-
 
 class CleanUp:
     
@@ -16,26 +14,8 @@ class CleanUp:
         while '  ' in self.text:
             self.text = self.text.replace('  ', ' ')
     
-    def tag_wforms(self):
-        f = '[MClient] sources.dsl.cleanup.CleanUp.tag_wforms'
-        if not FORA:
-            rep.lazy(f)
-            return
-        self.text = self.text.splitlines()
-        for i in range(len(self.text)):
-            parts = self.text[i].split('[/dic]')
-            if len(parts) == 1:
-                continue
-            parts[0] += '[/dic]'
-            parts[1] = '[wform]' + parts[1] + '[/wform]'
-            self.text[i] = parts[0] + parts[1]
-        self.text = '\n'.join(self.text)
-    
     def convert_dic_names(self):
         f = '[MClient] sources.dsl.cleanup.CleanUp.convert_dic_names'
-        if FORA:
-            rep.lazy(f)
-            return
         # Process cases like '#NAME\t"DicTitle (En-Ru)"'
         self.text = self.text.splitlines()
         for i in range(len(self.text)):
@@ -56,9 +36,6 @@ class CleanUp:
     
     def add_wforms(self):
         f = '[MClient] sources.dsl.cleanup.CleanUp.add_wforms'
-        if FORA:
-            rep.lazy(f)
-            return
         if self.text.startswith('#'):
             rep.lazy(f)
             return
@@ -73,7 +50,6 @@ class CleanUp:
             return ''
         self.delete_trash()
         self.convert_tags()
-        self.tag_wforms()
         self.add_wforms()
         self.convert_dic_names()
         return self.text

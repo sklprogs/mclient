@@ -10,7 +10,7 @@ import sources.fora.stardict0.elems
 import sources.stardict.cleanup
 import sources.stardict.tags
 import sources.stardict.elems
-import sources.dsl.cleanup
+import sources.fora.cleanup
 import sources.dsl.tags
 import sources.dsl.elems
 
@@ -140,8 +140,7 @@ class Source:
         return sources.fora.stardictm.elems.Elems(blocks).run()
     
     def _request_dsl(self, dic):
-        sources.dsl.cleanup.FORA = True
-        text = sources.dsl.cleanup.CleanUp(dic.article).run()
+        text = sources.fora.cleanup.CleanUp(dic.article).run()
         blocks = sources.dsl.tags.Tags(text).run()
         return sources.dsl.elems.Elems(blocks).run()
     
