@@ -11,4 +11,4 @@ class Elems(stElems):
     
     def set_source(self):
         for block in self.blocks:
-            block.source = 'Fora (Stardict-x)'
+            block.source = 'Fora (StarDict-x)'
