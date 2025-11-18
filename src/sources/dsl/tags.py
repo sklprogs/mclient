@@ -90,11 +90,14 @@ class AnalyzeTag:
     def _is_term(self):
         return self.tag.name in ('dtrn', 'trn')
     
-    def _is_subj(self):
+    def _is_dic(self):
         return self.tag.name == 'dic'
     
+    def _is_subj(self):
+        return self.tag.name == 'p'
+    
     def _is_comment(self):
-        return self.tag.name in ('c', 'com', 'p', 'ex', 'i', 's')
+        return self.tag.name in ('c', 'com', 'ex', 'i', 's')
     
     def _is_phrase(self):
         return self.tag.name == 'ref'
@@ -108,6 +111,8 @@ class AnalyzeTag:
     def _set_type(self):
         if self._is_term():
             self.tag.type = 'term'
+        elif self._is_dic():
+            self.tag.type = 'dic'
         elif self._is_subj():
             self.tag.type = 'subj'
         elif self._is_wform():
