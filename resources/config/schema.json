@@ -563,7 +563,6 @@
     ,"lang2": {"type": "string"}
     ,"repeat_sign": {"type": "string"}
     ,"repeat_sign2": {"type": "string"}
-    ,"source": {"type": "string"}
     ,"spec_syms": {"type": "string"}
     ,"speech1": {"type": "string"}
     ,"speech2": {"type": "string"}

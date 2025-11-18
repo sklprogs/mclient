@@ -121,7 +121,6 @@ class Config(shConfig):
         self.new['columns']['6']['type'] = _(self.new['columns']['6']['type'])
         self.new['lang1'] = _(self.new['lang1'])
         self.new['lang2'] = _(self.new['lang2'])
-        self.new['source'] = _(self.new['source'])
         self.new['speech1'] = _(self.new['speech1'])
         self.new['speech2'] = _(self.new['speech2'])
         self.new['speech3'] = _(self.new['speech3'])

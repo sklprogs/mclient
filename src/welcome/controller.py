@@ -70,37 +70,31 @@ class Welcome:
         if not CONFIG.new['Ping']:
             rep.lazy(f)
             return
-        old = SOURCES.source
-        dics = SOURCES.get_online_sources()
-        if not dics:
+        sources = SOURCES.get_online_sources()
+        if not sources:
             rep.empty(f)
             return
-        for dic in dics:
-            SOURCES.set(dic)
+        for source in sources:
             isource = Source()
-            isource.title = dic
+            isource.title = source
             isource.Online = True
             if SOURCES.count_valid():
                 isource.status = _('running')
                 isource.color = 'green'
             self.sources.append(isource)
-        SOURCES.set(old)
     
     def set_offline_sources(self):
         f = '[MClient] welcome.controller.Welcome.set_offline_sources'
-        dics = SOURCES.get_offline_sources()
-        if not dics:
+        sources = SOURCES.get_offline_sources()
+        if not sources:
             rep.empty(f)
             return
-        old = SOURCES.source
-        for dic in dics:
-            SOURCES.set(dic)
+        for source in sources:
             isource = Source()
-            isource.title = dic
+            isource.title = source
             isource.successful = SOURCES.count_valid()
             isource.failed = SOURCES.count_invalid()
             self.sources.append(isource)
-        SOURCES.set(old)
     
     def set_sources(self):
         self.set_online_sources()

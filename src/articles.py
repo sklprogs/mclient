@@ -130,8 +130,7 @@ class Articles:
             mes = _('Wrong input data: "{}"!').format(id_)
             Message(f, mes).show_warning()
             return
-        self.articles['ids'][id_] = {'source'        : CONFIG.new['source']
-                                    ,'lang1'         : SOURCES.get_lang1()
+        self.articles['ids'][id_] = {'lang1'         : SOURCES.get_lang1()
                                     ,'lang2'         : SOURCES.get_lang2()
                                     ,'Parallel'      : SOURCES.is_parallel()
                                     ,'Separate'      : SOURCES.is_separate()
@@ -239,17 +238,6 @@ class Articles:
             rep.wrong_input(f)
         return ''
     
-    def get_source(self):
-        f = '[MClient] articles.Articles.get_source'
-        if not self.articles['ids']:
-            rep.empty(f)
-            return ''
-        try:
-            return self.articles['ids'][self.id]['source']
-        except KeyError:
-            rep.wrong_input(f)
-        return ''
-    
     def get_url(self):
         f = '[MClient] articles.Articles.get_url'
         if not self.articles['ids']:
@@ -294,10 +282,9 @@ class Articles:
             rep.wrong_input(f)
         return []
     
-    def find(self, source, search, url):
+    def find(self, search, url):
         for id_ in self.articles['ids']:
-            if self.articles['ids'][id_]['source'] == source \
-            and self.articles['ids'][id_]['search'] == search \
+            if self.articles['ids'][id_]['search'] == search \
             and self.articles['ids'][id_]['url'] == url:
                 return id_
         return -1

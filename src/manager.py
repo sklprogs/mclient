@@ -27,12 +27,9 @@ class Sources:
         self.sdplugin = None
         self.frplugin = None
         self.mdplugin = None
-        self.source = CONFIG.new['source']
-        self.plugin = self.mcplugin
         self.timeout = timeout
         self.load()
-        #NOTE: either put this on top of 'self.sources' or synchronize with GUI
-        self.set(self.source)
+        self.plugin = self.mcplugin
         self.set_timeout(self.timeout)
     
     def get_speeches(self):
@@ -149,10 +146,10 @@ class Sources:
         return self.plugin.suggest(search)
     
     def get_sources(self):
-        return (_('Multitran'), _('Stardict'), 'Lingvo (.dsl)', _('Local MT'), 'Fora', 'MClient (.mdic)')
+        return (_('Multitran'), _('Stardict'), 'Lingvo (.dsl)', _('Local MT'), 'Fora (Stardict-x)', 'MClient (.mdic)')
     
     def get_offline_sources(self):
-        return (_('Stardict'), 'Lingvo (.dsl)', _('Local MT'), 'Fora', 'MClient (.mdic)')
+        return (_('Stardict'), 'Lingvo (.dsl)', _('Local MT'), 'Fora (Stardict-x)', 'MClient (.mdic)')
     
     def get_online_sources(self):
         ''' This is used by lg.Welcome to check the availability of online
@@ -181,29 +178,6 @@ class Sources:
         self.lgplugin = sources.dsl.run.Source()
         self.frplugin = sources.fora.run.Source()
         self.mdplugin = sources.mdic.run.Source()
-    
-    def set(self, source):
-        f = '[MClient] manager.Sources.set'
-        if not source:
-            rep.empty(f)
-            return
-        self.source = source
-        if source == _('Stardict'):
-            self.plugin = self.sdplugin
-        elif source in (_('Multitran'), 'multitran.com'):
-            self.plugin = self.mcplugin
-        elif source == 'Lingvo (.dsl)':
-            self.plugin = self.lgplugin
-        elif source == _('Local MT'):
-            self.plugin = self.mbplugin
-        elif source == 'Fora':
-            self.plugin = self.frplugin
-        elif source == 'MClient (.mdic)':
-            self.plugin = self.mdplugin
-        else:
-            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(self.source, self.get_sources())
-            Message(f, mes, True).show_error()
     
     def get_text(self):
         f = '[MClient] manager.Sources.get_text'

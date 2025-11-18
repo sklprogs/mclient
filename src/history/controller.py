@@ -79,7 +79,7 @@ class History:
             if self.model.items[i] and self.model.items[i][0] == id_:
                 return i
     
-    def add_row(self, id_, source, lang1, lang2, search):
+    def add_row(self, id_, lang1, lang2, search):
         f = '[MClient] history.controller.History.add_row'
         if not self.model.items:
             rep.empty(f)
@@ -89,7 +89,7 @@ class History:
             del self.model.items[0]
         rowno = self._find_id(str(id_ + 1))
         if rowno is None:
-            row = [str(id_ + 1), source, lang1, lang2, search]
+            row = [str(id_ + 1), lang1, lang2, search]
             self.model.items.append(row)
             self.model.update()
             self._go_row(len(self.model.items)-1)

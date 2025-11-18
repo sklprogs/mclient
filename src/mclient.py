@@ -478,7 +478,6 @@ class App:
             rep.lazy(f)
             return
         self.history.add_row(id_ = ARTICLES.id
-                            ,source = SOURCES.source
                             ,lang1 = SOURCES.get_lang1()
                             ,lang2 = SOURCES.get_lang2()
                             ,search = ARTICLES.get_search())
@@ -497,14 +496,9 @@ class App:
         if not source or not lang1 or not lang2:
             rep.empty(f)
             return
-        CONFIG.new['source'] = source
-        mes = _('Set source to "{}"')
-        mes = mes.format(CONFIG.new['source'])
-        Message(f, mes).show_info()
-        SOURCES.set(CONFIG.new['source'])
         SOURCES.set_lang1(lang1)
         SOURCES.set_lang2(lang2)
-        self.reset_opt(CONFIG.new['source'])
+        self.reset_opt()
         self.load_article()
     
     def clear_history(self):
@@ -527,11 +521,9 @@ class App:
         if not source or not lang1 or not lang2:
             rep.empty(f)
             return
-        CONFIG.new['source'] = source
-        SOURCES.set(CONFIG.new['source'])
         SOURCES.set_lang1(lang1)
         SOURCES.set_lang2(lang2)
-        self.reset_opt(CONFIG.new['source'])
+        self.reset_opt()
         self.load_article()
         self.history.go_up()
     
@@ -550,11 +542,9 @@ class App:
         if not source or not lang1 or not lang2:
             rep.empty(f)
             return
-        CONFIG.new['source'] = source
-        SOURCES.set(CONFIG.new['source'])
         SOURCES.set_lang1(lang1)
         SOURCES.set_lang2(lang2)
-        self.reset_opt(CONFIG.new['source'])
+        self.reset_opt()
         self.load_article()
         self.history.go_down()
     
@@ -673,7 +663,7 @@ class App:
             Message(f, mes).show_info()
             self.swap_langs()
     
-    def reset_opt(self, default=_('Multitran')):
+    def reset_opt(self):
         f = '[MClient] mclient.App.reset_opt'
         # Reset OptionMenus
         lang1 = SOURCES.get_lang1()
@@ -868,15 +858,13 @@ class App:
         timer.start()
 
         if search or url:
-            artid = ARTICLES.find(source = CONFIG.new['source']
-                                 ,search = search
-                                 ,url = url)
+            artid = ARTICLES.find(search, url)
         else:
             # Just reload the article if no parameters are provided
             artid = ARTICLES.id
             
         if artid == -1:
-            blocks = SOURCES.request(search=search, url=url)
+            blocks = SOURCES.request(search, url)
             ielems = Elems(blocks)
             blocks = ielems.run()
             cells = Cells(blocks).run()
@@ -994,7 +982,7 @@ class App:
     
     def update_ui(self):
         gi.objs.get_panel().ent_src.focus()
-        self.reset_opt(CONFIG.new['source'])
+        self.reset_opt()
     
     def show(self):
         self.gui.show()
