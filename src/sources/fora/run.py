@@ -7,13 +7,12 @@ from skl_shared.message.controller import Message, rep
 from sources.fora.get import ALL_DICS
 import sources.fora.stardict0.cleanup
 import sources.fora.stardict0.elems
+import sources.fora.dsl.cleanup
+import sources.dsl.tags
+import sources.fora.dsl.elems
 import sources.stardict.cleanup
 import sources.stardict.tags
-import sources.stardict.elems
-import sources.fora.dsl.cleanup
 import sources.fora.stardictx.elems
-import sources.dsl.tags
-import sources.dsl.elems
 
 
 class Source:
@@ -143,7 +142,7 @@ class Source:
     def _request_dsl(self, dic):
         text = sources.fora.dsl.cleanup.CleanUp(dic.article).run()
         blocks = sources.dsl.tags.Tags(text).run()
-        return sources.dsl.elems.Elems(blocks).run()
+        return sources.fora.dsl.elems.Elems(blocks).run()
     
     def _request_xdxf(self, dic):
         text = sources.fora.xdxf.cleanup.CleanUp(dic.article).run()

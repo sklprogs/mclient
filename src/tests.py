@@ -15,7 +15,8 @@ from skl_shared.logic import Text
 
 from config import CONFIG
 
-SEARCH = 'hello'
+SEARCH = 'analyzer'
+#SEARCH = 'hello'
 #SEARCH = 'account'
 #SEARCH = 'book'
 #SEARCH = 'good'
@@ -266,7 +267,7 @@ class Elems:
         from sources.fora.get import ALL_DICS
         import sources.fora.dsl.cleanup as cu
         import sources.dsl.tags as tg
-        import sources.dsl.elems as el
+        import sources.fora.dsl.elems as el
         article = ALL_DICS.search(SEARCH)
         if not article:
             rep.empty(f)

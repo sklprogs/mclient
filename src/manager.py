@@ -146,10 +146,10 @@ class Sources:
         return self.plugin.suggest(search)
     
     def get_sources(self):
-        return (_('Multitran'), _('Stardict'), 'Lingvo (.dsl)', _('Local MT'), 'Fora (Stardict-x)', 'MClient (.mdic)')
+        return (_('Multitran'), _('Stardict'), 'Lingvo (.dsl)', _('Local MT'), 'Fora (DSL)', 'Fora (Stardict-x)', 'MClient (.mdic)')
     
     def get_offline_sources(self):
-        return (_('Stardict'), 'Lingvo (.dsl)', _('Local MT'), 'Fora (Stardict-x)', 'MClient (.mdic)')
+        return (_('Stardict'), 'Lingvo (.dsl)', _('Local MT'), 'Fora (DSL)', 'Fora (Stardict-x)', 'MClient (.mdic)')
     
     def get_online_sources(self):
         ''' This is used by lg.Welcome to check the availability of online
