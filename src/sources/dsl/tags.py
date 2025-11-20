@@ -94,6 +94,7 @@ class AnalyzeTag:
         return self.tag.name == 'dic'
     
     def _is_subj(self):
+        # Or a part of speech
         return self.tag.name == 'p'
     
     def _is_comment(self):
