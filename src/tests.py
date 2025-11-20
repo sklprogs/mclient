@@ -15,8 +15,8 @@ from skl_shared.logic import Text
 
 from config import CONFIG
 
-SEARCH = 'analyzer'
-#SEARCH = 'hello'
+#SEARCH = 'analyzer'
+SEARCH = 'hello'
 #SEARCH = 'account'
 #SEARCH = 'book'
 #SEARCH = 'good'
@@ -457,8 +457,8 @@ class Get:
         return '\n\n'.join(articles)
     
     def run_fora(self):
-        from sources.fora.get import Get as mGet
-        return mGet(SEARCH).run()
+        from sources.fora.get import ALL_DICS
+        return ALL_DICS.search(SEARCH)
     
     def run_dsl(self):
         from sources.dsl.get import Get as mGet
@@ -1129,7 +1129,7 @@ if __name__ == '__main__':
     #mes = Prioritize().run_multitrancom()
     #mes = CleanUp().run_dsl()
     #mes = Get().run_dsl()
-    #mes = Get().run_fora()
+    mes = Get().run_fora()
     #mes = Get().run_fora_many_matches()
     #mes = Get().run_mdic()
     #mes = Get().run_multitrancom()
@@ -1144,7 +1144,7 @@ if __name__ == '__main__':
     #mes = Elems().run_dsl()
     #mes = Elems().run_mdic()
     #mes = Elems().run_stardict()
-    mes = Elems().run_stardict_cells()
+    #mes = Elems().run_stardict_cells()
     #mes = Elems().run_fora_stardictx()
     #mes = Elems().run_fora_dsl()
     #mes = Elems().run_fora()
