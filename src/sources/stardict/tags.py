@@ -81,7 +81,7 @@ class AnalyzeTag:
     def _is_term(self):
         return 'dtrn' in self.tag.text
     
-    def _is_subj(self):
+    def _is_dic(self):
         return self.tag.name == 'dic'
     
     def _is_comment(self):
@@ -101,8 +101,8 @@ class AnalyzeTag:
             self.tag.type = 'term'
         elif self._is_comment():
             self.tag.type = 'comment'
-        elif self._is_subj():
-            self.tag.type = 'subj'
+        elif self._is_dic():
+            self.tag.type = 'dic'
         elif self._is_wform():
             self.tag.type = 'wform'
         elif self._is_speech():
