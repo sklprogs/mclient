@@ -29,7 +29,7 @@ HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/inunda
 class Wrap:
     
     def run_multitrancom(self):
-        f = '[MClient] tests.Wrap.run_multitrancom'
+        f = '[MClient] tests.sources.Wrap.run_multitrancom'
         import articles as ARTICLES
         # Do not change import style - we already have there Get, Tags, etc.
         import sources.multitrancom.cleanup as cu
@@ -61,7 +61,7 @@ class Wrap:
 class Prioritize:
     
     def run_multitrancom(self):
-        f = '[MClient] tests.Prioritize.run_multitrancom'
+        f = '[MClient] tests.sources.Prioritize.run_multitrancom'
         import logic as lg
         import sources.multitrancom.cleanup as cu
         import sources.multitrancom.tags as tg
@@ -126,7 +126,7 @@ class View:
         return iview.debug()
     
     def run_multitrancom(self):
-        f = '[MClient] tests.View.run_multitrancom'
+        f = '[MClient] tests.sources.View.run_multitrancom'
         import logic as lg
         import sources.multitrancom.cleanup as cu
         import sources.multitrancom.tags as tg
@@ -152,7 +152,7 @@ class View:
         return iview.debug()
     
     def run_dsl(self):
-        f = '[MClient] tests.View.run_dsl'
+        f = '[MClient] tests.sources.View.run_dsl'
         import logic as lg
         import sources.dsl.get as gt
         import sources.dsl.cleanup as cu
@@ -237,7 +237,7 @@ class Elems:
         return icells.debug()
     
     def run_fora(self):
-        f = '[MClient] tests.Elems.run_fora'
+        f = '[MClient] tests.sources.Elems.run_fora'
         from cells import Cells
         from sources.fora.run import Source
         blocks = Source().request(SEARCH)
@@ -249,7 +249,7 @@ class Elems:
         return icells.debug()
     
     def run_fora_stardictx(self):
-        f = '[MClient] tests.Elems.run_fora_stardictx'
+        f = '[MClient] tests.sources.Elems.run_fora_stardictx'
         from sources.fora.get import ALL_DICS
         from sources.fora.stardictx.tags import Tags
         from sources.fora.stardictx.elems import Elems
@@ -263,7 +263,7 @@ class Elems:
         return ielems.debug()
     
     def run_fora_dsl(self):
-        f = '[MClient] tests.Elems.run_fora_dsl'
+        f = '[MClient] tests.sources.Elems.run_fora_dsl'
         from sources.fora.get import ALL_DICS
         import sources.fora.dsl.cleanup as cu
         import sources.fora.dsl.tags as tg
@@ -307,7 +307,7 @@ class Elems:
         return ielems.debug()
     
     def run_multitrancom(self):
-        f = '[MClient] tests.Elems.run_multitrancom'
+        f = '[MClient] tests.sources.Elems.run_multitrancom'
         from skl_shared.text_file import Read
         from skl_shared.time import Timer
         from cells import Cells
@@ -361,12 +361,12 @@ class Subjects:
         self.report.append(self.isubj.debug())
     
     def expand(self, subj):
-        f = '[MClient] tests.Subjects.expand'
+        f = '[MClient] tests.sources.Subjects.expand'
         sub = self.isubj.expand(subj)
         self.report.append(f'{f}:\n{sub}')
     
     def is_phrase_blocked(self, subject):
-        f = '[MClient] tests.Subjects.is_phrase_blocked'
+        f = '[MClient] tests.sources.Subjects.is_phrase_blocked'
         if self.isubj.is_phrase_blocked(subject):
             sub = _('Phrase "{}" is blocked').format(subject)
         else:
@@ -374,7 +374,7 @@ class Subjects:
         self.report.append(f'{f}:\n{sub}')
     
     def is_phrase_prior(self, subject):
-        f = '[MClient] tests.Subjects.is_phrase_prior'
+        f = '[MClient] tests.sources.Subjects.is_phrase_prior'
         if self.isubj.is_phrase_prior(subject):
             sub = _('Phrase "{}" is prioritized').format(subject)
         else:
@@ -382,7 +382,7 @@ class Subjects:
         self.report.append(f'{f}:\n{sub}')
     
     def is_blocked(self, subject):
-        f = '[MClient] tests.Subjects.is_blocked'
+        f = '[MClient] tests.sources.Subjects.is_blocked'
         if self.isubj.is_blocked(subject):
             sub = _('Subject "{}" is blocked').format(subject)
         else:
@@ -390,7 +390,7 @@ class Subjects:
         self.report.append(f'{f}:\n{sub}')
     
     def is_prioritized(self, subject):
-        f = '[MClient] tests.Subjects.is_prioritized'
+        f = '[MClient] tests.sources.Subjects.is_prioritized'
         if self.isubj.is_prioritized(subject):
             sub = _('Subject "{}" is prioritized').format(subject)
         else:
@@ -411,7 +411,7 @@ class Subjects:
 class CleanUp:
     
     def run_dsl(self):
-        f = '[MClient] tests.CleanUp.run_dsl'
+        f = '[MClient] tests.sources.CleanUp.run_dsl'
         import sources.dsl.get as gt
         import sources.dsl.cleanup as cu
         code = []
@@ -477,7 +477,7 @@ class Get:
         return str(result)
     
     def run_multitrancom(self):
-        f = '[MClient] tests.Get.run_multitrancom'
+        f = '[MClient] tests.sources.Get.run_multitrancom'
         import sources.multitrancom.get as gt
         #url = 'https://www.multitran.com/m.exe?a=3&sc=8&s=%D1%81%D0%B8%D0%BC%D0%BF%D1%82%D0%BE%D0%BC&l1=2&l2=1&SHL=2'
         #search = 'Медицина'
@@ -502,7 +502,7 @@ class Get:
 class Tags:
     
     def run_fora_stardictx(self):
-        f = '[MClient] tests.Tags.run_fora_stardictx'
+        f = '[MClient] tests.sources.Tags.run_fora_stardictx'
         import sources.fora.get as gt
         import sources.fora.stardictx.cleanup as cu
         import sources.fora.stardictx.tags as tg
@@ -516,7 +516,7 @@ class Tags:
         return itags.debug()
     
     def run_fora_dsl(self):
-        f = '[MClient] tests.Tags.run_fora_dsl'
+        f = '[MClient] tests.sources.Tags.run_fora_dsl'
         import sources.fora.get as gt
         import sources.fora.dsl.cleanup as cu
         import sources.fora.dsl.tags as tg
@@ -530,7 +530,7 @@ class Tags:
         return itags.debug()
     
     def run_multitrandem(self):
-        f = '[MClient] tests.Tags.run_multitrandem'
+        f = '[MClient] tests.sources.Tags.run_multitrandem'
         from manager import SOURCES
         import sources.multitrandem.get as gt
         import sources.multitrandem.tags as tg
@@ -663,7 +663,7 @@ class Commands:
         return isuggest
     
     def get_priority(self):
-        f = '[MClient] tests.Commands.get_priority'
+        f = '[MClient] tests.sources.Commands.get_priority'
         from manager import SOURCES
         from articles import ARTICLES
         from subjects import SUBJECTS
@@ -699,7 +699,7 @@ class Commands:
         return '\n'.join(mes)
     
     def run_article_subjects(self):
-        f = '[MClient] tests.Commands.run_article_subjects'
+        f = '[MClient] tests.sources.Commands.run_article_subjects'
         from manager import SOURCES
         from articles import ARTICLES
         search = 'set'
@@ -744,7 +744,7 @@ class Commands:
         return ipopup
     
     def run_font_limits(self):
-        f = '[MClient] tests.Commands.run_font_limits'
+        f = '[MClient] tests.sources.Commands.run_font_limits'
         from font_limits.controller import FontLimits
         from skl_shared.time import Timer
         text = 'Раз, два, три, четыре, пять - вышел зайчик погулять'
@@ -809,7 +809,7 @@ class Commands:
         sym.show()
     
     def get_column_width(self):
-        f = '[MClient] tests.Commands.get_column_width'
+        f = '[MClient] tests.sources.Commands.get_column_width'
         import logic as lg
         #CONFIG.new['columns']['num'] = 0
         mes = f'"{lg.com.get_column_width()}%"'
@@ -827,7 +827,7 @@ class Commands:
         ''' Get subjects not united by a major subject. This is not an error
             and can be witnessed sometimes at multitran.com.
         '''
-        f = '[MClient] tests.Commands.get_subjects_wo_majors'
+        f = '[MClient] tests.sources.Commands.get_subjects_wo_majors'
         import sources.multitrancom.subjects as sj
         titles = []
         for key in sj.SUBJECTS.keys():
@@ -843,7 +843,7 @@ class Commands:
             rep.lazy(f)
     
     def get_modified_subjects(self):
-        f = '[MClient] tests.Commands.get_modified_subjects'
+        f = '[MClient] tests.sources.Commands.get_modified_subjects'
         import sources.multitrancom.subjects as sj
         titles = []
         for key in sj.SUBJECTS.keys():
@@ -855,7 +855,7 @@ class Commands:
         shDEBUG.show()
     
     def get_majors_en(self):
-        f = '[MClient] tests.Commands.get_majors_en'
+        f = '[MClient] tests.sources.Commands.get_majors_en'
         import sources.multitrancom.subjects as sj
         groups = []
         shorts = []
@@ -936,7 +936,7 @@ class Commands:
         ''' Get languages that are not supported by multitran.com for
             both directions.
         '''
-        f = '[MClient] tests.Commands.get_nonpairs'
+        f = '[MClient] tests.sources.Commands.get_nonpairs'
         import sources.multitrancom.pairs as pairs
         lst = []
         for lang in pairs.LANGS:
@@ -960,7 +960,7 @@ class Commands:
         Message(f, mes).show_info()
     
     def compare_elems(self):
-        f = '[MClient] tests.Commands.compare_elems'
+        f = '[MClient] tests.sources.Commands.compare_elems'
         import sources.multitran.elems as el
         data1 = []
         data2 = []
@@ -1015,7 +1015,7 @@ class Commands:
     
     def request(self):
         from manager import SOURCES
-        f = '[MClient] tests.Commands.request'
+        f = '[MClient] tests.sources.Commands.request'
         source = _('Multitran')
         pair = 'DEU <=> RUS'
         search = 'ernährung'
@@ -1033,7 +1033,7 @@ class Commands:
     
     def get_url(self):
         from manager import SOURCES
-        f = '[MClient] tests.Commands.get_url'
+        f = '[MClient] tests.sources.Commands.get_url'
         source = 'multitran.com'
         pair = 'RUS <=> XAL'
         search = 'До свидания!'
@@ -1046,7 +1046,7 @@ class Commands:
     
     def suggest(self):
         from manager import SOURCES
-        f = '[MClient] tests.Commands.suggest'
+        f = '[MClient] tests.sources.Commands.suggest'
         source = 'multitran.com'
         pair = 'DEU <=> RUS'
         search = 'Scheiße'
@@ -1059,7 +1059,7 @@ class Commands:
     
     def _set_timeout(self, module, source, timeout):
         from manager import SOURCES
-        f = '[MClient] tests.Commands._set_timeout'
+        f = '[MClient] tests.sources.Commands._set_timeout'
         SOURCES.set(source)
         SOURCES.set_timeout(timeout)
         mes = _('Source: {}; timeout: {}').format(source, module.TIMEOUT)
@@ -1074,7 +1074,7 @@ class Commands:
     
     def count_valid(self):
         from manager import SOURCES
-        f = '[MClient] tests.Commands.count_valid'
+        f = '[MClient] tests.sources.Commands.count_valid'
         source = _('Offline')
         SOURCES.set(source)
         result = SOURCES.count_valid()
@@ -1088,7 +1088,7 @@ class Commands:
     
     def welcome(self):
         import logic as lg
-        f = '[MClient] tests.Commands.welcome'
+        f = '[MClient] tests.sources.Commands.welcome'
         file_w = '/tmp/test.html'
         code = lg.Welcome().run()
         if code:
@@ -1099,7 +1099,7 @@ class Commands:
     
     def set_pair(self):
         from manager import SOURCES
-        f = '[MClient] tests.Commands.set_pair'
+        f = '[MClient] tests.sources.Commands.set_pair'
         import sources.multitrancom.get
         pair = 'RUS <=> XAL'
         source = 'multitran.com'
@@ -1118,7 +1118,7 @@ com = Commands()
 
 
 if __name__ == '__main__':
-    f = '[MClient] tests.__main__'
+    f = '[MClient] tests.sources.__main__'
     ROOT.get_root()
     ''' #NOTE: Putting QMainWindow.show() or QWidget.show() (without
         explicitly invoking QMainWindow in __main__) in a separate procedure,
