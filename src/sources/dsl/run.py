@@ -39,10 +39,6 @@ class Source:
         #return ds.objs.get_subjects().get_list()
         return {}
     
-    def get_speeches(self):
-        #TODO: implement
-        return {}
-    
     def get_minors(self):
         if not self.minors:
             #TODO: implement

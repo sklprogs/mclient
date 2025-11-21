@@ -10,8 +10,6 @@ import sources.multitrancom.tags as tg
 import sources.multitrancom.elems as el
 import sources.multitrancom.pairs as pr
 import sources.multitrancom.subjects as ms
-import sources.multitrancom.speech as sp
-
 
 
 class Source:
@@ -130,9 +128,6 @@ class Source:
             return pr.objs.get_pairs().get_pairs2(lang1)
         else:
             return pr.objs.get_pairs().get_alive()
-    
-    def get_speeches(self):
-        return sp.objs.get_speech().get_dic()
     
     def is_parallel(self):
         return self.Parallel

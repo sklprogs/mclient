@@ -39,10 +39,6 @@ class Source:
     def is_separate(self):
         return self.Separate
     
-    def get_speeches(self):
-        #TODO: implement or rework
-        return {}
-    
     def get_subjects(self):
         return sj.objs.get_subjects().get_list()
     

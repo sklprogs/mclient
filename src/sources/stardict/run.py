@@ -32,9 +32,6 @@ class Source:
     def is_separate(self):
         return self.Separate
     
-    def get_speeches(self):
-        return {}
-    
     def get_minors(self):
         return self.minors
     
