@@ -12,9 +12,7 @@ from skl_shared.table import Table
 
 from instance import Block, is_block_fixed
 from subjects import SUBJECTS
-
-SPEECH_ABBR = ('adj', 'adv', 'art', 'cj', 'int', 'n', 'prp', 'suf', 'v', 'гл.'
-              ,'глаг.', 'нареч.', 'нар.', 'прил.', 'сокр.', 'сущ.')
+from speech import SPEECH
 
 
 class Elems:
@@ -71,7 +69,7 @@ class Elems:
         f = '[MClient] sources.dsl.elems.Elems.set_speech'
         count = 0
         for block in self.blocks:
-            if block.text in SPEECH_ABBR:
+            if SPEECH.is_speech(block.text):
                 count += 1
                 block.type = 'speech'
                 block.speech = block.text
