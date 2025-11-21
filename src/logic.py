@@ -18,40 +18,6 @@ from articles import ARTICLES
 from table.controller import Table
 
 
-class Speech:
-    ''' It's OK to recreate this class each time it runs since the speech
-        dictionary is reused and not recreated.
-    '''
-    def __init__(self):
-        self.dic = SOURCES.get_speeches()
-    
-    def _get_short(self, full):
-        f = '[MClient] logic.Speech._get_short'
-        for short in self.dic:
-            if self.dic[short] == full:
-                return short
-        rep.wrong_input(f, full)
-        return full
-    
-    def get_settings(self):
-        #f = '[MClient] logic.Speech.get_settings'
-        # Source tuple cannot be concatenated with target list
-        speeches = [CONFIG.new['speech1'], CONFIG.new['speech2']
-                   ,CONFIG.new['speech3'], CONFIG.new['speech4']
-                   ,CONFIG.new['speech5'], CONFIG.new['speech6']
-                   ,CONFIG.new['speech7']]
-        if not self.dic:
-            return speeches
-        if not CONFIG.new['ShortSpeech']:
-            return speeches
-        for i in range(len(speeches)):
-            speeches[i] = self._get_short(speeches[i])
-        #mes = ', '.join(speeches)
-        #Message(f, mes).show_debug()
-        return speeches
-
-
-
 class App:
     
     def open_in_browser(self):
