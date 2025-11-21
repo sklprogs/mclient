@@ -32,12 +32,29 @@ class Speech:
         short = SPEECH.shorten(full)
         self.mes.append(f'"{full}" -> "{short}"')
     
+    def _is_speech(self, pattern):
+        result = SPEECH.is_speech(pattern)
+        self.mes.append(f'"{pattern}": "{result}"')
+    
+    def is_speech(self):
+        f = '[MClient] tests.Speech.is_speech'
+        self.mes.append(f + ':')
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self._is_speech('сущ.')
+        self._is_speech('Verbo')
+        self._is_speech('VV')
+        self.mes.append('')
+    
     def expand(self):
         f = '[MClient] tests.Speech.expand'
         self.mes.append(f + ':')
         if not self.Success:
             rep.cancel(f)
             return
+        self.mes.append(_('Expand mismatch'))
+        self._expand('mism')
         self._expand('сущ.')
         self._expand('n')
         self._expand('v')
@@ -55,6 +72,8 @@ class Speech:
         if not self.Success:
             rep.cancel(f)
             return
+        self.mes.append(_('Shorten mismatch'))
+        self._shorten('mism')
         self._shorten('Существительное')
         self._shorten('Noun')
         self._shorten('Verb')
@@ -70,4 +89,5 @@ class Speech:
         self.get_settings()
         self.expand()
         self.shorten()
+        self.is_speech()
         return '\n'.join(self.mes)

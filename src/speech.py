@@ -109,6 +109,18 @@ class Speech:
         for i in range(len(speeches)):
             speeches[i] = self.shorten(speeches[i])
         return speeches
+    
+    def is_speech(self, pattern):
+        f = '[MClient] speech.Speech.is_speech'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        for lang in self.dic:
+            for short in self.dic[lang]:
+                if pattern == short:
+                    return True
+                if self.dic[lang][short] == pattern:
+                    return True
 
 
 SPEECH = Speech()
