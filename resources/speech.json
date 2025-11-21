@@ -1,53 +1,68 @@
 {
 "en": {
-    "n"    : "Noun",
-    "v"    : "Verb",
-    "adj." : "Adjective",
+    "abbr" : "Abbreviation",
     "abbr.": "Abbreviation",
-    "adv." : "Adverb"
+    "adj"  : "Adjective",
+    "adj." : "Adjective",
+    "adv"  : "Adverb",
+    "adv." : "Adverb",
+    "art"  : "Article",
+    "art." : "Article",
+    "cj"   : "Conjunction",
+    "cj."  : "Conjunction",
+    "int"  : "Interjection",
+    "int." : "Interjection",
+    "n"    : "Noun",
+    "prp"  : "Preposition",
+    "prp." : "Preposition",
+    "suf"  : "Suffix",
+    "suf." : "Suffix",
+    "v"    : "Verb"
 },
 "ru": {
-    "сущ."  : "Существительное",
-    "глаг." : "Глагол",
-    "прил." : "Прилагательное",
-    "сокр." : "Сокращение",
-    "нареч.": "Наречие",
-    "числ." : "Числительное",
     "арт."  : "Артикль",
-    "союз." : "Союз",
-    "предл.": "Предлог",
+    "гл."   : "Глагол",
+    "глаг." : "Глагол",
     "межд." : "Междометие",
-    "част." : "Частица",
+    "мест." : "Местоимение",
+    "нар."  : "Наречие",
+    "нареч.": "Наречие",
+    "предл.": "Предлог",
+    "прил." : "Прилагательное",
     "прич." : "Причастие",
-    "мест." : "Местоимение"
+    "сокр." : "Сокращение",
+    "союз." : "Союз",
+    "сущ."  : "Существительное",
+    "част." : "Частица",
+    "числ." : "Числительное"
 },
 "de": {
-    "Sub.": "Substantiv",
-    "V."  : "Verb",
-    "Adj.": "Adjektiv",
     "Abk.": "Abkürzung",
-    "Adv.": "Adverb"
+    "Adj.": "Adjektiv",
+    "Adv.": "Adverb",
+    "Sub.": "Substantiv",
+    "V."  : "Verb"
 },
 "es": {
-    "s": "Sustantivo",
-    "v": "Verbo",
-    "adj.": "Adjetivo",
     "abbr.": "Abreviatura",
-    "adv.": "Adverbio"
+    "adj." : "Adjetivo",
+    "adv." : "Adverbio",
+    "s"    : "Sustantivo",
+    "v"    : "Verbo"
 },
 "pl": {
-    "rzecz." : "Rzeczownik",
     "czas."  : "Czasownik",
     "przym." : "Przymiotnik",
-    "skr."   : "Skrót",
-    "przysł.": "Przysłówek"
+    "przysł.": "Przysłówek",
+    "rzecz." : "Rzeczownik",
+    "skr."   : "Skrót"
 },
 "uk": {
-    "імен." : "Іменник",
     "дієсл.": "Дієслово",
+    "імен." : "Іменник",
     "прикм.": "Прикметник",
-    "скор." : "Скорочення",
-    "присл.": "Прислівник"
+    "присл.": "Прислівник",
+    "скор." : "Скорочення"
 },
 "zh": {
     "名词"  : "名词",
