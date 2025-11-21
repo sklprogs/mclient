@@ -28,6 +28,10 @@ class Speech:
         full = SPEECH.expand(short)
         self.mes.append(f'"{short}" -> "{full}"')
     
+    def _shorten(self, full):
+        short = SPEECH.shorten(full)
+        self.mes.append(f'"{full}" -> "{short}"')
+    
     def expand(self):
         f = '[MClient] tests.Speech.expand'
         self.mes.append(f + ':')
@@ -45,7 +49,25 @@ class Speech:
         self.mes.append(_('Set language to "{}"').format(shcom.lang))
         self.mes.append('')
     
+    def shorten(self):
+        f = '[MClient] tests.Speech.shorten'
+        self.mes.append(f + ':')
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self._shorten('Существительное')
+        self._shorten('Noun')
+        self._shorten('Verb')
+        old = shcom.lang
+        shcom.lang = 'es'
+        self.mes.append(_('Set language to "{}"').format(shcom.lang))
+        self._shorten('Verbo')
+        shcom.lang = old
+        self.mes.append(_('Set language to "{}"').format(shcom.lang))
+        self.mes.append('')
+    
     def run_all(self):
         self.get_settings()
         self.expand()
+        self.shorten()
         return '\n'.join(self.mes)
