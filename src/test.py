@@ -6,7 +6,8 @@ from skl_shared.message.controller import Message, rep
 from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
 
-from tests.sources import Get
+#from tests.sources import Get
+from tests.speech import Speech
 
 
 if __name__ == '__main__':
@@ -16,11 +17,12 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
+    mes = Speech().run_all()
     #mes = com.get_all_subjects()
     #mes = Subjects().run()
     #mes = Prioritize().run_multitrancom()
     #mes = CleanUp().run_dsl()
-    mes = Get().run_dsl()
+    #mes = Get().run_dsl()
     #mes = Get().run_fora()
     #mes = Get().run_fora_many_matches()
     #mes = Get().run_mdic()
