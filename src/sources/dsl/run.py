@@ -9,7 +9,6 @@ import sources.dsl.get as gt
 import sources.dsl.tags as tg
 import sources.dsl.elems as el
 import sources.dsl.cleanup as cu
-import sources.dsl.subjects as ds
 
 
 class Source:
@@ -23,8 +22,6 @@ class Source:
         self.Parallel = False
         self.Separate = False
         self.blocks = []
-        self.majors = []
-        self.minors = []
         self.text = ''
         self.search = ''
     
@@ -36,20 +33,10 @@ class Source:
     
     def get_subjects(self):
         #TODO: rework
-        #return ds.objs.get_subjects().get_list()
         return {}
-    
-    def get_minors(self):
-        if not self.minors:
-            #TODO: implement
-            self.minors = []
-        return self.minors
     
     def get_text(self):
         return self.text
-    
-    def get_majors(self):
-        return ds.objs.get_subjects().get_majors()
     
     def get_search(self):
         return self.search

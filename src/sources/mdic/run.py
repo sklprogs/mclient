@@ -19,8 +19,6 @@ class Source:
         '''
         self.Parallel = False
         self.Separate = False
-        self.majors = []
-        self.minors = []
         self.text = ''
         self.search = ''
     
@@ -30,21 +28,10 @@ class Source:
     def is_separate(self):
         return self.Separate
     
-    def get_minors(self):
-        return self.minors
-    
     def get_text(self):
         return self.text
     
     def get_subjects(self):
-        #TODO: implement
-        return []
-    
-    def get_group_with_header(self, subject=''):
-        #TODO: implement
-        return []
-    
-    def get_majors(self):
         #TODO: implement
         return []
     

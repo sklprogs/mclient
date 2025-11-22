@@ -6,8 +6,6 @@ import sources.stardict.get as gt
 import sources.stardict.cleanup as cu
 import sources.stardict.tags as tg
 import sources.stardict.elems as el
-import sources.stardict.subjects as sj
-
 
 
 class Source:
@@ -21,8 +19,6 @@ class Source:
         self.Parallel = False
         self.Separate = False
         self.blocks = []
-        self.majors = []
-        self.minors = []
         self.text = ''
         self.search = ''
     
@@ -32,20 +28,11 @@ class Source:
     def is_separate(self):
         return self.Separate
     
-    def get_minors(self):
-        return self.minors
-    
     def get_text(self):
         return self.text
     
     def get_subjects(self):
-        return sj.objs.get_subjects().get_list()
-    
-    def get_group_with_header(self, subject=''):
-        return sj.objs.get_subjects().get_group_with_header(subject)
-    
-    def get_majors(self):
-        return sj.objs.get_subjects().get_majors()
+        return []
     
     def get_search(self):
         return self.search

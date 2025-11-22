@@ -21,8 +21,6 @@ class Source:
         self.Parallel = False
         self.Separate = False
         self.blocks = []
-        self.majors = []
-        self.minors = []
         self.text = ''
         self.search = ''
     
@@ -31,26 +29,6 @@ class Source:
     
     def get_subjects(self):
         return ms.objs.get_subjects().get()
-    
-    def get_majors(self):
-        f = '[MClient] sources.multitrancom.run.Source.get_majors'
-        if not self.majors:
-            result = ms.objs.get_groups().get_lists()
-            if not result:
-                rep.empty(f)
-                return []
-            self.majors, self.minors = result[0], result[1]
-        return self.majors
-    
-    def get_minors(self):
-        f = '[MClient] sources.multitrancom.run.Source.get_minors'
-        if not self.minors:
-            result = ms.objs.get_groups().get_lists()
-            if not result:
-                rep.empty(f)
-                return []
-            self.majors, self.minors = result[0], result[1]
-        return self.minors
     
     def get_search(self):
         return self.search

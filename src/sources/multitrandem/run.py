@@ -9,8 +9,6 @@ import instance as ic
 import sources.multitrandem.get as gt
 import sources.multitrandem.tags as tg
 import sources.multitrandem.elems as el
-import sources.multitrandem.subjects as sj
-
 
 
 class Source:
@@ -26,8 +24,6 @@ class Source:
         self.langint = ('English', 'Russian')
         self.langloc = (_('English'), _('Russian'))
         self.blocks = []
-        self.majors = []
-        self.minors = []
         self.text = ''
         self.search = ''
         #TODO: elaborate
@@ -40,13 +36,7 @@ class Source:
         return self.Separate
     
     def get_subjects(self):
-        return sj.objs.get_subjects().get_list()
-    
-    def get_majors(self):
-        return sj.objs.get_subjects().get_majors()
-    
-    def get_minors(self):
-        return self.minors
+        return []
     
     def get_search(self):
         return self.search

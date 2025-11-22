@@ -39,20 +39,6 @@ class Sources:
             return {}
         return self.plugin.get_speeches()
     
-    def get_majors(self):
-        f = '[MClient] manager.Sources.get_majors'
-        if not self.plugin:
-            rep.empty(f)
-            return []
-        return self.plugin.get_majors()
-    
-    def get_minors(self):
-        f = '[MClient] manager.Sources.get_minors'
-        if not self.plugin:
-            rep.empty(f)
-            return []
-        return self.plugin.get_minors()
-    
     def get_search(self):
         f = '[MClient] manager.Sources.get_search'
         if not self.plugin:

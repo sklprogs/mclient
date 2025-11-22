@@ -823,25 +823,6 @@ class Commands:
         mc.objs.get_webframe().fill(code)
         mc.objs.webframe.show()
     
-    def get_subjects_wo_majors(self):
-        ''' Get subjects not united by a major subject. This is not an error
-            and can be witnessed sometimes at multitran.com.
-        '''
-        f = '[MClient] tests.sources.Commands.get_subjects_wo_majors'
-        import sources.multitrancom.subjects as sj
-        titles = []
-        for key in sj.SUBJECTS.keys():
-            if not sj.SUBJECTS[key]['major_en'] \
-            and sj.SUBJECTS[key]['Single']:
-                titles.append(sj.SUBJECTS[key]['en']['title'])
-        titles = sorted(set(titles))
-        if titles:
-            mes = '\n'.join(titles)
-            shDEBUG.reset(f, mes)
-            shDEBUG.show()
-        else:
-            rep.lazy(f)
-    
     def get_modified_subjects(self):
         f = '[MClient] tests.sources.Commands.get_modified_subjects'
         import sources.multitrancom.subjects as sj
@@ -854,30 +835,6 @@ class Commands:
         shDEBUG.reset(f, mes)
         shDEBUG.show()
     
-    def get_majors_en(self):
-        f = '[MClient] tests.sources.Commands.get_majors_en'
-        import sources.multitrancom.subjects as sj
-        groups = []
-        shorts = []
-        titles = []
-        for key in sj.SUBJECTS.keys():
-            if sj.SUBJECTS[key]['Major']:
-                groups.append(sj.SUBJECTS[key]['major_en'])
-                shorts.append(sj.SUBJECTS[key]['en']['short'])
-                titles.append(sj.SUBJECTS[key]['en']['title'])
-        nos = [i + 1 for i in range(len(groups))]
-        headers = (_('#'), _('MAJOR (EN)'), _('SHORT'), _('TITLE'))
-        iterable = [nos, groups, shorts, titles]
-        mes = Table(iterable = iterable
-                   ,headers = headers
-                   ,maxrow = 30).run()
-        shDEBUG.reset(f, mes)
-        shDEBUG.show()
-    
-    def get_majors(self):
-        import sources.multitrancom.subjects as sj
-        print(sj.objs.get_subjects().get_majors())
-    
     def run_speech(self):
         import sources.multitrancom.speech as sp
         # ru_RU locale is required
@@ -885,48 +842,6 @@ class Commands:
         full = sp.objs.get_speech().find(short)
         mes = f'"{short}" -> "{full}"'
         return mes
-    
-    def edit_priorities(self):
-        from manager import SOURCES
-        import mclient as mc
-        #TODO: Rework lg.objs.get_order
-        mc.objs.get_priorities().reset(lst1 = lg.objs.get_order().priorlst
-                                      ,lst2 = SOURCES.get_subjects()
-                                      ,art_subjects = []
-                                      ,majors = SOURCES.get_majors())
-        mc.objs.priorities.show()
-    
-    def edit_blacklist(self):
-        from manager import SOURCES
-        import mclient as mc
-        #TODO: Rework lg.objs.get_order
-        '''
-        def edit_blacklist(self):
-            f = '[MClient] mclient.App.edit_blacklist'
-            old_list = CONFIG.new['subjects']['blocked']
-            old_key = CONFIG.new['BlockSubjects']
-            BLOCK.reset(lst1 = old_list
-                       ,lst2=SOURCES.get_subjects()
-                       ,art_subjects = com.get_article_subjects()
-                       ,majors = SOURCES.get_majors())
-            BLOCK.set_checkbox(CONFIG.new['BlockSubjects'])
-            BLOCK.show()
-            CONFIG.new['BlockSubjects'] = self.block.get_checkbox()
-            new_list = BLOCK.get1()
-            if (old_list == new_list) \
-            and (old_key == CONFIG.new['BlockSubjects']):
-                rep.lazy(f)
-                return
-            lg.objs.default.block = new_list
-            ARTICLES.delete_bookmarks()
-            self.load_article()
-        '''
-        
-        mc.objs.get_blacklist().reset(lst1 = lg.objs.get_order().blacklst
-                                     ,lst2 = SOURCES.get_subjects()
-                                     ,art_subjects = []
-                                     ,majors = SOURCES.get_majors())
-        mc.objs.blacklist.show()
     
     def show_about(self):
         from mclient import About
