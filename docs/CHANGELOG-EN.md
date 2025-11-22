@@ -5,6 +5,7 @@
 * Show number of dictionaries that could not be loaded in main window
 * Add modules for converting .dsl to .xml (ODICT ODXML) and .dsl to .mdic
 * Add new mode&mdash;Full
+* Search is now performed for all sources at once
 
 ## 7.1.7
 * Fix loading .dsl and Stardict dictionaries
