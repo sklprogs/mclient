@@ -12,10 +12,10 @@ from instance import Block, Cell
 from config import CONFIG
 from manager import SOURCES
 from format import Block as fmBlock
-from logic import Speech
 from subjects import SUBJECTS
 from articles import ARTICLES
 from columns import COL_WIDTH, Types as ColTypes
+from speech import SPEECH
 
 
 class Expand:
@@ -34,21 +34,13 @@ class Expand:
         self.cells = copy.deepcopy(cells)
     
     def expand_speeches(self):
-        # This takes ~0.0015s for 'set' on AMD E-300 (no IDE, no warnings)
+        # This takes ~0.008s for 'set' on AMD E-300 (no IDE, no warnings)
         f = '[MClient] view.Expand.expand_speeches'
         if CONFIG.new['ShortSpeech']:
             rep.lazy(f)
             return
-        speeches = SOURCES.get_speeches()
-        if not speeches:
-            rep.lazy(f)
-            return
         for cell in self.cells:
-            try:
-                cell.speech = speeches[cell.speech]
-            except KeyError:
-                mes = _('Wrong input data: "{}"!').format(cell.speech)
-                Message(f, mes, True).show_warning()
+            cell.speech = SPEECH.expand(cell.speech)
     
     def expand_subjects(self):
         # This takes ~0.0086s for 'set' on AMD E-300
@@ -130,7 +122,7 @@ class Omit:
 class Prioritize:
     
     def __init__(self, cells):
-        self.speech = Speech().get_settings()
+        self.speech = SPEECH.get_settings()
         self.cells = cells
     
     def debug(self, maxrow=60):
