@@ -225,14 +225,14 @@ class Subjects(Create):
                 return isubj.prior_index
     
     def expand(self, subj):
-        # Works only for subjects within the current article
-        for isubj in self.subjects:
-            if subj == isubj.subj:
-                return isubj.subjf
         try:
             return CONFIG.new['subjects']['history'][subj]
         except KeyError:
             pass
+        # Works only for subjects within the current article
+        for isubj in self.subjects:
+            if subj == isubj.subj:
+                return isubj.subjf
         return subj
     
     def get_max_subjpr(self):
