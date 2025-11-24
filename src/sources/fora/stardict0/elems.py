@@ -9,7 +9,6 @@ from skl_shared.table import Table
 from instance import Block, Cell, is_block_fixed
 
 COM = ('мн') # '{{мн}}' that can be treated as comments
-SUBJ_ABBR = ('разг.', 'уст.', 'диал.')
 
 
 class Elems:
