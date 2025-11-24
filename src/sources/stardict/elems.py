@@ -10,14 +10,8 @@ from skl_shared.list import List
 from skl_shared.logic import Text, punc_array, ru_alphabet, lat_alphabet
 
 from instance import Block, is_block_fixed
-
-SPEECH_ABBR = ('гл.', 'нареч.', 'нар.', 'прил.', 'сокр.', 'сущ.')
-SUBJ_ABBR = ('амер.', 'вчт.', 'геогр.', 'карт.', 'мор.', 'разг.', 'уст.', 'хир.', 'эл.')
-#TODO: read from file
-SUBJ = ('(австралийское)', '(американизм)', '(военное)', '(горное)'
-       ,'(железнодорожное)', '(карточное)', '(кулинарное)', '(новозеландское)'
-       ,'(профессионализм)', '(разговорное)', '(сленг)', '(спортивное)'
-       ,'(текстильное)', '(теннис)', '(химическое)', '(электротехника)')
+from config import CONFIG
+from speech import SPEECH
 
 
 class Phrases:
@@ -147,16 +141,22 @@ class Elems:
         f = '[MClient] sources.stardict.elems.Elems.set_speech'
         count = 0
         for block in self.blocks:
-            if block.text in SPEECH_ABBR:
+            if SPEECH.is_speech(block.text):
                 count += 1
                 block.type = 'speech'
         rep.matches(f, count)
+    
+    def _is_subj(self, subj):
+        try:
+            return CONFIG.new['subjects']['history'][subj]
+        except KeyError:
+            pass
     
     def set_subjects(self):
         f = '[MClient] sources.stardict.elems.Elems.set_subjects'
         count = 0
         for block in self.blocks:
-            if block.text in SUBJ_ABBR or block.text in SUBJ:
+            if self._is_subj(block.text):
                 count += 1
                 block.type = 'subj'
         rep.matches(f, count)
