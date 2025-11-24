@@ -303,7 +303,7 @@ class Cells:
 class Phrases:
     
     def __init__(self, blocks):
-        self.phsubj_url = ''
+        self.phsubj_url = self.phsubj_name = ''
         self.blocks = blocks
         
     def move(self):
@@ -314,8 +314,10 @@ class Phrases:
         cellnos = [block.cellno for block in self.blocks \
                   if block.type == 'phrase']
         move = [block for block in self.blocks if block.cellno in cellnos]
+        for block in move:
+            block.subj = block.subjf = self.phsubj_name
         other = [block for block in self.blocks if not block.cellno in cellnos]
-        self.blocks = other + move
+        self.blocks = other + [self._get_phsubj()] + move
     
     def set_phsubj_name(self):
         f = '[MClient] cells.Phrases.set_phsubj_name'
@@ -329,30 +331,15 @@ class Phrases:
         self.phsubj_name = _('Phrases ({})').format(count)
         mes = f'"{self.phsubj_name}"'
         Message(f, mes).show_debug()
-        for block in self.blocks:
-            if block.type == 'phrase':
-                block.subj = block.subjf = self.phsubj_name
     
-    def get_first_phrase(self):
-        for i in range(len(self.blocks)):
-            if self.blocks[i].type == 'phrase':
-                return i
-    
-    def set_phsubj(self):
-        f = '[MClient] cells.Phrases.set_phsubj'
-        no = self.get_first_phrase()
-        if no is None:
-            rep.lazy(f)
-            return
+    def _get_phsubj(self):
         block = Block()
-        if no > 1:
-            block.cellno = self.blocks[no-1].cellno + 0.1
         block.subj = self.phsubj_name
         block.subjf = self.phsubj_name
         block.text = self.phsubj_name
         block.url = self.phsubj_url
         block.type = 'phsubj'
-        self.blocks.insert(no, block)
+        return block
     
     def _get_last_subj(self):
         i = len(self.blocks) - 1
@@ -381,9 +368,25 @@ class Phrases:
         mes = f'URL: "{self.phsubj_url}"'
         Message(f, mes).show_debug()
     
+    def renumber(self):
+        cellnos = []
+        old = cellno = -1
+        for block in self.blocks:
+            if block.cellno != old:
+                cellno += 1
+                old = block.cellno
+            cellnos.append(cellno)
+        for i in range(len(self.blocks)):
+            self.blocks[i].cellno = cellnos[i]
+    
     def run(self):
-        self.move()
+        ''' At this point, blocks may have identical cellno (especially, this
+            concerns fixed blocks). Must be fixed before moving to the end.
+        '''
+        self.renumber()
         self.set_phsubj_url()
         self.set_phsubj_name()
-        self.set_phsubj()
+        self.move()
+        # Do this again for easier debugging
+        self.renumber()
         return self.blocks
