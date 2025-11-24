@@ -29,7 +29,7 @@ class AnalyzeTag(DslAnalyzeTag):
 
 
 
-class Tags:
+class Tags(DslTags):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
