@@ -433,6 +433,26 @@ class CleanUp:
 
 class Get:
     
+    def run_local(self):
+        mes = []
+        mes.append('DSL:')
+        mes.append(self.run_dsl())
+        mes.append('\n')
+        mes.append('Fora:')
+        mes.append(self.run_fora())
+        mes.append('\n')
+        mes.append('MDIC:')
+        mes.append(self.run_mdic())
+        mes.append('\n')
+        mes.append('Multitran (Demo):')
+        mes.append(self.run_multitrandem())
+        mes.append('\n')
+        mes.append('Stardict:')
+        mes.append(self.run_stardict())
+        mes.append('\n')
+        mes = [item for item in mes if item]
+        return '\n'.join(mes)
+    
     def run_mdic(self):
         from sources.mdic.get import ALL_DICS
         # Search is case-insensitive for MDIC
@@ -502,8 +522,8 @@ class Get:
         Launch(file).launch_default()
     
     def run_stardict(self):
-        from sources.stardict.get import Get as mGet
-        return mGet(SEARCH).run()
+        from sources.stardict.get import ALL_DICS
+        return ALL_DICS.get(SEARCH)
 
 
 
