@@ -188,6 +188,14 @@ class View:
 
 class Elems:
     
+    def run_all(self):
+        from manager import SOURCES
+        from cells import Elems
+        blocks = SOURCES.request(SEARCH)
+        ielems = Elems(blocks)
+        ielems.run()
+        return ielems.debug()
+    
     def run_multitrandem(self):
         import sources.multitrandem.get as gt
         import sources.multitrandem.tags as tg
@@ -594,6 +602,14 @@ class Tags:
 
 
 class Source:
+    
+    def run_all(self):
+        from manager import SOURCES
+        from cells import Cells
+        blocks = SOURCES.request(SEARCH)
+        icells = Cells(blocks)
+        icells.run()
+        return icells.debug()
     
     def run_fora(self):
         from cells import Cells
