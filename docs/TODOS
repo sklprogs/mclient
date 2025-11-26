@@ -1,4 +1,16 @@
-
+all:
+- Catch RuntimeError:
+Traceback (most recent call last):
+  File "/home/pete/bin/mclient/src/mclient.py", line 992, in quit
+    self.thread.end()
+    ~~~~~~~~~~~~~~~^^
+  File "/home/pete/bin/mclient/src/keylistener/gui.py", line 70, in end
+    self.catcher.cancel()
+    ~~~~~~~~~~~~~~~~~~~^^
+  File "/home/pete/bin/mclient/src/keylistener/gui.py", line 50, in cancel
+    self.sig_end.emit()
+    ^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type Catcher has been deleted
 
 mclient:
 - go places: "разг." is misformatted owing to new <nobr> tag
