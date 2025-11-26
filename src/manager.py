@@ -131,9 +131,6 @@ class Sources:
             return
         return self.plugin.suggest(search)
     
-    def get_sources(self):
-        return (_('Multitran'), _('StarDict'), 'Lingvo (.dsl)', _('Local MT'), 'Fora (DSL)', 'Fora (StarDict-x)', 'MClient (.mdic)')
-    
     def get_offline_sources(self):
         return (_('StarDict'), 'Lingvo (.dsl)', _('Local MT'), 'Fora (DSL)', 'Fora (StarDict-x)', 'MClient (.mdic)')
     
