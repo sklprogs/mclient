@@ -78,10 +78,7 @@ class Prioritize:
         ielems = el.Elems(blocks)
         blocks = ielems.run()
         cells = cl.Cells(blocks).run()
-        
-        ''' #FIX: For some reason, lg.objs.get_sources().get_article_subjects()
-            is empty.
-        '''
+
         pairs = ielems.art_subj
         if not pairs:
             rep.empty(f)

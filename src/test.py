@@ -6,8 +6,8 @@ from skl_shared.message.controller import Message, rep
 from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
 
-from tests.sources import Get
-#from tests.sources import Elems
+#from tests.sources import Get
+from tests.sources import Elems
 #from tests.sources import Source
 #from tests.speech import Speech
 
@@ -24,7 +24,7 @@ if __name__ == '__main__':
     #mes = Subjects().run()
     #mes = Prioritize().run_multitrancom()
     #mes = CleanUp().run_dsl()
-    mes = Get().run_local()
+    #mes = Get().run_local()
     #mes = Get().run_dsl()
     #mes = Get().run_fora()
     #mes = Get().run_fora_many_matches()
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     #mes = Tags().run_multitrancom()
     #mes = Tags().run_stardict()
     #mes = Source().run_all()
-    #mes = Elems().run_all()
+    mes = Elems().run_all()
     #mes = Elems().run_dsl()
     #mes = Elems().run_mdic()
     #mes = Elems().run_stardict()
