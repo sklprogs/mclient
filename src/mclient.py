@@ -490,10 +490,9 @@ class App:
             rep.empty(f)
             return
         ARTICLES.set_id(id_)
-        source = ARTICLES.get_source()
         lang1 = ARTICLES.get_lang1()
         lang2 = ARTICLES.get_lang2()
-        if not source or not lang1 or not lang2:
+        if not lang1 or not lang2:
             rep.empty(f)
             return
         SOURCES.set_lang1(lang1)
@@ -515,10 +514,9 @@ class App:
             ARTICLES.set_id(ARTICLES.get_max_id())
         else:
             ARTICLES.set_id(ARTICLES.id - 1)
-        source = ARTICLES.get_source()
         lang1 = ARTICLES.get_lang1()
         lang2 = ARTICLES.get_lang2()
-        if not source or not lang1 or not lang2:
+        if not lang1 or not lang2:
             rep.empty(f)
             return
         SOURCES.set_lang1(lang1)
@@ -536,10 +534,9 @@ class App:
             ARTICLES.set_id(0)
         else:
             ARTICLES.set_id(ARTICLES.id + 1)
-        source = ARTICLES.get_source()
         lang1 = ARTICLES.get_lang1()
         lang2 = ARTICLES.get_lang2()
-        if not source or not lang1 or not lang2:
+        if not lang1 or not lang2:
             rep.empty(f)
             return
         SOURCES.set_lang1(lang1)
@@ -670,8 +667,7 @@ class App:
         lang2 = SOURCES.get_lang2()
         langs1 = SOURCES.get_langs1()
         langs2 = SOURCES.get_langs2(lang1)
-        sources = SOURCES.get_sources()
-        if not (langs1 and langs2 and lang1 and lang2 and sources):
+        if not (langs1 and langs2 and lang1 and lang2):
             rep.empty(f)
             return
         gi.objs.get_panel().opt_lg1.reset(items=langs1, default=lang1)
