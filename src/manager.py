@@ -110,20 +110,6 @@ class Sources:
             return
         self.plugin.set_timeout(timeout)
     
-    def count_valid(self):
-        f = '[MClient] manager.Sources.count_valid'
-        if not self.plugin:
-            rep.empty(f)
-            return
-        return self.plugin.count_valid()
-    
-    def count_invalid(self):
-        f = '[MClient] manager.Sources.count_invalid'
-        if not self.plugin:
-            rep.empty(f)
-            return
-        return self.plugin.count_invalid()
-
     def suggest(self, search):
         f = '[MClient] manager.Sources.suggest'
         if not self.plugin:
@@ -132,13 +118,11 @@ class Sources:
         return self.plugin.suggest(search)
     
     def get_offline_sources(self):
-        return (_('StarDict'), 'Lingvo (.dsl)', _('Local MT'), 'Fora (DSL)', 'Fora (StarDict-x)', 'MClient (.mdic)')
+        return (self.sdplugin, self.lgplugin, self.mbplugin, self.frplugin
+               ,self.mdplugin)
     
     def get_online_sources(self):
-        ''' This is used by lg.Welcome to check the availability of online
-            sources. Do not put combined sources here.
-        '''
-        return ['multitran.com']
+        return (self.mcplugin,)
     
     def get_langs1(self, lang2=''):
         f = '[MClient] manager.Sources.get_langs1'
