@@ -32,13 +32,6 @@ class Sources:
         self.plugin = self.mcplugin
         self.set_timeout(self.timeout)
     
-    def get_speeches(self):
-        f = '[MClient] manager.Sources.get_speeches'
-        if not self.plugin:
-            rep.empty(f)
-            return {}
-        return self.plugin.get_speeches()
-    
     def get_search(self):
         f = '[MClient] manager.Sources.get_search'
         if not self.plugin:
