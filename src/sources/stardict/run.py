@@ -20,7 +20,6 @@ class Source:
         self.Separate = False
         self.blocks = []
         self.text = ''
-        self.search = ''
         self.name = 'StarDict'
     
     def is_parallel(self):
@@ -34,9 +33,6 @@ class Source:
     
     def get_subjects(self):
         return []
-    
-    def get_search(self):
-        return self.search
     
     def fix_url(self, url):
         # This is needed only for compliance with a general method
@@ -99,8 +95,7 @@ class Source:
         return gt.Suggest(search).run()
     
     def request(self, search='', url=''):
-        self.search = search
-        self.text = gt.ALL_DICS.get(self.search)
+        self.text = gt.ALL_DICS.get(search)
         self.text = cu.CleanUp(self.text).run()
         blocks = tg.Tags(self.text).run()
         ielems = el.Elems(blocks)

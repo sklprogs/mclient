@@ -25,7 +25,6 @@ class Source:
         self.langloc = (_('English'), _('Russian'))
         self.blocks = []
         self.text = ''
-        self.search = ''
         #TODO: elaborate
         self.abbr = gt.FILES.get_subject()
         self.name = _('Multitran (offline)')
@@ -38,9 +37,6 @@ class Source:
     
     def get_subjects(self):
         return []
-    
-    def get_search(self):
-        return self.search
     
     def fix_url(self, url=''):
         # This is needed only for compliance with a general method
@@ -121,7 +117,6 @@ class Source:
         return gt.Suggest(search).run()
     
     def request(self, search='', url=''):
-        self.search = search
         iget = gt.Get(search)
         chunks = iget.run()
         if not chunks:

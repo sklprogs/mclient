@@ -23,7 +23,6 @@ class Source:
         self.Separate = False
         self.blocks = []
         self.text = ''
-        self.search = ''
         self.name = 'Lingvo (.dsl)'
     
     def is_parallel(self):
@@ -38,9 +37,6 @@ class Source:
     
     def get_text(self):
         return self.text
-    
-    def get_search(self):
-        return self.search
     
     # This is needed only for compliance with a general method
     def fix_url(self, url):
@@ -135,7 +131,6 @@ class Source:
     def request(self, search='', url=''):
         cu.FORA = False
         htm = []
-        self.search = search
         articles = gt.Get(search).run()
         for iarticle in articles:
             htm.append(iarticle.code)

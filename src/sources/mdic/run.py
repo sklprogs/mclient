@@ -20,7 +20,6 @@ class Source:
         self.Parallel = False
         self.Separate = False
         self.text = ''
-        self.search = ''
         self.name = 'MClient (.mdic)'
     
     def is_parallel(self):
@@ -35,9 +34,6 @@ class Source:
     def get_subjects(self):
         #TODO: implement
         return []
-    
-    def get_search(self):
-        return self.search
     
     def fix_url(self, url):
         # This is needed only for compliance with a general method
@@ -104,8 +100,7 @@ class Source:
     
     def request(self, search='', url=''):
         f = '[MClient] sources.mdic.run.Source.request'
-        self.search = search
-        str_lst = ALL_DICS.search(self.search)
+        str_lst = ALL_DICS.search(search)
         blocks = Elems(str_lst).run()
         if not blocks:
             rep.empty(f)

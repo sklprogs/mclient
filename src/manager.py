@@ -32,13 +32,6 @@ class Sources:
         self.plugin = self.mcplugin
         self.set_timeout(self.timeout)
     
-    def get_search(self):
-        f = '[MClient] manager.Sources.get_search'
-        if not self.plugin:
-            rep.empty(f)
-            return ''
-        return self.plugin.get_search()
-    
     def fix_url(self, url):
         f = '[MClient] manager.Sources.fix_url'
         if not self.plugin:

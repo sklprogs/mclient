@@ -22,7 +22,6 @@ class Source:
         self.Separate = False
         self.blocks = []
         self.text = ''
-        self.search = ''
         self.name = _('Multitran')
     
     def get_text(self):
@@ -30,9 +29,6 @@ class Source:
     
     def get_subjects(self):
         return ms.objs.get_subjects().get()
-    
-    def get_search(self):
-        return self.search
     
     def fix_url(self, url):
         return gt.com.fix_url(url)
@@ -115,7 +111,6 @@ class Source:
         return self.Separate
     
     def request(self, search='', url=''):
-        self.search = search
         self.htm = gt.Get(search = search, url = url).run()
         code = cu.CleanUp(self.htm).run()
         blocks = tg.Tags(code).run()

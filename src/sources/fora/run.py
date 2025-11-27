@@ -26,7 +26,6 @@ class Source:
         self.Parallel = False
         self.Separate = False
         self.text = ''
-        self.search = ''
         self.name = 'Fora'
     
     def is_parallel(self):
@@ -41,9 +40,6 @@ class Source:
     def get_subjects(self):
         #TODO: implement
         return []
-    
-    def get_search(self):
-        return self.search
     
     def fix_url(self, url):
         # This is needed only for compliance with a general method
@@ -161,8 +157,7 @@ class Source:
     
     def request(self, search='', url=''):
         f = '[MClient] sources.fora.run.Source.request'
-        self.search = search
-        ALL_DICS.search(self.search)
+        ALL_DICS.search(search)
         text = ''
         blocks = []
         for dic in ALL_DICS.dics:
