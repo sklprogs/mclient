@@ -76,9 +76,9 @@ class Welcome:
             return
         for source in sources:
             isource = Source()
-            isource.title = source
+            isource.title = source.name
             isource.Online = True
-            if SOURCES.count_valid():
+            if source.count_valid():
                 isource.status = _('running')
                 isource.color = 'green'
             self.sources.append(isource)
@@ -91,9 +91,9 @@ class Welcome:
             return
         for source in sources:
             isource = Source()
-            isource.title = source
-            isource.successful = SOURCES.count_valid()
-            isource.failed = SOURCES.count_invalid()
+            isource.title = source.name
+            isource.successful = source.count_valid()
+            isource.failed = source.count_invalid()
             self.sources.append(isource)
     
     def set_sources(self):
