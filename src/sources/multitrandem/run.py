@@ -28,6 +28,7 @@ class Source:
         self.search = ''
         #TODO: elaborate
         self.abbr = gt.FILES.get_subject()
+        self.name = _('Multitran (offline)')
     
     def is_parallel(self):
         return self.Parallel

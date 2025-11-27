@@ -24,6 +24,7 @@ class Source:
         self.blocks = []
         self.text = ''
         self.search = ''
+        self.name = 'Lingvo (.dsl)'
     
     def is_parallel(self):
         return self.Parallel

@@ -21,6 +21,7 @@ class Source:
         self.Separate = False
         self.text = ''
         self.search = ''
+        self.name = 'MClient (.mdic)'
     
     def is_parallel(self):
         return self.Parallel

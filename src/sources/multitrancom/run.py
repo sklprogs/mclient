@@ -23,6 +23,7 @@ class Source:
         self.blocks = []
         self.text = ''
         self.search = ''
+        self.name = _('Multitran')
     
     def get_text(self):
         return self.text

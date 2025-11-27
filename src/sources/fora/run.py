@@ -27,6 +27,7 @@ class Source:
         self.Separate = False
         self.text = ''
         self.search = ''
+        self.name = 'Fora'
     
     def is_parallel(self):
         return self.Parallel

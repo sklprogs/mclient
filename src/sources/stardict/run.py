@@ -21,6 +21,7 @@ class Source:
         self.blocks = []
         self.text = ''
         self.search = ''
+        self.name = 'StarDict'
     
     def is_parallel(self):
         return self.Parallel
