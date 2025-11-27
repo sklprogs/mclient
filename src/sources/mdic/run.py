@@ -3,7 +3,6 @@
 
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
-from skl_shared.list import List
 
 from sources.mdic.get import ALL_DICS
 from sources.mdic.elems import Elems
@@ -19,7 +18,6 @@ class Source:
         '''
         self.Parallel = False
         self.Separate = False
-        self.text = ''
         self.name = 'MClient (.mdic)'
     
     def is_parallel(self):
@@ -27,9 +25,6 @@ class Source:
     
     def is_separate(self):
         return self.Separate
-    
-    def get_text(self):
-        return self.text
     
     def get_subjects(self):
         #TODO: implement
@@ -106,7 +101,6 @@ class Source:
             rep.empty(f)
             return []
         texts = [block.text for block in blocks]
-        self.htm = self.text = List(texts).space_items()
         #TODO: Implement or drop
         #self.Parallel = ielems.Parallel
         #self.Separate = ielems.Separate

@@ -25,7 +25,6 @@ class Source:
         '''
         self.Parallel = False
         self.Separate = False
-        self.text = ''
         self.name = 'Fora'
     
     def is_parallel(self):
@@ -33,9 +32,6 @@ class Source:
     
     def is_separate(self):
         return self.Separate
-    
-    def get_text(self):
-        return self.text
     
     def get_subjects(self):
         #TODO: implement
@@ -183,7 +179,6 @@ class Source:
                     blocks.append(self._request_xdxf(dic))
                 case 'dictd':
                     blocks.append(self._request_dictd(dic))
-        self.htm = self.text = text
         blocks = [result for result in blocks if result]
         blocks = self._join_blocks(blocks)
         #TODO: Implement or drop

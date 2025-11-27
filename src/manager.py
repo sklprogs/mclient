@@ -132,13 +132,6 @@ class Sources:
         self.frplugin = sources.fora.run.Source()
         self.mdplugin = sources.mdic.run.Source()
     
-    def get_text(self):
-        f = '[MClient] manager.Sources.get_text'
-        if not self.plugin:
-            rep.empty(f)
-            return
-        return self.plugin.get_text()
-    
     def request(self, search='', url=''):
         blocks = self.mcplugin.request(search, url)
         blocks += self.sdplugin.request(search, url)

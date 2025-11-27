@@ -24,7 +24,6 @@ class Source:
         self.langint = ('English', 'Russian')
         self.langloc = (_('English'), _('Russian'))
         self.blocks = []
-        self.text = ''
         #TODO: elaborate
         self.abbr = gt.FILES.get_subject()
         self.name = _('Multitran (offline)')
@@ -65,17 +64,6 @@ class Source:
             mes = mes.format(lang, ';'.join(modes))
             Message(f, mes, True).show_error()
         return 'English'
-    
-    def get_text(self):
-        mes = []
-        if not self.text:
-            for block in self.blocks:
-                if block.text and block.type in ('dic', 'wform', 'term'
-                                                ,'comment', 'correction'
-                                                ,'user'):
-                    mes.append(block.text)
-            self.text = ''.join(mes)
-        return self.text
     
     def get_lang1(self):
         return self._adapt_lang(gt.LANG1)
@@ -128,5 +116,4 @@ class Source:
         self.blocks = el.Elems(blocks=self.blocks, abbr=None
                               ,langs = gt.ALL_DICS.get_langs()
                               ,search=search).run()
-        self.get_text()
         return self.blocks

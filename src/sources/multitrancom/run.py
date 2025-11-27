@@ -21,11 +21,7 @@ class Source:
         self.Parallel = False
         self.Separate = False
         self.blocks = []
-        self.text = ''
         self.name = _('Multitran')
-    
-    def get_text(self):
-        return self.text
     
     def get_subjects(self):
         return ms.objs.get_subjects().get()

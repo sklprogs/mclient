@@ -19,7 +19,6 @@ class Source:
         self.Parallel = False
         self.Separate = False
         self.blocks = []
-        self.text = ''
         self.name = 'StarDict'
     
     def is_parallel(self):
@@ -27,9 +26,6 @@ class Source:
     
     def is_separate(self):
         return self.Separate
-    
-    def get_text(self):
-        return self.text
     
     def get_subjects(self):
         return []
@@ -95,9 +91,9 @@ class Source:
         return gt.Suggest(search).run()
     
     def request(self, search='', url=''):
-        self.text = gt.ALL_DICS.get(search)
-        self.text = cu.CleanUp(self.text).run()
-        blocks = tg.Tags(self.text).run()
+        code = gt.ALL_DICS.get(search)
+        code = cu.CleanUp(code).run()
+        blocks = tg.Tags(code).run()
         ielems = el.Elems(blocks)
         self.blocks = ielems.run()
         self.Parallel = ielems.Parallel

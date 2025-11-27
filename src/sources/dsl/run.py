@@ -3,7 +3,6 @@
 
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
-from skl_shared.list import List
 
 import sources.dsl.get as gt
 import sources.dsl.tags as tg
@@ -22,7 +21,6 @@ class Source:
         self.Parallel = False
         self.Separate = False
         self.blocks = []
-        self.text = ''
         self.name = 'Lingvo (.dsl)'
     
     def is_parallel(self):
@@ -34,9 +32,6 @@ class Source:
     def get_subjects(self):
         #TODO: rework
         return {}
-    
-    def get_text(self):
-        return self.text
     
     # This is needed only for compliance with a general method
     def fix_url(self, url):
@@ -138,6 +133,5 @@ class Source:
             self.blocks += tg.Tags(code).run()
         self.htm = '\n'.join(htm)
         texts = [block.text for block in self.blocks if block.text]
-        self.text = List(texts).space_items()
         self.blocks = el.Elems(self.blocks).run()
         return self.blocks
