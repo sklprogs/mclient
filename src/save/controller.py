@@ -178,11 +178,11 @@ class Save:
             rep.empty(f)
             return
         self.close()
-        if opt == _('Save the current view as a web-page (*.htm)'):
+        if opt == _('Save as web-page (*.htm)'):
             self.save_view_as_htm()
-        elif opt == _('Save the article as plain text in UTF-8 (*.txt)'):
+        elif opt == _('Save as plain text in UTF-8 (*.txt)'):
             self.save_view_as_txt()
-        elif opt == _('Copy the text of the article to clipboard'):
+        elif opt == _('Copy article to clipboard'):
             self.copy_view()
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')

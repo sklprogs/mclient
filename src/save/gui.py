@@ -17,9 +17,9 @@ class TableModel(QAbstractTableModel):
     def __init__(self, data=[], parent=None, *args):
         QAbstractTableModel.__init__(self, parent, *args)
         if not data:
-            data = [_('Save the current view as a web-page (*.htm)')
-                   ,_('Save the article as plain text in UTF-8 (*.txt)')
-                   ,_('Copy the text of the article to clipboard')]
+            data = [_('Save as web-page (*.htm)')
+                   ,_('Save as plain text in UTF-8 (*.txt)')
+                   ,_('Copy article to clipboard')]
         self.items = data
     
     def rowCount(self, parent):
