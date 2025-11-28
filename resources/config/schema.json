@@ -9,14 +9,12 @@
             ,"col5_up", "col6_down", "col6_up", "copy_article_url"
             ,"copy_nominative", "copy_sel", "copy_url", "define", "go_back"
             ,"go_next", "go_phrases", "next_lang1", "next_lang2"
-            ,"open_in_browser", "prev_lang1", "prev_lang2", "print", "quit"
-            ,"re_search_article", "reload_article", "save_article"
-            ,"search_article_backward", "search_article_forward"
-            ,"select_block", "show_block", "show_prior", "swap_langs"
-            ,"toggle_about", "toggle_alphabet", "toggle_block"
-            ,"toggle_history", "toggle_popup", "toggle_priority"
-            ,"toggle_settings", "toggle_spec_symbols"
-            ]
+            ,"prev_lang1", "prev_lang2", "print", "quit", "re_search_article"
+            ,"reload_article", "save_article", "search_article_backward"
+            ,"search_article_forward", "select_block", "show_block"
+            ,"show_prior", "swap_langs", "toggle_about", "toggle_alphabet"
+            ,"toggle_block", "toggle_history", "toggle_popup"
+            ,"toggle_priority", "toggle_settings", "toggle_spec_symbols"]
         ,"properties":
             {"clear_history":
                 {"type": "object"
@@ -195,14 +193,6 @@
                     }
                 }
             ,"next_lang2":
-                {"type": "object"
-                ,"required": ["hotkeys", "hint"]
-                ,"properties":
-                    {"hotkeys": {"type": "array"}
-                    ,"hint": {"type": "string"}
-                    }
-                }
-            ,"open_in_browser":
                 {"type": "object"
                 ,"required": ["hotkeys", "hint"]
                 ,"properties":
