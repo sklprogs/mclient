@@ -91,6 +91,10 @@
         {"hotkeys": ["F9", "Ctrl+L"]
         ,"hint": "Next target language"
         }
+    ,"open_in_browser":
+        {"hotkeys": ["F7", "Ctrl+B"]
+        ,"hint": "Open the current article in a default browser"
+        }
     ,"prev_lang1":
         {"hotkeys": ["Shift+F8", "Shift+Ctrl+K"]
         ,"hint": "Previous source language"
