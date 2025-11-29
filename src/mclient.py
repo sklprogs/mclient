@@ -646,8 +646,7 @@ class App:
         f = '[MClient] mclient.App.auto_swap'
         lang1 = gi.objs.get_panel().opt_lg1.get()
         lang2 = gi.objs.panel.opt_lg2.get()
-        if SOURCES.is_oneway() or not CONFIG.new['Autoswap'] \
-        or not REQUEST.search:
+        if not CONFIG.new['Autoswap'] or not REQUEST.search:
             rep.lazy(f)
             return
         if Text(REQUEST.search).has_cyrillic():
@@ -758,10 +757,6 @@ class App:
     
     def swap_langs(self):
         f = '[MClient] mclient.App.swap_langs'
-        if SOURCES.is_oneway():
-            mes = _('Cannot swap languages, this is a one-way dictionary!')
-            Message(f, mes, True).show_info()
-            return
         self.update_lang1()
         self.update_lang2()
         lang1 = gi.objs.get_panel().opt_lg1.get()

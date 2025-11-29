@@ -39,13 +39,6 @@ class Sources:
         '''
         return self.mcsource.fix_url(url)
     
-    def is_oneway(self):
-        f = '[MClient] manager.Sources.is_oneway'
-        if not self.source:
-            rep.empty(f)
-            return
-        return self.source.is_oneway()
-    
     def quit(self):
         self.mbsource.quit()
         self.mcsource.quit()

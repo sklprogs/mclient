@@ -41,9 +41,6 @@ class Source:
         # This is needed only for compliance with a general method
         return url
     
-    def is_oneway(self):
-        return False
-    
     def quit(self):
         gt.FILES.close()
     

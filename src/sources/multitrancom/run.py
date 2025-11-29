@@ -29,9 +29,6 @@ class Source:
     def fix_url(self, url):
         return gt.com.fix_url(url)
     
-    def is_oneway(self):
-        return False
-    
     def quit(self):
         # This is needed only for compliance with a general method
         pass

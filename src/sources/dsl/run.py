@@ -37,9 +37,6 @@ class Source:
     def fix_url(self, url):
         return url
     
-    def is_oneway(self):
-        return True
-    
     # This is needed only for compliance with a general method
     def get_title(self, short):
         return short

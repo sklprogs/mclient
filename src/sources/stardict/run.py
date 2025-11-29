@@ -34,9 +34,6 @@ class Source:
         # This is needed only for compliance with a general method
         return url
     
-    def is_oneway(self):
-        return False
-    
     def get_title(self, short):
         #TODO: implement
         return short
