@@ -436,8 +436,7 @@ class AllDics:
             return lang
         if lang in self.langs:
             return self.langs[lang]['code']
-        else:
-            rep.wrong_input(f, lang)
+        rep.wrong_input(f, lang)
         return lang
     
     def get_pairs(self, lang):

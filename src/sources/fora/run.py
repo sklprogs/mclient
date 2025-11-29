@@ -48,14 +48,6 @@ class Source:
     def quit(self):
         ALL_DICS.close()
     
-    def get_lang1(self):
-        # This is needed only for compliance with a general method
-        return _('Any')
-    
-    def get_lang2(self):
-        # This is needed only for compliance with a general method
-        return _('Any')
-    
     def get_server(self):
         # This is needed only for compliance with a general method
         return ''
@@ -75,14 +67,6 @@ class Source:
     def set_timeout(self, timeout=0):
         # This is needed only for compliance with a general method
         pass
-    
-    def get_langs1(self, lang2=''):
-        # This is needed only for compliance with a general method
-        return(_('Any'),)
-    
-    def get_langs2(self, lang1=''):
-        # This is needed only for compliance with a general method
-        return(_('Any'),)
     
     def count_valid(self):
         return len(ALL_DICS.get_valid())

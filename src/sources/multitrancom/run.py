@@ -33,12 +33,6 @@ class Source:
         # This is needed only for compliance with a general method
         pass
     
-    def get_lang1(self):
-        return pr.LANG1
-    
-    def get_lang2(self):
-        return pr.LANG2
-    
     def get_url(self, search):
         f = '[MClient] sources.multitrancom.run.Source.get_url'
         code1 = pr.objs.get_pairs().get_code(pr.LANG1)
@@ -81,28 +75,16 @@ class Source:
             return 0
         else:
             return 1
-    
+
     def suggest(self, search):
         return gt.Suggest(search).run()
-    
-    def get_langs1(self, lang2=''):
-        if lang2:
-            return pr.objs.get_pairs().get_pairs1(lang2)
-        else:
-            return pr.objs.get_pairs().get_alive()
-    
-    def get_langs2(self, lang1=''):
-        if lang1:
-            return pr.objs.get_pairs().get_pairs2(lang1)
-        else:
-            return pr.objs.get_pairs().get_alive()
-    
+
     def is_parallel(self):
         return self.Parallel
-    
+
     def is_separate(self):
         return self.Separate
-    
+
     def request(self, search='', url=''):
         self.htm = gt.Get(search = search, url = url).run()
         code = cu.CleanUp(self.htm).run()

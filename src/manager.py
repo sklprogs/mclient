@@ -16,6 +16,7 @@ import sources.multitrandem.run
 import sources.dsl.run
 import sources.fora.run
 import sources.mdic.run
+import sources.multitrancom.pairs
 
 
 class Sources:
@@ -47,20 +48,6 @@ class Sources:
         self.frsource.quit()
         self.mdsource.quit()
     
-    def get_lang1(self):
-        f = '[MClient] manager.Sources.get_lang1'
-        if not self.source:
-            rep.empty(f)
-            return
-        return self.source.get_lang1()
-    
-    def get_lang2(self):
-        f = '[MClient] manager.Sources.get_lang2'
-        if not self.source:
-            rep.empty(f)
-            return
-        return self.source.get_lang2()
-    
     def get_url(self, search):
         f = '[MClient] manager.Sources.get_url'
         if not self.source:
@@ -75,6 +62,9 @@ class Sources:
         # Return all non-combined sources
         return (self.sdsource, self.mcsource, self.mbsource, self.lgsource
                ,self.frsource)
+    
+    def get_langs(self):
+        return sources.multitrancom.pairs.objs.get_pairs().get_alive()
     
     def set_lang1(self, lang1):
         self.source.set_lang1(lang1)
@@ -103,20 +93,6 @@ class Sources:
     def get_online_sources(self):
         return (self.mcsource,)
     
-    def get_langs1(self, lang2=''):
-        f = '[MClient] manager.Sources.get_langs1'
-        if not self.source:
-            rep.empty(f)
-            return
-        return self.source.get_langs1(lang2)
-    
-    def get_langs2(self, lang1=''):
-        f = '[MClient] manager.Sources.get_langs2'
-        if not self.source:
-            rep.empty(f)
-            return
-        return self.source.get_langs2(lang1)
-
     def request(self, search='', url=''):
         blocks = self.mcsource.request(search, url)
         blocks += self.sdsource.request(search, url)

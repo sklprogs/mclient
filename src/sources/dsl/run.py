@@ -45,32 +45,6 @@ class Source:
         pass
         #TODO (?): Unload dictionaries
     
-    def get_lang1(self):
-        f = '[MClient] sources.dsl.run.Source.get_lang1'
-        lang = _(gt.LANG1)
-        langs = self.get_langs1()
-        if langs:
-            # Ignore a default language if it is not available
-            if not lang in langs:
-                lang = langs[0]
-        else:
-            lang = (_('Any'),)
-        Message(f, f'"{lang}"').show_debug()
-        return lang
-    
-    def get_lang2(self):
-        f = '[MClient] sources.dsl.run.Source.get_lang2'
-        lang = _(gt.LANG2)
-        langs = self.get_langs2()
-        if langs:
-            # Ignore a default language if it is not available
-            if not lang in langs:
-                lang = langs[0]
-        else:
-            lang = (_('Any'),)
-        Message(f, f'"{lang}"').show_debug()
-        return lang
-    
     def get_url(self, search=''):
         # This is needed only for compliance with a general method
         return ''
@@ -98,18 +72,6 @@ class Source:
     def set_timeout(self, timeout=0):
         # This is needed only for compliance with a general method
         pass
-    
-    def get_langs1(self, lang2=''):
-        if lang2:
-            return gt.ALL_DICS.get_pairs(lang2)
-        else:
-            return gt.ALL_DICS.get_langs1()
-    
-    def get_langs2(self, lang1=''):
-        if lang1:
-            return gt.ALL_DICS.get_pairs(lang1)
-        else:
-            return gt.ALL_DICS.get_langs2()
     
     def count_valid(self):
         return len(gt.ALL_DICS.get_valid())

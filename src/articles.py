@@ -130,8 +130,8 @@ class Articles:
             mes = _('Wrong input data: "{}"!').format(id_)
             Message(f, mes).show_warning()
             return
-        self.articles['ids'][id_] = {'lang1'         : SOURCES.get_lang1()
-                                    ,'lang2'         : SOURCES.get_lang2()
+        self.articles['ids'][id_] = {'lang1'         : CONFIG.new['lang1']
+                                    ,'lang2'         : CONFIG.new['lang2']
                                     ,'Parallel'      : SOURCES.is_parallel()
                                     ,'Separate'      : SOURCES.is_separate()
                                     ,'search'        : search

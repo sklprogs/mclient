@@ -62,12 +62,6 @@ class Source:
             Message(f, mes, True).show_error()
         return 'English'
     
-    def get_lang1(self):
-        return self._adapt_lang(gt.LANG1)
-    
-    def get_lang2(self):
-        return self._adapt_lang(gt.LANG2)
-    
     def get_url(self, search=''):
         # This is needed only for compliance with a general method
         return ''
@@ -83,14 +77,6 @@ class Source:
     def set_timeout(self, timeout=0):
         # This is needed only for compliance with a general method
         pass
-    
-    def get_langs1(self, lang2=''):
-        #TODO: elaborate
-        return(_('Any'), _('English'), _('Russian'))
-    
-    def get_langs2(self, lang1=''):
-        #TODO: elaborate
-        return(_('Any'), _('English'), _('Russian'))
     
     def count_valid(self):
         return gt.com.count_valid()

@@ -478,8 +478,8 @@ class App:
             rep.lazy(f)
             return
         self.history.add_row(id_ = ARTICLES.id
-                            ,lang1 = SOURCES.get_lang1()
-                            ,lang2 = SOURCES.get_lang2()
+                            ,lang1 = CONFIG.new['lang1']
+                            ,lang2 = CONFIG.new['lang2']
                             ,search = ARTICLES.get_search())
         # Setting column width works only after updating the model, see https://stackoverflow.com/questions/8364061/how-do-you-set-the-column-width-on-a-qtreeview
         self.history.gui.set_col_width()
@@ -495,8 +495,8 @@ class App:
         if not lang1 or not lang2:
             rep.empty(f)
             return
-        SOURCES.set_lang1(lang1)
-        SOURCES.set_lang2(lang2)
+        self.set_lang1(lang1)
+        self.set_lang2(lang2)
         self.reset_opt()
         self.load_article()
     
@@ -659,122 +659,69 @@ class App:
             Message(f, mes).show_info()
             self.swap_langs()
     
+    def get_langs(self):
+        return SOURCES.get_langs()
+    
     def reset_opt(self):
-        f = '[MClient] mclient.App.reset_opt'
         # Reset OptionMenus
-        lang1 = SOURCES.get_lang1()
-        lang2 = SOURCES.get_lang2()
-        langs1 = SOURCES.get_langs1()
-        langs2 = SOURCES.get_langs2(lang1)
-        if not (langs1 and langs2 and lang1 and lang2):
+        f = '[MClient] mclient.App.reset_opt'
+        langs = self.get_langs()
+        if not langs:
             rep.empty(f)
             return
-        gi.objs.get_panel().opt_lg1.reset(items=langs1, default=lang1)
-        gi.objs.panel.opt_lg2.reset(items=langs2, default=lang2)
+        gi.objs.get_panel().opt_lg1.reset(langs, CONFIG.new['lang1'])
+        gi.objs.panel.opt_lg2.reset(langs, CONFIG.new['lang2'])
     
     def set_next_lang1(self):
-        ''' We want to navigate through the full list of supported languages
-            rather than through the list of 'lang2' pairs so we reset the
-            widget first.
-        '''
-        old = gi.objs.get_panel().opt_lg1.get()
-        gi.objs.panel.opt_lg1.reset(items = SOURCES.get_langs1()
-                                   ,default = old)
         gi.objs.panel.opt_lg1.set_next()
         self.update_lang1()
-        self.update_lang2()
     
     def set_next_lang2(self):
         # We want to navigate through the limited list here
-        self.update_lang1()
         self.update_lang2()
         gi.objs.get_panel().opt_lg2.set_next()
         self.update_lang2()
     
     def set_prev_lang1(self):
-        ''' We want to navigate through the full list of supported languages
-            rather than through the list of 'lang2' pairs so we reset the
-            widget first.
-        '''
-        old = gi.objs.get_panel().opt_lg1.get()
-        gi.objs.panel.opt_lg1.reset(items = SOURCES.get_langs1()
-                                   ,default = old)
         gi.objs.panel.opt_lg1.set_prev()
         self.update_lang1()
-        self.update_lang2()
     
     def set_prev_lang2(self):
-        # We want to navigate through the limited list here
-        self.update_lang1()
-        self.update_lang2()
         gi.objs.get_panel().opt_lg2.set_prev()
         self.update_lang2()
     
     def set_lang1(self):
         f = '[MClient] mclient.App.set_lang1'
         lang = gi.objs.get_panel().opt_lg1.get()
-        if SOURCES.get_lang1() != lang:
-            mes = _('Set language: {}').format(lang)
-            Message(f, mes).show_info()
-            CONFIG.new['lang1'] = lang
-            SOURCES.set_lang1(lang)
+        mes = _('Set language: {}').format(lang)
+        Message(f, mes).show_info()
+        CONFIG.new['lang1'] = lang
+        SOURCES.set_lang1(lang)
     
     def set_lang2(self):
         f = '[MClient] mclient.App.set_lang2'
         lang = gi.objs.get_panel().opt_lg2.get()
-        if SOURCES.get_lang2() != lang:
-            mes = _('Set language: {}').format(lang)
-            Message(f, mes).show_info()
-            CONFIG.new['lang2'] = lang
-            SOURCES.set_lang2(lang)
+        mes = _('Set language: {}').format(lang)
+        Message(f, mes).show_info()
+        CONFIG.new['lang2'] = lang
+        SOURCES.set_lang2(lang)
     
     def update_lang1(self):
-        f = '[MClient] mclient.App.update_lang1'
-        self.set_lang1()
-        self.set_lang2()
-        lang1 = SOURCES.get_lang1()
-        langs1 = SOURCES.get_langs1()
-        if not langs1:
-            rep.empty(f)
-            return
-        gi.objs.get_panel().opt_lg1.set(lang1)
+        gi.objs.get_panel().opt_lg1.set(CONFIG.new['lang1'])
         self.set_lang1()
     
     def update_lang2(self):
-        f = '[MClient] mclient.App.update_lang2'
-        self.set_lang1()
-        self.set_lang2()
-        lang1 = SOURCES.get_lang1()
-        lang2 = SOURCES.get_lang2()
-        langs2 = SOURCES.get_langs2(lang1)
-        if not langs2:
-            rep.empty(f)
-            return
-        if not lang2 in langs2:
-            lang2 = langs2[0]
-        gi.objs.get_panel().opt_lg2.reset(items=langs2, default=lang2)
+        gi.objs.get_panel().opt_lg2.set(CONFIG.new['lang2'])
         self.set_lang2()
     
     def swap_langs(self):
         f = '[MClient] mclient.App.swap_langs'
-        self.update_lang1()
-        self.update_lang2()
         lang1 = gi.objs.get_panel().opt_lg1.get()
         lang2 = gi.objs.panel.opt_lg2.get()
-        lang1, lang2 = lang2, lang1
-        langs1 = SOURCES.get_langs1()
-        langs2 = SOURCES.get_langs2(lang1)
-        if not langs1:
-            rep.empty(f)
-            return
-        if not (langs2 and lang1 in langs1 and lang2 in langs2):
-            mes = _('Pair {}-{} is not supported!').format(lang1, lang2)
-            Message(f, mes, True).show_warning()
-            return
-        gi.objs.panel.opt_lg1.reset(items=langs1, default=lang1)
-        gi.objs.panel.opt_lg2.reset(items=langs2, default=lang2)
-        self.update_lang1()
-        self.update_lang2()
+        gi.objs.panel.opt_lg1.set(lang2)
+        gi.objs.panel.opt_lg2.set(lang1)
+        self.set_lang1()
+        self.set_lang2()
     
     def insert_repeat_sign2(self):
         # Insert the previous search string
@@ -944,8 +891,8 @@ class App:
             REQUEST.search = ''
         REQUEST.search = REQUEST.search.strip()
         if lg.com.control_length():
-            self.update_lang1()
-            self.update_lang2()
+            self.set_lang1()
+            self.set_lang2()
             self.auto_swap()
             mes = f'"{REQUEST.search}"'
             Message(f, mes).show_debug()
