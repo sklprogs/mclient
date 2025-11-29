@@ -21,23 +21,23 @@ import sources.mdic.run
 class Sources:
     
     def __init__(self, timeout=5.0):
-        self.lgsource = None
-        self.mbsource = None
-        self.mcsource = None
-        self.sdsource = None
-        self.frsource = None
-        self.mdsource = None
-        self.timeout = timeout
-        self.load()
+        self.sdsource = sources.stardict.run.Source()
+        self.mcsource = sources.multitrancom.run.Source()
+        self.mbsource = sources.multitrandem.run.Source()
+        self.lgsource = sources.dsl.run.Source()
+        self.frsource = sources.fora.run.Source()
+        self.mdsource = sources.mdic.run.Source()
         self.source = self.mcsource
-        self.set_timeout(self.timeout)
+        self.set_timeout(timeout)
     
     def fix_url(self, url):
-        f = '[MClient] manager.Sources.fix_url'
-        if not self.source:
-            rep.empty(f)
-            return url
-        return self.source.fix_url(url)
+        ''' This method cannot be deleted yet, since it processes both article
+            and cell URLs (required by mclient.App.go_url). Expanding and
+            fixing URLs in place slows down loading an article.
+            #NOTE: If there is more than 1 online source, methods processing
+            URLs must be rewritten.
+        '''
+        return self.mcsource.fix_url(url)
     
     def is_oneway(self):
         f = '[MClient] manager.Sources.is_oneway'
@@ -124,14 +124,6 @@ class Sources:
             return
         return self.source.get_langs2(lang1)
 
-    def load(self):
-        self.sdsource = sources.stardict.run.Source()
-        self.mcsource = sources.multitrancom.run.Source()
-        self.mbsource = sources.multitrandem.run.Source()
-        self.lgsource = sources.dsl.run.Source()
-        self.frsource = sources.fora.run.Source()
-        self.mdsource = sources.mdic.run.Source()
-    
     def request(self, search='', url=''):
         blocks = self.mcsource.request(search, url)
         blocks += self.sdsource.request(search, url)
