@@ -246,6 +246,7 @@ class App:
                 ,(gi.objs.panel.btn_rld, 'reload_article')
                 ,(gi.objs.panel.btn_ser, 're_search_article')
                 ,(gi.objs.panel.btn_sav, 'save_article')
+                ,(gi.objs.panel.btn_brw, 'open_in_browser')
                 ,(gi.objs.panel.btn_prn, 'print')
                 ,(gi.objs.panel.btn_def, 'define')
                 ,(gi.objs.panel.btn_abt, 'toggle_about')
@@ -1079,6 +1080,8 @@ class App:
                      ,self.toggle_alphabet)
         self.gui.bind(CONFIG.new['actions']['reload_article']['hotkeys']
                      ,self.reload)
+        self.gui.bind(CONFIG.new['actions']['open_in_browser']['hotkeys']
+                     ,self.logic.open_in_browser)
         self.gui.bind(CONFIG.new['actions']['print']['hotkeys']
                      ,self.logic.print)
         self.gui.bind(CONFIG.new['actions']['define']['hotkeys']
@@ -1126,6 +1129,7 @@ class App:
         gi.objs.panel.btn_abt.set_action(ABOUT.toggle)
         gi.objs.panel.btn_alp.set_action(self.toggle_alphabet)
         gi.objs.panel.btn_blk.set_action(BLOCK.toggle)
+        gi.objs.panel.btn_brw.set_action(self.logic.open_in_browser)
         gi.objs.panel.btn_cap.set_action(self.watch_clipboard)
         gi.objs.panel.btn_clr.set_action(self.clear_search_field)
         gi.objs.panel.btn_def.set_action(lambda x:self.define(False))

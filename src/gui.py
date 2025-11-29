@@ -267,6 +267,8 @@ class Panel(QWidget):
                                ,'go_next_off.png')
         self.icn_fw1 = PDIR.add('..', 'resources', 'buttons', 'go_next.png')
         self.icn_ret = PDIR.add('..', 'resources', 'buttons', 'go_search.png')
+        self.icn_brw = PDIR.add('..', 'resources', 'buttons'
+                               ,'open_in_browser.png')
         self.icn_ins = PDIR.add('..', 'resources', 'buttons', 'paste.png')
         self.icn_prn = PDIR.add('..', 'resources', 'buttons', 'print.png')
         self.icn_pr0 = PDIR.add('..', 'resources', 'buttons'
@@ -384,6 +386,8 @@ class Panel(QWidget):
         self.btn_ser = Button(inactive = self.icn_src, active = self.icn_src)
         # A button to save the article
         self.btn_sav = Button(inactive = self.icn_sav, active = self.icn_sav)
+        # A button to open the current article in a browser
+        self.btn_brw = Button(inactive = self.icn_brw, active = self.icn_brw)
         # A button to print the article
         self.btn_prn = Button(inactive = self.icn_prn, active = self.icn_prn)
         # A button to define a term
@@ -416,6 +420,7 @@ class Panel(QWidget):
         self.layout_.addWidget(self.btn_rld.widget)
         self.layout_.addWidget(self.btn_ser.widget)
         self.layout_.addWidget(self.btn_sav.widget)
+        self.layout_.addWidget(self.btn_brw.widget)
         self.layout_.addWidget(self.btn_prn.widget)
         self.layout_.addWidget(self.btn_def.widget)
         self.layout_.addWidget(self.btn_cap.widget)

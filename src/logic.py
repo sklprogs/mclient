@@ -20,6 +20,12 @@ from table.controller import Table
 
 class App:
     
+    def open_in_browser(self):
+        ionline = Online()
+        url = REQUEST.url
+        ionline.url = SOURCES.fix_url(url)
+        ionline.browse()
+    
     def print(self):
         f = '[MClient] logic.App.print'
         code = make_pretty(REQUEST.htm)

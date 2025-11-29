@@ -119,6 +119,7 @@ class Welcome:
         self._add_hotkeys('next_lang1')
         self._add_hotkeys('prev_lang1')
         self._add_hotkeys('print')
+        self._add_hotkeys('open_in_browser')
         self._add_hotkeys('reload_article')
         self._add_hotkeys('save_article')
         self._add_hotkeys('re_search_article')
