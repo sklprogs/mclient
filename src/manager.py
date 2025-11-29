@@ -21,147 +21,147 @@ import sources.mdic.run
 class Sources:
     
     def __init__(self, timeout=5.0):
-        self.lgplugin = None
-        self.mbplugin = None
-        self.mcplugin = None
-        self.sdplugin = None
-        self.frplugin = None
-        self.mdplugin = None
+        self.lgsource = None
+        self.mbsource = None
+        self.mcsource = None
+        self.sdsource = None
+        self.frsource = None
+        self.mdsource = None
         self.timeout = timeout
         self.load()
-        self.plugin = self.mcplugin
+        self.source = self.mcsource
         self.set_timeout(self.timeout)
     
     def fix_url(self, url):
         f = '[MClient] manager.Sources.fix_url'
-        if not self.plugin:
+        if not self.source:
             rep.empty(f)
             return url
-        return self.plugin.fix_url(url)
+        return self.source.fix_url(url)
     
     def is_oneway(self):
         f = '[MClient] manager.Sources.is_oneway'
-        if not self.plugin:
+        if not self.source:
             rep.empty(f)
             return
-        return self.plugin.is_oneway()
+        return self.source.is_oneway()
     
     def quit(self):
-        self.mbplugin.quit()
-        self.mcplugin.quit()
-        self.sdplugin.quit()
-        self.lgplugin.quit()
-        self.frplugin.quit()
-        self.mdplugin.quit()
+        self.mbsource.quit()
+        self.mcsource.quit()
+        self.sdsource.quit()
+        self.lgsource.quit()
+        self.frsource.quit()
+        self.mdsource.quit()
     
     def get_lang1(self):
         f = '[MClient] manager.Sources.get_lang1'
-        if not self.plugin:
+        if not self.source:
             rep.empty(f)
             return
-        return self.plugin.get_lang1()
+        return self.source.get_lang1()
     
     def get_lang2(self):
         f = '[MClient] manager.Sources.get_lang2'
-        if not self.plugin:
+        if not self.source:
             rep.empty(f)
             return
-        return self.plugin.get_lang2()
+        return self.source.get_lang2()
     
     def get_url(self, search):
         f = '[MClient] manager.Sources.get_url'
-        if not self.plugin:
+        if not self.source:
             rep.empty(f)
             return ''
-        url = self.plugin.get_url(search)
+        url = self.source.get_url(search)
         if not url:
             return ''
         return url
     
     def get_unique(self):
         # Return all non-combined sources
-        return (self.sdplugin, self.mcplugin, self.mbplugin, self.lgplugin
-               ,self.frplugin)
+        return (self.sdsource, self.mcsource, self.mbsource, self.lgsource
+               ,self.frsource)
     
     def set_lang1(self, lang1):
-        self.plugin.set_lang1(lang1)
+        self.source.set_lang1(lang1)
     
     def set_lang2(self, lang2):
-        self.plugin.set_lang2(lang2)
+        self.source.set_lang2(lang2)
     
     def set_timeout(self, timeout=5.0):
         f = '[MClient] manager.Sources.set_timeout'
-        if not self.plugin:
+        if not self.source:
             rep.empty(f)
             return
-        self.plugin.set_timeout(timeout)
+        self.source.set_timeout(timeout)
     
     def suggest(self, search):
         f = '[MClient] manager.Sources.suggest'
-        if not self.plugin:
+        if not self.source:
             rep.empty(f)
             return
-        return self.plugin.suggest(search)
+        return self.source.suggest(search)
     
     def get_offline_sources(self):
-        return (self.sdplugin, self.lgplugin, self.mbplugin, self.frplugin
-               ,self.mdplugin)
+        return (self.sdsource, self.lgsource, self.mbsource, self.frsource
+               ,self.mdsource)
     
     def get_online_sources(self):
-        return (self.mcplugin,)
+        return (self.mcsource,)
     
     def get_langs1(self, lang2=''):
         f = '[MClient] manager.Sources.get_langs1'
-        if not self.plugin:
+        if not self.source:
             rep.empty(f)
             return
-        return self.plugin.get_langs1(lang2)
+        return self.source.get_langs1(lang2)
     
     def get_langs2(self, lang1=''):
         f = '[MClient] manager.Sources.get_langs2'
-        if not self.plugin:
+        if not self.source:
             rep.empty(f)
             return
-        return self.plugin.get_langs2(lang1)
+        return self.source.get_langs2(lang1)
 
     def load(self):
-        self.sdplugin = sources.stardict.run.Source()
-        self.mcplugin = sources.multitrancom.run.Source()
-        self.mbplugin = sources.multitrandem.run.Source()
-        self.lgplugin = sources.dsl.run.Source()
-        self.frplugin = sources.fora.run.Source()
-        self.mdplugin = sources.mdic.run.Source()
+        self.sdsource = sources.stardict.run.Source()
+        self.mcsource = sources.multitrancom.run.Source()
+        self.mbsource = sources.multitrandem.run.Source()
+        self.lgsource = sources.dsl.run.Source()
+        self.frsource = sources.fora.run.Source()
+        self.mdsource = sources.mdic.run.Source()
     
     def request(self, search='', url=''):
-        blocks = self.mcplugin.request(search, url)
-        blocks += self.sdplugin.request(search, url)
-        blocks += self.mbplugin.request(search, url)
-        blocks += self.lgplugin.request(search, url)
-        blocks += self.frplugin.request(search, url)
-        blocks += self.mdplugin.request(search, url)
+        blocks = self.mcsource.request(search, url)
+        blocks += self.sdsource.request(search, url)
+        blocks += self.mbsource.request(search, url)
+        blocks += self.lgsource.request(search, url)
+        blocks += self.frsource.request(search, url)
+        blocks += self.mdsource.request(search, url)
         return blocks
     
     def is_parallel(self):
         f = '[MClient] manager.Sources.is_parallel'
-        if not self.plugin:
+        if not self.source:
             rep.empty(f)
             return
-        return self.plugin.is_parallel()
+        return self.source.is_parallel()
     
     def is_separate(self):
         f = '[MClient] manager.Sources.is_separate'
-        if not self.plugin:
+        if not self.source:
             rep.empty(f)
             return
-        return self.plugin.is_separate()
+        return self.source.is_separate()
     
     def get_subjects(self):
         # Get all available subjects (if any)
         f = '[MClient] manager.Sources.get_subjects'
-        if not self.plugin:
+        if not self.source:
             rep.empty(f)
             return {}
-        dic = self.plugin.get_subjects()
+        dic = self.source.get_subjects()
         if not dic:
             return {}
         return dic
