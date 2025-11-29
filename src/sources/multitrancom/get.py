@@ -81,7 +81,7 @@ class Suggest:
         if not self.Success:
             rep.cancel(f)
             return
-        #NOTE: The encoding here MUST be 'utf-8' irrespective of the plugin!
+        #NOTE: The encoding here MUST be 'utf-8' irrespective of the source!
         self.url = Online(base = self.pair, pattern = self.pattern
                          ,coding = 'utf-8').get_url()
         if not self.url:
