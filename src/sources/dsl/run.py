@@ -49,26 +49,6 @@ class Source:
         # This is needed only for compliance with a general method
         return ''
     
-    def set_lang1(self, lang1=''):
-        f = '[MClient] sources.dsl.run.Source.set_lang1'
-        if lang1 == _('Any'):
-            rep.lazy(f)
-        elif not lang1:
-            rep.empty(f)
-        else:
-            lang1 = gt.ALL_DICS.get_code(lang1)
-            gt.LANG1 = lang1
-    
-    def set_lang2(self, lang2=''):
-        f = '[MClient] sources.dsl.run.Source.set_lang2'
-        if lang2 == _('Any'):
-            rep.lazy(f)
-        elif not lang2:
-            rep.empty(f)
-        else:
-            lang2 = gt.ALL_DICS.get_code(lang2)
-            gt.LANG2 = lang2
-    
     def set_timeout(self, timeout=0):
         # This is needed only for compliance with a general method
         pass

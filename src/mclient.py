@@ -495,9 +495,12 @@ class App:
         if not lang1 or not lang2:
             rep.empty(f)
             return
-        self.set_lang1(lang1)
-        self.set_lang2(lang2)
-        self.reset_opt()
+        CONFIG.new['lang1'] = lang1
+        CONFIG.new['lang2'] = lang2
+        self.update_lang1()
+        self.update_lang2()
+        self.set_lang1()
+        self.set_lang2()
         self.load_article()
     
     def clear_history(self):
@@ -519,9 +522,10 @@ class App:
         if not lang1 or not lang2:
             rep.empty(f)
             return
-        SOURCES.set_lang1(lang1)
-        SOURCES.set_lang2(lang2)
-        self.reset_opt()
+        CONFIG.new['lang1'] = lang1
+        CONFIG.new['lang2'] = lang2
+        self.update_lang1()
+        self.update_lang2()
         self.load_article()
         self.history.go_up()
     
@@ -539,9 +543,10 @@ class App:
         if not lang1 or not lang2:
             rep.empty(f)
             return
-        SOURCES.set_lang1(lang1)
-        SOURCES.set_lang2(lang2)
-        self.reset_opt()
+        CONFIG.new['lang1'] = lang1
+        CONFIG.new['lang2'] = lang2
+        self.update_lang1(lang1)
+        self.update_lang2(lang2)
         self.load_article()
         self.history.go_down()
     
@@ -696,7 +701,6 @@ class App:
         mes = _('Set language: {}').format(lang)
         Message(f, mes).show_info()
         CONFIG.new['lang1'] = lang
-        SOURCES.set_lang1(lang)
     
     def set_lang2(self):
         f = '[MClient] mclient.App.set_lang2'
@@ -704,15 +708,18 @@ class App:
         mes = _('Set language: {}').format(lang)
         Message(f, mes).show_info()
         CONFIG.new['lang2'] = lang
-        SOURCES.set_lang2(lang)
     
     def update_lang1(self):
+        f = '[MClient] mclient.App.update_lang1'
+        mes = _('Set language: {}').format(CONFIG.new['lang1'])
+        Message(f, mes).show_info()
         gi.objs.get_panel().opt_lg1.set(CONFIG.new['lang1'])
-        self.set_lang1()
     
     def update_lang2(self):
+        f = '[MClient] mclient.App.update_lang2'
+        mes = _('Set language: {}').format(CONFIG.new['lang2'])
+        Message(f, mes).show_info()
         gi.objs.get_panel().opt_lg2.set(CONFIG.new['lang2'])
-        self.set_lang2()
     
     def swap_langs(self):
         f = '[MClient] mclient.App.swap_langs'

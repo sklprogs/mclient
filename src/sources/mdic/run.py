@@ -49,14 +49,6 @@ class Source:
         # This is needed only for compliance with a general method
         return ''
     
-    def set_lang1(self, lang1=''):
-        # This is needed only for compliance with a general method
-        pass
-    
-    def set_lang2(self, lang2=''):
-        # This is needed only for compliance with a general method
-        pass
-    
     def set_timeout(self, timeout=0):
         # This is needed only for compliance with a general method
         pass

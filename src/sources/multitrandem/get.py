@@ -15,12 +15,49 @@ from skl_shared.logic import Text, Input, com as shcom
 from skl_shared.paths import Home, Path, File, Directory
 from skl_shared.table import Table
 
+from config import CONFIG
 # Do not localize language names here
 CODING = 'windows-1251'
-LANG1 = 'English'
-LANG2 = 'Russian'
 MAXSTEMS = 2
 DEBUG = False
+
+
+class Language:
+    
+    def __init__(self):
+        ''' #NOTE: Change this if number of languages supported by binary
+            Multitran changes.
+        '''
+        self.langint = ('English', 'Russian', 'German', 'Spanish', 'French'
+                       ,'Italian', 'Dutch', 'Latvian', 'Estonian')
+        self.langloc = (_('English'), _('Russian'), _('German'), _('Spanish')
+                       ,_('French'), _('Italian'), _('Dutch'), _('Latvian')
+                       ,_('Estonian'))
+    
+    def _adapt(self, lang):
+        f = '[MClient] sources.multitrandem.run.Source._adapt'
+        if not lang:
+            rep.empty(f)
+            return 'English'
+        if lang in self.langloc:
+            ind = self.langloc.index(lang)
+            return self.langint[ind]
+        elif lang in self.langint:
+            ind = self.langint.index(lang)
+            return self.langloc[ind]
+        else:
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            modes = self.langloc + self.langint
+            mes = mes.format(lang, ';'.join(modes))
+            Message(f, mes, True).show_error()
+        return 'English'
+    
+    def get_lang1(self):
+        return self._adapt(CONFIG.new['lang1'])
+    
+    def get_lang2(self):
+        return self._adapt(CONFIG.new['lang2'])
+
 
 
 class Ending:
@@ -938,8 +975,7 @@ class Walker:
             return []
         return [self.get_typein1(), self.get_typein2(), self.get_stems1()
                ,self.get_stems2(), self.get_glue1(), self.get_glue2()
-               ,self.get_article()
-               ]
+               ,self.get_article()]
     
     def get_article(self):
         f = '[MClient] sources.multitrandem.get.Walker.get_article'
@@ -1002,8 +1038,8 @@ class Walker:
         if not self.Success:
             rep.cancel(f)
             return
-        lang1 = LANG1.lower()
-        lang2 = LANG2.lower()
+        lang1 = LANGS.get_lang1().lower()
+        lang2 = LANGS.get_lang2().lower()
         self.lang11 = lang1[0:1]
         self.lang21 = lang2[0:1]
         self.lang13 = lang1[0:3]
@@ -1011,7 +1047,7 @@ class Walker:
     
     def check(self):
         f = '[MClient] sources.multitrandem.get.Walker.check'
-        if not self.path or not LANG1 or not LANG2:
+        if not self.path:
             self.Success = False
             rep.empty(f)
             return
@@ -1105,16 +1141,13 @@ class TypeIn(UPage):
             if chunk.startswith(coded):
                 matches.append(chunk)
         decoded = [match.decode(CODING, 'replace') \
-                   for match in matches if match
-                  ]
+                  for match in matches if match]
         for i in range(len(decoded)):
             ''' Sometimes MT provides for suggestions in different case, e.g.,
                 'aafc', 'AAFC' separated by b'\x00'.
             '''
             decoded[i] = decoded[i].split('\x00')
-            decoded[i] = [item for item in decoded[i] \
-                          if item
-                         ]
+            decoded[i] = [item for item in decoded[i] if item]
             if decoded[i][-1]:
                 decoded[i] = decoded[i][-1]
             else:
@@ -1340,9 +1373,8 @@ class Articles(UPage):
         if not chunk:
             #rep.empty(f)
             return
-        return Xor (data = chunk
-                   ,offset = -251
-                   ).dexor()
+        return Xor(data = chunk
+                  ,offset = -251).dexor()
     
     def search(self, coded):
         # Do not fail the whole class upon a failed search
@@ -1357,10 +1389,9 @@ class Articles(UPage):
         if not poses:
             rep.empty(f)
             return
-        chunk = self.get_part2 (pattern = coded
-                               ,start = poses[0]
-                               ,end = poses[1]
-                               )
+        chunk = self.get_part2(pattern = coded
+                              ,start = poses[0]
+                              ,end = poses[1])
         return self.parse(chunk)
 
 
@@ -1383,10 +1414,9 @@ class Glue(UPage):
         if not poses:
             rep.empty(f)
             return
-        chunk = self.get_part2 (pattern = coded
-                               ,start = poses[0]
-                               ,end = poses[1]
-                               )
+        chunk = self.get_part2(pattern = coded
+                              ,start = poses[0]
+                              ,end = poses[1])
         if chunk:
             return self.parse(chunk)
         ''' 'dict.erd' sometimes does not comprise stem numbers provided by
@@ -1534,8 +1564,7 @@ class Commands:
             - All chunk will have the same length.
         '''
         return [iterable[i: i + length] \
-                for i in range(len(iterable) - length + 1)
-               ]
+               for i in range(len(iterable) - length + 1)]
 
 
 class Files:
@@ -1975,5 +2004,6 @@ class Get:
 
 
 ALL_DICS = AllDics()
+LANGS = Language()
 FILES = Files()
 com = Commands()

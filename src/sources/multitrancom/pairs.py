@@ -4,8 +4,6 @@
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 
-LANG1 = _('Russian')
-LANG2 = _('English')
 
 ''' Bad Gateway:209 (Burmese), 262 (Gothic)
     #NOTE: do not forget to put ',' at the end of a pair tuple (otherwise,
@@ -2779,7 +2777,7 @@ class Pairs:
         self.flawed = []
         self.alive = []
     
-    def get_code(self,lang):
+    def get_code(self, lang):
         f = '[MClient] sources.multitrancom.utils.Pairs.get_code'
         if not lang:
             rep.empty(f)
@@ -2798,7 +2796,7 @@ class Pairs:
             self.alive.sort()
         return self.alive
     
-    def get_lang(self,code):
+    def get_lang(self, code):
         f = '[MClient] sources.multitrancom.utils.Pairs.get_lang'
         if not isinstance(code,int):
             mes = _('Wrong input data: "{}"!').format(code)
@@ -2847,7 +2845,7 @@ class Pairs:
                                   ,self.get_lang(pair[1])))
         return self.flawed
     
-    def get_pairs2(self,lang1):
+    def get_pairs2(self, lang1):
         f = '[MClient] sources.multitrancom.Pairs.get_pairs2'
         if not lang1:
             rep.empty(f)
@@ -2858,7 +2856,7 @@ class Pairs:
             mes = _('Wrong input data!')
             Message(f, mes, True).show_error()
     
-    def get_pairs1(self,lang2):
+    def get_pairs1(self, lang2):
         f = '[MClient] sources.multitrancom.Pairs.get_pairs1'
         if not lang2:
             rep.empty(f)

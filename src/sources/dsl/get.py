@@ -4,8 +4,6 @@
 import os
 import re
 
-from instance import Article
-
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.time import Timer
@@ -13,9 +11,8 @@ from skl_shared.logic import Input, com as shcom
 from skl_shared.paths import Home, Path, File, Directory
 from skl_shared.graphics.progress_bar.controller import PROGRESS
 
-
-LANG1 = 'English'
-LANG2 = 'Russian'
+from config import CONFIG
+from instance import Article
 
 
 class Get:
@@ -83,8 +80,16 @@ class Get:
                 return
             PROGRESS.inc()
         PROGRESS.close()
+        '''
+        #TODO: Fix
+        #lang1 = ALL_DICS.get_lang1()
+        #lang2 = ALL_DICS.get_lang2()
+        lang1 = CONFIG.new['lang1']
+        lang2 = CONFIG.new['lang2']
         dics = [idic for idic in ALL_DICS.dics \
-               if idic.lang1 == LANG1 and idic.lang2 == LANG2]
+               if idic.lang1 == lang1 and idic.lang2 == lang2]
+        '''
+        dics = ALL_DICS.dics
         dicnames = [idic.dicname for idic in dics]
         mes = _('Dictionaries to search in ({}/{}): {}')
         mes = mes.format(len(dicnames), len(ALL_DICS.dics), '; '.join(dicnames))
@@ -428,16 +433,33 @@ class AllDics:
             Message(f, mes).show_debug()
         return self.langs1
     
-    def get_code(self, lang):
+    def get_lang1(self):
+        #TODO: Fix
+        #NOTE: Do not set a variable, CONFIG may change
         # Both language code and localization name are accepted at input
-        f = '[MClient] sources.dsl.get.AllDics.get_code'
+        f = '[MClient] sources.dsl.get.AllDics.get_lang1'
         if not self.Success:
             rep.cancel(f)
-            return lang
-        if lang in self.langs:
-            return self.langs[lang]['code']
-        rep.wrong_input(f, lang)
-        return lang
+            return CONFIG.new['lang1']
+        print('langs1:', self.langs)
+        if CONFIG.new['lang1'] in self.langs:
+            return self.langs[CONFIG.new['lang1']]['code']
+        rep.wrong_input(f, CONFIG.new['lang1'])
+        return CONFIG.new['lang1']
+    
+    def get_lang2(self):
+        #TODO: Fix
+        #NOTE: Do not set a variable, CONFIG may change
+        # Both language code and localization name are accepted at input
+        f = '[MClient] sources.dsl.get.AllDics.get_lang2'
+        if not self.Success:
+            rep.cancel(f)
+            return CONFIG.new['lang2']
+        print('langs2:', self.langs)
+        if CONFIG.new['lang2'] in self.langs:
+            return self.langs[CONFIG.new['lang2']]['code']
+        rep.wrong_input(f, CONFIG.new['lang2'])
+        return CONFIG.new['lang2']
     
     def get_pairs(self, lang):
         # Both language code and localization name are accepted at input
@@ -476,9 +498,7 @@ class AllDics:
             self.langs[localized]['pairs'] = []
     
     def set_langs(self):
-        ''' DSL dictionaries are one-way only because of the index
-            structure.
-        '''
+        # DSL dictionaries are one-way only because of the index structure
         f = '[MClient] sources.dsl.get.AllDics.set_langs'
         if not self.Success:
             rep.cancel(f)

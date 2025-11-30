@@ -66,12 +66,6 @@ class Sources:
     def get_langs(self):
         return sources.multitrancom.pairs.objs.get_pairs().get_alive()
     
-    def set_lang1(self, lang1):
-        self.source.set_lang1(lang1)
-    
-    def set_lang2(self, lang2):
-        self.source.set_lang2(lang2)
-    
     def set_timeout(self, timeout=5.0):
         f = '[MClient] manager.Sources.set_timeout'
         if not self.source:

@@ -11,6 +11,8 @@ import sources.multitrancom.elems as el
 import sources.multitrancom.pairs as pr
 import sources.multitrancom.subjects as ms
 
+from config import CONFIG
+
 
 class Source:
     
@@ -35,34 +37,12 @@ class Source:
     
     def get_url(self, search):
         f = '[MClient] sources.multitrancom.run.Source.get_url'
-        code1 = pr.objs.get_pairs().get_code(pr.LANG1)
-        code2 = pr.objs.pairs.get_code(pr.LANG2)
+        code1 = pr.objs.get_pairs().get_code(CONFIG.new['lang1'])
+        code2 = pr.objs.pairs.get_code(CONFIG.new['lang2'])
         if not (code1 and code2 and search):
             rep.empty(f)
             return ''
         return gt.com.get_url(code1 = code1, code2 = code2, search = search)
-    
-    def set_lang1(self, lang1):
-        f = '[MClient] sources.multitrancom.run.Source.set_lang1'
-        if not lang1:
-            rep.empty(f)
-            return
-        if lang1 in pr.LANGS:
-            pr.LANG1 = lang1
-        else:
-            mes = _('Wrong input data: "{}"!').format(lang1)
-            Message(f, mes, True).show_error()
-    
-    def set_lang2(self, lang2):
-        f = '[MClient] sources.multitrancom.run.Source.set_lang2'
-        if not lang2:
-            rep.empty(f)
-            return
-        if lang2 in pr.LANGS:
-            pr.LANG2 = lang2
-        else:
-            mes = _('Wrong input data: "{}"!').format(lang2)
-            Message(f, mes, True).show_error()
     
     def set_timeout(self, timeout=6):
         gt.TIMEOUT = timeout
