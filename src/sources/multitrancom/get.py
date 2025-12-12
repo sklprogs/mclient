@@ -11,12 +11,12 @@ from skl_shared.message.controller import Message, rep
 from skl_shared.online import Online
 from skl_shared.get_url import Get as shGet
 
+from config import CONFIG
+
 
 CODING = 'UTF-8'
 # 'https' is received faster than 'http' (~0.2s)
 URL = 'https://www.multitran.com'
-# This value is reassigned with config
-TIMEOUT = 6
 PAIRROOT = URL + '/m.exe?'
 
 
@@ -163,7 +163,7 @@ class Get:
                       manually, then we need a string as output.
                     - If 'self.url' is empty, then an error is thrown.
                 '''
-                self.code = urllib.request.urlopen(self.url, None, TIMEOUT).read()
+                self.code = urllib.request.urlopen(self.url, None, CONFIG.new['timeout']).read()
                 mes = _('[OK]: "{}"').format(self.pattern)
                 Message(f, mes).show_info()
             # Too many possible exceptions
@@ -212,7 +212,7 @@ class Commands:
 
     def count_valid(self):
         try:
-            code = urllib.request.urlopen(url=URL, timeout=TIMEOUT).code
+            code = urllib.request.urlopen(url=URL, timeout=CONFIG.new['timeout']).code
             if (code / 100 < 4):
                 return 1
         except: #urllib.error.URLError, socket.timeout
