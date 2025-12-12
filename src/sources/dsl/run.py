@@ -45,10 +45,6 @@ class Source:
         pass
         #TODO (?): Unload dictionaries
     
-    def get_url(self, search=''):
-        # This is needed only for compliance with a general method
-        return ''
-    
     def set_timeout(self, timeout=0):
         # This is needed only for compliance with a general method
         pass
