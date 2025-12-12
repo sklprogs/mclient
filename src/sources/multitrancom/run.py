@@ -44,9 +44,6 @@ class Source:
             return ''
         return gt.com.get_url(code1 = code1, code2 = code2, search = search)
     
-    def set_timeout(self, timeout=6):
-        gt.TIMEOUT = timeout
-    
     def count_valid(self):
         return gt.com.count_valid()
     

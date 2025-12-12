@@ -42,10 +42,6 @@ class Source:
     def quit(self):
         gt.FILES.close()
     
-    def set_timeout(self, timeout=0):
-        # This is needed only for compliance with a general method
-        pass
-    
     def count_valid(self):
         return gt.com.count_valid()
     
