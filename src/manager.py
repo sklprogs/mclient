@@ -49,11 +49,7 @@ class Sources:
         self.mdsource.quit()
     
     def get_url(self, search):
-        f = '[MClient] manager.Sources.get_url'
-        if not self.source:
-            rep.empty(f)
-            return ''
-        url = self.source.get_url(search)
+        url = self.mcsource.get_url(search)
         if not url:
             return ''
         return url
