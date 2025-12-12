@@ -21,7 +21,7 @@ import sources.multitrancom.pairs
 
 class Sources:
     
-    def __init__(self, timeout=5.0):
+    def __init__(self):
         self.sdsource = sources.stardict.run.Source()
         self.mcsource = sources.multitrancom.run.Source()
         self.mbsource = sources.multitrandem.run.Source()
@@ -29,7 +29,6 @@ class Sources:
         self.frsource = sources.fora.run.Source()
         self.mdsource = sources.mdic.run.Source()
         self.source = self.mcsource
-        self.set_timeout(timeout)
     
     def fix_url(self, url):
         ''' This method cannot be deleted yet, since it processes both article
@@ -56,13 +55,6 @@ class Sources:
     
     def get_langs(self):
         return sources.multitrancom.pairs.objs.get_pairs().get_alive()
-    
-    def set_timeout(self, timeout=5.0):
-        f = '[MClient] manager.Sources.set_timeout'
-        if not self.source:
-            rep.empty(f)
-            return
-        self.source.set_timeout(timeout)
     
     def suggest(self, search):
         f = '[MClient] manager.Sources.suggest'
@@ -115,7 +107,7 @@ class Sources:
 
 f = '[MClient] manager.__main__'
 if CONFIG.Success:
-    SOURCES = Sources(CONFIG.new['timeout'])
+    SOURCES = Sources()
 else:
     SOURCES = None
     rep.cancel(f)
