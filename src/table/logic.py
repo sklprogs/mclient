@@ -32,7 +32,7 @@ class Table:
         ''' This is a constant value and should be manually changed only when
             new fixed types are introduced.
         '''
-        self.fixed_num = 4
+        self.fixed_num = 6
     
     def get_phsubj(self):
         f = '[MClient] table.logic.Table.get_phsubj'
