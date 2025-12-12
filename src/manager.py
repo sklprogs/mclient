@@ -80,18 +80,16 @@ class Sources:
         return blocks
     
     def is_parallel(self):
-        f = '[MClient] manager.Sources.is_parallel'
-        if not self.source:
-            rep.empty(f)
-            return
-        return self.source.is_parallel()
+        return self.sdsource.is_parallel() or self.mcsource.is_parallel() \
+        or self.mbsource.is_parallel() or self.lgsource.is_parallel() \
+        or self.frsource.is_parallel() or self.mdsource.is_parallel() \
+        or self.source.is_parallel()
     
     def is_separate(self):
-        f = '[MClient] manager.Sources.is_separate'
-        if not self.source:
-            rep.empty(f)
-            return
-        return self.source.is_separate()
+        return self.sdsource.is_separate() or self.mcsource.is_separate() \
+        or self.mbsource.is_separate() or self.lgsource.is_separate() \
+        or self.frsource.is_separate() or self.mdsource.is_separate() \
+        or self.source.is_separate()
     
     def get_subjects(self):
         # Get all available subjects (if any)
