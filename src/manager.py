@@ -54,11 +54,6 @@ class Sources:
             return ''
         return url
     
-    def get_unique(self):
-        # Return all non-combined sources
-        return (self.sdsource, self.mcsource, self.mbsource, self.lgsource
-               ,self.frsource)
-    
     def get_langs(self):
         return sources.multitrancom.pairs.objs.get_pairs().get_alive()
     
