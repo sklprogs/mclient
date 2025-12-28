@@ -50,7 +50,16 @@ class Elems:
                 self.art_subj[block.subj] = block.subjf
         rep.matches(f, count)
     
+    def remove_numbering(self):
+        f = '[MClient] cells.Elems.remove_numbering'
+        pattern = r'[\d+,aA-zZ,аА-яЯ][\),\.][\s]{0,1}'
+        old_len = len(self.blocks)
+        self.blocks = [block for block in self.blocks \
+                      if not re.match(pattern, block.text)]
+        rep.deleted(f, old_len - len(self.blocks))
+    
     def run(self):
+        self.remove_numbering()
         self.set_art_subj()
         iphrases = Phrases(self.blocks)
         self.blocks = iphrases.run()
