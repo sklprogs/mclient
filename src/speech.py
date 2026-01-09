@@ -78,6 +78,8 @@ class Speech:
         if not self.Success:
             rep.cancel(f)
             return short
+        short = short.strip()
+        short = short.rstrip('.').rstrip(';')
         full = self._get_full_by_lang(short)
         if short != full:
             return full
