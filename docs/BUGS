@@ -23,6 +23,7 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
+- RU-ZH: squares instead of characters
 - RU-EN, zero-sum game: wrong input data!
 - RU-EN, pedding (Cut-to-the chase mode, 1st part of speech is verb): condition
   not observed
