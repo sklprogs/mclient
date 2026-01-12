@@ -39,8 +39,8 @@ class Speech:
         if not self.Success:
             rep.cancel(f)
             return
-        ''' Show the full path in case of not finding the file to make
-            debugging easier.
+        ''' Show the full path in case of not finding the file to make debugging
+            easier.
         '''
         self.file = Path(self.file).get_absolute()
         self.code = Read(self.file).get()
