@@ -17,7 +17,7 @@
 },
 "Conjunction": {
     "full": {"en": "Conjunction", "ru": "Союз", "de": "Fügewort", "es": "Conjunción", "pl": "Spójnik", "uk": "Сполучник", "zh": ["连词", "连接词", "接续词"]},
-    "short": {"en": "cj.", "ru": "союз.", "es": "conj."}
+    "short": {"en": "cj.", "ru": "союз", "es": "conj."}
 },
 "Interjection": {
     "full": {"en": "Interjection", "ru": "Междометие", "de": ["Ausrufewort", "Empfindungswort", "Interjektion", "Empfindungslaut"], "es": "Interjección", "pl": ["Wykrzyknik", "Interiekcja"], "uk": "Вигук", "zh": ["感叹词", "闲投词"]},
@@ -37,7 +37,7 @@
 },
 "Participle": {
     "full": {"en": "Participle", "ru": "Причастие", "de": ["Mittelwort", "Partizip"], "es": "Participio", "pl": "Imiesłów", "uk": "Дієприкметник", "zh": "分词"},
-    "short": {"en": ["P", "part."], "ru": "прич."}
+    "short": {"en": ["part.", "P"], "ru": "прич."}
 },
 "Preposition": {
     "full": {"en": "Preposition", "ru": "Предлог", "de": ["Präposition", "Verhältniswort", "Vorwort"], "es": "Preposición", "pl": "Prepozycja", "uk": "Прийменник", "zh": ["介字", "前置词"]},
