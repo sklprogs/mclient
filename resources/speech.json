@@ -1,66 +1,58 @@
 {
-"en": {
-    "abbr"   : "Abbreviation",
-    "adj"    : "Adjective",
-    "adv"    : "Adverb",
-    "art"    : "Article",
-    "cj"     : "Conjunction",
-    "int"    : "Interjection",
-    "interj" : "Interjection",
-    "n"      : "Noun",
-    "prp"    : "Preposition",
-    "suf"    : "Suffix",
-    "v"      : "Verb"
+"Abbreviation": {
+    "full": {"en": "Abbreviation", "ru": "Сокращение", "de": "Abkürzung", "es": "Abreviatura", "pl": "Skrót", "uk": "Скорочення", "zh": "缩写"},
+    "short": {"en": "abbr.", "ru": "сокр.", "de": "Abk.", "es": "abbr.", "pl": "skr.", "uk": "скор."}
 },
-"ru": {
-    "арт"  : "Артикль",
-    "гл"   : "Глагол",
-    "глаг" : "Глагол",
-    "межд" : "Междометие",
-    "мест" : "Местоимение",
-    "нар"  : "Наречие",
-    "нареч": "Наречие",
-    "предл": "Предлог",
-    "прил" : "Прилагательное",
-    "прич" : "Причастие",
-    "сокр" : "Сокращение",
-    "союз" : "Союз",
-    "сущ"  : "Существительное",
-    "част" : "Частица",
-    "числ" : "Числительное"
+"Adjective": {
+    "full": {"en": "Adjective", "ru": "Прилагательное", "de": "Adjektiv", "es": "Adjetivo", "pl": "Przymiotnik", "uk": "Прикметник", "zh": "形容词"},
+    "short": {"en": "adj.", "ru": "прил.", "de": "Adj.", "es": "adj.", "pl": "przym.", "uk": "прикм."}
 },
-"de": {
-    "Abk": "Abkürzung",
-    "Adj": "Adjektiv",
-    "Adv": "Adverb",
-    "Sub": "Substantiv",
-    "V"  : "Verb"
+"Adverb": {
+    "full": {"en": "Adverb", "ru": "Наречие", "de": "Adverb", "es": "Adverbio", "pl": "Przysłówek", "uk": "Прислівник", "zh": "副词"},
+    "short": {"en": "adv.", "ru": ["нар.", "нареч."], "de": "Adv.", "es": "adv.", "pl": "przysł.", "uk": "присл."}
 },
-"es": {
-    "abbr": "Abreviatura",
-    "adj" : "Adjetivo",
-    "adv" : "Adverbio",
-    "s"    : "Sustantivo",
-    "v"    : "Verbo"
+"Article": {
+    "full": {"en": "Article", "ru": "Артикль", "de": ["Artikel", "Geschlechtswort"], "es": "Artículo", "pl": ["Rodzajnik", "Przedimek"], "uk": "Артикль", "zh": ["指件字", "冠词"]},
+    "short": {"en": "art.", "ru": "арт.", "pl": ["rodz.", "prz."]}
 },
-"pl": {
-    "czas"  : "Czasownik",
-    "przym" : "Przymiotnik",
-    "przysł": "Przysłówek",
-    "rzecz" : "Rzeczownik",
-    "skr"   : "Skrót"
+"Conjunction": {
+    "full": {"en": "Conjunction", "ru": "Союз", "de": "Fügewort", "es": "Conjunción", "pl": "Spójnik", "uk": "Сполучник", "zh": ["连词", "连接词", "接续词"]},
+    "short": {"en": "cj.", "ru": "союз.", "es": "conj."}
 },
-"uk": {
-    "дієсл": "Дієслово",
-    "імен" : "Іменник",
-    "прикм": "Прикметник",
-    "присл": "Прислівник",
-    "скор" : "Скорочення"
+"Interjection": {
+    "full": {"en": "Interjection", "ru": "Междометие", "de": ["Ausrufewort", "Empfindungswort", "Interjektion", "Empfindungslaut"], "es": "Interjección", "pl": ["Wykrzyknik", "Interiekcja"], "uk": "Вигук", "zh": ["感叹词", "闲投词"]},
+    "short": {"en": ["int.", "interj.", "interj;"], "ru": "межд.", "pl": "wykr."}
 },
-"zh": {
-    "名词"  : "名词",
-    "动词"  : "动词",
-    "形容词": "形容词",
-    "缩写"  : "缩写",
-    "副词"  : "副词"}
+"Noun": {
+    "full": {"en": "Noun", "ru": "Существительное", "de": "Substantiv", "es": "Sustantivo", "pl": "Rzeczownik", "uk": "Іменник", "zh": "名词"},
+    "short": {"en": "n", "ru": "сущ.", "de": "Sub.", "es": "s", "pl": "rzecz.", "uk": "імен."}
+},
+"Numeral adjective": {
+    "full": {"en": "Numeral adjective", "ru": "Числительное", "de": "Zahlwort", "es": "Numeral", "pl": "Liczebnik", "uk": "Числівник", "zh": ["基数", "数量数词"]},
+    "short": {"en": "num. adj.", "ru": "числ.", "pl": "licz."}
+},
+"Particle": {
+    "full": {"en": "Particle", "ru": "Частица", "de": ["Füllwort", "Partikel"], "es": "Partícula", "pl": "Partykuła", "uk": "Частка", "zh": ["语气词", "助辞", "助词, 小品词"]},
+    "short": {"en": "ptcl.", "ru": "част."}
+},
+"Participle": {
+    "full": {"en": "Participle", "ru": "Причастие", "de": ["Mittelwort", "Partizip"], "es": "Participio", "pl": "Imiesłów", "uk": "Дієприкметник", "zh": "分词"},
+    "short": {"en": ["P", "part."], "ru": "прич."}
+},
+"Preposition": {
+    "full": {"en": "Preposition", "ru": "Предлог", "de": ["Präposition", "Verhältniswort", "Vorwort"], "es": "Preposición", "pl": "Prepozycja", "uk": "Прийменник", "zh": ["介字", "前置词"]},
+    "short": {"en": "prp.", "ru": "предл."}
+},
+"Pronoun": {
+    "full": {"en": "Pronoun", "ru": "Местоимение", "de": ["Fürwort", "Pronomen"], "es": "Pronombre", "pl": "Zaimek", "uk": "Займенник", "zh": ["代名词", "代词"]},
+    "short": {"en": "pron.", "ru": "мест."}
+},
+"Suffix": {
+    "full": {"en": "Suffix", "ru": "Суффикс", "de": ["Suffix", "Nachsilbe"], "es": "Sufijo", "pl": "Przyrostek", "uk": "Суфікс", "zh": ["词尾", "接尾语", "后缀"]},
+    "short": {"en": "suf.", "ru": "суф.", "pl": "prz.", "uk": "суф."}
+},
+"Verb": {
+    "full": {"en": "Verb", "ru": "Глагол", "de": "Verb", "es": "Verbo", "pl": "Czasownik", "uk": "Дієслово", "zh": "动词"},
+    "short": {"en": "v", "ru": ["гл.", "глаг."], "de": "V.", "es": "v", "pl": "czas.", "uk": "дієсл."}
+}
 }

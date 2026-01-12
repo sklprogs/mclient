@@ -3,7 +3,6 @@
 
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
-from skl_shared.logic import com as shcom
 
 from config import CONFIG
 from speech import SPEECH
@@ -58,12 +57,6 @@ class Speech:
         self._expand('сущ.')
         self._expand('n')
         self._expand('v')
-        old = shcom.lang
-        shcom.lang = 'es'
-        self.mes.append(_('Set language to "{}"').format(shcom.lang))
-        self._expand('v')
-        shcom.lang = old
-        self.mes.append(_('Set language to "{}"').format(shcom.lang))
         self.mes.append('')
     
     def shorten(self):
@@ -77,12 +70,7 @@ class Speech:
         self._shorten('Существительное')
         self._shorten('Noun')
         self._shorten('Verb')
-        old = shcom.lang
-        shcom.lang = 'es'
-        self.mes.append(_('Set language to "{}"').format(shcom.lang))
         self._shorten('Verbo')
-        shcom.lang = old
-        self.mes.append(_('Set language to "{}"').format(shcom.lang))
         self.mes.append('')
     
     def run_all(self):

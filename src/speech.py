@@ -2,9 +2,9 @@
 
 import json
 
+from skl_shared.localize import _
 from skl_shared.message.controller import rep
 from skl_shared.paths import PDIR
-from skl_shared.logic import com as shcom
 from skl_shared.paths import Path
 from skl_shared.text_file import Read
 
@@ -17,9 +17,11 @@ class Speech:
         self.Success = True
         self.code = ''
         self.dic = {}
+        self.dicrw = {}
         self.file = PDIR.add('..', 'resources', 'speech.json')
         self.load()
         self.set_dic()
+        self.restructure()
     
     def set_dic(self):
         f = '[MClient] speech.Speech.set_dic'
@@ -46,54 +48,76 @@ class Speech:
             self.Success = False
             rep.empty_output(f)
     
-    def _get_short_by_lang(self, full):
-        if not shcom.lang in self.dic:
-            return full
-        for short in self.dic[shcom.lang]:
-            if self.dic[shcom.lang][short] == full:
-                return short
-        return full
+    def _add_item(self, section, lang, item):
+        f = '[MClient] speech.Speech._add_item'
+        item = item.lower()
+        if item in self.dicrw:
+            return
+        self.dicrw[item] = {}
+        # 'lang' key is just for information
+        #self.dicrw[item]['lang'] = lang
+        # Presence of keys should be checked at the scheme level
+        if not self.dic[section]['full']['en']:
+            self.Success = False
+            rep.empty(f)
+            return
+        if not self.dic[section]['short']['en']:
+            self.Success = False
+            rep.empty(f)
+            return
+        if isinstance(self.dic[section]['full']['en'], str):
+            full = self.dic[section]['full']['en']
+        else:
+            full = self.dic[section]['full']['en'][0]
+        if isinstance(self.dic[section]['short']['en'], str):
+            short = self.dic[section]['short']['en']
+        else:
+            short = self.dic[section]['short']['en'][0]
+        self.dicrw[item]['full'] = full
+        self.dicrw[item]['short'] = short
     
-    def _get_short(self, full):
-        for lang in self.dic:
-            for short in self.dic[lang]:
-                if self.dic[lang][short] == full:
-                    return short
-        return full
-    
-    def _get_full_by_lang(self, short):
-        try:
-            return self.dic[shcom.lang][short]
-        except KeyError:
-            return short
-    
-    def _get_full(self, short):
-        for lang in self.dic:
-            if short in self.dic[lang]:
-                return self.dic[lang][short]
-        return short
+    def restructure(self):
+        ''' Create a search-friendly dictionary. Unlike the dictionary read from
+            resources, this is less user-friendly, much larger when dumped to
+            JSON (~12 times), does not store languages and has each search key
+            lowercased.
+        '''
+        f = '[MClient] speech.Speech.restructure'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        # This loop is very fast (<0.002s)
+        for section in self.dic:
+            for type_ in self.dic[section]:
+                for lang in self.dic[section][type_]:
+                    items = self.dic[section][type_][lang]
+                    if isinstance(items, str):
+                        self._add_item(section, lang, items)
+                    else:
+                        for item in items:
+                            self._add_item(section, lang, item)
     
     def expand(self, short):
         f = '[MClient] speech.Speech.expand'
         if not self.Success:
             rep.cancel(f)
             return short
-        short = short.strip()
-        short = short.rstrip('.').rstrip(';')
-        full = self._get_full_by_lang(short)
-        if short != full:
-            return full
-        return self._get_full(short)
+        lower = short.lower().strip()
+        try:
+            return _(self.dicrw[lower]['full'])
+        except KeyError:
+            return short
     
     def shorten(self, full):
         f = '[MClient] speech.Speech.shorten'
         if not self.Success:
             rep.cancel(f)
             return full
-        short = self._get_short_by_lang(full)
-        if short != full:
-            return short
-        return self._get_short(full)
+        lower = full.lower().strip()
+        try:
+            return _(self.dicrw[lower]['short'])
+        except KeyError:
+            return full
     
     def get_settings(self):
         f = '[MClient] speech.Speech.get_settings'
@@ -104,7 +128,7 @@ class Speech:
         if not self.Success:
             rep.cancel(f)
             return speeches
-        if not self.dic:
+        if not self.dicrw:
             return speeches
         if not CONFIG.new['ShortSpeech']:
             return speeches
@@ -117,12 +141,7 @@ class Speech:
         if not self.Success:
             rep.cancel(f)
             return
-        for lang in self.dic:
-            for short in self.dic[lang]:
-                if pattern == short:
-                    return True
-                if self.dic[lang][short] == pattern:
-                    return True
+        return pattern.lower() in self.dicrw
 
 
 SPEECH = Speech()
