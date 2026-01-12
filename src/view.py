@@ -27,20 +27,23 @@ class Expand:
               full values can be sorted differently (especially this concerns
               subjects, in which first letters of shortened and full texts may
               differ).
-            - Creating a full clone of cells is necessary since blocks and
-              cells change their attributes. 'list' or 'copy.copy' is not
-              enough. Works with None.
+            - Creating a full clone of cells is necessary since blocks and cells
+              change their attributes. 'list' or 'copy.copy' is not enough.
+              Works with None.
         '''
         self.cells = copy.deepcopy(cells)
     
     def expand_speeches(self):
-        # This takes ~0.008s for 'set' on AMD E-300 (no IDE, no warnings)
         f = '[MClient] view.Expand.expand_speeches'
+        ''' Even if we expect parts of speech in a short form, we need to
+            process them because they should be localized for local sources.
+        '''
         if CONFIG.new['ShortSpeech']:
-            rep.lazy(f)
-            return
-        for cell in self.cells:
-            cell.speech = SPEECH.expand(cell.speech)
+            for cell in self.cells:
+                cell.speech = SPEECH.shorten(cell.speech)
+        else:
+            for cell in self.cells:
+                cell.speech = SPEECH.expand(cell.speech)
     
     def expand_subjects(self):
         # This takes ~0.0086s for 'set' on AMD E-300
@@ -103,7 +106,8 @@ class Omit:
         count = 0
         for cell in self.cells:
             old_len = len(cell.blocks)
-            cell.blocks = [block for block in cell.blocks if block.type != 'user']
+            cell.blocks = [block for block in cell.blocks \
+                          if block.type != 'user']
             delta = old_len - len(cell.blocks)
             if delta:
                 fragms = [block.text for block in cell.blocks]
@@ -371,8 +375,8 @@ class View:
         if not self.Success:
             rep.cancel(f)
             return
-        headers = (_('ROW #'), _('CELL #'), _('TEXT'), _('TYPES'), 'URL'
-                  ,'COL1' ,'COL2', 'COL3', 'COL4', 'COL5', 'COL6')
+        headers = (_('ROW #'), _('CELL #'), _('TEXT'), _('TYPES'), 'URL', 'COL1'
+                  ,'COL2', 'COL3', 'COL4', 'COL5', 'COL6')
         rowno = []
         no = []
         text = []
@@ -399,7 +403,8 @@ class View:
             for block in cell.blocks:
                 cell_types.append(block.type)
             types.append(', '.join(cell_types))
-        iterable = [rowno, no, text, types, url, col1, col2, col3, col4, col5, col6]
+        iterable = [rowno, no, text, types, url, col1, col2, col3, col4, col5
+                   ,col6]
         return Table(headers=headers, iterable=iterable, maxrow=maxrow).run()
     
     def _renumber_cell_nos(self):
@@ -481,7 +486,8 @@ class View:
         while i < len(self.cells):
             cell = self.cells[i]
             if cell.fixed_block \
-            and cell.fixed_block.type in ('source', 'dic', 'wform', 'transc', 'speech'):
+            and cell.fixed_block.type in ('source', 'dic', 'wform', 'transc'
+                                         ,'speech'):
                 cell.text = ''
             cell.source = cell.dic = cell.wform = cell.speech = cell.transc = ''
             i += 1
