@@ -141,7 +141,7 @@ class Speech:
         if not self.Success:
             rep.cancel(f)
             return
-        return pattern.lower() in self.dicrw
+        return pattern.lower().strip() in self.dicrw
 
 
 SPEECH = Speech()
