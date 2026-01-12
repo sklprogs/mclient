@@ -256,9 +256,11 @@ class Elems:
     def run_fora_stardictx(self):
         f = '[MClient] tests.sources.Elems.run_fora_stardictx'
         from sources.fora.get import ALL_DICS
-        from sources.fora.stardictx.tags import Tags
+        from sources.stardict.cleanup import CleanUp
+        from sources.stardict.tags import Tags
         from sources.fora.stardictx.elems import Elems
         article = ALL_DICS.search(SEARCH)
+        article = CleanUp(article).run()
         if not article:
             rep.empty(f)
             return
@@ -266,6 +268,25 @@ class Elems:
         ielems = Elems(blocks)
         ielems.run()
         return ielems.debug()
+    
+    def run_fora_stardictx_cells(self):
+        f = '[MClient] tests.sources.Elems.run_fora_stardictx_cells'
+        from sources.fora.get import ALL_DICS
+        from sources.stardict.cleanup import CleanUp
+        from sources.stardict.tags import Tags
+        from sources.fora.stardictx.elems import Elems
+        from cells import Elems as cElems, Cells
+        article = ALL_DICS.search(SEARCH)
+        article = CleanUp(article).run()
+        if not article:
+            rep.empty(f)
+            return
+        blocks = Tags(article).run()
+        blocks = Elems(blocks).run()
+        blocks = cElems(blocks).run()
+        icells = Cells(blocks)
+        icells.run()
+        return icells.debug()
     
     def run_fora_dsl(self):
         f = '[MClient] tests.sources.Elems.run_fora_dsl'
@@ -529,8 +550,8 @@ class Tags:
     def run_fora_stardictx(self):
         f = '[MClient] tests.sources.Tags.run_fora_stardictx'
         import sources.fora.get as gt
-        import sources.fora.stardictx.cleanup as cu
-        import sources.fora.stardictx.tags as tg
+        import sources.stardict.cleanup as cu
+        import sources.stardict.tags as tg
         article = gt.ALL_DICS.search(SEARCH)
         if not article:
             rep.empty(f)

@@ -7,9 +7,10 @@ from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
 
 #from tests.sources import Get
-#from tests.sources import Elems
-#from tests.sources import Source
-from tests.speech import Speech
+from tests.sources import Tags
+from tests.sources import Elems
+from tests.sources import Source
+#from tests.speech import Speech
 
 
 if __name__ == '__main__':
@@ -19,7 +20,7 @@ if __name__ == '__main__':
         explicitly invoking QMainWindow in __main__) in a separate procedure,
         e.g. com.run_welcome, will cause an infinite loop.
     '''
-    mes = Speech().run_all()
+    #mes = Speech().run_all()
     #mes = com.get_all_subjects()
     #mes = Subjects().run()
     #mes = Prioritize().run_multitrancom()
@@ -45,6 +46,7 @@ if __name__ == '__main__':
     #mes = Elems().run_stardict()
     #mes = Elems().run_stardict_cells()
     #mes = Elems().run_fora_stardictx()
+    mes = Elems().run_fora_stardictx_cells()
     #mes = Elems().run_fora_dsl()
     #mes = Elems().run_fora()
     #mes = Elems().run_multitrandem()
