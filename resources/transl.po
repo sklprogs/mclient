@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-12 06:15+0300\n"
-"PO-Revision-Date: 2026-01-12 06:15+0300\n"
+"POT-Creation-Date: 2026-01-12 22:45+0300\n"
+"PO-Revision-Date: 2026-01-12 22:51+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -179,16 +179,139 @@ msgstr "Основные сочетания клавиш"
 msgid "General"
 msgstr "Общая лексика"
 
-#: mclient/src/_translations.py:52 mclient/src/sources/multitrandem/get.py:1890
-msgid "n"
-msgstr "сущ."
+#: mclient/src/_translations.py:52 mclient/src/settings/gui.py:36
+#: mclient/src/settings/gui.py:85 mclient/src/settings/gui.py:86
+#: mclient/src/settings/gui.py:87 mclient/src/settings/gui.py:472
+#: mclient/src/settings/gui.py:538 mclient/src/sources/multitrandem/get.py:1829
+msgid "Abbreviation"
+msgstr "Сокращение"
 
-#: mclient/src/_translations.py:53 mclient/src/settings/gui.py:36
+#: mclient/src/_translations.py:53 mclient/src/sources/multitrandem/get.py:1830
+msgid "abbr."
+msgstr "сокр."
+
+#: mclient/src/_translations.py:54 mclient/src/settings/gui.py:36
+#: mclient/src/settings/gui.py:71 mclient/src/settings/gui.py:72
+#: mclient/src/settings/gui.py:73 mclient/src/settings/gui.py:471
+#: mclient/src/settings/gui.py:535 mclient/src/sources/multitrandem/get.py:1885
+msgid "Adjective"
+msgstr "Прилагательное"
+
+#: mclient/src/_translations.py:55
+msgid "adj."
+msgstr "прил."
+
+#: mclient/src/_translations.py:56 mclient/src/settings/gui.py:37
+#: mclient/src/settings/gui.py:99 mclient/src/settings/gui.py:100
+#: mclient/src/settings/gui.py:101 mclient/src/settings/gui.py:473
+#: mclient/src/settings/gui.py:541 mclient/src/sources/multitrandem/get.py:1833
+msgid "Adverb"
+msgstr "Наречие"
+
+#: mclient/src/_translations.py:57 mclient/src/sources/multitrandem/get.py:1834
+msgid "adv."
+msgstr "нареч."
+
+#: mclient/src/_translations.py:58 mclient/src/sources/multitrandem/get.py:1848
+msgid "Article"
+msgstr "Статья"
+
+#: mclient/src/_translations.py:59
+#| msgid "Gen"
+msgid "en"
+msgstr "en"
+
+#: mclient/src/_translations.py:60 mclient/src/sources/multitrandem/get.py:1843
+msgid "Conjunction"
+msgstr "Союз"
+
+#: mclient/src/_translations.py:61
+msgid "cj."
+msgstr "союз"
+
+#: mclient/src/_translations.py:62 mclient/src/sources/multitrandem/get.py:1838
+msgid "Interjection"
+msgstr "Междометие"
+
+#: mclient/src/_translations.py:63
+msgid "int."
+msgstr "межд."
+
+#: mclient/src/_translations.py:64 mclient/src/settings/gui.py:36
 #: mclient/src/settings/gui.py:43 mclient/src/settings/gui.py:44
 #: mclient/src/settings/gui.py:45 mclient/src/settings/gui.py:469
 #: mclient/src/settings/gui.py:530 mclient/src/sources/multitrandem/get.py:1889
 msgid "Noun"
 msgstr "Существительное"
+
+#: mclient/src/_translations.py:65 mclient/src/sources/multitrandem/get.py:1890
+msgid "n"
+msgstr "сущ."
+
+#: mclient/src/_translations.py:66
+msgid "Numeral adjective"
+msgstr "Числительное"
+
+#: mclient/src/_translations.py:67
+msgid "num. adj."
+msgstr "числ."
+
+#: mclient/src/_translations.py:68 mclient/src/sources/multitrandem/get.py:1872
+msgid "Particle"
+msgstr "Частица"
+
+#: mclient/src/_translations.py:69
+msgid "ptcl."
+msgstr "част."
+
+#: mclient/src/_translations.py:70
+msgid "Participle"
+msgstr "Причастие"
+
+#: mclient/src/_translations.py:71 mclient/src/sources/multitrandem/get.py:1873
+msgid "part."
+msgstr "част."
+
+#: mclient/src/_translations.py:72 mclient/src/settings/gui.py:37
+#: mclient/src/settings/gui.py:113 mclient/src/settings/gui.py:114
+#: mclient/src/settings/gui.py:115 mclient/src/settings/gui.py:474
+#: mclient/src/settings/gui.py:544 mclient/src/sources/multitrandem/get.py:1862
+msgid "Preposition"
+msgstr "Предлог"
+
+#: mclient/src/_translations.py:73
+msgid "prp."
+msgstr "предл."
+
+#: mclient/src/_translations.py:74 mclient/src/settings/gui.py:37
+#: mclient/src/settings/gui.py:127 mclient/src/settings/gui.py:128
+#: mclient/src/settings/gui.py:129 mclient/src/settings/gui.py:475
+#: mclient/src/settings/gui.py:547 mclient/src/sources/multitrandem/get.py:1881
+msgid "Pronoun"
+msgstr "Местоимение"
+
+#: mclient/src/_translations.py:75
+msgid "pron."
+msgstr "мест."
+
+#: mclient/src/_translations.py:76
+msgid "Suffix"
+msgstr "Суффикс"
+
+#: mclient/src/_translations.py:77
+msgid "suf."
+msgstr "суф."
+
+#: mclient/src/_translations.py:78 mclient/src/settings/gui.py:36
+#: mclient/src/settings/gui.py:57 mclient/src/settings/gui.py:58
+#: mclient/src/settings/gui.py:59 mclient/src/settings/gui.py:470
+#: mclient/src/settings/gui.py:532 mclient/src/sources/multitrandem/get.py:1893
+msgid "Verb"
+msgstr "Глагол"
+
+#: mclient/src/_translations.py:79 mclient/src/sources/multitrandem/get.py:1894
+msgid "v"
+msgstr "глаг."
 
 #: mclient/src/about/gui.py:46 mclient/src/third_parties/controller.py:27
 msgid "Third parties"
@@ -292,8 +415,8 @@ msgstr "Недопустимые входные данные!"
 #: mclient/src/sources/multitrancom/elems.py:455
 #: mclient/src/sources/multitrancom/tags.py:305
 #: mclient/src/sources/stardict/elems.py:200
-#: mclient/src/sources/stardict/tags.py:199 mclient/src/view.py:374
-#: mclient/src/view.py:668
+#: mclient/src/sources/stardict/tags.py:199 mclient/src/view.py:377
+#: mclient/src/view.py:671
 msgid "CELL #"
 msgstr "ЯЧЕЙКА №"
 
@@ -301,7 +424,7 @@ msgstr "ЯЧЕЙКА №"
 #: mclient/src/sources/fora/stardict0/elems.py:182
 #: mclient/src/sources/fora/stardict0/elems.py:204
 #: mclient/src/sources/multitrancom/elems.py:455
-#: mclient/src/sources/stardict/elems.py:200 mclient/src/view.py:374
+#: mclient/src/sources/stardict/elems.py:200 mclient/src/view.py:377
 msgid "TYPES"
 msgstr "ТИПЫ"
 
@@ -314,13 +437,13 @@ msgstr "ТИПЫ"
 #: mclient/src/sources/multitrancom/tags.py:371
 #: mclient/src/sources/stardict/elems.py:200
 #: mclient/src/sources/stardict/tags.py:198
-#: mclient/src/sources/stardict/tags.py:268 mclient/src/view.py:143
-#: mclient/src/view.py:374 mclient/src/view.py:668
+#: mclient/src/sources/stardict/tags.py:268 mclient/src/view.py:146
+#: mclient/src/view.py:377 mclient/src/view.py:671
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
 #: mclient/src/cells.py:115 mclient/src/sources/fora/stardict0/elems.py:203
-#: mclient/src/view.py:374 mclient/src/view.py:668
+#: mclient/src/view.py:377 mclient/src/view.py:671
 msgid "ROW #"
 msgstr "СТРОКА №"
 
@@ -538,7 +661,7 @@ msgstr "История"
 #: mclient/src/sources/multitrancom/tags.py:304
 #: mclient/src/sources/multitrancom/tags.py:371
 #: mclient/src/sources/stardict/tags.py:198
-#: mclient/src/sources/stardict/tags.py:268 mclient/src/view.py:143
+#: mclient/src/sources/stardict/tags.py:268 mclient/src/view.py:146
 #: skl_shared/src/test.py:728
 msgid "#"
 msgstr "№"
@@ -1068,7 +1191,7 @@ msgstr "Запрос длинный ({} символов). Отправить?"
 #: mclient/src/logic.py:234 mclient/src/prior_block/controller.py:199
 #: mclient/src/prior_block/controller.py:251 mclient/src/save/controller.py:188
 #: mclient/src/settings/gui.py:327 mclient/src/sources/multitrandem/get.py:49
-#: mclient/src/view.py:306 skl_shared/src/graphics/option_menu/controller.py:65
+#: mclient/src/view.py:309 skl_shared/src/graphics/option_menu/controller.py:65
 #: skl_shared/src/text_file.py:145
 msgid ""
 "An unknown mode \"{}\"!\n"
@@ -1361,48 +1484,6 @@ msgstr "Ясность"
 #: mclient/src/settings/gui.py:324
 msgid "Custom"
 msgstr "Особый"
-
-#: mclient/src/settings/gui.py:36 mclient/src/settings/gui.py:57
-#: mclient/src/settings/gui.py:58 mclient/src/settings/gui.py:59
-#: mclient/src/settings/gui.py:470 mclient/src/settings/gui.py:532
-#: mclient/src/sources/multitrandem/get.py:1893
-msgid "Verb"
-msgstr "Глагол"
-
-#: mclient/src/settings/gui.py:36 mclient/src/settings/gui.py:71
-#: mclient/src/settings/gui.py:72 mclient/src/settings/gui.py:73
-#: mclient/src/settings/gui.py:471 mclient/src/settings/gui.py:535
-#: mclient/src/sources/multitrandem/get.py:1885
-msgid "Adjective"
-msgstr "Прилагательное"
-
-#: mclient/src/settings/gui.py:36 mclient/src/settings/gui.py:85
-#: mclient/src/settings/gui.py:86 mclient/src/settings/gui.py:87
-#: mclient/src/settings/gui.py:472 mclient/src/settings/gui.py:538
-#: mclient/src/sources/multitrandem/get.py:1829
-msgid "Abbreviation"
-msgstr "Сокращение"
-
-#: mclient/src/settings/gui.py:37 mclient/src/settings/gui.py:99
-#: mclient/src/settings/gui.py:100 mclient/src/settings/gui.py:101
-#: mclient/src/settings/gui.py:473 mclient/src/settings/gui.py:541
-#: mclient/src/sources/multitrandem/get.py:1833
-msgid "Adverb"
-msgstr "Наречие"
-
-#: mclient/src/settings/gui.py:37 mclient/src/settings/gui.py:113
-#: mclient/src/settings/gui.py:114 mclient/src/settings/gui.py:115
-#: mclient/src/settings/gui.py:474 mclient/src/settings/gui.py:544
-#: mclient/src/sources/multitrandem/get.py:1862
-msgid "Preposition"
-msgstr "Предлог"
-
-#: mclient/src/settings/gui.py:37 mclient/src/settings/gui.py:127
-#: mclient/src/settings/gui.py:128 mclient/src/settings/gui.py:129
-#: mclient/src/settings/gui.py:475 mclient/src/settings/gui.py:547
-#: mclient/src/sources/multitrandem/get.py:1881
-msgid "Pronoun"
-msgstr "Местоимение"
 
 #: mclient/src/settings/gui.py:50 mclient/src/settings/gui.py:64
 #: mclient/src/settings/gui.py:78 mclient/src/settings/gui.py:92
@@ -14090,33 +14171,13 @@ msgstr "Фраза"
 msgid "phrase"
 msgstr "фраза"
 
-#: mclient/src/sources/multitrandem/get.py:1830
-msgid "abbr."
-msgstr "сокр."
-
-#: mclient/src/sources/multitrandem/get.py:1834
-msgid "adv."
-msgstr "нареч."
-
-#: mclient/src/sources/multitrandem/get.py:1838
-msgid "Interjection"
-msgstr "Междометие"
-
 #: mclient/src/sources/multitrandem/get.py:1839
 msgid "interj."
 msgstr "межд."
 
-#: mclient/src/sources/multitrandem/get.py:1843
-msgid "Conjunction"
-msgstr "Союз"
-
 #: mclient/src/sources/multitrandem/get.py:1844
 msgid "conj."
 msgstr "союз"
-
-#: mclient/src/sources/multitrandem/get.py:1848
-msgid "Article"
-msgstr "Статья"
 
 #: mclient/src/sources/multitrandem/get.py:1849
 msgid "art."
@@ -14150,14 +14211,6 @@ msgstr "Форма"
 msgid "form"
 msgstr "форма"
 
-#: mclient/src/sources/multitrandem/get.py:1872
-msgid "Particle"
-msgstr "Частица"
-
-#: mclient/src/sources/multitrandem/get.py:1873
-msgid "part."
-msgstr "част."
-
 #: mclient/src/sources/multitrandem/get.py:1877
 msgid "Predicative"
 msgstr "Предикатив"
@@ -14173,10 +14226,6 @@ msgstr "мест."
 #: mclient/src/sources/multitrandem/get.py:1886
 msgid "adj"
 msgstr "прил."
-
-#: mclient/src/sources/multitrandem/get.py:1894
-msgid "v"
-msgstr "глаг."
 
 #: mclient/src/sources/multitrandem/get.py:1936
 msgid "Try for \"{}|{}\""
@@ -14558,7 +14607,7 @@ msgstr "Самый высокий приоритет (упорядоченнос
 msgid "Details:"
 msgstr "Подробности:"
 
-#: mclient/src/tests/sources.py:729 mclient/src/view.py:143
+#: mclient/src/tests/sources.py:729 mclient/src/view.py:146
 msgid "SUBJECT"
 msgstr "ТЕМАТИКА"
 
@@ -14610,19 +14659,19 @@ msgstr "Несовпадение в сокращенном виде"
 msgid "On MClient"
 msgstr "По поводу MClient"
 
-#: mclient/src/view.py:95
+#: mclient/src/view.py:98
 msgid "Omitted cells: {}"
 msgstr "Опущенные ячейки: {}"
 
-#: mclient/src/view.py:143
+#: mclient/src/view.py:146
 msgid "SPEECH"
 msgstr "ЧАСТЬ РЕЧИ"
 
-#: mclient/src/view.py:668
+#: mclient/src/view.py:671
 msgid "COLUMN #"
 msgstr "СТОЛБЕЦ №"
 
-#: mclient/src/view.py:668
+#: mclient/src/view.py:671
 msgid "CODE"
 msgstr "КОД"
 
@@ -16127,9 +16176,6 @@ msgstr ""
 
 #~ msgid "suf"
 #~ msgstr "суф."
-
-#~ msgid "Suffix"
-#~ msgstr "Суффикс"
 
 #, python-format
 #~ msgid "Go to the previous section of column #%d"
