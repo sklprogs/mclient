@@ -4,6 +4,8 @@ all:
 - head -> устройство или приспособление...: blocks from previous article
 
 mclient:
+- EN-RU: lockup garage: "Отдельные слова" is copied as "Отдельные слова <!--"
+  and propagated to the source not having such subject
 - hello -> %d phrases: Alt+F works, but not Enter
 - Search for "turn up with", go to "turn up", turn on History -> Request
 - 'cause of: Сообщить об ошибке Короткая ссылка
@@ -23,6 +25,7 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
+- EN_RU: lockup: "холодная (сущ.)": each bracket is on a new line
 - RU-ZH: squares instead of characters
 - RU-EN, zero-sum game: wrong input data!
 - RU-EN, pedding (Cut-to-the chase mode, 1st part of speech is verb): condition
