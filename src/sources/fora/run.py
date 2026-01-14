@@ -104,12 +104,12 @@ class Source:
         if not groups[0]:
             rep.wrong_input(f)
             return []
-        cellno = groups[0][-1].cellno + 1
+        delta = 0
         i = 1
         while i < len(groups):
+            delta += groups[i-1][-1].cellno
             for block in groups[i]:
-                block.cellno = cellno
-                cellno += 1
+                block.cellno = block.cellno + delta
             i += 1
         blocks = []
         for group in groups:
