@@ -110,10 +110,11 @@ class Cells:
         for i in range(len(self.cells)):
             self.cells[i].no = i
     
-    def debug(self, maxrow=15, maxrows=0):
+    def debug(self, maxrow=60, maxrows=0):
         f = '[MClient] cells.Cells.debug'
-        headers = ('SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #'), _('CELL #')
-                  ,_('TYPES'), _('TEXT'), 'URL')
+        headers = (_('SOURCE'), 'SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #')
+                  ,_('CELL #'), _('TYPES'), _('TEXT'), 'URL')
+        sources = []
         subj = []
         wform = []
         speech = []
@@ -124,6 +125,7 @@ class Cells:
         texts = []
         urls = []
         for cell in self.cells:
+            sources.append(cell.source)
             subj.append(cell.subj)
             wform.append(cell.wform)
             speech.append(cell.speech)
@@ -135,8 +137,8 @@ class Cells:
             types.append(', '.join(cell_types))
             urls.append(cell.url)
         mes = Table(headers = headers
-                   ,iterable = (subj, wform, speech, transc, rownos, nos, types
-                               ,texts, urls)
+                   ,iterable = (sources, subj, wform, speech, transc, rownos
+                               ,nos, types, texts, urls)
                    ,maxrow = maxrow, maxrows = maxrows).run()
         return f'{f}:\n{mes}'
     
