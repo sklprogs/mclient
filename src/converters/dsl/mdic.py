@@ -60,7 +60,6 @@ class Portion:
             return
         # We do not want millions of debug messages
         ms.STOP = True
-        cu.FORA = False
         for article in self.articles:
             code = cu.CleanUp(article).run()
             blocks = Tags(code).run()
