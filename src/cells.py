@@ -301,10 +301,16 @@ class Cells:
             if char.isalpha():
                 return True
     
+    def _is_roman_number(self, text):
+        return text.strip() in ('I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'
+                               ,'IX', 'X')
+    
     def delete_trash(self):
         # Either do this on cells or on blocks having unique cellno
         f = '[MClient] cells.Cells.delete_trash'
         old = len(self.cells)
+        self.cells = [cell for cell in self.cells \
+                     if not self._is_roman_number(cell.text)]
         self.cells = [cell for cell in self.cells if self._has_text(cell.text)]
         rep.deleted(f, old - len(self.cells))
     
