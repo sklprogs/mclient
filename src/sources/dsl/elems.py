@@ -154,6 +154,18 @@ class Elems:
         for block in self.blocks:
             block.source = 'Lingvo (.dsl)'
     
+    def duplicate_phrases(self):
+        f = '[MClient] sources.dsl.elems.Elems.duplicate_phrases'
+        count = 0
+        phrases = []
+        for block in self.blocks:
+            if block.type == 'phrase':
+                count += 1
+                phrases.append(copy.deepcopy(block))
+                block.type = 'comment'
+        self.blocks += phrases
+        rep.matches(f, count)
+    
     def run(self):
         f = '[MClient] sources.dsl.elems.Elems.run'
         if not self.Success:
@@ -163,6 +175,7 @@ class Elems:
         self.delete_trash()
         self.delete_numeration()
         self.delete_backslash()
+        self.duplicate_phrases()
         self.set_speech()
         self.set_subjects()
         self.set_source()
