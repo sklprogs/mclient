@@ -57,7 +57,7 @@ class Block:
         self.text = ''
         self.url = ''
         ''' 'comment', 'correction', 'invalid', 'phcount', 'phrase', 'phsubj',
-            'speech', 'subj', 'term', 'transc', 'wform'.
+            'speech', 'subj', 'term', 'transc', 'user', 'wform'.
         '''
         self.type = 'comment'
         self.dic = ''
