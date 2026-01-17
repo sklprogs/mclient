@@ -58,9 +58,49 @@ class Elems:
                       if not re.match(pattern, block.text)]
         rep.deleted(f, old_len - len(self.blocks))
     
+    def _is_comment_like(self, group):
+        for i in group:
+            if not self.blocks[i].type in ('comment', 'correction', 'user'):
+                return False
+        return True
+    
+    def _get_groups(self):
+        groups = []
+        group = []
+        cellno = -1
+        for i in range(len(self.blocks)):
+            if self.blocks[i].cellno == cellno:
+                group.append(i)
+            elif group:
+                groups.append(group)
+                group = [i]
+                cellno = self.blocks[i].cellno
+            else:
+                group = [i]
+                cellno = self.blocks[i].cellno
+        if group:
+            groups.append(group)
+        return groups
+    
+    def attach_comments(self):
+        #TODO: Do not attach to fixed blocks
+        # This is fast (~0.01s for 'set' on AMD E-300)
+        f = '[MClient] cells.Elems.attach_comments'
+        groups = self._get_groups()
+        count = 0
+        i = 1
+        while i < len(groups):
+            if self._is_comment_like(groups[i]):
+                for j in groups[i]:
+                    count += 1
+                    self.blocks[j].cellno = self.blocks[groups[i-1][-1]].cellno
+            i += 1
+        rep.matches(f, count)
+    
     def run(self):
         self.remove_numbering()
         self.set_art_subj()
+        self.attach_comments()
         iphrases = Phrases(self.blocks)
         self.blocks = iphrases.run()
         self.phsubj_url = iphrases.phsubj_url
