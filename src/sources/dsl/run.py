@@ -55,14 +55,13 @@ class Source:
         return gt.Suggest(search).run()
     
     def request(self, search='', url=''):
-        cu.FORA = False
         htm = []
+        self.blocks = []
         articles = gt.Get(search).run()
         for iarticle in articles:
             htm.append(iarticle.code)
             code = cu.CleanUp(iarticle.code).run()
             self.blocks += tg.Tags(code).run()
         self.htm = '\n'.join(htm)
-        texts = [block.text for block in self.blocks if block.text]
         self.blocks = el.Elems(self.blocks).run()
         return self.blocks

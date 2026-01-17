@@ -52,6 +52,7 @@ class Source:
         return gt.Suggest(search).run()
     
     def request(self, search='', url=''):
+        self.blocks = []
         iget = gt.Get(search)
         chunks = iget.run()
         if not chunks:
