@@ -296,11 +296,24 @@ class Cells:
             cell.source = cell.blocks[0].source
             cell.dic = cell.blocks[0].dic
     
+    def _has_text(self, text):
+        for char in text:
+            if char.isalpha():
+                return True
+    
+    def delete_trash(self):
+        # Either do this on cells or on blocks having unique cellno
+        f = '[MClient] cells.Cells.delete_trash'
+        old = len(self.cells)
+        self.cells = [cell for cell in self.cells if self._has_text(cell.text)]
+        rep.deleted(f, old - len(self.cells))
+    
     def run(self):
         self.set_cells()
         self.set_urls()
         self.unite_brackets()
         self.set_text()
+        self.delete_trash()
         self.set_sources()
         self.set_fixed_cells()
         self.set_row_nos()
