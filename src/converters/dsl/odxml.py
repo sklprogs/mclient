@@ -16,7 +16,8 @@ from skl_shared.logic import com as shcom
 from sources.dsl.cleanup import CleanUp
 from sources.dsl.get import ALL_DICS
 from sources.dsl.tags import Tags
-from sources.dsl.elems import Elems
+from sources.dsl.elems import Elems as dslElems
+from cells import Elems
 
 
 class Parser:
@@ -24,7 +25,7 @@ class Parser:
     def __init__(self, idic):
         self.idic = idic
         self.Success = self.idic.Success
-        self.cells = []
+        self.blocks = []
     
     def set_articles(self):
         f = '[MClient] converters.dsl.odxml.Parser.set_articles'
@@ -47,8 +48,8 @@ class Parser:
         article[0] = '[wform]' + article[0] + '[/wform]'
         return '\n'.join(article)
     
-    def set_cells(self):
-        f = '[MClient] converters.dsl.odxml.Parser.set_cells'
+    def set_blocks(self):
+        f = '[MClient] converters.dsl.odxml.Parser.set_blocks'
         if not self.Success:
             rep.cancel(f)
             return
@@ -61,20 +62,15 @@ class Parser:
                 rep.empty(f)
                 continue
             ''' When exporting to Odict XML, we do not care about cell or row
-                numbers, so we do not need sources.fora.run.Source._join_cells.
+                numbers, so we do not need sources.fora.run.Source._join_blocks.
             '''
-            self.cells += Elems(blocks).run()
+            self.blocks += dslElems(blocks).run()
         # Reclaim memory
         self.idic.articles = []
-        if not self.cells:
+        if not self.blocks:
             self.Success = False
             rep.empty_output(f)
             return
-    
-    def _has_phrase(self, cell):
-        for block in cell.blocks:
-            if block.type == 'phrase':
-                return True
     
     def remove_phrases(self):
         ''' Dumping to ODXML needs wforms to be sorted; however, combining
@@ -85,7 +81,7 @@ class Parser:
         if not self.Success:
             rep.cancel(f)
             return
-        self.cells = [cell for cell in self.cells if not self._has_phrase(cell)]
+        self.blocks = [block for block in self.blocks if block.type != 'phrase']
     
     def set_speech(self):
         # Speech is crucial for OXML, so we must assign it if empty
@@ -94,37 +90,36 @@ class Parser:
             rep.cancel(f)
             return
         count = 0
-        for cell in self.cells:
-            for block in cell.blocks:
-                if not block.speech:
-                    count += 1
-                    block.speech = 'un'
+        for block in self.blocks:
+            if not block.speech:
+                count += 1
+                block.speech = 'un'
         rep.matches(count)
     
     def run(self):
         # We do not want millions of debug messages
-        #ms.STOP = True
+        ms.STOP = True
         self.set_articles()
-        self.set_cells()
+        self.set_blocks()
         self.remove_phrases()
         self.set_speech()
-        #ms.STOP = False
-        return self.cells
+        ms.STOP = False
+        return self.blocks
 
 
 
 class XML:
     
-    def __init__(self, cells, dicname):
+    def __init__(self, blocks, dicname):
         self.Success = True
         self.open = []
         self.xml = []
-        self.cells = cells
+        self.blocks = blocks
         self.dicname = dicname
     
     def check(self):
         f = '[MClient] converters.dsl.odxml.XML.check'
-        if not self.cells or not self.dicname:
+        if not self.blocks or not self.dicname:
             self.Success = False
             rep.empty(f)
     
@@ -178,52 +173,49 @@ class XML:
         step = 1000
         PROGRESS.set_title(_('Generate XML'))
         PROGRESS.set_value(0)
-        PROGRESS.set_max(round(len(self.cells) / step))
+        PROGRESS.set_max(round(len(self.blocks) / step))
         PROGRESS.show()
         wform = ''
         speech = ''
         self.open_dictionary()
         count = 0
-        for cell in self.cells:
+        for block in self.blocks:
             count += 1
             if count % step == 0:
                 PROGRESS.update()
-                mes = _('Process cell #{}/{}').format(count, len(self.cells))
+                mes = _('Process block #{}/{}').format(count, len(self.blocks))
                 PROGRESS.set_info(mes)
                 PROGRESS.inc()
-            if not cell or not cell.text:
+            if not block or not block.text:
                 rep.empty(f)
                 continue
-            if not cell.blocks:
-                rep.empty(f)
-                continue
-            if not cell.blocks[0].wform:
+            if not block.wform:
                 mes = _('Empty word forms are not allowed!')
                 Message(f, mes).show_warning()
                 continue
-            if not cell.blocks[0].speech:
+            if not block.speech:
                 mes = _('Empty parts of speech are not allowed!')
                 Message(f, mes).show_warning()
                 continue
             NewWform = False
-            if wform != cell.blocks[0].wform:
+            if wform != block.wform:
                 NewWform = True
                 #TODO: Should we check it?
                 self.close_definition()
                 self.close_sense()
                 self.close_ety()
                 self.close_entry()
-                wform = cell.blocks[0].wform
+                wform = block.wform
                 self.open_entry(wform)
                 self.open_ety()
-            if NewWform or speech != cell.blocks[0].speech:
+            if NewWform or speech != block.speech:
                 #TODO: Should we check it?
                 self.close_definition()
                 self.close_sense()
-                speech = cell.blocks[0].speech
+                speech = block.speech
                 self.open_sense(speech)
             #TODO: Rework
-            self.open_definition(cell.text)
+            self.open_definition(block.text)
             self.close_definition()
         #TODO: Should we check it?
         self.close_definition()
@@ -249,7 +241,7 @@ class XML:
 class Runner:
     
     def __init__(self):
-        self.cells = []
+        self.blocks = []
         self.Success = ALL_DICS.Success
 
     def sort(self):
@@ -257,27 +249,27 @@ class Runner:
         if not self.Success:
             rep.cancel(f)
             return
-        mes = _('Sort cells')
+        mes = _('Sort blocks')
         Message(f, mes).show_info()
-        self.cells.sort(key=lambda cell: (cell.blocks[0].wform, cell.blocks[0].speech))
+        self.blocks.sort(key=lambda block: (block.wform, block.speech))
     
     def create_xml(self):
         f = '[MClient] converters.dsl.odxml.Runner.create_xml'
         if not self.Success:
             rep.cancel(f)
             return
-        dicname = _('.dsl dictionaries: {}. Cells: {}')
-        dicname = dicname.format(len(ALL_DICS.dics), len(self.cells))
-        mes = XML(self.cells, dicname).run()
+        dicname = _('.dsl dictionaries: {}. Blocks: {}')
+        dicname = dicname.format(len(ALL_DICS.dics), len(self.blocks))
+        mes = XML(self.blocks, dicname).run()
         pathw = os.path.join(ALL_DICS.path, 'dsl-odxml.xml')
         Write(pathw, True).write(mes)
         # Reclaim memory
-        self.cells = []
+        self.blocks = []
         mes = ''
     
-    def set_cells(self):
+    def set_blocks(self):
         # Call Parser from this module
-        f = '[MClient] converters.dsl.odxml.Runner.set_cells'
+        f = '[MClient] converters.dsl.odxml.Runner.set_blocks'
         if not self.Success:
             rep.cancel(f)
             return
@@ -292,22 +284,21 @@ class Runner:
             PROGRESS.set_info(mes)
             ALL_DICS.dics[i].run()
             iparse = Parser(ALL_DICS.dics[i])
-            self.cells += iparse.run()
+            self.blocks += iparse.run()
             self.Success = iparse.Success
             if not self.Success:
                 PROGRESS.close()
                 return
             PROGRESS.inc()
         PROGRESS.close()
-        self.cells = [cell for cell in self.cells if cell]
-        mes = _('Cells have been created')
+        mes = _('Blocks have been created')
         Message(f, mes).show_info()
     
     def run(self):
         f = '[MClient] converters.dsl.odxml.Runner.run'
         timer = Timer(f)
         timer.start()
-        self.set_cells()
+        self.set_blocks()
         self.sort()
         self.create_xml()
         sub = shcom.get_human_time(timer.end())
