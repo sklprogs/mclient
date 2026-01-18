@@ -13,16 +13,63 @@ from skl_shared.text_file import Write
 from skl_shared.time import Timer
 from skl_shared.logic import com as shcom
 
+from sources.dsl.cleanup import CleanUp
 from sources.dsl.get import ALL_DICS
+from sources.dsl.tags import Tags
+from sources.dsl.elems import Elems
 
-from converters.dsl.shared import Parser as shParser
-from converters.dsl.shared import Runner as shRunner
 
-
-class Parser(shParser):
+class Parser:
     
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, idic):
+        self.idic = idic
+        self.Success = self.idic.Success
+        self.cells = []
+    
+    def set_articles(self):
+        f = '[MClient] converters.dsl.odxml.Parser.set_articles'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self.idic.set_articles()
+        # Reclaim memory
+        self.idic.lst = []
+        self.idic.poses = []
+        self.idic.index_ = []
+        self.Success = self.idic.Success and self.idic.articles
+    
+    def _add_wform(self, article):
+        f = '[MClient] converters.dsl.odxml.Parser._add_wform'
+        if not article:
+            rep.empty(f)
+            return
+        article = article.splitlines()
+        article[0] = '[wform]' + article[0] + '[/wform]'
+        return '\n'.join(article)
+    
+    def set_cells(self):
+        f = '[MClient] converters.dsl.odxml.Parser.set_cells'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        for article in self.idic.articles:
+            blocks = []
+            article = self._add_wform(article)
+            code = CleanUp(article).run()
+            blocks += Tags(code).run()
+            if not blocks:
+                rep.empty(f)
+                continue
+            ''' When exporting to Odict XML, we do not care about cell or row
+                numbers, so we do not need sources.fora.run.Source._join_cells.
+            '''
+            self.cells += Elems(blocks).run()
+        # Reclaim memory
+        self.idic.articles = []
+        if not self.cells:
+            self.Success = False
+            rep.empty_output(f)
+            return
     
     def _has_phrase(self, cell):
         for block in cell.blocks:
@@ -43,8 +90,6 @@ class Parser(shParser):
     def set_speech(self):
         # Speech is crucial for OXML, so we must assign it if empty
         f = '[MClient] converters.dsl.odxml.Parser.set_speech'
-        mes = f'{f} is in progress'
-        Message(f, mes, True).show_info()
         if not self.Success:
             rep.cancel(f)
             return
@@ -58,12 +103,12 @@ class Parser(shParser):
     
     def run(self):
         # We do not want millions of debug messages
-        ms.STOP = True
+        #ms.STOP = True
         self.set_articles()
         self.set_cells()
         self.remove_phrases()
         self.set_speech()
-        ms.STOP = False
+        #ms.STOP = False
         return self.cells
 
 
@@ -201,11 +246,12 @@ class XML:
 
 
 
-class Runner(shRunner):
+class Runner:
     
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-    
+    def __init__(self):
+        self.cells = []
+        self.Success = ALL_DICS.Success
+
     def sort(self):
         f = '[MClient] converters.dsl.odxml.Runner.sort'
         if not self.Success:
@@ -223,11 +269,10 @@ class Runner(shRunner):
         dicname = _('.dsl dictionaries: {}. Cells: {}')
         dicname = dicname.format(len(ALL_DICS.dics), len(self.cells))
         mes = XML(self.cells, dicname).run()
-        # Reclaim memory (but do we need this?)
-        self.cells = []
         pathw = os.path.join(ALL_DICS.path, 'dsl-odxml.xml')
         Write(pathw, True).write(mes)
-        # Reclaim memory (but do we need this?)
+        # Reclaim memory
+        self.cells = []
         mes = ''
     
     def set_cells(self):
@@ -245,11 +290,13 @@ class Runner(shRunner):
             mes = _('Process {} ({}/{})')
             mes = mes.format(ALL_DICS.dics[i].fname, i + 1, len(ALL_DICS.dics))
             PROGRESS.set_info(mes)
+            ALL_DICS.dics[i].run()
             iparse = Parser(ALL_DICS.dics[i])
             self.cells += iparse.run()
             self.Success = iparse.Success
             if not self.Success:
-                break
+                PROGRESS.close()
+                return
             PROGRESS.inc()
         PROGRESS.close()
         self.cells = [cell for cell in self.cells if cell]
@@ -264,5 +311,9 @@ class Runner(shRunner):
         self.sort()
         self.create_xml()
         sub = shcom.get_human_time(timer.end())
-        mes = _('The operation has taken {}.').format(sub)
-        Message(f, mes, True).show_info()
+        if self.Success:
+            mes = _('The operation has taken {}.').format(sub)
+            Message(f, mes, True).show_info()
+        else:
+            mes = _('The operation has failed! Time wasted: {}').format(sub)
+            Message(f, mes, True).show_error()
