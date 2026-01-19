@@ -545,8 +545,8 @@ class App:
             return
         CONFIG.new['lang1'] = lang1
         CONFIG.new['lang2'] = lang2
-        self.update_lang1(lang1)
-        self.update_lang2(lang2)
+        self.update_lang1()
+        self.update_lang2()
         self.load_article()
         self.history.go_down()
     
