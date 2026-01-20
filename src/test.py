@@ -6,7 +6,7 @@ from skl_shared.message.controller import Message, rep
 from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
 
-#from tests.sources import Get
+from tests.sources import Get
 from tests.sources import Tags
 from tests.sources import Elems
 from tests.sources import Source
@@ -42,11 +42,12 @@ if __name__ == '__main__':
     #mes = Source().run_all()
     #mes = Elems().run_all()
     #mes = Elems().run_dsl()
+    mes = Elems().run_dsl_cells()
     #mes = Elems().run_mdic()
     #mes = Elems().run_stardict()
     #mes = Elems().run_stardict_cells()
     #mes = Elems().run_fora_stardictx()
-    mes = Elems().run_fora_stardictx_cells()
+    #mes = Elems().run_fora_stardictx_cells()
     #mes = Elems().run_fora_dsl()
     #mes = Elems().run_fora()
     #mes = Elems().run_multitrandem()

@@ -16,7 +16,7 @@ from skl_shared.logic import Text
 from config import CONFIG
 
 #SEARCH = 'analyzer'
-SEARCH = 'hello'
+SEARCH = 'terminal'
 #SEARCH = 'account'
 #SEARCH = 'book'
 #SEARCH = 'good'
@@ -331,6 +331,23 @@ class Elems:
         ielems = el.Elems(blocks)
         ielems.run()
         return ielems.debug()
+    
+    def run_dsl_cells(self):
+        from sources.dsl.cleanup import CleanUp
+        from sources.dsl.get import Get
+        from sources.dsl.tags import Tags
+        from sources.dsl.elems import Elems
+        from cells import Elems as cElems, Cells
+        blocks = []
+        articles = Get(SEARCH).run()
+        for iarticle in articles:
+            code = CleanUp(iarticle.code).run()
+            blocks += Tags(code).run()
+        blocks = Elems(blocks).run()
+        blocks = cElems(blocks).run()
+        icells = Cells(blocks)
+        icells.run()
+        return icells.debug()
     
     def run_multitrancom(self):
         f = '[MClient] tests.sources.Elems.run_multitrancom'
