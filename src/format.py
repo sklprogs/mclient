@@ -85,8 +85,7 @@ class Block:
     
     def set_fixed(self):
         weight1, weight2 = self._get_weight()
-        align = self._get_align()
-        self.code = f'''{weight1}<div align="{align}">{self.code}</div>{weight2}'''
+        self.code = f'''{weight1}<span style="display:inline-block;text-align:{self._get_align()};">{self.code}</span>{weight2}'''
     
     def get_family(self):
         if self.block.type in ('phrase', 'term'):
