@@ -102,5 +102,6 @@ dsl:
 - hello -> breed of cat -> not found (but present in index)
 
 - mdic:
+- spike: invalid JSON
 - Not finding anything causes the next search to fail.
 - hello: \n in blocks
