@@ -17,7 +17,6 @@ from table.controller import TABLE
 import logic as lg
 from logic import REQUEST
 import gui as gi
-import format as fm
 from view import Expand, Omit, View, Prioritize, Wrap
 from prior_block.controller import BLOCK, PRIOR
 from settings.controller import SETTINGS, SAVE_SETTINGS
