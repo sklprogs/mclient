@@ -254,8 +254,8 @@ class SeparateWords:
         for block in self.blocks:
             block.type = 'term'
     
-    def set(self):
-        f = '[MClient] sources.multitrancom.elems.SeparateWords.set'
+    def set_separate(self):
+        f = '[MClient] sources.multitrancom.elems.SeparateWords.set_separate'
         if not self.blocks:
             rep.empty(f)
             return
@@ -268,8 +268,23 @@ class SeparateWords:
             if self.blocks[i-1].text in ('|', '// -->'):
                 blocks.append(self.blocks[i])
             i += 1
-        rep.deleted(f, len(self.blocks)-len(blocks))
+        rep.deleted(f, len(self.blocks) - len(blocks))
         self.blocks = blocks
+    
+    def _get_tail(self):
+        for i in range(len(self.blocks)):
+            if '&act1=26' in self.blocks[i].url:
+                return i
+    
+    def delete_tail(self):
+        # Remove "Report an error" and "Get short URL" blocks
+        f = '[MClient] sources.multitrancom.elems.SeparateWords.delete_tail'
+        no = self._get_tail()
+        if no is None:
+            rep.lazy(f)
+            return
+        rep.deleted(f, len(self.blocks) - no)
+        self.blocks = self.blocks[:no]
     
     def run(self):
         f = '[MClient] sources.multitrancom.elems.SeparateWords.run'
@@ -277,7 +292,8 @@ class SeparateWords:
             rep.lazy(f)
             # Blocks are further assigned, do not return None
             return self.blocks
-        self.set()
+        self.set_separate()
+        self.delete_tail()
         self.set_terms()
         self.add_subject()
         return self.blocks
