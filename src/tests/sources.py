@@ -12,16 +12,18 @@ from skl_shared.text_file import Read, Write
 from skl_shared.launch import Launch
 from skl_shared.table import Table
 from skl_shared.logic import Text
+from skl_shared.list import List
 
 from config import CONFIG
 
 #SEARCH = 'analyzer'
-SEARCH = 'terminal'
+#SEARCH = 'hello bye'
 #SEARCH = 'account'
 #SEARCH = 'book'
+SEARCH = 'absolute'
 #SEARCH = 'good'
 #SEARCH = 'orderly'
-URL = 'https://www.multitran.com/m.exe?ll1=1&ll2=2&s=chicken+wing&l2=2'
+URL = 'https://www.multitran.com/m.exe?s=hello+bye&l1=2&l2=1'
 #HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/account (2025-10-26).htm'
 HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/inundate (2024-04-08).html'
 
@@ -351,22 +353,16 @@ class Elems:
     
     def run_multitrancom(self):
         f = '[MClient] tests.sources.Elems.run_multitrancom'
-        from skl_shared.text_file import Read
-        from skl_shared.time import Timer
-        from cells import Cells
-        from sources.multitrancom.cleanup import CleanUp as mCleanUp
-        from sources.multitrancom.tags import Tags as mTags
-        from sources.multitrancom.elems import Elems as mElems
-        text = Read(HTM_FILE).get()
-        timer = Timer(f)
-        timer.start()
-        text = mCleanUp(text).run()
-        blocks = mTags(text).run()
-        blocks = mElems(blocks).run()
-        timer.end()
-        icells = Cells(blocks)
-        icells.run()
-        return icells.debug()
+        import sources.multitrancom.get as gt
+        import sources.multitrancom.cleanup as cu
+        import sources.multitrancom.tags as tg
+        import sources.multitrancom.elems as el
+        code = gt.Get(search=SEARCH, url=URL).run()
+        code = cu.CleanUp(code).run()
+        blocks = tg.Tags(code).run()
+        ielems = el.Elems(blocks)
+        ielems.run()
+        return ielems.debug()
 
 
 
@@ -539,22 +535,25 @@ class Get:
             result[i] = result[i].decode(CODING)
         return str(result)
     
-    def run_multitrancom(self):
-        f = '[MClient] tests.sources.Get.run_multitrancom'
+    def export_multitrancom(self):
+        f = '[MClient] tests.sources.Get.export_multitrancom'
         import sources.multitrancom.get as gt
-        #url = 'https://www.multitran.com/m.exe?a=3&sc=8&s=%D1%81%D0%B8%D0%BC%D0%BF%D1%82%D0%BE%D0%BC&l1=2&l2=1&SHL=2'
-        #search = 'Медицина'
-        url = 'https://www.multitran.com/m.exe?s=working%20documentation&l1=1&l2=2&SHL=2'
-        search = 'working documentation'
         timer = Timer(f)
         timer.start()
-        result = gt.Get(search=search, url=url).run()
+        result = gt.Get(search=SEARCH, url=URL).run()
         timer.end()
         filename = f'{search} ({Time().get_date()}).html'
         file = Home().add('docs', 'mclient_tests'
                          ,'multitrancom (saved with Get.get)', filename)
         Write(file).write(result)
         Launch(file).launch_default()
+    
+    def run_multitrancom(self):
+        f = '[MClient] tests.sources.Get.run_multitrancom'
+        import sources.multitrancom.get as gt
+        import sources.multitrancom.cleanup as cu
+        code = gt.Get(search=SEARCH, url=URL).run()
+        return cu.CleanUp(code).run()
     
     def run_stardict(self):
         from sources.stardict.get import ALL_DICS
@@ -1097,6 +1096,21 @@ class Commands:
         SOURCES.set_pair('XAL <=> RUS')
         mes = 'multitrancom: {}'.format(sources.multitrancom.get.PAIR)
         Message(f, mes).show_debug()
+
+
+
+class Suggest:
+    
+    def run_all(self):
+        results = [self.run_stardict()]
+        results = [sub for sub in results if sub]
+        results = List(results).join_sublists()
+        results = [f'"{item}"' for item in results]
+        return '\n'.join(results)
+    
+    def run_stardict(self):
+        from sources.stardict.run import Source as sdSource
+        return sdSource().suggest(SEARCH)
 
 
 

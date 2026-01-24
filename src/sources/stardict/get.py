@@ -35,19 +35,7 @@ class Suggest:
         if not self.Success:
             rep.cancel(f)
             return
-        items = ALL_DICS.get_index()
-        if not items:
-            self.Success = False
-            rep.empty(f)
-            return
-        timer = Timer(f)
-        timer.start()
-        search = self.pattern.lower()
-        result = [item for item in items if str(item).lower().startswith(search)]
-        timer.end()
-        mes = '; '.join(result)
-        Message(f, mes).show_debug()
-        return result
+        return ALL_DICS.get_all(self.pattern)
     
     def run(self):
         return self.get()
@@ -297,6 +285,37 @@ class StarDict:
         Message(f, mes).show_debug()
         return(index, len_)
     
+    def _find_next(self, pattern, start):
+        start = self.map.find(pattern, start)
+        if start == -1:
+            return
+        end = self.map.find(b'\x00', start + len(pattern))
+        if end == -1:
+            return
+        self.idx.seek(start)
+        chunk = self.idx.read(end - start)
+        if chunk:
+            chunk = chunk.decode(errors='ignore')
+            return(chunk, end)
+    
+    def find_all(self, pattern):
+        f = '[MClient] sources.stardict.get.Stardict.find_all'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        if not pattern:
+            rep.empty(f)
+            return
+        results = []
+        start = 0
+        while True:
+            tuple_ = self._find_next(pattern, start)
+            if not tuple_:
+                return results
+            result, start = tuple_[0], tuple_[1]
+            start += 1
+            results.append(result)
+    
     def get_dict_data(self, index, len_):
         f = '[MClient] sources.stardict.get.Stardict.get_dict_data'
         if not self.Success:
@@ -363,10 +382,32 @@ class AllDics:
             if result:
                 # Set offline dictionary title
                 lst.append(f'<dic>{dic.title}</dic>{result}')
-                mes = _('"{}" has matches for "{}"')
-                mes = mes.format(dic.title, search)
+                mes = _('"{}" has matches for "{}"').format(dic.title, search)
                 Message(f, mes).show_debug()
         return '\n'.join(lst)
+    
+    def get_all(self, search):
+        f = '[MClient] sources.stardict.get.AllDics.get_all'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        if not search:
+            rep.empty(f)
+            return
+        #TODO: .lower() when index is lowercased
+        search = bytes(search, 'utf-8')
+        dics = [dic for dic in self.dics if not dic.Block]
+        lst = []
+        for dic in dics:
+            results = dic.find_all(search)
+            if not results:
+                mes = _('No matches for "{}"!').format(dic.title)
+                Message(f, mes).show_info()
+                continue
+            lst += results
+            mes = _('"{}" has matches for "{}"').format(dic.title, search)
+            Message(f, mes).show_debug()
+        return lst
     
     def walk(self):
         ''' Explore all subdirectories of path searching for filenames that

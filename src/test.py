@@ -10,6 +10,7 @@ from tests.sources import Get
 from tests.sources import Tags
 from tests.sources import Elems
 from tests.sources import Source
+from tests.sources import Suggest
 #from tests.speech import Speech
 
 
@@ -42,7 +43,7 @@ if __name__ == '__main__':
     #mes = Source().run_all()
     #mes = Elems().run_all()
     #mes = Elems().run_dsl()
-    mes = Elems().run_dsl_cells()
+    #mes = Elems().run_dsl_cells()
     #mes = Elems().run_mdic()
     #mes = Elems().run_stardict()
     #mes = Elems().run_stardict_cells()
@@ -62,6 +63,7 @@ if __name__ == '__main__':
     #mes = Source().run_multitrancom()
     #mes = Source().run_multitrandem()
     #mes = Source().run_stardict()
+    mes = Suggest().run_all()
     shDEBUG.reset(f, mes)
     shDEBUG.show()
     # This MUST be on a separate line, the widget will not be shown otherwise
