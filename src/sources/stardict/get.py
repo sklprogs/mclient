@@ -266,6 +266,15 @@ class StarDict:
         self.idx.close()
         self.dictf.close()
 
+    def _get_index_data(self, pos, len_):
+        self.idx.seek(pos)
+        return self.idx.read(len_)
+    
+    def _get_index(self, end):
+        chunk = self._get_index_data(end, 8)
+        index, len_ = struct.unpack('>LL', chunk)
+        return(index, len_)
+    
     def search(self, pattern):
         f = '[MClient] sources.stardict.get.Stardict.search'
         if not self.Success:
@@ -274,47 +283,44 @@ class StarDict:
         if not pattern:
             rep.empty(f)
             return
-        pattern = bytes(pattern, 'utf-8') + b'\x00'
-        pos = self.map.find(pattern)
-        if pos == -1:
+        bytes_ = bytes(pattern, 'utf-8') + b'\x00'
+        start = self.map.find(bytes_)
+        if start == -1:
             return
-        self.idx.seek(pos + len(pattern))
-        chunk = self.idx.read(8)
-        index, len_ = struct.unpack('>LL', chunk)
-        mes = _('Found a match at position {} with length {}').format(index, len_)
+        index, len_ = self._get_index(start + len(bytes_))
+        mes = _('Pattern: "{}", position in dictionary: {}, article length: {}')
+        mes = mes.format(pattern, index, len_)
         Message(f, mes).show_debug()
         return(index, len_)
     
-    def _find_next(self, pattern, start):
-        start = self.map.find(pattern, start)
+    def _find_next(self, bytes_, start):
+        f = '[MClient] sources.stardict.get.Stardict._find_next'
+        start = self.map.find(bytes_, start)
         if start == -1:
             return
-        end = self.map.find(b'\x00', start + len(pattern))
+        end = self.map.find(b'\x00', start + len(bytes_))
         if end == -1:
             return
-        self.idx.seek(start)
-        chunk = self.idx.read(end - start)
+        chunk = self._get_index_data(start, end - start)
         if chunk:
-            chunk = chunk.decode(errors='ignore')
-            return(chunk, end)
+            return(chunk.decode(errors='ignore'), end)
     
-    def find_all(self, pattern):
+    def find_all(self, bytes_):
         f = '[MClient] sources.stardict.get.Stardict.find_all'
         if not self.Success:
             rep.cancel(f)
             return
-        if not pattern:
+        if not bytes_:
             rep.empty(f)
             return
         results = []
         start = 0
         while True:
-            tuple_ = self._find_next(pattern, start)
+            tuple_ = self._find_next(bytes_, start)
             if not tuple_:
                 return results
-            result, start = tuple_[0], tuple_[1]
-            start += 1
-            results.append(result)
+            match_, start = tuple_[0], tuple_[1] + 1
+            results.append(match_)
     
     def get_dict_data(self, index, len_):
         f = '[MClient] sources.stardict.get.Stardict.get_dict_data'
@@ -395,11 +401,11 @@ class AllDics:
             rep.empty(f)
             return
         #TODO: .lower() when index is lowercased
-        search = bytes(search, 'utf-8')
+        bytes_ = bytes(search, 'utf-8')
         dics = [dic for dic in self.dics if not dic.Block]
         lst = []
         for dic in dics:
-            results = dic.find_all(search)
+            results = dic.find_all(bytes_)
             if not results:
                 mes = _('No matches for "{}"!').format(dic.title)
                 Message(f, mes).show_info()
