@@ -293,12 +293,15 @@ class StarDict:
         Message(f, mes).show_debug()
         return(index, len_)
     
+    def _find_end(self, start):
+        return self.map.find(b'\x00', start)
+    
     def _find_next(self, bytes_, start):
         f = '[MClient] sources.stardict.get.Stardict._find_next'
         start = self.map.find(bytes_, start)
         if start == -1:
             return
-        end = self.map.find(b'\x00', start + len(bytes_))
+        end = self._find_end(start + len(bytes_))
         if end == -1:
             return
         chunk = self._get_index_data(start, end - start)
@@ -319,8 +322,16 @@ class StarDict:
             tuple_ = self._find_next(bytes_, start)
             if not tuple_:
                 return results
-            match_, start = tuple_[0], tuple_[1] + 1
+            match_, start = tuple_[0], tuple_[1]
+            '''
+            # Print index for all matches (useful for debugging)
+            index, len_ = self._get_index(self._find_end(start) + 1)
+            mes = _('Pattern: "{}", position in dictionary: {}, article length: {}')
+            mes = mes.format(match_, index, len_)
+            Message(f, mes).show_debug()
+            '''
             results.append(match_)
+            start += 1
     
     def get_dict_data(self, index, len_):
         f = '[MClient] sources.stardict.get.Stardict.get_dict_data'
