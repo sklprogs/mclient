@@ -34,6 +34,7 @@ if __name__ == '__main__':
     #mes = Get().run_multitrancom()
     #mes = Get().run_multitrandem()
     #mes = Get().run_stardict()
+    mes = Get().get_stardict_by_pos()
     #mes = Tags().run_stardict()
     #mes = Tags().run_fora_stardictx()
     #mes = Tags().run_dsl()
@@ -63,7 +64,7 @@ if __name__ == '__main__':
     #mes = Source().run_multitrancom()
     #mes = Source().run_multitrandem()
     #mes = Source().run_stardict()
-    mes = Suggest().run_all()
+    #mes = Suggest().run_all()
     shDEBUG.reset(f, mes)
     shDEBUG.show()
     # This MUST be on a separate line, the widget will not be shown otherwise

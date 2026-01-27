@@ -558,6 +558,13 @@ class Get:
     def run_stardict(self):
         from sources.stardict.get import ALL_DICS
         return ALL_DICS.get(SEARCH)
+    
+    def get_stardict_by_pos(self):
+        from sources.stardict.get import StarDict
+        istar = StarDict('/home/pete/.config/mclient/dics/example.ifo')
+        istar.load()
+        # absolute
+        return istar.get_dict_data(50702415, 66)
 
 
 
