@@ -529,18 +529,18 @@ class Index:
                 timer.end()
                 return
             lower = phrase.lower().strip()
-            if not lower in INDEX[self.file]:
-                INDEX[self.file][lower] = {'phrase': phrase}
+            if not lower in INDEX:
+                INDEX[lower] = {'file': self.file, 'phrase': phrase}
             pos = self.idx.read(4)
             if not pos:
                 timer.end()
                 return
-            INDEX[self.file][lower]['pos'] = pos
+            INDEX[lower]['pos'] = pos
             len_ = self.idx.read(4)
             if not len_:
                 timer.end()
                 return
-            INDEX[self.file][lower]['len'] = len_
+            INDEX[lower]['len'] = len_
     
     def run(self):
         self.load()
@@ -561,9 +561,7 @@ class Indexes:
             return []
         # We assume that the index is created only once
         if not self.records:
-            for file in INDEX:
-                self.records += list(INDEX[file].keys())
-            self.records = sorted(set(self.records))
+            self.records = sorted(set(INDEX.keys()))
         return self.records
     
     def suggest(self, pattern, limit=0):
@@ -588,9 +586,7 @@ class Indexes:
             records = records[:limit]
         phrases = []
         for record in records:
-            for file in INDEX:
-                if record in INDEX[file]:
-                    phrases.append(INDEX[file][record]['phrase'])
+            phrases.append(INDEX[record]['phrase'])
         timer.end()
         return phrases
     
@@ -609,19 +605,18 @@ class Indexes:
             return
         timer = Timer(f)
         timer.start()
-        for file in INDEX:
-            keys = INDEX[file].keys()
-            if limit:
-                keys = sorted(keys)[:limit]
-            else:
-                keys = sorted(keys)
-            for key in keys:
-                phrase = INDEX[file][key]['phrase']
-                pos = self._unpack(INDEX[file][key]['pos'])
-                len_ = self._unpack(INDEX[file][key]['len'])
-                mes = _('Message: "{}", position: {}, length: {}')
-                mes = mes.format(phrase, pos, len_)
-                Message(f, mes).show_debug()
+        keys = INDEX.keys()
+        if limit:
+            keys = sorted(keys)[:limit]
+        else:
+            keys = sorted(keys)
+        for key in keys:
+            phrase = INDEX[key]['phrase']
+            pos = self._unpack(INDEX[key]['pos'])
+            len_ = self._unpack(INDEX[key]['len'])
+            mes = _('Message: "{}", position: {}, length: {}')
+            mes = mes.format(phrase, pos, len_)
+            Message(f, mes).show_debug()
         timer.end()
 
 
