@@ -539,7 +539,6 @@ class Index:
     def run(self):
         self.load()
         self.parse()
-        return INDEX
 
 
 
@@ -580,4 +579,3 @@ class Indexes:
 
 
 #ALL_DICS = AllDics()
-INDEXES = Indexes()
