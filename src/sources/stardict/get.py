@@ -11,8 +11,6 @@ from skl_shared.time import Timer
 from skl_shared.paths import Home, Path, File, Directory
 from skl_shared.logic import Input
 
-INDEX = {}
-
 
 class Suggest:
     
@@ -489,8 +487,43 @@ class AllDics:
 class Index:
     
     def __init__(self, file):
+        self.lowers = {}
         self.file = file
         self.Success = File(self.file).Success
+    
+    def _unpack(self, chunk):
+        f = '[MClient] sources.stardict.get.Index._unpack'
+        try:
+            return struct.unpack('>LL', chunk)
+        except Exception as e:
+            self.Success = False
+            rep.third_party(f, e)
+    
+    def get_lowers(self):
+        f = '[MClient] sources.stardict.get.Index.get_lowers'
+        if not self.Success:
+            rep.cancel(f)
+            return []
+        return self.lowers.keys()
+    
+    def _get_word(self, lower):
+        if not lower in self.lowers:
+            return lower
+        return self.lowers[lower]['word']
+    
+    def _get_poses(self, lower):
+        if not lower in self.lowers:
+            return []
+        poses = [self._unpack(chunk) for chunk in self.lowers[lower]['poses']]
+        return [pos for pos in poses if pos]
+    
+    def suggest(self, lower):
+        f = '[MClient] sources.stardict.get.Index.suggest'
+        if not self.Success:
+            rep.cancel(f)
+            return []
+        return [self._get_word(item) for item in self.get_lowers() \
+               if item.startswith(lower)]
     
     def load(self):
         f = '[MClient] sources.stardict.get.Index.load'
@@ -504,14 +537,14 @@ class Index:
             mes = _('Failed to load "{}"!\n\nDetails: {}').format(self.path, e)
             Message(f, mes, True).show_warning()
     
-    def _get_phrase(self):
-        phrase = []
+    def _get_next_word(self):
+        word = []
         while True:
             char = self.idx.read(1)
             if char in (b'', b'\x00'):
-                phrase = b''.join(phrase)
-                return phrase.decode(errors='ignore')
-            phrase.append(char)
+                word = b''.join(word)
+                return word.decode(errors='ignore')
+            word.append(char)
     
     def parse(self):
         f = '[MClient] sources.stardict.get.Index.parse'
@@ -523,23 +556,18 @@ class Index:
         timer = Timer(f)
         timer.start()
         while True:
-            phrase = self._get_phrase()
-            if not phrase:
+            word = self._get_next_word()
+            if not word:
                 timer.end()
                 return
-            lower = phrase.lower().strip()
-            if not lower in INDEX:
-                INDEX[lower] = {'file': self.file, 'phrase': phrase, 'pos': [], 'len': []}
-            pos = self.idx.read(4)
-            if not pos:
+            lower = word.lower().strip()
+            if not lower in self.lowers:
+                self.lowers[lower] = {'word': word, 'poses': []}
+            poses = self.idx.read(8)
+            if not poses:
                 timer.end()
                 return
-            INDEX[lower]['pos'].append(pos)
-            len_ = self.idx.read(4)
-            if not len_:
-                timer.end()
-                return
-            INDEX[lower]['len'].append(len_)
+            self.lowers[lower]['poses'].append(poses)
     
     def run(self):
         self.load()
@@ -551,17 +579,26 @@ class Indexes:
     
     def __init__(self):
         self.Success = True
-        self.records = []
+        self.indexes = []
+        self.lowers = []
     
-    def get_records(self):
-        f = '[MClient] sources.stardict.get.Indexes.get_records'
+    def add(self, file):
+        index = Index(file)
+        self.indexes.append(index)
+        index.run()
+    
+    def get_lowers(self):
+        f = '[MClient] sources.stardict.get.Indexes.get_lowers'
         if not self.Success:
             rep.cancel(f)
             return []
         # We assume that the index is created only once
-        if not self.records:
-            self.records = sorted(set(INDEX.keys()))
-        return self.records
+        if self.lowers:
+            return self.lowers
+        for index in self.indexes:
+            self.lowers += index.get_lowers()
+        self.lowers = sorted(set(self.lowers))
+        return self.lowers
     
     def search(self, pattern):
         f = '[MClient] sources.stardict.get.Indexes.search'
@@ -592,35 +629,37 @@ class Indexes:
         f = '[MClient] sources.stardict.get.Indexes.suggest'
         if not self.Success:
             rep.cancel(f)
-            return
+            return []
         #TODO: Do this once for all sources upon search
         pattern = pattern.lower().strip()
         if not pattern:
             rep.empty(f)
-            return
+            return []
         # Suggestions should be at least 3 chars long to keep speed
         if len(pattern) < 3:
             rep.lazy(f)
             return []
         timer = Timer(f)
         timer.start()
-        records = [record for record in self.get_records() \
-                  if record.startswith(pattern)]
+        words = []
+        for index in self.indexes:
+            words += index.suggest(pattern)
         if limit:
-            records = records[:limit]
-        phrases = []
-        for record in records:
-            phrases.append(INDEX[record]['phrase'])
+            words = words[:limit]
         timer.end()
-        return phrases
+        return words
     
-    def _unpack(self, chunk):
-        f = '[MClient] sources.stardict.get.Indexes._unpack'
-        try:
-            return struct.unpack('>L', chunk)[0]
-        except Exception as e:
-            self.Success = False
-            rep.third_party(f, e)
+    def _debug(self, limit):
+        mes = []
+        for index in self.indexes:
+            for lower in index.get_lowers():
+                word = index._get_word(lower)
+                poses = index._get_poses(lower)
+                sub = _('Word: "{}", positions: {}').format(word, poses)
+                mes.append(sub)
+                if limit and len(mes) == limit:
+                    return '\n'.join(mes)
+        return '\n'.join(mes)
     
     def debug(self, limit=100):
         f = '[MClient] sources.stardict.get.Indexes.debug'
@@ -629,19 +668,9 @@ class Indexes:
             return
         timer = Timer(f)
         timer.start()
-        keys = INDEX.keys()
-        if limit:
-            keys = sorted(keys)[:limit]
-        else:
-            keys = sorted(keys)
-        for key in keys:
-            phrase = INDEX[key]['phrase']
-            pos = self._unpack(INDEX[key]['pos'])
-            len_ = self._unpack(INDEX[key]['len'])
-            mes = _('Message: "{}", position: {}, length: {}')
-            mes = mes.format(phrase, pos, len_)
-            Message(f, mes).show_debug()
+        mes = self._debug(limit)
         timer.end()
+        return mes
 
 
 #ALL_DICS = AllDics()
