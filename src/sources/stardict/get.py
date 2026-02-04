@@ -552,6 +552,47 @@ class Indexes:
     
     def __init__(self):
         self.Success = True
+        self.records = []
+    
+    def get_records(self):
+        f = '[MClient] sources.stardict.get.Index.get_records'
+        if not self.Success:
+            rep.cancel(f)
+            return []
+        # We assume that the index is created only once
+        if not self.records:
+            for file in INDEX:
+                self.records += list(INDEX[file].keys())
+            self.records = sorted(set(self.records))
+        return self.records
+    
+    def suggest(self, pattern, limit=0):
+        f = '[MClient] sources.stardict.get.Index.suggest'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        #TODO: Do this once for all sources upon search
+        pattern = pattern.lower().strip()
+        if not pattern:
+            rep.empty(f)
+            return
+        # Suggestions should be at least 3 chars long to keep speed
+        if len(pattern) < 3:
+            rep.lazy(f)
+            return []
+        timer = Timer(f)
+        timer.start()
+        records = [record for record in self.get_records() \
+                  if record.startswith(pattern)]
+        if limit:
+            records = records[:limit]
+        phrases = []
+        for record in records:
+            for file in INDEX:
+                if record in INDEX[file]:
+                    phrases.append(INDEX[file][record]['phrase'])
+        timer.end()
+        return phrases
     
     def _unpack(self, chunk):
         f = '[MClient] sources.stardict.get.Indexes._unpack'
