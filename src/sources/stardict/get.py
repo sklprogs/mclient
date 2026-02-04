@@ -522,7 +522,6 @@ class Index:
         Message(f, mes).show_info()
         timer = Timer(f)
         timer.start()
-        INDEX[self.file] = {}
         while True:
             phrase = self._get_phrase()
             if not phrase:
