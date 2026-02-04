@@ -525,6 +525,14 @@ class Index:
         return [self._get_word(item) for item in self.get_lowers() \
                if item.startswith(lower)]
     
+    def search(self, lower):
+        f = '[MClient] sources.stardict.get.Index.search'
+        if not self.Success:
+            rep.cancel(f)
+            return []
+        return [self._get_poses(item) for item in self.get_lowers() \
+               if item == lower]
+    
     def load(self):
         f = '[MClient] sources.stardict.get.Index.load'
         if not self.Success:
@@ -610,20 +618,18 @@ class Indexes:
         if not pattern:
             rep.empty(f)
             return
+        poses = []
         timer = Timer(f)
         timer.start()
-        if not pattern in INDEX:
+        for index in self.indexes:
+            poses += index.search(pattern)
+        if not poses:
             mes = _('"{}": no matches!').format(pattern)
             Message(f, mes).show_info()
             return
-        poses = []
-        lens = []
-        for pos in INDEX[pattern]['pos']:
-            poses.append(self._unpack(pos))
-        for len_ in INDEX[pattern]['len']:
-            lens.append(self._unpack(len_))
         timer.end()
-        return(poses, lens)
+        #TODO: Also return file names
+        return poses
     
     def suggest(self, pattern, limit=0):
         f = '[MClient] sources.stardict.get.Indexes.suggest'
