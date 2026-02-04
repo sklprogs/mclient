@@ -513,16 +513,6 @@ class Index:
                 return phrase.decode(errors='ignore')
             phrase.append(char)
     
-    def _get_poses(self):
-        f = '[MClient] sources.stardict.get.Index._get_poses'
-        chunk = self.idx.read(8)
-        try:
-            pos, len_ = struct.unpack('>LL', chunk)
-            return(pos, len_)
-        except Exception as e:
-            self.Success = False
-            rep.third_party(f, e)
-    
     def parse(self):
         f = '[MClient] sources.stardict.get.Index.parse'
         if not self.Success:
@@ -532,18 +522,19 @@ class Index:
         Message(f, mes).show_info()
         timer = Timer(f)
         timer.start()
+        INDEX[self.file] = {}
         while True:
             phrase = self._get_phrase()
             if not phrase:
                 timer.end()
                 return
-            poses = self._get_poses()
+            poses = self.idx.read(8)
             if not poses:
                 timer.end()
                 return
-            if not phrase in INDEX:
-                INDEX[phrase] = {}
-            INDEX[phrase][self.file] = {'pos': poses[0], 'len': poses[1]}
+            if not phrase in INDEX[self.file]:
+                INDEX[self.file][phrase] = []
+            INDEX[self.file][phrase].append(poses)
     
     def run(self):
         self.load()
@@ -551,4 +542,42 @@ class Index:
         return INDEX
 
 
+
+class Indexes:
+    
+    def __init__(self):
+        self.Success = True
+    
+    def get_poses(self, chunk):
+        f = '[MClient] sources.stardict.get.Indexes.get_poses'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        try:
+            pos, len_ = struct.unpack('>LL', chunk)
+            return(pos, len_)
+        except Exception as e:
+            self.Success = False
+            rep.third_party(f, e)
+    
+    def debug(self):
+        f = '[MClient] sources.stardict.get.Index.debug'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        timer = Timer(f)
+        timer.start()
+        for file in INDEX:
+            phrases = INDEX[file].keys()
+            phrases = sorted(phrases)[:100]
+            for phrase in phrases:
+                for poses in INDEX[file][phrase]:
+                    if not poses:
+                        continue
+                    pos, len_ = self.get_poses(poses)
+                    print(f'Phrase: "{phrase}", pos: {pos}, len: {len_}')
+        timer.end()
+
+
 #ALL_DICS = AllDics()
+INDEXES = Indexes()
