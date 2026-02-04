@@ -528,13 +528,19 @@ class Index:
             if not phrase:
                 timer.end()
                 return
-            poses = self.idx.read(8)
-            if not poses:
+            lower = phrase.lower().strip()
+            if not lower in INDEX[self.file]:
+                INDEX[self.file][lower] = {'phrase': phrase}
+            pos = self.idx.read(4)
+            if not pos:
                 timer.end()
                 return
-            if not phrase in INDEX[self.file]:
-                INDEX[self.file][phrase] = []
-            INDEX[self.file][phrase].append(poses)
+            INDEX[self.file][lower]['pos'] = pos
+            len_ = self.idx.read(4)
+            if not len_:
+                timer.end()
+                return
+            INDEX[self.file][lower]['len'] = len_
     
     def run(self):
         self.load()
@@ -547,19 +553,15 @@ class Indexes:
     def __init__(self):
         self.Success = True
     
-    def get_poses(self, chunk):
-        f = '[MClient] sources.stardict.get.Indexes.get_poses'
-        if not self.Success:
-            rep.cancel(f)
-            return
+    def _unpack(self, chunk):
+        f = '[MClient] sources.stardict.get.Indexes._unpack'
         try:
-            pos, len_ = struct.unpack('>LL', chunk)
-            return(pos, len_)
+            return struct.unpack('>L', chunk)[0]
         except Exception as e:
             self.Success = False
             rep.third_party(f, e)
     
-    def debug(self):
+    def debug(self, limit=100):
         f = '[MClient] sources.stardict.get.Index.debug'
         if not self.Success:
             rep.cancel(f)
@@ -567,14 +569,18 @@ class Indexes:
         timer = Timer(f)
         timer.start()
         for file in INDEX:
-            phrases = INDEX[file].keys()
-            phrases = sorted(phrases)[:100]
-            for phrase in phrases:
-                for poses in INDEX[file][phrase]:
-                    if not poses:
-                        continue
-                    pos, len_ = self.get_poses(poses)
-                    print(f'Phrase: "{phrase}", pos: {pos}, len: {len_}')
+            keys = INDEX[file].keys()
+            if limit:
+                keys = sorted(keys)[:limit]
+            else:
+                keys = sorted(keys)
+            for key in keys:
+                phrase = INDEX[file][key]['phrase']
+                pos = self._unpack(INDEX[file][key]['pos'])
+                len_ = self._unpack(INDEX[file][key]['len'])
+                mes = _('Message: "{}", position: {}, length: {}')
+                mes = mes.format(phrase, pos, len_)
+                Message(f, mes).show_debug()
         timer.end()
 
 
