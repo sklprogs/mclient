@@ -11,6 +11,8 @@ from skl_shared.time import Timer
 from skl_shared.paths import Home, Path, File, Directory
 from skl_shared.logic import Input
 
+INDEX = {}
+
 
 class Suggest:
     
@@ -80,8 +82,7 @@ class DictZip:
             self.count = len(self.size)
         except Exception as e:
             self.Success = False
-            mes = _('Failed to load "{}"!\n\nDetails: {}')
-            mes = mes.format(self.path, e)
+            mes = _('Failed to load "{}"!\n\nDetails: {}').format(self.path, e)
             Message(f, mes, True).show_warning()
 
     def _read_header(self):
@@ -484,4 +485,70 @@ class AllDics:
         Message(f, mes).show_info()
 
 
-ALL_DICS = AllDics()
+
+class Index:
+    
+    def __init__(self, file):
+        self.file = file
+        self.Success = File(self.file).Success
+    
+    def load(self):
+        f = '[MClient] sources.stardict.get.Index.load'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        try:
+            self.idx = open(self.file, 'rb')
+        except Exception as e:
+            self.Success = False
+            mes = _('Failed to load "{}"!\n\nDetails: {}').format(self.path, e)
+            Message(f, mes, True).show_warning()
+    
+    def _get_phrase(self):
+        phrase = []
+        while True:
+            char = self.idx.read(1)
+            if char in (b'', b'\x00'):
+                phrase = b''.join(phrase)
+                return phrase.decode(errors='ignore')
+            phrase.append(char)
+    
+    def _get_poses(self):
+        f = '[MClient] sources.stardict.get.Index._get_poses'
+        chunk = self.idx.read(8)
+        try:
+            pos, len_ = struct.unpack('>LL', chunk)
+            return(pos, len_)
+        except Exception as e:
+            self.Success = False
+            rep.third_party(f, e)
+    
+    def parse(self):
+        f = '[MClient] sources.stardict.get.Index.parse'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        mes = _('Load "{}"').format(self.file)
+        Message(f, mes).show_info()
+        timer = Timer(f)
+        timer.start()
+        while True:
+            phrase = self._get_phrase()
+            if not phrase:
+                timer.end()
+                return
+            poses = self._get_poses()
+            if not poses:
+                timer.end()
+                return
+            if not phrase in INDEX:
+                INDEX[phrase] = {}
+            INDEX[phrase][self.file] = {'pos': poses[0], 'len': poses[1]}
+    
+    def run(self):
+        self.load()
+        self.parse()
+        return INDEX
+
+
+#ALL_DICS = AllDics()
