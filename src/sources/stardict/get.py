@@ -529,17 +529,17 @@ class Index:
                 return
             lower = phrase.lower().strip()
             if not lower in INDEX:
-                INDEX[lower] = {'file': self.file, 'phrase': phrase}
+                INDEX[lower] = {'file': self.file, 'phrase': phrase, 'pos': [], 'len': []}
             pos = self.idx.read(4)
             if not pos:
                 timer.end()
                 return
-            INDEX[lower]['pos'] = pos
+            INDEX[lower]['pos'].append(pos)
             len_ = self.idx.read(4)
             if not len_:
                 timer.end()
                 return
-            INDEX[lower]['len'] = len_
+            INDEX[lower]['len'].append(len_)
     
     def run(self):
         self.load()
@@ -554,7 +554,7 @@ class Indexes:
         self.records = []
     
     def get_records(self):
-        f = '[MClient] sources.stardict.get.Index.get_records'
+        f = '[MClient] sources.stardict.get.Indexes.get_records'
         if not self.Success:
             rep.cancel(f)
             return []
@@ -563,8 +563,33 @@ class Indexes:
             self.records = sorted(set(INDEX.keys()))
         return self.records
     
+    def search(self, pattern):
+        f = '[MClient] sources.stardict.get.Indexes.search'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        #TODO: Do this once for all sources upon search
+        pattern = pattern.lower().strip()
+        if not pattern:
+            rep.empty(f)
+            return
+        timer = Timer(f)
+        timer.start()
+        if not pattern in INDEX:
+            mes = _('"{}": no matches!').format(pattern)
+            Message(f, mes).show_info()
+            return
+        poses = []
+        lens = []
+        for pos in INDEX[pattern]['pos']:
+            poses.append(self._unpack(pos))
+        for len_ in INDEX[pattern]['len']:
+            lens.append(self._unpack(len_))
+        timer.end()
+        return(poses, lens)
+    
     def suggest(self, pattern, limit=0):
-        f = '[MClient] sources.stardict.get.Index.suggest'
+        f = '[MClient] sources.stardict.get.Indexes.suggest'
         if not self.Success:
             rep.cancel(f)
             return
@@ -598,7 +623,7 @@ class Indexes:
             rep.third_party(f, e)
     
     def debug(self, limit=100):
-        f = '[MClient] sources.stardict.get.Index.debug'
+        f = '[MClient] sources.stardict.get.Indexes.debug'
         if not self.Success:
             rep.cancel(f)
             return
