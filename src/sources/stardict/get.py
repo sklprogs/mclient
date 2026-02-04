@@ -530,8 +530,11 @@ class Index:
         if not self.Success:
             rep.cancel(f)
             return []
-        return [self._get_poses(item) for item in self.get_lowers() \
-               if item == lower]
+        poses = []
+        for item in self.get_lowers():
+            if item == lower:
+                poses += self._get_poses(item)
+        return poses
     
     def load(self):
         f = '[MClient] sources.stardict.get.Index.load'
