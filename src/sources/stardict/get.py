@@ -12,36 +12,6 @@ from skl_shared.paths import Home, Path, File, Directory
 from skl_shared.logic import Input
 
 
-class Suggest:
-    
-    def __init__(self, search):
-        self.set_values()
-        if search:
-            self.reset(search)
-    
-    def set_values(self):
-        self.Success = True
-        self.pattern = ''
-    
-    def reset(self, search):
-        f = '[MClient] sources.stardict.get.Suggest.reset'
-        self.pattern = search
-        if not self.pattern:
-            self.Success = False
-            rep.empty(f)
-    
-    def get(self):
-        f = '[MClient] sources.stardict.get.Suggest.get'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        return ALL_DICS.get_all(self.pattern)
-    
-    def run(self):
-        return self.get()
-
-
-
 class DictZip:
     # Based on https://github.com/cz7asm/pyStarDictViewer
     # Read archives in '.dict.dz' format
@@ -183,8 +153,7 @@ class StarDict:
         self.Success = True
         self.Block = False
         self.dictf = None
-        self.idx = None
-        self.map = None
+        self.index = None
         self.ifo = {}
         self.wcount = 0
         self.path = ''
@@ -202,8 +171,7 @@ class StarDict:
             return
         if not 'bookname' in self.ifo or not 'wordcount' in self.ifo:
             self.Success = False
-            mes = _('File "{}" is incorrect!')
-            mes = mes.format(self.bname + '.ifo')
+            mes = _('File "{}" is invalid!').format(self.bname + '.ifo')
             Message(f, mes, True).show_warning()
             return
         self.title = str(self.ifo['bookname'])
@@ -246,10 +214,12 @@ class StarDict:
         if not self.Success:
             rep.cancel(f)
             return
-        idx = self.bname + '.idx'
-        self.idx = open(idx, 'rb')
-        # Setting 'prot' avoids PermissionError
-        self.map = mmap.mmap(self.idx.fileno(), 0, prot=mmap.PROT_READ)
+        self.index = Index(self.bname + '.idx')
+        self.index.run()
+        self.Success = self.index.Success
+        if not self.Success:
+            rep.cancel(f)
+            return
         # Compression of .dict is optional
         try:
             self.dictf = open(self.bname + '.dict', 'rb')
@@ -261,18 +231,15 @@ class StarDict:
         if not self.Success:
             rep.cancel(f)
             return
-        self.map = None
-        self.idx.close()
+        self.index.close()
         self.dictf.close()
 
-    def _get_index_data(self, pos, len_):
-        self.idx.seek(pos)
-        return self.idx.read(len_)
-    
-    def _get_index(self, end):
-        chunk = self._get_index_data(end, 8)
-        index, len_ = struct.unpack('>LL', chunk)
-        return(index, len_)
+    def suggest(self, pattern):
+        f = '[MClient] sources.stardict.get.Stardict.suggest'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        return self.index.suggest(pattern)
     
     def search(self, pattern):
         f = '[MClient] sources.stardict.get.Stardict.search'
@@ -282,55 +249,14 @@ class StarDict:
         if not pattern:
             rep.empty(f)
             return
-        bytes_ = bytes(pattern, 'utf-8') + b'\x00'
-        start = self.map.find(bytes_)
-        if start == -1:
+        poses = self.index.search(pattern)
+        if not poses:
             return
-        index, len_ = self._get_index(start + len(bytes_))
-        mes = _('Pattern: "{}", position in dictionary: {}, article length: {}')
-        mes = mes.format(pattern, index, len_)
-        Message(f, mes).show_debug()
-        return(index, len_)
-    
-    def _find_end(self, start):
-        return self.map.find(b'\x00', start)
-    
-    def _find_next(self, bytes_, start):
-        f = '[MClient] sources.stardict.get.Stardict._find_next'
-        start = self.map.find(bytes_, start)
-        if start == -1:
-            return
-        end = self._find_end(start + len(bytes_))
-        if end == -1:
-            return
-        chunk = self._get_index_data(start, end - start)
-        if chunk:
-            return(chunk.decode(errors='ignore'), end)
-    
-    def find_all(self, bytes_):
-        f = '[MClient] sources.stardict.get.Stardict.find_all'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if not bytes_:
-            rep.empty(f)
-            return
-        results = []
-        start = 0
-        while True:
-            tuple_ = self._find_next(bytes_, start)
-            if not tuple_:
-                return results
-            match_, start = tuple_[0], tuple_[1]
-            '''
-            # Print index for all matches (useful for debugging)
-            index, len_ = self._get_index(self._find_end(start) + 1)
+        for index, len_ in poses:
             mes = _('Pattern: "{}", position in dictionary: {}, article length: {}')
-            mes = mes.format(match_, index, len_)
+            mes = mes.format(pattern, index, len_)
             Message(f, mes).show_debug()
-            '''
-            results.append(match_)
-            start += 1
+        return poses
     
     def get_dict_data(self, index, len_):
         f = '[MClient] sources.stardict.get.Stardict.get_dict_data'
@@ -356,7 +282,6 @@ class AllDics:
     def __init__(self):
         self.ifos = []
         self.dics = []
-        self.index_ = []
         self.path = Home('mclient').add_config('dics')
         self.Success = Directory(self.path).Success
         self.load()
@@ -367,63 +292,54 @@ class AllDics:
     def get_invalid(self):
         return [dic for dic in self.dics if not dic.Success]
     
-    def get_index(self):
-        f = '[MClient] sources.stardict.get.AllDics.get_index'
+    def suggest(self, pattern, limit=0):
+        f = '[MClient] sources.stardict.get.AllDics.suggest'
         if not self.Success:
             rep.cancel(f)
-            return
-        if not self.index_:
-            for idic in self.dics:
-                if idic.idx:
-                    self.index_ += [item[0] for item in idic.idx]
-        return self.index_
+            return []
+        #TODO: Do this once for all sources upon search
+        pattern = pattern.lower().strip()
+        if not pattern:
+            rep.empty(f)
+            return []
+        # Suggestions should be at least 3 chars long to keep speed
+        if len(pattern) < 3:
+            rep.lazy(f)
+            return []
+        timer = Timer(f)
+        timer.start()
+        words = []
+        for dic in self.dics:
+            words += dic.suggest(pattern)
+        if limit:
+            words = words[:limit]
+        timer.end()
+        return words
     
-    def get(self, search):
-        f = '[MClient] sources.stardict.get.AllDics.get'
+    def search(self, pattern):
+        f = '[MClient] sources.stardict.get.AllDics.search'
         if not self.Success:
             rep.cancel(f)
             return
-        if not search:
+        if not pattern:
             rep.empty(f)
             return
         dics = [dic for dic in self.dics if not dic.Block]
         lst = []
         for dic in dics:
-            tuple_ = dic.search(search)
-            if tuple_ is None:
+            poses = dic.search(pattern)
+            if not poses:
                 mes = _('No matches for "{}"!').format(dic.title)
                 Message(f, mes).show_info()
                 continue
-            result = dic.get_dict_data(tuple_[0], tuple_[1])
+            #TODO: Process several matches instead of a single one
+            result = dic.get_dict_data(poses[0][0], poses[0][1])
             if result:
                 # Set offline dictionary title
                 lst.append(f'<dic>{dic.title}</dic>{result}')
-                mes = _('"{}" has matches for "{}"').format(dic.title, search)
+                mes = _('"{}" has matches for "{}"').format(dic.title, pattern)
                 Message(f, mes).show_debug()
         return '\n'.join(lst)
-    
-    def get_all(self, search):
-        f = '[MClient] sources.stardict.get.AllDics.get_all'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if not search:
-            rep.empty(f)
-            return
-        #TODO: .lower() when index is lowercased
-        bytes_ = bytes(search, 'utf-8')
-        dics = [dic for dic in self.dics if not dic.Block]
-        lst = []
-        for dic in dics:
-            results = dic.find_all(bytes_)
-            if not results:
-                mes = _('No matches for "{}"!').format(dic.title)
-                Message(f, mes).show_info()
-                continue
-            lst += results
-            mes = _('"{}" has matches for "{}"').format(dic.title, search)
-            Message(f, mes).show_debug()
-        return lst
     
     def walk(self):
         ''' Explore all subdirectories of path searching for filenames that
@@ -485,11 +401,24 @@ class AllDics:
 
 
 class Index:
-    
+    ''' I had a fast, smart algorithm using mmap to navigate through a StarDict
+        dictionary. Unfortunately, StarDict is designed such that there is no
+        easy way to find exact matches without iterating through the entire
+        index. There is a null byte (b'\x00') at the end of each entry, but we
+        cannot say for sure if this null byte truly designates an entry end or
+        it is a part of an index chunk.
+    '''
     def __init__(self, file):
         self.lowers = {}
         self.file = file
         self.Success = File(self.file).Success
+    
+    def close(self):
+        f = '[MClient] sources.stardict.get.Index.close'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self.idx.close()
     
     def _unpack(self, chunk):
         f = '[MClient] sources.stardict.get.Index._unpack'
@@ -585,101 +514,4 @@ class Index:
         self.parse()
 
 
-
-class Indexes:
-    
-    def __init__(self):
-        self.Success = True
-        self.indexes = []
-        self.lowers = []
-    
-    def add(self, file):
-        index = Index(file)
-        self.indexes.append(index)
-        index.run()
-    
-    def get_lowers(self):
-        f = '[MClient] sources.stardict.get.Indexes.get_lowers'
-        if not self.Success:
-            rep.cancel(f)
-            return []
-        # We assume that the index is created only once
-        if self.lowers:
-            return self.lowers
-        for index in self.indexes:
-            self.lowers += index.get_lowers()
-        self.lowers = sorted(set(self.lowers))
-        return self.lowers
-    
-    def search(self, pattern):
-        f = '[MClient] sources.stardict.get.Indexes.search'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        #TODO: Do this once for all sources upon search
-        pattern = pattern.lower().strip()
-        if not pattern:
-            rep.empty(f)
-            return
-        poses = []
-        timer = Timer(f)
-        timer.start()
-        for index in self.indexes:
-            poses += index.search(pattern)
-        if not poses:
-            mes = _('"{}": no matches!').format(pattern)
-            Message(f, mes).show_info()
-            return
-        timer.end()
-        #TODO: Also return file names
-        return poses
-    
-    def suggest(self, pattern, limit=0):
-        f = '[MClient] sources.stardict.get.Indexes.suggest'
-        if not self.Success:
-            rep.cancel(f)
-            return []
-        #TODO: Do this once for all sources upon search
-        pattern = pattern.lower().strip()
-        if not pattern:
-            rep.empty(f)
-            return []
-        # Suggestions should be at least 3 chars long to keep speed
-        if len(pattern) < 3:
-            rep.lazy(f)
-            return []
-        timer = Timer(f)
-        timer.start()
-        words = []
-        for index in self.indexes:
-            words += index.suggest(pattern)
-        if limit:
-            words = words[:limit]
-        timer.end()
-        return words
-    
-    def _debug(self, limit):
-        mes = []
-        for index in self.indexes:
-            for lower in index.get_lowers():
-                word = index._get_word(lower)
-                poses = index._get_poses(lower)
-                sub = _('Word: "{}", positions: {}').format(word, poses)
-                mes.append(sub)
-                if limit and len(mes) == limit:
-                    return '\n'.join(mes)
-        return '\n'.join(mes)
-    
-    def debug(self, limit=100):
-        f = '[MClient] sources.stardict.get.Indexes.debug'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        timer = Timer(f)
-        timer.start()
-        mes = self._debug(limit)
-        timer.end()
-        return mes
-
-
-#ALL_DICS = AllDics()
+ALL_DICS = AllDics()
