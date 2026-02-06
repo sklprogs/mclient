@@ -332,11 +332,13 @@ class AllDics:
                 mes = _('No matches for "{}"!').format(dic.title)
                 Message(f, mes).show_info()
                 continue
-            #TODO: Process several matches instead of a single one
-            result = dic.get_dict_data(poses[0][0], poses[0][1])
-            if result:
+            articles = []
+            for pos in poses:
+                articles.append(dic.get_dict_data(pos[0], pos[1]))
+            articles = ''.join([article for article in articles if article])
+            if articles:
                 # Set offline dictionary title
-                lst.append(f'<dic>{dic.title}</dic>{result}')
+                lst.append(f'<dic>{dic.title}</dic>{articles}')
                 mes = _('"{}" has matches for "{}"').format(dic.title, pattern)
                 Message(f, mes).show_debug()
         return '\n'.join(lst)
