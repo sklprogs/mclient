@@ -557,7 +557,7 @@ class Get:
     
     def run_stardict(self):
         from sources.stardict.get import ALL_DICS
-        return ALL_DICS.get(SEARCH)
+        return ALL_DICS.search(SEARCH)
     
     def get_stardict_by_pos(self):
         from sources.stardict.get import StarDict
