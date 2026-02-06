@@ -1214,9 +1214,12 @@ class Suggest:
         if not self.Success:
             rep.cancel(f)
             return
-        suggestions = FILES.get_typein1().search(self.pattern)
+        typein1 = FILES.get_typein1()
+        if not typein1:
+            return []
+        suggestions = typein1.search(self.pattern)
         if suggestions:
-            return suggestions[0:20]
+            return suggestions[0:limit]
     
     def run(self):
         self.pattern = com.strip(self.pattern)
