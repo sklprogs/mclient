@@ -1109,15 +1109,20 @@ class Commands:
 class Suggest:
     
     def run_all(self):
-        results = [self.run_stardict()]
+        results = [self.run_multitrancom(), self.run_stardict()]
         results = [sub for sub in results if sub]
         results = List(results).join_sublists()
+        results = sorted(set(results))
         results = [f'"{item}"' for item in results]
         return '\n'.join(results)
     
     def run_stardict(self):
         from sources.stardict.run import Source as sdSource
         return sdSource().suggest(SEARCH)
+    
+    def run_multitrancom(self):
+        from sources.multitrancom.run import Source as mcSource
+        return mcSource().suggest(SEARCH)
 
 
 
