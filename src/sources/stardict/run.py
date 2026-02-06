@@ -53,10 +53,10 @@ class Source:
         return len(gt.ALL_DICS.get_invalid())
     
     def suggest(self, search):
-        return gt.Suggest(search).run()
+        return gt.ALL_DICS.suggest(search)
     
     def request(self, search='', url=''):
-        code = gt.ALL_DICS.get(search)
+        code = gt.ALL_DICS.search(search)
         code = cu.CleanUp(code).run()
         blocks = tg.Tags(code).run()
         ielems = el.Elems(blocks)
