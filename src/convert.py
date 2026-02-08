@@ -7,6 +7,7 @@ from skl_shared.graphics.root.controller import ROOT
 
 #from converters.dsl.odxml import Runner
 from converters.dsl.mdic import Runner
+#from converters.stardict.mdic import Runner
 
 
 if __name__ == '__main__':
