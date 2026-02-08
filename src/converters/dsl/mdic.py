@@ -13,6 +13,7 @@ from sources.dsl.cleanup import CleanUp
 from sources.dsl.get import ALL_DICS
 from sources.dsl.tags import Tags
 from sources.dsl.elems import Elems
+from cells import Elems as cElems
 
 from converters.mdic_shared import Runner as mdRunner, Index as mdIndex
 from converters.mdic_shared import Portion as mdPortion
@@ -37,6 +38,7 @@ class Portion(mdPortion):
                 rep.empty(f)
                 continue
             blocks = Elems(blocks).run()
+            blocks = cElems(blocks).run()
             if blocks:
                 self.blocks.append(blocks)
         ms.STOP = False
