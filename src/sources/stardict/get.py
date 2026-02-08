@@ -136,6 +136,13 @@ class StarDict:
         if ifopath:
             self.reset(ifopath)
     
+    def get_lowers(self):
+        f = '[MClient] sources.stardict.get.StarDict.get_lowers'
+        if not self.Success:
+            rep.cancel(f)
+            return []
+        return self.index.get_lowers()
+    
     def reset(self, ifopath):
         self.set_values()
         self.path = ifopath
