@@ -24,22 +24,6 @@ class Portion(mdPortion):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
    
-    def _get_first_wform(self):
-        for block in self.blocks:
-            if block.type == 'wform':
-                return block.text.strip()
-        return ''
-    
-    def set_wform(self):
-        # Do this before 'cells.Elems.run'
-        f = '[MClient] converters.stardict.mdic.Portion.set_wform'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        wform = self._get_first_wform()
-        for block in self.blocks:
-            block.wform = wform
-    
     def set_blocks(self):
         f = '[MClient] converters.stardict.mdic.Portion.set_blocks'
         if not self.Success:
@@ -54,7 +38,6 @@ class Portion(mdPortion):
                 rep.empty(f)
                 continue
             blocks = Elems(blocks).run()
-            self.set_wform()
             blocks = cElems(blocks).run()
             if blocks:
                 self.blocks.append(blocks)
@@ -129,7 +112,11 @@ class Runner(mdRunner):
                             article = f'<k>{lower}</k>{article}'
                             articles.append(article)
                 self.count += len(articles)
-                self.Success, pos = Portion(articles, idic.bname, pos).run()
+                iportion = Portion(articles, idic.bname, pos).run()
+                self.Success, pos = iportion.run()
+                self.unknown_wforms += iportion.unknown_wforms
+                # Free memory
+                iportion = None
                 if not self.Success:
                     return
             PROGRESS.inc()
@@ -155,6 +142,10 @@ class Runner(mdRunner):
         mes.append(sub)
         mes = '\n'.join(mes)
         Message(f, mes, True).show_info()
+        if self.unknown_wforms:
+            mes = _('Number of articles having no word forms: {}')
+            mes = mes.format(self.unknown_wforms)
+            Message(f, mes).show_warning()
     
     def run(self):
         f = '[MClient] converters.stardict.mdic.Runner.run'
