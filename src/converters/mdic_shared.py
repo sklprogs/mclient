@@ -13,8 +13,6 @@ from skl_shared.paths import Home, Path
 from skl_shared.text_file import Write
 from skl_shared.launch import Launch
 
-from sources.dsl.get import ALL_DICS
-
 BODY_FOLDER = Home('mclient').add_config('dics', 'MDIC')
 INDEX_FOLDER = os.path.join(BODY_FOLDER, 'collection.indexes')
 CREATE_FOLDER = Path(BODY_FOLDER).create() and Path(INDEX_FOLDER).create()
@@ -36,6 +34,7 @@ class Portion:
         self.Success = self.articles = articles
         self.dicname = dicname
         self.pos = pos
+        self.unknown_wforms = 0
    
     def set_wforms(self):
         # Do this only after 'self.set_json'
@@ -49,6 +48,7 @@ class Portion:
         for block in blocks:
             if block.type == 'wform':
                 return block.text
+        self.unknown_wforms += 1
         return 'wform'
     
     def _get_wform(self, blocks):
@@ -265,9 +265,10 @@ class Block:
 class Runner:
     
     def __init__(self):
-        self.Success = CREATE_FOLDER and ALL_DICS.Success
+        self.Success = CREATE_FOLDER
         self.feed_limit = 1000
         self.count = 0
+        self.unknown_wforms = 0
 
 
 

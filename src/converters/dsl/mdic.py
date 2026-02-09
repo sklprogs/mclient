@@ -66,6 +66,7 @@ class Runner(mdRunner):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.Success = self.Success and ALL_DICS.Success
     
     def loop_sources(self):
         f = '[MClient] converters.dsl.mdic.Runner.loop_sources'
@@ -97,7 +98,11 @@ class Runner(mdRunner):
                 PROGRESS.set_info(mes, 69)
                 PROGRESS.update()
                 self.count += len(articles)
-                self.Success, pos = Portion(articles, idic.dicname, pos).run()
+                iportion = Portion(articles, idic.dicname, pos)
+                self.Success, pos = iportion.run()
+                self.unknown_wforms += iportion.unknown_wforms
+                # Free memory
+                iportion = None
                 if not self.Success:
                     return
             PROGRESS.inc()
@@ -123,6 +128,10 @@ class Runner(mdRunner):
         mes.append(sub)
         mes = '\n'.join(mes)
         Message(f, mes, True).show_info()
+        if self.unknown_wforms:
+            mes = _('Number of articles having no word forms: {}')
+            mes = mes.format(self.unknown_wforms)
+            Message(f, mes).show_warning()
     
     def run(self):
         f = '[MClient] converters.dsl.mdic.Runner.run'
