@@ -320,12 +320,9 @@ class DSL:
                 text = fi.read()
         except Exception as e:
             self.Success = False
-            mes = _('Operation has failed!\n\nDetails: {}')
-            mes = mes.format(e)
+            mes = _('Operation has failed!\n\nDetails: {}').format(e)
             Message(f, mes, True).show_warning()
-        ''' Possibly, a memory consumption will be lower if we do not store
-            'self.text'.
-        '''
+        # Possibly, memory consumption is lower if we do not store 'self.text'
         if not text:
             self.Success = False
             rep.empty(f)
@@ -549,8 +546,7 @@ class AllDics:
                     self.dics.append(DSL(dsl))
             else:
                 rep.lazy(f)
-        mes = _('{} offline dictionaries are available')
-        mes = mes.format(len(self.dics))
+        mes = _('{} offline dictionaries are available').format(len(self.dics))
         Message(f, mes).show_info()
         return self.dics
 
