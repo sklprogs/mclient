@@ -45,10 +45,16 @@ class Portion:
             return
         self.wforms = [item.lower().strip() for item in self.json.keys() if item]
     
+    def _get_first_wform(self, blocks):
+        for block in blocks:
+            if block.type == 'wform':
+                return block.text
+        return 'wform'
+    
     def _get_wform(self, blocks):
         if not blocks:
             return ''
-        return blocks[0].wform
+        return self._get_first_wform(blocks)
     
     def set_json(self):
         ''' #NOTE: Edit Poses.start_pattern and Poses.end_pattern upon changing
