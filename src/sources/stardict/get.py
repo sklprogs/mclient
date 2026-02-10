@@ -156,6 +156,11 @@ class StarDict:
         self.check()
         self.set_meta()
 
+    def free_memory(self):
+        self.dictf = None
+        self.index = None
+        self.ifo = {}
+    
     def set_values(self):
         self.Success = True
         self.Block = False
@@ -166,7 +171,6 @@ class StarDict:
         self.path = ''
         self.bname = ''
         self.title = ''
-        self.transl = ''
     
     def set_meta(self):
         f = '[MClient] sources.stardict.get.Stardict.set_meta'
