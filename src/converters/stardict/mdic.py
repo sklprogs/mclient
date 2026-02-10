@@ -112,7 +112,7 @@ class Runner(mdRunner):
                             article = f'<k>{lower}</k>{article}'
                             articles.append(article)
                 self.count += len(articles)
-                iportion = Portion(articles, idic.bname, pos).run()
+                iportion = Portion(articles, idic.bname, pos)
                 self.Success, pos = iportion.run()
                 self.unknown_wforms += iportion.unknown_wforms
                 # Free memory
