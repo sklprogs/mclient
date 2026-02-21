@@ -427,7 +427,7 @@ class AllDics:
             dump = self.dics[self.dicno].dump(limit)
             if dump:
                 return dump
-            mes = _('Dictionary #{} ({}) has been dumped!')
+            mes = _('Dictionary #{} ({}) has been dumped')
             mes = mes.format(self.dicno + 1, self.dics[self.dicno].dicname)
             Message(f, mes).show_info()
             self.dics[self.dicno].free_memory()
