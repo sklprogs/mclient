@@ -19,7 +19,8 @@ class Dsl:
             rep.cancel(f)
             return
         if not dump:
-            rep.empty(f)
+            # Dictionary length may be less than limit
+            rep.lazy(f)
             return
         #iarticles = dump[0:3] + dump[-3:]
         iarticles = [dump[0]] + [dump[-1]]
@@ -36,6 +37,6 @@ class Dsl:
             self.get_next(limit)
     
     def run(self):
-        self.run_loops(2, 900)
+        self.run_loops(2)
         return '\n'.join(self.report)
         
