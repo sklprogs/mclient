@@ -7,6 +7,7 @@ from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
 
 from tests.sources import Get
+from tests.sources import Dump
 from tests.sources import Tags
 from tests.sources import Elems
 from tests.sources import Source
@@ -34,7 +35,7 @@ if __name__ == '__main__':
     #mes = Get().run_multitrancom()
     #mes = Get().run_multitrandem()
     #mes = Get().run_stardict()
-    mes = Get().get_stardict_by_pos()
+    mes = Dump().run_dsl()
     #mes = Tags().run_stardict()
     #mes = Tags().run_fora_stardictx()
     #mes = Tags().run_dsl()

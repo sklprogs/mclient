@@ -1126,4 +1126,20 @@ class Suggest:
 
 
 
+class Dump:
+    
+    def run_dsl(self):
+        from sources.dsl.get import ALL_DICS
+        idic = ALL_DICS.dics[0]
+        idic.run()
+        iarticle = idic.get_entry(5)
+        mes = []
+        sub = _('Dictionary: "{}"').format(iarticle.dic)
+        mes.append(sub)
+        mes.append(iarticle.search)
+        mes.append(iarticle.code)
+        return '\n'.join(mes)
+
+
+
 com = Commands()
