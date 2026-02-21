@@ -31,16 +31,11 @@ class Dsl:
     def get_next(self, limit=1500):
         self.add_report(self.source.dump(limit))
     
-    def run2(self):
-        self.get_next(100)
-        self.get_next(100)
-    
-    def run3(self):
-        self.get_next(10)
-        self.get_next(10)
-        self.get_next(10)
+    def run_loops(self, loops=1, limit=1500):
+        for i in range(loops):
+            self.get_next(limit)
     
     def run(self):
-        self.run3()
+        self.run_loops(2, 900)
         return '\n'.join(self.report)
         
