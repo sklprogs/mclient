@@ -260,7 +260,7 @@ class DSL:
             return
         iarticles = []
         # Slices do not cause IndexError
-        for pos in self.poses[self.recno:limit]:
+        for pos in self.poses[self.recno:self.recno+limit]:
             iarticle = self.get_entry(pos)
             if not iarticle:
                 continue
@@ -427,6 +427,9 @@ class AllDics:
             dump = self.dics[self.dicno].dump(limit)
             if dump:
                 return dump
+            mes = _('Dictionary #{} ({}) has been dumped!')
+            mes = mes.format(self.dicno + 1, self.dics[self.dicno].dicname)
+            Message(f, mes).show_info()
             self.dics[self.dicno].free_memory()
             self.dicno += 1
     
