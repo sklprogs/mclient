@@ -112,6 +112,7 @@ class DSL:
     def __init__(self, file):
         self.file = ''
         self.fname = ''
+        self.recno = 0
         self.lst = []
         self.lang1 = _('Any')
         self.lang2 = _('Any')
@@ -251,6 +252,19 @@ class DSL:
         Message(f, mes).show_debug()
         return iarticle
     
+    def dump(self, limit):
+        # converters
+        f = '[MClient] sources.dsl.get.DSL.dump'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        iarticles = []
+        # Slices do not cause IndexError
+        for pos in self.poses[self.recno:limit]:
+            iarticles.append(self.get_entry(pos))
+        self.recno += limit
+        return [iarticle for iarticle in iarticles if iarticle]
+    
     def search(self, pattern):
         f = '[MClient] sources.dsl.get.DSL.search'
         if not self.Success:
@@ -380,6 +394,7 @@ class Suggest:
 class AllDics:
     
     def __init__(self):
+        self.dicno = 0
         self.dsls = []
         self.dics = []
         self.index_ = []
@@ -396,6 +411,20 @@ class AllDics:
     
     def get_invalid(self):
         return [dic for dic in self.dics if not dic.Success]
+    
+    def dump(self, limit=1500):
+        f = '[MClient] sources.dsl.get.AllDics.dump'
+        if not self.Success:
+            rep.cancel(f)
+            return []
+        dump = []
+        while self.dicno < len(self.dics):
+            self.dics[self.dicno].run()
+            dump = self.dics[self.dicno].dump(limit)
+            if dump:
+                return dump
+            self.dics[self.dicno].free_memory()
+            self.dicno += 1
     
     def get_langs2(self):
         f = '[MClient] sources.dsl.get.AllDics.get_langs2'
