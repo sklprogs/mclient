@@ -14,21 +14,19 @@ class Dsl:
     
     def add_report(self, dump):
         f = '[MClient] tests.dump.Dsl.add_report'
+        self.report.append(f + ':')
         if not self.source.Success:
             rep.cancel(f)
             return
         if not dump:
             rep.empty(f)
             return
-        self.report.append(f + ':')
         #iarticles = dump[0:3] + dump[-3:]
         iarticles = [dump[0]] + [dump[-1]]
         for iarticle in iarticles:
-            sub = _('Dictionary: "{}"').format(iarticle.dic)
-            self.report.append(sub)
-            self.report.append(iarticle.search)
-            self.report.append(f'{iarticle.pos}: {iarticle.code}')
-            self.report.append('\n')
+            self.report.append(f'{iarticle.pos}: {iarticle.search} ({iarticle.dic})')
+            self.report.append(iarticle.code)
+        self.report.append('')
     
     def get_next(self, limit=1500):
         self.add_report(self.source.dump(limit))
@@ -38,9 +36,9 @@ class Dsl:
         self.get_next(100)
     
     def run3(self):
-        self.get_next(100)
-        self.get_next(100)
-        self.get_next(100)
+        self.get_next(10)
+        self.get_next(10)
+        self.get_next(10)
     
     def run(self):
         self.run3()
