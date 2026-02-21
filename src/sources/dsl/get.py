@@ -261,9 +261,13 @@ class DSL:
         iarticles = []
         # Slices do not cause IndexError
         for pos in self.poses[self.recno:limit]:
-            iarticles.append(self.get_entry(pos))
+            iarticle = self.get_entry(pos)
+            if not iarticle:
+                continue
+            iarticle.pos = pos
+            iarticles.append(iarticle)
         self.recno += limit
-        return [iarticle for iarticle in iarticles if iarticle]
+        return iarticles
     
     def search(self, pattern):
         f = '[MClient] sources.dsl.get.DSL.search'

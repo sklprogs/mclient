@@ -1125,27 +1125,4 @@ class Suggest:
         return mcSource().suggest(SEARCH)
 
 
-
-class Dump:
-    
-    def run_dsl(self):
-        f = '[MClient] tests.sources.Dump.run_dsl'
-        from sources.dsl.get import ALL_DICS
-        dump = ALL_DICS.dump()
-        if not dump:
-            rep.empty(f)
-            return
-        iarticles = dump[0:3]
-        iarticles += dump[-3:]
-        mes = []
-        for iarticle in iarticles:
-            sub = _('Dictionary: "{}"').format(iarticle.dic)
-            mes.append(sub)
-            mes.append(iarticle.search)
-            mes.append(iarticle.code)
-            mes.append('\n')
-        return '\n'.join(mes)
-
-
-
 com = Commands()

@@ -79,6 +79,8 @@ class Subject:
 class Article:
     
     def __init__(self):
+        # Useful for debugging export
+        self.pos = 0
         self.dic = ''
         self.code = ''
         self.search = ''
