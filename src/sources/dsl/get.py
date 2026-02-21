@@ -244,6 +244,7 @@ class DSL:
                 break
             i += 1
         iarticle = Article()
+        iarticle.dic = self.dicname
         iarticle.search = self.lst[pos]
         iarticle.code = '\n'.join(article)
         mes = f'"{iarticle.code}"'
