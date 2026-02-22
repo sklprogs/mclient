@@ -61,3 +61,12 @@ class Source:
             self.blocks += tg.Tags(article).run()
         self.blocks = el.Elems(self.blocks).run()
         return self.blocks
+    
+    def get_blocks(self, article):
+        f = '[MClient] sources.dsl.run.Source.get_blocks'
+        if not article:
+            rep.empty(f)
+            return []
+        article.code = cu.CleanUp(article.code).run()
+        blocks = tg.Tags(article).run()
+        return el.Elems(blocks).run()
