@@ -154,14 +154,14 @@ class AnalyzeTag:
 
 class Tags:
     
-    def __init__(self, text):
-        self.Success = True
+    def __init__(self, article):
         self.abbr = {}
         self.blocks = []
         self.fragms = []
         self.tags = []
         self.open = []
-        self.code = text
+        self.Success = True
+        self.article = article
     
     def _is_trash(self, tag):
         for subtag in tag.inherent:
@@ -252,7 +252,7 @@ class Tags:
         self.tags = [tag for tag in self.tags if tag]
     
     def _debug_code(self):
-        return _('Code:') + '\n' + '"{}"'.format(self.code)
+        return _('Code:') + '\n' + '"{}"'.format(self.article.code)
     
     def _debug_fragms(self):
         mes = []
@@ -298,37 +298,33 @@ class Tags:
         mes = [self._debug_tags(), self._debug_blocks()]
         return '\n\n'.join(mes)
     
-    def check(self):
-        f = '[MClient] sources.dsl.tags.Tags.check'
-        if not self.code:
-            # Avoid None on output
-            self.code = ''
-            self.Success = False
-            rep.empty(f)
-    
     def split(self):
         f = '[MClient] sources.dsl.tags.Tags.split'
         if not self.Success:
             rep.cancel(f)
             return
+        if not self.article:
+            self.Success = False
+            rep.empty(f)
+            return
         fragm = ''
-        for i in range(len(self.code)):
-            if self.code[i] == '[':
-                if i > 0 and self.code[i-1] == '\\':
-                    fragm += self.code[i]
+        for i in range(len(self.article.code)):
+            if self.article.code[i] == '[':
+                if i > 0 and self.article.code[i-1] == '\\':
+                    fragm += self.article.code[i]
                     continue
                 if fragm:
                     self.fragms.append(fragm)
-                fragm = self.code[i]
-            elif self.code[i] == ']':
-                if i > 0 and self.code[i-1] == '\\':
-                    fragm += self.code[i]
+                fragm = self.article.code[i]
+            elif self.article.code[i] == ']':
+                if i > 0 and self.article.code[i-1] == '\\':
+                    fragm += self.article.code[i]
                     continue
-                fragm += self.code[i]
+                fragm += self.article.code[i]
                 self.fragms.append(fragm)
                 fragm = ''
             else:
-                fragm += self.code[i]
+                fragm += self.article.code[i]
         if fragm:
             self.fragms.append(fragm)
     
@@ -338,7 +334,6 @@ class Tags:
                 return True
     
     def run(self):
-        self.check()
         self.split()
         self.assign()
         self.set_inherent()

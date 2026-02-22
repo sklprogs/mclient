@@ -166,11 +166,9 @@ class View:
         timer.start()
         gt.PATH = Home('mclient').add_config('dics')
         articles = gt.Get(SEARCH).run()
-        for iarticle in articles:
-            code = cu.CleanUp(iarticle.code).run()
-            code = cu.TagLike(code).run()
-            blocks += tg.Tags(code = code
-                             ,dicname = iarticle.dic).run()
+        for article in articles:
+            article.code = cu.CleanUp(article.code).run()
+            blocks += tg.Tags(article).run()
         blocks = el.Elems(blocks).run()
         cells = cl.Cells(blocks).run()
         
@@ -323,13 +321,10 @@ class Elems:
         import sources.dsl.tags as tg
         import sources.dsl.elems as el
         blocks = []
-        htm = []
         articles = gt.Get(SEARCH).run()
-        for iarticle in articles:
-            htm.append(iarticle.code)
-            code = cu.CleanUp(iarticle.code).run()
-            blocks += tg.Tags(code).run()
-        htm = '\n'.join(htm)
+        for article in articles:
+            article.code = cu.CleanUp(article.code).run()
+            blocks += tg.Tags(article).run()
         ielems = el.Elems(blocks)
         ielems.run()
         return ielems.debug()
@@ -342,9 +337,9 @@ class Elems:
         from cells import Elems as cElems, Cells
         blocks = []
         articles = Get(SEARCH).run()
-        for iarticle in articles:
-            code = CleanUp(iarticle.code).run()
-            blocks += Tags(code).run()
+        for article in articles:
+            article.code = CleanUp(article.code).run()
+            blocks += Tags(article).run()
         blocks = Elems(blocks).run()
         blocks = cElems(blocks).run()
         icells = Cells(blocks)
@@ -455,8 +450,8 @@ class CleanUp:
         import sources.dsl.cleanup as cu
         code = []
         articles = gt.Get(SEARCH).run()
-        for iarticle in articles:
-            code.append(cu.CleanUp(iarticle.code).run())
+        for article in articles:
+            code.append(cu.CleanUp(article.code).run())
         code = '\n\n'.join(code)
         return f + '\n"' + cu.CleanUp(code).run() + '"'
 
@@ -624,9 +619,9 @@ class Tags:
         import sources.dsl.tags as tg
         articles = gt.Get('account').run()
         debug = []
-        for iarticle in articles:
-            code = cu.CleanUp(iarticle.code).run()
-            itags = tg.Tags(code)
+        for article in articles:
+            article.code = cu.CleanUp(article.code).run()
+            itags = tg.Tags(article)
             itags.run()
             debug.append(itags.debug())
         return '\n\n'.join(debug)
