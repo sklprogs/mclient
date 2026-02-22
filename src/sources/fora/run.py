@@ -7,7 +7,7 @@ from skl_shared.message.controller import Message, rep
 from sources.fora.get import ALL_DICS
 import sources.fora.stardict0.cleanup
 import sources.fora.stardict0.elems
-import sources.fora.dsl.cleanup
+import sources.dsl.cleanup
 import sources.fora.dsl.tags
 import sources.fora.dsl.elems
 import sources.stardict.cleanup
@@ -82,7 +82,7 @@ class Source:
         return sources.fora.stardictm.elems.Elems(blocks).run()
     
     def _request_dsl(self, dic):
-        text = sources.fora.dsl.cleanup.CleanUp(dic.article).run()
+        text = sources.dsl.cleanup.CleanUp(dic.article).run()
         blocks = sources.fora.dsl.tags.Tags(text).run()
         return sources.fora.dsl.elems.Elems(blocks).run()
     

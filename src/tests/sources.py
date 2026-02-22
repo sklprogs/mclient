@@ -293,7 +293,7 @@ class Elems:
     def run_fora_dsl(self):
         f = '[MClient] tests.sources.Elems.run_fora_dsl'
         from sources.fora.get import ALL_DICS
-        import sources.fora.dsl.cleanup as cu
+        import sources.dsl.cleanup as cu
         import sources.fora.dsl.tags as tg
         import sources.fora.dsl.elems as el
         article = ALL_DICS.search(SEARCH)
@@ -587,7 +587,7 @@ class Tags:
     def run_fora_dsl(self):
         f = '[MClient] tests.sources.Tags.run_fora_dsl'
         import sources.fora.get as gt
-        import sources.fora.dsl.cleanup as cu
+        import sources.dsl.cleanup as cu
         import sources.fora.dsl.tags as tg
         article = gt.ALL_DICS.search(SEARCH)
         if not article:
