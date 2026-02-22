@@ -152,8 +152,9 @@ class Cells:
     
     def debug(self, maxrow=60, maxrows=0):
         f = '[MClient] cells.Cells.debug'
-        headers = (_('SOURCE'), 'SUBJ', 'WFORM', 'SPEECH', 'TRANSC', _('ROW #')
-                  ,_('CELL #'), _('TYPES'), _('TEXT'), 'URL')
+        headers = (_('SOURCE'), 'DIC', 'SUBJ', 'WFORM', 'SPEECH', 'TRANSC'
+                  ,_('ROW #'), _('CELL #'), _('TYPES'), _('TEXT'), 'URL')
+        dics = []
         sources = []
         subj = []
         wform = []
@@ -166,6 +167,7 @@ class Cells:
         urls = []
         for cell in self.cells:
             sources.append(cell.source)
+            dics.append(cell.dic)
             subj.append(cell.subj)
             wform.append(cell.wform)
             speech.append(cell.speech)
@@ -177,8 +179,8 @@ class Cells:
             types.append(', '.join(cell_types))
             urls.append(cell.url)
         mes = Table(headers = headers
-                   ,iterable = (sources, subj, wform, speech, transc, rownos
-                               ,nos, types, texts, urls)
+                   ,iterable = (sources, dics, subj, wform, speech, transc
+                               ,rownos, nos, types, texts, urls)
                    ,maxrow = maxrow, maxrows = maxrows).run()
         return f'{f}:\n{mes}'
     
@@ -216,6 +218,12 @@ class Cells:
     def set_urls(self):
         for cell in self.cells:
             cell.url = self._get_url(cell)
+    
+    def _get_last_dic(self):
+        for cell in self.cells[::-1]:
+            if cell.fixed_block and cell.fixed_block.type == 'dic':
+                return cell.text
+        return ''
     
     def _get_last_subj(self):
         for cell in self.cells[::-1]:
@@ -276,6 +284,7 @@ class Cells:
         return ''
     
     def fill_fixed(self):
+        dic = self._get_last_dic()
         subj = self._get_last_subj()
         wform = self._get_last_wform()
         transc = self._get_last_transc()
@@ -287,6 +296,7 @@ class Cells:
                 wform = self._get_prev_wform(i)
                 speech = self._get_prev_speech(i)
                 transc = self._get_prev_transc(i)
+            self.cells[i].dic = dic
             self.cells[i].subj = subj
             self.cells[i].wform = wform
             self.cells[i].speech = speech
