@@ -226,6 +226,20 @@ class Tags:
         else:
             block.type = tag.inherent[-1].type
     
+    def add_head(self):
+        f = '[MClient] sources.dsl.tags.Tags.add_head'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        block = Block()
+        block.type = 'dic'
+        block.text = block.dic = self.article.dic
+        self.blocks.append(block)
+        block = Block()
+        block.type = 'wform'
+        block.text = self.article.search
+        self.blocks.append(block)
+    
     def set_blocks(self):
         f = '[MClient] sources.dsl.tags.Tags.set_blocks'
         if not self.Success:
@@ -338,5 +352,6 @@ class Tags:
         self.assign()
         self.set_inherent()
         self.set_nos()
+        self.add_head()
         self.set_blocks()
         return self.blocks

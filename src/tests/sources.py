@@ -18,9 +18,8 @@ from config import CONFIG
 
 #SEARCH = 'analyzer'
 #SEARCH = 'hello bye'
-#SEARCH = 'account'
+SEARCH = 'account'
 #SEARCH = 'book'
-SEARCH = 'absolute'
 #SEARCH = 'good'
 #SEARCH = 'orderly'
 URL = 'https://www.multitran.com/m.exe?s=hello+bye&l1=2&l2=1'
@@ -617,7 +616,7 @@ class Tags:
         import sources.dsl.get as gt
         import sources.dsl.cleanup as cu
         import sources.dsl.tags as tg
-        articles = gt.Get('account').run()
+        articles = gt.Get(SEARCH).run()
         debug = []
         for article in articles:
             article.code = cu.CleanUp(article.code).run()
