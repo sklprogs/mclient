@@ -56,9 +56,8 @@ class Source:
     
     def request(self, search='', url=''):
         self.blocks = []
-        articles = gt.Get(search).run()
-        for iarticle in articles:
-            iarticle.code = cu.CleanUp(iarticle.code).run()
-            self.blocks += tg.Tags(iarticle).run()
+        for article in gt.Get(search).run():
+            article.code = cu.CleanUp(article.code).run()
+            self.blocks += tg.Tags(article).run()
         self.blocks = el.Elems(self.blocks).run()
         return self.blocks
