@@ -70,6 +70,7 @@ actually Cyrillic)
   (sdict_EnRu_full - cut (manual).txt) are not separated when sorting
 
 dsl:
+- bottling: no dic block, wform is misplaced
 - hello -> handshaking goes back to hello
 - Ru-En search does not work
 - Cannot find anything in Ozhegov's and Ushakov's dictionaries
