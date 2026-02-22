@@ -95,15 +95,11 @@ class Get:
         mes = mes.format(len(dicnames), len(ALL_DICS.dics), '; '.join(dicnames))
         Message(f, mes).show_debug()
         for idic in dics:
-            iarticle = idic.search(self.pattern)
-            if iarticle:
-                iarticle.dic = idic.dicname.replace('[', '(').replace(']', ')')
-                ''' \n avoids incorrectly assigning wforms if the article
-                    already contains a dictionary name
-                    (see sources.dsl.tags.Tags._set_block_type).
-                '''
-                iarticle.code = f'[dic]{iarticle.dic}[/dic]\n{iarticle.code}'
-                self.articles.append(iarticle)
+            article = idic.search(self.pattern)
+            if article:
+                #TODO: Do we still need to replace square brackets?
+                article.dic = idic.dicname.replace('[', '(').replace(']', ')')
+                self.articles.append(article)
 
 
 
@@ -118,7 +114,6 @@ class DSL:
         self.lang2 = _('Any')
         self.poses = []
         self.index_ = []
-        self.articles = []
         self.Success = True
         self.dicname = _('Untitled dictionary')
         self.file = file
@@ -138,27 +133,6 @@ class DSL:
         self.cleanup()
         self.get_index()
         timer.end()
-    
-    def set_articles(self):
-        # Used by converters
-        f = '[MClient] sources.dsl.get.DSL.set_articles'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if not self.poses:
-            self.Success = False
-            rep.empty(f)
-            return
-        # 'self.poses' denote index poses, so we need a new list
-        poses = self.poses
-        if self.lst[-1].startswith('\t'):
-            # Not -1 because of slices
-            poses.append(len(self.lst))
-        i = 1
-        while i < len(poses):
-            article = self.lst[poses[i-1]:poses[i]]
-            self.articles.append('\n'.join(article))
-            i += 1
     
     def cleanup(self):
         f = '[MClient] sources.dsl.get.DSL.cleanup'
@@ -236,21 +210,21 @@ class DSL:
             mes = f'0 <= {pos + 1} < {len(self.lst)}'
             rep.condition(f, mes)
             return
-        article = []
+        code = []
         i = pos + 1
         while i < len(self.lst):
             if self.lst[i].startswith('\t'):
-                article.append(self.lst[i])
+                code.append(self.lst[i])
             else:
                 break
             i += 1
-        iarticle = Article()
-        iarticle.dic = self.dicname
-        iarticle.search = self.lst[pos]
-        iarticle.code = '\n'.join(article)
-        mes = f'"{iarticle.code}"'
+        article = Article()
+        article.dic = self.dicname
+        article.search = self.lst[pos]
+        article.code = '\n'.join(code)
+        mes = f'"{article.code}"'
         Message(f, mes).show_debug()
-        return iarticle
+        return article
     
     def dump(self, limit):
         # converters
@@ -258,16 +232,16 @@ class DSL:
         if not self.Success:
             rep.cancel(f)
             return
-        iarticles = []
+        articles = []
         # Slices do not cause IndexError
         for pos in self.poses[self.recno:self.recno+limit]:
-            iarticle = self.get_entry(pos)
-            if not iarticle:
+            article = self.get_entry(pos)
+            if not article:
                 continue
-            iarticle.pos = pos
-            iarticles.append(iarticle)
+            article.pos = pos
+            articles.append(article)
         self.recno += limit
-        return iarticles
+        return articles
     
     def search(self, pattern):
         f = '[MClient] sources.dsl.get.DSL.search'
@@ -352,7 +326,6 @@ class DSL:
         self.lst = []
         self.poses = []
         self.index_ = []
-        self.articles = []
 
 
 
