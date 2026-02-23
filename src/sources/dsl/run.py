@@ -4,6 +4,7 @@
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 
+import cells
 import sources.dsl.get as gt
 import sources.dsl.tags as tg
 import sources.dsl.elems as el
@@ -62,11 +63,18 @@ class Source:
         self.blocks = el.Elems(self.blocks).run()
         return self.blocks
     
-    def get_blocks(self, article):
-        f = '[MClient] sources.dsl.run.Source.get_blocks'
-        if not article:
-            rep.empty(f)
+    def dump(self, limit=1500):
+        f = '[MClient] sources.dsl.run.Source.dump'
+        articles = gt.ALL_DICS.dump(limit)
+        if not articles:
+            rep.lazy(f)
             return []
-        article.code = cu.CleanUp(article.code).run()
-        blocks = tg.Tags(article).run()
-        return el.Elems(blocks).run()
+        for article in articles:
+            if not article:
+                rep.empty(f)
+                continue
+            article.code = cu.CleanUp(article.code).run()
+            article.blocks = tg.Tags(article).run()
+            article.blocks = el.Elems(article.blocks).run()
+            article.blocks = cells.Elems(article.blocks).run()
+        return articles
