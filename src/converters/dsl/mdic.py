@@ -300,6 +300,12 @@ class Runner:
         self.limit = 1000
         self.count = 0
     
+    def _update_progress(self, dicname):
+        mes = _('Dictionary: {}\nArticles processed in total: {}')
+        mes = mes.format(dicname, self.count)
+        PROGRESS.set_info(mes, 69)
+        PROGRESS.update()
+    
     def loop_sources(self):
         f = '[MClient] converters.dsl.mdic.Runner.loop_sources'
         if not self.Success:
@@ -318,7 +324,7 @@ class Runner:
         PROGRESS.set_title(_('Process articles'))
         PROGRESS.show()
         pos = 0
-        old_dic = 0
+        cur_dic = ''
         while True:
             articles = ALL_DICS.dump(self.limit)
             if not articles:
@@ -327,16 +333,14 @@ class Runner:
                 if not article:
                     rep.empty(f)
                     continue
-                if old_dic != article.dic:
-                    old_dic = article.dic
-                    mes = _('Dictionary: {}\nArticles processed in total: {}')
-                    mes = mes.format(old_dic, self.count)
-                    PROGRESS.set_info(mes, 69)
+                if cur_dic != article.dic:
+                    cur_dic = article.dic
+                    self._update_progress(cur_dic)
                     PROGRESS.inc()
-                    PROGRESS.update()
                 article.blocks = DslSource().get_blocks(article)
                 article.blocks = cElems(article.blocks).run()
                 self.count += 1
+            self._update_progress(cur_dic)
         PROGRESS.close()
     
     def report(self, interval):
@@ -363,7 +367,7 @@ class Runner:
         timer = Timer(f)
         timer.start()
         self.loop_sources()
-        #self.Success = self.Success and Index().run()
+        self.Success = self.Success and Index().run()
         self.report(timer.end())
 
 
