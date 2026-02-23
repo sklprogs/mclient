@@ -41,30 +41,6 @@ class Portion:
         '''
         self.Success = self.articles = articles
         self.pos = pos
-        self.unknown_wforms = 0
-   
-    def set_blocks(self):
-        f = '[MClient] converters.dsl.mdic.Portion.set_blocks'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        # We do not want millions of debug messages
-        ms.STOP = True
-        for article in self.articles:
-            code = CleanUp(article).run()
-            blocks = Tags(code).run()
-            if not blocks:
-                rep.empty(f)
-                continue
-            blocks = Elems(blocks).run()
-            blocks = cElems(blocks).run()
-            if blocks:
-                self.blocks.append(blocks)
-        ms.STOP = False
-        if not self.blocks:
-            self.Success = False
-            rep.empty_output(f)
-            return
     
     def set_wforms(self):
         # Do this only after 'self.set_json'
@@ -82,20 +58,17 @@ class Portion:
         if not self.Success:
             rep.cancel(f)
             return
-        ms.STOP = True
-        for article_blocks in self.blocks:
-            wform = self._get_wform(article_blocks)
-            if not wform in self.json:
-                self.json[wform] = {}
-            for block in article_blocks:
+        for article in self.articles:
+            for block in article.blocks:
+                if not article.search in self.json:
+                    self.json[article.search] = {}
                 #TODO: Use block no
-                ''' Rewrite blocks having the same text (may relate to
-                    different subjects of the same dictionary). Blocks of
-                    different dictionaries are not affected since Portion is
-                    executed for a single dictionary.
+                ''' Rewrite blocks having the same text (may relate to different
+                    subjects of the same dictionary). Blocks of different
+                    dictionaries are not affected since reading a portion
+                    completes when the dictionary end is reached.
                 '''
-                self.json[wform][block.text] = Block(block).run()
-        ms.STOP = False
+                self.json[article.search][block.text] = Block(block).run()
     
     def _debug_json(self):
         ''' Debug JSON structure of the current portion. Should work even when
@@ -251,20 +224,19 @@ class Portion:
         for wform in self.json:
             for block_text in self.json[wform]:
                 self.json[wform][block_text]['source'] = 'MClient (.mdic)'
-                self.json[wform][block_text]['dic'] = self.dicname
+                # Currently, dictionary is the same for the whole portion
+                self.json[wform][block_text]['dic'] = self.articles[0].dic
     
     def run(self):
-        self.set_blocks()
         self.set_json()
         self.set_sources()
         self.dump_json()
-        self.set_wforms()
-        self.set_fragms()
-        self.set_body()
-        self.save_body()
-        self.free_memory()
-        # We return tuple in order not to keep in memory this class
-        return(self.Success, self.pos)
+        #self.set_wforms()
+        #self.set_fragms()
+        #self.set_body()
+        #self.save_body()
+        #self.free_memory()
+        return self.pos
 
 
 
@@ -325,6 +297,8 @@ class Runner:
         PROGRESS.show()
         pos = 0
         cur_dic = ''
+        # We do not want millions of debug messages
+        ms.STOP = True
         while True:
             articles = ALL_DICS.dump(self.limit)
             if not articles:
@@ -340,8 +314,14 @@ class Runner:
                 article.blocks = DslSource().get_blocks(article)
                 article.blocks = cElems(article.blocks).run()
                 self.count += 1
-            # Update progress after parsing a portion
+            iportion = Portion(articles, pos)
+            pos = iportion.run()
+            self.Success = iportion.Success
+            if not self.Success:
+                break
+            # Update progress because number of processed articles changed
             self._update_progress(cur_dic)
+        ms.STOP = False
         PROGRESS.close()
     
     def report(self, interval):
