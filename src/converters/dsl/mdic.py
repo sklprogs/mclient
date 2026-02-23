@@ -231,11 +231,11 @@ class Portion:
         self.set_json()
         self.set_sources()
         self.dump_json()
-        #self.set_wforms()
-        #self.set_fragms()
-        #self.set_body()
-        #self.save_body()
-        #self.free_memory()
+        self.set_wforms()
+        self.set_fragms()
+        self.set_body()
+        self.save_body()
+        self.free_memory()
         return self.pos
 
 
