@@ -50,20 +50,27 @@ class Dsl:
                 return '\n'.join(self.report)
             self.add_report(dump)
     
-    def dump(self):
-        f = '[MClient] tests.dump.Dsl.dump'
+    def run_blocks(self):
+        f = '[MClient] tests.dump.Dsl.run_blocks'
         self.report.append(f + ':')
-        articles = DslSource().dump(3)
-        mes = []
-        for article in articles:
-            # sources.dsl.run.Source.dump already prevents adding empty articles
-            ielems = Elems(article.blocks)
-            mes.append(ielems.debug())
-        return '\n'.join(mes)
+        if not self.all_dics.Success:
+            rep.cancel(f)
+            return
+        articles = self.all_dics.dump(1)
+        if not articles:
+            rep.empty(f)
+            return
+        blocks = DslSource().get_blocks(articles[0])
+        if not blocks:
+            rep.empty(f)
+            return
+        ielems = Elems(blocks)
+        ielems.run()
+        return ielems.debug()
     
     def run(self):
         #self.limit = 100
         #return self.run_loops(2)
         #return self.run_all()
-        return self.dump()
+        return self.run_blocks()
         
