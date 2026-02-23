@@ -317,8 +317,8 @@ class Runner:
             rep.condition(f, mes)
             return
         PROGRESS.set_value(0)
-        ''' We cannot set the number of articles here since they are
-            not processed yet.
+        ''' The final number of articles can be established only after parsing
+            all indexes of all dictionaries.
         '''
         PROGRESS.set_max(len(ALL_DICS.dics))
         PROGRESS.set_title(_('Process articles'))
@@ -340,6 +340,7 @@ class Runner:
                 article.blocks = DslSource().get_blocks(article)
                 article.blocks = cElems(article.blocks).run()
                 self.count += 1
+            # Update progress after parsing a portion
             self._update_progress(cur_dic)
         PROGRESS.close()
     
