@@ -269,8 +269,9 @@ class Runner:
     
     def __init__(self):
         self.Success = CREATE_FOLDER and ALL_DICS.Success
-        self.limit = 1000
+        self.limit = 1500
         self.count = 0
+        self.failed = 0
     
     def _update_progress(self, dicname):
         mes = _('Dictionary: {}\nArticles processed in total: {}')
@@ -305,6 +306,7 @@ class Runner:
                 break
             for article in articles:
                 if not article:
+                    self.failed += 1
                     rep.empty(f)
                     continue
                 if cur_dic != article.dic:
@@ -313,6 +315,8 @@ class Runner:
                     PROGRESS.inc()
                 article.blocks = DslSource().get_blocks(article)
                 article.blocks = cElems(article.blocks).run()
+                if not article.blocks:
+                    self.failed += 1
                 self.count += 1
             iportion = Portion(articles, pos)
             pos = iportion.run()
@@ -335,8 +339,8 @@ class Runner:
         len_ = shcom.set_figure_commas(len(ALL_DICS.dics))
         count = shcom.set_figure_commas(self.count)
         mes = []
-        sub = _('Processed in total: dictionaries: {}; articles: {}')
-        sub = sub.format(len_, count)
+        sub = _('Processed in total: dictionaries: {} (failed: {}); articles: {} (failed: {})')
+        sub = sub.format(len_, len(ALL_DICS.get_invalid()), count, self.failed)
         mes.append(sub)
         sub = _('The operation has taken {}.').format(interval)
         mes.append(sub)
