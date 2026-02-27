@@ -55,12 +55,22 @@ class Source:
     def suggest(self, search):
         return gt.ALL_DICS.suggest(search)
     
-    def request(self, search='', url=''):
-        code = gt.ALL_DICS.search(search)
-        code = cu.CleanUp(code).run()
-        blocks = tg.Tags(code).run()
-        ielems = el.Elems(blocks)
+    def request(self, search):
+        self.blocks = []
+        for article in gt.ALL_DICS.search(search):
+            article.code = cu.CleanUp(article.code).run()
+            self.blocks += tg.Tags(article).run()
+        ielems = el.Elems(self.blocks)
         self.blocks = ielems.run()
         self.Parallel = ielems.Parallel
         self.Separate = ielems.Separate
         return self.blocks
+
+    def get_blocks(self, article):
+        f = '[MClient] sources.stardict.run.Source.get_blocks'
+        if not article:
+            rep.empty(f)
+            return []
+        article.code = cu.CleanUp(article.code).run()
+        blocks = tg.Tags(article).run()
+        return el.Elems(blocks).run()

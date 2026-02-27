@@ -71,11 +71,11 @@ class Sources:
     
     def request(self, search='', url=''):
         blocks = self.mcsource.request(search, url)
-        blocks += self.sdsource.request(search, url)
-        blocks += self.mbsource.request(search, url)
-        blocks += self.lgsource.request(search, url)
-        blocks += self.frsource.request(search, url)
-        blocks += self.mdsource.request(search, url)
+        blocks += self.sdsource.request(search)
+        blocks += self.mbsource.request(search)
+        blocks += self.lgsource.request(search)
+        blocks += self.frsource.request(search)
+        blocks += self.mdsource.request(search)
         return blocks
     
     def is_parallel(self):

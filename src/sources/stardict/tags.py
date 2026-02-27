@@ -139,14 +139,14 @@ class AnalyzeTag:
 
 class Tags:
     
-    def __init__(self, text):
-        self.Success = True
+    def __init__(self, article):
         self.abbr = {}
         self.blocks = []
         self.fragms = []
         self.tags = []
         self.open = []
-        self.code = text
+        self.Success = bool(article)
+        self.article = article
     
     def _is_trash(self, tag):
         for subtag in tag.inherent:
@@ -203,6 +203,20 @@ class Tags:
                    ,maxrows = 1000).run()
         return _('Blocks:') + '\n' + mes
     
+    def add_head(self):
+        f = '[MClient] sources.stardict.tags.Tags.add_head'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        block = Block()
+        block.type = 'dic'
+        block.text = block.dic = self.article.dic
+        self.blocks.append(block)
+        block = Block()
+        block.type = 'wform'
+        block.text = self.article.search
+        self.blocks.append(block)
+    
     def set_blocks(self):
         f = '[MClient] sources.stardict.tags.Tags.set_blocks'
         if not self.Success:
@@ -239,7 +253,7 @@ class Tags:
             self.tags.append(AnalyzeTag(fragm).run())
     
     def _debug_code(self):
-        return _('Code:') + '\n' + '"{}"'.format(self.code)
+        return _('Code:') + '\n' + '"{}"'.format(self.article.code)
     
     def _debug_fragms(self):
         mes = []
@@ -285,21 +299,17 @@ class Tags:
         mes = [self._debug_tags(), self._debug_blocks()]
         return '\n\n'.join(mes)
     
-    def check(self):
-        f = '[MClient] sources.stardict.tags.Tags.check'
-        if not self.code:
-            # Avoid None on output
-            self.code = ''
-            self.Success = False
-            rep.empty(f)
-    
     def split(self):
         f = '[MClient] sources.stardict.tags.Tags.split'
         if not self.Success:
             rep.cancel(f)
             return
+        if not self.article.code:
+            self.Success = False
+            rep.empty(f)
+            return
         fragm = ''
-        for sym in list(self.code):
+        for sym in list(self.article.code):
             if sym == '<':
                 if fragm:
                     self.fragms.append(fragm)
@@ -314,10 +324,10 @@ class Tags:
             self.fragms.append(fragm)
     
     def run(self):
-        self.check()
         self.split()
         self.assign()
         self.set_inherent()
         self.set_nos()
+        self.add_head()
         self.set_blocks()
         return self.blocks

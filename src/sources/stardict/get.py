@@ -5,11 +5,14 @@ import struct
 import os
 import mmap
 import zlib
+
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.time import Timer
 from skl_shared.paths import Home, Path, File, Directory
 from skl_shared.logic import Input
+
+from instance import Article
 
 
 class DictZip:
@@ -186,6 +189,8 @@ class StarDict:
             Message(f, mes, True).show_warning()
             return
         self.title = str(self.ifo['bookname'])
+        if not self.title:
+            self.title = self.bname
         self.wcount = Input(f, self.ifo['wordcount']).get_integer()
     
     def fail(self, f, e):
@@ -331,28 +336,29 @@ class AllDics:
         f = '[MClient] sources.stardict.get.AllDics.search'
         if not self.Success:
             rep.cancel(f)
-            return
+            return []
         if not pattern:
             rep.empty(f)
-            return
+            return []
         dics = [dic for dic in self.dics if not dic.Block]
-        lst = []
+        articles = []
         for dic in dics:
             poses = dic.search(pattern)
-            if not poses:
+            if poses:
+                mes = _('"{}" has matches for "{}"').format(dic.title, pattern)
+                Message(f, mes).show_debug()
+            else:
                 mes = _('No matches for "{}"!').format(dic.title)
                 Message(f, mes).show_info()
                 continue
-            articles = []
             for pos in poses:
-                articles.append(dic.get_dict_data(pos[0], pos[1]))
-            articles = ''.join([article for article in articles if article])
-            if articles:
-                # Set offline dictionary title
-                lst.append(f'<dic>{dic.title}</dic>{articles}')
-                mes = _('"{}" has matches for "{}"').format(dic.title, pattern)
-                Message(f, mes).show_debug()
-        return '\n'.join(lst)
+                article = Article()
+                article.code = dic.get_dict_data(pos[0], pos[1])
+                article.pos = pos
+                article.dic = dic.title
+                article.search = pattern
+                articles.append(article)
+        return articles
     
     def walk(self):
         ''' Explore all subdirectories of path searching for filenames that

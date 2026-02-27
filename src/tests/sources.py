@@ -19,7 +19,10 @@ from config import CONFIG
 #SEARCH = 'analyzer'
 #SEARCH = 'hello bye'
 #SEARCH = 'account'
-SEARCH = 'bottling'
+#SEARCH = 'Дисковая операционная система'
+#SEARCH = 'Генеральный контролер по патентам'
+SEARCH = 'abeyance'
+#SEARCH = 'bottling'
 #SEARCH = 'book'
 #SEARCH = 'good'
 #SEARCH = 'orderly'
@@ -552,7 +555,17 @@ class Get:
     
     def run_stardict(self):
         from sources.stardict.get import ALL_DICS
-        return ALL_DICS.search(SEARCH)
+        mes = []
+        articles = ALL_DICS.search(SEARCH)
+        for article in articles:
+            sub = _('Pattern: "{}"').format(article.search)
+            mes.append(sub)
+            sub = _('Dictionary: "{}"').format(article.dic)
+            mes.append(sub)
+            sub = _('Article:')
+            mes.append(sub)
+            mes.append(article.code)
+        return '\n'.join(mes)
     
     def get_stardict_by_pos(self):
         from sources.stardict.get import StarDict
@@ -636,14 +649,18 @@ class Tags:
         itag.debug()
     
     def run_stardict(self):
+        from sources.stardict.get import ALL_DICS
         import sources.stardict.cleanup as cu
         import sources.stardict.tags as tg
-        file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - good.txt'
-        text = Read(file).get()
-        text = cu.CleanUp(text).run()
-        itags = tg.Tags(text)
-        itags.run()
-        return itags.debug()
+        mes = []
+        articles = ALL_DICS.search(SEARCH)
+        debug = []
+        for article in articles:
+            article.code = cu.CleanUp(article.code).run()
+            itags = tg.Tags(article)
+            itags.run()
+            debug.append(itags.debug())
+        return '\n\n'.join(debug)
     
     def run_multitrancom(self):
         from skl_shared.text_file import Read

@@ -56,6 +56,7 @@ multitrancom:
 - RU-EN, bunnyhug: calculate font height more precisely
 
 stardict:
+- Patents, RU-EN: Nothing is found
 - dash: 'to m', 't', 'a', 'o' - dangling block parts ('a', 'o', 'y' are
 actually Cyrillic)
 - good: How'm I going?" - adjacent blocks are dangling
