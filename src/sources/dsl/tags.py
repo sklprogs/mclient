@@ -160,7 +160,7 @@ class Tags:
         self.fragms = []
         self.tags = []
         self.open = []
-        self.Success = True
+        self.Success = bool(article)
         self.article = article
     
     def _is_trash(self, tag):
@@ -317,7 +317,7 @@ class Tags:
         if not self.Success:
             rep.cancel(f)
             return
-        if not self.article:
+        if not self.article.code:
             self.Success = False
             rep.empty(f)
             return
