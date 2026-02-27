@@ -54,7 +54,7 @@ class Source:
     def suggest(self, search):
         return gt.Suggest(search).run()
     
-    def request(self, search='', url=''):
+    def request(self, search):
         self.blocks = []
         for article in gt.Get(search).run():
             article.code = cu.CleanUp(article.code).run()
