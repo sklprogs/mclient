@@ -19,7 +19,6 @@ mclient:
   Windows
 - Welcome: bind_toggle_popup is not shown
 - Article IDs > 9 are not shown in History
-- Fix Stardict (nothing is found)
 - Fix wrong 1st position of a speech part in the Cut-to-the chase mode
 - Changing number of columns causes navigation issues
 - Disabling prioritization doesn't unprioritize subjects
@@ -56,7 +55,6 @@ multitrancom:
 - RU-EN, bunnyhug: calculate font height more precisely
 
 stardict:
-- Patents, RU-EN: Nothing is found
 - dash: 'to m', 't', 'a', 'o' - dangling block parts ('a', 'o', 'y' are
 actually Cyrillic)
 - good: How'm I going?" - adjacent blocks are dangling

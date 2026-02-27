@@ -16,12 +16,11 @@ from skl_shared.list import List
 
 from config import CONFIG
 
+# Search pattern must be lowercased
 #SEARCH = 'analyzer'
 #SEARCH = 'hello bye'
-#SEARCH = 'account'
-#SEARCH = 'Дисковая операционная система'
-#SEARCH = 'Генеральный контролер по патентам'
-SEARCH = 'abeyance'
+SEARCH = 'account'
+#SEARCH = 'abeyance'
 #SEARCH = 'bottling'
 #SEARCH = 'book'
 #SEARCH = 'good'
@@ -218,15 +217,19 @@ class Elems:
         return ielems.debug()
     
     def run_stardict(self):
-        from sources.stardict.cleanup import CleanUp as mCleanUp
-        from sources.stardict.tags import Tags as mTags
+        from sources.stardict.get import ALL_DICS
+        import sources.stardict.cleanup as cu
+        import sources.stardict.tags as tg
         from sources.stardict.elems import Elems as mElems
-        file = '/home/pete/docs/mclient_tests/stardict/English-Russian full dictionary - hello.txt'
-        text = Read(file).get()
-        text = mCleanUp(text).run()
-        blocks = mTags(text).run()
-        ielems = mElems(blocks)
-        ielems.run()
+        from cells import Elems as cElems
+        mes = []
+        articles = ALL_DICS.search(SEARCH)
+        blocks = []
+        for article in articles:
+            article.code = cu.CleanUp(article.code).run()
+            blocks += tg.Tags(article).run()
+        blocks = mElems(blocks).run()
+        ielems = cElems(blocks)
         return ielems.debug()
     
     def run_stardict_cells(self):
