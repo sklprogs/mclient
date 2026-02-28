@@ -12,6 +12,11 @@ Traceback (most recent call last):
     ^^^^^^^^^^^^
 RuntimeError: wrapped C/C++ object of type Catcher has been deleted
 
+converters:
+- remove 'failed' from report if there were no fails
+- split progress messages by lines before shortening
+- do not load stardict dics altogether
+
 mclient:
 - go places: "разг." is misformatted owing to new <nobr> tag
 - search: Refactor searching in article
