@@ -150,7 +150,8 @@ class StarDict:
         # Slices do not cause IndexError
         for lower in lowers[self.recno:self.recno+limit]:
             poses = self.index._get_poses(lower)
-            articles.append(self.get_entry(lower, poses))
+            for pos in poses:
+                articles.append(self.get_entry(lower, pos))
         self.recno += limit
         return [article for article in articles if article and article.code]
     
@@ -162,12 +163,9 @@ class StarDict:
         if not pattern or not poses:
             rep.empty(f)
             return
-        if len(poses) > 1:
-            rep.wrong_input(f)
-            return
         article = Article()
-        article.code = self.get_dict_data(poses[0][0], poses[0][1])
-        #article.pos = poses[0]
+        article.code = self.get_dict_data(poses[0], poses[1])
+        article.pos = poses[0]
         article.dic = self.title
         article.search = pattern
         return article
@@ -348,7 +346,7 @@ class AllDics:
             if dump:
                 return dump
             mes = _('Dictionary #{} ({}) has been dumped')
-            mes = mes.format(self.dicno + 1, self.dics[self.dicno].dicname)
+            mes = mes.format(self.dicno + 1, self.dics[self.dicno].title)
             Message(f, mes).show_info()
             self.dics[self.dicno].free_memory()
             self.dicno += 1
