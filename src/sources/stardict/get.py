@@ -139,13 +139,34 @@ class StarDict:
         if ifopath:
             self.reset(ifopath)
     
+    def dump(self, limit):
+        # converters
+        f = '[MClient] sources.stardict.get.StarDict.dump'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        articles = []
+        lowers = list(self.get_lowers())
+        # Slices do not cause IndexError
+        for lower in lowers[self.recno:self.recno+limit]:
+            poses = self.index._get_poses(lower)
+            articles.append(self.get_entry(lower, poses))
+        self.recno += limit
+        return [article for article in articles if article and article.code]
+    
     def get_entry(self, pattern, poses):
         f = '[MClient] sources.stardict.get.StarDict.get_entry'
         if not self.Success:
             rep.cancel(f)
             return
+        if not pattern or not poses:
+            rep.empty(f)
+            return
+        if len(poses) > 1:
+            rep.wrong_input(f)
+            return
         article = Article()
-        article.code = self.get_dict_data(poses[0], poses[1])
+        article.code = self.get_dict_data(poses[0][0], poses[0][1])
         #article.pos = poses[0]
         article.dic = self.title
         article.search = pattern
@@ -183,6 +204,7 @@ class StarDict:
         self.index = None
         self.ifo = {}
         self.wcount = 0
+        self.recno = 0
         self.path = ''
         self.bname = ''
         self.title = ''
@@ -310,9 +332,26 @@ class AllDics:
     def __init__(self):
         self.ifos = []
         self.dics = []
+        self.dicno = 0
         self.path = Home('mclient').add_config('dics')
         self.Success = Directory(self.path).Success
         self.load()
+    
+    def dump(self, limit=1500):
+        f = '[MClient] sources.stardict.get.AllDics.dump'
+        if not self.Success:
+            rep.cancel(f)
+            return []
+        dump = []
+        while self.dicno < len(self.dics):
+            dump = self.dics[self.dicno].dump(limit)
+            if dump:
+                return dump
+            mes = _('Dictionary #{} ({}) has been dumped')
+            mes = mes.format(self.dicno + 1, self.dics[self.dicno].dicname)
+            Message(f, mes).show_info()
+            self.dics[self.dicno].free_memory()
+            self.dicno += 1
     
     def get_valid(self):
         return [dic for dic in self.dics if dic.Success]
