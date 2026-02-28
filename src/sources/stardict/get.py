@@ -139,6 +139,18 @@ class StarDict:
         if ifopath:
             self.reset(ifopath)
     
+    def get_entry(self, pattern, poses):
+        f = '[MClient] sources.stardict.get.StarDict.get_entry'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        article = Article()
+        article.code = self.get_dict_data(poses[0], poses[1])
+        #article.pos = poses[0]
+        article.dic = self.title
+        article.search = pattern
+        return article
+    
     def get_lowers(self):
         f = '[MClient] sources.stardict.get.StarDict.get_lowers'
         if not self.Success:
@@ -150,9 +162,9 @@ class StarDict:
         self.set_values()
         self.path = ifopath
         ipath = Path(self.path)
-        ''' We need a filename with an absolute path here. 'file'[:-4]
-            does the same thing (providing that extensions are only 3 symbols
-            long). 'Path' is more precise for other cases.
+        ''' We need a filename with an absolute path here. 'file'[:-4] does
+            the same thing (providing that extensions are only 3 symbols long).
+            'Path' is more precise for other cases.
         '''
         self.bname = os.path.join(ipath.get_dirname(), ipath.get_basename())
         self.Success = File(self.path).Success
@@ -352,11 +364,10 @@ class AllDics:
                 Message(f, mes).show_info()
                 continue
             for pos in poses:
-                article = Article()
-                article.code = dic.get_dict_data(pos[0], pos[1])
-                article.pos = pos
-                article.dic = dic.title
-                article.search = pattern
+                article = dic.get_entry(pattern, pos)
+                if not article:
+                    rep.empty(f)
+                    continue
                 articles.append(article)
         return articles
     
