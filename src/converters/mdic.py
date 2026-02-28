@@ -17,8 +17,10 @@ from skl_shared.time import Timer
 from skl_shared.logic import com as shcom
 from skl_shared.list import List
 
-from sources.dsl.get import ALL_DICS
+from sources.dsl.get import ALL_DICS as DslDics
 from sources.dsl.run import Source as DslSource
+from sources.stardict.get import ALL_DICS as StarDics
+from sources.stardict.run import Source as StarSource
 from cells import Elems as cElems
 
 BODY_FOLDER = Home('mclient').add_config('dics', 'MDIC')
@@ -268,8 +270,9 @@ class Block:
 class Runner:
     
     def __init__(self):
-        self.Success = CREATE_FOLDER and ALL_DICS.Success
+        self.Success = CREATE_FOLDER and (DslDics.Success or StarDics.Success)
         self.limit = 1500
+        self.pos = 0
         self.count = 0
         self.failed = 0
     
@@ -279,29 +282,11 @@ class Runner:
         PROGRESS.set_info(mes, 69)
         PROGRESS.update()
     
-    def loop_sources(self):
-        f = '[MClient] converters.dsl.mdic.Runner.loop_sources'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if self.limit <= 0:
-            self.Success = False
-            mes = f'{self.limit} > 0'
-            rep.condition(f, mes)
-            return
-        PROGRESS.set_value(0)
-        ''' The final number of articles can be established only after parsing
-            all indexes of all dictionaries.
-        '''
-        PROGRESS.set_max(len(ALL_DICS.dics))
-        PROGRESS.set_title(_('Process articles'))
-        PROGRESS.show()
-        pos = 0
+    def _loop_dsl(self):
+        f = '[MClient] converters.mdic.Runner._loop_dsl'
         cur_dic = ''
-        # We do not want millions of debug messages
-        ms.STOP = True
         while True:
-            articles = ALL_DICS.dump(self.limit)
+            articles = DslDics.dump(self.limit)
             if not articles:
                 break
             for article in articles:
@@ -318,29 +303,81 @@ class Runner:
                 if not article.blocks:
                     self.failed += 1
                 self.count += 1
-            iportion = Portion(articles, pos)
-            pos = iportion.run()
+            iportion = Portion(articles, self.pos)
+            self.pos = iportion.run()
             self.Success = iportion.Success
             if not self.Success:
                 break
             # Update progress because number of processed articles changed
             self._update_progress(cur_dic)
+    
+    def _loop_stardict(self):
+        f = '[MClient] converters.mdic.Runner._loop_stardict'
+        cur_dic = ''
+        while True:
+            articles = StarDics.dump(self.limit)
+            if not articles:
+                break
+            for article in articles:
+                if not article:
+                    self.failed += 1
+                    rep.empty(f)
+                    continue
+                if cur_dic != article.dic:
+                    cur_dic = article.dic
+                    self._update_progress(cur_dic)
+                    PROGRESS.inc()
+                article.blocks = StarSource().get_blocks(article)
+                article.blocks = cElems(article.blocks).run()
+                if not article.blocks:
+                    self.failed += 1
+                self.count += 1
+            iportion = Portion(articles, self.pos)
+            self.pos = iportion.run()
+            self.Success = iportion.Success
+            if not self.Success:
+                break
+            # Update progress because number of processed articles changed
+            self._update_progress(cur_dic)
+    
+    def loop_sources(self):
+        f = '[MClient] converters.mdic.Runner.loop_sources'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        if self.limit <= 0:
+            self.Success = False
+            mes = f'{self.limit} > 0'
+            rep.condition(f, mes)
+            return
+        PROGRESS.set_value(0)
+        ''' The final number of articles can be established only after parsing
+            all indexes of all dictionaries.
+        '''
+        PROGRESS.set_max(len(DslDics.dics) + len(StarDics.dics))
+        PROGRESS.set_title(_('Process articles'))
+        PROGRESS.show()
+        # We do not want millions of debug messages
+        ms.STOP = True
+        self._loop_dsl()
+        self._loop_stardict()
         ms.STOP = False
         PROGRESS.close()
     
     def report(self, interval):
-        f = '[MClient] converters.dsl.mdic.Runner.report'
+        f = '[MClient] converters.mdic.Runner.report'
         interval = shcom.get_human_time(interval)
         if not self.Success:
             mes = _('The operation has failed! Time wasted: {}')
             mes = mes.format(interval)
             Message(f, mes, True).show_error()
             return
-        len_ = shcom.set_figure_commas(len(ALL_DICS.dics))
+        len_ = shcom.set_figure_commas(len(DslDics.dics) + len(StarDics.dics))
         count = shcom.set_figure_commas(self.count)
         mes = []
         sub = _('Processed in total: dictionaries: {} (failed: {}); articles: {} (failed: {})')
-        sub = sub.format(len_, len(ALL_DICS.get_invalid()), count, self.failed)
+        invalid = len(DslDics.get_invalid()) + len(StarDics.get_invalid())
+        sub = sub.format(len_, invalid, count, self.failed)
         mes.append(sub)
         sub = _('The operation has taken {}.').format(interval)
         mes.append(sub)
@@ -348,7 +385,7 @@ class Runner:
         Message(f, mes, True).show_info()
     
     def run(self):
-        f = '[MClient] converters.dsl.mdic.Runner.run'
+        f = '[MClient] converters.mdic.Runner.run'
         timer = Timer(f)
         timer.start()
         self.loop_sources()
