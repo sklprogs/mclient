@@ -249,15 +249,15 @@ class Elems:
     
     def run_fora(self):
         f = '[MClient] tests.sources.Elems.run_fora'
-        from cells import Cells
+        from cells import Elems as cElems, Cells
         from sources.fora.run import Source
         blocks = Source().request(SEARCH)
         if not blocks:
             rep.lazy(f)
             return
-        icells = Cells(blocks)
-        icells.run()
-        return icells.debug()
+        ielems = cElems(blocks)
+        ielems.run()
+        return ielems.debug()
     
     def run_fora_stardictx(self):
         f = '[MClient] tests.sources.Elems.run_fora_stardictx'
