@@ -11,6 +11,8 @@ from skl_shared.message.controller import Message, rep
 from skl_shared.paths import File, Directory, Path, Home
 from skl_shared.time import Timer
 
+from instance import Article
+
 # Must be lowercase
 '''
 FORMATS = ('stardict-0', 'stardict-h', 'stardict-m', 'stardict-x', 'xdxf'
@@ -284,7 +286,6 @@ class Properties:
 class Fora:
     
     def __init__(self, folder):
-        self.article = ''
         self.pattern = ''
         self.prop = Properties(folder)
         self.index = Index(folder)
@@ -311,35 +312,37 @@ class Fora:
         if not self.Success:
             rep.cancel(f)
             return
-        self.article = ''
         self.pattern = pattern
         pos = self.index.search(self.pattern)
         if not pos:
             return
         indexes = self.index.get(pos)
-        self.article = self.dic.get(indexes)
-        if self.article.strip():
-            self.article = '<dic>' + self.get_name() + '</dic>' + self.article
-        return self.article
+        article = Article()
+        article.search = self.pattern
+        article.code = self.dic.get(indexes)
+        article.dic = self.get_name()
+        article.format = self.get_format()
+        return article
     
     def search_all(self, pattern):
+        # Orphant
         f = '[MClient] sources.fora.get.Fora.search_all'
         if not self.Success:
             rep.cancel(f)
             return
-        self.article = ''
         self.pattern = pattern
         poses = self.index.search_all(self.pattern)
         if not poses:
             return
+        articles = []
         for pos in poses:
             indexes = self.index.get(pos)
-            article = self.dic.get(indexes)
-            if article:
-                self.article += article + '\n'
-        if self.article.strip():
-            self.article = '<dic>' + self.get_name() + '</dic>' + self.article
-        return self.article
+            article = Article()
+            article.code = self.dic.get(indexes)
+            article.dic = self.get_name()
+            article.format = self.get_format()
+            articles.append(article)
+        return articles
     
     def close(self):
         f = '[MClient] sources.fora.get.Fora.close'
@@ -440,24 +443,22 @@ class AllDics:
         f = '[MClient] sources.fora.get.AllDics.search'
         if not self.Success:
             rep.cancel(f)
-            return
+            return []
         if not pattern:
             rep.empty(f)
-            return
+            return []
         timer = Timer(f)
         timer.start()
+        articles = []
         for dic in self.dics:
-            dic.search(pattern)
+            article = dic.search(pattern)
+            if article and article.code:
+                articles.append(article)
         timer.end()
-        articles = [dic.article for dic in self.dics \
-                   if dic.Success and dic.article]
         mes = _('"{}": {} matches in {} Fora dictionaries')
         mes = mes.format(pattern, len(articles), len(self.get_valid()))
         Message(f, mes).show_debug()
-        ''' #NOTE: This output should be used for debugging purposes only,
-            since it is incorrect to join articles of different formats.
-        '''
-        return '\n\n'.join(articles)
+        return articles
     
     def close(self):
         f = '[MClient] sources.fora.get.AllDics.close'

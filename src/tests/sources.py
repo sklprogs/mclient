@@ -20,7 +20,6 @@ from config import CONFIG
 #SEARCH = 'analyzer'
 #SEARCH = 'hello bye'
 SEARCH = 'account'
-#SEARCH = 'abeyance'
 #SEARCH = 'bottling'
 #SEARCH = 'book'
 #SEARCH = 'good'
@@ -518,7 +517,19 @@ class Get:
     
     def run_fora(self):
         from sources.fora.get import ALL_DICS
-        return ALL_DICS.search(SEARCH)
+        mes = []
+        articles = ALL_DICS.search(SEARCH)
+        for article in articles:
+            sub = _('Pattern: "{}"').format(article.search)
+            mes.append(sub)
+            sub = _('Dictionary: "{}"').format(article.dic)
+            mes.append(sub)
+            sub = _('Format: "{}"').format(article.format)
+            mes.append(sub)
+            sub = _('Article:')
+            mes.append(sub)
+            mes.append(article.code)
+        return '\n'.join(mes)
     
     def run_dsl(self):
         from sources.dsl.get import Get as mGet
