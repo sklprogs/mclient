@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-24 22:00+0300\n"
-"PO-Revision-Date: 2026-02-24 22:01+0300\n"
+"POT-Creation-Date: 2026-03-01 17:29+0300\n"
+"PO-Revision-Date: 2026-03-01 17:30+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -436,7 +436,7 @@ msgstr "ТИПЫ"
 #: mclient/src/sources/multitrancom/tags.py:371
 #: mclient/src/sources/stardict/elems.py:200
 #: mclient/src/sources/stardict/tags.py:198
-#: mclient/src/sources/stardict/tags.py:268 mclient/src/view.py:147
+#: mclient/src/sources/stardict/tags.py:282 mclient/src/view.py:147
 #: mclient/src/view.py:378 mclient/src/view.py:674
 msgid "TEXT"
 msgstr "ТЕКСТ"
@@ -550,47 +550,11 @@ msgstr "Обновление конфигурации по умолчанию"
 msgid "Use default configuration"
 msgstr "Используется конфигурация по умолчанию"
 
-#: mclient/src/convert.py:17 mclient/src/mclient.py:944
+#: mclient/src/convert.py:16 mclient/src/mclient.py:944
 #: mclient/src/sources/multitrandem/utils.py:943
-#: mclient/src/sources/multitrandem/utils.py:1400 mclient/src/test.py:115
+#: mclient/src/sources/multitrandem/utils.py:1400 mclient/src/test.py:117
 msgid "Goodbye!"
 msgstr "До свидания!"
-
-#: mclient/src/converters/dsl/mdic.py:199 mclient/src/converters/dsl/mdic.py:484
-#: mclient/src/sources/multitrandem/utils.py:743
-#: mclient/src/sources/multitrandem/utils.py:1143
-#: mclient/src/sources/multitrandem/utils.py:1147
-msgid "Write \"{}\""
-msgstr "Запись \"{}\""
-
-#: mclient/src/converters/dsl/mdic.py:277
-#: mclient/src/converters/stardict/mdic.py:94
-msgid ""
-"Dictionary: {}\n"
-"Articles processed in total: {}"
-msgstr ""
-"Словарь: {}\n"
-"Всего обработано статей: {}"
-
-#: mclient/src/converters/dsl/mdic.py:297
-#: mclient/src/converters/stardict/mdic.py:85
-msgid "Process articles"
-msgstr "Обработка статей"
-
-#: mclient/src/converters/dsl/mdic.py:335 mclient/src/converters/dsl/odxml.py:309
-#: mclient/src/converters/stardict/mdic.py:131
-msgid "The operation has failed! Time wasted: {}"
-msgstr "Операция завершилась неудачно! Потрачено впустую {}"
-
-#: mclient/src/converters/dsl/mdic.py:342
-msgid ""
-"Processed in total: dictionaries: {} (failed: {}); articles: {} (failed: {})"
-msgstr "Всего обработано: словарей: {} (неудачно: {}); статей: {} (неудачно: {})"
-
-#: mclient/src/converters/dsl/mdic.py:345 mclient/src/converters/dsl/odxml.py:306
-#: mclient/src/converters/stardict/mdic.py:141
-msgid "The operation has taken {}."
-msgstr "Операция завершена за {}."
 
 #: mclient/src/converters/dsl/odxml.py:174
 msgid "Generate XML"
@@ -632,18 +596,41 @@ msgstr "Обработка {} ({}/{})"
 msgid "Blocks have been created"
 msgstr "Блоки созданы"
 
-#: mclient/src/converters/stardict/mdic.py:103
-#: mclient/src/sources/stardict/get.py:343
-msgid "No matches for \"{}\"!"
-msgstr "Нет совпадений для \"{}\"!"
+#: mclient/src/converters/dsl/odxml.py:306 mclient/src/converters/mdic.py:389
+msgid "The operation has taken {}."
+msgstr "Операция завершена за {}."
 
-#: mclient/src/converters/stardict/mdic.py:138
+#: mclient/src/converters/dsl/odxml.py:309 mclient/src/converters/mdic.py:371
+msgid "The operation has failed! Time wasted: {}"
+msgstr "Операция завершилась неудачно! Потрачено впустую {}"
+
+#: mclient/src/converters/mdic.py:201 mclient/src/converters/mdic.py:528
+#: mclient/src/sources/multitrandem/utils.py:743
+#: mclient/src/sources/multitrandem/utils.py:1143
+#: mclient/src/sources/multitrandem/utils.py:1147
+msgid "Write \"{}\""
+msgstr "Запись \"{}\""
+
+#: mclient/src/converters/mdic.py:280
+msgid ""
+"Dictionary: {}\n"
+"Articles processed in total: {}"
+msgstr ""
+"Словарь: {}\n"
+"Всего обработано статей: {}"
+
+#: mclient/src/converters/mdic.py:358
+msgid "Process articles"
+msgstr "Обработка статей"
+
+#: mclient/src/converters/mdic.py:378
 msgid "Processed in total: dictionaries: {}; articles: {}"
 msgstr "Всего обработано: словарей: {}; статей: {}"
 
-#: mclient/src/converters/stardict/mdic.py:146
-msgid "Number of articles having no word forms: {}"
-msgstr "Число статей без словоформ: {}"
+#: mclient/src/converters/mdic.py:381 mclient/src/converters/mdic.py:385
+#| msgid "Failed: {}"
+msgid "{} (failed: {})"
+msgstr "{} (неуспешно: {})"
 
 #: mclient/src/gui.py:348
 msgid "Translate"
@@ -678,7 +665,7 @@ msgstr "История"
 #: mclient/src/sources/multitrancom/tags.py:304
 #: mclient/src/sources/multitrancom/tags.py:371
 #: mclient/src/sources/stardict/tags.py:198
-#: mclient/src/sources/stardict/tags.py:268 mclient/src/view.py:147
+#: mclient/src/sources/stardict/tags.py:282 mclient/src/view.py:147
 #: skl_shared/src/test.py:728
 msgid "#"
 msgstr "№"
@@ -831,11 +818,11 @@ msgstr "Выход за границы массива, ряд №{}, столб�
 #: mclient/src/sources/multitrancom/pairs.py:2658
 #: mclient/src/sources/multitrancom/pairs.py:2674
 #: mclient/src/sources/multitrancom/pairs.py:2708
-#: mclient/src/sources/multitrandem/get.py:33 mclient/src/tests/sources.py:859
-#: mclient/src/tests/sources.py:860 mclient/src/tests/sources.py:861
-#: mclient/src/tests/sources.py:862 mclient/src/tests/sources.py:863
-#: mclient/src/tests/sources.py:869 mclient/src/tests/sources.py:871
-#: mclient/src/tests/sources.py:875
+#: mclient/src/sources/multitrandem/get.py:33 mclient/src/tests/sources.py:879
+#: mclient/src/tests/sources.py:880 mclient/src/tests/sources.py:881
+#: mclient/src/tests/sources.py:882 mclient/src/tests/sources.py:883
+#: mclient/src/tests/sources.py:889 mclient/src/tests/sources.py:891
+#: mclient/src/tests/sources.py:895
 msgid "Russian"
 msgstr "Русский"
 
@@ -955,11 +942,11 @@ msgstr "Русский"
 #: mclient/src/sources/multitrancom/pairs.py:2654
 #: mclient/src/sources/multitrancom/pairs.py:2674
 #: mclient/src/sources/multitrancom/pairs.py:2692
-#: mclient/src/sources/multitrandem/get.py:33 mclient/src/tests/sources.py:859
-#: mclient/src/tests/sources.py:860 mclient/src/tests/sources.py:861
-#: mclient/src/tests/sources.py:862 mclient/src/tests/sources.py:863
-#: mclient/src/tests/sources.py:869 mclient/src/tests/sources.py:871
-#: mclient/src/tests/sources.py:875
+#: mclient/src/sources/multitrandem/get.py:33 mclient/src/tests/sources.py:879
+#: mclient/src/tests/sources.py:880 mclient/src/tests/sources.py:881
+#: mclient/src/tests/sources.py:882 mclient/src/tests/sources.py:883
+#: mclient/src/tests/sources.py:889 mclient/src/tests/sources.py:891
+#: mclient/src/tests/sources.py:895
 msgid "English"
 msgstr "Английский"
 
@@ -1177,7 +1164,7 @@ msgstr "Арабский"
 #: mclient/src/sources/multitrancom/pairs.py:2654
 #: mclient/src/sources/multitrancom/pairs.py:2674
 #: mclient/src/sources/multitrancom/pairs.py:2693
-#: mclient/src/sources/multitrandem/get.py:34 mclient/src/tests/sources.py:873
+#: mclient/src/sources/multitrandem/get.py:34 mclient/src/tests/sources.py:893
 msgid "French"
 msgstr "Французский"
 
@@ -1482,8 +1469,8 @@ msgstr "Полный"
 
 #: mclient/src/settings/gui.py:34 mclient/src/settings/gui.py:279
 #: mclient/src/settings/gui.py:303 mclient/src/sources/multitrancom/elems.py:628
-#: mclient/src/sources/multitrancom/run.py:26 mclient/src/tests/sources.py:1006
-#: mclient/src/tests/sources.py:1059 mclient/src/tests/sources.py:1097
+#: mclient/src/sources/multitrancom/run.py:26 mclient/src/tests/sources.py:1026
+#: mclient/src/tests/sources.py:1079 mclient/src/tests/sources.py:1117
 msgid "Multitran"
 msgstr "Мультитран"
 
@@ -1605,7 +1592,7 @@ msgstr "Поиск: \"{}\""
 
 #: mclient/src/sources/dsl/get.py:35 mclient/src/sources/dsl/tags.py:269
 #: mclient/src/sources/multitrancom/tags.py:345
-#: mclient/src/sources/stardict/tags.py:242
+#: mclient/src/sources/stardict/tags.py:256
 msgid "Code:"
 msgstr "Код:"
 
@@ -1641,7 +1628,7 @@ msgstr "Нет совпадений для \"{}\" в \"{}\""
 msgid "Dictionary \"{}\" ({}) has {} records"
 msgstr "В словаре \"{}\" ({}) {} записей"
 
-#: mclient/src/sources/dsl/get.py:308 mclient/src/sources/stardict/get.py:507
+#: mclient/src/sources/dsl/get.py:308 mclient/src/sources/stardict/get.py:561
 msgid "Load \"{}\""
 msgstr "Загрузка \"{}\""
 
@@ -1662,7 +1649,7 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: mclient/src/sources/dsl/get.py:403
+#: mclient/src/sources/dsl/get.py:403 mclient/src/sources/stardict/get.py:348
 msgid "Dictionary #{} ({}) has been dumped"
 msgstr "Словарь №{} ({}) был экспортирован"
 
@@ -1670,7 +1657,7 @@ msgstr "Словарь №{} ({}) был экспортирован"
 msgid "Index has {} entries"
 msgstr "{} вхождений в индексе"
 
-#: mclient/src/sources/dsl/get.py:559 mclient/src/sources/stardict/get.py:392
+#: mclient/src/sources/dsl/get.py:559 mclient/src/sources/stardict/get.py:446
 msgid "{} offline dictionaries are available"
 msgstr "Доступно {} локальных словарей"
 
@@ -1686,43 +1673,43 @@ msgstr "Образец \"{}\" тегом не является!"
 #: mclient/src/sources/multitrancom/tags.py:304
 #: mclient/src/sources/multitrancom/tags.py:371
 #: mclient/src/sources/stardict/tags.py:198
-#: mclient/src/sources/stardict/tags.py:268
+#: mclient/src/sources/stardict/tags.py:282
 msgid "TYPE"
 msgstr "ТИП"
 
 #: mclient/src/sources/dsl/tags.py:275
 #: mclient/src/sources/multitrancom/tags.py:351
-#: mclient/src/sources/stardict/tags.py:248
+#: mclient/src/sources/stardict/tags.py:262
 msgid "Fragments:"
 msgstr "Фрагменты:"
 
 #: mclient/src/sources/dsl/tags.py:295
 #: mclient/src/sources/multitrancom/tags.py:371
-#: mclient/src/sources/stardict/tags.py:268
+#: mclient/src/sources/stardict/tags.py:282
 msgid "CLOSING"
 msgstr "ЗАКРЫВАЮЩИЙ"
 
 #: mclient/src/sources/dsl/tags.py:295
 #: mclient/src/sources/multitrancom/tags.py:371
-#: mclient/src/sources/stardict/tags.py:268
+#: mclient/src/sources/stardict/tags.py:282
 msgid "NAME"
 msgstr "НАЗВАНИЕ"
 
 #: mclient/src/sources/dsl/tags.py:296
 #: mclient/src/sources/multitrancom/tags.py:372
-#: mclient/src/sources/stardict/tags.py:269
+#: mclient/src/sources/stardict/tags.py:283
 msgid "OPEN"
 msgstr "ОТКРЫТЫЕ"
 
 #: mclient/src/sources/dsl/tags.py:296
 #: mclient/src/sources/multitrancom/tags.py:372
-#: mclient/src/sources/stardict/tags.py:269
+#: mclient/src/sources/stardict/tags.py:283
 msgid "CELL"
 msgstr "ЯЧЕЙКА"
 
 #: mclient/src/sources/dsl/tags.py:301
 #: mclient/src/sources/multitrancom/tags.py:377
-#: mclient/src/sources/stardict/tags.py:274
+#: mclient/src/sources/stardict/tags.py:288
 msgid "Tags:"
 msgstr "Теги:"
 
@@ -6878,7 +6865,7 @@ msgstr "Чешский"
 #: mclient/src/sources/multitrancom/pairs.py:2548
 #: mclient/src/sources/multitrancom/pairs.py:2552
 #: mclient/src/sources/multitrancom/pairs.py:2650
-#: mclient/src/tests/sources.py:873
+#: mclient/src/tests/sources.py:893
 msgid "Esperanto"
 msgstr "Эсперанто"
 
@@ -14333,7 +14320,7 @@ msgstr "Неуспешно: {}"
 msgid "Warning: this step will be skipped!"
 msgstr "Предупреждение: данный шаг будет пропущен!"
 
-#: mclient/src/sources/multitrandem/utils.py:122
+#: mclient/src/sources/multitrandem/utils.py:122 mclient/src/tests/sources.py:564
 msgid "Pattern: \"{}\""
 msgstr "Образец: \"{}\""
 
@@ -14466,8 +14453,8 @@ msgstr "Фрагмент 1:"
 msgid "Chunk 2:"
 msgstr "Фрагмент 2:"
 
-#: mclient/src/sources/stardict/get.py:53 mclient/src/sources/stardict/get.py:193
-#: mclient/src/sources/stardict/get.py:490
+#: mclient/src/sources/stardict/get.py:56 mclient/src/sources/stardict/get.py:230
+#: mclient/src/sources/stardict/get.py:544
 msgid ""
 "Failed to load \"{}\"!\n"
 "\n"
@@ -14477,35 +14464,39 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: mclient/src/sources/stardict/get.py:63
+#: mclient/src/sources/stardict/get.py:66
 msgid "GZIP signature is expected, but found \"{}\"!"
 msgstr "Требуется сигнатура GZIP, но найдено \"{}\"!"
 
-#: mclient/src/sources/stardict/get.py:67
+#: mclient/src/sources/stardict/get.py:70
 msgid "Only DEFLATE archives are supported!"
 msgstr "Поддерживаются только архивы DEFLATE!"
 
-#: mclient/src/sources/stardict/get.py:70
+#: mclient/src/sources/stardict/get.py:73
 msgid "An extra dictzip field is expected!"
 msgstr "Требуется дополнительное поле dictzip!"
 
-#: mclient/src/sources/stardict/get.py:74
+#: mclient/src/sources/stardict/get.py:77
 msgid "An RA signature is expected!"
 msgstr "Требуется сигнатура RA!"
 
-#: mclient/src/sources/stardict/get.py:185
+#: mclient/src/sources/stardict/get.py:220
 msgid "File \"{}\" is invalid!"
 msgstr "Файл \"{}\" некорректен!"
 
-#: mclient/src/sources/stardict/get.py:267
+#: mclient/src/sources/stardict/get.py:304
 msgid "Pattern: \"{}\", position in dictionary: {}, article length: {}"
 msgstr "Шаблон: \"{}\", позиция в словаре: {}, длина статьи: {}"
 
-#: mclient/src/sources/stardict/get.py:353
+#: mclient/src/sources/stardict/get.py:397
 msgid "\"{}\" has matches for \"{}\""
 msgstr "В \"{}\" найдены совпадения для \"{}\""
 
-#: mclient/src/sources/stardict/get.py:411
+#: mclient/src/sources/stardict/get.py:400
+msgid "No matches for \"{}\"!"
+msgstr "Нет совпадений для \"{}\"!"
+
+#: mclient/src/sources/stardict/get.py:465
 msgid "Dictionaries loaded: {}/{}"
 msgstr "Загружено словарей: {}/{}"
 
@@ -14577,75 +14568,83 @@ msgstr "Текст есть во всех столбцах"
 msgid "Table size: {}×{}"
 msgstr "Размеры таблицы: {}×{}"
 
-#: mclient/src/tests/dump.py:48
+#: mclient/src/tests/dump/shared.py:48
 msgid "All dictionaries have been dumped"
 msgstr "Все словари экспортированы"
 
-#: mclient/src/tests/sources.py:405
+#: mclient/src/tests/sources.py:411
 msgid "Phrase \"{}\" is blocked"
 msgstr "Фраза \"{}\" блокируется"
 
-#: mclient/src/tests/sources.py:407
+#: mclient/src/tests/sources.py:413
 msgid "Phrase \"{}\" is NOT blocked"
 msgstr "Фраза \"{}\" НЕ блокируется"
 
-#: mclient/src/tests/sources.py:413
+#: mclient/src/tests/sources.py:419
 msgid "Phrase \"{}\" is prioritized"
 msgstr "Фраза \"{}\" имеет приоритет"
 
-#: mclient/src/tests/sources.py:415
+#: mclient/src/tests/sources.py:421
 msgid "Phrase \"{}\" is NOT prioritized"
 msgstr "Фраза \"{}\" НЕ имеет приоритета"
 
-#: mclient/src/tests/sources.py:421
+#: mclient/src/tests/sources.py:427
 msgid "Subject \"{}\" is blocked"
 msgstr "Тематика \"{}\" блокируется"
 
-#: mclient/src/tests/sources.py:423
+#: mclient/src/tests/sources.py:429
 msgid "Subject \"{}\" is NOT blocked"
 msgstr "Тематика \"{}\" НЕ блокируется"
 
-#: mclient/src/tests/sources.py:429
+#: mclient/src/tests/sources.py:435
 msgid "Subject \"{}\" is prioritized"
 msgstr "Тематика \"{}\" имеет приоритет"
 
-#: mclient/src/tests/sources.py:431
+#: mclient/src/tests/sources.py:437
 msgid "Subject \"{}\" is NOT prioritized"
 msgstr "Тематика \"{}\" НЕ имеет приоритета"
 
-#: mclient/src/tests/sources.py:750
+#: mclient/src/tests/sources.py:566
+msgid "Dictionary: \"{}\""
+msgstr "Словарь: \"{}\""
+
+#: mclient/src/tests/sources.py:568
+msgid "Article:"
+msgstr "Статья:"
+
+#: mclient/src/tests/sources.py:770
 msgid "Prioritized subjects:"
 msgstr "Приоритетные тематики"
 
-#: mclient/src/tests/sources.py:755
+#: mclient/src/tests/sources.py:775
 msgid "Subject: \"{}\""
 msgstr "Тематика: \"{}\""
 
-#: mclient/src/tests/sources.py:758
+#: mclient/src/tests/sources.py:778
 msgid "Highest priority (ascending order): {}"
 msgstr "Самый высокий приоритет (упорядоченность по возрастанию): {}"
 
-#: mclient/src/tests/sources.py:761
+#: mclient/src/tests/sources.py:781
 msgid "Details:"
 msgstr "Подробности:"
 
-#: mclient/src/tests/sources.py:768 mclient/src/view.py:147
+#: mclient/src/tests/sources.py:788 mclient/src/view.py:147
 msgid "SUBJECT"
 msgstr "ТЕМАТИКА"
 
-#: mclient/src/tests/sources.py:768
+#: mclient/src/tests/sources.py:788
 msgid "PRIORITY"
 msgstr "ПРИОРИТЕТ"
 
-#: mclient/src/tests/sources.py:791
+#: mclient/src/tests/sources.py:811
 msgid "SHORT"
 msgstr "КОРОТКО"
 
-#: mclient/src/tests/sources.py:791
+#: mclient/src/tests/sources.py:811
 msgid "FULL"
 msgstr "ПОЛНАЯ"
 
-#: mclient/src/tests/sources.py:945
+#: mclient/src/tests/sources.py:965
 msgid ""
 "The following pairs are not supported:\n"
 "{}"
@@ -14653,19 +14652,19 @@ msgstr ""
 "Следующие пары не поддерживаются:\n"
 "{}"
 
-#: mclient/src/tests/sources.py:1009
+#: mclient/src/tests/sources.py:1029
 msgid "Source: \"{}\"; pair: \"{}\"; search: \"{}\""
 msgstr "Источник: \"{}\"; пара: \"{}\"; запрос: \"{}\""
 
-#: mclient/src/tests/sources.py:1052
+#: mclient/src/tests/sources.py:1072
 msgid "Source: {}; timeout: {}"
 msgstr "Источник: {}; таймаут: {}"
 
-#: mclient/src/tests/sources.py:1058 mclient/src/tests/sources.py:1065
+#: mclient/src/tests/sources.py:1078 mclient/src/tests/sources.py:1085
 msgid "Offline"
 msgstr "Оффлайн"
 
-#: mclient/src/tests/sources.py:1068 mclient/src/tests/sources.py:1073
+#: mclient/src/tests/sources.py:1088 mclient/src/tests/sources.py:1093
 msgid "Source: {}; accessibility: {}"
 msgstr "Источник: {}; доступность: {}"
 
@@ -15329,7 +15328,7 @@ msgstr "Задать максимальное число столбцов: {}"
 msgid "Set the max column width to {} symbols"
 msgstr "Ограничить максимальную ширину столбца {} символами"
 
-#: skl_shared/src/table.py:166
+#: skl_shared/src/table.py:165
 msgid "Only iterable objects are supported!"
 msgstr "Поддерживаются только итерируемые объекты!"
 
@@ -15545,6 +15544,14 @@ msgstr ""
 "Заданные параметры времени неверны или не поддерживаются.\n"
 "\n"
 "Подробности: {}"
+
+#~ msgid ""
+#~ "Processed in total: dictionaries: {} (failed: {}); articles: {} (failed: {})"
+#~ msgstr ""
+#~ "Всего обработано: словарей: {} (неудачно: {}); статей: {} (неудачно: {})"
+
+#~ msgid "Number of articles having no word forms: {}"
+#~ msgstr "Число статей без словоформ: {}"
 
 #~ msgid "File \"{}\" is incorrect!"
 #~ msgstr "Файл \"{}\" некорректен!"
@@ -15770,9 +15777,6 @@ msgstr ""
 
 #~ msgid "SEARCH"
 #~ msgstr "ЗАПРОС"
-
-#~ msgid "Articles:"
-#~ msgstr "Статьи:"
 
 #~ msgid ""
 #~ "Configuration file \"{}\" has values of a wrong type!\n"
