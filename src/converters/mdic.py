@@ -375,10 +375,17 @@ class Runner:
         len_ = shcom.set_figure_commas(len(DslDics.dics) + len(StarDics.dics))
         count = shcom.set_figure_commas(self.count)
         mes = []
-        sub = _('Processed in total: dictionaries: {} (failed: {}); articles: {} (failed: {})')
-        invalid = len(DslDics.get_invalid()) + len(StarDics.get_invalid())
-        sub = sub.format(len_, invalid, count, self.failed)
-        mes.append(sub)
+        sub = _('Processed in total: dictionaries: {}; articles: {}')
+        failed_dics = len(DslDics.get_invalid()) + len(StarDics.get_invalid())
+        if failed_dics:
+            sub_dics = _('{} (failed: {})').format(len_, failed_dics)
+        else:
+            sub_dics = len_
+        if self.failed:
+            sub_art = _('{} (failed: {})').format(count, self.failed)
+        else:
+            sub_art = count
+        mes.append(sub.format(sub_dics, sub_art))
         sub = _('The operation has taken {}.').format(interval)
         mes.append(sub)
         mes = '\n'.join(mes)
