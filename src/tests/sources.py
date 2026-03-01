@@ -611,11 +611,12 @@ class Tags:
         import sources.fora.get as gt
         import sources.dsl.cleanup as cu
         import sources.fora.dsl.tags as tg
-        article = gt.ALL_DICS.search(SEARCH)
-        if not article:
+        articles = gt.ALL_DICS.search(SEARCH)
+        if not articles:
             rep.empty(f)
             return
-        article = cu.CleanUp(article).run()
+        article = articles[0]
+        article.code = cu.CleanUp(article.code).run()
         itags = tg.Tags(article)
         itags.run()
         return itags.debug()
