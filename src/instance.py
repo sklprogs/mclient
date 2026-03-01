@@ -84,6 +84,7 @@ class Article:
         self.dic = ''
         self.code = ''
         self.search = ''
+        self.format = ''
 
 
 
