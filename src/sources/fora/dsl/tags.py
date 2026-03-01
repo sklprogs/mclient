@@ -22,8 +22,8 @@ class AnalyzeTag(DslAnalyzeTag):
         return False
     
     def _is_comment(self):
-        ''' 'p' actually means 'subj', but DSL dictionaries are generally
-            poorly converted to Fora.
+        ''' 'p' actually means 'subj', but DSL dictionaries are generally poorly
+            converted to Fora.
         '''
         return self.tag.name in ('p', 'c', 'com', 'ex', 'i', 's')
 
