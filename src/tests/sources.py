@@ -248,65 +248,10 @@ class Elems:
         return icells.debug()
     
     def run_fora(self):
-        f = '[MClient] tests.sources.Elems.run_fora'
-        from cells import Elems as cElems, Cells
+        from cells import Elems as cElems
         from sources.fora.run import Source
         blocks = Source().request(SEARCH)
-        if not blocks:
-            rep.lazy(f)
-            return
         ielems = cElems(blocks)
-        ielems.run()
-        return ielems.debug()
-    
-    def run_fora_stardictx(self):
-        f = '[MClient] tests.sources.Elems.run_fora_stardictx'
-        from sources.fora.get import ALL_DICS
-        from sources.stardict.cleanup import CleanUp
-        from sources.stardict.tags import Tags
-        from sources.fora.stardictx.elems import Elems
-        article = ALL_DICS.search(SEARCH)
-        article = CleanUp(article).run()
-        if not article:
-            rep.empty(f)
-            return
-        blocks = Tags(article).run()
-        ielems = Elems(blocks)
-        ielems.run()
-        return ielems.debug()
-    
-    def run_fora_stardictx_cells(self):
-        f = '[MClient] tests.sources.Elems.run_fora_stardictx_cells'
-        from sources.fora.get import ALL_DICS
-        from sources.stardict.cleanup import CleanUp
-        from sources.stardict.tags import Tags
-        from sources.fora.stardictx.elems import Elems
-        from cells import Elems as cElems, Cells
-        article = ALL_DICS.search(SEARCH)
-        article = CleanUp(article).run()
-        if not article:
-            rep.empty(f)
-            return
-        blocks = Tags(article).run()
-        blocks = Elems(blocks).run()
-        blocks = cElems(blocks).run()
-        icells = Cells(blocks)
-        icells.run()
-        return icells.debug()
-    
-    def run_fora_dsl(self):
-        f = '[MClient] tests.sources.Elems.run_fora_dsl'
-        from sources.fora.get import ALL_DICS
-        import sources.dsl.cleanup as cu
-        import sources.fora.dsl.tags as tg
-        import sources.fora.dsl.elems as el
-        article = ALL_DICS.search(SEARCH)
-        if not article:
-            rep.empty(f)
-            return
-        article = cu.CleanUp(article).run()
-        blocks = tg.Tags(article).run()
-        ielems = el.Elems(blocks)
         ielems.run()
         return ielems.debug()
     
@@ -702,12 +647,12 @@ class Source:
         return icells.debug()
     
     def run_fora(self):
-        from cells import Cells
-        from sources.fora.run import Source as mSource
-        blocks = mSource().request(SEARCH)
-        icells = Cells(blocks)
-        icells.run()
-        return icells.debug()
+        from cells import Elems as cElems
+        from sources.fora.run import Source
+        blocks = Source().request(SEARCH)
+        ielems = cElems(blocks)
+        ielems.run()
+        return ielems.debug()
     
     def run_multitrandem(self):
         from cells import Cells
