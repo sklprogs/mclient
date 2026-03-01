@@ -13,8 +13,6 @@ Traceback (most recent call last):
 RuntimeError: wrapped C/C++ object of type Catcher has been deleted
 
 converters:
-- remove 'failed' from report if there were no fails
-- split progress messages by lines before shortening
 - do not load stardict dics altogether
 
 mclient:
