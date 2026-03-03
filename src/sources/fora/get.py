@@ -80,6 +80,7 @@ class Index:
         self.Success = True
         self.b64_list = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
         self.folder = folder
+        self.recpos = 0
         self.set_file()
         self.load()
     
@@ -193,6 +194,32 @@ class Index:
             retval = retval | (val << shiftval)
             shiftval += 6
         return retval
+    
+    def dump(self, limit):
+        # converters
+        f = '[MClient] sources.fora.get.Index.dump'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        records = []
+        self.imap.seek(self.recpos)
+        for i in range(limit):
+            line = self.imap.readline()
+            if not line:
+                self.recpos = self.imap.tell()
+                return records
+            line = line.decode()
+            line = line.strip()
+            line = line.split('\t')
+            if len(line) != 3:
+                mes = f'{len(indexes)} == 3'
+                rep.condition(f, mes, False)
+                continue
+            line[1] = self.decode(line[1])
+            line[2] = self.decode(line[2])
+            records.append(line)
+        self.recpos = self.imap.tell()
+        return records
 
 
 
@@ -286,6 +313,7 @@ class Properties:
 class Fora:
     
     def __init__(self, folder):
+        self.recno = 0
         self.pattern = ''
         self.prop = Properties(folder)
         self.index = Index(folder)
@@ -351,6 +379,50 @@ class Fora:
             return
         self.index.close()
         self.dic.close()
+    
+    def free_memory(self):
+        self.pattern = ''
+        self.prop = None
+        self.index = None
+        self.dic = None
+    
+    def dump(self, limit):
+        # converters
+        f = '[MClient] sources.fora.get.Fora.dump'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        articles = []
+        lowers = list(self.get_lowers())
+        # Slices do not cause IndexError
+        for lower in lowers[self.recno:self.recno+limit]:
+            poses = self.index._get_poses(lower)
+            for pos in poses:
+                articles.append(self.get_entry(lower, pos))
+        self.recno += limit
+        return [article for article in articles if article and article.code]
+    
+    def get_entry(self, pattern, poses):
+        f = '[MClient] sources.fora.get.Fora.get_entry'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        if not pattern or not poses:
+            rep.empty(f)
+            return
+        article = Article()
+        article.code = self.get_dict_data(poses[0], poses[1])
+        article.pos = poses[0]
+        article.dic = self.title
+        article.search = pattern
+        return article
+    
+    def get_lowers(self):
+        f = '[MClient] sources.fora.get.Fora.get_lowers'
+        if not self.Success:
+            rep.cancel(f)
+            return []
+        return self.index.get_lowers()
 
 
 
@@ -359,6 +431,7 @@ class AllDics:
     def __init__(self):
         self.Success = True
         self.dics = []
+        self.dicno = 0
         self.path = Home('mclient').add_config('dics')
         self.set()
     
@@ -467,6 +540,22 @@ class AllDics:
             return
         for dic in self.dics:
             dic.close()
+    
+    def dump(self, limit=1500):
+        f = '[MClient] sources.fora.get.AllDics.dump'
+        if not self.Success:
+            rep.cancel(f)
+            return []
+        dump = []
+        while self.dicno < len(self.dics):
+            dump = self.dics[self.dicno].dump(limit)
+            if dump:
+                return dump
+            mes = _('Dictionary #{} ({}) has been dumped')
+            mes = mes.format(self.dicno + 1, self.dics[self.dicno].get_name())
+            Message(f, mes).show_info()
+            self.dics[self.dicno].free_memory()
+            self.dicno += 1
 
 
 ALL_DICS = AllDics()

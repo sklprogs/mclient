@@ -9,6 +9,7 @@ from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
 from tests.sources import Get
 from tests.dump.dsl import Dump as DumpDsl
 from tests.dump.stardict import Dump as DumpStardict
+from tests.dump.fora import Dump as DumpFora
 from tests.sources import Tags
 from tests.sources import Elems
 from tests.sources import Source
@@ -38,6 +39,7 @@ if __name__ == '__main__':
     #mes = Get().run_stardict()
     #mes = DumpDsl().run()
     #mes = DumpStardict().run()
+    mes = DumpFora().run()
     #mes = Tags().run_dsl()
     #mes = Tags().run_stardict()
     #mes = Tags().run_fora_dsl()
@@ -59,7 +61,7 @@ if __name__ == '__main__':
     #mes = View().run_multitrancom()
     #mes = Wrap().run_multitrancom()
     #mes = Source().run_dsl()
-    mes = Source().run_fora()
+    #mes = Source().run_fora()
     #mes = Source().run_mdic()
     #mes = Source().run_multitrancom()
     #mes = Source().run_multitrandem()
