@@ -13,8 +13,8 @@ from skl_shared.logic import Input
 
 
 class Index:
-    ''' This class is recreated each time upon search (should be cheap
-        because of mmap), so self.pos and self.length are OK.
+    ''' This class is recreated each time upon search (should be cheap because
+        of mmap), so self.pos and self.length are OK.
     '''
     def __init__(self, wform):
         self.Success = True
