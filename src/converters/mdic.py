@@ -18,9 +18,11 @@ from skl_shared.logic import com as shcom
 from skl_shared.list import List
 
 from sources.dsl.get import ALL_DICS as DslDics
-from sources.dsl.run import Source as DslSource
 from sources.stardict.get import ALL_DICS as StarDics
+from sources.fora.get import ALL_DICS as ForaDics
+from sources.dsl.run import Source as DslSource
 from sources.stardict.run import Source as StarSource
+from sources.fora.run import Source as ForaSource
 from cells import Elems as cElems
 
 BODY_FOLDER = Home('mclient').add_config('dics', 'MDIC')
@@ -340,6 +342,35 @@ class Runner:
             # Update progress because number of processed articles changed
             self._update_progress(cur_dic)
     
+    def _loop_fora(self):
+        f = '[MClient] converters.mdic.Runner._loop_fora'
+        cur_dic = ''
+        while True:
+            articles = ForaDics.dump(self.limit)
+            if not articles:
+                break
+            for article in articles:
+                if not article:
+                    self.failed += 1
+                    rep.empty(f)
+                    continue
+                if cur_dic != article.dic:
+                    cur_dic = article.dic
+                    self._update_progress(cur_dic)
+                    PROGRESS.inc()
+                article.blocks = ForaSource().get_blocks(article)
+                article.blocks = cElems(article.blocks).run()
+                if not article.blocks:
+                    self.failed += 1
+                self.count += 1
+            iportion = Portion(articles, self.pos)
+            self.pos = iportion.run()
+            self.Success = iportion.Success
+            if not self.Success:
+                break
+            # Update progress because number of processed articles changed
+            self._update_progress(cur_dic)
+    
     def loop_sources(self):
         f = '[MClient] converters.mdic.Runner.loop_sources'
         if not self.Success:
@@ -361,6 +392,7 @@ class Runner:
         ms.STOP = True
         self._loop_dsl()
         self._loop_stardict()
+        self._loop_fora()
         ms.STOP = False
         PROGRESS.close()
     
