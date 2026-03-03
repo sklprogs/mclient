@@ -37,9 +37,8 @@ class Dump(tests.dump.shared.Dump):
         return '\n'.join(mes)
     
     def run(self):
-        #self.limit = 10
-        #return self.run_loops(1)
+        self.limit = 10
+        return self.run_loops(2)
         #return self.run_blocks()
         #return self.run_all()
-        return self.run_index() + '\n\n' + self.run_index()
         #return self.run_index()

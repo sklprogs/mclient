@@ -313,7 +313,6 @@ class Properties:
 class Fora:
     
     def __init__(self, folder):
-        self.recno = 0
         self.pattern = ''
         self.prop = Properties(folder)
         self.index = Index(folder)
@@ -391,38 +390,32 @@ class Fora:
         f = '[MClient] sources.fora.get.Fora.dump'
         if not self.Success:
             rep.cancel(f)
-            return
+            return []
+        records = self.index.dump(limit)
+        if not records:
+            return []
         articles = []
-        lowers = list(self.get_lowers())
-        # Slices do not cause IndexError
-        for lower in lowers[self.recno:self.recno+limit]:
-            poses = self.index._get_poses(lower)
-            for pos in poses:
-                articles.append(self.get_entry(lower, pos))
-        self.recno += limit
+        for record in records:
+            articles.append(self.get_entry(record[0], record[1], record[2]))
         return [article for article in articles if article and article.code]
     
-    def get_entry(self, pattern, poses):
+    def get_entry(self, pattern, pos, length):
         f = '[MClient] sources.fora.get.Fora.get_entry'
         if not self.Success:
             rep.cancel(f)
             return
-        if not pattern or not poses:
+        if not pattern:
             rep.empty(f)
             return
+        if length < 1:
+            rep.condition(f, f'{length} > 1', False)
+            return
         article = Article()
-        article.code = self.get_dict_data(poses[0], poses[1])
-        article.pos = poses[0]
-        article.dic = self.title
+        article.code = self.dic.get((pos, length))
+        article.pos = pos
+        article.dic = self.get_name()
         article.search = pattern
         return article
-    
-    def get_lowers(self):
-        f = '[MClient] sources.fora.get.Fora.get_lowers'
-        if not self.Success:
-            rep.cancel(f)
-            return []
-        return self.index.get_lowers()
 
 
 
@@ -546,7 +539,6 @@ class AllDics:
         if not self.Success:
             rep.cancel(f)
             return []
-        dump = []
         while self.dicno < len(self.dics):
             dump = self.dics[self.dicno].dump(limit)
             if dump:
