@@ -340,7 +340,6 @@ class AllDics:
         if not self.Success:
             rep.cancel(f)
             return []
-        dump = []
         while self.dicno < len(self.dics):
             dump = self.dics[self.dicno].dump(limit)
             if dump:
