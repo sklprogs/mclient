@@ -87,15 +87,15 @@ class Source:
         if not article:
             rep.empty(f)
             return []
+        ''' The format support is already checked by
+            sources.fora.get.Properties.check_format. The warning is kept for
+            converters just to be safe.
+        '''
         match article.format:
             case 'stardict-x':
                 return self._get_blocks_stardictx(article)
             case 'dsl':
                 return self._get_blocks_dsl(article)
-            ''' The format support is already checked by
-                sources.fora.get.Properties.check_format. This check is kept
-                just to be safe for converters.
-            '''
             case other if True:
                 mes = _('Format "{}" is not supported!').format(other)
                 Message(f, mes).show_warning()
