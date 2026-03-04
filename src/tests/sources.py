@@ -20,7 +20,7 @@ from config import CONFIG
 #SEARCH = 'analyzer'
 #SEARCH = 'hello bye'
 #SEARCH = 'account'
-SEARCH = 'adverse variance'
+SEARCH = 'after-tax charge'
 #SEARCH = 'bottling'
 #SEARCH = 'book'
 #SEARCH = 'good'

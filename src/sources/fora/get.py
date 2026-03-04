@@ -411,10 +411,11 @@ class Fora:
             rep.condition(f, f'{length} > 1', False)
             return
         article = Article()
-        article.code = self.dic.get((pos, length))
-        article.pos = pos
-        article.dic = self.get_name()
         article.search = pattern
+        article.pos = pos
+        article.code = self.dic.get((pos, length))
+        article.dic = self.get_name()
+        article.format = self.get_format()
         return article
 
 
