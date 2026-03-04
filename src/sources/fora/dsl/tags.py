@@ -13,6 +13,14 @@ from sources.dsl.tags import AnalyzeTag as DslAnalyzeTag
 from sources.dsl.tags import Tags as DslTags
 
 
+class ForaBlock(Block):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.type = 'term'
+
+
+
 class AnalyzeTag(DslAnalyzeTag):
 
     def __init__(self, *args, **kwargs):
@@ -42,3 +50,19 @@ class Tags(DslTags):
         for fragm in self.fragms:
             self.tags.append(AnalyzeTag(fragm).run())
         self.tags = [tag for tag in self.tags if tag]
+    
+    def set_blocks(self):
+        f = '[MClient] sources.fora.dsl.tags.Tags.set_blocks'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        tags = [tag for tag in self.tags if tag.type == 'text' \
+               and not self._is_trash(tag)]
+        for tag in tags:
+            block = ForaBlock()
+            self._set_block_type(block, tag)
+            block.text = tag.text
+            block.cellno = tag.cellno
+            if block.type in ('subj', 'phsubj'):
+                block.subj = block.text
+            self.blocks.append(block)
