@@ -6,6 +6,9 @@ all:
 - rework Table: adjust column widths correctly
 
 mclient:
+- EN-RU: cold feet -> get cold feet -> <!-- --> Словари Форум Купить Скачать
+Контакты <!-- // --> → + <!-- // --> Не найдено
+- EN-RU: jockey: "мембрана ()"
 - EN-RU: lockup garage: "Отдельные слова" is copied as "Отдельные слова <!--"
   and propagated to the source not having such subject
 - hello -> %d phrases: Alt+F works, but not Enter
