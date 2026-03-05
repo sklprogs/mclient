@@ -272,7 +272,7 @@ class Block:
 class Runner:
     
     def __init__(self):
-        self.Success = CREATE_FOLDER and (DslDics.Success or StarDics.Success)
+        self.Success = CREATE_FOLDER and (DslDics.Success or StarDics.Success or ForaDics.Success)
         self.limit = 1500
         self.pos = 0
         self.count = 0
@@ -385,7 +385,7 @@ class Runner:
         ''' The final number of articles can be established only after parsing
             all indexes of all dictionaries.
         '''
-        PROGRESS.set_max(len(DslDics.dics) + len(StarDics.dics))
+        PROGRESS.set_max(len(DslDics.dics) + len(StarDics.dics) + len(ForaDics.dics))
         PROGRESS.set_title(_('Process articles'))
         PROGRESS.show()
         # We do not want millions of debug messages
@@ -404,11 +404,11 @@ class Runner:
             mes = mes.format(interval)
             Message(f, mes, True).show_error()
             return
-        len_ = shcom.set_figure_commas(len(DslDics.dics) + len(StarDics.dics))
+        len_ = shcom.set_figure_commas(len(DslDics.dics) + len(StarDics.dics) + len(ForaDics.dics))
         count = shcom.set_figure_commas(self.count)
         mes = []
         sub = _('Processed in total: dictionaries: {}; articles: {}')
-        failed_dics = len(DslDics.get_invalid()) + len(StarDics.get_invalid())
+        failed_dics = len(DslDics.get_invalid()) + len(StarDics.get_invalid()) + len(ForaDics.get_invalid())
         if failed_dics:
             sub_dics = _('{} (failed: {})').format(len_, failed_dics)
         else:
