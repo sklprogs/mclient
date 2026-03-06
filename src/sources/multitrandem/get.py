@@ -652,6 +652,7 @@ class Binary:
         mes = _('Close "{}"').format(self.file)
         Message(f, mes).show_info()
         self.imap.flush()
+        self.imap.close()
         self.bin.close()
 
 
