@@ -81,6 +81,7 @@ class Index:
             rep.cancel(f)
             return
         self.imap.flush()
+        self.imap.close()
         self.bin.close()
     
     def set_pos(self):
@@ -212,6 +213,7 @@ class Body:
             rep.cancel(f)
             return
         self.imap.flush()
+        self.imap.close()
         self.bin.close()
 
 
