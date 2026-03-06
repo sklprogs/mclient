@@ -3,7 +3,6 @@
 
 import struct
 import os
-import mmap
 import zlib
 
 from skl_shared.localize import _
