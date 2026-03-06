@@ -49,6 +49,8 @@ class Dic:
             rep.cancel(f)
             return
         self.imap.flush()
+        self.imap.close()
+        del self.imap
         self.bin.close()
     
     def get(self, indexes):
