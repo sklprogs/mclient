@@ -240,6 +240,8 @@ class Portion:
         self.set_body()
         self.save_body()
         self.free_memory()
+        Index().run()
+        INDEX.clear()
         return self.pos
 
 
@@ -273,7 +275,7 @@ class Runner:
     
     def __init__(self):
         self.Success = CREATE_FOLDER and (DslDics.Success or StarDics.Success or ForaDics.Success)
-        self.limit = 1500
+        self.limit = 10000
         self.pos = 0
         self.count = 0
         self.failed = 0
