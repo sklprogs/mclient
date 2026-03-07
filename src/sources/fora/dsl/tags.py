@@ -27,7 +27,7 @@ class AnalyzeTag(DslAnalyzeTag):
         super().__init__(*args, **kwargs)
     
     def _is_subj(self):
-        return False
+        return self.tag.text == 'c green'
     
     def _is_comment(self):
         ''' 'p' actually means 'subj', but DSL dictionaries are generally poorly
