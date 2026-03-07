@@ -94,7 +94,7 @@ class AnalyzeTag:
         return self.tag.name == 'tr'
     
     def _is_speech(self):
-        return self.tag.text == 'gr'
+        return self.tag.text in ('gr', 'abr')
     
     def _set_type(self):
         if self._is_term():

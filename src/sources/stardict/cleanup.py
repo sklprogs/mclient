@@ -27,7 +27,6 @@ class CleanUp:
         try:
             self.text = self.text.replace('<i>', '').replace('</i>', '')
             self.text = self.text.replace('<nu />', '')
-            self.text = self.text.replace('<abr>', '').replace('</abr>', '')
             self.text = self.text.replace('[/&apos;]', '')
             self.text = self.text.replace('[&apos;]', '')
         # Encoding has failed
