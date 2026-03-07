@@ -9,7 +9,7 @@
 },
 "Adverb": {
     "full": {"en": "Adverb", "ru": "Наречие", "de": "Adverb", "es": "Adverbio", "pl": "Przysłówek", "uk": "Прислівник", "zh": "副词"},
-    "short": {"en": "adv.", "ru": ["нар.", "нареч."], "de": "Adv.", "es": "adv.", "pl": "przysł.", "uk": "присл."}
+    "short": {"en": ["adv", "adv."], "ru": ["нар.", "нареч."], "de": "Adv.", "es": "adv.", "pl": "przysł.", "uk": "присл."}
 },
 "Article": {
     "full": {"en": "Article", "ru": "Артикль", "de": ["Artikel", "Geschlechtswort"], "es": "Artículo", "pl": ["Rodzajnik", "Przedimek"], "uk": "Артикль", "zh": ["指件字", "冠词"]},
