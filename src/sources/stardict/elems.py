@@ -129,6 +129,23 @@ class Elems:
             self.Success = False
             rep.empty(f)
     
+    def fix_cellnos(self):
+        ''' By design, fixed blocks can lie within the same cell in StarDict.
+            We force incrementing block.cellno here. By the same reason, we
+            cannot increment cellno only on the basis of fixed blocks.
+        '''
+        f = '[MClient] sources.stardict.elems.Elems.fix_cellnos'
+        cellno = 0
+        count = 0
+        for block in self.blocks:
+            if is_block_fixed(block) or block.type == 'phrase':
+                count += 1
+                cellno += 0.01
+                block.cellno = cellno
+            else:
+                cellno = block.cellno
+        rep.matches(f, count)
+    
     def set_transc(self):
         f = '[MClient] sources.stardict.elems.Elems.set_transc'
         count = 0
@@ -208,6 +225,7 @@ class Elems:
         self.set_source()
         self.set_art_subj()
         self.separate_term()
+        self.fix_cellnos()
         self.set_phrases()
         self.blocks = Phrases(self.blocks).run()
         return self.blocks
