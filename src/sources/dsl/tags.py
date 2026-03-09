@@ -145,7 +145,8 @@ class AnalyzeTag:
         f = '[MClient] sources.dsl.tags.AnalyzeTag.run'
         # This can actually happen and this is not an error, e.g., '\n\t'
         if not self.fragm:
-            rep.lazy(f)
+            # Too frequent
+            #rep.lazy(f)
             return
         self.set_attr()
         return self.tag
