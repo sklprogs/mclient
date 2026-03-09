@@ -119,11 +119,22 @@ class Elems:
             i += 1
         rep.matches(f, count)
     
+    def remove_wform_dup(self):
+        f = '[MClient] cells.Elems.remove_wform_dup'
+        old_len = len(self.blocks)
+        wforms = [block.text for block in self.blocks \
+                 if block.type == 'wform' and block.text.strip()]
+        self.blocks = [block for block in self.blocks \
+                      if not (block.type == 'term' \
+                      and block.text.strip() in wforms)]
+        rep.deleted(f, old_len - len(self.blocks))
+    
     def run(self):
         self.remove_numbering()
         self.set_art_subj()
         self.convert_comments()
         self.attach_comments()
+        self.remove_wform_dup()
         iphrases = Phrases(self.blocks)
         self.blocks = iphrases.run()
         self.phsubj_url = iphrases.phsubj_url
