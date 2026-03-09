@@ -66,6 +66,12 @@ class Elems:
                 return False
         return True
     
+    def _is_fixed_like(self, group):
+        for i in group:
+            if not is_block_fixed(self.blocks[i]):
+                return False
+        return True
+    
     def _get_groups(self):
         groups = []
         group = []
@@ -85,14 +91,13 @@ class Elems:
         return groups
     
     def attach_comments(self):
-        #TODO: Do not attach to fixed blocks
-        # This is fast (~0.01s for 'set' on AMD E-300)
         f = '[MClient] cells.Elems.attach_comments'
         groups = self._get_groups()
         count = 0
         i = 1
         while i < len(groups):
-            if self._is_comment_like(groups[i]):
+            if self._is_comment_like(groups[i]) \
+            and not self._is_fixed_like(groups[i-1]):
                 for j in groups[i]:
                     count += 1
                     self.blocks[j].cellno = self.blocks[groups[i-1][-1]].cellno
