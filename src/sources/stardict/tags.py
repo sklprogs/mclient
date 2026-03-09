@@ -15,7 +15,7 @@ from instance import Block, Tag
     •  Full dictionary titles:
          define them by the .ifo file, set the tag manually
          <dic></dic>
-    •  Any abbreviation (a short dictionary title, a comment, etc.)
+    •  Any abbreviation (short dictionary title, part of speech, comment, etc.)
          <abr></abr>
     •  Terms:
          (no tags at all, see "'cellist")
@@ -94,7 +94,11 @@ class AnalyzeTag:
         return self.tag.name == 'tr'
     
     def _is_speech(self):
-        return self.tag.text in ('gr', 'abr')
+        return self.tag.text == 'gr'
+    
+    def _is_subj(self):
+        # Can also be part of speech, but we rely on sources.stardict.elems.Elems.set_speech
+        return self.tag.name == 'abr'
     
     def _set_type(self):
         if self._is_term():
@@ -109,6 +113,8 @@ class AnalyzeTag:
             self.tag.type = 'speech'
         elif self._is_transc():
             self.tag.type = 'transc'
+        elif self._is_subj():
+            self.tag.type = 'subj'
         else:
             self.tag.type = 'comment'
     
