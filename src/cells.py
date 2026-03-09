@@ -104,9 +104,25 @@ class Elems:
             i += 1
         rep.matches(f, count)
     
+    def convert_comments(self):
+        # Or allow articles without terms or with empty terms
+        f = '[MClient] cells.Elems.convert_comments'
+        count = 0
+        i = 1
+        while i < len(self.blocks):
+            if is_block_fixed(self.blocks[i-1]) \
+            and self.blocks[i].type in ('comment', 'correction', 'user') \
+            and self.blocks[i-1].cellno == self.blocks[i].cellno:
+                count += 1
+                self.blocks[i].type = 'term'
+                self.blocks[i].cellno += 0.01
+            i += 1
+        rep.matches(f, count)
+    
     def run(self):
         self.remove_numbering()
         self.set_art_subj()
+        self.convert_comments()
         self.attach_comments()
         iphrases = Phrases(self.blocks)
         self.blocks = iphrases.run()
