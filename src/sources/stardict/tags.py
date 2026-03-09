@@ -59,7 +59,7 @@ class AnalyzeTag:
         self.tag.name = self.tag.name.lower()
     
     def _set_text(self):
-        f = '[MClient] sources.stardict.tags.Tags._set_text'
+        f = '[MClient] sources.stardict.tags.AnalyzeTag._set_text'
         self.tag.text = self.fragm
         if self.tag.text.startswith('</'):
             self.tag.text = self.tag.text[2:]
