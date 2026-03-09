@@ -182,6 +182,19 @@ class Elems:
                     block.text = block.text.strip()
         rep.matches(f, count)
     
+    def remove_wform_dup(self):
+        f = '[MClient] sources.dsl.elems.Elems.remove_wform_dup'
+        old_len = len(self.blocks)
+        i = len(self.blocks) - 1
+        while i >= 0:
+            if self.blocks[i-1].type == 'wform' \
+            and self.blocks[i].type in ('wform', 'term') \
+            and self.blocks[i-1].text.strip() == self.blocks[i].text.strip():
+                del self.blocks[i]
+                i += 1
+            i -= 1
+        rep.deleted(f, old_len - len(self.blocks))
+    
     def run(self):
         f = '[MClient] sources.dsl.elems.Elems.run'
         if not self.Success:
@@ -192,6 +205,7 @@ class Elems:
         self.delete_trash()
         self.delete_numeration()
         self.delete_backslash()
+        self.remove_wform_dup()
         self.duplicate_phrases()
         self.set_speech()
         self.set_subjects()
