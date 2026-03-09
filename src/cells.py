@@ -56,8 +56,8 @@ class Elems:
         pattern2 = r'((\s){0,1})+((\n|\r){0,1})+((\s){0,1})+\d+[\),\>]\.{0,1}((\s){0,1})+'
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks \
-                      if not re.match(pattern1, block.text) and \
-                      not re.match(pattern2, block.text)]
+                      if not re.fullmatch(pattern1, block.text) and \
+                      not re.fullmatch(pattern2, block.text)]
         rep.deleted(f, old_len - len(self.blocks))
     
     def _is_comment_like(self, group):
