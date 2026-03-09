@@ -19,6 +19,8 @@ class Elems:
 
     def __init__(self, blocks):
         f = '[MClient] sources.dsl.elems.Elems.__init__'
+        self.phonemes = ('ɪ', 'ɛ', 'æ', 'ʌ', 'ə', 'ɚ', 'ʊ', 'ɔ', 'ɑ', 'ɵ', 'ð'
+                        ,'ʃ', 'ʒ', 'ʧ', 'ʤ', 'ŋ', 'ı')
         self.art_subj = {}
         self.Parallel = False
         self.Separate = False
@@ -166,12 +168,27 @@ class Elems:
         self.blocks += phrases
         rep.matches(f, count)
     
+    def set_transc(self):
+        f = '[MClient] sources.dsl.elems.Elems.set_transc'
+        count = 0
+        for block in self.blocks:
+            fragm = block.text.strip()
+            if not fragm.startswith('[') or not fragm.endswith(']'):
+                continue
+            for phoneme in self.phonemes:
+                if phoneme in fragm:
+                    count += 1
+                    block.type = 'transc'
+                    block.text = block.text.strip()
+        rep.matches(f, count)
+    
     def run(self):
         f = '[MClient] sources.dsl.elems.Elems.run'
         if not self.Success:
             rep.cancel(f)
             return []
         self.fix_transc()
+        self.set_transc()
         self.delete_trash()
         self.delete_numeration()
         self.delete_backslash()
