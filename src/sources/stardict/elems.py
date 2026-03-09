@@ -117,6 +117,8 @@ class Elems:
 
     def __init__(self, blocks):
         f = '[MClient] sources.stardict.elems.Elems.__init__'
+        self.phonemes = ('ɪ', 'ɛ', 'æ', 'ʌ', 'ə', 'ɚ', 'ʊ', 'ɔ', 'ɑ', 'ɵ', 'ð'
+                        ,'ʃ', 'ʒ', 'ʧ', 'ʤ', 'ŋ', 'ı')
         self.art_subj = {}
         self.Parallel = False
         self.Separate = False
@@ -126,6 +128,20 @@ class Elems:
         else:
             self.Success = False
             rep.empty(f)
+    
+    def set_transc(self):
+        f = '[MClient] sources.stardict.elems.Elems.set_transc'
+        count = 0
+        for block in self.blocks:
+            fragm = block.text.strip()
+            if not fragm.startswith('[') or not fragm.endswith(']'):
+                continue
+            for phoneme in self.phonemes:
+                if phoneme in fragm:
+                    count += 1
+                    block.type = 'transc'
+                    block.text = block.text.strip()
+        rep.matches(f, count)
     
     def set_art_subj(self):
         f = '[MClient] sources.stardict.elems.Elems.set_art_subj'
@@ -186,6 +202,7 @@ class Elems:
         if not self.Success:
             rep.cancel(f)
             return []
+        self.set_transc()
         self.set_subjects()
         self.set_speech()
         self.set_source()
