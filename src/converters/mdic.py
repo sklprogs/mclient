@@ -170,7 +170,7 @@ class Portion:
         '''
         f = '[MClient] converters.mdic.Portion._compress'
         try:
-            return zstd.compress(data)
+            return zstd.compress(data, 6)
         except Exception as e:
             self.Success = False
             rep.third_party(f, e)
