@@ -329,6 +329,77 @@ class DSL:
 
 
 
+class DumpDsl:
+    # Converters
+    def __init__(self, file):
+        self.file = ''
+        self.fname = ''
+        self.body = []
+        self.wform = ''
+        self.recno = 0
+        self.pos = 0
+        self.Success = True
+        self.dicname = _('Untitled dictionary')
+        self.file = file
+        self.load()
+    
+    def load(self):
+        f = '[MClient] sources.dsl.get.DumpDsl.load'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self.fname = Path(self.file).get_filename()
+        try:
+            self.open = open(self.file, 'r', encoding='UTF-16-LE')
+        except Exception as e:
+            self.Success = False
+            rep.third_party(f, e)
+    
+    def close(self):
+        f = '[MClient] sources.dsl.get.DumpDsl.close'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self.open.close()
+    
+    def get_next(self):
+        f = '[MClient] sources.dsl.get.DumpDsl.get_next'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        article = Article()
+        while True:
+            line = self.open.readline()
+            if not line:
+                if self.wform and self.body:
+                   code = [self.wform + '\n'] + self.body
+                   code = ''.join(code)
+                   article.search = self.wform
+                   article.code = code
+                   article.dic = self.fname
+                   return article
+                return
+            if line.startswith('#'):
+                continue
+            if line.startswith('\t'):
+                self.body.append(line)
+                continue
+            #NOTE: a line can consist of spaces (actually happened)
+            line = line.strip()
+            if not line:
+                continue
+            if self.wform and self.body:
+                code = [self.wform + '\n'] + self.body
+                code = ''.join(code)
+                article.search = self.wform
+                article.code = code
+                self.wform = line
+                self.body = []
+                return article
+            self.wform = line
+
+
+
 class Suggest:
     
     def __init__(self, search):
