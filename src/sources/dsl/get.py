@@ -103,7 +103,7 @@ class Get:
 
 
 
-class DSL:
+class Dsl:
     
     def __init__(self, file):
         self.file = ''
@@ -120,7 +120,7 @@ class DSL:
         self.check()
     
     def run(self):
-        f = '[MClient] sources.dsl.get.DSL.run'
+        f = '[MClient] sources.dsl.get.Dsl.run'
         if self.lst:
             rep.lazy(f)
             return
@@ -135,7 +135,7 @@ class DSL:
         timer.end()
     
     def cleanup(self):
-        f = '[MClient] sources.dsl.get.DSL.cleanup'
+        f = '[MClient] sources.dsl.get.Dsl.cleanup'
         if not self.Success:
             rep.cancel(f)
             return
@@ -147,7 +147,7 @@ class DSL:
                    and not line.startswith('#')]
     
     def set_lang1(self):
-        f = '[MClient] sources.dsl.get.DSL.set_lang1'
+        f = '[MClient] sources.dsl.get.Dsl.set_lang1'
         if not self.Success:
             rep.cancel(f)
             return
@@ -165,7 +165,7 @@ class DSL:
         Message(f, mes).show_debug()
     
     def set_lang2(self):
-        f = '[MClient] sources.dsl.get.DSL.set_lang2'
+        f = '[MClient] sources.dsl.get.Dsl.set_lang2'
         if not self.Success:
             rep.cancel(f)
             return
@@ -184,7 +184,7 @@ class DSL:
     
     def set_dic_name(self):
         # Do this before deleting comments ('self.strip')
-        f = '[MClient] sources.dsl.get.DSL.set_dic_name'
+        f = '[MClient] sources.dsl.get.Dsl.set_dic_name'
         if not self.Success:
             rep.cancel(f)
             return
@@ -200,7 +200,7 @@ class DSL:
         Message(f, mes).show_debug()
     
     def get_entry(self, pos):
-        f = '[MClient] sources.dsl.get.DSL.get_entry'
+        f = '[MClient] sources.dsl.get.Dsl.get_entry'
         if not self.Success:
             rep.cancel(f)
             return
@@ -228,7 +228,7 @@ class DSL:
     
     def dump(self, limit):
         # converters
-        f = '[MClient] sources.dsl.get.DSL.dump'
+        f = '[MClient] sources.dsl.get.Dsl.dump'
         if not self.Success:
             rep.cancel(f)
             return
@@ -244,7 +244,7 @@ class DSL:
         return articles
     
     def search(self, pattern):
-        f = '[MClient] sources.dsl.get.DSL.search'
+        f = '[MClient] sources.dsl.get.Dsl.search'
         if not self.Success:
             rep.cancel(f)
             return
@@ -274,7 +274,7 @@ class DSL:
         return line
     
     def get_index(self):
-        f = '[MClient] sources.dsl.get.DSL.get_index'
+        f = '[MClient] sources.dsl.get.Dsl.get_index'
         if not self.Success:
             rep.cancel(f)
             return self.index_
@@ -292,7 +292,7 @@ class DSL:
         return self.index_
     
     def check(self):
-        f = '[MClient] sources.dsl.get.DSL.check'
+        f = '[MClient] sources.dsl.get.Dsl.check'
         if not self.file:
             self.Success = False
             rep.empty(f)
@@ -300,7 +300,7 @@ class DSL:
         self.Success = File(self.file).Success
     
     def load(self):
-        f = '[MClient] sources.dsl.get.DSL.load'
+        f = '[MClient] sources.dsl.get.Dsl.load'
         if not self.Success:
             rep.cancel(f)
             return
@@ -624,7 +624,7 @@ class AllDics:
         if not self.dics:
             if self.walk():
                 for dsl in self.dsls:
-                    self.dics.append(DSL(dsl))
+                    self.dics.append(Dsl(dsl))
             else:
                 rep.lazy(f)
         mes = _('{} offline dictionaries are available').format(len(self.dics))
