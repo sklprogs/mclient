@@ -53,6 +53,8 @@ class Dsl:
         self.lang2 = _('Any')
         self.dicname = _('Untitled dictionary')
         self.file = file
+    
+    def run(self):
         self.load()
     
     def set_dic_name(self, line):
