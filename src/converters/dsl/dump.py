@@ -90,15 +90,13 @@ class Dsl:
         f = '[MClient] converters.dsl.dump.Dsl.dump'
         if not self.Success:
             rep.cancel(f)
-            return
+            return []
         articles = []
         while len(articles) < limit:
             article = self.get_next()
-            if article:
-                articles.append(article)
-            else:
-                # We need empty output if the end has been reached; do not break
-                return []
+            if not article:
+                return articles
+            articles.append(article)
         return articles
     
     def load(self):
