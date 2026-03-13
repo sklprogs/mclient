@@ -7,9 +7,12 @@ from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.debug.controller import DEBUG as shDEBUG
 
 from tests.sources import Get
+''' tests.dump.shared: ALL_DICS and Source are reassigned with every Dump class,
+    so import it only once here and comment out all others.
+'''
 from tests.dump.dsl import Dump as DumpDsl
-from tests.dump.stardict import Dump as DumpStardict
-from tests.dump.fora import Dump as DumpFora
+#from tests.dump.stardict import Dump as DumpStardict
+#from tests.dump.fora import Dump as DumpFora
 from tests.sources import Tags
 from tests.sources import Elems
 from tests.sources import Source
@@ -37,9 +40,9 @@ if __name__ == '__main__':
     #mes = Get().run_multitrancom()
     #mes = Get().run_multitrandem()
     #mes = Get().run_stardict()
-    #mes = DumpDsl().run()
+    mes = DumpDsl().run()
     #mes = DumpStardict().run()
-    mes = DumpFora().run()
+    #mes = DumpFora().run()
     #mes = Tags().run_dsl()
     #mes = Tags().run_stardict()
     #mes = Tags().run_fora_dsl()

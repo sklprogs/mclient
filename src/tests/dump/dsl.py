@@ -15,7 +15,7 @@ class Dump(tests.dump.shared.Dump):
         super().__init__(*args, **kwargs)
     
     def run(self):
-        self.limit = 10
-        return self.run_loops(1)
+        self.limit = 1000
+        #return self.run_loops(1)
         #return self.run_all()
-        #return self.run_blocks()
+        return self.run_blocks()
