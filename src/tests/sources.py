@@ -20,7 +20,8 @@ from config import CONFIG
 #SEARCH = 'analyzer'
 #SEARCH = 'hello bye'
 #SEARCH = 'account'
-SEARCH = 'after-tax charge'
+SEARCH = 'pail'
+#SEARCH = 'absolute'
 #SEARCH = 'bottling'
 #SEARCH = 'book'
 #SEARCH = 'good'
@@ -663,12 +664,12 @@ class Source:
         return icells.debug()
     
     def run_stardict(self):
-        from cells import Cells
+        from cells import Elems as cElems
         from sources.stardict.run import Source as mSource
         blocks = mSource().request(SEARCH)
-        icells = Cells(blocks)
-        icells.run()
-        return icells.debug()
+        ielems = cElems(blocks)
+        ielems.run()
+        return ielems.debug()
     
     def run_mdic(self):
         from cells import Cells
