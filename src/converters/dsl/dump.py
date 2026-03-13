@@ -36,6 +36,22 @@ class AllDics(DslDics):
         mes = _('{} offline dictionaries are available').format(len(self.dics))
         Message(f, mes).show_info()
         return self.dics
+    
+    def dump(self, limit=1500):
+        f = '[MClient] converters.dsl.dump.AllDics.dump'
+        if not self.Success:
+            rep.cancel(f)
+            return []
+        articles = []
+        while self.dicno < len(self.dics):
+            articles = self.dics[self.dicno].dump(limit)
+            if articles:
+                return articles
+            mes = _('Dictionary #{} ({}) has been dumped')
+            mes = mes.format(self.dicno + 1, self.dics[self.dicno].dicname)
+            Message(f, mes).show_info()
+            self.dics[self.dicno].close()
+            self.dicno += 1
 
 
 
@@ -46,15 +62,11 @@ class Dsl:
         self.fname = ''
         self.body = []
         self.wform = ''
-        self.recno = 0
-        self.pos = 0
         self.Success = True
         self.lang1 = _('Any')
         self.lang2 = _('Any')
         self.dicname = _('Untitled dictionary')
         self.file = file
-    
-    def run(self):
         self.load()
     
     def set_dic_name(self, line):
@@ -85,7 +97,8 @@ class Dsl:
             if article:
                 articles.append(article)
             else:
-                break
+                # We need empty output if the end has been reached; do not break
+                return []
         return articles
     
     def load(self):
@@ -122,6 +135,7 @@ class Dsl:
                    article.search = self.wform
                    article.code = code
                    article.dic = self.fname
+                   self.body = []
                    return article
                 return
             if line.startswith('#'):
