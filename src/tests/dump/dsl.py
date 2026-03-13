@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from sources.dsl.get import ALL_DICS
+from converters.dsl.dump import ALL_DICS
 from sources.dsl.run import Source
 
 import tests.dump.shared

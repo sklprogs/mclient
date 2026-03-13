@@ -23,7 +23,7 @@ class AllDics(DslDics):
         self.locate()
     
     def locate(self):
-        f = '[MClient] sources.dsl.dump.AllDics.locate'
+        f = '[MClient] converters.dsl.dump.AllDics.locate'
         if not self.Success:
             rep.cancel(f)
             return
@@ -56,7 +56,7 @@ class Dsl:
         self.load()
     
     def set_dic_name(self, line):
-        f = '[MClient] sources.dsl.dump.Dsl.set_dic_name'
+        f = '[MClient] converters.dsl.dump.Dsl.set_dic_name'
         if not self.Success:
             rep.cancel(f)
             return
@@ -73,7 +73,7 @@ class Dsl:
         Message(f, f'"{self.dicname}"').show_debug()
     
     def dump(self, limit):
-        f = '[MClient] sources.dsl.dump.Dsl.dump'
+        f = '[MClient] converters.dsl.dump.Dsl.dump'
         if not self.Success:
             rep.cancel(f)
             return
@@ -87,7 +87,7 @@ class Dsl:
         return articles
     
     def load(self):
-        f = '[MClient] sources.dsl.dump.Dsl.load'
+        f = '[MClient] converters.dsl.dump.Dsl.load'
         if not self.Success:
             rep.cancel(f)
             return
@@ -99,14 +99,14 @@ class Dsl:
             rep.third_party(f, e)
     
     def close(self):
-        f = '[MClient] sources.dsl.dump.Dsl.close'
+        f = '[MClient] converters.dsl.dump.Dsl.close'
         if not self.Success:
             rep.cancel(f)
             return
         self.open.close()
     
     def get_next(self):
-        f = '[MClient] sources.dsl.dump.Dsl.get_next'
+        f = '[MClient] converters.dsl.dump.Dsl.get_next'
         if not self.Success:
             rep.cancel(f)
             return
