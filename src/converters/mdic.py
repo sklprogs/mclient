@@ -10,7 +10,7 @@ import skl_shared.message.controller as ms
 from skl_shared.message.controller import Message, rep
 from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.progress_bar.controller import PROGRESS
-from skl_shared.paths import Home, Path
+from skl_shared.paths import Home, Path, File
 from skl_shared.text_file import Write
 from skl_shared.launch import Launch
 from skl_shared.time import Timer
@@ -373,6 +373,19 @@ class Runner:
             # Update progress because number of processed articles changed
             self._update_progress(cur_dic)
     
+    def set_pos(self):
+        f = '[MClient] converters.mdic.Runner.set_pos'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        if not os.path.exists(BIN_FILE):
+            rep.lazy(f)
+            return
+        self.pos = File(BIN_FILE).get_size()
+        pos = shcom.set_figure_commas(self.pos)
+        mes = _('Conversion will continue from position {}').format(pos)
+        Message(f, mes).show_info()
+    
     def loop_sources(self):
         f = '[MClient] converters.mdic.Runner.loop_sources'
         if not self.Success:
@@ -429,6 +442,7 @@ class Runner:
         f = '[MClient] converters.mdic.Runner.run'
         timer = Timer(f)
         timer.start()
+        self.set_pos()
         self.loop_sources()
         self.Success = self.Success and Index().run()
         self.report(timer.end())
