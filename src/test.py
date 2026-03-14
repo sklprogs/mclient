@@ -10,7 +10,7 @@ from tests.sources import Get
 ''' tests.dump.shared: ALL_DICS and Source are reassigned with every Dump class,
     so import it only once here and comment out all others.
 '''
-from tests.dump.dsl import Dump as DumpDsl
+#from tests.dump.dsl import Dump as DumpDsl
 #from tests.dump.stardict import Dump as DumpStardict
 #from tests.dump.fora import Dump as DumpFora
 from tests.sources import Tags
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     #mes = Get().run_multitrancom()
     #mes = Get().run_multitrandem()
     #mes = Get().run_stardict()
-    mes = DumpDsl().run()
+    #mes = DumpDsl().run()
     #mes = DumpStardict().run()
     #mes = DumpFora().run()
     #mes = Tags().run_dsl()
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     #mes = Elems().run_all()
     #mes = Elems().run_dsl()
     #mes = Elems().run_dsl_cells()
-    #mes = Elems().run_mdic()
+    mes = Elems().run_mdic()
     #mes = Elems().run_stardict()
     #mes = Elems().run_stardict_cells()
     #mes = Elems().run_fora()

@@ -113,9 +113,8 @@ class Dsl:
     
     def _get_article(self):
         article = Article()
-        code = '\n'.join([self.wform] + self.body)
         article.search = self.wform
-        article.code = code
+        article.code = '\n'.join(self.body)
         article.dic = self.dicname
         self.body = []
         return article
