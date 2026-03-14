@@ -16,6 +16,7 @@ class AllDics(DslDics):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.dicno = 0
         #TODO: Do not call sources.dsl.get.AllDics.locate from sources.dsl.get.AllDics.__init__
         # Must be recreated because we need to run self.locate once again
         self.dsls = []
