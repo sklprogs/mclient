@@ -70,22 +70,14 @@ class Dsl:
         self.file = file
         self.load()
     
-    def set_dic_name(self, line):
+    def _set_dic_name(self, line):
         f = '[MClient] converters.dsl.dump.Dsl.set_dic_name'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if not line:
-            rep.empty(f)
-            return
         match = re.match('#NAME	"(.*)"', line)
         if match:
             dicname = match.group(1).strip()
             if dicname:
                 self.dicname = dicname
-        if not self.dicname:
-            self.dicname = self.fname
-        Message(f, f'"{self.dicname}"').show_debug()
+            Message(f, f'"{self.dicname}"').show_debug()
     
     def dump(self, limit):
         f = '[MClient] converters.dsl.dump.Dsl.dump'
@@ -105,7 +97,7 @@ class Dsl:
         if not self.Success:
             rep.cancel(f)
             return
-        self.fname = Path(self.file).get_filename()
+        self.dicname = self.fname = Path(self.file).get_filename()
         try:
             self.open = open(self.file, 'r', encoding='UTF-16-LE')
         except Exception as e:
@@ -133,13 +125,13 @@ class Dsl:
                    code = ''.join(code)
                    article.search = self.wform
                    article.code = code
-                   article.dic = self.fname
+                   article.dic = self.dicname
                    self.body = []
                    return article
                 return
             if line.startswith('#'):
                 if line.startswith('#NAME'):
-                    self.set_dic_name(line)
+                    self._set_dic_name(line)
                 continue
             if line.startswith('\t'):
                 self.body.append(line)
@@ -153,6 +145,7 @@ class Dsl:
                 code = ''.join(code)
                 article.search = self.wform
                 article.code = code
+                article.dic = self.dicname
                 self.wform = line
                 self.body = []
                 return article
