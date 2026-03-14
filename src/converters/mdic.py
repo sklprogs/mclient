@@ -587,7 +587,8 @@ class Index:
                 wform_string = '\t'.join(wform_string)
                 index = f"{wform}\t{wform_string}"
                 indexes.append(index)
-            bytes_ = bytes('\n'.join(indexes), 'utf-8')
+            # New chunk will corrupt index if a line break is not added
+            bytes_ = bytes('\n'.join(indexes), 'utf-8') + bytes('\n', 'utf-8')
             if not self._save(abbr, bytes_):
                 break
     
