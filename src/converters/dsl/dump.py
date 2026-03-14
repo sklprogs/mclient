@@ -71,7 +71,7 @@ class Dsl:
         self.load()
     
     def _set_dic_name(self, line):
-        f = '[MClient] converters.dsl.dump.Dsl.set_dic_name'
+        f = '[MClient] converters.dsl.dump.Dsl._set_dic_name'
         match = re.match('#NAME	"(.*)"', line)
         if match:
             dicname = match.group(1).strip()
@@ -121,14 +121,21 @@ class Dsl:
             line = self.open.readline()
             if not line:
                 if self.wform and self.body:
-                   code = [self.wform + '\n'] + self.body
-                   code = ''.join(code)
+                   code = '\n'.join([self.wform] + self.body)
                    article.search = self.wform
                    article.code = code
                    article.dic = self.dicname
                    self.body = []
                    return article
                 return
+            # Remove BOM
+            if line.startswith('\ufeff'):
+                line = line[1:]
+            ''' Do not strip earlier because there is an empty line after
+                # section, so we continue on a line break but return on empty
+                input.
+            '''
+            line = line.rstrip()
             if line.startswith('#'):
                 if line.startswith('#NAME'):
                     self._set_dic_name(line)
@@ -141,8 +148,7 @@ class Dsl:
             if not line:
                 continue
             if self.wform and self.body:
-                code = [self.wform + '\n'] + self.body
-                code = ''.join(code)
+                code = '\n'.join([self.wform] + self.body)
                 article.search = self.wform
                 article.code = code
                 article.dic = self.dicname
