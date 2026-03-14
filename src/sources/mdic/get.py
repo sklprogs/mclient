@@ -202,7 +202,9 @@ class Body:
                 return
             fragm = bytes_.decode(errors='ignore')
             # Create valid JSON structure
-            fragm = '{' + fragm + '}'
+            if not fragm.startswith('{'):
+                fragm = '{' + fragm
+            fragm = fragm + '}'
             matches.append(fragm)
         timer.end()
         return matches
