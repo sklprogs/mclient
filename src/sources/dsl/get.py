@@ -108,7 +108,6 @@ class Dsl:
     def __init__(self, file):
         self.file = ''
         self.fname = ''
-        self.recno = 0
         self.lst = []
         self.lang1 = _('Any')
         self.lang2 = _('Any')
@@ -226,23 +225,6 @@ class Dsl:
         Message(f, mes).show_debug()
         return article
     
-    def dump(self, limit):
-        # converters
-        f = '[MClient] sources.dsl.get.Dsl.dump'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        articles = []
-        # Slices do not cause IndexError
-        for pos in self.poses[self.recno:self.recno+limit]:
-            article = self.get_entry(pos)
-            if not article:
-                continue
-            article.pos = pos
-            articles.append(article)
-        self.recno += limit
-        return articles
-    
     def search(self, pattern):
         f = '[MClient] sources.dsl.get.Dsl.search'
         if not self.Success:
@@ -321,11 +303,6 @@ class Dsl:
             rep.empty(f)
             return
         self.lst = text.splitlines()
-    
-    def free_memory(self):
-        self.lst = []
-        self.poses = []
-        self.index_ = []
 
 
 
@@ -371,7 +348,6 @@ class Suggest:
 class AllDics:
     
     def __init__(self):
-        self.dicno = 0
         self.dsls = []
         self.dics = []
         self.index_ = []
@@ -388,24 +364,6 @@ class AllDics:
     
     def get_invalid(self):
         return [dic for dic in self.dics if not dic.Success]
-    
-    def dump(self, limit=1500):
-        f = '[MClient] sources.dsl.get.AllDics.dump'
-        if not self.Success:
-            rep.cancel(f)
-            return []
-        dump = []
-        while self.dicno < len(self.dics):
-            self.dics[self.dicno].run()
-            dump = self.dics[self.dicno].dump(limit)
-            if dump:
-                return dump
-            mes = _('Dictionary #{} ({}) has been dumped')
-            mes = mes.format(self.dicno + 1, self.dics[self.dicno].dicname)
-            Message(f, mes).show_info()
-            # Close dictionary if the file open mode is changed
-            self.dics[self.dicno].free_memory()
-            self.dicno += 1
     
     def get_langs2(self):
         f = '[MClient] sources.dsl.get.AllDics.get_langs2'
