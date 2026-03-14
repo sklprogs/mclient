@@ -6,8 +6,6 @@ all:
 - rework Table: adjust column widths correctly
 
 mclient:
-- EN-RU: cold feet -> get cold feet -> <!-- --> Словари Форум Купить Скачать
-Контакты <!-- // --> → + <!-- // --> Не найдено
 - EN-RU: jockey: "мембрана ()"
 - EN-RU: lockup garage: "Отдельные слова" is copied as "Отдельные слова <!--"
   and propagated to the source not having such subject
@@ -29,6 +27,9 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
+- EN-RU: 150 percent declining balance depreciation: Remove "Короткая ссылка"
+- EN-RU: cold feet -> get cold feet -> <!-- --> Словари Форум Купить Скачать
+Контакты <!-- // --> → + <!-- // --> Не найдено
 - EN_RU: lockup: "холодная (сущ.)": each bracket is on a new line
 - RU-ZH: squares instead of characters
 - RU-EN, zero-sum game: wrong input data!
