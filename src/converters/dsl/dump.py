@@ -111,22 +111,25 @@ class Dsl:
             return
         self.open.close()
     
+    def _get_article(self):
+        article = Article()
+        code = '\n'.join([self.wform] + self.body)
+        article.search = self.wform
+        article.code = code
+        article.dic = self.dicname
+        self.body = []
+        return article
+    
     def get_next(self):
         f = '[MClient] converters.dsl.dump.Dsl.get_next'
         if not self.Success:
             rep.cancel(f)
             return
-        article = Article()
         while True:
             line = self.open.readline()
             if not line:
                 if self.wform and self.body:
-                   code = '\n'.join([self.wform] + self.body)
-                   article.search = self.wform
-                   article.code = code
-                   article.dic = self.dicname
-                   self.body = []
-                   return article
+                   return self._get_article()
                 return
             # Remove BOM
             if line.startswith('\ufeff'):
@@ -148,12 +151,9 @@ class Dsl:
             if not line:
                 continue
             if self.wform and self.body:
-                code = '\n'.join([self.wform] + self.body)
-                article.search = self.wform
-                article.code = code
-                article.dic = self.dicname
+                # Generate article before setting new wform
+                article = self._get_article()
                 self.wform = line
-                self.body = []
                 return article
             self.wform = line
 
