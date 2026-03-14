@@ -17,7 +17,6 @@ from skl_shared.time import Timer
 from skl_shared.logic import com as shcom
 from skl_shared.list import List
 
-#from sources.dsl.get import ALL_DICS as DslDics
 from converters.dsl.dump import ALL_DICS as DslDics
 from sources.stardict.get import ALL_DICS as StarDics
 from sources.fora.get import ALL_DICS as ForaDics
