@@ -186,7 +186,7 @@ class Elems:
         f = '[MClient] sources.dsl.elems.Elems.remove_wform_dup'
         old_len = len(self.blocks)
         i = len(self.blocks) - 1
-        while i >= 0:
+        while i > 0:
             if self.blocks[i-1].type == 'wform' \
             and self.blocks[i].type in ('wform', 'term') \
             and self.blocks[i-1].text.strip() == self.blocks[i].text.strip():
