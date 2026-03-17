@@ -76,14 +76,6 @@ class Width:
                 column.width = CONFIG.new['columns'][str(column.no+1)]['width']
             else:
                 column.width = CONFIG.new['columns']['terms']['width']
-            '''
-            if objs.get_blocksdb().is_col_empty(column.no):
-                column.width = self.min_width
-            elif column.Fixed:
-                column.width = CONFIG.new['columns']['fixed']['width']
-            else:
-                column.width = CONFIG.new['columns']['terms']['width']
-            '''
     
     def reset(self):
         # This approach includes percentage only
