@@ -275,13 +275,8 @@ class Table:
             if no in self.logic.empty_cols:
                 #TODO: Check this for articles prepared for printing
                 width = 0
-            elif no == 0:
-                #TODO: Constant widths should depend on types
-                width = 123
-            elif no == 1:
-                width = CONFIG.new['columns']['fixed']['width']
-            elif no in (2, 3):
-                width = 80
+            elif no >= 0 and no < 6:
+                width = CONFIG.new['columns'][str(no+1)]['width']
             else:
                 width = CONFIG.new['columns']['terms']['width']
             self.gui.set_col_width(no, width)
