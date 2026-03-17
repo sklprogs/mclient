@@ -72,8 +72,8 @@ class Width:
             rep.lazy(f)
             return
         for column in self.columns:
-            if column.Fixed:
-                column.width = CONFIG.new['columns']['fixed']['width']
+            if column.no < self.fixed_num:
+                column.width = CONFIG.new['columns'][str(column.no+1)]['width']
             else:
                 column.width = CONFIG.new['columns']['terms']['width']
             '''
