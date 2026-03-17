@@ -44,10 +44,8 @@ class Load:
     
     def load_col_widths(self):
         SETTINGS.gui.ent_num.reset()
-        SETTINGS.gui.ent_fix.reset()
         SETTINGS.gui.ent_trm.reset()
         SETTINGS.gui.ent_num.insert(CONFIG.new['columns']['num'])
-        SETTINGS.gui.ent_fix.insert(CONFIG.new['columns']['fixed']['width'])
         SETTINGS.gui.ent_trm.insert(CONFIG.new['columns']['terms']['width'])
     
     def run(self):
@@ -107,17 +105,6 @@ class Save:
             SETTINGS.gui.ent_num.insert(col_num)
         CONFIG.new['columns']['num'] = col_num
     
-    def save_fixed_col_width(self):
-        f = '[MClient] settings.controller.Save.save_fixed_col_width'
-        width = SETTINGS.gui.ent_fix.get()
-        width = Input(f, width).get_integer()
-        if not 50 <= width <= 512:
-            self._report_wrong_range(f, 50, 512)
-            width = 63
-            SETTINGS.gui.ent_fix.reset()
-            SETTINGS.gui.ent_fix.insert(width)
-        CONFIG.new['columns']['fixed']['width'] = width
-    
     def save_term_col_width(self):
         f = '[MClient] settings.controller.Save.save_term_col_width'
         width = SETTINGS.gui.ent_trm.get()
@@ -133,7 +120,6 @@ class Save:
         self.save_style_area()
         self.save_speech_area()
         self.save_checkboxes()
-        self.save_fixed_col_width()
         self.save_term_col_width()
         self.save_col_num()
 

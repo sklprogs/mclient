@@ -592,7 +592,6 @@ class App:
         Message(f, mes).show_debug()
         
         SETTINGS.gui.ent_num.set_text(col_num)
-        SETTINGS.gui.ent_fix.set_text(63)
         SETTINGS.gui.ent_trm.set_text(term_width)
     
     def set_col_num(self):

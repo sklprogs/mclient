@@ -587,8 +587,6 @@ class Settings(QWidget):
     def set_suggest(self):
         self.lbl_num = Label(_('Preferred number of columns:'))
         self.ent_num = Entry()
-        self.lbl_fix = Label(_('Fixed column width:'))
-        self.ent_fix = Entry()
         self.lbl_trm = Label(_('Term column width:'))
         self.ent_trm = Entry()
         self.btn_sug = Button(_('Suggest'))
@@ -638,8 +636,6 @@ class Settings(QWidget):
     def _add_suggest(self):
         self.lay_sgl.addWidget(self.lbl_num.widget)
         self.lay_sgl.addWidget(self.ent_num.widget)
-        self.lay_sgl.addWidget(self.lbl_fix.widget)
-        self.lay_sgl.addWidget(self.ent_fix.widget)
         self.lay_sgl.addWidget(self.lbl_trm.widget)
         self.lay_sgl.addWidget(self.ent_trm.widget)
         self.lay_sug.addWidget(self.btn_sug.widget)
@@ -665,11 +661,9 @@ class Settings(QWidget):
         self.setStyleSheet('QLabel {color: #bbffff}')
         
         self.lbl_num.widget.setStyleSheet('color: black')
-        self.lbl_fix.widget.setStyleSheet('color: black')
         self.lbl_trm.widget.setStyleSheet('color: black')
         
         self.ent_num.set_max_width(20)
-        self.ent_fix.set_max_width(35)
         self.ent_trm.set_max_width(35)
         
         # 10 -> 11
