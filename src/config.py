@@ -52,12 +52,8 @@ class Paths:
 
 class Config(shConfig):
     
-    def __init__(self, default, schema, local):
-        super().__init__(default, schema, local)
-        self.set_values()
-        self.default = default
-        self.schema = schema
-        self.local = local
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
     
     def update(self):
         f = '[MClient] config.Config.update'
