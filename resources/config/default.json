@@ -185,7 +185,7 @@
          }
 ,"columns":
     {"num": 6
-    ,"terms": {"width": 157}
+    ,"terms": {"width": 210}
     ,"1":
         {"type": "Sources"
         ,"font": {"family": "Arial", "size": 12, "weight": "bold", "color": "red", "align": "center"}
