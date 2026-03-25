@@ -44,7 +44,7 @@ class Block:
             return COLORS.phb
         if self.block.type in ('phrase', 'term'):
             return CONFIG.new['terms']['font']['color']
-        if self.block.type in ('comment', 'phcount', 'transc'):
+        if self.block.type in ('comment', 'phcount'):
             return CONFIG.new['comments']['font']['color']
         if self.block.type == 'user':
             return COLORS.user
@@ -62,7 +62,7 @@ class Block:
     
     def set_italic(self):
         if self.block.type in ('comment', 'user', 'correction', 'phcount'
-                              ,'speech', 'transc'):
+                              ,'speech'):
             self.code = '<i>' + self.code + '</i>'
     
     def _get_weight(self):
@@ -90,8 +90,7 @@ class Block:
     def get_family(self):
         if self.block.type in ('phrase', 'term'):
             return CONFIG.new['terms']['font']['family']
-        if self.block.type in ('comment', 'correction', 'phcount', 'transc'
-                              ,'user'):
+        if self.block.type in ('comment', 'correction', 'phcount', 'user'):
             return CONFIG.new['comments']['font']['family']
         try:
             return CONFIG.new['columns'][str(self.colno + 1)]['font']['family']
@@ -101,8 +100,7 @@ class Block:
     def get_size(self):
         if self.block.type in ('phrase', 'term'):
             return CONFIG.new['terms']['font']['size']
-        if self.block.type in ('comment', 'correction', 'phcount', 'transc'
-                              ,'user'):
+        if self.block.type in ('comment', 'correction', 'phcount', 'user'):
             return CONFIG.new['comments']['font']['size']
         try:
             return CONFIG.new['columns'][str(self.colno + 1)]['font']['size']
