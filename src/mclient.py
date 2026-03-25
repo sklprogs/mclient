@@ -764,8 +764,7 @@ class App:
             REQUEST.url = cell.url
             mes = _('Open link: {}').format(REQUEST.url)
             Message(f, mes).show_info()
-            self.load_article(search = REQUEST.search
-                             ,url = REQUEST.url)
+            self.load_article(REQUEST.search, REQUEST.url)
         else:
             self.go_search()
     
@@ -902,8 +901,7 @@ class App:
             mes = f'"{REQUEST.search}"'
             Message(f, mes).show_debug()
             lg.com.set_url()
-            self.load_article(search = REQUEST.search
-                             ,url = REQUEST.url)
+            self.load_article(REQUEST.search, REQUEST.url)
     
     def load_suggestion(self, text):
         SUGGEST.close()
