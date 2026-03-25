@@ -61,8 +61,7 @@ class Block:
             return ''
     
     def set_italic(self):
-        if self.block.type in ('comment', 'user', 'correction', 'phcount'
-                              ,'speech'):
+        if self.block.type in ('comment', 'user', 'correction', 'phcount'):
             self.code = '<i>' + self.code + '</i>'
     
     def _get_weight(self):
