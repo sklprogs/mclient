@@ -53,9 +53,6 @@ class Column(iColumn):
         if not CONFIG.Success:
             rep.cancel(f)
             return
-        if not CONFIG.new['rows']['height']:
-            rep.lazy(f)
-            return
         if self.no < self.fixed_num:
             self._set_fixed_width()
         else:
