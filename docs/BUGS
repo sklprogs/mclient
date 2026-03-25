@@ -1,4 +1,5 @@
 all:
+- deliquent, otherjourney, baldergash: condition not observed, nothing found
 - articles are constantly growing with old requests;
 - ударить головой -> headbutt: freeze, probably on multitrandem
 - head -> устройство или приспособление...: blocks from previous article
@@ -108,6 +109,7 @@ dsl:
 - hello -> breed of cat -> not found (but present in index)
 
 - mdic:
+- cross: find all cases
 - RU-EN: цикл (or any other): subj is set by term cell
 - Abfuller, spike, (1st wform of any dictionary): invalid JSON
 - scope: not found; search for multiple matches
