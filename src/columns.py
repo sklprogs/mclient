@@ -6,55 +6,75 @@ from skl_shared.message.controller import rep, Message
 
 from config import CONFIG
 from articles import ARTICLES
-from instance import Column
+from instance import Column as iColumn
 
 
-class Types:
+class Column(iColumn):
     
-    def _get(self, type_):
-        f = '[MClient] columns.Types._get'
-        if type_ == _('Sources'):
-            return 'source'
-        elif type_ == _('Dictionaries'):
-            return 'dic'
-        elif type_ == _('Subjects'):
-            return 'subj'
-        elif type_ == _('Word forms'):
-            return 'wform'
-        elif type_ == _('Parts of speech'):
-            return 'speech'
-        elif type_ == _('Transcriptions'):
-            return 'transc'
-        elif type_ == _('Do not set'):
-            pass
-        else:
-            mes = _('Wrong input data: "{}"!').format(type_)
-            Message(f, mes, True).show_error()
-        return ''
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fixed_num = 6
     
-    def get(self):
-        f = '[MClient] columns.Types.get'
+    def set_type(self):
+        f = '[MClient] columns.Column.set_type'
         if not CONFIG.Success:
             rep.cancel(f)
             return
-        types = [CONFIG.new['columns']['1']['type']
-                ,CONFIG.new['columns']['2']['type']
-                ,CONFIG.new['columns']['3']['type']
-                ,CONFIG.new['columns']['4']['type']
-                ,CONFIG.new['columns']['5']['type']
-                ,CONFIG.new['columns']['6']['type']]
-        for i in range(len(types)):
-            types[i] = self._get(types[i])
-        mes = ', '.join(types)
-        Message(f, mes).show_debug()
-        return types
+        self.type = CONFIG.new['columns'][str(self.no+1)]['type']
     
-    def run(self):
-        return self.get()
+    def set_short(self):
+        f = '[MClient] columns.Column.set_short'
+        if self.type == _('Sources'):
+            self.short = 'source'
+        elif self.type == _('Dictionaries'):
+            self.short = 'dic'
+        elif self.type == _('Subjects'):
+            self.short = 'subj'
+        elif self.type == _('Word forms'):
+            self.short = 'wform'
+        elif self.type == _('Parts of speech'):
+            self.short = 'speech'
+        elif self.type == _('Transcriptions'):
+            self.short = 'transc'
+        elif self.type == _('Do not set'):
+            pass
+        else:
+            mes = _('Wrong input data: "{}"!').format(self.type)
+            Message(f, mes, True).show_error()
+    
+    def _set_fixed_width(self):
+        try:
+            self.width = CONFIG.new['columns']['by_type'][self.short]['width']
+        except KeyError:
+            pass
+    
+    def set_width(self):
+        f = '[MClient] columns.Column.set_width'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
+        if not CONFIG.new['rows']['height']:
+            rep.lazy(f)
+            return
+        if self.no < self.fixed_num:
+            self.width = self._set_fixed_width()
+        else:
+            self.width = CONFIG.new['columns']['terms']['width']
+    
+    def add(self, no):
+        f = '[MClient] columns.Column.add'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
+        self.no = no
+        if self.no < self.fixed_num:
+            self.set_type()
+            self.set_short()
+        self.set_width()
 
 
 
-class Width:
+class Columns:
     ''' Adjust fixed columns to have a constant width. A fixed value in pixels
         rather than percentage should be used to adjust columns since we cannot
         say if gaps between columns are too large without calculating a text
@@ -63,45 +83,22 @@ class Width:
     def __init__(self):
         self.reset()
     
-    def set_width(self):
-        f = '[MClient] columns.Width.set_width'
-        if not CONFIG.Success:
-            rep.cancel(f)
-            return
-        if not CONFIG.new['rows']['height']:
-            rep.lazy(f)
-            return
-        for column in self.columns:
-            if column.no < self.fixed_num:
-                column.width = CONFIG.new['columns'][str(column.no+1)]['width']
-            else:
-                column.width = CONFIG.new['columns']['terms']['width']
-    
     def reset(self):
-        # This approach includes percentage only
-        self.fixed_num = 0
         self.term_num = 0
+        self.fixed_num = 6
         self.min_width = 1
         self.columns = []
     
     def run(self):
-        self.set_fixed_num()
         self.set_term_num()
         self.set_columns()
-        self.set_width()
-    
-    def set_fixed_num(self):
-        f = '[MClient] columns.Width.set_fixed_num'
-        self.fixed_num = 6
-        mes = _('Number of fixed columns: {}').format(self.fixed_num)
-        Message(f, mes).show_debug()
     
     def get_col_num(self):
         ''' A subject from the 'Phrases' section usually has an 'original +
             translation' structure, so we need to switch off sorting terms and
             ensure that the number of columns is divisible by 2.
         '''
-        f = '[MClient] columns.Width.get_col_num'
+        f = '[MClient] columns.Columns.get_col_num'
         if not CONFIG.Success:
             rep.cancel(f)
             return 2
@@ -112,25 +109,29 @@ class Width:
         return 2
     
     def set_term_num(self):
-        f = '[MClient] columns.Width.set_term_num'
+        f = '[MClient] columns.Columns.set_term_num'
         self.term_num = self.get_col_num()
         mes = _('Number of term columns: {}').format(self.term_num)
         Message(f, mes).show_debug()
     
     def set_columns(self):
-        col_nos = self.fixed_num + self.term_num
-        for i in range(self.fixed_num):
+        f = '[MClient] columns.Columns.set_columns'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
+        for i in range(self.fixed_num + self.term_num):
             column = Column()
-            column.no = i
-            column.Fixed = True
+            column.add(i)
             self.columns.append(column)
-        i = self.fixed_num
-        while i < col_nos:
-            column = Column()
-            column.no = i
-            self.columns.append(column)
-            i += 1
+    
+    def get_fixed_short(self):
+        f = '[MClient] columns.Columns.get_fixed_short'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return []
+        return [column.short for column in self.columns \
+               if column.no < self.fixed_num]
 
 
-COL_WIDTH = Width()
+COL_WIDTH = Columns()
 COL_WIDTH.run()

@@ -14,7 +14,7 @@ from manager import SOURCES
 from format import Block as fmBlock
 from subjects import SUBJECTS
 from articles import ARTICLES
-from columns import COL_WIDTH, Types as ColTypes
+from columns import COL_WIDTH
 from speech import SPEECH
 
 
@@ -250,7 +250,7 @@ class View:
         self.view = []
         self.cells = cells
         # Must be recreated for each article loading/reloading
-        self.fixed_cols = ColTypes().run()
+        self.fixed_cols = COL_WIDTH.get_fixed_short()
     
     def check(self):
         f = '[MClient] view.View.check'

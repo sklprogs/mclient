@@ -93,7 +93,8 @@ class Column:
     def __init__(self):
         self.no = 0
         self.width = 0
-        self.Fixed = False
+        self.type = ''
+        self.short = ''
 
 
 
