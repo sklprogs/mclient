@@ -513,7 +513,7 @@
                     }
                 }
             ,"by_type": {"type": "object"
-                        ,"required": ["source", "dic", "subject", "wform", "transc", "speech"]
+                        ,"required": ["source", "dic", "subj", "wform", "transc", "speech"]
                         ,"properties":
                         {"source":
                             {"type": "object"
@@ -527,7 +527,7 @@
                             ,"properties":
                                 {"width": {"type": "integer"}}
                             }
-                        ,"subject":
+                        ,"subj":
                             {"type": "object"
                             ,"required": ["width"]
                             ,"properties":

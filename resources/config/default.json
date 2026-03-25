@@ -210,7 +210,7 @@
         {"type": "Parts of speech"
         ,"font": {"family": "Mono", "size": 11, "weight": "italic", "color": "slate gray", "align": "center"}
         }
-    ,"by_type": {"source": {"width": 120}, "dic": {"width": 120}, "subject": {"width": 150}, "wform": {"width": 120}, "transc": {"width": 90}, "speech": {"width": 65}}
+    ,"by_type": {"source": {"width": 120}, "dic": {"width": 120}, "subj": {"width": 150}, "wform": {"width": 120}, "transc": {"width": 90}, "speech": {"width": 65}}
     }
 ,"subjects":
     {"blocked": {}, "prioritized": {"General": {}}, "history": {}
