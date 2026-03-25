@@ -189,33 +189,28 @@
     ,"1":
         {"type": "Sources"
         ,"font": {"family": "Arial", "size": 12, "weight": "bold", "color": "red", "align": "center"}
-        ,"width": 65
         }
     ,"2":
         {"type": "Dictionaries"
         ,"font": {"family": "Arial", "size": 12, "weight": "bold", "color": "orange", "align": "center"}
-        ,"width": 65
         }
     ,"3":
         {"type": "Subjects"
         ,"font": {"family": "Arial", "size": 12, "weight": "bold", "color": "coral", "align": "center"}
-        ,"width": 65
         }
     ,"4":
         {"type": "Word forms"
         ,"font": {"family": "Arial", "size": 12, "weight": "bold", "color": "cadet blue", "align": "center"}
-        ,"width": 65
         }
     ,"5":
         {"type": "Transcriptions"
         ,"font": {"family": "Mono", "size": 11, "weight": "normal", "color": "slate gray", "align": "center"}
-        ,"width": 65
         }
     ,"6":
         {"type": "Parts of speech"
         ,"font": {"family": "Mono", "size": 11, "weight": "italic", "color": "slate gray", "align": "center"}
-        ,"width": 65
         }
+    ,"by_type": {"source": {"width": 120}, "dic": {"width": 120}, "subject": {"width": 150}, "wform": {"width": 120}, "transc": {"width": 90}, "speech": {"width": 65}}
     }
 ,"subjects":
     {"blocked": {}, "prioritized": {"General": {}}, "history": {}

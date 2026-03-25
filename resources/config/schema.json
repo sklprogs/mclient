@@ -420,7 +420,6 @@
                             }
                         }
                     ,"type": {"type": "string"}
-                    ,"width": {"type": "integer"}
                     }
                 }
             ,"2":
@@ -439,7 +438,6 @@
                             }
                         }
                     ,"type": {"type": "string"}
-                    ,"width": {"type": "integer"}
                     }
                 }
             ,"3":
@@ -458,7 +456,6 @@
                             }
                         }
                     ,"type": {"type": "string"}
-                    ,"width": {"type": "integer"}
                     }
                 }
             ,"4":
@@ -477,7 +474,6 @@
                             }
                         }
                     ,"type": {"type": "string"}
-                    ,"width": {"type": "integer"}
                     }
                 }
             ,"5":
@@ -496,7 +492,6 @@
                             }
                         }
                     ,"type": {"type": "string"}
-                    ,"width": {"type": "integer"}
                     }
                 }
             ,"6":
@@ -515,8 +510,48 @@
                             }
                         }
                     ,"type": {"type": "string"}
-                    ,"width": {"type": "integer"}
                     }
+                }
+            ,"by_type": {"type": "object"
+                        ,"required": ["source", "dic", "subject", "wform", "transc", "speech"]
+                        ,"properties":
+                        {"source":
+                            {"type": "object"
+                            ,"required": ["width"]
+                            ,"properties":
+                                {"width": {"type": "integer"}}
+                            }
+                        ,"dic":
+                            {"type": "object"
+                            ,"required": ["width"]
+                            ,"properties":
+                                {"width": {"type": "integer"}}
+                            }
+                        ,"subject":
+                            {"type": "object"
+                            ,"required": ["width"]
+                            ,"properties":
+                                {"width": {"type": "integer"}}
+                            }
+                        ,"wform":
+                            {"type": "object"
+                            ,"required": ["width"]
+                            ,"properties":
+                                {"width": {"type": "integer"}}
+                            }
+                        ,"transc":
+                            {"type": "object"
+                            ,"required": ["width"]
+                            ,"properties":
+                                {"width": {"type": "integer"}}
+                            }
+                        ,"speech":
+                            {"type": "object"
+                            ,"required": ["width"]
+                            ,"properties":
+                                {"width": {"type": "integer"}}
+                            }
+                        }
                 }
             }
         }
