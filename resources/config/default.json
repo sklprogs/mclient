@@ -204,7 +204,7 @@
         }
     ,"5":
         {"type": "Transcriptions"
-        ,"font": {"family": "Mono", "size": 11, "weight": "normal", "color": "slate gray", "align": "center"}
+        ,"font": {"family": "Mono", "size": 10, "weight": "normal", "color": "slate gray", "align": "center"}
         }
     ,"6":
         {"type": "Parts of speech"
