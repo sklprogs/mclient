@@ -1,4 +1,5 @@
 all:
+- failed schema fails on multitrandem.get, not by Success
 - deliquent, otherjourney, baldergash: condition not observed, nothing found
 - articles are constantly growing with old requests;
 - ударить головой -> headbutt: freeze, probably on multitrandem
