@@ -332,6 +332,8 @@ class Table:
         self.gui.delegate.long = []
         for rowno in range(self.logic.rownum):
             for colno in range(self.logic.colnum):
+                if not self.logic.plain[rowno][colno]:
+                    continue
                 ilimits.set_text(self.logic.plain[rowno][colno])
                 space = ilimits.get_space()
                 index_ = self.model.index(rowno, colno)
