@@ -13,6 +13,7 @@ from table.gui import Table as guiTable, TableModel
 from table.logic import Table as lgTable
 from search.controller import Search
 from font_limits.controller import FontLimits
+from columns import COL_WIDTH
 
 
 class Table:
@@ -275,10 +276,8 @@ class Table:
             if no in self.logic.empty_cols:
                 #TODO: Check this for articles prepared for printing
                 width = 0
-            elif no >= 0 and no < 6:
-                width = CONFIG.new['columns'][str(no+1)]['width']
             else:
-                width = CONFIG.new['columns']['terms']['width']
+                width = COL_WIDTH.get_width(no)
             self.gui.set_col_width(no, width)
     
     def go_bookmark(self):

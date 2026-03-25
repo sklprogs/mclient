@@ -57,7 +57,7 @@ class Column(iColumn):
             rep.lazy(f)
             return
         if self.no < self.fixed_num:
-            self.width = self._set_fixed_width()
+            self._set_fixed_width()
         else:
             self.width = CONFIG.new['columns']['terms']['width']
     
@@ -131,6 +131,17 @@ class Columns:
             return []
         return [column.short for column in self.columns \
                if column.no < self.fixed_num]
+    
+    def get_width(self, colno):
+        f = '[MClient] columns.Columns.get_width'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return 0
+        try:
+            return self.columns[colno].width
+        except IndexError:
+            rep.wrong_input(f, colno)
+            return 0
 
 
 COL_WIDTH = Columns()
