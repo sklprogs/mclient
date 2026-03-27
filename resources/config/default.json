@@ -187,27 +187,27 @@
     {"num": 6
     ,"terms": {"width": 210}
     ,"1":
-        {"type": "Sources"
+        {"type": "source"
         ,"font": {"family": "Arial", "size": 12, "weight": "bold", "color": "red", "align": "center"}
         }
     ,"2":
-        {"type": "Dictionaries"
+        {"type": "dic"
         ,"font": {"family": "Arial", "size": 12, "weight": "bold", "color": "orange", "align": "center"}
         }
     ,"3":
-        {"type": "Subjects"
+        {"type": "subj"
         ,"font": {"family": "Arial", "size": 12, "weight": "bold", "color": "coral", "align": "center"}
         }
     ,"4":
-        {"type": "Word forms"
+        {"type": "wform"
         ,"font": {"family": "Arial", "size": 12, "weight": "bold", "color": "cadet blue", "align": "center"}
         }
     ,"5":
-        {"type": "Transcriptions"
+        {"type": "transc"
         ,"font": {"family": "Mono", "size": 10, "weight": "normal", "color": "slate gray", "align": "center"}
         }
     ,"6":
-        {"type": "Parts of speech"
+        {"type": "speech"
         ,"font": {"family": "Mono", "size": 11, "weight": "italic", "color": "slate gray", "align": "center"}
         }
     ,"by_type": {"source": {"width": 120}, "dic": {"width": 120}, "subj": {"width": 150}, "wform": {"width": 120}, "transc": {"width": 120}, "speech": {"width": 65}}

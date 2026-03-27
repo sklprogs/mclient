@@ -9,6 +9,28 @@ from articles import ARTICLES
 from instance import Column as iColumn
 
 
+class AllTypes:
+    
+    def __init__(self):
+        self.types = {'source': _('Sources'), 'dic': _('Dictionaries')
+                     ,'subj': _('Subjects'), 'wform': _('Word forms')
+                     ,'speech': _('Parts of speech')
+                     ,'transc': _('Transcriptions'), '': _('Do not set')}
+    
+    def get_title(self, type_):
+        try:
+            return self.types[type_]
+        except KeyError:
+            return _('Do not set')
+    
+    def get_type(self, title):
+        for type_ in self.types:
+            if self.types[type_] == title:
+                return type_
+        return ''
+
+
+
 class Column(iColumn):
     
     def __init__(self, *args, **kwargs):
@@ -22,29 +44,9 @@ class Column(iColumn):
             return
         self.type = CONFIG.new['columns'][str(self.no+1)]['type']
     
-    def set_short(self):
-        f = '[MClient] columns.Column.set_short'
-        if self.type == _('Sources'):
-            self.short = 'source'
-        elif self.type == _('Dictionaries'):
-            self.short = 'dic'
-        elif self.type == _('Subjects'):
-            self.short = 'subj'
-        elif self.type == _('Word forms'):
-            self.short = 'wform'
-        elif self.type == _('Parts of speech'):
-            self.short = 'speech'
-        elif self.type == _('Transcriptions'):
-            self.short = 'transc'
-        elif self.type == _('Do not set'):
-            pass
-        else:
-            mes = _('Wrong input data: "{}"!').format(self.type)
-            Message(f, mes, True).show_error()
-    
     def _set_fixed_width(self):
         try:
-            self.width = CONFIG.new['columns']['by_type'][self.short]['width']
+            self.width = CONFIG.new['columns']['by_type'][self.type]['width']
         except KeyError:
             pass
     
@@ -66,7 +68,6 @@ class Column(iColumn):
         self.no = no
         if self.no < self.fixed_num:
             self.set_type()
-            self.set_short()
         self.set_width()
 
 
@@ -78,6 +79,7 @@ class Columns:
         width first.
     '''
     def __init__(self):
+        self.Success = CONFIG.Success
         self.reset()
     
     def reset(self):
@@ -96,7 +98,7 @@ class Columns:
             ensure that the number of columns is divisible by 2.
         '''
         f = '[MClient] columns.Columns.get_col_num'
-        if not CONFIG.Success:
+        if not self.Success:
             rep.cancel(f)
             return 2
         if not ARTICLES.is_parallel() or CONFIG.new['columns']['num'] % 2 == 0:
@@ -113,7 +115,7 @@ class Columns:
     
     def set_columns(self):
         f = '[MClient] columns.Columns.set_columns'
-        if not CONFIG.Success:
+        if not self.Success:
             rep.cancel(f)
             return
         for i in range(self.fixed_num + self.term_num):
@@ -121,17 +123,9 @@ class Columns:
             column.add(i)
             self.columns.append(column)
     
-    def get_fixed_short(self):
-        f = '[MClient] columns.Columns.get_fixed_short'
-        if not CONFIG.Success:
-            rep.cancel(f)
-            return []
-        return [column.short for column in self.columns \
-               if column.no < self.fixed_num]
-    
     def get_width(self, colno):
         f = '[MClient] columns.Columns.get_width'
-        if not CONFIG.Success:
+        if not self.Success:
             rep.cancel(f)
             return 0
         try:
@@ -139,7 +133,27 @@ class Columns:
         except IndexError:
             rep.wrong_input(f, colno)
             return 0
+    
+    def get_title(self, colno):
+        f = '[MClient] columns.Columns.get_title'
+        if not self.Success:
+            rep.cancel(f)
+            return _('Do not set')
+        try:
+            return ALL_TYPES.get_title(self.columns[colno].type)
+        except IndexError:
+            rep.wrong_input(f, colno)
+        return _('Do not set')
+    
+    def get_fixed_types(self):
+        f = '[MClient] columns.Columns.get_fixed_types'
+        if not self.Success:
+            rep.cancel(f)
+            return []
+        return [column.type for column in self.columns \
+               if column.no < self.fixed_num]
 
 
+ALL_TYPES = AllTypes()
 COL_WIDTH = Columns()
 COL_WIDTH.run()

@@ -250,7 +250,7 @@ class View:
         self.view = []
         self.cells = cells
         # Must be recreated for each article loading/reloading
-        self.fixed_cols = COL_WIDTH.get_fixed_short()
+        self.fixed_cols = COL_WIDTH.get_fixed_types()
     
     def check(self):
         f = '[MClient] view.View.check'

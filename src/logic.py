@@ -16,6 +16,7 @@ from config import CONFIG, PRODUCT_LOW
 from manager import SOURCES
 from articles import ARTICLES
 from table.controller import Table
+from columns import COL_WIDTH
 
 
 class App:
@@ -201,43 +202,11 @@ class Commands:
         ''' Do not use 'gettext' to name internal types - this will make
             the program ~0.6s slower.
         '''
-        lst = [choice for choice in (CONFIG.new['columns']['1']['type']
-                                    ,CONFIG.new['columns']['2']['type']
-                                    ,CONFIG.new['columns']['3']['type']
-                                    ,CONFIG.new['columns']['4']['type']
-                                    ,CONFIG.new['columns']['5']['type']
-                                    ,CONFIG.new['columns']['6']['type']) \
-              if choice != _('Do not set')]
-        ''' #NOTE: The following assignment does not change the list:
-            for item in lst:
-                if item == something:
-                    item = something_else
-        '''
-        for i in range(len(lst)):
-            if lst[i] == _('Sources'):
-                lst[i] = 'source'
-            elif lst[i] == _('Dictionaries'):
-                lst[i] = 'dic'
-            elif lst[i] == _('Subjects'):
-                lst[i] = 'subj'
-            elif lst[i] == _('Word forms'):
-                lst[i] = 'wform'
-            elif lst[i] == _('Parts of speech'):
-                lst[i] = 'speech'
-            elif lst[i] == _('Transcriptions'):
-                lst[i] = 'transc'
-            else:
-                sub = (_('Sources'), _('Dictionaries'), _('Subjects')
-                      ,_('Word forms'), _('Transcriptions')
-                      ,_('Parts of speech'))
-                sub = '; '.join(sub)
-                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-                mes = mes.format(lst[i], sub)
-                Message(f, mes, True).show_error()
-        if not lst:
+        types = COL_WIDTH.get_fixed_types()
+        if not types:
             rep.lazy(f)
             return
-        REQUEST.cols = tuple(lst)
+        REQUEST.cols = tuple(types)
         #TODO: Should we change REQUEST.collimit here?
         
     def use_unverified(self):

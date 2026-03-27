@@ -94,7 +94,6 @@ class Column:
         self.no = 0
         self.width = 0
         self.type = ''
-        self.short = ''
 
 
 

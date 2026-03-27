@@ -7,18 +7,19 @@ from skl_shared.logic import Input
 
 from config import CONFIG
 from settings.gui import Settings as guiSettings
+from columns import ALL_TYPES, COL_WIDTH
 
 
 class Load:
     
     def load_style_area(self):
         SETTINGS.gui.opt_stl.set(CONFIG.new['style'])
-        SETTINGS.gui.opt_cl1.set(CONFIG.new['columns']['1']['type'])
-        SETTINGS.gui.opt_cl2.set(CONFIG.new['columns']['2']['type'])
-        SETTINGS.gui.opt_cl3.set(CONFIG.new['columns']['3']['type'])
-        SETTINGS.gui.opt_cl4.set(CONFIG.new['columns']['4']['type'])
-        SETTINGS.gui.opt_cl5.set(CONFIG.new['columns']['5']['type'])
-        SETTINGS.gui.opt_cl6.set(CONFIG.new['columns']['6']['type'])
+        SETTINGS.gui.opt_cl1.set(COL_WIDTH.get_title(0))
+        SETTINGS.gui.opt_cl2.set(COL_WIDTH.get_title(1))
+        SETTINGS.gui.opt_cl3.set(COL_WIDTH.get_title(2))
+        SETTINGS.gui.opt_cl4.set(COL_WIDTH.get_title(3))
+        SETTINGS.gui.opt_cl5.set(COL_WIDTH.get_title(4))
+        SETTINGS.gui.opt_cl6.set(COL_WIDTH.get_title(5))
     
     def load_speech_area(self):
         SETTINGS.gui.opt_sp1.set(CONFIG.new['speech1'])
@@ -69,12 +70,12 @@ class Save:
     
     def save_style_area(self):
         CONFIG.new['style'] = SETTINGS.gui.opt_stl.get()
-        CONFIG.new['columns']['1']['type'] = SETTINGS.gui.opt_cl1.get()
-        CONFIG.new['columns']['2']['type'] = SETTINGS.gui.opt_cl2.get()
-        CONFIG.new['columns']['3']['type'] = SETTINGS.gui.opt_cl3.get()
-        CONFIG.new['columns']['4']['type'] = SETTINGS.gui.opt_cl4.get()
-        CONFIG.new['columns']['5']['type'] = SETTINGS.gui.opt_cl5.get()
-        CONFIG.new['columns']['6']['type'] = SETTINGS.gui.opt_cl6.get()
+        CONFIG.new['columns']['1']['type'] = ALL_TYPES.get_type(SETTINGS.gui.opt_cl1.get())
+        CONFIG.new['columns']['2']['type'] = ALL_TYPES.get_type(SETTINGS.gui.opt_cl2.get())
+        CONFIG.new['columns']['3']['type'] = ALL_TYPES.get_type(SETTINGS.gui.opt_cl3.get())
+        CONFIG.new['columns']['4']['type'] = ALL_TYPES.get_type(SETTINGS.gui.opt_cl4.get())
+        CONFIG.new['columns']['5']['type'] = ALL_TYPES.get_type(SETTINGS.gui.opt_cl5.get())
+        CONFIG.new['columns']['6']['type'] = ALL_TYPES.get_type(SETTINGS.gui.opt_cl6.get())
     
     def save_checkboxes(self):
         CONFIG.new['SortByColumns'] = SETTINGS.gui.cbx_no1.get()
