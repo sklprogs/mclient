@@ -176,7 +176,8 @@ class Body:
             return
         wform = wform.lower().strip()
         if not wform:
-            rep.empty(f)
+            # Failed search should not fail the class
+            rep.lazy(f)
             return
         timer = Timer(f)
         timer.start()
@@ -187,7 +188,6 @@ class Body:
             rep.cancel(f)
             return
         if not iindex.length:
-            self.Success = False
             rep.empty(f)
             return
         matches = []
