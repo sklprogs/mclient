@@ -172,7 +172,7 @@ class Thesaurus:
         self.ru = ('Russian thesaurus', 'Русский тезаурус'
                   ,'Russisch Thesaurus', 'Russe glossaire', 'Ruso tesauro'
                   ,'רוסית אוצר מילים', 'Rosyjski tezaurus', '俄语 词库'
-                  , 'Російський тезаурус')
+                  ,'Російський тезаурус')
         self.names = self.en + self.ru
         self.blocks = blocks
     
@@ -248,11 +248,13 @@ class SeparateWords:
         block.type = 'subj'
         block.text = block.subjf = _('Separate words')
         block.subj = _('sep. words')
-        self.blocks.insert(0, block)
+        # Works even for empty lists
+        self.blocks.insert(1, block)
     
     def set_terms(self):
         for block in self.blocks:
-            block.type = 'term'
+            if not is_block_fixed(block):
+                block.type = 'term'
     
     def set_separate(self):
         f = '[MClient] sources.multitrancom.elems.SeparateWords.set_separate'
