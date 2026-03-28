@@ -5,14 +5,14 @@ from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 
 from sources.fora.get import ALL_DICS
+import sources.dsl.cleanup
+import sources.stardict.cleanup
 import sources.fora.stardict0.cleanup
 import sources.fora.stardict0.elems
-import sources.dsl.cleanup
 import sources.fora.dsl.tags
-import sources.fora.dsl.elems
-import sources.stardict.cleanup
-import sources.stardict.tags
-import sources.fora.stardictx.elems
+import sources.fora.stardictx.tags
+import sources.dsl.elems
+import sources.stardict.elems
 
 
 class Source:
@@ -75,12 +75,12 @@ class Source:
     def _get_blocks_dsl(self, article):
         article.code = sources.dsl.cleanup.CleanUp(article.code).run()
         blocks = sources.fora.dsl.tags.Tags(article).run()
-        return sources.fora.dsl.elems.Elems(blocks).run()
+        return sources.dsl.elems.Elems(blocks).run()
     
     def _get_blocks_stardictx(self, article):
         article.code = sources.stardict.cleanup.CleanUp(article.code).run()
-        blocks = sources.stardict.tags.Tags(article).run()
-        return sources.fora.stardictx.elems.Elems(blocks).run()
+        blocks = sources.fora.stardictx.tags.Tags(article).run()
+        return sources.stardict.elems.Elems(blocks).run()
     
     def get_blocks(self, article):
         f = '[MClient] sources.fora.run.Source.get_blocks'
