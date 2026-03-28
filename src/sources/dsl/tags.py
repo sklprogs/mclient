@@ -161,6 +161,7 @@ class Tags:
         self.fragms = []
         self.tags = []
         self.open = []
+        self.source = 'Lingvo (.dsl)'
         self.Success = bool(article)
         self.article = article
     
@@ -232,6 +233,10 @@ class Tags:
         if not self.Success:
             rep.cancel(f)
             return
+        block = Block()
+        block.type = 'source'
+        block.text = block.source = self.source
+        self.blocks.append(block)
         block = Block()
         block.type = 'dic'
         block.text = block.dic = self.article.dic
