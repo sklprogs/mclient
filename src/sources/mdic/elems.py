@@ -87,13 +87,21 @@ class Elems:
             rep.empty_output(f)
     
     def fill(self):
-        dic = dicf = wform = speech = transc = term = ''
+        source = dic = subj = subjf = wform = speech = transc = term = ''
         
         # Find first non-empty values and set them as default
         for block in self.blocks:
+            if block.type == 'source':
+                source = block.source
+                break
+        for block in self.blocks:
+            if block.type == 'dic':
+                dic = block.dic
+                break
+        for block in self.blocks:
             if block.type == 'subj':
-                dic = block.subj
-                dicf = block.subjf
+                subj = block.subj
+                subjf = block.subjf
                 break
         for block in self.blocks:
             if block.type == 'wform':
@@ -113,9 +121,13 @@ class Elems:
                 break
         
         for block in self.blocks:
-            if block.type == 'subj':
-                dic = block.subj
-                dicf = block.subjf
+            if block.type == 'source':
+                source = block.text
+            elif block.type == 'dic':
+                dic = block.text
+            elif block.type == 'subj':
+                subj = block.subj
+                subjf = block.subjf
             elif block.type == 'wform':
                 wform = block.text
             elif block.type == 'speech':
@@ -127,18 +139,21 @@ class Elems:
                 '''
             elif block.type in ('term', 'phrase'):
                 term = block.text
-            block.subj = dic
-            block.subjf = dicf
+            block.source = source
+            block.dic = dic
+            block.subj = subj
+            block.subjf = subjf
             block.wform = wform
             block.speech = speech
             block.transc = transc
                 
     def insert_fixed(self):
-        subj = wform = speech = ''
+        source = dic = subj = wform = speech = ''
         i = 0
         cellno = 0
         while i < len(self.blocks):
-            if subj != self.blocks[i].subj or wform != self.blocks[i].wform \
+            if source != self.blocks[i].source or dic != self.blocks[i].dic \
+            or subj != self.blocks[i].subj or wform != self.blocks[i].wform \
             or speech != self.blocks[i].speech:
                 
                 if i > 0:
@@ -147,6 +162,8 @@ class Elems:
                 block = inBlock()
                 block.type = 'speech'
                 block.text = self.blocks[i].speech
+                block.source = self.blocks[i].source
+                block.dic = self.blocks[i].dic
                 block.subj = self.blocks[i].subj
                 block.subjf = self.blocks[i].subjf
                 block.wform = self.blocks[i].wform
@@ -159,6 +176,8 @@ class Elems:
                 block = inBlock()
                 block.type = 'transc'
                 block.text = self.blocks[i].transc
+                block.source = self.blocks[i].source
+                block.dic = self.blocks[i].dic
                 block.subj = self.blocks[i].subj
                 block.subjf = self.blocks[i].subjf
                 block.wform = self.blocks[i].wform
@@ -171,6 +190,8 @@ class Elems:
                 block = inBlock()
                 block.type = 'wform'
                 block.text = self.blocks[i].wform
+                block.source = self.blocks[i].source
+                block.dic = self.blocks[i].dic
                 block.subj = self.blocks[i].subj
                 block.subjf = self.blocks[i].subjf
                 block.wform = self.blocks[i].wform
@@ -183,6 +204,8 @@ class Elems:
                 block = inBlock()
                 block.type = 'subj'
                 block.text = self.blocks[i].subj
+                block.source = self.blocks[i].source
+                block.dic = self.blocks[i].dic
                 block.subj = self.blocks[i].subj
                 block.subjf = self.blocks[i].subjf
                 block.wform = self.blocks[i].wform
@@ -192,10 +215,40 @@ class Elems:
                 block.cellno = cellno
                 self.blocks.insert(i, block)
                 
+                block = inBlock()
+                block.type = 'dic'
+                block.text = self.blocks[i].dic
+                block.source = self.blocks[i].source
+                block.dic = self.blocks[i].dic
+                block.subj = self.blocks[i].subj
+                block.subjf = self.blocks[i].subjf
+                block.wform = self.blocks[i].wform
+                block.speech = self.blocks[i].speech
+                block.transc = self.blocks[i].transc
+                cellno += 0.01
+                block.cellno = cellno
+                self.blocks.insert(i, block)
+                
+                block = inBlock()
+                block.type = 'source'
+                block.text = self.blocks[i].source
+                block.source = self.blocks[i].source
+                block.dic = self.blocks[i].dic
+                block.subj = self.blocks[i].subj
+                block.subjf = self.blocks[i].subjf
+                block.wform = self.blocks[i].wform
+                block.speech = self.blocks[i].speech
+                block.transc = self.blocks[i].transc
+                cellno += 0.01
+                block.cellno = cellno
+                self.blocks.insert(i, block)
+                
+                source = self.blocks[i].source
+                dic = self.blocks[i].dic
                 subj = self.blocks[i].subj
                 wform = self.blocks[i].wform
                 speech = self.blocks[i].speech
-                i += 4
+                i += 6
             i += 1
             
     def remove_fixed(self):
