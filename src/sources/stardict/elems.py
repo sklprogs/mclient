@@ -194,10 +194,6 @@ class Elems:
                 block.type = 'subj'
         rep.matches(f, count)
     
-    def set_source(self):
-        for block in self.blocks:
-            block.source = 'StarDict'
-    
     def separate_term(self):
         ''' This can be necessary if the dictionary is incorrectly tagged -
             terms following transcription can be not tagged at all.
@@ -222,7 +218,6 @@ class Elems:
         self.set_transc()
         self.set_subjects()
         self.set_speech()
-        self.set_source()
         self.set_art_subj()
         self.separate_term()
         self.fix_cellnos()
