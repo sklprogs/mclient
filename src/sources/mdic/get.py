@@ -67,7 +67,7 @@ class Index:
             rep.cancel(f)
             return
         bpattern = bytes('\n' + self.wform + '\t', 'utf-8')
-        pos = self.imap.find(bpattern, 0)
+        pos = self.imap.find(bpattern)
         if pos > -1:
             return pos + len(bpattern)
         bpattern = bytes(self.wform + '\t', 'utf-8')
@@ -84,15 +84,10 @@ class Index:
         self.imap.close()
         self.bin.close()
     
-    def set_pos(self):
-        f = '[MClient] sources.mdic.get.Index.set_pos'
-        if not self.Success:
-            rep.cancel(f)
-            return
+    def _set_pos(self):
+        f = '[MClient] sources.mdic.get.Index._set_pos'
         pos = self.search()
         if pos is None:
-            mes = _('No matches!')
-            Message(f, mes).show_info()
             return
         self.imap.seek(pos)
         bytes_ = self.imap.readline()
@@ -115,6 +110,28 @@ class Index:
                 self.length.append(parts[i])
             else:
                 self.pos.append(parts[i])
+        return True
+    
+    def set_pos(self):
+        f = '[MClient] sources.mdic.get.Index.set_pos'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        ''' There can be multiple matches within a portion. In additiom, we
+            export the index immediately after finishing the portion to avoid
+            performance issues, so there can be multiple identical wforms
+            within the index. The index is named after first two characters of
+            wforms, so the index is guaranteed to have all matches of the same
+            wform.
+        '''
+        self.imap.seek(0)
+        while True:
+            if not self._set_pos():
+                break
+        if not self.pos:
+            mes = _('No matches!')
+            Message(f, mes).show_info()
+            return
         for i in range(len(self.pos)):
             mes = _('Pattern: "{}". Position: {}. Length: {}')
             mes = mes.format(self.wform, self.pos, self.length)
