@@ -195,19 +195,21 @@ class Elems:
         self.duplicate_phrases()
         self.set_speech()
         self.set_subjects()
-        self.set_source()
         #self.move_phrases()
         self.fix_cellnos()
         self.fill()
+        # Do this only after creating all new elems
+        self.set_source()
         return self.blocks
     
     def debug(self, maxrow=70, maxrows=1000):
         f = '[MClient] sources.dsl.elems.Elems.debug'
-        headers = ('NO', 'SUBJ', 'SUBJF', 'WFORM', 'SPEECH', 'TRANSC', 'TYPE'
-                  ,'TEXT')
+        headers = ('NO', 'SOURCE', 'DIC', 'SUBJ', 'SUBJF', 'WFORM', 'SPEECH'
+                  ,'TRANSC', 'TYPE', 'TEXT')
         rows = []
         for i in range(len(self.blocks)):
-            rows.append([i + 1, self.blocks[i].subj, self.blocks[i].subjf
+            rows.append([i + 1, self.blocks[i].source, self.blocks[i].dic
+                       ,self.blocks[i].subj, self.blocks[i].subjf
                        ,self.blocks[i].wform, self.blocks[i].speech
                        ,self.blocks[i].transc, self.blocks[i].type
                        ,self.blocks[i].text])
@@ -221,9 +223,13 @@ class Elems:
         return '\n'.join(mes)
     
     def fill(self):
-        subj = wform = speech = transc = ''
+        dic = subj = wform = speech = transc = ''
         
         # Find first non-empty values and set them as default
+        for block in self.blocks:
+            if block.type == 'dic':
+                dic = block.text
+                break
         for block in self.blocks:
             if block.type == 'subj':
                 subj = block.text
@@ -242,7 +248,9 @@ class Elems:
                 break
         
         for block in self.blocks:
-            if block.type == 'subj':
+            if block.type == 'dic':
+                dic = block.text
+            elif block.type == 'subj':
                 subj = block.text
             elif block.type == 'wform':
                 wform = block.text
@@ -253,6 +261,7 @@ class Elems:
                 ''' #TODO: Is there a difference if we use both term/phrase
                     here or the term only?
                 '''
+            block.dic = dic
             block.subj = block.subjf = subj.strip()
             block.wform = wform
             block.speech = speech
