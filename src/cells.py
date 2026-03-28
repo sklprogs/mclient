@@ -21,10 +21,12 @@ class Elems:
     
     def debug(self, maxrow=30, maxrows=0):
         f = '[MClient] cells.Elems.debug'
-        headers = (_('CELL #'), _('TYPES'), _('TEXT'), 'SUBJ', 'SUBJF', 'URL')
+        headers = (_('CELL #'), _('TYPES'), _('TEXT'), 'DIC', 'SUBJ', 'SUBJF'
+                  ,'URL')
         nos = []
         types = []
         texts = []
+        dics = []
         subj = []
         subjf = []
         urls = []
@@ -32,11 +34,12 @@ class Elems:
             nos.append(block.cellno)
             types.append(block.type)
             texts.append(f'"{block.text}"')
+            dics.append(block.dic)
             subj.append(block.subj)
             subjf.append(block.subjf)
             urls.append(block.url)
         mes = Table(headers = headers
-                   ,iterable = (nos, types, texts, subj, subjf, urls)
+                   ,iterable = (nos, types, texts, dics, subj, subjf, urls)
                    ,maxrow = maxrow, maxrows = maxrows).run()
         return f'{f}:\n{mes}'
     
