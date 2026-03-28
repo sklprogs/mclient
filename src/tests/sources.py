@@ -20,13 +20,15 @@ from config import CONFIG
 #SEARCH = 'analyzer'
 #SEARCH = 'hello bye'
 #SEARCH = 'account'
-SEARCH = 'pail'
+#SEARCH = 'constant-voltage welding source'
+SEARCH = 'wine structure'
+#SEARCH = 'pail'
 #SEARCH = 'absolute'
 #SEARCH = 'bottling'
 #SEARCH = 'book'
 #SEARCH = 'good'
 #SEARCH = 'orderly'
-URL = 'https://www.multitran.com/m.exe?s=hello+bye&l1=2&l2=1'
+URL = 'https://www.multitran.com/m.exe?s=wine+structure&l1=2&l2=1'
 #HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/account (2025-10-26).htm'
 HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/inundate (2024-04-08).html'
 
@@ -257,6 +259,16 @@ class Elems:
         return ielems.debug()
     
     def run_mdic(self):
+        import sources.mdic.get as gt
+        import sources.mdic.elems as el
+        import cells as cl
+        result = gt.ALL_DICS.search(SEARCH)
+        blocks = el.Elems(result).run()
+        ielems = cl.Elems(blocks)
+        ielems.run()
+        return ielems.debug()
+    
+    def run_mdic_cells(self):
         import sources.mdic.get as gt
         import sources.mdic.elems as el
         import cells as cl
@@ -626,12 +638,14 @@ class Tags:
         return '\n\n'.join(debug)
     
     def run_multitrancom(self):
-        from skl_shared.text_file import Read
-        from sources.multitrancom.cleanup import CleanUp
-        from sources.multitrancom.tags import Tags
-        text = Read(HTM_FILE).get()
-        text = CleanUp(text).run()
-        itags = Tags(text)
+        f = '[MClient] tests.sources.Tags.run_multitrancom'
+        import sources.multitrancom.get as gt
+        import sources.multitrancom.cleanup as cu
+        import sources.multitrancom.tags as tg
+        import sources.multitrancom.elems as el
+        code = gt.Get(search=SEARCH, url=URL).run()
+        code = cu.CleanUp(code).run()
+        itags = tg.Tags(code)
         itags.run()
         return itags.debug()
 
