@@ -468,10 +468,12 @@ class Elems:
     
     def debug(self, maxrow=30, maxrows=0):
         f = '[MClient] sources.multitrancom.elems.Elems.debug'
-        headers = (_('CELL #'), _('TYPES'), _('TEXT'), 'SUBJ', 'SUBJF', 'URL')
+        headers = (_('CELL #'), _('TYPES'), _('TEXT'), 'SOURCE', 'SUBJ', 'SUBJF'
+                  ,'URL')
         nos = []
         types = []
         texts = []
+        sources = []
         subj = []
         subjf = []
         urls = []
@@ -479,11 +481,12 @@ class Elems:
             nos.append(block.cellno)
             types.append(block.type)
             texts.append(f'"{block.text}"')
+            sources.append(block.source)
             subj.append(block.subj)
             subjf.append(block.subjf)
             urls.append(block.url)
         mes = Table(headers = headers
-                   ,iterable = (nos, types, texts, subj, subjf, urls)
+                   ,iterable = (nos, types, texts, sources, subj, subjf, urls)
                    ,maxrow = maxrow, maxrows = maxrows).run()
         return f'{f}:\n{mes}'
     
@@ -623,10 +626,6 @@ class Elems:
             i -= 1
         rep.matches(f, count)
     
-    def set_source(self):
-        for block in self.blocks:
-            block.source = _('Multitran')
-    
     def run(self):
         # Find thesaurus before deleting empty blocks
         self.blocks = Thesaurus(self.blocks).run()
@@ -653,5 +652,4 @@ class Elems:
         self.run_com_sp_com()
         self.unite_comments()
         self.renumber_by_type()
-        self.set_source()
         return self.blocks
