@@ -21,11 +21,12 @@ class Elems:
     
     def debug(self, maxrow=30, maxrows=0):
         f = '[MClient] cells.Elems.debug'
-        headers = (_('CELL #'), _('TYPES'), _('TEXT'), 'DIC', 'SUBJ', 'SUBJF'
-                  ,'URL')
+        headers = (_('CELL #'), _('TYPES'), _('TEXT'), 'SOURCE', 'DIC', 'SUBJ'
+                  ,'SUBJF', 'URL')
         nos = []
         types = []
         texts = []
+        sources = []
         dics = []
         subj = []
         subjf = []
@@ -34,12 +35,14 @@ class Elems:
             nos.append(block.cellno)
             types.append(block.type)
             texts.append(f'"{block.text}"')
+            sources.append(block.source)
             dics.append(block.dic)
             subj.append(block.subj)
             subjf.append(block.subjf)
             urls.append(block.url)
         mes = Table(headers = headers
-                   ,iterable = (nos, types, texts, dics, subj, subjf, urls)
+                   ,iterable = (nos, types, texts, sources, dics, subj, subjf
+                               ,urls)
                    ,maxrow = maxrow, maxrows = maxrows).run()
         return f'{f}:\n{mes}'
     
@@ -178,7 +181,7 @@ class Cells:
     
     def debug(self, maxrow=60, maxrows=0):
         f = '[MClient] cells.Cells.debug'
-        headers = (_('SOURCE'), 'DIC', 'SUBJ', 'WFORM', 'SPEECH', 'TRANSC'
+        headers = ('SOURCE', 'DIC', 'SUBJ', 'WFORM', 'SPEECH', 'TRANSC'
                   ,_('ROW #'), _('CELL #'), _('TYPES'), _('TEXT'), 'URL')
         dics = []
         sources = []
@@ -245,6 +248,12 @@ class Cells:
         for cell in self.cells:
             cell.url = self._get_url(cell)
     
+    def _get_last_source(self):
+        for cell in self.cells[::-1]:
+            if cell.fixed_block and cell.fixed_block.type == 'source':
+                return cell.text
+        return ''
+    
     def _get_last_dic(self):
         for cell in self.cells[::-1]:
             if cell.fixed_block and cell.fixed_block.type == 'dic':
@@ -273,6 +282,22 @@ class Cells:
         for cell in self.cells[::-1]:
             if cell.fixed_block and cell.fixed_block.type == 'transc':
                 return cell.text
+        return ''
+    
+    def _get_prev_source(self, i):
+        while i >= 0:
+            if self.cells[i].fixed_block \
+            and self.cells[i].fixed_block.type == 'source':
+                return self.cells[i].text
+            i -= 1
+        return ''
+    
+    def _get_prev_dic(self, i):
+        while i >= 0:
+            if self.cells[i].fixed_block \
+            and self.cells[i].fixed_block.type == 'dic':
+                return self.cells[i].text
+            i -= 1
         return ''
     
     def _get_prev_subj(self, i):
@@ -310,6 +335,7 @@ class Cells:
         return ''
     
     def fill_fixed(self):
+        source = self._get_last_source()
         dic = self._get_last_dic()
         subj = self._get_last_subj()
         wform = self._get_last_wform()
@@ -318,28 +344,25 @@ class Cells:
         i = len(self.cells) - 1
         while i >= 0:
             if not self.cells[i].fixed_block:
+                source = self._get_prev_source(i)
+                dic = self._get_prev_dic(i)
                 subj = self._get_prev_subj(i)
                 wform = self._get_prev_wform(i)
                 speech = self._get_prev_speech(i)
                 transc = self._get_prev_transc(i)
+            self.cells[i].source = source
             self.cells[i].dic = dic
             self.cells[i].subj = subj
             self.cells[i].wform = wform
-            self.cells[i].speech = speech
             self.cells[i].transc = transc
+            self.cells[i].speech = speech
             i -= 1
     
     def delete_fixed(self):
         f = '[MClient] cells.Cells.delete_fixed'
-        count = 0
-        i = 0
-        while i < len(self.cells):
-            if self.cells[i].fixed_block:
-                count += 1
-                del self.cells[i]
-                i -= 1
-            i += 1
-        rep.matches(f, count)
+        old_len = len(self.cells)
+        self.cells = [cell for cell in self.cells if not cell.fixed_block]
+        rep.deleted(f, old_len - len(self.cells))
     
     def set_row_nos(self):
         # Run this before deleting fixed types
@@ -365,13 +388,6 @@ class Cells:
             # 'phsubj' text may have multiple spaces for some reason
             cell.text = Text(cell.text).delete_duplicate_spaces()
     
-    def set_sources(self):
-        for cell in self.cells:
-            if not cell or not cell.blocks:
-                continue
-            cell.source = cell.blocks[0].source
-            cell.dic = cell.blocks[0].dic
-    
     def _has_text(self, text):
         for char in text:
             if char.isalpha():
@@ -396,7 +412,6 @@ class Cells:
         self.unite_brackets()
         self.set_text()
         self.delete_trash()
-        self.set_sources()
         self.set_fixed_cells()
         self.set_row_nos()
         self.fill_fixed()
