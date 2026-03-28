@@ -152,10 +152,6 @@ class Elems:
         for block in self.blocks:
             block.text = block.text.replace(r'\[', r'[').replace(r'\]', r']')
     
-    def set_source(self):
-        for block in self.blocks:
-            block.source = 'Lingvo (.dsl)'
-    
     def duplicate_phrases(self):
         f = '[MClient] sources.dsl.elems.Elems.duplicate_phrases'
         count = 0
@@ -198,8 +194,6 @@ class Elems:
         #self.move_phrases()
         self.fix_cellnos()
         self.fill()
-        # Do this only after creating all new elems
-        self.set_source()
         return self.blocks
     
     def debug(self, maxrow=70, maxrows=1000):
@@ -223,9 +217,13 @@ class Elems:
         return '\n'.join(mes)
     
     def fill(self):
-        dic = subj = wform = speech = transc = ''
+        source = dic = subj = wform = speech = transc = ''
         
         # Find first non-empty values and set them as default
+        for block in self.blocks:
+            if block.type == 'source':
+                source = block.text
+                break
         for block in self.blocks:
             if block.type == 'dic':
                 dic = block.text
@@ -248,7 +246,9 @@ class Elems:
                 break
         
         for block in self.blocks:
-            if block.type == 'dic':
+            if block.type == 'source':
+                source = block.text
+            elif block.type == 'dic':
                 dic = block.text
             elif block.type == 'subj':
                 subj = block.text
@@ -261,6 +261,7 @@ class Elems:
                 ''' #TODO: Is there a difference if we use both term/phrase
                     here or the term only?
                 '''
+            block.source = source
             block.dic = dic
             block.subj = block.subjf = subj.strip()
             block.wform = wform
