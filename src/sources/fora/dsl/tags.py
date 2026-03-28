@@ -41,6 +41,7 @@ class Tags(DslTags):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.source = 'Fora (DSL)'
     
     def assign(self):
         f = '[MClient] sources.fora.dsl.tags.Tags.assign'
