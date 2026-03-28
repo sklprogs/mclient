@@ -134,7 +134,7 @@ class Index:
             return
         for i in range(len(self.pos)):
             mes = _('Pattern: "{}". Position: {}. Length: {}')
-            mes = mes.format(self.wform, self.pos, self.length)
+            mes = mes.format(self.wform, self.pos[i], self.length[i])
             Message(f, mes).show_debug()
     
     def run(self):
