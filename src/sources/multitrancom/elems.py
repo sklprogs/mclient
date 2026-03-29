@@ -628,6 +628,15 @@ class Elems:
             i -= 1
         rep.matches(f, count)
     
+    def add_head(self):
+        ''' Unlike other sources, it's more convenient to add source block here
+            (not in Tags) because Trash and custom modes won't break.
+        '''
+        block = Block()
+        block.type = 'source'
+        block.text = block.source = _('Multitran')
+        self.blocks.insert(0, block)
+    
     def run(self):
         # Find thesaurus before deleting empty blocks
         self.blocks = Thesaurus(self.blocks).run()
@@ -643,6 +652,7 @@ class Elems:
         self.set_not_found()
         # Remove empty blocks only after removing trash
         self.delete_empty()
+        self.add_head()
         self.set_transc()
         self.separate_sp_transc()
         self.convert_user_subj()

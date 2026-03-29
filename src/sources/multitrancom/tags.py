@@ -447,16 +447,6 @@ class Tags:
         Message(f, mes).show_debug()
         rep.matches(f, count)
     
-    def add_head(self):
-        f = '[MClient] sources.multitrancom.tags.Tags.add_head'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        block = Block()
-        block.type = 'source'
-        block.text = block.source = _('Multitran')
-        self.blocks.append(block)
-    
     def run(self):
         self.check()
         self.split()
@@ -464,6 +454,5 @@ class Tags:
         self.assign()
         self.set_inherent()
         self.set_nos()
-        self.add_head()
         self.set_blocks()
         return self.blocks
