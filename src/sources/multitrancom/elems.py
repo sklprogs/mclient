@@ -248,8 +248,7 @@ class SeparateWords:
         block.type = 'subj'
         block.text = block.subjf = _('Separate words')
         block.subj = _('sep. words')
-        # Works even for empty lists
-        self.blocks.insert(1, block)
+        self.blocks.insert(0, block)
     
     def set_terms(self):
         for block in self.blocks:
