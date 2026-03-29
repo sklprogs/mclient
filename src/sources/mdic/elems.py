@@ -26,6 +26,9 @@ class Block:
         self.block.text = self.json['text']
         self.block.url = self.json['url']
         self.block.type = self.json['type']
+        if self.block.type == 'source':
+            self.block.source = 'mdic — ' + self.block.source
+            self.block.text = 'mdic — ' + self.block.text
     
     def run(self):
         f = '[MClient] sources.mdic.elems.Block.run'
