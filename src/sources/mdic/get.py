@@ -61,17 +61,17 @@ class Index:
             self.Success = False
             rep.third_part(f, e)
     
-    def search(self):
+    def search(self, start=0):
         f = '[MClient] sources.mdic.get.Index.search'
         if not self.Success:
             rep.cancel(f)
             return
         bpattern = bytes('\n' + self.wform + '\t', 'utf-8')
-        pos = self.imap.find(bpattern)
+        pos = self.imap.find(bpattern, start)
         if pos > -1:
             return pos + len(bpattern)
         bpattern = bytes(self.wform + '\t', 'utf-8')
-        pos = self.imap.find(bpattern, 0)
+        pos = self.imap.find(bpattern, start)
         if pos == 0:
             return len(bpattern)
     
@@ -84,9 +84,9 @@ class Index:
         self.imap.close()
         self.bin.close()
     
-    def _set_pos(self):
+    def _set_pos(self, start=0):
         f = '[MClient] sources.mdic.get.Index._set_pos'
-        pos = self.search()
+        pos = self.search(start)
         if pos is None:
             return
         self.imap.seek(pos)
@@ -110,7 +110,7 @@ class Index:
                 self.length.append(parts[i])
             else:
                 self.pos.append(parts[i])
-        return True
+        return self.imap.tell()
     
     def set_pos(self):
         f = '[MClient] sources.mdic.get.Index.set_pos'
@@ -124,9 +124,10 @@ class Index:
             wforms, so the index is guaranteed to have all matches of the same
             wform.
         '''
-        self.imap.seek(0)
+        start = 0
         while True:
-            if not self._set_pos():
+            start = self._set_pos(start)
+            if start is None:
                 break
         if not self.pos:
             mes = _('No matches!')
@@ -204,6 +205,10 @@ class Body:
         if not self.Success:
             rep.cancel(f)
             return
+        if not iindex.pos:
+            rep.lazy(f)
+            return
+        # Can be empty if nothing is found, but not if pos list is not empty
         if not iindex.length:
             rep.empty(f)
             return
@@ -212,7 +217,7 @@ class Body:
             bytes_ = self._get(iindex.pos[i], iindex.length[i])
             bytes_ = self._decompress(bytes_)
             ''' We do not allow empty or malformed fragments because they can
-                be caused by a failing storage.
+                be caused by failing storage.
             '''
             if not self.Success:
                 rep.cancel(f)
