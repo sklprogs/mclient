@@ -21,16 +21,17 @@ from config import CONFIG
 #SEARCH = 'hello bye'
 #SEARCH = 'account'
 #SEARCH = 'constant-voltage welding source'
-SEARCH = 'wine structure'
+#SEARCH = 'wine structure'
+SEARCH = 'wine'
 #SEARCH = 'pail'
 #SEARCH = 'absolute'
 #SEARCH = 'bottling'
 #SEARCH = 'book'
 #SEARCH = 'good'
 #SEARCH = 'orderly'
-URL = 'https://www.multitran.com/m.exe?s=wine+structure&l1=2&l2=1'
+URL = 'https://www.multitran.com/m.exe?s=wine&l1=2&l2=1'
 #HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/account (2025-10-26).htm'
-HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/inundate (2024-04-08).html'
+#HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/inundate (2024-04-08).html'
 
 
 class Wrap:
@@ -66,6 +67,20 @@ class Wrap:
 
 
 class Prioritize:
+    
+    def run_all(self):
+        from manager import SOURCES
+        from articles import ARTICLES
+        from cells import Elems as cElems, Cells
+        from view import Omit, Prioritize as vPrioritize
+        blocks = SOURCES.request(SEARCH)
+        blocks = cElems(blocks).run()
+        cells = Cells(blocks).run()
+        ARTICLES.add(SEARCH, URL, cells)
+        cells = Omit(cells).run()
+        iprior = vPrioritize(cells)
+        iprior.run()
+        return iprior.debug()
     
     def run_multitrancom(self):
         f = '[MClient] tests.sources.Prioritize.run_multitrancom'
@@ -108,6 +123,21 @@ class Prioritize:
 
 
 class View:
+    
+    def run_all(self):
+        from manager import SOURCES
+        from articles import ARTICLES
+        from cells import Elems as cElems, Cells
+        from view import Omit, Prioritize as vPrioritize, View as vView
+        blocks = SOURCES.request(SEARCH)
+        blocks = cElems(blocks).run()
+        cells = Cells(blocks).run()
+        ARTICLES.add(SEARCH, URL, cells)
+        cells = Omit(cells).run()
+        cells = vPrioritize(cells).run()
+        iview = vView(cells)
+        iview.run()
+        return iview.debug()
     
     def run_stardict(self):
         import logic as lg
@@ -192,9 +222,9 @@ class Elems:
     
     def run_all(self):
         from manager import SOURCES
-        from cells import Elems
+        from cells import Elems as cElems
         blocks = SOURCES.request(SEARCH)
-        ielems = Elems(blocks)
+        ielems = cElems(blocks)
         ielems.run()
         return ielems.debug()
     

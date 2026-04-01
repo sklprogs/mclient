@@ -15,6 +15,8 @@ from tests.sources import Get
 #from tests.dump.fora import Dump as DumpFora
 from tests.sources import Tags
 from tests.sources import Elems
+from tests.sources import View
+from tests.sources import Prioritize
 from tests.sources import Source
 from tests.sources import Suggest
 #from tests.speech import Speech
@@ -50,7 +52,7 @@ if __name__ == '__main__':
     #mes = Tags().run_multitrancom()
     #mes = Tags().run_stardict()
     #mes = Source().run_all()
-    #mes = Elems().run_all()
+    mes = Elems().run_all()
     #mes = Elems().run_dsl()
     #mes = Elems().run_dsl_cells()
     #mes = Elems().run_mdic()
@@ -59,7 +61,9 @@ if __name__ == '__main__':
     #mes = Elems().run_stardict_cells()
     #mes = Elems().run_fora()
     #mes = Elems().run_multitrandem()
-    mes = Elems().run_multitrancom()
+    #mes = Elems().run_multitrancom()
+    #mes = Prioritize().run_all()
+    #mes = View().run_all()
     #mes = View().run_dsl()
     #mes = View().run_stardict()
     #mes = View().run_multitrancom()
