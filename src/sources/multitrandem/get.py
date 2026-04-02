@@ -1800,10 +1800,12 @@ class Stems(UPage):
 class Get:
     
     def __init__(self, pattern):
-        self.set_values()
-        self.pattern = pattern
+        self.Success = True
+        self.htm = ''
         self.speech = ''
         self.spabbr = ''
+        self.stemnos = []
+        self.pattern = pattern
     
     def set_speech(self):
         f = '[MClient] sources.multitrandem.get.Get.set_speech'
@@ -1964,12 +1966,6 @@ class Get:
         self.stemnos = [item for item in self.stemnos if item]
         if DEBUG:
             Message(f, self.stemnos).show_debug()
-    
-    def set_values(self):
-        self.Success = True
-        self.pattern = ''
-        self.htm = ''
-        self.stemnos = []
     
     def search(self):
         f = '[MClient] sources.multitrandem.get.Get.search'
