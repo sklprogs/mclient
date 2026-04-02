@@ -22,9 +22,31 @@ class Phrases:
     
     def __init__(self, cells):
         self.phsubj_url = ''
+        self.last_source = ''
+        self.last_dic = ''
         self.phsubj = Cell()
         self.cells = cells
         
+    def set_last_source(self):
+        f = '[MClient] view.Phrases.set_last_source'
+        for cell in self.cells[::-1]:
+            for block in cell.blocks:
+                if block.source:
+                    self.last_source = block.source
+                    mes = f'"{self.last_source}"'
+                    Message(f, mes).show_debug()
+                    return
+    
+    def set_last_dic(self):
+        f = '[MClient] view.Phrases.set_last_dic'
+        for cell in self.cells[::-1]:
+            for block in cell.blocks:
+                if block.dic:
+                    self.last_dic = block.dic
+                    mes = f'"{self.last_dic}"'
+                    Message(f, mes).show_debug()
+                    return
+    
     def move(self):
         ''' - phsubj is set to an incorrect row without this.
             - Phrases may have synonyms attached to them and formatted as
@@ -35,14 +57,18 @@ class Phrases:
         move = [cell for cell in self.cells if cell.no in cellnos]
         for cell in move:
             cell.subj = self.phsubj_name
-            cell.source = _('Multitran')
+            cell.source = self.last_source
+            cell.dic = self.last_dic
+            for block in cell.blocks:
+                block.source = self.last_source
+                block.dic = self.last_dic
         other = [cell for cell in self.cells if not cell.no in cellnos]
         self.phsubj.no = len(other)
         self.cells = other + [self.phsubj] + move
         self.cells = other + move
     
     def set_phsubj(self):
-        f = '[MClient] cells.Phrases.set_phsubj'
+        f = '[MClient] view.Phrases.set_phsubj'
         count = 0
         for cell in self.cells:
             for block in cell.blocks:
@@ -57,8 +83,10 @@ class Phrases:
         self.phsubj.fixed_block.type = 'phsubj'
         self.phsubj.blocks = [self.phsubj.fixed_block]
         
-        self.phsubj.source = _('Multitran')
-        self.phsubj.dic = 'Wine (En-Ru)'
+        self.phsubj.source = self.last_source
+        self.phsubj.dic = self.last_dic
+        self.phsubj.fixed_block.source = self.last_source
+        self.phsubj.fixed_block.dic = self.last_dic
     
     def renumber(self):
         cellnos = []
@@ -76,6 +104,8 @@ class Phrases:
             concerns fixed blocks). Must be fixed before moving to the end.
         '''
         self.renumber()
+        self.set_last_source()
+        self.set_last_dic()
         self.set_phsubj()
         self.move()
         # Do this again for easier debugging
