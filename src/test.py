@@ -72,9 +72,17 @@ if __name__ == '__main__':
     #mes = Source().run_fora()
     #mes = Source().run_mdic()
     #mes = Source().run_multitrancom()
-    mes = Source().run_multitrandem()
+    #mes = Source().run_multitrandem()
     #mes = Source().run_stardict()
     #mes = Suggest().run_all()
+    # Suggest:
+    # multitrancom - OK
+    # StarDict - OK
+    #mes = Suggest().run_multitrancom()
+    #mes = Suggest().run_stardict()
+    mes = Suggest().run_dsl()
+    if isinstance(mes, list):
+        mes = '\n'.join(mes)
     shDEBUG.reset(f, mes)
     shDEBUG.show()
     # This MUST be on a separate line, the widget will not be shown otherwise

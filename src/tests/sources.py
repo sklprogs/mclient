@@ -1128,12 +1128,16 @@ class Commands:
 class Suggest:
     
     def run_all(self):
-        results = [self.run_multitrancom(), self.run_stardict()]
+        results = [self.run_multitrancom(), self.run_dsl(), self.run_stardict()]
         results = [sub for sub in results if sub]
         results = List(results).join_sublists()
         results = sorted(set(results))
         results = [f'"{item}"' for item in results]
         return '\n'.join(results)
+    
+    def run_dsl(self):
+        from sources.dsl.run import Source as dsSource
+        return dsSource().suggest(SEARCH)
     
     def run_stardict(self):
         from sources.stardict.run import Source as sdSource
