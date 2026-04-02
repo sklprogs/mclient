@@ -1,4 +1,5 @@
 all:
+- cut-to-the-chase, wine: phrases are at top
 - does not get the same article from mdic and dsl simultaneously
 - enabling/disabling phrase count does nothing
 - failed schema fails on multitrandem.get, not by Success
