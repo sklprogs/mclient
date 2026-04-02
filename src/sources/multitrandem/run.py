@@ -24,7 +24,7 @@ class Source:
         self.blocks = []
         #TODO: elaborate
         self.abbr = gt.FILES.get_subject()
-        self.name = _('Multitran (offline)')
+        self.name = _('Multitran (Demo)')
     
     def is_parallel(self):
         return self.Parallel
