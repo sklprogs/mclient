@@ -10,6 +10,7 @@ all:
 - rework Table: adjust column widths correctly
 
 mclient:
+- EN-RU: alcamo: trash in article
 - EN-RU: wine structure: "wine" has grey border
 - EN-RU: jockey: "мембрана ()"
 - EN-RU: lockup garage: "Отдельные слова" is copied as "Отдельные слова <!--"

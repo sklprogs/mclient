@@ -437,8 +437,35 @@ class Phrases:
         move = [block for block in self.blocks if block.cellno in cellnos]
         for block in move:
             block.subj = block.subjf = self.phsubj_name
+        self.set_last_source(move)
+        self.set_last_dic(move)
         other = [block for block in self.blocks if not block.cellno in cellnos]
         self.blocks = other + [self._get_phsubj()] + move
+    
+    def set_last_source(self, move):
+        #TODO: Set source priority
+        f = '[MClient] cells.Phrases.set_last_source'
+        sources = sorted(set([block.source for block in self.blocks]), reverse=True)
+        sources = [source for source in sources if source]
+        if not sources:
+            rep.lazy(f)
+            return
+        last = sources[0]
+        print(f, last)
+        for block in move:
+            block.source = last
+    
+    def set_last_dic(self, move):
+        f = '[MClient] cells.Phrases.set_last_dic'
+        dics = sorted(set([block.dic for block in self.blocks]), reverse=True)
+        dics = [dic for dic in dics if dic]
+        if not dics:
+            rep.lazy(f)
+            return
+        last = dics[0]
+        print(f, last)
+        for block in move:
+            block.dic = last
     
     def set_phsubj_name(self):
         f = '[MClient] cells.Phrases.set_phsubj_name'
@@ -505,7 +532,7 @@ class Phrases:
             concerns fixed blocks). Must be fixed before moving to the end.
         '''
         self.renumber()
-        self.set_phsubj_url()
+        #self.set_phsubj_url()
         self.set_phsubj_name()
         self.move()
         # Do this again for easier debugging

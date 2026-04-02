@@ -18,6 +18,72 @@ from columns import COL_WIDTH
 from speech import SPEECH
 
 
+class Phrases:
+    
+    def __init__(self, cells):
+        self.phsubj_url = ''
+        self.phsubj = Cell()
+        self.cells = cells
+        
+    def move(self):
+        ''' - phsubj is set to an incorrect row without this.
+            - Phrases may have synonyms attached to them and formatted as
+              comments, so moving by cellno is more precise.
+        '''
+        cellnos = [cell.no for cell in self.cells \
+                  if [block for block in cell.blocks if block.type in ('phrase', 'phsubj')]]
+        move = [cell for cell in self.cells if cell.no in cellnos]
+        for cell in move:
+            cell.subj = self.phsubj_name
+            cell.source = _('Multitran')
+        other = [cell for cell in self.cells if not cell.no in cellnos]
+        self.phsubj.no = len(other)
+        self.cells = other + [self.phsubj] + move
+        self.cells = other + move
+    
+    def set_phsubj(self):
+        f = '[MClient] cells.Phrases.set_phsubj'
+        count = 0
+        for cell in self.cells:
+            for block in cell.blocks:
+                if block.type == 'phrase':
+                    count += 1
+        self.phsubj_name = _('Phrases ({})').format(count)
+        mes = f'"{self.phsubj_name}"'
+        Message(f, mes).show_debug()
+        self.phsubj.text = self.phsubj_name
+        self.phsubj.fixed_block = Block()
+        self.phsubj.fixed_block.text = self.phsubj_name
+        self.phsubj.fixed_block.type = 'phsubj'
+        self.phsubj.blocks = [self.phsubj.fixed_block]
+        
+        self.phsubj.source = _('Multitran')
+        self.phsubj.dic = 'Wine (En-Ru)'
+    
+    def renumber(self):
+        cellnos = []
+        old = cellno = -1
+        for cell in self.cells:
+            if cell.no != old:
+                cellno += 1
+                old = cell.no
+            cellnos.append(cellno)
+        for i in range(len(self.cells)):
+            self.cells[i].no = cellnos[i]
+    
+    def run(self):
+        ''' At this point, blocks may have identical cellno (especially, this
+            concerns fixed blocks). Must be fixed before moving to the end.
+        '''
+        self.renumber()
+        self.set_phsubj()
+        self.move()
+        # Do this again for easier debugging
+        self.renumber()
+        return self.cells
+
+
+
 class Expand:
     
     def __init__(self, cells):
@@ -126,6 +192,7 @@ class Omit:
 class Prioritize:
     
     def __init__(self, cells):
+        self.phsubj_url = ''
         self.speech = SPEECH.get_settings()
         self.cells = cells
     
@@ -134,28 +201,31 @@ class Prioritize:
         subj = []
         subjpr = []
         text = []
+        types = []
         nos = []
         speech = []
         speechpr = []
         for cell in self.cells:
             text.append(cell.text)
+            if cell.fixed_block:
+                types.append(cell.fixed_block.type)
+            else:
+                types.append('')
             nos.append(cell.no)
             subj.append(cell.subj)
             subjpr.append(cell.subjpr)
             speech.append(cell.speech)
             speechpr.append(cell.speechpr)
-        headers = (_('#'), _('TEXT'), _('SUBJECT'), 'SUBJPR', _('SPEECH')
-                  ,'SPEECHPR')
-        iterable = [nos, text, subj, subjpr, speech, speechpr]
+        headers = (_('#'), _('TEXT'), _('TYPE'), _('SUBJECT'), 'SUBJPR'
+                  ,_('SPEECH'), 'SPEECHPR')
+        iterable = [nos, text, types, subj, subjpr, speech, speechpr]
         mes = Table(headers = headers
                    ,iterable = iterable
                    ,maxrow = maxrow).run()
         return f + ':\n' + mes
     
     def set_speech(self):
-        ph_cells = [cell for cell in self.cells if is_phrase_type(cell)]
-        all_speech = sorted(set([cell.speech for cell in self.cells \
-                                 if not cell in ph_cells]))
+        all_speech = sorted(set([cell.speech for cell in self.cells]))
         speech_unp = [speech for speech in all_speech \
                      if not speech in self.speech]
         all_speech = self.speech + speech_unp
@@ -163,12 +233,6 @@ class Prioritize:
             for cell in self.cells:
                 if cell.speech == all_speech[i]:
                     cell.speechpr = i
-        ''' Phrases must be put at the end, otherwise we will have issues in
-            the "Cut to the chase" mode.
-        '''
-        i += 1
-        for cell in ph_cells:
-            cell.speechpr = i
     
     def get_last_sorted_wform(self):
         ''' Fix a bug when phrases are not at the bottom in the Multitran mode.
@@ -191,10 +255,7 @@ class Prioritize:
             if priority is not None:
                 cell.subjpr = priority
         pr_cells = [cell for cell in self.cells if cell.subjpr > -1]
-        unp_cells = [cell for cell in self.cells if cell.subjpr == -1 \
-                    and not is_phrase_type(cell)]
-        ph_cells = [cell for cell in self.cells if cell.subjpr == -1 \
-                   and is_phrase_type(cell)]
+        unp_cells = [cell for cell in self.cells if cell.subjpr == -1]
         
         pr_cells.sort(key=lambda x: (x.subjpr, x.no))
         unp_cells.sort(key=lambda x: (x.subj.lower(), x.no))
@@ -224,20 +285,15 @@ class Prioritize:
                 descending order than Latin ones.
             '''
             wform = 'яяяяя'
-        for cell in ph_cells:
-            if cell.subj == subj:
-                cell.subjpr = subjpr
-            else:
-                subj = cell.subj
-                subjpr += 1
-                cell.subjpr = subjpr
-            cell.wform = wform
         # [] + ['example'] == ['example']
-        self.cells = pr_cells + unp_cells + ph_cells
+        self.cells = pr_cells + unp_cells
     
     def run(self):
         self.set_subjects()
         self.set_speech()
+        iphrases = Phrases(self.cells)
+        self.cells = iphrases.run()
+        self.phsubj_url = iphrases.phsubj_url
         return self.cells
 
 
@@ -594,9 +650,9 @@ class View:
         self.sort()
         self.restore_fixed()
         self.restore_first()
-        self.restore_phsubj()
+        #self.restore_phsubj()
         self.clear_duplicates()
-        self.clear_phrase_fields()
+        #self.clear_phrase_fields()
         self.renumber()
         return self.cells
 
