@@ -700,12 +700,12 @@ class Source:
         return ielems.debug()
     
     def run_multitrandem(self):
-        from cells import Cells
+        from cells import Elems as cElems
         from sources.multitrandem.run import Source as mSource
         blocks = mSource().request(search=SEARCH)
-        icells = Cells(blocks)
-        icells.run()
-        return icells.debug()
+        ielems = cElems(blocks)
+        ielems.run()
+        return ielems.debug()
     
     def run_stardict(self):
         from cells import Elems as cElems
