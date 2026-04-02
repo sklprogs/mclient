@@ -34,6 +34,7 @@ mclient:
 - Do not add entries that were not found to history
 
 multitrancom:
+- Мальтийский-Русский: pedding: Remove trash and report that nothing was found (the article is actually empty)
 - RU-EN, padding: sort wforms properly
 - RU-EN, Linux distribution, phytophotodermatitis, coregone: Add subj for other
   languages

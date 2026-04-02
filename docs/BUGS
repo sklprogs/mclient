@@ -3,7 +3,6 @@ all:
 - does not get the same article from mdic and dsl simultaneously
 - enabling/disabling phrase count does nothing
 - failed schema fails on multitrandem.get, not by Success
-- deliquent, otherjourney, baldergash: condition not observed, nothing found
 - articles are constantly growing with old requests;
 - ударить головой -> headbutt: freeze, probably on multitrandem
 - head -> устройство или приспособление...: blocks from previous article
@@ -34,20 +33,22 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
+- EN_RU: slick: 2 Multitran sources
 - EN-RU: 150 percent declining balance depreciation: Remove "Короткая ссылка"
 - EN-RU: cold feet -> get cold feet -> <!-- --> Словари Форум Купить Скачать
 Контакты <!-- // --> → + <!-- // --> Не найдено
 - EN_RU: lockup: "холодная (сущ.)": each bracket is on a new line
 - RU-ZH: squares instead of characters
-- RU-EN, zero-sum game: wrong input data!
-- RU-EN, pedding (Cut-to-the chase mode, 1st part of speech is verb): condition
-  not observed
-- RU-EN, warhawk: condition not observed
+- RU-EN, zero-sum game: Mtultitran source is repeated
+- RU-EN, warhawk: Remove trash (should be Not found, the article is actually
+  empty)
 - RU-EN, grey area: (UK spelling) and (US spelling) are dangling comments
 - RU-EN, метка (Multitran mode): go to the end -> PgUp does not work
-- RU-EN, mumblety peg, 1099: 1) Wrong layout; 2) -> Фразы - condition is not observed
+- RU-EN, mumblety peg, 1099: 1) Wrong layout; 2) -> Фразы - condition is not
+  observed
 - RU-EN, herpe: nothing found (actually there is a list of languages)
-- RU-EN, injuctive relief: найдены отдельные слова (mode does not work)
+- RU-EN, injuctive relief: найдены отдельные слова (mode does not work) +
+  Короткая ссылка
 - RU-EN, mapping, trips (Multitran mode): word forms are not properly sorted
 - RU-EN, catnip: "catmint (Amer.)" is separated into 2 blocks
 - RU-EN, teetotaller: "(American spelling)" is a separate cell
@@ -89,6 +90,8 @@ dsl:
 - Fix the wrong position (at top) of a phrase section
 
 multitrandem:
+- sources.multitrandem.get.Language._adapt: Change language to "Мальтийский"
+  results in error
 - RU-EN: Searching any word results in "Invalid continuation byte"
 - Throws an error during a search when Stardict/DSL dics (but not MT)
   are available
