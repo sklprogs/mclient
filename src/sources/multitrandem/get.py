@@ -35,7 +35,10 @@ class Language:
                        ,_('Estonian'))
     
     def _adapt(self, lang):
-        f = '[MClient] sources.multitrandem.run.Source._adapt'
+        ''' Either drop this or rework such as not to cause the error upon
+            choosing a language not from the binary Multitran's list.
+        '''
+        f = '[MClient] sources.multitrandem.get.Language._adapt'
         if not lang:
             rep.empty(f)
             return 'English'
@@ -53,10 +56,12 @@ class Language:
         return 'English'
     
     def get_lang1(self):
-        return self._adapt(CONFIG.new['lang1'])
+        #return self._adapt(CONFIG.new['lang1'])
+        return 'English'
     
     def get_lang2(self):
-        return self._adapt(CONFIG.new['lang2'])
+        #return self._adapt(CONFIG.new['lang2'])
+        return 'Russian'
 
 
 
