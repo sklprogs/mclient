@@ -7,7 +7,7 @@ from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.table import Table
 
-import instance as ic
+from instance import Block
 
 
 CODING = 'windows-1251'
@@ -30,6 +30,7 @@ class Tags:
         self.entry = ''
         self.lang1 = 0
         self.lang2 = 0
+        self.source = _('Multitran (Demo)')
         self.seplg1 = b''
         self.seplg2 = b''
         # The result of 'struct.pack('<b', 15)'
@@ -70,7 +71,7 @@ class Tags:
             rep.cancel(f)
             return
         for i in range(len(self.content)):
-            self.blocks.append(ic.Block())
+            self.blocks.append(Block())
             self.blocks[-1].text = self.content[i]
             if self.types[i] == self.seplg1:
                 self.blocks[i].type = 'wform'
@@ -184,6 +185,22 @@ class Tags:
         for block in self.blocks:
             block.cellno = self.cellno
     
+    def add_head(self):
+        f = '[MClient] sources.multitrandem.tags.Tags.add_head'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        block = Block()
+        block.type = 'dic'
+        # self.article.dic
+        #TODO: Set dic name
+        block.text = block.dic = 'sample_dic.erd'
+        self.blocks.insert(0, block)
+        block = Block()
+        block.type = 'source'
+        block.text = block.source = self.source
+        self.blocks.insert(0, block)
+    
     def run(self):
         self.set_langs()
         self.check()
@@ -191,6 +208,7 @@ class Tags:
         self.split()
         self.decode()
         self.get_types()
+        self.add_head()
         self.set_types()
         self.set_cellnos()
         return self.blocks
