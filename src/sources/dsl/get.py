@@ -309,32 +309,27 @@ class Dsl:
 class Suggest:
     
     def __init__(self, search):
-        self.Success = True
+        # Do not fail this class
         self.pattern = ''
         if search:
             self.reset(search)
     
     def reset(self, search):
-        f = '[MClient] sources.dsl.get.Suggest.reset'
-        self.pattern = search
-        if not self.pattern:
-            self.Success = False
-            rep.empty(f)
+        self.pattern = search.lower()
     
     def get(self):
         f = '[MClient] sources.dsl.get.Suggest.get'
-        if not self.Success:
-            rep.cancel(f)
+        if not self.pattern:
+            rep.empty(f)
             return
         items = ALL_DICS.get_index()
         if not items:
-            self.Success = False
             rep.empty(f)
             return
         timer = Timer(f)
         timer.start()
-        search = self.pattern.lower()
-        result = [item for item in items if str(item).lower().startswith(search)]
+        # Index is already lowercased (Dsl._delete_curly_brackets)
+        result = [item for item in items if item.startswith(self.pattern)]
         timer.end()
         mes = '; '.join(result)
         Message(f, mes).show_debug()
@@ -482,6 +477,7 @@ class AllDics:
             return
         if not self.index_:
             for idic in self.dics:
+                idic.run()
                 self.index_ += idic.get_index()
             self.index_ = sorted(set(self.index_))
             mes = _('Index has {} entries').format(len(self.index_))
