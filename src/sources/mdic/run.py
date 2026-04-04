@@ -54,8 +54,11 @@ class Source:
     def suggest(self, search, limit=0):
         return ALL_DICS.suggest(search, limit)
     
-    def request(self, search='', url=''):
+    def request(self, search=''):
         f = '[MClient] sources.mdic.run.Source.request'
+        if self.count_invalid():
+            rep.lazy(f)
+            return []
         str_lst = ALL_DICS.search(search)
         blocks = Elems(str_lst).run()
         if not blocks:
