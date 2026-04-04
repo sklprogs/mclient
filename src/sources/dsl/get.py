@@ -328,6 +328,7 @@ class Suggest:
             # No DSL dictionaries
             rep.lazy(f)
             return []
+        result = []
         timer = Timer(f)
         timer.start()
         # Index is already lowercased (Dsl._delete_curly_brackets)
