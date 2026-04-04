@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared.localize import _
+from skl_shared.message.controller import rep
 import sources.stardict.get as gt
 import sources.stardict.cleanup as cu
 import sources.stardict.tags as tg
@@ -56,6 +57,10 @@ class Source:
         return gt.ALL_DICS.suggest(search)
     
     def request(self, search):
+        f = '[MClient] sources.stardict.run.Source.request'
+        if not gt.ALL_DICS.dics:
+            rep.lazy(f)
+            return []
         self.blocks = []
         for article in gt.ALL_DICS.search(search):
             article.code = cu.CleanUp(article.code).run()
