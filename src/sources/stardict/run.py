@@ -54,11 +54,15 @@ class Source:
         return len(gt.ALL_DICS.get_invalid())
     
     def suggest(self, search):
+        f = '[MClient] sources.stardict.run.Source.suggest'
+        if not self.count_valid():
+            rep.lazy(f)
+            return []
         return gt.ALL_DICS.suggest(search)
     
     def request(self, search):
         f = '[MClient] sources.stardict.run.Source.request'
-        if not gt.ALL_DICS.dics:
+        if not self.count_valid():
             rep.lazy(f)
             return []
         self.blocks = []
