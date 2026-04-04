@@ -271,7 +271,7 @@ class App:
         if not fragment:
             rep.empty(f)
             return
-        items = SOURCES.suggest(fragment, 35)
+        items = SOURCES.suggest(fragment, 100)
         if not items:
             mes = _('No suggestions are available!')
             Message(f, mes).show_info()
