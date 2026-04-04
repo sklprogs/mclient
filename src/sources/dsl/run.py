@@ -52,9 +52,17 @@ class Source:
         return len(gt.ALL_DICS.get_invalid())
     
     def suggest(self, search):
+        f = '[MClient] sources.dsl.run.Source.suggest'
+        if not self.count_valid():
+            rep.lazy(f)
+            return []
         return gt.Suggest(search).run()
     
     def request(self, search):
+        f = '[MClient] sources.dsl.run.Source.request'
+        if not self.count_valid():
+            rep.lazy(f)
+            return []
         self.blocks = []
         for article in gt.Get(search).run():
             article.code = cu.CleanUp(article.code).run()
