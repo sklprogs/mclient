@@ -79,10 +79,13 @@ if __name__ == '__main__':
     # multitrancom - OK
     # StarDict - OK
     # DSL - OK
+    # Fora - OK
+    # MDIC - OK
     #mes = Suggest().run_multitrancom()
     #mes = Suggest().run_stardict()
     #mes = Suggest().run_dsl()
-    mes = Suggest().run_fora()
+    #mes = Suggest().run_fora()
+    mes = Suggest().run_mdic()
     if isinstance(mes, list):
         mes = '\n'.join(mes)
     shDEBUG.reset(f, mes)

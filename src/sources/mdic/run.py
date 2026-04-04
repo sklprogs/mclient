@@ -54,9 +54,8 @@ class Source:
         else:
             return 1
     
-    def suggest(self, search):
-        #TODO: implement
-        return []
+    def suggest(self, search, limit=0):
+        return ALL_DICS.suggest(search, limit)
     
     def request(self, search='', url=''):
         f = '[MClient] sources.mdic.run.Source.request'

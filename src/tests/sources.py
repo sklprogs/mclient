@@ -22,7 +22,7 @@ from config import CONFIG
 #SEARCH = 'account'
 #SEARCH = 'constant-voltage welding source'
 #SEARCH = 'wine structure'
-SEARCH = 'analog'
+SEARCH = 'diffus'
 #SEARCH = 'pail'
 #SEARCH = 'absolute'
 #SEARCH = 'bottling'
@@ -1129,7 +1129,7 @@ class Suggest:
     
     def run_all(self):
         results = [self.run_multitrancom(), self.run_dsl(), self.run_stardict()
-                  ,self.run_fora()]
+                  ,self.run_fora(), self.run_mdic]
         results = [sub for sub in results if sub]
         results = List(results).join_sublists()
         results = sorted(set(results))
@@ -1151,6 +1151,10 @@ class Suggest:
     def run_fora(self):
         from sources.fora.run import Source as frSource
         return frSource().suggest(SEARCH)
+    
+    def run_mdic(self):
+        from sources.mdic.run import Source as mdSource
+        return mdSource().suggest(SEARCH)
 
 
 com = Commands()

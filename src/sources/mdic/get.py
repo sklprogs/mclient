@@ -75,6 +75,35 @@ class Index:
         if pos == 0:
             return len(bpattern)
     
+    def suggest(self, pattern, limit=0):
+        #TODO: Implement finding 1st entry
+        f = '[MClient] sources.mdic.get.Index.suggest'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        start = 0
+        matches = []
+        bpattern = bytes('\n' + pattern, 'utf-8')
+        while True:
+            pos = self.imap.find(bpattern, start)
+            if pos == -1:
+                return matches
+            self.imap.seek(pos + 1)
+            chunk = self.imap.readline()
+            line = chunk.decode('utf-8', 'errors=ignore')
+            if not line:
+                rep.empty(f)
+                start = self.imap.tell() - 1
+                continue
+            line = line.split('\t')
+            matches.append(line[0])
+            if limit and limit == len(matches):
+                return matches
+            ''' imap.tell returns position after the line break (read by
+                imap.readline), but we need the line break to find the pattern.
+            '''
+            start = self.imap.tell() - 1
+    
     def close(self):
         f = '[MClient] sources.mdic.get.Index.close'
         if not self.Success:
@@ -239,6 +268,23 @@ class Body:
         self.imap.flush()
         self.imap.close()
         self.bin.close()
+    
+    def suggest(self, pattern, limit=0):
+        f = '[MClient] sources.mdic.get.Body.suggest'
+        if not self.Success:
+            rep.cancel(f)
+            return []
+        pattern = pattern.strip().lower()
+        iindex = Index(pattern)
+        iindex.set_file()
+        iindex.load()
+        self.Success = iindex.Success
+        if not self.Success:
+            rep.cancel(f)
+            return []
+        matches = iindex.suggest(pattern, limit)
+        iindex.close()
+        return matches
 
 
 ALL_DICS = Body()
