@@ -110,6 +110,7 @@ class Index:
         self.bin.close()
     
     def search(self, pattern):
+        #TODO: Implement case-insensitive search
         f = '[MClient] sources.fora.get.Index.search'
         if not self.Success:
             rep.cancel(f)
@@ -143,6 +144,41 @@ class Index:
             pos += 1
             poses.append(pos)
         return poses
+    
+    def _suggest_poses(self, pattern):
+        bpattern = b'\n' + bytes(pattern, 'utf-8')
+        poses = []
+        start = 0
+        while True:
+            pos1 = self.imap.find(bpattern, start)
+            if pos1 == -1:
+                return poses
+            pos2 = self.imap.find(b'\t', pos1)
+            if pos2 == -1:
+                mes = _('File {} has an invalid structure!').format(self.file)
+                Message(f, mes).show_warning()
+                return []
+            start = pos2 + 1
+            poses.append((pos1, pos2))
+    
+    def _suggest_matches(self, poses):
+        matches = []
+        for pair in poses:
+            self.imap.seek(pair[0])
+            chunk = self.imap.read(pair[1])
+            fragm = chunk.decode('utf-8', 'errors=ignore')
+            matches.append(fragm)
+        return matches
+    
+    def suggest(self, pattern):
+        #TODO: Implement case-insensitive search
+        #TODO: Implement finding 1st entry
+        f = '[MClient] sources.fora.get.Index.suggest'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        poses = self._suggest_poses(pattern)
+        return self._suggest_matches(poses)
     
     def get(self, pos):
         f = '[MClient] sources.fora.get.Index.get'
@@ -430,6 +466,12 @@ class AllDics:
         self.dicno = 0
         self.path = Home('mclient').add_config('dics')
         self.set()
+    
+    def suggest(self, pattern):
+        matches = []
+        for dic in self.dics:
+            matches += dic.index.suggest(pattern.strip())
+        return matches
     
     def get_valid(self):
         return [dic for dic in self.dics if dic.Success]

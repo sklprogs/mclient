@@ -59,8 +59,7 @@ class Source:
         return len(ALL_DICS.get_invalid())
     
     def suggest(self, search):
-        #TODO: implement
-        return []
+        return ALL_DICS.suggest(search)
     
     def request(self, search):
         f = '[MClient] sources.fora.run.Source.request'

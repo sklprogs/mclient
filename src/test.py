@@ -78,9 +78,11 @@ if __name__ == '__main__':
     # Suggest:
     # multitrancom - OK
     # StarDict - OK
+    # DSL - OK
     #mes = Suggest().run_multitrancom()
     #mes = Suggest().run_stardict()
-    mes = Suggest().run_dsl()
+    #mes = Suggest().run_dsl()
+    mes = Suggest().run_fora()
     if isinstance(mes, list):
         mes = '\n'.join(mes)
     shDEBUG.reset(f, mes)

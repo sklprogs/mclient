@@ -22,7 +22,7 @@ from config import CONFIG
 #SEARCH = 'account'
 #SEARCH = 'constant-voltage welding source'
 #SEARCH = 'wine structure'
-SEARCH = 'wine'
+SEARCH = 'analog'
 #SEARCH = 'pail'
 #SEARCH = 'absolute'
 #SEARCH = 'bottling'
@@ -1128,7 +1128,8 @@ class Commands:
 class Suggest:
     
     def run_all(self):
-        results = [self.run_multitrancom(), self.run_dsl(), self.run_stardict()]
+        results = [self.run_multitrancom(), self.run_dsl(), self.run_stardict()
+                  ,self.run_fora()]
         results = [sub for sub in results if sub]
         results = List(results).join_sublists()
         results = sorted(set(results))
@@ -1146,6 +1147,10 @@ class Suggest:
     def run_multitrancom(self):
         from sources.multitrancom.run import Source as mcSource
         return mcSource().suggest(SEARCH)
+    
+    def run_fora(self):
+        from sources.fora.run import Source as frSource
+        return frSource().suggest(SEARCH)
 
 
 com = Commands()
