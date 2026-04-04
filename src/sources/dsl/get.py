@@ -324,7 +324,8 @@ class Suggest:
             return
         items = ALL_DICS.get_index()
         if not items:
-            rep.empty(f)
+            # No DSL dictionaries
+            rep.lazy(f)
             return
         timer = Timer(f)
         timer.start()
