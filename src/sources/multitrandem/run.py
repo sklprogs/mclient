@@ -49,12 +49,19 @@ class Source:
         return gt.com.count_invalid()
     
     def suggest(self, search):
+        f = '[MClient] sources.multitrandem.run.Source.suggest'
+        if not self.count_valid():
+            rep.lazy(f)
+            return []
         return gt.Suggest(search).run()
     
-    def request(self, search='', url=''):
+    def request(self, search=''):
+        f = '[MClient] sources.multitrandem.run.Source.request'
+        if not self.count_valid():
+            rep.lazy(f)
+            return []
         self.blocks = []
-        iget = gt.Get(search)
-        chunks = iget.run()
+        chunks = gt.Get(search).run()
         if not chunks:
             chunks = []
         for i in range(len(chunks)):
