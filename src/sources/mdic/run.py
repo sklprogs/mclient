@@ -46,7 +46,7 @@ class Source:
         return ''
     
     def count_valid(self):
-        return int(ALL_DICS.Success)
+        return int(bool(ALL_DICS.Success))
     
     def count_invalid(self):
         if self.count_valid():
