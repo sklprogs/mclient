@@ -145,7 +145,7 @@ class Index:
             poses.append(pos)
         return poses
     
-    def suggest(self, pattern):
+    def suggest(self, pattern, limit=0):
         #TODO: Implement case-insensitive search
         #TODO: Implement finding 1st entry
         f = '[MClient] sources.fora.get.Index.suggest'
@@ -163,8 +163,9 @@ class Index:
             chunk = self.imap.readline()
             line = chunk.decode('utf-8', 'errors=ignore')
             line = line.split('\t')
-            line = line[0]
-            matches.append(line)
+            matches.append(line[0])
+            if limit and limit == len(matches):
+                return matches
             ''' imap.tell returns position after the line break (read by
                 imap.readline), but we need the line break to find the pattern.
             '''
@@ -457,10 +458,12 @@ class AllDics:
         self.path = Home('mclient').add_config('dics')
         self.set()
     
-    def suggest(self, pattern):
+    def suggest(self, pattern, limit=0):
         matches = []
         for dic in self.dics:
-            matches += dic.index.suggest(pattern.strip())
+            matches += dic.index.suggest(pattern.strip(), limit)
+            if limit and limit == len(matches):
+                return matches
         return matches
     
     def get_valid(self):

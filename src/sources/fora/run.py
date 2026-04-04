@@ -58,8 +58,8 @@ class Source:
     def count_invalid(self):
         return len(ALL_DICS.get_invalid())
     
-    def suggest(self, search):
-        return ALL_DICS.suggest(search)
+    def suggest(self, search, limit=0):
+        return ALL_DICS.suggest(search, limit)
     
     def request(self, search):
         f = '[MClient] sources.fora.run.Source.request'
