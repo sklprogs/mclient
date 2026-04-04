@@ -59,10 +59,17 @@ class Source:
         return len(ALL_DICS.get_invalid())
     
     def suggest(self, search, limit=0):
+        f = '[MClient] sources.fora.run.Source.suggest'
+        if not self.count_valid():
+            rep.lazy(f)
+            return []
         return ALL_DICS.suggest(search, limit)
     
     def request(self, search):
         f = '[MClient] sources.fora.run.Source.request'
+        if not self.count_valid():
+            rep.lazy(f)
+            return []
         blocks = []
         for article in ALL_DICS.search(search):
             blocks += self.get_blocks(article)
