@@ -1129,7 +1129,7 @@ class Suggest:
     
     def run_all(self):
         results = [self.run_multitrancom(), self.run_dsl(), self.run_stardict()
-                  ,self.run_fora(), self.run_mdic]
+                  ,self.run_fora(), self.run_mdic(), self.run_multitrandem()]
         results = [sub for sub in results if sub]
         results = List(results).join_sublists()
         results = sorted(set(results))
@@ -1147,6 +1147,10 @@ class Suggest:
     def run_multitrancom(self):
         from sources.multitrancom.run import Source as mcSource
         return mcSource().suggest(SEARCH)
+    
+    def run_multitrandem(self):
+        from sources.multitrandem.run import Source as dmSource
+        return dmSource().suggest(SEARCH)
     
     def run_fora(self):
         from sources.fora.run import Source as frSource
