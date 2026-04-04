@@ -6,6 +6,7 @@ from skl_shared.message.controller import Message, rep
 from skl_shared.logic import Input
 from skl_shared.paths import Home
 from skl_shared.list import List
+from skl_shared.time import Timer
 
 from config import CONFIG, PRODUCT_LOW
 from cells import Cells
@@ -62,6 +63,8 @@ class Sources:
         if len(search) < 3:
             rep.lazy(f)
             return []
+        timer = Timer(f)
+        timer.start()
         lst = self.mcsource.suggest(search, limit)
         lst += self.sdsource.suggest(search, limit)
         lst += self.mbsource.suggest(search, limit)
@@ -70,6 +73,7 @@ class Sources:
         lst += self.mdsource.suggest(search, limit)
         lst = [item.strip() for item in lst if item.strip()]
         lst = sorted(set(lst))
+        timer.end()
         if limit:
             return lst[:limit]
         else:
@@ -83,12 +87,20 @@ class Sources:
         return (self.mcsource,)
     
     def request(self, search='', url=''):
+        f = '[MClient] manager.Sources.request'
+        search = search.strip()
+        if not search:
+            rep.empty(f)
+            return []
+        timer = Timer(f)
+        timer.start()
         blocks = self.mcsource.request(search, url)
         blocks += self.sdsource.request(search)
         blocks += self.mbsource.request(search)
         blocks += self.lgsource.request(search)
         blocks += self.frsource.request(search)
         blocks += self.mdsource.request(search)
+        timer.end()
         return blocks
     
     def is_parallel(self):
