@@ -145,31 +145,6 @@ class Index:
             poses.append(pos)
         return poses
     
-    def _suggest_poses(self, pattern):
-        bpattern = b'\n' + bytes(pattern, 'utf-8')
-        poses = []
-        start = 0
-        while True:
-            pos1 = self.imap.find(bpattern, start)
-            if pos1 == -1:
-                return poses
-            pos2 = self.imap.find(b'\t', pos1)
-            if pos2 == -1:
-                mes = _('File {} has an invalid structure!').format(self.file)
-                Message(f, mes).show_warning()
-                return []
-            start = pos2 + 1
-            poses.append((pos1, pos2))
-    
-    def _suggest_matches(self, poses):
-        matches = []
-        for pair in poses:
-            self.imap.seek(pair[0])
-            chunk = self.imap.read(pair[1])
-            fragm = chunk.decode('utf-8', 'errors=ignore')
-            matches.append(fragm)
-        return matches
-    
     def suggest(self, pattern):
         #TODO: Implement case-insensitive search
         #TODO: Implement finding 1st entry
@@ -177,8 +152,23 @@ class Index:
         if not self.Success:
             rep.cancel(f)
             return
-        poses = self._suggest_poses(pattern)
-        return self._suggest_matches(poses)
+        bpattern = b'\n' + bytes(pattern, 'utf-8')
+        matches = []
+        start = 0
+        while True:
+            pos = self.imap.find(bpattern, start)
+            if pos == -1:
+                return matches
+            self.imap.seek(pos + 1)
+            chunk = self.imap.readline()
+            line = chunk.decode('utf-8', 'errors=ignore')
+            line = line.split('\t')
+            line = line[0]
+            matches.append(line)
+            ''' imap.tell returns position after the line break (read by
+                imap.readline), but we need the line break to find the pattern.
+            '''
+            start = self.imap.tell() - 1
     
     def get(self, pos):
         f = '[MClient] sources.fora.get.Index.get'
