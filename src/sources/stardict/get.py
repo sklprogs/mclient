@@ -375,8 +375,8 @@ class AllDics:
         words = []
         for dic in self.dics:
             words += dic.suggest(pattern)
-        if limit:
-            words = words[:limit]
+            if limit and limit == len(words):
+                break
         timer.end()
         return words
     

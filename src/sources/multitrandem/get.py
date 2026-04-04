@@ -1199,8 +1199,9 @@ class TypeIn(UPage):
 
 class Suggest:
     
-    def __init__(self, pattern):
+    def __init__(self, pattern, limit=0):
         self.set_values()
+        self.limit = limit
         if pattern:
             self.reset(pattern)
     
@@ -1215,17 +1216,20 @@ class Suggest:
             self.Success = False
             rep.empty(f)
     
-    def get(self, limit=20):
+    def get(self):
         f = '[MClient] sources.multitrandem.get.Suggest.get'
         if not self.Success:
             rep.cancel(f)
-            return
+            return []
         typein1 = FILES.get_typein1()
         if not typein1:
             return []
         suggestions = typein1.search(self.pattern)
-        if suggestions:
-            return suggestions[0:limit]
+        if not suggestions:
+            suggestions = []
+        if self.limit:
+            return suggestions[:self.limit]
+        return suggestions
     
     def run(self):
         self.pattern = com.strip(self.pattern)

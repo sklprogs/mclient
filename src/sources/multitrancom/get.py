@@ -58,8 +58,9 @@ class Extension:
 
 class Suggest:
     
-    def __init__(self, search):
+    def __init__(self, search, limit=0):
         self.set_values()
+        self.limit = limit
         if search:
             self.reset(search)
     
@@ -95,15 +96,17 @@ class Suggest:
         f = '[MClient] sources.multitrancom.get.Suggest.get'
         if not self.Success:
             rep.cancel(f)
-            return
+            return []
         #NOTE: the encoding here (unlike 'self.url') is source-dependent
         self.items = shGet(url=self.url, coding=CODING).run()
         if not self.items:
             rep.empty(f)
-            return
+            return []
         self.items = html.unescape(self.items)
         self.items = [item for item in self.items.splitlines() if item]
         Message(f, self.items).show_debug()
+        if self.limit:
+            return self.items[:self.limit]
         return self.items
     
     def run(self):

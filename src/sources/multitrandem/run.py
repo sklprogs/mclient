@@ -48,12 +48,12 @@ class Source:
     def count_invalid(self):
         return gt.com.count_invalid()
     
-    def suggest(self, search):
+    def suggest(self, search, limit=0):
         f = '[MClient] sources.multitrandem.run.Source.suggest'
         if not self.count_valid():
             rep.lazy(f)
             return []
-        return gt.Suggest(search).run()
+        return gt.Suggest(search, limit).run()
     
     def request(self, search=''):
         f = '[MClient] sources.multitrandem.run.Source.request'

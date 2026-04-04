@@ -4,7 +4,6 @@
 from skl_shared.localize import _
 from skl_shared.message.controller import rep
 
-from manager import SOURCES
 from suggest.gui import Suggest as guiSuggest
 
 
@@ -68,14 +67,6 @@ class Suggest:
     
     def set_width(self, width):
         self.gui.set_width(width)
-    
-    def suggest(self, search, limit=0):
-        f = '[MClient] suggest.controller.Suggest.suggest'
-        items = SOURCES.suggest(search)
-        if not items:
-            rep.empty(f)
-            return []
-        return items[0:limit]
 
 
 SUGGEST = Suggest()

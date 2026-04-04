@@ -308,9 +308,10 @@ class Dsl:
 
 class Suggest:
     
-    def __init__(self, search):
+    def __init__(self, search, limit=0):
         # Do not fail this class
         self.pattern = ''
+        self.limit = limit
         if search:
             self.reset(search)
     
@@ -321,16 +322,20 @@ class Suggest:
         f = '[MClient] sources.dsl.get.Suggest.get'
         if not self.pattern:
             rep.empty(f)
-            return
+            return []
         items = ALL_DICS.get_index()
         if not items:
             # No DSL dictionaries
             rep.lazy(f)
-            return
+            return []
         timer = Timer(f)
         timer.start()
         # Index is already lowercased (Dsl._delete_curly_brackets)
-        result = [item for item in items if item.startswith(self.pattern)]
+        for item in items:
+            if item.startswith(self.pattern):
+                result.append(item)
+                if self.limit and len(result) == self.limit:
+                    break
         timer.end()
         mes = '; '.join(result)
         Message(f, mes).show_debug()

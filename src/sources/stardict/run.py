@@ -53,12 +53,12 @@ class Source:
     def count_invalid(self):
         return len(gt.ALL_DICS.get_invalid())
     
-    def suggest(self, search):
+    def suggest(self, search, limit=0):
         f = '[MClient] sources.stardict.run.Source.suggest'
         if not self.count_valid():
             rep.lazy(f)
             return []
-        return gt.ALL_DICS.suggest(search)
+        return gt.ALL_DICS.suggest(search, limit)
     
     def request(self, search):
         f = '[MClient] sources.stardict.run.Source.request'

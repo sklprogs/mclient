@@ -56,11 +56,22 @@ class Sources:
     def get_langs(self):
         return sources.multitrancom.pairs.objs.get_pairs().get_alive()
     
-    def suggest(self, search):
-        lst = [self.sdsource.suggest(search), self.mcsource.suggest(search) \
-              ,self.mbsource.suggest(search), self.lgsource.suggest(search) \
-              ,self.frsource.suggest(search), self.mdsource.suggest(search)]
-        return List([item for item in lst if item]).join_sublists()
+    def suggest(self, search, limit=0):
+        f = '[MClient] manager.Sources.suggest'
+        search = search.strip()
+        if len(search) < 3:
+            rep.lazy(f)
+            return []
+        lst = self.mcsource.suggest(search, limit)
+        lst += self.sdsource.suggest(search, limit)
+        lst += self.mbsource.suggest(search, limit)
+        lst += self.lgsource.suggest(search, limit)
+        lst += self.frsource.suggest(search, limit)
+        lst += self.mdsource.suggest(search, limit)
+        if limit:
+            return lst[:limit]
+        else:
+            return lst
     
     def get_offline_sources(self):
         return (self.sdsource, self.lgsource, self.mbsource, self.frsource

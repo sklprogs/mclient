@@ -53,8 +53,8 @@ class Source:
         else:
             return 1
 
-    def suggest(self, search):
-        return gt.Suggest(search).run()
+    def suggest(self, search, limit=0):
+        return gt.Suggest(search, limit).run()
 
     def is_parallel(self):
         return self.Parallel
