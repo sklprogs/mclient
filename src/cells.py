@@ -451,7 +451,6 @@ class Phrases:
             rep.lazy(f)
             return
         last = sources[0]
-        print(f, last)
         for block in move:
             block.source = last
     
@@ -463,7 +462,6 @@ class Phrases:
             rep.lazy(f)
             return
         last = dics[0]
-        print(f, last)
         for block in move:
             block.dic = last
     
