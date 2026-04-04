@@ -49,10 +49,7 @@ class Source:
         return int(bool(ALL_DICS.Success))
     
     def count_invalid(self):
-        if self.count_valid():
-            return 0
-        else:
-            return 1
+        return int(not(self.count_valid()))
     
     def suggest(self, search, limit=0):
         return ALL_DICS.suggest(search, limit)
