@@ -68,6 +68,8 @@ class Sources:
         lst += self.lgsource.suggest(search, limit)
         lst += self.frsource.suggest(search, limit)
         lst += self.mdsource.suggest(search, limit)
+        lst = [item.strip() for item in lst if item.strip()]
+        lst = sorted(set(lst))
         if limit:
             return lst[:limit]
         else:
