@@ -179,11 +179,16 @@ class Body:
     
     def __init__(self):
         self.file = Home('mclient').add_config('dics', 'MDIC', 'collection.mdic')
-        self.Success = File(self.file, Graphical=False).Success
         self.load()
     
     def load(self):
         f = '[MClient] sources.mdic.get.Body.load'
+        if not os.path.exists(self.file):
+            self.Success = False
+            rep.lazy(f)
+            return
+        # Ensure that collection.mdic is a file
+        self.Success = File(self.file).Success
         if not self.Success:
             rep.cancel(f)
             return
