@@ -52,11 +52,15 @@ class Source:
         return int(not(self.count_valid()))
     
     def suggest(self, search, limit=0):
+        f = '[MClient] sources.mdic.run.Source.suggest'
+        if not self.count_valid():
+            rep.lazy(f)
+            return []
         return ALL_DICS.suggest(search, limit)
     
     def request(self, search=''):
         f = '[MClient] sources.mdic.run.Source.request'
-        if self.count_invalid():
+        if not self.count_valid():
             rep.lazy(f)
             return []
         str_lst = ALL_DICS.search(search)
