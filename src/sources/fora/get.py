@@ -151,7 +151,7 @@ class Index:
         f = '[MClient] sources.fora.get.Index.suggest'
         if not self.Success:
             rep.cancel(f)
-            return
+            return []
         bpattern = b'\n' + bytes(pattern, 'utf-8')
         matches = []
         start = 0
@@ -459,11 +459,18 @@ class AllDics:
         self.set()
     
     def suggest(self, pattern, limit=0):
+        f = '[MClient] sources.fora.get.AllDics.suggest'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        timer = Timer(f)
+        timer.start()
         matches = []
         for dic in self.dics:
             matches += dic.index.suggest(pattern.strip(), limit)
             if limit and limit == len(matches):
                 return matches
+        timer.end()
         return matches
     
     def get_valid(self):
