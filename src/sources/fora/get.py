@@ -162,6 +162,10 @@ class Index:
             self.imap.seek(pos + 1)
             chunk = self.imap.readline()
             line = chunk.decode('utf-8', 'errors=ignore')
+            if not line:
+                rep.empty(f)
+                start = self.imap.tell() - 1
+                continue
             line = line.split('\t')
             matches.append(line[0])
             if limit and limit == len(matches):
