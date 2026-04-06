@@ -28,6 +28,7 @@ class Cell:
         self.colno = -1
         self.subjpr = -1
         self.speechpr = -1
+        self.sourcepr = -1
         self.code = ''
         self.speech = ''
         self.source = ''

@@ -18,6 +18,52 @@ from columns import COL_WIDTH
 from speech import SPEECH
 
 
+class OrderSources:
+    
+    def __init__(self):
+        self.ordered = []
+        self.prior = []
+    
+    def reset(self, sources):
+        self.sources = sources
+        self.set_prior()
+        self.order()
+    
+    def set_prior(self):
+        f = '[MClient] view.OrderSources.set_prior'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
+        self.prior = CONFIG.new['sources']['prioritized'].keys()
+        mes = ', '.join(self.prior)
+        Message(f, mes).show_debug()
+    
+    def order(self):
+        f = '[MClient] view.OrderSources.order'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
+        prior = [source for source in list(self.prior) \
+                if source in self.sources]
+        other = [source for source in self.sources if not source in prior]
+        other = sorted(other, key=lambda x: x.casefold())
+        self.ordered = prior + other
+        mes = ', '.join(self.ordered)
+        Message(f, mes).show_debug()
+    
+    def get_priority(self, source):
+        f = '[MClient] view.OrderSources.get_priority'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return -1
+        try:
+            return self.ordered.index(source)
+        except ValueError:
+            rep.wrong_input(f, source)
+            return -1
+
+
+
 class Phrases:
     
     def __init__(self, cells):
@@ -226,29 +272,34 @@ class Prioritize:
         self.speech = SPEECH.get_settings()
         self.cells = cells
     
-    def debug(self, maxrow=60):
+    def debug(self, maxrow=50):
         f = '[MClient] view.Prioritize.debug'
         subj = []
         subjpr = []
         text = []
         types = []
+        sources = []
+        sourcepr = []
         nos = []
         speech = []
         speechpr = []
         for cell in self.cells:
+            nos.append(cell.no)
             text.append(cell.text)
             if cell.fixed_block:
                 types.append(cell.fixed_block.type)
             else:
                 types.append('')
-            nos.append(cell.no)
+            sources.append(cell.source)
+            sourcepr.append(cell.sourcepr)
             subj.append(cell.subj)
             subjpr.append(cell.subjpr)
             speech.append(cell.speech)
             speechpr.append(cell.speechpr)
-        headers = (_('#'), _('TEXT'), _('TYPE'), _('SUBJECT'), 'SUBJPR'
-                  ,_('SPEECH'), 'SPEECHPR')
-        iterable = [nos, text, types, subj, subjpr, speech, speechpr]
+        headers = (_('#'), _('TEXT'), _('TYPE'), 'SOURCE', 'SOURCEPR', 'SUBJ'
+                  ,'SUBJPR', 'SPEECH', 'SPEECHPR')
+        iterable = [nos, text, types, sources, sourcepr, subj, subjpr, speech
+                   ,speechpr]
         mes = Table(headers = headers
                    ,iterable = iterable
                    ,maxrow = maxrow).run()
@@ -318,9 +369,16 @@ class Prioritize:
         # [] + ['example'] == ['example']
         self.cells = pr_cells + unp_cells
     
+    def set_sources(self):
+        sources = set([cell.source for cell in self.cells if cell.source])
+        ORDER_SOURCES.reset(sources)
+        for cell in self.cells:
+            cell.sourcepr = ORDER_SOURCES.get_priority(cell.source)
+    
     def run(self):
         self.set_subjects()
         self.set_speech()
+        self.set_sources()
         iphrases = Phrases(self.cells)
         self.cells = iphrases.run()
         self.phsubj_url = iphrases.phsubj_url
@@ -592,7 +650,7 @@ class View:
                     case 0:
                         match self.fixed_cols[i]:
                             case 'source':
-                                cell.col1 = cell.source.lower()
+                                cell.col1 = cell.sourcepr
                             case 'dic':
                                 cell.col1 = cell.dic.lower()
                             case 'subj':
@@ -606,7 +664,7 @@ class View:
                     case 1:
                         match self.fixed_cols[i]:
                             case 'source':
-                                cell.col2 = cell.source.lower()
+                                cell.col2 = cell.sourcepr
                             case 'dic':
                                 cell.col2 = cell.dic.lower()
                             case 'subj':
@@ -620,7 +678,7 @@ class View:
                     case 2:
                         match self.fixed_cols[i]:
                             case 'source':
-                                cell.col3 = cell.source.lower()
+                                cell.col3 = cell.sourcepr
                             case 'dic':
                                 cell.col3 = cell.dic.lower()
                             case 'subj':
@@ -634,7 +692,7 @@ class View:
                     case 3:
                         match self.fixed_cols[i]:
                             case 'source':
-                                cell.col4 = cell.source.lower()
+                                cell.col4 = cell.sourcepr
                             case 'dic':
                                 cell.col4 = cell.dic.lower()
                             case 'subj':
@@ -648,7 +706,7 @@ class View:
                     case 4:
                         match self.fixed_cols[i]:
                             case 'source':
-                                cell.col5 = cell.source.lower()
+                                cell.col5 = cell.sourcepr
                             case 'dic':
                                 cell.col5 = cell.dic.lower()
                             case 'subj':
@@ -662,7 +720,7 @@ class View:
                     case 5:
                         match self.fixed_cols[i]:
                             case 'source':
-                                cell.col6 = cell.source.lower()
+                                cell.col6 = cell.sourcepr
                             case 'dic':
                                 cell.col6 = cell.dic.lower()
                             case 'subj':
@@ -876,8 +934,10 @@ class Wrap:
         return self.cells
 
 
-
 def is_phrase_type(cell):
     for block in cell.blocks:
         if block.type in ('phsubj', 'phrase', 'phcount'):
             return True
+
+
+ORDER_SOURCES = OrderSources()
