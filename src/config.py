@@ -99,6 +99,13 @@ class Config(shConfig):
             self.new['subjects'][section][_(key)] = self.new['subjects'][section][key]
             del self.new['subjects'][section][key]
     
+    def _localize_sources(self, section):
+        for key in list(self.new['sources'][section].keys()):
+            if key == _(key):
+                continue
+            self.new['sources'][section][_(key)] = self.new['sources'][section][key]
+            del self.new['sources'][section][key]
+    
     def localize(self):
         ''' Do this each time the default config is loaded since the local
             config can theoretically have absent sections that are present in
@@ -122,6 +129,8 @@ class Config(shConfig):
         
         self._localize_subjects('blocked')
         self._localize_subjects('prioritized')
+        self._localize_sources('blocked')
+        self._localize_sources('prioritized')
         
         for action in self.new['actions']:
             self.new['actions'][action]['hint'] = _(self.new['actions'][action]['hint'])

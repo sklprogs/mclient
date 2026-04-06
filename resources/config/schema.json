@@ -555,6 +555,14 @@
                 }
             }
         }
+    ,"sources":
+        {"type": "object"
+        ,"required": ["blocked", "prioritized"]
+        ,"properties":
+            {"blocked": {"type": "object"}
+            ,"prioritized": {"type": "object"}
+            }
+        }
     ,"subjects":
         {"type": "object"
         ,"required": ["blocked", "prioritized", "history", "source_all"]

@@ -212,6 +212,8 @@
         }
     ,"by_type": {"source": {"width": 120}, "dic": {"width": 120}, "subj": {"width": 150}, "wform": {"width": 120}, "transc": {"width": 120}, "speech": {"width": 65}}
     }
+,"sources":
+    {"blocked": {}, "prioritized": {"Multitran": {}}}
 ,"subjects":
     {"blocked": {}, "prioritized": {"General": {}}, "history": {}
     ,"source_all": {}
