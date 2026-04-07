@@ -68,21 +68,10 @@ class Phrases:
     
     def __init__(self, cells):
         self.phsubj_url = ''
-        self.last_source = ''
         self.last_dic = ''
         self.phsubj = Cell()
         self.cells = cells
         
-    def set_last_source(self):
-        f = '[MClient] view.Phrases.set_last_source'
-        for cell in self.cells[::-1]:
-            for block in cell.blocks:
-                if block.source:
-                    self.last_source = block.source
-                    mes = f'"{self.last_source}"'
-                    Message(f, mes).show_debug()
-                    return
-    
     def set_last_dic(self):
         f = '[MClient] view.Phrases.set_last_dic'
         for cell in self.cells[::-1]:
@@ -101,15 +90,21 @@ class Phrases:
         cellnos = [cell.no for cell in self.cells \
                   if [block for block in cell.blocks if block.type in ('phrase', 'phsubj')]]
         move = [cell for cell in self.cells if cell.no in cellnos]
+        sourcepr = self.get_sourcepr()
+        subjpr = self.get_subjpr()
+        speechpr = self.get_speechpr()
         for cell in move:
             cell.subj = self.phsubj_name
-            cell.source = self.last_source
             cell.dic = self.last_dic
-            for block in cell.blocks:
-                block.source = self.last_source
-                block.dic = self.last_dic
+            cell.sourcepr = sourcepr
+            cell.subjpr = subjpr
+            cell.speechpr = speechpr
         other = [cell for cell in self.cells if not cell.no in cellnos]
         self.phsubj.no = len(other)
+        self.phsubj.type = 'phsubj'
+        self.phsubj.sourcepr = sourcepr
+        self.phsubj.subjpr = subjpr
+        self.phsubj.speechpr = speechpr
         self.cells = other + [self.phsubj] + move
         self.cells = other + move
     
@@ -129,9 +124,7 @@ class Phrases:
         self.phsubj.fixed_block.type = 'phsubj'
         self.phsubj.blocks = [self.phsubj.fixed_block]
         
-        self.phsubj.source = self.last_source
         self.phsubj.dic = self.last_dic
-        self.phsubj.fixed_block.source = self.last_source
         self.phsubj.fixed_block.dic = self.last_dic
     
     def renumber(self):
@@ -145,12 +138,29 @@ class Phrases:
         for i in range(len(self.cells)):
             self.cells[i].no = cellnos[i]
     
+    def get_sourcepr(self):
+        sourcepr = [cell.sourcepr for cell in self.cells]
+        if not sourcepr:
+            return -1
+        return max(sourcepr) + 1
+    
+    def get_speechpr(self):
+        speechpr = [cell.speechpr for cell in self.cells]
+        if not speechpr:
+            return -1
+        return max(speechpr) + 1
+    
+    def get_subjpr(self):
+        subjpr = [cell.subjpr for cell in self.cells]
+        if not subjpr:
+            return -1
+        return max(subjpr) + 1
+    
     def run(self):
         ''' At this point, blocks may have identical cellno (especially, this
             concerns fixed blocks). Must be fixed before moving to the end.
         '''
         self.renumber()
-        self.set_last_source()
         self.set_last_dic()
         self.set_phsubj()
         self.move()
