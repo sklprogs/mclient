@@ -22,7 +22,7 @@ from config import CONFIG
 #SEARCH = 'account'
 #SEARCH = 'constant-voltage welding source'
 #SEARCH = 'wine structure'
-SEARCH = 'diffus'
+SEARCH = 'wine'
 #SEARCH = 'pail'
 #SEARCH = 'absolute'
 #SEARCH = 'bottling'
@@ -73,7 +73,7 @@ class Prioritize:
         from articles import ARTICLES
         from cells import Elems as cElems, Cells
         from view import Omit, Prioritize as vPrioritize
-        blocks = SOURCES.request(SEARCH)
+        blocks = SOURCES.request(SEARCH, URL)
         blocks = cElems(blocks).run()
         cells = Cells(blocks).run()
         ARTICLES.add(SEARCH, URL, cells)
@@ -129,7 +129,7 @@ class View:
         from articles import ARTICLES
         from cells import Elems as cElems, Cells
         from view import Omit, Prioritize as vPrioritize, View as vView
-        blocks = SOURCES.request(SEARCH)
+        blocks = SOURCES.request(SEARCH, URL)
         blocks = cElems(blocks).run()
         cells = Cells(blocks).run()
         ARTICLES.add(SEARCH, URL, cells)
@@ -685,8 +685,9 @@ class Source:
     
     def run_all(self):
         from manager import SOURCES
-        from cells import Cells
-        blocks = SOURCES.request(SEARCH)
+        from cells import Elems as cElems, Cells
+        blocks = SOURCES.request(SEARCH, URL)
+        blocks = cElems(blocks).run()
         icells = Cells(blocks)
         icells.run()
         return icells.debug()
@@ -732,9 +733,10 @@ class Source:
         return icells.debug()
     
     def run_multitrancom(self):
-        from cells import Cells
+        from cells import Elems as cElems, Cells
         from sources.multitrancom.run import Source as mSource
-        blocks = mSource().request(url=url, search=SEARCH)
+        blocks = mSource().request(url=URL, search=SEARCH)
+        blocks = cElems(blocks).run()
         icells = Cells(blocks)
         icells.run()
         return icells.debug()
