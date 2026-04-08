@@ -132,6 +132,7 @@ class Phrases:
         self.phsubj.dic = self.last_dic
         self.phsubj.fixed_block.dic = self.last_dic
         self.phsubj.url = self.phsubj.fixed_block.url = ARTICLES.get_phsubj_url()
+        self.phsubj.rowno, self.phsubj.colno = self.get_rowno()
     
     def renumber(self):
         cellnos = []
@@ -144,23 +145,30 @@ class Phrases:
         for i in range(len(self.cells)):
             self.cells[i].no = cellnos[i]
     
+    def get_rowno(self):
+        for cell in self.cells:
+            for block in cell.blocks:
+                if block.type == 'phrase':
+                    return (cell.rowno, cell.colno)
+        return (-1, -1)
+    
     def get_sourcepr(self):
         sourcepr = [cell.sourcepr for cell in self.cells]
         if not sourcepr:
             return -1
-        return max(sourcepr) + 1
+        return max(sourcepr)
     
     def get_speechpr(self):
         speechpr = [cell.speechpr for cell in self.cells]
         if not speechpr:
             return -1
-        return max(speechpr) + 1
+        return max(speechpr)
     
     def get_subjpr(self):
         subjpr = [cell.subjpr for cell in self.cells]
         if not subjpr:
             return -1
-        return max(subjpr) + 1
+        return max(subjpr)
     
     def run(self):
         ''' At this point, blocks may have identical cellno (especially, this
@@ -331,16 +339,6 @@ class Prioritize:
                 if cell.speech == all_speech[i]:
                     cell.speechpr = i
     
-    def get_last_sorted_wform(self):
-        ''' Fix a bug when phrases are not at the bottom in the Multitran mode.
-            Alternatively, we can use just set 'wform' to 'яяяяя' here
-            (Cyrillic letters are sorted such that they are farther in a
-            descending order than Latin ones), but this looks hacky.
-        '''
-        wforms = sorted(set([cell.wform for cell in self.cells]), reverse=True)
-        if wforms:
-            return wforms[0]
-    
     def set_subjects(self):
         ''' All cells must have 'subjpr' set since they will not be further
             sorted by 'subj', so do not cancel this procedure even if there are
@@ -376,12 +374,6 @@ class Prioritize:
                 subj = cell.subj
                 subjpr += 1
                 cell.subjpr = subjpr
-        wform = self.get_last_sorted_wform()
-        if not wform:
-            ''' Cyrillic letters are sorted such that they are farther in a
-                descending order than Latin ones.
-            '''
-            wform = 'яяяяя'
         # [] + ['example'] == ['example']
         self.cells = pr_cells + unp_cells
     
