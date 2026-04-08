@@ -176,7 +176,7 @@ class Cells:
         for i in range(len(self.cells)):
             self.cells[i].no = i
     
-    def debug(self, maxrow=60, maxrows=0):
+    def debug(self, maxrow=30, maxrows=0):
         f = '[MClient] cells.Cells.debug'
         headers = ('SOURCE', 'DIC', 'SUBJ', 'WFORM', 'SPEECH', 'TRANSC'
                   ,_('ROW #'), _('CELL #'), _('TYPES'), _('TEXT'), 'URL')
