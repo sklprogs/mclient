@@ -69,6 +69,7 @@ class Phrases:
     def __init__(self, cells):
         self.phsubj_url = ''
         self.last_dic = ''
+        self.num = 0
         self.phsubj = Cell()
         self.cells = cells
         
@@ -87,8 +88,12 @@ class Phrases:
             - Phrases may have synonyms attached to them and formatted as
               comments, so moving by cellno is more precise.
         '''
+        f = '[MClient] view.Phrases.move'
+        if not self.num:
+            rep.lazy(f)
+            return
         cellnos = [cell.no for cell in self.cells \
-                  if [block for block in cell.blocks if block.type in ('phrase', 'phsubj')]]
+                  if [block for block in cell.blocks if block.type == 'phrase']]
         move = [cell for cell in self.cells if cell.no in cellnos]
         sourcepr = self.get_sourcepr()
         subjpr = self.get_subjpr()
@@ -101,31 +106,32 @@ class Phrases:
             cell.speechpr = speechpr
         other = [cell for cell in self.cells if not cell.no in cellnos]
         self.phsubj.no = len(other)
-        self.phsubj.type = 'phsubj'
+        self.phsubj.type = 'subj'
         self.phsubj.sourcepr = sourcepr
         self.phsubj.subjpr = subjpr
         self.phsubj.speechpr = speechpr
         self.cells = other + [self.phsubj] + move
-        self.cells = other + move
     
     def set_phsubj(self):
         f = '[MClient] view.Phrases.set_phsubj'
-        count = 0
         for cell in self.cells:
             for block in cell.blocks:
                 if block.type == 'phrase':
-                    count += 1
-        self.phsubj_name = _('Phrases ({})').format(count)
+                    self.num += 1
+        if not self.num:
+            rep.lazy(f)
+            return
+        self.phsubj_name = _('Phrases ({})').format(self.num)
         mes = f'"{self.phsubj_name}"'
         Message(f, mes).show_debug()
-        self.phsubj.text = self.phsubj_name
+        self.phsubj.text = self.phsubj.subj = self.phsubj_name
         self.phsubj.fixed_block = Block()
         self.phsubj.fixed_block.text = self.phsubj_name
-        self.phsubj.fixed_block.type = 'phsubj'
+        self.phsubj.fixed_block.type = 'subj'
         self.phsubj.blocks = [self.phsubj.fixed_block]
-        
         self.phsubj.dic = self.last_dic
         self.phsubj.fixed_block.dic = self.last_dic
+        self.phsubj.url = self.phsubj.fixed_block.url = ARTICLES.get_phsubj_url()
     
     def renumber(self):
         cellnos = []
@@ -400,7 +406,6 @@ class View:
     # Create user-specific cells
     def __init__(self, cells):
         self.Success = True
-        self.phi = None
         self.view = []
         self.cells = cells
         # Must be recreated for each article loading/reloading
@@ -497,32 +502,6 @@ class View:
             cell = self._create_fixed(0, type_, rowno)
             self.cells.insert(0, cell)
         rep.matches(f, count)
-    
-    def _has_phrase(self):
-        for cell in self.cells[::-1]:
-            for block in cell.blocks:
-                if block.type == 'phrase':
-                    return True
-    
-    def restore_phsubj(self):
-        f = '[MClient] view.View.restore_phsubj'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if not self._has_phrase():
-            rep.lazy(f)
-            return
-        i = len(self.cells) - 1
-        while i >= 0:
-            if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type == 'subj':
-                self.cells[i].fixed_block.type = 'phsubj'
-                self.cells[i].fixed_block.url = ARTICLES.get_phsubj_url()
-                self.phi = i
-                mes = f'"{self.cells[i].fixed_block.text}"'
-                Message(f, mes).show_debug()
-                return
-            i -= 1
     
     def debug(self, maxrow=35):
         f = '[MClient] view.View.debug'
@@ -628,24 +607,6 @@ class View:
                 else:
                     speech = cell.speech
     
-    def clear_phrase_fields(self):
-        f = '[MClient] view.View.clear_phrase_fields'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if self.phi is None:
-            rep.lazy(f)
-            return
-        i = self.phi
-        while i < len(self.cells):
-            cell = self.cells[i]
-            if cell.fixed_block \
-            and cell.fixed_block.type in ('source', 'dic', 'wform', 'transc'
-                                         ,'speech'):
-                cell.text = ''
-            cell.source = cell.dic = cell.wform = cell.speech = cell.transc = ''
-            i += 1
-
     def fill_cols(self):
         f = '[MClient] view.View.fill_cols'
         if not self.Success:
@@ -748,9 +709,7 @@ class View:
         self.sort()
         self.restore_fixed()
         self.restore_first()
-        #self.restore_phsubj()
         self.clear_duplicates()
-        #self.clear_phrase_fields()
         self.renumber()
         return self.cells
 
