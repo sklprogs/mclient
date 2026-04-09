@@ -132,8 +132,6 @@ class Phrases:
         if not self.num:
             rep.lazy(f)
             return
-        for cell in self.cells:
-            cell.blocks = [block for block in cell.blocks if block.type != 'phsubj']
         cellnos = [cell.no for cell in self.cells \
                   if [block for block in cell.blocks if block.type == 'phrase']]
         move = [cell for cell in self.cells if cell.no in cellnos]
@@ -143,7 +141,7 @@ class Phrases:
         for cell in move:
             cell.source = self.last_source
             cell.dic = self.last_dic
-            cell.subj = self.phsubj_name
+            cell.subj = self.phname
             cell.wform = self.last_wform
             cell.speech = self.last_speech
             cell.transc = self.last_transc
@@ -151,7 +149,7 @@ class Phrases:
             cell.subjpr = subjpr + 1
             cell.speechpr = speechpr
             for block in cell.blocks:
-                block.subj = block.subjf = self.phsubj_name
+                block.subj = block.subjf = self.phname
                 block.dic = self.last_dic
                 block.source = self.last_source
         other = [cell for cell in self.cells if not cell.no in cellnos]
@@ -161,13 +159,13 @@ class Phrases:
         self.phsubj.speech = self.last_speech
         self.phsubj.transc = self.last_transc
         self.phsubj.sourcepr = sourcepr
-        self.phsubj.fixed_block.subj = self.phsubj_name
+        self.phsubj.fixed_block.subj = self.phname
         self.phsubj.subjpr = subjpr + 1
         self.phsubj.speechpr = speechpr
         #self.phsubj.rowno = max_rowno
         #self.phsubj.colno = 6
-        #self.cells = other + [self.phsubj] + move
-        self.cells = other + move
+        self.cells = other + [self.phsubj] + move
+        #self.cells = other + move
     
     def set_phsubj(self):
         f = '[MClient] view.Phrases.set_phsubj'
@@ -178,14 +176,14 @@ class Phrases:
         if not self.num:
             rep.lazy(f)
             return
-        self.phsubj_name = _('Phrases ({})').format(self.num)
-        mes = f'"{self.phsubj_name}"'
+        self.phname = _('Phrases ({})').format(self.num)
+        mes = f'"{self.phname}"'
         Message(f, mes).show_debug()
-        self.phsubj.text = self.phsubj.subj = self.phsubj_name
+        self.phsubj.text = self.phsubj.subj = self.phname
         self.phsubj.fixed_block = Block()
         self.phsubj.fixed_block.text = self.phsubj.fixed_block.subj \
                                      = self.phsubj.fixed_block.subjf \
-                                     = self.phsubj_name
+                                     = self.phname
         self.phsubj.fixed_block.type = 'phsubj'
         self.phsubj.blocks = [self.phsubj.fixed_block]
         self.phsubj.dic = self.last_dic
@@ -364,10 +362,7 @@ class Prioritize:
         for cell in self.cells:
             nos.append(cell.no)
             text.append(cell.text)
-            if cell.fixed_block:
-                types.append(cell.fixed_block.type)
-            else:
-                types.append('')
+            types.append(', '.join(set([block.type for block in cell.blocks])))
             sources.append(cell.source)
             sourcepr.append(cell.sourcepr)
             subj.append(cell.subj)
