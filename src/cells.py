@@ -15,9 +15,30 @@ from instance import Block, Cell, is_block_fixed
 class Elems:
     
     def __init__(self, blocks):
+        self.phurl = ''
         self.art_subj = {}
-        self.phsubj_url = ''
         self.blocks = blocks
+    
+    def set_phurl(self):
+        f = '[MClient] cells.Elems.set_phurl'
+        for block in self.blocks:
+            if block.type == 'phsubj' and block.url:
+                self.phurl = block.url
+                mes = f'"{self.phurl}"'
+                Message(f, mes).show_debug()
+                return
+    
+    def remove_phsubj(self):
+        f = '[MClient] cells.Elems.remove_phsubj'
+        cellnos = []
+        for block in self.blocks:
+            if block.type == 'phsubj':
+                cellnos.append(block.cellno)
+        count = 0
+        old_len = len(self.blocks)
+        self.blocks = [block for block in self.blocks \
+                      if not block.cellno in cellnos]
+        rep.deleted(f, old_len - len(self.blocks))
     
     def debug(self, maxrow=30, maxrows=0):
         f = '[MClient] cells.Elems.debug'
@@ -126,6 +147,8 @@ class Elems:
         rep.matches(f, count)
     
     def run(self):
+        self.set_phurl()
+        self.remove_phsubj()
         self.remove_numbering()
         self.set_art_subj()
         self.convert_comments()
