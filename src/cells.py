@@ -34,7 +34,6 @@ class Elems:
         for block in self.blocks:
             if block.type == 'phsubj':
                 cellnos.append(block.cellno)
-        count = 0
         old_len = len(self.blocks)
         self.blocks = [block for block in self.blocks \
                       if not block.cellno in cellnos]
