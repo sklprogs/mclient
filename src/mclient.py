@@ -818,8 +818,7 @@ class App:
                         ,blocked = SUBJECTS.block
                         ,prioritized = SUBJECTS.prior
                         ,art_subj = ielems.art_subj
-                        #,phsubj_url = icells.phsubj_url
-                        )
+                        ,phurl = ielems.phurl)
             HistorySubjects().add(ielems.art_subj)
             self.add_history()
         else:

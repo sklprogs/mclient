@@ -67,7 +67,6 @@ class OrderSources:
 class Phrases:
     
     def __init__(self, cells):
-        self.phsubj_url = ''
         self.last_dic = ''
         self.last_source = ''
         self.last_wform = ''
@@ -191,7 +190,7 @@ class Phrases:
         self.phsubj.blocks = [self.phsubj.fixed_block]
         self.phsubj.dic = self.last_dic
         self.phsubj.fixed_block.dic = self.last_dic
-        self.phsubj.url = self.phsubj.fixed_block.url = ARTICLES.get_phsubj_url()
+        self.phsubj.url = self.phsubj.fixed_block.url = ARTICLES.get_phurl()
     
     def renumber(self):
         cellnos = []
@@ -348,7 +347,6 @@ class Omit:
 class Prioritize:
     
     def __init__(self, cells):
-        self.phsubj_url = ''
         self.speech = SPEECH.get_settings()
         self.cells = cells
     
@@ -443,10 +441,7 @@ class Prioritize:
         self.set_subjects()
         self.set_speech()
         self.set_sources()
-        iphrases = Phrases(self.cells)
-        self.cells = iphrases.run()
-        self.phsubj_url = iphrases.phsubj_url
-        return self.cells
+        return Phrases(self.cells).run()
 
 
 
