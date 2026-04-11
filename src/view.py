@@ -139,18 +139,22 @@ class Phrases:
         speechpr = self.get_speechpr()
         for cell in move:
             cell.source = self.last_source
+            cell.sourcepr = sourcepr
             cell.dic = self.last_dic
             cell.subj = self.phname
-            cell.wform = self.last_wform
-            cell.speech = self.last_speech
-            cell.transc = self.last_transc
-            cell.sourcepr = sourcepr
             cell.subjpr = subjpr + 1
+            cell.wform = self.last_wform
+            cell.transc = self.last_transc
+            cell.speech = self.last_speech
             cell.speechpr = speechpr
             for block in cell.blocks:
-                block.subj = block.subjf = self.phname
-                block.dic = self.last_dic
                 block.source = self.last_source
+                block.dic = self.last_dic
+                block.subj = block.subjf = self.phname
+            if cell.fixed_block:
+                cell.fixed_block.source = self.last_source
+                cell.fixed_block.dic = self.last_dic
+                cell.fixed_block.subj = cell.fixed_block.subjf = self.phname
         other = [cell for cell in self.cells if not cell.no in cellnos]
         for i in range(len(other)):
             other[i].no = i
