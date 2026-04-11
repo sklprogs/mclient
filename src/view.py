@@ -159,7 +159,7 @@ class Phrases:
         self.phsubj.speech = self.last_speech
         self.phsubj.transc = self.last_transc
         self.phsubj.sourcepr = sourcepr
-        self.phsubj.fixed_block.subj = self.phname
+        self.phsubj.fixed_block.subj = self.phsubj.fixed_block.subjf = self.phname
         self.phsubj.subjpr = subjpr + 1
         self.phsubj.speechpr = speechpr
         #self.phsubj.rowno = max_rowno
@@ -176,9 +176,10 @@ class Phrases:
         if not self.num:
             rep.lazy(f)
             return
-        self.phname = _('Phrases ({})').format(self.num)
-        mes = f'"{self.phname}"'
-        Message(f, mes).show_debug()
+        #self.phname = _('Phrases ({})').format(self.num)
+        #mes = f'"{self.phname}"'
+        #Message(f, mes).show_debug()
+        self.phname = _('Phrases (Multitran)')
         self.phsubj.text = self.phsubj.subj = self.phname
         self.phsubj.fixed_block = Block()
         self.phsubj.fixed_block.text = self.phsubj.fixed_block.subj \
@@ -188,6 +189,7 @@ class Phrases:
         self.phsubj.blocks = [self.phsubj.fixed_block]
         self.phsubj.dic = self.last_dic
         self.phsubj.fixed_block.dic = self.last_dic
+        self.phsubj.fixed_block.source = self.last_source
         self.phsubj.url = self.phsubj.fixed_block.url = ARTICLES.get_phurl()
     
     def renumber(self):
@@ -522,6 +524,10 @@ class View:
                 for type_ in self.fixed_cols:
                     count += 1
                     cell = self._create_fixed(i, type_, rowno)
+                    if cell.text in (_('Phrases (Multitran)'), _('See also')):
+                        cell.text = cell.subj = ''
+                        for block in cell.blocks:
+                            block.text = block.subj = block.subjf = ''
                     self.cells.insert(i, cell)
                     i += 1
             i += 1
@@ -741,10 +747,20 @@ class View:
                             case 'transc':
                                 cell.col6 = cell.transc.lower()
     
+    def convert_phsubj(self):
+        f = '[MClient] view.View.convert_phsubj'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        for cell in self.cells:
+            if cell.fixed_block and cell.fixed_block.type == 'phsubj':
+                cell.fixed_block.type = 'subj'
+    
     def run(self):
         self.check()
         self.fill_cols()
         self.sort()
+        self.convert_phsubj()
         self.restore_fixed()
         self.restore_first()
         self.clear_duplicates()

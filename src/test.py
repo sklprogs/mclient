@@ -62,7 +62,7 @@ if __name__ == '__main__':
     #mes = Elems().run_multitrandem()
     #mes = Elems().run_multitrancom()
     #mes = Prioritize().run_all()
-    #mes = View().run_all()
+    mes = View().run_all()
     #mes = View().run_dsl()
     #mes = View().run_stardict()
     #mes = View().run_multitrancom()
@@ -74,7 +74,7 @@ if __name__ == '__main__':
     #mes = Source().run_multitrancom()
     #mes = Source().run_multitrandem()
     #mes = Source().run_stardict()
-    mes = Suggest().run_all()
+    #mes = Suggest().run_all()
     # Suggest:
     # multitrancom - OK
     # StarDict - OK
