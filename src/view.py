@@ -72,7 +72,7 @@ class Phrases:
         self.last_wform = ''
         self.last_speech = ''
         self.last_transc = ''
-        self.num = 0
+        self.phname = _('Phrases (Multitran)')
         self.cells = cells
         
     def set_last_source(self):
@@ -128,11 +128,11 @@ class Phrases:
               comments, so moving by cellno is more precise.
         '''
         f = '[MClient] view.Phrases.move'
-        if not self.num:
-            rep.lazy(f)
-            return
         cellnos = [cell.no for cell in self.cells \
                   if [block for block in cell.blocks if block.type == 'phrase']]
+        if not cellnos:
+            rep.lazy(f)
+            return
         move = [cell for cell in self.cells if cell.no in cellnos]
         sourcepr = self.get_sourcepr()
         subjpr = self.get_subjpr()
@@ -161,17 +161,6 @@ class Phrases:
         for j in range(len(move)):
             move[j].no = j + i + 1
         self.cells = other + move
-    
-    def set_phname(self):
-        f = '[MClient] view.Phrases.set_phname'
-        for cell in self.cells:
-            for block in cell.blocks:
-                if block.type == 'phrase':
-                    self.num += 1
-        if not self.num:
-            rep.lazy(f)
-            return
-        self.phname = _('Phrases (Multitran)')
     
     def renumber(self):
         cellnos = []
@@ -212,7 +201,6 @@ class Phrases:
         self.set_last_wform()
         self.set_last_speech()
         self.set_last_transc()
-        self.set_phname()
         self.move()
         # Do this again for easier debugging
         self.renumber()
