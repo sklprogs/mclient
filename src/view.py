@@ -229,27 +229,6 @@ class Phrases:
             return -1
         return max(subjpr)
     
-    def move2(self):
-        self.cells.sort(key=lambda x: x.no)
-        '''
-        #self.cells = sorted(self.cells, key=lambda x: x.text)
-        #self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.col5, x.col6, x.text, x.no))
-        nos = [cell.no for cell in self.cells]
-        if not nos:
-            return
-        nos.sort()
-        print(nos)
-        cells2 = []
-        for no in nos:
-            for cell in self.cells:
-                if no == cell.no:
-                    cells2.append(cell)
-                    break
-        self.cells = cells2
-        for cell in self.cells:
-            print(f'#{cell.no}: {cell.text}')
-        '''
-    
     def run(self):
         ''' At this point, blocks may have identical cellno (especially, this
             concerns fixed blocks). Must be fixed before moving to the end.
@@ -262,9 +241,8 @@ class Phrases:
         self.set_last_transc()
         self.set_phsubj()
         self.move()
-        self.move2()
         # Do this again for easier debugging
-        #self.renumber()
+        self.renumber()
         return self.cells
 
 
@@ -782,7 +760,6 @@ class View:
     
     def run(self):
         self.check()
-        self.renumber()
         self.fill_cols()
         self.sort()
         self.restore_fixed()
