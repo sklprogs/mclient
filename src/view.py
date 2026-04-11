@@ -501,13 +501,6 @@ class View:
                 for type_ in self.fixed_cols:
                     count += 1
                     cell = self._create_fixed(i, type_, rowno)
-                    #cur
-                    '''
-                    if cell.text in (_('Phrases (Multitran)'), _('See also')):
-                        cell.text = cell.subj = ''
-                        for block in cell.blocks:
-                            block.text = block.subj = block.subjf = ''
-                    '''
                     self.cells.insert(i, cell)
                     i += 1
             i += 1
