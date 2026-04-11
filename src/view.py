@@ -164,8 +164,15 @@ class Phrases:
         self.phsubj.speechpr = speechpr
         #self.phsubj.rowno = max_rowno
         #self.phsubj.colno = 6
-        self.cells = other + [self.phsubj] + move
-        #self.cells = other + move
+        #cur
+        for i in range(len(other)):
+            other[i].no = i
+        #self.phsubj.no = i + 1
+        for j in range(len(move)):
+            #move[j].no = j + i + 1
+            move[j].no = j + i + 1
+        #self.cells = other + [self.phsubj] + move
+        self.cells = other + move
     
     def set_phsubj(self):
         f = '[MClient] view.Phrases.set_phsubj'
@@ -185,7 +192,8 @@ class Phrases:
         self.phsubj.fixed_block.text = self.phsubj.fixed_block.subj \
                                      = self.phsubj.fixed_block.subjf \
                                      = self.phname
-        self.phsubj.fixed_block.type = 'phsubj'
+        #self.phsubj.fixed_block.type = 'phsubj'
+        self.phsubj.fixed_block.type = 'subj'
         self.phsubj.blocks = [self.phsubj.fixed_block]
         self.phsubj.dic = self.last_dic
         self.phsubj.fixed_block.dic = self.last_dic
@@ -221,6 +229,27 @@ class Phrases:
             return -1
         return max(subjpr)
     
+    def move2(self):
+        self.cells.sort(key=lambda x: x.no)
+        '''
+        #self.cells = sorted(self.cells, key=lambda x: x.text)
+        #self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.col5, x.col6, x.text, x.no))
+        nos = [cell.no for cell in self.cells]
+        if not nos:
+            return
+        nos.sort()
+        print(nos)
+        cells2 = []
+        for no in nos:
+            for cell in self.cells:
+                if no == cell.no:
+                    cells2.append(cell)
+                    break
+        self.cells = cells2
+        for cell in self.cells:
+            print(f'#{cell.no}: {cell.text}')
+        '''
+    
     def run(self):
         ''' At this point, blocks may have identical cellno (especially, this
             concerns fixed blocks). Must be fixed before moving to the end.
@@ -233,8 +262,9 @@ class Phrases:
         self.set_last_transc()
         self.set_phsubj()
         self.move()
+        self.move2()
         # Do this again for easier debugging
-        self.renumber()
+        #self.renumber()
         return self.cells
 
 
@@ -524,10 +554,13 @@ class View:
                 for type_ in self.fixed_cols:
                     count += 1
                     cell = self._create_fixed(i, type_, rowno)
+                    #cur
+                    '''
                     if cell.text in (_('Phrases (Multitran)'), _('See also')):
                         cell.text = cell.subj = ''
                         for block in cell.blocks:
                             block.text = block.subj = block.subjf = ''
+                    '''
                     self.cells.insert(i, cell)
                     i += 1
             i += 1
@@ -747,20 +780,11 @@ class View:
                             case 'transc':
                                 cell.col6 = cell.transc.lower()
     
-    def convert_phsubj(self):
-        f = '[MClient] view.View.convert_phsubj'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        for cell in self.cells:
-            if cell.fixed_block and cell.fixed_block.type == 'phsubj':
-                cell.fixed_block.type = 'subj'
-    
     def run(self):
         self.check()
+        self.renumber()
         self.fill_cols()
         self.sort()
-        self.convert_phsubj()
         self.restore_fixed()
         self.restore_first()
         self.clear_duplicates()
