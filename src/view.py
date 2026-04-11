@@ -73,7 +73,6 @@ class Phrases:
         self.last_speech = ''
         self.last_transc = ''
         self.num = 0
-        self.phsubj = Cell()
         self.cells = cells
         
     def set_last_source(self):
@@ -153,29 +152,14 @@ class Phrases:
                 block.dic = self.last_dic
                 block.source = self.last_source
         other = [cell for cell in self.cells if not cell.no in cellnos]
-        self.phsubj.dic = self.last_dic
-        self.phsubj.source = self.last_source
-        self.phsubj.wform = self.last_wform
-        self.phsubj.speech = self.last_speech
-        self.phsubj.transc = self.last_transc
-        self.phsubj.sourcepr = sourcepr
-        self.phsubj.fixed_block.subj = self.phsubj.fixed_block.subjf = self.phname
-        self.phsubj.subjpr = subjpr + 1
-        self.phsubj.speechpr = speechpr
-        #self.phsubj.rowno = max_rowno
-        #self.phsubj.colno = 6
-        #cur
         for i in range(len(other)):
             other[i].no = i
-        #self.phsubj.no = i + 1
         for j in range(len(move)):
-            #move[j].no = j + i + 1
             move[j].no = j + i + 1
-        #self.cells = other + [self.phsubj] + move
         self.cells = other + move
     
-    def set_phsubj(self):
-        f = '[MClient] view.Phrases.set_phsubj'
+    def set_phname(self):
+        f = '[MClient] view.Phrases.set_phname'
         for cell in self.cells:
             for block in cell.blocks:
                 if block.type == 'phrase':
@@ -183,22 +167,7 @@ class Phrases:
         if not self.num:
             rep.lazy(f)
             return
-        #self.phname = _('Phrases ({})').format(self.num)
-        #mes = f'"{self.phname}"'
-        #Message(f, mes).show_debug()
         self.phname = _('Phrases (Multitran)')
-        self.phsubj.text = self.phsubj.subj = self.phname
-        self.phsubj.fixed_block = Block()
-        self.phsubj.fixed_block.text = self.phsubj.fixed_block.subj \
-                                     = self.phsubj.fixed_block.subjf \
-                                     = self.phname
-        #self.phsubj.fixed_block.type = 'phsubj'
-        self.phsubj.fixed_block.type = 'subj'
-        self.phsubj.blocks = [self.phsubj.fixed_block]
-        self.phsubj.dic = self.last_dic
-        self.phsubj.fixed_block.dic = self.last_dic
-        self.phsubj.fixed_block.source = self.last_source
-        self.phsubj.url = self.phsubj.fixed_block.url = ARTICLES.get_phurl()
     
     def renumber(self):
         cellnos = []
@@ -239,7 +208,7 @@ class Phrases:
         self.set_last_wform()
         self.set_last_speech()
         self.set_last_transc()
-        self.set_phsubj()
+        self.set_phname()
         self.move()
         # Do this again for easier debugging
         self.renumber()
