@@ -712,6 +712,23 @@ class View:
                             case 'transc':
                                 cell.col6 = cell.transc.lower()
     
+    def _get_last_subj(self):
+        for cell in self.cells[::-1]:
+            for block in cell.blocks:
+                if block.type == 'subj' and block.text == _('Phrases'):
+                    return cell
+    
+    def restore_url(self):
+        f = '[MClient] view.View.restore_url'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        last_subj = self._get_last_subj()
+        if not last_subj:
+            rep.lazy(f)
+            return
+        last_subj.url = last_subj.fixed_block.url = ARTICLES.get_phurl()
+    
     def run(self):
         self.check()
         self.fill_cols()
@@ -719,6 +736,7 @@ class View:
         self.restore_fixed()
         self.restore_first()
         self.clear_duplicates()
+        self.restore_url()
         self.renumber()
         return self.cells
 
