@@ -72,7 +72,7 @@ class Phrases:
         self.last_wform = ''
         self.last_speech = ''
         self.last_transc = ''
-        self.phname = _('Phrases (Multitran)')
+        self.phname = _('Phrases')
         self.cells = cells
         
     def set_last_source(self):
