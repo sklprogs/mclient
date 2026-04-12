@@ -596,7 +596,7 @@ class View:
                 else:
                     dic = cell.dic
             elif cell.fixed_block.type == 'subj':
-                if cell.text == subj:
+                if cell.text == subj or (not subj and not cell.subj):
                     cell.text = cell.fixed_block.text = ''
                 else:
                     subj = cell.subj
