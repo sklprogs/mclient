@@ -115,3 +115,6 @@ for now. Inbound tags have priority over outbound tags.
 
 fora:
 - Implement better splitting for "pave", "точка с запятой".
+
+mdic:
+- search is done for all sources, so do not warn about non-existent index
