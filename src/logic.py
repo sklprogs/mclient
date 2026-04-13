@@ -29,7 +29,16 @@ class App:
     
     def print(self):
         f = '[MClient] logic.App.print'
-        code = make_pretty(REQUEST.htm)
+        # Can be an empty list
+        cells = ARTICLES.get_table()
+        #TODO: elaborate
+        skipped = []
+        #skipped = com.get_skipped_terms()
+        code = HTM(cells, skipped).run()
+        if not code:
+            rep.empty(f)
+            return
+        code = make_pretty(code)
         if not code:
             rep.empty(f)
             return
