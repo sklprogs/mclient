@@ -95,11 +95,14 @@ class Sources:
         timer = Timer(f)
         timer.start()
         blocks = self.mcsource.request(search, url)
-        blocks += self.sdsource.request(search)
-        blocks += self.mbsource.request(search)
-        blocks += self.lgsource.request(search)
-        blocks += self.frsource.request(search)
-        blocks += self.mdsource.request(search)
+        if search == _('Phrases') and url:
+            rep.lazy(f)
+        else:
+            blocks += self.sdsource.request(search)
+            blocks += self.mbsource.request(search)
+            blocks += self.lgsource.request(search)
+            blocks += self.frsource.request(search)
+            blocks += self.mdsource.request(search)
         timer.end()
         return blocks
     
