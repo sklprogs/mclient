@@ -568,7 +568,7 @@ class Settings(QWidget):
         self.lay_prm.addLayout(self.lay_btn)
     
     def set_checkboxes(self):
-        self.cbx_no1 = CheckBox(_('Sort by each column (if it is set, except for transcription) and order parts of speech'))
+        self.cbx_no1 = CheckBox(_('Order cells'))
         self.cbx_no2 = CheckBox(_('Shorten subject titles'))
         self.cbx_no3 = CheckBox(_('Shorten parts of speech'))
         self.cbx_no4 = CheckBox(_('Show user names'))

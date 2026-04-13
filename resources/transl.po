@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-13 00:49+0300\n"
-"PO-Revision-Date: 2026-04-13 00:49+0300\n"
+"POT-Creation-Date: 2026-04-14 00:43+0300\n"
+"PO-Revision-Date: 2026-04-14 00:44+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -423,7 +423,7 @@ msgstr "Недопустимые входные данные!"
 #: mclient/src/sources/multitrancom/tags.py:305
 #: mclient/src/sources/stardict/elems.py:230
 #: mclient/src/sources/stardict/tags.py:206 mclient/src/view.py:520
-#: mclient/src/view.py:796
+#: mclient/src/view.py:828
 msgid "CELL #"
 msgstr "ЯЧЕЙКА №"
 
@@ -445,12 +445,12 @@ msgstr "ТИПЫ"
 #: mclient/src/sources/stardict/elems.py:230
 #: mclient/src/sources/stardict/tags.py:205
 #: mclient/src/sources/stardict/tags.py:293 mclient/src/view.py:343
-#: mclient/src/view.py:520 mclient/src/view.py:796
+#: mclient/src/view.py:520 mclient/src/view.py:828
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
 #: mclient/src/cells.py:204 mclient/src/sources/fora/stardict0/elems.py:203
-#: mclient/src/view.py:520 mclient/src/view.py:796
+#: mclient/src/view.py:520 mclient/src/view.py:828
 msgid "ROW #"
 msgstr "СТРОКА №"
 
@@ -1194,33 +1194,38 @@ msgstr "тест"
 msgid "not running"
 msgstr "не работает"
 
-#: mclient/src/logic.py:65
+#: mclient/src/logic.py:74
 msgid "Print"
 msgstr "Печать"
 
-#: mclient/src/logic.py:78 mclient/src/mclient.py:868
+#: mclient/src/logic.py:87 mclient/src/mclient.py:868
 msgid "Nothing has been found."
 msgstr "Ничего не найдено."
 
-#: mclient/src/logic.py:83 mclient/src/mclient.py:864
+#: mclient/src/logic.py:92 mclient/src/mclient.py:864
 msgid "Nothing has been found (skipped subjects: {})."
 msgstr "Ничего не найдено (игнорировано тематик: {})."
 
-#: mclient/src/logic.py:194
+#: mclient/src/logic.py:203
 msgid "The request is long ({} symbols). Do you really want to send it?"
 msgstr "Запрос длинный ({} символов). Отправить?"
 
-#: mclient/src/logic.py:221 skl_shared/src/get_url.py:39
+#: mclient/src/logic.py:230 skl_shared/src/get_url.py:39
 msgid "Unable to use unverified certificates!"
 msgstr "Не удается использовать неподтвержденные сертификаты!"
 
-#: mclient/src/logic.py:289 mclient/src/search/logic.py:70
+#: mclient/src/logic.py:298 mclient/src/search/logic.py:70
 msgid "Row #{}. Column #{}: \"{}\""
 msgstr "Строка №{}, столбец №{}: \"{}\""
 
-#: mclient/src/logic.py:303 mclient/src/search/logic.py:84
+#: mclient/src/logic.py:312 mclient/src/search/logic.py:84
 msgid "Row #{}. Column #{}. Text: \"{}\""
 msgstr "Строка №{}, столбец №{}. Текст: \"{}\""
+
+#: mclient/src/manager.py:98 mclient/src/table/logic.py:46 mclient/src/view.py:75
+#: mclient/src/view.py:718
+msgid "Phrases"
+msgstr "Фразы"
 
 #: mclient/src/mclient.py:51
 msgid "Sort terms by alphabet"
@@ -1524,12 +1529,8 @@ msgid "Part of speech {}:"
 msgstr "Часть речи {}:"
 
 #: mclient/src/settings/gui.py:571
-msgid ""
-"Sort by each column (if it is set, except for transcription) and order parts "
-"of speech"
-msgstr ""
-"Сортировать по каждому столбцу (если он задан, кроме транскрипции) и "
-"упорядочить части речи"
+msgid "Order cells"
+msgstr "Упорядочить ячейки"
 
 #: mclient/src/settings/gui.py:572
 msgid "Shorten subject titles"
@@ -14554,15 +14555,15 @@ msgstr "Высота окна: {}"
 msgid "Index must be set externally!"
 msgstr "Индекс должен быть задан извне!"
 
-#: mclient/src/table/logic.py:74
+#: mclient/src/table/logic.py:75
 msgid "Columns with no text: {}"
 msgstr "Столбцы без текста: {}"
 
-#: mclient/src/table/logic.py:77
+#: mclient/src/table/logic.py:78
 msgid "All columns have texts"
 msgstr "Текст есть во всех столбцах"
 
-#: mclient/src/table/logic.py:226
+#: mclient/src/table/logic.py:227
 msgid "Table size: {}×{}"
 msgstr "Размеры таблицы: {}×{}"
 
@@ -14682,19 +14683,15 @@ msgstr "Несовпадение в сокращенном виде"
 msgid "On MClient"
 msgstr "По поводу MClient"
 
-#: mclient/src/view.py:75
-msgid "Phrases"
-msgstr "Фразы"
-
 #: mclient/src/view.py:288
 msgid "Omitted cells: {}"
 msgstr "Опущенные ячейки: {}"
 
-#: mclient/src/view.py:796
+#: mclient/src/view.py:828
 msgid "COLUMN #"
 msgstr "СТОЛБЕЦ №"
 
-#: mclient/src/view.py:796
+#: mclient/src/view.py:828
 msgid "CODE"
 msgstr "КОД"
 
@@ -15547,6 +15544,13 @@ msgstr ""
 "Заданные параметры времени неверны или не поддерживаются.\n"
 "\n"
 "Подробности: {}"
+
+#~ msgid ""
+#~ "Sort by each column (if it is set, except for transcription) and order "
+#~ "parts of speech"
+#~ msgstr ""
+#~ "Сортировать по каждому столбцу (если он задан, кроме транскрипции) и "
+#~ "упорядочить части речи"
 
 #~ msgid "Phrases ({})"
 #~ msgstr "Фразы ({})"
