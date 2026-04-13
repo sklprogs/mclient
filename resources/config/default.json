@@ -246,6 +246,7 @@
 ,"ShortSpeech": true
 ,"ShowUserNames": true
 ,"SortByColumns": true
+,"ClearSingleSource": true
 ,"timeout": "5.0"
 ,"hotkey_delay": 0
 ,"config": {"min_version": 3}
