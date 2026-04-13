@@ -729,10 +729,24 @@ class View:
             return
         last_subj.url = last_subj.fixed_block.url = ARTICLES.get_phurl()
     
+    def clear_single_source(self):
+        f = '[MClient] view.View.clear_single_source'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        if not CONFIG.new['ClearSingleSource']:
+            rep.lazy(f)
+            return
+        sources = set([cell.source for cell in self.cells if cell.source])
+        if len(sources) == 1:
+            for cell in self.cells:
+                cell.source = ''
+    
     def run(self):
         self.check()
         self.fill_cols()
         self.sort()
+        self.clear_single_source()
         self.restore_fixed()
         self.restore_first()
         self.clear_duplicates()
