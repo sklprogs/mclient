@@ -42,7 +42,8 @@ class Table:
             return
         for row in table[::-1]:
             for cell in row:
-                if cell.fixed_block and cell.fixed_block.type == 'phsubj':
+                if cell.fixed_block and cell.fixed_block.type == 'subj' \
+                and cell.text == _('Phrases') and cell.url:
                     return(cell.text, cell.fixed_block.url)
     
     def get_first_term(self):
