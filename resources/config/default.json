@@ -60,7 +60,7 @@
         ,"hint": "Copy the nominative case"
         }
     ,"copy_sel":
-        {"hotkeys": ["Ctrl+Return", "Ctrl+Enter"]
+        {"hotkeys": ["Ctrl+Enter"]
         ,"hint": "Copy the current selection"
         }
     ,"copy_url":
