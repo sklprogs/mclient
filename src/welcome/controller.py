@@ -146,9 +146,7 @@ class Welcome:
         '''
         self.set_col_widths()
         self.set_spans()
-        self.hide_rows((0, 1, 2, 3, 4, 5, 6, 7, 8))
         self.gui.resize_rows()
-        self.show_rows((0, 1, 2, 3, 4, 5, 6, 7, 8))
     
     def reset(self):
         #self.set_col_widths()
