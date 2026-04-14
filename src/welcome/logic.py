@@ -89,7 +89,7 @@ class Welcome:
         self.ihotkeys = Hotkeys()
         
         self.ihotkeys.add(_('Translate the current input or selection')
-                         ,(_('Left mouse button'), 'Return'))
+                         ,(_('Left mouse button'), 'Enter'))
         
         self.ihotkeys.add(CONFIG.new['actions']['copy_sel']['hint']
                          ,[_('Right mouse button')] + CONFIG.new['actions']['copy_sel']['hotkeys'])
