@@ -135,7 +135,7 @@ class Welcome:
     
     def set_col_widths(self):
         for i in range(COLNUM):
-            self.gui.set_col_width(i, 166)
+            self.gui.set_col_width(i, 200)
     
     def resize_rows(self):
         ''' Create the table and fill the model before resizing rows, otherwise
