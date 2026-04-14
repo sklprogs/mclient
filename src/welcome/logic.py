@@ -156,7 +156,7 @@ class Welcome:
         mes = _('Welcome to {}!').format(self.desc)
         #TODO: Fix table to use <h1>
         #mes = f'<h1>{mes}</h1>'
-        mes = f'<b><p style="font-family: Liberation Sans; font-size: 16pt">{mes}</p></b>'
+        mes = f'<b><p style="font-family: Sans; font-size: 16pt">{mes}</p></b>'
         self.table.append([mes])
     
     def add_cols(self):
