@@ -157,7 +157,8 @@ class Table:
             return
         if rowno >= len(self.logic.plain) \
         or colno >= len(self.logic.plain[rowno]):
-            rep.wrong_input(f, (rowno, colno,))
+            # Module is buggy and should be reworked, so not Graphical for now
+            rep.wrong_input(f, (rowno, colno,), False)
             return
         if not self.logic.plain[rowno][colno].strip():
             return
