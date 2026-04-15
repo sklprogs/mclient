@@ -42,7 +42,8 @@ class Hotkeys:
                 row = []
             i += 1
         if row:
-            row += ['' * COLNUM]
+            while len(row) < COLNUM:
+                row.append('')
             rows.append(row)
         return rows
 
