@@ -37,7 +37,7 @@ class Hotkeys:
             hotkeys = self._format_hotkeys(hotkeys)
             desc = self._format_desc(self.hotkeys[i][0])
             row += [desc, hotkeys]
-            if (i + 1) % COLNUM == 0:
+            if len(row) == COLNUM:
                 rows.append(row)
                 row = []
             i += 1
