@@ -30,17 +30,14 @@ class Hotkeys:
             rep.empty(f)
             return []
         rows = []
-        hotkeys = '; '.join(self.hotkeys[0][1])
-        hotkeys = self._format_hotkeys(hotkeys)
-        desc = self._format_desc(self.hotkeys[0][0])
-        row = [desc, hotkeys]
-        i = 1
+        row = []
+        i = 0
         while i < len(self.hotkeys):
             hotkeys = '; '.join(self.hotkeys[i][1])
             hotkeys = self._format_hotkeys(hotkeys)
             desc = self._format_desc(self.hotkeys[i][0])
             row += [desc, hotkeys]
-            if i % COLNUM == 0:
+            if (i + 1) % COLNUM == 0:
                 rows.append(row)
                 row = []
             i += 1
