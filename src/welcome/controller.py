@@ -75,6 +75,8 @@ class Welcome:
             rep.empty(f)
             return
         for source in sources:
+            if source.name in SOURCES.blocked:
+                continue
             isource = Source()
             isource.title = source.name
             isource.Online = True
