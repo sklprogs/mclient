@@ -34,8 +34,9 @@ mclient:
 - Disabling prioritization doesn't unprioritize subjects
 
 multitrancom:
-- EN_RU: slick: 2 Multitran sources
-- EN-RU: 150 percent declining balance depreciation: Remove "Короткая ссылка"
+- EN-RU: pot boy, barrister, 150 percent declining balance depreciation:
+  no grey line
+- EN-RU: slick: 2 Multitran sources
 - EN-RU: cold feet -> get cold feet -> <!-- --> Словари Форум Купить Скачать
 Контакты <!-- // --> → + <!-- // --> Не найдено
 - EN_RU: lockup: "холодная (сущ.)": each bracket is on a new line
