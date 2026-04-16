@@ -75,12 +75,13 @@ class Welcome:
             rep.empty(f)
             return
         for source in sources:
-            if source.name in SOURCES.blocked:
-                continue
             isource = Source()
             isource.title = source.name
             isource.Online = True
-            if source.count_valid():
+            if source.name in SOURCES.blocked:
+                isource.status = _('ignored')
+                isource.color = 'red'
+            elif source.count_valid():
                 isource.status = _('running')
                 isource.color = 'green'
             self.sources.append(isource)
