@@ -287,6 +287,13 @@ class SeparateWords:
         rep.deleted(f, len(self.blocks) - no)
         self.blocks = self.blocks[:no]
     
+    def keep_urls(self):
+        f = '[MClient] sources.multitrancom.elems.SeparateWords.keep_urls'
+        old_len = len(self.blocks)
+        self.blocks = [block for block in self.blocks \
+                      if not (not block.url and block.type == 'term')]
+        rep.deleted(f, old_len - len(self.blocks))
+    
     def run(self):
         f = '[MClient] sources.multitrancom.elems.SeparateWords.run'
         if not self.has():
@@ -297,6 +304,7 @@ class SeparateWords:
         self.delete_tail()
         self.set_terms()
         self.add_subject()
+        self.keep_urls()
         return self.blocks
 
 
