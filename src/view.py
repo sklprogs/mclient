@@ -156,6 +156,8 @@ class Phrases:
                 cell.fixed_block.dic = self.last_dic
                 cell.fixed_block.subj = cell.fixed_block.subjf = self.phname
         other = [cell for cell in self.cells if not cell.no in cellnos]
+        # Initialize 'i' because it is further used, but 'other' may be empty
+        i = 0
         for i in range(len(other)):
             other[i].no = i
         for j in range(len(move)):
