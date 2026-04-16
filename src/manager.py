@@ -30,6 +30,7 @@ class Sources:
         self.lgsource = sources.dsl.run.Source()
         self.frsource = sources.fora.run.Source()
         self.mdsource = sources.mdic.run.Source()
+        self.blocked = CONFIG.new['sources']['blocked'].keys()
     
     def fix_url(self, url):
         ''' This method cannot be deleted yet, since it processes both article
@@ -65,12 +66,19 @@ class Sources:
             return []
         timer = Timer(f)
         timer.start()
-        lst = self.mcsource.suggest(search, limit)
-        lst += self.sdsource.suggest(search, limit)
-        lst += self.mbsource.suggest(search, limit)
-        lst += self.lgsource.suggest(search, limit)
-        lst += self.frsource.suggest(search, limit)
-        lst += self.mdsource.suggest(search, limit)
+        lst = []
+        if not self.mcsource.name in self.blocked:
+            lst += self.mcsource.suggest(search, limit)
+        if not self.sdsource.name in self.blocked:
+            lst += self.sdsource.suggest(search, limit)
+        if not self.mbsource.name in self.blocked:
+            lst += self.mbsource.suggest(search, limit)
+        if not self.lgsource.name in self.blocked:
+            lst += self.lgsource.suggest(search, limit)
+        if not self.frsource.name in self.blocked:
+            lst += self.frsource.suggest(search, limit)
+        if not self.mdsource.name in self.blocked:
+            lst += self.mdsource.suggest(search, limit)
         lst = [item.strip() for item in lst if item.strip()]
         lst = sorted(set(lst))
         timer.end()
@@ -94,15 +102,22 @@ class Sources:
             return []
         timer = Timer(f)
         timer.start()
-        blocks = self.mcsource.request(search, url)
+        blocks = []
+        if not self.mcsource.name in self.blocked:
+            blocks += self.mcsource.request(search, url)
         if search == _('Phrases') and url:
             rep.lazy(f)
         else:
-            blocks += self.sdsource.request(search)
-            blocks += self.mbsource.request(search)
-            blocks += self.lgsource.request(search)
-            blocks += self.frsource.request(search)
-            blocks += self.mdsource.request(search)
+            if not self.sdsource.name in self.blocked:
+                blocks += self.sdsource.request(search)
+            if not self.mbsource.name in self.blocked:
+                blocks += self.mbsource.request(search)
+            if not self.lgsource.name in self.blocked:
+                blocks += self.lgsource.request(search)
+            if not self.frsource.name in self.blocked:
+                blocks += self.frsource.request(search)
+            if not self.mdsource.name in self.blocked:
+                blocks += self.mdsource.request(search)
         timer.end()
         return blocks
     
