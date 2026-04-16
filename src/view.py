@@ -59,7 +59,7 @@ class OrderSources:
         try:
             return self.ordered.index(source)
         except ValueError:
-            rep.wrong_input(f, source)
+            # This can happen if the source is blocked
             return -1
 
 
