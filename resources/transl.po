@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-14 00:43+0300\n"
-"PO-Revision-Date: 2026-04-14 00:44+0300\n"
+"POT-Creation-Date: 2026-04-17 02:04+0300\n"
+"PO-Revision-Date: 2026-04-17 02:05+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -171,7 +171,7 @@ msgstr "Настройки"
 msgid "Paste a special symbol"
 msgstr "Вставить специальный символ"
 
-#: mclient/src/_translations.py:50 mclient/src/welcome/logic.py:68
+#: mclient/src/_translations.py:50 mclient/src/welcome/logic.py:66
 msgid "Main hotkeys"
 msgstr "Основные сочетания клавиш"
 
@@ -181,7 +181,7 @@ msgstr "Общая лексика"
 
 #: mclient/src/_translations.py:52 mclient/src/settings/gui.py:34
 #: mclient/src/settings/gui.py:279 mclient/src/settings/gui.py:303
-#: mclient/src/sources/multitrancom/elems.py:636
+#: mclient/src/sources/multitrancom/elems.py:644
 #: mclient/src/sources/multitrancom/run.py:26 mclient/src/tests/sources.py:1032
 #: mclient/src/tests/sources.py:1085 mclient/src/tests/sources.py:1123
 msgid "Multitran"
@@ -419,19 +419,19 @@ msgstr "Недопустимые входные данные!"
 #: mclient/src/sources/dsl/tags.py:216
 #: mclient/src/sources/fora/stardict0/elems.py:182
 #: mclient/src/sources/fora/stardict0/elems.py:203
-#: mclient/src/sources/multitrancom/elems.py:472
+#: mclient/src/sources/multitrancom/elems.py:480
 #: mclient/src/sources/multitrancom/tags.py:305
 #: mclient/src/sources/stardict/elems.py:230
-#: mclient/src/sources/stardict/tags.py:206 mclient/src/view.py:520
-#: mclient/src/view.py:828
+#: mclient/src/sources/stardict/tags.py:206 mclient/src/view.py:522
+#: mclient/src/view.py:830
 msgid "CELL #"
 msgstr "ЯЧЕЙКА №"
 
 #: mclient/src/cells.py:44 mclient/src/cells.py:204
 #: mclient/src/sources/fora/stardict0/elems.py:182
 #: mclient/src/sources/fora/stardict0/elems.py:204
-#: mclient/src/sources/multitrancom/elems.py:472
-#: mclient/src/sources/stardict/elems.py:230 mclient/src/view.py:520
+#: mclient/src/sources/multitrancom/elems.py:480
+#: mclient/src/sources/stardict/elems.py:230 mclient/src/view.py:522
 msgid "TYPES"
 msgstr "ТИПЫ"
 
@@ -439,18 +439,18 @@ msgstr "ТИПЫ"
 #: mclient/src/sources/dsl/tags.py:215 mclient/src/sources/dsl/tags.py:301
 #: mclient/src/sources/fora/stardict0/elems.py:182
 #: mclient/src/sources/fora/stardict0/elems.py:204
-#: mclient/src/sources/multitrancom/elems.py:472
+#: mclient/src/sources/multitrancom/elems.py:480
 #: mclient/src/sources/multitrancom/tags.py:304
 #: mclient/src/sources/multitrancom/tags.py:371
 #: mclient/src/sources/stardict/elems.py:230
 #: mclient/src/sources/stardict/tags.py:205
-#: mclient/src/sources/stardict/tags.py:293 mclient/src/view.py:343
-#: mclient/src/view.py:520 mclient/src/view.py:828
+#: mclient/src/sources/stardict/tags.py:293 mclient/src/view.py:345
+#: mclient/src/view.py:522 mclient/src/view.py:830
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
 #: mclient/src/cells.py:204 mclient/src/sources/fora/stardict0/elems.py:203
-#: mclient/src/view.py:520 mclient/src/view.py:828
+#: mclient/src/view.py:522 mclient/src/view.py:830
 msgid "ROW #"
 msgstr "СТРОКА №"
 
@@ -683,7 +683,7 @@ msgstr "История"
 #: mclient/src/sources/multitrancom/tags.py:304
 #: mclient/src/sources/multitrancom/tags.py:371
 #: mclient/src/sources/stardict/tags.py:205
-#: mclient/src/sources/stardict/tags.py:293 mclient/src/view.py:343
+#: mclient/src/sources/stardict/tags.py:293 mclient/src/view.py:345
 #: skl_shared/src/test.py:728
 msgid "#"
 msgstr "№"
@@ -1222,8 +1222,8 @@ msgstr "Строка №{}, столбец №{}: \"{}\""
 msgid "Row #{}. Column #{}. Text: \"{}\""
 msgstr "Строка №{}, столбец №{}. Текст: \"{}\""
 
-#: mclient/src/manager.py:98 mclient/src/table/logic.py:46 mclient/src/view.py:75
-#: mclient/src/view.py:718
+#: mclient/src/manager.py:108 mclient/src/table/logic.py:46
+#: mclient/src/view.py:75 mclient/src/view.py:720
 msgid "Phrases"
 msgstr "Фразы"
 
@@ -1361,7 +1361,7 @@ msgstr "Из статьи"
 #: mclient/src/prior_block/controller.py:199
 #: mclient/src/prior_block/controller.py:251 mclient/src/save/controller.py:188
 #: mclient/src/settings/gui.py:327 mclient/src/sources/multitrandem/get.py:52
-#: mclient/src/view.py:478 skl_shared/src/graphics/option_menu/controller.py:65
+#: mclient/src/view.py:480 skl_shared/src/graphics/option_menu/controller.py:65
 #: skl_shared/src/text_file.py:145
 msgid ""
 "An unknown mode \"{}\"!\n"
@@ -1665,7 +1665,7 @@ msgstr "Образец \"{}\" тегом не является!"
 #: mclient/src/sources/multitrancom/tags.py:304
 #: mclient/src/sources/multitrancom/tags.py:371
 #: mclient/src/sources/stardict/tags.py:205
-#: mclient/src/sources/stardict/tags.py:293 mclient/src/view.py:343
+#: mclient/src/sources/stardict/tags.py:293 mclient/src/view.py:345
 msgid "TYPE"
 msgstr "ТИП"
 
@@ -1816,16 +1816,16 @@ msgstr "Отдельные слова"
 msgid "sep. words"
 msgstr "отд. слова"
 
-#: mclient/src/sources/multitrancom/elems.py:344
+#: mclient/src/sources/multitrancom/elems.py:352
 msgid "Unexpected block type: \"{}\"!"
 msgstr "Неожиданный тип блока: \"{}\"!"
 
-#: mclient/src/sources/multitrancom/elems.py:383
-#: mclient/src/sources/multitrancom/elems.py:396
+#: mclient/src/sources/multitrancom/elems.py:391
+#: mclient/src/sources/multitrancom/elems.py:404
 msgid "Block #{}. Text: \"{}\". URL: {}"
 msgstr "Блок №{}. Текст: \"{}\". URL: {}"
 
-#: mclient/src/sources/multitrancom/elems.py:425
+#: mclient/src/sources/multitrancom/elems.py:433
 msgid "Block #{}. Type: \"{}\". Text: \"{}\". URL: \"{}\""
 msgstr "Блок №{}. Тип: \"{}\". Текст: \"{}\". URL: \"{}\""
 
@@ -14535,19 +14535,19 @@ msgstr "ЗАБЛОКИРОВАНО"
 msgid "Paste symbols"
 msgstr "Вставка символов"
 
-#: mclient/src/table/controller.py:214
+#: mclient/src/table/controller.py:215
 msgid "No cell is selected!"
 msgstr "Нет выбранных ячеек!"
 
-#: mclient/src/table/controller.py:344
+#: mclient/src/table/controller.py:345
 msgid "Number of cells: {}"
 msgstr "Число ячеек: {}"
 
-#: mclient/src/table/controller.py:346
+#: mclient/src/table/controller.py:347
 msgid "Number of long cells: {}"
 msgstr "Число длинных ячеек: {}"
 
-#: mclient/src/table/controller.py:359
+#: mclient/src/table/controller.py:360
 msgid "Window height: {}"
 msgstr "Высота окна: {}"
 
@@ -14683,15 +14683,15 @@ msgstr "Несовпадение в сокращенном виде"
 msgid "On MClient"
 msgstr "По поводу MClient"
 
-#: mclient/src/view.py:288
+#: mclient/src/view.py:290
 msgid "Omitted cells: {}"
 msgstr "Опущенные ячейки: {}"
 
-#: mclient/src/view.py:828
+#: mclient/src/view.py:830
 msgid "COLUMN #"
 msgstr "СТОЛБЕЦ №"
 
-#: mclient/src/view.py:828
+#: mclient/src/view.py:830
 msgid "CODE"
 msgstr "КОД"
 
@@ -14700,48 +14700,52 @@ msgid "Offline dictionaries loaded: "
 msgstr "Загружено локальных словарей: "
 
 #: mclient/src/welcome/controller.py:82
+msgid "ignored"
+msgstr "игнорируется"
+
+#: mclient/src/welcome/controller.py:85
 msgid "running"
 msgstr "работает"
 
-#: mclient/src/welcome/logic.py:70
+#: mclient/src/welcome/logic.py:68
 msgid "(see documentation for other hotkeys, mouse bindings and functions)"
 msgstr ""
 "(см. документацию для получения информации о других сочетаниях клавиш, кнопок "
 "мыши и возможностях)"
 
-#: mclient/src/welcome/logic.py:91
+#: mclient/src/welcome/logic.py:89
 msgid "Translate the current input or selection"
 msgstr "Перевести текущий ввод или выделение"
 
-#: mclient/src/welcome/logic.py:92
+#: mclient/src/welcome/logic.py:90
 msgid "Left mouse button"
 msgstr "Левая кнопка мыши"
 
-#: mclient/src/welcome/logic.py:95
+#: mclient/src/welcome/logic.py:93
 msgid "Right mouse button"
 msgstr "Правая кнопка мыши"
 
-#: mclient/src/welcome/logic.py:97
+#: mclient/src/welcome/logic.py:95
 msgid "Show the program window (system-wide)"
 msgstr "Показать окно программы (системное сочетание)"
 
-#: mclient/src/welcome/logic.py:99
+#: mclient/src/welcome/logic.py:97
 msgid "Translate selection from an external program"
 msgstr "Перевести выделение во внешней программе"
 
-#: mclient/src/welcome/logic.py:102
+#: mclient/src/welcome/logic.py:100
 msgid "Minimize the program window"
 msgstr "Свернуть окно программы"
 
-#: mclient/src/welcome/logic.py:148
+#: mclient/src/welcome/logic.py:146
 msgid "This program retrieves translation from online/offline sources."
 msgstr "Эта программа — оболочка для онлайн и локальных словарей."
 
-#: mclient/src/welcome/logic.py:151
+#: mclient/src/welcome/logic.py:149
 msgid "Use an entry area below to enter a word/phrase to be translated."
 msgstr "Введите слово или фразу для перевода в область ввода ниже."
 
-#: mclient/src/welcome/logic.py:156
+#: mclient/src/welcome/logic.py:154
 msgid "Welcome to {}!"
 msgstr "{} приветствует Вас!"
 
