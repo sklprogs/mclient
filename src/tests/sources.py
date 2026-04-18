@@ -22,7 +22,8 @@ from config import CONFIG
 #SEARCH = 'account'
 #SEARCH = 'constant-voltage welding source'
 #SEARCH = 'wine structure'
-SEARCH = 'wine'
+#SEARCH = 'wine'
+SEARCH = 'слово'
 #SEARCH = 'pail'
 #SEARCH = 'absolute'
 #SEARCH = 'bottling'
@@ -546,6 +547,7 @@ class Get:
         return iget.debug()
     
     def run_multitrandem(self):
+        f = '[MClient] tests.sources.Get.run_multitrandem'
         from sources.multitrandem.get import CODING, Get as mGet
         result = mGet(SEARCH).run()
         if not result:
