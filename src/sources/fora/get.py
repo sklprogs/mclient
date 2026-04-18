@@ -150,7 +150,8 @@ class Index:
         #TODO: Implement finding 1st entry
         f = '[MClient] sources.fora.get.Index.suggest'
         if not self.Success:
-            rep.cancel(f)
+            # Suppress extra warnings when doing global search
+            rep.lazy(f)
             return []
         bpattern = b'\n' + bytes(pattern, 'utf-8')
         matches = []
@@ -552,7 +553,8 @@ class AllDics:
         timer.end()
         if not self.get_valid():
             self.Success = False
-            rep.empty_output(f)
+            # Suppress extra warnings when doing global search
+            rep.lazy(f)
     
     def search(self, pattern):
         f = '[MClient] sources.fora.get.AllDics.search'
