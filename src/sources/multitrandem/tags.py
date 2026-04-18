@@ -186,24 +186,6 @@ class Tags:
         for block in self.blocks:
             block.cellno = self.cellno
     
-    def add_head(self):
-        f = '[MClient] sources.multitrandem.tags.Tags.add_head'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        block = Block()
-        '''
-        block.type = 'dic'
-        # self.article.dic
-        #TODO: Set dic name
-        block.text = block.dic = 'sample_dic.erd'
-        self.blocks.insert(0, block)
-        '''
-        block = Block()
-        block.type = 'source'
-        block.text = block.source = self.source
-        self.blocks.insert(0, block)
-    
     def run(self):
         self.set_langs()
         self.check()
@@ -212,6 +194,5 @@ class Tags:
         self.decode()
         self.get_types()
         self.set_types()
-        self.add_head()
         self.set_cellnos()
         return self.blocks
