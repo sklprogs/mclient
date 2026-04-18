@@ -133,13 +133,13 @@ class Elems:
         self.strip()
         # Prepare contents
         self.set_dic_titles()
-        self.set_source()
         self.add_brackets()
         self.remove_dupl_wforms()
         # Prepare for cells
         self.fill()
         self.remove_fixed()
         self.insert_fixed()
+        self.set_source()
         self.set_cellnos()
         # Extra spaces in the beginning may cause sorting problems
         self.add_space()
