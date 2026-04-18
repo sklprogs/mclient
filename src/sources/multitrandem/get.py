@@ -1831,6 +1831,7 @@ class Get:
         match speech:
             case None:
                 rep.empty(f)
+                return
             case 0:
                 # MT: phrase;phrase
                 self.speech = _('Phrase')
