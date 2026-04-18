@@ -676,22 +676,20 @@ class App:
         gi.objs.panel.opt_lg2.reset(langs, CONFIG.new['lang2'])
     
     def set_next_lang1(self):
-        gi.objs.panel.opt_lg1.set_next()
-        self.update_lang1()
+        gi.objs.get_panel().opt_lg1.set_next()
+        self.set_lang1()
     
     def set_next_lang2(self):
-        # We want to navigate through the limited list here
-        self.update_lang2()
         gi.objs.get_panel().opt_lg2.set_next()
-        self.update_lang2()
+        self.set_lang2()
     
     def set_prev_lang1(self):
         gi.objs.panel.opt_lg1.set_prev()
-        self.update_lang1()
+        self.set_lang1()
     
     def set_prev_lang2(self):
         gi.objs.get_panel().opt_lg2.set_prev()
-        self.update_lang2()
+        self.set_lang2()
     
     def set_lang1(self):
         f = '[MClient] mclient.App.set_lang1'
@@ -1041,6 +1039,14 @@ class App:
                      ,self.copy_wform)
         self.gui.bind(CONFIG.new['actions']['select_block']['hotkeys']
                      ,BLOCK_MODE.toggle)
+        self.gui.bind(CONFIG.new['actions']['next_lang1']['hotkeys']
+                     ,self.set_next_lang1)
+        self.gui.bind(CONFIG.new['actions']['next_lang2']['hotkeys']
+                     ,self.set_next_lang2)
+        self.gui.bind(CONFIG.new['actions']['prev_lang1']['hotkeys']
+                     ,self.set_prev_lang1)
+        self.gui.bind(CONFIG.new['actions']['prev_lang2']['hotkeys']
+                     ,self.set_prev_lang2)
         
         self.history.gui.bind(CONFIG.new['actions']['toggle_history']['hotkeys']
                              ,self.history.close)
