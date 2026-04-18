@@ -642,10 +642,13 @@ class Tags:
             chunks = []
         tags = []
         blocks = []
+        itags = None
         for i in range(len(chunks)):
             itags = tg.Tags(chunks[i], i)
             blocks += itags.run()
             tags += itags.tags
+        if itags is None:
+            return
         itags.tags = tags
         itags.blocks = blocks
         return itags.debug()
