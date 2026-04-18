@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-17 02:04+0300\n"
-"PO-Revision-Date: 2026-04-17 02:05+0300\n"
+"POT-Creation-Date: 2026-04-18 03:14+0300\n"
+"PO-Revision-Date: 2026-04-18 03:15+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -1860,6 +1860,10 @@ msgstr ""
 "Не удается загрузить страницу. Попытаться снова?\n"
 "\n"
 "Подробности: {}"
+
+#: mclient/src/sources/multitrancom/get.py:218
+msgid "Connect multitran.com"
+msgstr "Соединение с multitran.com"
 
 #: mclient/src/sources/multitrancom/pairs.py:12
 msgid "Abaza"
