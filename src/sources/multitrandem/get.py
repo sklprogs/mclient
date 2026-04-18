@@ -1386,8 +1386,7 @@ class Articles(UPage):
         if not chunk:
             #rep.empty(f)
             return
-        return Xor(data = chunk
-                  ,offset = -251).dexor()
+        return Xor(chunk, -251).dexor()
     
     def search(self, coded):
         # Do not fail the whole class upon a failed search
@@ -1402,9 +1401,7 @@ class Articles(UPage):
         if not poses:
             rep.empty(f)
             return
-        chunk = self.get_part2(pattern = coded
-                              ,start = poses[0]
-                              ,end = poses[1])
+        chunk = self.get_part2(coded, poses[0], poses[1])
         return self.parse(chunk)
 
 
@@ -1427,9 +1424,7 @@ class Glue(UPage):
         if not poses:
             rep.empty(f)
             return
-        chunk = self.get_part2(pattern = coded
-                              ,start = poses[0]
-                              ,end = poses[1])
+        chunk = self.get_part2(coded, poses[0], poses[1])
         if chunk:
             return self.parse(chunk)
         ''' 'dict.erd' sometimes does not comprise stem numbers provided by
@@ -1833,60 +1828,61 @@ class Get:
         if DEBUG:
             mes = f'{com.get_string(chno)} -> {speech}'
             Message(f, mes).show_debug()
-        if speech is None:
-            rep.empty(f)
-        elif speech == 0:
-            # MT: phrase;phrase
-            self.speech = _('Phrase')
-            self.spabbr = _('phrase')
-        elif speech == 1:
-            # MT: Abbreviation;abbr;Сокращение;сокр.
-            self.speech = _('Abbreviation')
-            self.spabbr = _('abbr.')
-        elif speech == 2:
-            # MT: Adverb;adv;Наречие;нареч.
-            self.speech = _('Adverb')
-            self.spabbr = _('adv.')
-        elif speech == 3:
-            # MT: Interjection;interj.;
-            # My translation: Междометие;межд.
-            self.speech = _('Interjection')
-            self.spabbr = _('interj.')
-        elif speech == 4:
-            # MT: Conjunction;conj.
-            # My translation: Союз;союз
-            self.speech = _('Conjunction')
-            self.spabbr = _('conj.')
-        elif speech == 5:
-            # MT: Article;article
-            # My translation: Артикль;арт.
-            self.speech = _('Article')
-            self.spabbr = _('art.')
-        elif speech == 6:
-            # MT: Numeral;num;
-            # My translation: Числительное;числ.
-            self.speech = _('Numeral')
-            self.spabbr = _('num.')
-        elif speech == 7:
-            # MT: Ord Numeral;ord.num;
-            # My translation: Порядковое числительное;поряд.числ.
-            self.speech = _('Ordinal Numeral')
-            self.spabbr = _('ord.num.')
-        elif speech == 8:
-            # MT: Preposition;prepos.;Предлог;предл.
-            self.speech = _('Preposition')
-            self.spabbr = _('prepos.')
-        elif speech == 9:
-            # MT: Form;form
-            # My translation: Форма;форма (?)
-            self.speech = _('Form')
-            self.spabbr = _('form')
-        elif speech == 10:
-            # MT: Particle;part.;
-            # My translation: Частица;част.
-            self.speech = _('Particle')
-            self.spabbr = _('part.')
-        elif 11 <= speech < 16:
+        match speech:
+            case None:
+                rep.empty(f)
+            case 0:
+                # MT: phrase;phrase
+                self.speech = _('Phrase')
+                self.spabbr = _('phrase')
+            case 1:
+                # MT: Abbreviation;abbr;Сокращение;сокр.
+                self.speech = _('Abbreviation')
+                self.spabbr = _('abbr.')
+            case 2:
+                # MT: Adverb;adv;Наречие;нареч.
+                self.speech = _('Adverb')
+                self.spabbr = _('adv.')
+            case 3:
+                # MT: Interjection;interj.;
+                # My translation: Междометие;межд.
+                self.speech = _('Interjection')
+                self.spabbr = _('interj.')
+            case 4:
+                # MT: Conjunction;conj.
+                # My translation: Союз;союз
+                self.speech = _('Conjunction')
+                self.spabbr = _('conj.')
+            case 5:
+                # MT: Article;article
+                # My translation: Артикль;арт.
+                self.speech = _('Article')
+                self.spabbr = _('art.')
+            case 6:
+                # MT: Numeral;num;
+                # My translation: Числительное;числ.
+                self.speech = _('Numeral')
+                self.spabbr = _('num.')
+            case 7:
+                # MT: Ord Numeral;ord.num;
+                # My translation: Порядковое числительное;поряд.числ.
+                self.speech = _('Ordinal Numeral')
+                self.spabbr = _('ord.num.')
+            case 8:
+                # MT: Preposition;prepos.;Предлог;предл.
+                self.speech = _('Preposition')
+                self.spabbr = _('prepos.')
+            case 9:
+                # MT: Form;form
+                # My translation: Форма;форма (?)
+                self.speech = _('Form')
+                self.spabbr = _('form')
+            case 10:
+                # MT: Particle;part.;
+                # My translation: Частица;част.
+                self.speech = _('Particle')
+                self.spabbr = _('part.')
+        if 11 <= speech < 16:
             # MT: Predicative;predic.
             # My translation: Предикатив;предик.
             self.speech = _('Predicative')
