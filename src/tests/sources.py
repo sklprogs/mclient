@@ -185,6 +185,25 @@ class View:
         timer.end()
         return iview.debug()
     
+    def run_multitrandem(self):
+        f = '[MClient] tests.sources.View.run_multitrandem'
+        from articles import ARTICLES
+        from sources.multitrandem.run import Source as dmSource
+        from cells import Elems as dmElems, Cells
+        from view import Omit as dmOmit, Prioritize as dmPrioritize, View as dmView
+        
+        blocks = dmSource().request(SEARCH)
+        blocks = dmElems(blocks).run()
+        cells = Cells(blocks).run()
+        
+        ARTICLES.add(SEARCH, URL, cells)
+        
+        cells = dmOmit(cells).run()
+        cells = dmPrioritize(cells).run()
+        iview = dmView(cells)
+        iview.run()
+        return iview.debug()
+    
     def run_dsl(self):
         f = '[MClient] tests.sources.View.run_dsl'
         import logic as lg
@@ -244,7 +263,7 @@ class Elems:
                 blocks += add
         ielems = el.Elems(blocks = blocks
                          ,abbr = None
-                         ,langs = gt.objs.get_all_dics().get_langs()
+                         ,langs = gt.ALL_DICS.get_langs()
                          ,search = SEARCH)
         ielems.run()
         return ielems.debug()
@@ -699,10 +718,10 @@ class Source:
         return ielems.debug()
     
     def run_multitrandem(self):
-        from cells import Elems as cElems
-        from sources.multitrandem.run import Source as mSource
-        blocks = mSource().request(search=SEARCH)
-        ielems = cElems(blocks)
+        from cells import Elems as dmElems
+        from sources.multitrandem.run import Source as dmSource
+        blocks = dmSource().request(SEARCH)
+        ielems = dmElems(blocks)
         ielems.run()
         return ielems.debug()
     
