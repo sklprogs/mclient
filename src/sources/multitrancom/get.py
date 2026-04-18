@@ -214,6 +214,9 @@ class Commands:
         return url
 
     def count_valid(self):
+        f = '[MClient] sources.multitrancom.get.Commands.count_valid'
+        mes = _('Connect multitran.com')
+        Message(f, mes).show_info()        
         try:
             code = urllib.request.urlopen(url=URL, timeout=CONFIG.new['timeout']).code
             if (code / 100 < 4):
