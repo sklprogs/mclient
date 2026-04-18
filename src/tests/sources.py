@@ -618,15 +618,13 @@ class Tags:
         import sources.multitrandem.tags as tg
         chunks = gt.Get(SEARCH).run()
         if not chunks:
-            rep.empty(f)
-            return
+            chunks = []
         tags = []
         blocks = []
-        for chunk in chunks:
-            itags = tg.Tags(chunk)
-            itags.run()
+        for i in range(len(chunks)):
+            itags = tg.Tags(chunks[i], i)
+            blocks += itags.run()
             tags += itags.tags
-            blocks += itags.blocks
         itags.tags = tags
         itags.blocks = blocks
         return itags.debug()
