@@ -48,20 +48,13 @@ class Language:
         elif lang in self.langint:
             ind = self.langint.index(lang)
             return self.langloc[ind]
-        else:
-            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            modes = self.langloc + self.langint
-            mes = mes.format(lang, ';'.join(modes))
-            Message(f, mes, True).show_error()
         return 'English'
     
     def get_lang1(self):
-        #return self._adapt(CONFIG.new['lang1'])
-        return 'English'
+        return self._adapt(CONFIG.new['lang1'])
     
     def get_lang2(self):
-        #return self._adapt(CONFIG.new['lang2'])
-        return 'Russian'
+        return self._adapt(CONFIG.new['lang2'])
 
 
 
@@ -128,7 +121,7 @@ class Ending:
         if not self.Success:
             rep.cancel(f)
             return
-        self.text = Read(self.file).get()
+        self.text = Read(self.file, Graphical=False).get()
         if not self.text:
             self.Success = False
             mes = _('Empty output is not allowed!')
@@ -270,7 +263,7 @@ class Subject:
             mes = _('File "{}" does not exist!').format(self.file)
             Message(f, mes).show_warning()
             return
-        iread = Read(self.file)
+        iread = Read(self.file, Graphical=False)
         iread._read(CODING)
         self.text = iread.get()
         if not self.text:
@@ -1046,6 +1039,11 @@ class Walker:
             return
         lang1 = LANGS.get_lang1().lower()
         lang2 = LANGS.get_lang2().lower()
+
+        mes = _('Source language: "{}". Target language: "{}"')
+        mes = mes.format(lang1, lang2)
+        Message(f, mes).show_debug()
+        
         self.lang11 = lang1[0:1]
         self.lang21 = lang2[0:1]
         self.lang13 = lang1[0:3]
@@ -1946,7 +1944,7 @@ class Get:
                 stem = word[0:i]
                 end = word[i:]
                 mes = _('Try for "{}|{}"').format(stem, end)
-                Message(f, mes).show_info()
+                Message(f, mes).show_debug()
                 ''' Since we swap languages, the needed stems will always be
                     stored in stem file #1.
                 '''
