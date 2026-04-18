@@ -73,21 +73,22 @@ class Tags:
         for i in range(len(self.content)):
             self.blocks.append(Block())
             self.blocks[-1].text = self.content[i]
-            if self.types[i] == self.seplg1:
-                self.blocks[i].type = 'wform'
-                self.blocks[i].lang = self.lang1
-            elif self.types[i] == self.seplg2:
-                self.blocks[i].type = 'term'
-                self.blocks[i].lang = self.lang2
-            elif self.types[i] == self.sepcom:
-                self.blocks[i].type = 'comment'
-            elif self.types[i] == self.sepdic:
-                self.blocks[i].type = 'subj'
-            else:
-                self.blocks[i].type = 'invalid'
-                #TODO: convert to a string
-                mes = _('Unknown type "{}"!').format(self.types[i])
-                Message(f, mes).show_warning()
+            match self.types[i]:
+                case self.seplg1:
+                    self.blocks[i].type = 'wform'
+                    self.blocks[i].lang = self.lang1
+                case self.seplg2:
+                    self.blocks[i].type = 'term'
+                    self.blocks[i].lang = self.lang2
+                case self.sepcom:
+                    self.blocks[i].type = 'comment'
+                case self.sepdic:
+                    self.blocks[i].type = 'subj'
+                case other if True:
+                    self.blocks[i].type = 'invalid'
+                    #TODO: convert to a string
+                    mes = _('Unknown type "{}"!').format(other)
+                    Message(f, mes).show_warning()
     
     def _debug_blocks(self, maxrow=40, maxrows=1000):
         f = '[MClient] sources.multitrandem.tags.Tags._debug_blocks'
@@ -191,11 +192,13 @@ class Tags:
             rep.cancel(f)
             return
         block = Block()
+        '''
         block.type = 'dic'
         # self.article.dic
         #TODO: Set dic name
         block.text = block.dic = 'sample_dic.erd'
         self.blocks.insert(0, block)
+        '''
         block = Block()
         block.type = 'source'
         block.text = block.source = self.source
@@ -208,7 +211,7 @@ class Tags:
         self.split()
         self.decode()
         self.get_types()
-        self.add_head()
         self.set_types()
+        self.add_head()
         self.set_cellnos()
         return self.blocks
