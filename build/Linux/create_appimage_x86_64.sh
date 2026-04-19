@@ -78,9 +78,9 @@ cp -r "$resdir/locale" "$tmpdir/app/resources/"
 # For some reason, pyinstaller cannot find these modules
 cp -r "$srcdir/keylistener" "$xlibdir" "$tmpdir/app/usr/bin/"
 cd "$builddir"
-pyinstaller "$product.py"
+pyinstaller "start.py"
 # Create AppImage
-mv "$builddir/dist/$product"/* "$tmpdir/app/usr/bin/"
+mv "$builddir/dist/start"/* "$tmpdir/app/usr/bin/"
 cp "$appimagedir/AppRun-$arch" "$tmpdir/app/AppRun"
 cp "$appimagedir/appimagetool-$arch.AppImage" "$tmpdir"
 cp "$HOME/bin/$product/build/$os/$product.desktop" "$tmpdir/app"

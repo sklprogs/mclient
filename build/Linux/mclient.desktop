@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=mclient
-Exec=mclient
+Exec=start
 Icon=mclient
 Type=Application
 Categories=Education;
