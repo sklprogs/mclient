@@ -1,3 +1,8 @@
+This application uses an open-source version of Qt. For the full text of the GPL
+license, click the License button.
+
+
+
 # The MIT License
 
 # Copyright (c) 2006, 2007, 2010 Alexander Belchenko
