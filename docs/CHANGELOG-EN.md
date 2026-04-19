@@ -6,6 +6,8 @@
 * Implement MClient (.mdic) dictionary format
 * Search is now performed for all sources at once
 * Add new mode&mdash;Full
+* Add 2 new columns&mdash;Sources and Dictionaries. You can prioritize and
+  block sources.
 * Show number of dictionaries that could not be loaded in main window
 * Add a mode to convert dictionaries. Run the application with the --convert
   parameter (DSL, StarDict, Fora (stardictx, DSL) are supported).
