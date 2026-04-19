@@ -23,7 +23,8 @@ from config import CONFIG
 #SEARCH = 'constant-voltage welding source'
 #SEARCH = 'wine structure'
 #SEARCH = 'wine'
-SEARCH = 'слово'
+#SEARCH = 'слово'
+SEARCH = 'word'
 #SEARCH = 'pail'
 #SEARCH = 'absolute'
 #SEARCH = 'bottling'
@@ -1152,6 +1153,7 @@ class Commands:
 class Suggest:
     
     def run_all(self):
+        #NOTE: Source-blocking is app-based; here all sources are enabled
         results = [self.run_multitrancom(), self.run_dsl(), self.run_stardict()
                   ,self.run_fora(), self.run_mdic(), self.run_multitrandem()]
         results = [sub for sub in results if sub]

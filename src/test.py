@@ -50,7 +50,7 @@ if __name__ == '__main__':
     #mes = Tags().run_fora_dsl()
     #mes = Tags().run_fora_stardictx()
     #mes = Tags().run_multitrancom()
-    mes = Tags().run_multitrandem()
+    #mes = Tags().run_multitrandem()
     #mes = Tags().run_stardict()
     #mes = Elems().run_all()
     #mes = Elems().run_dsl()
@@ -84,6 +84,7 @@ if __name__ == '__main__':
     # Fora - OK
     # MDIC - OK
     #mes = Suggest().run_multitrancom()
+    mes = Suggest().run_multitrandem()
     #mes = Suggest().run_stardict()
     #mes = Suggest().run_dsl()
     #mes = Suggest().run_fora()
