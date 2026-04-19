@@ -132,6 +132,9 @@ class Settings:
         self.Shown = False
         self.set_gui()
     
+    def reset(self):
+        Load().run()
+    
     def set_gui(self):
         self.gui = guiSettings()
         self.set_title()
@@ -140,6 +143,7 @@ class Settings:
     def set_bindings(self):
         self.gui.bind(('Ctrl+Q',), self.close)
         self.gui.bind(('Esc',), self.close)
+        self.gui.sig_reset.connect(self.reset)
     
     def show(self):
         self.Shown = True

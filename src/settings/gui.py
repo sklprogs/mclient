@@ -19,6 +19,7 @@ PRODUCT = 'MClient'
 class Settings(QWidget):
     
     sig_close = pyqtSignal()
+    sig_reset = pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -459,28 +460,7 @@ class Settings(QWidget):
         self.update_sp6()
     
     def reset(self):
-        self.opt_stl.set(PRODUCT)
-        self.opt_cl1.set(_('Subjects'))
-        self.opt_cl2.set(_('Word forms'))
-        self.opt_cl3.set(_('Parts of speech'))
-        self.opt_cl4.set(_('Transcriptions'))
-        self.opt_cl5.set(_('Do not set'))
-        self.opt_cl6.set(_('Do not set'))
-        self.opt_sp1.set(_('Noun'))
-        self.opt_sp2.set(_('Verb'))
-        self.opt_sp3.set(_('Adjective'))
-        self.opt_sp4.set(_('Abbreviation'))
-        self.opt_sp5.set(_('Adverb'))
-        self.opt_sp6.set(_('Preposition'))
-        self.opt_sp7.set(_('Pronoun'))
-        self.cbx_no1.enable()
-        self.cbx_no2.enable()
-        self.cbx_no3.disable()
-        self.cbx_no4.disable()
-        self.cbx_no5.enable()
-        self.cbx_no6.disable()
-        self.cbx_no7.enable()
-        self.cbx_no8.enable()
+        self.sig_reset.emit()
     
     def closeEvent(self, event):
         self.sig_close.emit()
