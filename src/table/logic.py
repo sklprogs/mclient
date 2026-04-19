@@ -58,12 +58,12 @@ class Table:
                     if block.type == 'term' and block.text.strip():
                         return(cell.rowno, cell.colno)
     
-    def get_non_empty_col(self):
-        colno = 0
+    def get_non_empty_col(self, colno):
         while colno < self.colnum:
             if not self._is_col_empty(colno):
                 return colno
             colno += 1
+        return colno
     
     def _is_col_empty(self, colno):
         for rowno in range(self.rownum):
