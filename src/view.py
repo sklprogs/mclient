@@ -447,6 +447,9 @@ class View:
         if not self.Success:
             rep.cancel(f)
             return
+        if not CONFIG.new['OrderCells']:
+            rep.empty(f)
+            return
         if CONFIG.new['AlphabetizeTerms'] and not ARTICLES.is_parallel() \
         and not ARTICLES.is_separate():
             self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.col5, x.col6, x.text, x.no))

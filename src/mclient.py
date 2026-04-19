@@ -76,12 +76,13 @@ class UpdateUI:
     def update_prioritization(self):
         mes = [_('Subject prioritization')]
         prioritized = ARTICLES.get_prioritized()
-        if CONFIG.new['PrioritizeSubjects'] and prioritized \
-        and not self.Parallel:
+        # PrioritizeSubjects keeps prioritization of subjects in prior_block
+        if CONFIG.new['OrderCells'] and CONFIG.new['PrioritizeSubjects'] \
+        and prioritized and not self.Parallel:
             gi.objs.get_panel().btn_pri.activate()
         else:
             gi.objs.get_panel().btn_pri.inactivate()
-        if CONFIG.new['PrioritizeSubjects']:
+        if CONFIG.new['OrderCells'] and CONFIG.new['PrioritizeSubjects']:
             mes.append(_('Status: ON'))
             PRIOR.gui.cbx_pri.enable()
         else:
@@ -831,7 +832,8 @@ class App:
         cells = Expand(cells).run()
         iomit = Omit(cells)
         cells = iomit.run()
-        cells = Prioritize(cells).run()
+        if CONFIG.new['OrderCells']:
+            cells = Prioritize(cells).run()
         
         COL_WIDTH.reset()
         COL_WIDTH.run()
