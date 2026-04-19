@@ -1,11 +1,14 @@
 (in development)
+
+## 8.0
 * Improve support of online dictionaries
-* Support Fora dictionaries
+* Support Fora dictionaries (stardictx, DSL)
 * Implement MClient (.mdic) dictionary format
-* Show number of dictionaries that could not be loaded in main window
-* Add modules for converting .dsl to .xml (ODICT ODXML) and .dsl to .mdic
-* Add new mode&mdash;Full
 * Search is now performed for all sources at once
+* Add new mode&mdash;Full
+* Show number of dictionaries that could not be loaded in main window
+* Add a mode to convert dictionaries. Run the application with the --convert
+  parameter (DSL, StarDict, Fora (stardictx, DSL) are supported).
 
 ## 7.1.7
 * Fix loading .dsl and Stardict dictionaries
