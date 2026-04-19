@@ -9,8 +9,8 @@ class About:
     
     def __init__(self):
         self.product = 'MClient'
-        self.version = '7.1.7'
-        self.curyear = 2025
+        self.version = '8.0'
+        self.curyear = 2026
         self.code = []
     
     def get_product(self):
