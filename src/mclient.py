@@ -41,15 +41,15 @@ class UpdateUI:
         self.Separate = ARTICLES.is_separate()
     
     def _update_alphabet_image(self):
-        if CONFIG.new['AlphabetizeTerms'] and not self.Parallel \
-        and not self.Separate:
+        if CONFIG.new['OrderCells'] and CONFIG.new['AlphabetizeTerms'] \
+        and not self.Parallel and not self.Separate:
             gi.objs.get_panel().btn_alp.activate()
         else:
             gi.objs.get_panel().btn_alp.inactivate()
     
     def _update_alphabet_hint(self):
         mes = [_('Sort terms by alphabet')]
-        if CONFIG.new['AlphabetizeTerms']:
+        if CONFIG.new['OrderCells'] and CONFIG.new['AlphabetizeTerms']:
             mes.append(_('Status: ON'))
         else:
             mes.append(_('Status: OFF'))
@@ -464,10 +464,7 @@ class App:
         self.load_article(search, url)
     
     def toggle_alphabet(self):
-        if CONFIG.new['AlphabetizeTerms']:
-            CONFIG.new['AlphabetizeTerms'] = False
-        else:
-            CONFIG.new['AlphabetizeTerms'] = True
+        CONFIG.new['AlphabetizeTerms'] = not CONFIG.new['AlphabetizeTerms']
         ARTICLES.delete_bookmarks()
         self.load_article()
     
