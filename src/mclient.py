@@ -1147,8 +1147,8 @@ class App:
         self.set_bindings()
 
 
-if __name__ == '__main__':
-    f = '[MClient] mclient.__main__'
+def start():
+    f = '[MClient] mclient.start'
     if CONFIG.Success:
         app = App()
         app.run_thread()
@@ -1163,3 +1163,7 @@ if __name__ == '__main__':
         #DEBUG.reset(f, mes)
         #DEBUG.show()
     ROOT.end()
+
+
+if __name__ == '__main__':
+    start()

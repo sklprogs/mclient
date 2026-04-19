@@ -9,10 +9,14 @@ from skl_shared.graphics.root.controller import ROOT
 from converters.mdic import Runner
 
 
-if __name__ == '__main__':
-    f = '[MClient] convert.__main__'
+def start():
+    f = '[MClient] convert.start'
     ROOT.get_root()
     Runner().run()
     mes = _('Goodbye!')
     Message(f, mes).show_debug()
     ROOT.end()
+
+
+if __name__ == '__main__':
+    start()
