@@ -31,7 +31,7 @@ class Load:
         SETTINGS.gui.opt_sp7.set(CONFIG.new['speech7'])
     
     def load_checkboxes(self):
-        SETTINGS.gui.cbx_no1.set(CONFIG.new['SortByColumns'])
+        SETTINGS.gui.cbx_no1.set(CONFIG.new['OrderCells'])
         SETTINGS.gui.cbx_no2.set(CONFIG.new['ShortSubjects'])
         SETTINGS.gui.cbx_no3.set(CONFIG.new['ShortSpeech'])
         SETTINGS.gui.cbx_no4.set(CONFIG.new['ShowUserNames'])
@@ -78,7 +78,7 @@ class Save:
         CONFIG.new['columns']['6']['type'] = ALL_TYPES.get_type(SETTINGS.gui.opt_cl6.get())
     
     def save_checkboxes(self):
-        CONFIG.new['SortByColumns'] = SETTINGS.gui.cbx_no1.get()
+        CONFIG.new['OrderCells'] = SETTINGS.gui.cbx_no1.get()
         CONFIG.new['ShortSubjects'] = SETTINGS.gui.cbx_no2.get()
         CONFIG.new['ShortSpeech'] = SETTINGS.gui.cbx_no3.get()
         CONFIG.new['ShowUserNames'] = SETTINGS.gui.cbx_no4.get()

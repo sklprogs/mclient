@@ -628,7 +628,7 @@
     ,"ShortSubjects": {"type": "boolean"}
     ,"ShortSpeech": {"type": "boolean"}
     ,"ShowUserNames": {"type": "boolean"}
-    ,"SortByColumns": {"type": "boolean"}
+    ,"OrderCells": {"type": "boolean"}
     ,"ClearSingleSource": {"type": "boolean"}
     ,"timeout": {"type": "string"}
     ,"hotkey_delay": {"type": "integer"}

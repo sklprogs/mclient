@@ -245,7 +245,7 @@
 ,"ShortSubjects": false
 ,"ShortSpeech": true
 ,"ShowUserNames": true
-,"SortByColumns": true
+,"OrderCells": true
 ,"ClearSingleSource": true
 ,"timeout": "5.0"
 ,"hotkey_delay": 0
