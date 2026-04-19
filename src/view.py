@@ -75,6 +75,19 @@ class Phrases:
         self.phname = _('Phrases')
         self.cells = cells
         
+    def remove_phcount(self):
+        f = '[MClient] view.Phrases.remove_phcount'
+        if CONFIG.new['PhraseCount']:
+            rep.lazy(f)
+            return
+        count = 0
+        for cell in self.cells:
+            old_len = len(cell.blocks)
+            cell.blocks = [block for block in cell.blocks \
+                          if block.type != 'phcount']
+            count += old_len - len(cell.blocks)
+        rep.deleted(f, old_len - len(cell.blocks))
+    
     def set_last_source(self):
         f = '[MClient] view.Phrases.set_last_source'
         for cell in self.cells[::-1]:
@@ -203,6 +216,7 @@ class Phrases:
         self.set_last_wform()
         self.set_last_speech()
         self.set_last_transc()
+        self.remove_phcount()
         self.move()
         # Do this again for easier debugging
         self.renumber()
