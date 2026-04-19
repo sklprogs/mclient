@@ -85,11 +85,17 @@ class Table:
         self.select(rowno, colno)
     
     def go_next_section(self, no):
+        first = self.logic.get_non_empty_col()
+        if no < first:
+            no = first
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_next_row_by_col(rowno, colno, no)
         self.select(rowno, colno)
     
     def go_prev_section(self, no):
+        first = self.logic.get_non_empty_col()
+        if no < first:
+            no = first
         rowno, colno = self.get_cell()
         rowno, colno = self.logic.get_prev_row_by_col(rowno, colno, no)
         self.select(rowno, colno)
