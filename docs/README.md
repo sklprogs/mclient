@@ -4,7 +4,7 @@ article items; specifically, it can sort them by subjects, word forms, parts of
 speech and so on (if the dictionary source provides corresponding tags).
 Sources and subjects can be blocked or prioritized.
 
-[!screenshot](screenshot.png)
+![screenshot](screenshot.png)
 
 Various online and offline sources are supported, specifically:
 
