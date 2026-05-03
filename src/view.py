@@ -80,13 +80,15 @@ class Phrases:
         if CONFIG.new['PhraseCount']:
             rep.lazy(f)
             return
-        count = 0
+        count = old_len = 0
+        cell = None
         for cell in self.cells:
             old_len = len(cell.blocks)
             cell.blocks = [block for block in cell.blocks \
                           if block.type != 'phcount']
             count += old_len - len(cell.blocks)
-        rep.deleted(f, old_len - len(cell.blocks))
+        if cell:
+            rep.deleted(f, old_len - len(cell.blocks))
     
     def set_last_source(self):
         f = '[MClient] view.Phrases.set_last_source'
