@@ -1,5 +1,9 @@
 (in development)
 
+## 8.0.1
+* Fix crashes with phrase count showing disabled
+* Fix sorting word forms
+
 ## 8.0
 * Improve support of online dictionaries
 * Support Fora dictionaries (stardictx, DSL)
