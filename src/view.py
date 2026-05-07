@@ -645,6 +645,9 @@ class View:
         if not self.fixed_cols:
             rep.lazy(f)
             return
+        ''' Word forms must be case-sensitive; otherwise, they can be ordered
+            like AST - ast - AST, etc.
+        '''
         for cell in self.cells:
             for i in range(len(self.fixed_cols)):
                 match i:
@@ -657,11 +660,11 @@ class View:
                             case 'subj':
                                 cell.col1 = cell.subjpr
                             case 'wform':
-                                cell.col1 = cell.wform.lower()
+                                cell.col1 = cell.wform
                             case 'speech':
                                 cell.col1 = cell.speechpr
                             case 'transc':
-                                cell.col1 = cell.transc.lower()
+                                cell.col1 = cell.transc
                     case 1:
                         match self.fixed_cols[i]:
                             case 'source':
@@ -671,11 +674,11 @@ class View:
                             case 'subj':
                                 cell.col2 = cell.subjpr
                             case 'wform':
-                                cell.col2 = cell.wform.lower()
+                                cell.col2 = cell.wform
                             case 'speech':
                                 cell.col2 = cell.speechpr
                             case 'transc':
-                                cell.col2 = cell.transc.lower()
+                                cell.col2 = cell.transc
                     case 2:
                         match self.fixed_cols[i]:
                             case 'source':
@@ -685,11 +688,11 @@ class View:
                             case 'subj':
                                 cell.col3 = cell.subjpr
                             case 'wform':
-                                cell.col3 = cell.wform.lower()
+                                cell.col3 = cell.wform
                             case 'speech':
                                 cell.col3 = cell.speechpr
                             case 'transc':
-                                cell.col3 = cell.transc.lower()
+                                cell.col3 = cell.transc
                     case 3:
                         match self.fixed_cols[i]:
                             case 'source':
@@ -699,11 +702,11 @@ class View:
                             case 'subj':
                                 cell.col4 = cell.subjpr
                             case 'wform':
-                                cell.col4 = cell.wform.lower()
+                                cell.col4 = cell.wform
                             case 'speech':
                                 cell.col4 = cell.speechpr
                             case 'transc':
-                                cell.col4 = cell.transc.lower()
+                                cell.col4 = cell.transc
                     case 4:
                         match self.fixed_cols[i]:
                             case 'source':
@@ -713,11 +716,11 @@ class View:
                             case 'subj':
                                 cell.col5 = cell.subjpr
                             case 'wform':
-                                cell.col5 = cell.wform.lower()
+                                cell.col5 = cell.wform
                             case 'speech':
                                 cell.col5 = cell.speechpr
                             case 'transc':
-                                cell.col5 = cell.transc.lower()
+                                cell.col5 = cell.transc
                     case 5:
                         match self.fixed_cols[i]:
                             case 'source':
@@ -727,11 +730,11 @@ class View:
                             case 'subj':
                                 cell.col6 = cell.subjpr
                             case 'wform':
-                                cell.col6 = cell.wform.lower()
+                                cell.col6 = cell.wform
                             case 'speech':
                                 cell.col6 = cell.speechpr
                             case 'transc':
-                                cell.col6 = cell.transc.lower()
+                                cell.col6 = cell.transc
     
     def _get_last_subj(self):
         for cell in self.cells[::-1]:

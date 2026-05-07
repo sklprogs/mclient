@@ -1,6 +1,4 @@
 all:
-- hooray: word forms + speeches + subjects + sources + dictionaries: word forms
-  are not sorted properly
 - fend for: no phsubj
 - ClearSingleSource=True: Ctrl+Up or Ctrl+Down causes the table to warn
 - cut-to-the-chase, wine: phrases are at top
