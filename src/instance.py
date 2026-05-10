@@ -36,6 +36,8 @@ class Block:
         self.reset()
     
     def reset(self):
+        self.Ignore = False
+        self.Block = False
         self.no = -1
         self.cellno = -1
         self.rowno = -1
