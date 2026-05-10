@@ -9,7 +9,7 @@ from skl_shared.list import List
 from skl_shared.table import Table
 from skl_shared.logic import Text
 
-from instance import Block, Cell, is_block_fixed
+from instance import Block, is_block_fixed
 
 
 class Elems:

@@ -18,41 +18,11 @@ class Tag:
 
 
 
-class Cell:
-    
-    def __init__(self):
-        self.fixed_block = None
-        self.blocks = []
-        self.no = -1
-        self.rowno = -1
-        self.colno = -1
-        self.subjpr = -1
-        self.speechpr = -1
-        self.sourcepr = -1
-        self.code = ''
-        self.speech = ''
-        self.source = ''
-        self.dic = ''
-        self.subj = ''
-        self.text = ''
-        self.transc = ''
-        self.url = ''
-        self.wform = ''
-        self.col1 = ''
-        self.col2 = ''
-        self.col3 = ''
-        self.col4 = ''
-        self.col5 = ''
-        self.col6 = ''
-
-
-
 class Block:
     ''' Cannot be reimported in sources since we would need to load this module
         from different places.    
     '''
     def __init__(self):
-        self.cellno = -1
         self.subj = ''
         self.subjf = ''
         self.text = ''
@@ -63,6 +33,26 @@ class Block:
         self.type = 'comment'
         self.dic = ''
         self.source = ''
+        self.reset()
+    
+    def reset(self):
+        self.cellno = -1
+        self.rowno = -1
+        self.colno = -1
+        self.subjpr = -1
+        self.speech = ''
+        self.speechpr = -1
+        self.sourcepr = -1
+        self.code = ''
+        self.text = ''
+        self.transc = ''
+        self.wform = ''
+        self.col1 = ''
+        self.col2 = ''
+        self.col3 = ''
+        self.col4 = ''
+        self.col5 = ''
+        self.col6 = ''
 
 
 

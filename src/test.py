@@ -45,7 +45,7 @@ if __name__ == '__main__':
     #mes = DumpDsl().run()
     #mes = DumpStardict().run()
     #mes = DumpFora().run()
-    #mes = Tags().run_dsl()
+    mes = Tags().run_dsl()
     #mes = Tags().run_stardict()
     #mes = Tags().run_fora_dsl()
     #mes = Tags().run_fora_stardictx()
@@ -84,7 +84,7 @@ if __name__ == '__main__':
     # Fora - OK
     # MDIC - OK
     #mes = Suggest().run_multitrancom()
-    mes = Suggest().run_multitrandem()
+    #mes = Suggest().run_multitrandem()
     #mes = Suggest().run_stardict()
     #mes = Suggest().run_dsl()
     #mes = Suggest().run_fora()
