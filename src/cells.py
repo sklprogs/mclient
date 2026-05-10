@@ -41,9 +41,10 @@ class Elems:
     
     def debug(self, maxrow=30, maxrows=0):
         f = '[MClient] cells.Elems.debug'
-        headers = (_('CELL #'), _('TYPES'), _('TEXT'), 'SOURCE', 'DIC', 'SUBJ'
-                  ,'SUBJF', 'URL')
+        headers = (_('BLOCK #'), _('CELL #'), _('TYPES'), _('TEXT'), 'SOURCE'
+                  ,'DIC', 'SUBJ', 'SUBJF', 'URL')
         nos = []
+        cellnos = []
         types = []
         texts = []
         sources = []
@@ -52,7 +53,8 @@ class Elems:
         subjf = []
         urls = []
         for block in self.blocks:
-            nos.append(block.cellno)
+            nos.append(block.no)
+            cellnos.append(block.cellno)
             types.append(block.type)
             texts.append(f'"{block.text}"')
             sources.append(block.source)
@@ -61,8 +63,8 @@ class Elems:
             subjf.append(block.subjf)
             urls.append(block.url)
         mes = Table(headers = headers
-                   ,iterable = (nos, types, texts, sources, dics, subj, subjf
-                               ,urls)
+                   ,iterable = (nos, cellnos, types, texts, sources, dics, subj
+                               ,subjf, urls)
                    ,maxrow = maxrow, maxrows = maxrows).run()
         return f'{f}:\n{mes}'
     
@@ -80,11 +82,13 @@ class Elems:
         f = '[MClient] cells.Elems.remove_numbering'
         pattern1 = r'[\d+,aA-zZ,аА-яЯ][\),\.][\s]{0,1}'
         pattern2 = r'((\s){0,1})+((\n|\r){0,1})+((\s){0,1})+\d+[\),\>]\.{0,1}((\s){0,1})+'
-        old_len = len(self.blocks)
-        self.blocks = [block for block in self.blocks \
-                      if not re.fullmatch(pattern1, block.text) and \
-                      not re.fullmatch(pattern2, block.text)]
-        rep.deleted(f, old_len - len(self.blocks))
+        count = 0
+        for block in self.blocks:
+            if re.fullmatch(pattern1, block.text) \
+            or re.fullmatch(pattern2, block.text):
+                count += 1
+                block.Ignore = True
+        rep.deleted(f, count)
     
     def _is_comment_like(self, group):
         for i in group:

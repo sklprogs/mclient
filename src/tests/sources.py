@@ -748,12 +748,12 @@ class Source:
         return icells.debug()
     
     def run_dsl(self):
-        from cells import Cells
-        from sources.dsl.run import Source as mSource
-        blocks = mSource().request(SEARCH)
-        icells = Cells(blocks)
-        icells.run()
-        return icells.debug()
+        from cells import Elems as dElems
+        from sources.dsl.run import Source as dSource
+        blocks = dSource().request(SEARCH)
+        ielems = dElems(blocks)
+        ielems.run()
+        return ielems.debug()
     
     def run_multitrancom(self):
         from cells import Elems as cElems, Cells

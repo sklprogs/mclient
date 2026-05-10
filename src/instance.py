@@ -36,6 +36,7 @@ class Block:
         self.reset()
     
     def reset(self):
+        self.no = -1
         self.cellno = -1
         self.rowno = -1
         self.colno = -1
