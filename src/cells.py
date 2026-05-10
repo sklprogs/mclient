@@ -149,6 +149,27 @@ class Elems:
             i += 1
         rep.matches(f, count)
     
+    def move_brackets(self):
+        ''' Combine a cell with a preceding or following bracket such that the
+            user would not see '()' when the cell is ignored/blocked.
+        '''
+        f = '[MClient] cells.Cells.move_brackets'
+        count = 0
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i].text.startswith(')'):
+                self.blocks[i-1].text = self.blocks[i-1].text + ')'
+                self.blocks[i].text = self.blocks[i].text.lstrip(')')
+                self.blocks[i].text = self.blocks[i].text.lstrip()
+                count += 1
+            elif self.blocks[i-1].text.endswith('('):
+                self.blocks[i-1].text = self.blocks[i-1].text.rstrip('(')
+                self.blocks[i-1].text = self.blocks[i-1].text.rstrip()
+                self.blocks[i].text = '(' + self.blocks[i].text
+                count += 1
+            i += 1
+        rep.matches(f, count)
+    
     def run(self):
         self.set_phurl()
         self.remove_phsubj()
@@ -156,6 +177,7 @@ class Elems:
         self.set_art_subj()
         self.convert_comments()
         self.attach_comments()
+        self.move_brackets()
         return self.blocks
 
 
@@ -165,38 +187,6 @@ class Cells:
     def __init__(self, blocks):
         self.cells = []
         self.blocks = blocks
-    
-    def _get_fixed_block(self, cell):
-        for block in cell.blocks:
-            if is_block_fixed(block):
-                return block
-    
-    def set_fixed_cells(self):
-        for cell in self.cells:
-            cell.fixed_block = self._get_fixed_block(cell)
-    
-    def set_cells(self):
-        f = '[MClient] cells.Cells.set_cells'
-        if not self.blocks:
-            rep.empty(f)
-            return
-        if len(self.blocks) < 2:
-            rep.condition(f, f'{len(self.blocks)} >= 2')
-            return
-        cell = Cell()
-        cell.blocks.append(self.blocks[0])
-        i = 1
-        while i < len(self.blocks):
-            if self.blocks[i-1].cellno == self.blocks[i].cellno:
-                cell.blocks.append(self.blocks[i])
-            else:
-                if cell.blocks:
-                    self.cells.append(cell)
-                cell = Cell()
-                cell.blocks.append(self.blocks[i])
-            i += 1
-        if cell.blocks:
-            self.cells.append(cell)
     
     def renumber(self):
         for i in range(len(self.cells)):
@@ -235,41 +225,6 @@ class Cells:
                                ,rownos, nos, types, texts, urls)
                    ,maxrow = maxrow, maxrows = maxrows).run()
         return f'{f}:\n{mes}'
-    
-    def unite_brackets(self):
-        ''' Combine a cell with a preceding or following bracket such that the
-            user would not see '()' when the cell is ignored/blocked.
-        '''
-        f = '[MClient] cells.Cells.unite_brackets'
-        count = 0
-        for cell in self.cells:
-            i = 2
-            while i < len(cell.blocks):
-                if cell.blocks[i-2].text.strip() == '(' \
-                and cell.blocks[i].text.strip() == ')':
-                    count += 1
-                    ''' Add brackets to text of a cell (usually of the 'user'
-                        type), not vice versa, to preserve its type.
-                    '''
-                    cell.blocks[i-1].text = cell.blocks[i-2].text \
-                                          + cell.blocks[i-1].text \
-                                          + cell.blocks[i].text
-                    del cell.blocks[i]
-                    del cell.blocks[i-2]
-                    i -= 2
-                i += 1
-        rep.matches(f, count)
-    
-    def _get_url(self, cell):
-        #TODO: Do we need to support several URLs in one cell?
-        for block in cell.blocks:
-            if block.url:
-                return block.url
-        return ''
-    
-    def set_urls(self):
-        for cell in self.cells:
-            cell.url = self._get_url(cell)
     
     def _get_last_source(self):
         for cell in self.cells[::-1]:
@@ -404,38 +359,20 @@ class Cells:
             i += 1
         rep.matches(f, count)
     
-    def set_text(self):
-        for cell in self.cells:
-            fragms = [block.text for block in cell.blocks]
-            cell.text = List(fragms).space_items().strip()
-            # 'phsubj' text may have multiple spaces for some reason
-            cell.text = Text(cell.text).delete_duplicate_spaces()
-    
-    def _has_text(self, text):
-        for char in text:
-            if char.isalpha():
-                return True
-    
-    def _is_roman_number(self, text):
-        return text.strip() in ('I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'
-                               ,'IX', 'X')
-    
-    def delete_trash(self):
-        # Either do this on cells or on blocks having unique cellno
-        f = '[MClient] cells.Cells.delete_trash'
-        old = len(self.cells)
-        self.cells = [cell for cell in self.cells \
-                     if not self._is_roman_number(cell.text)]
-        self.cells = [cell for cell in self.cells if self._has_text(cell.text)]
-        rep.deleted(f, old - len(self.cells))
+    def ignore_roman_numbers(self):
+        #TODO: Do this on unique cellnos only
+        f = '[MClient] cells.Cells.ignore_roman_numbers'
+        count = 0
+        for block in self.blocks:
+            if block.Ignore:
+                continue
+            if block.text.strip() in ('I', 'II', 'III', 'IV', 'V', 'VI', 'VII'
+                                     ,'VIII', 'IX', 'X'):
+                block.Ignore = True
+        rep.deleted(f, count)
     
     def run(self):
-        self.set_cells()
-        self.set_urls()
-        self.unite_brackets()
-        self.set_text()
-        self.delete_trash()
-        self.set_fixed_cells()
+        self.ignore_roman_numbers()
         self.set_row_nos()
         self.fill_fixed()
         self.delete_fixed()
