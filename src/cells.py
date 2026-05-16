@@ -12,6 +12,39 @@ from skl_shared.logic import Text
 from instance import Block, is_block_fixed
 
 
+def debug(blocks, maxrow=30, maxrows=0):
+    f = '[MClient] cells.debug'
+    headers = (_('BLOCK #'), _('CELL #'), _('TYPES'), _('TEXT'), 'SOURCE', 'DIC'
+              ,'SUBJ', 'SUBJF', _('ROW #'), _('COL #'))
+    nos = []
+    cellnos = []
+    types = []
+    texts = []
+    sources = []
+    dics = []
+    subj = []
+    subjf = []
+    rownos = []
+    colnos = []
+    for block in blocks:
+        nos.append(block.no)
+        cellnos.append(block.cellno)
+        types.append(block.type)
+        texts.append(f'"{block.text}"')
+        sources.append(block.source)
+        dics.append(block.dic)
+        subj.append(block.subj)
+        subjf.append(block.subjf)
+        rownos.append(block.rowno)
+        colnos.append(block.colno)
+    mes = Table(headers = headers
+               ,iterable = (nos, cellnos, types, texts, sources, dics, subj
+                           ,subjf, rownos, colnos)
+               ,maxrow = maxrow, maxrows = maxrows).run()
+    return f'{f}:\n{mes}'
+
+
+
 class Elems:
     
     def __init__(self, blocks):
@@ -38,35 +71,6 @@ class Elems:
         self.blocks = [block for block in self.blocks \
                       if not block.cellno in cellnos]
         rep.deleted(f, old_len - len(self.blocks))
-    
-    def debug(self, maxrow=30, maxrows=0):
-        f = '[MClient] cells.Elems.debug'
-        headers = (_('BLOCK #'), _('CELL #'), _('TYPES'), _('TEXT'), 'SOURCE'
-                  ,'DIC', 'SUBJ', 'SUBJF', 'URL')
-        nos = []
-        cellnos = []
-        types = []
-        texts = []
-        sources = []
-        dics = []
-        subj = []
-        subjf = []
-        urls = []
-        for block in self.blocks:
-            nos.append(block.no)
-            cellnos.append(block.cellno)
-            types.append(block.type)
-            texts.append(f'"{block.text}"')
-            sources.append(block.source)
-            dics.append(block.dic)
-            subj.append(block.subj)
-            subjf.append(block.subjf)
-            urls.append(block.url)
-        mes = Table(headers = headers
-                   ,iterable = (nos, cellnos, types, texts, sources, dics, subj
-                               ,subjf, urls)
-                   ,maxrow = maxrow, maxrows = maxrows).run()
-        return f'{f}:\n{mes}'
     
     def set_art_subj(self):
         # Works only before deleting fixed blocks
@@ -170,6 +174,39 @@ class Elems:
             i += 1
         rep.matches(f, count)
     
+    def fill_fixed(self):
+        source = dic = subj = subjf = wform = transc = speech = ''
+        for block in self.blocks:
+            if is_block_fixed(block):
+                if block.type == 'source':
+                    source = block.text
+                elif block.type == 'dic':
+                    dic = block.text
+                elif block.type == 'subj':
+                    subj = block.subj
+                    subjf = block.subjf
+                elif block.type == 'wform':
+                    wform = block.text
+                elif block.type == 'speech':
+                    speech = block.text
+                elif block.type == 'transc':
+                    transc = block.text
+            else:
+                block.source = source
+                block.dic = dic
+                block.subj = subj
+                block.subjf = subjf
+                block.wform = wform
+                block.speech = speech
+                block.transc = transc
+    
+    def remove_fixed(self):
+        f = '[MClient] cells.Elems.remove_fixed'
+        old_len = len(self.blocks)
+        self.blocks = [block for block in self.blocks \
+                      if not is_block_fixed(block)]
+        rep.deleted(f, old_len - len(self.blocks))
+    
     def run(self):
         self.set_phurl()
         self.remove_phsubj()
@@ -178,6 +215,8 @@ class Elems:
         self.convert_comments()
         self.attach_comments()
         self.move_brackets()
+        self.fill_fixed()
+        self.remove_fixed()
         return self.blocks
 
 
@@ -185,177 +224,23 @@ class Elems:
 class Cells:
     
     def __init__(self, blocks):
-        self.cells = []
         self.blocks = blocks
-    
-    def renumber(self):
-        for i in range(len(self.cells)):
-            self.cells[i].no = i
-    
-    def debug(self, maxrow=30, maxrows=0):
-        f = '[MClient] cells.Cells.debug'
-        headers = ('SOURCE', 'DIC', 'SUBJ', 'WFORM', 'SPEECH', 'TRANSC'
-                  ,_('ROW #'), _('CELL #'), _('TYPES'), _('TEXT'), 'URL')
-        dics = []
-        sources = []
-        subj = []
-        wform = []
-        speech = []
-        transc = []
-        rownos = []
-        nos = []
-        types = []
-        texts = []
-        urls = []
-        for cell in self.cells:
-            sources.append(cell.source)
-            dics.append(cell.dic)
-            subj.append(cell.subj)
-            wform.append(cell.wform)
-            speech.append(cell.speech)
-            transc.append(cell.transc)
-            rownos.append(cell.rowno)
-            nos.append(cell.no)
-            texts.append(f'"{cell.text}"')
-            cell_types = [block.type for block in cell.blocks]
-            types.append(', '.join(cell_types))
-            urls.append(cell.url)
-        mes = Table(headers = headers
-                   ,iterable = (sources, dics, subj, wform, speech, transc
-                               ,rownos, nos, types, texts, urls)
-                   ,maxrow = maxrow, maxrows = maxrows).run()
-        return f'{f}:\n{mes}'
-    
-    def _get_last_source(self):
-        for cell in self.cells[::-1]:
-            if cell.fixed_block and cell.fixed_block.type == 'source':
-                return cell.text
-        return ''
-    
-    def _get_last_dic(self):
-        for cell in self.cells[::-1]:
-            if cell.fixed_block and cell.fixed_block.type == 'dic':
-                return cell.text
-        return ''
-    
-    def _get_last_subj(self):
-        for cell in self.cells[::-1]:
-            if cell.fixed_block and cell.fixed_block.type in ('subj', 'phsubj'):
-                return cell.text
-        return ''
-    
-    def _get_last_wform(self):
-        for cell in self.cells[::-1]:
-            if cell.fixed_block and cell.fixed_block.type == 'wform':
-                return cell.text
-        return ''
-    
-    def _get_last_speech(self):
-        for cell in self.cells[::-1]:
-            if cell.fixed_block and cell.fixed_block.type == 'speech':
-                return cell.text
-        return ''
-    
-    def _get_last_transc(self):
-        for cell in self.cells[::-1]:
-            if cell.fixed_block and cell.fixed_block.type == 'transc':
-                return cell.text
-        return ''
-    
-    def _get_prev_source(self, i):
-        while i >= 0:
-            if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type == 'source':
-                return self.cells[i].text
-            i -= 1
-        return ''
-    
-    def _get_prev_dic(self, i):
-        while i >= 0:
-            if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type == 'dic':
-                return self.cells[i].text
-            i -= 1
-        return ''
-    
-    def _get_prev_subj(self, i):
-        while i >= 0:
-            if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type in ('subj', 'phsubj'):
-                return self.cells[i].text
-            i -= 1
-        return ''
-    
-    def _get_prev_wform(self, i):
-        while i >= 0:
-            if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type == 'wform':
-                return self.cells[i].text
-            i -= 1
-        return ''
-    
-    def _get_prev_speech(self, i):
-        while i >= 0:
-            if self.cells[i].fixed_block \
-            and self.cells[i].fixed_block.type == 'speech':
-                return self.cells[i].text
-            i -= 1
-        return ''
-    
-    def _get_prev_transc(self, i):
-        while i >= 0:
-            if self.cells[i].fixed_block:
-                if self.cells[i].fixed_block.type == 'wform':
-                    return ''
-                if self.cells[i].fixed_block.type == 'transc':
-                    return self.cells[i].text
-            i -= 1
-        return ''
-    
-    def fill_fixed(self):
-        source = self._get_last_source()
-        dic = self._get_last_dic()
-        subj = self._get_last_subj()
-        wform = self._get_last_wform()
-        transc = self._get_last_transc()
-        speech = self._get_last_speech()
-        i = len(self.cells) - 1
-        while i >= 0:
-            if not self.cells[i].fixed_block:
-                source = self._get_prev_source(i)
-                dic = self._get_prev_dic(i)
-                subj = self._get_prev_subj(i)
-                wform = self._get_prev_wform(i)
-                speech = self._get_prev_speech(i)
-                transc = self._get_prev_transc(i)
-            self.cells[i].source = source
-            self.cells[i].dic = dic
-            self.cells[i].subj = subj
-            self.cells[i].wform = wform
-            self.cells[i].transc = transc
-            self.cells[i].speech = speech
-            i -= 1
-    
-    def delete_fixed(self):
-        f = '[MClient] cells.Cells.delete_fixed'
-        old_len = len(self.cells)
-        self.cells = [cell for cell in self.cells if not cell.fixed_block]
-        rep.deleted(f, old_len - len(self.cells))
     
     def set_row_nos(self):
         # Run this before deleting fixed types
         f = '[MClient] cells.Cells.set_row_nos'
         count = 0
-        if self.cells:
+        if self.blocks:
             count += 1
-            self.cells[0].rowno = 0
+            self.blocks[0].rowno = 0
         rowno = 0
         i = 1
-        while i < len(self.cells):
-            if not self.cells[i-1].fixed_block and self.cells[i].fixed_block:
+        while i < len(self.blocks):
+            if not is_block_fixed(self.blocks[i-1]) \
+            and is_block_fixed(self.blocks[i]):
                 count += 1
                 rowno += 1
-            self.cells[i].rowno = rowno
+            self.blocks[i].rowno = rowno
             i += 1
         rep.matches(f, count)
     
@@ -374,7 +259,4 @@ class Cells:
     def run(self):
         self.ignore_roman_numbers()
         self.set_row_nos()
-        self.fill_fixed()
-        self.delete_fixed()
-        self.renumber()
-        return self.cells
+        return self.blocks

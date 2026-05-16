@@ -740,12 +740,12 @@ class Source:
         return ielems.debug()
     
     def run_mdic(self):
-        from cells import Cells
+        from cells import Cells, debug
         from sources.mdic.run import Source as mSource
         blocks = mSource().request(SEARCH)
         icells = Cells(blocks)
-        icells.run()
-        return icells.debug()
+        blocks = icells.run()
+        return debug(blocks)
     
     def run_dsl(self):
         from cells import Elems as dElems
@@ -756,13 +756,13 @@ class Source:
         return ielems.debug()
     
     def run_multitrancom(self):
-        from cells import Elems as cElems, Cells
+        from cells import Elems as cElems, Cells, debug
         from sources.multitrancom.run import Source as mSource
         blocks = mSource().request(url=URL, search=SEARCH)
         blocks = cElems(blocks).run()
         icells = Cells(blocks)
-        icells.run()
-        return icells.debug()
+        blocks = icells.run()
+        return debug(blocks)
 
 
 
