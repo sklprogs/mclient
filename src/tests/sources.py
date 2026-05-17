@@ -88,12 +88,13 @@ class Prioritize:
         f = '[MClient] tests.sources.Prioritize.run_multitrancom'
         from articles import ARTICLES
         from sources.multitrancom.run import Source
-        from cells import Elems as mtElems, Cells as mtCells, debug
+        from cells import Elems as mtElems, Cells as mtCells, Expand, debug
         from view import Prioritize as mtPrioritize
         from subjects import SUBJECTS
         blocks = Source().request(SEARCH, URL)
         ielems = mtElems(blocks)
         blocks = ielems.run()
+        blocks = Expand(blocks).run()
         cells = mtCells(blocks).run()
         SUBJECTS.reset(ielems.art_subj)
         ARTICLES.add(search = SEARCH

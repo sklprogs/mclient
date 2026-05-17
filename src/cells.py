@@ -10,6 +10,9 @@ from skl_shared.table import Table
 from skl_shared.logic import Text
 
 from instance import Block, is_block_fixed
+from config import CONFIG
+from speech import SPEECH
+from subjects import SUBJECTS
 
 
 def debug(blocks, maxrow=30, maxrows=0):
@@ -259,4 +262,48 @@ class Cells:
     def run(self):
         self.ignore_roman_numbers()
         self.set_row_nos()
+        return self.blocks
+
+
+
+class Expand:
+    
+    def __init__(self, blocks):
+        ''' Run this class before blocking and prioritization since short and
+            full values can be sorted differently (especially this concerns
+            subjects, in which first letters of shortened and full texts may
+            differ).
+        '''
+        self.blocks = blocks
+    
+    def expand_speeches(self):
+        f = '[MClient] cells.Expand.expand_speeches'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
+        ''' Even if we expect parts of speech in a short form, we need to
+            process them because they should be localized for local sources.
+        '''
+        if CONFIG.new['ShortSpeech']:
+            for block in self.blocks:
+                block.speech = SPEECH.shorten(block.speech)
+            return
+        for block in self.blocks:
+            block.speech = SPEECH.expand(block.speech)
+    
+    def expand_subjects(self):
+        # This takes ~0.0086s for 'set' on AMD E-300
+        f = '[MClient] cells.Expand.expand_subjects'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
+        if CONFIG.new['ShortSubjects']:
+            rep.lazy(f)
+            return
+        for block in self.blocks:
+            block.subj = SUBJECTS.expand(block.subj)
+    
+    def run(self):
+        self.expand_speeches()
+        self.expand_subjects()
         return self.blocks
