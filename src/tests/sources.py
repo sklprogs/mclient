@@ -86,40 +86,27 @@ class Prioritize:
     
     def run_multitrancom(self):
         f = '[MClient] tests.sources.Prioritize.run_multitrancom'
-        import logic as lg
-        import sources.multitrancom.cleanup as cu
-        import sources.multitrancom.tags as tg
-        import sources.multitrancom.elems as el
-        import cells as cl
-        import view as vw
+        from articles import ARTICLES
+        from sources.multitrancom.run import Source
+        from cells import Elems as mtElems, Cells as mtCells, debug
+        from view import Prioritize as mtPrioritize
         from subjects import SUBJECTS
-        
-        text = Read(HTM_FILE).get()
-        timer = Timer(f)
-        timer.start()
-        text = cu.CleanUp(text).run()
-        blocks = tg.Tags(text).run()
-        ielems = el.Elems(blocks)
+        blocks = Source().request(SEARCH, URL)
+        ielems = mtElems(blocks)
         blocks = ielems.run()
-        cells = cl.Cells(blocks).run()
-
-        pairs = ielems.art_subj
-        if not pairs:
-            rep.empty(f)
-            return
-        SUBJECTS.reset(pairs)
-        
+        cells = mtCells(blocks).run()
+        SUBJECTS.reset(ielems.art_subj)
         ARTICLES.add(search = SEARCH
                     ,url = URL
                     ,cells = cells
                     ,subjf = SUBJECTS.article
                     ,blocked = SUBJECTS.block
-                    ,prioritized = SUBJECTS.prior)
-
-        cells = vw.Omit(cells).run()
-        iprior = vw.Prioritize(cells)
+                    ,prioritized = SUBJECTS.prior
+                    ,art_subj = ielems.art_subj
+                    ,phurl = ielems.phurl)
+        #blocks = mtOmit(blocks).run()
+        iprior = mtPrioritize(blocks)
         iprior.run()
-        timer.end()
         return iprior.debug()
 
 

@@ -6,7 +6,7 @@ from skl_shared.message.controller import rep, Message
 from skl_shared.list import List
 from skl_shared.table import Table
 
-from instance import Block, Cell, is_block_fixed
+from instance import Block, is_block_fixed
 
 COM = ('мн') # '{{мн}}' that can be treated as comments
 

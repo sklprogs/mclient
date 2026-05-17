@@ -1,14 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import copy
-
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.list import List
 from skl_shared.table import Table
 
-from instance import Block, Cell
 from config import CONFIG
 from manager import SOURCES
 from format import Block as fmBlock
@@ -66,76 +63,109 @@ class OrderSources:
 
 class Phrases:
     
-    def __init__(self, cells):
-        self.last_dic = ''
-        self.last_source = ''
-        self.last_wform = ''
-        self.last_speech = ''
-        self.last_transc = ''
+    def __init__(self, blocks):
+        self.sourcepr = -1
+        self.dic = ''
+        self.subjpr = -1
+        self.wform = ''
+        self.speechpr = -1
+        self.transc = ''
+        self.cellno = -1
+        self.no = -1
         self.phname = _('Phrases')
-        self.cells = cells
+        self.blocks = blocks
         
     def remove_phcount(self):
         f = '[MClient] view.Phrases.remove_phcount'
         if CONFIG.new['PhraseCount']:
             rep.lazy(f)
             return
-        count = old_len = 0
-        cell = None
-        for cell in self.cells:
-            old_len = len(cell.blocks)
-            cell.blocks = [block for block in cell.blocks \
-                          if block.type != 'phcount']
-            count += old_len - len(cell.blocks)
-        if cell:
-            rep.deleted(f, old_len - len(cell.blocks))
+        count = 0
+        for block in self.blocks:
+            if block.type == 'phcount':
+                count += 1
+                block.Ignore = True
+        rep.matches(f, count)
     
-    def set_last_source(self):
-        f = '[MClient] view.Phrases.set_last_source'
-        for cell in self.cells[::-1]:
-            for block in cell.blocks:
-                if block.source:
-                    self.last_source = block.source
-                    mes = f'"{self.last_source}"'
-                    Message(f, mes).show_debug()
-                    return
+    def set_sourcepr(self):
+        f = '[MClient] view.Phrases.set_sourcepr'
+        sourcepr = [block.sourcepr for block in self.blocks]
+        if not sourcepr:
+            rep.lazy(f)
+            return
+        self.sourcepr = max(sourcepr) + 1
+        mes = f'"{self.sourcepr}"'
+        Message(f, mes).show_debug()
     
-    def set_last_dic(self):
-        f = '[MClient] view.Phrases.set_last_dic'
-        for cell in self.cells[::-1]:
-            for block in cell.blocks:
-                if block.dic:
-                    self.last_dic = block.dic
-                    mes = f'"{self.last_dic}"'
-                    Message(f, mes).show_debug()
-                    return
+    def set_subjpr(self):
+        f = '[MClient] view.Phrases.set_subjpr'
+        subjpr = [block.subjpr for block in self.blocks]
+        if not subjpr:
+            rep.lazy(f)
+            return
+        self.subjpr = max(subjpr) + 1
+        mes = f'"{self.subjpr}"'
+        Message(f, mes).show_debug()
     
-    def set_last_wform(self):
-        f = '[MClient] view.Phrases.set_last_wform'
-        for cell in self.cells[::-1]:
-            if cell.wform:
-                self.last_wform = cell.wform
-                mes = f'"{self.last_wform}"'
+    def set_dic(self):
+        f = '[MClient] view.Phrases.set_dic'
+        for block in self.blocks[::-1]:
+            if block.dic and not block.type in ('phsubj', 'phrase', 'phcount'
+                                               ,'comment'):
+                self.dic = block.dic
+                mes = f'"{self.dic}"'
                 Message(f, mes).show_debug()
                 return
     
-    def set_last_speech(self):
-        f = '[MClient] view.Phrases.set_last_speech'
-        for cell in self.cells[::-1]:
-            if cell.speech:
-                self.last_speech = cell.speech
-                mes = f'"{self.last_speech}"'
+    def set_wform(self):
+        f = '[MClient] view.Phrases.set_wform'
+        for block in self.blocks[::-1]:
+            if block.wform and not block.type in ('phsubj', 'phrase', 'phcount'
+                                                 ,'comment'):
+                self.wform = block.wform
+                mes = f'"{self.wform}"'
                 Message(f, mes).show_debug()
                 return
     
-    def set_last_transc(self):
-        f = '[MClient] view.Phrases.set_last_transc'
-        for cell in self.cells[::-1]:
-            if cell.transc:
-                self.last_transc = cell.transc
-                mes = f'"{self.last_transc}"'
+    def set_speechpr(self):
+        f = '[MClient] view.Phrases.set_speechpr'
+        speechpr = [block.speechpr for block in self.blocks]
+        if not speechpr:
+            rep.lazy(f)
+            return
+        self.speechpr = max(speechpr) + 1
+        mes = f'"{self.speechpr}"'
+        Message(f, mes).show_debug()
+    
+    def set_transc(self):
+        f = '[MClient] view.Phrases.set_transc'
+        for block in self.blocks[::-1]:
+            if block.transc and not block.type in ('phsubj', 'phrase', 'phcount'
+                                                  ,'comment'):
+                self.transc = block.transc
+                mes = f'"{self.transc}"'
                 Message(f, mes).show_debug()
                 return
+    
+    def set_cellno(self):
+        f = '[MClient] view.Phrases.set_cellno'
+        cellnos = [block.cellno for block in self.blocks]
+        if not cellnos:
+            rep.lazy(f)
+            return
+        self.cellno = max(cellnos) + 1
+        mes = f'"{self.cellno}"'
+        Message(f, mes).show_debug()
+    
+    def set_no(self):
+        f = '[MClient] view.Phrases.set_no'
+        nos = [block.no for block in self.blocks]
+        if not nos:
+            rep.lazy(f)
+            return
+        self.no = max(nos) + 1
+        mes = f'"{self.no}"'
+        Message(f, mes).show_debug()
     
     def move(self):
         ''' - phsubj is set to an incorrect row without this.
@@ -143,86 +173,36 @@ class Phrases:
               comments, so moving by cellno is more precise.
         '''
         f = '[MClient] view.Phrases.move'
-        cellnos = [cell.no for cell in self.cells \
-                  if [block for block in cell.blocks if block.type == 'phrase']]
+        cellnos = [block.cellno for block in self.blocks \
+                  if block.type == 'phrase']
         if not cellnos:
             rep.lazy(f)
             return
-        move = [cell for cell in self.cells if cell.no in cellnos]
-        sourcepr = self.get_sourcepr()
-        subjpr = self.get_subjpr()
-        speechpr = self.get_speechpr()
-        for cell in move:
-            cell.source = self.last_source
-            cell.sourcepr = sourcepr
-            cell.dic = self.last_dic
-            cell.subj = self.phname
-            cell.subjpr = subjpr + 1
-            cell.wform = self.last_wform
-            cell.transc = self.last_transc
-            cell.speech = self.last_speech
-            cell.speechpr = speechpr
-            for block in cell.blocks:
-                block.source = self.last_source
-                block.dic = self.last_dic
-                block.subj = block.subjf = self.phname
-            if cell.fixed_block:
-                cell.fixed_block.source = self.last_source
-                cell.fixed_block.dic = self.last_dic
-                cell.fixed_block.subj = cell.fixed_block.subjf = self.phname
-        other = [cell for cell in self.cells if not cell.no in cellnos]
-        # Initialize 'i' because it is further used, but 'other' may be empty
-        i = 0
-        for i in range(len(other)):
-            other[i].no = i
-        for j in range(len(move)):
-            move[j].no = j + i + 1
-        self.cells = other + move
-    
-    def renumber(self):
-        cellnos = []
-        old = cellno = -1
-        for cell in self.cells:
-            if cell.no != old:
-                cellno += 1
-                old = cell.no
-            cellnos.append(cellno)
-        for i in range(len(self.cells)):
-            self.cells[i].no = cellnos[i]
-    
-    def get_sourcepr(self):
-        sourcepr = [cell.sourcepr for cell in self.cells]
-        if not sourcepr:
-            return -1
-        return max(sourcepr)
-    
-    def get_speechpr(self):
-        speechpr = [cell.speechpr for cell in self.cells]
-        if not speechpr:
-            return -1
-        return max(speechpr)
-    
-    def get_subjpr(self):
-        subjpr = [cell.subjpr for cell in self.cells]
-        if not subjpr:
-            return -1
-        return max(subjpr)
+        phrases = [block for block in self.blocks if block.cellno in cellnos]
+        for block in phrases:
+            block.no = self.no
+            block.cellno = self.cellno
+            block.sourcepr = self.sourcepr
+            block.dic = self.dic
+            block.subjpr = self.subjpr
+            block.wform = self.wform
+            block.speechpr = self.speechpr
+            block.transc = self.transc
+            block.cellno = self.cellno
+            
     
     def run(self):
-        ''' At this point, blocks may have identical cellno (especially, this
-            concerns fixed blocks). Must be fixed before moving to the end.
-        '''
-        self.renumber()
-        self.set_last_source()
-        self.set_last_dic()
-        self.set_last_wform()
-        self.set_last_speech()
-        self.set_last_transc()
+        # At this point, blocks may have identical cellno
+        self.set_sourcepr()
+        self.set_dic()
+        self.set_wform()
+        self.set_speechpr()
+        self.set_transc()
+        self.set_cellno()
+        self.set_no()
         self.remove_phcount()
         self.move()
-        # Do this again for easier debugging
-        self.renumber()
-        return self.cells
+        return self.blocks
 
 
 
@@ -333,9 +313,9 @@ class Omit:
 
 class Prioritize:
     
-    def __init__(self, cells):
+    def __init__(self, blocks):
         self.speech = SPEECH.get_settings()
-        self.cells = cells
+        self.blocks = blocks
     
     def debug(self, maxrow=50):
         f = '[MClient] view.Prioritize.debug'
@@ -348,16 +328,16 @@ class Prioritize:
         nos = []
         speech = []
         speechpr = []
-        for cell in self.cells:
-            nos.append(cell.no)
-            text.append(cell.text)
-            types.append(', '.join(set([block.type for block in cell.blocks])))
-            sources.append(cell.source)
-            sourcepr.append(cell.sourcepr)
-            subj.append(cell.subj)
-            subjpr.append(cell.subjpr)
-            speech.append(cell.speech)
-            speechpr.append(cell.speechpr)
+        for block in self.blocks:
+            nos.append(block.no)
+            text.append(block.text)
+            types.append(block.type)
+            sources.append(block.source)
+            sourcepr.append(block.sourcepr)
+            subj.append(block.subj)
+            subjpr.append(block.subjpr)
+            speech.append(block.speech)
+            speechpr.append(block.speechpr)
         headers = (_('#'), _('TEXT'), _('TYPE'), 'SOURCE', 'SOURCEPR', 'SUBJ'
                   ,'SUBJPR', 'SPEECH', 'SPEECHPR')
         iterable = [nos, text, types, sources, sourcepr, subj, subjpr, speech
@@ -368,14 +348,14 @@ class Prioritize:
         return f + ':\n' + mes
     
     def set_speech(self):
-        all_speech = sorted(set([cell.speech for cell in self.cells]))
+        all_speech = sorted(set([block.speech for block in self.blocks]))
         speech_unp = [speech for speech in all_speech \
                      if not speech in self.speech]
         all_speech = self.speech + speech_unp
         for i in range(len(all_speech)):
-            for cell in self.cells:
-                if cell.speech == all_speech[i]:
-                    cell.speechpr = i
+            for block in self.blocks:
+                if block.speech == all_speech[i]:
+                    block.speechpr = i
     
     def set_subjects(self):
         ''' All cells must have 'subjpr' set since they will not be further
@@ -383,49 +363,22 @@ class Prioritize:
             no prioritized subjects, otherwise there may be sorting bugs, e.g.
             multitran.com, EN-RU, 'full of it'.
         '''
-        for cell in self.cells:
-            priority = SUBJECTS.get_priority(cell.subj)
+        for block in self.blocks:
+            priority = SUBJECTS.get_priority(block.subj)
             if priority is not None:
-                cell.subjpr = priority
-        pr_cells = [cell for cell in self.cells if cell.subjpr > -1]
-        unp_cells = [cell for cell in self.cells if cell.subjpr == -1]
-        
-        pr_cells.sort(key=lambda x: (x.subjpr, x.no))
-        unp_cells.sort(key=lambda x: (x.subj.lower(), x.no))
-        
-        ''' Keep old 'subjpr' if 'subj' is the same since we may need to
-            alphabetize terms later.
-        '''
-        subj = ''
-        subjpr = -1
-        for cell in pr_cells:
-            if cell.subj == subj:
-                cell.subjpr = subjpr
-            else:
-                subj = cell.subj
-                subjpr += 1
-                cell.subjpr = subjpr
-        for cell in unp_cells:
-            if cell.subj == subj:
-                cell.subjpr = subjpr
-            else:
-                subj = cell.subj
-                subjpr += 1
-                cell.subjpr = subjpr
-        # [] + ['example'] == ['example']
-        self.cells = pr_cells + unp_cells
+                block.subjpr = priority
     
     def set_sources(self):
-        sources = set([cell.source for cell in self.cells if cell.source])
+        sources = set([block.source for block in self.blocks if block.source])
         ORDER_SOURCES.reset(sources)
-        for cell in self.cells:
-            cell.sourcepr = ORDER_SOURCES.get_priority(cell.source)
+        for block in self.blocks:
+            block.sourcepr = ORDER_SOURCES.get_priority(block.source)
     
     def run(self):
         self.set_subjects()
         self.set_speech()
         self.set_sources()
-        return Phrases(self.cells).run()
+        return Phrases(self.blocks).run()
 
 
 
