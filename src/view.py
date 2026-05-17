@@ -61,6 +61,52 @@ class OrderSources:
 
 
 
+class OrderSubjects:
+    
+    def __init__(self):
+        self.ordered = []
+        self.prior = []
+    
+    def reset(self, subjects):
+        self.subjects = subjects
+        self.set_prior()
+        self.order()
+    
+    def set_prior(self):
+        f = '[MClient] view.OrderSubjects.set_prior'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
+        self.prior = CONFIG.new['subjects']['prioritized'].keys()
+        mes = ', '.join(self.prior)
+        Message(f, mes).show_debug()
+    
+    def order(self):
+        f = '[MClient] view.OrderSubjects.order'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
+        prior = [subject for subject in list(self.prior) \
+                if subject in self.subjects]
+        other = [subject for subject in self.subjects if not subject in prior]
+        other = sorted(other, key=lambda x: x.casefold())
+        self.ordered = prior + other
+        mes = ', '.join(self.ordered)
+        Message(f, mes).show_debug()
+    
+    def get_priority(self, subject):
+        f = '[MClient] view.OrderSubjects.get_priority'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return -1
+        try:
+            return self.ordered.index(subject)
+        except ValueError:
+            # This can happen if the subject is blocked
+            return -1
+
+
+
 class Phrases:
     
     def __init__(self, blocks):
@@ -75,8 +121,8 @@ class Phrases:
         self.phname = _('Phrases')
         self.blocks = blocks
         
-    def remove_phcount(self):
-        f = '[MClient] view.Phrases.remove_phcount'
+    def ignore_phcount(self):
+        f = '[MClient] view.Phrases.ignore_phcount'
         if CONFIG.new['PhraseCount']:
             rep.lazy(f)
             return
@@ -167,12 +213,12 @@ class Phrases:
         mes = f'"{self.no}"'
         Message(f, mes).show_debug()
     
-    def move(self):
+    def reassign(self):
         ''' - phsubj is set to an incorrect row without this.
             - Phrases may have synonyms attached to them and formatted as
               comments, so moving by cellno is more precise.
         '''
-        f = '[MClient] view.Phrases.move'
+        f = '[MClient] view.Phrases.reassign'
         cellnos = [block.cellno for block in self.blocks \
                   if block.type == 'phrase']
         if not cellnos:
@@ -190,62 +236,19 @@ class Phrases:
             block.transc = self.transc
             block.cellno = self.cellno
             
-    
     def run(self):
         # At this point, blocks may have identical cellno
         self.set_sourcepr()
         self.set_dic()
+        self.set_subjpr()
         self.set_wform()
         self.set_speechpr()
         self.set_transc()
         self.set_cellno()
         self.set_no()
-        self.remove_phcount()
-        self.move()
+        self.ignore_phcount()
+        self.reassign()
         return self.blocks
-
-
-
-class Expand:
-    
-    def __init__(self, cells):
-        ''' - Runs just after 'elems'. Fixed types are not restored yet at this
-              point.
-            - Run this class before blocking and prioritization since short and
-              full values can be sorted differently (especially this concerns
-              subjects, in which first letters of shortened and full texts may
-              differ).
-            - Creating a full clone of cells is necessary since blocks and cells
-              change their attributes. 'list' or 'copy.copy' is not enough.
-              Works with None.
-        '''
-        self.cells = copy.deepcopy(cells)
-    
-    def expand_speeches(self):
-        f = '[MClient] view.Expand.expand_speeches'
-        ''' Even if we expect parts of speech in a short form, we need to
-            process them because they should be localized for local sources.
-        '''
-        if CONFIG.new['ShortSpeech']:
-            for cell in self.cells:
-                cell.speech = SPEECH.shorten(cell.speech)
-        else:
-            for cell in self.cells:
-                cell.speech = SPEECH.expand(cell.speech)
-    
-    def expand_subjects(self):
-        # This takes ~0.0086s for 'set' on AMD E-300
-        f = '[MClient] view.Expand.expand_subjects'
-        if CONFIG.new['ShortSubjects']:
-            rep.lazy(f)
-            return
-        for cell in self.cells:
-            cell.subj = SUBJECTS.expand(cell.subj)
-    
-    def run(self):
-        self.expand_speeches()
-        self.expand_subjects()
-        return self.cells
 
 
 
@@ -363,10 +366,10 @@ class Prioritize:
             no prioritized subjects, otherwise there may be sorting bugs, e.g.
             multitran.com, EN-RU, 'full of it'.
         '''
+        subjects = set([block.subjf for block in self.blocks if block.subjf])
+        ORDER_SOURCES.reset(subjects)
         for block in self.blocks:
-            priority = SUBJECTS.get_priority(block.subj)
-            if priority is not None:
-                block.subjpr = priority
+            block.subjpr = ORDER_SUBJECTS.get_priority(block.subjf)
     
     def set_sources(self):
         sources = set([block.source for block in self.blocks if block.source])
@@ -928,3 +931,4 @@ def is_phrase_type(cell):
 
 
 ORDER_SOURCES = OrderSources()
+ORDER_SUBJECTS = OrderSubjects()
