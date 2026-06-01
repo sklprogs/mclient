@@ -61,52 +61,6 @@ class OrderSources:
 
 
 
-class OrderSubjects:
-    
-    def __init__(self):
-        self.ordered = []
-        self.prior = []
-    
-    def reset(self, subjects):
-        self.subjects = subjects
-        self.set_prior()
-        self.order()
-    
-    def set_prior(self):
-        f = '[MClient] view.OrderSubjects.set_prior'
-        if not CONFIG.Success:
-            rep.cancel(f)
-            return
-        self.prior = CONFIG.new['subjects']['prioritized'].keys()
-        mes = ', '.join(self.prior)
-        Message(f, mes).show_debug()
-    
-    def order(self):
-        f = '[MClient] view.OrderSubjects.order'
-        if not CONFIG.Success:
-            rep.cancel(f)
-            return
-        prior = [subject for subject in list(self.prior) \
-                if subject in self.subjects]
-        other = [subject for subject in self.subjects if not subject in prior]
-        other = sorted(other, key=lambda x: x.casefold())
-        self.ordered = prior + other
-        mes = ', '.join(self.ordered)
-        Message(f, mes).show_debug()
-    
-    def get_priority(self, subject):
-        f = '[MClient] view.OrderSubjects.get_priority'
-        if not CONFIG.Success:
-            rep.cancel(f)
-            return -1
-        try:
-            return self.ordered.index(subject)
-        except ValueError:
-            # This can happen if the subject is blocked
-            return -1
-
-
-
 class Phrases:
     
     def __init__(self, blocks):
@@ -366,10 +320,10 @@ class Prioritize:
             no prioritized subjects, otherwise there may be sorting bugs, e.g.
             multitran.com, EN-RU, 'full of it'.
         '''
-        subjects = set([block.subjf for block in self.blocks if block.subjf])
-        ORDER_SOURCES.reset(subjects)
         for block in self.blocks:
-            block.subjpr = ORDER_SUBJECTS.get_priority(block.subjf)
+            priority = SUBJECTS.get_priority(block.subj)
+            if priority is not None:
+                block.subjpr = priority
     
     def set_sources(self):
         sources = set([block.source for block in self.blocks if block.source])
@@ -931,4 +885,3 @@ def is_phrase_type(cell):
 
 
 ORDER_SOURCES = OrderSources()
-ORDER_SUBJECTS = OrderSubjects()
