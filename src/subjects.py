@@ -73,8 +73,8 @@ class PriorIndex:
         self.indexes = [self._get(part) for part in self.parts]
     
     def set_min(self):
-        # Cannot use 'min' on an empty list
         indexes = [index_ for index_ in self.indexes if index_ > -1]
+        # Cannot use 'min' on an empty list
         if not indexes:
             return
         self.min = min(indexes)
