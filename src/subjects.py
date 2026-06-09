@@ -92,12 +92,19 @@ class Create:
         self.set_values()
     
     def set_values(self):
+        # Subjects in full form as in CONFIG.new['subjects']['prioritized']
         self.prior_all = []
+        # Subjects in full form as in CONFIG.new['subjects']['blocked']
         self.block_all = []
+        # List of instances of 'Subject' type
         self.subjects = []
+        # Sorted list of 'pairs' keys
         self.article = []
+        # Article subjects in full form after splitting matched by 'prior_all'
         self.prior = []
+        # Article subjects in full form after splitting matched by 'block_all'
         self.block = []
+        # Subjects returned by ielems.art_subj
         self.pairs = {}
     
     def set_article(self):
