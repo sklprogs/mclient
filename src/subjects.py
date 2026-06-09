@@ -96,7 +96,7 @@ class Create:
         self.prior_all = []
         # Subjects in full form as in CONFIG.new['subjects']['blocked']
         self.block_all = []
-        # List of instances of 'Subject' type
+        # List of instances of 'Subject' type based on 'pairs'
         self.subjects = []
         # Sorted list of 'pairs' keys
         self.article = []
