@@ -104,7 +104,7 @@ class Create:
         self.prior = []
         # Article subjects in full form after splitting matched by 'block_all'
         self.block = []
-        # Subjects returned by ielems.art_subj
+        # Same as ielems.art_subj (dict of short: full subject pairs)
         self.pairs = {}
     
     def set_article(self):
