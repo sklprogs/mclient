@@ -315,15 +315,8 @@ class Prioritize:
                     block.speechpr = i
     
     def set_subjects(self):
-        ''' All cells must have 'subjpr' set since they will not be further
-            sorted by 'subj', so do not cancel this procedure even if there are
-            no prioritized subjects, otherwise there may be sorting bugs, e.g.
-            multitran.com, EN-RU, 'full of it'.
-        '''
         for block in self.blocks:
-            priority = SUBJECTS.get_priority(block.subj)
-            if priority is not None:
-                block.subjpr = priority
+            block.subjpr = SUBJECTS.get_priority(block.subjf)
     
     def set_sources(self):
         sources = set([block.source for block in self.blocks if block.source])
