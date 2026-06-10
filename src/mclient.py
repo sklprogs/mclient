@@ -17,7 +17,7 @@ from table.controller import TABLE
 import logic as lg
 from logic import REQUEST
 import gui as gi
-from view import Expand, Omit, View, Prioritize, Wrap
+from view import Omit, View, Prioritize, Wrap
 from prior_block.controller import BLOCK, PRIOR
 from settings.controller import SETTINGS, SAVE_SETTINGS
 from suggest.controller import SUGGEST
@@ -826,7 +826,6 @@ class App:
             
         self.solve_screen()
         
-        cells = Expand(cells).run()
         iomit = Omit(cells)
         cells = iomit.run()
         if CONFIG.new['OrderCells']:
