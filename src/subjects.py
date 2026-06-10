@@ -98,7 +98,7 @@ class Create:
         self.block_all = []
         # List of instances of 'Subject' type based on 'pairs'
         self.subjects = []
-        # Sorted list of 'pairs' keys
+        # Sorted list of article subjf ('pairs' values)
         self.article = []
         # Article subjects in full form after splitting matched by 'prior_all'
         self.prior = []
@@ -211,12 +211,38 @@ class Create:
     def prioritize(self):
         self.subjects.sort(key=lambda x: x.subjpr)
     
+    def set_subjpr(self):
+        ''' - We cannot combine subjpr and prior_index, because the latter is
+              used to determine if a subject is prioritized at all (see
+              Subjects.is_prioritized).
+            - Do this after 'self.alphabetize', because we need subjects in
+            'not_prior' to be sorted depending on CONFIG.new['ShortSubjects'].
+            - All blocks must have 'subjpr' set, because they will not be further
+            sorted by 'subj', so do not cancel this procedure even if there are
+            no prioritized subjects, otherwise there may be sorting bugs, e.g.
+            multitran.com, EN-RU, 'full of it'.
+        '''
+        f = '[MClient] subjects.Create.set_subjpr'
+        if not self.subjects:
+            rep.lazy(f)
+            return
+        prior_index = [subject.prior_index for subject in self.subjects]
+        delta = max(prior_index) + 1
+        not_prior = [subject.subjf for subject in self.subjects \
+                    if subject.prior_index == -1]
+        for subject in self.subjects:
+            if subject.prior_index == -1:
+                subject.subjpr = not_prior.index(subject.subjf) + delta
+            else:
+                subject.subjpr = subject.prior_index
+    
     def run(self):
         self.set_article()
         self.set_blocked_all()
         self.set_prior_all()
         self.set_subjects()
         self.alphabetize()
+        self.set_subjpr()
         self.prioritize()
 
 
@@ -229,7 +255,8 @@ class Subjects(Create):
     def get_priority(self, subject):
         for isubj in self.subjects:
             if subject in (isubj.subj, isubj.subjf):
-                return isubj.prior_index
+                return isubj.subjpr
+        return -1
     
     def expand(self, subj):
         try:
