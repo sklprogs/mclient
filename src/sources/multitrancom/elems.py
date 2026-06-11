@@ -561,6 +561,7 @@ class Elems:
             and self.blocks[i-1].cellno != self.blocks[i].cellno:
                 count += 1
                 self.blocks[i].type = 'subj'
+                self.blocks[i].subj = self.blocks[i].subjf = self.blocks[i].text
             i += 1
         rep.matches(f, count)
     
