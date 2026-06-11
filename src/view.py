@@ -277,6 +277,7 @@ class Prioritize:
     def debug(self, maxrow=50):
         f = '[MClient] view.Prioritize.debug'
         subj = []
+        subjf = []
         subjpr = []
         text = []
         types = []
@@ -292,12 +293,13 @@ class Prioritize:
             sources.append(block.source)
             sourcepr.append(block.sourcepr)
             subj.append(block.subj)
+            subjf.append(block.subjf)
             subjpr.append(block.subjpr)
             speech.append(block.speech)
             speechpr.append(block.speechpr)
         headers = (_('#'), _('TEXT'), _('TYPE'), 'SOURCE', 'SOURCEPR', 'SUBJ'
-                  ,'SUBJPR', 'SPEECH', 'SPEECHPR')
-        iterable = [nos, text, types, sources, sourcepr, subj, subjpr, speech
+                  ,'SUBJF', 'SUBJPR', 'SPEECH', 'SPEECHPR')
+        iterable = [nos, text, types, sources, sourcepr, subj, subjf, subjpr, speech
                    ,speechpr]
         mes = Table(headers = headers
                    ,iterable = iterable
