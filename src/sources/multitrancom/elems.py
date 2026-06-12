@@ -567,6 +567,8 @@ class Elems:
     
     def set_see_also(self):
         # Example: "beg the question"
+        f = '[MClient] sources.multitrancom.elems.Elems.set_see_also'
+        count = 0
         i = 1
         while i < len(self.blocks):
             if self.blocks[i-1].type == 'term' \
@@ -577,7 +579,13 @@ class Elems:
                 self.blocks[i].cellno = self.blocks[i-1].cellno + 0.1
                 if not self.blocks[i-1].url:
                     self.blocks[i-1].url = self.blocks[i].url
+                count += 1
+                self.blocks[i-1].subj = self.blocks[i-1].subjf \
+                                      = self.blocks[i-1].text \
+                                      = self.blocks[i].subj \
+                                      = self.blocks[i].subjf = _('See also')
             i += 1
+        rep.matches(f, count)
     
     def strip_blocks(self):
         # Needed for 'phsubj' and such 'wform' as 'English Thesaurus'
