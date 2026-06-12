@@ -210,7 +210,12 @@ class Elems:
                       if not is_block_fixed(block)]
         rep.deleted(f, old_len - len(self.blocks))
     
+    def set_no(self):
+        for i in range(len(self.blocks)):
+            self.blocks[i].no = i
+    
     def run(self):
+        self.set_no()
         self.set_phurl()
         self.remove_phsubj()
         self.remove_numbering()
