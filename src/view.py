@@ -71,7 +71,6 @@ class Phrases:
         self.speechpr = -1
         self.transc = ''
         self.cellno = -1
-        self.no = -1
         self.phname = _('Phrases')
         self.blocks = blocks
         
@@ -170,7 +169,6 @@ class Phrases:
             return
         phrases = [block for block in self.blocks if block.cellno in cellnos]
         for block in phrases:
-            block.no = self.no
             block.cellno = self.cellno
             block.sourcepr = self.sourcepr
             block.dic = self.dic
