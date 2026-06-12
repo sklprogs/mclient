@@ -157,16 +157,6 @@ class Phrases:
         mes = f'"{self.cellno}"'
         Message(f, mes).show_debug()
     
-    def set_no(self):
-        f = '[MClient] view.Phrases.set_no'
-        nos = [block.no for block in self.blocks]
-        if not nos:
-            rep.lazy(f)
-            return
-        self.no = max(nos) + 1
-        mes = f'"{self.no}"'
-        Message(f, mes).show_debug()
-    
     def reassign(self):
         ''' - phsubj is set to an incorrect row without this.
             - Phrases may have synonyms attached to them and formatted as
@@ -200,7 +190,6 @@ class Phrases:
         self.set_speechpr()
         self.set_transc()
         self.set_cellno()
-        self.set_no()
         self.ignore_phcount()
         self.reassign()
         return self.blocks
