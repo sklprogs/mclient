@@ -545,12 +545,6 @@ class Elems:
                 block.type = 'transc'
         rep.matches(f, count)
     
-    def delete_empty(self):
-        f = '[MClient] sources.multitrancom.elems.Elems.delete_empty'
-        old_len = len(self.blocks)
-        self.blocks = [block for block in self.blocks if block.text.strip()]
-        rep.matches(f, old_len-len(self.blocks))
-    
     def convert_user_subj(self):
         # "Gruzovik" and other entries that function as 'subj'
         f = '[MClient] sources.multitrancom.elems.Elems.convert_user_subj'
@@ -666,8 +660,6 @@ class Elems:
         self.Parallel = itrash.Parallel
         self.Separate = iseparate.Separate or isuggest.Success
         self.set_not_found()
-        # Remove empty blocks only after removing trash
-        self.delete_empty()
         self.add_head()
         self.set_transc()
         self.separate_sp_transc()

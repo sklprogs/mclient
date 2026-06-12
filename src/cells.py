@@ -160,7 +160,7 @@ class Elems:
         ''' Combine a cell with a preceding or following bracket such that the
             user would not see '()' when the cell is ignored/blocked.
         '''
-        f = '[MClient] cells.Cells.move_brackets'
+        f = '[MClient] cells.Elems.move_brackets'
         count = 0
         i = 1
         while i < len(self.blocks):
@@ -214,6 +214,12 @@ class Elems:
         for i in range(len(self.blocks)):
             self.blocks[i].no = i
     
+    def delete_empty(self):
+        f = '[MClient] cells.Elems.delete_empty'
+        old_len = len(self.blocks)
+        self.blocks = [block for block in self.blocks if block.text.strip()]
+        rep.matches(f, old_len - len(self.blocks))
+    
     def run(self):
         self.set_no()
         self.set_phurl()
@@ -223,6 +229,8 @@ class Elems:
         self.convert_comments()
         self.attach_comments()
         self.move_brackets()
+        # Remove empty blocks only after sources.multitrancom.elems.Trash
+        self.delete_empty()
         self.fill_fixed()
         self.remove_fixed()
         return self.blocks
