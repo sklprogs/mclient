@@ -189,6 +189,7 @@ class Phrases:
             block.speechpr = self.speechpr
             block.transc = self.transc
             block.cellno = self.cellno
+            block.subj = block.subjf = self.phname
             
     def run(self):
         # At this point, blocks may have identical cellno
