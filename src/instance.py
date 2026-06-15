@@ -39,12 +39,14 @@ class Block:
         self.Ignore = False
         self.Block = False
         self.Delete = False
+        # Preserve original order after sorting
         self.no = -1
         self.cellno = -1
         self.rowno = -1
         self.colno = -1
         self.subjpr = -1
         self.speech = ''
+        self.speechf = ''
         self.speechpr = -1
         self.sourcepr = -1
         self.code = ''
