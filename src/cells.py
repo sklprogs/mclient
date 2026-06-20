@@ -88,7 +88,7 @@ class Elems:
         rep.deleted(f, old_len - len(self.blocks))
     
     def set_art_subj(self):
-        # Works only before deleting fixed blocks
+        # Works only before deleting fixed blocks and setting subjf
         f = '[MClient] cells.Elems.set_art_subj'
         count = 0
         for block in self.blocks:
@@ -237,18 +237,19 @@ class Elems:
         self.set_phurl()
         self.remove_phsubj()
         self.remove_numbering()
-        self.set_art_subj()
         self.convert_comments()
         self.attach_comments()
         self.move_brackets()
         # Remove empty blocks only after sources.multitrancom.elems.Trash
         self.delete_empty()
         self.fill_fixed()
-        self.remove_fixed()
         # Do this only after self.fill_fixed
         self.set_subjf()
         # Do this only after self.fill_fixed
         self.set_speechf()
+        # Do this only after self.set_subjf but before self.remove_fixed
+        self.set_art_subj()
+        self.remove_fixed()
         return self.blocks
 
 
