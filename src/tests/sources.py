@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import w3lib.url
+
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.graphics.root.controller import ROOT
@@ -22,16 +24,16 @@ from config import CONFIG
 #SEARCH = 'account'
 #SEARCH = 'constant-voltage welding source'
 #SEARCH = 'wine structure'
-SEARCH = 'wine'
 #SEARCH = 'слово'
 #SEARCH = 'word'
 #SEARCH = 'pail'
 #SEARCH = 'absolute'
 #SEARCH = 'bottling'
 #SEARCH = 'book'
+SEARCH = 'hello'
 #SEARCH = 'good'
 #SEARCH = 'orderly'
-URL = 'https://www.multitran.com/m.exe?s=wine&l1=2&l2=1'
+URL = f'https://www.multitran.com/m.exe?s={w3lib.url.safe_url_string(SEARCH)}&l1=2&l2=1'
 #HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/account (2025-10-26).htm'
 #HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/inundate (2024-04-08).html'
 
@@ -88,13 +90,12 @@ class Prioritize:
         f = '[MClient] tests.sources.Prioritize.run_multitrancom'
         from articles import ARTICLES
         from sources.multitrancom.run import Source
-        from cells import Elems as mtElems, Cells as mtCells, Expand, debug
+        from cells import Elems as mtElems, Cells as mtCells, debug
         from view import Prioritize as mtPrioritize
         from subjects import SUBJECTS
         blocks = Source().request(SEARCH, URL)
         ielems = mtElems(blocks)
         blocks = ielems.run()
-        blocks = Expand(blocks).run()
         cells = mtCells(blocks).run()
         SUBJECTS.reset(ielems.art_subj)
         ARTICLES.add(search = SEARCH
@@ -351,15 +352,14 @@ class Elems:
     
     def run_multitrancom(self):
         f = '[MClient] tests.sources.Elems.run_multitrancom'
-        import sources.multitrancom.get as gt
-        import sources.multitrancom.cleanup as cu
-        import sources.multitrancom.tags as tg
-        import sources.multitrancom.elems as el
-        code = gt.Get(search=SEARCH, url=URL).run()
-        code = cu.CleanUp(code).run()
-        blocks = tg.Tags(code).run()
-        ielems = el.Elems(blocks)
-        ielems.run()
+        from sources.multitrancom.get import Get as mtGet
+        from sources.multitrancom.cleanup import CleanUp as mtCleanUp
+        from sources.multitrancom.tags import Tags as mtTags
+        from sources.multitrancom.elems import Elems as mtElems
+        code = mtGet(search=SEARCH, url=URL).run()
+        code = mtCleanUp(code).run()
+        blocks = mtTags(code).run()
+        ielems = mtElems(blocks).run()
         return ielems.debug()
 
 
@@ -748,8 +748,7 @@ class Source:
         from sources.multitrancom.run import Source as mSource
         blocks = mSource().request(url=URL, search=SEARCH)
         blocks = cElems(blocks).run()
-        icells = Cells(blocks)
-        blocks = icells.run()
+        #blocks = Cells(blocks).run()
         return debug(blocks)
 
 
