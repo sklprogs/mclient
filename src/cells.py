@@ -63,6 +63,10 @@ class Elems:
         for block in self.blocks:
             block.speechf = SPEECH.expand(block.speech)
     
+    def set_subjf(self):
+        for block in self.blocks:
+            block.subjf = SUBJECTS.expand(block.subj)
+    
     def set_phurl(self):
         f = '[MClient] cells.Elems.set_phurl'
         for block in self.blocks:
@@ -242,6 +246,8 @@ class Elems:
         self.fill_fixed()
         self.remove_fixed()
         # Do this only after self.fill_fixed
+        self.set_subjf()
+        # Do this only after self.fill_fixed
         self.set_speechf()
         return self.blocks
 
@@ -366,34 +372,6 @@ class OrderSources:
         except ValueError:
             # This can happen if the source is blocked
             return -1
-
-
-
-class Expand:
-    
-    def __init__(self, blocks):
-        ''' Run this class before blocking and prioritization since short and
-            full values can be sorted differently (especially this concerns
-            subjects, in which first letters of shortened and full texts may
-            differ).
-        '''
-        self.blocks = blocks
-    
-    def expand_subjects(self):
-        # This takes ~0.0086s for 'set' on AMD E-300
-        f = '[MClient] cells.Expand.expand_subjects'
-        if not CONFIG.Success:
-            rep.cancel(f)
-            return
-        if CONFIG.new['ShortSubjects']:
-            rep.lazy(f)
-            return
-        for block in self.blocks:
-            block.subj = SUBJECTS.expand(block.subj)
-    
-    def run(self):
-        self.expand_subjects()
-        return self.blocks
 
 
 ORDER_SOURCES = OrderSources()
