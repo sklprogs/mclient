@@ -241,6 +241,40 @@ class Elems:
 
 
 
+class Prioritize:
+    
+    def __init__(self, blocks):
+        self.speech = SPEECH.get_settings()
+        self.blocks = blocks
+    
+    def set_speech(self):
+        all_speech = sorted(set([block.speech for block in self.blocks]))
+        speech_unp = [speech for speech in all_speech \
+                     if not speech in self.speech]
+        all_speech = self.speech + speech_unp
+        for i in range(len(all_speech)):
+            for block in self.blocks:
+                if block.speech == all_speech[i]:
+                    block.speechpr = i
+    
+    def set_subjects(self):
+        for block in self.blocks:
+            block.subjpr = SUBJECTS.get_priority(block.subjf)
+    
+    def set_sources(self):
+        sources = set([block.source for block in self.blocks if block.source])
+        ORDER_SOURCES.reset(sources)
+        for block in self.blocks:
+            block.sourcepr = ORDER_SOURCES.get_priority(block.source)
+    
+    def run(self):
+        self.set_subjects()
+        self.set_speech()
+        self.set_sources()
+        return self.blocks
+
+
+
 class Cells:
     
     def __init__(self, blocks):
@@ -280,6 +314,52 @@ class Cells:
         self.ignore_roman_numbers()
         self.set_row_nos()
         return self.blocks
+
+
+
+class OrderSources:
+    
+    def __init__(self):
+        self.ordered = []
+        self.prior = []
+    
+    def reset(self, sources):
+        self.sources = sources
+        self.set_prior()
+        self.order()
+    
+    def set_prior(self):
+        f = '[MClient] cells.OrderSources.set_prior'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
+        self.prior = CONFIG.new['sources']['prioritized'].keys()
+        mes = ', '.join(self.prior)
+        Message(f, mes).show_debug()
+    
+    def order(self):
+        f = '[MClient] cells.OrderSources.order'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return
+        prior = [source for source in list(self.prior) \
+                if source in self.sources]
+        other = [source for source in self.sources if not source in prior]
+        other = sorted(other, key=lambda x: x.casefold())
+        self.ordered = prior + other
+        mes = ', '.join(self.ordered)
+        Message(f, mes).show_debug()
+    
+    def get_priority(self, source):
+        f = '[MClient] cells.OrderSources.get_priority'
+        if not CONFIG.Success:
+            rep.cancel(f)
+            return -1
+        try:
+            return self.ordered.index(source)
+        except ValueError:
+            # This can happen if the source is blocked
+            return -1
 
 
 
@@ -324,3 +404,6 @@ class Expand:
         self.expand_speeches()
         self.expand_subjects()
         return self.blocks
+
+
+ORDER_SOURCES = OrderSources()
