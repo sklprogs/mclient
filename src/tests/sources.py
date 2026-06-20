@@ -748,7 +748,7 @@ class Source:
         from sources.multitrancom.run import Source as mSource
         blocks = mSource().request(url=URL, search=SEARCH)
         blocks = cElems(blocks).run()
-        #blocks = Cells(blocks).run()
+        blocks = Cells(blocks).run()
         return debug(blocks)
 
 

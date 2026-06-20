@@ -17,8 +17,8 @@ from subjects import SUBJECTS
 
 def debug(blocks, maxrow=30, maxrows=0):
     f = '[MClient] cells.debug'
-    headers = (_('BLOCK #'), _('CELL #'), _('TYPES'), _('TEXT'), 'SOURCE', 'DIC'
-              ,'SUBJ', 'SUBJF', _('ROW #'), _('COL #'))
+    headers = (_('BLOCK'), _('CELL'), _('TYPE'), _('TEXT'), 'SOURCE', 'DIC'
+              ,'SUBJ', 'SUBJF', 'SUBJPR', 'SPEECH', 'SPEECHF', 'SPEECHPR')
     nos = []
     cellnos = []
     types = []
@@ -27,8 +27,10 @@ def debug(blocks, maxrow=30, maxrows=0):
     dics = []
     subj = []
     subjf = []
-    rownos = []
-    colnos = []
+    subjpr = []
+    speech = []
+    speechf = []
+    speechpr = []
     for block in blocks:
         nos.append(block.no)
         cellnos.append(block.cellno)
@@ -38,11 +40,13 @@ def debug(blocks, maxrow=30, maxrows=0):
         dics.append(block.dic)
         subj.append(block.subj)
         subjf.append(block.subjf)
-        rownos.append(block.rowno)
-        colnos.append(block.colno)
+        subjpr.append(block.subjpr)
+        speech.append(block.speech)
+        speechf.append(block.speechf)
+        speechpr.append(block.speechpr)
     mes = Table(headers = headers
                ,iterable = (nos, cellnos, types, texts, sources, dics, subj
-                           ,subjf, rownos, colnos)
+                           ,subjf, subjpr, speech, speechf, speechpr)
                ,maxrow = maxrow, maxrows = maxrows).run()
     return f'{f}:\n{mes}'
 
