@@ -108,6 +108,29 @@ class Prioritize:
         #blocks = mtOmit(blocks).run()
         blocks = mtPrioritize(blocks).run()
         return debug(blocks)
+    
+    def run_mdic(self):
+        f = '[MClient] tests.sources.Prioritize.run_mdic'
+        from articles import ARTICLES
+        from sources.mdic.run import Source
+        from cells import Elems as mtElems, Cells as mtCells, Prioritize as mtPrioritize, debug
+        from subjects import SUBJECTS
+        blocks = Source().request(SEARCH)
+        ielems = mtElems(blocks)
+        blocks = ielems.run()
+        cells = mtCells(blocks).run()
+        SUBJECTS.reset(ielems.art_subj)
+        ARTICLES.add(search = SEARCH
+                    ,url = URL
+                    ,cells = cells
+                    ,subjf = SUBJECTS.article
+                    ,blocked = SUBJECTS.block
+                    ,prioritized = SUBJECTS.prior
+                    ,art_subj = ielems.art_subj
+                    ,phurl = ielems.phurl)
+        #blocks = mtOmit(blocks).run()
+        blocks = mtPrioritize(blocks).run()
+        return debug(blocks)
 
 
 
