@@ -293,24 +293,6 @@ class Cells:
     def __init__(self, blocks):
         self.blocks = blocks
     
-    def set_row_nos(self):
-        # Run this before deleting fixed types
-        f = '[MClient] cells.Cells.set_row_nos'
-        count = 0
-        if self.blocks:
-            count += 1
-            self.blocks[0].rowno = 0
-        rowno = 0
-        i = 1
-        while i < len(self.blocks):
-            if not is_block_fixed(self.blocks[i-1]) \
-            and is_block_fixed(self.blocks[i]):
-                count += 1
-                rowno += 1
-            self.blocks[i].rowno = rowno
-            i += 1
-        rep.matches(f, count)
-    
     def ignore_roman_numbers(self):
         #TODO: Do this on unique cellnos only
         f = '[MClient] cells.Cells.ignore_roman_numbers'
@@ -325,7 +307,6 @@ class Cells:
     
     def run(self):
         self.ignore_roman_numbers()
-        self.set_row_nos()
         return self.blocks
 
 
