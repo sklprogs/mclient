@@ -379,21 +379,6 @@ class Expand:
         '''
         self.blocks = blocks
     
-    def expand_speeches(self):
-        f = '[MClient] cells.Expand.expand_speeches'
-        if not CONFIG.Success:
-            rep.cancel(f)
-            return
-        ''' Even if we expect parts of speech in a short form, we need to
-            process them because they should be localized for local sources.
-        '''
-        if CONFIG.new['ShortSpeech']:
-            for block in self.blocks:
-                block.speech = SPEECH.shorten(block.speech)
-            return
-        for block in self.blocks:
-            block.speech = SPEECH.expand(block.speech)
-    
     def expand_subjects(self):
         # This takes ~0.0086s for 'set' on AMD E-300
         f = '[MClient] cells.Expand.expand_subjects'
@@ -407,7 +392,6 @@ class Expand:
             block.subj = SUBJECTS.expand(block.subj)
     
     def run(self):
-        self.expand_speeches()
         self.expand_subjects()
         return self.blocks
 
