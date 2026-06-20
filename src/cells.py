@@ -59,6 +59,10 @@ class Elems:
         self.art_subj = {}
         self.blocks = blocks
     
+    def set_speechf(self):
+        for block in self.blocks:
+            block.speechf = SPEECH.expand(block.speech)
+    
     def set_phurl(self):
         f = '[MClient] cells.Elems.set_phurl'
         for block in self.blocks:
@@ -237,6 +241,8 @@ class Elems:
         self.delete_empty()
         self.fill_fixed()
         self.remove_fixed()
+        # Do this only after self.fill_fixed
+        self.set_speechf()
         return self.blocks
 
 
