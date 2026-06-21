@@ -291,6 +291,7 @@ class Prioritize:
 class Cells:
     
     def __init__(self, blocks):
+        self.cells = []
         self.blocks = blocks
     
     def ignore_roman_numbers(self):
@@ -305,8 +306,47 @@ class Cells:
                 block.Ignore = True
         rep.deleted(f, count)
     
+    def set_cells(self):
+        f = '[MClient] cells.Cells.set_cells'
+        if not self.blocks:
+            rep.lazy(f)
+            return
+        cell = [self.blocks[0]]
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i].cellno == self.blocks[i-1].cellno:
+                cell.append(self.blocks[i])
+            else:
+                if cell:
+                    self.cells.append(cell)
+                cell = [self.blocks[i]]
+            i += 1
+        if cell:
+            self.cells.append(cell)
+    
+    def debug_cells(self):
+        f = '[MClient] cells.Cells.debug_cells'
+        for cell in self.cells:
+            text = [block.text for block in cell]
+            text = ' '.join(text)
+            nos = [block.no for block in cell]
+            min_no = min(nos)
+            max_no = max(nos)
+            cellnos = [block.cellno for block in cell]
+            min_cellno = min(cellnos)
+            max_cellno = max(cellnos)
+            if min_cellno != max_cellno:
+                rep.condition(f, f'{min_cellno} == {max_cellno}')
+            cellno = max_cellno
+            if min_no == max_no:
+                print(f'{cellno}: {max_no}: "{text}"')
+            else:
+                print(f'{cellno}: {min_no}-{max_no}: "{text}"')
+    
     def run(self):
         self.ignore_roman_numbers()
+        self.set_cells()
+        self.debug_cells()
         return self.blocks
 
 
