@@ -311,18 +311,20 @@ class Cells:
         if not self.blocks:
             rep.lazy(f)
             return
-        cell = [self.blocks[0]]
-        i = 1
-        while i < len(self.blocks):
-            if self.blocks[i].cellno == self.blocks[i-1].cellno:
-                cell.append(self.blocks[i])
+        cellno = -1
+        cell = []
+        for block in self.blocks:
+            if block.cellno == cellno:
+                cell.append(f'{block.cellno}-{block.no}-{block.text}')
             else:
+                cellno = block.cellno
                 if cell:
                     self.cells.append(cell)
-                cell = [self.blocks[i]]
-            i += 1
+                    cell = []
+                cell.append(f'{block.cellno}-{block.no}-{block.text}')
         if cell:
             self.cells.append(cell)
+        print(self.cells)
     
     def debug_cells(self):
         f = '[MClient] cells.Cells.debug_cells'
@@ -445,28 +447,10 @@ class Omit:
                 block.Block = True
         rep.matches(f, count)
     
-    def set_cells(self):
-        f = '[MClient] cells.Omit.set_cells'
-        if not self.omit:
-            rep.lazy(f)
-            return
-        cell = []
-        cellno = -1
-        for block in self.omit:
-            if block.cellno != cellno:
-                if cell:
-                    self.cells += [cell]
-                    cell = []
-                cell.append(block.text)
-        if cell:
-            self.cells += [cell]
-        print(self.cells)
-    
     def run(self):
         self.set_subjects()
         self.omit_subjects()
         self.omit_users()
-        self.set_cells()
         return self.blocks
 
 
