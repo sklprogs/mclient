@@ -35,7 +35,8 @@ def debug(blocks, maxrow=30, maxrows=0):
         nos.append(block.no)
         cellnos.append(block.cellno)
         types.append(block.type)
-        texts.append(f'"{block.text}"')
+        text = block.text.replace('\n', ' ')
+        texts.append(f'"{text}"')
         sources.append(block.source)
         dics.append(block.dic)
         subj.append(block.subj)
@@ -339,18 +340,37 @@ class Cells:
             if min_cellno != max_cellno:
                 rep.condition(f, f'{min_cellno} == {max_cellno}')
             cellno = max_cellno
-            if min_no == max_no:
-                print(f'{cellno}: {max_no}: "{text}"')
+            subjpr = [block.subjpr for block in cell]
+            min_subjpr = min(subjpr)
+            max_subjpr = max(subjpr)
+            if min_subjpr == max_subjpr:
+                subjpr = max_subjpr
             else:
-                print(f'{cellno}: {min_no}-{max_no}: "{text}"')
+                subjpr = f'{min_subjpr}-{max_subjpr}'
+            if min_no == max_no:
+                print(f'{subjpr}: {cellno}: {max_no}: "{text}"')
+            else:
+                print(f'{subjpr}: {cellno}: {min_no}-{max_no}: "{text}"')
+    
+    def sort(self):
+        self.cells.sort(key=lambda cell: [block.subjpr for block in cell])
+    
+    def set_blocks(self):
+        self.blocks = []
+        for cell in self.cells:
+            for block in cell:
+                self.blocks.append(block)
     
     def run(self):
         self.ignore_roman_numbers()
         # Set instance in order to further get blocked subjects and cells
         self.iomit = Omit(self.blocks)
         self.blocks = self.iomit.run()
+        self.blocks = Prioritize(self.blocks).run()
         self.set_cells()
-        self.debug_cells()
+        self.sort()
+        #self.debug_cells()
+        self.set_blocks()
         return self.blocks
 
 
