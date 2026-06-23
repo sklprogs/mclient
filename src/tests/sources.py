@@ -95,8 +95,9 @@ class Prioritize:
         blocks = Source().request(SEARCH, URL)
         ielems = mtElems(blocks)
         blocks = ielems.run()
-        cells = mtCells(blocks).run()
+        # Reset subjects before running Omit (getting blocked subjects)
         SUBJECTS.reset(ielems.art_subj)
+        cells = mtCells(blocks).run()
         ARTICLES.add(search = SEARCH
                     ,url = URL
                     ,cells = cells
@@ -118,8 +119,9 @@ class Prioritize:
         blocks = Source().request(SEARCH)
         ielems = mtElems(blocks)
         blocks = ielems.run()
-        cells = mtCells(blocks).run()
+        # Reset subjects before running Omit (getting blocked subjects)
         SUBJECTS.reset(ielems.art_subj)
+        cells = mtCells(blocks).run()
         ARTICLES.add(search = SEARCH
                     ,url = URL
                     ,cells = cells

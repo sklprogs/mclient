@@ -345,8 +345,11 @@ class Cells:
     
     def run(self):
         self.ignore_roman_numbers()
+        # Set instance in order to further get blocked subjects and cells
+        self.iomit = Omit(self.blocks)
+        self.blocks = self.iomit.run()
         self.set_cells()
-        self.debug_cells()
+        #self.debug_cells()
         return self.blocks
 
 
@@ -394,6 +397,77 @@ class OrderSources:
         except ValueError:
             # This can happen if the source is blocked
             return -1
+
+
+
+class Omit:
+    
+    def __init__(self, blocks):
+        self.cells = []
+        self.subj = []
+        self.omit = []
+        self.blocks = blocks
+    
+    def set_subjects(self):
+        f = '[MClient] cells.Omit.set_subjects'
+        if not CONFIG.new['BlockSubjects']:
+            rep.lazy(f)
+            return
+        subjects = [block.subj for block in self.blocks]
+        subjects = sorted(set(subjects))
+        for subject in subjects:
+            if SUBJECTS.is_blocked(subject):
+                self.subj.append(subject)
+        mes = '; '.join(self.subj)
+        Message(f, mes).show_debug()
+    
+    def omit_subjects(self):
+        f = '[MClient] cells.Omit.omit_subjects'
+        if not CONFIG.new['BlockSubjects']:
+            rep.lazy(f)
+            return
+        for block in self.blocks:
+            if block.subj in self.subj:
+                block.Block = True
+                self.omit.append(block)
+        rep.matches(f, len(self.omit))
+    
+    def omit_users(self):
+        f = '[MClient] cells.Omit.omit_users'
+        if CONFIG.new['ShowUserNames']:
+            rep.lazy(f)
+            return
+        count = 0
+        for block in self.blocks:
+            if block.type == 'user':
+                count += 1
+                #TODO: Block or Ignore?
+                block.Block = True
+        rep.matches(f, count)
+    
+    def set_cells(self):
+        f = '[MClient] cells.Omit.set_cells'
+        if not self.omit:
+            rep.lazy(f)
+            return
+        cell = []
+        cellno = -1
+        for block in self.omit:
+            if block.cellno != cellno:
+                if cell:
+                    self.cells += [cell]
+                    cell = []
+                cell.append(block.text)
+        if cell:
+            self.cells += [cell]
+        print(self.cells)
+    
+    def run(self):
+        self.set_subjects()
+        self.omit_subjects()
+        self.omit_users()
+        self.set_cells()
+        return self.blocks
 
 
 ORDER_SOURCES = OrderSources()

@@ -147,68 +147,6 @@ class Phrases:
 
 
 
-class Omit:
-    
-    def __init__(self, cells):
-        self.cells = cells
-        self.subj = []
-        self.omit_cells = []
-    
-    def set_subjects(self):
-        f = '[MClient] view.Omit.set_subjects'
-        if not CONFIG.new['BlockSubjects']:
-            rep.lazy(f)
-            return
-        subjects = [cell.subj for cell in self.cells]
-        subjects = sorted(set(subjects))
-        for subject in subjects:
-            if SUBJECTS.is_blocked(subject):
-                self.subj.append(subject)
-        mes = '; '.join(self.subj)
-        Message(f, mes).show_debug()
-    
-    def omit_subjects(self):
-        f = '[MClient] view.Omit.omit_subjects'
-        if not CONFIG.new['BlockSubjects']:
-            rep.lazy(f)
-            return
-        cells = []
-        for cell in self.cells:
-            if cell.subj in self.subj:
-                # Fixed types are not recreated yet
-                self.omit_cells.append(cell.text)
-            else:
-                cells.append(cell)
-        rep.matches(f, len(self.cells) - len(cells))
-        self.cells = cells
-        mes = _('Omitted cells: {}').format('; '.join(self.omit_cells))
-        Message(f, mes).show_debug()
-    
-    def omit_users(self):
-        f = '[MClient] view.Omit.omit_users'
-        if CONFIG.new['ShowUserNames']:
-            rep.lazy(f)
-            return
-        count = 0
-        for cell in self.cells:
-            old_len = len(cell.blocks)
-            cell.blocks = [block for block in cell.blocks \
-                          if block.type != 'user']
-            delta = old_len - len(cell.blocks)
-            if delta:
-                fragms = [block.text for block in cell.blocks]
-                cell.text = List(fragms).space_items().strip()
-            count += delta
-        rep.matches(f, count)
-    
-    def run(self):
-        self.set_subjects()
-        self.omit_subjects()
-        self.omit_users()
-        return self.cells
-
-
-
 class View:
     # Create user-specific cells
     def __init__(self, cells):
