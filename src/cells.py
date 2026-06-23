@@ -315,16 +315,15 @@ class Cells:
         cell = []
         for block in self.blocks:
             if block.cellno == cellno:
-                cell.append(f'{block.cellno}-{block.no}-{block.text}')
+                cell.append(block)
             else:
                 cellno = block.cellno
                 if cell:
                     self.cells.append(cell)
                     cell = []
-                cell.append(f'{block.cellno}-{block.no}-{block.text}')
+                cell.append(block)
         if cell:
             self.cells.append(cell)
-        print(self.cells)
     
     def debug_cells(self):
         f = '[MClient] cells.Cells.debug_cells'
@@ -351,7 +350,7 @@ class Cells:
         self.iomit = Omit(self.blocks)
         self.blocks = self.iomit.run()
         self.set_cells()
-        #self.debug_cells()
+        self.debug_cells()
         return self.blocks
 
 
