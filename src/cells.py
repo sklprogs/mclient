@@ -17,10 +17,10 @@ from subjects import SUBJECTS
 
 def debug(blocks, maxrow=30, maxrows=0):
     f = '[MClient] cells.debug'
-    headers = (_('BLOCK'), _('CELL'), _('TYPE'), _('TEXT'), 'SOURCE', 'DIC'
+    headers = (_('CELL'), _('BLOCK'), _('TYPE'), _('TEXT'), 'SOURCE', 'DIC'
               ,'SUBJ', 'SUBJF', 'SUBJPR', 'SPEECH', 'SPEECHF', 'SPEECHPR')
-    nos = []
     cellnos = []
+    nos = []
     types = []
     texts = []
     sources = []
@@ -32,8 +32,8 @@ def debug(blocks, maxrow=30, maxrows=0):
     speechf = []
     speechpr = []
     for block in blocks:
-        nos.append(block.no)
         cellnos.append(block.cellno)
+        nos.append(block.no)
         types.append(block.type)
         text = block.text.replace('\n', ' ')
         texts.append(f'"{text}"')
@@ -46,7 +46,7 @@ def debug(blocks, maxrow=30, maxrows=0):
         speechf.append(block.speechf)
         speechpr.append(block.speechpr)
     mes = Table(headers = headers
-               ,iterable = (nos, cellnos, types, texts, sources, dics, subj
+               ,iterable = (cellnos, nos, types, texts, sources, dics, subj
                            ,subjf, subjpr, speech, speechf, speechpr)
                ,maxrow = maxrow, maxrows = maxrows).run()
     return f'{f}:\n{mes}'
