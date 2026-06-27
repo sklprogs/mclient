@@ -292,7 +292,6 @@ class Prioritize:
 class Cells:
     
     def __init__(self, blocks):
-        self.cells = []
         self.blocks = blocks
     
     def ignore_roman_numbers(self):
@@ -307,60 +306,8 @@ class Cells:
                 block.Ignore = True
         rep.deleted(f, count)
     
-    def set_cells(self):
-        f = '[MClient] cells.Cells.set_cells'
-        if not self.blocks:
-            rep.lazy(f)
-            return
-        cellno = -1
-        cell = []
-        for block in self.blocks:
-            if block.cellno == cellno:
-                cell.append(block)
-            else:
-                cellno = block.cellno
-                if cell:
-                    self.cells.append(cell)
-                    cell = []
-                cell.append(block)
-        if cell:
-            self.cells.append(cell)
-    
-    def debug_cells(self):
-        f = '[MClient] cells.Cells.debug_cells'
-        for cell in self.cells:
-            text = [block.text for block in cell]
-            text = ' '.join(text)
-            nos = [block.no for block in cell]
-            min_no = min(nos)
-            max_no = max(nos)
-            cellnos = [block.cellno for block in cell]
-            min_cellno = min(cellnos)
-            max_cellno = max(cellnos)
-            if min_cellno != max_cellno:
-                rep.condition(f, f'{min_cellno} == {max_cellno}')
-            cellno = max_cellno
-            subjpr = [block.subjpr for block in cell]
-            min_subjpr = min(subjpr)
-            max_subjpr = max(subjpr)
-            if min_subjpr == max_subjpr:
-                subjpr = max_subjpr
-            else:
-                subjpr = f'{min_subjpr}-{max_subjpr}'
-            if min_no == max_no:
-                print(f'{subjpr}: {cellno}: {max_no}: "{text}"')
-            else:
-                print(f'{subjpr}: {cellno}: {min_no}-{max_no}: "{text}"')
-    
     def sort(self):
-        #self.blocks.sort(key=lambda block: (block.subjpr, block.speechpr, block.cellno, block.no))
-        self.cells.sort(key=lambda cell: [tuple((block.subjpr, block.speechpr, block.cellno, block.no) for block in cell)])
-    
-    def set_blocks(self):
-        self.blocks = []
-        for cell in self.cells:
-            for block in cell:
-                self.blocks.append(block)
+        self.blocks.sort(key=lambda block: (block.subjpr, block.speechpr, block.cellno, block.no))
     
     def run(self):
         self.ignore_roman_numbers()
@@ -368,10 +315,7 @@ class Cells:
         self.iomit = Omit(self.blocks)
         self.blocks = self.iomit.run()
         self.blocks = Prioritize(self.blocks).run()
-        self.set_cells()
         self.sort()
-        #self.debug_cells()
-        self.set_blocks()
         return self.blocks
 
 
@@ -425,7 +369,6 @@ class OrderSources:
 class Omit:
     
     def __init__(self, blocks):
-        self.cells = []
         self.subj = []
         self.omit = []
         self.blocks = blocks
