@@ -353,7 +353,8 @@ class Cells:
                 print(f'{subjpr}: {cellno}: {min_no}-{max_no}: "{text}"')
     
     def sort(self):
-        self.cells.sort(key=lambda cell: [tuple((block.subjpr, block.speechpr) for block in cell)])
+        #self.blocks.sort(key=lambda block: (block.subjpr, block.speechpr, block.cellno, block.no))
+        self.cells.sort(key=lambda cell: [tuple((block.subjpr, block.speechpr, block.cellno, block.no) for block in cell)])
     
     def set_blocks(self):
         self.blocks = []
