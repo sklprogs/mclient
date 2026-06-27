@@ -25,12 +25,12 @@ from config import CONFIG
 #SEARCH = 'constant-voltage welding source'
 #SEARCH = 'wine structure'
 #SEARCH = 'слово'
-#SEARCH = 'word'
+SEARCH = 'word'
 #SEARCH = 'pail'
 #SEARCH = 'absolute'
 #SEARCH = 'bottling'
 #SEARCH = 'book'
-SEARCH = 'hello'
+#SEARCH = 'hello'
 #SEARCH = 'good'
 #SEARCH = 'orderly'
 URL = f'https://www.multitran.com/m.exe?s={w3lib.url.safe_url_string(SEARCH)}&l1=2&l2=1'
@@ -88,40 +88,28 @@ class Prioritize:
     
     def run_multitrancom(self):
         f = '[MClient] tests.sources.Prioritize.run_multitrancom'
-        from articles import ARTICLES
-        from sources.multitrancom.run import Source
-        from cells import Elems as mtElems, Cells as mtCells, Prioritize as mtPrioritize, debug
+        from sources.multitrancom.run import Source as cSource
+        from cells import Elems as cElems, Cells as cCells, debug
         from subjects import SUBJECTS
-        blocks = Source().request(SEARCH, URL)
-        ielems = mtElems(blocks)
+        blocks = cSource().request(SEARCH)
+        ielems = cElems(blocks)
         blocks = ielems.run()
         # Reset subjects before running Omit (getting blocked subjects)
         SUBJECTS.reset(ielems.art_subj)
-        cells = mtCells(blocks).run()
-        ARTICLES.add(search = SEARCH
-                    ,url = URL
-                    ,cells = cells
-                    ,subjf = SUBJECTS.article
-                    ,blocked = SUBJECTS.block
-                    ,prioritized = SUBJECTS.prior
-                    ,art_subj = ielems.art_subj
-                    ,phurl = ielems.phurl)
-        #blocks = mtOmit(blocks).run()
-        blocks = mtPrioritize(blocks).run()
+        blocks = cCells(blocks).run()
         return debug(blocks)
     
     def run_mdic(self):
         f = '[MClient] tests.sources.Prioritize.run_mdic'
-        from articles import ARTICLES
-        from sources.mdic.run import Source
-        from cells import Elems as mtElems, Cells as mtCells, debug
+        from sources.mdic.run import Source as cSource
+        from cells import Elems as cElems, Cells as cCells, debug
         from subjects import SUBJECTS
-        blocks = Source().request(SEARCH)
-        ielems = mtElems(blocks)
+        blocks = cSource().request(SEARCH)
+        ielems = cElems(blocks)
         blocks = ielems.run()
         # Reset subjects before running Omit (getting blocked subjects)
         SUBJECTS.reset(ielems.art_subj)
-        blocks = mtCells(blocks).run()
+        blocks = cCells(blocks).run()
         return debug(blocks)
 
 
