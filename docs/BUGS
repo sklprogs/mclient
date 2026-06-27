@@ -1,4 +1,6 @@
 all:
+- whoopee water: Сленг, but not blocked
+- if the 1st article is not found (e.g. "pile on to"), the history starts from 0
 - strong case: all sources, not set + wforms + speech + subj + dics + sources:
   wforms are duplicated and not prioritized
 - fend for: no phsubj
