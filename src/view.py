@@ -148,17 +148,17 @@ class Phrases:
 
 
 class View:
-    # Create user-specific cells
-    def __init__(self, cells):
+    # Order blocks as specified by the user
+    def __init__(self, blocks):
         self.Success = True
         self.view = []
-        self.cells = cells
+        self.blocks = blocks
         # Must be recreated for each article loading/reloading
         self.fixed_cols = COL_WIDTH.get_fixed_types()
     
     def check(self):
         f = '[MClient] view.View.check'
-        if not self.cells:
+        if not self.blocks:
             self.Success = False
             rep.empty(f)
     
@@ -170,46 +170,42 @@ class View:
         if not CONFIG.new['OrderCells']:
             rep.empty(f)
             return
-        if CONFIG.new['AlphabetizeTerms'] and not ARTICLES.is_parallel() \
-        and not ARTICLES.is_separate():
-            self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.col5, x.col6, x.text, x.no))
-        else:
-            self.cells.sort(key=lambda x: (x.col1, x.col2, x.col3, x.col4, x.col5, x.col6, x.no))
+        #if CONFIG.new['AlphabetizeTerms'] and not ARTICLES.is_parallel() \
+        #and not ARTICLES.is_separate():
+            self.blocks.sort(key=lambda b: (b.col1, b.col2, b.col3, b.col4, b.col5, b.col6, b.cellno, b.no))
     
     def _create_fixed(self, i, type_, rowno):
         f = '[MClient] view.View._create_fixed'
-        cell = Cell()
         block = Block()
         block.type = type_
-        cell.fixed_block = block
-        cell.blocks = [block]
-        cell.rowno = rowno
-        if is_phrase_type(self.cells[i]):
-            cell.subjpr = self.cells[i].subjpr
-            cell.speechpr = self.cells[i].speechpr
+        block.Delete = True
+        block.rowno = rowno
+        if self.blocks[i].type in ('phsubj', 'phrase', 'phcount'):
+            block.subjpr = self.blocks[i].subjpr
+            block.speechpr = self.blocks[i].speechpr
             if type_ == 'subj':
-                cell.text = block.text = self.cells[i].subj
-            return cell
-        cell.source = self.cells[i].source
-        cell.dic = self.cells[i].dic
-        cell.subj = self.cells[i].subj
-        cell.subjpr = self.cells[i].subjpr
-        cell.wform = self.cells[i].wform
-        cell.transc = self.cells[i].transc
-        cell.speech = self.cells[i].speech
-        cell.speechpr = self.cells[i].speechpr
+                block.text = self.blocks[i].subj
+            return block
+        block.source = self.blocks[i].source
+        block.dic = self.blocks[i].dic
+        block.subj = self.blocks[i].subj
+        block.subjpr = self.blocks[i].subjpr
+        block.wform = self.blocks[i].wform
+        block.transc = self.blocks[i].transc
+        block.speech = self.blocks[i].speech
+        block.speechpr = self.blocks[i].speechpr
         if type_ == 'source':
-            cell.text = block.text = self.cells[i].source
+            block.text = self.blocks[i].source
         elif type_ == 'dic':
-            cell.text = block.text = self.cells[i].dic
+            block.text = self.blocks[i].dic
         elif type_ == 'subj':
-            cell.text = block.text = self.cells[i].subj
+            block.text = self.blocks[i].subj
         elif type_ == 'wform':
-            cell.text = block.text = self.cells[i].wform
+            block.text = self.blocks[i].wform
         elif type_ == 'transc':
-            cell.text = block.text = self.cells[i].transc
+            block.text = self.blocks[i].transc
         elif type_ == 'speech':
-            cell.text = block.text = self.cells[i].speech
+            block.text = self.blocks[i].speech
         elif not type_:
             # Empty types are actually allowed since we can have empty columns
             pass
@@ -217,7 +213,7 @@ class View:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(type_, 'source, dic, subj, wform, transc, speech, or empty')
             Message(f, mes, True).show_error()
-        return cell
+        return block
     
     def restore_fixed(self):
         f = '[MClient] view.View.restore_fixed'
@@ -226,13 +222,13 @@ class View:
             return
         count = 0
         i = 1
-        while i < len(self.cells):
-            if self.cells[i-1].rowno != self.cells[i].rowno:
-                rowno = self.cells[i].rowno
+        while i < len(self.blocks):
+            if self.blocks[i-1].rowno != self.blocks[i].rowno:
+                rowno = self.blocks[i].rowno
                 for type_ in self.fixed_cols:
                     count += 1
-                    cell = self._create_fixed(i, type_, rowno)
-                    self.cells.insert(i, cell)
+                    block = self._create_fixed(i, type_, rowno)
+                    self.blocks.insert(i, block)
                     i += 1
             i += 1
         rep.matches(f, count)
@@ -366,133 +362,101 @@ class View:
         ''' Word forms must be case-sensitive; otherwise, they can be ordered
             like AST - ast - AST, etc.
         '''
-        for cell in self.cells:
+        for block in self.blocks:
             for i in range(len(self.fixed_cols)):
                 match i:
                     case 0:
                         match self.fixed_cols[i]:
                             case 'source':
-                                cell.col1 = cell.sourcepr
+                                block.col1 = block.sourcepr
                             case 'dic':
-                                cell.col1 = cell.dic.lower()
+                                block.col1 = block.dic.lower()
                             case 'subj':
-                                cell.col1 = cell.subjpr
+                                block.col1 = block.subjpr
                             case 'wform':
-                                cell.col1 = cell.wform
+                                block.col1 = block.wform
                             case 'speech':
-                                cell.col1 = cell.speechpr
+                                block.col1 = block.speechpr
                             case 'transc':
-                                cell.col1 = cell.transc
+                                block.col1 = block.transc
                     case 1:
                         match self.fixed_cols[i]:
                             case 'source':
-                                cell.col2 = cell.sourcepr
+                                block.col2 = block.sourcepr
                             case 'dic':
-                                cell.col2 = cell.dic.lower()
+                                block.col2 = block.dic.lower()
                             case 'subj':
-                                cell.col2 = cell.subjpr
+                                block.col2 = block.subjpr
                             case 'wform':
-                                cell.col2 = cell.wform
+                                block.col2 = block.wform
                             case 'speech':
-                                cell.col2 = cell.speechpr
+                                block.col2 = block.speechpr
                             case 'transc':
-                                cell.col2 = cell.transc
+                                block.col2 = block.transc
                     case 2:
                         match self.fixed_cols[i]:
                             case 'source':
-                                cell.col3 = cell.sourcepr
+                                block.col3 = block.sourcepr
                             case 'dic':
-                                cell.col3 = cell.dic.lower()
+                                block.col3 = block.dic.lower()
                             case 'subj':
-                                cell.col3 = cell.subjpr
+                                block.col3 = block.subjpr
                             case 'wform':
-                                cell.col3 = cell.wform
+                                block.col3 = block.wform
                             case 'speech':
-                                cell.col3 = cell.speechpr
+                                block.col3 = block.speechpr
                             case 'transc':
-                                cell.col3 = cell.transc
+                                block.col3 = block.transc
                     case 3:
                         match self.fixed_cols[i]:
                             case 'source':
-                                cell.col4 = cell.sourcepr
+                                block.col4 = block.sourcepr
                             case 'dic':
-                                cell.col4 = cell.dic.lower()
+                                block.col4 = block.dic.lower()
                             case 'subj':
-                                cell.col4 = cell.subjpr
+                                block.col4 = block.subjpr
                             case 'wform':
-                                cell.col4 = cell.wform
+                                block.col4 = block.wform
                             case 'speech':
-                                cell.col4 = cell.speechpr
+                                block.col4 = block.speechpr
                             case 'transc':
-                                cell.col4 = cell.transc
+                                block.col4 = block.transc
                     case 4:
                         match self.fixed_cols[i]:
                             case 'source':
-                                cell.col5 = cell.sourcepr
+                                block.col5 = block.sourcepr
                             case 'dic':
-                                cell.col5 = cell.dic.lower()
+                                block.col5 = block.dic.lower()
                             case 'subj':
-                                cell.col5 = cell.subjpr
+                                block.col5 = block.subjpr
                             case 'wform':
-                                cell.col5 = cell.wform
+                                block.col5 = block.wform
                             case 'speech':
-                                cell.col5 = cell.speechpr
+                                block.col5 = block.speechpr
                             case 'transc':
-                                cell.col5 = cell.transc
+                                block.col5 = block.transc
                     case 5:
                         match self.fixed_cols[i]:
                             case 'source':
-                                cell.col6 = cell.sourcepr
+                                block.col6 = block.sourcepr
                             case 'dic':
-                                cell.col6 = cell.dic.lower()
+                                block.col6 = block.dic.lower()
                             case 'subj':
-                                cell.col6 = cell.subjpr
+                                block.col6 = block.subjpr
                             case 'wform':
-                                cell.col6 = cell.wform
+                                block.col6 = block.wform
                             case 'speech':
-                                cell.col6 = cell.speechpr
+                                block.col6 = block.speechpr
                             case 'transc':
-                                cell.col6 = cell.transc
-    
-    def _get_last_subj(self):
-        for cell in self.cells[::-1]:
-            for block in cell.blocks:
-                if block.type == 'subj' and block.text == _('Phrases'):
-                    return cell
-    
-    def restore_url(self):
-        f = '[MClient] view.View.restore_url'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        last_subj = self._get_last_subj()
-        if not last_subj:
-            rep.lazy(f)
-            return
-        last_subj.url = last_subj.fixed_block.url = ARTICLES.get_phurl()
-    
-    def clear_single_source(self):
-        f = '[MClient] view.View.clear_single_source'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if not CONFIG.new['ClearSingleSource']:
-            rep.lazy(f)
-            return
-        sources = set([cell.source for cell in self.cells if cell.source])
-        if len(sources) == 1:
-            for cell in self.cells:
-                cell.source = ''
+                                block.col6 = block.transc
     
     def run(self):
         self.check()
         self.fill_cols()
         self.sort()
-        self.clear_single_source()
         self.restore_fixed()
         self.restore_first()
         self.clear_duplicates()
-        self.restore_url()
         self.renumber()
         return self.cells
 
@@ -510,6 +474,19 @@ class Wrap:
         self.cells = cells
         self.fixed_len = COL_WIDTH.fixed_num
         self.collimit = COL_WIDTH.fixed_num + COL_WIDTH.term_num
+    
+    def clear_single_source(self):
+        f = '[MClient] view.Wrap.clear_single_source'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        if not CONFIG.new['ClearSingleSource']:
+            rep.lazy(f)
+            return
+        sources = set([block.source for block in self.blocks if block.source])
+        if len(sources) == 1:
+            for cell in self.cells:
+                cell.source = ''
     
     def check(self):
         f = '[MClient] view.Wrap.check'
@@ -683,10 +660,5 @@ class Wrap:
         self.format()
         self.set_plain()
         self.set_code()
+        self.clear_single_source()
         return self.cells
-
-
-def is_phrase_type(cell):
-    for block in cell.blocks:
-        if block.type in ('phsubj', 'phrase', 'phcount'):
-            return True
