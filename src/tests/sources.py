@@ -21,11 +21,12 @@ from config import CONFIG
 # Search pattern must be lowercased
 #SEARCH = 'analyzer'
 #SEARCH = 'hello bye'
+SEARCH = 'byte'
 #SEARCH = 'account'
 #SEARCH = 'constant-voltage welding source'
 #SEARCH = 'wine structure'
 #SEARCH = 'слово'
-SEARCH = 'word'
+#SEARCH = 'word'
 #SEARCH = 'pail'
 #SEARCH = 'absolute'
 #SEARCH = 'bottling'
@@ -176,6 +177,21 @@ class View:
         iview.run()
         timer.end()
         return iview.debug()
+    
+    def run_mdic(self):
+        f = '[MClient] tests.sources.View.run_mdic'
+        from sources.mdic.run import Source as cSource
+        from cells import Elems as cElems, Cells as cCells, debug
+        from view import View as cView
+        from subjects import SUBJECTS
+        blocks = cSource().request(SEARCH)
+        ielems = cElems(blocks)
+        blocks = ielems.run()
+        # Reset subjects before running Omit (getting blocked subjects)
+        SUBJECTS.reset(ielems.art_subj)
+        blocks = cCells(blocks).run()
+        blocks = cView(blocks).run()
+        return debug(blocks)
     
     def run_multitrandem(self):
         f = '[MClient] tests.sources.View.run_multitrandem'

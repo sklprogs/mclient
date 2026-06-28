@@ -454,11 +454,11 @@ class View:
         self.check()
         self.fill_cols()
         self.sort()
-        self.restore_fixed()
-        self.restore_first()
-        self.clear_duplicates()
-        self.renumber()
-        return self.cells
+        #self.restore_fixed()
+        #self.restore_first()
+        #self.clear_duplicates()
+        #self.renumber()
+        return self.blocks
 
 
 
