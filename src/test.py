@@ -16,6 +16,7 @@ from tests.sources import Get
 from tests.sources import Tags
 from tests.sources import Elems
 from tests.sources import View
+from tests.sources import Wrap
 from tests.sources import Prioritize
 from tests.sources import Source
 from tests.sources import Suggest
@@ -69,9 +70,9 @@ if __name__ == '__main__':
     #mes = View().run_stardict()
     #mes = View().run_multitrancom()
     #mes = View().run_multitrandem()
-    mes = View().run_mdic()
+    #mes = View().run_mdic()
     #mes = Wrap().run_multitrancom()
-    #mes = Wrap().run_mdic()
+    mes = Wrap().run_mdic()
     #mes = Source().run_all()
     #mes = Source().run_dsl()
     #mes = Source().run_fora()

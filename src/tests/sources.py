@@ -68,6 +68,22 @@ class Wrap:
         iwrap.run()
         timer.end()
         return iwrap.debug()
+    
+    def run_mdic(self):
+        f = '[MClient] tests.sources.Wrap.run_mdic'
+        from sources.mdic.run import Source as cSource
+        from cells import Elems as cElems, Cells as cCells, debug
+        from view import View as cView, Wrap2 as cWrap
+        from subjects import SUBJECTS
+        blocks = cSource().request(SEARCH)
+        ielems = cElems(blocks)
+        blocks = ielems.run()
+        # Reset subjects before running Omit (getting blocked subjects)
+        SUBJECTS.reset(ielems.art_subj)
+        blocks = cCells(blocks).run()
+        blocks = cView(blocks).run()
+        blocks = cWrap(blocks).run()
+        return debug(blocks)
 
 
 
