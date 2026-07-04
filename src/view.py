@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import copy
+
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.list import List
@@ -151,7 +153,6 @@ class View:
     # Order blocks as specified by the user
     def __init__(self, blocks):
         self.Success = True
-        self.view = []
         self.blocks = blocks
         # Must be recreated for each article loading/reloading
         self.fixed_cols = COL_WIDTH.get_fixed_types()
@@ -174,46 +175,73 @@ class View:
         #and not ARTICLES.is_separate():
             self.blocks.sort(key=lambda b: (b.col1, b.col2, b.col3, b.col4, b.col5, b.col6, b.cellno, b.no))
     
-    def _create_fixed(self, i, type_, rowno):
+    '''
+    def _get_fixed(self, block):
+        f = '[MClient] view.View._get_fixed'
+        iblock = Block()
+        iblock.type = block.type
+        iblock.Delete = True
+        if block.type in ('phsubj', 'phrase', 'phcount'):
+            iblock.subjpr = block.subjpr
+            iblock.speechpr = block.speechpr
+            if block.type == 'subj':
+                if CONFIG.new['ShortSubjects']:
+                    iblock.text = block.subj
+                else:
+                    iblock.text = block.subjf
+            return iblock
+        iblock.source = block.source
+        iblock.dic = block.dic
+        iblock.subj = block.subj
+        iblock.subjf = block.subjf
+        iblock.subjpr = block.subjpr
+        iblock.wform = block.wform
+        iblock.transc = block.transc
+        iblock.speech = block.speech
+        iblock.speechpr = block.speechpr
+    '''
+    
+    '''
+    def _create_fixed(self, block):
         f = '[MClient] view.View._create_fixed'
-        block = Block()
-        block.type = type_
-        block.Delete = True
-        block.rowno = rowno
-        if self.blocks[i].type in ('phsubj', 'phrase', 'phcount'):
-            block.subjpr = self.blocks[i].subjpr
-            block.speechpr = self.blocks[i].speechpr
-            if type_ == 'subj':
-                block.text = self.blocks[i].subj
-            return block
-        block.source = self.blocks[i].source
-        block.dic = self.blocks[i].dic
-        block.subj = self.blocks[i].subj
-        block.subjpr = self.blocks[i].subjpr
-        block.wform = self.blocks[i].wform
-        block.transc = self.blocks[i].transc
-        block.speech = self.blocks[i].speech
-        block.speechpr = self.blocks[i].speechpr
-        if type_ == 'source':
-            block.text = self.blocks[i].source
-        elif type_ == 'dic':
-            block.text = self.blocks[i].dic
-        elif type_ == 'subj':
-            block.text = self.blocks[i].subj
-        elif type_ == 'wform':
-            block.text = self.blocks[i].wform
-        elif type_ == 'transc':
-            block.text = self.blocks[i].transc
-        elif type_ == 'speech':
-            block.text = self.blocks[i].speech
-        elif not type_:
+        iblock = Block()
+        iblock.type = block.type
+        iblock.Delete = True
+        if block.type in ('phsubj', 'phrase', 'phcount'):
+            iblock.subjpr = block.subjpr
+            iblock.speechpr = block.speechpr
+            if block.type == 'subj':
+                iblock.text = block.subj
+            return iblock
+        iblock.source = block.source
+        iblock.dic = block.dic
+        iblock.subj = block.subj
+        iblock.subjpr = block.subjpr
+        iblock.wform = block.wform
+        iblock.transc = block.transc
+        iblock.speech = block.speech
+        iblock.speechpr = block.speechpr
+        if block.type == 'source':
+            iblock.text = block.source
+        elif block.type == 'dic':
+            iblock.text = block.dic
+        elif block.type == 'subj':
+            iblock.text = block.subj
+        elif block.type == 'wform':
+            iblock.text = block.wform
+        elif block.type == 'transc':
+            iblock.text = block.transc
+        elif block.type == 'speech':
+            iblock.text = block.speech
+        elif not block.type:
             # Empty types are actually allowed since we can have empty columns
             pass
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(type_, 'source, dic, subj, wform, transc, speech, or empty')
+            mes = mes.format(block.type, 'source, dic, subj, wform, transc, speech, or empty')
             Message(f, mes, True).show_error()
-        return block
+        return iblock
+    '''
     
     def restore_fixed(self):
         f = '[MClient] view.View.restore_fixed'
@@ -462,16 +490,90 @@ class View:
 
 
 
+class Wrap2:
+    
+    def __init__(self, blocks):
+        self.Success = True
+        self.blocks = blocks
+    
+    def _create_block(self, block, column):
+        f = '[MClient] view.View._create_block'
+        if not block or not column:
+            rep.empty(f)
+            return block
+        block = copy.deepcopy(block)
+        block.Delete = True
+        match column.type:
+            case 'source':
+                block.text = block.source
+            case 'dic':
+                block.text = block.dic
+            case 'subj':
+                if CONFIG.new['ShortSubjects']:
+                    block.text = block.subj
+                else:
+                    block.text = block.subjf
+            case 'wform':
+                block.text = block.wform
+            case 'speech':
+                if CONFIG.new['ShortSpeech']:
+                    block.text = block.speech
+                else:
+                    block.text = block.speechf
+            case 'transc':
+                block.text = block.transc
+            # Column types are read from config, so '' means column is not set
+            case '':
+                block.text = ''
+            case other if True:
+                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+                mes = mes.format(other, 'source, dic, subj, wform, speech or transc')
+                Message(f, mes, True).show_error()
+        block.type = column.type
+        block.no = block.no - 1 + float(f'.{column.no + 1}')
+        block.cellno = block.cellno - 1 + float(f'.{column.no + 1}')
+        return block
+    
+    def _create_row(self, block):
+        row = []
+        for column in COL_WIDTH.columns[:COL_WIDTH.fixed_num]:
+            row.append(self._create_block(block, column))
+        return row
+    
+    def wrap(self):
+        #fixed_len = COL_WIDTH.fixed_num
+        #collimit = COL_WIDTH.fixed_num + COL_WIDTH.term_num
+        new_blocks = []
+        source = dic = subj = wform = speech = transc = ''
+        for block in self.blocks:
+            if (source, dic, subj, wform, speech, transc) != (block.source
+               ,block.dic, block.subj, block.wform, block.speech, block.transc):
+                new_blocks += self._create_row(block)
+                source = block.source
+                dic = block.dic
+                subj = block.subj
+                wform = block.wform
+                speech = block.speech
+                transc = block.transc
+            new_blocks.append(block)
+        self.blocks = new_blocks
+    
+    def run(self):
+        self.wrap()
+        return self.blocks
+
+
+
 class Wrap:
     
-    def __init__(self, cells):
+    def __init__(self, blocks):
         ''' Since we create even empty columns, the number of fixed cells in
             a row should always be 6 (unless new fixed types are added).
         '''
         self.Success = True
         self.plain = []
         self.code = []
-        self.cells = cells
+        self.blocks = blocks
         self.fixed_len = COL_WIDTH.fixed_num
         self.collimit = COL_WIDTH.fixed_num + COL_WIDTH.term_num
     
