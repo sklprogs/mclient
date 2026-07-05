@@ -17,8 +17,11 @@ from subjects import SUBJECTS
 
 def debug(blocks, maxrow=30, maxrows=0):
     f = '[MClient] cells.debug'
-    headers = (_('CELL'), _('BLOCK'), _('TYPE'), _('TEXT'), 'SOURCE', 'DIC'
-              ,'SUBJ', 'SUBJF', 'SUBJPR', 'SPEECH', 'SPEECHF', 'SPEECHPR')
+    headers = (_('ROW'), _('COL'), _('CELL'), _('BLOCK'), _('TYPE'), _('TEXT')
+              ,'SOURCE', 'DIC', 'SUBJ', 'SUBJF', 'SUBJPR', 'SPEECH', 'SPEECHF'
+              ,'SPEECHPR')
+    rownos = []
+    colnos = []
     cellnos = []
     nos = []
     types = []
@@ -32,6 +35,8 @@ def debug(blocks, maxrow=30, maxrows=0):
     speechf = []
     speechpr = []
     for block in blocks:
+        rownos.append(block.rowno)
+        colnos.append(block.colno)
         cellnos.append(block.cellno)
         nos.append(block.no)
         types.append(block.type)
@@ -46,8 +51,8 @@ def debug(blocks, maxrow=30, maxrows=0):
         speechf.append(block.speechf)
         speechpr.append(block.speechpr)
     mes = Table(headers = headers
-               ,iterable = (cellnos, nos, types, texts, sources, dics, subj
-                           ,subjf, subjpr, speech, speechf, speechpr)
+               ,iterable = (rownos, colnos, cellnos, nos, types, texts, sources
+                           ,dics, subj, subjf, subjpr, speech, speechf, speechpr)
                ,maxrow = maxrow, maxrows = maxrows).run()
     return f'{f}:\n{mes}'
 
