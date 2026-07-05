@@ -495,6 +495,7 @@ class Wrap2:
     def __init__(self, blocks):
         self.Success = True
         self.blocks = blocks
+        self.rowno = -1
     
     def _create_block(self, block, column):
         f = '[MClient] view.View._create_block'
@@ -532,10 +533,12 @@ class Wrap2:
         block.type = column.type
         block.no = block.no - 1 + float(f'.{column.no + 1}')
         block.cellno = block.cellno - 1 + float(f'.{column.no + 1}')
+        block.rowno = self.rowno
         return block
     
     def _create_row(self, block):
         row = []
+        self.rowno += 1
         for column in COL_WIDTH.columns[:COL_WIDTH.fixed_num]:
             row.append(self._create_block(block, column))
         return row
@@ -556,6 +559,7 @@ class Wrap2:
                 speech = block.speech
                 transc = block.transc
             new_blocks.append(block)
+            new_blocks[-1].rowno = self.rowno
         self.blocks = new_blocks
     
     def run(self):
