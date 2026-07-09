@@ -496,14 +496,9 @@ class Wrap2:
         self.Success = True
         self.blocks = blocks
         self.rowno = -1
+        self.colno = 0
     
-    def _create_block(self, block, column):
-        f = '[MClient] view.View._create_block'
-        if not block or not column:
-            rep.empty(f)
-            return block
-        block = copy.deepcopy(block)
-        block.Delete = True
+    def _set_text_by_type(self, block, column):
         match column.type:
             case 'source':
                 block.text = block.source
@@ -530,27 +525,44 @@ class Wrap2:
                 mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
                 mes = mes.format(other, 'source, dic, subj, wform, speech or transc')
                 Message(f, mes, True).show_error()
+        return block
+    
+    def _create_block(self, block, column, Empty=False):
+        f = '[MClient] view.View._create_block'
+        if not block or not column:
+            rep.empty(f)
+            return block
+        block = copy.deepcopy(block)
+        block.Delete = True
+        if Empty:
+            block.text = ''
+        else:
+            block = self._set_text_by_type(block, column)
         block.type = column.type
         block.no = block.no - 1 + float(f'.{column.no + 1}')
         block.cellno = block.cellno - 1 + float(f'.{column.no + 1}')
         block.rowno = self.rowno
+        block.colno = self.colno
+        self.colno += 1
         return block
     
-    def _create_row(self, block):
+    def _create_row(self, block, Empty=False):
         row = []
         self.rowno += 1
+        self.colno = 0
         for column in COL_WIDTH.columns[:COL_WIDTH.fixed_num]:
-            row.append(self._create_block(block, column))
+            row.append(self._create_block(block, column, Empty))
         return row
     
     def wrap(self):
-        #fixed_len = COL_WIDTH.fixed_num
-        #collimit = COL_WIDTH.fixed_num + COL_WIDTH.term_num
+        collimit = COL_WIDTH.fixed_num + COL_WIDTH.term_num
         new_blocks = []
         source = dic = subj = wform = speech = transc = ''
+        cellno = 0
         for block in self.blocks:
             if (source, dic, subj, wform, speech, transc) != (block.source
                ,block.dic, block.subj, block.wform, block.speech, block.transc):
+                self.colno = 0
                 new_blocks += self._create_row(block)
                 source = block.source
                 dic = block.dic
@@ -558,8 +570,14 @@ class Wrap2:
                 wform = block.wform
                 speech = block.speech
                 transc = block.transc
+            elif block.cellno != cellno:
+                cellno = block.cellno
+                self.colno += 1
+                if self.colno + 1 == collimit:
+                    new_blocks += self._create_row(block, True)
             new_blocks.append(block)
             new_blocks[-1].rowno = self.rowno
+            new_blocks[-1].colno = self.colno
         self.blocks = new_blocks
     
     def run(self):
