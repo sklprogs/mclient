@@ -572,9 +572,10 @@ class Wrap2:
                 transc = block.transc
             elif block.cellno != cellno:
                 cellno = block.cellno
-                self.colno += 1
                 if self.colno + 1 == collimit:
                     new_blocks += self._create_row(block, True)
+                else:
+                    self.colno += 1
             new_blocks.append(block)
             new_blocks[-1].rowno = self.rowno
             new_blocks[-1].colno = self.colno
