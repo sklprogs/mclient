@@ -562,7 +562,8 @@ class Wrap2:
         for block in self.blocks:
             if (source, dic, subj, wform, speech, transc) != (block.source
                ,block.dic, block.subj, block.wform, block.speech, block.transc):
-                self.colno = 0
+                # Required in both if and elif; otherwise, expect bugs
+                cellno = block.cellno
                 new_blocks += self._create_row(block)
                 source = block.source
                 dic = block.dic
