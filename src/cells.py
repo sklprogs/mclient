@@ -311,16 +311,12 @@ class Cells:
                 block.Ignore = True
         rep.deleted(f, count)
     
-    def sort(self):
-        self.blocks.sort(key=lambda block: (block.subjpr, block.speechpr, block.cellno, block.no))
-    
     def run(self):
         self.ignore_roman_numbers()
         # Set instance in order to further get blocked subjects and cells
         self.iomit = Omit(self.blocks)
         self.blocks = self.iomit.run()
         self.blocks = Prioritize(self.blocks).run()
-        self.sort()
         return self.blocks
 
 
