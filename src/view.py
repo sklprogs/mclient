@@ -175,106 +175,6 @@ class View:
         #and not ARTICLES.is_separate():
             self.blocks.sort(key=lambda b: (b.col1, b.col2, b.col3, b.col4, b.col5, b.col6, b.cellno, b.no))
     
-    '''
-    def _get_fixed(self, block):
-        f = '[MClient] view.View._get_fixed'
-        iblock = Block()
-        iblock.type = block.type
-        iblock.Delete = True
-        if block.type in ('phsubj', 'phrase', 'phcount'):
-            iblock.subjpr = block.subjpr
-            iblock.speechpr = block.speechpr
-            if block.type == 'subj':
-                if CONFIG.new['ShortSubjects']:
-                    iblock.text = block.subj
-                else:
-                    iblock.text = block.subjf
-            return iblock
-        iblock.source = block.source
-        iblock.dic = block.dic
-        iblock.subj = block.subj
-        iblock.subjf = block.subjf
-        iblock.subjpr = block.subjpr
-        iblock.wform = block.wform
-        iblock.transc = block.transc
-        iblock.speech = block.speech
-        iblock.speechpr = block.speechpr
-    '''
-    
-    '''
-    def _create_fixed(self, block):
-        f = '[MClient] view.View._create_fixed'
-        iblock = Block()
-        iblock.type = block.type
-        iblock.Delete = True
-        if block.type in ('phsubj', 'phrase', 'phcount'):
-            iblock.subjpr = block.subjpr
-            iblock.speechpr = block.speechpr
-            if block.type == 'subj':
-                iblock.text = block.subj
-            return iblock
-        iblock.source = block.source
-        iblock.dic = block.dic
-        iblock.subj = block.subj
-        iblock.subjpr = block.subjpr
-        iblock.wform = block.wform
-        iblock.transc = block.transc
-        iblock.speech = block.speech
-        iblock.speechpr = block.speechpr
-        if block.type == 'source':
-            iblock.text = block.source
-        elif block.type == 'dic':
-            iblock.text = block.dic
-        elif block.type == 'subj':
-            iblock.text = block.subj
-        elif block.type == 'wform':
-            iblock.text = block.wform
-        elif block.type == 'transc':
-            iblock.text = block.transc
-        elif block.type == 'speech':
-            iblock.text = block.speech
-        elif not block.type:
-            # Empty types are actually allowed since we can have empty columns
-            pass
-        else:
-            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(block.type, 'source, dic, subj, wform, transc, speech, or empty')
-            Message(f, mes, True).show_error()
-        return iblock
-    '''
-    
-    def restore_fixed(self):
-        f = '[MClient] view.View.restore_fixed'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        count = 0
-        i = 1
-        while i < len(self.blocks):
-            if self.blocks[i-1].rowno != self.blocks[i].rowno:
-                rowno = self.blocks[i].rowno
-                for type_ in self.fixed_cols:
-                    count += 1
-                    block = self._create_fixed(i, type_, rowno)
-                    self.blocks.insert(i, block)
-                    i += 1
-            i += 1
-        rep.matches(f, count)
-    
-    def restore_first(self):
-        # Add fixed cells for the very first row
-        f = '[MClient] view.View.restore_first'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        count = 0
-        rowno = self.cells[0].rowno
-        for type_ in self.fixed_cols[::-1]:
-            count += 1
-            cell = self._create_fixed(0, type_, rowno)
-            self.cells.insert(0, cell)
-        rep.matches(f, count)
-    
     def debug(self, maxrow=35):
         f = '[MClient] view.View.debug'
         if not self.Success:
@@ -311,73 +211,6 @@ class View:
         iterable = [rowno, no, text, types, url, col1, col2, col3, col4, col5
                    ,col6]
         return Table(headers=headers, iterable=iterable, maxrow=maxrow).run()
-    
-    def _renumber_cell_nos(self):
-        for i in range(len(self.cells)):
-            self.cells[i].no = i
-    
-    def _renumber_row_nos(self):
-        # Actually, we do this for prettier debug output
-        rownos = [0]
-        rowno = 0
-        i = 1
-        while i < len(self.cells):
-            if self.cells[i-1].rowno != self.cells[i].rowno:
-                rowno += 1
-            rownos.append(rowno)
-            i += 1
-        i = 0
-        while i < len(self.cells):
-            self.cells[i].rowno = rownos[i]
-            i += 1
-    
-    def renumber(self):
-        f = '[MClient] view.View.renumber'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        self._renumber_cell_nos()
-        self._renumber_row_nos()
-    
-    def clear_duplicates(self):
-        f = '[MClient] view.View.clear_duplicates'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        source = dic = subj = wform = transc = speech = ''
-        for cell in self.cells:
-            if not cell.fixed_block:
-               continue
-            if cell.fixed_block.type == 'source':
-                if cell.text == source:
-                    cell.text = cell.fixed_block.text = ''
-                else:
-                    source = cell.source
-            elif cell.fixed_block.type == 'dic':
-                if cell.text == dic:
-                    cell.text = cell.fixed_block.text = ''
-                else:
-                    dic = cell.dic
-            elif cell.fixed_block.type == 'subj':
-                if cell.text == subj or (not subj and not cell.subj):
-                    cell.text = cell.fixed_block.text = ''
-                else:
-                    subj = cell.subj
-            elif cell.fixed_block.type == 'wform':
-                if cell.text == wform:
-                    cell.text = cell.fixed_block.text = ''
-                else:
-                    wform = cell.wform
-            elif cell.fixed_block.type == 'transc':
-                if cell.text == transc:
-                    cell.text = cell.fixed_block.text = ''
-                else:
-                    transc = cell.transc
-            elif cell.fixed_block.type == 'speech':
-                if cell.text == speech:
-                    cell.text = cell.fixed_block.text = ''
-                else:
-                    speech = cell.speech
     
     def fill_cols(self):
         f = '[MClient] view.View.fill_cols'
@@ -482,10 +315,6 @@ class View:
         self.check()
         self.fill_cols()
         self.sort()
-        #self.restore_fixed()
-        #self.restore_first()
-        #self.clear_duplicates()
-        #self.renumber()
         return self.blocks
 
 
