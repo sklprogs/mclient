@@ -173,7 +173,7 @@ class View:
             return
         #if CONFIG.new['AlphabetizeTerms'] and not ARTICLES.is_parallel() \
         #and not ARTICLES.is_separate():
-            self.blocks.sort(key=lambda b: (b.col1, b.col2, b.col3, b.col4, b.col5, b.col6, b.cellno, b.no))
+        self.blocks.sort(key=lambda b: (b.col1, b.col2, b.col3, b.col4, b.col5, b.col6, b.cellno, b.no))
     
     def debug(self, maxrow=35):
         f = '[MClient] view.View.debug'
