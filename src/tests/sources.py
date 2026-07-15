@@ -41,41 +41,14 @@ URL = f'https://www.multitran.com/m.exe?s={w3lib.url.safe_url_string(SEARCH)}&l1
 
 class Wrap:
     
-    def run_multitrancom(self):
-        f = '[MClient] tests.sources.Wrap.run_multitrancom'
-        import articles as ARTICLES
-        # Do not change import style - we already have there Get, Tags, etc.
-        import sources.multitrancom.cleanup as cu
-        import sources.multitrancom.tags as tg
-        import sources.multitrancom.elems as el
-        import cells as cl
-        import view as vw
-        
-        text = Read(HTM_FILE).get()
-        timer = Timer(f)
-        timer.start()
-        text = cu.CleanUp(text).run()
-        blocks = tg.Tags(text).run()
-        blocks = el.Elems(blocks).run()
-        cells = cl.Cells(blocks).run()
-        
-        ARTICLES.add(SEARCH, URL, cells)
-        
-        cells = vw.Omit(cells).run()
-        cells = vw.Prioritize(cells).run()
-        cells = vw.View(cells).run()
-        iwrap = vw.Wrap(cells)
-        iwrap.run()
-        timer.end()
-        return iwrap.debug()
-    
-    def run_mdic(self):
-        f = '[MClient] tests.sources.Wrap.run_mdic'
-        from sources.mdic.run import Source as cSource
+    def _run(self, f, cSource, url=''):
         from cells import Elems as cElems, Cells as cCells, debug
         from view import View as cView, Wrap2 as cWrap, Phrases, Phsubj
         from subjects import SUBJECTS
-        blocks = cSource().request(SEARCH)
+        if url:
+            blocks = cSource().request(SEARCH, url)
+        else:
+            blocks = cSource().request(SEARCH)
         ielems = cElems(blocks)
         blocks = ielems.run()
         # Reset subjects before running Omit (getting blocked subjects)
@@ -85,7 +58,17 @@ class Wrap:
         blocks = cView(blocks).run()
         blocks = cWrap(blocks).run()
         blocks = Phsubj(blocks).run()
-        return debug(blocks)
+        return debug(f, blocks)
+    
+    def run_mdic(self):
+        f = '[MClient] tests.sources.Wrap.run_mdic'
+        from sources.mdic.run import Source as cSource
+        return self._run(f, cSource)
+    
+    def run_multitrancom(self):
+        f = '[MClient] tests.sources.Wrap.run_multitrancom'
+        from sources.multitrancom.run import Source as cSource
+        return self._run(f, cSource, URL)
 
 
 
