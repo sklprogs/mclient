@@ -444,11 +444,6 @@ class Wrap2:
             new_blocks[-1].colno = self.colno
         self.blocks = new_blocks
     
-    def _get_first_source(self):
-        for i in range(len(self.blocks)):
-            if self.blocks[i].type == 'source' and self.blocks[i].text:
-                return i
-    
     def clear_single_source(self):
         f = '[MClient] view.Wrap2.clear_single_source'
         if not self.Success:
@@ -457,17 +452,15 @@ class Wrap2:
         if not CONFIG.new['ClearSingleSource']:
             rep.lazy(f)
             return
-        i = self._get_first_source()
-        if i is None:
+        sources = set([block.source for block in self.blocks if block.source])
+        if len(sources) != 1:
             rep.lazy(f)
             return
-        sources = set([block.source for block in self.blocks if block.source])
         count = 0
-        if len(sources) == 1:
-            for block in self.blocks[i+1:][::-1]:
-                if block.type == 'source':
-                    count += 1
-                    block.text = ''
+        for block in self.blocks:
+            if block.type == 'source':
+                count += 1
+                block.text = ''
         rep.matches(f, count)
     
     def run(self):
