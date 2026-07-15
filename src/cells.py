@@ -15,8 +15,9 @@ from speech import SPEECH
 from subjects import SUBJECTS
 
 
-def debug(blocks, maxrow=30, maxrows=0):
-    f = '[MClient] cells.debug'
+def debug(f, blocks, maxrow=30, maxrows=0):
+    if not f:
+        f = '[MClient] cells.debug'
     headers = (_('ROW'), _('COL'), _('CELL'), _('BLOCK'), _('TYPE'), _('TEXT')
               ,'SOURCE', 'DIC', 'SUBJ', 'SUBJF', 'SUBJPR', 'SPEECH', 'SPEECHF'
               ,'SPEECHPR')
