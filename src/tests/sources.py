@@ -118,6 +118,23 @@ class Prioritize:
 
 class View:
     
+    def _run(self, f, cSource, url=''):
+        from cells import Elems as cElems, Cells as cCells, debug
+        from view import View as cView, Wrap2 as cWrap, Phrases
+        from subjects import SUBJECTS
+        if url:
+            blocks = cSource().request(SEARCH, url)
+        else:
+            blocks = cSource().request(SEARCH)
+        ielems = cElems(blocks)
+        blocks = ielems.run()
+        # Reset subjects before running Omit (getting blocked subjects)
+        SUBJECTS.reset(ielems.art_subj)
+        blocks = cCells(blocks).run()
+        blocks = Phrases(blocks).run()
+        blocks = cView(blocks).run()
+        return debug(f, blocks)
+    
     def run_all(self):
         from manager import SOURCES
         from articles import ARTICLES
@@ -155,45 +172,13 @@ class View:
     
     def run_multitrancom(self):
         f = '[MClient] tests.sources.View.run_multitrancom'
-        import logic as lg
-        import sources.multitrancom.cleanup as cu
-        import sources.multitrancom.tags as tg
-        import sources.multitrancom.elems as el
-        import cells as cl
-        import view as vw
-        
-        text = Read(HTM_FILE).get()
-        timer = Timer(f)
-        timer.start()
-        text = cu.CleanUp(text).run()
-        blocks = tg.Tags(text).run()
-        blocks = el.Elems(blocks).run()
-        cells = cl.Cells(blocks).run()
-        
-        ARTICLES.add(SEARCH, URL, cells)
-        
-        cells = vw.Omit(cells).run()
-        cells = vw.Prioritize(cells).run()
-        iview = vw.View(cells)
-        iview.run()
-        timer.end()
-        return iview.debug()
+        from sources.multitrancom.run import Source as cSource
+        return self._run(f, cSource, URL)
     
     def run_mdic(self):
         f = '[MClient] tests.sources.View.run_mdic'
         from sources.mdic.run import Source as cSource
-        from cells import Elems as cElems, Cells as cCells, debug
-        from view import View as cView, Phrases
-        from subjects import SUBJECTS
-        blocks = cSource().request(SEARCH)
-        ielems = cElems(blocks)
-        blocks = ielems.run()
-        # Reset subjects before running Omit (getting blocked subjects)
-        SUBJECTS.reset(ielems.art_subj)
-        blocks = cCells(blocks).run()
-        blocks = Phrases(blocks).run()
-        blocks = cView(blocks).run()
-        return debug(blocks)
+        return self._run(f, cSource)
     
     def run_multitrandem(self):
         f = '[MClient] tests.sources.View.run_multitrandem'
