@@ -73,7 +73,7 @@ class Wrap:
         f = '[MClient] tests.sources.Wrap.run_mdic'
         from sources.mdic.run import Source as cSource
         from cells import Elems as cElems, Cells as cCells, debug
-        from view import View as cView, Wrap2 as cWrap
+        from view import View as cView, Wrap2 as cWrap, Phrases, Phsubj
         from subjects import SUBJECTS
         blocks = cSource().request(SEARCH)
         ielems = cElems(blocks)
@@ -81,8 +81,10 @@ class Wrap:
         # Reset subjects before running Omit (getting blocked subjects)
         SUBJECTS.reset(ielems.art_subj)
         blocks = cCells(blocks).run()
+        blocks = Phrases(blocks).run()
         blocks = cView(blocks).run()
         blocks = cWrap(blocks).run()
+        blocks = Phsubj(blocks).run()
         return debug(blocks)
 
 
@@ -198,7 +200,7 @@ class View:
         f = '[MClient] tests.sources.View.run_mdic'
         from sources.mdic.run import Source as cSource
         from cells import Elems as cElems, Cells as cCells, debug
-        from view import View as cView
+        from view import View as cView, Phrases
         from subjects import SUBJECTS
         blocks = cSource().request(SEARCH)
         ielems = cElems(blocks)
@@ -206,6 +208,7 @@ class View:
         # Reset subjects before running Omit (getting blocked subjects)
         SUBJECTS.reset(ielems.art_subj)
         blocks = cCells(blocks).run()
+        blocks = Phrases(blocks).run()
         blocks = cView(blocks).run()
         return debug(blocks)
     
