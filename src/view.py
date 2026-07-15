@@ -30,6 +30,7 @@ class Phrases:
         self.blocks = blocks
         
     def ignore_phcount(self):
+        #TODO: Should this be placed elsewhere?
         f = '[MClient] view.Phrases.ignore_phcount'
         if CONFIG.new['PhraseCount']:
             rep.lazy(f)
@@ -61,25 +62,15 @@ class Phrases:
         mes = f'"{self.subjpr}"'
         Message(f, mes).show_debug()
     
-    def set_dic(self):
-        f = '[MClient] view.Phrases.set_dic'
-        for block in self.blocks[::-1]:
-            if block.dic and not block.type in ('phsubj', 'phrase', 'phcount'
-                                               ,'comment'):
-                self.dic = block.dic
-                mes = f'"{self.dic}"'
-                Message(f, mes).show_debug()
-                return
-    
     def set_wform(self):
         f = '[MClient] view.Phrases.set_wform'
-        for block in self.blocks[::-1]:
-            if block.wform and not block.type in ('phsubj', 'phrase', 'phcount'
-                                                 ,'comment'):
-                self.wform = block.wform
-                mes = f'"{self.wform}"'
-                Message(f, mes).show_debug()
-                return
+        wforms = [block.wform for block in self.blocks]
+        if not wforms:
+            rep.lazy(f)
+            return
+        self.wform = sorted(wforms)[-1]
+        mes = f'"{self.wform}"'
+        Message(f, mes).show_debug()
     
     def set_speechpr(self):
         f = '[MClient] view.Phrases.set_speechpr'
@@ -93,13 +84,13 @@ class Phrases:
     
     def set_transc(self):
         f = '[MClient] view.Phrases.set_transc'
-        for block in self.blocks[::-1]:
-            if block.transc and not block.type in ('phsubj', 'phrase', 'phcount'
-                                                  ,'comment'):
-                self.transc = block.transc
-                mes = f'"{self.transc}"'
-                Message(f, mes).show_debug()
-                return
+        transc = [block.transc for block in self.blocks]
+        if not transc:
+            rep.lazy(f)
+            return
+        self.transc = sorted(transc)[-1]
+        mes = f'"{self.transc}"'
+        Message(f, mes).show_debug()
     
     def set_cellno(self):
         f = '[MClient] view.Phrases.set_cellno'
@@ -112,9 +103,10 @@ class Phrases:
         Message(f, mes).show_debug()
     
     def reassign(self):
-        ''' - phsubj is set to an incorrect row without this.
-            - Phrases may have synonyms attached to them and formatted as
-              comments, so moving by cellno is more precise.
+        ''' Phrases may have number of counts in Multitran ('phcount') and
+            synonyms attached to phrases; both are formatted as comments and
+            share the same cellno as the parent phrase block, so we need to use
+            cellnos.
         '''
         f = '[MClient] view.Phrases.reassign'
         cellnos = [block.cellno for block in self.blocks \
@@ -122,22 +114,20 @@ class Phrases:
         if not cellnos:
             rep.lazy(f)
             return
+        start = min(cellnos)
         phrases = [block for block in self.blocks if block.cellno in cellnos]
         for block in phrases:
-            block.cellno = self.cellno
             block.sourcepr = self.sourcepr
             block.dic = self.dic
             block.subjpr = self.subjpr
             block.wform = self.wform
             block.speechpr = self.speechpr
             block.transc = self.transc
-            block.cellno = self.cellno
-            block.subj = block.subjf = self.phname
+            #block.subj = block.subjf = self.phname
+            block.cellno = self.cellno + block.cellno - start
             
     def run(self):
-        # At this point, blocks may have identical cellno
         self.set_sourcepr()
-        self.set_dic()
         self.set_subjpr()
         self.set_wform()
         self.set_speechpr()
@@ -315,6 +305,49 @@ class View:
         self.check()
         self.fill_cols()
         self.sort()
+        return self.blocks
+
+
+
+class Phsubj:
+    # Fixed blocks are inserted at 'View.Wrap', so do this afterwards
+    def __init__(self, blocks, phurl=''):
+        self.phname = _('Phrases')
+        self.blocks = blocks
+        self.phurl = phurl
+    
+    def _get_last_subj(self, i):
+        for block in self.blocks[:i][::-1]:
+            if block.type == 'subj' and block.text:
+                return block
+    
+    def _get_1st_phrase(self):
+        for i in range(len(self.blocks)):
+            if self.blocks[i].type == 'phrase' and self.blocks[i].text:
+                return i
+    
+    def set(self):
+        f = '[MClient] view.Phsubj.set'
+        i = self._get_1st_phrase()
+        if i is None:
+            rep.lazy(f)
+            return
+        phsubj = self._get_last_subj(i)
+        if not phsubj:
+            rep.lazy(f)
+            return
+        mes = _('Reassign block (row #{}, column #{}, cellno: {}, no: {}, subj: "{}", text: "{}")')
+        mes = mes.format(phsubj.rowno, phsubj.colno, phsubj.cellno, phsubj.no
+                        ,phsubj.subj, phsubj.text)
+        Message(f, mes).show_debug()
+        phsubj.type = 'phsubj'
+        phsubj.subj = _('phr.')
+        phsubj.text = phsubj.subjf = self.phname
+        #TODO: Implement
+        phsubj.url = self.phurl
+    
+    def run(self):
+        self.set()
         return self.blocks
 
 
