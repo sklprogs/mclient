@@ -321,14 +321,14 @@ class Phsubj:
             if block.type == 'subj' and block.text:
                 return block
     
-    def _get_1st_phrase(self):
+    def _get_first_phrase(self):
         for i in range(len(self.blocks)):
             if self.blocks[i].type == 'phrase' and self.blocks[i].text:
                 return i
     
     def set(self):
         f = '[MClient] view.Phsubj.set'
-        i = self._get_1st_phrase()
+        i = self._get_first_phrase()
         if i is None:
             rep.lazy(f)
             return
@@ -444,8 +444,35 @@ class Wrap2:
             new_blocks[-1].colno = self.colno
         self.blocks = new_blocks
     
+    def _get_first_source(self):
+        for i in range(len(self.blocks)):
+            if self.blocks[i].type == 'source' and self.blocks[i].text:
+                return i
+    
+    def clear_single_source(self):
+        f = '[MClient] view.Wrap2.clear_single_source'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        if not CONFIG.new['ClearSingleSource']:
+            rep.lazy(f)
+            return
+        i = self._get_first_source()
+        if i is None:
+            rep.lazy(f)
+            return
+        sources = set([block.source for block in self.blocks if block.source])
+        count = 0
+        if len(sources) == 1:
+            for block in self.blocks[i+1:][::-1]:
+                if block.type == 'source':
+                    count += 1
+                    block.text = ''
+        rep.matches(f, count)
+    
     def run(self):
         self.wrap()
+        self.clear_single_source()
         return self.blocks
 
 
