@@ -9,14 +9,12 @@ from subjects import SUBJECTS
 
 class Block:
     
-    def __init__(self, block, colno, Select=False):
+    def __init__(self, block, Select=False):
         self.colors_bl = (COLORS.b1, COLORS.b2, COLORS.b3, COLORS.b4, COLORS.b5
                          ,COLORS.b6)
         self.colors_pr = (COLORS.p1, COLORS.p2, COLORS.p3, COLORS.p4, COLORS.p5
                          ,COLORS.p6)
-        self.code = ''
         self.block = block
-        self.colno = colno
         self.Select = Select
     
     def _is_phrase_prior(self):
@@ -51,22 +49,22 @@ class Block:
         if self.block.type == 'correction':
             return COLORS.correction
         if self._is_subj_blocked():
-            return self.colors_bl[self.colno]
+            return self.colors_bl[self.block.colno]
         if self._is_subj_prior():
-            return self.colors_pr[self.colno]
+            return self.colors_pr[self.block.colno]
         try:
-            return CONFIG.new['columns'][str(self.colno + 1)]['font']['color']
+            return CONFIG.new['columns'][str(self.block.colno + 1)]['font']['color']
         except KeyError:
             # Qt accepts empty color names
             return ''
     
     def set_italic(self):
         if self.block.type in ('comment', 'user', 'correction', 'phcount'):
-            self.code = '<i>' + self.code + '</i>'
+            self.block.code = '<i>' + self.block.code + '</i>'
     
     def _get_weight(self):
         try:
-            weight = CONFIG.new['columns'][str(self.colno + 1)]['font']['weight']
+            weight = CONFIG.new['columns'][str(self.block.colno + 1)]['font']['weight']
         except KeyError:
             return ('', '')
         match weight:
@@ -78,13 +76,13 @@ class Block:
     
     def _get_align(self):
         try:
-            return CONFIG.new['columns'][str(self.colno + 1)]['font']['align']
+            return CONFIG.new['columns'][str(self.block.colno + 1)]['font']['align']
         except KeyError:
             return 'left'
     
     def set_fixed(self):
         weight1, weight2 = self._get_weight()
-        self.code = f'''{weight1}<span style="display:inline-block;text-align:{self._get_align()};">{self.code}</span>{weight2}'''
+        self.block.code = f'''{weight1}<span style="display:inline-block;text-align:{self._get_align()};">{self.block.code}</span>{weight2}'''
     
     def get_family(self):
         if self.block.type in ('phrase', 'term'):
@@ -92,7 +90,7 @@ class Block:
         if self.block.type in ('comment', 'correction', 'phcount', 'user'):
             return CONFIG.new['comments']['font']['family']
         try:
-            return CONFIG.new['columns'][str(self.colno + 1)]['font']['family']
+            return CONFIG.new['columns'][str(self.block.colno + 1)]['font']['family']
         except KeyError:
             return 'Sans'
     
@@ -102,7 +100,7 @@ class Block:
         if self.block.type in ('comment', 'correction', 'phcount', 'user'):
             return CONFIG.new['comments']['font']['size']
         try:
-            return CONFIG.new['columns'][str(self.colno + 1)]['font']['size']
+            return CONFIG.new['columns'][str(self.block.colno + 1)]['font']['size']
         except KeyError:
             return 11
 
@@ -116,20 +114,20 @@ class Block:
                 This is not required now.
             '''
             sub = '''<span style="font-family:{}; font-size:{}pt; color:{}; background-color:{};">{}</span>'''
-            self.code = sub.format(family, size, color
-                                  ,CONFIG.new['selection']['block']
-                                  ,self.block.text)
+            self.block.code = sub.format(family, size, color
+                                        ,CONFIG.new['selection']['block']
+                                        ,self.block.text)
         else:
             sub = '''<span style="font-family:{}; font-size:{}pt; color:{};">{}</span>'''
-            self.code = sub.format(family, size, color, self.block.text)
+            self.block.code = sub.format(family, size, color, self.block.text)
     
     def run(self):
         if not self.block.text:
-            return ''
+            return self.block
         self.set_style()
         self.set_fixed()
         self.set_italic()
-        return self.code
+        return self.block
 
 
 
