@@ -28,19 +28,6 @@ class Phrases:
         self.cellno = -1
         self.phname = _('Phrases')
         self.blocks = blocks
-        
-    def ignore_phcount(self):
-        #TODO: Should this be placed elsewhere?
-        f = '[MClient] view.Phrases.ignore_phcount'
-        if CONFIG.new['PhraseCount']:
-            rep.lazy(f)
-            return
-        count = 0
-        for block in self.blocks:
-            if block.type == 'phcount':
-                count += 1
-                block.Ignore = True
-        rep.matches(f, count)
     
     def set_sourcepr(self):
         f = '[MClient] view.Phrases.set_sourcepr'
@@ -133,7 +120,6 @@ class Phrases:
         self.set_speechpr()
         self.set_transc()
         self.set_cellno()
-        self.ignore_phcount()
         self.reassign()
         return self.blocks
 
@@ -355,7 +341,6 @@ class Phsubj:
 class Wrap2:
     
     def __init__(self, blocks):
-        self.Success = True
         self.blocks = blocks
         self.rowno = -1
         self.colno = 0
@@ -446,9 +431,6 @@ class Wrap2:
     
     def clear_single_source(self):
         f = '[MClient] view.Wrap2.clear_single_source'
-        if not self.Success:
-            rep.cancel(f)
-            return
         if not CONFIG.new['ClearSingleSource']:
             rep.lazy(f)
             return
@@ -463,9 +445,20 @@ class Wrap2:
                 block.text = ''
         rep.matches(f, count)
     
+    def format(self):
+        self.blocks = [fmBlock(block).run() for block in self.blocks]
+    
+    def debug_format(self):
+        f = '[MClient] view.Wrap2.debug_format'
+        mes = [f'{f}:']
+        for block in self.blocks:
+            mes.append(f'{block.cellno}, {block.no}, "{block.text}": "{block.code}"')
+        return '\n'.join(mes)
+    
     def run(self):
         self.wrap()
         self.clear_single_source()
+        self.format()
         return self.blocks
 
 
