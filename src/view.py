@@ -338,7 +338,7 @@ class Phsubj:
 
 
 
-class Wrap2:
+class Wrap:
     
     def __init__(self, blocks):
         self.blocks = blocks
@@ -430,7 +430,7 @@ class Wrap2:
         self.blocks = new_blocks
     
     def clear_single_source(self):
-        f = '[MClient] view.Wrap2.clear_single_source'
+        f = '[MClient] view.Wrap.clear_single_source'
         if not CONFIG.new['ClearSingleSource']:
             rep.lazy(f)
             return
@@ -449,7 +449,7 @@ class Wrap2:
         self.blocks = [fmBlock(block).run() for block in self.blocks]
     
     def debug_format(self):
-        f = '[MClient] view.Wrap2.debug_format'
+        f = '[MClient] view.Wrap.debug_format'
         mes = [f'{f}:']
         for block in self.blocks:
             mes.append(f'{block.cellno}, {block.no}, "{block.text}": "{block.code}"')
@@ -460,206 +460,3 @@ class Wrap2:
         self.clear_single_source()
         self.format()
         return self.blocks
-
-
-
-class Wrap:
-    
-    def __init__(self, blocks):
-        ''' Since we create even empty columns, the number of fixed cells in
-            a row should always be 6 (unless new fixed types are added).
-        '''
-        self.Success = True
-        self.plain = []
-        self.code = []
-        self.blocks = blocks
-        self.fixed_len = COL_WIDTH.fixed_num
-        self.collimit = COL_WIDTH.fixed_num + COL_WIDTH.term_num
-    
-    def clear_single_source(self):
-        f = '[MClient] view.Wrap.clear_single_source'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if not CONFIG.new['ClearSingleSource']:
-            rep.lazy(f)
-            return
-        sources = set([block.source for block in self.blocks if block.source])
-        if len(sources) == 1:
-            for cell in self.cells:
-                cell.source = ''
-    
-    def check(self):
-        f = '[MClient] view.Wrap.check'
-        if not self.cells:
-            self.Success = False
-            rep.empty(f)
-            return
-        if self.collimit <= self.fixed_len:
-            self.Success = False
-            rep.condition(f, f'{self.collimit} > {self.fixed_len}')
-    
-    def get_empty_cells(self, delta):
-        row = []
-        for type_ in range(delta):
-            cell = Cell()
-            cell.blocks = [Block()]
-            row.append(cell)
-        return row
-    
-    def wrap(self):
-        f = '[MClient] view.Wrap.wrap'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        cells = []
-        row = []
-        rowno = 0
-        for cell in self.cells:
-            if len(row) == self.collimit:
-                cells.append(row)
-                if cell.rowno == rowno:
-                    row = self.get_empty_cells(self.fixed_len)
-                else:
-                    row = []
-            elif cell.rowno != rowno:
-                row += self.get_empty_cells(self.collimit - len(row))
-                cells.append(row)
-                row = []
-            row.append(cell)
-            rowno = cell.rowno
-        row += self.get_empty_cells(self.collimit - len(row))
-        cells.append(row)
-        self.cells = cells
-    
-    def _get_prev_cell(self, i, j):
-        if i >= len(self.cells):
-            return
-        while j >= 0:
-            try:
-                return self.cells[i][j]
-            except IndexError:
-                pass
-            j -= 1
-    
-    def _debug_cells(self, maxrow=60, maxrows=700):
-        f = '[MClient] view.Wrap._debug_cells'
-        mes = [f'{f}:']
-        headers = (_('CELL #'), _('ROW #'), _('COLUMN #'), _('TEXT'), _('CODE')
-                  ,'URL')
-        no = []
-        rowno = []
-        colno = []
-        text = []
-        code = []
-        url = []
-        for row in self.cells:
-            for cell in row:
-                no.append(cell.no)
-                rowno.append(cell.rowno)
-                colno.append(cell.colno)
-                text.append(cell.text)
-                code.append(cell.code)
-                url.append(cell.url)
-        iterable = [no, rowno, colno, text, code, url]
-        mes += Table(headers=headers, iterable=iterable, maxrow=maxrow
-                    ,maxrows=maxrows).run()
-        return '\n'.join(mes)
-    
-    def _debug_plain(self):
-        f = '[MClient] view.Wrap._debug_plain'
-        mes = [f'{f}:']
-        plain = []
-        for row in self.cells:
-            new_row = []
-            for cell in row:
-                text = f'({cell.rowno}, {cell.no}): {cell.text}'
-                new_row.append(text)
-            plain.append(new_row)
-        mes.append(str(plain))
-        return '\n'.join(mes)
-    
-    def _debug_code(self):
-        f = '[MClient] view.Wrap._debug_code'
-        mes = [f'{f}:']
-        code = []
-        for row in self.cells:
-            new_row = []
-            for cell in row:
-                text = f'({cell.rowno}, {cell.no}): {cell.code}'
-                new_row.append(text)
-            code.append(new_row)
-        mes.append(str(code))
-        return '\n'.join(mes)
-    
-    def debug(self):
-        f = '[MClient] view.Wrap.debug'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        mes = [self._debug_cells()]
-        mes.append(self._debug_plain())
-        mes.append(self._debug_code())
-        return '\n\n'.join(mes)
-    
-    def renumber(self):
-        f = '[MClient] view.Wrap.renumber'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if not self.cells[0]:
-            self.Success = False
-            rep.empty(f)
-            return
-        no = 0
-        for i in range(len(self.cells)):
-            for j in range(len(self.cells[i])):
-                self.cells[i][j].no = no
-                self.cells[i][j].rowno = i
-                self.cells[i][j].colno = j
-                no += 1
-    
-    def format(self):
-        # Takes ~0.871s for 'set' on AMD E-300
-        f = '[MClient] view.Wrap.format'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        for row in self.cells:
-            for cell in row:
-                cell_code = []
-                for block in cell.blocks:
-                    cell_code.append(fmBlock(block, cell.colno).run())
-                cell.code = List(cell_code).space_items()
-    
-    def set_plain(self):
-        f = '[MClient] view.Wrap.set_plain'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        for row in self.cells:
-            new_row = []
-            for cell in row:
-                new_row.append(cell.text)
-            self.plain.append(new_row)
-    
-    def set_code(self):
-        f = '[MClient] view.Wrap.set_code'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        for row in self.cells:
-            new_row = []
-            for cell in row:
-                new_row.append(cell.code)
-            self.code.append(new_row)
-    
-    def run(self):
-        self.check()
-        self.wrap()
-        self.renumber()
-        self.format()
-        self.set_plain()
-        self.set_code()
-        self.clear_single_source()
-        return self.cells
