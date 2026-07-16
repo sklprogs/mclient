@@ -56,9 +56,11 @@ class Wrap:
         blocks = cCells(blocks).run()
         blocks = Phrases(blocks).run()
         blocks = cView(blocks).run()
-        blocks = cWrap(blocks).run()
+        iwrap = cWrap(blocks)
+        blocks = iwrap.run()
         blocks = Phsubj(blocks).run()
         return debug(f, blocks)
+        #return iwrap.debug_format()
     
     def run_mdic(self):
         f = '[MClient] tests.sources.Wrap.run_mdic'
