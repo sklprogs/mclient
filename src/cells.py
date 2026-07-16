@@ -312,8 +312,21 @@ class Cells:
                 block.Ignore = True
         rep.deleted(f, count)
     
+    def ignore_phcount(self):
+        f = '[MClient] cells.Cells.ignore_phcount'
+        if CONFIG.new['PhraseCount']:
+            rep.lazy(f)
+            return
+        count = 0
+        for block in self.blocks:
+            if block.type == 'phcount':
+                count += 1
+                block.Ignore = True
+        rep.matches(f, count)
+    
     def run(self):
         self.ignore_roman_numbers()
+        self.ignore_phcount()
         # Set instance in order to further get blocked subjects and cells
         self.iomit = Omit(self.blocks)
         self.blocks = self.iomit.run()
