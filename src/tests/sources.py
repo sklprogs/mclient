@@ -43,7 +43,7 @@ class Wrap:
     
     def _run(self, f, cSource, url=''):
         from cells import Elems as cElems, Cells as cCells, debug
-        from view import View as cView, Wrap2 as cWrap, Phrases, Phsubj
+        from view import View as cView, Wrap as cWrap, Phrases, Phsubj
         from subjects import SUBJECTS
         if url:
             blocks = cSource().request(SEARCH, url)
@@ -122,7 +122,7 @@ class View:
     
     def _run(self, f, cSource, url=''):
         from cells import Elems as cElems, Cells as cCells, debug
-        from view import View as cView, Wrap2 as cWrap, Phrases
+        from view import View as cView, Wrap as cWrap, Phrases
         from subjects import SUBJECTS
         if url:
             blocks = cSource().request(SEARCH, url)
