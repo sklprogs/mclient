@@ -4,29 +4,22 @@
 from skl_shared.localize import _
 from skl_shared.message.controller import rep, Message
 
-from articles import ARTICLES
-
 
 class Table:
     ''' To keep the current article functioning if nothing was found, we do not
         use 'Success' or call 'reset' before filling.
     '''
-    def __init__(self, plain=[], code=[]):
+    def __init__(self, blocks=[]):
         self.set_values()
-        if plain and code:
-            self.reset(plain, code)
+        if blocks:
+            self.reset(blocks)
     
-    def reset(self, plain, code):
+    def reset(self, blocks):
         self.set_values()
-        self.plain = plain
-        self.code = code
+        self.blocks = blocks
         self.set_size()
-        self.set_empty_cols()
     
     def set_values(self):
-        self.plain = []
-        self.code = []
-        self.empty_cols = []
         self.rownum = 0
         self.colnum = 0
         ''' This is a constant value and should be manually changed only when
@@ -36,203 +29,157 @@ class Table:
     
     def get_phsubj(self):
         f = '[MClient] table.logic.Table.get_phsubj'
-        table = ARTICLES.get_table()
-        if not table:
-            rep.empty(f)
-            return
-        for row in table[::-1]:
-            for cell in row:
-                if cell.fixed_block and cell.fixed_block.type == 'subj' \
-                and cell.text == _('Phrases') and cell.url:
-                    return(cell.text, cell.fixed_block.url)
+        for block in self.blocks:
+            if block.type == 'phsubj':
+                return block
     
     def get_first_term(self):
         f = '[MClient] table.logic.Table.get_first_term'
-        table = ARTICLES.get_table()
-        if not table:
+        for block in self.blocks:
+            if block.type == 'term' and block.text.strip():
+                return block
+    
+    def _get_col(self, block, colno):
+        ''' We need to return even empty blocks here. If no empty fixed blocks
+            are allowed, rewrite this code.
+        '''
+        rowno = block.rowno
+        for block in self.blocks:
+            if block.rowno == rowno and block.colno == colno:
+                return block
+    
+    def get_next_section(self, block, colno):
+        f = '[MClient] table.logic.Table.get_next_section'
+        if not self.blocks:
             rep.empty(f)
             return
-        for row in table:
-            for cell in row:
-                for block in cell.blocks:
-                    if block.type == 'term' and block.text.strip():
-                        return(cell.rowno, cell.colno)
+        block = self._get_col(block, colno)
+        if block:
+            return self.get_next_row(block)
     
-    def get_non_empty_col(self, colno):
-        while colno < self.colnum:
-            if not self._is_col_empty(colno):
-                return colno
-            colno += 1
-        return colno
-    
-    def _is_col_empty(self, colno):
-        for rowno in range(self.rownum):
-            # Cell texts should already be stripped
-            if self.plain[rowno][colno]:
-                return
-        return True
-    
-    def set_empty_cols(self):
-        f = '[MClient] table.logic.Table.set_empty_cols'
-        #TODO: Should we run this for fixed columns only?
-        for colno in range(self.colnum):
-            if self._is_col_empty(colno):
-                self.empty_cols.append(colno)
-        if self.empty_cols:
-            mes = _('Columns with no text: {}')
-            mes = mes.format(', '.join([str(item) for item in self.empty_cols]))
-        else:
-            mes = _('All columns have texts')
-        Message(f, mes).show_debug()
-    
-    def get_next_row_by_col(self, rowno, colno, ref_colno):
-        f = '[MClient] table.logic.Table.get_next_row_by_col'
-        if not self.plain:
+    def get_prev_section(self, block, colno):
+        f = '[MClient] table.logic.Table.get_prev_section'
+        if not self.blocks:
             rep.empty(f)
-            return(rowno, colno)
-        tuple_ = self._get_next_row(rowno, ref_colno)
-        if tuple_:
-            rowno = tuple_[0]
-            tuple_ = self._get_next_row(rowno - 1, colno)
-            if tuple_:
-                return tuple_
-        elif rowno > 0:
-            return self.get_next_row_by_col(-1, colno, ref_colno)
-        return(rowno, colno)
+            return
+        block = self._get_col(colno)
+        if block:
+            return self.get_prev_row(block)
     
-    def get_prev_row_by_col(self, rowno, colno, ref_colno):
-        f = '[MClient] table.logic.Table.get_prev_row_by_col'
-        if not self.plain:
-            rep.empty(f)
-            return(rowno, colno)
-        tuple_ = self._get_prev_row(rowno, ref_colno)
-        if tuple_:
-            rowno = tuple_[0]
-            tuple_ = self._get_prev_row(rowno + 1, colno)
-            if tuple_:
-                return tuple_
-        elif rowno < self.rownum:
-            return self.get_prev_row_by_col(self.rownum, colno, ref_colno)
-        return(rowno, colno)
+    def _get_next_col(self, block):
+        rowno, colno = block.rowno, block.colno
+        for block in self.blocks:
+            ''' After blocks are sorted and wrapped, rowno and colno increase by
+                design, so we don't need to iterate colno.
+            '''
+            if block.rowno == rowno and block.colno > colno \
+            and block.text.strip():
+                return block
     
-    def _get_next_col(self, rowno, colno):
-        while colno + 1 < self.colnum:
-            colno += 1
-            if self.plain[rowno][colno]:
-                return(rowno, colno)
-    
-    def get_next_col(self, rowno, colno):
+    def get_next_col(self, block):
         f = '[MClient] table.logic.Table.get_next_col'
-        if not self.plain:
+        if not self.blocks:
             rep.empty(f)
-            return(rowno, colno)
-        start = rowno
-        while rowno < self.rownum:
-            if rowno == start:
-                tuple_ = self._get_next_col(rowno, colno)
-            else:
-                tuple_ = self._get_next_col(rowno, -1)
-            if tuple_:
-                return tuple_
-            rowno += 1
-        if colno + 1 < self.colnum:
-            colno += 1
-        if rowno >= self.rownum:
-            return self.get_start()
-        return(rowno, colno)
+            return
+        block = self._get_col(block, 0)
+        if not block:
+            rep.empty(f)
+            return
+        return self.get_next_row(block)
     
-    def _get_prev_col(self, rowno, colno):
-        while colno > 0:
-            colno -= 1
-            if self.plain[rowno][colno]:
-                return(rowno, colno)
+    def _get_prev_col(self, block):
+        rowno, colno = block.rowno, block.colno
+        for block in self.blocks[::-1]:
+            ''' After blocks are sorted and wrapped, rowno and colno increase by
+                design, so we don't need to iterate colno.
+            '''
+            if block.rowno == rowno and block.colno < colno \
+            and block.text.strip():
+                return block
     
-    def get_prev_col(self, rowno, colno):
+    def get_prev_col(self, block):
         f = '[MClient] table.logic.Table.get_prev_col'
-        if not self.plain:
+        if not self.blocks:
             rep.empty(f)
-            return(rowno, colno)
-        start = rowno
-        while rowno >= 0:
-            if rowno == start:
-                tuple_ = self._get_prev_col(rowno, colno)
-            else:
-                tuple_ = self._get_prev_col(rowno, self.colnum)
-            if tuple_:
-                return tuple_
-            rowno -= 1
-        if colno > 0:
-            colno -= 1
-        if rowno < 0:
-            return self.get_end()
-        return(rowno, colno)
-    
-    def _get_prev_row(self, rowno, colno):
-        while rowno > 0:
-            rowno -= 1
-            if self.plain[rowno][colno]:
-                return(rowno, colno)
-    
-    def get_prev_row(self, rowno, colno):
-        f = '[MClient] table.logic.Table.get_prev_row'
-        if not self.plain:
+            return
+        target = self._get_prev_col(block)
+        if target:
+            return target
+        block = self._get_col(block, 0)
+        if not block:
             rep.empty(f)
-            return(rowno, colno)
-        start = colno
-        while colno >= 0:
-            if start == colno:
-                tuple_ = self._get_prev_row(rowno, colno)
-            else:
-                tuple_ = self._get_prev_row(self.rownum, colno)
-            if tuple_:
-                return tuple_
-            colno -= 1
-        if colno < 0:
-            return self.get_end()
-        return(rowno, colno)
+            return
+        return self.get_next_row(block)
     
-    def _get_next_row(self, rowno, colno):
-        while rowno + 1 < self.rownum:
-            rowno += 1
-            if self.plain[rowno][colno]:
-                return(rowno, colno)
+    def _get_prev_row(self, block):
+        rowno, colno = block.rowno, block.colno
+        for block in self.blocks[::-1]:
+            ''' After blocks are sorted and wrapped, rowno and colno increase by
+                design, so we don't need to iterate rowno.
+            '''
+            if block.colno == colno and block.rowno < rowno \
+            and block.text.strip():
+                return block
     
-    def get_next_row(self, rowno, colno):
-        f = '[MClient] table.logic.Table.get_next_row'
-        if not self.plain:
-            rep.empty(f)
-            return(rowno, colno)
-        start = colno
-        while colno < self.colnum:
-            if start == colno:
-                tuple_ = self._get_next_row(rowno, colno)
-            else:
-                tuple_ = self._get_next_row(-1, colno)
-            if tuple_:
-                return tuple_
-            colno += 1
-        if colno >= self.colnum:
-            return self.get_start()
-        return(rowno, colno)
+    def get_prev_row(self, block):
+        colno = block.colno
+        block = self._get_prev_row(block)
+        if block:
+            return block
+        for block in self.blocks[::-1]:
+            if block.colno == colno and block.text.strip():
+                return block
+    
+    def _get_next_row(self, block):
+        rowno, colno = block.rowno, block.colno
+        for block in self.blocks:
+            ''' After blocks are sorted and wrapped, rowno and colno increase by
+                design, so we don't need to iterate rowno.
+            '''
+            if block.colno == colno and block.rowno > rowno \
+            and block.text.strip():
+                return block
+    
+    def get_next_row(self, block):
+        colno = block.colno
+        block = self._get_next_row(block)
+        if block:
+            return block
+        for block in self.blocks:
+            if block.colno == colno and block.text.strip():
+                return block
     
     def get_start(self):
-        return self.get_next_col(0, -1)
+        for block in self.blocks:
+            if block.text.strip():
+                return block
     
-    def get_line_start(self, rowno):
-        return self.get_next_col(rowno, -1)
+    def get_line_start(self, block):
+        rowno = block.rowno
+        for block in self.blocks:
+            if block.rowno == rowno and block.colno > (self.fixed_num - 1) \
+            and block.text.strip():
+                return block
     
-    def get_line_end(self, rowno):
-        return self.get_prev_col(rowno, self.colnum)
+    def get_line_end(self, block):
+        rowno = block.rowno
+        for block in self.blocks[::-1]:
+            if block.rowno == rowno and block.text.strip():
+                return block
     
     def set_size(self):
         f = '[MClient] table.logic.Table.set_size'
-        if not self.plain:
+        if not self.blocks:
             rep.empty(f)
             return
-        self.rownum = len(self.plain)
-        self.colnum = len(self.plain[0])
+        rownos = [block.rowno for block in self.blocks]
+        colnos = [block.colno for block in self.blocks]
+        self.rownum = max(rownos)
+        self.colnum = max(colnos)
         mes = _('Table size: {}×{}').format(self.rownum, self.colnum)
         Message(f, mes).show_debug()
     
     def get_end(self):
-        return self.get_prev_col(self.rownum - 1, self.colnum)
+        for block in self.blocks[::-1]:
+            if block.text.strip():
+                return block
