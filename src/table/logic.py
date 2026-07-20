@@ -14,6 +14,38 @@ class Table:
         if blocks:
             self.reset(blocks)
     
+    def get_start(self):
+        for block in self.blocks:
+            if block.text.strip():
+                return block
+    
+    def get_end(self):
+        for block in self.blocks[::-1]:
+            if block.text.strip():
+                return block
+    
+    def get_left(self, block):
+        f = '[MClient] table.logic.Table.get_left'
+        if not block:
+            rep.empty(f)
+            return
+        colno = block.colno
+        for block in self.blocks[::-1]:
+            if block.colno < colno and block.text.strip():
+                return block
+        return self.get_end()
+    
+    def get_right(self, block):
+        f = '[MClient] table.logic.Table.get_right'
+        if not block:
+            rep.empty(f)
+            return
+        colno = block.colno
+        for block in self.blocks:
+            if block.colno > colno and block.text.strip():
+                return block
+        return self.get_start()
+    
     def reset(self, blocks):
         self.set_values()
         self.blocks = blocks
@@ -31,12 +63,6 @@ class Table:
         f = '[MClient] table.logic.Table.get_phsubj'
         for block in self.blocks:
             if block.type == 'phsubj':
-                return block
-    
-    def get_first_term(self):
-        f = '[MClient] table.logic.Table.get_first_term'
-        for block in self.blocks:
-            if block.type == 'term' and block.text.strip():
                 return block
     
     def _get_col(self, block, colno):
@@ -75,17 +101,6 @@ class Table:
             if block.rowno == rowno and block.colno > colno \
             and block.text.strip():
                 return block
-    
-    def get_next_col(self, block):
-        f = '[MClient] table.logic.Table.get_next_col'
-        if not self.blocks:
-            rep.empty(f)
-            return
-        block = self._get_col(block, 0)
-        if not block:
-            rep.empty(f)
-            return
-        return self.get_next_row(block)
     
     def _get_prev_col(self, block):
         rowno, colno = block.rowno, block.colno
@@ -149,11 +164,6 @@ class Table:
             if block.colno == colno and block.text.strip():
                 return block
     
-    def get_start(self):
-        for block in self.blocks:
-            if block.text.strip():
-                return block
-    
     def get_line_start(self, block):
         rowno = block.rowno
         for block in self.blocks:
@@ -178,8 +188,3 @@ class Table:
         self.colnum = max(colnos)
         mes = _('Table size: {}×{}').format(self.rownum, self.colnum)
         Message(f, mes).show_debug()
-    
-    def get_end(self):
-        for block in self.blocks[::-1]:
-            if block.text.strip():
-                return block

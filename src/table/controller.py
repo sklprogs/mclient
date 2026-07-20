@@ -25,6 +25,182 @@ class Table:
         self.search = Search()
         self.set_gui()
     
+    def set_values(self):
+        self.model = None
+        self.coords = {}
+        self.old_rowno = -1
+        self.old_colno = -1
+    
+    def get_cell_x(self):
+        f = '[MClient] table.controller.Table.get_cell_x'
+        cell = self.get_cell()
+        if not cell:
+            rep.empty(f)
+            return
+        if len(cell) != 2:
+            mes = f'{len(cell)} == 2'
+            rep.condition(f, mes)
+            return
+        return self.gui.get_cell_x(cell[1])
+    
+    def get_cell_y(self):
+        f = '[MClient] table.controller.Table.get_cell_y'
+        cell = self.get_cell()
+        if not cell:
+            rep.empty(f)
+            return
+        if len(cell) != 2:
+            mes = f'{len(cell)} == 2'
+            rep.condition(f, mes)
+            return
+        return self.gui.get_cell_y(cell[0])
+    
+    def go_start(self):
+        block = self.logic.get_start()
+        self.select(block)
+    
+    def go_end(self):
+        block = self.logic.get_end()
+        self.select(block)
+    
+    def search_prev(self):
+        self.reset_search()
+        block = self.search.search_prev()
+        self.select(block)
+    
+    def search_next(self):
+        self.reset_search(True)
+        block = self.search.search_next()
+        self.select(block)
+    
+    def reset_search(self, Forward=False):
+        block = self.get_selected_block(Forward)
+        self.search.reset(self.blocks, block)
+    
+    def close_search_next(self):
+        self.search.close()
+        self.reset_search(True)
+        block = self.search.search_next()
+        self.select(block)
+    
+    def go_prev_section(self, colno):
+        f = '[MClient] table.controller.Table.go_prev_section'
+        if colno < 0 or colno >= self.logic.colnum:
+            mes = f'0 <= {colno} < {self.logic.colnum}'
+            rep.condition(f, mes)
+            return
+        block = self.get_selected_block()
+        block = self.logic.get_prev_section(block, colno)
+        self.select(block)
+    
+    def go_next_section(self, colno):
+        f = '[MClient] table.controller.Table.go_next_section'
+        if colno < 0 or colno >= self.logic.colnum:
+            mes = f'0 <= {colno} < {self.logic.colnum}'
+            rep.condition(f, mes)
+            return
+        block = self.get_selected_block(True)
+        block = self.logic.get_next_section(block, colno)
+        self.select(block)
+    
+    def get_block(self, rowno, colno, Forward=False):
+        f = '[MClient] table.controller.Table.get_block'
+        if rowno < 0 or rowno >= self.logic.rownum:
+            mes = f'0 <= {rowno} < {self.logic.rownum}'
+            rep.condition(f, mes)
+            return
+        if colno < 0 or colno >= self.logic.colnum:
+            mes = f'0 <= {colno} < {self.logic.colnum}'
+            rep.condition(f, mes)
+            return
+        if Forward:
+            for block in self.blocks:
+                if block.colno == colno and block.rowno == rowno:
+                    return block
+        else:
+            for block in self.blocks[::-1]:
+                if block.colno == colno and block.rowno == rowno:
+                    return block
+    
+    def get_selected_block(self, Forward=False):
+        f = '[MClient] table.controller.Table.get_selected_block'
+        cell = self.get_cell()
+        if not cell:
+            rep.empty(f)
+            return
+        if len(cell) != 2:
+            mes = f'{len(cell)} == 2'
+            rep.condition(f, mes)
+            return
+        return self.get_block(cell[0], cell[1], Forward)
+    
+    def get_cell(self):
+        # Get rowno and colno
+        f = '[MClient] table.controller.Table.get_cell'
+        try:
+            return self.gui.get_cell()
+        except Exception as e:
+            rep.third_party(f, e)
+    
+    def go_right(self):
+        block = self.logic.get_right(self.get_block(True))
+        self.select(block)
+    
+    def go_left(self):
+        block = self.logic.get_left(self.get_block())
+        self.select(block)
+    
+    def go_up(self):
+        block = self.logic.get_up(self.get_block())
+        self.select(block)
+    
+    def go_down(self):
+        ''' #NOTE: This should run only after an event since Qt returns dummy
+            geometry values right after startup.
+        '''
+        block = self.logic.get_down(self.get_block(True))
+        self.select(block)
+    
+    def select(self, block, Mouse=False):
+        f = '[MClient] table.controller.Table.select'
+        if not block:
+            rep.empty(f)
+            return
+        rowno, colno = block.rowno, block.colno
+        if Mouse and self.search.Shown:
+            return
+        if rowno == self.old_rowno and colno == self.old_colno:
+            return
+        self.old_rowno = rowno
+        self.old_colno = colno
+        self.model.update(self.gui.get_index())
+        new_index = self.model.index(rowno, colno)
+        if Mouse:
+            self.gui.set_index(new_index)
+        else:
+            self.gui.set_cur_index(new_index)
+        self.model.update(new_index)
+        if not Mouse:
+            self.scroll_top()
+        if Mouse:
+            if new_index in self.gui.delegate.long:
+                self.show_popup()
+            else:
+                POPUP.close()
+        #ARTICLES.set_bookmark(rowno, colno)
+    
+    def go_line_start(self):
+        block = self.get_selected_block()
+        block = self.logic.get_line_start(block)
+        self.select(block)
+    
+    def go_line_end(self):
+        block = self.get_selected_block(True)
+        block = self.logic.get_line_end(block)
+        self.select(block)
+    
+    
+    
     def get_row_height(self, rowno):
         return self.gui.get_row_height(rowno)
     
@@ -46,10 +222,14 @@ class Table:
         if not self.coords2:
             rep.empty(f)
             return
-        rowno, colno = self.get_cell()
+        cell = self.get_cell()
+        if not cell:
+            rep.empty(f)
+            return
+        rowno, colno = cell[0], cell[1]
         cur_page = self.coords2[rowno]
         if cur_page < 0:
-            mes = '{} >= 0'.format(cur_page)
+            mes = f'{cur_page} >= 0'
             rep.condition(f, mes)
             return
         if cur_page == 0:
@@ -84,129 +264,6 @@ class Table:
             return
         self.select(rowno, colno)
     
-    def go_next_section(self, no):
-        no = self.logic.get_non_empty_col(no)
-        rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_next_row_by_col(rowno, colno, no)
-        self.select(rowno, colno)
-    
-    def go_prev_section(self, no):
-        no = self.logic.get_non_empty_col(no)
-        rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_prev_row_by_col(rowno, colno, no)
-        self.select(rowno, colno)
-    
-    def close_search_next(self):
-        self.search.close()
-        self.reset_search()
-        rowno, colno = self.search.search_next()
-        self.select(rowno, colno)
-    
-    def reset_search(self):
-        rowno, colno = self.get_cell()
-        self.search.reset(self.logic.plain, rowno, colno)
-    
-    def search_next(self):
-        self.reset_search()
-        rowno, colno = self.search.search_next()
-        self.select(rowno, colno)
-    
-    def search_prev(self):
-        self.reset_search()
-        rowno, colno = self.search.search_prev()
-        self.select(rowno, colno)
-    
-    def set_values(self):
-        self.model = None
-        self.coords = {}
-        self.old_rowno = -1
-        self.old_colno = -1
-    
-    def go_end(self):
-        rowno, colno = self.logic.get_end()
-        self.select(rowno, colno)
-    
-    def go_start(self):
-        rowno, colno = self.logic.get_start()
-        self.select(rowno, colno)
-    
-    def go_first_term(self):
-        f = '[MClient] table.controller.Table.go_first_term'
-        cell = self.logic.get_first_term()
-        if not cell:
-            rep.empty(f)
-            self.go_start()
-            return
-        rowno, colno = cell[0], cell[1]
-        self.select(rowno, colno)
-    
-    def go_down(self):
-        ''' #NOTE: This should run only after an event since Qt returns dummy
-            geometry values right after startup.
-        '''
-        rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_next_row(rowno, colno)
-        self.select(rowno, colno)
-    
-    def select(self, rowno, colno, Mouse=False):
-        f = '[MClient] table.controller.Table.select'
-        if Mouse and self.search.Shown:
-            return
-        if rowno == self.old_rowno and colno == self.old_colno:
-            return
-        if not self.logic.plain:
-            rep.empty(f)
-            return
-        if rowno >= len(self.logic.plain) \
-        or colno >= len(self.logic.plain[rowno]):
-            # Module is buggy and should be reworked, so not Graphical for now
-            rep.wrong_input(f, (rowno, colno,), False)
-            return
-        if not self.logic.plain[rowno][colno].strip():
-            return
-        self.old_rowno = rowno
-        self.old_colno = colno
-        self.model.update(self.gui.get_index())
-        new_index = self.model.index(rowno, colno)
-        if Mouse:
-            self.gui.set_index(new_index)
-        else:
-            self.gui.set_cur_index(new_index)
-        self.model.update(new_index)
-        if not Mouse:
-            self.scroll_top()
-        if Mouse:
-            if new_index in self.gui.delegate.long:
-                self.show_popup()
-            else:
-                POPUP.close()
-        ARTICLES.set_bookmark(rowno, colno)
-    
-    def go_up(self):
-        rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_prev_row(rowno, colno)
-        self.select(rowno, colno)
-    
-    def go_line_start(self):
-        rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_line_start(rowno)
-        self.select(rowno, colno)
-    
-    def go_line_end(self):
-        rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_line_end(rowno)
-        self.select(rowno, colno)
-    
-    def go_left(self):
-        rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_prev_col(rowno, colno)
-        self.select(rowno, colno)
-    
-    def go_right(self):
-        rowno, colno = self.get_cell()
-        rowno, colno = self.logic.get_next_col(rowno, colno)
-        self.select(rowno, colno)
-    
     def scroll_top(self):
         f = '[MClient] table.controller.Table.scroll_top'
         if not self.coords or not self.model:
@@ -219,20 +276,6 @@ class Table:
             return
         index_ = self.model.index(self.coords[rowno], colno)
         self.gui.scroll2index(index_)
-    
-    def get_cell(self):
-        f = '[MClient] table.controller.Table.get_cell'
-        try:
-            return self.gui.get_cell()
-        except Exception as e:
-            rep.third_party(f, e)
-            return(0, 0)
-    
-    def get_cell_x(self, colno):
-        return self.gui.get_cell_x(colno)
-    
-    def get_cell_y(self, rowno):
-        return self.gui.get_cell_y(rowno)
     
     def get_cell_text(self):
         f = '[MClient] table.controller.Table.get_cell_text'
