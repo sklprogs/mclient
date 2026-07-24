@@ -14,6 +14,35 @@ class Table:
         if blocks:
             self.reset(blocks)
     
+    def set_values(self):
+        self.rownum = 0
+        self.colnum = 0
+        ''' This is a constant value and should be manually changed only when
+            new fixed types are introduced.
+        '''
+        self.fixed_num = 6
+    
+    def reset(self, blocks):
+        self.set_values()
+        self.blocks = blocks
+        self.set_size()
+    
+    def check_block(self, block):
+        f = '[MClient] table.logic.Table.check_block'
+        if not block:
+            rep.empty(f)
+            return
+        rowno, colno = block.rowno, block.colno
+        if rowno < 0 or rowno >= self.rownum:
+            mes = f'0 <= {rowno} < {self.rownum}'
+            rep.condition(f, mes)
+            return
+        if colno < 0 or colno >= self.colnum:
+            mes = f'0 <= {colno} < {self.colnum}'
+            rep.condition(f, mes)
+            return
+        return True
+    
     def get_start(self):
         for block in self.blocks:
             if block.text.strip():
@@ -26,8 +55,8 @@ class Table:
     
     def get_left(self, block):
         f = '[MClient] table.logic.Table.get_left'
-        if not block:
-            rep.empty(f)
+        if not self.check_block(block):
+            rep.cancel(f)
             return
         colno = block.colno
         for block in self.blocks[::-1]:
@@ -37,145 +66,14 @@ class Table:
     
     def get_right(self, block):
         f = '[MClient] table.logic.Table.get_right'
-        if not block:
-            rep.empty(f)
+        if not self.check_block(block):
+            rep.cancel(f)
             return
         colno = block.colno
         for block in self.blocks:
             if block.colno > colno and block.text.strip():
                 return block
         return self.get_start()
-    
-    def reset(self, blocks):
-        self.set_values()
-        self.blocks = blocks
-        self.set_size()
-    
-    def set_values(self):
-        self.rownum = 0
-        self.colnum = 0
-        ''' This is a constant value and should be manually changed only when
-            new fixed types are introduced.
-        '''
-        self.fixed_num = 6
-    
-    def get_phsubj(self):
-        f = '[MClient] table.logic.Table.get_phsubj'
-        for block in self.blocks:
-            if block.type == 'phsubj':
-                return block
-    
-    def _get_col(self, block, colno):
-        ''' We need to return even empty blocks here. If no empty fixed blocks
-            are allowed, rewrite this code.
-        '''
-        rowno = block.rowno
-        for block in self.blocks:
-            if block.rowno == rowno and block.colno == colno:
-                return block
-    
-    def get_next_section(self, block, colno):
-        f = '[MClient] table.logic.Table.get_next_section'
-        if not self.blocks:
-            rep.empty(f)
-            return
-        block = self._get_col(block, colno)
-        if block:
-            return self.get_next_row(block)
-    
-    def get_prev_section(self, block, colno):
-        f = '[MClient] table.logic.Table.get_prev_section'
-        if not self.blocks:
-            rep.empty(f)
-            return
-        block = self._get_col(colno)
-        if block:
-            return self.get_prev_row(block)
-    
-    def _get_next_col(self, block):
-        rowno, colno = block.rowno, block.colno
-        for block in self.blocks:
-            ''' After blocks are sorted and wrapped, rowno and colno increase by
-                design, so we don't need to iterate colno.
-            '''
-            if block.rowno == rowno and block.colno > colno \
-            and block.text.strip():
-                return block
-    
-    def _get_prev_col(self, block):
-        rowno, colno = block.rowno, block.colno
-        for block in self.blocks[::-1]:
-            ''' After blocks are sorted and wrapped, rowno and colno increase by
-                design, so we don't need to iterate colno.
-            '''
-            if block.rowno == rowno and block.colno < colno \
-            and block.text.strip():
-                return block
-    
-    def get_prev_col(self, block):
-        f = '[MClient] table.logic.Table.get_prev_col'
-        if not self.blocks:
-            rep.empty(f)
-            return
-        target = self._get_prev_col(block)
-        if target:
-            return target
-        block = self._get_col(block, 0)
-        if not block:
-            rep.empty(f)
-            return
-        return self.get_next_row(block)
-    
-    def _get_prev_row(self, block):
-        rowno, colno = block.rowno, block.colno
-        for block in self.blocks[::-1]:
-            ''' After blocks are sorted and wrapped, rowno and colno increase by
-                design, so we don't need to iterate rowno.
-            '''
-            if block.colno == colno and block.rowno < rowno \
-            and block.text.strip():
-                return block
-    
-    def get_prev_row(self, block):
-        colno = block.colno
-        block = self._get_prev_row(block)
-        if block:
-            return block
-        for block in self.blocks[::-1]:
-            if block.colno == colno and block.text.strip():
-                return block
-    
-    def _get_next_row(self, block):
-        rowno, colno = block.rowno, block.colno
-        for block in self.blocks:
-            ''' After blocks are sorted and wrapped, rowno and colno increase by
-                design, so we don't need to iterate rowno.
-            '''
-            if block.colno == colno and block.rowno > rowno \
-            and block.text.strip():
-                return block
-    
-    def get_next_row(self, block):
-        colno = block.colno
-        block = self._get_next_row(block)
-        if block:
-            return block
-        for block in self.blocks:
-            if block.colno == colno and block.text.strip():
-                return block
-    
-    def get_line_start(self, block):
-        rowno = block.rowno
-        for block in self.blocks:
-            if block.rowno == rowno and block.colno > (self.fixed_num - 1) \
-            and block.text.strip():
-                return block
-    
-    def get_line_end(self, block):
-        rowno = block.rowno
-        for block in self.blocks[::-1]:
-            if block.rowno == rowno and block.text.strip():
-                return block
     
     def set_size(self):
         f = '[MClient] table.logic.Table.set_size'
@@ -188,3 +86,102 @@ class Table:
         self.colnum = max(colnos)
         mes = _('Table size: {}×{}').format(self.rownum, self.colnum)
         Message(f, mes).show_debug()
+    
+    def get_phsubj(self):
+        f = '[MClient] table.logic.Table.get_phsubj'
+        for block in self.blocks:
+            if block.type == 'phsubj':
+                return block
+    
+    def get_col(self, block, colno):
+        ''' We need to return even empty blocks here. If no empty fixed blocks
+            are allowed, rewrite this code.
+        '''
+        f = '[MClient] table.logic.Table.get_col'
+        if not self.check_block(block):
+            rep.cancel(f)
+            return
+        if colno < 0 or colno >= self.colnum:
+            mes = f'0 <= {colno} < {self.colnum}'
+            rep.condition(f, mes)
+            return
+        rowno = block.rowno
+        for block in self.blocks:
+            if block.rowno == rowno and block.colno == colno:
+                return block
+    
+    def _get_down(self, block):
+        rowno, colno = block.rowno, block.colno
+        for block in self.blocks:
+            ''' After blocks are sorted and wrapped, rowno and colno increase by
+                design, so we don't need to iterate rowno.
+            '''
+            if block.colno == colno and block.rowno > rowno \
+            and block.text.strip():
+                return block
+    
+    def get_down(self, block):
+        f = '[MClient] table.logic.Table.get_down'
+        if not self.check_block(block):
+            rep.cancel(f)
+            return
+        block = self._get_down(block)
+        if block:
+            return block
+        for block in self.blocks:
+            if block.colno > colno and block.text.strip():
+                return block
+        return self.get_start()
+    
+    def _get_up(self, block):
+        rowno, colno = block.rowno, block.colno
+        for block in self.blocks[::-1]:
+            ''' After blocks are sorted and wrapped, rowno and colno increase by
+                design, so we don't need to iterate rowno.
+            '''
+            if block.colno == colno and block.rowno < rowno \
+            and block.text.strip():
+                return block
+    
+    def get_up(self, block):
+        f = '[MClient] table.logic.Table.get_up'
+        if not self.check_block(block):
+            rep.cancel(f)
+            return
+        colno = block.colno
+        block = self._get_up(block)
+        if block:
+            return block
+        for block in self.blocks[::-1]:
+            if block.colno < colno and block.text.strip():
+                return block
+        return self.get_end()
+    
+    def get_next_section(self, block, colno):
+        block = self.get_col(block, colno)
+        return self.get_down(block)
+    
+    def get_prev_section(self, block, colno):
+        block = self.get_col(block, colno)
+        return self.get_up(block)
+    
+    def get_line_start(self, block):
+        f = '[MClient] table.logic.Table.get_line_start'
+        if not self.check_block(block):
+            rep.cancel(f)
+            return
+        rowno = block.rowno
+        for block in self.blocks:
+            if block.rowno == rowno and block.colno >= self.fixed_num \
+            and block.text.strip():
+                return block
+    
+    def get_line_end(self, block):
+        f = '[MClient] table.logic.Table.get_line_end'
+        if not self.check_block(block):
+            rep.cancel(f)
+            return
+        rowno = block.rowno
+        for block in self.blocks[::-1]:
+            if block.rowno == rowno and block.text.strip():
+                return block
