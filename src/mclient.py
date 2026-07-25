@@ -99,38 +99,35 @@ class UpdateUI:
     
     def update_block(self):
         f = '[MClient] mclient.UpdateUI.update_block'
-        ''' #NOTE: We cannot use 'ARTICLES.get_cells()' since it does not have
-            blocked items.
-        '''
-        blocked_subj = ARTICLES.get_blocked()
-        blocked_cells = ARTICLES.get_blocked_cells()
-        if blocked_subj:
-            blocked_subj = len(blocked_subj)
-        else:
-            blocked_subj = 0
-        if blocked_cells:
-            blocked_cells = len(blocked_cells)
-        else:
-            blocked_cells = 0
+        blocks = ARTICLES.get_blocks()
+        cells = 0
+        subj = []
+        cellnos = []
+        for block in self.blocks:
+            if block.Block and not block.cellno in cellnos:
+                cells += 1
+                cellnos.append(block.cellno)
+                if block.type in ('subj', 'phsubj') and block.text \
+                and not block.text in subj:
+                    subj.append(block.text)
         mes = [_('Subject blocking')]
-        if CONFIG.new['BlockSubjects'] and blocked_subj:
+        if CONFIG.new['BlockSubjects'] and subj:
             gi.objs.get_panel().btn_blk.activate()
         else:
             gi.objs.get_panel().btn_blk.inactivate()
-        if CONFIG.new['BlockSubjects'] and blocked_cells:
+        if CONFIG.new['BlockSubjects']:
             mes.append(_('Status: ON'))
-            sub = _('Blocked {} subjects ({} cells)')
-            sub = sub.format(blocked_subj, blocked_cells)
+            BLOCK.gui.cbx_pri.enable()
         else:
             mes.append(_('Status: OFF'))
+            BLOCK.gui.cbx_pri.disable()
+        if cells:
+            sub = _('Blocked {} subjects ({} cells)').format(len(subj), cells)
+        else:
             sub = _('Nothing was blocked')
         mes.append(sub)
         gi.objs.panel.btn_blk.hint = '\n'.join(mes)
         gi.objs.panel.btn_blk.set_hint()
-        if CONFIG.new['BlockSubjects']:
-            BLOCK.gui.cbx_pri.enable()
-        else:
-            BLOCK.gui.cbx_pri.disable()
     
     def update_go_next(self):
         if ARTICLES.is_last():
@@ -326,15 +323,11 @@ class App:
     
     def get_wform(self):
         f = '[MClient] mclient.App.get_wform'
-        table = ARTICLES.get_table()
-        if not table:
+        block = TABLE.get_selected_block()
+        if not block:
             rep.empty(f)
             return
-        cell = self.get_cell()
-        if not cell:
-            rep.empty(f)
-            return
-        return cell.wform
+        return block.wform
     
     def copy_wform(self):
         f = '[MClient] mclient.App.copy_wform'
@@ -365,21 +358,21 @@ class App:
         if CONFIG.new['Iconify']:
             self.minimize()
     
-    def get_cell_url(self):
-        f = '[MClient] mclient.App.get_cell_url'
-        cell = self.get_cell()
-        if not cell:
+    def get_block_url(self):
+        f = '[MClient] mclient.App.get_block_url'
+        block = TABLE.get_selected_block()
+        if not block:
             rep.empty(f)
             return
-        return cell.url
+        return block.url
     
-    def copy_cell_url(self):
-        f = '[MClient] mclient.App.copy_cell_url'
+    def copy_block_url(self):
+        f = '[MClient] mclient.App.copy_block_url'
         if not ARTICLES.get_len():
             # Do not warn when there are no articles yet
             rep.lazy(f)
             return
-        url = self.get_cell_url()
+        url = self.get_block_url()
         if not url:
             rep.empty(f)
             return
@@ -746,18 +739,13 @@ class App:
             # Do not warn when there are no articles yet
             rep.lazy(f)
             return
-        cell = TABLE.get_cell()
-        if not cell:
+        block = TABLE.get_selected_block()
+        if not block:
             rep.empty(f)
             return
-        rowno, colno = cell[0], cell[1]
-        cell = ARTICLES.get_cell(rowno, colno)
-        if not cell:
-            rep.empty(f)
-            return
-        REQUEST.search = cell.text
-        if cell.url:
-            REQUEST.url = cell.url
+        REQUEST.search = block.text
+        if block.url:
+            REQUEST.url = block.url
             mes = _('Open link: {}').format(REQUEST.url)
             Message(f, mes).show_info()
             self.load_article(REQUEST.search, REQUEST.url)
@@ -786,6 +774,16 @@ class App:
         else:
             gi.objs.get_article_proxy().go_welcome()
     
+    def _get_blocked_subj(self, blocks):
+        subj = []
+        for block in self.blocks:
+            if not block.Block:
+                continue
+            if block.type in ('subj', 'phsubj') and block.text \
+            and not block.text in subj:
+                subj.append(block.text)
+        return subj
+    
     def load_article(self, search='', url=''):
         f = '[MClient] mclient.App.load_article'
         ''' #NOTE: each time the contents of the current page is changed
@@ -802,16 +800,15 @@ class App:
             artid = ARTICLES.id
             
         if artid == -1:
-            blocks = SOURCES.request(search, url)
+            blocks = SOURCES().request(SEARCH, url)
             ielems = Elems(blocks)
             blocks = ielems.run()
-            cells = Cells(blocks).run()
+            # Reset subjects before running Omit (getting blocked subjects)
             SUBJECTS.reset(ielems.art_subj)
             ARTICLES.add(search = search
                         ,url = url
-                        ,cells = cells
+                        ,blocks = blocks
                         ,subjf = SUBJECTS.article
-                        ,blocked = SUBJECTS.block
                         ,prioritized = SUBJECTS.prior
                         ,art_subj = ielems.art_subj
                         ,phurl = ielems.phurl)
@@ -822,43 +819,34 @@ class App:
             Message(f, mes).show_info()
             ARTICLES.set_id(artid)
             SUBJECTS.reset(ARTICLES.get_art_subj())
-            cells = ARTICLES.get_cells()
+            blocks = ARTICLES.get_blocks()
             
         self.solve_screen()
         
-        iomit = Omit(cells)
-        cells = iomit.run()
-        if CONFIG.new['OrderCells']:
-            cells = Prioritize(cells).run()
+        blocks = Cells(blocks).run()
+        blocks = Phrases(blocks).run()
+        blocks = View(blocks).run()
+        blocks = Wrap(blocks).run()
+        blocks = Phsubj(blocks).run()
         
         COL_WIDTH.reset()
         COL_WIDTH.run()
-        
         self.update_columns()
-        
-        cells = View(cells).run()
-        iwrap = Wrap(cells)
-        iwrap.run()
-        
-        TABLE.reset(iwrap.plain, iwrap.code)
-        
-        ARTICLES.set_blocked_cells(iomit.omit_cells)
-        ARTICLES.set_table(iwrap.cells)
+        TABLE.reset(blocks)
         
         #REQUEST.text = lg.com.get_text(cells)
         #colors = lg.com.get_colors(blocks)
         #lg.com.fix_colors(colors)
         
-        #TODO: elaborate
-        skipped = []
+        skipped = self._get_blocked_subj(blocks)
         ''' Empty article is not added either to memory or history, so we just
             do not clear the search field to be able to correct the typo.
         '''
-        if iwrap.plain or skipped:
+        if blocks or skipped:
             gi.objs.get_panel().ent_src.reset()
         elif skipped:
             mes = _('Nothing has been found (skipped subjects: {}).')
-            mes = mes.format(skipped)
+            mes = mes.format(len(skipped))
             Message(f, mes, True).show_info()
         else:
             mes = _('Nothing has been found.')
@@ -1032,7 +1020,7 @@ class App:
         self.gui.bind(CONFIG.new['actions']['copy_article_url']['hotkeys']
                      ,self.copy_article_url)
         self.gui.bind(CONFIG.new['actions']['copy_url']['hotkeys']
-                     ,self.copy_cell_url)
+                     ,self.copy_block_url)
         self.gui.bind(CONFIG.new['actions']['copy_nominative']['hotkeys']
                      ,self.copy_wform)
         self.gui.bind(CONFIG.new['actions']['select_block']['hotkeys']
