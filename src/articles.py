@@ -30,17 +30,6 @@ class Articles:
             rep.wrong_input(f)
         return []
     
-    def get_blocked(self):
-        f = '[MClient] articles.Articles.get_blocked'
-        if not self.articles['ids']:
-            rep.empty(f)
-            return []
-        try:
-            return self.articles['ids'][self.id]['blocked']
-        except KeyError:
-            rep.wrong_input(f)
-        return []
-    
     def get_prioritized(self):
         f = '[MClient] articles.Articles.get_prioritized'
         if not self.articles['ids']:
@@ -84,45 +73,14 @@ class Articles:
             rep.wrong_input(f)
         return -1
     
-    def set_table(self, table):
-        f = '[MClient] articles.Articles.set_table'
-        if not table or not self.articles['ids']:
-            rep.empty(f)
-            # Keep old article
-            return
-        try:
-            self.articles['ids'][self.id]['table'] = table
-        except KeyError:
-            rep.wrong_input(f)
-    
-    def get_table(self):
-        f = '[MClient] articles.Articles.get_table'
-        if not self.articles['ids']:
-            rep.empty(f)
-            return
-        try:
-            return self.articles['ids'][self.id]['table']
-        except KeyError:
-            rep.wrong_input(f)
-    
-    def get_cell(self, rowno, colno):
-        f = '[MClient] articles.Articles.get_cell'
-        if not self.articles['ids']:
-            rep.empty(f)
-            return
-        try:
-            return self.articles['ids'][self.id]['table'][rowno][colno]
-        except (KeyError, IndexError):
-            rep.wrong_input(f)
-    
     def get_len(self):
         return self.get_max_id() + 1
     
-    def add(self, search='', url='', cells=[], table=[], subjf=[], blocked=[]
+    def add(self, search='', url='', blocks=[], subjf=[]
            ,prioritized=[], art_subj={}, phurl=''):
         f = '[MClient] articles.Articles.add'
         # Do not add articles that were not found to history
-        if not cells:
+        if not blocks:
             rep.lazy(f)
             return
         id_ = self.get_max_id() + 1
@@ -130,44 +88,20 @@ class Articles:
             mes = _('Wrong input data: "{}"!').format(id_)
             Message(f, mes).show_warning()
             return
-        self.articles['ids'][id_] = {'lang1'         : CONFIG.new['lang1']
-                                    ,'lang2'         : CONFIG.new['lang2']
-                                    ,'Parallel'      : SOURCES.is_parallel()
-                                    ,'Separate'      : SOURCES.is_separate()
-                                    ,'search'        : search
-                                    ,'url'           : url
-                                    ,'cells'         : cells
-                                    ,'table'         : table
-                                    ,'subjf'         : subjf
-                                    ,'blocked'       : blocked
-                                    ,'prioritized'   : prioritized
-                                    ,'rowno'         : -1
-                                    ,'colno'         : -1
-                                    ,'blocked_cells' : []
-                                    ,'art_subj'      : art_subj
-                                    ,'phurl'         : phurl}
+        self.articles['ids'][id_] = {'lang1'       : CONFIG.new['lang1']
+                                    ,'lang2'       : CONFIG.new['lang2']
+                                    ,'Parallel'    : SOURCES.is_parallel()
+                                    ,'Separate'    : SOURCES.is_separate()
+                                    ,'search'      : search
+                                    ,'url'         : url
+                                    ,'blocks'      : blocks
+                                    ,'subjf'       : subjf
+                                    ,'prioritized' : prioritized
+                                    ,'rowno'       : -1
+                                    ,'colno'       : -1
+                                    ,'art_subj'    : art_subj
+                                    ,'phurl'       : phurl}
         self.set_id(id_)
-    
-    def get_blocked_cells(self):
-        f = '[MClient] articles.Articles.get_blocked_cells'
-        if not self.articles['ids']:
-            rep.empty(f)
-            return []
-        try:
-            return self.articles['ids'][self.id]['blocked_cells']
-        except KeyError:
-            rep.wrong_input(f)
-        return []
-    
-    def set_blocked_cells(self, texts):
-        f = '[MClient] articles.Articles.set_blocked_cells'
-        if not self.articles['ids']:
-            rep.empty(f)
-            return
-        try:
-            self.articles['ids'][self.id]['blocked_cells'] = texts
-        except KeyError:
-            rep.wrong_input(f)
     
     def clear_article(self):
         f = '[MClient] articles.Articles.clear_article'
@@ -271,13 +205,13 @@ class Articles:
             rep.wrong_input(f)
         return ''
     
-    def get_cells(self):
-        f = '[MClient] articles.Articles.get_cells'
+    def get_blocks(self):
+        f = '[MClient] articles.Articles.get_blocks'
         if not self.articles['ids']:
             rep.empty(f)
             return []
         try:
-            return self.articles['ids'][self.id]['cells']
+            return self.articles['ids'][self.id]['blocks']
         except KeyError:
             rep.wrong_input(f)
         return []
