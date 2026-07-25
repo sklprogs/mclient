@@ -5,7 +5,7 @@ from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.time import Timer
 from skl_shared.graphics.clipboard.controller import CLIPBOARD
-from skl_shared.graphics.list import List
+from skl_shared.list import List
 
 from popup.controller import POPUP
 from config import CONFIG
@@ -21,7 +21,7 @@ class Table:
 
     def __init__(self):
         self.set_values()
-        self.logic = lgTable([], [])
+        self.logic = lgTable([])
         self.gui = guiTable()
         self.search = Search()
         self.set_gui()
@@ -78,7 +78,7 @@ class Table:
     
     def reset_search(self, Forward=False):
         block = self.get_selected_block(Forward)
-        self.search.reset(self.blocks, block)
+        self.search.reset(self.logic.blocks, block)
     
     def close_search_next(self):
         self.search.close()
@@ -112,11 +112,11 @@ class Table:
             rep.condition(f, mes)
             return
         if Forward:
-            for block in self.blocks:
+            for block in self.logic.blocks:
                 if block.colno == colno and block.rowno == rowno:
                     return block
         else:
-            for block in self.blocks[::-1]:
+            for block in self.logic.blocks[::-1]:
                 if block.colno == colno and block.rowno == rowno:
                     return block
     
@@ -275,7 +275,8 @@ class Table:
     
     def _get_cell_text(self, block):
         cellno = block.cellno
-        fragms = [block.text for block in self.blocks if block.cellno == cellno]
+        fragms = [block.text for block in self.logic.blocks \
+                 if block.cellno == cellno]
         return List(fragms).space_items()
     
     def get_cell_text(self):
@@ -293,7 +294,8 @@ class Table:
             rep.empty(f)
             return ''
         cellno = block.cellno
-        code = [block.code for block in self.blocks if block.cellno == cellno]
+        code = [block.code for block in self.logic.blocks \
+               if block.cellno == cellno]
         return ''.join(code)
     
     def copy_cell(self):
@@ -348,7 +350,7 @@ class Table:
             self.gui.resize_to_contents()
     
     def get_article_code(self):
-        return ''.join([block.code for block in self.blocks])
+        return ''.join([block.code for block in self.logic.blocks])
     
     def reset(self, blocks):
         f = '[MClient] table.controller.Table.reset'
@@ -383,7 +385,7 @@ class Table:
         timer.start()
         self.gui.delegate.long = []
         cellno = -1
-        for block in self.blocks:
+        for block in self.logic.blocks:
             if not block.text:
                 continue
             if block.cellno == cellno:
