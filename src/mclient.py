@@ -17,7 +17,7 @@ from table.controller import TABLE
 import logic as lg
 from logic import REQUEST
 import gui as gi
-from view import Omit, View, Prioritize, Wrap
+from view import View, Wrap, Phrases, Phsubj
 from prior_block.controller import BLOCK, PRIOR
 from settings.controller import SETTINGS, SAVE_SETTINGS
 from suggest.controller import SUGGEST
@@ -103,7 +103,7 @@ class UpdateUI:
         cells = 0
         subj = []
         cellnos = []
-        for block in self.blocks:
+        for block in blocks:
             if block.Block and not block.cellno in cellnos:
                 cells += 1
                 cellnos.append(block.cellno)
@@ -776,7 +776,7 @@ class App:
     
     def _get_blocked_subj(self, blocks):
         subj = []
-        for block in self.blocks:
+        for block in blocks:
             if not block.Block:
                 continue
             if block.type in ('subj', 'phsubj') and block.text \
@@ -800,7 +800,7 @@ class App:
             artid = ARTICLES.id
             
         if artid == -1:
-            blocks = SOURCES().request(SEARCH, url)
+            blocks = SOURCES.request(search, url)
             ielems = Elems(blocks)
             blocks = ielems.run()
             # Reset subjects before running Omit (getting blocked subjects)
