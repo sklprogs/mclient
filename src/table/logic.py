@@ -43,6 +43,11 @@ class Table:
             return
         return True
     
+    def get_first_term(self):
+        for block in self.blocks:
+            if block.type == 'term' and block.text.strip():
+                return block
+    
     def get_start(self):
         for block in self.blocks:
             if block.text.strip():
