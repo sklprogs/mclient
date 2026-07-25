@@ -5,6 +5,7 @@ from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.time import Timer
 from skl_shared.graphics.clipboard.controller import CLIPBOARD
+from skl_shared.graphics.list import List
 
 from popup.controller import POPUP
 from config import CONFIG
@@ -31,27 +32,29 @@ class Table:
         self.old_rowno = -1
         self.old_colno = -1
     
-    def get_cell_x(self):
-        f = '[MClient] table.controller.Table.get_cell_x'
-        cell = self.get_cell()
+    def _check_cell(self):
+        f = '[MClient] table.controller.Table._check_cell'
         if not cell:
             rep.empty(f)
             return
         if len(cell) != 2:
             mes = f'{len(cell)} == 2'
             rep.condition(f, mes)
+            return
+    
+    def get_cell_x(self):
+        f = '[MClient] table.controller.Table.get_cell_x'
+        cell = self.get_cell()
+        if not self._check_cell():
+            rep.cancel(f)
             return
         return self.gui.get_cell_x(cell[1])
     
     def get_cell_y(self):
         f = '[MClient] table.controller.Table.get_cell_y'
         cell = self.get_cell()
-        if not cell:
-            rep.empty(f)
-            return
-        if len(cell) != 2:
-            mes = f'{len(cell)} == 2'
-            rep.condition(f, mes)
+        if not self._check_cell():
+            rep.cancel(f)
             return
         return self.gui.get_cell_y(cell[0])
     
@@ -85,11 +88,6 @@ class Table:
     
     def go_prev_section(self, colno):
         f = '[MClient] table.controller.Table.go_prev_section'
-        if colno < 0 or colno >= self.logic.colnum:
-            mes = f'0 <= {colno} < {self.logic.colnum}'
-            rep.condition(f, mes)
-            return
-        block = self.get_selected_block()
         block = self.logic.get_prev_section(block, colno)
         self.select(block)
     
@@ -187,7 +185,7 @@ class Table:
                 self.show_popup()
             else:
                 POPUP.close()
-        #ARTICLES.set_bookmark(rowno, colno)
+        ARTICLES.set_bookmark(rowno, colno)
     
     def go_line_start(self):
         block = self.get_selected_block()
@@ -198,8 +196,6 @@ class Table:
         block = self.get_selected_block(True)
         block = self.logic.get_line_end(block)
         self.select(block)
-    
-    
     
     def get_row_height(self, rowno):
         return self.gui.get_row_height(rowno)
@@ -239,7 +235,7 @@ class Table:
         if rowno is None:
             rep.empty(f)
             return
-        self.select(rowno, colno)
+        self.select(self.get_block(rowno, colno))
     
     def go_page_down(self):
         f = '[MClient] table.controller.Table.go_page_down'
@@ -262,7 +258,7 @@ class Table:
         if rowno is None:
             rep.empty(f)
             return
-        self.select(rowno, colno)
+        self.select(self.get_block(rowno, colno, True))
     
     def scroll_top(self):
         f = '[MClient] table.controller.Table.scroll_top'
@@ -277,29 +273,28 @@ class Table:
         index_ = self.model.index(self.coords[rowno], colno)
         self.gui.scroll2index(index_)
     
+    def _get_cell_text(self, block):
+        cellno = block.cellno
+        fragms = [block.text for block in self.blocks if block.cellno == cellno]
+        return List(fragms).space_items()
+    
     def get_cell_text(self):
         f = '[MClient] table.controller.Table.get_cell_text'
-        if not self.logic.plain:
+        block = self.get_selected_block()
+        if not block:
             rep.empty(f)
             return ''
-        rowno, colno = self.get_cell()
-        try:
-            return self.logic.plain[rowno][colno]
-        except IndexError:
-            rep.wrong_input()
-        return ''
+        return self._get_cell_text(block)
     
     def get_cell_code(self):
         f = '[MClient] table.controller.Table.get_cell_code'
-        if not self.logic.code:
+        block = self.get_selected_block()
+        if not block:
             rep.empty(f)
             return ''
-        rowno, colno = self.get_cell()
-        try:
-            return self.logic.code[rowno][colno]
-        except IndexError:
-            rep.wrong_input()
-        return ''
+        cellno = block.cellno
+        code = [block.code for block in self.blocks if block.cellno == cellno]
+        return ''.join(code)
     
     def copy_cell(self):
         f = '[MClient] table.controller.Table.copy_cell'
@@ -326,16 +321,25 @@ class Table:
                 width = COL_WIDTH.get_width(no)
             self.gui.set_col_width(no, width)
     
+    def go_first_term(self):
+        f = '[MClient] table.controller.Table.go_first_term'
+        block = self.logic.get_first_term()
+        if not block:
+            rep.empty(f)
+            return
+        self.select(block)
+    
     def go_bookmark(self):
+        f = '[MClient] table.controller.Table.go_bookmark'
         bookmark = ARTICLES.get_bookmark()
         if not bookmark:
             self.go_first_term()
             return
-        rowno, colno = bookmark[0], bookmark[1]
-        if rowno > -1 and colno > -1:
-            self.select(rowno, colno)
-        else:
-            self.go_first_term()
+        block = self.get_block(bookmark[0], bookmark[1])
+        if not block:
+            rep.empty(f)
+            return
+        self.select(block)
     
     def select_row_height(self):
         if CONFIG.new['rows']['height']:
@@ -343,16 +347,19 @@ class Table:
         else:
             self.gui.resize_to_contents()
     
-    def reset(self, plain, code):
+    def get_article_code(self):
+        return ''.join([block.code for block in self.blocks])
+    
+    def reset(self, blocks):
         f = '[MClient] table.controller.Table.reset'
-        if not plain or not code:
+        if not blocks:
             rep.empty(f)
             # Keep old article functioning if nothing was found
             return
         # Reset values only if the article is not empty
         self.set_values()
-        self.logic.reset(plain, code)
-        self.model = TableModel(self.logic.code)
+        self.logic.reset(blocks)
+        self.model = TableModel(self.get_article_code())
         self.fill()
         self.set_col_width()
         self.select_row_height()
@@ -364,7 +371,6 @@ class Table:
         self.set_coords()
     
     def set_long(self):
-        # Takes ~0.56s for 'set' on Intel Atom
         f = '[MClient] table.controller.Table.set_long'
         if not CONFIG.new['rows']['height']:
             rep.lazy(f)
@@ -376,18 +382,21 @@ class Table:
         timer = Timer(f)
         timer.start()
         self.gui.delegate.long = []
-        for rowno in range(self.logic.rownum):
-            for colno in range(self.logic.colnum):
-                if not self.logic.plain[rowno][colno]:
-                    continue
-                ilimits.set_text(self.logic.plain[rowno][colno])
-                space = ilimits.get_space()
-                index_ = self.model.index(rowno, colno)
-                hint_space = CONFIG.new['rows']['height'] * self.gui.get_col_width(colno)
-                if space > hint_space:
-                    self.gui.delegate.long.append(index_)
+        cellno = -1
+        for block in self.blocks:
+            if not block.text:
+                continue
+            if block.cellno == cellno:
+                continue
+            cellno = block.cellno
+            ilimits.set_text(self._get_cell_text(block))
+            space = ilimits.get_space()
+            index_ = self.model.index(block.rowno, block.colno)
+            hint_space = CONFIG.new['rows']['height'] * self.gui.get_col_width(block.colno)
+            if space > hint_space:
+                self.gui.delegate.long.append(index_)
         timer.end()
-        mes = _('Number of cells: {}').format(self.logic.rownum*self.logic.colnum)
+        mes = _('Number of cells: {}').format(self.logic.rownum * self.logic.colnum)
         Message(f, mes).show_debug()
         mes = _('Number of long cells: {}').format(len(self.gui.delegate.long))
         Message(f, mes).show_debug()
