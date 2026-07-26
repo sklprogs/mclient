@@ -313,15 +313,20 @@ class Table:
         for no in range(self.logic.rownum):
             self.gui.set_row_height(no, height)
     
+    def _is_col_empty(self, colno):
+        for block in self.logic.blocks:
+            if block.colno == colno and block.text.strip():
+                return False
+        return True
+    
     def set_col_width(self):
         # For some reason, this works only after filling cells
-        for no in range(self.logic.colnum):
-            if no in self.logic.empty_cols:
-                #TODO: Check this for articles prepared for printing
+        for colno in range(self.logic.colnum):
+            if self._is_col_empty(colno):
                 width = 0
             else:
-                width = COL_WIDTH.get_width(no)
-            self.gui.set_col_width(no, width)
+                width = COL_WIDTH.get_width(colno)
+            self.gui.set_col_width(colno, width)
     
     def go_first_term(self):
         f = '[MClient] table.controller.Table.go_first_term'
