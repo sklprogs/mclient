@@ -21,7 +21,7 @@ from config import CONFIG
 # Search pattern must be lowercased
 #SEARCH = 'analyzer'
 #SEARCH = 'hello bye'
-SEARCH = 'byte'
+#SEARCH = 'byte'
 #SEARCH = 'account'
 #SEARCH = 'constant-voltage welding source'
 #SEARCH = 'wine structure'
@@ -31,7 +31,7 @@ SEARCH = 'byte'
 #SEARCH = 'absolute'
 #SEARCH = 'bottling'
 #SEARCH = 'book'
-#SEARCH = 'hello'
+SEARCH = 'hello'
 #SEARCH = 'good'
 #SEARCH = 'orderly'
 URL = f'https://www.multitran.com/m.exe?s={w3lib.url.safe_url_string(SEARCH)}&l1=2&l2=1'
@@ -734,12 +734,13 @@ class Source:
         return ielems.debug()
     
     def run_mdic(self):
+        f = '[MClient] tests.sources.Source.run_mdic'
         from cells import Cells, debug
         from sources.mdic.run import Source as mSource
         blocks = mSource().request(SEARCH)
         icells = Cells(blocks)
         blocks = icells.run()
-        return debug(blocks)
+        return debug(f, blocks)
     
     def run_dsl(self):
         from cells import Elems as dElems
@@ -750,12 +751,13 @@ class Source:
         return ielems.debug()
     
     def run_multitrancom(self):
+        f = '[MClient] tests.sources.Source.run_multitrancom'
         from cells import Elems as cElems, Cells, debug
         from sources.multitrancom.run import Source as mSource
         blocks = mSource().request(url=URL, search=SEARCH)
         blocks = cElems(blocks).run()
         blocks = Cells(blocks).run()
-        return debug(blocks)
+        return debug(f, blocks)
 
 
 
