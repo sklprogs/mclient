@@ -32,7 +32,7 @@ class Table:
         self.old_rowno = -1
         self.old_colno = -1
     
-    def _check_cell(self):
+    def _check_cell(self, cell):
         f = '[MClient] table.controller.Table._check_cell'
         if not cell:
             rep.empty(f)
@@ -88,6 +88,11 @@ class Table:
     
     def go_prev_section(self, colno):
         f = '[MClient] table.controller.Table.go_prev_section'
+        if colno < 0 or colno >= self.logic.colnum:
+            mes = f'0 <= {colno} < {self.logic.colnum}'
+            rep.condition(f, mes)
+            return
+        block = self.get_selected_block()
         block = self.logic.get_prev_section(block, colno)
         self.select(block)
     
@@ -141,31 +146,35 @@ class Table:
             rep.third_party(f, e)
     
     def go_right(self):
-        block = self.logic.get_right(self.get_block(True))
+        block = self.logic.get_right(self.get_selected_block(True))
         self.select(block)
     
     def go_left(self):
-        block = self.logic.get_left(self.get_block())
+        block = self.logic.get_left(self.get_selected_block())
         self.select(block)
     
     def go_up(self):
-        block = self.logic.get_up(self.get_block())
+        block = self.logic.get_up(self.get_selected_block())
         self.select(block)
     
     def go_down(self):
         ''' #NOTE: This should run only after an event since Qt returns dummy
             geometry values right after startup.
         '''
-        block = self.logic.get_down(self.get_block(True))
+        block = self.logic.get_down(self.get_selected_block(True))
         self.select(block)
     
-    def select(self, block, Mouse=False):
-        f = '[MClient] table.controller.Table.select'
-        if not block:
-            rep.empty(f)
+    def select_with_mouse(self, rowno, colno):
+        f = '[MClient] table.controller.Table.select_with_mouse'
+        if self.search.Shown:
             return
-        rowno, colno = block.rowno, block.colno
-        if Mouse and self.search.Shown:
+        if rowno < 0 or rowno >= self.logic.rownum:
+            mes = f'0 <= {rowno} < {self.logic.rownum}'
+            rep.condition(f, mes, False)
+            return
+        if colno < 0 or colno >= self.logic.colnum:
+            mes = f'0 <= {colno} < {self.logic.colnum}'
+            rep.condition(f, mes, False)
             return
         if rowno == self.old_rowno and colno == self.old_colno:
             return
@@ -173,18 +182,31 @@ class Table:
         self.old_colno = colno
         self.model.update(self.gui.get_index())
         new_index = self.model.index(rowno, colno)
-        if Mouse:
-            self.gui.set_index(new_index)
-        else:
-            self.gui.set_cur_index(new_index)
+        self.gui.set_index(new_index)
         self.model.update(new_index)
-        if not Mouse:
-            self.scroll_top()
-        if Mouse:
-            if new_index in self.gui.delegate.long:
-                self.show_popup()
-            else:
-                POPUP.close()
+        if new_index in self.gui.delegate.long:
+            self.show_popup()
+        else:
+            POPUP.close()
+        ARTICLES.set_bookmark(rowno, colno)
+    
+    def select(self, block):
+        f = '[MClient] table.controller.Table.select'
+        if not self.logic.check_block(block):
+            rep.cancel(f)
+            return
+        rowno, colno = block.rowno, block.colno
+        if self.search.Shown:
+            return
+        if rowno == self.old_rowno and colno == self.old_colno:
+            return
+        self.old_rowno = rowno
+        self.old_colno = colno
+        self.model.update(self.gui.get_index())
+        new_index = self.model.index(rowno, colno)
+        self.gui.set_cur_index(new_index)
+        self.model.update(new_index)
+        self.scroll_top()
         ARTICLES.set_bookmark(rowno, colno)
     
     def go_line_start(self):
@@ -223,7 +245,11 @@ class Table:
             rep.empty(f)
             return
         rowno, colno = cell[0], cell[1]
-        cur_page = self.coords2[rowno]
+        try:
+            cur_page = self.coords2[rowno]
+        except KeyError:
+            rep.wrong_input(f, Graphical=False)
+            return
         if cur_page < 0:
             mes = f'{cur_page} >= 0'
             rep.condition(f, mes)
@@ -245,8 +271,12 @@ class Table:
             rep.empty(f)
             return
         rowno, colno = self.get_cell()
-        cur_page = self.coords2[rowno]
-        max_page = self.coords2[max(self.coords2.keys())]
+        try:
+            cur_page = self.coords2[rowno]
+            max_page = self.coords2[max(self.coords2.keys())]
+        except KeyError:
+            rep.wrong_input(f, Graphical=False)
+            return
         if cur_page > max_page:
             mes = f'{max_page} >= {cur_page}'
             rep.condition(f, mes)
@@ -442,7 +472,7 @@ class Table:
         self.set_bindings()
     
     def set_bindings(self):
-        self.gui.sig_select.connect(self.select)
+        self.gui.sig_select.connect(self.select_with_mouse)
         self.search.gui.ent_src.bind(('Return',), self.close_search_next)
         self.search.gui.btn_srp.set_action(self.search_prev)
         self.search.gui.btn_srn.set_action(self.search_next)
