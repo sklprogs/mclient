@@ -42,21 +42,11 @@ class Table:
             rep.condition(f, mes)
             return
     
-    def get_cell_x(self):
-        f = '[MClient] table.controller.Table.get_cell_x'
-        cell = self.get_cell()
-        if not self._check_cell():
-            rep.cancel(f)
-            return
-        return self.gui.get_cell_x(cell[1])
+    def get_cell_x(self, colno):
+        return self.gui.get_cell_x(colno)
     
-    def get_cell_y(self):
-        f = '[MClient] table.controller.Table.get_cell_y'
-        cell = self.get_cell()
-        if not self._check_cell():
-            rep.cancel(f)
-            return
-        return self.gui.get_cell_y(cell[0])
+    def get_cell_y(self, rowno):
+        return self.gui.get_cell_y(rowno)
     
     def go_start(self):
         block = self.logic.get_start()
@@ -385,7 +375,29 @@ class Table:
             self.gui.resize_to_contents()
     
     def get_article_code(self):
-        return ''.join([block.code for block in self.logic.blocks])
+        f = '[MClient] table.controller.Table.get_article_code'
+        code = []
+        row = []
+        cell = []
+        rowno = 0
+        colno = 0
+        for block in self.logic.blocks:
+            if block.rowno != rowno:
+                rowno = block.rowno
+                if row:
+                    code.append(row)
+                row = []
+            if block.colno != colno:
+                cellno = block.cellno
+                if cell:
+                    row.append(''.join(cell))
+                cell = []
+            cell.append(block.code)
+        if cell:
+            row.append(''.join(cell))
+        if row:
+            code.append(row)
+        return code
     
     def reset(self, blocks):
         f = '[MClient] table.controller.Table.reset'
