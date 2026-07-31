@@ -87,8 +87,9 @@ class Table:
             return
         rownos = [block.rowno for block in self.blocks]
         colnos = [block.colno for block in self.blocks]
-        self.rownum = max(rownos)
-        self.colnum = max(colnos)
+        # Row and column numbers start from 0, so we need +1 to get len
+        self.rownum = max(rownos) + 1
+        self.colnum = max(colnos) + 1
         mes = _('Table size: {}×{}').format(self.rownum, self.colnum)
         Message(f, mes).show_debug()
     
