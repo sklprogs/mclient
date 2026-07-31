@@ -362,7 +362,16 @@ class Table:
         if not bookmark:
             self.go_first_term()
             return
-        block = self.get_block(bookmark[0], bookmark[1])
+        if len(bookmark) != 2:
+            mes = f'{len(bookmark)} == 2'
+            rep.condition(f, mes)
+            return
+        rowno, colno = bookmark[0], bookmark[1]
+        # There are no bookmarks or they were deleted
+        if rowno == -1 or colno == -1:
+            self.go_first_term()
+            return
+        block = self.get_block(rowno, colno)
         if not block:
             rep.empty(f)
             return
