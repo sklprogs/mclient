@@ -445,6 +445,41 @@ class Wrap:
                 block.text = ''
         rep.matches(f, count)
     
+    def clear_duplicates(self):
+        f = '[MClient] view.Wrap.clear_duplicates'
+        source = dic = subj = wform = speech = transc = ''
+        for block in self.blocks:
+            if block.type == 'source':
+                if block.source == source:
+                    block.text = ''
+                else:
+                    source = block.source
+            if block.type == 'dic':
+                if block.dic == dic:
+                    block.text = ''
+                else:
+                    dic = block.dic
+            if block.type == 'subj':
+                if block.subj == subj:
+                    block.text = ''
+                else:
+                    subj = block.subj
+            if block.type == 'wform':
+                if block.wform == wform:
+                    block.text = ''
+                else:
+                    wform = block.wform
+            if block.type == 'speech':
+                if block.speech == speech:
+                    block.text = ''
+                else:
+                    speech = block.speech
+            if block.type == 'transc':
+                if block.transc == transc:
+                    block.text = ''
+                else:
+                    transc = block.transc
+    
     def format(self):
         self.blocks = [fmBlock(block).run() for block in self.blocks]
     
@@ -458,5 +493,6 @@ class Wrap:
     def run(self):
         self.wrap()
         self.clear_single_source()
+        self.clear_duplicates()
         self.format()
         return self.blocks
