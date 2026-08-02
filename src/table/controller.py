@@ -5,7 +5,7 @@ from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
 from skl_shared.time import Timer
 from skl_shared.graphics.clipboard.controller import CLIPBOARD
-from skl_shared.list import List
+from skl_shared.list import List, get_text_table
 
 from popup.controller import POPUP
 from config import CONFIG
@@ -383,29 +383,20 @@ class Table:
         else:
             self.gui.resize_to_contents()
     
-    def get_article_code(self):
-        f = '[MClient] table.controller.Table.get_article_code'
-        code = []
-        row = []
-        cell = []
-        rowno = 0
-        colno = 0
+    def get_code_table(self):
+        f = '[MClient] table.controller.Table.get_code_table'
+        code = get_text_table(self.logic.rownum, self.logic.colnum)
+        if not code:
+            rep.empty(f)
+            return []
         for block in self.logic.blocks:
-            if block.rowno != rowno:
-                rowno = block.rowno
-                if row:
-                    code.append(row)
-                row = []
-            if block.colno != colno:
-                cellno = block.cellno
-                if cell:
-                    row.append(''.join(cell))
-                cell = []
-            cell.append(block.code)
-        if cell:
-            row.append(''.join(cell))
-        if row:
-            code.append(row)
+            try:
+                code[block.rowno][block.colno] = block.code
+            except IndexError:
+                mes = _('List out of bounds at row #{}, column #{}!')
+                mes = mes.format(rowno, colno)
+                Message(f, mes).show_warning()
+                return []
         return code
     
     def reset(self, blocks):
@@ -417,7 +408,7 @@ class Table:
         # Reset values only if the article is not empty
         self.set_values()
         self.logic.reset(blocks)
-        self.model = TableModel(self.get_article_code())
+        self.model = TableModel(self.get_code_table())
         self.fill()
         self.set_col_width()
         self.select_row_height()
