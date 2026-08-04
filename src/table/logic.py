@@ -69,14 +69,25 @@ class Table:
                 return block
         return self.get_end()
     
+    def _get_right(self, block):
+        rowno = block.rowno
+        colno = block.colno
+        for block in self.blocks:
+            if block.rowno == rowno and block.colno > colno \
+            and block.text.strip():
+                return block
+    
     def get_right(self, block):
         f = '[MClient] table.logic.Table.get_right'
         if not self.check_block(block):
             rep.cancel(f)
             return
-        colno = block.colno
+        rowno = block.rowno
+        block = self._get_right(block)
+        if block:
+            return block
         for block in self.blocks:
-            if block.colno > colno and block.text.strip():
+            if block.rowno > rowno and block.text.strip():
                 return block
         return self.get_start()
     
