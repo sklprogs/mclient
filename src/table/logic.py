@@ -131,6 +131,7 @@ class Table:
         if not self.check_block(block):
             rep.cancel(f)
             return
+        colno = block.colno
         block = self._get_down(block)
         if block:
             return block
