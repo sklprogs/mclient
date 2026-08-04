@@ -58,14 +58,25 @@ class Table:
             if block.text.strip():
                 return block
     
+    def _get_left(self, block):
+        rowno = block.rowno
+        colno = block.colno
+        for block in self.blocks[::-1]:
+            if block.rowno == rowno and block.colno < colno \
+            and block.text.strip():
+                return block
+    
     def get_left(self, block):
         f = '[MClient] table.logic.Table.get_left'
         if not self.check_block(block):
             rep.cancel(f)
             return
-        colno = block.colno
+        rowno = block.rowno
+        block = self._get_left(block)
+        if block:
+            return block
         for block in self.blocks[::-1]:
-            if block.colno < colno and block.text.strip():
+            if block.rowno < rowno and block.text.strip():
                 return block
         return self.get_end()
     
