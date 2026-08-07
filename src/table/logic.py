@@ -27,12 +27,39 @@ class Table:
         self.blocks = blocks
         self.set_size()
     
-    def check_block(self, block):
-        f = '[MClient] table.logic.Table.check_block'
-        if not block:
-            rep.empty(f)
+    def _get_page_down(self, colno, row_min, row_max):
+        for block in self.blocks:
+            if block.colno == colno and block.rowno >= row_min \
+            and block.rowno <= row_max and block.text.strip():
+                return block
+    
+    def get_page_down(self, colno, row_min, row_max):
+        f = '[MClient] table.logic.Table.get_page_down'
+        if row_min == -1 or row_max == -1:
+            rep.cancel(f)
             return
-        rowno, colno = block.rowno, block.colno
+        if colno < 0 or colno >= self.colnum:
+            mes = f'0 <= {colno} < {self.colnum}'
+            rep.condition(f, mes)
+            return
+        if row_min < 0 or row_min >= self.rownum:
+            mes = f'0 <= {row_min} < {self.rownum}'
+            rep.condition(f, mes)
+            return
+        if row_max < 0 or row_max >= self.rownum:
+            mes = f'0 <= {row_max} < {self.rownum}'
+            rep.condition(f, mes)
+            return
+        block = self._get_page_down(colno, row_min, row_max)
+        if block:
+            return block
+        for block in self.blocks:
+            if block.rowno >= row_min and block.colno >= colno \
+            and block.text.strip():
+                return block
+    
+    def check_nos(self, rowno, colno):
+        f = '[MClient] table.logic.Table.check_nos'
         if rowno < 0 or rowno >= self.rownum:
             mes = f'0 <= {rowno} < {self.rownum}'
             rep.condition(f, mes)
@@ -42,6 +69,13 @@ class Table:
             rep.condition(f, mes)
             return
         return True
+    
+    def check_block(self, block):
+        f = '[MClient] table.logic.Table.check_block'
+        if not block:
+            rep.empty(f)
+            return
+        return self.check_nos(block.rowno, block.colno)
     
     def get_first_term(self):
         for block in self.blocks:

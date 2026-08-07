@@ -98,13 +98,8 @@ class Table:
     
     def get_block(self, rowno, colno, Forward=False):
         f = '[MClient] table.controller.Table.get_block'
-        if rowno < 0 or rowno >= self.logic.rownum:
-            mes = f'0 <= {rowno} < {self.logic.rownum}'
-            rep.condition(f, mes)
-            return
-        if colno < 0 or colno >= self.logic.colnum:
-            mes = f'0 <= {colno} < {self.logic.colnum}'
-            rep.condition(f, mes)
+        if not self.logic.check_nos(rowno, colno):
+            rep.cancel(f)
             return
         if Forward:
             for block in self.logic.blocks:
@@ -218,10 +213,24 @@ class Table:
     def show_popup(self):
         self.gui.show_popup()
     
-    def _get_page_row(self, page):
+    def _get_page_limits(self, page):
+        f = '[MClient] table.controller.Table._get_page_limits'
+        min_ = -1
+        max_ = -1
+        rownos = []
         for rowno in self.coords2:
             if self.coords2[rowno] == page:
-                return rowno
+                rownos.append(rowno)
+        if not rownos:
+            mes = _('Page: {}. Minimal row no: {}. Maximal row no: {}')
+            mes = mes.format(page, min_, max_)
+            Message(f, mes).show_debug()
+            return(min_, max_)
+        min_, max_ = min(rownos), max(rownos)
+        mes = _('Page: {}. Minimal row no: {}. Maximal row no: {}')
+        mes = mes.format(page, min_, max_)
+        Message(f, mes).show_debug()
+        return(min_, max_)
     
     def go_page_up(self):
         f = '[MClient] table.controller.Table.go_page_up'
@@ -247,10 +256,8 @@ class Table:
         if cur_page == 0:
             rep.lazy(f)
             return
-        rowno = self._get_page_row(cur_page-1)
-        if rowno is None:
-            rep.empty(f)
-            return
+        row_min, row_max = self._get_page_limits(cur_page)
+        block = self.logic.get_page_down(rowno, colno, row_min, row_max)
         self.select(self.get_block(rowno, colno))
     
     def go_page_down(self):
@@ -260,7 +267,11 @@ class Table:
         if not self.coords2:
             rep.empty(f)
             return
-        rowno, colno = self.get_cell()
+        cell = self.get_cell()
+        if not cell:
+            rep.empty(f)
+            return
+        rowno, colno = cell[0], cell[1]
         try:
             cur_page = self.coords2[rowno]
             max_page = self.coords2[max(self.coords2.keys())]
@@ -274,11 +285,9 @@ class Table:
         if cur_page == max_page:
             rep.lazy(f)
             return
-        rowno = self._get_page_row(cur_page+1)
-        if rowno is None:
-            rep.empty(f)
-            return
-        self.select(self.get_block(rowno, colno, True))
+        row_min, row_max = self._get_page_limits(cur_page + 1)
+        block = self.logic.get_page_down(colno, row_min, row_max)
+        self.select(block)
     
     def scroll_top(self):
         f = '[MClient] table.controller.Table.scroll_top'
