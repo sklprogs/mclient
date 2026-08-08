@@ -232,36 +232,8 @@ class Table:
         Message(f, mes).show_debug()
         return(min_, max_)
     
-    def go_page_up(self):
-        f = '[MClient] table.controller.Table.go_page_up'
-        if not self.coords2:
-            self.set_coords()
-        if not self.coords2:
-            rep.empty(f)
-            return
-        cell = self.get_cell()
-        if not cell:
-            rep.empty(f)
-            return
-        rowno, colno = cell[0], cell[1]
-        try:
-            cur_page = self.coords2[rowno]
-        except KeyError:
-            rep.wrong_input(f, Graphical=False)
-            return
-        if cur_page < 0:
-            mes = f'{cur_page} >= 0'
-            rep.condition(f, mes)
-            return
-        if cur_page == 0:
-            rep.lazy(f)
-            return
-        row_min, row_max = self._get_page_limits(cur_page)
-        block = self.logic.get_page_down(rowno, colno, row_min, row_max)
-        self.select(self.get_block(rowno, colno))
-    
-    def go_page_down(self):
-        f = '[MClient] table.controller.Table.go_page_down'
+    def go_page(self, Forward=False):
+        f = '[MClient] table.controller.Table.go_page'
         if not self.coords2:
             self.set_coords()
         if not self.coords2:
@@ -282,11 +254,19 @@ class Table:
             mes = f'{max_page} >= {cur_page}'
             rep.condition(f, mes)
             return
-        if cur_page == max_page:
+        if Forward:
+            if cur_page == max_page:
+                rep.lazy(f)
+                return
+        elif cur_page == 0:
             rep.lazy(f)
             return
-        row_min, row_max = self._get_page_limits(cur_page + 1)
-        block = self.logic.get_page_down(colno, row_min, row_max)
+        if Forward:
+            delta = 1
+        else:
+            delta = -1
+        row_min, row_max = self._get_page_limits(cur_page + delta)
+        block = self.logic.get_page_block(colno, row_min, row_max)
         self.select(block)
     
     def scroll_top(self):

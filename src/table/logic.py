@@ -27,14 +27,14 @@ class Table:
         self.blocks = blocks
         self.set_size()
     
-    def _get_page_down(self, colno, row_min, row_max):
+    def _get_page_block(self, colno, row_min, row_max):
         for block in self.blocks:
             if block.colno == colno and block.rowno >= row_min \
             and block.rowno <= row_max and block.text.strip():
                 return block
     
-    def get_page_down(self, colno, row_min, row_max):
-        f = '[MClient] table.logic.Table.get_page_down'
+    def get_page_block(self, colno, row_min, row_max):
+        f = '[MClient] table.logic.Table.get_page_block'
         if row_min == -1 or row_max == -1:
             rep.cancel(f)
             return
@@ -50,7 +50,7 @@ class Table:
             mes = f'0 <= {row_max} < {self.rownum}'
             rep.condition(f, mes)
             return
-        block = self._get_page_down(colno, row_min, row_max)
+        block = self._get_page_block(colno, row_min, row_max)
         if block:
             return block
         for block in self.blocks:
