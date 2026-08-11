@@ -324,7 +324,17 @@ class Cells:
                 block.Ignore = True
         rep.matches(f, count)
     
+    def reset(self):
+        f = '[MClient] cells.Cells.reset'
+        old_len = len(self.blocks)
+        self.blocks = [block for block in self.blocks if not block.Delete]
+        rep.deleted(f, old_len - len(self.blocks))
+        for block in self.blocks:
+            block.reset()
+        self.blocks.sort(key=lambda b: b.no)
+    
     def run(self):
+        self.reset()
         self.ignore_roman_numbers()
         self.ignore_phcount()
         # Set instance in order to further get blocked subjects and cells
