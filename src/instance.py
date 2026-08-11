@@ -33,26 +33,25 @@ class Block:
         self.type = 'comment'
         self.dic = ''
         self.source = ''
+        # Preserve original order after sorting
+        self.no = -1
+        self.cellno = -1
+        self.Delete = False
+        self.speech = ''
+        self.speechf = ''
+        self.transc = ''
+        self.wform = ''
         self.reset()
     
     def reset(self):
         self.Ignore = False
         self.Block = False
-        self.Delete = False
-        # Preserve original order after sorting
-        self.no = -1
-        self.cellno = -1
         self.rowno = -1
         self.colno = -1
         self.subjpr = -1
-        self.speech = ''
-        self.speechf = ''
         self.speechpr = -1
         self.sourcepr = -1
         self.code = ''
-        self.text = ''
-        self.transc = ''
-        self.wform = ''
         self.col1 = ''
         self.col2 = ''
         self.col3 = ''
