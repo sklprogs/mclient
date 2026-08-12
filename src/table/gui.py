@@ -270,3 +270,10 @@ class Table(QTableView):
     
     def resize_to_contents(self):
         self.resizeRowsToContents()
+
+
+def does_fit_cell(code, max_width, max_height):
+    doc = QTextDocument()
+    doc.setHtml(code)
+    doc.setTextWidth(max_width)
+    return doc.documentLayout().documentSize().height() <= max_height
