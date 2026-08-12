@@ -21,6 +21,7 @@ class Table:
             new fixed types are introduced.
         '''
         self.fixed_num = 6
+        self.blocks = []
     
     def reset(self, blocks):
         self.set_values()
