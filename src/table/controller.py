@@ -10,10 +10,9 @@ from skl_shared.list import List, get_text_table
 from popup.controller import POPUP
 from config import CONFIG
 from articles import ARTICLES
-from table.gui import Table as guiTable, TableModel
+from table.gui import Table as guiTable, TableModel, does_fit_cell
 from table.logic import Table as lgTable
 from search.controller import Search
-from font_limits.controller import FontLimits
 from columns import COL_WIDTH
 
 
@@ -380,7 +379,7 @@ class Table:
             return []
         for block in self.logic.blocks:
             try:
-                code[block.rowno][block.colno] = block.code
+                code[block.rowno][block.colno] += block.code
             except IndexError:
                 mes = _('List out of bounds at row #{}, column #{}!')
                 mes = mes.format(rowno, colno)
@@ -413,25 +412,22 @@ class Table:
         if not CONFIG.new['rows']['height']:
             rep.lazy(f)
             return
-        ilimits = FontLimits(family = CONFIG.new['terms']['font']['family']
-                            ,size = CONFIG.new['terms']['font']['size']
-                            ,Bold = False
-                            ,Italic = False)
         timer = Timer(f)
         timer.start()
         self.gui.delegate.long = []
-        cellno = -1
+        cells = {}
         for block in self.logic.blocks:
-            if not block.text:
-                continue
-            if block.cellno == cellno:
-                continue
-            cellno = block.cellno
-            ilimits.set_text(self._get_cell_text(block))
-            space = ilimits.get_space()
-            index_ = self.model.index(block.rowno, block.colno)
-            hint_space = CONFIG.new['rows']['height'] * self.gui.get_col_width(block.colno)
-            if space > hint_space:
+            if not block.cellno in cells:
+                cells[block.cellno] = {'code': '', 'rowno': block.rowno
+                                      ,'colno': block.colno}
+            cells[block.cellno]['code'] += block.code
+        max_height = CONFIG.new['rows']['height']
+        for cellno in cells:
+            max_width = self.gui.get_col_width(cells[cellno]['colno'])
+            Fits = does_fit_cell(cells[cellno]['code'], max_width, max_height)
+            if not Fits:
+                index_ = self.model.index(cells[cellno]['rowno']
+                                         ,cells[cellno]['colno'])
                 self.gui.delegate.long.append(index_)
         timer.end()
         mes = _('Number of cells: {}').format(self.logic.rownum * self.logic.colnum)
