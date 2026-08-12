@@ -1,3 +1,6 @@
+cell_text can be used here: search article, save article as txt,
+alphabetize terms (?), get cell duplicates
+
 all:
 - Catch RuntimeError:
 Traceback (most recent call last):
