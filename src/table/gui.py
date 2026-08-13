@@ -276,4 +276,9 @@ def does_fit_cell(code, max_width, max_height):
     doc = QTextDocument()
     doc.setHtml(code)
     doc.setTextWidth(max_width)
-    return doc.documentLayout().documentSize().height() <= max_height
+    '''
+    Cell calculated height can exceed max allowed row height, but the cell can
+    still remain visible because there is spacing between cells (the hard-coded
+    value is 19).
+    '''
+    return doc.documentLayout().documentSize().height() <= max_height + 19
