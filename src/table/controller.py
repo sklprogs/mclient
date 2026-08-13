@@ -10,7 +10,7 @@ from skl_shared.list import List, get_text_table
 from popup.controller import POPUP
 from config import CONFIG
 from articles import ARTICLES
-from table.gui import Table as guiTable, TableModel, does_fit_cell
+from table.gui import Table as guiTable, TableModel
 from table.logic import Table as lgTable
 from search.controller import Search
 from columns import COL_WIDTH
@@ -401,39 +401,10 @@ class Table:
         self.set_col_width()
         self.select_row_height()
         self.show_borders(False)
-        self.set_long()
         ''' Coordinates are recreated each time the app window is resized. Here
             we merely suppress a warning at 'self.go_start'.
         '''
         self.set_coords()
-    
-    def set_long(self):
-        f = '[MClient] table.controller.Table.set_long'
-        if not CONFIG.new['rows']['height']:
-            rep.lazy(f)
-            return
-        timer = Timer(f)
-        timer.start()
-        self.gui.delegate.long = []
-        cells = {}
-        for block in self.logic.blocks:
-            if not block.cellno in cells:
-                cells[block.cellno] = {'code': '', 'rowno': block.rowno
-                                      ,'colno': block.colno}
-            cells[block.cellno]['code'] += block.code
-        max_height = CONFIG.new['rows']['height']
-        for cellno in cells:
-            max_width = self.gui.get_col_width(cells[cellno]['colno'])
-            Fits = does_fit_cell(cells[cellno]['code'], max_width, max_height)
-            if not Fits:
-                index_ = self.model.index(cells[cellno]['rowno']
-                                         ,cells[cellno]['colno'])
-                self.gui.delegate.long.append(index_)
-        timer.end()
-        mes = _('Number of cells: {}').format(self.logic.rownum * self.logic.colnum)
-        Message(f, mes).show_debug()
-        mes = _('Number of long cells: {}').format(len(self.gui.delegate.long))
-        Message(f, mes).show_debug()
     
     def set_coords(self, event=None):
         ''' Calculating Y is very fast (~0.05s for 'set' on Intel Atom). We
