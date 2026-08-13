@@ -9,6 +9,7 @@ from PyQt6.QtGui import QColor, QPen
 
 from skl_shared.localize import _
 from skl_shared.message.controller import rep, Message
+from config import CONFIG
 
 WIDE_ROW_COLOR = '#CCCCCC'
 WIDE_ROW_LEN = 70
@@ -79,12 +80,11 @@ class TableDelegate(QStyledItemDelegate):
         
         doc = QTextDocument()
         doc.setHtml(options.text)
+        # Enable text wrapping
+        doc.setTextWidth(options.rect.width())
         options.text = ''
         
         self.set_line_spacing(doc)
-        
-        # Enable text wrapping
-        doc.setTextWidth(options.rect.width())
         
         style.drawControl(QStyle.ControlElement.CE_ItemViewItem, options, painter)
         ctx = QAbstractTextDocumentLayout.PaintContext()
@@ -103,7 +103,12 @@ class TableDelegate(QStyledItemDelegate):
             option.rect.setCoords(x1 + 1, y1 + 1, x2 - 1, y2 - 1)
             painter.drawRect(option.rect)
         
-        if self.long and index in self.long:
+        '''
+        Cell calculated height can exceed max allowed row height, but the cell
+        can still remain visible because there is spacing between cells (the
+        hard-coded value is 19).
+        '''
+        if doc.documentLayout().documentSize().height() > CONFIG.new['rows']['height'] + 19:
             color = QColor(WIDE_ROW_COLOR)
             pen = QPen(color, 2)
             pen.setStyle(Qt.PenStyle.DotLine)
@@ -270,15 +275,3 @@ class Table(QTableView):
     
     def resize_to_contents(self):
         self.resizeRowsToContents()
-
-
-def does_fit_cell(code, max_width, max_height):
-    doc = QTextDocument()
-    doc.setHtml(code)
-    doc.setTextWidth(max_width)
-    '''
-    Cell calculated height can exceed max allowed row height, but the cell can
-    still remain visible because there is spacing between cells (the hard-coded
-    value is 19).
-    '''
-    return doc.documentLayout().documentSize().height() <= max_height + 19
