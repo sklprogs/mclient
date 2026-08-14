@@ -14,13 +14,15 @@ from config import CONFIG
 from speech import SPEECH
 from subjects import SUBJECTS
 
+CELLS = {}
 
-def debug(f, blocks, maxrow=30, maxrows=0):
+
+def debug(f, blocks, maxrow=23, maxrows=0):
     if not f:
         f = '[MClient] cells.debug'
     headers = (_('ROW'), _('COL'), _('CELL'), _('BLOCK'), _('TYPE'), _('TEXT')
               ,'SOURCE', 'DIC', 'SUBJ', 'SUBJF', 'SUBJPR', 'SPEECH', 'SPEECHF'
-              ,'SPEECHPR')
+              ,'SPEECHPR', 'TERM')
     rownos = []
     colnos = []
     cellnos = []
@@ -35,6 +37,7 @@ def debug(f, blocks, maxrow=30, maxrows=0):
     speech = []
     speechf = []
     speechpr = []
+    terms = []
     for block in blocks:
         rownos.append(block.rowno)
         colnos.append(block.colno)
@@ -51,9 +54,12 @@ def debug(f, blocks, maxrow=30, maxrows=0):
         speech.append(block.speech)
         speechf.append(block.speechf)
         speechpr.append(block.speechpr)
+        term = block.term.replace('\n', ' ')
+        terms.append(f'"{term}"')
     mes = Table(headers = headers
                ,iterable = (rownos, colnos, cellnos, nos, types, texts, sources
-                           ,dics, subj, subjf, subjpr, speech, speechf, speechpr)
+                           ,dics, subj, subjf, subjpr, speech, speechf, speechpr
+                           ,terms)
                ,maxrow = maxrow, maxrows = maxrows).run()
     return f'{f}:\n{mes}'
 
@@ -145,6 +151,12 @@ class Elems:
         if group:
             groups.append(group)
         return groups
+
+    def fill_cells(self):
+        for block in self.blocks:
+            if not block.cellno in CELLS:
+                CELLS[block.cellno] = []
+            CELLS[block.cellno].append(block)
     
     def attach_comments(self):
         f = '[MClient] cells.Elems.attach_comments'
@@ -239,6 +251,18 @@ class Elems:
         self.blocks = [block for block in self.blocks if block.text.strip()]
         rep.matches(f, old_len - len(self.blocks))
     
+    def set_term(self):
+        for cellno in CELLS:
+            term = ''
+            for block in CELLS[cellno]:
+                if block.type == 'term':
+                    term = block.text.lower().strip()
+                    # Set only the 1st term of the cell to keep sorting correct
+                    break
+            if term:
+                for block in CELLS[cellno]:
+                    block.term = term
+    
     def run(self):
         self.set_no()
         self.set_phurl()
@@ -257,6 +281,9 @@ class Elems:
         # Do this only after self.set_subjf but before self.remove_fixed
         self.set_art_subj()
         self.remove_fixed()
+        # Do this only after cellnos are set and will not be reassigned
+        self.fill_cells()
+        self.set_term()
         return self.blocks
 
 
