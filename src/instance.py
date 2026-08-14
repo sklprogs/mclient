@@ -41,6 +41,7 @@ class Block:
         self.speechf = ''
         self.transc = ''
         self.wform = ''
+        self.term = ''
         self.reset()
     
     def reset(self):
