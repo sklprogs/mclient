@@ -735,9 +735,10 @@ class Source:
     
     def run_mdic(self):
         f = '[MClient] tests.sources.Source.run_mdic'
-        from cells import Cells, debug
+        from cells import Elems as cElems, Cells, debug
         from sources.mdic.run import Source as mSource
         blocks = mSource().request(SEARCH)
+        blocks = cElems(blocks).run()
         icells = Cells(blocks)
         blocks = icells.run()
         return debug(f, blocks)
