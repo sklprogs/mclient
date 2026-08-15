@@ -346,6 +346,7 @@ class Wrap:
         self.colno = 0
     
     def _set_text_by_type(self, block, column):
+        f = '[MClient] view.Wrap._set_text_by_type'
         match column.type:
             case 'source':
                 block.text = block.source
@@ -375,7 +376,7 @@ class Wrap:
         return block
     
     def _create_block(self, block, column, Empty=False):
-        f = '[MClient] view.View._create_block'
+        f = '[MClient] view.Wrap._create_block'
         if not block or not column:
             rep.empty(f)
             return block
@@ -422,6 +423,9 @@ class Wrap:
                 cellno = block.cellno
                 if self.colno + 1 == collimit:
                     new_blocks += self._create_row(block, True)
+                elif block.Ignore:
+                    # Do not add empty space - cells can be entirely ignored
+                    pass
                 else:
                     self.colno += 1
             new_blocks.append(block)
