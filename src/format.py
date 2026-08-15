@@ -122,7 +122,8 @@ class Block:
             self.block.code = sub.format(family, size, color, self.block.text)
     
     def run(self):
-        if not self.block.text:
+        # Do not add CODE for ignored blocks
+        if self.block.Ignore or not self.block.text:
             return self.block
         self.set_style()
         self.set_fixed()
