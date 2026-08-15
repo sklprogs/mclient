@@ -21,8 +21,8 @@ def debug(f, blocks, maxrow=23, maxrows=0):
     if not f:
         f = '[MClient] cells.debug'
     headers = (_('ROW'), _('COL'), _('CELL'), _('BLOCK'), _('TYPE'), _('TEXT')
-              ,'SOURCE', 'DIC', 'SUBJ', 'SUBJF', 'SUBJPR', 'SPEECH', 'SPEECHF'
-              ,'SPEECHPR', 'TERM')
+              ,'IGNORE' ,'SOURCE', 'DIC', 'SUBJ', 'SUBJF', 'SUBJPR', 'SPEECH'
+              ,'SPEECHF', 'SPEECHPR', 'TERM')
     rownos = []
     colnos = []
     cellnos = []
@@ -38,6 +38,7 @@ def debug(f, blocks, maxrow=23, maxrows=0):
     speechf = []
     speechpr = []
     terms = []
+    ignore = []
     for block in blocks:
         rownos.append(block.rowno)
         colnos.append(block.colno)
@@ -46,6 +47,7 @@ def debug(f, blocks, maxrow=23, maxrows=0):
         types.append(block.type)
         text = block.text.replace('\n', ' ')
         texts.append(f'"{text}"')
+        ignore.append(block.Ignore)
         sources.append(block.source)
         dics.append(block.dic)
         subj.append(block.subj)
@@ -57,9 +59,9 @@ def debug(f, blocks, maxrow=23, maxrows=0):
         term = block.term.replace('\n', ' ')
         terms.append(f'"{term}"')
     mes = Table(headers = headers
-               ,iterable = (rownos, colnos, cellnos, nos, types, texts, sources
-                           ,dics, subj, subjf, subjpr, speech, speechf, speechpr
-                           ,terms)
+               ,iterable = (rownos, colnos, cellnos, nos, types, texts, ignore
+                           ,sources, dics, subj, subjf, subjpr, speech, speechf
+                           ,speechpr, terms)
                ,maxrow = maxrow, maxrows = maxrows).run()
     return f'{f}:\n{mes}'
 
@@ -252,12 +254,16 @@ class Elems:
         rep.matches(f, old_len - len(self.blocks))
     
     def set_term(self):
+        # Alphabetize by terms, not by cell text since it can start with comment
         for cellno in CELLS:
             term = ''
             for block in CELLS[cellno]:
-                if block.type == 'term':
+                ''' TERM field could be set previously, for example, in
+                    multitrancom.elems to keep order of SeparateWords mode.
+                '''
+                if block.type == 'term' and not block.text:
                     term = block.text.lower().strip()
-                    # Set only the 1st term of the cell to keep sorting correct
+                    # Set by 1st term of cell as to keep cellnos in right order
                     break
             if term:
                 for block in CELLS[cellno]:
@@ -458,8 +464,7 @@ class Omit:
         for block in self.blocks:
             if block.type == 'user':
                 count += 1
-                #TODO: Block or Ignore?
-                block.Block = True
+                block.Ignore = True
         rep.matches(f, count)
     
     def run(self):
