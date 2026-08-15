@@ -31,7 +31,8 @@ class Table:
     def _get_page_block(self, colno, row_min, row_max):
         for block in self.blocks:
             if block.colno == colno and block.rowno >= row_min \
-            and block.rowno <= row_max and block.text.strip():
+            and block.rowno <= row_max and block.text.strip() \
+            and not block.Ignore:
                 return block
     
     def get_page_block(self, colno, row_min, row_max):
@@ -56,7 +57,7 @@ class Table:
             return block
         for block in self.blocks:
             if block.rowno >= row_min and block.colno >= colno \
-            and block.text.strip():
+            and block.text.strip() and not block.Ignore:
                 return block
     
     def check_nos(self, rowno, colno):
@@ -80,17 +81,17 @@ class Table:
     
     def get_first_term(self):
         for block in self.blocks:
-            if block.type == 'term' and block.text.strip():
+            if block.type == 'term' and block.text.strip() and not block.Ignore:
                 return block
     
     def get_start(self):
         for block in self.blocks:
-            if block.text.strip():
+            if block.text.strip() and not block.Ignore:
                 return block
     
     def get_end(self):
         for block in self.blocks[::-1]:
-            if block.text.strip():
+            if block.text.strip() and not block.Ignore:
                 return block
     
     def _get_left(self, block):
@@ -98,7 +99,7 @@ class Table:
         colno = block.colno
         for block in self.blocks[::-1]:
             if block.rowno == rowno and block.colno < colno \
-            and block.text.strip():
+            and block.text.strip() and not block.Ignore:
                 return block
     
     def get_left(self, block):
@@ -111,7 +112,7 @@ class Table:
         if block:
             return block
         for block in self.blocks[::-1]:
-            if block.rowno < rowno and block.text.strip():
+            if block.rowno < rowno and block.text.strip() and not block.Ignore:
                 return block
         return self.get_end()
     
@@ -120,7 +121,7 @@ class Table:
         colno = block.colno
         for block in self.blocks:
             if block.rowno == rowno and block.colno > colno \
-            and block.text.strip():
+            and block.text.strip() and not block.Ignore:
                 return block
     
     def get_right(self, block):
@@ -133,7 +134,7 @@ class Table:
         if block:
             return block
         for block in self.blocks:
-            if block.rowno > rowno and block.text.strip():
+            if block.rowno > rowno and block.text.strip() and not block.Ignore:
                 return block
         return self.get_start()
     
@@ -142,6 +143,9 @@ class Table:
         if not self.blocks:
             rep.empty(f)
             return
+        ''' No need to take into account IGNORE here. If blocks are ignored,
+            CODE is not assigned. Empty columns have zero width.
+        '''
         rownos = [block.rowno for block in self.blocks]
         colnos = [block.colno for block in self.blocks]
         # Row and column numbers start from 0, so we need +1 to get len
@@ -157,8 +161,8 @@ class Table:
                 return block
     
     def get_col(self, block, colno):
-        ''' We need to return even empty blocks here. If no empty fixed blocks
-            are allowed, rewrite this code.
+        ''' We need to return even empty blocks here. If empty fixed blocks are
+            not allowed, rewrite this code.
         '''
         f = '[MClient] table.logic.Table.get_col'
         if not self.check_block(block):
@@ -180,7 +184,7 @@ class Table:
                 design, so we don't need to iterate rowno.
             '''
             if block.colno == colno and block.rowno > rowno \
-            and block.text.strip():
+            and block.text.strip() and not block.Ignore:
                 return block
     
     def get_down(self, block):
@@ -193,7 +197,7 @@ class Table:
         if block:
             return block
         for block in self.blocks:
-            if block.colno > colno and block.text.strip():
+            if block.colno > colno and block.text.strip() and not block.Ignore:
                 return block
         return self.get_start()
     
@@ -204,7 +208,7 @@ class Table:
                 design, so we don't need to iterate rowno.
             '''
             if block.colno == colno and block.rowno < rowno \
-            and block.text.strip():
+            and block.text.strip() and not block.Ignore:
                 return block
     
     def get_up(self, block):
@@ -217,7 +221,7 @@ class Table:
         if block:
             return block
         for block in self.blocks[::-1]:
-            if block.colno < colno and block.text.strip():
+            if block.colno < colno and block.text.strip() and not block.Ignore:
                 return block
         return self.get_end()
     
@@ -237,7 +241,7 @@ class Table:
         rowno = block.rowno
         for block in self.blocks:
             if block.rowno == rowno and block.colno >= self.fixed_num \
-            and block.text.strip():
+            and block.text.strip() and not block.Ignore:
                 return block
     
     def get_line_end(self, block):
@@ -247,5 +251,5 @@ class Table:
             return
         rowno = block.rowno
         for block in self.blocks[::-1]:
-            if block.rowno == rowno and block.text.strip():
+            if block.rowno == rowno and block.text.strip() and not block.Ignore:
                 return block
