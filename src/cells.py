@@ -259,7 +259,7 @@ class Elems:
             term = ''
             for block in CELLS[cellno]:
                 ''' TERM field could be set previously, for example, in
-                    multitrancom.elems to keep order of SeparateWords mode.
+                    multitrancom.elems to keep its cells in SeparateWords mode.
                 '''
                 if block.type == 'term' and not block.text:
                     term = block.text.lower().strip()
