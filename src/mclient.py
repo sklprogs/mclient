@@ -13,7 +13,7 @@ from skl_shared.time import Timer
 from config import CONFIG, HistorySubjects
 from manager import SOURCES
 from articles import ARTICLES
-from table.controller import TABLE
+from table.controller import TABLE, BLOCK_MODE
 import logic as lg
 from logic import REQUEST
 import gui as gi
@@ -29,7 +29,6 @@ from save.controller import Save
 from popup.controller import POPUP
 import keylistener.gui as kg
 from subjects import SUBJECTS
-from block_mode import BLOCK_MODE
 from columns import COL_WIDTH
 from cells import Elems, Cells
 
@@ -213,8 +212,8 @@ class App:
             TABLE.go_right()
     
     def solve_go_down(self):
-        if BLOCK_MODE.blockno > -1:
-            BLOCK_MODE.select_next()
+        if BLOCK_MODE.Enable:
+            BLOCK_MODE.update(True)
         else:
             TABLE.go_down()
     
