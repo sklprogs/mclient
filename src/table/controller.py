@@ -14,6 +14,7 @@ from table.gui import Table as guiTable, TableModel
 from table.logic import Table as lgTable
 from search.controller import Search
 from columns import COL_WIDTH
+import format as fm
 
 
 class Table:
@@ -446,4 +447,42 @@ class Table:
         self.search.gui.btn_srn.set_action(self.search_next)
 
 
+
+class BlockMode:
+    
+    def __init__(self):
+        self.Enable = False
+    
+    def enable(self):
+        f = '[MClient] table.controller.BlockMode.enable'
+        Message(f, _('Enable block mode')).show_info()
+        self.Enable = True
+        self.update()
+    
+    def disable(self):
+        f = '[MClient] table.controller.BlockMode.disable'
+        Message(f, _('Disable block mode')).show_info()
+        self.Enable = False
+        self.update()
+    
+    def toggle(self):
+        if self.Enable:
+            self.disable()
+        else:
+            self.enable()
+    
+    def update(self, Forward=True):
+        # Forward=True so as to select 1st block by default
+        f = '[MClient] table.controller.BlockMode.update'
+        block = TABLE.get_selected_block(Forward)
+        if not block:
+            rep.lazy(f)
+            return
+        fm.Block(block, self.Enable).run()
+        #TABLE.model.update(TABLE.gui.get_cur_index())
+        #print(f, 'code:', block.code)
+        TABLE.select(block)
+
+
 TABLE = Table()
+BLOCK_MODE = BlockMode()
