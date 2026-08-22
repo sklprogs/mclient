@@ -194,31 +194,31 @@ class App:
                 self.minimize()
     
     def solve_copy(self):
-        if BLOCK_MODE.blockno > -1:
+        if BLOCK_MODE.is_active():
             self.copy_block()
         else:
             self.copy_cell()
     
     def solve_go_left(self):
-        if BLOCK_MODE.Enable:
+        if BLOCK_MODE.is_active():
             BLOCK_MODE.go_left()
         else:
             TABLE.go_left()
     
     def solve_go_right(self):
-        if BLOCK_MODE.Enable:
+        if BLOCK_MODE.is_active():
             BLOCK_MODE.go_right()
         else:
             TABLE.go_right()
     
     def solve_go_down(self):
-        if BLOCK_MODE.Enable:
+        if BLOCK_MODE.is_active():
             BLOCK_MODE.go_down()
         else:
             TABLE.go_down()
     
     def solve_go_up(self):
-        if BLOCK_MODE.Enable:
+        if BLOCK_MODE.is_active():
             BLOCK_MODE.go_up()
         else:
             TABLE.go_up()

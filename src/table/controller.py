@@ -453,6 +453,9 @@ class BlockMode:
     def __init__(self):
         self.block = None
     
+    def is_active(self):
+        return self.block
+    
     def enable(self):
         f = '[MClient] table.controller.BlockMode.enable'
         Message(f, _('Enable block mode')).show_info()
@@ -485,22 +488,29 @@ class BlockMode:
     
     def set_down(self):
         f = '[MClient] table.controller.BlockMode.set_down'
-        block = self.get_down()
-        if block:
-            print(f, 'Successfully set new_block for the same cell')
-            self.block = block
-        self.new = TABLE.logic.get_down(block)
-        if self.new:
-            print(f, 'Successfully set new_block for the new cell')
+        self.block = self.get_down()
+        if self.block:
+            return
+        self.block = TABLE.logic.get_down(self.block)
     
     def set_block(self, Forward=False):
+        f = '[MClient] table.controller.BlockMode.set_block'
+        ''' Do not reassign the current block if it is already set; otherwise,
+            the current block is set according to the selected cell, i.e. to
+            block #0, and doing 'go_down' or 'go_right' won't be able to go past
+            block #1.
+        '''
+        if self.block:
+            rep.lazy(f)
+            return
         self.block = TABLE.get_selected_block(Forward)
     
     def go_down(self):
         f = '[MClient] table.controller.BlockMode.go_down'
-        self.update(True)
+        self.reset_block_code(True)
         self.set_block(True)
         self.set_down()
+        self.update()
     
     def go_left(self):
         self.update()
@@ -508,17 +518,23 @@ class BlockMode:
     def go_right(self):
         self.update(True)
     
-    def update(self, Reset=False):
-        f = '[MClient] table.controller.BlockMode.update'
+    def reset_block_code(self, Reset=False):
+        f = '[MClient] table.controller.BlockMode.reset_block_code'
         if not self.block:
             rep.lazy(f)
             return
         # Reset reverts current block to old formatting thus unselecting it
         fm.Block(self.block, not Reset).run()
+    
+    def update(self, Reset=False):
+        f = '[MClient] table.controller.BlockMode.update'
+        if not self.block:
+            rep.lazy(f)
+            return
+        self.reset_block_code(Reset)
         #TODO: This is probably slower than it should be
         TABLE.reset(TABLE.logic.blocks)
         TABLE.select(self.block)
-        print(f, 'code:', self.block.code)
 
 
 TABLE = Table()
