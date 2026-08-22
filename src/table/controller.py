@@ -451,37 +451,74 @@ class Table:
 class BlockMode:
     
     def __init__(self):
-        self.Enable = False
+        self.block = None
     
     def enable(self):
         f = '[MClient] table.controller.BlockMode.enable'
         Message(f, _('Enable block mode')).show_info()
-        self.Enable = True
+        self.set_block(True)
         self.update()
     
     def disable(self):
         f = '[MClient] table.controller.BlockMode.disable'
         Message(f, _('Disable block mode')).show_info()
-        self.Enable = False
-        self.update()
+        self.update(True)
+        self.block = False
     
     def toggle(self):
-        if self.Enable:
+        if self.block:
             self.disable()
         else:
             self.enable()
     
-    def update(self, Forward=True):
-        # Forward=True so as to select 1st block by default
+    def go_up(self):
+        self.update()
+    
+    def get_down(self):
+        f = '[MClient] table.controller.BlockMode.get_down'
+        if not self.block:
+            rep.empty(f)
+            return
+        for block in TABLE.logic.blocks:
+            if block.cellno == self.block.cellno and block.no > self.block.no:
+                return block
+    
+    def set_down(self):
+        f = '[MClient] table.controller.BlockMode.set_down'
+        block = self.get_down()
+        if block:
+            print(f, 'Successfully set new_block for the same cell')
+            self.block = block
+        self.new = TABLE.logic.get_down(block)
+        if self.new:
+            print(f, 'Successfully set new_block for the new cell')
+    
+    def set_block(self, Forward=False):
+        self.block = TABLE.get_selected_block(Forward)
+    
+    def go_down(self):
+        f = '[MClient] table.controller.BlockMode.go_down'
+        self.update(True)
+        self.set_block(True)
+        self.set_down()
+    
+    def go_left(self):
+        self.update()
+    
+    def go_right(self):
+        self.update(True)
+    
+    def update(self, Reset=False):
         f = '[MClient] table.controller.BlockMode.update'
-        block = TABLE.get_selected_block(Forward)
-        if not block:
+        if not self.block:
             rep.lazy(f)
             return
-        fm.Block(block, self.Enable).run()
-        #TABLE.model.update(TABLE.gui.get_cur_index())
-        #print(f, 'code:', block.code)
-        TABLE.select(block)
+        # Reset reverts current block to old formatting thus unselecting it
+        fm.Block(self.block, not Reset).run()
+        #TODO: This is probably slower than it should be
+        TABLE.reset(TABLE.logic.blocks)
+        TABLE.select(self.block)
+        print(f, 'code:', self.block.code)
 
 
 TABLE = Table()

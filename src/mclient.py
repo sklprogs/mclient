@@ -200,26 +200,26 @@ class App:
             self.copy_cell()
     
     def solve_go_left(self):
-        if BLOCK_MODE.blockno > -1:
-            BLOCK_MODE.select_prev()
+        if BLOCK_MODE.Enable:
+            BLOCK_MODE.go_left()
         else:
             TABLE.go_left()
     
     def solve_go_right(self):
-        if BLOCK_MODE.blockno > -1:
-            BLOCK_MODE.select_next()
+        if BLOCK_MODE.Enable:
+            BLOCK_MODE.go_right()
         else:
             TABLE.go_right()
     
     def solve_go_down(self):
         if BLOCK_MODE.Enable:
-            BLOCK_MODE.update(True)
+            BLOCK_MODE.go_down()
         else:
             TABLE.go_down()
     
     def solve_go_up(self):
-        if BLOCK_MODE.blockno > -1:
-            BLOCK_MODE.select_prev()
+        if BLOCK_MODE.Enable:
+            BLOCK_MODE.go_up()
         else:
             TABLE.go_up()
     
