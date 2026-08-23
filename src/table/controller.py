@@ -466,7 +466,7 @@ class BlockMode:
         f = '[MClient] table.controller.BlockMode.disable'
         Message(f, _('Disable block mode')).show_info()
         self.update(True)
-        self.block = False
+        self.block = None
     
     def toggle(self):
         if self.block:
@@ -488,10 +488,24 @@ class BlockMode:
     
     def set_down(self):
         f = '[MClient] table.controller.BlockMode.set_down'
-        self.block = self.get_down()
-        if self.block:
+        ''' Although this class should work OK with 'self.block' being None, do
+            not assign all attempts to get next block rightaway to self.block,
+            because a) 'TABLE.logic.get_down' does not accept None;
+            b) if 'self.block' is None, it is determined by the current
+            selection, i.e. the current cell, and you will not be able to go to
+            the next cell in this mode.
+        '''
+        block = self.get_down()
+        if block:
+            self.block = block
+            mes = _('Go to the same-cell block "{}"').format(self.block.text)
+            Message(f, mes).show_debug()
             return
-        self.block = TABLE.logic.get_down(self.block)
+        block = TABLE.logic.get_down(self.block)
+        if block:
+            self.block = block
+            mes = _('Go to the next-cell block "{}"').format(self.block.text)
+            Message(f, mes).show_debug()
     
     def set_block(self, Forward=False):
         f = '[MClient] table.controller.BlockMode.set_block'
