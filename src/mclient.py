@@ -199,25 +199,25 @@ class App:
         else:
             self.copy_cell()
     
-    def solve_go_left(self):
+    def go_left(self):
         if BLOCK_MODE.is_active():
             BLOCK_MODE.go_left()
         else:
             TABLE.go_left()
     
-    def solve_go_right(self):
+    def go_right(self):
         if BLOCK_MODE.is_active():
             BLOCK_MODE.go_right()
         else:
             TABLE.go_right()
     
-    def solve_go_down(self):
+    def go_down(self):
         if BLOCK_MODE.is_active():
             BLOCK_MODE.go_down()
         else:
             TABLE.go_down()
     
-    def solve_go_up(self):
+    def go_up(self):
         if BLOCK_MODE.is_active():
             BLOCK_MODE.go_up()
         else:
@@ -938,8 +938,8 @@ class App:
         
         self.gui.bind(('Ctrl+Q',), self.close)
         self.gui.bind(('Esc',), self.minimize)
-        self.gui.bind(('Down',), self.solve_go_down)
-        self.gui.bind(('Up',), self.solve_go_up)
+        self.gui.bind(('Down',), self.go_down)
+        self.gui.bind(('Up',), self.go_up)
         self.gui.bind(('Ctrl+Home',), TABLE.go_start)
         self.gui.bind(('Ctrl+End',), TABLE.go_end)
         self.gui.bind(('Home',), TABLE.go_line_start)
@@ -1092,8 +1092,8 @@ class App:
         gi.objs.panel.ent_src.widget.sig_ctrl_end.connect(TABLE.go_end)
         gi.objs.panel.ent_src.widget.sig_ctrl_space.connect(self.show_suggestions)
         # Binding 'Left' and 'Right' to self.gui does not work for some reason
-        gi.objs.panel.ent_src.widget.sig_left_arrow.connect(self.solve_go_left)
-        gi.objs.panel.ent_src.widget.sig_right_arrow.connect(self.solve_go_right)
+        gi.objs.panel.ent_src.widget.sig_left_arrow.connect(self.go_left)
+        gi.objs.panel.ent_src.widget.sig_right_arrow.connect(self.go_right)
         gi.objs.panel.opt_lg1.widget.activated.connect(self.go_search)
         gi.objs.panel.opt_lg2.widget.activated.connect(self.go_search)
         gi.objs.panel.opt_col.set_action(self.set_columns)
