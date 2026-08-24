@@ -475,6 +475,9 @@ class BlockMode:
             self.enable()
     
     def go_up(self):
+        self.reset_block_code(True)
+        self.set_block()
+        self.set_up()
         self.update()
     
     def get_down(self):
@@ -483,7 +486,8 @@ class BlockMode:
             rep.empty(f)
             return
         for block in TABLE.logic.blocks:
-            if block.cellno == self.block.cellno and block.no > self.block.no:
+            if block.cellno == self.block.cellno and block.no > self.block.no \
+            and block.text.strip() and not block.Ignore:
                 return block
     
     def set_down(self):
@@ -504,7 +508,31 @@ class BlockMode:
         block = TABLE.logic.get_down(self.block)
         if block:
             self.block = block
-            mes = _('Go to the next-cell block "{}"').format(self.block.text)
+            mes = _('Go to the other-cell block "{}"').format(self.block.text)
+            Message(f, mes).show_debug()
+    
+    def get_up(self):
+        f = '[MClient] table.controller.BlockMode.get_up'
+        if not self.block:
+            rep.empty(f)
+            return
+        for block in TABLE.logic.blocks[::-1]:
+            if block.cellno == self.block.cellno and block.no < self.block.no \
+            and block.text.strip() and not block.Ignore:
+                return block
+    
+    def set_up(self):
+        f = '[MClient] table.controller.BlockMode.set_up'
+        block = self.get_up()
+        if block:
+            self.block = block
+            mes = _('Go to the same-cell block "{}"').format(self.block.text)
+            Message(f, mes).show_debug()
+            return
+        block = TABLE.logic.get_up(self.block)
+        if block:
+            self.block = block
+            mes = _('Go to the other-cell block "{}"').format(self.block.text)
             Message(f, mes).show_debug()
     
     def set_block(self, Forward=False):
@@ -520,7 +548,6 @@ class BlockMode:
         self.block = TABLE.get_selected_block(Forward)
     
     def go_down(self):
-        f = '[MClient] table.controller.BlockMode.go_down'
         self.reset_block_code(True)
         self.set_block(True)
         self.set_down()
