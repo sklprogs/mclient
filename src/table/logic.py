@@ -216,13 +216,27 @@ class Table:
         if not self.check_block(block):
             rep.cancel(f)
             return
+        rowno = block.rowno
         colno = block.colno
-        block = self._get_up(block)
-        if block:
-            return block
-        for block in self.blocks[::-1]:
-            if block.colno < colno and block.text.strip() and not block.Ignore:
-                return block
+        no = block.no
+        j = colno
+        while j >= 0:
+            i = self.rownum - 1
+            while i >= 0:
+                for block in self.blocks[::-1]:
+                    if not rowno == i or not colno == j:
+                        continue
+                    if block.Ignore or not block.text.strip():
+                        continue
+                    if colno == j:
+                        if block.rowno == rowno and block.no > no:
+                            return block
+                        elif block.rowno > rowno:
+                            return block
+                    elif block.colno > j:
+                        return block
+                i -= 1
+            j -= 1
         return self.get_end()
     
     def get_next_section(self, block, colno):
