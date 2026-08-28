@@ -217,23 +217,22 @@ class Table:
             rep.cancel(f)
             return
         rowno = block.rowno
-        colno = block.colno
+        j = colno = block.colno
+        cellno = block.cellno
         no = block.no
-        j = colno
         while j >= 0:
             i = self.rownum - 1
             while i >= 0:
                 for block in self.blocks[::-1]:
-                    if not rowno == i or not colno == j:
+                    if block.rowno != i or block.colno != j:
                         continue
                     if block.Ignore or not block.text.strip():
                         continue
-                    if colno == j:
-                        if block.rowno == rowno and block.no > no:
-                            return block
-                        elif block.rowno > rowno:
-                            return block
-                    elif block.colno > j:
+                    #if block.cellno == cellno and block.no < no:
+                    #    return block
+                    if block.colno == colno and block.rowno < rowno:
+                        return block
+                    if block.colno < colno:
                         return block
                 i -= 1
             j -= 1
