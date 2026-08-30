@@ -244,6 +244,7 @@ class Elems:
         rep.deleted(f, old_len - len(self.blocks))
     
     def set_no(self):
+        # Put this after deleting blocks so as to avoid inconsistent numbering
         for i in range(len(self.blocks)):
             self.blocks[i].no = i
     
@@ -270,7 +271,6 @@ class Elems:
                     block.term = term
     
     def run(self):
-        self.set_no()
         self.set_phurl()
         self.remove_phsubj()
         self.remove_numbering()
@@ -290,6 +290,7 @@ class Elems:
         # Do this only after cellnos are set and will not be reassigned
         self.fill_cells()
         self.set_term()
+        self.set_no()
         return self.blocks
 
 
