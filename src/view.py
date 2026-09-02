@@ -487,13 +487,6 @@ class Wrap:
     def format(self):
         self.blocks = [fmBlock(block).run() for block in self.blocks]
     
-    def debug_format(self):
-        f = '[MClient] view.Wrap.debug_format'
-        mes = [f'{f}:']
-        for block in self.blocks:
-            mes.append(f'{block.cellno}, {block.no}, "{block.text}": "{block.code}"')
-        return '\n'.join(mes)
-    
     def run(self):
         self.wrap()
         self.clear_single_source()
