@@ -14,7 +14,7 @@ from skl_shared.text_file import Read, Write
 from skl_shared.launch import Launch
 from skl_shared.table import Table
 from skl_shared.logic import Text
-from skl_shared.list import List
+from skl_shared.list import List, get_text_table
 
 from config import CONFIG
 
@@ -31,19 +31,137 @@ from config import CONFIG
 #SEARCH = 'absolute'
 #SEARCH = 'bottling'
 #SEARCH = 'book'
-#SEARCH = 'hello'
+SEARCH = 'hello'
 #SEARCH = 'good'
 #SEARCH = 'orderly'
-SEARCH = 'стартап'
+#SEARCH = 'стартап'
 URL = f'https://www.multitran.com/m.exe?s={w3lib.url.safe_url_string(SEARCH)}&l1=2&l2=1'
 #HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/account (2025-10-26).htm'
 #HTM_FILE = '/home/pete/docs/mclient_tests/multitrancom (saved in browser)/inundate (2024-04-08).html'
+
+def debug_cells(f, blocks, maxrow=23, maxrows=0):
+    if not f:
+        f = '[MClient] tests.sources.debug_cells'
+    headers = (_('ROW'), _('COL'), _('CELL'), _('BLOCK'), _('TYPE'), _('TEXT')
+              ,'IGNORE' ,'SOURCE', 'DIC', 'SUBJ', 'SUBJF', 'SUBJPR', 'SPEECH'
+              ,'SPEECHF', 'SPEECHPR', 'TERM')
+    rownos = []
+    colnos = []
+    cellnos = []
+    nos = []
+    types = []
+    texts = []
+    sources = []
+    dics = []
+    subj = []
+    subjf = []
+    subjpr = []
+    speech = []
+    speechf = []
+    speechpr = []
+    terms = []
+    ignore = []
+    for block in blocks:
+        rownos.append(block.rowno)
+        colnos.append(block.colno)
+        cellnos.append(block.cellno)
+        nos.append(block.no)
+        types.append(block.type)
+        text = block.text.replace('\n', ' ')
+        texts.append(f'"{text}"')
+        ignore.append(block.Ignore)
+        sources.append(block.source)
+        dics.append(block.dic)
+        subj.append(block.subj)
+        subjf.append(block.subjf)
+        subjpr.append(block.subjpr)
+        speech.append(block.speech)
+        speechf.append(block.speechf)
+        speechpr.append(block.speechpr)
+        term = block.term.replace('\n', ' ')
+        terms.append(f'"{term}"')
+    mes = Table(headers = headers
+               ,iterable = (rownos, colnos, cellnos, nos, types, texts, ignore
+                           ,sources, dics, subj, subjf, subjpr, speech, speechf
+                           ,speechpr, terms)
+               ,maxrow = maxrow, maxrows = maxrows).run()
+    return f'{f}:\n{mes}'
+
+
+class WrapTable:
+    
+    def __init__(self):
+        self.set_values()
+    
+    def set_values(self):
+        self.Success = True
+        self.table = []
+        self.rownum = 0
+        self.colnum = 0
+        self.func = ''
+    
+    def reset(self, f='', blocks=[]):
+        self.set_values()
+        self.func = f
+        self.blocks = blocks
+    
+    def set_func(self):
+        if not self.func:
+            self.func = '[MClient] tests.sources.WrapTable.set_func'
+    
+    def set_num(self):
+        f = '[MClient] tests.sources.WrapTable.set_num'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        rownos = [block.rowno for block in self.blocks]
+        colnos = [block.colno for block in self.blocks]
+        if not rownos or not colnos:
+            self.Success = False
+            return
+        self.rownum = max(rownos) + 1
+        self.colnum = max(colnos) + 1
+    
+    def set_table(self):
+        f = '[MClient] tests.sources.WrapTable.set_table'
+        if not self.Success:
+            rep.cancel(f)
+            return
+        self.table = get_text_table(self.rownum, self.colnum + 1)
+        for block in self.blocks:
+            try:
+                self.table[block.rowno][block.colno + 1] += block.text.replace('\n', ' ')
+            except IndexError:
+                mes = _('List out of bounds at row #{}, column #{}!')
+                mes = mes.format(block.rowno, block.colno)
+                Message(f, mes).show_warning()
+                return
+        for rowno in range(self.rownum):
+            self.table[rowno][0] = str(rowno)
+    
+    def debug(self):
+        if not self.Success:
+            rep.cancel(self.func)
+            return ''
+        headers = list(range(self.colnum))
+        headers = [str(no) for no in headers]
+        headers.insert(0, '#')
+        mes = Table(headers = headers, iterable = self.table, maxrow = 40
+                   ,maxrows = 200, Transpose=True, ShowGap=False).run()
+        return f'{self.func}:\n{mes}'
+    
+    def run(self):
+        self.set_func()
+        self.set_num()
+        self.set_table()
+        return self.debug()
+
 
 
 class Wrap:
     
     def _run(self, f, cSource, url=''):
-        from cells import Elems as cElems, Cells as cCells, debug
+        from cells import Elems as cElems, Cells as cCells
         from view import View as cView, Wrap as cWrap, Phrases, Phsubj
         from subjects import SUBJECTS
         if url:
@@ -60,8 +178,9 @@ class Wrap:
         iwrap = cWrap(blocks)
         blocks = iwrap.run()
         blocks = Phsubj(blocks).run()
-        return debug(f, blocks)
-        #return iwrap.debug_format()
+        #return debug_cells(f, blocks)
+        WRAP_TABLE.reset(f, blocks)
+        return WRAP_TABLE.run()
     
     def run_mdic(self):
         f = '[MClient] tests.sources.Wrap.run_mdic'
@@ -94,7 +213,7 @@ class Prioritize:
     def run_multitrancom(self):
         f = '[MClient] tests.sources.Prioritize.run_multitrancom'
         from sources.multitrancom.run import Source as cSource
-        from cells import Elems as cElems, Cells as cCells, debug
+        from cells import Elems as cElems, Cells as cCells
         from subjects import SUBJECTS
         blocks = cSource().request(SEARCH)
         ielems = cElems(blocks)
@@ -102,12 +221,12 @@ class Prioritize:
         # Reset subjects before running Omit (getting blocked subjects)
         SUBJECTS.reset(ielems.art_subj)
         blocks = cCells(blocks).run()
-        return debug(blocks)
+        return debug_cells(blocks)
     
     def run_mdic(self):
         f = '[MClient] tests.sources.Prioritize.run_mdic'
         from sources.mdic.run import Source as cSource
-        from cells import Elems as cElems, Cells as cCells, debug
+        from cells import Elems as cElems, Cells as cCells
         from subjects import SUBJECTS
         blocks = cSource().request(SEARCH)
         ielems = cElems(blocks)
@@ -115,14 +234,14 @@ class Prioritize:
         # Reset subjects before running Omit (getting blocked subjects)
         SUBJECTS.reset(ielems.art_subj)
         blocks = cCells(blocks).run()
-        return debug(blocks)
+        return debug_cells(blocks)
 
 
 
 class View:
     
     def _run(self, f, cSource, url=''):
-        from cells import Elems as cElems, Cells as cCells, debug
+        from cells import Elems as cElems, Cells as cCells
         from view import View as cView, Wrap as cWrap, Phrases
         from subjects import SUBJECTS
         if url:
@@ -136,7 +255,7 @@ class View:
         blocks = cCells(blocks).run()
         blocks = Phrases(blocks).run()
         blocks = cView(blocks).run()
-        return debug(f, blocks)
+        return debug_cells(f, blocks)
     
     def run_all(self):
         from manager import SOURCES
@@ -736,13 +855,13 @@ class Source:
     
     def run_mdic(self):
         f = '[MClient] tests.sources.Source.run_mdic'
-        from cells import Elems as cElems, Cells, debug
+        from cells import Elems as cElems, Cells
         from sources.mdic.run import Source as mSource
         blocks = mSource().request(SEARCH)
         blocks = cElems(blocks).run()
         icells = Cells(blocks)
         blocks = icells.run()
-        return debug(f, blocks)
+        return debug_cells(f, blocks)
     
     def run_dsl(self):
         from cells import Elems as dElems
@@ -754,12 +873,12 @@ class Source:
     
     def run_multitrancom(self):
         f = '[MClient] tests.sources.Source.run_multitrancom'
-        from cells import Elems as cElems, Cells, debug
+        from cells import Elems as cElems, Cells
         from sources.multitrancom.run import Source as mSource
         blocks = mSource().request(url=URL, search=SEARCH)
         blocks = cElems(blocks).run()
         blocks = Cells(blocks).run()
-        return debug(f, blocks)
+        return debug_cells(f, blocks)
 
 
 
@@ -1185,3 +1304,4 @@ class Suggest:
 
 
 com = Commands()
+WRAP_TABLE = WrapTable()
