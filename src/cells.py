@@ -5,9 +5,6 @@ import re
 
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
-from skl_shared.list import List
-from skl_shared.table import Table
-from skl_shared.logic import Text
 
 from instance import Block, is_block_fixed
 from config import CONFIG
@@ -15,55 +12,6 @@ from speech import SPEECH
 from subjects import SUBJECTS
 
 CELLS = {}
-
-
-def debug(f, blocks, maxrow=23, maxrows=0):
-    if not f:
-        f = '[MClient] cells.debug'
-    headers = (_('ROW'), _('COL'), _('CELL'), _('BLOCK'), _('TYPE'), _('TEXT')
-              ,'IGNORE' ,'SOURCE', 'DIC', 'SUBJ', 'SUBJF', 'SUBJPR', 'SPEECH'
-              ,'SPEECHF', 'SPEECHPR', 'TERM')
-    rownos = []
-    colnos = []
-    cellnos = []
-    nos = []
-    types = []
-    texts = []
-    sources = []
-    dics = []
-    subj = []
-    subjf = []
-    subjpr = []
-    speech = []
-    speechf = []
-    speechpr = []
-    terms = []
-    ignore = []
-    for block in blocks:
-        rownos.append(block.rowno)
-        colnos.append(block.colno)
-        cellnos.append(block.cellno)
-        nos.append(block.no)
-        types.append(block.type)
-        text = block.text.replace('\n', ' ')
-        texts.append(f'"{text}"')
-        ignore.append(block.Ignore)
-        sources.append(block.source)
-        dics.append(block.dic)
-        subj.append(block.subj)
-        subjf.append(block.subjf)
-        subjpr.append(block.subjpr)
-        speech.append(block.speech)
-        speechf.append(block.speechf)
-        speechpr.append(block.speechpr)
-        term = block.term.replace('\n', ' ')
-        terms.append(f'"{term}"')
-    mes = Table(headers = headers
-               ,iterable = (rownos, colnos, cellnos, nos, types, texts, ignore
-                           ,sources, dics, subj, subjf, subjpr, speech, speechf
-                           ,speechpr, terms)
-               ,maxrow = maxrow, maxrows = maxrows).run()
-    return f'{f}:\n{mes}'
 
 
 
