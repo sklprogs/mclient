@@ -130,7 +130,7 @@ class WrapTable:
         self.table = get_text_table(self.rownum, self.colnum + 1)
         for block in self.blocks:
             try:
-                self.table[block.rowno][block.colno + 1] += block.text.replace('\n', ' ')
+                self.table[block.rowno][block.colno + 1] += f'({block.rowno},{block.colno})' + block.text.replace('\n', ' ')
             except IndexError:
                 mes = _('List out of bounds at row #{}, column #{}!')
                 mes = mes.format(block.rowno, block.colno)
@@ -146,7 +146,7 @@ class WrapTable:
         headers = list(range(self.colnum))
         headers = [str(no) for no in headers]
         headers.insert(0, '#')
-        mes = Table(headers = headers, iterable = self.table, maxrow = 40
+        mes = Table(headers = headers, iterable = self.table, maxrow = 38
                    ,maxrows = 200, Transpose=True, ShowGap=False).run()
         return f'{self.func}:\n{mes}'
     
