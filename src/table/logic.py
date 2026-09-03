@@ -10,6 +10,7 @@ class Table:
         use 'Success' or call 'reset' before filling.
     '''
     def __init__(self, blocks=[]):
+        self.BlockMode = False
         self.set_values()
         if blocks:
             self.reset(blocks)
@@ -22,11 +23,13 @@ class Table:
         '''
         self.fixed_num = 6
         self.blocks = []
+        self.up = []
     
     def reset(self, blocks):
         self.set_values()
         self.blocks = blocks
         self.set_size()
+        self.set_up()
     
     def _get_page_block(self, colno, row_min, row_max):
         for block in self.blocks:
@@ -201,42 +204,82 @@ class Table:
                 return block
         return self.get_start()
     
-    def _get_up(self, block):
-        rowno, colno = block.rowno, block.colno
-        for block in self.blocks[::-1]:
-            ''' After blocks are sorted and wrapped, rowno and colno increase by
-                design, so we don't need to iterate rowno.
-            '''
-            if block.colno == colno and block.rowno < rowno \
-            and block.text.strip() and not block.Ignore:
-                return block
+    def set_up(self):
+        self.up = sorted(self.blocks, key=lambda block: (-block.colno, -block.rowno))
+    
+    def _get_adjacent(self, ref_block):
+        f = '[MClient] table.logic.Table._get_adjacent'
+        if not ref_block:
+            rep.empty(f)
+            return
+        for block in self.blocks:
+            if block.rowno == ref_block.rowno and block.colno == ref_block.colno + 2:
+                print(f, f'Adjacent block: "{block.text}": row #{block.rowno}, col #{block.colno}, cell #{block.cellno}, block #{block.no}')
+                return
+    
+    def _get_next_cell(self, ref_block, lst):
+        f = '[MClient] table.logic.Table._get_next_cell'
+        if not ref_block or not lst:
+            rep.empty(f)
+            return
+        try:
+            pos = lst.index(ref_block)
+        except ValueError:
+            return
+        try:
+            block = lst[pos + 1]
+        except IndexError:
+            return
+        if not block:
+            rep.empty(f)
+            return
+        if block.Ignore or not block.text.strip() \
+        or ref_block.cellno == block.cellno:
+            block = self._get_next_cell(block, lst)
+        print(f, f'Final block: "{block.text}": row #{block.rowno}, col #{block.colno}, cell #{block.cellno}, block #{block.no}')
+        self._get_adjacent(block)
+        return block
     
     def get_up(self, block):
+        block = self._get_next_cell(block, self.up)
+        if block:
+            return block
+        return self.get_end()
+    
+    '''
+    def _get_up(self, rowno, colno, ref_block):
+        for block in self.blocks[::-1]:
+            if block.rowno != rowno or block.colno != colno:
+                continue
+            if block.Ignore or not block.text.strip():
+                continue
+            if self.BlockMode and block.cellno == ref_block.cellno \
+            and block.no < ref_block.no:
+                return block
+            if block.colno == ref_block.colno \
+            and block.rowno < ref_block.rowno:
+                return block
+            if block.colno < ref_block.colno:
+                return block
+    
+    def get_up(self, ref_block):
+        # When going from bottom to top, iterate by columns and then by rows
         f = '[MClient] table.logic.Table.get_up'
-        if not self.check_block(block):
+        if not self.check_block(ref_block):
             rep.cancel(f)
             return
-        rowno = block.rowno
-        j = colno = block.colno
-        cellno = block.cellno
-        no = block.no
-        while j >= 0:
-            i = self.rownum - 1
-            while i >= 0:
-                for block in self.blocks[::-1]:
-                    if block.rowno != i or block.colno != j:
-                        continue
-                    if block.Ignore or not block.text.strip():
-                        continue
-                    #if block.cellno == cellno and block.no < no:
-                    #    return block
-                    if block.colno == colno and block.rowno < rowno:
-                        return block
-                    if block.colno < colno:
-                        return block
-                i -= 1
-            j -= 1
-        return self.get_end()
+        print(f, f'Reference block: "{ref_block.text}": row #{ref_block.rowno}, col #{ref_block.colno}, cell #{ref_block.cellno}, block #{ref_block.no}')
+        colno = ref_block.colno
+        while colno >= 0:
+            rowno = self.rownum - 1
+            while rowno >= 0:
+                block = self._get_up(rowno, colno, ref_block)
+                if block:
+                    print(f, f'Found block: "{block.text}": row #{block.rowno}, col #{block.colno}, cell #{block.cellno}, block #{block.no}')
+                    return block
+                rowno -= 1
+            colno -= 1
+    '''
     
     def get_next_section(self, block, colno):
         block = self.get_col(block, colno)

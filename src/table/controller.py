@@ -383,7 +383,7 @@ class Table:
                 code[block.rowno][block.colno] += block.code
             except IndexError:
                 mes = _('List out of bounds at row #{}, column #{}!')
-                mes = mes.format(rowno, colno)
+                mes = mes.format(block.rowno, block.colno)
                 Message(f, mes).show_warning()
                 return []
         return code
@@ -512,28 +512,17 @@ class BlockMode:
             Message(f, mes).show_debug()
     
     def get_up(self):
-        f = '[MClient] table.controller.BlockMode.get_up'
-        if not self.block:
-            rep.empty(f)
-            return
-        for block in TABLE.logic.blocks[::-1]:
-            if block.cellno == self.block.cellno and block.no < self.block.no \
-            and block.text.strip() and not block.Ignore:
-                return block
+        print('get_up:', f'"{self.block.text}": row #{self.block.rowno}, col #{self.block.colno}, cell #{self.block.cellno}, block #{self.block.no}')
+        return TABLE.logic.get_up(self.block)
     
     def set_up(self):
         f = '[MClient] table.controller.BlockMode.set_up'
         block = self.get_up()
-        if block:
-            self.block = block
-            mes = _('Go to the same-cell block "{}"').format(self.block.text)
-            Message(f, mes).show_debug()
+        if not block:
+            rep.empty(f)
             return
-        block = TABLE.logic.get_up(self.block)
-        if block:
-            self.block = block
-            mes = _('Go to the other-cell block "{}"').format(self.block.text)
-            Message(f, mes).show_debug()
+        self.block = block
+        print(f, f': "{block.text}": row #{block.rowno}, col #{block.colno}, cell #{block.cellno}, block #{block.no}')
     
     def set_block(self, Forward=False):
         f = '[MClient] table.controller.BlockMode.set_block'

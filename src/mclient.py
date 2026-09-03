@@ -218,10 +218,13 @@ class App:
             TABLE.go_down()
     
     def go_up(self):
+        '''
         if BLOCK_MODE.is_active():
             BLOCK_MODE.go_up()
         else:
             TABLE.go_up()
+        '''
+        TABLE.go_up()
     
     def _set_hint(self, widget, action):
         section = CONFIG.new['actions'][action]
