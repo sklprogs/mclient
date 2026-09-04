@@ -24,12 +24,15 @@ class Table:
         self.fixed_num = 6
         self.blocks = []
         self.up = []
+        self.down = []
+        self.left = []
+        self.right = []
     
     def reset(self, blocks):
         self.set_values()
         self.blocks = blocks
         self.set_size()
-        self.set_up()
+        self.set_navigation()
     
     def _get_page_block(self, colno, row_min, row_max):
         for block in self.blocks:
@@ -204,14 +207,18 @@ class Table:
                 return block
         return self.get_start()
     
-    def set_up(self):
+    def set_navigation(self):
         self.up = sorted(self.blocks, key=lambda block: (-block.colno, -block.rowno))
+        self.down = sorted(self.blocks, key=lambda block: (block.colno, block.rowno))
+        self.right = sorted(self.blocks, key=lambda block: (block.rowno, block.colno))
+        self.left = sorted(self.blocks, key=lambda block: (-block.rowno, -block.colno))
     
     def _get_adjacent(self, ref_block):
         f = '[MClient] table.logic.Table._get_adjacent'
         if not ref_block:
             rep.empty(f)
             return
+        print(f, f'Final block: "{ref_block.text}": row #{ref_block.rowno}, col #{ref_block.colno}, cell #{ref_block.cellno}, block #{ref_block.no}')
         for block in self.blocks:
             if block.rowno == ref_block.rowno and block.colno == ref_block.colno + 2:
                 print(f, f'Adjacent block: "{block.text}": row #{block.rowno}, col #{block.colno}, cell #{block.cellno}, block #{block.no}')
@@ -236,12 +243,29 @@ class Table:
         if block.Ignore or not block.text.strip() \
         or ref_block.cellno == block.cellno:
             block = self._get_next_cell(block, lst)
-        print(f, f'Final block: "{block.text}": row #{block.rowno}, col #{block.colno}, cell #{block.cellno}, block #{block.no}')
         self._get_adjacent(block)
         return block
     
     def get_up(self, block):
         block = self._get_next_cell(block, self.up)
+        if block:
+            return block
+        return self.get_end()
+    
+    def get_down(self, block):
+        block = self._get_next_cell(block, self.down)
+        if block:
+            return block
+        return self.get_start()
+    
+    def get_right(self, block):
+        block = self._get_next_cell(block, self.right)
+        if block:
+            return block
+        return self.get_start()
+    
+    def get_left(self, block):
+        block = self._get_next_cell(block, self.left)
         if block:
             return block
         return self.get_end()
