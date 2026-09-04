@@ -480,49 +480,55 @@ class BlockMode:
         self.set_up()
         self.update()
     
-    def get_down(self):
-        f = '[MClient] table.controller.BlockMode.get_down'
-        if not self.block:
-            rep.empty(f)
-            return
-        for block in TABLE.logic.blocks:
-            if block.cellno == self.block.cellno and block.no > self.block.no \
-            and block.text.strip() and not block.Ignore:
-                return block
+    def go_down(self):
+        self.reset_block_code(True)
+        self.set_block(True)
+        self.set_down()
+        self.update()
     
-    def set_down(self):
-        f = '[MClient] table.controller.BlockMode.set_down'
-        ''' Although this class should work OK with 'self.block' being None, do
-            not assign all attempts to get next block rightaway to self.block,
-            because a) 'TABLE.logic.get_down' does not accept None;
-            b) if 'self.block' is None, it is determined by the current
-            selection, i.e. the current cell, and you will not be able to go to
-            the next cell in this mode.
-        '''
-        block = self.get_down()
-        if block:
-            self.block = block
-            mes = _('Go to the same-cell block "{}"').format(self.block.text)
-            Message(f, mes).show_debug()
-            return
-        block = TABLE.logic.get_down(self.block)
-        if block:
-            self.block = block
-            mes = _('Go to the other-cell block "{}"').format(self.block.text)
-            Message(f, mes).show_debug()
+    def go_left(self):
+        self.reset_block_code(True)
+        self.set_block()
+        self.set_left()
+        self.update()
     
-    def get_up(self):
-        print('get_up:', f'"{self.block.text}": row #{self.block.rowno}, col #{self.block.colno}, cell #{self.block.cellno}, block #{self.block.no}')
-        return TABLE.logic.get_up(self.block)
+    def go_right(self):
+        self.reset_block_code(True)
+        self.set_block(True)
+        self.set_right()
+        self.update()
     
     def set_up(self):
         f = '[MClient] table.controller.BlockMode.set_up'
-        block = self.get_up()
+        block = TABLE.logic.get_up(self.block)
         if not block:
             rep.empty(f)
             return
         self.block = block
-        print(f, f': "{block.text}": row #{block.rowno}, col #{block.colno}, cell #{block.cellno}, block #{block.no}')
+    
+    def set_down(self):
+        f = '[MClient] table.controller.BlockMode.set_down'
+        block = TABLE.logic.get_down(self.block)
+        if not block:
+            rep.empty(f)
+            return
+        self.block = block
+    
+    def set_left(self):
+        f = '[MClient] table.controller.BlockMode.set_left'
+        block = TABLE.logic.get_left(self.block)
+        if not block:
+            rep.empty(f)
+            return
+        self.block = block
+    
+    def set_right(self):
+        f = '[MClient] table.controller.BlockMode.set_right'
+        block = TABLE.logic.get_right(self.block)
+        if not block:
+            rep.empty(f)
+            return
+        self.block = block
     
     def set_block(self, Forward=False):
         f = '[MClient] table.controller.BlockMode.set_block'
@@ -535,18 +541,6 @@ class BlockMode:
             rep.lazy(f)
             return
         self.block = TABLE.get_selected_block(Forward)
-    
-    def go_down(self):
-        self.reset_block_code(True)
-        self.set_block(True)
-        self.set_down()
-        self.update()
-    
-    def go_left(self):
-        self.update()
-    
-    def go_right(self):
-        self.update(True)
     
     def reset_block_code(self, Reset=False):
         f = '[MClient] table.controller.BlockMode.reset_block_code'
