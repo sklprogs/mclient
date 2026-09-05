@@ -16,6 +16,8 @@ all:
 - rework Table: adjust column widths correctly
 
 mclient:
+- EN-RU: celadon: 2 cells are joined into 1 cell: "селадон (кит. фарфор
+светло-зеленого цвета эпохи Сун the Sung Dynasty) возлюбленный"
 - EN-RU: inpersonate: condition not observed
 - EN-RU: backbone: subjects not prioritized (special page?)
 - EN-RU: alcamo: trash in article
