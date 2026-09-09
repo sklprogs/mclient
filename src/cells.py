@@ -210,7 +210,7 @@ class Elems:
                 ''' TERM field could be set previously, for example, in
                     multitrancom.elems to keep its cells in SeparateWords mode.
                 '''
-                if block.type == 'term' and not block.text:
+                if block.type == 'term' and not block.term:
                     term = block.text.lower().strip()
                     # Set by 1st term of cell as to keep cellnos in right order
                     break
