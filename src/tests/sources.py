@@ -146,7 +146,7 @@ class WrapTable:
         headers = list(range(self.colnum))
         headers = [str(no) for no in headers]
         headers.insert(0, '#')
-        mes = Table(headers = headers, iterable = self.table, maxrow = 38
+        mes = Table(headers = headers, iterable = self.table, maxrow = 32
                    ,maxrows = 200, Transpose=True, ShowGap=False).run()
         return f'{self.func}:\n{mes}'
     
@@ -178,9 +178,9 @@ class Wrap:
         iwrap = cWrap(blocks)
         blocks = iwrap.run()
         blocks = Phsubj(blocks).run()
-        #return debug_cells(f, blocks)
-        WRAP_TABLE.reset(f, blocks)
-        return WRAP_TABLE.run()
+        return debug_cells(f, blocks)
+        #WRAP_TABLE.reset(f, blocks)
+        #return WRAP_TABLE.run()
     
     def run_mdic(self):
         f = '[MClient] tests.sources.Wrap.run_mdic'
