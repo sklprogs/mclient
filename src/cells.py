@@ -177,7 +177,7 @@ class Cells:
             rep.empty(f)
             return
         if len(self.blocks) < 2:
-            rep.condition(f, f'{len(self.blocks)} >= 2')
+            rep.condition(f, f'{len(self.blocks)} >= 2', Graphical=False)
             return
         cell = Cell()
         cell.blocks.append(self.blocks[0])
