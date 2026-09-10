@@ -1,4 +1,6 @@
 (in development)
+## 8.0.2
+* Suppress annoying and useless warning when nothing was found at multitran.com
 
 ## 8.0.1
 * Fix crashes with phrase count showing disabled
