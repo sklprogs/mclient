@@ -5,6 +5,7 @@ import re
 
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
+from skl_shared.list import List
 
 from instance import Block, is_block_fixed
 from config import CONFIG
@@ -315,6 +316,19 @@ class Cells:
             block.reset()
         self.blocks.sort(key=lambda b: b.no)
     
+    def set_cell_text(self):
+        for cellno in CELLS:
+            text = []
+            for block in CELLS[cellno]:
+                if block.Ignore or block.Block:
+                    continue
+                if block.type == 'user' and not CONFIG.new['ShowUserNames']:
+                    continue
+                text.append(block.text)
+            text = List(text).space_items()
+            for block in CELLS[cellno]:
+                block.cell_text = text
+    
     def run(self):
         self.reset()
         self.ignore_roman_numbers()
@@ -323,6 +337,8 @@ class Cells:
         self.iomit = Omit(self.blocks)
         self.blocks = self.iomit.run()
         self.blocks = Prioritize(self.blocks).run()
+        # Do this only after Omit
+        self.set_cell_text()
         return self.blocks
 
 
