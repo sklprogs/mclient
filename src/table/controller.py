@@ -12,7 +12,6 @@ from config import CONFIG
 from articles import ARTICLES
 from table.gui import Table as guiTable, TableModel
 from table.logic import Table as lgTable
-from search.controller import Search
 from columns import COL_WIDTH
 import format as fm
 
@@ -23,7 +22,6 @@ class Table:
         self.set_values()
         self.logic = lgTable([])
         self.gui = guiTable()
-        self.search = Search()
         self.set_gui()
     
     def set_values(self):
@@ -54,26 +52,6 @@ class Table:
     
     def go_end(self):
         block = self.logic.get_end()
-        self.select(block)
-    
-    def search_prev(self):
-        self.reset_search()
-        block = self.search.search_prev()
-        self.select(block)
-    
-    def search_next(self):
-        self.reset_search(True)
-        block = self.search.search_next()
-        self.select(block)
-    
-    def reset_search(self, Forward=False):
-        block = self.get_selected_block(Forward)
-        self.search.reset(self.logic.blocks, block)
-    
-    def close_search_next(self):
-        self.search.close()
-        self.reset_search(True)
-        block = self.search.search_next()
         self.select(block)
     
     def go_prev_section(self, colno):
@@ -151,8 +129,6 @@ class Table:
     
     def select_with_mouse(self, rowno, colno):
         f = '[MClient] table.controller.Table.select_with_mouse'
-        if self.search.Shown:
-            return
         if rowno < 0 or rowno >= self.logic.rownum:
             mes = f'0 <= {rowno} < {self.logic.rownum}'
             rep.condition(f, mes, False)
@@ -181,8 +157,6 @@ class Table:
             rep.cancel(f)
             return
         rowno, colno = block.rowno, block.colno
-        if self.search.Shown:
-            return
         if rowno == self.old_rowno and colno == self.old_colno:
             return
         self.old_rowno = rowno
@@ -442,9 +416,6 @@ class Table:
     
     def set_bindings(self):
         self.gui.sig_select.connect(self.select_with_mouse)
-        self.search.gui.ent_src.bind(('Return',), self.close_search_next)
-        self.search.gui.btn_srp.set_action(self.search_prev)
-        self.search.gui.btn_srn.set_action(self.search_next)
 
 
 
