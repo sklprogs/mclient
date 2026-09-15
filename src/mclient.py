@@ -31,6 +31,7 @@ import keylistener.gui as kg
 from subjects import SUBJECTS
 from columns import COL_WIDTH
 from cells import Elems, Cells
+from search.controller import SEARCH
 
 
 class UpdateUI:
@@ -894,11 +895,6 @@ class App:
         REQUEST.search = text
         self.go_search()
     
-    def clear_search_field(self):
-        #TODO: implement
-        #objs.get_suggest().get_gui().close()
-        gi.objs.get_panel().ent_src.clear()
-    
     def paste(self):
         gi.objs.get_panel().ent_src.set_text(CLIPBOARD.paste())
     
@@ -948,9 +944,7 @@ class App:
         self.gui.bind(('Home',), TABLE.go_line_start)
         self.gui.bind(('End',), TABLE.go_line_end)
         self.gui.bind(('F1',), ABOUT.toggle)
-        self.gui.bind(('F3',), TABLE.search_next)
-        self.gui.bind(('Shift+F3',), TABLE.search_prev)
-        self.gui.bind(('Ctrl+F',), TABLE.search.show)
+        self.gui.bind(('Ctrl+F',), SEARCH.show)
         self.gui.bind(('Return', 'Enter',), self.go_keyboard)
         self.gui.bind(('Ctrl+Return', 'Ctrl+Enter',), self.solve_copy)
         
@@ -1035,6 +1029,12 @@ class App:
                      ,self.set_prev_lang1)
         self.gui.bind(CONFIG.new['actions']['prev_lang2']['hotkeys']
                      ,self.set_prev_lang2)
+        self.gui.bind(CONFIG.new['actions']['re_search_article']['hotkeys']
+                     ,SEARCH.clear)
+        self.gui.bind(CONFIG.new['actions']['search_article_forward']['hotkeys']
+                     ,SEARCH.search_next)
+        self.gui.bind(CONFIG.new['actions']['search_article_backward']['hotkeys']
+                     ,SEARCH.search_prev)
         
         self.history.gui.bind(CONFIG.new['actions']['toggle_history']['hotkeys']
                              ,self.history.close)
@@ -1070,7 +1070,7 @@ class App:
         gi.objs.panel.btn_blk.set_action(BLOCK.toggle)
         gi.objs.panel.btn_brw.set_action(self.logic.open_in_browser)
         gi.objs.panel.btn_cap.set_action(self.watch_clipboard)
-        gi.objs.panel.btn_clr.set_action(self.clear_search_field)
+        gi.objs.panel.btn_clr.set_action(SEARCH.clear)
         gi.objs.panel.btn_def.set_action(lambda x:self.define(False))
         gi.objs.panel.btn_hst.set_action(self.history.toggle)
         gi.objs.panel.btn_ins.set_action(self.paste)
@@ -1083,7 +1083,7 @@ class App:
         gi.objs.panel.btn_rp1.set_action(self.insert_repeat_sign)
         gi.objs.panel.btn_rp2.set_action(self.insert_repeat_sign2)
         gi.objs.panel.btn_sav.set_action(self.save.toggle)
-        gi.objs.panel.btn_ser.set_action(TABLE.search.toggle)
+        gi.objs.panel.btn_ser.set_action(SEARCH.toggle)
         gi.objs.panel.btn_set.set_action(SETTINGS.toggle)
         gi.objs.panel.btn_sym.set_action(self.symbols.show)
         gi.objs.panel.btn_swp.set_action(self.swap_langs)
