@@ -189,6 +189,16 @@ class App:
         self.set_hints()
         self.update_ui()
     
+    def select_with_mouse(self, rowno, colno):
+        ''' We must block changing cells in Table if Search is open; otherwise,
+            buttons in Search such as Next become unusable with mouse because
+            we won't be able to fix cell selection.
+        '''
+        f = '[MClient] mclient.App.select_with_mouse'
+        if SEARCH.Shown:
+            return
+        TABLE.select_with_mouse(rowno, colno)
+    
     def copy_block(self):
         if BLOCK_MODE.copy_block():
             if CONFIG.new['Iconify']:
@@ -1059,6 +1069,7 @@ class App:
         TABLE.gui.sig_mmb.connect(self.minimize)
         TABLE.gui.sig_rmb.connect(self.solve_copy)
         TABLE.gui.sig_popup.connect(self.show_popup)
+        TABLE.gui.sig_select.connect(self.select_with_mouse)
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be
             returned before the window is shown.
