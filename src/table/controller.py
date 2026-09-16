@@ -22,7 +22,6 @@ class Table:
         self.set_values()
         self.logic = lgTable([])
         self.gui = guiTable()
-        self.set_gui()
     
     def set_values(self):
         self.model = None
@@ -409,13 +408,6 @@ class Table:
     
     def show_borders(self, Show=False):
         self.gui.show_borders(Show)
-    
-    def set_gui(self):
-        #self.set_max_row_height()
-        self.set_bindings()
-    
-    def set_bindings(self):
-        self.gui.sig_select.connect(self.select_with_mouse)
 
 
 
