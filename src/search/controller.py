@@ -60,8 +60,6 @@ class Search:
             self.search_next()
     
     def reset(self):
-        print('ent_src:', self.gui.ent_src.get())
-        print('cbx_cas:', self.gui.cbx_cas.get())
         self.logic.reset(self.gui.ent_src.get(), self.gui.cbx_cas.get())
     
     def search_next(self):

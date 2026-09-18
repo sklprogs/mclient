@@ -61,7 +61,6 @@ class Search:
     
     def search_next(self, ref_block):
         f = '[MClient] search.logic.Search.search_next'
-        print(f'{f}: Searching for "{self.pattern}"')
         if not self.Success:
             rep.cancel(f)
             return
@@ -77,7 +76,6 @@ class Search:
     
     def search_prev(self, ref_block):
         f = '[MClient] search.logic.Search.search_prev'
-        print(f'{f}: Searching for "{self.pattern}"')
         if not self.Success:
             rep.cancel(f)
             return
