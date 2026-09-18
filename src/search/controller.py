@@ -35,6 +35,7 @@ class Search:
     def show(self):
         self.Shown = True
         self.gui.show()
+        self.gui.centralize()
     
     def set_bindings(self):
         self.gui.bind(('Esc',), self.close)

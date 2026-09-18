@@ -6,6 +6,7 @@ from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QShortcut, QKeySequence
 
 from skl_shared.localize import _
+from skl_shared.graphics.root.controller import ROOT
 from skl_shared.graphics.entry.controller import Entry
 from skl_shared.graphics.button.controller import Button
 from skl_shared.graphics.checkbox.controller import CheckBox
@@ -22,6 +23,9 @@ class Search(QWidget):
     def closeEvent(self, event):
         self.sig_close.emit()
         return super().closeEvent(event)
+    
+    def centralize(self):
+        self.move(ROOT.get_root().primaryScreen().geometry().center() - self.rect().center())
     
     def clear(self):
         self.ent_src.clear()
