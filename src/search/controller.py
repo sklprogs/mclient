@@ -38,7 +38,7 @@ class Search:
     
     def set_bindings(self):
         self.gui.bind(('Esc',), self.close)
-        self.gui.ent_src.bind(('Return',), self.activate_button)
+        self.gui.ent_src.bind(('Return',), self.solve_enter)
         self.gui.btn_srp.set_action(self.search_prev)
         self.gui.btn_srn.set_action(self.search_next)
         self.gui.btn_cls.action = self.close
@@ -47,16 +47,16 @@ class Search:
         self.gui.btn_clr.set_action()
         self.gui.sig_close.connect(self.close)
     
-    def activate_button(self):
+    def solve_enter(self):
         # Determine which search button has focus, if none of them - search next
-        if self.gui.btn_srn.has_focus():
-            self.search_next()
-        elif self.gui.btn_srp.has_focus():
+        if self.gui.btn_srp.has_focus():
             self.search_prev()
         elif self.gui.btn_clr.has_focus():
             self.clear()
         elif self.gui.btn_cls.has_focus():
             self.close()
+        else:
+            self.search_next()
     
     def reset(self):
         print('ent_src:', self.gui.ent_src.get())
