@@ -31,11 +31,15 @@ class Search:
     
     def _search_sensitive(self, blocks):
         for block in blocks:
+            if block.Ignore or block.Block:
+                continue
             if self.pattern in block.text:
                 return block
     
     def _search_insensitive(self, blocks):
         for block in blocks:
+            if block.Ignore or block.Block:
+                continue
             if self.pattern.lower() in block.text.lower():
                 return block
     
