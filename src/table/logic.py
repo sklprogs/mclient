@@ -100,50 +100,6 @@ class Table:
             if block.text.strip() and not block.Ignore:
                 return block
     
-    def _get_left(self, block):
-        rowno = block.rowno
-        colno = block.colno
-        for block in self.blocks[::-1]:
-            if block.rowno == rowno and block.colno < colno \
-            and block.text.strip() and not block.Ignore:
-                return block
-    
-    def get_left(self, block):
-        f = '[MClient] table.logic.Table.get_left'
-        if not self.check_block(block):
-            rep.cancel(f)
-            return
-        rowno = block.rowno
-        block = self._get_left(block)
-        if block:
-            return block
-        for block in self.blocks[::-1]:
-            if block.rowno < rowno and block.text.strip() and not block.Ignore:
-                return block
-        return self.get_end()
-    
-    def _get_right(self, block):
-        rowno = block.rowno
-        colno = block.colno
-        for block in self.blocks:
-            if block.rowno == rowno and block.colno > colno \
-            and block.text.strip() and not block.Ignore:
-                return block
-    
-    def get_right(self, block):
-        f = '[MClient] table.logic.Table.get_right'
-        if not self.check_block(block):
-            rep.cancel(f)
-            return
-        rowno = block.rowno
-        block = self._get_right(block)
-        if block:
-            return block
-        for block in self.blocks:
-            if block.rowno > rowno and block.text.strip() and not block.Ignore:
-                return block
-        return self.get_start()
-    
     def set_size(self):
         f = '[MClient] table.logic.Table.set_size'
         if not self.blocks:
@@ -182,30 +138,6 @@ class Table:
         for block in self.blocks:
             if block.rowno == rowno and block.colno == colno:
                 return block
-    
-    def _get_down(self, block):
-        rowno, colno = block.rowno, block.colno
-        for block in self.blocks:
-            ''' After blocks are sorted and wrapped, rowno and colno increase by
-                design, so we don't need to iterate rowno.
-            '''
-            if block.colno == colno and block.rowno > rowno \
-            and block.text.strip() and not block.Ignore:
-                return block
-    
-    def get_down(self, block):
-        f = '[MClient] table.logic.Table.get_down'
-        if not self.check_block(block):
-            rep.cancel(f)
-            return
-        colno = block.colno
-        block = self._get_down(block)
-        if block:
-            return block
-        for block in self.blocks:
-            if block.colno > colno and block.text.strip() and not block.Ignore:
-                return block
-        return self.get_start()
     
     def set_navigation(self):
         self.up = sorted(self.blocks, key=lambda block: (-block.colno, -block.rowno))
