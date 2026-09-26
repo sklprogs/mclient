@@ -30,7 +30,7 @@ class Search(QWidget):
     def clear(self):
         self.ent_src.clear()
     
-    def set_title(self, title=_('Search:')):
+    def set_title(self, title=_('Search')):
         self.setWindowTitle(title)
     
     def add_widgets(self):
