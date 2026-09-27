@@ -11,8 +11,8 @@ from skl_shared.pretty_html import make_pretty
 from config import CONFIG
 from logic import HTM
 from manager import SOURCES
-from articles import ARTICLES
 from save.gui import Save as guiSave, TableModel
+from table.controller import TABLE
 
 
 class Save:
@@ -200,12 +200,10 @@ class Save:
         if not self.file:
             rep.empty(f)
             return
-        # Can be an empty list
-        cells = ARTICLES.get_table()
         #TODO: elaborate
         skipped = []
         #skipped = com.get_skipped_terms()
-        code = HTM(cells, skipped).run()
+        code = HTM(TABLE.logic.blocks, skipped).run()
         if not code:
             rep.empty(f)
             return
