@@ -352,6 +352,8 @@ class Table:
             rep.empty(f)
             return []
         for block in self.logic.blocks:
+            if block.Ignore or block.Block:
+                continue
             try:
                 code[block.rowno][block.colno] += block.code
             except IndexError:
