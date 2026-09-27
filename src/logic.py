@@ -15,8 +15,9 @@ from skl_shared.paths import PDIR, Home
 from config import CONFIG, PRODUCT_LOW
 from manager import SOURCES
 from articles import ARTICLES
-from table.controller import Table
+from table.controller import TABLE
 from columns import COL_WIDTH
+from instance import is_block_fixed
 
 
 class App:
@@ -27,14 +28,12 @@ class App:
         ionline.url = SOURCES.fix_url(url)
         ionline.browse()
     
-    def print(self):
+    def print(self, blocks):
         f = '[MClient] logic.App.print'
-        # Can be an empty list
-        cells = ARTICLES.get_table()
         #TODO: elaborate
         skipped = []
         #skipped = com.get_skipped_terms()
-        code = HTM(cells, skipped).run()
+        code = HTM(TABLE.logic.blocks, skipped).run()
         if not code:
             rep.empty(f)
             return
@@ -50,14 +49,14 @@ class App:
 
 class HTM:
 
-    def __init__(self, cells, skipped=0):
+    def __init__(self, blocks, skipped=0):
         ''' - Takes ~0.01s for 'set' on AMD E-300.
             - 'collimit' includes fixed blocks.
         '''
         self.code = ['<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">']
         self.landscape = ''
         self.skipped = 0
-        self.cells = cells
+        self.blocks = blocks
         self.skipped = skipped
         
     def set_landscape(self):
@@ -95,23 +94,30 @@ class HTM:
         self.code.append('</h1>')
     
     def _create_article(self):
+        rowno = colno = -1
         self.code.append('<table>')
-        for row in self.cells:
-            self.code.append('<tr>')
-            for cell in row:
-                if cell.fixed_block:
-                    #sub = '<td align="center" valign="top" width="{}">'
+        for block in self.blocks:
+            if block.Ignore or block.Block:
+                continue
+            if block.rowno != rowno:
+                rowno = block.rowno
+                if block.rowno > 0:
+                    self.code.append('</tr>')
+                self.code.append('<tr>')
+            if block.colno != colno:
+                colno = block.colno
+                if block.colno > 0:
+                    self.code.append('</td>')
+                if is_block_fixed(block):
                     self.code.append('<td align="center" valign="top">')
                 else:
                     self.code.append('<td valign="top">')
-                self.code.append(cell.code)
-                self.code.append('</td>')
-            self.code.append('</tr>')
+            self.code.append(block.code)
         self.code.append('</table>')
     
     def create(self):
         self.add_landscape()
-        if self.cells:
+        if self.blocks:
             self._create_article()
         elif self.skipped:
             self._create_skipped()
@@ -230,101 +236,6 @@ class Commands:
             mes = _('Unable to use unverified certificates!')
             Message(f, mes).show_warning()
 
-
-
-class Search(Table):
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-    
-    def check(self):
-        f = '[MClient] logic.Search.check'
-        if not self.plain or not self.pattern.strip():
-            self.Success = False
-            rep.empty(f)
-    
-    def lower(self):
-        f = '[MClient] logic.Search.lower'
-        if not self.Success:
-            rep.cancel(f)
-            return
-        if not self.Case:
-            self.pattern = self.pattern.lower()
-            plain = []
-            for row in self.plain:
-                row = [item.lower() for item in row]
-                plain.append(row)
-            self.plain = plain
-    
-    def reset(self, plain, pattern, rowno, colno, Case=False):
-        self.set_values()
-        self.plain = plain
-        self.pattern = pattern
-        self.rowno = rowno
-        self.colno = colno
-        self.Case = Case
-        self.check()
-        self.set_size()
-        self.lower()
-    
-    def set_values(self):
-        ''' This procedure is still reused in table.controller.Table inherited
-            by the current class, so do not delete it.
-        '''
-        self.plain = []
-        self.Success = True
-        self.Case = False
-        self.rownum = 0
-        self.colnum = 0
-        self.rowno = 0
-        self.colno = 0
-        self.pattern = ''
-    
-    def _has_pattern(self):
-        for rowno in range(self.rownum):
-            for colno in range(self.colnum):
-                if self.pattern in self.plain[rowno][colno]:
-                    return True
-    
-    def search_next(self):
-        f = '[MClient] logic.Search.search_next'
-        if not self.Success:
-            rep.cancel(f)
-            return(self.rowno, self.colno)
-        # Avoid infinite recursion
-        if not self._has_pattern():
-            return(self.rowno, self.colno)
-        rowno, colno = self.get_next_col(self.rowno, self.colno)
-        mes = _('Row #{}. Column #{}: "{}"')
-        mes = mes.format(rowno, colno, self.plain[rowno][colno])
-        Message(f, mes).show_debug()
-        return(rowno, colno)
-    
-    def search_prev(self):
-        f = '[MClient] logic.Search.search_prev'
-        if not self.Success:
-            rep.cancel(f)
-            return(self.rowno, self.colno)
-        # Avoid infinite recursion
-        if not self._has_pattern():
-            return(self.rowno, self.colno)
-        rowno, colno = self.get_prev_col(self.rowno, self.colno)
-        mes = _('Row #{}. Column #{}. Text: "{}"')
-        mes = mes.format(rowno, colno, self.plain[rowno][colno])
-        Message(f, mes).show_debug()
-        return(rowno, colno)
-    
-    def _get_next_col(self, rowno, colno):
-        while colno + 1 < self.colnum:
-            colno += 1
-            if self.pattern in self.plain[rowno][colno]:
-                return(rowno, colno)
-    
-    def _get_prev_col(self, rowno, colno):
-        while colno > 0:
-            colno -= 1
-            if self.pattern in self.plain[rowno][colno]:
-                return(rowno, colno)
 
 
 com = Commands()
