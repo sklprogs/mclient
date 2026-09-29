@@ -12,7 +12,6 @@ from config import CONFIG
 from logic import HTM
 from manager import SOURCES
 from save.gui import Save as guiSave, TableModel
-from table.controller import TABLE
 
 
 class Save:
@@ -203,7 +202,7 @@ class Save:
         #TODO: elaborate
         skipped = []
         #skipped = com.get_skipped_terms()
-        code = HTM(TABLE.logic.blocks, skipped).run()
+        code = HTM(skipped).run()
         if not code:
             rep.empty(f)
             return
