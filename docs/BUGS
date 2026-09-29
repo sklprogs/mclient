@@ -1,4 +1,5 @@
 all:
+- настройка: pretty make fails ("oil&gas." is not escaped)
 - whoopee water: Сленг, but not blocked
 - if the 1st article is not found (e.g. "pile on to"), the history starts from 0
 - strong case: all sources, not set + wforms + speech + subj + dics + sources:
