@@ -28,7 +28,7 @@ class App:
         ionline.url = SOURCES.fix_url(url)
         ionline.browse()
     
-    def print(self, blocks):
+    def print(self):
         f = '[MClient] logic.App.print'
         #TODO: elaborate
         skipped = []
@@ -49,14 +49,13 @@ class App:
 
 class HTM:
 
-    def __init__(self, blocks, skipped=0):
+    def __init__(self, skipped=0):
         ''' - Takes ~0.01s for 'set' on AMD E-300.
             - 'collimit' includes fixed blocks.
         '''
         self.code = ['<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">']
         self.landscape = ''
         self.skipped = 0
-        self.blocks = blocks
         self.skipped = skipped
         
     def set_landscape(self):
@@ -96,18 +95,21 @@ class HTM:
     def _create_article(self):
         rowno = colno = -1
         self.code.append('<table>')
-        for block in self.blocks:
+        for block in TABLE.logic.blocks:
             if block.Ignore or block.Block:
                 continue
+            ''' Close td before tr. Combining opening and closing tags can
+                cause bugs.
+            '''
+            if block.colno != colno and block.colno > 0:
+                self.code.append('</td>')
+            if block.rowno != rowno and block.rowno > 0:
+                self.code.append('</tr>')
             if block.rowno != rowno:
                 rowno = block.rowno
-                if block.rowno > 0:
-                    self.code.append('</tr>')
                 self.code.append('<tr>')
             if block.colno != colno:
                 colno = block.colno
-                if block.colno > 0:
-                    self.code.append('</td>')
                 if is_block_fixed(block):
                     self.code.append('<td align="center" valign="top">')
                 else:
@@ -117,14 +119,13 @@ class HTM:
     
     def create(self):
         self.add_landscape()
-        if self.blocks:
+        if TABLE.logic.blocks:
             self._create_article()
         elif self.skipped:
             self._create_skipped()
         else:
             self._create_not_found()
-        self.code.append('</div>')
-        self.code.append('</meta></body></html>')
+        self.code.append('</div></meta></body></html>')
 
 
 
