@@ -98,23 +98,25 @@ class HTM:
         for block in TABLE.logic.blocks:
             if block.Ignore or block.Block:
                 continue
-            ''' Close td before tr. Combining opening and closing tags can
-                cause bugs.
-            '''
-            if block.colno != colno and block.colno > 0:
+            if (block.colno != colno or block.rowno != rowno) \
+            and block.colno > 0:
                 self.code.append('</td>')
-            if block.rowno != rowno and block.rowno > 0:
-                self.code.append('</tr>')
+            elif block.rowno != rowno and block.rowno > 0:
+                self.code.append('</td></tr>')
             if block.rowno != rowno:
-                rowno = block.rowno
-                self.code.append('<tr>')
-            if block.colno != colno:
                 colno = block.colno
+                rowno = block.rowno
+                self.code.append('<tr><td>')
+            elif block.colno != colno:
+                colno = block.colno
+                rowno = block.rowno
                 if is_block_fixed(block):
                     self.code.append('<td align="center" valign="top">')
                 else:
                     self.code.append('<td valign="top">')
             self.code.append(block.code)
+        if TABLE.logic.blocks:
+            self.code.append('</td></tr>')
         self.code.append('</table>')
     
     def create(self):
