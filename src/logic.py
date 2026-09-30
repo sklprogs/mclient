@@ -11,6 +11,7 @@ import skl_shared.temp_file as temp_file
 from skl_shared.text_file import Read, Write
 from skl_shared.launch import Launch
 from skl_shared.paths import PDIR, Home
+from skl_shared.list import List
 
 from config import CONFIG, PRODUCT_LOW
 from manager import SOURCES
@@ -18,6 +19,7 @@ from articles import ARTICLES
 from table.controller import TABLE
 from columns import COL_WIDTH
 from instance import is_block_fixed
+from cells import CELLS
 
 
 class App:
@@ -166,12 +168,28 @@ class Commands:
     def __init__(self):
         self.use_unverified()
     
-    def get_text(self, cells):
+    def get_text(self):
         f = '[MClient] logic.Commands.get_text'
-        if not cells:
-            rep.empty(f)
-            return ''
-        return '\n'.join([cell.plain for cell in cells])
+        text = []
+        rowno = 0
+        row = []
+        for cellno in CELLS:
+            if not CELLS[cellno]:
+                rep.empty(f)
+                continue
+            cell_text = [block.text for block in CELLS[cellno] \
+                        if not block.Ignore and not block.Block]
+            cell_text = List(cell_text).space_items()
+            if CELLS[cellno][0].rowno == rowno:
+                row.append(cell_text)
+            else:
+                if row:
+                    text.append('; '.join(row))
+                row = [cell_text]
+                rowno = CELLS[cellno][0].rowno
+        if row:
+            text.append('; '.join(row))
+        return '\n'.join(text)
     
     def fix_colors(self, colors):
         ''' We need HTML code both in cells and output to be saved. Qt requires
