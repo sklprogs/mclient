@@ -9,7 +9,7 @@ from skl_shared.text_file import Write
 from skl_shared.pretty_html import make_pretty
 
 from config import CONFIG
-from logic import HTM
+from logic import HTM, com
 from manager import SOURCES
 from save.gui import Save as guiSave, TableModel
 
@@ -136,35 +136,6 @@ class Save:
         else:
             self.show()
     
-    def _get_text(self):
-        f = '[MClient] save.controller.Save._get_text'
-        text = []
-        text_row = []
-        cells = ARTICLES.get_table()
-        if not cells:
-            rep.empty(f)
-            return ''
-        for row in cells:
-            for cell in row:
-                if not cell.text.strip():
-                    continue
-                if cell.colno == 0 and cell.fixed_block:
-                    if text_row:
-                        text_row = ''.join(text_row)
-                        # Removing '; ' before subject-related cells
-                        text.append(text_row[:-2])
-                        text_row = []
-                text_row.append(cell.text)
-                if cell.colno == 0 and cell.fixed_block:
-                    text_row.append(': ')
-                else:
-                    text_row.append('; ')
-        if text_row:
-            # Removing '; ' before subject-related cells
-            text_row = ''.join(text_row)
-            text.append(text_row[:-2])
-        return '\n\n'.join(text)
-    
     def add_bindings(self):
         self.gui.save.clicked.connect(self.select)
         self.gui.bind(('Return',), self.select)
@@ -212,16 +183,16 @@ class Save:
         Write(self.file).write(code)
 
     def save_view_as_txt(self):
-        f = '[MClient] mclient.Save.save_view_as_txt'
+        f = '[MClient] save.controller.Save.save_view_as_txt'
         self.gui.ask.filter = _('Plain text (*.txt)')
         self.file = self.gui.ask.save()
-        text = self._get_text()
-        if not self.file or not text:
-            rep.empty(f)
+        text = com.get_text()
+        if not text:
+            rep.lazy(f)
             return
         if not Path(self.file).get_ext_low() == '.txt':
             self.file += '.txt'
         Write(self.file).write(text)
 
     def copy_view(self):
-        CLIPBOARD.copy(self._get_text())
+        CLIPBOARD.copy(com.get_text())
