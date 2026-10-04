@@ -5,6 +5,8 @@
 alphabetize terms (?), get cell duplicates
 
 all:
+- Searching in article: if BlockMode, search in block.text; otherwise, search in
+  block.cell_text.
 - Catch RuntimeError:
 Traceback (most recent call last):
   File "/home/pete/bin/mclient/src/mclient.py", line 992, in quit
