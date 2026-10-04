@@ -35,6 +35,7 @@ class Block:
         self.source = ''
         # Preserve original order after sorting
         self.no = -1
+        # This is assigned in sources that are processed once; do not reset
         self.cellno = -1
         self.Delete = False
         self.speech = ''
@@ -52,6 +53,7 @@ class Block:
         self.subjpr = -1
         self.speechpr = -1
         self.sourcepr = -1
+        self.cell_text = ''
         self.code = ''
         self.col1 = ''
         self.col2 = ''
