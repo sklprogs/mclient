@@ -12,8 +12,10 @@ from config import CONFIG
 from speech import SPEECH
 from subjects import SUBJECTS
 
-CELLS = {}
 
+def get_cell(blocks, cellno):
+    return [block for block in blocks \
+           if block.cellno == cellno and not block.Ignore and not block.Block]
 
 
 class Elems:
@@ -103,12 +105,6 @@ class Elems:
             groups.append(group)
         return groups
 
-    def fill_cells(self):
-        for block in self.blocks:
-            if not block.cellno in CELLS:
-                CELLS[block.cellno] = []
-            CELLS[block.cellno].append(block)
-    
     def attach_comments(self):
         f = '[MClient] cells.Elems.attach_comments'
         groups = self._get_groups()
@@ -203,21 +199,36 @@ class Elems:
         self.blocks = [block for block in self.blocks if block.text.strip()]
         rep.matches(f, old_len - len(self.blocks))
     
+    def _get_term(self, blocks):
+        f = '[MClient] cells.Elems._get_term'
+        if not blocks:
+            rep.lazy(f)
+            return ''
+        term = [block.term for block in blocks if block.term]
+        ''' TERM field could be set previously, for example, in
+            multitrancom.elems to keep its cells in SeparateWords mode.
+        '''
+        if term:
+            return ''
+        for block in blocks:
+            if block.type == 'term' and block.text.strip():
+                # Set by 1st term of cell as to keep cellnos in right order
+                return block.text.lower().strip()
+        return ''
+    
     def set_term(self):
         # Alphabetize by terms, not by cell text since it can start with comment
-        for cellno in CELLS:
-            term = ''
-            for block in CELLS[cellno]:
-                ''' TERM field could be set previously, for example, in
-                    multitrancom.elems to keep its cells in SeparateWords mode.
-                '''
-                if block.type == 'term' and not block.term:
-                    term = block.text.lower().strip()
-                    # Set by 1st term of cell as to keep cellnos in right order
-                    break
-            if term:
-                for block in CELLS[cellno]:
-                    block.term = term
+        cellno = -1
+        for block in self.blocks:
+            if block.cellno == cellno:
+                continue
+            cellno = block.cellno
+            cell = get_cell(self.blocks, cellno)
+            term = self._get_term(cell)
+            if not term:
+                continue
+            for cell_block in cell:
+                cell_block.term = term
     
     def run(self):
         self.set_phurl()
@@ -236,8 +247,6 @@ class Elems:
         # Do this only after self.set_subjf but before self.remove_fixed
         self.set_art_subj()
         self.remove_fixed()
-        # Do this only after cellnos are set and will not be reassigned
-        self.fill_cells()
         self.set_term()
         self.set_no()
         return self.blocks
@@ -317,17 +326,20 @@ class Cells:
         self.blocks.sort(key=lambda b: b.no)
     
     def set_cell_text(self):
-        for cellno in CELLS:
-            text = []
-            for block in CELLS[cellno]:
-                if block.Ignore or block.Block:
+        cellno = -1
+        for block in self.blocks:
+            if block.cellno == cellno:
+                continue
+            cellno = block.cellno
+            cell = get_cell(self.blocks, cellno)
+            cell_text = []
+            for cell_block in cell:
+                if cell_block.Ignore or cell_block.Block:
                     continue
-                if block.type == 'user' and not CONFIG.new['ShowUserNames']:
-                    continue
-                text.append(block.text)
-            text = List(text).space_items()
-            for block in CELLS[cellno]:
-                block.cell_text = text
+                cell_text.append(cell_block.text)
+            cell_text = List(cell_text).space_items()
+            for cell_block in cell:
+                cell_block.cell_text = cell_text
     
     def run(self):
         self.reset()
