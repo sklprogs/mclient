@@ -29,6 +29,9 @@ class Table:
         self.old_rowno = -1
         self.old_colno = -1
     
+    def get_text(self):
+        return self.logic.get_text()
+    
     def _check_cell(self, cell):
         f = '[MClient] table.controller.Table._check_cell'
         if not cell:
@@ -255,19 +258,13 @@ class Table:
         index_ = self.model.index(self.coords[rowno], colno)
         self.gui.scroll2index(index_)
     
-    def _get_cell_text(self, block):
-        cellno = block.cellno
-        fragms = [block.text for block in self.logic.blocks \
-                 if block.cellno == cellno]
-        return List(fragms).space_items()
-    
     def get_cell_text(self):
         f = '[MClient] table.controller.Table.get_cell_text'
         block = self.get_selected_block()
         if not block:
             rep.empty(f)
             return ''
-        return self._get_cell_text(block)
+        return block.cell_text
     
     def get_cell_code(self):
         f = '[MClient] table.controller.Table.get_cell_code'
