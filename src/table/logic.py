@@ -34,6 +34,25 @@ class Table:
         self.set_size()
         self.set_navigation()
     
+    def get_text(self):
+        text = []
+        row = []
+        rowno = cellno = -1
+        for block in self.blocks:
+            if cellno == block.cellno:
+                continue
+            cellno = block.cellno
+            if rowno == block.rowno:
+                row.append(block.cell_text)
+            else:
+                rowno = block.rowno
+                if row:
+                    text.append('; '.join(row))
+                row = [block.cell_text]
+        if row:
+            text.append('; '.join(row))
+        return '\n'.join(text)
+    
     def _get_page_block(self, colno, row_min, row_max):
         for block in self.blocks:
             if block.colno == colno and block.rowno >= row_min \
