@@ -9,9 +9,10 @@ from skl_shared.text_file import Write
 from skl_shared.pretty_html import make_pretty
 
 from config import CONFIG
-from logic import HTM, com
+from logic import HTM
 from manager import SOURCES
 from save.gui import Save as guiSave, TableModel
+from table.controller import TABLE
 
 
 class Save:
@@ -186,7 +187,7 @@ class Save:
         f = '[MClient] save.controller.Save.save_view_as_txt'
         self.gui.ask.filter = _('Plain text (*.txt)')
         self.file = self.gui.ask.save()
-        text = com.get_text()
+        text = TABLE.get_text()
         if not text:
             rep.lazy(f)
             return
@@ -195,4 +196,4 @@ class Save:
         Write(self.file).write(text)
 
     def copy_view(self):
-        CLIPBOARD.copy(com.get_text())
+        CLIPBOARD.copy(TABLE.get_text())
