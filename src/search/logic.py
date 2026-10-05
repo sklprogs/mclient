@@ -29,25 +29,49 @@ class Search:
         self.Case = False
         self.pattern = ''
     
-    def _search_sensitive(self, blocks):
+    def _search_sensitive_block(self, blocks):
         for block in blocks:
             if block.Ignore or block.Block:
                 continue
             if self.pattern in block.text:
                 return block
     
-    def _search_insensitive(self, blocks):
+    def _search_sensitive(self, blocks):
+        cellno = -1
+        for block in blocks:
+            if block.Ignore or block.Block or cellno == block.cellno:
+                continue
+            cellno = block.cellno
+            if self.pattern in block.cell_text:
+                return block
+    
+    def _search_insensitive_block(self, blocks):
         for block in blocks:
             if block.Ignore or block.Block:
                 continue
             if self.pattern.lower() in block.text.lower():
                 return block
     
+    def _search_insensitive(self, blocks):
+        cellno = -1
+        for block in blocks:
+            if block.Ignore or block.Block or cellno == block.cellno:
+                continue
+            cellno = block.cellno
+            if self.pattern.lower() in block.cell_text.lower():
+                return block
+    
     def _search(self, blocks):
         if self.Case:
-            return self._search_sensitive(blocks)
+            if TABLE.logic.BlockMode:
+                return self._search_sensitive_block(blocks)
+            else:
+                return self._search_sensitive(blocks)
         else:
-            return self._search_insensitive(blocks)
+            if TABLE.logic.BlockMode:
+                return self._search_insensitive_block(blocks)
+            else:
+                return self._search_insensitive(blocks)
     
     def search_start(self):
         f = '[MClient] search.logic.Search.search_start'
