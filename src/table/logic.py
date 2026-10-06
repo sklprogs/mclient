@@ -34,6 +34,12 @@ class Table:
         self.set_size()
         self.set_navigation()
     
+    def _add_row(self, text, row):
+        row = [cell_text for cell_text in row if cell_text.strip()]
+        if row:
+            text.append('; '.join(row))
+        return text
+    
     def get_text(self):
         text = []
         row = []
@@ -46,11 +52,9 @@ class Table:
                 row.append(block.cell_text)
             else:
                 rowno = block.rowno
-                if row:
-                    text.append('; '.join(row))
+                text = self._add_row(text, row)
                 row = [block.cell_text]
-        if row:
-            text.append('; '.join(row))
+        text = self._add_row(text, row)
         return '\n'.join(text)
     
     def _get_page_block(self, colno, row_min, row_max):
