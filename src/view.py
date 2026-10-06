@@ -13,6 +13,7 @@ from format import Block as fmBlock
 from subjects import SUBJECTS
 from articles import ARTICLES
 from columns import COL_WIDTH
+from cells import get_cell
 
 
 
@@ -487,6 +488,25 @@ class Wrap:
                 else:
                     transc = block.transc
     
+    def set_cell_text(self):
+        ''' Do this after clearing duplicates (where block.text is set for
+            the last time).
+        '''
+        cellno = -1
+        for block in self.blocks:
+            if block.cellno == cellno:
+                continue
+            cellno = block.cellno
+            cell = get_cell(self.blocks, cellno)
+            cell_text = []
+            for cell_block in cell:
+                if cell_block.Ignore or cell_block.Block:
+                    continue
+                cell_text.append(cell_block.text)
+            cell_text = List(cell_text).space_items()
+            for cell_block in cell:
+                cell_block.cell_text = cell_text
+    
     def format(self):
         self.blocks = [fmBlock(block).run() for block in self.blocks]
     
@@ -494,5 +514,6 @@ class Wrap:
         self.wrap()
         self.clear_single_source()
         self.clear_duplicates()
+        self.set_cell_text()
         self.format()
         return self.blocks
