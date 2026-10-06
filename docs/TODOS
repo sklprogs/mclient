@@ -5,6 +5,7 @@
 alphabetize terms (?), get cell duplicates
 
 all:
+- export .csv instead of .txt
 - Searching in article: if BlockMode, search in block.text; otherwise, search in
   block.cell_text.
 - Catch RuntimeError:
