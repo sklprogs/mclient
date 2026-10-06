@@ -1,4 +1,7 @@
 all:
+- when there is a lot of ignored blocks, the whole row can be empty and some
+  of its empty blocks can be selected (the row should not be created in the
+  first place)
 - настройка: pretty make fails ("oil&gas." is not escaped)
 - whoopee water: Сленг, but not blocked
 - if the 1st article is not found (e.g. "pile on to"), the history starts from 0
