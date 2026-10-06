@@ -19,7 +19,6 @@ from articles import ARTICLES
 from table.controller import TABLE
 from columns import COL_WIDTH
 from instance import is_block_fixed
-from cells import get_cell
 
 
 class App:
