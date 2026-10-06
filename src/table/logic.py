@@ -3,6 +3,7 @@
 
 from skl_shared.localize import _
 from skl_shared.message.controller import rep, Message
+from skl_shared.logic import Text
 
 
 class Table:
@@ -35,9 +36,23 @@ class Table:
         self.set_navigation()
     
     def _add_row(self, text, row):
-        row = [cell_text for cell_text in row if cell_text.strip()]
-        if row:
-            text.append('; '.join(row))
+        new_row = []
+        for block in row:
+            itext = Text(block.cell_text)
+            itext.delete_duplicate_line_breaks()
+            itext.delete_line_breaks()
+            itext.tabs2spaces()
+            itext.delete_duplicate_spaces()
+            cell_text = itext.text
+            if cell_text:
+                if block.colno == 0:
+                    new_row.append('\n' + cell_text)
+                else:
+                    new_row.append(cell_text)
+            else:
+                new_row.append(f'({block.rowno},{block.colno})')
+        if new_row:
+            text.append('; '.join(new_row))
         return text
     
     def get_text(self):
@@ -49,13 +64,13 @@ class Table:
                 continue
             cellno = block.cellno
             if rowno == block.rowno:
-                row.append(block.cell_text)
+                row.append(block)
             else:
                 rowno = block.rowno
                 text = self._add_row(text, row)
-                row = [block.cell_text]
+                row = [block]
         text = self._add_row(text, row)
-        return '\n'.join(text)
+        return '\n'.join(text).strip()
     
     def _get_page_block(self, colno, row_min, row_max):
         for block in self.blocks:
