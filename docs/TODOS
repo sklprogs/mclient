@@ -1,10 +1,11 @@
-- add spaces between blocks where appropriate;
-- do not reset bookmarks when loading a different view, try to find the same
-  cell;
 - cell_text can be used here: search article, save article as txt,
 alphabetize terms (?), get cell duplicates
 
 all:
+- set: article loading became too long;
+- add spaces between blocks where appropriate;
+- do not reset bookmarks when loading a different view, try to find the same
+  cell;
 - export .csv instead of .txt
 - Searching in article: if BlockMode, search in block.text; otherwise, search in
   block.cell_text.
