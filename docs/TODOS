@@ -2,6 +2,9 @@
 alphabetize terms (?), get cell duplicates
 
 all:
+- (as an option) Delete stress in blocks like здр'авствуйте, прив'ет. Do not
+  delete it in trascription and in cases like Michael's and Petersons'.
+- convert single-character comments to embracing type;
 - set: article loading became too long;
 - add spaces between blocks where appropriate;
 - do not reset bookmarks when loading a different view, try to find the same
