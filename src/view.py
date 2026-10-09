@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import copy
+from collections import defaultdict
 
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
@@ -13,8 +14,6 @@ from format import Block as fmBlock
 from subjects import SUBJECTS
 from articles import ARTICLES
 from columns import COL_WIDTH
-from cells import get_cell
-
 
 
 class Phrases:
@@ -489,23 +488,15 @@ class Wrap:
                     transc = block.transc
     
     def set_cell_text(self):
-        ''' Do this after clearing duplicates (where block.text is set for
-            the last time).
-        '''
-        cellno = -1
+        cells_dic = defaultdict(list)
         for block in self.blocks:
-            if block.cellno == cellno:
-                continue
-            cellno = block.cellno
-            cell = get_cell(self.blocks, cellno)
-            cell_text = []
-            for cell_block in cell:
-                if cell_block.Ignore or cell_block.Block:
-                    continue
-                cell_text.append(cell_block.text)
+            if not block.Ignore and not block.Block:
+                cells_dic[block.cellno].append(block)
+        for cellno, cell_blocks in cells_dic.items():
+            cell_text = [block.text for block in cell_blocks]
             cell_text = List(cell_text).space_items()
-            for cell_block in cell:
-                cell_block.cell_text = cell_text
+            for block in cell_blocks:
+                block.cell_text = cell_text
     
     def format(self):
         self.blocks = [fmBlock(block).run() for block in self.blocks]
