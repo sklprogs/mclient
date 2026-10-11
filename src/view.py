@@ -411,6 +411,8 @@ class Wrap:
         source = dic = subj = wform = speech = transc = ''
         cellno = 0
         for block in self.blocks:
+            if block.Ignore or block.Block:
+                continue
             if (source, dic, subj, wform, speech, transc) != (block.source
                ,block.dic, block.subj, block.wform, block.speech, block.transc):
                 # Required in both if and elif; otherwise, expect bugs
@@ -426,9 +428,6 @@ class Wrap:
                 cellno = block.cellno
                 if self.colno + 1 == collimit:
                     new_blocks += self._create_row(block, True)
-                elif block.Ignore:
-                    # Do not add empty space - cells can be entirely ignored
-                    pass
                 else:
                     self.colno += 1
             new_blocks.append(block)
