@@ -258,6 +258,7 @@ class View:
         return debug_cells(f, blocks)
     
     def run_all(self):
+        f = '[MClient] tests.sources.View.run_all'
         from manager import SOURCES
         from articles import ARTICLES
         from cells import Elems as cElems, Cells
@@ -268,11 +269,11 @@ class View:
         ARTICLES.add(SEARCH, URL, cells)
         cells = Omit(cells).run()
         cells = vPrioritize(cells).run()
-        iview = vView(cells)
-        iview.run()
-        return iview.debug()
+        blocks = vView(cells).run()
+        return debug_cells(f, blocks)
     
     def run_stardict(self):
+        f = '[MClient] tests.sources.View.run_stardict'
         import logic as lg
         import sources.stardict.cleanup as cu
         import sources.stardict.tags as tg
@@ -288,9 +289,8 @@ class View:
         ARTICLES.add(SEARCH, URL, cells)
         cells = vw.Omit(cells).run()
         cells = vw.Prioritize(cells).run()
-        iview = vw.View(cells)
-        iview.run()
-        return iview.debug()
+        blocks = vw.View(cells).run()
+        return debug_cells(f, blocks)
     
     def run_multitrancom(self):
         f = '[MClient] tests.sources.View.run_multitrancom'
@@ -357,14 +357,15 @@ class View:
 class Elems:
     
     def run_all(self):
+        f = '[MClient] tests.sources.Elems.run_all'
         from manager import SOURCES
         from cells import Elems as cElems
         blocks = SOURCES.request(SEARCH)
-        ielems = cElems(blocks)
-        ielems.run()
-        return ielems.debug()
+        blocks = cElems(blocks).run()
+        return debug_cells(f, blocks)
     
     def run_multitrandem(self):
+        f = '[MClient] tests.sources.Elems.run_multitrandem'
         import sources.multitrandem.get as gt
         import sources.multitrandem.tags as tg
         import sources.multitrandem.elems as el
@@ -378,14 +379,14 @@ class Elems:
             add = tg.Tags(chunks[i], i).run()
             if add:
                 blocks += add
-        ielems = el.Elems(blocks = blocks
+        blocks = el.Elems(blocks = blocks
                          ,abbr = None
                          ,langs = gt.ALL_DICS.get_langs()
-                         ,search = SEARCH)
-        ielems.run()
-        return ielems.debug()
+                         ,search = SEARCH).run()
+        return debug_cells(f, blocks)
     
     def run_stardict(self):
+        f = '[MClient] tests.sources.Elems.run_stardict'
         from sources.stardict.get import ALL_DICS
         import sources.stardict.cleanup as cu
         import sources.stardict.tags as tg
@@ -398,10 +399,11 @@ class Elems:
             article.code = cu.CleanUp(article.code).run()
             blocks += tg.Tags(article).run()
         blocks = mElems(blocks).run()
-        ielems = cElems(blocks)
-        return ielems.debug()
+        blocks = cElems(blocks).run()
+        return debug_cells(f, blocks)
     
     def run_stardict_cells(self):
+        f = '[MClient] tests.sources.Elems.run_stardict_cells'
         from sources.stardict.cleanup import CleanUp as mCleanUp
         from sources.stardict.tags import Tags as mTags
         from sources.stardict.elems import Elems as mElems
@@ -412,40 +414,41 @@ class Elems:
         blocks = mTags(text).run()
         blocks = mElems(blocks).run()
         blocks = cElems(blocks).run()
-        icells = Cells(blocks)
-        icells.run()
-        return icells.debug()
+        blocks = Cells(blocks).run()
+        return debug_cells(f, blocks)
     
     def run_fora(self):
+        f = '[MClient] tests.sources.Elems.run_fora'
         from cells import Elems as cElems
         from sources.fora.run import Source
         blocks = Source().request(SEARCH)
-        ielems = cElems(blocks)
-        ielems.run()
-        return ielems.debug()
+        blocks = cElems(blocks).run()
+        return debug_cells(f, blocks)
     
     def run_mdic(self):
+        f = '[MClient] tests.sources.Elems.run_mdic'
         import sources.mdic.get as gt
         import sources.mdic.elems as el
         import cells as cl
         result = gt.ALL_DICS.search(SEARCH)
         blocks = el.Elems(result).run()
         ielems = cl.Elems(blocks)
-        ielems.run()
-        return ielems.debug()
+        blocks = ielems.run()
+        return debug_cells(f, blocks)
     
     def run_mdic_cells(self):
+        f = '[MClient] tests.sources.Elems.run_mdic_cells'
         import sources.mdic.get as gt
         import sources.mdic.elems as el
         import cells as cl
         result = gt.ALL_DICS.search(SEARCH)
         blocks = el.Elems(result).run()
         blocks = cl.Elems(blocks).run()
-        icell = cl.Cells(blocks)
-        icell.run()
-        return icell.debug()
+        blocks = cl.Cells(blocks).run()
+        return debug_cells(f, blocks)
     
     def run_dsl(self):
+        f = '[MClient] tests.sources.Elems.run_dsl'
         import sources.dsl.cleanup as cu
         import sources.dsl.get as gt
         import sources.dsl.tags as tg
@@ -455,11 +458,11 @@ class Elems:
         for article in articles:
             article.code = cu.CleanUp(article.code).run()
             blocks += tg.Tags(article).run()
-        ielems = el.Elems(blocks)
-        ielems.run()
-        return ielems.debug()
+        blocks = el.Elems(blocks).run()
+        return debug_cells(f, blocks)
     
     def run_dsl_cells(self):
+        f = '[MClient] tests.sources.Elems.run_dsl_cells'
         from sources.dsl.cleanup import CleanUp
         from sources.dsl.get import Get
         from sources.dsl.tags import Tags
@@ -472,9 +475,8 @@ class Elems:
             blocks += Tags(article).run()
         blocks = Elems(blocks).run()
         blocks = cElems(blocks).run()
-        icells = Cells(blocks)
-        icells.run()
-        return icells.debug()
+        blocks = Cells(blocks).run()
+        return debug_cells(f, blocks)
     
     def run_multitrancom(self):
         f = '[MClient] tests.sources.Elems.run_multitrancom'
@@ -485,8 +487,8 @@ class Elems:
         code = mtGet(search=SEARCH, url=URL).run()
         code = mtCleanUp(code).run()
         blocks = mtTags(code).run()
-        ielems = mtElems(blocks).run()
-        return ielems.debug()
+        blocks = mtElems(blocks).run()
+        return debug_cells(f, blocks)
 
 
 
