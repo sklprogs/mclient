@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import re
+from collections import defaultdict
 
 from skl_shared.localize import _
 from skl_shared.message.controller import Message, rep
@@ -10,11 +11,6 @@ from instance import Block, is_block_fixed
 from config import CONFIG
 from speech import SPEECH
 from subjects import SUBJECTS
-
-
-def get_cell(blocks, cellno):
-    return [block for block in blocks \
-           if block.cellno == cellno and not block.Ignore and not block.Block]
 
 
 class Elems:
@@ -217,12 +213,13 @@ class Elems:
     
     def set_term(self):
         # Alphabetize by terms, not by cell text since it can start with comment
-        cellno = -1
+        ''' Similar to Wrap.set_cell_text. Do not share since contents is
+            different - no fixed cells and additional fields at this step. '''
+        cells_dic = defaultdict(list)
         for block in self.blocks:
-            if block.cellno == cellno:
-                continue
-            cellno = block.cellno
-            cell = get_cell(self.blocks, cellno)
+            if not block.Ignore and not block.Block:
+                cells_dic[block.cellno].append(block)
+        for cellno, cell in cells_dic.items():
             term = self._get_term(cell)
             if not term:
                 continue
