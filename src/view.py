@@ -488,14 +488,14 @@ class Wrap:
                     transc = block.transc
     
     def set_cell_text(self):
-        cells_dic = defaultdict(list)
+        cell_dic = defaultdict(list)
         for block in self.blocks:
             if not block.Ignore and not block.Block:
-                cells_dic[block.cellno].append(block)
-        for cellno, cell_blocks in cells_dic.items():
-            cell_text = [block.text for block in cell_blocks]
+                cell_dic[block.cellno].append(block)
+        for cellno, cell in cell_dic.items():
+            cell_text = [block.text for block in cell]
             cell_text = List(cell_text).space_items()
-            for block in cell_blocks:
+            for block in cell:
                 block.cell_text = cell_text
     
     def format(self):
