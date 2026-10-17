@@ -13,7 +13,7 @@ from skl_shared.time import Timer
 from config import CONFIG, HistorySubjects
 from manager import SOURCES
 from articles import ARTICLES
-from table.controller import TABLE, BLOCK_MODE
+from table.controller import TABLE
 import logic as lg
 from logic import REQUEST
 import gui as gi
@@ -200,41 +200,27 @@ class App:
         TABLE.select_with_mouse(rowno, colno)
     
     def copy_block(self):
-        if BLOCK_MODE.copy_block():
+        #TODO: implement
+        if TABLE.copy_block():
             if CONFIG.new['Iconify']:
                 self.minimize()
     
     def solve_copy(self):
-        if BLOCK_MODE.is_active():
+        if CONFIG.new['BlockMode']:
             self.copy_block()
         else:
             self.copy_cell()
     
     def go_left(self):
-        if BLOCK_MODE.is_active():
-            BLOCK_MODE.go_left()
-        else:
-            TABLE.go_left()
+        TABLE.go_left()
     
     def go_right(self):
-        if BLOCK_MODE.is_active():
-            BLOCK_MODE.go_right()
-        else:
-            TABLE.go_right()
+        TABLE.go_right()
     
     def go_down(self):
-        if BLOCK_MODE.is_active():
-            BLOCK_MODE.go_down()
-        else:
-            TABLE.go_down()
+        TABLE.go_down()
     
     def go_up(self):
-        '''
-        if BLOCK_MODE.is_active():
-            BLOCK_MODE.go_up()
-        else:
-            TABLE.go_up()
-        '''
         TABLE.go_up()
     
     def _set_hint(self, widget, action):
@@ -1001,12 +987,12 @@ class App:
                      ,self.symbols.show)
         self.gui.bind(CONFIG.new['actions']['swap_langs']['hotkeys']
                      ,self.swap_langs)
-        self.gui.bind(CONFIG.new['actions']['toggle_block']['hotkeys']
-                     ,BLOCK.toggle_use)
         self.gui.bind(CONFIG.new['actions']['toggle_priority']['hotkeys']
                      ,PRIOR.toggle_use)
         self.gui.bind(CONFIG.new['actions']['show_block']['hotkeys']
                      ,BLOCK.toggle)
+        self.gui.bind(CONFIG.new['actions']['toggle_block']['hotkeys']
+                     ,BLOCK.toggle_use)
         self.gui.bind(CONFIG.new['actions']['show_prior']['hotkeys']
                      ,PRIOR.toggle)
         self.gui.bind(CONFIG.new['actions']['toggle_popup']['hotkeys']
@@ -1030,7 +1016,7 @@ class App:
         self.gui.bind(CONFIG.new['actions']['copy_nominative']['hotkeys']
                      ,self.copy_wform)
         self.gui.bind(CONFIG.new['actions']['select_block']['hotkeys']
-                     ,BLOCK_MODE.toggle)
+                     ,TABLE.toggle_mode)
         self.gui.bind(CONFIG.new['actions']['next_lang1']['hotkeys']
                      ,self.set_next_lang1)
         self.gui.bind(CONFIG.new['actions']['next_lang2']['hotkeys']
