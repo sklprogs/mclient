@@ -98,8 +98,8 @@ class TableDelegate(QStyledItemDelegate):
             color = QColor('red')
             pen = QPen(color, 2)
             painter.setPen(pen)
-            # Avoid intersecting cell borders and artifacts as the result
             x1, y1, x2, y2 = option.rect.getCoords()
+            # +/-1 to avoid intersecting cell borders and artifacts as the result
             option.rect.setCoords(x1 + 1, y1 + 1, x2 - 1, y2 - 1)
             painter.drawRect(option.rect)
         
