@@ -4,6 +4,7 @@
 from skl_shared.localize import _
 from skl_shared.message.controller import rep, Message
 from skl_shared.logic import Text
+from config import CONFIG
 
 
 class Table:
@@ -199,8 +200,9 @@ class Table:
         if not block:
             rep.empty(f)
             return
-        if block.Ignore or not block.text.strip() \
-        or ref_block.cellno == block.cellno:
+        Empty = block.Ignore or not block.text.strip()
+        SameCell = ref_block.cellno == block.cellno and not CONFIG.new['BlockMode']
+        if Empty or SameCell:
             block = self._get_next_cell(block, lst)
         return block
     
