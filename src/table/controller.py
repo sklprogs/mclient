@@ -24,10 +24,24 @@ class Table:
         self.gui = guiTable()
     
     def set_values(self):
+        #TODO: Set in default config
+        CONFIG.new['BlockMode'] = False
         self.model = None
         self.coords = {}
         self.old_rowno = -1
         self.old_colno = -1
+    
+    def toggle_mode(self):
+        f = '[MClient] table.controller.Table.toggle_mode'
+        if CONFIG.new['BlockMode']:
+            Message(f, _('Disable block mode')).show_info()
+            CONFIG.new['BlockMode'] = False
+            #self.reset_block_code(True)
+            #self.update(True)
+        else:
+            Message(f, _('Enable block mode')).show_info()
+            CONFIG.new['BlockMode'] = True
+            #self.update()
     
     def get_text(self):
         return self.logic.get_text()
@@ -409,119 +423,4 @@ class Table:
         self.gui.show_borders(Show)
 
 
-
-class BlockMode:
-    
-    def __init__(self):
-        self.block = None
-    
-    def is_active(self):
-        return self.block
-    
-    def enable(self):
-        f = '[MClient] table.controller.BlockMode.enable'
-        Message(f, _('Enable block mode')).show_info()
-        self.set_block(True)
-        self.update()
-    
-    def disable(self):
-        f = '[MClient] table.controller.BlockMode.disable'
-        Message(f, _('Disable block mode')).show_info()
-        self.update(True)
-        self.block = None
-    
-    def toggle(self):
-        if self.block:
-            self.disable()
-        else:
-            self.enable()
-    
-    def go_up(self):
-        self.reset_block_code(True)
-        self.set_block()
-        self.set_up()
-        self.update()
-    
-    def go_down(self):
-        self.reset_block_code(True)
-        self.set_block(True)
-        self.set_down()
-        self.update()
-    
-    def go_left(self):
-        self.reset_block_code(True)
-        self.set_block()
-        self.set_left()
-        self.update()
-    
-    def go_right(self):
-        self.reset_block_code(True)
-        self.set_block(True)
-        self.set_right()
-        self.update()
-    
-    def set_up(self):
-        f = '[MClient] table.controller.BlockMode.set_up'
-        block = TABLE.logic.get_up(self.block)
-        if not block:
-            rep.empty(f)
-            return
-        self.block = block
-    
-    def set_down(self):
-        f = '[MClient] table.controller.BlockMode.set_down'
-        block = TABLE.logic.get_down(self.block)
-        if not block:
-            rep.empty(f)
-            return
-        self.block = block
-    
-    def set_left(self):
-        f = '[MClient] table.controller.BlockMode.set_left'
-        block = TABLE.logic.get_left(self.block)
-        if not block:
-            rep.empty(f)
-            return
-        self.block = block
-    
-    def set_right(self):
-        f = '[MClient] table.controller.BlockMode.set_right'
-        block = TABLE.logic.get_right(self.block)
-        if not block:
-            rep.empty(f)
-            return
-        self.block = block
-    
-    def set_block(self, Forward=False):
-        f = '[MClient] table.controller.BlockMode.set_block'
-        ''' Do not reassign the current block if it is already set; otherwise,
-            the current block is set according to the selected cell, i.e. to
-            block #0, and doing 'go_down' or 'go_right' won't be able to go past
-            block #1.
-        '''
-        if self.block:
-            rep.lazy(f)
-            return
-        self.block = TABLE.get_selected_block(Forward)
-    
-    def reset_block_code(self, Reset=False):
-        f = '[MClient] table.controller.BlockMode.reset_block_code'
-        if not self.block:
-            rep.lazy(f)
-            return
-        # Reset reverts current block to old formatting thus unselecting it
-        fm.Block(self.block, not Reset).run()
-    
-    def update(self, Reset=False):
-        f = '[MClient] table.controller.BlockMode.update'
-        if not self.block:
-            rep.lazy(f)
-            return
-        self.reset_block_code(Reset)
-        #TODO: This is probably slower than it should be
-        TABLE.reset(TABLE.logic.blocks)
-        TABLE.select(self.block)
-
-
 TABLE = Table()
-BLOCK_MODE = BlockMode()
