@@ -94,7 +94,7 @@ class TableDelegate(QStyledItemDelegate):
         if self.index is None:
             mes = _('Index must be set externally!')
             Message(f, mes).show_error()
-        elif index == self.index:
+        elif index == self.index and not CONFIG.new['BlockMode']:
             color = QColor('red')
             pen = QPen(color, 2)
             painter.setPen(pen)
