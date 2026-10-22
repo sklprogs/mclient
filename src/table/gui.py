@@ -149,17 +149,12 @@ class Table(QTableView):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.delegate = TableDelegate()
-        # Do not override internal 'x' and 'y'
-        self.x_ = 0
-        self.y_ = 0
         self.set_gui()
     
     def _use_mouse(self, event):
         pos = event.position().toPoint()
-        self.x_ = pos.x()
-        self.y_ = pos.y()
-        rowno = self.rowAt(self.y_)
-        colno = self.columnAt(self.x_)
+        rowno = self.rowAt(pos.y())
+        colno = self.columnAt(pos.x())
         self.sig_select.emit(rowno, colno, True)
     
     def mouseMoveEvent(self, event):
