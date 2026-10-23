@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+from skl_shared.message.controller import rep
 from skl_shared.graphics.color.controller import Color
 
 from config import CONFIG
@@ -122,6 +123,10 @@ class Block:
             self.block.code = sub.format(family, size, color, self.block.text)
     
     def run(self):
+        f = '[MClient] format.Block.run'
+        if not self.block:
+            rep.empty(f)
+            return
         # Do not set CODE for ignored blocks
         if self.block.Ignore or not self.block.text:
             return self.block
