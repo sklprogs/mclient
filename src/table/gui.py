@@ -3,9 +3,10 @@
 
 from PyQt6.QtWidgets import QTableView, QStyleOptionViewItem, QAbstractItemView
 from PyQt6.QtWidgets import QStyledItemDelegate, QApplication, QStyle
-from PyQt6.QtCore import pyqtSignal, Qt, QSize, QAbstractTableModel, QVariant
-from PyQt6.QtGui import QTextCursor, QTextDocument, QAbstractTextDocumentLayout
-from PyQt6.QtGui import QColor, QPen
+from PyQt6.QtCore import pyqtSignal, Qt, QSize, QAbstractTableModel, QVariant,\
+                         QPointF
+from PyQt6.QtGui import QTextCursor, QTextDocument, QAbstractTextDocumentLayout,\
+                        QColor, QPen
 
 from skl_shared.localize import _
 from skl_shared.message.controller import rep, Message
@@ -42,17 +43,29 @@ class TableModel(QAbstractTableModel):
                 Message(f, mes).show_warning()
                 return QVariant()
     
-    def update(self, index_):
-        self.dataChanged.emit(index_, index_)
+    def update(self, row, col):
+        idx = self.index(row, col)
+        self.dataChanged.emit(idx, idx, [Qt.ItemDataRole.DisplayRole])
 
 
 
 class TableDelegate(QStyledItemDelegate):
+    sig_select = pyqtSignal(str, bool)
     # akej74, https://stackoverflow.com/questions/35397943/how-to-make-a-fast-qtableview-with-html-formatted-and-clickable-cells
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.last_block_no = None
         self.index = None
         self.long = []
+    
+    def get_block(self, doc: QTextDocument, point: QPointF):
+        f = '[MClient] table.gui.TableDelegate.get_block'
+        # Return block.no for the link under point, or None
+        href = doc.documentLayout().anchorAt(point)
+        if not href.startswith("block#"):
+            # Occurs too often
+            return
+        return href.removeprefix("block#")
     
     def set_line_spacing(self, doc):
         f = '[MClient] table.gui.TableDelegate.set_line_spacing'
@@ -72,25 +85,19 @@ class TableDelegate(QStyledItemDelegate):
         # option:  PyQt6.QtWidgets.QStyleOptionViewItem
         options = QStyleOptionViewItem(option)
         self.initStyleOption(options, index)
-        
         if options.widget:
             style = options.widget.style()
         else:
             style = QApplication.style()
-        
         doc = QTextDocument()
         doc.setHtml(options.text)
         # Enable text wrapping
         doc.setTextWidth(options.rect.width())
         options.text = ''
-        
         self.set_line_spacing(doc)
-        
         style.drawControl(QStyle.ControlElement.CE_ItemViewItem, options, painter)
         ctx = QAbstractTextDocumentLayout.PaintContext()
-        
         textRect = style.subElementRect(QStyle.SubElement.SE_ItemViewItemText, options)
-        
         if self.index is None:
             mes = _('Index must be set externally!')
             Message(f, mes).show_error()
@@ -102,7 +109,6 @@ class TableDelegate(QStyledItemDelegate):
             # +/-1 to avoid intersecting cell borders and artifacts as the result
             option.rect.setCoords(x1 + 1, y1 + 1, x2 - 1, y2 - 1)
             painter.drawRect(option.rect)
-        
         '''
         Cell calculated height can exceed max allowed row height, but the cell
         can still remain visible because there is spacing between cells (the
@@ -116,24 +122,42 @@ class TableDelegate(QStyledItemDelegate):
             # Avoid intersecting cell borders and artifacts as the result
             x1, y1, x2, y2 = option.rect.getCoords()
             painter.drawLine(x1 + 5, y2 - 1, x1 + WIDE_ROW_LEN, y2 - 1)
-        
         painter.save()
-    
         painter.translate(textRect.topLeft())
         # Hide too long text; do not allow cells to overlap
         painter.setClipRect(textRect.translated(-textRect.topLeft()))
         doc.documentLayout().draw(painter, ctx)
-    
         painter.restore()
+    
+    def make_document(self, html, width):
+        doc = QTextDocument()
+        doc.setDocumentMargin(4)
+        doc.setHtml(html)
+        doc.setTextWidth(width)
+        return doc
+    
+    def editorEvent(self, event, model, option, index):
+        if event.type() == event.Type.MouseMove:
+            html = index.data(Qt.ItemDataRole.DisplayRole) or ''
+            doc = self.make_document(html, option.rect.width())
+            ''' Mouse position is in viewport coordinates; the document starts
+                at the cell's top-left corner.
+            '''
+            point = event.position() - QPointF(option.rect.topLeft())
+            block_no = self.get_block(doc, point)
+            if not block_no in (self.last_block_no, None):
+                self.last_block_no = block_no
+                self.sig_select.emit(block_no, True)
+            elif event.type() == event.Type.Leave:
+                self.last_block_no = None
+        return False
     
     def sizeHint(self, option, index):
         options = QStyleOptionViewItem(option)
         self.initStyleOption(options, index)
-        
         doc = QTextDocument()
         doc.setHtml(options.text)
         doc.setTextWidth(options.rect.width())
-
         # 'float' is possible but not allowed
         return QSize(int(doc.idealWidth()), int(doc.size().height()))
 
@@ -141,7 +165,6 @@ class TableDelegate(QStyledItemDelegate):
 
 class Table(QTableView):
     
-    sig_select = pyqtSignal(int, int, bool)
     sig_rmb = pyqtSignal()
     sig_mmb = pyqtSignal()
     sig_popup = pyqtSignal()
@@ -150,16 +173,6 @@ class Table(QTableView):
         super().__init__(*args, **kwargs)
         self.delegate = TableDelegate()
         self.set_gui()
-    
-    def _use_mouse(self, event):
-        pos = event.position().toPoint()
-        rowno = self.rowAt(pos.y())
-        colno = self.columnAt(pos.x())
-        self.sig_select.emit(rowno, colno, True)
-    
-    def mouseMoveEvent(self, event):
-        self._use_mouse(event)
-        return super().mouseMoveEvent(event)
     
     def get_col_width(self, colno):
         return self.columnWidth(colno)
