@@ -122,6 +122,11 @@ class Block:
             sub = '''<span style="font-family:{}; font-size:{}pt; color:{};">{}</span>'''
             self.block.code = sub.format(family, size, color, self.block.text)
     
+    def add_no(self):
+        self.block.code = '<style>a {text-decoration: none; color: black; }</style>' \
+                        + f'<a href="block#{self.block.no}"><span>' \
+                        + self.block.code + '</span></a>'
+    
     def run(self):
         f = '[MClient] format.Block.run'
         if not self.block:
@@ -133,6 +138,7 @@ class Block:
         self.set_style()
         self.set_fixed()
         self.set_italic()
+        self.add_no()
         return self.block
 
 
