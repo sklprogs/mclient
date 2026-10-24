@@ -29,12 +29,15 @@ class Table:
         self.down = []
         self.left = []
         self.right = []
+        self.block = None
     
     def reset(self, blocks):
         self.set_values()
         self.blocks = blocks
         self.set_size()
         self.set_navigation()
+        #TODO: Implement bookmarks and set the block
+        self.set_start()
     
     def _add_row(self, text, row):
         new_row = []
@@ -117,22 +120,25 @@ class Table:
             return
         return True
     
-    def check_block(self, block):
+    def check_block(self):
         f = '[MClient] table.logic.Table.check_block'
-        if not block:
+        if not self.block:
             rep.empty(f)
             return
-        return self.check_nos(block.rowno, block.colno)
+        return self.check_nos(self.block.rowno, self.block.colno)
     
     def get_first_term(self):
         for block in self.blocks:
             if block.type == 'term' and block.text.strip() and not block.Ignore:
                 return block
     
-    def get_start(self):
+    def set_start(self):
+        f = '[MClient] table.logic.Table.set_start'
         for block in self.blocks:
             if block.text.strip() and not block.Ignore:
-                return block
+                self.block = block
+                return
+        Message(f, _('Nothing has been found.')).show_warning()
     
     def get_end(self):
         for block in self.blocks[::-1]:
@@ -216,13 +222,15 @@ class Table:
         block = self._get_next_cell(block, self.down)
         if block:
             return block
-        return self.get_start()
+        self.set_start()
+        return self.logic.block
     
     def get_right(self, block):
         block = self._get_next_cell(block, self.right)
         if block:
             return block
-        return self.get_start()
+        self.set_start()
+        return self.logic.block
     
     def get_left(self, block):
         block = self._get_next_cell(block, self.left)
