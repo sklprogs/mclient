@@ -43,9 +43,12 @@ class TableModel(QAbstractTableModel):
                 Message(f, mes).show_warning()
                 return QVariant()
     
-    def update(self, row, col):
-        idx = self.index(row, col)
-        self.dataChanged.emit(idx, idx, [Qt.ItemDataRole.DisplayRole])
+    def update(self, rowno, colno, code):
+        # We need to update underlying data, not only blocks
+        self.arraydata[rowno][colno] = code
+        index_ = self.index(rowno, colno)
+        # Since we update a single cell, indexes are the same
+        self.dataChanged.emit(index_, index_, [Qt.ItemDataRole.DisplayRole])
 
 
 
