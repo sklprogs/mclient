@@ -37,7 +37,12 @@ class Table:
         self.set_size()
         self.set_navigation()
         #TODO: Implement bookmarks and set the block
-        self.set_start()
+        self.set_first_term()
+    
+    def get_cell_code(self):
+        code = [block.code for block in self.blocks \
+               if block.cellno == self.block.cellno]
+        return ''.join(code)
     
     def _add_row(self, text, row):
         new_row = []
@@ -108,29 +113,22 @@ class Table:
             and block.text.strip() and not block.Ignore:
                 return block
     
-    def check_nos(self, rowno, colno):
-        f = '[MClient] table.logic.Table.check_nos'
-        if rowno < 0 or rowno >= self.rownum:
-            mes = f'0 <= {rowno} < {self.rownum}'
-            rep.condition(f, mes)
-            return
-        if colno < 0 or colno >= self.colnum:
-            mes = f'0 <= {colno} < {self.colnum}'
-            rep.condition(f, mes)
-            return
-        return True
-    
     def check_block(self):
         f = '[MClient] table.logic.Table.check_block'
-        if not self.block:
-            rep.empty(f)
-            return
-        return self.check_nos(self.block.rowno, self.block.colno)
+        if self.block:
+            return self.block
+        rep.empty(f)
+        return
     
     def get_first_term(self):
         for block in self.blocks:
             if block.type == 'term' and block.text.strip() and not block.Ignore:
                 return block
+    
+    def set_first_term(self):
+        block = self.get_first_term()
+        if block:
+            self.block = block
     
     def set_start(self):
         f = '[MClient] table.logic.Table.set_start'
@@ -218,8 +216,8 @@ class Table:
             return block
         return self.get_end()
     
-    def get_down(self, block):
-        block = self._get_next_cell(block, self.down)
+    def get_down(self):
+        block = self._get_next_cell(self.down)
         if block:
             return block
         self.set_start()

@@ -25,7 +25,8 @@ class Table:
     
     def set_values(self):
         #TODO: Set in default config
-        CONFIG.new['BlockMode'] = False
+        #CONFIG.new['BlockMode'] = False
+        CONFIG.new['BlockMode'] = True
         self.model = None
         self.coords = {}
         self.old_rowno = -1
@@ -35,13 +36,10 @@ class Table:
         f = '[MClient] table.controller.Table.toggle_mode'
         if CONFIG.new['BlockMode']:
             Message(f, _('Disable block mode')).show_info()
-            CONFIG.new['BlockMode'] = False
-            #self.reset_block_code(True)
-            #self.update(True)
         else:
             Message(f, _('Enable block mode')).show_info()
-            CONFIG.new['BlockMode'] = True
-            #self.update()
+        CONFIG.new['BlockMode'] = not CONFIG.new['BlockMode']
+        self.update_cell(CONFIG.new['BlockMode'])
     
     def get_text(self):
         return self.logic.get_text()
@@ -63,8 +61,8 @@ class Table:
         return self.gui.get_cell_y(rowno)
     
     def go_start(self):
-        block = self.logic.get_start()
-        self.select(block)
+        self.logic.set_start()
+        self.select(self.logic.block)
     
     def go_end(self):
         block = self.logic.get_end()
@@ -91,10 +89,6 @@ class Table:
         self.select(block)
     
     def get_block(self, rowno, colno, Forward=False):
-        f = '[MClient] table.controller.Table.get_block'
-        if not self.logic.check_nos(rowno, colno):
-            rep.cancel(f)
-            return
         if Forward:
             for block in self.logic.blocks:
                 if block.colno == colno and block.rowno == rowno:
@@ -123,6 +117,9 @@ class Table:
             return self.gui.get_cell()
         except Exception as e:
             rep.third_party(f, e)
+        
+    def get_cell_code(self):
+        return self.logic.get_cell_code()
     
     def go_right(self):
         block = self.logic.get_right(self.get_selected_block(True))
@@ -140,9 +137,79 @@ class Table:
         ''' #NOTE: This should run only after an event since Qt returns dummy
             geometry values right after startup.
         '''
-        block = self.logic.get_down(self.get_selected_block(True))
-        self.select(block)
+        block = self.logic.get_down()
+        if block:
+            self.logic.block = block
+            self.select()
     
+    def select_block_with_mouse(self):
+        f = '[MClient] table.controller.Table.select_block_with_mouse'
+        if not self.logic.block:
+            rep.empty(f)
+            return
+        
+        
+        self.model.update(self.gui.get_index())
+        new_index = self.model.index(rowno, colno)
+        self.gui.set_index(new_index)
+        self.model.update(new_index)
+        if new_index in self.gui.delegate.long:
+            self.show_popup()
+        else:
+            POPUP.close()
+        ARTICLES.set_bookmark(rowno, colno)
+    
+    def select_cell_with_mouse(self, rowno, colno):
+        f = '[MClient] table.controller.Table.select_cell_with_mouse'
+        if rowno < 0 or rowno >= self.logic.rownum:
+            mes = f'0 <= {rowno} < {self.logic.rownum}'
+            rep.condition(f, mes, False)
+            return
+        if colno < 0 or colno >= self.logic.colnum:
+            mes = f'0 <= {colno} < {self.logic.colnum}'
+            rep.condition(f, mes, False)
+            return
+        if rowno == self.old_rowno and colno == self.old_colno:
+            return
+        self.old_rowno = rowno
+        self.old_colno = colno
+        self.model.update(self.gui.get_index())
+        new_index = self.model.index(rowno, colno)
+        self.gui.set_index(new_index)
+        self.model.update(new_index)
+        if new_index in self.gui.delegate.long:
+            self.show_popup()
+        else:
+            POPUP.close()
+        ARTICLES.set_bookmark(rowno, colno)
+    
+    def _get_block(self, block_no):
+        for block in self.logic.blocks:
+            if block.no == block_no:
+                return block
+    
+    def select_with_mouse(self, block_no_str):
+        f = '[MClient] table.controller.Table.select_with_mouse'
+        if block_no_str is None:
+            rep.empty(f)
+            return
+        ''' Do not impose a float with skl_shared.logic.Input.get_float because
+            self.logic.block should not be overridden on failure.
+        '''
+        try:
+            block_no = float(block_no_str)
+        except ValueError:
+            rep.wrong_input(f, Graphical=False)
+            return
+        self.update_cell(False)
+        block = self._get_block(block_no)
+        if not block:
+            rep.empty(f)
+            return
+        self.logic.block = block
+        self.update_cell(CONFIG.new['BlockMode'])
+    
+    '''
     def select_with_mouse(self, rowno, colno):
         f = '[MClient] table.controller.Table.select_with_mouse'
         if rowno < 0 or rowno >= self.logic.rownum:
@@ -166,23 +233,31 @@ class Table:
         else:
             POPUP.close()
         ARTICLES.set_bookmark(rowno, colno)
+    '''
     
-    def select(self, block):
-        f = '[MClient] table.controller.Table.select'
-        if not self.logic.check_block(block):
+    def update_cell(self, Select=False):
+        f = '[MClient] table.controller.Table.update_cell'
+        if not self.logic.check_block():
             rep.cancel(f)
             return
-        rowno, colno = block.rowno, block.colno
-        if rowno == self.old_rowno and colno == self.old_colno:
+        self.logic.block = fm.Block(self.logic.block, Select).run()
+        self.model.update(self.logic.block.rowno, self.logic.block.colno, self.logic.get_cell_code())
+        
+    '''
+    def _select_cell(self):
+        index = self.model.index(block.rowno, block.colno)
+        self.gui.set_cur_index(index)
+        self.model.update(index)
+    '''
+    
+    def select(self):
+        f = '[MClient] table.controller.Table.select'
+        if not self.logic.check_block():
+            rep.cancel(f)
             return
-        self.old_rowno = rowno
-        self.old_colno = colno
-        self.model.update(self.gui.get_index())
-        new_index = self.model.index(rowno, colno)
-        self.gui.set_cur_index(new_index)
-        self.model.update(new_index)
+        self.update_cell(CONFIG.new['BlockMode'])
         self.scroll_top()
-        ARTICLES.set_bookmark(rowno, colno)
+        #ARTICLES.set_bookmark(self.logic.block)
     
     def go_line_start(self):
         block = self.get_selected_block()
@@ -279,17 +354,6 @@ class Table:
             rep.empty(f)
             return ''
         return block.cell_text
-    
-    def get_cell_code(self):
-        f = '[MClient] table.controller.Table.get_cell_code'
-        block = self.get_selected_block()
-        if not block:
-            rep.empty(f)
-            return ''
-        cellno = block.cellno
-        code = [block.code for block in self.logic.blocks \
-               if block.cellno == cellno]
-        return ''.join(code)
     
     def copy_cell(self):
         f = '[MClient] table.controller.Table.copy_cell'
@@ -392,6 +456,7 @@ class Table:
             we merely suppress a warning at 'self.go_start'.
         '''
         self.set_coords()
+        self.update_cell(CONFIG.new['BlockMode'])
     
     def set_coords(self, event=None):
         ''' Calculating Y is very fast (~0.05s for 'set' on Intel Atom). We
