@@ -77,7 +77,7 @@ class Articles:
         return self.get_max_id() + 1
     
     def add(self, search='', url='', blocks=[], subjf=[]
-           ,prioritized=[], art_subj={}, phurl=''):
+           ,prioritized=[], art_subj={}, phurl='', bookmark=None):
         f = '[MClient] articles.Articles.add'
         # Do not add articles that were not found to history
         if not blocks:
@@ -97,10 +97,9 @@ class Articles:
                                     ,'blocks'      : blocks
                                     ,'subjf'       : subjf
                                     ,'prioritized' : prioritized
-                                    ,'rowno'       : -1
-                                    ,'colno'       : -1
                                     ,'art_subj'    : art_subj
-                                    ,'phurl'       : phurl}
+                                    ,'phurl'       : phurl
+                                    ,'bookmark'    : bookmark}
         self.set_id(id_)
     
     def clear_article(self):
@@ -124,17 +123,15 @@ class Articles:
             rep.empty(f)
             return
         for id_ in self.articles['ids']:
-            self.articles['ids'][id_]['rowno'] = -1
-            self.articles['ids'][id_]['colno'] = -1
+            self.articles['ids'][id_]['bookmark'] = None
     
-    def set_bookmark(self, rowno, colno):
+    def set_bookmark(self, block=None):
         f = '[MClient] articles.Articles.set_bookmark'
         if not self.articles['ids']:
             rep.empty(f)
             return
         try:
-            self.articles['ids'][self.id]['rowno'] = rowno
-            self.articles['ids'][self.id]['colno'] = colno
+            self.articles['ids'][self.id]['bookmark'] = block
         except KeyError:
             rep.wrong_input(f)
     
@@ -144,8 +141,7 @@ class Articles:
             rep.empty(f)
             return
         try:
-            return (self.articles['ids'][self.id]['rowno']
-                   ,self.articles['ids'][self.id]['colno'])
+            return self.articles['ids'][self.id]['bookmark']
         except KeyError:
             rep.wrong_input(f)
     
