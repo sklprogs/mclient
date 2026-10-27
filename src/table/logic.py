@@ -120,15 +120,11 @@ class Table:
         rep.empty(f)
         return
     
-    def get_first_term(self):
+    def set_first_term(self):
         for block in self.blocks:
             if block.type == 'term' and block.text.strip() and not block.Ignore:
-                return block
-    
-    def set_first_term(self):
-        block = self.get_first_term()
-        if block:
-            self.block = block
+                self.block = block
+                return
     
     def set_start(self):
         f = '[MClient] table.logic.Table.set_start'
@@ -137,11 +133,6 @@ class Table:
                 self.block = block
                 return
         Message(f, _('Nothing has been found.')).show_warning()
-    
-    def get_end(self):
-        for block in self.blocks[::-1]:
-            if block.text.strip() and not block.Ignore:
-                return block
     
     def set_size(self):
         f = '[MClient] table.logic.Table.set_size'
@@ -165,22 +156,22 @@ class Table:
             if block.type == 'phsubj':
                 return block
     
-    def get_col(self, block, colno):
+    def set_col(self, colno):
         ''' We need to return even empty blocks here. If empty fixed blocks are
             not allowed, rewrite this code.
         '''
-        f = '[MClient] table.logic.Table.get_col'
-        if not self.check_block(block):
+        f = '[MClient] table.logic.Table.set_col'
+        if not self.check_block():
             rep.cancel(f)
             return
         if colno < 0 or colno >= self.colnum:
             mes = f'0 <= {colno} < {self.colnum}'
             rep.condition(f, mes)
             return
-        rowno = block.rowno
         for block in self.blocks:
-            if block.rowno == rowno and block.colno == colno:
-                return block
+            if block.rowno == self.block.rowno and block.colno == colno:
+                self.block = block
+                return True
     
     def set_navigation(self):
         self.up = sorted(self.blocks, key=lambda block: (-block.colno, -block.rowno))
@@ -188,13 +179,13 @@ class Table:
         self.right = sorted(self.blocks, key=lambda block: (block.rowno, block.colno))
         self.left = sorted(self.blocks, key=lambda block: (-block.rowno, -block.colno))
     
-    def _get_next_cell(self, ref_block, lst):
+    def _get_next_cell(self, lst):
         f = '[MClient] table.logic.Table._get_next_cell'
-        if not ref_block or not lst:
+        if not self.check_block() or not lst:
             rep.empty(f)
             return
         try:
-            pos = lst.index(ref_block)
+            pos = lst.index(self.block)
         except ValueError:
             return
         try:
@@ -205,62 +196,73 @@ class Table:
             rep.empty(f)
             return
         Empty = block.Ignore or not block.text.strip()
-        SameCell = ref_block.cellno == block.cellno and not CONFIG.new['BlockMode']
+        SameCell = self.block.cellno == block.cellno and not CONFIG.new['BlockMode']
         if Empty or SameCell:
-            block = self._get_next_cell(block, lst)
+            self.block = block
+            block = self._get_next_cell(lst)
         return block
     
-    def get_up(self, block):
-        block = self._get_next_cell(block, self.up)
+    def set_up(self):
+        block = self._get_next_cell(self.up)
         if block:
-            return block
-        return self.get_end()
+            self.block = block
+            return
+        self.set_down()
     
-    def get_down(self):
+    def set_down(self):
         block = self._get_next_cell(self.down)
         if block:
-            return block
-        self.set_start()
-        return self.logic.block
-    
-    def get_right(self, block):
-        block = self._get_next_cell(block, self.right)
-        if block:
-            return block
-        self.set_start()
-        return self.logic.block
-    
-    def get_left(self, block):
-        block = self._get_next_cell(block, self.left)
-        if block:
-            return block
-        return self.get_end()
-    
-    def get_next_section(self, block, colno):
-        block = self.get_col(block, colno)
-        return self.get_down(block)
-    
-    def get_prev_section(self, block, colno):
-        block = self.get_col(block, colno)
-        return self.get_up(block)
-    
-    def get_line_start(self, block):
-        f = '[MClient] table.logic.Table.get_line_start'
-        if not self.check_block(block):
-            rep.cancel(f)
+            self.block = block
             return
-        rowno = block.rowno
+        self.set_start()
+    
+    def set_right(self):
+        f = '[MClient] table.logic.Table.set_right'
+        if not self.check_block():
+            rep.empty(f)
+            return
+        block = self._get_next_cell(self.right)
+        if block:
+            self.block = block
+            return
+        self.set_start()
+    
+    def set_left(self):
+        f = '[MClient] table.logic.Table.set_left'
+        if not self.check_block():
+            rep.empty(f)
+            return
+        block = self._get_next_cell(self.left)
+        if block:
+            self.block = block
+            return
+        self.set_end()
+    
+    def set_next_section(self, colno):
+        if self.set_col(colno):
+            self.set_down()
+    
+    def set_prev_section(self, colno):
+        if self.set_col(colno):
+            self.set_up()
+    
+    def set_line_start(self):
+        f = '[MClient] table.logic.Table.set_line_start'
+        if not self.check_block():
+            rep.empty(f)
+            return
         for block in self.blocks:
-            if block.rowno == rowno and block.colno >= self.fixed_num \
+            if block.rowno == self.block.rowno and block.colno >= self.fixed_num \
             and block.text.strip() and not block.Ignore:
-                return block
+                self.block = block
+                return
     
-    def get_line_end(self, block):
-        f = '[MClient] table.logic.Table.get_line_end'
-        if not self.check_block(block):
-            rep.cancel(f)
+    def set_line_end(self):
+        f = '[MClient] table.logic.Table.set_line_end'
+        if not self.check_block():
+            rep.empty(f)
             return
-        rowno = block.rowno
         for block in self.blocks[::-1]:
-            if block.rowno == rowno and block.text.strip() and not block.Ignore:
-                return block
+            if block.rowno == self.block.rowno and block.text.strip() and not block.Ignore:
+                self.block = block
+                return
