@@ -142,47 +142,6 @@ class Table:
             self.logic.block = block
             self.select()
     
-    def select_block_with_mouse(self):
-        f = '[MClient] table.controller.Table.select_block_with_mouse'
-        if not self.logic.block:
-            rep.empty(f)
-            return
-        
-        
-        self.model.update(self.gui.get_index())
-        new_index = self.model.index(rowno, colno)
-        self.gui.set_index(new_index)
-        self.model.update(new_index)
-        if new_index in self.gui.delegate.long:
-            self.show_popup()
-        else:
-            POPUP.close()
-        ARTICLES.set_bookmark(rowno, colno)
-    
-    def select_cell_with_mouse(self, rowno, colno):
-        f = '[MClient] table.controller.Table.select_cell_with_mouse'
-        if rowno < 0 or rowno >= self.logic.rownum:
-            mes = f'0 <= {rowno} < {self.logic.rownum}'
-            rep.condition(f, mes, False)
-            return
-        if colno < 0 or colno >= self.logic.colnum:
-            mes = f'0 <= {colno} < {self.logic.colnum}'
-            rep.condition(f, mes, False)
-            return
-        if rowno == self.old_rowno and colno == self.old_colno:
-            return
-        self.old_rowno = rowno
-        self.old_colno = colno
-        self.model.update(self.gui.get_index())
-        new_index = self.model.index(rowno, colno)
-        self.gui.set_index(new_index)
-        self.model.update(new_index)
-        if new_index in self.gui.delegate.long:
-            self.show_popup()
-        else:
-            POPUP.close()
-        ARTICLES.set_bookmark(rowno, colno)
-    
     def _get_block(self, block_no):
         for block in self.logic.blocks:
             if block.no == block_no:
@@ -207,33 +166,7 @@ class Table:
             rep.empty(f)
             return
         self.logic.block = block
-        self.update_cell(CONFIG.new['BlockMode'])
-    
-    '''
-    def select_with_mouse(self, rowno, colno):
-        f = '[MClient] table.controller.Table.select_with_mouse'
-        if rowno < 0 or rowno >= self.logic.rownum:
-            mes = f'0 <= {rowno} < {self.logic.rownum}'
-            rep.condition(f, mes, False)
-            return
-        if colno < 0 or colno >= self.logic.colnum:
-            mes = f'0 <= {colno} < {self.logic.colnum}'
-            rep.condition(f, mes, False)
-            return
-        if rowno == self.old_rowno and colno == self.old_colno:
-            return
-        self.old_rowno = rowno
-        self.old_colno = colno
-        self.model.update(self.gui.get_index())
-        new_index = self.model.index(rowno, colno)
-        self.gui.set_index(new_index)
-        self.model.update(new_index)
-        if new_index in self.gui.delegate.long:
-            self.show_popup()
-        else:
-            POPUP.close()
-        ARTICLES.set_bookmark(rowno, colno)
-    '''
+        self.select()
     
     def update_cell(self, Select=False):
         f = '[MClient] table.controller.Table.update_cell'
@@ -243,13 +176,6 @@ class Table:
         self.logic.block = fm.Block(self.logic.block, Select).run()
         self.model.update(self.logic.block.rowno, self.logic.block.colno, self.logic.get_cell_code())
         
-    '''
-    def _select_cell(self):
-        index = self.model.index(block.rowno, block.colno)
-        self.gui.set_cur_index(index)
-        self.model.update(index)
-    '''
-    
     def select(self):
         f = '[MClient] table.controller.Table.select'
         if not self.logic.check_block():
