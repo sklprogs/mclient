@@ -29,8 +29,6 @@ class Table:
         CONFIG.new['BlockMode'] = True
         self.model = None
         self.coords = {}
-        self.old_rowno = -1
-        self.old_colno = -1
     
     def toggle_mode(self):
         f = '[MClient] table.controller.Table.toggle_mode'
@@ -44,16 +42,6 @@ class Table:
     def get_text(self):
         return self.logic.get_text()
     
-    def _check_cell(self, cell):
-        f = '[MClient] table.controller.Table._check_cell'
-        if not cell:
-            rep.empty(f)
-            return
-        if len(cell) != 2:
-            mes = f'{len(cell)} == 2'
-            rep.condition(f, mes)
-            return
-    
     def get_cell_x(self, colno):
         return self.gui.get_cell_x(colno)
     
@@ -61,12 +49,14 @@ class Table:
         return self.gui.get_cell_y(rowno)
     
     def go_start(self):
+        self.update_cell()
         self.logic.set_start()
-        self.select(self.logic.block)
+        self.select()
     
     def go_end(self):
-        block = self.logic.get_end()
-        self.select(block)
+        self.update_cell()
+        self.logic.set_end()
+        self.select()
     
     def go_prev_section(self, colno):
         f = '[MClient] table.controller.Table.go_prev_section'
@@ -74,9 +64,9 @@ class Table:
             mes = f'0 <= {colno} < {self.logic.colnum}'
             rep.condition(f, mes)
             return
-        block = self.get_selected_block()
-        block = self.logic.get_prev_section(block, colno)
-        self.select(block)
+        self.update_cell()
+        self.logic.set_prev_section(colno)
+        self.select()
     
     def go_next_section(self, colno):
         f = '[MClient] table.controller.Table.go_next_section'
@@ -84,9 +74,9 @@ class Table:
             mes = f'0 <= {colno} < {self.logic.colnum}'
             rep.condition(f, mes)
             return
-        block = self.get_selected_block(True)
-        block = self.logic.get_next_section(block, colno)
-        self.select(block)
+        self.update_cell()
+        self.logic.set_next_section(colno)
+        self.select()
     
     def get_block(self, rowno, colno, Forward=False):
         if Forward:
@@ -97,18 +87,6 @@ class Table:
             for block in self.logic.blocks[::-1]:
                 if block.colno == colno and block.rowno == rowno:
                     return block
-    
-    def get_selected_block(self, Forward=False):
-        f = '[MClient] table.controller.Table.get_selected_block'
-        cell = self.get_cell()
-        if not cell:
-            rep.empty(f)
-            return
-        if len(cell) != 2:
-            mes = f'{len(cell)} == 2'
-            rep.condition(f, mes)
-            return
-        return self.get_block(cell[0], cell[1], Forward)
     
     def get_cell(self):
         # Get rowno and colno
@@ -122,25 +100,27 @@ class Table:
         return self.logic.get_cell_code()
     
     def go_right(self):
-        block = self.logic.get_right(self.get_selected_block(True))
-        self.select(block)
+        self.update_cell()
+        self.logic.set_right()
+        self.select()
     
     def go_left(self):
-        block = self.logic.get_left(self.get_selected_block())
-        self.select(block)
+        self.update_cell()
+        self.logic.set_left()
+        self.select()
     
     def go_up(self):
-        block = self.logic.get_up(self.get_selected_block())
-        self.select(block)
+        self.update_cell()
+        self.logic.set_up()
+        self.select()
     
     def go_down(self):
         ''' #NOTE: This should run only after an event since Qt returns dummy
             geometry values right after startup.
         '''
-        block = self.logic.get_down()
-        if block:
-            self.logic.block = block
-            self.select()
+        self.update_cell()
+        self.logic.set_down()
+        self.select()
     
     def _get_block(self, block_no):
         for block in self.logic.blocks:
@@ -160,7 +140,7 @@ class Table:
         except ValueError:
             rep.wrong_input(f, Graphical=False)
             return
-        self.update_cell(False)
+        self.update_cell()
         block = self._get_block(block_no)
         if not block:
             rep.empty(f)
@@ -186,14 +166,14 @@ class Table:
         #ARTICLES.set_bookmark(self.logic.block)
     
     def go_line_start(self):
-        block = self.get_selected_block()
-        block = self.logic.get_line_start(block)
-        self.select(block)
+        self.update_cell()
+        self.logic.set_line_start()
+        self.select()
     
     def go_line_end(self):
-        block = self.get_selected_block(True)
-        block = self.logic.get_line_end(block)
-        self.select(block)
+        self.update_cell()
+        self.logic.set_line_end()
+        self.select()
     
     def get_row_height(self, rowno):
         return self.gui.get_row_height(rowno)
@@ -225,18 +205,16 @@ class Table:
     
     def go_page(self, Forward=False):
         f = '[MClient] table.controller.Table.go_page'
+        if not self.logic.check_block():
+            rep.empty(f)
+            return
         if not self.coords2:
             self.set_coords()
         if not self.coords2:
             rep.empty(f)
             return
-        cell = self.get_cell()
-        if not cell:
-            rep.empty(f)
-            return
-        rowno, colno = cell[0], cell[1]
         try:
-            cur_page = self.coords2[rowno]
+            cur_page = self.coords2[self.logic.block.rowno]
             max_page = self.coords2[max(self.coords2.keys())]
         except KeyError:
             rep.wrong_input(f, Graphical=False)
@@ -256,30 +234,26 @@ class Table:
             delta = 1
         else:
             delta = -1
+        self.update_cell()
         row_min, row_max = self._get_page_limits(cur_page + delta)
-        block = self.logic.get_page_block(colno, row_min, row_max)
-        self.select(block)
+        self.logic.set_page_block(colno, row_min, row_max)
+        self.select()
     
     def scroll_top(self):
         f = '[MClient] table.controller.Table.scroll_top'
-        if not self.coords or not self.model:
+        if not self.coords or not self.model or not self.logic.check_block():
             rep.empty(f)
             return
-        rowno, colno = self.gui.get_cell()
-        if rowno == -1 or colno == -1:
-            mes = _('No cell is selected!')
-            Message(f, mes).show_warning()
-            return
-        index_ = self.model.index(self.coords[rowno], colno)
+        index_ = self.model.index(self.coords[self.logic.block.rowno]
+                                 ,self.logic.block.colno)
         self.gui.scroll2index(index_)
     
     def get_cell_text(self):
         f = '[MClient] table.controller.Table.get_cell_text'
-        block = self.get_selected_block()
-        if not block:
+        if not self.logic.check_block():
             rep.empty(f)
             return ''
-        return block.cell_text
+        return self.logic.block.cell_text
     
     def copy_cell(self):
         f = '[MClient] table.controller.Table.copy_cell'
@@ -313,32 +287,19 @@ class Table:
     
     def go_first_term(self):
         f = '[MClient] table.controller.Table.go_first_term'
-        block = self.logic.get_first_term()
-        if not block:
-            rep.empty(f)
-            return
-        self.select(block)
+        self.update_cell()
+        self.logic.set_first_term()
+        self.select()
     
     def go_bookmark(self):
         f = '[MClient] table.controller.Table.go_bookmark'
-        bookmark = ARTICLES.get_bookmark()
-        if not bookmark:
-            self.go_first_term()
-            return
-        if len(bookmark) != 2:
-            mes = f'{len(bookmark)} == 2'
-            rep.condition(f, mes)
-            return
-        rowno, colno = bookmark[0], bookmark[1]
-        # There are no bookmarks or they were deleted
-        if rowno == -1 or colno == -1:
-            self.go_first_term()
-            return
-        block = self.get_block(rowno, colno)
+        block = ARTICLES.get_bookmark()
         if not block:
-            rep.empty(f)
+            self.go_first_term()
             return
-        self.select(block)
+        self.update_cell()
+        self.logic.block = block
+        self.select()
     
     def select_row_height(self):
         if CONFIG.new['rows']['height']:
@@ -382,7 +343,7 @@ class Table:
             we merely suppress a warning at 'self.go_start'.
         '''
         self.set_coords()
-        self.update_cell(CONFIG.new['BlockMode'])
+        self.go_bookmark()
     
     def set_coords(self, event=None):
         ''' Calculating Y is very fast (~0.05s for 'set' on Intel Atom). We
