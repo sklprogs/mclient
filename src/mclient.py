@@ -810,7 +810,8 @@ class App:
                         ,subjf = SUBJECTS.article
                         ,prioritized = SUBJECTS.prior
                         ,art_subj = ielems.art_subj
-                        ,phurl = ielems.phurl)
+                        ,phurl = ielems.phurl
+                        ,bookmark=TABLE.logic.block)
             HistorySubjects().add(ielems.art_subj)
             self.add_history()
         else:
