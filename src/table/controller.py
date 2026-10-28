@@ -236,7 +236,9 @@ class Table:
             delta = -1
         self.update_cell()
         row_min, row_max = self._get_page_limits(cur_page + delta)
-        self.logic.set_page_block(colno, row_min, row_max)
+        block = self.logic.get_page_block(self.logic.block.colno, row_min, row_max)
+        if block:
+            self.logic.block = block
         self.select()
     
     def scroll_top(self):
