@@ -118,7 +118,6 @@ class Table:
         if self.block:
             return self.block
         rep.empty(f)
-        return
     
     def set_first_term(self):
         for block in self.blocks:
@@ -131,8 +130,16 @@ class Table:
         for block in self.blocks:
             if block.text.strip() and not block.Ignore:
                 self.block = block
-                return
-        Message(f, _('Nothing has been found.')).show_warning()
+                # Start has been reached - for Search
+                return True
+    
+    def set_end(self):
+        f = '[MClient] table.logic.Table.set_end'
+        for block in self.blocks[::-1]:
+            if block.text.strip() and not block.Ignore:
+                self.block = block
+                # End has been reached - for Search
+                return True
     
     def set_size(self):
         f = '[MClient] table.logic.Table.set_size'
@@ -179,13 +186,15 @@ class Table:
         self.right = sorted(self.blocks, key=lambda block: (block.rowno, block.colno))
         self.left = sorted(self.blocks, key=lambda block: (-block.rowno, -block.colno))
     
-    def _get_next_cell(self, lst):
-        f = '[MClient] table.logic.Table._get_next_cell'
-        if not self.check_block() or not lst:
+    def set_next_cell(self, lst, ref_block=None):
+        f = '[MClient] table.logic.Table.set_next_cell'
+        if not ref_block:
+            ref_block = self.block
+        if not ref_block or not lst:
             rep.empty(f)
             return
         try:
-            pos = lst.index(self.block)
+            pos = lst.index(ref_block)
         except ValueError:
             return
         try:
@@ -196,47 +205,35 @@ class Table:
             rep.empty(f)
             return
         Empty = block.Ignore or not block.text.strip()
-        SameCell = self.block.cellno == block.cellno and not CONFIG.new['BlockMode']
+        SameCell = ref_block.cellno == block.cellno and not CONFIG.new['BlockMode']
         if Empty or SameCell:
-            self.block = block
-            block = self._get_next_cell(lst)
-        return block
+            self.set_next_cell(lst, block)
+        self.block = block
+        return True
     
     def set_up(self):
-        block = self._get_next_cell(self.up)
-        if block:
-            self.block = block
-            return
-        self.set_down()
+        if not self.set_next_cell(self.up):
+            self.set_end()
     
     def set_down(self):
-        block = self._get_next_cell(self.down)
-        if block:
-            self.block = block
-            return
-        self.set_start()
+        if not self.set_next_cell(self.down):
+            self.set_start()
     
     def set_right(self):
         f = '[MClient] table.logic.Table.set_right'
         if not self.check_block():
             rep.empty(f)
             return
-        block = self._get_next_cell(self.right)
-        if block:
-            self.block = block
-            return
-        self.set_start()
+        if not self.set_next_cell(self.right):
+            self.set_start()
     
     def set_left(self):
         f = '[MClient] table.logic.Table.set_left'
         if not self.check_block():
             rep.empty(f)
             return
-        block = self._get_next_cell(self.left)
-        if block:
-            self.block = block
-            return
-        self.set_end()
+        if not self.set_next_cell(self.left):
+            self.set_end()
     
     def set_next_section(self, colno):
         if self.set_col(colno):
