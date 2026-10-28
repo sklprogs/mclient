@@ -181,10 +181,10 @@ class Table:
                 return True
     
     def set_navigation(self):
-        self.up = sorted(self.blocks, key=lambda block: (-block.colno, -block.rowno))
-        self.down = sorted(self.blocks, key=lambda block: (block.colno, block.rowno))
-        self.right = sorted(self.blocks, key=lambda block: (block.rowno, block.colno))
-        self.left = sorted(self.blocks, key=lambda block: (-block.rowno, -block.colno))
+        self.up = sorted(self.blocks, key=lambda block: (-block.colno, -block.rowno, -block.no))
+        self.down = sorted(self.blocks, key=lambda block: (block.colno, block.rowno, block.no))
+        self.right = sorted(self.blocks, key=lambda block: (block.rowno, block.colno, block.no))
+        self.left = sorted(self.blocks, key=lambda block: (-block.rowno, -block.colno, -block.no))
     
     def set_next_cell(self, lst, ref_block=None):
         f = '[MClient] table.logic.Table.set_next_cell'
@@ -207,7 +207,7 @@ class Table:
         Empty = block.Ignore or not block.text.strip()
         SameCell = ref_block.cellno == block.cellno and not CONFIG.new['BlockMode']
         if Empty or SameCell:
-            self.set_next_cell(lst, block)
+            return self.set_next_cell(lst, block)
         self.block = block
         return True
     
