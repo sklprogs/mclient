@@ -1,4 +1,5 @@
 all:
+- *sometimes* going to next/previous page is too slow, see 'cell' (.mdic)
 - when some cells are blocked, Block button is off and its tooltip says some
   blocks are blocked with 0 blocked subjects
 - настройка: pretty make fails ("oil&gas." is not escaped)
