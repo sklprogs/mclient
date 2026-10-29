@@ -856,10 +856,10 @@ class App:
         UpdateUI().run()
         timer.end()
         gi.objs.get_panel().ent_src.focus()
-        ''' Do not put this in 'Table.reset' - that is too early, the article
+        ''' Do not put this in 'Table.reset' - this is too early, the article
             dictionary is not filled yet!
         '''
-        #TABLE.go_bookmark()
+        TABLE.go_bookmark()
     
     def go_keyboard(self):
         search = gi.objs.get_panel().ent_src.get().strip()
