@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from PyQt6.QtWidgets import QTableView, QStyleOptionViewItem, QAbstractItemView
-from PyQt6.QtWidgets import QStyledItemDelegate, QApplication, QStyle
+from PyQt6.QtWidgets import QTableView, QStyleOptionViewItem, QAbstractItemView,\
+                            QStyledItemDelegate, QApplication, QStyle
 from PyQt6.QtCore import pyqtSignal, Qt, QSize, QAbstractTableModel, QVariant,\
-                         QPointF
+                         QPointF, QModelIndex
 from PyQt6.QtGui import QTextCursor, QTextDocument, QAbstractTextDocumentLayout,\
-                        QColor, QPen
+                        QColor, QPen, QPainter
 
 from skl_shared.localize import _
 from skl_shared.message.controller import rep, Message
@@ -57,71 +57,67 @@ class TableDelegate(QStyledItemDelegate):
     # akej74, https://stackoverflow.com/questions/35397943/how-to-make-a-fast-qtableview-with-html-formatted-and-clickable-cells
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.last_block_no = None
-        self.index = None
-        self.long = []
+        self.mclast_block_no = None
+        self.mcindex = None
+        self.mclong = []
+        self.mcdoc = QTextDocument()
+        self.mcctx = QAbstractTextDocumentLayout.PaintContext()
+        self.mcborder = QColor(CONFIG.new['rows']['border']['color'])
+        self.mcrow_color = QColor(WIDE_ROW_COLOR)
+        self.mcpen_border = QPen(self.mcborder, 2)
+        self.mcpen_row = QPen(self.mcrow_color, 2)
+        self.mcpen_row.setStyle(Qt.PenStyle.DotLine)
+        self.mccursor = QTextCursor(self.mcdoc)
+        self.mcstyle = QApplication.style()
     
-    def get_block(self, doc: QTextDocument, point: QPointF):
-        f = '[MClient] table.gui.TableDelegate.get_block'
+    def mcget_block(self, point: QPointF):
+        f = '[MClient] table.gui.TableDelegate.mcget_block'
         # Return block.no for the link under point, or None
-        href = doc.documentLayout().anchorAt(point)
+        href = self.mcdoc.documentLayout().anchorAt(point)
         if not href.startswith("block#"):
             # Occurs too often
             return
         return href.removeprefix("block#")
     
-    def set_line_spacing(self, doc):
-        f = '[MClient] table.gui.TableDelegate.set_line_spacing'
-        cursor = QTextCursor(doc)
-        block = doc.firstBlock()
+    def mcset_line_spacing(self):
+        f = '[MClient] table.gui.TableDelegate.mcset_line_spacing'
+        block = self.mcdoc.firstBlock()
         if not block.isValid():
             rep.wrong_input(f)
             return
         format_ = block.blockFormat()
         format_.setLineHeight(19, 2)
-        cursor.setBlockFormat(format_)
+        self.mccursor.setBlockFormat(format_)
     
-    def paint(self, painter, option, index):
+    def paint(self, painter: QPainter, option: QStyleOptionViewItem, index: QModelIndex):
         f = '[MClient] table.gui.TableDelegate.paint'
-        # index:   PyQt6.QtCore.QModelIndex
-        # painter: PyQt6.QtGui.QPainter
-        # option:  PyQt6.QtWidgets.QStyleOptionViewItem
         options = QStyleOptionViewItem(option)
         self.initStyleOption(options, index)
         if options.widget:
             style = options.widget.style()
         else:
-            style = QApplication.style()
-        doc = QTextDocument()
-        doc.setHtml(options.text)
+            style = self.mcstyle
+        self.mcdoc.setHtml(options.text)
         # Enable text wrapping
-        doc.setTextWidth(options.rect.width())
+        self.mcdoc.setTextWidth(options.rect.width())
         options.text = ''
-        self.set_line_spacing(doc)
+        self.mcset_line_spacing()
         style.drawControl(QStyle.ControlElement.CE_ItemViewItem, options, painter)
-        ctx = QAbstractTextDocumentLayout.PaintContext()
         textRect = style.subElementRect(QStyle.SubElement.SE_ItemViewItemText, options)
-        if self.index is None:
+        if self.mcindex is None:
             mes = _('Index must be set externally!')
             Message(f, mes).show_error()
-        elif index == self.index and not CONFIG.new['BlockMode']:
-            color = QColor(CONFIG.new['rows']['border']['color'])
-            pen = QPen(color, 2)
-            painter.setPen(pen)
+        elif index == self.mcindex and not CONFIG.new['BlockMode']:
+            painter.setPen(self.mcpen_border)
             x1, y1, x2, y2 = option.rect.getCoords()
             # +/-1 to avoid intersecting cell borders and artifacts as the result
             option.rect.setCoords(x1 + 1, y1 + 1, x2 - 1, y2 - 1)
             painter.drawRect(option.rect)
-        '''
-        Cell calculated height can exceed max allowed row height, but the cell
-        can still remain visible because there is spacing between cells (the
-        hard-coded value is 19).
-        '''
-        if doc.documentLayout().documentSize().height() > CONFIG.new['rows']['height'] + 19:
-            color = QColor(WIDE_ROW_COLOR)
-            pen = QPen(color, 2)
-            pen.setStyle(Qt.PenStyle.DotLine)
-            painter.setPen(pen)
+        ''' Cell calculated height can exceed max allowed row height, but
+            the cell can still remain visible because there is spacing between
+            cells (the hard-coded value is 19). '''
+        if self.mcdoc.documentLayout().documentSize().height() > CONFIG.new['rows']['height'] + 19:
+            painter.setPen(self.mcpen_row)
             # Avoid intersecting cell borders and artifacts as the result
             x1, y1, x2, y2 = option.rect.getCoords()
             painter.drawLine(x1 + 5, y2 - 1, x1 + WIDE_ROW_LEN, y2 - 1)
@@ -129,38 +125,34 @@ class TableDelegate(QStyledItemDelegate):
         painter.translate(textRect.topLeft())
         # Hide too long text; do not allow cells to overlap
         painter.setClipRect(textRect.translated(-textRect.topLeft()))
-        doc.documentLayout().draw(painter, ctx)
+        self.mcdoc.documentLayout().draw(painter, self.mcctx)
         painter.restore()
     
     def make_document(self, html, width):
-        doc = QTextDocument()
-        doc.setDocumentMargin(4)
-        doc.setHtml(html)
-        doc.setTextWidth(width)
-        return doc
+        #self.mcdoc.setDocumentMargin(4)
+        self.mcdoc.setHtml(html)
+        self.mcdoc.setTextWidth(width)
     
     def editorEvent(self, event, model, option, index):
         if event.type() == event.Type.MouseMove:
             html = index.data(Qt.ItemDataRole.DisplayRole) or ''
-            doc = self.make_document(html, option.rect.width())
+            self.make_document(html, option.rect.width())
             ''' Mouse position is in viewport coordinates; the document starts
-                at the cell's top-left corner.
-            '''
+                at the cell's top-left corner. '''
             point = event.position() - QPointF(option.rect.topLeft())
-            block_no = self.get_block(doc, point)
-            if not block_no in (self.last_block_no, None):
-                self.last_block_no = block_no
+            block_no = self.mcget_block(point)
+            if not block_no in (self.mclast_block_no, None):
+                self.mclast_block_no = block_no
                 self.sig_select.emit(block_no, True)
             elif event.type() == event.Type.Leave:
-                self.last_block_no = None
+                self.mclast_block_no = None
         return False
     
     def sizeHint(self, option, index):
         options = QStyleOptionViewItem(option)
         self.initStyleOption(options, index)
-        doc = QTextDocument()
-        doc.setHtml(options.text)
-        doc.setTextWidth(options.rect.width())
+        self.mcdoc.setHtml(options.text)
+        self.mcdoc.setTextWidth(options.rect.width())
         # 'float' is possible but not allowed
         return QSize(int(doc.idealWidth()), int(doc.size().height()))
 
@@ -174,8 +166,11 @@ class Table(QTableView):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.delegate = TableDelegate()
+        self.reset_delegate()
         self.set_gui()
+    
+    def reset_delegate(self):
+        self.delegate = TableDelegate()
     
     def get_col_width(self, colno):
         return self.columnWidth(colno)
@@ -214,14 +209,14 @@ class Table(QTableView):
         return index_.column()
     
     def get_index(self):
-        return self.delegate.index
+        return self.delegate.mcindex
     
     def set_index(self, index_):
-        self.delegate.index = index_
+        self.delegate.mcindex = index_
     
     def set_cur_index(self, index_):
         self.setCurrentIndex(index_)
-        self.delegate.index = index_
+        self.delegate.mcindex = index_
     
     def get_cur_index(self):
         return self.currentIndex()
@@ -231,13 +226,12 @@ class Table(QTableView):
         return(index_.row(), index_.column())
     
     def get_cell(self):
-        return(self.delegate.index.row(), self.delegate.index.column())
+        return(self.delegate.mcindex.row(), self.delegate.mcindex.column())
     
     def get_height(self):
         ''' #NOTE: Run only after events since Qt returns dummy geometry values
             right after startup. This is claimed to be fixed by showing the
-            window, but I have not managed this yet.
-        '''
+            window, but I have not managed this yet. '''
         return self.height()
     
     def get_cell_x(self, colno):
@@ -267,7 +261,7 @@ class Table(QTableView):
         self.vheader.setMaximumSectionSize(height)
     
     def set_gui(self):
-        self.delegate.index = self.get_cur_index()
+        self.delegate.mcindex = self.get_cur_index()
         self.setItemDelegate(self.delegate)
         self.hheader = self.horizontalHeader()
         self.vheader = self.verticalHeader()

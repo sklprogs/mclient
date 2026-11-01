@@ -333,6 +333,7 @@ class Table:
             rep.empty(f)
             # Keep old article functioning if nothing was found
             return
+        self.gui.reset_delegate()
         # Reset values only if the article is not empty
         self.set_values()
         self.logic.reset(blocks)
@@ -345,7 +346,6 @@ class Table:
             we merely suppress a warning at 'self.go_start'.
         '''
         self.set_coords()
-        self.go_bookmark()
     
     def set_coords(self, event=None):
         ''' Calculating Y is very fast (~0.05s for 'set' on Intel Atom). We
