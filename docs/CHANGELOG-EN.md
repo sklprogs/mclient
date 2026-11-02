@@ -7,6 +7,9 @@
 * Refactor code, remove cells intermediate structure
 * Fix webpage export. Improve .txt export.
 
+## 8.0.3
+* Remove "| year" block (multitran.com)
+
 ## 8.0.2
 * Suppress annoying and useless warning when nothing was found at multitran.com
 
