@@ -1,4 +1,12 @@
 (in development)
+* Remove duplicate cells
+* Accelerate article loading
+* Make cell visibility check faster and more precise
+* Refactor code, remove cells intermediate structure
+* Fix webpage export. Improve .txt export.
+
+## 8.0.2
+* Suppress annoying and useless warning when nothing was found at multitran.com
 
 ## 8.0.1
 * Fix crashes with phrase count showing disabled
