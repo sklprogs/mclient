@@ -147,8 +147,17 @@ class Trash:
                       if not block.url.startswith('a=467&s=')]
         rep.matches(f, old_len-len(self.blocks))
     
+    def remove_year(self):
+        # Remove useless "| year" block
+        f = '[MClient] sources.multitrancom.elems.Trash.remove_year'
+        old_len = len(self.blocks)
+        self.blocks = [block for block in self.blocks \
+                      if not block.url.startswith('a=506&pl=')]
+        rep.matches(f, old_len-len(self.blocks))
+    
     def run(self):
         self.remove_stresses()
+        self.remove_year()
         self.set_head()
         self.set_tail()
         self.report()
