@@ -1,7 +1,5 @@
 (in development)
 * Remove duplicate cells
-
-## 8.1
 * Accelerate article loading
 * Make cell visibility check faster and more precise
 * Refactor code, remove cells intermediate structure
