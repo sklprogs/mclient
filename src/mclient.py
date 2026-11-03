@@ -286,7 +286,14 @@ class App:
         if not text:
             rep.empty(f)
             return
-        rowno, colno = TABLE.get_cell()
+        cell = TABLE.get_cell()
+        if not cell:
+            rep.empty(f)
+            return
+        if len(cell) != 2:
+            rep.wrong_input(f, Graphical=False)
+            return
+        rowno, colno = cell[0], cell[1]
         max_width = self.get_width()
         width = TABLE.get_col_width(colno)
         height = TABLE.get_row_height(rowno)
