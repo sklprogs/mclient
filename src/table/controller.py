@@ -163,7 +163,14 @@ class Table:
             return
         self.update_cell(CONFIG.new['BlockMode'])
         self.scroll_top()
-        #ARTICLES.set_bookmark(self.logic.block)
+        index = self.model.index(self.logic.block.rowno, self.logic.block.colno)
+        self.gui.set_cur_index(index)
+        if index in self.gui.delegate.mclong \
+        and (CONFIG.new['BlockMode'] or CONFIG.new['rows']['height'] > 0):
+            self.show_popup()
+        else:
+            POPUP.close()
+        ARTICLES.set_bookmark(self.logic.block)
     
     def go_line_start(self):
         self.update_cell()
@@ -182,6 +189,7 @@ class Table:
         return self.gui.get_col_width(colno)
     
     def show_popup(self):
+        POPUP.fill(self.get_cell_code())
         self.gui.show_popup()
     
     def _get_page_limits(self, page):
@@ -327,6 +335,30 @@ class Table:
                 return []
         return code
     
+    def set_long(self):
+        f = '[MClient] table.controller.Table.set_long'
+        if not CONFIG.new['rows']['height']:
+            rep.lazy(f)
+            return
+        timer = Timer(f)
+        timer.start()
+        self.gui.delegate.mclong = []
+        cellno = -1
+        for block in self.logic.blocks:
+            if cellno == block.cellno:
+                continue
+            cellno = block.cellno
+            col_width = self.gui.get_col_width(block.colno)
+            Fits = self.gui.delegate.does_cell_fit(block.code, block.colno, col_width)
+            if not Fits:
+                index = self.model.index(block.rowno, block.colno)
+                self.gui.delegate.mclong.append(index)
+        timer.end()
+        mes = _('Number of cells: {}').format(self.logic.rownum * self.logic.colnum)
+        Message(f, mes).show_debug()
+        mes = _('Number of long cells: {}').format(len(self.gui.delegate.mclong))
+        Message(f, mes).show_debug()
+    
     def reset(self, blocks):
         f = '[MClient] table.controller.Table.reset'
         if not blocks:
@@ -342,8 +374,11 @@ class Table:
         self.set_col_width()
         self.select_row_height()
         self.show_borders(False)
-        ''' Coordinates are recreated each time the app window is resized. Here
-            we merely suppress a warning at 'self.go_start'.
+        self.set_long()
+        ''' - Coordinates are recreated each time the app window is resized.
+              Here we merely suppress a warning at 'self.go_start'.
+            - Do not call 'go_bookmark' from this class - this is too early,
+              the article dictionary is not filled yet!
         '''
         self.set_coords()
     
