@@ -70,6 +70,11 @@ class TableDelegate(QStyledItemDelegate):
         self.mccursor = QTextCursor(self.mcdoc)
         self.mcstyle = QApplication.style()
     
+    def does_cell_fit(self, code, colno, col_width):
+        self.mcdoc.setHtml(code)
+        self.mcdoc.setTextWidth(col_width)
+        return self.mcdoc.documentLayout().documentSize().height() <= CONFIG.new['rows']['height']
+    
     def mcget_block(self, point: QPointF):
         f = '[MClient] table.gui.TableDelegate.mcget_block'
         # Return block.no for the link under point, or None
