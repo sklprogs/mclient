@@ -236,19 +236,20 @@
 ,"web_search_url": "http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s"
 ,"AlphabetizeTerms": false
 ,"Autoswap": false
+,"BlockMode": false
 ,"BlockSubjects": true
 ,"CaptureHotkey": true
+,"ClearSingleSource": true
 ,"Iconify": true
+,"OrderCells": true
 ,"PhraseCount": true
 ,"Ping": true
 ,"PrioritizeSubjects": true
-,"ShortSubjects": false
 ,"ShortSpeech": true
+,"ShortSubjects": false
 ,"ShowUserNames": true
-,"OrderCells": true
-,"ClearSingleSource": true
-,"timeout": "5.0"
 ,"hotkey_delay": 0
+,"timeout": "5.0"
 ,"config": {"min_version": 3}
 ,"popup": {"center": true}
 ,"selection": {"cell": "#FF0000", "block": "#00FFFF"}
