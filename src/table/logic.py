@@ -35,8 +35,12 @@ class Table:
         self.blocks = blocks
         self.set_size()
         self.set_navigation()
-        #TODO: Implement bookmarks and set the block
-        self.set_first_term()
+        ''' If there is no bookmark, the current block is set to the 1st term
+            (mclient.App.load_article -> table.controller.Table.go_bookmark ->
+            table.logic.Table.set_first_term), but we want to ensure that
+            a valid block is set (not necessarily of the term type) to suppress
+            warnings. '''
+        self.set_start()
     
     def get_cell_code(self):
         code = [block.code for block in self.blocks \
