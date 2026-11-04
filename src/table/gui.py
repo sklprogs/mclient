@@ -67,10 +67,8 @@ class TableDelegate(QStyledItemDelegate):
         self.mcindex = None
         self.mcdoc = QTextDocument()
         self.mcctx = QAbstractTextDocumentLayout.PaintContext()
-        self.mcborder = QColor(CONFIG.new['rows']['border']['color'])
-        self.mcrow_color = QColor(WIDE_ROW_COLOR)
-        self.mcpen_border = QPen(self.mcborder, 2)
-        self.mcpen_row = QPen(self.mcrow_color, 2)
+        self.mcpen_border = QPen(QColor(CONFIG.new['rows']['border']['color']), 2)
+        self.mcpen_row = QPen(QColor(WIDE_ROW_COLOR), 2)
         self.mcpen_row.setStyle(Qt.PenStyle.DotLine)
         self.mccursor = QTextCursor(self.mcdoc)
         self.mcstyle = QApplication.style()
