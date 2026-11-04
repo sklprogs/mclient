@@ -86,16 +86,13 @@ class Search:
             return
         return self._search(TABLE.logic.non_empty[::-1])
     
-    def search_next(self, ref_block):
+    def search_next(self):
         f = '[MClient] search.logic.Search.search_next'
         if not self.Success:
             rep.cancel(f)
             return
-        if not ref_block:
-            rep.empty(f)
-            return
         try:
-            pos = TABLE.logic.non_empty.index(ref_block)
+            pos = TABLE.logic.non_empty.index(TABLE.logic.block)
         except ValueError:
             rep.wrong_input(f)
             return
