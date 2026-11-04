@@ -16,7 +16,8 @@ class Search:
     
     def check(self):
         f = '[MClient] search.logic.Search.check'
-        if not TABLE.logic.non_empty or not Text(self.pattern).delete_line_breaks():
+        if not TABLE.logic.non_empty or not TABLE.logic.check_block() \
+        or not Text(self.pattern).delete_line_breaks():
             self.Success = False
             rep.empty(f)
     
