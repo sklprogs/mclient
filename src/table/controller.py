@@ -24,9 +24,6 @@ class Table:
         self.gui = guiTable()
     
     def set_values(self):
-        #TODO: Set in default config
-        #CONFIG.new['BlockMode'] = False
-        CONFIG.new['BlockMode'] = True
         self.model = None
         self.coords = {}
     

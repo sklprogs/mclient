@@ -12,7 +12,6 @@ class Table:
         use 'Success' or call 'reset' before filling.
     '''
     def __init__(self, blocks=[]):
-        self.BlockMode = False
         self.set_values()
         if blocks:
             self.reset(blocks)
