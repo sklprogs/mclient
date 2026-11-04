@@ -109,15 +109,3 @@ class Search:
             rep.wrong_input(f)
             return
         return self._search(TABLE.logic.non_empty[:pos-1][::-1])
-    
-    def _get_next_col(self, rowno, colno):
-        while colno + 1 < self.colnum:
-            colno += 1
-            if self.pattern in self.plain[rowno][colno]:
-                return(rowno, colno)
-    
-    def _get_prev_col(self, rowno, colno):
-        while colno > 0:
-            colno -= 1
-            if self.pattern in self.plain[rowno][colno]:
-                return(rowno, colno)
