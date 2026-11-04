@@ -220,18 +220,10 @@ class Table:
             self.set_start()
     
     def set_right(self):
-        f = '[MClient] table.logic.Table.set_right'
-        if not self.check_block():
-            rep.empty(f)
-            return
         if not self.set_next_cell(self.right):
             self.set_start()
     
     def set_left(self):
-        f = '[MClient] table.logic.Table.set_left'
-        if not self.check_block():
-            rep.empty(f)
-            return
         if not self.set_next_cell(self.left):
             self.set_end()
     
