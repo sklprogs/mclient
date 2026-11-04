@@ -16,7 +16,8 @@ WIDE_ROW_COLOR = '#CCCCCC'
 WIDE_ROW_LEN = 70
 ''' Putting this in TableDelegate does not work (probably because
     table.gui.TableDelegate.paint is called after table.controller.Table.select),
-    but for some reason the global list works.
+    but for some reason the global list works. Paint processes only a visible
+    screen area, so WIDE_ROWS will be constantly updated.
 '''
 WIDE_ROWS = []
 
