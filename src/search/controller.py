@@ -65,42 +65,38 @@ class Search:
     def search_next(self):
         f = '[MClient] search.controller.Search.search_next'
         self.reset()
-        ref_block = TABLE.get_selected_block()
-        if not ref_block:
-            rep.empty(f)
-            return
         block_start = self.logic.search_start()
-        block_next = self.logic.search_next(ref_block)
         if not block_start:
             mes = _('No matches!')
             Message(f, mes, True).show_info()
             return
+        block_next = self.logic.search_next()
         if not block_next:
             mes = _('The end has been reached. Searching from the start.')
             Message(f, mes, True).show_info()
-            TABLE.select(block_start)
+            TABLE.logic.block = block_start
+            TABLE.select()
             return
-        TABLE.select(block_next)
+        TABLE.logic.block = block_next
+        TABLE.select()
     
     def search_prev(self):
         f = '[MClient] search.controller.Search.search_prev'
         self.reset()
-        ref_block = TABLE.get_selected_block()
-        if not ref_block:
-            rep.empty(f)
-            return
         block_end = self.logic.search_end()
-        block_prev = self.logic.search_prev(ref_block)
         if not block_end:
             mes = _('No matches!')
             Message(f, mes, True).show_info()
             return
+        block_prev = self.logic.search_prev()
         if not block_prev:
             mes = _('The start has been reached. Searching from the end.')
             Message(f, mes, True).show_info()
-            TABLE.select(block_end)
+            TABLE.logic.block = block_end
+            TABLE.select()
             return
-        TABLE.select(block_prev)
+        TABLE.logic.block = block_prev
+        TABLE.select()
 
 
 SEARCH = Search()
