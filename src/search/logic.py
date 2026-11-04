@@ -4,6 +4,8 @@
 from skl_shared.localize import _
 from skl_shared.message.controller import rep, Message
 from skl_shared.logic import Text
+
+from config import CONFIG
 from table.controller import TABLE
 
 
@@ -14,7 +16,7 @@ class Search:
     
     def check(self):
         f = '[MClient] search.logic.Search.check'
-        if not TABLE.logic.blocks or not Text(self.pattern).delete_line_breaks():
+        if not TABLE.logic.non_empty or not Text(self.pattern).delete_line_breaks():
             self.Success = False
             rep.empty(f)
     
@@ -31,15 +33,13 @@ class Search:
     
     def _search_sensitive_block(self, blocks):
         for block in blocks:
-            if block.Ignore or block.Block:
-                continue
             if self.pattern in block.text:
                 return block
     
     def _search_sensitive(self, blocks):
         cellno = -1
         for block in blocks:
-            if block.Ignore or block.Block or cellno == block.cellno:
+            if cellno == block.cellno:
                 continue
             cellno = block.cellno
             if self.pattern in block.cell_text:
@@ -47,15 +47,13 @@ class Search:
     
     def _search_insensitive_block(self, blocks):
         for block in blocks:
-            if block.Ignore or block.Block:
-                continue
             if self.pattern.lower() in block.text.lower():
                 return block
     
     def _search_insensitive(self, blocks):
         cellno = -1
         for block in blocks:
-            if block.Ignore or block.Block or cellno == block.cellno:
+            if cellno == block.cellno:
                 continue
             cellno = block.cellno
             if self.pattern.lower() in block.cell_text.lower():
@@ -63,12 +61,12 @@ class Search:
     
     def _search(self, blocks):
         if self.Case:
-            if TABLE.logic.BlockMode:
+            if CONFIG.new['BlockMode']:
                 return self._search_sensitive_block(blocks)
             else:
                 return self._search_sensitive(blocks)
         else:
-            if TABLE.logic.BlockMode:
+            if CONFIG.new['BlockMode']:
                 return self._search_insensitive_block(blocks)
             else:
                 return self._search_insensitive(blocks)
@@ -78,16 +76,17 @@ class Search:
         if not self.Success:
             rep.cancel(f)
             return
-        return self._search(TABLE.logic.blocks)
+        return self._search(TABLE.logic.non_empty)
     
     def search_end(self):
         f = '[MClient] search.logic.Search.search_end'
         if not self.Success:
             rep.cancel(f)
             return
-        return self._search(TABLE.logic.blocks[::-1])
+        return self._search(TABLE.logic.non_empty[::-1])
     
     def search_next(self, ref_block):
+        #Message(f, _('Nothing has been found.')).show_warning()
         f = '[MClient] search.logic.Search.search_next'
         if not self.Success:
             rep.cancel(f)
@@ -96,11 +95,11 @@ class Search:
             rep.empty(f)
             return
         try:
-            pos = TABLE.logic.blocks.index(ref_block)
+            pos = TABLE.logic.non_empty.index(ref_block)
         except ValueError:
             rep.wrong_input(f)
             return
-        return self._search(TABLE.logic.blocks[pos+1:])
+        return self._search(TABLE.logic.non_empty[pos+1:])
     
     def search_prev(self, ref_block):
         f = '[MClient] search.logic.Search.search_prev'
@@ -111,11 +110,11 @@ class Search:
             rep.empty(f)
             return
         try:
-            pos = TABLE.logic.blocks.index(ref_block)
+            pos = TABLE.logic.non_empty.index(ref_block)
         except ValueError:
             rep.wrong_input(f)
             return
-        return self._search(TABLE.logic.blocks[:pos-1][::-1])
+        return self._search(TABLE.logic.non_empty[:pos-1][::-1])
     
     def _get_next_col(self, rowno, colno):
         while colno + 1 < self.colnum:
