@@ -292,13 +292,11 @@ class Table:
             self.gui.set_col_width(colno, width)
     
     def go_first_term(self):
-        f = '[MClient] table.controller.Table.go_first_term'
         self.update_cell()
         self.logic.set_first_term()
         self.select()
     
     def go_bookmark(self):
-        f = '[MClient] table.controller.Table.go_bookmark'
         block = ARTICLES.get_bookmark()
         if not block:
             self.go_first_term()
