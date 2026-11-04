@@ -37,7 +37,7 @@ class Search:
             if self.pattern in block.text:
                 return block
     
-    def _search_sensitive(self, blocks):
+    def _search_sensitive_cell(self, blocks):
         cellno = -1
         for block in blocks:
             if cellno == block.cellno:
@@ -51,7 +51,7 @@ class Search:
             if self.pattern.lower() in block.text.lower():
                 return block
     
-    def _search_insensitive(self, blocks):
+    def _search_insensitive_cell(self, blocks):
         cellno = -1
         for block in blocks:
             if cellno == block.cellno:
@@ -65,12 +65,12 @@ class Search:
             if CONFIG.new['BlockMode']:
                 return self._search_sensitive_block(blocks)
             else:
-                return self._search_sensitive(blocks)
+                return self._search_sensitive_cell(blocks)
         else:
             if CONFIG.new['BlockMode']:
                 return self._search_insensitive_block(blocks)
             else:
-                return self._search_insensitive(blocks)
+                return self._search_insensitive_cell(blocks)
     
     def search_start(self):
         f = '[MClient] search.logic.Search.search_start'
