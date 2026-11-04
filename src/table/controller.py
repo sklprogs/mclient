@@ -161,7 +161,7 @@ class Table:
         index = self.model.index(self.logic.block.rowno, self.logic.block.colno)
         self.gui.set_cur_index(index)
         self.update_cell(CONFIG.new['BlockMode'])
-        self.scroll_top()
+        self.scroll_block()
         if CONFIG.new['rows']['height'] > 0 and index in WIDE_ROWS:
             self.show_popup()
         else:
@@ -245,8 +245,8 @@ class Table:
             self.logic.block = block
         self.select()
     
-    def scroll_top(self):
-        f = '[MClient] table.controller.Table.scroll_top'
+    def scroll_block(self):
+        f = '[MClient] table.controller.Table.scroll_block'
         if not self.coords or not self.model or not self.logic.check_block():
             rep.empty(f)
             return
