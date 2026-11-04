@@ -619,17 +619,18 @@
     ,"web_search_url": {"type": "string"}
     ,"AlphabetizeTerms": {"type": "boolean"}
     ,"Autoswap": {"type": "boolean"}
+    ,"BlockMode": {"type": "boolean"}
     ,"BlockSubjects": {"type": "boolean"}
     ,"CaptureHotkey": {"type": "boolean"}
+    ,"ClearSingleSource": {"type": "boolean"}
     ,"Iconify": {"type": "boolean"}
+    ,"OrderCells": {"type": "boolean"}
     ,"PhraseCount": {"type": "boolean"}
     ,"Ping": {"type": "boolean"}
     ,"PrioritizeSubjects": {"type": "boolean"}
-    ,"ShortSubjects": {"type": "boolean"}
     ,"ShortSpeech": {"type": "boolean"}
+    ,"ShortSubjects": {"type": "boolean"}
     ,"ShowUserNames": {"type": "boolean"}
-    ,"OrderCells": {"type": "boolean"}
-    ,"ClearSingleSource": {"type": "boolean"}
     ,"timeout": {"type": "string"}
     ,"hotkey_delay": {"type": "integer"}
     }
