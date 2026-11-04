@@ -23,7 +23,7 @@ class Table:
             new fixed types are introduced.
         '''
         self.fixed_num = 6
-        self.blocks = []
+        self.blocks = self.non_empty = []
         self.up = []
         self.down = []
         self.left = []
@@ -32,7 +32,9 @@ class Table:
     
     def reset(self, blocks):
         self.set_values()
-        self.blocks = blocks
+        self.blocks = self.non_empty = blocks
+        self.non_empty = [block for block in self.non_empty \
+                         if block.text.strip() and not block.Ignore]
         self.set_size()
         self.set_navigation()
         ''' If there is no bookmark, the current block is set to the 1st term
@@ -85,10 +87,9 @@ class Table:
         return '\n'.join(text).strip()
     
     def _get_page_block(self, colno, row_min, row_max):
-        for block in self.blocks:
+        for block in self.non_empty:
             if block.colno == colno and block.rowno >= row_min \
-            and block.rowno <= row_max and block.text.strip() \
-            and not block.Ignore:
+            and block.rowno <= row_max:
                 return block
     
     def get_page_block(self, colno, row_min, row_max):
@@ -111,9 +112,8 @@ class Table:
         block = self._get_page_block(colno, row_min, row_max)
         if block:
             return block
-        for block in self.blocks:
-            if block.rowno >= row_min and block.colno >= colno \
-            and block.text.strip() and not block.Ignore:
+        for block in self.non_empty:
+            if block.rowno >= row_min and block.colno >= colno:
                 return block
     
     def check_block(self):
@@ -123,26 +123,26 @@ class Table:
         rep.empty(f)
     
     def set_first_term(self):
-        for block in self.blocks:
-            if block.type == 'term' and block.text.strip() and not block.Ignore:
+        for block in self.non_empty:
+            if block.type == 'term':
                 self.block = block
                 return
     
     def set_start(self):
         f = '[MClient] table.logic.Table.set_start'
-        for block in self.blocks:
-            if block.text.strip() and not block.Ignore:
-                self.block = block
-                # Start has been reached - for Search
-                return True
+        try:
+            # Non-empty return signals Search that start has been reached
+            return self.non_empty[0]
+        except IndexError:
+            rep.empty(f)
     
     def set_end(self):
         f = '[MClient] table.logic.Table.set_end'
-        for block in self.blocks[::-1]:
-            if block.text.strip() and not block.Ignore:
-                self.block = block
-                # End has been reached - for Search
-                return True
+        try:
+            # Non-empty return signals Search that end has been reached
+            return self.non_empty[::-1][0]
+        except IndexError:
+            rep.empty(f)
     
     def set_size(self):
         f = '[MClient] table.logic.Table.set_size'
@@ -161,8 +161,7 @@ class Table:
         Message(f, mes).show_debug()
     
     def get_phsubj(self):
-        f = '[MClient] table.logic.Table.get_phsubj'
-        for block in self.blocks:
+        for block in self.non_empty:
             if block.type == 'phsubj':
                 return block
     
@@ -184,10 +183,10 @@ class Table:
                 return True
     
     def set_navigation(self):
-        self.up = sorted(self.blocks, key=lambda block: (-block.colno, -block.rowno, -block.no))
-        self.down = sorted(self.blocks, key=lambda block: (block.colno, block.rowno, block.no))
-        self.right = sorted(self.blocks, key=lambda block: (block.rowno, block.colno, block.no))
-        self.left = sorted(self.blocks, key=lambda block: (-block.rowno, -block.colno, -block.no))
+        self.up = sorted(self.non_empty, key=lambda block: (-block.colno, -block.rowno, -block.no))
+        self.down = sorted(self.non_empty, key=lambda block: (block.colno, block.rowno, block.no))
+        self.right = sorted(self.non_empty, key=lambda block: (block.rowno, block.colno, block.no))
+        self.left = sorted(self.non_empty, key=lambda block: (-block.rowno, -block.colno, -block.no))
     
     def set_next_cell(self, lst, ref_block=None):
         f = '[MClient] table.logic.Table.set_next_cell'
@@ -207,9 +206,7 @@ class Table:
         if not block:
             rep.empty(f)
             return
-        Empty = block.Ignore or not block.text.strip()
-        SameCell = ref_block.cellno == block.cellno and not CONFIG.new['BlockMode']
-        if Empty or SameCell:
+        if ref_block.cellno == block.cellno and not CONFIG.new['BlockMode']:
             return self.set_next_cell(lst, block)
         self.block = block
         return True
@@ -251,9 +248,8 @@ class Table:
         if not self.check_block():
             rep.empty(f)
             return
-        for block in self.blocks:
-            if block.rowno == self.block.rowno and block.colno >= self.fixed_num \
-            and block.text.strip() and not block.Ignore:
+        for block in self.non_empty:
+            if block.rowno == self.block.rowno and block.colno >= self.fixed_num:
                 self.block = block
                 return
     
@@ -262,7 +258,7 @@ class Table:
         if not self.check_block():
             rep.empty(f)
             return
-        for block in self.blocks[::-1]:
-            if block.rowno == self.block.rowno and block.text.strip() and not block.Ignore:
+        for block in self.non_empty[::-1]:
+            if block.rowno == self.block.rowno:
                 self.block = block
                 return
