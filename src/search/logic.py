@@ -86,7 +86,6 @@ class Search:
         return self._search(TABLE.logic.non_empty[::-1])
     
     def search_next(self, ref_block):
-        #Message(f, _('Nothing has been found.')).show_warning()
         f = '[MClient] search.logic.Search.search_next'
         if not self.Success:
             rep.cancel(f)
