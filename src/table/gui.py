@@ -14,6 +14,11 @@ from config import CONFIG
 
 WIDE_ROW_COLOR = '#CCCCCC'
 WIDE_ROW_LEN = 70
+''' Putting this in TableDelegate does not work (probably because
+    table.gui.TableDelegate.paint is called after table.controller.Table.select),
+    but for some reason the global list works.
+'''
+WIDE_ROWS = []
 
 
 class TableModel(QAbstractTableModel):
@@ -59,7 +64,6 @@ class TableDelegate(QStyledItemDelegate):
         super().__init__(*args, **kwargs)
         self.mclast_block_no = None
         self.mcindex = None
-        self.mclong = []
         self.mcdoc = QTextDocument()
         self.mcctx = QAbstractTextDocumentLayout.PaintContext()
         self.mcborder = QColor(CONFIG.new['rows']['border']['color'])
@@ -69,11 +73,6 @@ class TableDelegate(QStyledItemDelegate):
         self.mcpen_row.setStyle(Qt.PenStyle.DotLine)
         self.mccursor = QTextCursor(self.mcdoc)
         self.mcstyle = QApplication.style()
-    
-    def does_cell_fit(self, code, colno, col_width):
-        self.mcdoc.setHtml(code)
-        self.mcdoc.setTextWidth(col_width)
-        return self.mcdoc.documentLayout().documentSize().height() <= CONFIG.new['rows']['height']
     
     def mcget_block(self, point: QPointF):
         f = '[MClient] table.gui.TableDelegate.mcget_block'
@@ -122,6 +121,9 @@ class TableDelegate(QStyledItemDelegate):
             the cell can still remain visible because there is spacing between
             cells (the hard-coded value is 19). '''
         if self.mcdoc.documentLayout().documentSize().height() > CONFIG.new['rows']['height'] + 19:
+            # Must be index, not self.mcindex
+            if index and not index in WIDE_ROWS:
+                WIDE_ROWS.append(index)
             painter.setPen(self.mcpen_row)
             # Avoid intersecting cell borders and artifacts as the result
             x1, y1, x2, y2 = option.rect.getCoords()
@@ -175,6 +177,7 @@ class Table(QTableView):
         self.set_gui()
     
     def reset_delegate(self):
+        WIDE_ROWS.clear()
         self.delegate = TableDelegate()
     
     def get_col_width(self, colno):
