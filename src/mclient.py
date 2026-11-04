@@ -745,13 +745,12 @@ class App:
             # Do not warn when there are no articles yet
             rep.lazy(f)
             return
-        block = TABLE.get_selected_block()
-        if not block:
+        if not TABLE.logic.block:
             rep.empty(f)
             return
-        REQUEST.search = block.text
-        if block.url:
-            REQUEST.url = block.url
+        REQUEST.search = TABLE.logic.block.text
+        if TABLE.logic.block.url:
+            REQUEST.url = TABLE.logic.block.url
             mes = _('Open link: {}').format(REQUEST.url)
             Message(f, mes).show_info()
             self.load_article(REQUEST.search, REQUEST.url)
