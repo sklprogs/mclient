@@ -60,6 +60,7 @@ class Search:
             self.search_next()
     
     def reset(self):
+        TABLE.update_cell()
         self.logic.reset(self.gui.ent_src.get(), self.gui.cbx_cas.get())
     
     def search_next(self):
