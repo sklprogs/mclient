@@ -66,7 +66,6 @@ class TableDelegate(QStyledItemDelegate):
         self.mclast_block_no = None
         self.mcindex = None
         self.mcdoc = QTextDocument()
-        self.mcctx = QAbstractTextDocumentLayout.PaintContext()
         self.mcpen_border = QPen(QColor(CONFIG.new['rows']['border']['color']), 2)
         self.mcpen_row = QPen(QColor(WIDE_ROW_COLOR), 2)
         self.mcpen_row.setStyle(Qt.PenStyle.DotLine)
@@ -96,17 +95,15 @@ class TableDelegate(QStyledItemDelegate):
         f = '[MClient] table.gui.TableDelegate.paint'
         options = QStyleOptionViewItem(option)
         self.initStyleOption(options, index)
-        if options.widget:
-            style = options.widget.style()
-        else:
-            style = self.mcstyle
+        style = options.widget.style() if options.widget else self.mcstyle
         self.mcdoc.setHtml(options.text)
-        # Enable text wrapping
-        self.mcdoc.setTextWidth(options.rect.width())
         options.text = ''
+        textRect = style.subElementRect(QStyle.SubElement.SE_ItemViewItemText, options)
+        # Enable text wrapping
+        self.mcdoc.setTextWidth(textRect.width())
         self.mcset_line_spacing()
         style.drawControl(QStyle.ControlElement.CE_ItemViewItem, options, painter)
-        textRect = style.subElementRect(QStyle.SubElement.SE_ItemViewItemText, options)
+        
         if self.mcindex is None:
             mes = _('Index must be set externally!')
             Message(f, mes).show_error()
@@ -131,7 +128,8 @@ class TableDelegate(QStyledItemDelegate):
         painter.translate(textRect.topLeft())
         # Hide too long text; do not allow cells to overlap
         painter.setClipRect(textRect.translated(-textRect.topLeft()))
-        self.mcdoc.documentLayout().draw(painter, self.mcctx)
+        ctx = QAbstractTextDocumentLayout.PaintContext()
+        self.mcdoc.documentLayout().draw(painter, ctx)
         painter.restore()
     
     def make_document(self, html, width):
