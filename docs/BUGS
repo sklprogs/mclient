@@ -1,4 +1,7 @@
 all:
+- hello -> алло [manual input]:
+  File "/home/pete/bin/mclient/src/table/gui.py", line 54, in update
+    self.arraydata[rowno][colno] = code
 - hello: cannot find "hello int"
 - *sometimes* going to next/previous page is too slow, see 'cell' (.mdic)
 - when some cells are blocked, Block button is off and its tooltip says some
