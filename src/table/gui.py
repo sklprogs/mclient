@@ -91,8 +91,7 @@ class TableDelegate(QStyledItemDelegate):
         format_.setLineHeight(19, 2)
         self.mccursor.setBlockFormat(format_)
     
-    def paint(self, painter: QPainter, option: QStyleOptionViewItem, index: QModelIndex):
-        f = '[MClient] table.gui.TableDelegate.paint'
+    def _set_up_doc(self, option: QStyleOptionViewItem, index: QModelIndex):
         options = QStyleOptionViewItem(option)
         self.initStyleOption(options, index)
         style = options.widget.style() if options.widget else self.mcstyle
@@ -101,6 +100,11 @@ class TableDelegate(QStyledItemDelegate):
         textRect = style.subElementRect(QStyle.SubElement.SE_ItemViewItemText, options)
         # Enable text wrapping
         self.mcdoc.setTextWidth(textRect.width())
+        return(options, style, textRect)
+    
+    def paint(self, painter: QPainter, option: QStyleOptionViewItem, index: QModelIndex):
+        f = '[MClient] table.gui.TableDelegate.paint'
+        options, style, textRect = self._set_up_doc(option, index)
         self.mcset_line_spacing()
         style.drawControl(QStyle.ControlElement.CE_ItemViewItem, options, painter)
         if self.mcindex is None:
@@ -131,15 +135,8 @@ class TableDelegate(QStyledItemDelegate):
         self.mcdoc.documentLayout().draw(painter, ctx)
         painter.restore()
     
-    def editorEvent(self, event, model, option, index):
-        options = QStyleOptionViewItem(option)
-        self.initStyleOption(options, index)
-        style = options.widget.style() if options.widget else self.mcstyle
-        self.mcdoc.setHtml(options.text)
-        options.text = ''
-        textRect = style.subElementRect(QStyle.SubElement.SE_ItemViewItemText, options)
-        # Enable text wrapping
-        self.mcdoc.setTextWidth(textRect.width())
+    def editorEvent(self, event, model, option: QStyleOptionViewItem, index: QModelIndex):
+        self._set_up_doc(option, index)
         if event.type() == event.Type.MouseMove:
             ''' Mouse position is in viewport coordinates; the document starts
                 at the cell's top-left corner. '''
@@ -152,14 +149,8 @@ class TableDelegate(QStyledItemDelegate):
                 self.mclast_block_no = None
         return False
     
-    def sizeHint(self, option, index):
-        options = QStyleOptionViewItem(option)
-        self.initStyleOption(options, index)
-        self.mcdoc.setHtml(options.text)
-        style = options.widget.style() if options.widget else self.mcstyle
-        textRect = style.subElementRect(QStyle.SubElement.SE_ItemViewItemText, options)
-        # Enable text wrapping
-        self.mcdoc.setTextWidth(textRect.width())
+    def sizeHint(self, option: QStyleOptionViewItem, index: QModelIndex):
+        self._set_up_doc(option, index)
         # 'float' is possible but not allowed
         return QSize(int(self.mcdoc.idealWidth()), int(self.mcdoc.size().height()))
 
