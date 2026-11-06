@@ -160,7 +160,7 @@ class TableDelegate(QStyledItemDelegate):
         self.mcdoc.setHtml(options.text)
         self.mcdoc.setTextWidth(options.rect.width())
         # 'float' is possible but not allowed
-        return QSize(int(doc.idealWidth()), int(doc.size().height()))
+        return QSize(int(self.mcdoc.idealWidth()), int(self.mcdoc.size().height()))
 
 
 
