@@ -103,7 +103,6 @@ class TableDelegate(QStyledItemDelegate):
         self.mcdoc.setTextWidth(textRect.width())
         self.mcset_line_spacing()
         style.drawControl(QStyle.ControlElement.CE_ItemViewItem, options, painter)
-        
         if self.mcindex is None:
             mes = _('Index must be set externally!')
             Message(f, mes).show_error()
@@ -132,15 +131,16 @@ class TableDelegate(QStyledItemDelegate):
         self.mcdoc.documentLayout().draw(painter, ctx)
         painter.restore()
     
-    def make_document(self, html, width):
-        #self.mcdoc.setDocumentMargin(4)
-        self.mcdoc.setHtml(html)
-        self.mcdoc.setTextWidth(width)
-    
     def editorEvent(self, event, model, option, index):
+        options = QStyleOptionViewItem(option)
+        self.initStyleOption(options, index)
+        style = options.widget.style() if options.widget else self.mcstyle
+        self.mcdoc.setHtml(options.text)
+        options.text = ''
+        textRect = style.subElementRect(QStyle.SubElement.SE_ItemViewItemText, options)
+        # Enable text wrapping
+        self.mcdoc.setTextWidth(textRect.width())
         if event.type() == event.Type.MouseMove:
-            html = index.data(Qt.ItemDataRole.DisplayRole) or ''
-            self.make_document(html, option.rect.width())
             ''' Mouse position is in viewport coordinates; the document starts
                 at the cell's top-left corner. '''
             point = event.position() - QPointF(option.rect.topLeft())
@@ -156,7 +156,10 @@ class TableDelegate(QStyledItemDelegate):
         options = QStyleOptionViewItem(option)
         self.initStyleOption(options, index)
         self.mcdoc.setHtml(options.text)
-        self.mcdoc.setTextWidth(options.rect.width())
+        style = options.widget.style() if options.widget else self.mcstyle
+        textRect = style.subElementRect(QStyle.SubElement.SE_ItemViewItemText, options)
+        # Enable text wrapping
+        self.mcdoc.setTextWidth(textRect.width())
         # 'float' is possible but not allowed
         return QSize(int(self.mcdoc.idealWidth()), int(self.mcdoc.size().height()))
 
