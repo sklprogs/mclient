@@ -132,7 +132,8 @@ class Table:
         f = '[MClient] table.logic.Table.set_start'
         try:
             # Non-empty return signals Search that start has been reached
-            return self.non_empty[0]
+            self.block = self.non_empty[0]
+            return self.block
         except IndexError:
             rep.empty(f)
     
@@ -140,7 +141,8 @@ class Table:
         f = '[MClient] table.logic.Table.set_end'
         try:
             # Non-empty return signals Search that end has been reached
-            return self.non_empty[::-1][0]
+            self.block = self.non_empty[::-1][0]
+            return self.block
         except IndexError:
             rep.empty(f)
     
