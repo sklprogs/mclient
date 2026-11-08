@@ -116,8 +116,8 @@ class TableDelegate(QStyledItemDelegate):
         x1, y1, x2, y2 = option.rect.getCoords()
         painter.drawLine(x1 + 5, y2 - 1, x1 + WIDE_ROW_LEN, y2 - 1)
     
-    def _mcdraw_frame(self, index, painter, option):
-        f = '[MClient] table.gui.TableDelegate._mcdraw_frame'
+    def _mcdraw_border(self, index, painter, option):
+        f = '[MClient] table.gui.TableDelegate._mcdraw_border'
         if self.mcindex is None:
             mes = _('Index must be set externally!')
             Message(f, mes).show_error()
@@ -135,7 +135,7 @@ class TableDelegate(QStyledItemDelegate):
         options, style, textRect = self._set_up_doc(option, index)
         self.mcset_line_spacing()
         style.drawControl(QStyle.ControlElement.CE_ItemViewItem, options, painter)
-        self._mcdraw_frame(index, painter, option)
+        self._mcdraw_border(index, painter, option)
         self._mcdraw_row(index, painter, option)
         painter.save()
         painter.translate(textRect.topLeft())
