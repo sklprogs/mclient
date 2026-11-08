@@ -102,31 +102,41 @@ class TableDelegate(QStyledItemDelegate):
         self.mcdoc.setTextWidth(textRect.width())
         return(options, style, textRect)
     
+    def _mcdraw_row(self, index, painter, option):
+        ''' Cell calculated height can exceed max allowed row height, but
+            the cell can still remain visible because there is spacing between
+            cells (the hard-coded value is 19). '''
+        if self.mcdoc.documentLayout().documentSize().height() <= CONFIG.new['rows']['height'] + 19:
+            return
+        # Must be index, not self.mcindex
+        if index and not index in WIDE_ROWS:
+            WIDE_ROWS.append(index)
+        painter.setPen(self.mcpen_row)
+        # Avoid intersecting cell borders and artifacts as the result
+        x1, y1, x2, y2 = option.rect.getCoords()
+        painter.drawLine(x1 + 5, y2 - 1, x1 + WIDE_ROW_LEN, y2 - 1)
+    
+    def _mcdraw_frame(self, index, painter, option):
+        f = '[MClient] table.gui.TableDelegate._mcdraw_frame'
+        if self.mcindex is None:
+            mes = _('Index must be set externally!')
+            Message(f, mes).show_error()
+            return
+        if CONFIG.new['BlockMode'] or index != self.mcindex:
+            return
+        painter.setPen(self.mcpen_border)
+        x1, y1, x2, y2 = option.rect.getCoords()
+        # +/-1 to avoid intersecting cell borders and artifacts as the result
+        option.rect.setCoords(x1 + 1, y1 + 1, x2 - 1, y2 - 1)
+        painter.drawRect(option.rect)
+    
     def paint(self, painter: QPainter, option: QStyleOptionViewItem, index: QModelIndex):
         f = '[MClient] table.gui.TableDelegate.paint'
         options, style, textRect = self._set_up_doc(option, index)
         self.mcset_line_spacing()
         style.drawControl(QStyle.ControlElement.CE_ItemViewItem, options, painter)
-        if self.mcindex is None:
-            mes = _('Index must be set externally!')
-            Message(f, mes).show_error()
-        elif index == self.mcindex and not CONFIG.new['BlockMode']:
-            painter.setPen(self.mcpen_border)
-            x1, y1, x2, y2 = option.rect.getCoords()
-            # +/-1 to avoid intersecting cell borders and artifacts as the result
-            option.rect.setCoords(x1 + 1, y1 + 1, x2 - 1, y2 - 1)
-            painter.drawRect(option.rect)
-        ''' Cell calculated height can exceed max allowed row height, but
-            the cell can still remain visible because there is spacing between
-            cells (the hard-coded value is 19). '''
-        if self.mcdoc.documentLayout().documentSize().height() > CONFIG.new['rows']['height'] + 19:
-            # Must be index, not self.mcindex
-            if index and not index in WIDE_ROWS:
-                WIDE_ROWS.append(index)
-            painter.setPen(self.mcpen_row)
-            # Avoid intersecting cell borders and artifacts as the result
-            x1, y1, x2, y2 = option.rect.getCoords()
-            painter.drawLine(x1 + 5, y2 - 1, x1 + WIDE_ROW_LEN, y2 - 1)
+        self._mcdraw_frame(index, painter, option)
+        self._mcdraw_row(index, painter, option)
         painter.save()
         painter.translate(textRect.topLeft())
         # Hide too long text; do not allow cells to overlap
