@@ -122,7 +122,11 @@ class TableDelegate(QStyledItemDelegate):
             mes = _('Index must be set externally!')
             Message(f, mes).show_error()
             return
-        if CONFIG.new['BlockMode'] or index != self.mcindex:
+        ''' Compare row and column numbers, not indexes, because Qt's index is
+            generated on-the-fly and will never match 'mcindex' even if they
+            point to the same row and column. '''
+        if CONFIG.new['BlockMode'] or index.row() != self.mcindex.row() \
+        or index.column() != self.mcindex.column():
             return
         painter.setPen(self.mcpen_border)
         x1, y1, x2, y2 = option.rect.getCoords()
