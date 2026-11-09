@@ -38,7 +38,7 @@ class TableModel(QAbstractTableModel):
 
     def data(self, index, role):
         f = '[MClient] table.gui.TableModel.data'
-        if not index.isValid():
+        if index is None or not index.isValid():
             return QVariant()
         if role == Qt.ItemDataRole.DisplayRole:
             try:
@@ -52,9 +52,9 @@ class TableModel(QAbstractTableModel):
     def update(self, rowno, colno, code):
         # We need to update underlying data, not only blocks
         self.arraydata[rowno][colno] = code
-        index_ = self.index(rowno, colno)
+        index = self.index(rowno, colno)
         # Since we update a single cell, indexes are the same
-        self.dataChanged.emit(index_, index_, [Qt.ItemDataRole.DisplayRole])
+        self.dataChanged.emit(index, index, [Qt.ItemDataRole.DisplayRole])
 
 
 
@@ -92,6 +92,10 @@ class TableDelegate(QStyledItemDelegate):
         self.mccursor.setBlockFormat(format_)
     
     def _set_up_doc(self, option: QStyleOptionViewItem, index: QModelIndex):
+        f = '[MClient] table.gui.TableDelegate._set_up_doc'
+        if index is None:
+            rep.empty(f)
+            return
         options = QStyleOptionViewItem(option)
         self.initStyleOption(options, index)
         style = options.widget.style() if options.widget else self.mcstyle
@@ -103,6 +107,7 @@ class TableDelegate(QStyledItemDelegate):
         return(options, style, textRect)
     
     def _mcdraw_row(self, index, painter, option):
+        f = '[MClient] table.gui.TableDelegate._mcdraw_row'
         ''' Cell calculated height can exceed max allowed row height, but
             the cell can still remain visible because there is spacing between
             cells (the hard-coded value is 19). '''
@@ -113,6 +118,8 @@ class TableDelegate(QStyledItemDelegate):
             tuple_ = (index.row(), index.column())
             if not tuple_ in WIDE_ROWS:
                 WIDE_ROWS.append(tuple_)
+        else:
+            rep.empty(f)
         painter.setPen(self.mcpen_row)
         # Avoid intersecting cell borders and artifacts as the result
         x1, y1, x2, y2 = option.rect.getCoords()
@@ -124,6 +131,9 @@ class TableDelegate(QStyledItemDelegate):
             mes = _('Index must be set externally!')
             Message(f, mes).show_error()
             return
+        if index is None:
+            rep.empty(f)
+            return
         ''' Compare row and column numbers, not indexes, because Qt's index is
             generated on-the-fly and will never match 'mcindex' even if they
             point to the same row and column. '''
@@ -131,13 +141,15 @@ class TableDelegate(QStyledItemDelegate):
         or index.column() != self.mcindex.column():
             return
         painter.setPen(self.mcpen_border)
-        x1, y1, x2, y2 = option.rect.getCoords()
         # +/-1 to avoid intersecting cell borders and artifacts as the result
-        option.rect.setCoords(x1 + 1, y1 + 1, x2 - 1, y2 - 1)
-        painter.drawRect(option.rect)
+        rect = option.rect.adjusted(1, 1, -1, -1)
+        painter.drawRect(rect)
     
     def paint(self, painter: QPainter, option: QStyleOptionViewItem, index: QModelIndex):
         f = '[MClient] table.gui.TableDelegate.paint'
+        if index is None:
+            rep.empty(f)
+            return
         options, style, textRect = self._set_up_doc(option, index)
         self.mcset_line_spacing()
         style.drawControl(QStyle.ControlElement.CE_ItemViewItem, options, painter)
@@ -193,17 +205,17 @@ class Table(QTableView):
     def get_row_height(self, rowno):
         return self.rowHeight(rowno)
     
-    def get_cell_hint(self, index_):
+    def get_cell_hint(self, index):
         option = QStyleOptionViewItem()
-        return self.delegate.sizeHint(option, index_).height()
+        return self.delegate.sizeHint(option, index).height()
     
-    def get_cell_space(self, index_):
+    def get_cell_space(self, index):
         option = QStyleOptionViewItem()
-        hint = self.delegate.sizeHint(option, index_)
+        hint = self.delegate.sizeHint(option, index)
         return hint.width() * hint.height()
     
-    def scroll2index(self, index_):
-        self.scrollTo(index_, QAbstractItemView.ScrollHint.PositionAtTop)
+    def scroll2index(self, index):
+        self.scrollTo(index, QAbstractItemView.ScrollHint.PositionAtTop)
     
     def scroll2top(self):
         self.scrollToTop()
