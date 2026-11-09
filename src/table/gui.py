@@ -126,6 +126,7 @@ class TableDelegate(QStyledItemDelegate):
         painter.drawLine(x1 + 5, y2 - 1, x1 + WIDE_ROW_LEN, y2 - 1)
     
     def _mcdraw_border(self, index, painter, option):
+        # Run only after 'painter.restore' to draw border on drawn text
         f = '[MClient] table.gui.TableDelegate._mcdraw_border'
         if self.mcindex is None:
             mes = _('Index must be set externally!')
@@ -153,7 +154,6 @@ class TableDelegate(QStyledItemDelegate):
         options, style, textRect = self._set_up_doc(option, index)
         self.mcset_line_spacing()
         style.drawControl(QStyle.ControlElement.CE_ItemViewItem, options, painter)
-        self._mcdraw_border(index, painter, option)
         self._mcdraw_row(index, painter, option)
         painter.save()
         painter.translate(textRect.topLeft())
@@ -162,6 +162,7 @@ class TableDelegate(QStyledItemDelegate):
         ctx = QAbstractTextDocumentLayout.PaintContext()
         self.mcdoc.documentLayout().draw(painter, ctx)
         painter.restore()
+        self._mcdraw_border(index, painter, option)
     
     def editorEvent(self, event, model, option: QStyleOptionViewItem, index: QModelIndex):
         self._set_up_doc(option, index)
