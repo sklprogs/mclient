@@ -137,7 +137,7 @@ class TableDelegate(QStyledItemDelegate):
         ''' Compare row and column numbers, not indexes, because Qt's index is
             generated on-the-fly and will never match 'mcindex' even if they
             point to the same row and column. '''
-        if CONFIG.new['BlockMode'] or index.row() != self.mcindex.row() \
+        if CONFIG.new['rows']['height'] == 0 or index.row() != self.mcindex.row()\
         or index.column() != self.mcindex.column():
             return
         painter.setPen(self.mcpen_border)
@@ -229,28 +229,28 @@ class Table(QTableView):
     def get_row_y(self, rowno):
         return self.rowViewportPosition(rowno)
     
-    def get_row(self, index_):
-        return index_.row()
+    def get_row(self, index):
+        return index.row()
     
-    def get_column(self, index_):
-        return index_.column()
+    def get_column(self, index):
+        return index.column()
     
     def get_index(self):
         return self.delegate.mcindex
     
-    def set_index(self, index_):
-        self.delegate.mcindex = index_
+    def set_index(self, index):
+        self.delegate.mcindex = index
     
-    def set_cur_index(self, index_):
-        self.setCurrentIndex(index_)
-        self.delegate.mcindex = index_
+    def set_cur_index(self, index):
+        self.setCurrentIndex(index)
+        self.delegate.mcindex = index
     
     def get_cur_index(self):
         return self.currentIndex()
     
     def get_cur_cell(self):
-        index_ = self.currentIndex()
-        return(index_.row(), index_.column())
+        index = self.currentIndex()
+        return(index.row(), index.column())
     
     def get_cell(self):
         return(self.delegate.mcindex.row(), self.delegate.mcindex.column())
@@ -288,7 +288,6 @@ class Table(QTableView):
         self.vheader.setMaximumSectionSize(height)
     
     def set_gui(self):
-        self.delegate.mcindex = self.get_cur_index()
         self.setItemDelegate(self.delegate)
         self.hheader = self.horizontalHeader()
         self.vheader = self.verticalHeader()
