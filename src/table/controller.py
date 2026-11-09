@@ -162,7 +162,8 @@ class Table:
         self.gui.set_cur_index(index)
         self.update_cell(CONFIG.new['BlockMode'])
         self.scroll_block()
-        if CONFIG.new['rows']['height'] > 0 and index in WIDE_ROWS:
+        if CONFIG.new['rows']['height'] > 0 \
+        and (self.logic.block.rowno, self.logic.block.colno) in WIDE_ROWS:
             self.show_popup()
         else:
             POPUP.close()

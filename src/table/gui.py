@@ -109,8 +109,10 @@ class TableDelegate(QStyledItemDelegate):
         if self.mcdoc.documentLayout().documentSize().height() <= CONFIG.new['rows']['height'] + 19:
             return
         # Must be index, not self.mcindex
-        if index and not index in WIDE_ROWS:
-            WIDE_ROWS.append(index)
+        if index:
+            tuple_ = (index.row(), index.column())
+            if not tuple_ in WIDE_ROWS:
+                WIDE_ROWS.append(tuple_)
         painter.setPen(self.mcpen_row)
         # Avoid intersecting cell borders and artifacts as the result
         x1, y1, x2, y2 = option.rect.getCoords()
