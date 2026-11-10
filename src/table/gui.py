@@ -144,7 +144,8 @@ class TableDelegate(QStyledItemDelegate):
         ''' Compare row and column numbers, not indexes, because Qt's index is
             generated on-the-fly and will never match 'mcindex' even if they
             point to the same row and column. '''
-        if CONFIG.new['rows']['height'] == 0 or index.row() != self.mcindex.row()\
+        if CONFIG.new['BlockMode'] or CONFIG.new['rows']['height'] == 0 \
+        or index.row() != self.mcindex.row() \
         or index.column() != self.mcindex.column():
             return
         painter.setPen(self.mcpen_border)
