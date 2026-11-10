@@ -132,6 +132,9 @@ class TableDelegate(QStyledItemDelegate):
             mes = _('Index must be set externally!')
             Message(f, mes).show_error()
             return
+        if not self.mcindex.isValid():
+            rep.wrong_input(f, Graphical=False)
+            return
         if index is None:
             rep.empty(f)
             return
@@ -242,9 +245,19 @@ class Table(QTableView):
     def set_index(self, index):
         self.delegate.mcindex = index
     
+    def setCurrentIndex(self, index):
+        old_index = self.currentIndex()
+        super().setCurrentIndex(index)
+        if self.delegate:
+            self.delegate.mcindex = index
+            # Qt drawing is delayed, so we must update both indexes
+            if old_index and old_index.isValid():
+                self.update(old_index)
+            if index and index.isValid():
+                self.update(index)
+    
     def set_cur_index(self, index):
         self.setCurrentIndex(index)
-        self.delegate.mcindex = index
     
     def get_cur_index(self):
         return self.currentIndex()
