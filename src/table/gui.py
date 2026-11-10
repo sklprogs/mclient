@@ -63,14 +63,17 @@ class TableDelegate(QStyledItemDelegate):
     # akej74, https://stackoverflow.com/questions/35397943/how-to-make-a-fast-qtableview-with-html-formatted-and-clickable-cells
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.mclast_block_no = None
-        self.mcindex = None
+        self.reset()
         self.mcdoc = QTextDocument()
         self.mcpen_border = QPen(QColor(CONFIG.new['rows']['border']['color']), 2)
         self.mcpen_row = QPen(QColor(WIDE_ROW_COLOR), 2)
         self.mcpen_row.setStyle(Qt.PenStyle.DotLine)
         self.mccursor = QTextCursor(self.mcdoc)
         self.mcstyle = QApplication.style()
+    
+    def reset(self):
+        self.mclast_block_no = None
+        self.mcindex = None
     
     def mcget_block(self, point: QPointF):
         f = '[MClient] table.gui.TableDelegate.mcget_block'
@@ -196,12 +199,14 @@ class Table(QTableView):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.delegate = TableDelegate()
         self.reset_delegate()
         self.set_gui()
     
     def reset_delegate(self):
         WIDE_ROWS.clear()
-        self.delegate = TableDelegate()
+        # Do not recreate 'delegate', this leads to bugs
+        self.delegate.reset()
     
     def get_col_width(self, colno):
         return self.columnWidth(colno)
