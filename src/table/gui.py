@@ -111,11 +111,11 @@ class TableDelegate(QStyledItemDelegate):
     
     def _mcdraw_row(self, index, painter, option):
         f = '[MClient] table.gui.TableDelegate._mcdraw_row'
+        if CONFIG.new['rows']['height'] == 0:
+            return
         ''' Cell calculated height can exceed max allowed row height, but
             the cell can still remain visible because there is spacing between
             cells (the hard-coded value is 19). '''
-        if CONFIG.new['rows']['height'] == 0:
-            return
         if self.mcdoc.documentLayout().documentSize().height() <= CONFIG.new['rows']['height'] + 19:
             return
         # Must be index, not self.mcindex
