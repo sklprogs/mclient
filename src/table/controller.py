@@ -143,7 +143,7 @@ class Table:
             rep.empty(f)
             return
         self.logic.block = block
-        self.select()
+        self.select(True)
     
     def update_cell(self, Select=False):
         f = '[MClient] table.controller.Table.update_cell'
@@ -153,7 +153,7 @@ class Table:
         self.logic.block = fm.Block(self.logic.block, Select).run()
         self.model.update(self.logic.block.rowno, self.logic.block.colno, self.logic.get_cell_code())
         
-    def select(self):
+    def select(self, ShowPopup=False):
         f = '[MClient] table.controller.Table.select'
         if not self.logic.check_block():
             rep.cancel(f)
@@ -163,7 +163,8 @@ class Table:
         self.update_cell(CONFIG.new['BlockMode'])
         self.scroll_block()
         if CONFIG.new['rows']['height'] > 0 \
-        and (self.logic.block.rowno, self.logic.block.colno) in WIDE_ROWS:
+        and (self.logic.block.rowno, self.logic.block.colno) in WIDE_ROWS \
+        and (ShowPopup or CONFIG.new['BlockMode']):
             self.show_popup()
         else:
             POPUP.close()
