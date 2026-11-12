@@ -188,7 +188,7 @@
     ,"terms": {"width": 210}
     ,"1":
         {"type": "source"
-        ,"font": {"family": "Arial", "size": 12, "weight": "bold", "color": "red", "align": "center"}
+        ,"font": {"family": "Arial", "size": 12, "weight": "bold", "color": "#CB4154", "align": "center"}
         }
     ,"2":
         {"type": "dic"
@@ -252,5 +252,5 @@
 ,"timeout": "5.0"
 ,"config": {"min_version": 3}
 ,"popup": {"center": true}
-,"selection": {"cell": "#FF0000", "block": "#00FFFF"}
+,"selection": {"cell": "red", "block": "#00FFFF"}
 }
