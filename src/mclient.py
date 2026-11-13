@@ -199,12 +199,6 @@ class App:
             return
         TABLE.select_with_mouse(block_no_str)
     
-    def copy_block(self):
-        #TODO: implement
-        if TABLE.copy_block():
-            if CONFIG.new['Iconify']:
-                self.minimize()
-    
     def solve_copy(self):
         if CONFIG.new['BlockMode']:
             self.copy_block()
@@ -356,29 +350,6 @@ class App:
             rep.lazy(f)
             return
         url = ARTICLES.get_url()
-        if not url:
-            rep.empty(f)
-            return
-        url = SOURCES.fix_url(url)
-        CLIPBOARD.copy(url)
-        if CONFIG.new['Iconify']:
-            self.minimize()
-    
-    def get_block_url(self):
-        f = '[MClient] mclient.App.get_block_url'
-        block = TABLE.get_selected_block()
-        if not block:
-            rep.empty(f)
-            return
-        return block.url
-    
-    def copy_block_url(self):
-        f = '[MClient] mclient.App.copy_block_url'
-        if not ARTICLES.get_len():
-            # Do not warn when there are no articles yet
-            rep.lazy(f)
-            return
-        url = self.get_block_url()
         if not url:
             rep.empty(f)
             return
@@ -758,12 +729,25 @@ class App:
             self.go_search()
     
     def copy_cell(self):
-        ''' Do not combine these conditions with 'and' since the interpreter
-            may decide to check the lighter condition first.
-        '''
         if TABLE.copy_cell():
             if CONFIG.new['Iconify']:
                 self.minimize()
+    
+    def copy_block(self):
+        if TABLE.copy_block():
+            if CONFIG.new['Iconify']:
+                self.minimize()
+    
+    def copy_block_url(self):
+        f = '[MClient] mclient.App.copy_block_url'
+        url = TABLE.get_block_url()
+        if not url:
+            rep.lazy(f)
+            return
+        url = SOURCES.fix_url(url)
+        CLIPBOARD.copy(url)
+        if CONFIG.new['Iconify']:
+            self.minimize()
     
     def copy_symbol(self):
         symbol = self.symbols.get()
