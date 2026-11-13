@@ -265,14 +265,30 @@ class Table:
     
     def copy_cell(self):
         f = '[MClient] table.controller.Table.copy_cell'
-        if not ARTICLES.get_len():
-            # Do not warn when there are no articles yet
+        text = self.get_cell_text()
+        if not text:
             rep.lazy(f)
             return
-        text = self.get_cell_text()
-        if text:
-            CLIPBOARD.copy(text)
-            return True
+        CLIPBOARD.copy(text)
+        return True
+    
+    def copy_block(self):
+        f = '[MClient] table.controller.Table.copy_block'
+        if not self.logic.check_block():
+            rep.empty(f)
+            return
+        if not self.logic.block.text:
+            rep.lazy(f)
+            return
+        CLIPBOARD.copy(self.logic.block.text)
+        return True
+    
+    def get_block_url(self):
+        f = '[MClient] table.controller.Table.get_block_url'
+        if not self.logic.check_block():
+            rep.empty(f)
+            return
+        return self.logic.block.url
     
     def set_row_height(self, height=42):
         for no in range(self.logic.rownum):
