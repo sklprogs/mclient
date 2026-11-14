@@ -7,6 +7,14 @@ from skl_shared.message.controller import rep
 from config import CONFIG
 from popup.gui import Popup as guiPopup, HEIGHT, WIDTH
 
+''' Down arrow navigation cases:
+- block or cell mode, no popup: continue fully with mclient.App.go_down;
+- cell mode, popup: don't do anything, continue with Qt's popup internal
+  procedures to scroll down;
+- block mode, popup: send a signal to continue with mclient.App.go_down, ignore
+  Qt's popup internal procedures and scroll to the current block in the popup
+  if it's not hidden after changing the selection. '''
+
 
 class Attach:
     
