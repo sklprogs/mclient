@@ -2,13 +2,33 @@
 # -*- coding: UTF-8 -*-
 
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTextEdit
-from PyQt6.QtGui import QTextDocument, QTextCursor, QFont, QShortcut, QKeySequence
+from PyQt6.QtGui import QTextDocument, QTextCursor, QFont, QShortcut, \
+     QKeySequence, QKeyEvent
 from PyQt6.QtCore import pyqtSignal, Qt
 
 from skl_shared.graphics.root.controller import ROOT
 
 WIDTH = 270
 HEIGHT = 150
+
+
+class CustomTextEdit(QTextEdit):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Override = True
+    
+    def keyPressEvent(self, event: QKeyEvent):
+        if event.key() == Qt.Key.Key_Down:
+            print('Down arrowe p[ressed')
+            if self.Override:
+                event.accept()
+            else:
+                super().keyPressEvent(event)
+            return
+        # Return all other keys
+        super().keyPressEvent(event)
+
 
 
 class Popup(QWidget):
@@ -48,7 +68,7 @@ class Popup(QWidget):
     
     def set_gui(self):
         self.set_layout()
-        self.textbox = QTextEdit()
+        self.textbox = CustomTextEdit()
         self.doc = QTextDocument()
         self.cursor = QTextCursor(self.doc)
         self.char_fmt = self.cursor.charFormat()
