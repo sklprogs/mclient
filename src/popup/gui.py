@@ -22,6 +22,8 @@ class CustomTextEdit(QTextEdit):
     sig_pgdn = pyqtSignal()
     sig_start = pyqtSignal()
     sig_end = pyqtSignal()
+    sig_go = pyqtSignal()
+    sig_copy = pyqtSignal()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -34,6 +36,8 @@ class CustomTextEdit(QTextEdit):
     def set_bindings(self):
         self.bind(('Ctrl+Home',), self.sig_start.emit)
         self.bind(('Ctrl+End',), self.sig_end.emit)
+        self.bind(('Return', 'Enter',), self.sig_go)
+        self.bind(('Ctrl+Return', 'Ctrl+Enter',), self.sig_copy)
     
     def keyPressEvent(self, event: QKeyEvent):
         if event.key() == Qt.Key.Key_Up:
