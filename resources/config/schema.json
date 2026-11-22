@@ -641,8 +641,8 @@
         }
     ,"popup":
         {"type": "object"
-        ,"required": ["center"]
-        ,"properties": {"center": {"type": "boolean"}}
+        ,"required": ["center", "show"]
+        ,"properties": {"center": {"type": "boolean"}, "show": {"type": "boolean"}}
         }
     ,"selection":
         {"type": "object"

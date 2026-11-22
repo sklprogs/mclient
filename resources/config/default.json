@@ -165,7 +165,7 @@
         }
     ,"toggle_popup":
         {"hotkeys": ["Alt+X"]
-        ,"hint": "Toggle full cell text"
+        ,"hint": "Toggle popup"
         }
     ,"toggle_priority":
         {"hotkeys": ["Alt+P"]
@@ -251,6 +251,6 @@
 ,"hotkey_delay": 0
 ,"timeout": "5.0"
 ,"config": {"min_version": 3}
-,"popup": {"center": true}
+,"popup": {"center": true, 'show': true}
 ,"selection": {"cell": "red", "block": "#00FFFF"}
 }
