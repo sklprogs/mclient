@@ -919,8 +919,17 @@ class App:
         # Mouse buttons cannot be bound
         self.gui.sig_close.connect(self.close)
         self.gui.sig_close.connect(self.quit)
-        self.gui.sig_pgdn.connect(lambda: TABLE.go_page(True))
         self.gui.sig_pgup.connect(TABLE.go_page)
+        self.gui.sig_pgdn.connect(lambda: TABLE.go_page(True))
+        
+        POPUP.gui.textbox.sig_up.connect(self.go_up)
+        POPUP.gui.textbox.sig_down.connect(self.go_down)
+        POPUP.gui.textbox.sig_left.connect(self.go_left)
+        POPUP.gui.textbox.sig_right.connect(self.go_right)
+        POPUP.gui.textbox.sig_start.connect(TABLE.go_start)
+        POPUP.gui.textbox.sig_end.connect(TABLE.go_end)
+        POPUP.gui.textbox.sig_pgup.connect(TABLE.go_page)
+        POPUP.gui.textbox.sig_pgdn.connect(lambda: TABLE.go_page(True))
         
         self.gui.bind(('Ctrl+Q',), self.close)
         self.gui.bind(('Esc',), self.minimize)
