@@ -14,19 +14,40 @@ HEIGHT = 150
 
 class CustomTextEdit(QTextEdit):
     
+    sig_up = pyqtSignal()
+    sig_down = pyqtSignal()
+    sig_left = pyqtSignal()
+    sig_right = pyqtSignal()
+    sig_pgup = pyqtSignal()
+    sig_pgdn = pyqtSignal()
+    sig_start = pyqtSignal()
+    sig_end = pyqtSignal()
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.Override = True
+        self.set_bindings()
+    
+    def bind(self, hotkeys, action):
+        for hotkey in hotkeys:
+            QShortcut(QKeySequence(hotkey), self).activated.connect(action)
+    
+    def set_bindings(self):
+        self.bind(('Ctrl+Home',), self.sig_start.emit)
+        self.bind(('Ctrl+End',), self.sig_end.emit)
     
     def keyPressEvent(self, event: QKeyEvent):
-        if event.key() == Qt.Key.Key_Down:
-            print('Down arrowe p[ressed')
-            if self.Override:
-                event.accept()
-            else:
-                super().keyPressEvent(event)
-            return
-        # Return all other keys
+        if event.key() == Qt.Key.Key_Up:
+            self.sig_up.emit()
+        elif event.key() == Qt.Key.Key_Down:
+            self.sig_down.emit()
+        elif event.key() == Qt.Key.Key_Left:
+            self.sig_left.emit()
+        elif event.key() == Qt.Key.Key_Right:
+            self.sig_right.emit()
+        elif event.key() == Qt.Key.Key_PageUp:
+            self.sig_pgup.emit()
+        elif event.key() == Qt.Key.Key_PageDown:
+            self.sig_pgdn.emit()
         super().keyPressEvent(event)
 
 
