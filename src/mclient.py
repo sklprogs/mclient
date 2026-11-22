@@ -930,6 +930,8 @@ class App:
         POPUP.gui.textbox.sig_end.connect(TABLE.go_end)
         POPUP.gui.textbox.sig_pgup.connect(TABLE.go_page)
         POPUP.gui.textbox.sig_pgdn.connect(lambda: TABLE.go_page(True))
+        POPUP.gui.textbox.sig_go.connect(self.go_keyboard)
+        POPUP.gui.textbox.sig_copy.connect(self.solve_copy)
         
         self.gui.bind(('Ctrl+Q',), self.close)
         self.gui.bind(('Esc',), self.minimize)
