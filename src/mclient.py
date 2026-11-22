@@ -305,7 +305,8 @@ class App:
         POPUP.fill(text)
         POPUP.adjust_position(x1, width, y1, height, max_width
                              ,CONFIG.new['popup']['center'])
-        POPUP.show()
+        # Do not call POPUP.show, because this is where we came from
+        POPUP.gui.show()
     
     def get_cell(self):
         f = '[MClient] mclient.App.get_cell'
@@ -922,6 +923,7 @@ class App:
         self.gui.sig_pgup.connect(TABLE.go_page)
         self.gui.sig_pgdn.connect(lambda: TABLE.go_page(True))
         
+        POPUP.gui.sig_show.connect(self.show_popup)
         POPUP.gui.textbox.sig_up.connect(self.go_up)
         POPUP.gui.textbox.sig_down.connect(self.go_down)
         POPUP.gui.textbox.sig_left.connect(self.go_left)
@@ -998,7 +1000,7 @@ class App:
         self.gui.bind(CONFIG.new['actions']['show_prior']['hotkeys']
                      ,PRIOR.toggle)
         self.gui.bind(CONFIG.new['actions']['toggle_popup']['hotkeys']
-                     ,TABLE.show_popup)
+                     ,POPUP.toggle)
         self.gui.bind(CONFIG.new['actions']['toggle_alphabet']['hotkeys']
                      ,self.toggle_alphabet)
         self.gui.bind(CONFIG.new['actions']['reload_article']['hotkeys']
@@ -1056,7 +1058,6 @@ class App:
         TABLE.gui.clicked.connect(self.go_url)
         TABLE.gui.sig_mmb.connect(self.minimize)
         TABLE.gui.sig_rmb.connect(self.solve_copy)
-        TABLE.gui.sig_popup.connect(self.show_popup)
         TABLE.gui.delegate.sig_select.connect(self.select_with_mouse)
         ''' Recalculate pages each time the main window is resized. This allows
             to save resources and avoid getting dummy geometry which will be

@@ -58,6 +58,7 @@ class CustomTextEdit(QTextEdit):
 
 class Popup(QWidget):
     
+    sig_show = pyqtSignal()
     sig_close = pyqtSignal()
     
     def __init__(self, *args, **kwargs):
@@ -73,6 +74,9 @@ class Popup(QWidget):
     def closeEvent(self, event):
         self.sig_close.emit()
         return super().closeEvent(event)
+    
+    def emit_show(self):
+        self.sig_show.emit()
     
     def centralize(self):
         self.move(ROOT.get_root().primaryScreen().geometry().center() - self.rect().center())

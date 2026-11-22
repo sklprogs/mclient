@@ -143,7 +143,7 @@ class Table:
             rep.empty(f)
             return
         self.logic.block = block
-        self.select(True)
+        self.select()
     
     def update_cell(self, Select=False):
         f = '[MClient] table.controller.Table.update_cell'
@@ -153,7 +153,7 @@ class Table:
         self.logic.block = fm.Block(self.logic.block, Select).run()
         self.model.update(self.logic.block.rowno, self.logic.block.colno, self.logic.get_cell_code())
         
-    def select(self, ShowPopup=False):
+    def select(self):
         f = '[MClient] table.controller.Table.select'
         if not self.logic.check_block():
             rep.cancel(f)
@@ -164,8 +164,8 @@ class Table:
         self.scroll_block()
         if CONFIG.new['rows']['height'] > 0 \
         and (self.logic.block.rowno, self.logic.block.colno) in WIDE_ROWS \
-        and (ShowPopup or CONFIG.new['BlockMode']):
-            self.show_popup()
+        and CONFIG.new['popup']['show']:
+            POPUP.show()
         else:
             POPUP.close()
         ARTICLES.set_bookmark(self.logic.block)
@@ -185,10 +185,6 @@ class Table:
     
     def get_col_width(self, colno):
         return self.gui.get_col_width(colno)
-    
-    def show_popup(self):
-        POPUP.fill(self.get_cell_code())
-        self.gui.show_popup()
     
     def _get_page_limits(self, page):
         f = '[MClient] table.controller.Table._get_page_limits'

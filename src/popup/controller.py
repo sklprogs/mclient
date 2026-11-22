@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from skl_shared.localize import _
-from skl_shared.message.controller import rep
+from skl_shared.message.controller import rep, Message
 
 from config import CONFIG
 from popup.gui import Popup as guiPopup, HEIGHT, WIDTH
@@ -64,7 +64,6 @@ class Attach:
 class Popup:
     
     def __init__(self):
-        self.Shown = False
         self.gui = guiPopup()
         self.set_gui()
     
@@ -73,10 +72,24 @@ class Popup:
         self.gui.move(px1, py1)
     
     def toggle(self):
-        if self.Shown:
-            self.close()
+        if CONFIG.new['popup']['show']:
+            self.disable()
         else:
-            self.show()
+            self.enable()
+    
+    def disable(self):
+        f = '[MClient] popup.controller.Popup.disable'
+        mes = _('Disable popup mode')
+        Message(f, mes).show_info()
+        CONFIG.new['popup']['show'] = False
+        self.close()
+    
+    def enable(self):
+        f = '[MClient] popup.controller.Popup.enable'
+        mes = _('Enable popup mode')
+        Message(f, mes).show_info()
+        CONFIG.new['popup']['show'] = True
+        self.show()
     
     def fill(self, text):
         self.gui.fill(text)
@@ -89,16 +102,14 @@ class Popup:
         self.set_title()
     
     def show(self):
-        self.Shown = True
-        self.gui.show()
+        self.gui.emit_show()
     
     def close(self):
-        self.Shown = False
         self.gui.close()
     
     def set_bindings(self):
         f = '[MClient] popup.controller.Popup.set_bindings'
-        self.gui.bind(('Esc',), self.close)
+        self.gui.bind(('Esc',), self.disable)
         if not CONFIG.Success:
             rep.cancel(f)
             return
