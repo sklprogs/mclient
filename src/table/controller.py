@@ -166,6 +166,7 @@ class Table:
         and (self.logic.block.rowno, self.logic.block.colno) in WIDE_ROWS \
         and CONFIG.new['popup']['show']:
             POPUP.show()
+            POPUP.scroll(f"block#{TABLE.logic.block.no}")
         else:
             POPUP.close()
         ARTICLES.set_bookmark(self.logic.block)
