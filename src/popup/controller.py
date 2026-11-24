@@ -115,6 +115,17 @@ class Popup:
             return
         self.gui.bind(CONFIG.new['actions']['toggle_popup']['hotkeys']
                      ,self.toggle)
+    
+    def scroll(self, anchor):
+        f = '[MClient] popup.controller.Popup.scroll'
+        if not anchor:
+            rep.empty(f)
+            return
+        if not isinstance(anchor, str):
+            rep.wrong_input(f, anchor)
+            return
+        # No need to try-except
+        self.gui.textbox.mc_scroll(anchor)
 
 
 POPUP = Popup()
