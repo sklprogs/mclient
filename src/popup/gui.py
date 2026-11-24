@@ -4,7 +4,7 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTextEdit
 from PyQt6.QtGui import QTextDocument, QTextCursor, QFont, QShortcut, \
      QKeySequence, QKeyEvent
-from PyQt6.QtCore import pyqtSignal, Qt
+from PyQt6.QtCore import pyqtSignal, Qt, QTimer
 
 from skl_shared.graphics.root.controller import ROOT
 
@@ -53,6 +53,16 @@ class CustomTextEdit(QTextEdit):
         elif event.key() == Qt.Key.Key_PageDown:
             self.sig_pgdn.emit()
         super().keyPressEvent(event)
+    
+    def mc_scroll(self, anchor):
+        ''' - Do not override built-in 'scroll' method here.
+            - Using QTimer.singleShot is a standard, idiomatic Qt convention,
+        even though it looks like a workaround at firce glance. It ensures that
+        Qt has finished calculating line wraps, heights and scrollbar ranges;
+        otherwise, the document height is still 0, so Qt thinks that everything
+        is visible and doesn't scroll. In my case, scrolling worked imprecisely.
+        '''
+        QTimer.singleShot(0, lambda: self.scrollToAnchor(anchor))
 
 
 
