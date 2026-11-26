@@ -2,8 +2,7 @@
 alphabetize terms (?), get cell duplicates
 
 all:
-- Implement scrolling of cell contents with popup mode enabled. Example for
-"set": вделывать, вправить...: 
+- Implement selecting blocks upon mouse hovering and copying them in a popup.
 - (as an option) Delete stress in blocks like здр'авствуйте, прив'ет. Do not
   delete it in trascription and in cases like Michael's and Petersons'.
 - convert single-character comments to embracing type;
