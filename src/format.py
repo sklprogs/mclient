@@ -123,8 +123,12 @@ class Block:
             self.block.code = sub.format(family, size, color, self.block.text)
     
     def add_no(self):
+        ''' Store both 'href' (required for mouse navigation, expected by Qt)
+            and 'name' (popup scrolling) anchors. Extracting 'name' anchors upon
+            mouse hovering is slow by design. '''
+        block_no = f'block#{self.block.no}'
         self.block.code = '<style>a {text-decoration: none; color: black; }</style>' \
-                        + f'<a href="block#{self.block.no}"><span>' \
+                        + f'<a href="{block_no}" name="{block_no}"><span>' \
                         + self.block.code + '</span></a>'
     
     def run(self):
